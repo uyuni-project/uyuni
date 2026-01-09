@@ -49,6 +49,7 @@ public class FileLocks {
             new FileLocks("/var/lib/spacewalk/scc/sccrefresh.lock");
 
     private final String filePath;
+    private boolean skipSetOwner = false;
 
     /**
      * create the lock
@@ -56,6 +57,13 @@ public class FileLocks {
      */
     public FileLocks(String filePathIn) {
         this.filePath = filePathIn;
+    }
+
+    /**
+     * @param skip set skip set owner - used for testsuite
+     */
+    public void setSkipSetOwner(boolean skip) {
+        skipSetOwner = skip;
     }
 
     /**
@@ -101,12 +109,14 @@ public class FileLocks {
                 try {
                     LOG.info("File lock {} acquired.", filePath);
                     try {
-                        // Set the user to tomcat so both taskomatic (root) and tomcat (tomcat) can use it.
-                        FileSystem fileSystem = FileSystems.getDefault();
-                        UserPrincipalLookupService service = fileSystem.getUserPrincipalLookupService();
-                        UserPrincipal tomcatUser = service.lookupPrincipalByName("tomcat");
-                        if (!Files.getOwner(file.toPath(), LinkOption.NOFOLLOW_LINKS).equals(tomcatUser)) {
-                            Files.setOwner(file.toPath(), tomcatUser);
+                        if (!skipSetOwner) {
+                            // Set the user to tomcat so both taskomatic (root) and tomcat (tomcat) can use it.
+                            FileSystem fileSystem = FileSystems.getDefault();
+                            UserPrincipalLookupService service = fileSystem.getUserPrincipalLookupService();
+                            UserPrincipal tomcatUser = service.lookupPrincipalByName("tomcat");
+                            if (!Files.getOwner(file.toPath(), LinkOption.NOFOLLOW_LINKS).equals(tomcatUser)) {
+                                Files.setOwner(file.toPath(), tomcatUser);
+                            }
                         }
                     }
                     catch (IOException e) {

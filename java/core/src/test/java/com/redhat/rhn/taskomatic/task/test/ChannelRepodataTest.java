@@ -20,6 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -32,12 +34,15 @@ import com.redhat.rhn.taskomatic.task.ChannelRepodata;
 import com.redhat.rhn.taskomatic.task.RhnJob;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 
+import org.apache.commons.io.FileUtils;
 import org.hibernate.type.StandardBasicTypes;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.quartz.JobExecutionContext;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.function.BooleanSupplier;
 import java.util.stream.Collectors;
@@ -50,6 +55,9 @@ public class ChannelRepodataTest extends JMockBaseTestCaseWithUser {
 
     private ChannelRepodata channelRepodata;
 
+    private String pristineMountPoint;
+    private Path tmpMountPoint;
+
     @BeforeEach
     @Override
     public void setUp() throws Exception {
@@ -57,6 +65,12 @@ public class ChannelRepodataTest extends JMockBaseTestCaseWithUser {
 
         channelRepodata = new ChannelRepodata();
         jobContext = mock(JobExecutionContext.class);
+
+        // allows RpmRepositoryWriter.initBaseDir to create a temporary mount point
+        // instead of "/var/cache/rhn/repodata/..." to let tests run locally
+        tmpMountPoint = Files.createTempDirectory("channelrepodatatest");
+        pristineMountPoint = Config.get().getString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, "/pub");
+        Config.get().setString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, tmpMountPoint.toString());
     }
 
     @AfterEach
@@ -67,6 +81,9 @@ public class ChannelRepodataTest extends JMockBaseTestCaseWithUser {
         // Delete all the runs we created
         TaskoFactory.listRunsByBunch("channel-repodata-bunch")
             .forEach(TaskoFactory::deleteRun);
+
+        Config.get().setString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, pristineMountPoint);
+        FileUtils.deleteDirectory(tmpMountPoint.toFile());
     }
 
     @Test

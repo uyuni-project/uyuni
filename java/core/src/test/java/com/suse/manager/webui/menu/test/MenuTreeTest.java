@@ -21,7 +21,6 @@ import com.redhat.rhn.common.security.acl.AclFactory;
 
 import com.suse.manager.webui.menu.MenuItem;
 import com.suse.manager.webui.menu.MenuTree;
-import com.suse.manager.webui.menu.MenuTree.MenuItemList;
 
 import org.junit.jupiter.api.Test;
 
@@ -35,7 +34,7 @@ public class MenuTreeTest  {
         String url = "/rhn/account/UserDetails.do";
 
         // the menu tree
-        MenuItemList nodes = new MenuItemList();
+        MenuTree.MenuItemList nodes = new MenuTree.MenuItemList();
         nodes.add(new MenuItem("Home")
                 .addChild(new MenuItem("Overview")
                     .withPrimaryUrl("/rhn/YourRhn.do"))
@@ -59,7 +58,7 @@ public class MenuTreeTest  {
         String url = "/rhn/account/25/details";
 
         // the menu tree
-        MenuItemList nodes = new MenuItemList();
+        MenuTree.MenuItemList nodes = new MenuTree.MenuItemList();
         nodes.add(new MenuItem("Home")
             .addChild(new MenuItem("Overview")
                 .withPrimaryUrl("/rhn/YourRhn.do"))
@@ -83,7 +82,7 @@ public class MenuTreeTest  {
         String url = "/rhn/errata/manage/Create.do";
 
         // the menu tree
-        MenuItemList nodes = new MenuItemList();
+        MenuTree.MenuItemList nodes = new MenuTree.MenuItemList();
         nodes.add(new MenuItem("Patches")
                 .addChild(new MenuItem("Patches")
                     .withPrimaryUrl("/rhn/errata/RelevantErrata.do")
@@ -133,7 +132,7 @@ public class MenuTreeTest  {
         MenuItem systems = new MenuItem("Systems").withVisibility(true);
         MenuItem admin = new MenuItem("Admin").withVisibility(false);
 
-        MenuItemList nodes = new MenuItemList();
+        MenuTree.MenuItemList nodes = new MenuTree.MenuItemList();
         nodes.add(home);
         nodes.add(systems);
         nodes.add(admin);

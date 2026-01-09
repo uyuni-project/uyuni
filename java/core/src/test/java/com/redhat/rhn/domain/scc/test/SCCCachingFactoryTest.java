@@ -28,6 +28,7 @@ import com.redhat.rhn.domain.scc.SCCRepository;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -42,6 +43,27 @@ import java.util.stream.Collectors;
  * Tests for {@link SCCCachingFactory}.
  */
 public class SCCCachingFactoryTest extends BaseTestCaseWithUser {
+
+    @Override
+    @BeforeEach
+    public void setUp() throws Exception {
+        super.setUp();
+        SCCCachingFactory.clearRepositories();
+        cleanupSuseManagerInfo();
+    }
+
+    @AfterEach
+    @Override
+    public void tearDown() throws Exception {
+        super.tearDown();
+        cleanupSuseManagerInfo();
+    }
+
+    private void cleanupSuseManagerInfo() {
+        HibernateFactory.getSession()
+                .createNativeQuery("DELETE FROM suseManagerInfo")
+                .executeUpdate();
+    }
 
     /**
      * Test if initially an empty list is returned.
@@ -77,6 +99,8 @@ public class SCCCachingFactoryTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testRefreshNeeded() throws InterruptedException {
+        //cleanupSuseManagerInfo();
+
         for (SCCCredentials c : CredentialsFactory.listSCCCredentials()) {
             CredentialsFactory.removeCredentials(c);
         }
@@ -111,10 +135,12 @@ public class SCCCachingFactoryTest extends BaseTestCaseWithUser {
 
         HibernateFactory.getSession().flush();
         assertTrue(SCCCachingFactory.refreshNeeded(lastRefreshDate));
+
+        //cleanupSuseManagerInfo();
     }
 
     @Test
-    public void testListReposForRootProduct() throws Exception {
+    public void testListReposForRootProduct() {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, null, true);
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
@@ -142,13 +168,4 @@ public class SCCCachingFactoryTest extends BaseTestCaseWithUser {
         return repo;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @BeforeEach
-    public void setUp() throws Exception {
-        super.setUp();
-        SCCCachingFactory.clearRepositories();
-    }
 }
