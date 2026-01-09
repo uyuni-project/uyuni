@@ -8,12 +8,4 @@
 include:
   - util.mgr_switch_to_venv_minion
 
-mgr_remove_susemanagerconf:
-  file.absent:
-    - name: /etc/salt/minion.d/susemanager.conf
-    - require:
-      - service: mgr_disable_salt_minion
-    - order: last
-
 {%- endif %}
-
