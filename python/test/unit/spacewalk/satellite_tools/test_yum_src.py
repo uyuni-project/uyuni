@@ -534,6 +534,19 @@ class YumSrcTest(unittest.TestCase):
             assert not cs.get_mediaproducts()
             log_mock.assert_not_called()
 
+    def test_get_mediaproduct_adds_no_trailing_backslash(self):
+        cs = self._make_dummy_cs()
+        mirror_mock = Mock()
+
+        with patch(
+            "spacewalk.satellite_tools.repo_plugins.yum_src.MirrorGroup", mirror_mock
+        ):
+            cs.get_mediaproducts()
+
+        urls = mirror_mock.call_args[1]
+        for url in urls:
+            assert url[-1] != "/"
+
     @patch("spacewalk.satellite_tools.repo_plugins.yum_src.initCFG", Mock())
     @patch("spacewalk.satellite_tools.repo_plugins.yum_src.os.unlink", Mock())
     @patch("urlgrabber.grabber.PyCurlFileObject", Mock())
