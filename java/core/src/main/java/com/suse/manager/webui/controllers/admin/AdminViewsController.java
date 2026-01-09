@@ -14,11 +14,14 @@ package com.suse.manager.webui.controllers.admin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withProductAdmin;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
 import static spark.Spark.get;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.validation.password.PasswordPolicy;
+import com.redhat.rhn.domain.access.AccessGroupFactory;
+import com.redhat.rhn.domain.access.NamespaceFactory;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.cloudpayg.PaygSshDataFactory;
 import com.redhat.rhn.domain.iss.IssFactory;
@@ -41,6 +44,8 @@ import com.suse.manager.webui.controllers.admin.beans.MigrationEntryDto;
 import com.suse.manager.webui.controllers.admin.beans.PeripheralDetailsData;
 import com.suse.manager.webui.controllers.admin.mappers.PaygResponseMappers;
 import com.suse.manager.webui.utils.FlashScopeHelper;
+import com.suse.manager.webui.utils.gson.AccessGroupJson;
+import com.suse.manager.webui.utils.gson.AccessGroupUserJson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -94,6 +99,12 @@ public class AdminViewsController {
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showMonitoring))), jade);
         get("/manager/admin/config/password-policy",
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::showPasswordPolicy))), jade);
+        get("/manager/admin/access-control",
+                withUserPreferences(withCsrfToken(withUser(AdminViewsController::accessControl))), jade);
+        get("/manager/admin/access-control/create-access-group",
+                withUserPreferences(withCsrfToken(withUser(AdminViewsController::createAccessGroup))), jade);
+        get("/manager/admin/access-control/show-access-group/:id",
+                withUserPreferences(withCsrfToken(withUser(AdminViewsController::showAccessGroup))), jade);
         get("/manager/admin/setup/payg",
                 withUserPreferences(withCsrfToken(withOrgAdmin(AdminViewsController::listPayg))), jade);
         get("/manager/admin/setup/payg/create",
@@ -258,6 +269,53 @@ public class AdminViewsController {
      */
     public static ModelAndView createPayg(Request request, Response response, User user) {
         return new ModelAndView(new HashMap<>(), "controllers/admin/templates/payg_create.jade");
+    }
+
+
+   /**
+    * Render the view for managing access control
+    * @param request the request
+    * @param response the response
+    * @param user the logged-in user
+    * @return the access control jade view
+     */
+    public static ModelAndView accessControl(Request request, Response response, User user) {
+        return new ModelAndView(new HashMap<>(), "controllers/admin/templates/access-control.jade");
+    }
+
+     /**
+     * Render new Access group ssh connection data create page
+     * @param request
+     * @param response
+     * @param user
+     * @return return the form to create a new Access group ssh connection data
+     */
+    public static ModelAndView createAccessGroup(Request request, Response response, User user) {
+        return new ModelAndView(new HashMap<>(), "controllers/admin/templates/access-group_create.jade");
+    }
+
+    /**
+     * Render Access group details data page
+     * @param request
+     * @param response
+     * @param user
+     * @return return the form to show Access groups details data
+     */
+    public static ModelAndView showAccessGroup(Request request, Response response, User user) {
+        long id = Long.parseLong(request.params("id"));
+        AccessGroupJson accessGroupData = AccessGroupFactory.lookupById(id)
+                .map(AccessGroupJson::new)
+                .orElse(null);
+        if (accessGroupData == null) {
+            LOG.error("Access Group with id {} not found", id);
+            throw Spark.halt(HttpStatus.SC_NOT_FOUND, "Access Group with id " + id + " not found");
+        }
+        accessGroupData.setPermissions(NamespaceFactory.getAccessGroupNamespaces(id));
+        accessGroupData.setUsers(
+                AccessGroupFactory.listAccessGroupUsers(id).stream().map(AccessGroupUserJson::new).toList());
+        Map<String, Object> data = new HashMap<>();
+        data.put("accessGroup", GSON.toJson(accessGroupData));
+        return new ModelAndView(data, "controllers/admin/templates/access-group_show.jade");
     }
 
     /**
