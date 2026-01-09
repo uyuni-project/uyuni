@@ -131,6 +131,7 @@ class ScheduleAuditScan extends React.Component<{}, StateType> {
       dataStreamName: model.dataStreamName,
       tailoringFile: model.tailoringFile,
       tailoringProfileID: model.tailoringProfileID,
+      ovalFiles: model.ovalFiles,
       advancedArgs: model.advancedArgs,
       fetchRemoteResources: model.fetchRemoteResources,
     })
@@ -142,14 +143,8 @@ class ScheduleAuditScan extends React.Component<{}, StateType> {
           </span>
         );
 
-        const msgs = this.state.messages.concat(msg);
-
-        // Limit message history
-        while (msgs.length > MESSAGES_COUNTER_LIMIT) {
-          msgs.shift();
-        }
-
-        this.setState({ messages: msgs });
+        // Replace messages to clear any previous errors
+        this.setState({ messages: msg, errors: [] });
       })
       .catch(this.handleResponseError);
   };
@@ -275,6 +270,18 @@ class ScheduleAuditScan extends React.Component<{}, StateType> {
                   value={this.state.model.tailoringProfileID}
                   disabled={!!selectedScapPolicy}
                   options={tailoringFileProfiles.map((k) => ({ value: k.id, label: k.title }))}
+                />
+              </div>
+            </FormGroup>
+
+            <FormGroup>
+              <Label name={t("OVAL Files")} className="col-md-3" />
+              <div className="col-md-6">
+                <Text
+                  name="ovalFiles"
+                  disabled={!!selectedScapPolicy}
+                  placeholder={selectedScapPolicy ? "" : t("e.g: file1.xml, file2.xml")}
+                  title={t("Comma-separated list of OVAL files")}
                 />
               </div>
             </FormGroup>

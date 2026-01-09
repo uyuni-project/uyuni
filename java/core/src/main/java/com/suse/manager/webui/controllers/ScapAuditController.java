@@ -499,6 +499,7 @@ public class ScapAuditController {
         policyData.put("dataStreamName", policy.getDataStreamName());
         policyData.put("xccdfProfileId", policy.getXccdfProfileId());
         policyData.put("tailoringProfileId", policy.getTailoringProfileId());
+        policyData.put("ovalFiles", policy.getOvalFiles());
         policyData.put("advancedArgs", policy.getAdvancedArgs());
         policyData.put("fetchRemoteResources", policy.getFetchRemoteResources());
         
@@ -553,6 +554,7 @@ public class ScapAuditController {
         policyData.put("dataStreamName", policy.getDataStreamName());
         policyData.put("xccdfProfileId", policy.getXccdfProfileId());
         policyData.put("tailoringProfileId", policy.getTailoringProfileId());
+        policyData.put("ovalFiles", policy.getOvalFiles());
         policyData.put("advancedArgs", policy.getAdvancedArgs());
         policyData.put("fetchRemoteResources", policy.getFetchRemoteResources());
         
@@ -603,6 +605,7 @@ public class ScapAuditController {
         policyData.put("dataStreamName", policy.getDataStreamName());
         policyData.put("xccdfProfileId", policy.getXccdfProfileId());
         policyData.put("tailoringProfileId", policy.getTailoringProfileId());
+        policyData.put("ovalFiles", policy.getOvalFiles());
         policyData.put("advancedArgs", policy.getAdvancedArgs());
         policyData.put("fetchRemoteResources", policy.getFetchRemoteResources());
         
@@ -644,7 +647,7 @@ public class ScapAuditController {
                     reqData.getIds(),
                     reqData.getDataStreamPath(),
                     reqData.buildOscapParameters(),
-                    null, // ovalFiles
+                    reqData.getOvalFiles(), // OVAL files
                     earliest
             );
             
@@ -974,6 +977,75 @@ public class ScapAuditController {
     }
 
     /**
+     * Helper method to set optional string field if not empty
+     * @param value the value to check
+     * @param setter the setter method to call if value is not empty
+     */
+    private static void setIfNotEmpty(String value, java.util.function.Consumer<String> setter) {
+        Optional.ofNullable(value)
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .ifPresent(setter);
+    }
+
+    /**
+     * Helper method to set field to trimmed value or null if empty
+     * @param value the value to check
+     * @param setter the setter method to call with trimmed value or null
+     */
+    private static void setOrNull(String value, java.util.function.Consumer<String> setter) {
+        setter.accept(
+                Optional.ofNullable(value)
+                        .map(String::trim)
+                        .filter(s -> !s.isEmpty())
+                        .orElse(null)
+        );
+    }
+
+    /**
+     * Validates required policy fields
+     * @param policyJson the JSON data to validate
+     * @return error message if validation fails, null if valid
+     */
+    private static String validatePolicyFields(ScapPolicyJson policyJson) {
+        if (policyJson.getPolicyName() == null || policyJson.getPolicyName().trim().isEmpty()) {
+            return "Policy name is required";
+        }
+        if (policyJson.getDataStreamName() == null || policyJson.getDataStreamName().trim().isEmpty()) {
+            return "Data stream name is required";
+        }
+        if (policyJson.getXccdfProfileId() == null || policyJson.getXccdfProfileId().trim().isEmpty()) {
+            return "XCCDF profile ID is required";
+        }
+        return null;
+    }
+
+    /**
+     * Helper method to apply common policy fields from JSON to ScapPolicy entity
+     * @param policyJson the JSON data
+     * @param scapPolicy the policy entity to update
+     * @param user the user for tailoring file lookup
+     */
+    private static void applyPolicyFields(ScapPolicyJson policyJson, ScapPolicy scapPolicy, User user) {
+        // Set optional fields - use setOrNull to allow clearing fields (empty string becomes null)
+        setOrNull(policyJson.getDescription(), scapPolicy::setDescription);
+        setOrNull(policyJson.getTailoringProfileId(), scapPolicy::setTailoringProfileId);
+        setOrNull(policyJson.getOvalFiles(), scapPolicy::setOvalFiles);
+        setOrNull(policyJson.getAdvancedArgs(), scapPolicy::setAdvancedArgs);
+
+        // Set optional tailoring file
+        Optional.ofNullable(policyJson.getTailoringFile())
+                .filter(id -> !id.isEmpty())
+                .map(Integer::parseInt)
+                .flatMap(id -> ScapFactory.lookupTailoringFileByIdAndOrg(id, user.getOrg()))
+                .ifPresent(scapPolicy::setTailoringFile);
+
+        // Set fetch remote resources flag
+        Optional.ofNullable(policyJson.getFetchRemoteResources())
+                .ifPresent(scapPolicy::setFetchRemoteResources);
+    }
+
+    /**
      * Creates a new SCAP policy
      *
      * @param req the request object
@@ -987,14 +1059,9 @@ public class ScapAuditController {
             ScapPolicyJson policyJson = GSON.fromJson(req.body(), ScapPolicyJson.class);
 
             // Validate required fields
-            if (policyJson.getPolicyName() == null || policyJson.getPolicyName().trim().isEmpty()) {
-                return json(res, ResultJson.error("Policy name is required"));
-            }
-            if (policyJson.getDataStreamName() == null || policyJson.getDataStreamName().trim().isEmpty()) {
-                return json(res, ResultJson.error("Data stream name is required"));
-            }
-            if (policyJson.getXccdfProfileId() == null || policyJson.getXccdfProfileId().trim().isEmpty()) {
-                return json(res, ResultJson.error("XCCDF profile ID is required"));
+            String validationError = validatePolicyFields(policyJson);
+            if (validationError != null) {
+                return json(res, ResultJson.error(validationError));
             }
 
             // Create new SCAP policy
@@ -1005,32 +1072,8 @@ public class ScapAuditController {
             );
             scapPolicy.setOrg(user.getOrg());
             
-            // Set optional description
-            if (policyJson.getDescription() != null && !policyJson.getDescription().trim().isEmpty()) {
-                scapPolicy.setDescription(policyJson.getDescription().trim());
-            }
-
-            // Set optional tailoring file
-            if (policyJson.getTailoringFile() != null && !policyJson.getTailoringFile().isEmpty()) {
-                Integer tailoringId = Integer.parseInt(policyJson.getTailoringFile());
-                Optional<TailoringFile> tailoringFile = ScapFactory.lookupTailoringFileByIdAndOrg(tailoringId, user.getOrg());
-                tailoringFile.ifPresent(scapPolicy::setTailoringFile);
-            }
-
-            // Set optional tailoring profile
-            if (policyJson.getTailoringProfileId() != null && !policyJson.getTailoringProfileId().isEmpty()) {
-                scapPolicy.setTailoringProfileId(policyJson.getTailoringProfileId());
-            }
-
-            // Set advanced arguments
-            if (policyJson.getAdvancedArgs() != null && !policyJson.getAdvancedArgs().trim().isEmpty()) {
-                scapPolicy.setAdvancedArgs(policyJson.getAdvancedArgs().trim());
-            }
-
-            // Set fetch remote resources flag
-            if (policyJson.getFetchRemoteResources() != null) {
-                scapPolicy.setFetchRemoteResources(policyJson.getFetchRemoteResources());
-            }
+            // Apply common policy fields
+            applyPolicyFields(policyJson, scapPolicy, user);
 
             // Save to database
             ScapFactory.saveScapPolicy(scapPolicy);
@@ -1061,6 +1104,12 @@ public class ScapAuditController {
                 return json(res, ResultJson.error("Policy ID is required"));
             }
 
+            // Validate required fields
+            String validationError = validatePolicyFields(policyJson);
+            if (validationError != null) {
+                return json(res, ResultJson.error(validationError));
+            }
+
             Optional<ScapPolicy> scapPolicyOpt = ScapFactory.lookupScapPolicyByIdAndOrg(policyJson.getId(), user.getOrg());
 
             if (!scapPolicyOpt.isPresent()) {
@@ -1069,42 +1118,18 @@ public class ScapAuditController {
 
             ScapPolicy scapPolicy = scapPolicyOpt.get();
 
-            // Update fields
-            if (policyJson.getPolicyName() != null && !policyJson.getPolicyName().trim().isEmpty()) {
-                scapPolicy.setPolicyName(policyJson.getPolicyName().trim());
-            }
+            // Update core fields
+            setIfNotEmpty(policyJson.getPolicyName(), scapPolicy::setPolicyName);
+            setIfNotEmpty(policyJson.getDataStreamName(), scapPolicy::setDataStreamName);
+            setIfNotEmpty(policyJson.getXccdfProfileId(), scapPolicy::setXccdfProfileId);
 
-            if (policyJson.getDescription() != null) {
-                scapPolicy.setDescription(policyJson.getDescription().trim().isEmpty() ? null : policyJson.getDescription().trim());
-            }
-
-            if (policyJson.getDataStreamName() != null && !policyJson.getDataStreamName().trim().isEmpty()) {
-                scapPolicy.setDataStreamName(policyJson.getDataStreamName().trim());
-            }
-
-            if (policyJson.getXccdfProfileId() != null && !policyJson.getXccdfProfileId().trim().isEmpty()) {
-                scapPolicy.setXccdfProfileId(policyJson.getXccdfProfileId().trim());
-            }
-
-            if (policyJson.getTailoringFile() != null && !policyJson.getTailoringFile().isEmpty()) {
-                Integer tailoringId = Integer.parseInt(policyJson.getTailoringFile());
-                Optional<TailoringFile> tailoringFile = ScapFactory.lookupTailoringFileByIdAndOrg(tailoringId, user.getOrg());
-                tailoringFile.ifPresent(scapPolicy::setTailoringFile);
-            } else {
+            // Handle tailoring file - set to null if empty to allow clearing
+            if (policyJson.getTailoringFile() == null || policyJson.getTailoringFile().isEmpty()) {
                 scapPolicy.setTailoringFile(null);
             }
 
-            if (policyJson.getTailoringProfileId() != null) {
-                scapPolicy.setTailoringProfileId(policyJson.getTailoringProfileId().isEmpty() ? null : policyJson.getTailoringProfileId());
-            }
-
-            if (policyJson.getAdvancedArgs() != null) {
-                scapPolicy.setAdvancedArgs(policyJson.getAdvancedArgs().trim().isEmpty() ? null : policyJson.getAdvancedArgs().trim());
-            }
-
-            if (policyJson.getFetchRemoteResources() != null) {
-                scapPolicy.setFetchRemoteResources(policyJson.getFetchRemoteResources());
-            }
+            // Apply common policy fields
+            applyPolicyFields(policyJson, scapPolicy, user);
 
             // Save to database
             ScapFactory.saveScapPolicy(scapPolicy);

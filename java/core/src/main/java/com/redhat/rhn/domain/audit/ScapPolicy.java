@@ -54,6 +54,9 @@ public class ScapPolicy extends BaseDomainHelper {
     // The profile ID used for tailoring the SCAP policy
     private String tailoringProfileId;
 
+    // Comma-separated list of OVAL files
+    private String ovalFiles;
+
     // Advanced arguments for oscap command (e.g., --remediate, --skip-valid, --thin-results)
     private String advancedArgs;
 
@@ -199,6 +202,23 @@ public class ScapPolicy extends BaseDomainHelper {
      */
     public void setTailoringProfileId(String tailoringProfileId) {
         this.tailoringProfileId = tailoringProfileId;
+    }
+
+    /**
+     * Get the OVAL files (comma-separated).
+     * @return the OVAL files
+     */
+    @Column(name = "oval_files")
+    public String getOvalFiles() {
+        return ovalFiles;
+    }
+
+    /**
+     * Set the OVAL files.
+     * @param ovalFiles the OVAL files to set (comma-separated)
+     */
+    public void setOvalFiles(String ovalFiles) {
+        this.ovalFiles = ovalFiles;
     }
 
     /**

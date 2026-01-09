@@ -22,6 +22,7 @@ CREATE TABLE suseScapPolicy
                          ON DELETE CASCADE,
 
     tailoring_profile_id TEXT,
+    oval_files           TEXT,
     advanced_args        TEXT,
     fetch_remote_resources BOOLEAN NOT NULL DEFAULT FALSE,
     org_id               BIGINT NOT NULL

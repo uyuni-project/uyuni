@@ -35,6 +35,9 @@ public class ScapPolicyJson {
     /** The profile ID from the selected tailoring file */
     private String tailoringProfileId;
 
+    /** OVAL files (comma-separated) */
+    private String ovalFiles;
+
     /** Advanced arguments for oscap command */
     private String advancedArgs;
 
@@ -109,6 +112,14 @@ public class ScapPolicyJson {
      */
     public void setEarliest(LocalDateTime earliest) {
         this.earliest = earliest != null ? earliest.format(FORMATTER) : null;
+    }
+
+    public String getOvalFiles() {
+        return ovalFiles;
+    }
+
+    public void setOvalFiles(String ovalFilesIn) {
+        this.ovalFiles = ovalFilesIn;
     }
 
     public String getAdvancedArgs() {

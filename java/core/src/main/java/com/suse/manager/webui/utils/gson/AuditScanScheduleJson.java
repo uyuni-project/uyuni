@@ -40,6 +40,9 @@ public class AuditScanScheduleJson {
     /** The profile ID from the selected tailoring file */
     private String tailoringProfileID;
 
+    /** OVAL files (comma-separated) */
+    private String ovalFiles;
+
     /** Advanced arguments for oscap */
     private String advancedArgs;
 
@@ -79,6 +82,13 @@ public class AuditScanScheduleJson {
      */
     public String getXccdfProfileId() {
         return xccdfProfileId;
+    }
+
+    /**
+     * @return the OVAL files (comma-separated)
+     */
+    public String getOvalFiles() {
+        return ovalFiles;
     }
 
     /**

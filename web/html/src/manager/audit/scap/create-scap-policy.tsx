@@ -89,6 +89,21 @@ class ScapPolicy extends React.Component<Props, State> {
 
   onSubmit = async () => {
     try {
+      // Validate required Select fields
+      const { model } = this.state;
+      if (!model.dataStreamName) {
+        this.setState({
+          messages: [{ severity: "error", text: "SCAP Content is required" }],
+        });
+        return;
+      }
+      if (!model.xccdfProfileId) {
+        this.setState({
+          messages: [{ severity: "error", text: "XCCDF Profile is required" }],
+        });
+        return;
+      }
+
       const formData = new FormData(this.form);
       const jsonPayload = Object.fromEntries(formData.entries());
       
@@ -285,6 +300,20 @@ class ScapPolicy extends React.Component<Props, State> {
                 onChange={(value) => {
                   this.setState({ model: { ...model, tailoringProfileId: value as string } });
                 }}
+                disabled={isReadOnly}
+              />
+            </div>
+          </FormGroup>
+
+          <FormGroup>
+            <Label name={t("OVAL Files")} className="col-md-3" />
+            <div className="col-md-6">
+              <Text
+                name="ovalFiles"
+                value={model.ovalFiles || ""}
+                onChange={(name, value) => this.setState({ model: { ...model, ovalFiles: value } })}
+                placeholder={t("e.g: file1.xml, file2.xml")}
+                title={t("Comma-separated list of OVAL files")}
                 disabled={isReadOnly}
               />
             </div>
