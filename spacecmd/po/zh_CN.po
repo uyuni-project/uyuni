@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-11-21 10:50+0100\n"
+"POT-Creation-Date: 2026-01-09 10:26+0000\n"
 "PO-Revision-Date: 2025-11-24 05:04+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/spacecmd/zh_CN/>\n"
@@ -305,8 +305,8 @@ msgstr "联系方法：%s"
 msgid "Software Channels"
 msgstr "软件通道"
 
-#: ../src/spacecmd/activationkey.py:1050 ../src/spacecmd/configchannel.py:870
-#: ../src/spacecmd/configchannel.py:990 ../src/spacecmd/system.py:3165
+#: ../src/spacecmd/activationkey.py:1050 ../src/spacecmd/configchannel.py:872
+#: ../src/spacecmd/configchannel.py:992 ../src/spacecmd/system.py:3165
 msgid "Configuration Channels"
 msgstr "配置通道"
 
@@ -426,6 +426,7 @@ msgid "File %s exists, confirm overwrite file? (y/n)"
 msgstr "文件 %s 已存在，请确认是否重写文件？(y/n)"
 
 #: ../src/spacecmd/activationkey.py:1448
+#, python-brace-format
 msgid "Failed to save exported keys to file: {}"
 msgstr "无法将导出的密钥保存到文件：{}"
 
@@ -511,7 +512,7 @@ msgstr "原始密钥："
 msgid "Cloned Key:"
 msgstr "克隆的密钥："
 
-#: ../src/spacecmd/activationkey.py:1626 ../src/spacecmd/configchannel.py:1566
+#: ../src/spacecmd/activationkey.py:1626 ../src/spacecmd/configchannel.py:1568
 msgid "Error - must specify either -c or -x options!"
 msgstr "错误 - 必须指定 -c 或 -x 选项！"
 
@@ -552,7 +553,7 @@ msgstr "不存在，正在跳过！"
 msgid "Cloning key %s as %s"
 msgstr "正在将密钥 %s 克隆为 %s"
 
-#: ../src/spacecmd/activationkey.py:1768 ../src/spacecmd/configchannel.py:1631
+#: ../src/spacecmd/activationkey.py:1768 ../src/spacecmd/configchannel.py:1633
 #, python-format
 msgid "Failed to clone %s to %s"
 msgstr "无法将 %s 克隆到 %s"
@@ -793,23 +794,23 @@ msgstr "修改时间：%s"
 msgid "Target Path:     %s"
 msgstr "目标路径：%s"
 
-#: ../src/spacecmd/configchannel.py:306 ../src/spacecmd/configchannel.py:779
+#: ../src/spacecmd/configchannel.py:306 ../src/spacecmd/configchannel.py:781
 #, python-format
 msgid "Owner:           %s"
 msgstr "拥有者：%s"
 
-#: ../src/spacecmd/configchannel.py:307 ../src/spacecmd/configchannel.py:780
+#: ../src/spacecmd/configchannel.py:307 ../src/spacecmd/configchannel.py:782
 #, python-format
 msgid "Group:           %s"
 msgstr "组：%s"
 
-#: ../src/spacecmd/configchannel.py:308 ../src/spacecmd/configchannel.py:781
+#: ../src/spacecmd/configchannel.py:308 ../src/spacecmd/configchannel.py:783
 #, python-format
 msgid "Mode:            %s"
 msgstr "模式：%s"
 
 #: ../src/spacecmd/configchannel.py:310 ../src/spacecmd/configchannel.py:748
-#: ../src/spacecmd/configchannel.py:783
+#: ../src/spacecmd/configchannel.py:785
 #, python-format
 msgid "SELinux Context: %s"
 msgstr "SELinux 上下文：%s"
@@ -819,13 +820,13 @@ msgstr "SELinux 上下文：%s"
 msgid "SHA256:          %s"
 msgstr "SHA256：%s"
 
-#: ../src/spacecmd/configchannel.py:314 ../src/spacecmd/configchannel.py:782
+#: ../src/spacecmd/configchannel.py:314 ../src/spacecmd/configchannel.py:784
 #, python-format
 msgid "Binary:          %s"
 msgstr "二进制文件：%s"
 
-#: ../src/spacecmd/configchannel.py:318 ../src/spacecmd/configchannel.py:795
-#: ../src/spacecmd/configchannel.py:1061 ../src/spacecmd/kickstart.py:2114
+#: ../src/spacecmd/configchannel.py:318 ../src/spacecmd/configchannel.py:797
+#: ../src/spacecmd/configchannel.py:1063 ../src/spacecmd/kickstart.py:2114
 #: ../src/spacecmd/snippet.py:172
 msgid "Contents"
 msgstr "内容"
@@ -1007,15 +1008,15 @@ msgstr "模式 [%s]："
 msgid "SELinux Context [%s]:"
 msgstr "SELinux 上下文 [%s]："
 
-#: ../src/spacecmd/configchannel.py:668 ../src/spacecmd/configchannel.py:1029
+#: ../src/spacecmd/configchannel.py:668 ../src/spacecmd/configchannel.py:1031
 msgid "Revision [next]:"
 msgstr "修订版 [next]："
 
-#: ../src/spacecmd/configchannel.py:686 ../src/spacecmd/configchannel.py:1034
+#: ../src/spacecmd/configchannel.py:686 ../src/spacecmd/configchannel.py:1036
 msgid "The revision must be an integer"
 msgstr "修订版必须是整数"
 
-#: ../src/spacecmd/configchannel.py:690 ../src/spacecmd/configchannel.py:1015
+#: ../src/spacecmd/configchannel.py:690 ../src/spacecmd/configchannel.py:1017
 #: ../src/spacecmd/cryptokey.py:121 ../src/spacecmd/kickstart.py:2173
 #: ../src/spacecmd/snippet.py:152
 msgid "Read an existing file [y/N]:"
@@ -1029,7 +1030,7 @@ msgstr "文件："
 msgid "The path is required"
 msgstr "必须指定路径"
 
-#: ../src/spacecmd/configchannel.py:725 ../src/spacecmd/configchannel.py:1040
+#: ../src/spacecmd/configchannel.py:725 ../src/spacecmd/configchannel.py:1042
 msgid "You must provide the file contents"
 msgstr "必须提供文件内容"
 
@@ -1037,30 +1038,30 @@ msgstr "必须提供文件内容"
 msgid "You must provide the target path for a symlink"
 msgstr "必须提供符号链接的目标路径"
 
-#: ../src/spacecmd/configchannel.py:746 ../src/spacecmd/configchannel.py:777
+#: ../src/spacecmd/configchannel.py:746 ../src/spacecmd/configchannel.py:779
 #, python-format
 msgid "Path:            %s"
 msgstr "路径：%s"
 
-#: ../src/spacecmd/configchannel.py:778
+#: ../src/spacecmd/configchannel.py:780
 #, python-format
 msgid "Directory:       %s"
 msgstr "目录：%s"
 
-#: ../src/spacecmd/configchannel.py:788
+#: ../src/spacecmd/configchannel.py:790
 #, python-format
 msgid "Revision:        %i"
 msgstr "修订版：%i"
 
-#: ../src/spacecmd/configchannel.py:793
+#: ../src/spacecmd/configchannel.py:795
 msgid "Contents not displayed (base64 encoded)"
 msgstr "未显示内容（base64 编码）"
 
-#: ../src/spacecmd/configchannel.py:807
+#: ../src/spacecmd/configchannel.py:809
 msgid "configchannel_addfile/configchannel_updatefile: Create a configuration file"
 msgstr "configchannel_addfile/configchannel_updatefile：创建配置文件"
 
-#: ../src/spacecmd/configchannel.py:811
+#: ../src/spacecmd/configchannel.py:813
 msgid ""
 "usage: configchannel_addfile/configchannel_updatefile -c CHANNEL - p PATH -f LOCAL_FILE_PATH [OPTIONS])\n"
 "\n"
@@ -1106,39 +1107,39 @@ msgstr ""
 "  文件，需要以二进制文件 (-b) 形式发送。我们会尽努力来\n"
 "  自动检测需要此选项的文件，但您可能需要显式指定此选项。\n"
 
-#: ../src/spacecmd/configchannel.py:875 ../src/spacecmd/softwarechannel.py:900
+#: ../src/spacecmd/configchannel.py:877 ../src/spacecmd/softwarechannel.py:900
 #: ../src/spacecmd/softwarechannel.py:1028
 #: ../src/spacecmd/softwarechannel.py:1035
 msgid "Select:"
 msgstr "选择："
 
-#: ../src/spacecmd/configchannel.py:882 ../src/spacecmd/configchannel.py:1001
+#: ../src/spacecmd/configchannel.py:884 ../src/spacecmd/configchannel.py:1003
 #: ../src/spacecmd/softwarechannel.py:1520
 #, python-format
 msgid "%s is not a valid channel"
 msgstr "%s 不是有效通道"
 
-#: ../src/spacecmd/configchannel.py:886
+#: ../src/spacecmd/configchannel.py:888
 msgid "Unable to obtain a valid channel. Aborting."
 msgstr "无法获取有效通道。正在中止。"
 
-#: ../src/spacecmd/configchannel.py:892 ../src/spacecmd/scap.py:190
+#: ../src/spacecmd/configchannel.py:894 ../src/spacecmd/scap.py:190
 msgid "Path:"
 msgstr "路径："
 
-#: ../src/spacecmd/configchannel.py:907 ../src/spacecmd/configchannel.py:1050
+#: ../src/spacecmd/configchannel.py:909 ../src/spacecmd/configchannel.py:1052
 msgid "No config channel specified!"
 msgstr "未指定配置通道！"
 
-#: ../src/spacecmd/configchannel.py:912 ../src/spacecmd/configchannel.py:1055
+#: ../src/spacecmd/configchannel.py:914 ../src/spacecmd/configchannel.py:1057
 msgid "Error obtaining file info"
 msgstr "获取文件信息时出错"
 
-#: ../src/spacecmd/configchannel.py:958
+#: ../src/spacecmd/configchannel.py:960
 msgid "configchannel_updateinitsls: Update init.sls file"
 msgstr "configchannel_updateinitsls：更新 init.sls 文件"
 
-#: ../src/spacecmd/configchannel.py:961
+#: ../src/spacecmd/configchannel.py:963
 msgid ""
 "usage: configchannel_updateinitsls -c CHANNEL -f LOCAL_FILE_PATH [OPTIONS])\n"
 "\n"
@@ -1156,52 +1157,52 @@ msgstr ""
 "  -f 文件内容的本地路径\n"
 "  -y 自动继续处理文件内容\n"
 
-#: ../src/spacecmd/configchannel.py:1010
+#: ../src/spacecmd/configchannel.py:1012
 #, python-format
 msgid "No existing file information found for %s"
 msgstr "未找到 %s 的现有文件信息"
 
-#: ../src/spacecmd/configchannel.py:1059
+#: ../src/spacecmd/configchannel.py:1061
 #, python-format
 msgid "revision:                 %s"
 msgstr "修订版：                   %s"
 
-#: ../src/spacecmd/configchannel.py:1060
+#: ../src/spacecmd/configchannel.py:1062
 #, python-format
 msgid "contents_enc64:           %s"
 msgstr "contents_enc64：%s"
 
-#: ../src/spacecmd/configchannel.py:1091
+#: ../src/spacecmd/configchannel.py:1093
 msgid "configchannel_removefiles: Remove configuration files"
 msgstr "configchannel_removefiles：去除配置文件"
 
-#: ../src/spacecmd/configchannel.py:1092
+#: ../src/spacecmd/configchannel.py:1094
 msgid "usage: configchannel_removefiles CHANNEL <FILE ...>"
 msgstr "用法：configchannel_removefiles CHANNEL <文件 ...>"
 
-#: ../src/spacecmd/configchannel.py:1130
+#: ../src/spacecmd/configchannel.py:1132
 msgid "configchannel_verifyfile: Verify a configuration file"
 msgstr "configchannel_verifyfile：校验配置文件"
 
-#: ../src/spacecmd/configchannel.py:1131
+#: ../src/spacecmd/configchannel.py:1133
 msgid "usage: configchannel_verifyfile CHANNEL FILE <SYSTEMS>"
 msgstr "用法：configchannel_verifyfile CHANNEL FILE <系统>"
 
-#: ../src/spacecmd/configchannel.py:1172
+#: ../src/spacecmd/configchannel.py:1174
 msgid "No valid system selected"
 msgstr "未选择有效系统"
 
-#: ../src/spacecmd/configchannel.py:1178 ../src/spacecmd/system.py:551
+#: ../src/spacecmd/configchannel.py:1180 ../src/spacecmd/system.py:551
 #: ../src/spacecmd/system.py:572 ../src/spacecmd/system.py:1030
 #, python-format
 msgid "Action ID: %i"
 msgstr "操作 ID：%i"
 
-#: ../src/spacecmd/configchannel.py:1187
+#: ../src/spacecmd/configchannel.py:1189
 msgid "configchannel_export: export config channel(s) to json format file"
 msgstr "configchannel_export：将配置通道导出到 json 格式的文件"
 
-#: ../src/spacecmd/configchannel.py:1190
+#: ../src/spacecmd/configchannel.py:1192
 msgid ""
 "usage: configchannel_export <CHANNEL>... [options])\n"
 "options:\n"
@@ -1222,114 +1223,115 @@ msgstr ""
 "注意：通道列表是可选的，默认为全部导出"
 
 #. Get the cc details
-#: ../src/spacecmd/configchannel.py:1208
+#: ../src/spacecmd/configchannel.py:1210
 #, python-format
 msgid "Getting config channel details for %s"
 msgstr "正在获取 %s 的配置通道细节"
 
-#: ../src/spacecmd/configchannel.py:1229
+#: ../src/spacecmd/configchannel.py:1231
 #, python-format
 msgid "Failed to get details for file %s from %s"
 msgstr "无法获取文件 %s 的细节（从 %s）"
 
-#: ../src/spacecmd/configchannel.py:1282
+#: ../src/spacecmd/configchannel.py:1284
 #, python-format
 msgid "File %s could not be exported "
 msgstr "无法使用此 API 版本导出文件 %s "
 
-#: ../src/spacecmd/configchannel.py:1283
+#: ../src/spacecmd/configchannel.py:1285
 msgid "with this API version(needs base64 encoding)"
 msgstr "（需要 base64 编码）"
 
-#: ../src/spacecmd/configchannel.py:1287
+#: ../src/spacecmd/configchannel.py:1289
 #, python-format
 msgid "File %s could not be exported as"
 msgstr "无法将文件 %s 导出为"
 
-#: ../src/spacecmd/configchannel.py:1288
+#: ../src/spacecmd/configchannel.py:1290
 msgid " text...getting base64 encoded version"
 msgstr " 文本...正在获取 base64 编码的版本"
 
-#: ../src/spacecmd/configchannel.py:1329
+#: ../src/spacecmd/configchannel.py:1331
 #, python-format
 msgid "Exporting ALL config channels to %s"
 msgstr "正在将所有配置通道导出到 %s"
 
-#: ../src/spacecmd/configchannel.py:1338
+#: ../src/spacecmd/configchannel.py:1340
 msgid "Error, no valid config channel passed, check name is  correct with spacecmd configchannel_list"
 msgstr "错误：未传递有效配置通道，请使用 spacecmd configchannel_list 检查名称是否正确"
 
-#: ../src/spacecmd/configchannel.py:1356
+#: ../src/spacecmd/configchannel.py:1358
 #, python-format
 msgid "Exporting cc %s to %s"
 msgstr "正在将 cc %s 导出到 %s"
 
-#: ../src/spacecmd/configchannel.py:1364
+#: ../src/spacecmd/configchannel.py:1366
+#, python-brace-format
 msgid "File '{}' exists, confirm overwrite file? (y/n)"
 msgstr "文件 '{}' 已存在，请确认是否重写文件？(y/n)"
 
-#: ../src/spacecmd/configchannel.py:1368
+#: ../src/spacecmd/configchannel.py:1370
 #, python-format
 msgid "Error saving exported config channels to file: %s"
 msgstr "将导出的配置通道保存到文件时出错：%s"
 
-#: ../src/spacecmd/configchannel.py:1378
+#: ../src/spacecmd/configchannel.py:1380
 msgid "configchannel_import: import config channel(s) from json file"
 msgstr "configchannel_import：从 json 文件导入配置通道"
 
-#: ../src/spacecmd/configchannel.py:1379
+#: ../src/spacecmd/configchannel.py:1381
 msgid "usage: configchannel_import <JSONFILES...>"
 msgstr "用法：configchannel_import <JSON 文件...>"
 
-#: ../src/spacecmd/configchannel.py:1389 ../src/spacecmd/kickstart.py:2604
+#: ../src/spacecmd/configchannel.py:1391 ../src/spacecmd/kickstart.py:2604
 msgid "Error, no filename passed"
 msgstr "错误：未传递文件名"
 
-#: ../src/spacecmd/configchannel.py:1397 ../src/spacecmd/kickstart.py:2613
+#: ../src/spacecmd/configchannel.py:1399 ../src/spacecmd/kickstart.py:2613
 #, python-format
 msgid "Error, could not read json data from %s"
 msgstr "错误：无法读取 %s 中的 json 数据"
 
-#: ../src/spacecmd/configchannel.py:1401
+#: ../src/spacecmd/configchannel.py:1403
 #, python-format
 msgid "Error importing configchannel %s"
 msgstr "导入配置通道 %s 时出错"
 
-#: ../src/spacecmd/configchannel.py:1415
+#: ../src/spacecmd/configchannel.py:1417
 #, python-format
 msgid "Config channel %s already exists! Skipping!"
 msgstr "配置通道 %s 已存在！正在跳过！"
 
 #. create the cc, we need to drop the org prefix from the cc name
-#: ../src/spacecmd/configchannel.py:1420
+#: ../src/spacecmd/configchannel.py:1422
 #, python-format
 msgid "Importing config channel  %s"
 msgstr "正在导入配置通道 %s"
 
-#: ../src/spacecmd/configchannel.py:1438
+#: ../src/spacecmd/configchannel.py:1440
 #, python-format
 msgid "Found %s %s for cc %s"
 msgstr "发现 %s%s（针对 cc %s）"
 
-#: ../src/spacecmd/configchannel.py:1475
+#: ../src/spacecmd/configchannel.py:1477
 #, python-format
 msgid "Failed trying to import file %s (empty content)"
 msgstr "尝试导入文件 %s 失败（空内容）"
 
-#: ../src/spacecmd/configchannel.py:1477
+#: ../src/spacecmd/configchannel.py:1479
 msgid "Older APIs can't export encoded files"
 msgstr "旧版 API 无法导出编码的文件"
 
-#: ../src/spacecmd/configchannel.py:1503
+#: ../src/spacecmd/configchannel.py:1505
 #, python-format
 msgid "Error adding file %s to %s"
 msgstr "将文件 %s 添加到 %s 时出错"
 
-#: ../src/spacecmd/configchannel.py:1515
+#: ../src/spacecmd/configchannel.py:1517
 msgid "configchannel_clone: Clone config channel(s)"
 msgstr "configchannel_clone：克隆配置通道"
 
-#: ../src/spacecmd/configchannel.py:1518
+#: ../src/spacecmd/configchannel.py:1520
 msgid ""
 "usage examples:\n"
 "                 configchannel_clone foo_label -c bar_label\n"
@@ -1359,100 +1361,100 @@ msgstr ""
 "                   标签和说明中的 foo 替换为 bar\n"
 "  注意：如果未指定 -c 或 -x 选项，则假定采用交互模式"
 
-#: ../src/spacecmd/configchannel.py:1549
+#: ../src/spacecmd/configchannel.py:1551
 msgid "No config channels found"
 msgstr "未找到配置通道"
 
-#: ../src/spacecmd/configchannel.py:1552
+#: ../src/spacecmd/configchannel.py:1554
 msgid "Config Channels"
 msgstr "配置通道"
 
-#: ../src/spacecmd/configchannel.py:1558
+#: ../src/spacecmd/configchannel.py:1560
 #, python-format
 msgid "Channel to clone: %s"
 msgstr "要克隆的通道：%s"
 
-#: ../src/spacecmd/configchannel.py:1562
+#: ../src/spacecmd/configchannel.py:1564
 msgid "Channel to clone:"
 msgstr "要克隆的通道："
 
-#: ../src/spacecmd/configchannel.py:1563
+#: ../src/spacecmd/configchannel.py:1565
 msgid "Clone label:"
 msgstr "克隆版本标签："
 
-#: ../src/spacecmd/configchannel.py:1572
+#: ../src/spacecmd/configchannel.py:1574
 msgid "Error no channel label passed!"
 msgstr "错误：未传递通道标签！"
 
-#: ../src/spacecmd/configchannel.py:1581
+#: ../src/spacecmd/configchannel.py:1583
 msgid "No suitable channels to clone has been found."
 msgstr "未找到适合克隆的通道。"
 
-#: ../src/spacecmd/configchannel.py:1648
+#: ../src/spacecmd/configchannel.py:1650
 msgid "no configchannel given"
 msgstr "未指定配置通道"
 
-#: ../src/spacecmd/configchannel.py:1651
+#: ../src/spacecmd/configchannel.py:1653
 msgid "invalid configchannel label "
 msgstr "无效的配置通道标签 "
 
-#: ../src/spacecmd/configchannel.py:1678
+#: ../src/spacecmd/configchannel.py:1680
 msgid "configchannel_diff: diff between config channels"
 msgstr "configchannel_diff：比较配置通道的差异"
 
-#: ../src/spacecmd/configchannel.py:1680
+#: ../src/spacecmd/configchannel.py:1682
 msgid "usage: configchannel_diff SOURCE_CHANNEL TARGET_CHANNEL"
 msgstr "用法：configchannel_diff SOURCE_CHANNEL TARGET_CHANNEL"
 
-#: ../src/spacecmd/configchannel.py:1734
+#: ../src/spacecmd/configchannel.py:1736
 msgid "configchannel_sync:"
 msgstr "configchannel_sync："
 
-#: ../src/spacecmd/configchannel.py:1735
+#: ../src/spacecmd/configchannel.py:1737
 msgid "sync config files between two config channels"
 msgstr "同步两个配置通道之间的配置文件"
 
-#: ../src/spacecmd/configchannel.py:1737
+#: ../src/spacecmd/configchannel.py:1739
 msgid "usage: configchannel_sync SOURCE_CHANNEL TARGET_CHANNEL"
 msgstr "用法：configchannel_sync SOURCE_CHANNEL TARGET_CHANNEL"
 
-#: ../src/spacecmd/configchannel.py:1777
+#: ../src/spacecmd/configchannel.py:1779
 msgid "syncing files from configchannel "
 msgstr "正在同步配置通道中的文件 "
 
-#: ../src/spacecmd/configchannel.py:1788
+#: ../src/spacecmd/configchannel.py:1790
 msgid "files common in both channels:"
 msgstr "两个通道共有的文件："
 
-#: ../src/spacecmd/configchannel.py:1794
+#: ../src/spacecmd/configchannel.py:1796
 msgid "files only in source "
 msgstr "仅包含在源中的文件 "
 
-#: ../src/spacecmd/configchannel.py:1800
+#: ../src/spacecmd/configchannel.py:1802
 msgid "files only in target "
 msgstr "仅包含在目标中的文件 "
 
-#: ../src/spacecmd/configchannel.py:1807
+#: ../src/spacecmd/configchannel.py:1809
 msgid "files that are in both channels will be overwritten in the target channel"
 msgstr "将在目标通道中重写位于这两个通道中的文件"
 
-#: ../src/spacecmd/configchannel.py:1811
+#: ../src/spacecmd/configchannel.py:1813
 msgid "files only in the source channel will be added to the target channel"
 msgstr "只会将源通道中的文件添加到目标通道"
 
-#: ../src/spacecmd/configchannel.py:1813
+#: ../src/spacecmd/configchannel.py:1815
 msgid "files only in the target channel will be deleted"
 msgstr "只会删除目标通道中的文件"
 
-#: ../src/spacecmd/configchannel.py:1816
+#: ../src/spacecmd/configchannel.py:1818
 msgid "nothing to do"
 msgstr "不执行任何操作"
 
-#: ../src/spacecmd/configchannel.py:1820
+#: ../src/spacecmd/configchannel.py:1822
 msgid "perform synchronisation [y/N]:"
 msgstr "执行同步 [y/N]:"
 
-#: ../src/spacecmd/configchannel.py:1873
+#: ../src/spacecmd/configchannel.py:1875
 msgid "unknown file type "
 msgstr "未知文件类型 "
 
@@ -1586,6 +1588,7 @@ msgid "usage: custominfo_details KEY ..."
 msgstr "用法：custominfo_details KEY ..."
 
 #: ../src/spacecmd/custominfo.py:167
+#, python-brace-format
 msgid "No keys matched argument '{}'."
 msgstr "没有任何密钥与参数 '{}' 相匹配。"
 
@@ -3476,34 +3479,34 @@ msgstr "** 正在生成系统缓存 **"
 msgid "Could not create directory %s"
 msgstr "无法创建目录 %s"
 
-#: ../src/spacecmd/misc.py:862
+#: ../src/spacecmd/misc.py:870
 #, python-format
 msgid "Can't find system ID for %s"
 msgstr "找不到 %s 的系统 ID"
 
-#: ../src/spacecmd/misc.py:867
+#: ../src/spacecmd/misc.py:875
 msgid "Duplicate system profile names found!"
 msgstr "找到了重复的系统配置文件名称！"
 
-#: ../src/spacecmd/misc.py:868
+#: ../src/spacecmd/misc.py:876
 msgid "Please reference systems by ID or resolve the"
 msgstr "请按 ID 引用系统，或者解决"
 
-#: ../src/spacecmd/misc.py:869
+#: ../src/spacecmd/misc.py:877
 msgid "underlying issue with 'system_delete' or 'system_rename'"
 msgstr "'system_delete' 或 'system_rename' 的根本性问题"
 
-#: ../src/spacecmd/misc.py:940
+#: ../src/spacecmd/misc.py:948
 #, python-format
 msgid "No systems in group %s"
 msgstr "组 %s 中没有系统"
 
-#: ../src/spacecmd/misc.py:954
+#: ../src/spacecmd/misc.py:962
 #, python-format
 msgid "No systems subscribed to %s"
 msgstr "没有系统订阅 %s"
 
-#: ../src/spacecmd/misc.py:1015
+#: ../src/spacecmd/misc.py:1023
 msgid "Is this ok [y/N]:"
 msgstr "是否正常 [y/N]："
 
@@ -3648,6 +3651,7 @@ msgstr "找不到名为 %s 的组织"
 #: ../src/spacecmd/org.py:229 ../src/spacecmd/org.py:264
 #: ../src/spacecmd/org.py:300 ../src/spacecmd/org.py:338
 #: ../src/spacecmd/org.py:460 ../src/spacecmd/org.py:497
+#, python-brace-format
 msgid "Organisation '{}' was not found"
 msgstr "未找到组织 '{}'"
 
@@ -3677,6 +3681,7 @@ msgid "No trust organisation found for the name %s"
 msgstr "找不到名为 %s 的信任组织"
 
 #: ../src/spacecmd/org.py:304 ../src/spacecmd/org.py:342
+#, python-brace-format
 msgid "Organisation '{}' to trust for, was not found"
 msgstr "未找到要信任的组织 '{}'"
 
@@ -3710,6 +3715,7 @@ msgid "No trusted organisation found for the name %s"
 msgstr "找不到名为 %s 的可信组织"
 
 #: ../src/spacecmd/org.py:388
+#, python-brace-format
 msgid "Trusted organisation '{}' was not found"
 msgstr "未找到可信组织 '{}'"
 
@@ -4007,7 +4013,6 @@ msgid "proxy_container_config: create a proxy system and return its configuratio
 msgstr "proxy_container_config：创建代理系统并返回其配置文件"
 
 #: ../src/spacecmd/proxy.py:46
-#, python-format
 msgid ""
 "usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL ROOT_CA CRT KEY\n"
 "\n"
@@ -4054,7 +4059,7 @@ msgid "proxy_container_config_generate_cert: create a proxy system and return it
 msgstr "proxy_container_config_generate_cert：创建代理系统并返回其配置文件"
 
 #: ../src/spacecmd/proxy.py:119
-#, fuzzy, python-format
+#, fuzzy
 #| msgid ""
 #| "usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
 #| "\n"
@@ -4184,6 +4189,7 @@ msgid "Repository SSL Client Key:         %s"
 msgstr "储存库 SSL 客户端密钥：%s"
 
 #: ../src/spacecmd/repo.py:116
+#, python-brace-format
 msgid "No repositories found for '{}' query"
 msgstr "未找到查询 '{}' 的储存库"
 
@@ -4404,6 +4410,7 @@ msgid "%s  # Systems"
 msgstr "%s  系统数"
 
 #: ../src/spacecmd/report.py:197
+#, python-brace-format
 msgid "No errata found for '{}'"
 msgstr "未找到 '{}' 的勘误"
 
@@ -4828,6 +4835,7 @@ msgid "If no date is provided it will delete all archived actions"
 msgstr "如果不提供日期，将删除所有存档的操作"
 
 #: ../src/spacecmd/schedule.py:537
+#, python-brace-format
 msgid "Do you want to delete ({}) archived actions? [y/N]"
 msgstr "您要删除 ({}) 个存档的操作吗？[y/N]"
 
@@ -4848,6 +4856,7 @@ msgid "If no date is provided it will archive all completed actions"
 msgstr "如果不提供日期，将存档所有已完成操作"
 
 #: ../src/spacecmd/schedule.py:619
+#, python-brace-format
 msgid "Do you want to archive ({}) completed actions? [y/N]"
 msgstr "您要存档 ({}) 个已完成操作吗？[y/N]"
 
@@ -6112,10 +6121,12 @@ msgid "merging errata from softwarechannel "
 msgstr "正在合并以下软件通道中的勘误 "
 
 #: ../src/spacecmd/softwarechannel.py:2931
+#, python-brace-format
 msgid "{} contains no errata which is not already present in {}"
 msgstr "{} 不包含 {} 中尚不存在的勘误"
 
 #: ../src/spacecmd/softwarechannel.py:2939
+#, python-brace-format
 msgid "errata to add to channel {}: "
 msgstr "要添加到通道 {} 的勘误： "
 
@@ -6129,6 +6140,7 @@ msgid " errata to  "
 msgstr " 勘误至  "
 
 #: ../src/spacecmd/softwarechannel.py:2955
+#, python-brace-format
 msgid "Perform these changes to channel {} [y/N]:"
 msgstr "对通道 {} 执行这些更改 [y/N]："
 
@@ -8007,6 +8019,7 @@ msgstr "服务器在引导时不支持重新激活密钥"
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:5018
+#, python-brace-format
 msgid "Bootstrapping '{}'. This may take a while."
 msgstr "正在引导 \"{}\"。这可能需要一段时间。"
 
@@ -8020,11 +8033,13 @@ msgstr ""
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:5108
+#, python-brace-format
 msgid "System '{}' needs to be rebooted after update"
 msgstr ""
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:5117
+#, python-brace-format
 msgid "No reboot needed for system '{}' after applying available updates"
 msgstr ""
 
@@ -8342,40 +8357,41 @@ msgstr "无效排名"
 msgid "Clearing current selections"
 msgstr "正在清除当前选择内容"
 
-#: ../src/spacecmd/utils.py:817
+#: ../src/spacecmd/utils.py:818
 msgid "Could not generate json data object!"
 msgstr "无法生成 json 数据对象！"
 
-#: ../src/spacecmd/utils.py:826
+#: ../src/spacecmd/utils.py:827
 #, python-format
 msgid "Could not open file %s for writing: %s"
 msgstr "无法打开要写入的文件 %s：%s"
 
-#: ../src/spacecmd/utils.py:839
+#: ../src/spacecmd/utils.py:840
 #, python-format
 msgid "Could not open file %s for reading: %s"
 msgstr "无法打开要读取的文件 %s：%s"
 
-#: ../src/spacecmd/utils.py:841
+#: ../src/spacecmd/utils.py:842
 #, python-format
 msgid "Could not parse JSON data from %s: %s"
 msgstr "无法分析 %s 中的 JSON 数据：%s"
 
 #. pylint: disable=broad-except
-#: ../src/spacecmd/utils.py:843
+#: ../src/spacecmd/utils.py:844
 #, python-format
 msgid "Error processing file %s: %s"
 msgstr "处理文件 %s 时出错：%s"
 
-#: ../src/spacecmd/utils.py:880
+#: ../src/spacecmd/utils.py:881
 msgid "Skipping usage of common strings: both strings are equal"
 msgstr "正在跳过公用字符串的使用：两个字符串相同"
 
-#: ../src/spacecmd/utils.py:901
+#: ../src/spacecmd/utils.py:902
 msgid "Skipping usage of common strings: number of substrings differ"
 msgstr "正在跳过公用字符串的使用：子字符串数目不同"
 
-#: ../src/spacecmd/utils.py:992
+#: ../src/spacecmd/utils.py:993
+#, python-brace-format
 msgid "Parameter {} not a string type, but {}."
 msgstr "参数 {} 不是字符串类型，而是 {}。"
 
