@@ -10,11 +10,11 @@ def toggle_checkbox_in_package_list(action, text, last_version: false)
   return toggle_checkbox_in_list(action, text) unless last_version
 
   begin
-    link_elements = all(:xpath, "//table/tbody/tr/td[contains(@class, 'sortedCol')]/a")    packages      = link_elements.map(&:text)
+    link_elements = all(:xpath, "//table/tbody/tr/td[contains(@class, 'sortedCol')]/a")
     packages      = link_elements.map(&:text)
     latest        = latest_package(packages)
 
-    xpath = "//table/tbody/tr/td[contains(@class, 'sortedCol')]/a[text()='#{latest}']/ancestor::tr//input[@type='checkbox']"    row   = find(:xpath, xpath, match: :first)
+    xpath = "//table/tbody/tr/td[contains(@class, 'sortedCol')]/a[text()='#{latest}']/ancestor::tr//input[@type='checkbox']"
     row   = find(:xpath, xpath, match: :first)
     row.set(action == 'check')
   rescue StandardError => e
