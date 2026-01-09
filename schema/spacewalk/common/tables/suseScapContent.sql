@@ -18,7 +18,8 @@ CREATE TABLE suseScapContent
                   ON DELETE CASCADE,
     name          VARCHAR(255) NOT NULL,
     description   TEXT,
-    file_name     TEXT NOT NULL,
+    datastream_file_name TEXT NOT NULL,
+    xccdf_file_name TEXT NOT NULL,
     created       TIMESTAMPTZ DEFAULT current_timestamp NOT NULL,
     modified      TIMESTAMPTZ DEFAULT current_timestamp NOT NULL
 );

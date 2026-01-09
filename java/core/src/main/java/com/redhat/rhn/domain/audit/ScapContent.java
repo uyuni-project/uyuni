@@ -38,7 +38,8 @@ public class ScapContent extends BaseDomainHelper {
 
     private Long id;
     private String name;
-    private String fileName;
+    private String dataStreamFileName;
+    private String xccdfFileName;
     private String description;
     private Org org;
 
@@ -51,11 +52,11 @@ public class ScapContent extends BaseDomainHelper {
     /**
      * ScapContent constructor
      * @param nameIn the name
-     * @param fileNameIn the file name
+     * @param dataStreamFileNameIn the datastream file name
      */
-    public ScapContent(String nameIn, String fileNameIn) {
+    public ScapContent(String nameIn, String dataStreamFileNameIn) {
         this.name = nameIn;
-        this.fileName = fileNameIn;
+        this.dataStreamFileName = dataStreamFileNameIn;
     }
 
     /**
@@ -98,20 +99,37 @@ public class ScapContent extends BaseDomainHelper {
     }
 
     /**
-     * Gets the file name.
-     * @return the file name
+     * Gets the DataStream file name.
+     * @return the DataStream file name
      */
-    @Column(name = "file_name")
-    public String getFileName() {
-        return fileName;
+    @Column(name = "datastream_file_name")
+    public String getDataStreamFileName() {
+        return dataStreamFileName;
     }
 
     /**
-     * Sets the file name.
-     * @param fileNameIn the new file name
+     * Sets the DataStream file name.
+     * @param dataStreamFileNameIn the new DataStream file name
      */
-    public void setFileName(String fileNameIn) {
-        this.fileName = fileNameIn;
+    public void setDataStreamFileName(String dataStreamFileNameIn) {
+        this.dataStreamFileName = dataStreamFileNameIn;
+    }
+
+    /**
+     * Gets the XCCDF file name.
+     * @return the XCCDF file name
+     */
+    @Column(name = "xccdf_file_name")
+    public String getXccdfFileName() {
+        return xccdfFileName;
+    }
+
+    /**
+     * Sets the XCCDF file name.
+     * @param xccdfFileNameIn the new XCCDF file name
+     */
+    public void setXccdfFileName(String xccdfFileNameIn) {
+        this.xccdfFileName = xccdfFileNameIn;
     }
 
     /**

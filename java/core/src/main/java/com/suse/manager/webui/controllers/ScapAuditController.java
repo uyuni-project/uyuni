@@ -710,7 +710,8 @@ public class ScapAuditController {
             contentData.put("id", scapContent.get().getId());
             contentData.put("name", scapContent.get().getName());
             contentData.put("description", scapContent.get().getDescription());
-            contentData.put("fileName", scapContent.get().getFileName());
+            contentData.put("dataStreamFileName", scapContent.get().getDataStreamFileName());
+            contentData.put("xccdfFileName", scapContent.get().getXccdfFileName());
             data.put("scapContentData", GSON.toJson(contentData));
         } else {
             data.put("scapContentData", GSON.toJson(new HashMap<>()));
@@ -772,10 +773,14 @@ public class ScapAuditController {
 
         scapContentList.forEach(content -> {
             try {
-                Path filePath = Paths.get(SCAP_CONTENT_STANDARD_DIR, content.getFileName());
-                Files.deleteIfExists(filePath);
+                // Delete DataStream file
+                Path dsFilePath = Paths.get(SCAP_CONTENT_STANDARD_DIR, content.getDataStreamFileName());
+                Files.deleteIfExists(dsFilePath);
+                // Delete XCCDF file
+                Path xccdfFilePath = Paths.get(SCAP_CONTENT_STANDARD_DIR, content.getXccdfFileName());
+                Files.deleteIfExists(xccdfFilePath);
             } catch (IOException e) {
-                LOG.error("Error deleting SCAP content file: {}", content.getFileName(), e);
+                LOG.error("Error deleting SCAP content files for: {}", content.getName(), e);
             }
             ScapFactory.deleteScapContent(content);
         });
@@ -799,9 +804,20 @@ public class ScapAuditController {
               .orElseThrow(() ->
                 new IllegalArgumentException("Name parameter missing"));
             Optional<String> description = RequestUtil.findStringParam(items, "description");
-            DiskFileItem tailoringFileParam = RequestUtil.findFileItem(items, "scapFile")
-              .orElseThrow(() ->
-                new IllegalArgumentException("Tailoring_file parameter missing"));
+
+            // Get file items
+            Optional<DiskFileItem> scapFileOpt = RequestUtil.findFileItem(items, "scapFile");
+            Optional<DiskFileItem> xccdfFileOpt = RequestUtil.findFileItem(items, "xccdfFile");
+
+            // For create operation, both files are required
+            if (existingContent == null) {
+                if (!scapFileOpt.isPresent()) {
+                    return result(res, ResultJson.error("DataStream file is required"));
+                }
+                if (!xccdfFileOpt.isPresent()) {
+                    return result(res, ResultJson.error("XCCDF file is required"));
+                }
+            }
 
             ScapContent scapContent = existingContent != null ? existingContent : new ScapContent();
             scapContent.setName(name.trim());
@@ -810,9 +826,50 @@ public class ScapAuditController {
             if (existingContent == null) {
                 scapContent.setOrg(user.getOrg());
             }
+
             ensureDirectoryExists(SCAP_CONTENT_STANDARD_DIR);
-            saveFileToDirectory(tailoringFileParam, SCAP_CONTENT_STANDARD_DIR);
-            scapContent.setFileName(tailoringFileParam.getName());
+
+            // Process DataStream file if provided
+            if (scapFileOpt.isPresent()) {
+                DiskFileItem scapFile = scapFileOpt.get();
+                String dsFileName = scapFile.getName();
+
+                // Validate DataStream filename
+                if (!dsFileName.endsWith("-ds.xml")) {
+                    return result(res, ResultJson.error(
+                        "DataStream file must end with '-ds.xml'"));
+                }
+
+                saveFileToDirectory(scapFile, SCAP_CONTENT_STANDARD_DIR);
+                scapContent.setDataStreamFileName(dsFileName);
+            }
+
+            // Process XCCDF file if provided
+            if (xccdfFileOpt.isPresent()) {
+                DiskFileItem xccdfFile = xccdfFileOpt.get();
+                String xccdfFileName = xccdfFile.getName();
+
+                // Validate XCCDF filename
+                if (!xccdfFileName.endsWith("-xccdf.xml")) {
+                    return result(res, ResultJson.error(
+                        "XCCDF file must end with '-xccdf.xml'"));
+                }
+
+                saveFileToDirectory(xccdfFile, SCAP_CONTENT_STANDARD_DIR);
+                scapContent.setXccdfFileName(xccdfFileName);
+            }
+
+            // Validate that both files share the same base name (if both are being set)
+            if (scapFileOpt.isPresent() && xccdfFileOpt.isPresent()) {
+                String dsBaseName = scapContent.getDataStreamFileName().replace("-ds.xml", "");
+                String xccdfBaseName = scapContent.getXccdfFileName().replace("-xccdf.xml", "");
+
+                if (!dsBaseName.equals(xccdfBaseName)) {
+                    return result(res, ResultJson.error(
+                        "DataStream and XCCDF files must share the same base name. " +
+                        "DataStream: '" + dsBaseName + "', XCCDF: '" + xccdfBaseName + "'"));
+                }
+            }
 
             ScapFactory.saveScapContent(scapContent);
             return result(res, ResultJson.success());
