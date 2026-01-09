@@ -92,6 +92,8 @@ timezone: "Etc/UTC"
 # Email will be the email used for the notifications sent by the server.
 email: "admin@uyuni.lab.org"
 
+hubAPI: false
+
 global:
   # fqdn is the fully qualified name the server will answer as.
   # Changing this value renames the server and changes the server FQDN in the database, handle with care.

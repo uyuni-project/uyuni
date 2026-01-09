@@ -231,3 +231,27 @@ spec:
   selector:
     app.kubernetes.io/component: server
   type: ClusterIP
+{{- if default .Values.hubAPI false }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/component: hub-xmlrpc
+    app.kubernetes.io/part-of: uyuni
+  name: hub-xmlrpc
+  namespace: "{{ .Release.Namespace }}"
+{{- if .Values.servicesAnnotations }}
+  annotations:
+{{ toYaml .Values.servicesAnnotations | indent 4 }}
+{{- end }}
+spec:
+  ports:
+    - name: hub
+      port: 2830
+      protocol: TCP
+      targetPort: 2830
+  selector:
+    app.kubernetes.io/component: hub-xmlrpc
+  type: ClusterIP
+{{- end }}
