@@ -4657,6 +4657,12 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/ssm/Index.do</context>
         </context-group>
         </trans-unit>
+        <trans-unit id="ssm.overview.appstreams">
+            <source>AppStreams</source>
+        </trans-unit>
+        <trans-unit id="ssm.overview.appstreams.manage">
+            <source>&lt;a href="/rhn/manager/systems/ssm/appstreams"&gt;Enable and disable&lt;/a&gt; AppStreams on the selected systems</source>
+        </trans-unit>
         <trans-unit id="ssm.overview.product_migration">
             <source>Product Migration</source>
         </trans-unit>
@@ -24002,6 +24008,9 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="task.status.reboot-action-cleanup" xml:space="preserve">
         <source>Failed reboots cleanup</source>
+      </trans-unit>
+      <trans-unit id="task.status.root-ca-cert-update" xml:space="preserve">
+        <source>CA Certificates Update</source>
       </trans-unit>
       <trans-unit id="task.status.auto-errata" xml:space="preserve">
         <source>Auto Patch Updates</source>

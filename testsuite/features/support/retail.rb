@@ -84,3 +84,27 @@ def retrieve_build_host_id
   refute_nil(build_host_id, "Build host #{get_target('build_host').full_hostname} is not yet registered?")
   build_host_id
 end
+
+# determine the ipv6 and run an expect file
+def execute_expect_command_proxy(host, exp_file, context)
+  # convert MAC address to IPv6 link-local address
+  case host
+  when 'pxeboot_minion'
+    mac = $pxeboot_mac
+  when 'sle15sp6_terminal'
+    mac = $sle15sp6_terminal_mac
+  when 'sle15sp7_terminal'
+    mac = $sle15sp7_terminal_mac
+  end
+  mac = mac.tr(':', '')
+  eui64_base = "#{mac[0..5]}fffe#{mac[6..11]}"
+  hex = (eui64_base.to_i(16) ^ 0x0200000000000000).to_s(16)
+  interface = product == 'Uyuni' ? 'ens4' : 'eth1'
+  ipv6 = "fe80::#{hex[0..3]}:#{hex[4..7]}:#{hex[8..11]}:#{hex[12..15]}%#{interface}"
+  source = "#{File.dirname(__FILE__)}/../upload_files/#{exp_file}"
+  dest = "/tmp/#{exp_file}"
+  success = file_inject(get_target('proxy'), source, dest)
+  raise ScriptError, 'File injection failed' unless success
+
+  get_target('proxy').run("expect -f /tmp/#{exp_file} #{ipv6} #{context}")
+end

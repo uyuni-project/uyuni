@@ -55,11 +55,11 @@ class NamespaceActivationkey
     channels.nil? ? 0 : channels.length
   end
 
-  # Verifies if the ID of the user is valid and active.
+  # Checks if the ID of the user is valid and active.
   #
   # @param id [String] The ID of the user to verify.
   # @return [Boolean] True if the user ID is valid and active, false otherwise.
-  def verify(id)
+  def verified?(id)
     @test.call('activationkey.listActivationKeys', sessionKey: @test.token)
          .map { |key| key['key'] }
          .include?(id)
@@ -89,7 +89,7 @@ class NamespaceActivationkey
     @test.call('activationkey.getDetails', sessionKey: @test.token, key: id)
   end
 
-  # Sets the details of a channel.
+  # Sets the details of a channel and returns whether the operation was successful.
   #
   # @param id [String] The ID of the channel.
   # @param description [String] The description of the channel.
@@ -101,7 +101,7 @@ class NamespaceActivationkey
   #   - "ssh-push"
   #   - "ssh-push-tunnel"
   # @return [Boolean] True if the details were set successfully, false otherwise.
-  def set_details(id, description, base_channel_label, usage_limit, contact_method)
+  def details_set?(id, description, base_channel_label, usage_limit, contact_method)
     details = { description: description, base_channel_label: base_channel_label, usage_limit: usage_limit, universal_default: false, contact_method: contact_method }
     @test.call('activationkey.setDetails', sessionKey: @test.token, key: id, details: details).to_i == 1
   end

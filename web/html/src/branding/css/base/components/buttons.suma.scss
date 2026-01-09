@@ -30,7 +30,7 @@
     box-shadow: none;
   }
 
-   &:focus {
+   &:focus-visible {
     border-color: $eos-bc-blue-500;
   }
 
@@ -134,7 +134,7 @@
     }
   }
 
-  &:focus {
+  &:focus-visible {
     border-color: $eos-bc-blue-500;
   }
 }
@@ -158,7 +158,7 @@
     }
   }
 
-  &:focus {
+  &:focus-visible {
     border-color: $eos-bc-blue-500;
   }
 }
@@ -187,7 +187,7 @@
     }
   }
 
-  &:focus {
+  &:focus-visible {
     border-color: $eos-bc-blue-500;
   }
 }

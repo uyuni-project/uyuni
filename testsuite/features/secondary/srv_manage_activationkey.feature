@@ -74,7 +74,7 @@ Feature: Manipulate activation keys
     And I enter "SUSE Test PKG Key x86_64" as "description"
     And I enter "SUSE-TEST-x86_64" as "key"
     And I enter "20" as "usageLimit"
-    And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "selectedBaseChannel"
+    And I select "SLE-Product-SLES15-SP7-Pool for x86_64" from "selectedBaseChannel"
     And I click on "Create Activation Key"
     And I follow "Packages"
     And I enter "sed" as "packages"

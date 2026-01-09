@@ -41,10 +41,7 @@ public class SessionSwap {
 
     private static Logger log = LogManager.getLogger(SessionSwap.class);
 
-    public static final char[] HEX_CHARS = {'0', '1', '2', '3',
-                                             '4', '5', '6', '7',
-                                             '8', '9', 'a', 'b',
-                                             'c', 'd', 'e', 'f' };
+    public static final String HEX_CHARS = "0123456789abcdef";
 
     /** utility class, no public constructor  */
     private SessionSwap() {
@@ -61,7 +58,7 @@ public class SessionSwap {
      */
     public static String encodeData(String[] in) {
         for (String sIn : in) {
-            if (!StringUtils.containsOnly(sIn, HEX_CHARS)) {
+            if (!StringUtils.containsOnly(sIn, SessionSwap.HEX_CHARS.toCharArray())) {
                 throw new IllegalArgumentException("encodeData input must be " +
                         "lowercase hex, but wasn't: " + sIn);
             }

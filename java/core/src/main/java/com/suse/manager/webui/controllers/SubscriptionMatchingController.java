@@ -32,12 +32,18 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.matcher.MatcherJsonIO;
 import com.suse.manager.webui.services.subscriptionmatching.SubscriptionMatchProcessor;
+import com.suse.matcher.json.InputJson;
+import com.suse.matcher.json.OutputJson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Optional;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -48,6 +54,7 @@ import spark.template.jade.JadeTemplateEngine;
  * Controller class providing backend code for subscription-matcher pages.
  */
 public class SubscriptionMatchingController {
+    private static final Logger LOG = LogManager.getLogger(SubscriptionMatchingController.class);
 
     private static final Gson GSON = new GsonBuilder()
         .registerTypeAdapter(Date.class, new ECMAScriptDateAdapter())
@@ -162,12 +169,7 @@ public class SubscriptionMatchingController {
             PinnedSubscriptionFactory.getInstance().save(pin);
         }
 
-        MatcherJsonIO matcherJsonIO = new MatcherJsonIO();
-        Object data = new SubscriptionMatchProcessor().pinnedMatches(
-                matcherJsonIO.getLastMatcherInput().get(),
-                matcherJsonIO.getLastMatcherOutput().get());
-
-        return GSON.toJson(data);
+        return pinnedMatchedJson();
     }
 
     /**
@@ -184,11 +186,20 @@ public class SubscriptionMatchingController {
             PinnedSubscriptionFactory.getInstance().remove(pin);
         }
 
-        MatcherJsonIO matcherJsonIO = new MatcherJsonIO();
-        Object data = new SubscriptionMatchProcessor().pinnedMatches(
-                matcherJsonIO.getLastMatcherInput().get(),
-                matcherJsonIO.getLastMatcherOutput().get());
+        return pinnedMatchedJson();
+    }
 
-        return GSON.toJson(data);
+    private static String pinnedMatchedJson() {
+        MatcherJsonIO matcherJsonIO = new MatcherJsonIO();
+        Optional<InputJson> lastMatcherInput = matcherJsonIO.getLastMatcherInput();
+        Optional<OutputJson> lastMatcherOutput = matcherJsonIO.getLastMatcherOutput();
+        if (lastMatcherInput.isPresent() && lastMatcherOutput.isPresent()) {
+            Object data = new SubscriptionMatchProcessor()
+                    .pinnedMatches(lastMatcherInput.get(), lastMatcherOutput.get());
+            return GSON.toJson(data);
+        }
+
+        LOG.error("Missing lastMatcherInput or lastMatcherOutput");
+        return "";
     }
 }

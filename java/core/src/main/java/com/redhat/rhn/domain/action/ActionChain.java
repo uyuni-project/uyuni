@@ -167,8 +167,10 @@ public class ActionChain extends BaseDomainHelper {
      * @return the entries
      */
     public Date getEarliestAction() {
-        return entries.stream().map(ActionChainEntry::getAction)
-                .map(Action::getEarliestAction).min(Date::compareTo).get();
+        return entries.stream()
+                .map(ActionChainEntry::getAction)
+                .map(Action::getEarliestAction)
+                .min(Date::compareTo).orElse(new Date());
     }
 
     /**

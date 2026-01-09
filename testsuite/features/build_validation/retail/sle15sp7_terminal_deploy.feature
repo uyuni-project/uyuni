@@ -35,6 +35,7 @@ Feature: PXE boot a SLES 15 SP7 retail terminal
     Then "sle15sp7_terminal" should have been reformatted
 
   Scenario: Check connection from SLES 15 SP7 retail terminal to branch server
+    Given I am authorized for the "Admin" section
     When I navigate to the Systems overview page of this "sle15sp7_terminal"
     And I follow "Details" in the content area
     And I follow "Connection" in the content area
@@ -46,7 +47,7 @@ Feature: PXE boot a SLES 15 SP7 retail terminal
     And I enter "rust" as the filtered package name
     And I click on the filter button
     And I check "rust-1" in the list
-    And I click on "Install Selected Packages"
+    And I click on "Install Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled" text
     When I wait until event "Package Install/Upgrade scheduled" is completed

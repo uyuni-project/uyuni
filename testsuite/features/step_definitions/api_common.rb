@@ -8,6 +8,38 @@ require 'socket'
 
 # system namespace
 
+When(/^I delete all the imported terminals$/) do
+  terminals = read_terminals_from_yaml
+  short_names_to_process =
+    terminals.reject do |terminal_name|
+      terminal_name.include?('minion') || terminal_name.include?('client')
+    end
+  log "Terminals identified for deletion (short names): #{short_names_to_process.join(', ')}"
+  current_systems = $api_test.system.list_systems
+  full_names_to_delete = []
+  short_names_to_process.each do |short_name|
+    match =
+      current_systems.find do |s|
+        s['name'].split('.').include?(short_name)
+      end
+    if match
+      full_names_to_delete << match['name']
+    else
+      log "Warning: Could not find a registered system matching short name '#{short_name}'"
+    end
+  end
+  if full_names_to_delete.any?
+    $api_test.system.delete_systems_by_name(full_names_to_delete)
+  else
+    log 'No matching systems found to delete.'
+  end
+end
+
+When(/^I delete "([^"]*)" system using the api$/) do |host|
+  system_name = get_system_name(host)
+  $api_test.system.delete_systems_by_name([system_name])
+end
+
 Given(/^I want to operate on this "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
   first_match = $api_test.system.search_by_name(system_name).first
@@ -198,11 +230,11 @@ Then(/^something should get listed with a call of listSoftwareChannels$/) do
 end
 
 Then(/^"([^"]*)" should get listed with a call of listSoftwareChannels$/) do |label|
-  assert($api_test.channel.verify_channel(label))
+  assert($api_test.channel.channel_verified?(label))
 end
 
 Then(/^"([^"]*)" should not get listed with a call of listSoftwareChannels$/) do |label|
-  assert_equal(false, $api_test.channel.verify_channel(label))
+  assert_equal(false, $api_test.channel.channel_verified?(label))
 end
 
 Then(/^"([^"]*)" should be the parent channel of "([^"]*)"$/) do |parent, child|
@@ -269,7 +301,7 @@ When(/^I create an activation key with id "([^"]*)", description "([^"]*)"(?:, b
   raise ScriptError, 'Key creation failed' if activation_key.nil?
   raise ScriptError, 'Bad key name' unless activation_key == "1-#{id}"
 
-  success = $api_test.activationkey.set_details(
+  success = $api_test.activationkey.details_set?(
     activation_key,
     description,
     base_channel_label,
@@ -286,16 +318,16 @@ When(/^I set the entitlements of the activation key "([^"]*)" to "([^"]*)"$/) do
 end
 
 Then(/^I should get the new activation key "([^"]*)"$/) do |activation_key|
-  raise ScriptError unless $api_test.activationkey.verify(activation_key)
+  raise ScriptError unless $api_test.activationkey.verified?(activation_key)
 end
 
 When(/^I delete the activation key "([^"]*)"$/) do |activation_key|
   raise ScriptError unless $api_test.activationkey.delete(activation_key)
-  raise ScriptError if $api_test.activationkey.verify(activation_key)
+  raise ScriptError if $api_test.activationkey.verified?(activation_key)
 end
 
 When(/^I set the description of the activation key "([^"]*)" to "([^"]*)"$/) do |activation_key, description|
-  raise RuntimeError unless $api_test.activationkey.set_details(activation_key, description, '', 10, 'default')
+  raise RuntimeError unless $api_test.activationkey.details_set?(activation_key, description, '', 10, 'default')
 end
 
 Then(/^I get the description "([^"]*)" for the activation key "([^"]*)"$/) do |description, activation_key|
@@ -320,7 +352,7 @@ When(/^I create an activation key including custom channels for "([^"]*)" via AP
   $stdout.puts "Activation key #{key} created" unless key.nil?
 
   is_ssh_minion = client.include? 'ssh_minion'
-  $api_test.activationkey.set_details(key, description, base_channel_label, 100, is_ssh_minion ? 'ssh-push' : 'default')
+  $api_test.activationkey.details_set?(key, description, base_channel_label, 100, is_ssh_minion ? 'ssh-push' : 'default')
   entitlements = client.include?('buildhost') ? ['osimage_build_host'] : ''
   $api_test.activationkey.set_entitlement(key, entitlements) unless entitlements.empty?
 
@@ -648,7 +680,7 @@ When(/^I call system\.list_empty_system_profiles\(\)$/) do
 end
 
 Then(/^"([^"]*)" should be present in the result$/) do |profile_name|
-  assert($output.select { |p| p['name'] == profile_name }.count == 1)
+  assert($output.one? { |p| p['name'] == profile_name })
 end
 
 When(/^I create and modify the kickstart system "([^"]*)" with kickstart label "([^"]*)" and hostname "([^"]*)" via XML-RPC$/) do |name, kslabel, hostname, values|
@@ -668,7 +700,7 @@ When(/^I create "([^"]*)" kickstart tree via the API$/) do |distro_name|
   when 'fedora_kickstart_distro_api'
     $api_test.kickstart.tree.create_distro(distro_name, '/var/autoinstall/Fedora_12_i386/', 'fake-base-channel-rh-like', 'fedora18')
   when 'testdistro'
-    $api_test.kickstart.tree.create_distro(distro_name, '/var/autoinstall/SLES15-SP4-x86_64/DVD1/', 'sle-product-sles15-sp4-pool-x86_64', 'sles15generic')
+    $api_test.kickstart.tree.create_distro(distro_name, '/var/autoinstall/SLES15-SP7-x86_64/DVD1/', 'sle-product-sles15-sp7-pool-x86_64', 'sles15generic')
   else
     # Raise an error for unrecognized value
     raise ArgumentError, "Unrecognized value: #{distro_name}"

@@ -110,10 +110,47 @@ class RemoteNode
   # @param successcodes [Array<Integer>] An array with the values to be accepted as success codes from the command run.
   # @param buffer_size [Integer] The maximum buffer size in bytes.
   # @param verbose [Boolean] Whether to log the output of the command in case of success.
+  # @param exec_option [Boolean] The container exec option.
   # @return [Array<String, String, Integer>] The output, error, and exit code.
   def run(cmd, runs_in_container: true, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, successcodes: [0], buffer_size: 65_536, verbose: false, exec_option: '-i')
     cmd_prefixed = @has_mgrctl && runs_in_container ? "mgrctl exec #{exec_option} '#{cmd.gsub('\'', '\'"\'"\'')}'" : cmd
     run_local(cmd_prefixed, separated_results: separated_results, check_errors: check_errors, timeout: timeout, successcodes: successcodes, buffer_size: buffer_size, verbose: verbose)
+  end
+
+  # Runs a command that contains commands chained by pipes in it and returns the output, error, and exit code of all the commands chained. Just for debugging purpouses.
+  #
+  # @param cmd [String] The command to run.
+  # @param expected_pipestatus_codes [Array<Integer>] Expected stderrs of the commands chained by pipes.
+  # @param runs_in_container [Boolean] Whether the command should be run in the container or on the host. Defaults to true.
+  # @param separated_results [Boolean] Whether the results should be stored separately. Defaults to false.
+  # @param check_errors [Boolean] Whether to check for errors or not. Defaults to true.
+  # @param timeout [Integer] The timeout to be used, in seconds.
+  # @param successcodes [Array<Integer>] An array with the values to be accepted as success codes from the command run.
+  # @param buffer_size [Integer] The maximum buffer size in bytes.
+  # @param verbose [Boolean] Whether to log the output of the command in case of success.
+  # @param exec_option [Boolean] The container exec option.
+  # # @return [Array<String, Integer>] The output, error, and exit code.
+  def run_pipe(cmd, expected_pipestatus_codes, runs_in_container: true, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, successcodes: [0], buffer_size: 65_536, verbose: false, exec_option: '-i')
+    pipestatus_file_path = '/tmp/temp_file_with_stderrs'
+    cmd += "; echo ${PIPESTATUS[*]} > #{pipestatus_file_path}"
+    cmd_read_codes = "cat #{pipestatus_file_path}; rm #{pipestatus_file_path}"
+    if @has_mgrctl && runs_in_container
+      cmd = "mgrctl exec #{exec_option} '#{cmd.gsub('\'', '\'"\'"\'')}'"
+      cmd_read_codes = "mgrctl exec #{exec_option} '#{cmd_read_codes.gsub('\'', '\'"\'"\'')}'"
+    end
+
+    out, initial_code = run_local(cmd, separated_results: separated_results, check_errors: check_errors, timeout: timeout, successcodes: successcodes, buffer_size: buffer_size, verbose: verbose)
+    stderr_of_commands, _code = run_local(cmd_read_codes)
+
+    stderr_of_commands_array = stderr_of_commands.split.map(&:to_i)
+    raise "Expected the number of expected pipestatus codes does not match the number of commands chained by pipes. Expected stderr:#{expected_pipestatus_codes}, current stderr:#{stderr_of_commands_array}" if expected_pipestatus_codes.length != stderr_of_commands_array.length
+    raise "Expected outcome does not match with current outcome. Expected stderr:#{expected_pipestatus_codes}, current stderr:#{stderr_of_commands_array}" if check_errors && stderr_of_commands_array.each_index.any? { |i| stderr_of_commands_array[i] != expected_pipestatus_codes[i] }
+
+    if separated_results
+      [out, stderr_of_commands, initial_code]
+    else
+      [out + stderr_of_commands, initial_code]
+    end
   end
 
   # Runs a command locally and returns the output, error, and exit code.
@@ -245,7 +282,7 @@ class RemoteNode
   #
   # @param file [String] The path of the file to check.
   # @return [Boolean] Returns true if the file exists, false otherwise.
-  def file_exists(file)
+  def file_exists?(file)
     if @has_mgrctl
       _out, code = run_local("mgrctl exec -- 'test -f #{file}'", check_errors: false)
     else
@@ -259,7 +296,7 @@ class RemoteNode
   #
   # @param file [String] The path of the folder to check.
   # @return [Boolean] Returns true if the folder exists, false otherwise.
-  def folder_exists(file)
+  def folder_exists?(file)
     if @has_mgrctl
       _out, code = run_local("mgrctl exec -- 'test -d #{file}'", check_errors: false)
     else
@@ -340,7 +377,7 @@ class RemoteNode
         return output.strip
       end
     else
-      %w[br0 eth0 eth1 ens0 ens1 ens2 ens3 ens4 ens5 ens6 ens7].each do |dev|
+      %w[br0 eth0 eth1 eth1000 ens0 ens1 ens2 ens3 ens4 ens5 ens6 ens7].each do |dev|
         output, code = run_local("ip address show dev #{dev} | grep 'inet '", check_errors: false)
 
         next unless code.zero?

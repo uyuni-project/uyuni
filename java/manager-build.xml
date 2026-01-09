@@ -231,7 +231,9 @@
 
         <copy toDir="${build.dir}/classes">
             <fileset dir="core/src/main/resources" />
-            <fileset dir="core/src/test/resources" />
+            <fileset dir="core/src/test/resources">
+                <exclude name="log4j2-test.properties" />
+            </fileset>
         </copy>
     </target>
 

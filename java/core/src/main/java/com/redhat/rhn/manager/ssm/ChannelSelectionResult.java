@@ -65,14 +65,14 @@ public class ChannelSelectionResult {
      * @return the ChannelSelection if any
      */
     public ChannelSelection getChannelSelection() {
-        return result.left().get();
+        return result.left().orElse(null);
     }
 
     /**
      * @return the error message if any
      */
     public String getError() {
-        return result.right().get();
+        return result.right().orElse("");
     }
 
     /**

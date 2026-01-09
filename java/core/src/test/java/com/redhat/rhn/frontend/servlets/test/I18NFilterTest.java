@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2009--2010 Red Hat, Inc.
+ * Copyright (c) 2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -29,7 +30,7 @@ import javax.servlet.ServletException;
 /**
  * AuthFilterTest
  */
-public class I18NFilterTest extends BaseFilterTst {
+public class I18NFilterTest extends BaseFilterTest {
 
     /**
      * Test the CheckCharSet functionality

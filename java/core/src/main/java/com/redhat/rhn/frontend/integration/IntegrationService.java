@@ -99,7 +99,7 @@ public class IntegrationService {
         }
         else {
             String sha256random = SHA256Crypt.sha256Hex(RandomStringUtils.random(64, 0, 0,
-                    false, false, SessionSwap.HEX_CHARS, new SecureRandom()));
+                    false, false, SessionSwap.HEX_CHARS.toCharArray(), new SecureRandom()));
             // Store the sha256random number in our map
             // and send over the encoded version of it.
             // On the return checkRandomToken() call

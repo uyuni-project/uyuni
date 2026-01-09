@@ -21,8 +21,7 @@
   },
   "java.test.config": {
     "vmArgs": [
-      "-Drhn.config.dir=${workspaceFolder}/java/buildconf/test",
-      "-Dlog4j2.configurationFile=${workspaceFolder}/java/buildconf/test/log4j2.properties"
+      "-Drhn.config.dir=${workspaceFolder}/java/buildconf/test"
     ]
   },
   "java.project.referencedLibraries": [
@@ -57,5 +56,8 @@
 	"vscode-postgres.virtualFolders": [
     "functions"
   ],
-  "prettier.configPath": "web/.prettierrc"
+  "prettier.configPath": "web/.prettierrc",
+  "[json]": {
+    "editor.defaultFormatter": "prettier.prettier-vscode"
+  }
 }

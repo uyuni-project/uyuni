@@ -8,6 +8,7 @@ const nodejs = (stream: string, enabled = true): AppStreamModule => ({
   context: "context-test",
   arch: "x86_64",
   enabled,
+  systemCount: 0,
 });
 
 const redis = (stream: string, enabled = true): AppStreamModule => ({
@@ -17,6 +18,7 @@ const redis = (stream: string, enabled = true): AppStreamModule => ({
   context: "context",
   arch: "x86_64",
   enabled,
+  systemCount: 0,
 });
 
 const CHANNEL: Channel = { id: 1, label: "stream-channel-1", name: "Stream Channel 1" };

@@ -15,8 +15,10 @@
 package com.redhat.rhn.frontend.action.systems.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.frontend.action.systems.SystemSearchHelper;
+import com.redhat.rhn.frontend.action.systems.SystemSearchHelperType;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -217,5 +219,133 @@ should sort to
         assertEquals(1102L, (long) systems.get(9).getId());
         assertEquals(1101L, (long) systems.get(10).getId());
         assertEquals(1201L, (long) systems.get(11).getId());
+    }
+
+    @Test
+    public void testSystemSearchHelperTypePrefix() {
+        final String termsString = "TEST";
+        assertEquals("name:(TEST) description:(TEST)",
+                SystemSearchHelperType.NAME_AND_DESCRIPTION.getQuery(termsString));
+        assertEquals("server", SystemSearchHelperType.NAME_AND_DESCRIPTION.getIndexLabel());
+
+        assertEquals("system_id:(TEST)", SystemSearchHelperType.ID.getQuery(termsString));
+        assertEquals("server", SystemSearchHelperType.ID.getIndexLabel());
+
+        assertEquals("value:(TEST)", SystemSearchHelperType.CUSTOM_INFO.getQuery(termsString));
+        assertEquals("serverCustomInfo", SystemSearchHelperType.CUSTOM_INFO.getIndexLabel());
+
+        assertEquals("name:(TEST)", SystemSearchHelperType.SNAPSHOT_TAG.getQuery(termsString));
+        assertEquals("snapshotTag", SystemSearchHelperType.SNAPSHOT_TAG.getIndexLabel());
+
+        assertEquals("cpuModel:(TEST)", SystemSearchHelperType.CPU_MODEL.getQuery(termsString));
+        assertEquals("server", SystemSearchHelperType.CPU_MODEL.getIndexLabel());
+
+        assertEquals("description:(TEST)", SystemSearchHelperType.HW_DESCRIPTION.getQuery(termsString));
+        assertEquals("hwdevice", SystemSearchHelperType.HW_DESCRIPTION.getIndexLabel());
+
+        assertEquals("driver:(TEST)", SystemSearchHelperType.HW_DRIVER.getQuery(termsString));
+        assertEquals("hwdevice", SystemSearchHelperType.HW_DRIVER.getIndexLabel());
+
+        assertEquals("deviceId:(TEST)", SystemSearchHelperType.HW_DEVICE_ID.getQuery(termsString));
+        assertEquals("hwdevice", SystemSearchHelperType.HW_DEVICE_ID.getIndexLabel());
+
+        assertEquals("vendorId:(TEST)", SystemSearchHelperType.HW_VENDOR_ID.getQuery(termsString));
+        assertEquals("hwdevice", SystemSearchHelperType.HW_VENDOR_ID.getIndexLabel());
+
+        assertEquals("dmiSystem:(TEST)", SystemSearchHelperType.DMI_SYSTEM.getQuery(termsString));
+        assertEquals("server", SystemSearchHelperType.DMI_SYSTEM.getIndexLabel());
+
+        assertEquals("dmiBiosVendor:(TEST) dmiBiosVersion:(TEST) dmiBiosRelease:(TEST)",
+                SystemSearchHelperType.DMI_BIOS.getQuery(termsString));
+        assertEquals("server", SystemSearchHelperType.DMI_BIOS.getIndexLabel());
+
+        assertEquals("dmiAsset:(TEST)", SystemSearchHelperType.DMI_ASSET.getQuery(termsString));
+        assertEquals("server", SystemSearchHelperType.DMI_ASSET.getIndexLabel());
+
+        assertEquals("hostname:(TEST)", SystemSearchHelperType.HOSTNAME.getQuery(termsString));
+        assertEquals("server", SystemSearchHelperType.HOSTNAME.getIndexLabel());
+
+        assertEquals("ipaddr:(TEST)", SystemSearchHelperType.IP.getQuery(termsString));
+        assertEquals("server", SystemSearchHelperType.IP.getIndexLabel());
+
+        assertEquals("ip6addr:(TEST)", SystemSearchHelperType.IP6.getQuery(termsString));
+        assertEquals("server", SystemSearchHelperType.IP6.getIndexLabel());
+
+        assertEquals("runningKernel:(TEST)", SystemSearchHelperType.RUNNING_KERNEL.getQuery(termsString));
+        assertEquals("server", SystemSearchHelperType.RUNNING_KERNEL.getIndexLabel());
+
+        assertEquals("country:(TEST)", SystemSearchHelperType.LOC_COUNTRY_CODE.getQuery(termsString));
+        assertEquals("server", SystemSearchHelperType.LOC_COUNTRY_CODE.getIndexLabel());
+
+        assertEquals("state:(TEST)", SystemSearchHelperType.LOC_STATE.getQuery(termsString));
+        assertEquals("server", SystemSearchHelperType.LOC_STATE.getIndexLabel());
+
+        assertEquals("city:(TEST)", SystemSearchHelperType.LOC_CITY.getQuery(termsString));
+        assertEquals("server", SystemSearchHelperType.LOC_CITY.getIndexLabel());
+
+        assertEquals("address1:(TEST) address2:(TEST)",
+                SystemSearchHelperType.LOC_ADDRESS.getQuery(termsString));
+        assertEquals("server", SystemSearchHelperType.LOC_ADDRESS.getIndexLabel());
+
+        assertEquals("building:(TEST)", SystemSearchHelperType.LOC_BUILDING.getQuery(termsString));
+        assertEquals("server", SystemSearchHelperType.LOC_BUILDING.getIndexLabel());
+
+        assertEquals("room:(TEST)", SystemSearchHelperType.LOC_ROOM.getQuery(termsString));
+        assertEquals("server", SystemSearchHelperType.LOC_ROOM.getIndexLabel());
+
+        assertEquals("rack:(TEST)", SystemSearchHelperType.LOC_RACK.getQuery(termsString));
+        assertEquals("server", SystemSearchHelperType.LOC_RACK.getIndexLabel());
+
+        assertEquals("uuid:(TEST)", SystemSearchHelperType.UUID.getQuery(termsString));
+        assertEquals("server", SystemSearchHelperType.UUID.getIndexLabel());
+    }
+
+    @Test
+    public void testSystemSearchHelperTypePackage() {
+        final String termsString = "TEST";
+
+        assertEquals("filename:(TEST*)", SystemSearchHelperType.INSTALLED_PACKAGES.getQuery(termsString));
+        assertEquals("package", SystemSearchHelperType.INSTALLED_PACKAGES.getIndexLabel());
+
+        assertEquals("name:(TEST) filename:(TEST)", SystemSearchHelperType.NEEDED_PACKAGES.getQuery(termsString));
+        assertEquals("package", SystemSearchHelperType.NEEDED_PACKAGES.getIndexLabel());
+
+    }
+
+    @Test
+    public void testSystemSearchHelperTypeDates() {
+        assertTrue(SystemSearchHelperType.CHECKIN.getQuery("10").startsWith("checkin:[\"197001010000\" TO \""));
+        assertTrue(SystemSearchHelperType.CHECKIN.getQuery("10").endsWith("\"]"));
+        assertEquals("server", SystemSearchHelperType.CHECKIN.getIndexLabel());
+
+        assertTrue(SystemSearchHelperType.REGISTERED.getQuery("10").startsWith("registered:{\""));
+        assertTrue(SystemSearchHelperType.REGISTERED.getQuery("10").contains("\" TO \""));
+        assertTrue(SystemSearchHelperType.REGISTERED.getQuery("10").endsWith("\"}"));
+        assertEquals("server", SystemSearchHelperType.REGISTERED.getIndexLabel());
+    }
+
+    @Test
+    public void testSystemSearchHelperTypeRanges() {
+        final String termsString = "TEST";
+        assertEquals("cpuMHz:{0 TO TEST}", SystemSearchHelperType.CPU_MHZ_LT.getQuery(termsString));
+        assertEquals("server", SystemSearchHelperType.CPU_MHZ_LT.getIndexLabel());
+
+        assertEquals("cpuMHz:{TEST TO 9223372036854775807}",
+                SystemSearchHelperType.CPU_MHZ_GT.getQuery(termsString));
+        assertEquals("server", SystemSearchHelperType.CPU_MHZ_GT.getIndexLabel());
+
+        assertEquals("cpuNumberOfCpus:{0 TO TEST}", SystemSearchHelperType.NUM_CPUS_LT.getQuery(termsString));
+        assertEquals("server", SystemSearchHelperType.NUM_CPUS_LT.getIndexLabel());
+
+        assertEquals("cpuNumberOfCpus:{TEST TO 9223372036854775807}",
+                SystemSearchHelperType.NUM_CPUS_GT.getQuery(termsString));
+        assertEquals("server", SystemSearchHelperType.NUM_CPUS_GT.getIndexLabel());
+
+        assertEquals("ram:{0 TO TEST}", SystemSearchHelperType.RAM_LT.getQuery(termsString));
+        assertEquals("server", SystemSearchHelperType.RAM_LT.getIndexLabel());
+
+        assertEquals("ram:{TEST TO 9223372036854775807}", SystemSearchHelperType.RAM_GT.getQuery(termsString));
+        assertEquals("server", SystemSearchHelperType.RAM_GT.getIndexLabel());
+
     }
 }

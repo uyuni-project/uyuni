@@ -183,12 +183,12 @@ public final class NamedPreparedStatement {
     private static void setVars(PreparedStatement ps,
             Map<String, List<Integer>> parameterMap, Map<String, ?> map) {
 
-        for (String name : map.keySet()) {
-            Iterator<Integer> positions = getPositions(name, parameterMap);
+        for (Map.Entry<String, ?> entry : map.entrySet()) {
+            Iterator<Integer> positions = getPositions(entry.getKey(), parameterMap);
             while (positions.hasNext()) {
                 Integer pos = positions.next();
                 try {
-                    Object value = map.get(name);
+                    Object value = entry.getValue();
                     ps.setObject(pos, value);
                 }
                 catch (SQLException e) {
@@ -201,8 +201,8 @@ public final class NamedPreparedStatement {
     private static void setOutputVars(CallableStatement cs,
             Map<String, List<Integer>> parameterMap, Map<String, Integer> map) {
 
-        for (String name : map.keySet()) {
-            Iterator<Integer> positions = getPositions(name, parameterMap);
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+            Iterator<Integer> positions = getPositions(entry.getKey(), parameterMap);
             while (positions.hasNext()) {
                 Integer pos = positions.next();
                 try {
@@ -210,7 +210,7 @@ public final class NamedPreparedStatement {
                     // to represent SQL types.  So, we treat the values as
                     // Integers, and the caller is responsible for inserting
                     // the Integer object.
-                    Integer type = map.get(name);
+                    Integer type = entry.getValue();
                     cs.registerOutParameter(pos, type);
                 }
                 catch (SQLException e) {

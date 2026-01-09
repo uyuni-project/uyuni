@@ -252,7 +252,7 @@ public class ActionChainManager {
      * @param details the details to be linked with the action
      * @param earliest the earliest execution date
      * @param actionChain the action chain or null
-     * @param serverId the id of servers involved
+     * @param serverIds the ids of servers involved
      * @return id of the scheduled action
      * @throws TaskomaticApiException if there was a Taskomatic error
      */
@@ -262,10 +262,10 @@ public class ActionChainManager {
         Set<AppStreamActionDetails> details,
         Date earliest,
         ActionChain actionChain,
-        Long serverId
+        Set<Long> serverIds
     ) throws TaskomaticApiException {
         var actions = createActions(
-            user, ActionFactory.TYPE_APPSTREAM_CONFIGURE, name, earliest, actionChain, null, singleton(serverId)
+            user, ActionFactory.TYPE_APPSTREAM_CONFIGURE, name, earliest, actionChain, null, serverIds
         );
         AppStreamAction action = (AppStreamAction) actions.stream().findFirst()
                 .orElseThrow(() -> new RuntimeException("Action scheduling result missing"));

@@ -66,6 +66,9 @@ RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf && \
         sssd-ad \
         sssd-dbus \
         sssd-ipa \
+        susemanager \
+        susemanager-tools \
+        susemanager-tools-salt \
         sssd-krb5 \
         sssd-ldap \
         sssd-tools \
@@ -121,7 +124,7 @@ LABEL org.opencontainers.image.description="All-in-one ${PRODUCT} server image"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opencontainers.image.version=5.2.3
+LABEL org.opencontainers.image.version=5.2.4
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix

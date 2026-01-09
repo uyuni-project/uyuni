@@ -27,6 +27,7 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.ChannelSyncFlag;
+import com.redhat.rhn.domain.channel.ChannelTestUtility;
 import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.channel.ContentSource;
 import com.redhat.rhn.domain.channel.ContentSourceType;
@@ -366,7 +367,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         User user = UserTestUtils.createUser(this);
         Channel original = ChannelFactoryTest.createTestChannel(user);
         assertEquals(0, ChannelFactory.getPackageCount(original));
-        original.addPackage(PackageTest.createTestPackage(user.getOrg()));
+        ChannelTestUtility.testAddPackage(original, PackageTest.createTestPackage(user.getOrg()));
         ChannelFactory.save(original);
         TestUtils.flushAndEvict(original);
 

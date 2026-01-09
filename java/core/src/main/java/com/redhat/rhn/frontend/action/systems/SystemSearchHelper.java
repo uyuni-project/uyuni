@@ -37,13 +37,13 @@ import org.apache.logging.log4j.Logger;
 
 import java.net.MalformedURLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.TimeZone;
 import java.util.stream.Collectors;
 
@@ -56,51 +56,6 @@ import redstone.xmlrpc.XmlRpcFault;
  */
 public class SystemSearchHelper {
     private static Logger log = LogManager.getLogger(SystemSearchHelper.class);
-
-    public static final String NAME_AND_DESCRIPTION =
-        "systemsearch_name_and_description";
-    public static final String ID = "systemsearch_id";
-    public static final String CUSTOM_INFO = "systemsearch_custom_info";
-    public static final String SNAPSHOT_TAG = "systemsearch_snapshot_tag";
-    public static final String CHECKIN = "systemsearch_checkin";
-    public static final String REGISTERED = "systemsearch_registered";
-    public static final String CPU_MODEL = "systemsearch_cpu_model";
-    public static final String CPU_MHZ_LT = "systemsearch_cpu_mhz_lt";
-    public static final String CPU_MHZ_GT = "systemsearch_cpu_mhz_gt";
-    public static final String NUM_CPUS_LT = "systemsearch_num_of_cpus_lt";
-    public static final String NUM_CPUS_GT = "systemsearch_num_of_cpus_gt";
-    public static final String RAM_LT = "systemsearch_ram_lt";
-    public static final String RAM_GT = "systemsearch_ram_gt";
-    public static final String HW_DESCRIPTION = "systemsearch_hwdevice_description";
-    public static final String HW_DRIVER = "systemsearch_hwdevice_driver";
-    public static final String HW_DEVICE_ID = "systemsearch_hwdevice_device_id";
-    public static final String HW_VENDOR_ID = "systemsearch_hwdevice_vendor_id";
-    public static final String DMI_SYSTEM = "systemsearch_dmi_system";
-    public static final String DMI_BIOS = "systemsearch_dmi_bios";
-    public static final String DMI_ASSET = "systemsearch_dmi_asset";
-    public static final String HOSTNAME = "systemsearch_hostname";
-    public static final String IP = "systemsearch_ip";
-    public static final String IP6 = "systemsearch_ipv6";
-    public static final String INSTALLED_PACKAGES = "systemsearch_installed_packages";
-    public static final String NEEDED_PACKAGES = "systemsearch_needed_packages";
-    public static final String RUNNING_KERNEL = "systemsearch_running_kernel";
-    public static final String LOC_COUNTRY_CODE = "systemsearch_location_country_code";
-    public static final String LOC_STATE = "systemsearch_location_state";
-    public static final String LOC_CITY = "systemsearch_location_city";
-    public static final String LOC_ADDRESS = "systemsearch_location_address";
-    public static final String LOC_BUILDING = "systemsearch_location_building";
-    public static final String LOC_ROOM = "systemsearch_location_room";
-    public static final String LOC_RACK = "systemsearch_location_rack";
-    public static final String UUID = "systemsearch_uuid";
-
-    /**
-     * These vars store the name of a lucene index on the search server
-     */
-    public static final String PACKAGES_INDEX = "package";
-    public static final String SERVER_INDEX = "server";
-    public static final String HARDWARE_DEVICE_INDEX = "hwdevice";
-    public static final String SNAPSHOT_TAG_INDEX = "snapshotTag";
-    public static final String SERVER_CUSTOM_INFO_INDEX = "serverCustomInfo";
 
     protected SystemSearchHelper() { }
 
@@ -177,24 +132,24 @@ public class SystemSearchHelper {
 
         // We need to translate these results into a fleshed out DTO object which can be displayed.by the JSP
         Map<Long, Map<String, Object>> serverIds;
-        if (PACKAGES_INDEX.equals(index)) {
+        if (SystemSearchHelperIndex.PACKAGES_INDEX.equalsIndex(index)) {
             serverIds = getResultMapFromPackagesIndex(user, results, viewMode);
         }
-        else if (SERVER_INDEX.equals(index)) {
+        else if (SystemSearchHelperIndex.SERVER_INDEX.equalsIndex(index)) {
             serverIds = getResultMapFromServerIndex(results);
         }
-        else if (HARDWARE_DEVICE_INDEX.equals(index)) {
+        else if (SystemSearchHelperIndex.HARDWARE_DEVICE_INDEX.equalsIndex(index)) {
             serverIds = getResultMapFromHardwareDeviceIndex(results);
         }
-        else if (SNAPSHOT_TAG_INDEX.equals(index)) {
+        else if (SystemSearchHelperIndex.SNAPSHOT_TAG_INDEX.equalsIndex(index)) {
             serverIds = getResultMapFromSnapshotTagIndex(results);
         }
-        else if (SERVER_CUSTOM_INFO_INDEX.equals(index)) {
+        else if (SystemSearchHelperIndex.SERVER_CUSTOM_INFO_INDEX.equalsIndex(index)) {
             serverIds = getResultMapFromServerCustomInfoIndex(results);
         }
         else {
             log.warn("Unknown index: {}", index);
-            log.warn("Defaulting to treating this as a " + SERVER_INDEX + " index");
+            log.warn("Defaulting to treating this as a {} index", SystemSearchHelperIndex.SERVER_INDEX.getLabel());
             serverIds = getResultMapFromServerIndex(results);
         }
         if (invertResults) {
@@ -243,7 +198,7 @@ public class SystemSearchHelper {
             else {
                 // Escape colons in IPv6 address automatically.
                 // (colon is a special lucene character)
-                if (IP6.equals(mode)) {
+                if (SystemSearchHelperType.IP6.equalsMode(mode)) {
                     s = s.replace(":", "\\:");
                 }
             }
@@ -251,156 +206,12 @@ public class SystemSearchHelper {
             buf.append(" ");
         }
         String terms = buf.toString().trim();
+
+        Optional<SystemSearchHelperType> type = SystemSearchHelperType.find(mode);
         String query, index;
-        if (NAME_AND_DESCRIPTION.equals(mode)) {
-            query = "name:(" + terms + ") description:(" + terms + ")";
-            index = SERVER_INDEX;
-        }
-        else if (ID.equals(mode)) {
-            // 'system_id' is the tokenized form of ID in the search server
-            query = "system_id:(" + terms + ")";
-            index = SERVER_INDEX;
-        }
-        else if (CUSTOM_INFO.equals(mode)) {
-            query = "value:(" + terms + ")";
-            index = SERVER_CUSTOM_INFO_INDEX;
-        }
-        else if (SNAPSHOT_TAG.equals(mode)) {
-            query = "name:(" + terms + ")";
-            index = SNAPSHOT_TAG_INDEX;
-        }
-        else if (CHECKIN.equals(mode)) {
-            Integer numDays = Integer.parseInt(terms);
-            Calendar startDate = Calendar.getInstance();
-            // SearchRange:  [EPOCH - TargetDate]
-            startDate.add(Calendar.DATE, -1 * numDays);
-            query = "checkin:[\"" + formatDateString(new Date(0)) +
-                    "\" TO \"" + formatDateString(startDate.getTime()) + "\"]";
-            index = SERVER_INDEX;
-        }
-        else if (REGISTERED.equals(mode)) {
-            Integer numDays = Integer.parseInt(terms);
-            Calendar startDate = Calendar.getInstance();
-            // SearchRange:  [TargetDate - NOW]
-            startDate.add(Calendar.DATE, (-1 * numDays) - 1);
-            query = "registered:{\"" + formatDateString(startDate.getTime()) +
-                "\" TO \"" + formatDateString(
-                Calendar.getInstance().getTime()) +
-                "\"}";
-            index = SERVER_INDEX;
-        }
-        else if (CPU_MODEL.equals(mode)) {
-            query = "cpuModel:(" + terms + ")";
-            index = SERVER_INDEX;
-        }
-        else if (CPU_MHZ_LT.equals(mode)) {
-            query = "cpuMHz:{0 TO " + terms + "}";
-            index = SERVER_INDEX;
-        }
-        else if (CPU_MHZ_GT.equals(mode)) {
-            query = "cpuMHz:{" + terms + " TO " + Long.MAX_VALUE + "}";
-            index = SERVER_INDEX;
-        }
-        else if (NUM_CPUS_LT.equals(mode)) {
-            query = "cpuNumberOfCpus:{0 TO " + terms + "}";
-            index = SERVER_INDEX;
-        }
-        else if (NUM_CPUS_GT.equals(mode)) {
-            query = "cpuNumberOfCpus:{" + terms + " TO " + Long.MAX_VALUE + "}";
-            index = SERVER_INDEX;
-        }
-        else if (RAM_LT.equals(mode)) {
-            query = "ram:{0 TO " + terms + "}";
-            index = SERVER_INDEX;
-        }
-        else if (RAM_GT.equals(mode)) {
-            query = "ram:{" + terms + " TO " + Long.MAX_VALUE + "}";
-            index = SERVER_INDEX;
-        }
-        else if (HW_DESCRIPTION.equals(mode)) {
-            query = "description:(" + terms + ")";
-            index = HARDWARE_DEVICE_INDEX;
-        }
-        else if (HW_DRIVER.equals(mode)) {
-            query = "driver:(" + terms + ")";
-            index = HARDWARE_DEVICE_INDEX;
-        }
-        else if (HW_DEVICE_ID.equals(mode)) {
-            query = "deviceId:(" + terms + ")";
-            index = HARDWARE_DEVICE_INDEX;
-        }
-        else if (HW_VENDOR_ID.equals(mode)) {
-            query = "vendorId:(" + terms + ")";
-            index = HARDWARE_DEVICE_INDEX;
-        }
-        else if (DMI_SYSTEM.equals(mode)) {
-            query = "dmiSystem:(" + terms + ")";
-            index = SERVER_INDEX;
-        }
-        else if (DMI_BIOS.equals(mode)) {
-            query = "dmiBiosVendor:(" + terms + ") dmiBiosVersion:(" + terms + ")" +
-                " dmiBiosRelease:(" + terms + ")";
-            index = SERVER_INDEX;
-        }
-        else if (DMI_ASSET.equals(mode)) {
-            query = "dmiAsset:(" + terms + ")";
-            index = SERVER_INDEX;
-        }
-        else if (HOSTNAME.equals(mode)) {
-            query = "hostname:(" + terms + ")";
-            index = SERVER_INDEX;
-        }
-        else if (IP.equals(mode)) {
-            query = "ipaddr:(" + terms + ")";
-            index = SERVER_INDEX;
-        }
-        else if (IP6.equals(mode)) {
-            query = "ip6addr:(" + terms + ")";
-            index = SERVER_INDEX;
-        }
-        else if (INSTALLED_PACKAGES.equals(mode)) {
-            query = "filename:(" + terms + "*)";
-            index = PACKAGES_INDEX;
-        }
-        else if (NEEDED_PACKAGES.equals(mode)) {
-            query = "name:(" + terms + ")" + " filename:(" + terms + ")";
-            index = PACKAGES_INDEX;
-        }
-        else if (RUNNING_KERNEL.equals(mode)) {
-            query = "runningKernel:(" + terms + ")";
-            index = SERVER_INDEX;
-        }
-        else if (LOC_COUNTRY_CODE.equals(mode)) {
-            query = "country:(" + terms + ")";
-            index = SERVER_INDEX;
-        }
-        else if (LOC_STATE.equals(mode)) {
-            query = "state:(" + terms + ")";
-            index = SERVER_INDEX;
-        }
-        else if (LOC_CITY.equals(mode)) {
-            query = "city:(" + terms + ")";
-            index = SERVER_INDEX;
-        }
-        else if (LOC_ADDRESS.equals(mode)) {
-            query = "address1:(" + terms + ") address2:(" + terms + ")";
-            index = SERVER_INDEX;
-        }
-        else if (LOC_BUILDING.equals(mode)) {
-            query = "building:(" + terms + ")";
-            index = SERVER_INDEX;
-        }
-        else if (LOC_ROOM.equals(mode)) {
-            query = "room:(" + terms + ")";
-            index = SERVER_INDEX;
-        }
-        else if (LOC_RACK.equals(mode)) {
-            query = "rack:(" + terms + ")";
-            index = SERVER_INDEX;
-        }
-        else if (UUID.equals(mode)) {
-            query = "uuid:(" + terms + ")";
-            index = SERVER_INDEX;
+        if (type.isPresent()) {
+            query = type.get().getQuery(terms);
+            index = type.get().getIndexLabel();
         }
         else {
             throw new ValidatorException("Mode: " + mode + " not supported.");
@@ -432,10 +243,10 @@ public class SystemSearchHelper {
         for (Map<String, Object> result : searchResults) {
             Long pkgId = Long.valueOf((String)result.get("id"));
             List<Long> serverIds = null;
-            if (INSTALLED_PACKAGES.equals(viewMode)) {
+            if (SystemSearchHelperType.INSTALLED_PACKAGES.equalsMode(viewMode)) {
                 serverIds = getSystemsByInstalledPackageId(user, pkgId);
             }
-            else if (NEEDED_PACKAGES.equals(viewMode)) {
+            else if (SystemSearchHelperType.NEEDED_PACKAGES.equalsMode(viewMode)) {
                 serverIds = getSystemsByNeededPackageId(user, pkgId);
             }
             if (serverIds == null || serverIds.isEmpty()) {
@@ -640,13 +451,13 @@ public class SystemSearchHelper {
          * guess from the search server of what field in the document most influenced
          * the result.
          */
-        if (List.of(REGISTERED, CPU_MHZ_GT, NUM_CPUS_GT, RAM_GT).contains(viewMode)) {
+        if (SystemSearchHelperType.isSortLowToHighMode(viewMode)) {
             // We want to sort Low to High
             SearchResultMatchedFieldComparator comparator =
                 new SearchResultMatchedFieldComparator(serverIds);
             serverList.sort(comparator);
         }
-        else if (List.of(CHECKIN, CPU_MHZ_LT, NUM_CPUS_LT, RAM_LT).contains(viewMode)) {
+        else if (SystemSearchHelperType.isSortHighToLowMode(viewMode)) {
             // We want to sort High to Low
             SearchResultMatchedFieldComparator comparator =
                 new SearchResultMatchedFieldComparator(serverIds, false);

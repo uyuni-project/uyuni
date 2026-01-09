@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ChannelTestUtility;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
@@ -54,9 +55,9 @@ public class SyncActionsTest extends RhnMockStrutsTestCase {
         Package p2 = PackageTest.createTestPackage(user.getOrg());
         Package p3 = PackageTest.createTestPackage(user.getOrg());
 
-        testChannel.addPackage(p1);
-        testChannel.addPackage(p2);
-        testChannel2.addPackage(p3);
+        ChannelTestUtility.testAddPackage(testChannel, p1);
+        ChannelTestUtility.testAddPackage(testChannel, p2);
+        ChannelTestUtility.testAddPackage(testChannel2, p3);
         ChannelFactory.save(testChannel);
         ChannelFactory.save(testChannel2);
 

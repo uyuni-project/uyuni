@@ -56,12 +56,12 @@ public abstract class BaseSearchAction extends RhnAction {
     private static final Logger LOG = LogManager.getLogger(BaseSearchAction.class);
 
     /** Channel-arches a default package-search should look in */
-    public static final String[] DEFAULT_ARCHES = { "channel-ia32", "channel-ia64",
+    protected static final String[] DEFAULT_ARCHES = { "channel-ia32", "channel-ia64",
             "channel-x86_64", "channel-s390", "channel-s390x", "channel-ppc",
             "channel-ppc64le"};
 
     /** List of channel arches we don't really support any more. */
-    public static final List<String> EXCLUDED_ARCHES = Arrays.asList(
+    protected static final List<String> EXCLUDED_ARCHES = Arrays.asList(
         "channel-sparc", "channel-alpha", "channel-iSeries", "channel-pSeries");
 
     // combinedSearchForm common keys

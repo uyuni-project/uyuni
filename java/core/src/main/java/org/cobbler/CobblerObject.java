@@ -681,21 +681,21 @@ public abstract class CobblerObject {
     @SuppressWarnings("unchecked")
     public String convertOptionsMap(Map<String, Object> map) {
         StringBuilder string = new StringBuilder();
-        for (String key : map.keySet()) {
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
             List<String> keyList;
             try {
-                keyList = (List<String>) map.get(key);
+                keyList = (List<String>) entry.getValue();
             }
             catch (ClassCastException e) {
                 keyList = new ArrayList<>();
-                keyList.add((String) map.get(key));
+                keyList.add((String) entry.getValue());
             }
             if (keyList.isEmpty()) {
-                string.append(key).append(" ");
+                string.append(entry.getKey()).append(" ");
             }
             else {
                 for (String value : keyList) {
-                    string.append(key).append("=");
+                    string.append(entry.getKey()).append("=");
                     if (value != null && value.contains(" ")) {
                         string.append('"').append(value).append('"');
                     }

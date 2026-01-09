@@ -203,6 +203,7 @@ class RecurringActionsEdit extends Component<Props, State> {
         playbookPath: playbook?.playbookPath,
         inventoryPath: playbook?.inventoryPath,
         flushCache: playbook?.flushCache,
+        extraVars: playbook?.extraVars,
       },
     }));
   };
@@ -295,6 +296,7 @@ class RecurringActionsEdit extends Component<Props, State> {
             playbookPath={this.state.details.playbookPath}
             inventoryPath={this.state.details.inventoryPath}
             flushCache={this.state.details.flushCache}
+            variables={this.state.details.extraVars}
             onSelectPlaybook={this.onSelectPlaybook}
           />
         )}

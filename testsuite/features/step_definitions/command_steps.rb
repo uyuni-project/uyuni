@@ -687,7 +687,7 @@ When(/^I set the default PXE menu entry to the (target profile|local boot) on th
   when 'local boot'
     script = '-e "s/^TIMEOUT .*/TIMEOUT 2/" -e "s/ONTIMEOUT .*/ONTIMEOUT local/"'
   when 'target profile'
-    script = '-e "s/^TIMEOUT .*/TIMEOUT 2/" -e "s/ONTIMEOUT .*/ONTIMEOUT 15-sp4-cobbler:1:SUSETest/"'
+    script = '-e "s/^TIMEOUT .*/TIMEOUT 2/" -e "s/ONTIMEOUT .*/ONTIMEOUT 15-sp7-cobbler:1:SUSETest/"'
   else
     log "Entry #{entry} not supported"
   end
@@ -1041,7 +1041,7 @@ end
 
 When(/I copy the distribution inside the container on the server$/) do
   node = get_target('server')
-  node.run('mgradm distro copy /tmp/tftpboot-installation/SLE-15-SP4-x86_64 SLE-15-SP4-TFTP', runs_in_container: false)
+  node.run('mgradm distro copy /tmp/tftpboot-installation/SLE-15-SP7-x86_64 SLE-15-SP7-TFTP', runs_in_container: false)
 end
 
 When(/I generate a supportconfig for the server$/) do
@@ -1064,7 +1064,7 @@ end
 When(/I remove the autoinstallation files from the server$/) do
   node = get_target('server')
   node.run('rm -r /tmp/tftpboot-installation', runs_in_container: false)
-  node.run('rm -r /srv/www/distributions/SLE-15-SP4-TFTP')
+  node.run('rm -r /srv/www/distributions/SLE-15-SP7-TFTP')
 end
 
 When(/^I reset tftp defaults on the proxy$/) do
@@ -1266,7 +1266,7 @@ Then(/^I wait until refresh package list on "(.*?)" is finished$/) do |client|
   timeout_time = (Time.now + long_wait_delay + round_minute).strftime('%Y%m%d%H%M')
   node = get_system_name(client)
   get_target('server').run('spacecmd -u admin -p admin clear_caches')
-  # Gather all the ids of package refreshes existing at SUMA
+  # Gather all the ids of package refreshes existing at MLM
   refreshes, = get_target('server').run('spacecmd -u admin -p admin schedule_list | grep \'Package List Refresh\' | cut -f1 -d\' \'', check_errors: false)
   node_refreshes = ''
   refreshes.split.each do |refresh_id|

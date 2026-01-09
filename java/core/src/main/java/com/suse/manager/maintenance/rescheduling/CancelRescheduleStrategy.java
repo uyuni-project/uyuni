@@ -46,12 +46,12 @@ public class CancelRescheduleStrategy implements RescheduleStrategy {
             MaintenanceSchedule schedule) throws RescheduleException {
         RescheduleResult result = new RescheduleResult(getType().getLabel(), schedule.getName(), actionsServers);
         try {
-            for (Action action: actionsServers.keySet()) {
-                List<Long> serverIds = actionsServers.get(action).stream()
+            for (Map.Entry<Action, List<Server>> entry : actionsServers.entrySet()) {
+                List<Long> serverIds = entry.getValue().stream()
                         .map(Server::getId)
                         .collect(Collectors.toList());
-                ActionManager.cancelActions(user, Collections.singletonList(action), serverIds);
-                LOG.info("Cancel action '{}' for servers '{}'", action, serverIds);
+                ActionManager.cancelActions(user, Collections.singletonList(entry.getKey()), serverIds);
+                LOG.info("Cancel action '{}' for servers '{}'", entry.getKey(), serverIds);
             }
         }
         catch (TaskomaticApiException | RuntimeException e) {

@@ -19,15 +19,12 @@ import com.redhat.rhn.domain.server.ServerInfo;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 
-import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.scc.model.SCCSystemCredentialsJson;
 import com.suse.scc.registration.SCCSystemRegistrationContext;
 import com.suse.scc.registration.SCCSystemRegistrationUpdateCachedItems;
 
 import org.junit.jupiter.api.Test;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,10 +37,6 @@ public class SCCSystemRegistrationUpdateCachedItemsTest extends BaseTestCaseWith
     private List<SCCRegCacheItem> testSystems;
 
     private void setupSystems(int systemSize) throws Exception {
-        Path tmpSaltRoot = Files.createTempDirectory("salt");
-        SaltStateGeneratorService.INSTANCE.setSuseManagerStatesFilesRoot(tmpSaltRoot.toAbsolutePath());
-        SaltStateGeneratorService.INSTANCE.setSkipSetOwner(true);
-
         for (int i = 0; i < systemSize; i++) {
             Server testSystem = ServerTestUtils.createTestSystem();
             ServerInfo serverInfo = testSystem.getServerInfo();

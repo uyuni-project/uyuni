@@ -320,8 +320,8 @@ public class CVEAuditManagerOVAL {
                 .filter(result -> result.getPackageName().isPresent())
                 .collect(Collectors.groupingBy(r -> r.getPackageName().get()));
 
-        for (String packageName : resultsByPackage.keySet()) {
-            List<CVEAuditManager.CVEPatchStatus> packageResults = resultsByPackage.get(packageName);
+        for (Map.Entry<String, List<CVEAuditManager.CVEPatchStatus>> entry : resultsByPackage.entrySet()) {
+            List<CVEAuditManager.CVEPatchStatus> packageResults = entry.getValue();
             CVEAuditManager.getPatchCandidateResult(packageResults).ifPresent(patchCandidates::add);
         }
 

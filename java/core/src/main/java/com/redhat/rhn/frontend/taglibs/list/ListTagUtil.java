@@ -198,12 +198,12 @@ public class ListTagUtil {
                             .append(StringUtil.urlEncode(request.getParameter(paramName)));
             }
         }
-        for (String key : paramsToAdd.keySet()) {
+        for (Map.Entry<String, String> entry : paramsToAdd.entrySet()) {
             if (params.length() > 1) {
                 params.append("&amp;");
             }
-            params.append(StringUtil.urlEncode(key)).append("=")
-                        .append(StringUtil.urlEncode(paramsToAdd.get(key)));
+            params.append(StringUtil.urlEncode(entry.getKey())).append("=")
+                        .append(StringUtil.urlEncode(entry.getValue()));
         }
 
         return url + params.toString();

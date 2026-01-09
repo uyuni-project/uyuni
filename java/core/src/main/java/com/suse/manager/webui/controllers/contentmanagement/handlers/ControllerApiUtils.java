@@ -38,6 +38,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -67,7 +68,8 @@ public class ControllerApiUtils {
      * @return return the full project as json
      */
     public static String fullProjectJsonResponse(Response res, String projectLabel, User user) {
-        ContentProject dbContentProject = ContentManager.lookupProject(projectLabel, user).get();
+        ContentProject dbContentProject = ContentManager.lookupProject(projectLabel, user)
+                .orElseThrow(() -> new NoSuchElementException("No content project found with label: " + projectLabel));
 
         List<ContentEnvironment> dbContentEnvironments = ContentManager.listProjectEnvironments(projectLabel, user);
 

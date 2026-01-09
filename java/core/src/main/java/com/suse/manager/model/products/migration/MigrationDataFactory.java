@@ -33,6 +33,7 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.suse.manager.webui.controllers.channels.ChannelsUtils;
 import com.suse.manager.webui.utils.gson.ChannelsJson;
 import com.suse.utils.Lists;
+import com.suse.utils.Maps;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.BooleanUtils;
@@ -171,13 +172,17 @@ public class MigrationDataFactory {
     public MigrationSystemData toSystemData(Server server, Optional<SUSEProduct> sourceProduct,
                                             List<SUSEProductSet> migrationTargets) {
 
-        var installedProductSet = server.getInstalledProductSet().orElse(new SUSEProductSet());
+        var migrationProduct = server.getInstalledProductSet()
+            .filter(set -> set.getBaseProduct() != null)
+            .map(this::toMigrationProduct)
+            .orElse(null);
+
         var eligibility = computeEligibilityOf(server, migrationTargets, sourceProduct);
 
         return new MigrationSystemData(
             server.getId(),
             server.getName(),
-            toMigrationProduct(installedProductSet),
+            migrationProduct,
             eligibility.eligible(),
             eligibility.reason(),
             eligibility.details()
@@ -357,9 +362,9 @@ public class MigrationDataFactory {
         // Compute all the alternatives from existing cloned channel
         SortedMap<ClonedChannel, List<Long>> clonesMap = DistUpgradeManager.getAlternatives(target, commonArch, user);
 
-        HashMap<String, List<Long>> mandatoryMap = new HashMap<>();
-        mandatoryMap.put(baseChannel.getId().toString(), baseMandatoryChannels);
-        clonesMap.forEach((key, value) -> mandatoryMap.put(key.getId().toString(), value));
+        Map<Long, List<Long>> mandatoryMap = new HashMap<>();
+        mandatoryMap.put(baseChannel.getId(), baseMandatoryChannels);
+        clonesMap.forEach((key, value) -> mandatoryMap.put(key.getId(), value));
 
         var possibleChannels = Stream.concat(Stream.of(baseChannel), clonesMap.keySet().stream())
             .map(channel -> ChannelsUtils.generateChannelJson(channel, user))
@@ -374,14 +379,19 @@ public class MigrationDataFactory {
                     .map(Channel::getId)
                     .toList();
 
-                mandatoryMap.put(channel.getId().toString(), mandatory);
+                mandatoryMap.put(channel.getId(), mandatory);
             });
 
         var systemsData = serverList.stream()
             .map(server -> this.toSystemData(server, Optional.of(source.getBaseProduct()), List.of(target)))
             .toList();
 
-        return new MigrationChannelsSelection(possibleChannels, mandatoryMap, systemsData);
+        return new MigrationChannelsSelection(
+            possibleChannels,
+            Maps.mapToEntryList(mandatoryMap),
+            Maps.mapToEntryList(Maps.invertMultimap(mandatoryMap)),
+            systemsData
+        );
     }
 
     private String getAffectedAddonsDetail(Set<SUSEProduct> installedAddons, Set<SUSEProduct> missingSuccessors,

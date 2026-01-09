@@ -28,6 +28,7 @@ import com.suse.manager.webui.controllers.contentmanagement.request.ProjectSourc
 
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -61,9 +62,8 @@ public class ProjectSourcesApiController {
         ProjectSourcesRequest createSourceRequest = ProjectSourcesHandler.getSourcesRequest(req);
         String projectLabel = createSourceRequest.getProjectLabel();
 
-        ContentProject dbContentProject = ContentManager.lookupProject(
-                createSourceRequest.getProjectLabel(), user
-        ).get();
+        ContentProject dbContentProject = ContentManager.lookupProject(createSourceRequest.getProjectLabel(), user)
+                .orElseThrow(() -> new NoSuchElementException("No content project found with label: " + projectLabel));
 
         List<String> sourceLabelsToDetach = dbContentProject.getSources().stream()
                 .flatMap(source -> stream(source.asSoftwareSource()))

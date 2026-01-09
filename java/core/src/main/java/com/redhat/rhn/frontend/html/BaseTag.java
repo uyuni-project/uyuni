@@ -120,11 +120,11 @@ public abstract class BaseTag {
     protected String renderOpenTag(boolean selfClosing) {
         StringBuilder ret = new StringBuilder("<");
         ret.append(tag);
-        for (String key : attribs.keySet()) {
+        for (Map.Entry<String, String> entry : attribs.entrySet()) {
             ret.append(" ");
-            ret.append(key);
+            ret.append(entry.getKey());
             ret.append("=\"");
-            ret.append(attribs.get(key));
+            ret.append(entry.getValue());
             ret.append("\"");
         }
         if (selfClosing) {

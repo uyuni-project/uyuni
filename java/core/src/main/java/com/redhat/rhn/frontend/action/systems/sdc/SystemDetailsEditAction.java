@@ -53,6 +53,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.SortedMap;
 
 import javax.servlet.http.HttpServletRequest;
@@ -88,7 +90,8 @@ public class SystemDetailsEditAction extends RhnAction {
     public static final String UNENTITLE = "unentitle";
 
     private static MaintenanceManager maintenanceManager = new MaintenanceManager();
-    private SystemEntitlementManager systemEntitlementManager = GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
+    private static final SystemEntitlementManager SYSTEM_ENTITLEMENT_MANAGER =
+            GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER;
 
     /** {@inheritDoc} */
     @Override
@@ -153,10 +156,10 @@ public class SystemDetailsEditAction extends RhnAction {
         Entitlement base = EntitlementManager.getByName(selectedEnt);
         log.debug("base: {}", base);
         if (base != null) {
-            systemEntitlementManager.setBaseEntitlement(s, base);
+            SYSTEM_ENTITLEMENT_MANAGER.setBaseEntitlement(s, base);
         }
         else if (selectedEnt.equals(UNENTITLE)) {
-            systemEntitlementManager.removeAllServerEntitlements(s);
+            SYSTEM_ENTITLEMENT_MANAGER.removeAllServerEntitlements(s);
         }
 
         // setup location information
@@ -220,24 +223,29 @@ public class SystemDetailsEditAction extends RhnAction {
 
         if (scheduleId != null && scheduleId != 0) {
             // Assign schedule
-            MaintenanceSchedule schedule = maintenanceManager.lookupScheduleByUserAndId(user, scheduleId).get();
-            boolean cancelAffected = Boolean.TRUE.equals(daForm.get(MAINTENANCE_CANCEL_AFFECTED));
             try {
+                //if optional.get fails, it's caught in the catch part
+                MaintenanceSchedule schedule =
+                        maintenanceManager.lookupScheduleByUserAndId(user, scheduleId).orElseThrow();
+                boolean cancelAffected = Boolean.TRUE.equals(daForm.get(MAINTENANCE_CANCEL_AFFECTED));
                 maintenanceManager.assignScheduleToSystems(user, schedule, Collections.singleton(s.getId()),
                         cancelAffected);
                 log.debug("System {} assigned to schedule {}.", s.getId(), schedule.getName());
             }
-            catch (IllegalArgumentException e) {
+            catch (IllegalArgumentException | NoSuchElementException e) {
                 log.debug(e);
                 getStrutsDelegate().addError("maintenance.action.assign.error.fail", errors);
                 success = false;
             }
         }
-        else if (s.getMaintenanceScheduleOpt().isPresent()) {
-            // Retract schedule
-            String scheduleName = s.getMaintenanceScheduleOpt().get().getName();
-            maintenanceManager.retractScheduleFromSystems(user, Collections.singleton(s.getId()));
-            log.debug("System {} unassigned from schedule {}.", s.getId(), scheduleName);
+        else {
+            Optional<MaintenanceSchedule> maintenanceScheduleOpt = s.getMaintenanceScheduleOpt();
+            if (maintenanceScheduleOpt.isPresent()) {
+                // Retract schedule
+                String scheduleName = maintenanceScheduleOpt.get().getName();
+                maintenanceManager.retractScheduleFromSystems(user, Collections.singleton(s.getId()));
+                log.debug("System {} unassigned from schedule {}.", s.getId(), scheduleName);
+            }
         }
 
         if (!success) {
@@ -268,9 +276,9 @@ public class SystemDetailsEditAction extends RhnAction {
             log.debug("Entitlement: {}", e.getLabel());
             log.debug("form.get: {}", daForm.get(e.getLabel()));
             if (Boolean.TRUE.equals(daForm.get(e.getLabel())) &&
-                    systemEntitlementManager.canEntitleServer(s, e)) {
+                    SYSTEM_ENTITLEMENT_MANAGER.canEntitleServer(s, e)) {
                 log.debug("Entitling server with: {}", e);
-                ValidatorResult vr = systemEntitlementManager.addEntitlementToServer(s, e);
+                ValidatorResult vr = SYSTEM_ENTITLEMENT_MANAGER.addEntitlementToServer(s, e);
 
                 if (!vr.getWarnings().isEmpty()) {
                     getStrutsDelegate().saveMessages(request,
@@ -304,7 +312,7 @@ public class SystemDetailsEditAction extends RhnAction {
                      daForm.get(e.getLabel()).equals(Boolean.FALSE)) &&
                      s.hasEntitlement(e)) {
                 log.debug("removing entitlement: {}", e);
-                systemEntitlementManager.removeServerEntitlement(s, e);
+                SYSTEM_ENTITLEMENT_MANAGER.removeServerEntitlement(s, e);
 
                 needsSnapshot = true;
             }

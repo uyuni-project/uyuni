@@ -1,6 +1,6 @@
 import type { FC, ReactElement } from "react";
 
-import { BaseChannelType, ChannelTreeType, ChildChannelType } from "core/channels/type/channels.type";
+import { ChannelTreeType } from "core/channels/type/channels.type";
 
 import { Highlight } from "components/table/Highlight";
 import { DEPRECATED_onClick } from "components/utils";
@@ -27,9 +27,9 @@ type Props = {
   /** The channel processor used to retrieve the information about the channels */
   channelProcessor: Readonly<ChannelProcessor>;
   /** Callback to invoke when a channel is selected/deselected */
-  onToggleChannelSelect: (channel: BaseChannelType | ChildChannelType, toState?: boolean) => void;
+  onToggleChannelSelect: (channelId: number, toState?: boolean) => void;
   /** callback to invoke when a channel is opened/collapsed */
-  onToggleChannelOpen?: (channel: BaseChannelType) => void;
+  onToggleChannelOpen?: (channelId: number) => void;
 };
 
 const BaseChannel: FC<Props> = ({
@@ -57,7 +57,7 @@ const BaseChannel: FC<Props> = ({
       <h4
         className={`${styles.base_channel} ${isSelectedBaseChannel ? styles.initial_selected : ""}`}
         title={isSelectedBaseChannel ? t("New base channel") : undefined}
-        {...DEPRECATED_onClick(() => onToggleChannelOpen?.(base))}
+        {...DEPRECATED_onClick(() => onToggleChannelOpen?.(id))}
       >
         <input
           type="checkbox"
@@ -70,7 +70,7 @@ const BaseChannel: FC<Props> = ({
           onClick={(event) => {
             // Since this element is in another clickable element, don't propagate the event
             event.stopPropagation();
-            props.onToggleChannelSelect(base);
+            props.onToggleChannelSelect(id);
           }}
           disabled={isSelectedBaseChannel}
         />
@@ -93,7 +93,7 @@ const BaseChannel: FC<Props> = ({
 
     return (
       <>
-        {recommendedToggle && base.recommendedChildren.length > 0 && (
+        {recommendedToggle && base.recommendedChildrenIds.length > 0 && (
           <RecommendedToggle
             key={`recommended_toggle_${id}`}
             base={base}

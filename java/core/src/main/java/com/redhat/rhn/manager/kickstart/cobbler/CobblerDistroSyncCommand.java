@@ -122,25 +122,22 @@ public class CobblerDistroSyncCommand extends CobblerCommand {
      */
     public void backsyncKernelOptions() {
         for (KickstartableTree candidate : KickstartFactory.listCandidatesForBacksync()) {
-            Distro distro = Distro.lookupById(
-                    CobblerXMLRPCHelper.getAutomatedConnection(),
-                    candidate.getCobblerId());
-            if (hasDistroKernelOptions(distro)) {
-                log.info("Kernel options of kickstartable tree id {} are" +
-                        " empty, but corresponding fields in its cobbler distro (uid {})" +
-                        " are populated. Aligning the kickstartable tree with the cobbler" +
-                        " distro now.", candidate.getId(), distro.getUid());
-                candidate.setKernelOptions(distro.convertOptionsMap(distro.getKernelOptions().get()));
-                candidate.setKernelOptionsPost(distro.convertOptionsMap(distro.getKernelOptionsPost().get()));
-                KickstartFactory.saveKickstartableTree(candidate);
-            }
-        }
-    }
+            Distro distro = Distro.lookupById(CobblerXMLRPCHelper.getAutomatedConnection(), candidate.getCobblerId());
 
-    private static boolean hasDistroKernelOptions(Distro distro) {
-        return distro != null &&
-                (distro.getKernelOptions() != null ||
-                        distro.getKernelOptionsPost() != null);
+            if (distro == null || (distro.getKernelOptions().isEmpty() && distro.getKernelOptionsPost().isEmpty())) {
+                continue;
+            }
+
+            log.info("Kernel options of kickstartable tree id {} are" +
+                    " empty, but corresponding fields in its cobbler distro (uid {})" +
+                    " are populated. Aligning the kickstartable tree with the cobbler" +
+                    " distro now.", candidate.getId(), distro.getUid());
+
+            distro.getKernelOptions().map(distro::convertOptionsMap).ifPresent(candidate::setKernelOptions);
+            distro.getKernelOptionsPost().map(distro::convertOptionsMap).ifPresent(candidate::setKernelOptionsPost);
+
+            KickstartFactory.saveKickstartableTree(candidate);
+        }
     }
 
     /**

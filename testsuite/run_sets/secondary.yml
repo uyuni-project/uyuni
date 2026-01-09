@@ -7,6 +7,7 @@
 ## Secondary features BEGIN ##
 
 # IDEMPOTENT
+- features/secondary/https_connection.feature
 - features/secondary/srv_mgr_sync_list_products.feature
 - features/secondary/srv_monitoring.feature
 - features/secondary/srv_virtual_host_manager.feature

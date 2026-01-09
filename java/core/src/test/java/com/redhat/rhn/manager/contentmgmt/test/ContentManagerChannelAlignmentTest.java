@@ -36,6 +36,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ChannelTestUtility;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
@@ -105,7 +106,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
 
         srcChannel = ChannelFactoryTest.createTestChannel(user, false);
         srcChannel.setChecksumType(ChannelFactory.findChecksumTypeByLabel("sha256"));
-        srcChannel.addPackage(pkg);
+        ChannelTestUtility.testAddPackage(srcChannel, pkg);
         srcChannel.addErrata(errata);
         srcChannel = HibernateFactory.reload(srcChannel);
         errata = HibernateFactory.reload(errata);
@@ -175,9 +176,9 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         Package pack5 = PackageTest.createTestPackage(user.getOrg());
         Package pack6 = PackageTest.createTestPackage(user.getOrg());
 
-        srcChannel.addPackage(pack2);
-        srcChannel.addPackage(pack4);
-        srcChannel.addPackage(pack5);
+        ChannelTestUtility.testAddPackage(srcChannel, pack2);
+        ChannelTestUtility.testAddPackage(srcChannel, pack4);
+        ChannelTestUtility.testAddPackage(srcChannel, pack5);
 
         tgtChannel.getPackages().add(pack2);
         tgtChannel.getPackages().add(pack3);
@@ -257,7 +258,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         srcChannel.getErratas().clear();
 
         Package otherPkg = PackageTest.createTestPackage(user.getOrg());
-        tgtChannel.addPackage(otherPkg);
+        ChannelTestUtility.testAddPackage(tgtChannel, otherPkg);
         SystemManager.subscribeServerToChannel(user, server, tgtChannel);
 
         InstalledPackage olderPkg = copyPackage(otherPkg, of("0.9.9"));
@@ -294,8 +295,8 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         Package pack2 = PackageTest.createTestPackage(user.getOrg());
 
         Channel srcChan = ChannelFactoryTest.createTestChannel(user, false);
-        srcChan.addPackage(pack1);
-        srcChan.addPackage(pack2);
+        ChannelTestUtility.testAddPackage(srcChan, pack1);
+        ChannelTestUtility.testAddPackage(srcChan, pack2);
 
         Server server = ServerFactoryTest.createTestServer(user);
         SystemManager.subscribeServerToChannel(user, server, tgtChannel);
@@ -350,8 +351,8 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
 
         Channel srcChan = ChannelFactoryTest.createTestChannel(user, false);
         Channel tgtChan = ChannelFactoryTest.createTestChannel(user, false);
-        srcChan.addPackage(pack1);
-        srcChan.addPackage(pack2);
+        ChannelTestUtility.testAddPackage(srcChan, pack1);
+        ChannelTestUtility.testAddPackage(srcChan, pack2);
 
         Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         errata1.addPackage(pack1);
@@ -583,7 +584,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         assertEquals("1.0.0", pkg.getPackageEvr().getVersion());
 
         Package olderPkg = copyPackage(pkg, user, "0.9.9");
-        srcChannel.addPackage(olderPkg);
+        ChannelTestUtility.testAddPackage(srcChannel, olderPkg);
 
         FilterCriteria criteria = new FilterCriteria(
                 FilterCriteria.Matcher.EQUALS, "advisory_name", errata.getAdvisoryName());
@@ -622,7 +623,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         Errata retracted = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         retracted.setAdvisoryStatus(AdvisoryStatus.RETRACTED);
         retracted.addPackage(pkg2);
-        srcChannel.addPackage(pkg2);
+        ChannelTestUtility.testAddPackage(srcChannel, pkg2);
         srcChannel.addErrata(retracted);
 
         contentManager.alignEnvironmentTargetSync(emptyList(), srcChannel, tgtChannel, user);
@@ -659,7 +660,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
                 evr.getEpoch(), "2.0.0", evr.getRelease(), pkg.getPackageType()));
         Errata patch = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         patch.addPackage(pkg2);
-        srcChannel.addPackage(pkg2);
+        ChannelTestUtility.testAddPackage(srcChannel, pkg2);
         srcChannel.addErrata(patch);
 
         // we clone the source and retract the patch in the original afterwards
@@ -712,7 +713,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
                 evr.getEpoch(), "2.0.0", evr.getRelease(), pkg.getPackageType()));
         Errata patch2 = ErrataFactoryTest.createTestErrata(null);
         patch2.addPackage(pkg2);
-        srcChannel.addPackage(pkg2);
+        ChannelTestUtility.testAddPackage(srcChannel, pkg2);
         srcChannel.addErrata(patch2);
 
         // create a (non-retracted) patch that upgrades pkg to 3.0.0
@@ -722,7 +723,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
                 evr.getEpoch(), "3.0.0", evr.getRelease(), pkg.getPackageType()));
         Errata patch3 = ErrataFactoryTest.createTestErrata(null);
         patch3.addPackage(pkg3);
-        srcChannel.addPackage(pkg3);
+        ChannelTestUtility.testAddPackage(srcChannel, pkg3);
         srcChannel.addErrata(patch3);
 
         // assumptions

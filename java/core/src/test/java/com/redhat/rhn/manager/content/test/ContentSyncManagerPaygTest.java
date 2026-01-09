@@ -165,7 +165,7 @@ public class ContentSyncManagerPaygTest extends RhnBaseTestCase {
             runPaygUpdateAuthTaskAndSetHost("http://localhost:" + portNumber + "/repo");
 
             // download the product data from Cloud RMT
-            ContentSyncManager csm = new ContentSyncManager(tmpLogDir, mgr);
+            ContentSyncManager csm = new ContentSyncManager(tmpLogDir, true, mgr);
             csm.setSccRefreshLock(new MockFileLocks());
             ContentSyncManager.setChannelFamiliesJson(new File(TestUtils.findTestData(CHANNEL_FAMILY).getPath()));
             ContentSyncManager.setAdditionalProductsJson(

@@ -84,6 +84,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 
@@ -301,85 +302,32 @@ public class ErrataHandler extends BaseHandler {
             }
         }
 
-        if (details.containsKey("issue_date")) {
-            try {
-                errata.setIssueDate(parseInputValue(details.get("issue_date"), Date.class));
-            }
-            catch (InvalidParameterException e) {
-                throw new InvalidParameterException("Wrong 'issue_date' format.", e);
-            }
-        }
+        setDateDetail(details, "issue_date", errata::setIssueDate, "Wrong 'issue_date' format.");
 
-        if (details.containsKey("update_date")) {
-            try {
-                errata.setUpdateDate(parseInputValue(details.get("update_date"), Date.class));
-            }
-            catch (InvalidParameterException e) {
-                throw new InvalidParameterException("Wrong 'update_date' format.", e);
-            }
-        }
+        setDateDetail(details, "update_date", errata::setUpdateDate, "Wrong 'update_date' format.");
 
-        if (details.containsKey("synopsis")) {
-            if (StringUtils.isBlank((String)details.get("synopsis"))) {
-                throw new InvalidParameterException("Synopsis is required.");
-            }
-            errata.setSynopsis((String)details.get("synopsis"));
-        }
-        if (details.containsKey("advisory_name")) {
-            if (StringUtils.isBlank((String)details.get("advisory_name"))) {
-                throw new InvalidParameterException("Advisory name is required.");
-            }
-            errata.setAdvisoryName((String)details.get("advisory_name"));
-        }
-        if (details.containsKey("advisory_release")) {
-            Long rel = Long.valueOf((Integer)details.get("advisory_release"));
-            if (rel > ErrataManager.MAX_ADVISORY_RELEASE) {
-                throw new InvalidAdvisoryReleaseException(rel);
-            }
-            errata.setAdvisoryRel(rel);
-        }
-        if (details.containsKey("advisory_type")) {
-            String pea = "Product Enhancement Advisory"; // hack for checkstyle
-            if (!(details.get("advisory_type")).equals("Security Advisory") &&
-            !(details.get("advisory_type")).equals(pea) &&
-            !(details.get("advisory_type")).equals("Bug Fix Advisory")) {
-                throw new InvalidParameterException("Invalid advisory type");
-            }
-            errata.setAdvisoryType((String)details.get("advisory_type"));
-        }
-        if (details.containsKey("product")) {
-            if (StringUtils.isBlank((String)details.get("product"))) {
-                throw new InvalidParameterException("Product name is required.");
-            }
-            errata.setProduct((String)details.get("product"));
-        }
-        if (details.containsKey("errataFrom")) {
-            errata.setErrataFrom((String)details.get("errataFrom"));
-        }
-        if (details.containsKey("topic")) {
-            if (StringUtils.isBlank((String)details.get("topic"))) {
-                throw new InvalidParameterException("Topic is required.");
-            }
-            errata.setTopic((String)details.get("topic"));
-        }
-        if (details.containsKey("description")) {
-            if (StringUtils.isBlank((String)details.get("description"))) {
-                throw new InvalidParameterException("Description is required.");
-            }
-            errata.setDescription((String)details.get("description"));
-        }
-        if (details.containsKey("solution")) {
-            if (StringUtils.isBlank((String)details.get("solution"))) {
-                throw new InvalidParameterException("Solution is required.");
-            }
-            errata.setSolution((String)details.get("solution"));
-        }
-        if (details.containsKey("references")) {
-            errata.setRefersTo((String)details.get("references"));
-        }
-        if (details.containsKey("notes")) {
-            errata.setNotes((String)details.get("notes"));
-        }
+        setRequiredStringDetail(details, "synopsis", errata::setSynopsis, "Synopsis is required.");
+
+        setRequiredStringDetail(details, "advisory_name", errata::setAdvisoryName, "Advisory name is required.");
+
+        setAdvisoryReleaseDetails(details, errata);
+
+        setAdvisoryTypeDetails(details, errata);
+
+        setRequiredStringDetail(details, "product", errata::setProduct, "Product name is required.");
+
+        setStringDetail(details, "errataFrom", errata::setErrataFrom);
+
+        setRequiredStringDetail(details, "topic", errata::setTopic, "Topic is required.");
+
+        setRequiredStringDetail(details, "description", errata::setDescription, "Description is required.");
+
+        setRequiredStringDetail(details, "solution", errata::setSolution, "Solution is required.");
+
+        setStringDetail(details, "references", errata::setRefersTo);
+
+        setStringDetail(details, "notes", errata::setNotes);
+
         if ("Security Advisory".equals(errata.getAdvisoryType())) {
             if (details.containsKey("severity")) {
                 String sevName = (String) details.get("severity");
@@ -389,6 +337,72 @@ public class ErrataHandler extends BaseHandler {
         else if (errata.getSeverity() != null) {
                 errata.setSeverity(null);
         }
+
+        setBugsDetails(details, errata);
+
+        setKeywordsDetails(details, errata);
+
+        setCvesDetails(details, errata);
+
+        // ALWAYS change the advisory to match, as we do in the UI.
+        errata.setAdvisory(errata.getAdvisoryName() + "-" + errata.getAdvisoryRel().toString());
+
+        //Save the errata
+        ErrataFactory.save(errata);
+
+        return 1;
+    }
+
+    private void setDateDetail(Map<String, Object> details, String key, Consumer<Date> setMethod, String err) {
+        if (details.containsKey(key)) {
+            try {
+                setMethod.accept(parseInputValue(details.get(key), Date.class));
+            }
+            catch (InvalidParameterException e) {
+                throw new InvalidParameterException(err, e);
+            }
+        }
+    }
+
+    private void setStringDetail(Map<String, Object> details, String key, Consumer<String> setMethod) {
+        if (details.containsKey(key)) {
+            setMethod.accept((String) details.get(key));
+        }
+    }
+
+    private void setRequiredStringDetail(Map<String, Object> details, String key, Consumer<String> setMethod,
+                                         String err) {
+        if (details.containsKey(key)) {
+            if (StringUtils.isBlank((String) details.get(key))) {
+                throw new InvalidParameterException(err);
+            }
+            setMethod.accept((String) details.get(key));
+        }
+    }
+
+    private void setAdvisoryReleaseDetails(Map<String, Object> details, Errata errata) {
+        if (details.containsKey("advisory_release")) {
+            Long rel = Long.valueOf((Integer) details.get("advisory_release"));
+            if (rel > ErrataManager.MAX_ADVISORY_RELEASE) {
+                throw new InvalidAdvisoryReleaseException(rel);
+            }
+            errata.setAdvisoryRel(rel);
+        }
+    }
+
+    private void setAdvisoryTypeDetails(Map<String, Object> details, Errata errata) {
+        if (details.containsKey("advisory_type")) {
+            String pea = "Product Enhancement Advisory"; // hack for checkstyle
+            if (!(details.get("advisory_type")).equals("Security Advisory") &&
+                    !(details.get("advisory_type")).equals(pea) &&
+                    !(details.get("advisory_type")).equals("Bug Fix Advisory")) {
+                throw new InvalidParameterException("Invalid advisory type");
+            }
+            errata.setAdvisoryType((String) details.get("advisory_type"));
+        }
+    }
+
+    private void setBugsDetails(Map<String, Object> details, Errata errata) {
         if (details.containsKey("bugs")) {
 
             if (errata.getBugs() != null) {
@@ -397,7 +411,7 @@ public class ErrataHandler extends BaseHandler {
             }
 
             for (Map<String, Object> bugMap :
-                (ArrayList<Map<String, Object>>) details.get("bugs")) {
+                    (ArrayList<Map<String, Object>>) details.get("bugs")) {
 
                 if (bugMap.containsKey("id") && bugMap.containsKey("summary")) {
                     String url = null;
@@ -413,6 +427,9 @@ public class ErrataHandler extends BaseHandler {
                 }
             }
         }
+    }
+
+    private void setKeywordsDetails(Map<String, Object> details, Errata errata) {
         if (details.containsKey("keywords")) {
             if (errata.getKeywords() != null) {
                 errata.getKeywords().clear();
@@ -422,6 +439,9 @@ public class ErrataHandler extends BaseHandler {
                 errata.addKeyword(keyword);
             }
         }
+    }
+
+    private void setCvesDetails(Map<String, Object> details, Errata errata) {
         if (details.containsKey("cves")) {
             if (errata.getCves() != null) {
                 errata.getCves().clear();
@@ -437,15 +457,6 @@ public class ErrataHandler extends BaseHandler {
                 errata.getCves().add(c);
             }
         }
-
-        // ALWAYS change the advisory to match, as we do in the UI.
-        errata.setAdvisory(errata.getAdvisoryName() + "-" +
-                errata.getAdvisoryRel().toString());
-
-        //Save the errata
-        ErrataFactory.save(errata);
-
-        return 1;
     }
 
     /**

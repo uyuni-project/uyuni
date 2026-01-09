@@ -58,8 +58,6 @@ ENV_VAR_BY_HOST = {
   'rocky8_ssh_minion' => 'ROCKY8_SSHMINION',
   'rocky9_minion' => 'ROCKY9_MINION',
   'rocky9_ssh_minion' => 'ROCKY9_SSHMINION',
-  'ubuntu2004_minion' => 'UBUNTU2004_MINION',
-  'ubuntu2004_ssh_minion' => 'UBUNTU2004_SSHMINION',
   'ubuntu2204_minion' => 'UBUNTU2204_MINION',
   'ubuntu2204_ssh_minion' => 'UBUNTU2204_SSHMINION',
   'ubuntu2404_minion' => 'UBUNTU2404_MINION',
@@ -204,8 +202,6 @@ PACKAGE_BY_CLIENT = {
   'rocky8_ssh_minion' => 'bison',
   'rocky9_minion' => 'autoconf',
   'rocky9_ssh_minion' => 'autoconf',
-  'ubuntu2004_minion' => 'bison',
-  'ubuntu2004_ssh_minion' => 'bison',
   'ubuntu2204_minion' => 'bison',
   'ubuntu2204_ssh_minion' => 'bison',
   'ubuntu2404_minion' => 'bison',
@@ -229,12 +225,12 @@ BASE_CHANNEL_BY_CLIENT = {
     'proxy' => 'SL-Micro-6.1-Pool for x86_64',
     'proxy_container' => 'SL-Micro-6.1-Pool for x86_64',
     'proxy_nontransactional' => 'SLE-Product-SLES15-SP7-Pool for x86_64',
-    'sle_minion' => 'SLE-Product-SLES15-SP4-Pool for x86_64',
-    'ssh_minion' => 'SLE-Product-SLES15-SP4-Pool for x86_64',
+    'sle_minion' => 'SLE-Product-SLES15-SP7-Pool for x86_64',
+    'ssh_minion' => 'SLE-Product-SLES15-SP7-Pool for x86_64',
     'rhlike_minion' => 'RHEL8-Pool for x86_64',
-    'deblike_minion' => 'ubuntu-2004-amd64-main for amd64',
-    'pxeboot_minion' => 'SLE-Product-SLES15-SP4-Pool for x86_64',
-    'build_host' => 'SLE-Product-SLES15-SP4-Pool for x86_64',
+    'deblike_minion' => 'ubuntu-2404-amd64-main for amd64',
+    'pxeboot_minion' => 'SLE-Product-SLES15-SP7-Pool for x86_64',
+    'build_host' => 'SLE-Product-SLES15-SP7-Pool for x86_64',
     'sle12sp5_minion' => 'SLES12-SP5-Pool for x86_64',
     'sle12sp5_ssh_minion' => 'SLES12-SP5-Pool for x86_64',
     'sle15sp3_minion' => 'SLE-Product-SLES15-SP3-Pool for x86_64',
@@ -284,8 +280,6 @@ BASE_CHANNEL_BY_CLIENT = {
     'rocky8_ssh_minion' => 'rockylinux-8 for x86_64',
     'rocky9_minion' => 'rockylinux-9 for x86_64',
     'rocky9_ssh_minion' => 'rockylinux-9 for x86_64',
-    'ubuntu2004_minion' => 'ubuntu-2004-amd64-main for amd64',
-    'ubuntu2004_ssh_minion' => 'ubuntu-2004-amd64-main for amd64',
     'ubuntu2204_minion' => 'ubuntu-2204-amd64-main for amd64',
     'ubuntu2204_ssh_minion' => 'ubuntu-2204-amd64-main for amd64',
     'ubuntu2404_minion' => 'ubuntu-2404-amd64-main for amd64',
@@ -305,9 +299,9 @@ BASE_CHANNEL_BY_CLIENT = {
     'sle_minion' => 'openSUSE Tumbleweed (x86_64)',
     'ssh_minion' => 'openSUSE Tumbleweed (x86_64)',
     'rhlike_minion' => 'RHEL8-Pool for x86_64',
-    'deblike_minion' => 'Ubuntu 20.04 LTS AMD64 Base for Uyuni',
-    'pxeboot_minion' => 'SLE-Product-SLES15-SP4-Pool for x86_64',
-    'build_host' => 'SLE-Product-SLES15-SP4-Pool for x86_64',
+    'deblike_minion' => 'Ubuntu 24.04 LTS AMD64 Base for Uyuni',
+    'pxeboot_minion' => 'SLE-Product-SLES15-SP7-Pool for x86_64',
+    'build_host' => 'SLE-Product-SLES15-SP7-Pool for x86_64',
     'sle12sp5_minion' => 'SLES12-SP5-Pool for x86_64',
     'sle12sp5_ssh_minion' => 'SLES12-SP5-Pool for x86_64',
     'sle15sp3_minion' => 'SLE-Product-SLES15-SP3-Pool for x86_64',
@@ -357,8 +351,6 @@ BASE_CHANNEL_BY_CLIENT = {
     'rocky8_ssh_minion' => 'Rocky Linux 8 (x86_64)',
     'rocky9_minion' => 'Rocky Linux 9 (x86_64)',
     'rocky9_ssh_minion' => 'Rocky Linux 9 (x86_64)',
-    'ubuntu2004_minion' => 'Ubuntu 20.04 LTS AMD64 Base for Uyuni',
-    'ubuntu2004_ssh_minion' => 'Ubuntu 20.04 LTS AMD64 Base for Uyuni',
     'ubuntu2204_minion' => 'Ubuntu 22.04 LTS AMD64 Base for Uyuni',
     'ubuntu2204_ssh_minion' => 'Ubuntu 22.04 LTS AMD64 Base for Uyuni',
     'ubuntu2404_minion' => 'Ubuntu 24.04 LTS AMD64 Base for Uyuni',
@@ -381,7 +373,7 @@ BASE_CHANNEL_BY_CLIENT = {
 
 # Used for creating activation keys
 # The keys are the values of BASE_CHANNEL_BY_CLIENT
-# SUMA: The values can be found under Admin -> Setup Wizard -> Products
+# MLM: The values can be found under Admin -> Setup Wizard -> Products
 # Select the desired product and have a look at its product channels
 # The required product has to be synced before
 # Uyuni: You have to use `spacewalk-common-channels -l` to get the proper values
@@ -411,7 +403,6 @@ LABEL_BY_BASE_CHANNEL = {
     'oraclelinux9 for x86_64' => 'oraclelinux9-x86_64',
     'rockylinux-8 for x86_64' => 'rockylinux-8-x86_64',
     'rockylinux-9 for x86_64' => 'rockylinux-9-x86_64',
-    'ubuntu-2004-amd64-main for amd64' => 'ubuntu-2004-amd64-main-amd64',
     'ubuntu-2204-amd64-main for amd64' => 'ubuntu-2204-amd64-main-amd64',
     'ubuntu-2404-amd64-main for amd64' => 'ubuntu-2404-amd64-main-amd64',
     'debian-12-pool for amd64' => 'debian-12-pool-amd64',
@@ -444,7 +435,6 @@ LABEL_BY_BASE_CHANNEL = {
     'Oracle Linux 9 (x86_64)' => 'oraclelinux9-x86_64',
     'Rocky Linux 8 (x86_64)' => 'rockylinux8-x86_64',
     'Rocky Linux 9 (x86_64)' => 'rockylinux9-x86_64',
-    'Ubuntu 20.04 LTS AMD64 Base for Uyuni' => 'ubuntu-2004-pool-amd64-uyuni',
     'Ubuntu 22.04 LTS AMD64 Base for Uyuni' => 'ubuntu-2204-pool-amd64-uyuni',
     'Ubuntu 24.04 LTS AMD64 Base for Uyuni' => 'ubuntu-2404-pool-amd64-uyuni',
     'Debian 12 (bookworm) pool for amd64 for Uyuni' => 'debian-12-pool-amd64-uyuni',
@@ -483,7 +473,6 @@ CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'RHEL8-Pool for x86_64' => 'SLE-ES8-x86_64',
     'rockylinux-8 for x86_64' => 'rockylinux-8-x86_64',
     'rockylinux-9 for x86_64' => 'rockylinux-9-x86_64',
-    'ubuntu-2004-amd64-main for amd64' => 'ubuntu-20.04-amd64',
     'ubuntu-2204-amd64-main for amd64' => 'ubuntu-22.04-amd64',
     'ubuntu-2404-amd64-main for amd64' => 'ubuntu-24.04-amd64',
     'debian-12-pool for amd64' => 'debian12-amd64',
@@ -516,7 +505,6 @@ CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'Oracle Linux 9 (x86_64)' => 'oracle-9-x86_64-uyuni',
     'Rocky Linux 8 (x86_64)' => 'rockylinux8-x86_64-uyuni',
     'Rocky Linux 9 (x86_64)' => 'rockylinux9-x86_64-uyuni',
-    'Ubuntu 20.04 LTS AMD64 Base for Uyuni' => 'ubuntu-2004-amd64-uyuni',
     'Ubuntu 22.04 LTS AMD64 Base for Uyuni' => 'ubuntu-2204-amd64-uyuni',
     'Ubuntu 24.04 LTS AMD64 Base for Uyuni' => 'ubuntu-2404-amd64-uyuni',
     'Debian 12 (bookworm) pool for amd64 for Uyuni' => 'debian12-amd64-uyuni',
@@ -525,7 +513,7 @@ CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
 }.freeze
 
 # Used for creating bootstrap repositories
-# SUMA: The values can be found under Admin -> Setup Wizard -> Products
+# MLM: The values can be found under Admin -> Setup Wizard -> Products
 # Select the desired product and have a look at its product channels
 # The required product has to be synced before
 # Uyuni: You have to use `spacewalk-common-channels -l` with the appended architecture
@@ -556,7 +544,6 @@ PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'RHEL8-Pool for x86_64' => nil,
     'rockylinux-8 for x86_64' => nil,
     'rockylinux-9 for x86_64' => nil,
-    'ubuntu-2004-amd64-main for amd64' => nil,
     'ubuntu-2204-amd64-main for amd64' => nil,
     'ubuntu-2404-amd64-main for amd64' => nil,
     'debian-12-pool for amd64' => 'debian-12-pool-amd64',
@@ -588,7 +575,6 @@ PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'Oracle Linux 9 (x86_64)' => nil,
     'Rocky Linux 8 (x86_64)' => nil,
     'Rocky Linux 9 (x86_64)' => nil,
-    'Ubuntu 20.04 LTS AMD64 Base for Uyuni' => nil,
     'Ubuntu 22.04 LTS AMD64 Base for Uyuni' => nil,
     'Ubuntu 24.04 LTS AMD64 Base for Uyuni' => nil,
     'Debian 12 (bookworm) pool for amd64 for Uyuni' => 'debian12-amd64-uyuni',
@@ -647,8 +633,6 @@ PKGARCH_BY_CLIENT = {
   'rocky8_ssh_minion' => 'x86_64',
   'rocky9_minion' => 'x86_64',
   'rocky9_ssh_minion' => 'x86_64',
-  'ubuntu2004_minion' => 'amd64',
-  'ubuntu2004_ssh_minion' => 'amd64',
   'ubuntu2204_minion' => 'amd64',
   'ubuntu2204_ssh_minion' => 'amd64',
   'ubuntu2404_minion' => 'amd64',
@@ -662,7 +646,7 @@ PKGARCH_BY_CLIENT = {
 }.freeze
 
 # Explanations:
-# - SLED channels for SUMA tools were removed as we are not currently synchronizing them
+# - SLED channels for MLM tools were removed as we are not currently synchronizing them
 # - 'default' is required for auto-installation tests.
 # - '# CHECKED' means that we verified that the list of channels matches the results in /var/log/rhn/reposync,
 #   and that we took the occasion to evaluate a reasonable timeout for them
@@ -670,26 +654,25 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
   'SUSE Manager' => {
     'default' => # CHECKED
       %w[
-        sle-product-sles15-sp4-pool-x86_64
-        sle-product-sles15-sp4-updates-x86_64
-        sle15-sp4-installer-updates-x86_64
-        sle-module-basesystem15-sp4-updates-x86_64
-        sle-module-basesystem15-sp4-pool-x86_64
-        sle-module-desktop-applications15-sp4-updates-x86_64
-        sle-module-desktop-applications15-sp4-pool-x86_64
-        sle-module-server-applications15-sp4-pool-x86_64
-        sle-module-server-applications15-sp4-updates-x86_64
-        managertools-sle15-pool-x86_64-sp4
-        managertools-sle15-updates-x86_64-sp4
-        managertools-beta-sle15-pool-x86_64-sp4
-        managertools-beta-sle15-updates-x86_64-sp4
-        sle-module-devtools15-sp4-updates-x86_64
-        sle-module-devtools15-sp4-pool-x86_64
-        sle-module-python3-15-sp4-pool-x86_64
-        sle-module-python3-15-sp4-updates-x86_64
-        sle-module-containers15-sp4-pool-x86_64
-        sle-module-containers15-sp4-updates-x86_64
-        sle-product-sles15-sp4-ltss-updates-x86_64
+        sle-product-sles15-sp7-pool-x86_64
+        sle-product-sles15-sp7-updates-x86_64
+        sle15-sp7-installer-updates-x86_64
+        sle-module-basesystem15-sp7-pool-x86_64
+        sle-module-basesystem15-sp7-updates-x86_64
+        managertools-sle15-pool-x86_64-sp7
+        managertools-sle15-updates-x86_64-sp7
+        sle-module-python3-15-sp7-pool-x86_64
+        sle-module-python3-15-sp7-updates-x86_64
+        sle-module-server-applications15-sp7-pool-x86_64
+        sle-module-server-applications15-sp7-updates-x86_64
+        sle-module-desktop-applications15-sp7-pool-x86_64
+        sle-module-desktop-applications15-sp7-updates-x86_64
+        sle-module-devtools15-sp7-updates-x86_64
+        sle-module-devtools15-sp7-pool-x86_64
+        sle-module-systems-management-15-sp7-pool-x86_64
+        sle-module-systems-management-15-sp7-updates-x86_64
+        sle-module-containers15-sp7-pool-x86_64
+        sle-module-containers15-sp7-updates-x86_64
       ],
     'almalinux8' => # CHECKED
       %w[
@@ -829,6 +812,7 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-module-desktop-applications15-sp5-pool-x86_64
         sle-module-devtools15-sp5-pool-x86_64
         sle-module-devtools15-sp5-updates-x86_64
+        sle-product-sles15-sp5-ltss-updates-x86_64
       ],
     'sles15-sp6' => # CHECKED
       %w[
@@ -846,11 +830,13 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-module-devtools15-sp6-pool-x86_64
         sle-module-systems-management-15-sp6-pool-x86_64-sled
         sle-module-systems-management-15-sp6-updates-x86_64-sled
+        sle-product-sles15-sp6-ltss-updates-x86_64
       ],
     'sles15-sp7' =>
       %w[
         sle-product-sles15-sp7-pool-x86_64
         sle-product-sles15-sp7-updates-x86_64
+        sle15-sp7-installer-updates-x86_64
         sle-module-basesystem15-sp7-pool-x86_64
         sle-module-basesystem15-sp7-updates-x86_64
         managertools-sle15-pool-x86_64-sp7
@@ -863,7 +849,7 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-module-desktop-applications15-sp7-updates-x86_64
         sle-module-devtools15-sp7-updates-x86_64
         sle-module-devtools15-sp7-pool-x86_64
-        sle-module-systems-management-15-sp7-pool-x86_64-sled
+        sle-module-systems-management-15-sp7-pool-x86_64
         sle-module-systems-management-15-sp7-updates-x86_64
       ],
     'slesforsap15-sp5' =>
@@ -967,12 +953,6 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sl-micro-6.1-pool-x86_64
         managertools-sl-micro-6.1-x86_64
       ],
-    'ubuntu-2004' => # CHECKED
-      %w[
-        ubuntu-2004-amd64-main-amd64
-        ubuntu-2004-amd64-main-security-amd64
-        ubuntu-2004-amd64-main-updates-amd64
-      ],
     'ubuntu-2204' =>
       %w[
         ubuntu-2204-amd64-main-amd64
@@ -1056,21 +1036,22 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
   'Uyuni' => {
     'default' => # CHECKED
       %w[
-        sle-product-sles15-sp4-pool-x86_64
-        sle-product-sles15-sp4-updates-x86_64
-        sle15-sp4-installer-updates-x86_64
-        sle-module-basesystem15-sp4-updates-x86_64
-        sle-module-basesystem15-sp4-pool-x86_64
-        sle-module-server-applications15-sp4-updates-x86_64
-        sle-module-server-applications15-sp4-pool-x86_64
-        sle-module-desktop-applications15-sp4-updates-x86_64
-        sle-module-desktop-applications15-sp4-pool-x86_64
-        sle-product-sles15-sp4-ltss-updates-x86_64
-        sle-module-devtools15-sp4-pool-x86_64
-        sle-module-devtools15-sp4-updates-x86_64
-        sle-module-containers15-sp4-pool-x86_64
-        sle-module-containers15-sp4-updates-x86_64
-        sles15-sp4-uyuni-client-x86_64
+        sle-product-sles15-sp7-pool-x86_64
+        sle-product-sles15-sp7-updates-x86_64
+        sle15-sp7-installer-updates-x86_64
+        sle-module-basesystem15-sp7-pool-x86_64
+        sle-module-basesystem15-sp7-updates-x86_64
+        sle-module-python3-15-sp7-pool-x86_64
+        sle-module-python3-15-sp7-updates-x86_64
+        sle-module-server-applications15-sp7-pool-x86_64
+        sle-module-server-applications15-sp7-updates-x86_64
+        sle-module-desktop-applications15-sp7-pool-x86_64
+        sle-module-desktop-applications15-sp7-updates-x86_64
+        sle-module-devtools15-sp7-updates-x86_64
+        sle-module-devtools15-sp7-pool-x86_64
+        sle-module-systems-management-15-sp7-pool-x86_64
+        sle-module-systems-management-15-sp7-updates-x86_64
+        sles15-sp7-devel-uyuni-client-x86_64
       ],
     'almalinux8' => # CHECKED
       %w[
@@ -1190,6 +1171,7 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-module-python3-15-sp5-updates-x86_64
         sle-module-server-applications15-sp5-pool-x86_64
         sle-module-server-applications15-sp5-updates-x86_64
+        sle-product-sles15-sp5-ltss-updates-x86_64
         sles15-sp5-devel-uyuni-client-x86_64
       ],
     'sles15-sp6' => # CHECKED
@@ -1206,22 +1188,26 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-module-python3-15-sp6-updates-x86_64
         sle-module-server-applications15-sp6-pool-x86_64
         sle-module-server-applications15-sp6-updates-x86_64
+        sle-product-sles15-sp6-ltss-updates-x86_64
         sles15-sp6-devel-uyuni-client-x86_64
       ],
     'sles15-sp7' =>
       %w[
         sle-product-sles15-sp7-pool-x86_64
         sle-product-sles15-sp7-updates-x86_64
+        sle15-sp7-installer-updates-x86_64
         sle-module-basesystem15-sp7-pool-x86_64
         sle-module-basesystem15-sp7-updates-x86_64
-        sle-module-desktop-applications15-sp7-pool-x86_64
-        sle-module-desktop-applications15-sp7-updates-x86_64
-        sle-module-devtools15-sp7-pool-x86_64
-        sle-module-devtools15-sp7-updates-x86_64
         sle-module-python3-15-sp7-pool-x86_64
         sle-module-python3-15-sp7-updates-x86_64
         sle-module-server-applications15-sp7-pool-x86_64
         sle-module-server-applications15-sp7-updates-x86_64
+        sle-module-desktop-applications15-sp7-pool-x86_64
+        sle-module-desktop-applications15-sp7-updates-x86_64
+        sle-module-devtools15-sp7-updates-x86_64
+        sle-module-devtools15-sp7-pool-x86_64
+        sle-module-systems-management-15-sp7-pool-x86_64
+        sle-module-systems-management-15-sp7-updates-x86_64
         sles15-sp7-devel-uyuni-client-x86_64
       ],
     'slesforsap15-sp5' =>
@@ -1353,18 +1339,6 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         opensuse_tumbleweed-uyuni-client-x86_64
         opensuse_tumbleweed-uyuni-client-devel-x86_64
       ],
-    'ubuntu-2004' => # CHECKED
-      %w[
-        ubuntu-2004-pool-amd64-uyuni
-        ubuntu-2004-amd64-main-uyuni
-        ubuntu-2004-amd64-main-security-uyuni
-        ubuntu-2004-amd64-main-updates-uyuni
-        ubuntu-2004-amd64-universe-uyuni
-        ubuntu-2004-amd64-universe-backports-uyuni
-        ubuntu-2004-amd64-universe-security-uyuni
-        ubuntu-2004-amd64-universe-updates-uyuni
-        ubuntu-2004-amd64-uyuni-client-devel
-      ],
     'ubuntu-2204' => # CHECKED
       %w[
         ubuntu-2204-pool-amd64-uyuni
@@ -1407,6 +1381,14 @@ CLIENT_TOOLS_DEPENDENCIES_BY_BASE_CHANNEL = {
     golang-github-lusitaniae-apache_exporter
     prometheus-postgres_exporter
     golang-github-QubitProducts-exporter_exporter
+    system-user-prometheus
+    ansible
+    python313-packaging
+    python313-rpm
+    ansible-core
+    libgomp1
+    python313-resolvelib
+    librpmbuild10
   ]
 }.freeze
 
@@ -1543,6 +1525,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'rockylinux-9-x86_64' => 180,
   'sle15-sp3-installer-updates-x86_64' => 60,
   'sle15-sp4-installer-updates-x86_64' => 60,
+  'sle15-sp7-installer-updates-x86_64' => 60,
   'sle-micro-5.3-devel-uyuni-client-x86_64' => 120,
   'sle-micro-5.3-pool-x86_64' => 180,
   'sle-micro-5.3-updates-x86_64' => 900,
@@ -1584,7 +1567,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-module-desktop-applications15-sp5-updates-x86_64' => 120,
   'sle-module-desktop-applications15-sp6-pool-x86_64' => 240,
   'sle-module-desktop-applications15-sp6-updates-x86_64' => 60,
-  'sle-module-desktop-applications15-sp7-pool-x86_64' => 180,
+  'sle-module-desktop-applications15-sp7-pool-x86_64' => 300,
   'sle-module-desktop-applications15-sp7-updates-x86_64' => 60,
   'sle-module-devtools15-sp3-pool-x86_64' => 180,
   'sle-module-devtools15-sp3-updates-x86_64' => 1140,
@@ -1614,8 +1597,8 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-module-systems-management-15-sp6-updates-x86_64-sled' => 60,
   'sle-module-python3-15-sp7-pool-x86_64' => 60,
   'sle-module-python3-15-sp7-updates-x86_64' => 60,
-  'sle-module-systems-management-15-sp7-pool-x86_64-sled' => 60,
-  'sle-module-systems-management-15-sp7-updates-x86_64-sled' => 60,
+  'sle-module-systems-management-15-sp7-pool-x86_64' => 60,
+  'sle-module-systems-management-15-sp7-updates-x86_64' => 60,
   'sle-module-server-applications15-sp3-pool-x86_64' => 60,
   'sle-module-server-applications15-sp3-updates-x86_64' => 120,
   'sle-module-server-applications15-sp4-pool-x86_64' => 60,
@@ -1691,18 +1674,6 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'suse-microos-5.2-pool-x86_64' => 60,
   'suse-microos-5.2-updates-x86_64' => 120,
   'test-child-channel-x86_64' => 360,
-  'ubuntu-2004-amd64-main-amd64' => 660,
-  'ubuntu-2004-amd64-main-security-amd64' => 3480,
-  'ubuntu-2004-amd64-main-security-uyuni' => 4200,
-  'ubuntu-2004-amd64-main-updates-amd64' => 5820,
-  'ubuntu-2004-amd64-main-updates-uyuni' => 600,
-  'ubuntu-2004-amd64-main-uyuni' => 660,
-  'ubuntu-2004-amd64-universe-backports-uyuni' => 60,
-  'ubuntu-2004-amd64-universe-security-uyuni' => 900,
-  'ubuntu-2004-amd64-universe-updates-uyuni' => 240,
-  'ubuntu-2004-amd64-universe-uyuni' => 19_560,
-  'ubuntu-2004-amd64-uyuni-client-devel' => 120,
-  'ubuntu-2004-pool-amd64-uyuni' => 60,
   'ubuntu-2204-amd64-main-amd64' => 780,
   'ubuntu-2204-amd64-main-security-amd64' => 4920,
   'ubuntu-2204-amd64-main-security-uyuni' => 2040,
@@ -1737,6 +1708,7 @@ EMPTY_CHANNELS = %w[
   suse-multi-linux-manager-retail-branch-server-sle-5.1-updates-x86_64-sp7
   suse-multi-linux-manager-retail-branch-server-sle-5.2-updates-x86_64-sp7
   managertools-sle15-updates-x86_64-sp7
+  sle-product-sles15-sp6-ltss-updates-x86_64
   suse-manager-proxy-5.0-updates-x86_64
   suse-manager-retail-branch-server-5.0-updates-x86_64
   sle-module-suse-manager-retail-branch-server-4.3-updates-x86_64

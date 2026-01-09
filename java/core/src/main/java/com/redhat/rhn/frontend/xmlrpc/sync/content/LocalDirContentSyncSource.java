@@ -53,7 +53,7 @@ public class LocalDirContentSyncSource implements ContentSyncSource {
     }
 
     @Override
-    public SCCClient getClient(String uuid, Path loggingDir) throws SCCClientException {
+    public SCCClient getClient(String uuid, Path loggingDir, boolean unused) throws SCCClientException {
         File localFile = path.toFile();
         String localAbsolutePath = localFile.getAbsolutePath();
 

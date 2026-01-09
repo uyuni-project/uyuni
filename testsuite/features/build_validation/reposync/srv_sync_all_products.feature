@@ -113,6 +113,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I open the sub-list of the product "Desktop Applications Module 15 SP5 x86_64"
     And I select "Development Tools Module 15 SP5 x86_64" as a product
     Then I should see the "Development Tools Module 15 SP5 x86_64" selected
+    And I select "SUSE Linux Enterprise Server LTSS 15 SP5 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Server LTSS 15 SP5 x86_64" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Enterprise Server 15 SP5 x86_64" product has been added
@@ -148,6 +150,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I open the sub-list of the product "Desktop Applications Module 15 SP6 x86_64"
     And I select "Development Tools Module 15 SP6 x86_64" as a product
     Then I should see the "Development Tools Module 15 SP6 x86_64" selected
+    And I select "SUSE Linux Enterprise Server LTSS 15 SP6 x86_64 (ALPHA)" as a product
+    Then I should see the "SUSE Linux Enterprise Server LTSS 15 SP6 x86_64 (ALPHA)" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Enterprise Server 15 SP6 x86_64" product has been added
@@ -676,26 +680,6 @@ Feature: Synchronize products in the products page of the Setup Wizard
   Scenario: Add Rocky Linux 9
     When I use spacewalk-common-channel to add all "rockylinux9" channels with arch "x86_64"
     And I wait until all synchronized channels for "rockylinux9" have finished
-
-@susemanager
-@ubuntu2004_minion
-  Scenario: Add Ubuntu 20.04
-    Given I am authorized for the "Admin" section
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    And I wait until I do not see "currently running" text
-    And I wait until I do not see "Loading" text
-    And I enter "Ubuntu 20.04" as the filtered product description
-    And I select "Ubuntu 20.04" as a product
-    Then I should see the "Ubuntu 20.04" selected
-    When I click the Add Product button
-    And I wait until I see "Ubuntu 20.04" product has been added
-    And I wait until all synchronized channels for "ubuntu-2004" have finished
-
-@uyuni
-@ubuntu2004_minion
-  Scenario: Add Ubuntu 20.04
-    When I use spacewalk-common-channel to add all "ubuntu-2004" channels with arch "amd64-deb"
-    And I wait until all synchronized channels for "ubuntu-2004" have finished
 
 @susemanager
 @ubuntu2204_minion

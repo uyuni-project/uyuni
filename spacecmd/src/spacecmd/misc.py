@@ -824,6 +824,14 @@ def load_caches(self, server, username):
         self.packages_by_id_cache_file
     )
 
+    # Fix String IDs to ints
+    # JSON structure is "id : value", e.g. { "123": "example.com", ... }
+    # JSON does not allow non-string keys, but Uyuni/spacecmd expects IDs to be ints
+    self.all_systems = {int(id): system for id, system in self.all_systems.items()}
+    self.all_packages_by_id = {
+        int(id): pkg for id, pkg in self.all_packages_by_id.items()
+    }
+
 
 def get_system_names(self):
     self.generate_system_cache()

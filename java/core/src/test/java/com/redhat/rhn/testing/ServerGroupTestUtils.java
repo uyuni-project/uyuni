@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2009--2012 Red Hat, Inc.
+ * Copyright (c) 2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -23,7 +24,6 @@ import com.redhat.rhn.domain.server.test.ServerGroupTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 
-import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.iface.SaltApi;
 
 
@@ -55,7 +55,6 @@ public class ServerGroupTestUtils {
      * @return ManagedServerGroup created
      */
     public static ManagedServerGroup createManaged(User user) {
-        SaltStateGeneratorService.INSTANCE.setSkipSetOwner(true);
         ServerGroupTest.checkSysGroupAdminRole(user);
         return GlobalInstanceHolder.SERVER_GROUP_MANAGER.
                                         create(user, NAME + TestUtils.randomString(),

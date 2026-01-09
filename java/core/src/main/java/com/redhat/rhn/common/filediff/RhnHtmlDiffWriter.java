@@ -136,7 +136,7 @@ public class RhnHtmlDiffWriter implements DiffWriter, DiffVisitor {
                 //myself, ... the easy way.
                 buffy.append(StringEscapeUtils
                         .escapeHtml4(line.substring(0, CHARS_PER_LINE))
-                        .replaceAll(" ", "&nbsp;"));
+                        .replace(" ", "&nbsp;"));
                 buffy.append("<br />");
                 for (int p = 0; p < formatter.getMinimumIntegerDigits() + 1; p++) {
                     buffy.append("&nbsp;");
@@ -145,7 +145,7 @@ public class RhnHtmlDiffWriter implements DiffWriter, DiffVisitor {
                 numWritten++;
             }
             buffy.append(StringEscapeUtils.escapeHtml4(line)
-                    .replaceAll(" ", "&nbsp;"));
+                    .replace(" ", "&nbsp;"));
             buffy.append("<br />");
             numWritten++;
             linenum++;

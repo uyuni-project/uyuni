@@ -19,8 +19,8 @@ import com.google.gson.annotations.SerializedName;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Collections;
 import java.util.Map;
+import java.util.Optional;
 
 public class VmInfoSlsResult {
 
@@ -33,10 +33,12 @@ public class VmInfoSlsResult {
      * @return return virtual machine information
      */
     public Map<String, Map<String, Object>> getVmInfos() {
-        if (vminfo == null) {
-            LOG.info("No virtual machines found");
-            return Collections.emptyMap();
-        }
-        return vminfo.getChanges().getRet();
+        return Optional.ofNullable(vminfo)
+                .map(StateApplyResult::getChanges)
+                .map(Ret::getRet)
+                .orElseGet(() -> {
+                    LOG.info("No virtual machines found");
+                    return Map.of();
+                });
     }
 }

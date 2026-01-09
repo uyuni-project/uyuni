@@ -1,2 +1,0 @@
-- Use character class instead of alternation in regex
-  to fix the issue found by SonarCloud

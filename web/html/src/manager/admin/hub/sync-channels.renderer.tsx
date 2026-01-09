@@ -18,6 +18,8 @@ export const renderer = (
         peripheralFqdn={peripheralFqdn}
         availableOrgs={channelsSyncData.peripheralOrgs}
         channels={channelsSyncData.channels}
+        mandatoryMap={new Map(channelsSyncData.mandatoryMap)}
+        reversedMandatoryMap={new Map(channelsSyncData.reversedMandatoryMap)}
       />
     </RolesProvider>,
     document.getElementById(id)
