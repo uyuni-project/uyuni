@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LLC
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -153,9 +154,6 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
         t.setKsdata(k);
         t.setToken(TokenTest.createTestToken());
         TestUtils.saveAndFlush(t);
-
-        TestUtils.saveAndFlush(k);
-
     }
 
     @Test
@@ -419,9 +417,9 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
         d.setKstree(t);
         d.setCfgManagementFlag(Boolean.FALSE);
         d.setRemoteCommandFlag(Boolean.FALSE);
-        TestUtils.saveAndFlush(d);
+        KickstartDefaults kickstartDefaults = TestUtils.saveAndFlush(d);
         TestUtils.saveAndFlush(t);
-        return d;
+        return kickstartDefaults;
     }
 
 
@@ -460,14 +458,11 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
 
         k.setKernelParams(KERNEL_PARAMS);
 
-        k = TestUtils.saveAndReload(k);
+        k = TestUtils.save(k);
 
         k.addKsPackage(new KickstartPackage(k, pn, 0L));
         k.addKsPackage(new KickstartPackage(k, pn2, 1L));
 
-
-
-        k = TestUtils.saveAndReload(k);
         return k;
     }
 

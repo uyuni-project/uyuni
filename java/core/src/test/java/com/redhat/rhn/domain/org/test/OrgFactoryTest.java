@@ -185,7 +185,7 @@ public class OrgFactoryTest extends RhnBaseTestCase {
         // manually:
         Token token = TokenFactory.lookupById(key.getId());
         orig.setToken(token);
-        orig = OrgFactory.save(orig);
+
         Long origId = orig.getId();
         flushAndEvict(orig);
         Org lookup = OrgFactory.lookupById(origId);

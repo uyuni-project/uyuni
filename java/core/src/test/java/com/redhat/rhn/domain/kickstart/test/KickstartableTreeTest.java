@@ -183,7 +183,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
     /**
      * Creates KickstartableTree for testing purposes.
      * @param treeChannel Channel this Tree uses.
-     * @return Returns a committed KickstartableTree
+     * @return the managed {@link KickstartableTree} instance
      */
     public static KickstartableTree createTestKickstartableTree(Channel treeChannel) {
         Date created = new Date();
@@ -231,17 +231,14 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
         k.setCobblerId(d.getUid());
         k.setCobblerXenId(xend.getUid());
 
-        TestUtils.saveAndFlush(k);
-
-
-        return k;
+        return TestUtils.saveAndFlush(k);
     }
 
     /**
      * Create a KickstartableTree for testing purposes using the given install type.
      * @param treeChannel channel to use for this tree.
      * @param installTypeLabel install type to use
-     * @return the kickstartable tree
+     * @return the managed {@link KickstartableTree} instance
      * @throws Exception something bad happened
      */
     public static KickstartableTree createTestKickstartableTree(
@@ -251,8 +248,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
         KickstartInstallType installtype = KickstartFactory.lookupKickstartInstallTypeByLabel(installTypeLabel);
 
         tree.setInstallType(installtype);
-        TestUtils.saveAndFlush(tree);
-        return tree;
+        return TestUtils.saveAndFlush(tree);
     }
 
     private KickstartableTree createSUSEKsTreeByArch(Long archId, File ksRoot)

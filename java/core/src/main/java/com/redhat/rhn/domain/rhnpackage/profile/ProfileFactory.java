@@ -108,10 +108,12 @@ public class ProfileFactory extends HibernateFactory {
 
      /**
       * Store the profile.
+      *
       * @param profile The object we are commiting.
+      * @return the managed {@link Profile} instance
       */
-    public static void save(Profile profile) {
-        singleton.saveObject(profile);
+    public static Profile save(Profile profile) {
+        return singleton.saveObject(profile);
     }
 
     /**

@@ -35,10 +35,11 @@ public class SCCProxyFactory extends HibernateFactory {
      * Save a {@link SCCProxyRecord} object
      *
      * @param sccProxyRecord object to save
+     * @return the managed {@link SCCProxyRecord} instance
      */
-    public void save(SCCProxyRecord sccProxyRecord) {
+    public SCCProxyRecord save(SCCProxyRecord sccProxyRecord) {
         sccProxyRecord.setModified(new Date());
-        saveObject(sccProxyRecord);
+        return saveObject(sccProxyRecord);
     }
 
     /**

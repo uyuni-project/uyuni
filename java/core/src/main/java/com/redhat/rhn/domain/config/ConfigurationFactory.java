@@ -174,7 +174,7 @@ public class ConfigurationFactory extends HibernateFactory {
 
         //Have to commit the configFileName before we commit the
         // ConfigFile so the stored proc will have an ID to work with
-        singleton.saveObject(file.getConfigFileName());
+        ConfigFileName configFileName = singleton.saveObject(file.getConfigFileName());
 
         CallableMode m = ModeFactory.getCallableMode(CONFIG_QUERIES,
             "create_new_config_file");
@@ -184,7 +184,7 @@ public class ConfigurationFactory extends HibernateFactory {
         //this will generate a foreign-key constraint violation if the config
         //channel is not already persisted.
         inParams.put("config_channel_id_in", file.getConfigChannel().getId());
-        inParams.put("name_in", file.getConfigFileName().getPath());
+        inParams.put("name_in", configFileName.getPath());
         // Outparam
         outParams.put("configFileId", Types.NUMERIC);
 
@@ -217,10 +217,11 @@ public class ConfigurationFactory extends HibernateFactory {
                             "create_new_config_revision");
 
 
+        ConfigContent configContent = revision.getConfigContent();
         if (revision.isFile() || revision.isSls()) {
             //We need to save the content first so that we have an id for
             // the stored procedure.
-            singleton.saveObject(revision.getConfigContent());
+            configContent = singleton.saveObject(revision.getConfigContent());
         }
         //We do not have to save the ConfigInfo, because the info should always already be
         // in the database.  If this is not the case, please read the documentation for
@@ -232,7 +233,7 @@ public class ConfigurationFactory extends HibernateFactory {
         inParams.put("revision_in", revision.getRevision());
         inParams.put("config_file_id_in", revision.getConfigFile().getId());
         if (revision.isFile() || revision.isSls()) {
-            inParams.put("config_content_id_in", revision.getConfigContent().getId());
+            inParams.put("config_content_id_in", configContent.getId());
         }
         else {
             inParams.put("config_content_id_in", null);
@@ -248,16 +249,16 @@ public class ConfigurationFactory extends HibernateFactory {
         return (Long) result.get("configRevisionId");
     }
 
-    private static void save(ConfigChannel channel) {
-        singleton.saveObject(channel);
+    private static ConfigChannel save(ConfigChannel channel) {
+        return singleton.saveObject(channel);
     }
 
-    private static void save(ConfigFile file) {
-        singleton.saveObject(file);
+    private static ConfigFile save(ConfigFile file) {
+        return singleton.saveObject(file);
     }
 
-    private static void save(ConfigRevision revision) {
-        singleton.saveObject(revision);
+    private static ConfigRevision save(ConfigRevision revision) {
+        return singleton.saveObject(revision);
     }
 
     /**

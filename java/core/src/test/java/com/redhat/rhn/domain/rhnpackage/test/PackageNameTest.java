@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LLC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -45,13 +46,14 @@ public class PackageNameTest extends RhnBaseTestCase {
      * @return a test PackageName object.
      */
     public static PackageName createTestPackageName(String name) {
-        PackageName p = PackageFactory.lookupPackageName(name);
-        if (p == null) {
-            p = new PackageName();
-            p.setName(name);
-            TestUtils.saveAndFlush(p);
+        PackageName packageName = PackageFactory.lookupPackageName(name);
+        if (packageName != null) {
+            return packageName;
         }
-        return p;
+
+        packageName = new PackageName();
+        packageName.setName(name);
+        return TestUtils.saveAndFlush(packageName);
     }
 
     /**

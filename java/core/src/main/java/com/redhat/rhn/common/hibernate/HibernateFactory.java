@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009--2014 Red Hat, Inc.
+ * Copyright (c) 2026 SUSE LCC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,11 +7,8 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
+
 package com.redhat.rhn.common.hibernate;
 
 import com.redhat.rhn.common.db.DatabaseException;
@@ -336,7 +333,7 @@ public abstract class HibernateFactory {
              return entity;
          }
 
-         Object id = getSession().getEntityManagerFactory().getPersistenceUnitUtil().getIdentifier(entity);
+         Object id = session.getEntityManagerFactory().getPersistenceUnitUtil().getIdentifier(entity);
          T managed = entity;
 
          if (id == null) {
