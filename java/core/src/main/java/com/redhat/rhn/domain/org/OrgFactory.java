@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LLC
  * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -215,8 +216,7 @@ public class OrgFactory extends HibernateFactory {
             // New org, gotta use the stored procedure.
             return saveNewOrg(org);
         }
-        saveObject(org);
-        return org;
+        return saveObject(org);
     }
 
     /**

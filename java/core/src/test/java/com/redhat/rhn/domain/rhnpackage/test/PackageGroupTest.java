@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LLC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -32,7 +33,6 @@ public class PackageGroupTest extends RhnBaseTestCase {
     /**
      * Simple test to make sure we can create PackageGroups
      * and write them to the db.
-     * @throws Exception something bad happened
      */
     @Test
     public void testPackageGroup() {
@@ -45,7 +45,6 @@ public class PackageGroupTest extends RhnBaseTestCase {
     /**
      * Create a test PackageGroup
      * @return Returns a commited PackageGroup object
-     * @throws Exception something bad happened
      */
     public static PackageGroup createTestPackageGroup() {
         String name = TestUtils.randomString();
@@ -55,7 +54,6 @@ public class PackageGroupTest extends RhnBaseTestCase {
         p.setCreated(new Date());
         p.setModified(new Date());
 
-        TestUtils.saveAndFlush(p);
-        return p;
+        return TestUtils.saveAndFlush(p);
     }
 }

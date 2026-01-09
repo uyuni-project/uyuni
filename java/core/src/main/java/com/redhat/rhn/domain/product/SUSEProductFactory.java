@@ -56,34 +56,42 @@ public class SUSEProductFactory extends HibernateFactory {
 
     /**
      * Insert or update a SUSEProduct.
+     *
      * @param product SUSE product to be inserted into the database.
+     * @return the managed {@link SUSEProduct} instance
      */
-    public static void save(SUSEProduct product) {
-        singleton.saveObject(product);
+    public static SUSEProduct save(SUSEProduct product) {
+        return singleton.saveObject(product);
     }
 
     /**
      * Insert or update a {@link SUSEProductChannel}.
+     *
      * @param productChannel SUSE product channel relationship to be inserted.
+     * @return the managed {@link SUSEProductChannel} instance
      */
-    public static void save(SUSEProductChannel productChannel) {
-        singleton.saveObject(productChannel);
+    public static SUSEProductChannel save(SUSEProductChannel productChannel) {
+        return singleton.saveObject(productChannel);
     }
 
     /**
      * Save a {@link SCCRepository}
+     *
      * @param repo the repository
+     * @return the managed {@link SCCRepository} instance
      */
-    public static void save(SCCRepository repo) {
-        singleton.saveObject(repo);
+    public static SCCRepository save(SCCRepository repo) {
+        return singleton.saveObject(repo);
     }
 
     /**
      * Save a {@link ChannelTemplate}
+     *
      * @param productRepo the productrepo
+     * @return the managed {@link ChannelTemplate}
      */
-    public static void save(ChannelTemplate productRepo) {
-        singleton.saveObject(productRepo);
+    public static ChannelTemplate save(ChannelTemplate productRepo) {
+        return singleton.saveObject(productRepo);
     }
 
     /**
@@ -136,10 +144,12 @@ public class SUSEProductFactory extends HibernateFactory {
 
     /**
      * Insert or update a {@link SUSEProductExtension}.
+     *
      * @param productExtension migration target to be inserted.
+     * @return the managed {@link SUSEProductExtension} instance
      */
-    public static void save(SUSEProductExtension productExtension) {
-        singleton.saveObject(productExtension);
+    public static SUSEProductExtension save(SUSEProductExtension productExtension) {
+        return singleton.saveObject(productExtension);
     }
 
     /**

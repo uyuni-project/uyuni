@@ -688,10 +688,12 @@ public class ErrataFactory extends HibernateFactory {
 
     /**
      * Insert or Update a Errata.
+     *
      * @param errataIn Errata to be stored in database.
+     * @return the managed {@link Errata} instance
      */
-    public static void save(Errata errataIn) {
-        singleton.saveObject(errataIn);
+    public static Errata save(Errata errataIn) {
+        return singleton.saveObject(errataIn);
     }
 
     /**

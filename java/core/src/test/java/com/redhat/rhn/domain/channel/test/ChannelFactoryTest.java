@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LLC
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -37,6 +38,7 @@ import com.redhat.rhn.domain.kickstart.KickstartInstallType;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.domain.kickstart.test.KickstartableTreeTest;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.user.User;
@@ -97,8 +99,6 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         ProductName pn = lookupOrCreateProductName(ChannelManager.RHEL_PRODUCT_NAME);
         c.setProductName(pn);
 
-        ChannelFactory.save(c);
-        HibernateFactory.getSession().flush();
         return c;
     }
 
@@ -109,7 +109,6 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         ProductName pn = lookupOrCreateProductName(ChannelManager.RHEL_PRODUCT_NAME);
         c.setProductName(pn);
 
-        ChannelFactory.save(c);
         return c;
     }
 
@@ -118,8 +117,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         Channel c = createTestChannel(null, fam);
         ProductName pn = lookupOrCreateProductName(ChannelManager.RHEL_PRODUCT_NAME);
         c.setProductName(pn);
-        ChannelFactory.save(c);
-        return TestUtils.saveAndReload(c);
+        return c;
     }
 
     public static Channel createTestChannel(User user) {
@@ -127,8 +125,6 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         // assume we want the user to have access to this channel once created
         UserManager.addChannelPerm(user, c.getId(), "subscribe");
         UserManager.addChannelPerm(user, c.getId(), "manage");
-        ChannelFactory.save(c);
-        HibernateFactory.getSession().flush();
         return c;
     }
 
@@ -150,7 +146,6 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
                 })
                 .forEach(c.getSources()::add);
 
-        ChannelFactory.save(c);
         return c;
     }
 
@@ -160,15 +155,12 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         // assume we want the user to have access to this channel once created
         UserManager.addChannelPerm(user, c.getId(), "subscribe");
         UserManager.addChannelPerm(user, c.getId(), "manage");
-        ChannelFactory.save(c);
         return c;
     }
 
     public static Channel createTestChannel(Org org) {
         ChannelFamily cfam = org.getPrivateChannelFamily();
-        Channel c = ChannelFactoryTest.createTestChannel(org, cfam);
-        ChannelFactory.save(c);
-        return c;
+        return ChannelFactoryTest.createTestChannel(org, cfam);
     }
 
     public static Channel createTestChannel(Org org, ChannelFamily cfam) {
@@ -189,7 +181,6 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         // assume we want the user to have access to this channel once created
         UserManager.addChannelPerm(user, c.getId(), "subscribe");
         UserManager.addChannelPerm(user, c.getId(), "manage");
-        ChannelFactory.save(c);
         return c;
     }
 
@@ -233,8 +224,9 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         c.setChannelArch(arch);
         c.setChannelFamily(cfam);
         c.setChecksumType(ct);
-        ChannelFactory.save(c);
-        return c;
+        Channel save = ChannelFactory.save(c);
+        HibernateFactory.getSession().flush();
+        return save;
     }
 
     /**
@@ -419,13 +411,13 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         clone.setOriginal(original);
         clone.setParentChannel(parent);
 
-        ChannelFactory.save(clone);
+        Channel managed = ChannelFactory.save(clone);
 
         // assume we want the user to have access to this channel once created
-        UserManager.addChannelPerm(user, clone.getId(), "subscribe");
-        UserManager.addChannelPerm(user, clone.getId(), "manage");
+        UserManager.addChannelPerm(user, managed.getId(), "subscribe");
+        UserManager.addChannelPerm(user, managed.getId(), "manage");
 
-        return clone;
+        return managed;
     }
 
     @Test
@@ -501,6 +493,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         cp.setPath("redhat/1/c7d/some-package-child/2.13.1-6.fc9/" +
                 "x86_64/c7dd5e9b6975bc7f80f2f4657260af53/" +
                 fileNameChild);
+        TestUtils.saveAndFlush(child);
 
         Package lookedUpChild = ChannelFactory.lookupPackageByFilename(channel,
                 fileNameChild);
@@ -621,8 +614,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         // trusted org added to org
         org1.getTrustedOrgs().add(org3);
         c1.setAccess(Channel.PUBLIC);
-        flushAndEvict(org1);
-        flushAndEvict(c1);
+        clearSession();
 
         assertTrue(ChannelFactory.isAccessibleBy(c1.getLabel(), org1.getId()));
         assertFalse(ChannelFactory.isAccessibleBy(c1.getLabel(), org2.getId()));
@@ -635,9 +627,11 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         assertFalse(ChannelFactory.isAccessibleBy(c2.getLabel(), org4.getId()));
 
         // trusted org added to channel
-        c2.getTrustedOrgs().add(org4);
-        c2.setAccess(Channel.PROTECTED);
-        flushAndEvict(c2);
+        Channel c2Reloaded = ChannelFactory.lookupById(c2.getId());
+        Org org4Reloaded = OrgFactory.lookupById(org4.getId());
+        c2Reloaded.getTrustedOrgs().add(org4Reloaded);
+        c2Reloaded.setAccess(Channel.PROTECTED);
+        clearSession();
 
         assertTrue(ChannelFactory.isAccessibleBy(c1.getLabel(), org1.getId()));
         assertFalse(ChannelFactory.isAccessibleBy(c1.getLabel(), org2.getId()));

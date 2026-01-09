@@ -41,9 +41,7 @@ public class ChannelTestUtils {
      * @throws Exception if error
      */
     public static Channel createBaseChannel(User creator) throws Exception {
-        Channel retval = ChannelFactoryTest.createBaseChannel(creator);
-        retval = TestUtils.reload(retval);
-        return retval;
+        return ChannelFactoryTest.createBaseChannel(creator);
     }
 
     /**
@@ -73,10 +71,9 @@ public class ChannelTestUtils {
             throw new IllegalArgumentException("baseChannel is not a base channel");
         }
 
-        Channel retval = ChannelFactoryTest.createTestChannel(user);
-        retval.setParentChannel(baseChannel);
-        ChannelFactory.save(retval);
-        return retval;
+        Channel channel = ChannelFactoryTest.createTestChannel(user);
+        channel.setParentChannel(baseChannel);
+        return ChannelFactory.save(channel);
     }
 
     /**
