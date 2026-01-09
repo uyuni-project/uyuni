@@ -14,11 +14,19 @@ package com.redhat.rhn.manager.access;
 import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
 import static com.redhat.rhn.domain.role.RoleFactory.SAT_ADMIN;
 
+import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.access.AccessGroup;
 import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.access.NamespaceFactory;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.frontend.listview.PageControl;
+import com.redhat.rhn.manager.EntityExistsException;
+
+import com.suse.manager.utils.PagedSqlQueryBuilder;
+import com.suse.manager.webui.utils.gson.AccessGroupJson;
+import com.suse.manager.webui.utils.gson.AccessGroupUserJson;
+import com.suse.manager.webui.utils.gson.NamespaceJson;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,6 +36,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 
 /**
  * Class to manage RBAC access groups
@@ -43,7 +52,8 @@ public class AccessGroupManager {
      * @param org the org to which the group belongs
      * @return the created {@code AccessGroup}
      */
-    public AccessGroup create(String label, String description, Org org) throws DefaultRoleException {
+    public AccessGroup create(String label, String description, Org org)
+            throws DefaultRoleException, EntityExistsException {
         return this.create(label, description, org, Collections.emptyList());
     }
 
@@ -56,10 +66,14 @@ public class AccessGroupManager {
      * @return the created {@code AccessGroup}
      */
     public AccessGroup create(String label, String description, Org org, Collection<AccessGroup> copyFrom)
-            throws DefaultRoleException {
+            throws DefaultRoleException, EntityExistsException {
         if (ORG_ADMIN.getLabel().equals(label) || SAT_ADMIN.getLabel().equals(label) ||
                 lookup(label, null).isPresent()) {
             throw new DefaultRoleException(label + " already exists.");
+        }
+        if (lookup(label, org).isPresent()) {
+            throw new EntityExistsException(
+                    "Access Group: " + label + " already exists on organization: " + org.getName() + ".");
         }
         AccessGroup group = new AccessGroup(label, description, org);
         for (AccessGroup parent : copyFrom) {
@@ -88,11 +102,45 @@ public class AccessGroupManager {
     }
 
     /**
+     * Removes an access group with the given id.
+     * @param id the id of the access group to remove
+     * @throws java.util.NoSuchElementException if the {@code AccessGroup} is not found.
+     */
+    public void remove(Long id) {
+        AccessGroup group = AccessGroupFactory.lookupById(id).orElseThrow();
+        if (group.getOrg() == null) {
+            throw new IllegalArgumentException("Default groups cannot be altered.");
+        }
+        LOG.info("Access group {} removed.", group.getLabel());
+        AccessGroupFactory.remove(group);
+    }
+
+    /**
      * Lists all access groups defined in MLM.
      * @return a list of access groups
      */
     public List<AccessGroup> list() {
         return AccessGroupFactory.listAll();
+    }
+
+    /**
+     * Lists s paginated list of namespaces
+     * @param pc the page control
+     * @param parser the parser for filters when building query
+     * @return the list of access groups
+     */
+    public DataResult<NamespaceJson> listNamespaces(
+            PageControl pc, Function<Optional<PageControl>, PagedSqlQueryBuilder.FilterWithValue> parser) {
+        return NamespaceFactory.list(pc, parser);
+    }
+
+    /**
+     * Lists all the users of the given organization
+     * @param orgId the org id
+     * @return the list of users as json object
+     */
+    public List<AccessGroupUserJson> listUsers(Long orgId) {
+        return AccessGroupFactory.listUsers(orgId);
     }
 
     /**
@@ -105,6 +153,15 @@ public class AccessGroupManager {
     }
 
     /**
+     * Lists all custom access groups that are available to the given org.
+     * @param org the org to list access groups from
+     * @return a list of custom access groups
+     */
+    public List<AccessGroupJson> listCustom(Org org) {
+        return AccessGroupFactory.listCustom(org);
+    }
+
+    /**
      * Looks up an access group with the given label and org
      * @param label the label of the group to look up
      * @param org the org to which the group belongs
@@ -112,6 +169,15 @@ public class AccessGroupManager {
      */
     public Optional<AccessGroup> lookup(String label, Org org) {
         return AccessGroupFactory.lookupByLabelAndOrg(label, org);
+    }
+
+    /**
+     * Looks up an access group with the given id
+     * @param id the id of the group to look up
+     * @return an {@code Optional} containing the access group, or an empty {@code Optional} if not found
+     */
+    public Optional<AccessGroup> lookupById(Long id) {
+        return AccessGroupFactory.lookupById(id);
     }
 
     /**
@@ -146,6 +212,23 @@ public class AccessGroupManager {
         }
         LOG.info("Access group {} is granted access to {} namespace(s).", label, namespaces.size());
     }
+
+    /**
+     * Sets access to the given namespaces with the specified access modes for the access group.
+     * @param group the access group
+     * @param namespaces a list of namespace strings to grant access to
+     * @throws DefaultRoleException if trying to revoke access for a default access group.
+     */
+    public void setAccess(AccessGroup group, Set<Namespace> namespaces)
+            throws DefaultRoleException {
+        if (group.getOrg() == null) {
+            throw new DefaultRoleException("Default groups cannot be altered.");
+        }
+        group.setNamespaces(namespaces);
+        AccessGroupFactory.save(group);
+        LOG.info("Access group {} is granted access to {} namespace(s).", group.getLabel(), namespaces.size());
+    }
+
 
     /**
      * Revokes access to the given namespaces for the specified access group.
