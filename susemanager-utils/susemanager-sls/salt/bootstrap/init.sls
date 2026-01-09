@@ -165,7 +165,7 @@ bootstrap_repo:
 {% set salt_minion_installed = (salt['pkg.info_installed']('venv-salt-minion', attr='version', failhard=False).get('venv-salt-minion', {}).get('version') != None) %}
 check_bootstrap_dbg:
   cmd.run:
-    - name: /usr/bin/echo "{{ salt_minion_installed }}"
+    - name: command -p echo "{{ salt_minion_installed }}"
 {% set venv_available_request = salt_minion_installed or salt['http.query'](bootstrap_repo_url + 'venv-enabled-' + grains['osarch'] + '.txt', status=True, verify_ssl=False) %}
 {# Prefer venv-salt-minion if available and not disabled #}
 {%- set use_venv_salt = salt['pillar.get']('mgr_force_venv_salt_minion') or ((salt_minion_installed or (0 < venv_available_request.get('status', 404) < 300)) and not salt['pillar.get']('mgr_avoid_venv_salt_minion')) %}
@@ -189,10 +189,10 @@ salt-minion-package:
 {# hack until transactional_update.run is fixed to use venv-salt-call #}
 {# Writing  to the future - find latest etc overlay which was created for package installation and use that as etc root #}
 {# this only works here in bootstrap when we are not running in transaction #}
-{%- set pending_transaction_id = salt['cmd.run']('/usr/bin/snapper --no-dbus list --columns=number | /usr/bin/grep "+" | tr -d "+"', python_shell=True) %}
+{%- set pending_transaction_id = salt['cmd.run']('command -p snapper --no-dbus list --columns=number | command -p grep "+" | tr -d "+"', python_shell=True) %}
 {%- if not pending_transaction_id %}
 {#  if we did not get pending transaction id, write to current upperdir #}
-{%- set pending_transaction_id = salt['cmd.run']('/usr/bin/snapper --no-dbus list --columns number | /usr/bin/grep "*" | tr -d "*"', python_shell=True) %}
+{%- set pending_transaction_id = salt['cmd.run']('command -p snapper --no-dbus list --columns number | command -p grep "*" | tr -d "*"', python_shell=True) %}
 {%- endif %}
 {# increase transaction id by 1 since jinja is doing this before new transaction for package install is created #}
 {# this is working under assumption there will be only one transaction between jinja render and actual package installation #}
@@ -316,7 +316,7 @@ salt-minion-master-pub-wipe:
 {{ salt_minion_name }}:
   mgrcompat.module_run:
     - name: transactional_update.run
-    - command: /usr/bin/systemctl enable {{ salt_minion_name }}
+    - command: command -p systemctl enable {{ salt_minion_name }}
     - snapshot: continue
     - require:
       - salt-minion-package
@@ -335,7 +335,7 @@ copy_transactional_conf_file_to_etc:
     - name: /etc/transactional-update.conf
     - source: /usr/etc/transactional-update.conf
     - unless:
-      - /usr/bin/test -f /etc/transactional-update.conf
+      - command -p test -f /etc/transactional-update.conf
 
 transactional_update_set_reboot_method_systemd:
   file.keyvalue:
@@ -348,9 +348,9 @@ transactional_update_set_reboot_method_systemd:
     - require:
       - file: copy_transactional_conf_file_to_etc
     - unless:
-      - /usr/bin/grep -P '^(?=[\s]*+[^#])[^#]*(REBOOT_METHOD=(?!auto))' /etc/transactional-update.conf
+      - command -p grep -P '^(?=[\s]*+[^#])[^#]*(REBOOT_METHOD=(?!auto))' /etc/transactional-update.conf
 
 disable_reboot_timer_transactional_minions:
   cmd.run:
-    - name: /usr/bin/systemctl disable transactional-update.timer
+    - name: command -p systemctl disable transactional-update.timer
 {%- endif %}

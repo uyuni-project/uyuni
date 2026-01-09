@@ -1,6 +1,6 @@
 node_exporter:
   cmd.run:
-    - name: /usr/bin/rpm --query --info golang-github-prometheus-node_exporter
+    - name: command -p rpm --query --info golang-github-prometheus-node_exporter
 
 node_exporter_service:
   service.running:
@@ -17,7 +17,7 @@ node_exporter_service:
 {% if global.has_pillar_data %}
 postgres_exporter:
   cmd.run:
-    - name: /usr/bin/rpm --query --info prometheus-postgres_exporter || /usr/bin/rpm --query --info golang-github-wrouesnel-postgres_exporter
+    - name: command -p rpm --query --info prometheus-postgres_exporter || command -p rpm --query --info golang-github-wrouesnel-postgres_exporter
 
 postgres_exporter_cleanup:
   file.absent:
@@ -63,7 +63,7 @@ postgres_exporter_service:
 
 jmx_exporter:
   cmd.run:
-    - name: /usr/bin/rpm --query --info prometheus-jmx_exporter
+    - name: command -p rpm --query --info prometheus-jmx_exporter
 
 jmx_exporter_tomcat_yaml_config:
   file.managed:
@@ -81,7 +81,7 @@ remove_tomcat_previous:
     - source: /etc/sysconfig/tomcat
     - name: /etc/sysconfig/tomcat.bak
     - force: True
-    - onlyif: test -f /etc/sysconfig/tomcat
+    - onlyif: command -p test -f /etc/sysconfig/tomcat
 
 jmx_tomcat_config:
   file.managed:
@@ -141,8 +141,8 @@ jmx_exporter_taskomatic_service_cleanup:
 
 mgr_enable_prometheus_self_monitoring:
   cmd.run:
-    - name:  /usr/bin/grep -q '^prometheus_monitoring_enabled.*=.*' /etc/rhn/rhn.conf && /usr/bin/sed -i 's/^prometheus_monitoring_enabled.*/prometheus_monitoring_enabled = 1/' /etc/rhn/rhn.conf || /usr/bin/echo 'prometheus_monitoring_enabled = 1' >> /etc/rhn/rhn.conf
+    - name:  command -p grep -q '^prometheus_monitoring_enabled.*=.*' /etc/rhn/rhn.conf && command -p sed -i 's/^prometheus_monitoring_enabled.*/prometheus_monitoring_enabled = 1/' /etc/rhn/rhn.conf || command -p echo 'prometheus_monitoring_enabled = 1' >> /etc/rhn/rhn.conf
 
 mgr_is_prometheus_self_monitoring_enabled:
   cmd.run:
-    - name: /usr/bin/grep -qF 'prometheus_monitoring_enabled = 1' /etc/rhn/rhn.conf
+    - name: command -p grep -qF 'prometheus_monitoring_enabled = 1' /etc/rhn/rhn.conf

@@ -11,10 +11,10 @@ mgr_copy_initrd:
 
 {% set loader_type = salt['cmd.run']('if [ -f /etc/sysconfig/bootloader ]; then source /etc/sysconfig/bootloader 2> /dev/null; fi;
 if [ -z "${LOADER_TYPE}" ]; then
-if [ $(/usr/bin/which grubonce 2> /dev/null) ] && [ !$(/usr/bin/which grub2-mkconfig 2> /dev/null) ]; then LOADER_TYPE="grub";
-elif [ $(/usr/bin/which elilo 2> /dev/null) ] && [ !$(/usr/bin/which grub2-mkconfig 2> /dev/null) ]; then LOADER_TYPE="elilo";
+if [ $(command -p grubonce 2> /dev/null) ] && [ !$(command -p grub2-mkconfig 2> /dev/null) ]; then LOADER_TYPE="grub";
+elif [ $(command -p elilo 2> /dev/null) ] && [ !$(command -p grub2-mkconfig 2> /dev/null) ]; then LOADER_TYPE="elilo";
 fi;
-fi; /usr/bin/echo "${LOADER_TYPE}"', python_shell=True) %}
+fi; command -p echo "${LOADER_TYPE}"', python_shell=True) %}
 {% if loader_type == 'grub' %}
 mgr_create_grub_entry:
   file.append:
@@ -27,7 +27,7 @@ mgr_create_grub_entry:
 
 mgr_grub_boot_once:
   cmd.run:
-    - name: /usr/sbin/grubonce "{{ pillar.get('uyuni-reinstall-name') }}"
+    - name: command -p grubonce "{{ pillar.get('uyuni-reinstall-name') }}"
     - onchanges:
       - file: mgr_create_grub_entry
 {% elif loader_type == 'elilo' %}
@@ -50,7 +50,7 @@ mgr_set_default_boot:
 
 mgr_elilo_copy_config:
   cmd.run:
-    - name: /sbin/elilo
+    - name: command -p elilo
     - onchanges:
       - file: mgr_create_elilo_entry
       - file: mgr_set_default_boot
@@ -72,7 +72,7 @@ mgr_set_default_boot:
 
 mgr_generate_grubconf:
   cmd.run:
-    - name: /usr/sbin/grub2-mkconfig -o /boot/grub2/grub.cfg
+    - name: command -p grub2-mkconfig -o /boot/grub2/grub.cfg
     - onchanges:
       - file: mgr_copy_kernel
       - file: mgr_copy_initrd
@@ -82,11 +82,7 @@ mgr_generate_grubconf:
 
 mgr_autoinstall_start:
   cmd.run:
-{%- if grains['os_family'] == 'Suse' and grains['osmajorrelease'] <= 12 %}
-    - name: /sbin/shutdown -r +1
-{%- else %}
-    - name: /usr/sbin/shutdown -r +1
-{%- endif %}
+    - name: command -p shutdown -r +1
     - require:
 {% if loader_type == 'grub' %}
       - cmd: mgr_grub_boot_once

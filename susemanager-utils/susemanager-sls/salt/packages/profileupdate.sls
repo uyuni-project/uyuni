@@ -24,8 +24,8 @@ modules:
 {% elif grains['os_family'] == 'Debian' %}
 debianrelease:
   cmd.run:
-    - name: /usr/bin/cat /etc/os-release
-    - onlyif: /usr/bin/test -f /etc/os-release
+    - name: command -p cat /etc/os-release
+    - onlyif: command -p test -f /etc/os-release
 {% endif %}
 
 include:

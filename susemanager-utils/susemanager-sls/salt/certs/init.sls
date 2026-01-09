@@ -8,4 +8,4 @@ mgr_proxy_ca_cert_symlink:
   file.symlink:
     - name: /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT
     - target: /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT
-    - onlyif: /usr/bin/grep -Eq "^proxy.rhn_parent *= *[a-zA-Z0-9]+" /etc/rhn/rhn.conf && -e /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT
+    - onlyif: command -p grep -Eq "^proxy.rhn_parent *= *[a-zA-Z0-9]+" /etc/rhn/rhn.conf && -e /etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT

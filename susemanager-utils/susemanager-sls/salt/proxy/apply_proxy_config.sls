@@ -1,5 +1,5 @@
 {%- set mgrpxy_installed = salt['pkg.version']('mgrpxy') %}
-{%- set mgrpxy_status_output = salt['cmd.run']('mgrpxy status 2>&1', python_shell=True) %}
+{%- set mgrpxy_status_output = salt['cmd.run']('command -p mgrpxy status 2>&1', python_shell=True) %}
 {%- set mgrpxy_operation = 'install' if not mgrpxy_installed or 'Error: no installed proxy detected' in mgrpxy_status_output else 'upgrade' %}
 {%- set transactional = grains['transactional'] %}
 {%- set installPackages = not (pillar.get('registries') is mapping and pillar.get('registries') | length > 0) %}
@@ -116,15 +116,15 @@ install_proxy_packages:
 
         [Service]
         Type=oneshot
-        ExecStart=/bin/bash -c '/usr/bin/mgrpxy {{ mgrpxy_operation }} podman --logLevel debug {{ args | join(" ") }} 2>&1 | /usr/bin/tee -a /var/log/mgrpxy_install.log'
+        ExecStart=/bin/bash -c 'command -p mgrpxy {{ mgrpxy_operation }} podman --logLevel debug {{ args | join(" ") }} 2>&1 | command -p tee -a /var/log/mgrpxy_install.log'
         
         ExecStartPost=/bin/bash -c 'STATUS_OUTPUT=$(mgrpxy status 2>&1); \
-            /usr/bin/echo "$STATUS_OUTPUT" | /usr/bin/tee -a /var/log/mgrpxy_install.log; \
-            if ! /usr/bin/echo "$STATUS_OUTPUT" | /usr/bin/grep -q "Error: no installed proxy detected"; then \
-                /usr/bin/echo "mgrpxy was successfully {{ mgrpxy_operation }}ed. Removing apply mgrpxy service and configuration file." | /usr/bin/tee -a /var/log/mgrpxy_install.log; \
-                /usr/bin/rm -f /etc/systemd/system/apply_proxy_config.service; \
+            command -p echo "$STATUS_OUTPUT" | command -p tee -a /var/log/mgrpxy_install.log; \
+            if ! command -p echo "$STATUS_OUTPUT" | command -p grep -q "Error: no installed proxy detected"; then \
+                command -p echo "mgrpxy was successfully {{ mgrpxy_operation }}ed. Removing apply mgrpxy service and configuration file." | command -p tee -a /var/log/mgrpxy_install.log; \
+                command -p rm -f /etc/systemd/system/apply_proxy_config.service; \
             else \
-                /usr/bin/echo "mgrpxy status check failed. Service file will remain for troubleshooting." | /usr/bin/tee -a /var/log/mgrpxy_install.log; \
+                command -p echo "mgrpxy status check failed. Service file will remain for troubleshooting." | command -p tee -a /var/log/mgrpxy_install.log; \
             fi'
 
         [Install]
@@ -139,7 +139,7 @@ install_proxy_packages:
 # The system will run this service to enable apply_proxy_config.service after reboot
 enable_apply_proxy_config_service:
   cmd.run:
-    - name: /usr/bin/systemctl enable apply_proxy_config.service
+    - name: command -p systemctl enable apply_proxy_config.service
     - require:
       - file: /etc/systemd/system/apply_proxy_config.service
 
@@ -148,9 +148,9 @@ enable_apply_proxy_config_service:
 apply_proxy_configuration:
   cmd.run:
     - name: >
-        /usr/bin/mgrpxy {{ mgrpxy_operation }} podman --logLevel debug {{ args | join(" ") }} 
-        2>&1 | /usr/bin/tee -a /var/log/mgrpxy_install.log
-    - shell: /bin/bash
+        command -p mgrpxy {{ mgrpxy_operation }} podman --logLevel debug {{ args | join(" ") }} 
+        2>&1 | command -p tee -a /var/log/mgrpxy_install.log
+    - shell: /usr/bin/bash
     - require:
       - file: /etc/uyuni/proxy/config.yaml
       - file: /etc/uyuni/proxy/httpd.yaml
