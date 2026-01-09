@@ -15,14 +15,18 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
+import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.audit.*;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 
 import com.redhat.rhn.frontend.dto.XccdfRuleResultDto;
+import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.audit.ScapManager;
 import com.redhat.rhn.manager.audit.scap.xml.BenchMark;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.webui.controllers.utils.RequestUtil;
+import com.suse.manager.webui.utils.gson.AuditScanScheduleJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.manager.webui.utils.gson.ScapPolicyJson;
 import com.suse.utils.Json;
@@ -114,7 +118,7 @@ public class ScapAuditController {
         get("/manager/systems/details/schedule-scap-scan",
           withCsrfToken(withDocsLocale(withUserAndServer(this::scheduleAuditScanView))),
           jade);
-        //post("manager/api/audit/schedule/create", withUser(ScapAuditController::scheduleAuditScan));
+        post("manager/api/audit/schedule/create", withUser(this::scheduleAuditScan));
 
         //rules
 
@@ -608,6 +612,52 @@ public class ScapAuditController {
         }
         
         return json(res, policyData);
+    }
+    
+    /**
+     * Schedules SCAP audit scan for specified systems
+     * @param req the request
+     * @param res the response
+     * @param user the user
+     * @return JSON with action ID
+     */
+    public String scheduleAuditScan(Request req, Response res, User user) {
+        try {
+            // Parse request body into DTO
+            AuditScanScheduleJson reqData = GSON.fromJson(req.body(), AuditScanScheduleJson.class);
+            
+            // Validate required fields
+            String validationError = reqData.validate();
+            if (validationError != null) {
+                res.status(HttpStatus.SC_BAD_REQUEST);
+                return result(res, ResultJson.error(validationError));
+            }
+            
+            // Parse earliest date
+            Date earliest = reqData.getEarliest()
+                    .map(ldt -> Date.from(ldt.atZone(java.time.ZoneId.systemDefault()).toInstant()))
+                    .orElse(new Date());
+            
+            // Schedule the SCAP action
+            ScapAction action = ActionManager.scheduleXccdfEval(
+                    user,
+                    reqData.getIds(),
+                    reqData.getDataStreamPath(),
+                    reqData.buildOscapParameters(),
+                    null, // ovalFiles
+                    earliest
+            );
+            
+            // Return action ID
+            return json(res, action.getId());
+            
+        } catch (TaskomaticApiException e) {
+            res.status(HttpStatus.SC_INTERNAL_SERVER_ERROR);
+            return result(res, ResultJson.error("Failed to schedule SCAP scan: Taskomatic is down"));
+        } catch (Exception e) {
+            res.status(HttpStatus.SC_INTERNAL_SERVER_ERROR);
+            return result(res, ResultJson.error("Failed to schedule SCAP scan: " + e.getMessage()));
+        }
     }
 
     /**

@@ -17,7 +17,7 @@ import { localizedMoment } from "utils";
 import { ActionLink } from "components/links";
 
 enum ScapContentType {
-  DataStream = "Data_stream",
+  DataStream = "dataStream",
   TailoringFile = "tailoringFile",
 }
 
@@ -64,14 +64,6 @@ class ScheduleAuditScan extends React.Component<{}, StateType> {
 
   onValidate = (isValid) => {
     this.setState({ isInvalid: !isValid });
-  };
-
-  handleDataStreamChange = (name, value) => {
-    this.getProfiles(ScapContentType.DataStream, value);
-  };
-
-  handleTailoringFileChange = (name, value) => {
-    this.getProfiles(ScapContentType.TailoringFile, value);
   };
 
   getProfiles(type: ScapContentType, name: string) {
@@ -139,6 +131,8 @@ class ScheduleAuditScan extends React.Component<{}, StateType> {
       dataStreamName: model.dataStreamName,
       tailoringFile: model.tailoringFile,
       tailoringProfileID: model.tailoringProfileID,
+      advancedArgs: model.advancedArgs,
+      fetchRemoteResources: model.fetchRemoteResources,
     })
       .then((data) => {
         const msg = MessagesUtils.info(
@@ -222,7 +216,12 @@ class ScheduleAuditScan extends React.Component<{}, StateType> {
                   isClearable
                   value={this.state.model.dataStreamName}
                   disabled={!!selectedScapPolicy}
-                  onChange={this.handleDataStreamChange}
+                  onChange={(value) => {
+                    this.setState({ model: { ...this.state.model, dataStreamName: value as string } });
+                    if (value) {
+                      this.getProfiles(ScapContentType.DataStream, value as string);
+                    }
+                  }}
                   options={window.scapDataStreams
                     .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
                     .map((k) => ({ value: k, label: k.substring(0, k.indexOf("-xccdf.xml")).toUpperCase() }))}
@@ -239,6 +238,7 @@ class ScheduleAuditScan extends React.Component<{}, StateType> {
                   value={this.state.model.xccdfProfileId}
                   disabled={!!selectedScapPolicy}
                   isClearable
+                  onChange={(value) => this.setState({ model: { ...this.state.model, xccdfProfileId: value } })}
                   options={xccdfProfiles.map((k) => ({ value: k.id, label: k.title }))}
                 />
               </div>
@@ -250,7 +250,12 @@ class ScheduleAuditScan extends React.Component<{}, StateType> {
                 <Select
                   name="tailoringFile"
                   placeholder={t("Select Tailoring file...")}
-                  onChange={this.handleTailoringFileChange}
+                  onChange={(value) => {
+                    this.setState({ model: { ...this.state.model, tailoringFile: value as string } });
+                    if (value) {
+                      this.getProfiles(ScapContentType.TailoringFile, value as string);
+                    }
+                  }}
                   isClearable
                   value={this.state.model.tailoringFile}
                   disabled={!!selectedScapPolicy}
@@ -265,6 +270,7 @@ class ScheduleAuditScan extends React.Component<{}, StateType> {
                 <Select
                   name="tailoringProfileID"
                   placeholder={t("Select profile...")}
+                  onChange={(value) => this.setState({ model: { ...this.state.model, tailoringProfileID: value } })}
                   isClearable
                   value={this.state.model.tailoringProfileID}
                   disabled={!!selectedScapPolicy}
@@ -296,6 +302,11 @@ class ScheduleAuditScan extends React.Component<{}, StateType> {
                       className="fetch-remote-checkbox"
                       checked={this.state.model.fetchRemoteResources || false}
                       disabled={!!selectedScapPolicy}
+                      onChange={(e) => {
+                        this.setState({
+                          model: { ...this.state.model, fetchRemoteResources: e.target.checked },
+                        });
+                      }}
                     />
                     <span className="fetch-remote-help">
                       {t("This requires a lot of memory, make sure this minion has enough memory available!")}
