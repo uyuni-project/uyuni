@@ -1,0 +1,2 @@
+- Enable HSTS in Apache config (bsc#1255176)
+- Force SameSite=Lax on all Set-Cookie headers (bsc#1253711)
