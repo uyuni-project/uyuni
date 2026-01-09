@@ -24,9 +24,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 
 public class CloudRmtHostFactory extends HibernateFactory {
 
@@ -59,11 +59,13 @@ public class CloudRmtHostFactory extends HibernateFactory {
 
     /**
      * save the cloud rmt host object to the database
+     *
      * @param host to be saved
+     * @return the managed {@link CloudRmtHost} instance
      */
-    public static void saveCloudRmtHost(CloudRmtHost host) {
+    public static CloudRmtHost saveCloudRmtHost(CloudRmtHost host) {
         host.setModified(new Date());
-        SINGLETON.saveObject(host);
+        return SINGLETON.saveObject(host);
     }
 
     /**

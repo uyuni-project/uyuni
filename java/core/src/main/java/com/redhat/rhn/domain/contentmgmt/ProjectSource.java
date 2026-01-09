@@ -17,21 +17,21 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.Optional;
 
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 
 /**
  * Content Project Source base class
@@ -155,8 +155,8 @@ public abstract class ProjectSource implements Serializable {
      * @return id
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "content_prj_src_seq")
-    @SequenceGenerator(name = "content_prj_src_seq", sequenceName = "suse_ct_prj_src_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "content_prj_src_seq")
+	@SequenceGenerator(name = "content_prj_src_seq", sequenceName = "suse_ct_prj_src_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }

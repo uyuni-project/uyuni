@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LCC
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -416,10 +417,6 @@ public class AccessTest extends BaseTestCaseWithUser {
         SystemManager.subscribeServerToChannel(user, serverNoSupport, normalChannel);
         SystemManager.subscribeServerToChannel(user, serverWithSupport, normalChannel);
         SystemManager.subscribeServerToChannel(user, serverWithSupportAndChannel, ptfChannel);
-
-        serverNoSupport = TestUtils.saveAndReload(serverNoSupport);
-        serverWithSupport = TestUtils.saveAndReload(serverWithSupport);
-        serverWithSupportAndChannel = TestUtils.saveAndReload(serverWithSupportAndChannel);
 
         Access access = new Access();
         Map<String, Object> context = new HashMap<>();

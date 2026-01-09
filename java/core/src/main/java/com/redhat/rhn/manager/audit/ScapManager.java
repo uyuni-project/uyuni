@@ -542,9 +542,7 @@ public class ScapManager extends BaseManager {
                     "\nSome text strings were truncated when saving to the database.";
             }
             result.setErrors(HibernateFactory.stringToByteArray(errs));
-            ScapFactory.save(result);
-
-            return result;
+            return new ScapFactory().save(result);
         }
         catch (Exception e) {
             log.error("Scap xccdf eval failed", e);

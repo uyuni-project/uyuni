@@ -22,15 +22,15 @@ import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleImpl;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 
 /**
  * Class UserGroup that reflects the DB representation of RHNUSERGROUP
@@ -41,8 +41,8 @@ import javax.persistence.Table;
 public class UserGroupImpl extends BaseDomainHelper implements UserGroup {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rhn_user_group_id_seq")
-    @SequenceGenerator(name = "rhn_user_group_id_seq", sequenceName = "rhn_user_group_id_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rhn_user_group_id_seq")
+	@SequenceGenerator(name = "rhn_user_group_id_seq", sequenceName = "rhn_user_group_id_seq", allocationSize = 1)
     @Column(name = "id")
     private Long id;
 

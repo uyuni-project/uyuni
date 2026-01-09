@@ -75,7 +75,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.persistence.Tuple;
+import jakarta.persistence.Tuple;
 
 /**
  * ServerFactory - the singleton class used to fetch and store
@@ -353,7 +353,6 @@ public class ServerFactory extends HibernateFactory {
                 return newPath;
             });
             path.setPosition(parentPath.getPosition() + 1);
-            ServerFactory.save(path);
             paths.add(path);
 
         }
@@ -366,7 +365,6 @@ public class ServerFactory extends HibernateFactory {
             return newPath;
         });
         path.setPosition(0L);
-        ServerFactory.save(path);
         paths.add(path);
         return paths;
     }
@@ -634,7 +632,7 @@ public class ServerFactory extends HibernateFactory {
             return Collections.emptyList();
         }
         return getSession()
-                .createQuery("FROM Server AS s WHERE ORG_ID = :orgId AND s.id IN (:serverIds)", Server.class)
+                .createQuery("FROM Server AS s WHERE s.org.id = :orgId AND s.id IN (:serverIds)", Server.class)
                 .setParameter("orgId", org.getId())
                 .setParameterList("serverIds", serverIds)
                 .list();
@@ -717,7 +715,7 @@ public class ServerFactory extends HibernateFactory {
         if (id == null || orgIn == null) {
             return null;
         }
-        return getSession().createQuery("FROM Server AS s WHERE s.id = :sid AND ORG_ID = :orgId", Server.class)
+        return getSession().createQuery("FROM Server AS s WHERE s.id = :sid AND org.id = :orgId", Server.class)
                 .setParameter("sid", id)
                 .setParameter("orgId", orgIn.getId())
                 .uniqueResult();
@@ -906,34 +904,42 @@ public class ServerFactory extends HibernateFactory {
     /**
      * Insert or Update a Server.
      * @param serverIn Server to be stored in database.
+     * @return the managed {@link Server} instance
      */
-    public static void save(Server serverIn) {
-        SINGLETON.saveObject(serverIn);
-        updateServerPerms(serverIn);
+    public static Server save(Server serverIn) {
+        Server managed = SINGLETON.saveObject(serverIn);
+        updateServerPerms(managed);
+        return managed;
     }
 
     /**
      * Insert or Update a ServerPath.
+     *
      * @param pathIn ServerPath to be stored in database.
+     * @return the managed {@link ServerPath} instance
      */
-    public static void save(ServerPath pathIn) {
-        SINGLETON.saveObject(pathIn);
+    public static ServerPath save(ServerPath pathIn) {
+        return SINGLETON.saveObject(pathIn);
     }
 
     /**
      * Insert or Update InstalledProduct
+     *
      * @param productIn product to store in database
+     * @return the managed {@link InstalledProduct} instance
      */
-    public static void save(InstalledProduct productIn) {
-        SINGLETON.saveObject(productIn);
+    public static InstalledProduct save(InstalledProduct productIn) {
+        return SINGLETON.saveObject(productIn);
     }
 
     /**
      * Save a custom data key
+     *
      * @param keyIn the key to save
+     * @return the managed {@link CustomDataKey} instance
      */
-    public static void saveCustomKey(CustomDataKey keyIn) {
-        SINGLETON.saveObject(keyIn);
+    public static CustomDataKey saveCustomKey(CustomDataKey keyIn) {
+        return SINGLETON.saveObject(keyIn);
     }
 
     /**
@@ -1153,12 +1159,21 @@ public class ServerFactory extends HibernateFactory {
     public static List<Server> listSystemsInSsm(User user) {
         return getSession().createNativeQuery("""
                 select           S.*,
+                                 mi.container_runtime,
+                                 mi.minion_id,
+                                 mi.kernel_live_version,
+                                 mi.ssh_push_port,
+                                 mi.reboot_required_after,
+                                 mi.uname,
+                                 mi.os_family,
                                  case when ss.server_id is not null then 2
                                       when proxy.server_id is not null then 3
-                                      when S.id is not null then 0 end as clazz_
+                                      when mi.server_id is not null then 1
+                                      else 0 end as clazz_
                 from             rhnServer S
                 left outer join  suseMgrServerInfo SS on S.id = SS.server_id
                 left outer join  rhnProxyInfo proxy on S.id = proxy.server_id
+                left join        suseMinionInfo mi on mi.server_id = S.id
                 inner join       rhnSet ST on S.id = st.element
                 where            ST.user_id = :userId
                 and              ST.label = :label
@@ -1813,10 +1828,12 @@ public class ServerFactory extends HibernateFactory {
 
     /**
      * Save NetworkInterface
+     *
      * @param networkInterfaceIn the interface to save
+     * @return the managed {@link NetworkInterface} instance
      */
-    public static void saveNetworkInterface(NetworkInterface networkInterfaceIn) {
-        SINGLETON.saveObject(networkInterfaceIn);
+    public static NetworkInterface saveNetworkInterface(NetworkInterface networkInterfaceIn) {
+        return SINGLETON.saveObject(networkInterfaceIn);
     }
 
 
@@ -1896,7 +1913,7 @@ public class ServerFactory extends HibernateFactory {
      */
     public static List<Server> listOrgSystems(long orgId) {
         return getSession()
-                .createQuery("FROM com.redhat.rhn.domain.server.Server AS s WHERE ORG_ID = :orgId", Server.class)
+                .createQuery("FROM com.redhat.rhn.domain.server.Server AS s WHERE s.org.id = :orgId", Server.class)
                 .setParameter("orgId", orgId)
                 .list();
     }
@@ -1911,6 +1928,7 @@ public class ServerFactory extends HibernateFactory {
         if (systemIds.isEmpty()) {
             return new HashSet<>();
         }
+//        getSession().flush();
         return getSession().createNativeQuery(
                 """
                         SELECT sa.* FROM rhnServerAction sa
@@ -1920,6 +1938,7 @@ public class ServerFactory extends HibernateFactory {
                     """, ServerAction.class
                 )
                 .addSynchronizedEntityClass(Action.class)
+//                .addSynchronizedEntityClass(ServerAction.class)
                 .setParameterList("systemIds", systemIds, StandardBasicTypes.LONG)
                 .getResultList().stream().map(ServerAction::getServerId).collect(Collectors.toSet());
     }

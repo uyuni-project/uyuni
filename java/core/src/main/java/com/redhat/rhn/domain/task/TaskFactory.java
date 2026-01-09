@@ -25,10 +25,10 @@ import org.hibernate.Session;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaDelete;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaDelete;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 
 /**
  * TaskFactory
@@ -64,16 +64,16 @@ public class TaskFactory extends HibernateFactory {
         t.setName(name);
         t.setData(data);
         t.setEarliest(new Date()); //set to now
-        save(t); //store the task to the db
-        return reload(t);
+        return save(t);
     }
 
     /**
      * Saves the object to the db
      * @param taskIn The task to save
+     * @return the managed {@link Task} instance
      */
-    public static void save(Task taskIn) {
-        singleton.saveObject(taskIn);
+    public static Task save(Task taskIn) {
+        return singleton.saveObject(taskIn);
     }
 
     /**

@@ -71,7 +71,7 @@ public class ProfileFactory extends HibernateFactory {
      */
     public static Profile lookupByIdAndOrg(Long id, Org org) {
         Session session = HibernateFactory.getSession();
-        return session.createQuery("FROM Profile AS p WHERE p.id = :id AND org_id=:org_id", Profile.class)
+        return session.createQuery("FROM Profile AS p WHERE p.id = :id AND p.org.id = :org_id", Profile.class)
                 .setParameter("id", id)
                 .setParameter("org_id", org.getId())
                 //Retrieve from cache if there
@@ -108,10 +108,12 @@ public class ProfileFactory extends HibernateFactory {
 
      /**
       * Store the profile.
+      *
       * @param profile The object we are commiting.
+      * @return the managed {@link Profile} instance
       */
-    public static void save(Profile profile) {
-        singleton.saveObject(profile);
+    public static Profile save(Profile profile) {
+        return singleton.saveObject(profile);
     }
 
     /**

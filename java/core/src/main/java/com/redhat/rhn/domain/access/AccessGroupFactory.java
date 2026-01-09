@@ -50,11 +50,10 @@ public class AccessGroupFactory extends HibernateFactory {
     /**
      * Persists an {@code AccessGroup} entity to DB.
      * @param accessGroupIn the entity to save
-     * @return the saved entity
+     * @return the saved entity (managed instance)
      */
     public static AccessGroup save(AccessGroup accessGroupIn) {
-        INSTANCE.saveObject(accessGroupIn);
-        return accessGroupIn;
+        return (AccessGroup) INSTANCE.saveObject(accessGroupIn);
     }
 
     /**

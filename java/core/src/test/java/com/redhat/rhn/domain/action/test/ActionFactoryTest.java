@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LCC
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -412,8 +413,10 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         ServerAction sa2 = addServerAction(user, a1, ServerAction::setStatusQueued);
 
         ActionFactory.save(a1);
-        flushAndEvict(sa1);
-        flushAndEvict(sa2);
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().evict(sa1);
+        HibernateFactory.getSession().evict(sa2);
+        HibernateFactory.getSession().evict(a1);
 
         List<Long> list = new ArrayList<>();
         list.add(sa1.getServerId());
@@ -532,8 +535,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         newA.setArchived(0L);
         newA.setCreated(new Date());
         newA.setModified(new Date());
-        ActionFactory.save(newA);
-        return newA;
+        return ActionFactory.save(newA);
     }
 
 
@@ -671,9 +673,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
 
     public static ServerAction addServerAction(User user, Action newA, Consumer<ServerAction> statusSetter) {
         Server newS = ServerFactoryTest.createTestServer(user, true);
-        ServerAction serverAction = ServerActionTest.createServerAction(newS, newA, statusSetter);
-        newA.addServerAction(serverAction);
-        return serverAction;
+        return ServerActionTest.createServerAction(newS, newA, statusSetter);
     }
 
     public static Action createEmptyAction(User user, ActionType type) {

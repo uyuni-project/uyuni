@@ -19,19 +19,21 @@ import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.hibernate.annotations.Type;
+import org.hibernate.type.YesNoConverter;
 
 import java.util.Objects;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 
 /**
  * Installed Product
@@ -41,8 +43,8 @@ import javax.persistence.Table;
 public class InstalledProduct extends BaseDomainHelper {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suse_inst_pr_seq")
-    @SequenceGenerator(name = "suse_inst_pr_seq", sequenceName = "suse_inst_pr_id_seq", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suse_inst_pr_seq")
+	@SequenceGenerator(name = "suse_inst_pr_seq", sequenceName = "suse_inst_pr_id_seq", allocationSize = 1)
     private Long id;
 
     @Column
@@ -59,7 +61,7 @@ public class InstalledProduct extends BaseDomainHelper {
     private String release;
 
     @Column(name = "is_baseproduct")
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private boolean baseproduct;
 
     /**

@@ -64,7 +64,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 
-import javax.persistence.Tuple;
+import jakarta.persistence.Tuple;
 
 /**
  * ErrataFactory - the singleton class used to fetch and store
@@ -688,10 +688,12 @@ public class ErrataFactory extends HibernateFactory {
 
     /**
      * Insert or Update a Errata.
+     *
      * @param errataIn Errata to be stored in database.
+     * @return the managed {@link Errata} instance
      */
-    public static void save(Errata errataIn) {
-        singleton.saveObject(errataIn);
+    public static Errata save(Errata errataIn) {
+        return singleton.saveObject(errataIn);
     }
 
     /**

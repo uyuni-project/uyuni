@@ -15,8 +15,8 @@
 
 package com.redhat.rhn.frontend.servlets;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.WriteListener;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.WriteListener;
 
 /**
  * Wrapper class implementing new methods introduced in Servlet API 3.1 in Tomcat 8.
