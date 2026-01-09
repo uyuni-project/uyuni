@@ -183,21 +183,21 @@ end
 # configuration management steps
 
 Then(/^I should see a table line with "([^"]*)", "([^"]*)", "([^"]*)"$/) do |arg1, arg2, arg3|
-  within(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{arg1}')]]") do
+  within(:xpath, "//div[contains(@class, \"table-responsive\")]//tr[.//td[contains(.,'#{arg1}')]]") do
     raise ScriptError, "Link #{arg2} not found" unless find_link(arg2)
     raise ScriptError, "Link #{arg3} not found" unless find_link(arg3)
   end
 end
 
 Then(/^I should see a table line with "([^"]*)", "([^"]*)"$/) do |arg1, arg2|
-  within(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{arg1}')]]") do
+  within(:xpath, "//div[contains(@class, \"table-responsive\")]//tr[.//td[contains(.,'#{arg1}')]]") do
     raise ScriptError, "Link #{arg2} not found" unless find_link(arg2)
   end
 end
 
 Then(/^a table line should contain system "([^"]*)", "([^"]*)"$/) do |host, text|
   system_name = get_system_name(host)
-  within(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{system_name}')]]") do
+  within(:xpath, "//div[contains(@class, \"table-responsive\")]//tr[.//td[contains(.,'#{system_name}')]]") do
     raise ScriptError, "Text #{text} not found" unless find_all(:xpath, "//td[contains(., '#{text}')]")
   end
 end
@@ -434,7 +434,7 @@ Then(/^I check the first notification message$/) do
     log 'There are no notification messages, nothing to do then'
   else
     within(:xpath, '//section') do
-      row = find(:xpath, '//div[@class="table-responsive"]/table/tbody/tr[.//td]', match: :first)
+      row = find(:xpath, '//div[@class="table-responsive"]//tr[.//td]', match: :first)
       row.find(:xpath, './/input[@type="checkbox"]', match: :first).set(true)
     end
   end
