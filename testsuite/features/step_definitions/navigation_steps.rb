@@ -532,7 +532,7 @@ Then(/^table row for "([^"]*)" should contain "([^"]*)"$/) do |arg1, arg2|
 end
 
 Then(/^I wait until table row for "([^"]*)" contains "([^"]*)"$/) do |arg1, arg2|
-  xpath_query = "///tr[.//*[contains(.,'#{arg1}')]]"
+  xpath_query = "//tr[.//*[contains(.,'#{arg1}')]]"
   within(:xpath, xpath_query) do
     raise ScriptError, "xpath: #{xpath_query} has no content #{arg2}" unless check_text_and_catch_request_timeout_popup?(arg2, timeout: DEFAULT_TIMEOUT)
   end
@@ -546,7 +546,7 @@ Then(/^the table row for "([^"]*)" should( not)? contain "([^"]*)" icon$/) do |r
     raise ScriptError, "Unsupported icon '#{icon}' in the step definition"
   end
 
-  xpath_query = "///tr[.//*[contains(.,'#{row}')]]"
+  xpath_query = "//tr[.//*[contains(.,'#{row}')]]"
   within(:xpath, xpath_query) do
     if should_not
       raise ScriptError, "xpath: #{xpath_query} has icon #{icon}" unless has_no_css?(content_selector, wait: 2)
@@ -557,7 +557,7 @@ Then(/^the table row for "([^"]*)" should( not)? contain "([^"]*)" icon$/) do |r
 end
 
 When(/^I wait at most ([0-9]+) seconds until table row for "([^"]*)" contains button "([^"]*)"$/) do |timeout, text, button|
-  xpath_query = "///tr[td[contains(., '#{text}')]]/td/descendant::*[self::a or self::button][@title='#{button}']"
+  xpath_query = "//tr[td[contains(., '#{text}')]]/td/descendant::*[self::a or self::button][@title='#{button}']"
   raise ScriptError, "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: timeout.to_f)
 end
 
@@ -566,7 +566,7 @@ When(/^I wait until table row for "([^"]*)" contains button "([^"]*)"$/) do |tex
 end
 
 When(/^I wait until table row contains a "([^"]*)" text$/) do |text|
-  xpath_query = "///tr[.//td[contains(.,'#{text}')]]"
+  xpath_query = "//tr[.//td[contains(.,'#{text}')]]"
   raise ScriptError, "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: DEFAULT_TIMEOUT)
 end
 
