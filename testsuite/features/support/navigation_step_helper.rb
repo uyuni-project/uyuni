@@ -10,11 +10,11 @@ def toggle_checkbox_in_package_list(action, text, last_version: false)
   return toggle_checkbox_in_list(action, text) unless last_version
 
   begin
-    link_elements = all(:xpath, "//div[@class='table-responsive']/table/tbody/tr/td[@class=' sortedCol']/a")
+    link_elements = all(:xpath, "//table/tbody/tr/td[contains(@class, 'sortedCol')]/a")    packages      = link_elements.map(&:text)
     packages      = link_elements.map(&:text)
     latest        = latest_package(packages)
 
-    xpath = "//div[@class='table-responsive']/table/tbody/tr/td[@class=' sortedCol']/a[text()='#{latest}']/../../td/input[@type='checkbox']"
+    xpath = "//table/tbody/tr/td[contains(@class, 'sortedCol')]/a[text()='#{latest}']/ancestor::tr//input[@type='checkbox']"    row   = find(:xpath, xpath, match: :first)
     row   = find(:xpath, xpath, match: :first)
     row.set(action == 'check')
   rescue StandardError => e
@@ -28,8 +28,7 @@ end
 # @param action [String] Either 'check' or 'uncheck'
 # @param text [String] The text to match in the row
 def toggle_checkbox_in_list(action, text)
-  top_level_xpath_query = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{text}')]]//input[@type='checkbox']"
-
+  top_level_xpath_query = "//table/tbody/tr[.//td[contains(.,'#{text}')]]//input[@type='checkbox']"
   row = find(:xpath, top_level_xpath_query, match: :first)
   raise "xpath: #{top_level_xpath_query} not found" if row.nil?
 
