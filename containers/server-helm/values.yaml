@@ -47,7 +47,14 @@ matchPvByLabel: false
 #  claimName: mirror
 #  hostPath: /srv/mirror
 
-# TODO Parametrize big volumes sizes
+# Customize the volume sizes with the volumes dictionary.
+# The keys are the volume names.
+# TODO Allow setting different storage class per volume
+#volumes:
+#  var-pgsql:
+#    size: 50Gi
+#  var-spacewalk:
+#    size: 100Gi
 
 ## servicesAnnotations are annotations to set on both TCP and UDP services.
 ## This can be useful to share the same IP when using metallb
@@ -57,26 +64,36 @@ matchPvByLabel: false
 ## to taskomatic, search server and tomcat respectively
 # exposeJavaDebug: true
 
-## enableMonitoring will expose the 9100 9187 5556 5557 9500 9800 ports for prometheus to scrape
+## enableMonitoring will expose the 9100 9187 5556 5557 9800 ports for prometheus to scrape
 enableMonitoring: true
 
-## ingress defines the ingress that is used in the cluster.
-## It can be either "nginx", "traefik" or any other value.
-ingress: "traefik"
+ingress:
+  ## ingress.type defines the ingress that is used in the cluster.
+  ## It can be either "nginx", "traefik" or any other value.
+  type: "traefik"
+  ## Specify the ingress class name to use. Empty, means that the default one will be used.
+  class: ""
+  ## annotations can be used to set custom annotations on the created ingress rules.
+  ## This can be used to configure another ingress than the ones already wired with the ingress.type.
+  ## The ssl annotations can also be used to set a cert-manager issuer like:
+  ## ingress:
+  ##   annotations:
+  ##     ssl:
+  ##       cert-manager.io/cluster-issuer: uyuniIssuer
+  #annotations:
+  #  ssl:
+  #  sslRedirect:
+  #  nossl:
 
-## ingressSsl are annotations to pass the SSL ingress.
-## This can be used to set a cert-manager issuer like:
-## ingressSslAnnotations:
-##   cert-manager.io/cluster-issuer: uyuniIssuer
-# ingressSslAnnotations:
 
 # The time zone to set in the containers
 timezone: "Etc/UTC"
 
-# Only used to migrate from an existing non-container server
-# migration:
-#   ssh:
-#     agentSocket: /tmp/socket/path
-#     configPath: /home/mine/.ssh/config
-#     knownHostsPath: /home/mine/.ssh/known_hosts
-#   dataPath: /tmp/uyuni-migration
+# Email will be the email used for the notifications sent by the server.
+email: "admin@uyuni.lab.org"
+
+global:
+  # fqdn is the fully qualified name the server will answer as.
+  # Changing this value renames the server and changes the server FQDN in the database, handle with care.
+  # This value is required.
+  fqdn:
