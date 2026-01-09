@@ -95,10 +95,14 @@ class RecurringActionsEdit extends Component<Props, State> {
       .catch(this.props.onError);
   };
 
-  matchUrl = (target?: string) => {
+  matchUrl = (target?: string, filter?: string) => {
     const id = this.state.recurringActionId;
     if (target === "policy") {
-      return "/rhn/manager/api/recurringactions/policies?" + (id ? "id=" + id : "");
+      let url = "/rhn/manager/api/recurringactions/policies?";
+      const params: string[] = [];
+      if (id) params.push("id=" + id);
+      if (filter) params.push("filter=" + encodeURIComponent(filter));
+      return url + params.join("&");
     }
     return "/rhn/manager/api/recurringactions/states?" + (id ? "id=" + id : "") + (target ? "&target=" + target : "");
   };
@@ -308,7 +312,7 @@ class RecurringActionsEdit extends Component<Props, State> {
               &nbsp;
             </h3>
             <PoliciesPicker
-              matchUrl={() => this.matchUrl("policy")}
+              matchUrl={(filter) => this.matchUrl("policy", filter)}
               saveRequest={this.onSavePolicies}
             />
           </span>

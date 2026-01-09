@@ -346,6 +346,7 @@ public class RecurringActionController {
      */
     public static String listScapPolicies(Request req, Response res, User user) {
         String idParam = req.queryParams("id");
+        String filterParam = req.queryParams("filter");
         List<ScapPolicy> scapPolicies = ScapFactory.listScapPolicies(user.getOrg());
         
         // Get assigned policy if editing existing recurring action
@@ -361,6 +362,18 @@ public class RecurringActionController {
             }
         }
         
+        // Filter policies if filter parameter is provided
+        if (filterParam != null && !filterParam.trim().isEmpty()) {
+            String filter = filterParam.toLowerCase();
+            scapPolicies = scapPolicies.stream()
+                    .filter(policy ->
+                        policy.getPolicyName().toLowerCase().contains(filter) ||
+                        (policy.getDescription() != null && policy.getDescription().toLowerCase().contains(filter)) ||
+                        policy.getDataStreamName().toLowerCase().contains(filter)
+                    )
+                    .collect(Collectors.toList());
+        }
+
         List<JsonObject> scapPoliciesJson = scapPolicies.stream()
                 .map(policy -> {
                     JsonObject json = new JsonObject();
