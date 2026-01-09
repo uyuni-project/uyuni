@@ -974,7 +974,7 @@ When(/^I uncheck row with "([^"]*)" and arch of "([^"]*)"$/) do |text, client|
 end
 
 When(/^I check row with "([^"]*)" and "([^"]*)" in the list$/) do |text1, text2|
-  top_level_xpath_query = "//div[contains(@class, "table-responsive")]//tr[.//td[contains(.,'#{text1}')] and .//td[contains(.,'#{text2}')]]//input[@type='checkbox']"
+  top_level_xpath_query = "//div[contains(@class, 'table-responsive')]//tr[.//td[contains(.,'#{text1}')] and .//td[contains(.,'#{text2}')]]//input[@type='checkbox']"
   row = find(:xpath, top_level_xpath_query)
   raise ScriptError, "xpath: #{top_level_xpath_query} not found" if row.nil?
 
@@ -982,7 +982,7 @@ When(/^I check row with "([^"]*)" and "([^"]*)" in the list$/) do |text1, text2|
 end
 
 When(/^I uncheck row with "([^"]*)" and "([^"]*)" in the list$/) do |text1, text2|
-  top_level_xpath_query = "//div[contains(@class, "table-responsive")]//tr[.//td[contains(.,'#{text1}')] and .//td[contains(.,'#{text2}')]]//input[@type='checkbox']"
+  top_level_xpath_query = "//div[contains(@class, 'table-responsive')]//tr[.//td[contains(.,'#{text1}')] and .//td[contains(.,'#{text2}')]]//input[@type='checkbox']"
   row = find(:xpath, top_level_xpath_query, match: :first)
   raise ScriptError, "xpath: #{top_level_xpath_query} not found" if row.nil?
 
