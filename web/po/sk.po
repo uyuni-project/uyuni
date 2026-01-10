@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-09 10:26+0000\n"
-"PO-Revision-Date: 2026-01-10 15:04+0000\n"
+"PO-Revision-Date: 2026-01-10 20:04+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -719,7 +719,7 @@ msgstr "Prístupový token skopírovaný do schránky"
 #. Vendor channels can't sync orgs
 #: ../html/src/components/hub/ChannelSelectorTable.tsx:33
 msgid "Vendor"
-msgstr ""
+msgstr "Dodávateľ"
 
 #: ../html/src/components/hub/ChannelSelectorTable.tsx:50
 msgid "Select Organization"
@@ -2915,10 +2915,8 @@ msgid "AppStreams"
 msgstr "Položky AppStream"
 
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:59
-#, fuzzy
-#| msgid "Please review the changes below before scheduling an action to apply the changes on the system."
 msgid "Please review the changes below before scheduling an action to apply the changes."
-msgstr "Prosím, skontrolujte nižšie uvedené zmeny pred naplánovaním akcie na vykonanie zmien v systéme."
+msgstr "Prosím, skontrolujte nižšie uvedené zmeny pred naplánovaním akcie na vykonanie zmien."
 
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:77
 msgid "Streams to be enabled:"
@@ -4154,10 +4152,8 @@ msgid "The page you requested, {currentUrl}, was not found."
 msgstr "Požadovaná stránka {currentUrl} sa nenašla."
 
 #: ../html/src/manager/errors/not-found.tsx:10
-#, fuzzy
-#| msgid "If you typed this address into your browser, double-check the spelling and capitalization."
 msgid "If you typed this address into your browser, double-check the spelling and capitalization. The address you are copying may also be outdated."
-msgstr "Ak ste zadali túto adresu do svojho prehliadača, znova skontrolujte pravopis a veľké písmená."
+msgstr "Ak ste túto adresu zadali do prehliadača, prekontrolujte si pravopis a písanie veľkých písmen. Adresa, ktorú kopírujete, môže byť tiež neaktuálna."
 
 #: ../html/src/manager/errors/not-found.tsx:16
 msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your browser to try a different link, or use the top (or left) navigation bars to find the page you are looking for."
@@ -5255,10 +5251,8 @@ msgid "Nothing configured. Please add paths in the "
 msgstr "Nič nakonfigurované. Pridajte, prosím, cesty v "
 
 #: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:197
-#, fuzzy
-#| msgid "Add Peripheral"
 msgid "Add Variable"
-msgstr "Pridať perifériu"
+msgstr "Pridať premennú"
 
 #: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:222
 #: ../html/src/manager/minion/ansible/variables/boolean-editor.tsx:48
@@ -5268,32 +5262,24 @@ msgstr "Pravda"
 
 #: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:226
 #: ../html/src/manager/minion/ansible/variables/boolean-editor.tsx:51
-#, fuzzy
-#| msgid "false"
 msgid "False"
-msgstr "nepravda"
+msgstr "Nepravda"
 
 #: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:244
 msgid "Edit YAML"
 msgstr "Upraviť YAML"
 
 #: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:255
-#, fuzzy
-#| msgid "Collapse All Sections"
 msgid "Collapse All"
-msgstr "Zbaliť všetky sekcie"
+msgstr "Zbaliť všetko"
 
 #: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:255
-#, fuzzy
-#| msgid "Expand All Sections"
 msgid "Expand All"
-msgstr "Rozbaliť všetky sekcie"
+msgstr "Rozbaliť všetko"
 
 #: ../html/src/manager/minion/ansible/edit-ansible-vars-modal.tsx:65
-#, fuzzy
-#| msgid "Edit profile"
 msgid "Edit variables"
-msgstr "Upraviť profil"
+msgstr "Upraviť premenné"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:139
 msgid "Loading playbook contents.."
@@ -5319,16 +5305,12 @@ msgid "Change Playbook"
 msgstr "Zmeniť scenár"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:167
-#, fuzzy
-#| msgid "Change Playbook"
 msgid "Choose a different Playbook"
-msgstr "Zmeniť scenár"
+msgstr "Vybrať iný scenár"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:173
-#, fuzzy
-#| msgid "Select the current Playbook"
 msgid "Save the current Playbook"
-msgstr "Vybrať aktuálny scenár"
+msgstr "Uložiť aktuálny scenár"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:183
 msgid "Playbook \"{name}\""
@@ -5364,75 +5346,53 @@ msgstr "Vykonanie scenára bolo"
 
 #: ../html/src/manager/minion/ansible/variables/boolean-editor.tsx:27
 #: ../html/src/manager/minion/ansible/variables/boolean-editor.tsx:56
-#, fuzzy
-#| msgid "Add token"
 msgid "Add Boolean"
-msgstr "Pridať token"
+msgstr "Pridať logickú hodnotu"
 
 #: ../html/src/manager/minion/ansible/variables/dictionary-editor.tsx:93
 msgid "Key-Value Pairs"
-msgstr ""
+msgstr "Páry kľúč-hodnota"
 
 #: ../html/src/manager/minion/ansible/variables/dictionary-editor.tsx:115
-#, fuzzy
-#| msgid "Add item"
 msgid "Add Item"
 msgstr "Pridať položku"
 
 #: ../html/src/manager/minion/ansible/variables/dictionary-editor.tsx:120
-#, fuzzy
-#| msgid "Delete Image"
 msgid "Delete Item"
-msgstr "Vymazať obraz"
+msgstr "Vymazať položku"
 
 #: ../html/src/manager/minion/ansible/variables/dictionary-editor.tsx:131
-#, fuzzy
-#| msgid "Add Calendar"
 msgid "Add Key-Value Pair"
-msgstr "Pridať kalendár"
+msgstr "Pridať pár kľúč-hodnota"
 
 #: ../html/src/manager/minion/ansible/variables/dictionary-editor.tsx:131
-#, fuzzy
-#| msgid "Add token"
 msgid "Add Dictionary"
-msgstr "Pridať token"
+msgstr "Pridať slovník"
 
 #: ../html/src/manager/minion/ansible/variables/list-editor.tsx:49
-#, fuzzy
-#| msgid "Systems"
 msgid "Items"
-msgstr "Systémy"
+msgstr "Položky"
 
 #: ../html/src/manager/minion/ansible/variables/list-editor.tsx:69
-#, fuzzy
-#| msgid "Add item"
 msgid "Add List Item"
-msgstr "Pridať položku"
+msgstr "Pridať položku zoznamu"
 
 #: ../html/src/manager/minion/ansible/variables/list-editor.tsx:76
-#, fuzzy
-#| msgid "Delete cluster"
 msgid "Delete List Item"
-msgstr "Vymazať klaster"
+msgstr "Vymazať položku zoznamu"
 
 #: ../html/src/manager/minion/ansible/variables/list-editor.tsx:87
-#, fuzzy
-#| msgid "Add item"
 msgid "Add List"
-msgstr "Pridať položku"
+msgstr "Pridať zoznam"
 
 #: ../html/src/manager/minion/ansible/variables/string-editor.tsx:31
 #: ../html/src/manager/minion/ansible/variables/string-editor.tsx:58
-#, fuzzy
-#| msgid "Add token"
 msgid "Add String"
-msgstr "Pridať token"
+msgstr "Pridať reťazec"
 
 #: ../html/src/manager/minion/ansible/variables/string-editor.tsx:36
-#, fuzzy
-#| msgid "New value"
 msgid "Name and value"
-msgstr "Nová hodnota"
+msgstr "Názov a hodnota"
 
 #: ../html/src/manager/minion/coco/coco-settings.tsx:66
 msgid "Settings"
@@ -6291,10 +6251,8 @@ msgid "Flush fact cache:"
 msgstr "Vyprázdniť vyrovnávaciu pamäť faktov:"
 
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:126
-#, fuzzy
-#| msgid "Disable"
 msgid "Variables"
-msgstr "Zakázať"
+msgstr "Premenné"
 
 #. Value options for filtering by Action Type in recurring actions list
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:10
@@ -6602,47 +6560,35 @@ msgstr "Typ systému"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-channel-selection.tsx:16
 msgid "No modular channels are available for the selected systems in SSM."
-msgstr ""
+msgstr "Pre vybrané systémy v SSM nie sú k dispozícii žiadne modulárne kanály."
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-channel-selection.tsx:19
-#, fuzzy
-#| msgid "Select Channels"
 msgid "Select Channel"
-msgstr "Vybrať kanály"
+msgstr "Vybrať kanál"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-channel-selection.tsx:21
 msgid "First, select the channel containing the AppStreams to be configured upon the selected systems."
-msgstr ""
+msgstr "Najskôr vyberte kanál obsahujúci AppStreams pre konfiguráciu na vybraných systémoch."
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:18
-#, fuzzy
-#| msgid "Base Channel"
 msgid "Change Channel"
-msgstr "Základný kanál"
+msgstr "Zmeniť kanál"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:21
-#, fuzzy
-#| msgid "Config channel"
 msgid "Change channel"
-msgstr "Konfiguračný kanál"
+msgstr "Zmeniť kanál"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:74
-#, fuzzy
-#| msgid "The following AppStream modules are currently available to the system."
 msgid "The following AppStream modules are available on the selected channel."
-msgstr "V súčasnosti sú v systéme k dispozícii tieto moduly AppStream."
+msgstr "Na vybranom kanáli sú k dispozícii tieto moduly AppStream."
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:98
-#, fuzzy
-#| msgid "AppStreams"
 msgid "({count} AppStreams)"
-msgstr "Položky AppStream"
+msgstr "({count} AppStreams)"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:123
-#, fuzzy
-#| msgid "No change"
 msgid "Don't change"
-msgstr "Žiadna zmena"
+msgstr "Nemeniť"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:135
 msgid "Enable "
@@ -6937,10 +6883,8 @@ msgid "Product Migration - Schedule"
 msgstr "Migrácia produktov – Plán"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:105
-#, fuzzy
-#| msgid "Base Product"
 msgid "Unknown base product"
-msgstr "Základný produkt"
+msgstr "Neznámy základný produkt"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:119
 msgid "Show product details"
