@@ -1,7 +1,7 @@
 {%- set salt_minion_name = 'salt-minion' %}
 {%- set salt_config_dir = '/etc/salt' %}
-{# Prefer venv-salt-minion if installed #}
-{%- if salt['pkg.version']('venv-salt-minion') %}
+{# Use venv-salt-minion if the state applied with it #}
+{%- if '/venv-salt-minion/' in grains['pythonexecutable'] %}
 {%- set salt_minion_name = 'venv-salt-minion' %}
 {%- set salt_config_dir = '/etc/venv-salt-minion' %}
 {%- endif -%}
