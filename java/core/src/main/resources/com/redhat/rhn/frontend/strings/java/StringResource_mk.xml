@@ -895,28 +895,28 @@
       </trans-unit>
       <trans-unit id="product_proxy" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Proxy</source>
-        <target/>
+        <target state="translated">@@PRODUCT_NAME@@ Прокси</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="product_server" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ Server</source>
-        <target/>
+        <target state="translated">@@PRODUCT_NAME@@ Сервер</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Published" xml:space="preserve">
         <source>Published</source>
-        <target/>
+        <target state="translated">Објавено</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
       </trans-unit>
       <trans-unit id="Subscription Management" xml:space="preserve">
         <source>Subscription Management</source>
-        <target/>
+        <target state="translated">Управување со претплати</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
