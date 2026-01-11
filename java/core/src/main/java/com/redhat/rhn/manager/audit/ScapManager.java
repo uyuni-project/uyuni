@@ -631,9 +631,11 @@ public class ScapManager extends BaseManager {
 
             // get rules with remediations
 
-            List<Rule> remediations = resume.getRules().stream()
-
-                    .filter(s -> Objects.nonNull(s.getRemediation())).collect(Collectors.toList());
+            List<Rule> remediations = Optional.ofNullable(resume.getRules())
+                    .orElse(Collections.emptyList())
+                    .stream()
+                    .filter(s -> Objects.nonNull(s.getRemediation()))
+                    .collect(Collectors.toList());
 
             remediations.stream().forEach(s-> {
 

@@ -219,7 +219,7 @@ class ScheduleAuditScan extends React.Component<{}, StateType> {
                   }}
                   options={window.scapDataStreams
                     .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
-                    .map((k) => ({ value: k, label: k.substring(0, k.indexOf("-xccdf.xml")).toUpperCase() }))}
+                    .map((k) => ({ value: k, label: k.substring(0, k.indexOf("-ds.xml")).toUpperCase() }))}
                 />
               </div>
             </FormGroup>

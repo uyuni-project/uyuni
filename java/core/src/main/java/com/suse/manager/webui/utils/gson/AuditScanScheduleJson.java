@@ -67,7 +67,7 @@ public class AuditScanScheduleJson {
      * @return the full path to the SCAP data stream file
      */
     public String getDataStreamPath() {
-        return "/usr/share/scap/" + dataStreamName;
+        return "/usr/share/xml/scap/ssg/content/" + dataStreamName;
     }
 
     /**

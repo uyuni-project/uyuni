@@ -65,7 +65,7 @@ public class ScapAuditController {
     private static final Logger LOG = LogManager.getLogger(ScapAuditController.class);
     private static final Gson GSON = Json.GSON;
     private static final String TAILORING_FILES_DIR = "/srv/susemanager/scap/tailoring-files/";
-    private static final String SCAP_CONTENT_STANDARD_DIR = "/srv/susemanager/scap/ssg/content";
+    private static final String SCAP_CONTENT_DIR = "/srv/susemanager/scap/ssg/content";
 
 
     /**
@@ -774,10 +774,10 @@ public class ScapAuditController {
         scapContentList.forEach(content -> {
             try {
                 // Delete DataStream file
-                Path dsFilePath = Paths.get(SCAP_CONTENT_STANDARD_DIR, content.getDataStreamFileName());
+                Path dsFilePath = Paths.get(SCAP_CONTENT_DIR, content.getDataStreamFileName());
                 Files.deleteIfExists(dsFilePath);
                 // Delete XCCDF file
-                Path xccdfFilePath = Paths.get(SCAP_CONTENT_STANDARD_DIR, content.getXccdfFileName());
+                Path xccdfFilePath = Paths.get(SCAP_CONTENT_DIR, content.getXccdfFileName());
                 Files.deleteIfExists(xccdfFilePath);
             } catch (IOException e) {
                 LOG.error("Error deleting SCAP content files for: {}", content.getName(), e);
@@ -827,7 +827,7 @@ public class ScapAuditController {
                 scapContent.setOrg(user.getOrg());
             }
 
-            ensureDirectoryExists(SCAP_CONTENT_STANDARD_DIR);
+            ensureDirectoryExists(SCAP_CONTENT_DIR);
 
             // Process DataStream file if provided
             if (scapFileOpt.isPresent()) {
@@ -840,7 +840,7 @@ public class ScapAuditController {
                         "DataStream file must end with '-ds.xml'"));
                 }
 
-                saveFileToDirectory(scapFile, SCAP_CONTENT_STANDARD_DIR);
+                saveFileToDirectory(scapFile, SCAP_CONTENT_DIR);
                 scapContent.setDataStreamFileName(dsFileName);
             }
 
@@ -855,7 +855,7 @@ public class ScapAuditController {
                         "XCCDF file must end with '-xccdf.xml'"));
                 }
 
-                saveFileToDirectory(xccdfFile, SCAP_CONTENT_STANDARD_DIR);
+                saveFileToDirectory(xccdfFile, SCAP_CONTENT_DIR);
                 scapContent.setXccdfFileName(xccdfFileName);
             }
 
@@ -881,24 +881,17 @@ public class ScapAuditController {
     }
 
     /**
-     * Processes a GET request to get a list of all image store objects of a specific type
+     * Processes a GET request to get a list of scap configurations
      *
      * @param request  the request object
      * @param response  the response object
      * @param user the authorized user
-     * @param user the authorized user
+     * @param server the server
      * @return the result JSON object
      */
     private ModelAndView scheduleAuditScanView(Request request, Response response, User user, Server server) {
-        List<String> imageTypesDataFromTheServer = new ArrayList<>();
-        imageTypesDataFromTheServer.add("dockerfile");
 
         Map<String, Object> data = new HashMap<>();
-        data.put("activationKeys", new HashMap<>());
-        data.put("customDataKeys",new HashMap<>());
-        data.put("imageTypesDataFromTheServer", Json.GSON.toJson(imageTypesDataFromTheServer));
-
-        // Use shared method to get SCAP data streams
         data.put("scapDataStreams", Json.GSON.toJson(getScapDataStreams()));
         List<TailoringFile> tailoringFiles = ScapFactory.listTailoringFiles(user.getOrg());
         List<JsonObject> collect = tailoringFiles.stream().map(this::convertToTailoringFileJson).collect(Collectors.toList());
@@ -937,10 +930,6 @@ public class ScapAuditController {
         Optional<XccdfRuleFix> xccdfRuleFix = ScapFactory.lookupRuleRemediation(ruleResult.getDocumentIdref());
         String remediation = xccdfRuleFix.map(fix -> fix.getRemediation())
           .orElse("No remediation available");
-
-
-        List<String> imageTypesDataFromTheServer = new ArrayList<>();
-        imageTypesDataFromTheServer.add("dockerfile");
 
         Map<String, Object> data = new HashMap<>();
         data.put("identifier",ruleResult.getDocumentIdref());
@@ -990,27 +979,27 @@ public class ScapAuditController {
 
     /**
      * Reads SCAP content files from the standard directory
-     * @return List of SCAP XCCDF file names
+     * @return List of SCAP Datastream (-ds.xml) file names
      */
     private List<String> getScapDataStreams() {
-        File scapContentDir = new File(SCAP_CONTENT_STANDARD_DIR);
+        File scapContentDir = new File(SCAP_CONTENT_DIR);
         if (!scapContentDir.exists() || !scapContentDir.isDirectory()) {
-            LOG.warn("SCAP content directory does not exist: {}", SCAP_CONTENT_STANDARD_DIR);
+            LOG.warn("SCAP content directory does not exist: {}", SCAP_CONTENT_DIR);
             return Collections.emptyList();
         }
 
-        File[] xccdfFiles = scapContentDir.listFiles((dir, name) -> name.endsWith("-xccdf.xml"));
-        if (xccdfFiles == null) {
+        File[] scapDatastreams = scapContentDir.listFiles((dir, name) -> name.endsWith("-ds.xml"));
+        if (scapDatastreams == null) {
             return Collections.emptyList();
         }
 
-        return Arrays.stream(xccdfFiles)
+        return Arrays.stream(scapDatastreams)
                 .map(File::getName)
                 .sorted()
                 .collect(Collectors.toList());
     }
     /**
-     * Processes a GET request to get a list of all image store objects of a specific type
+     * Processes a GET request to get a list of profiles from SCAP content
      *
      * @param req  the request object
      * @param res  the response object
@@ -1018,17 +1007,37 @@ public class ScapAuditController {
      * @return the result JSON object
      */
     public static Object getProfileList(Request req, Response res, User user) {
-        String location = SCAP_CONTENT_STANDARD_DIR;
+        String location = SCAP_CONTENT_DIR;
         String contentType = req.params("type");
         String contentName = req.params("name");
+        
         if (contentType.equalsIgnoreCase("tailoringFile")) {
             location = TAILORING_FILES_DIR;
         }
-        Path dataStream = Paths.get(location).resolve(contentName);
+        
+        Path filePath;
+        
+        // If content name ends with -ds.xml, find the corresponding -xccdf.xml file
+        if (contentName.endsWith("-ds.xml")) {
+            String baseName = contentName.substring(0, contentName.length() - "-ds.xml".length());
+            String xccdfFileName = baseName + "-xccdf.xml";
+            filePath = Paths.get(location).resolve(xccdfFileName);
+            
+            // Verify the XCCDF file exists
+            if (!Files.exists(filePath)) {
+                LOG.error("Corresponding XCCDF file not found: {}", xccdfFileName);
+                return json(res, ResultJson.error("XCCDF file not found for: " + contentName), new TypeToken<>() { });
+            }
+        } else {
+            // For tailoring files or direct XCCDF references
+            filePath = Paths.get(location).resolve(contentName);
+        }
+        
         try {
-            BenchMark result = ScapManager.getProfileList(dataStream.toFile());
-            return json(res, result.getProfiles());
+            BenchMark result = ScapManager.getProfileList(filePath.toFile());
+            return json(res, result.getProfiles(), new TypeToken<>() { });
         } catch (IOException e) {
+            LOG.error("Error reading profile list from: {}", filePath, e);
             throw new RuntimeException(e);
         }
     }
