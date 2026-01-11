@@ -1,13 +1,10 @@
-# Copyright (c) 2025 SUSE LLC.
+# Copyright (c) 2026 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'net/scp'
 require 'net/ssh'
 require 'openssl'
 require 'stringio'
-
-Net::SSH::Transport::Algorithms::ALGORITHMS.each_value { |algs| algs.reject! { |a| a.match(/^ecd(sa|h)-sha2/) } }
-Net::SSH::KnownHosts::SUPPORTED_TYPE.reject! { |t| t.match(/^ecd(sa|h)-sha2/) }
 
 # This method is used to execute a command on a remote host using SSH and return the output of the command.
 #
