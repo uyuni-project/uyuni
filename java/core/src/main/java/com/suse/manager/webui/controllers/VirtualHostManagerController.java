@@ -70,8 +70,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import jakarta.persistence.NoResultException;
-import jakarta.servlet.ServletContext;
-
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;

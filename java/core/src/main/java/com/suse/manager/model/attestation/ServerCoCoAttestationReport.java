@@ -31,8 +31,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -57,8 +57,10 @@ public class ServerCoCoAttestationReport extends BaseDomainHelper implements Ser
      * @return return the ID
      */
     @Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "server_cocoatt_report_seq")
-	@SequenceGenerator(name = "server_cocoatt_report_seq", sequenceName = "suse_srvcocoatt_rep_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "server_cocoatt_report_seq")
+    @SequenceGenerator(
+            name = "server_cocoatt_report_seq", sequenceName = "suse_srvcocoatt_rep_id_seq", allocationSize = 1
+    )
     public Long getId() {
         return id;
     }

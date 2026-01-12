@@ -30,7 +30,6 @@ import java.util.regex.Pattern;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.jsp.PageContext;
-
 import spark.Request;
 import spark.Response;
 import spark.RouteImpl;

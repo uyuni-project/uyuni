@@ -18,7 +18,6 @@ import java.io.InputStream;
 import java.io.Writer;
 
 import jakarta.servlet.http.HttpServletRequest;
-
 import redstone.xmlrpc.XmlRpcDispatcher;
 import redstone.xmlrpc.XmlRpcServer;
 

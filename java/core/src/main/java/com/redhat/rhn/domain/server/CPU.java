@@ -17,16 +17,14 @@ package com.redhat.rhn.domain.server;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
-import io.hypersistence.utils.hibernate.type.json.JsonType;
-
-import org.hibernate.annotations.Type;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.annotations.Type;
 
 import java.util.Map;
 import java.util.TreeMap;
 
+import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -384,7 +382,7 @@ public class CPU extends BaseDomainHelper {
     /**
      * provides the cpuarch name, which is really the only usefull info for the
      * cpu arch object
-     * 
+     *
      * @return the arch that the cpu is.
      */
     public String getArchName() {

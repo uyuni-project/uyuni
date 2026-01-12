@@ -56,7 +56,6 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import jakarta.servlet.http.HttpServletRequest;
-
 import spark.Request;
 import spark.Route;
 import spark.Spark;

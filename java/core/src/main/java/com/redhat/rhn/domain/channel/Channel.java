@@ -32,7 +32,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.annotations.Type;
 import org.hibernate.type.YesNoConverter;
 
 import java.util.ArrayList;
@@ -50,8 +49,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
@@ -86,8 +85,8 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
                     "channel-sparc"));
 
     @Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rhn_channel_seq")
-	@SequenceGenerator(name = "rhn_channel_seq", sequenceName = "RHN_CHANNEL_ID_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rhn_channel_seq")
+    @SequenceGenerator(name = "rhn_channel_seq", sequenceName = "RHN_CHANNEL_ID_SEQ", allocationSize = 1)
     private Long id;
 
     @Column
