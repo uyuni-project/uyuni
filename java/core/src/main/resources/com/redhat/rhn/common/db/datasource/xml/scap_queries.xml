@@ -679,4 +679,84 @@
     </query>
 </callable-mode>
 
+<mode name="all_policies_compliance" class="com.suse.manager.webui.utils.gson.ScapPolicyComplianceSummary">
+  <query params="user_id, org_id">
+  WITH PolicyCompliance AS (
+      SELECT 
+          ras.scap_policy_id,
+          tr.server_id,
+          MAX(sa.completion_time) as last_server_scan,
+          CASE WHEN NOT EXISTS (
+              SELECT 1 FROM rhnXccdfRuleresult rr
+              JOIN rhnXccdfRuleresultType rrt ON rr.result_id = rrt.id
+              WHERE rr.testresult_id = tr.id AND rrt.label = 'fail'
+          ) THEN 1 ELSE 0 END as is_compliant
+      FROM rhnXccdfTestresult tr
+      JOIN rhnActionScap ras ON tr.action_scap_id = ras.id
+      JOIN rhnServerAction sa ON sa.server_id = tr.server_id AND sa.action_id = ras.action_id
+      JOIN rhnUserServerPerms usp ON usp.server_id = tr.server_id
+      WHERE usp.user_id = :user_id
+      GROUP BY ras.scap_policy_id, tr.server_id, tr.id
+  )
+  SELECT 
+      sp.id AS id,
+      sp.policy_name,
+      sp.data_stream_name,
+      COALESCE(COUNT(pc.server_id), 0) AS total_systems,
+      COALESCE(SUM(pc.is_compliant), 0) AS compliant_systems,
+      MAX(pc.last_server_scan) AS last_scan_time
+  FROM suseScapPolicy sp
+  LEFT JOIN PolicyCompliance pc ON sp.id = pc.scap_policy_id
+  WHERE sp.org_id = :org_id
+  GROUP BY sp.id, sp.policy_name, sp.data_stream_name
+  ORDER BY sp.policy_name
+  </query>
+</mode>
+
+<mode name="policy_scan_history" class="com.suse.manager.webui.utils.gson.ScapPolicyScanHistory">
+  <query params="user_id, policy_id">
+  WITH TargetTests AS (
+      -- Narrow down the test IDs first so the heavy counting is limited
+      SELECT tr.id 
+      FROM rhnXccdfTestresult tr
+      JOIN rhnActionScap ras ON tr.action_scap_id = ras.id
+      WHERE ras.scap_policy_id = :policy_id
+  ),
+  RuleCounts AS (
+      SELECT 
+          rr.testresult_id,
+          COUNT(CASE WHEN rrt.label = 'pass' THEN 1 END) AS pass,
+          COUNT(CASE WHEN rrt.label = 'fail' THEN 1 END) AS fail,
+          COUNT(CASE WHEN rrt.label NOT IN ('pass', 'fail') THEN 1 END) AS other
+      FROM rhnXccdfRuleresult rr
+      JOIN rhnXccdfRuleresultType rrt ON rr.result_id = rrt.id
+      -- Only count rules for tests we care about!
+      WHERE rr.testresult_id IN (SELECT id FROM TargetTests)
+      GROUP BY rr.testresult_id
+  )
+  SELECT 
+      tr.id AS xid,
+      tr.server_id AS sid,
+      s.name AS server_name,
+      sa.completion_time AS completed,
+      tr.start_time,
+      tr.end_time,
+      xp.identifier AS profile,
+      ras.id AS scap_action_id,
+      COALESCE(rc.pass, 0) AS pass,
+      COALESCE(rc.fail, 0) AS fail,
+      COALESCE(rc.other, 0) AS other
+  FROM rhnXccdfTestresult tr
+  JOIN rhnActionScap ras ON tr.action_scap_id = ras.id
+  JOIN rhnServer s ON s.id = tr.server_id
+  JOIN rhnServerAction sa ON sa.server_id = tr.server_id AND sa.action_id = ras.action_id
+  JOIN rhnXccdfProfile xp ON xp.id = tr.profile_id
+  JOIN rhnUserServerPerms usp ON usp.server_id = tr.server_id
+  LEFT JOIN RuleCounts rc ON rc.testresult_id = tr.id
+  WHERE ras.scap_policy_id = :policy_id
+      AND usp.user_id = :user_id
+  ORDER BY sa.completion_time DESC
+  </query>
+</mode>
+
 </datasource_modes>

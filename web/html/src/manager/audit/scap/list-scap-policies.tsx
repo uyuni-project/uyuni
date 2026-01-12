@@ -10,6 +10,8 @@ import { Table } from "components/table/Table";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
 import { Utils } from "utils/functions";
+import { ComplianceBadge } from "components/ComplianceBadge";
+import moment from "moment";
 
 type Props = {};
 
@@ -147,6 +149,36 @@ class ScapPolicy extends React.Component<Props, State> {
               comparator={Utils.sortByText}
               header={t("Content")}
               cell={(row) => row.dataStreamName}
+            />
+            <Column
+              columnKey="systems"
+              columnClass="text-center"
+              headerClass="text-center"
+              comparator={Utils.sortByNumber}
+              header={t("Systems Scanned")}
+              cell={(row) => row.totalSystems || 0}
+            />
+            <Column
+              columnKey="compliance"
+              columnClass="text-center"
+              headerClass="text-center"
+              comparator={(a, b) => (a.compliancePercentage || 0) - (b.compliancePercentage || 0)}
+              header={t("Compliance")}
+              cell={(row) => (
+                <ComplianceBadge 
+                  percentage={row.compliancePercentage || 0}
+                  compliant={row.compliantSystems || 0}
+                  total={row.totalSystems || 0}
+                />
+              )}
+            />
+            <Column
+              columnKey="lastScan"
+              columnClass="text-center"
+              headerClass="text-center"
+              comparator={Utils.sortByDate}
+              header={t("Last Scan")}
+              cell={(row) => row.lastScanTime ? moment(row.lastScanTime).fromNow() : t("Never")}
             />
             <Column
               width="15%"

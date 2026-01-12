@@ -28,7 +28,6 @@ type State = {
   xccdfProfiles: [];
   selectedTailoringFile: string;
   isEditMode: boolean;
-  isReadOnly: boolean;
 };
 
 class ScapPolicy extends React.Component<Props, State> {
@@ -39,7 +38,6 @@ class ScapPolicy extends React.Component<Props, State> {
     // policyData is already a JavaScript object from the template, not a JSON string
     const policyData = window.policyData || null;
     const isEditMode = window.isEditMode || false;
-    const isReadOnly = window.isReadOnly || false;
     
     this.state = {
       model: policyData || {},
@@ -47,7 +45,6 @@ class ScapPolicy extends React.Component<Props, State> {
       messages: [],
       errors: [],
       isEditMode,
-      isReadOnly,
       tailoringFiles: (window.tailoringFiles || []).map((file: any) => ({
         value: file.id,
         label: file.name,
@@ -55,7 +52,7 @@ class ScapPolicy extends React.Component<Props, State> {
       })),
       dataStreams: (window.scapDataStreams || []).sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())).map((stream: string) => ({
         value: stream,
-        label: stream.substring(0, stream.indexOf("-xccdf.xml")).toUpperCase(),
+        label: stream.replace("-ds.xml", "").toUpperCase(),
       })),
       tailoringFileProfiles: [],
       earliest: localizedMoment(),
@@ -66,8 +63,8 @@ class ScapPolicy extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    // In edit/detail mode, load the profiles for the selected data stream and tailoring file
-    if (this.state.isEditMode || this.state.isReadOnly) {
+    // In edit mode, load the profiles for the selected data stream and tailoring file
+    if (this.state.isEditMode) {
       const { model } = this.state;
       
       // Load XCCDF profiles if dataStreamName is set
@@ -157,9 +154,12 @@ class ScapPolicy extends React.Component<Props, State> {
     console.log(value)
 
   };
+  
   renderButtons = () => {
-    if (this.state.isReadOnly) {
-      return (
+    const buttons: React.ReactNode[] = [];
+    
+    if (this.state.isEditMode) {
+      buttons.push(
         <LinkButton
           key="back-btn"
           id="back-btn"
@@ -171,7 +171,7 @@ class ScapPolicy extends React.Component<Props, State> {
       );
     }
     
-    return (
+    buttons.push(
       <SubmitButton
         key="submit-btn"
         id="submit-btn"
@@ -180,7 +180,10 @@ class ScapPolicy extends React.Component<Props, State> {
         text={this.state.isEditMode ? t("Update") : t("Create")}
       />
     );
+    
+    return <>{buttons}</>;
   };
+  
   renderSelect = (name: string, label: string, options, onChange, isRequired = false) => (
     <Select
       name={name}
@@ -202,10 +205,8 @@ class ScapPolicy extends React.Component<Props, State> {
   };
 
   render() {
-
-
-    const { model, dataStreams, tailoringFiles, tailoringFileProfiles, xccdfProfiles, isReadOnly } = this.state;
-    const title = isReadOnly ? t("Policy Details") : (this.state.isEditMode ? t("Edit Compliance Policy") : t("Create Compliance Policy"));
+    const { model, dataStreams, tailoringFiles, tailoringFileProfiles, xccdfProfiles } = this.state;
+    const title = this.state.isEditMode ? t("Edit Compliance Policy") : t("Create Compliance Policy");
 
     return (
       <TopPanel title={title} icon="spacewalk-icon-manage-configuration-files">
@@ -213,23 +214,21 @@ class ScapPolicy extends React.Component<Props, State> {
         <Form
           model={this.state.model}
           className="scap-policy-form"
-          onSubmit={isReadOnly ? (e) => e.preventDefault() : this.onSubmit}
+          onSubmit={this.onSubmit}
           formRef={this.bindForm}
         >
           <Text
             name="policyName"
             label={t("Name")}
-            required={!isReadOnly}
+            required
             labelClass="col-md-3"
             divClass="col-md-6"
-            disabled={isReadOnly}
           />
           <TextArea
             name="description"
             label={t("Description")}
             labelClass="col-md-3"
             divClass="col-md-6"
-            disabled={isReadOnly}
           />
           <FormGroup>
             <Label name={t("SCAP Content")} className="col-md-3" required />
@@ -243,7 +242,6 @@ class ScapPolicy extends React.Component<Props, State> {
                   this.setState({ model: { ...model, dataStreamName: value as string } });
                   this.fetchProfiles("dataStream", value as string);
                 }}
-                disabled={isReadOnly}
               />
             </div>
           </FormGroup>
@@ -258,7 +256,6 @@ class ScapPolicy extends React.Component<Props, State> {
                 onChange={(value) => {
                   this.setState({ model: { ...model, xccdfProfileId: value as string } });
                 }}
-                disabled={isReadOnly}
               />
             </div>
           </FormGroup>
@@ -285,7 +282,6 @@ class ScapPolicy extends React.Component<Props, State> {
                     this.fetchProfiles("tailoringFile", fileName);
                   }
                 }}
-                disabled={isReadOnly}
               />
             </div>
           </FormGroup>
@@ -300,7 +296,6 @@ class ScapPolicy extends React.Component<Props, State> {
                 onChange={(value) => {
                   this.setState({ model: { ...model, tailoringProfileId: value as string } });
                 }}
-                disabled={isReadOnly}
               />
             </div>
           </FormGroup>
@@ -314,7 +309,6 @@ class ScapPolicy extends React.Component<Props, State> {
                 onChange={(name, value) => this.setState({ model: { ...model, ovalFiles: value } })}
                 placeholder={t("e.g: file1.xml, file2.xml")}
                 title={t("Comma-separated list of OVAL files")}
-                disabled={isReadOnly}
               />
             </div>
           </FormGroup>
@@ -324,9 +318,8 @@ class ScapPolicy extends React.Component<Props, State> {
             <div className="col-md-6">
               <Text
                 name="advancedArgs"
-                placeholder={isReadOnly ? "" : t("e.g: --results --report")}
+                placeholder={t("e.g: --results --report")}
                 title={t("Additional command-line arguments for oscap")}
-                disabled={isReadOnly}
               />
             </div>
           </FormGroup>
@@ -342,7 +335,6 @@ class ScapPolicy extends React.Component<Props, State> {
                       className="fetch-remote-checkbox"
                       value="true"
                       checked={model.fetchRemoteResources || false}
-                      disabled={isReadOnly}
                       onChange={(e) => {
                         this.setState({
                           model: { ...model, fetchRemoteResources: e.target.checked }

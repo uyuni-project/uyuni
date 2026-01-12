@@ -49,6 +49,9 @@ public class AuditScanScheduleJson {
     /** Whether to fetch remote resources */
     private Boolean fetchRemoteResources;
 
+    /** Optional SCAP policy ID to link this scan to */
+    private Integer policyId;
+
     /**
      * @return the server IDs
      */
@@ -137,5 +140,12 @@ public class AuditScanScheduleJson {
             return "XCCDF Profile is required";
         }
         return null;
+    }
+
+    /**
+     * @return the policy ID (optional)
+     */
+    public Integer getPolicyId() {
+        return policyId;
     }
 }

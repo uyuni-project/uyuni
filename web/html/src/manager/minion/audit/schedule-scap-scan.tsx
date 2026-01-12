@@ -134,6 +134,7 @@ class ScheduleAuditScan extends React.Component<{}, StateType> {
       ovalFiles: model.ovalFiles,
       advancedArgs: model.advancedArgs,
       fetchRemoteResources: model.fetchRemoteResources,
+      policyId: this.state.selectedScapPolicy, // Link scan to policy if selected
     })
       .then((data) => {
         const msg = MessagesUtils.info(

@@ -15,6 +15,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
+import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.audit.*;
 import com.redhat.rhn.domain.server.Server;
@@ -28,7 +30,9 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.webui.controllers.utils.RequestUtil;
 import com.suse.manager.webui.utils.gson.AuditScanScheduleJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
+import com.suse.manager.webui.utils.gson.ScapPolicyComplianceSummary;
 import com.suse.manager.webui.utils.gson.ScapPolicyJson;
+import com.suse.manager.webui.utils.gson.ScapPolicyScanHistory;
 import com.suse.utils.Json;
 
 import com.google.gson.reflect.TypeToken;
@@ -96,6 +100,7 @@ public class ScapAuditController {
                 withUserPreferences(withCsrfToken(withUser(this::detailScapPolicyView))), jade);
         get("/manager/api/audit/profiles/list/:type/:name", withUser(ScapAuditController::getProfileList));
         get("/manager/api/audit/scap/policy/view/:id", asJson(withUser(this::getScapPolicyDetails)));
+        get("/manager/api/audit/scap/policy/:id/scan-history", asJson(withUser(this::getPolicyScanHistory)));
 
         post("/manager/api/audit/scap/policy/create", withUser(this::createScapPolicy));
         post("/manager/api/audit/scap/policy/update", withUser(this::updateScapPolicy));
@@ -407,37 +412,15 @@ public class ScapAuditController {
     public ModelAndView listScapPoliciesView(Request req, Response res, User user) {
         Map<String, Object> data = new HashMap<>();
 
-        // Fetch all SCAP policies for the user's organization
-        List<ScapPolicy> scapPolicies = ScapFactory.listScapPolicies(user.getOrg());
+        // Use new query that includes compliance stats
+        SelectMode m = ModeFactory.getMode("scap_queries", "all_policies_compliance");
+        Map<String, Object> params = new HashMap<>();
+        params.put("user_id", user.getId());
+        params.put("org_id", user.getOrg().getId());
+        
+        List<ScapPolicyComplianceSummary> policies = m.execute(params);
+        data.put("scapPolicies", GSON.toJson(policies));
 
-        // Convert policies to JSON objects with all necessary fields
-        List<JsonObject> scapPoliciesJson = scapPolicies.stream()
-                .map(policy -> {
-                    JsonObject json = new JsonObject();
-                    json.addProperty("id", policy.getId());
-                    json.addProperty("policyName", policy.getPolicyName());
-                    json.addProperty("dataStreamName", policy.getDataStreamName());
-                    json.addProperty("xccdfProfileId", policy.getXccdfProfileId());
-
-                    // Add tailoring file information if present
-                    if (policy.getTailoringFile() != null) {
-                        json.addProperty("tailoringFileName", policy.getTailoringFile().getName());
-                    } else {
-                        json.addProperty("tailoringFileName", "");
-                    }
-
-                    // Add tailoring profile ID if present
-                    if (policy.getTailoringProfileId() != null) {
-                        json.addProperty("tailoringFileProfileId", policy.getTailoringProfileId());
-                    } else {
-                        json.addProperty("tailoringFileProfileId", "");
-                    }
-
-                    return json;
-                })
-                .collect(Collectors.toList());
-
-        data.put("scapPolicies", scapPoliciesJson);
         return new ModelAndView(data, "templates/audit/list-scap-policies.jade");
     }
 
@@ -576,8 +559,9 @@ public class ScapAuditController {
                 .map(this::convertToTailoringFileJson)
                 .collect(Collectors.toList());
         data.put("tailoringFiles", tailoringFilesJson);
+        data.put("policyId", policyId);
 
-        return new ModelAndView(data, "templates/audit/create-scap-policy.jade");
+        return new ModelAndView(data, "templates/audit/scap-policy-details.jade");
     }
 
     /**
@@ -618,6 +602,25 @@ public class ScapAuditController {
     }
 
     /**
+     * API endpoint to get scan history for a specific policy
+     * @param req the request
+     * @param res the response
+     * @param user the user
+     * @return JSON string with scan history
+     */
+    public String getPolicyScanHistory(Request req, Response res, User user) {
+        Integer policyId = Integer.parseInt(req.params("id"));
+        
+        SelectMode m = ModeFactory.getMode("scap_queries", "policy_scan_history");
+        Map<String, Object> params = new HashMap<>();
+        params.put("user_id", user.getId());
+        params.put("policy_id", policyId);
+        
+        List<ScapPolicyScanHistory> history = m.execute(params);
+        return json(res, history, new TypeToken<>() {});
+    }
+
+    /**
      * Schedules SCAP audit scan for specified systems
      * @param req the request
      * @param res the response
@@ -648,7 +651,8 @@ public class ScapAuditController {
                     reqData.getDataStreamPath(),
                     reqData.buildOscapParameters(),
                     reqData.getOvalFiles(), // OVAL files
-                    earliest
+                    earliest,
+                    reqData.getPolicyId() // Link to policy if provided
             );
 
             // Return action ID

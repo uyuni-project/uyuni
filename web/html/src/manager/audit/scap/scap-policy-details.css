@@ -1,0 +1,15 @@
+/* SCAP Policy Details Styles */
+
+/* Panel overflow fix for pagination dropdown visibility */
+.scap-scan-history-panel,
+.scap-scan-history-panel .panel,
+.scap-scan-history-panel .panel-body,
+.scap-scan-history-panel .panel-footer,
+.scap-scan-history-panel .table-responsive {
+  overflow: visible !important;
+}
+
+/* Spacing utilities */
+.mb-20 {
+  margin-bottom: 20px;
+}
