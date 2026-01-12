@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-09 10:26+0000\n"
-"PO-Revision-Date: 2025-12-08 22:04+0000\n"
+"PO-Revision-Date: 2026-01-12 20:04+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/web/ca/>\n"
 "Language: ca\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 5.15.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:409
 msgid "remaining"
@@ -719,7 +719,7 @@ msgstr "S'ha copiat el testimoni d'accés al porta-retalls"
 #. Vendor channels can't sync orgs
 #: ../html/src/components/hub/ChannelSelectorTable.tsx:33
 msgid "Vendor"
-msgstr ""
+msgstr "Proveïdor"
 
 #: ../html/src/components/hub/ChannelSelectorTable.tsx:50
 msgid "Select Organization"
