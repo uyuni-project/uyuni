@@ -149,6 +149,7 @@ public class ServerGroupFactory extends HibernateFactory {
     /**
      * Insert or update a ServerGroup
      * @param group the ServerGroup to save
+     * @return the saved {@link ServerGroup} instance
      */
     public static ServerGroup save(ServerGroup group) {
         return SINGLETON.saveObject(group);

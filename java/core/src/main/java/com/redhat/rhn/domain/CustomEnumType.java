@@ -119,22 +119,9 @@ public abstract class CustomEnumType<T extends Enum<T>> implements UserType<T> {
         }
     }
 
-//    @Override
-//    public void nullSafeSet(PreparedStatement st, T value, int position, WrapperOptions options) throws SQLException {
-//        UserType.super.nullSafeSet(st, value, position, options);
-//    }
-
-    //public void nullSafeSet(PreparedStatement statement, Object value, int position,
-    //                        SharedSessionContractImplementor session) throws HibernateException, SQLException {
     @Override
-    public void nullSafeSet(PreparedStatement statement, T value, int position, WrapperOptions options) throws SQLException {
-//        if (value == null) {
-//            st.setNull(position, this.getSqlType());
-//        } else {
-//            st.setObject(position, value, this.getSqlType());
-//        }
-//
-//    }
+    public void nullSafeSet(PreparedStatement statement, T value, int position, WrapperOptions options)
+            throws SQLException {
         String jdbcValue = value == null ? null : toDb.apply(enumClass.cast(value));
         if (jdbcValue == null) {
             statement.setNull(position, 12);
@@ -169,16 +156,4 @@ public abstract class CustomEnumType<T extends Enum<T>> implements UserType<T> {
         return o;
     }
 
-//
-//    default J assemble(Serializable cached, Object owner) {
-//        if (this.returnedClass().isInstance(cached)) {
-//            return (J)this.deepCopy(cached);
-//        } else {
-//            throw new UnsupportedOperationException("User-defined type '" + this.getClass().getName() + "' does not override 'assemble()'");
-//        }
-//    }
-//
-//    default J replace(J detached, J managed, Object owner) {
-//        return (J)this.deepCopy(detached);
-//    }
 }

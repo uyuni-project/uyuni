@@ -18,7 +18,6 @@ package com.redhat.rhn.domain.recurringactions.type;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.recurringactions.state.RecurringStateConfig;
 
-import org.hibernate.annotations.Type;
 import org.hibernate.type.YesNoConverter;
 
 import java.util.Set;

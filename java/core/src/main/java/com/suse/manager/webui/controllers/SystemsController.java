@@ -98,7 +98,6 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import jakarta.servlet.http.HttpServletRequest;
-
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;

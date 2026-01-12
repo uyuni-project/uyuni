@@ -15,7 +15,6 @@
 
 package com.redhat.rhn.domain.recurringactions.type;
 
-import org.hibernate.annotations.Type;
 import org.hibernate.type.YesNoConverter;
 
 import jakarta.persistence.Column;
