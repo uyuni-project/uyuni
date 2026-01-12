@@ -22,8 +22,8 @@ import org.apache.commons.lang3.StringUtils;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -39,8 +39,8 @@ public class Location extends BaseDomainHelper {
 
     @Id
     @Column(name = "ID")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "server_loc_seq")
-	@SequenceGenerator(name = "server_loc_seq", sequenceName = "rhn_server_loc_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "server_loc_seq")
+    @SequenceGenerator(name = "server_loc_seq", sequenceName = "rhn_server_loc_id_seq", allocationSize = 1)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

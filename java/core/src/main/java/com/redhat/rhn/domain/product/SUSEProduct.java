@@ -18,7 +18,6 @@ import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.hibernate.annotations.Type;
 import org.hibernate.type.YesNoConverter;
 
 import java.io.Serializable;
@@ -33,8 +32,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
@@ -52,8 +51,8 @@ import jakarta.persistence.Table;
 public class SUSEProduct extends BaseDomainHelper implements Serializable {
 
     @Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suse_product_seq")
-	@SequenceGenerator(name = "suse_product_seq", sequenceName = "SUSE_PRODUCTS_ID_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suse_product_seq")
+    @SequenceGenerator(name = "suse_product_seq", sequenceName = "SUSE_PRODUCTS_ID_SEQ", allocationSize = 1)
     private Long id;
 
     @Column(name = "name")

@@ -202,6 +202,7 @@ public class SimpleTestingResponse implements HttpServletResponse {
     }
 
     @Override
-    public void sendRedirect(String location, int status, boolean encode) {
+    public void sendRedirect(String location, int statusIn, boolean encode) {
+        throw new NotImplementedException("");
     }
 }

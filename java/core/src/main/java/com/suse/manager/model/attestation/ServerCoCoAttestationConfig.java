@@ -20,8 +20,8 @@ import java.io.Serializable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -60,8 +60,10 @@ public class ServerCoCoAttestationConfig implements Serializable  {
      */
     @Id
     @Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suse_srvcocoatt_cnf_seq")
-	@SequenceGenerator(name = "suse_srvcocoatt_cnf_seq", sequenceName = "suse_srvcocoatt_cnf_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suse_srvcocoatt_cnf_seq")
+    @SequenceGenerator(
+            name = "suse_srvcocoatt_cnf_seq", sequenceName = "suse_srvcocoatt_cnf_id_seq", allocationSize = 1
+    )
     public Long getId() {
         return id;
     }

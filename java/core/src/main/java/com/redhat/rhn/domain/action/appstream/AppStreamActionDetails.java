@@ -13,12 +13,11 @@ package com.redhat.rhn.domain.action.appstream;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.action.Action;
 
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -36,8 +35,8 @@ public class AppStreamActionDetails extends BaseDomainHelper {
     private static final String ENABLE_TYPE = "ENABLE";
 
     @Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suse_act_appstream_seq")
-	@SequenceGenerator(name = "suse_act_appstream_seq", sequenceName = "suse_act_appstream_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suse_act_appstream_seq")
+    @SequenceGenerator(name = "suse_act_appstream_seq", sequenceName = "suse_act_appstream_id_seq", allocationSize = 1)
     private Long id;
 
     @Column(name = "module_name")

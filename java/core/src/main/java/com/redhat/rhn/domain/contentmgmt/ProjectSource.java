@@ -23,8 +23,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
@@ -155,8 +155,8 @@ public abstract class ProjectSource implements Serializable {
      * @return id
      */
     @Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "content_prj_src_seq")
-	@SequenceGenerator(name = "content_prj_src_seq", sequenceName = "suse_ct_prj_src_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "content_prj_src_seq")
+    @SequenceGenerator(name = "content_prj_src_seq", sequenceName = "suse_ct_prj_src_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }

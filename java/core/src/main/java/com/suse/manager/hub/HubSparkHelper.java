@@ -34,7 +34,6 @@ import java.util.List;
 import java.util.Optional;
 
 import jakarta.servlet.http.HttpServletResponse;
-
 import spark.Route;
 import spark.Spark;
 

@@ -17,11 +17,10 @@ package com.redhat.rhn.domain.rhnpackage;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
@@ -34,8 +33,8 @@ import jakarta.persistence.Table;
 public class PackageDelta extends BaseDomainHelper {
 
     @Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_PACKAGEDELTA_ID_SEQ")
-	@SequenceGenerator(name = "RHN_PACKAGEDELTA_ID_SEQ", sequenceName = "RHN_PACKAGEDELTA_ID_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_PACKAGEDELTA_ID_SEQ")
+    @SequenceGenerator(name = "RHN_PACKAGEDELTA_ID_SEQ", sequenceName = "RHN_PACKAGEDELTA_ID_SEQ", allocationSize = 1)
     private Long id;
 
     @Column
