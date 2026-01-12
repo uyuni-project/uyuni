@@ -81,7 +81,8 @@ public class ImageUploadController {
                     .setPath(SALT_FILE_GENERATION_TEMP_PATH)
                     .get();
 
-            List<? extends FileItem> items = new JakartaServletFileUpload<>(fileItemFactory).parseRequest(request.raw());
+            List<? extends FileItem> items =
+                    new JakartaServletFileUpload<>(fileItemFactory).parseRequest(request.raw());
 
             try {
                 items.stream().forEach(item -> {

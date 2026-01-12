@@ -39,7 +39,6 @@ import org.apache.logging.log4j.Logger;
 import org.cobbler.CobblerConnection;
 import org.cobbler.Profile;
 import org.hibernate.annotations.SortNatural;
-import org.hibernate.annotations.Type;
 import org.hibernate.type.YesNoConverter;
 
 import java.util.Arrays;
@@ -64,14 +63,13 @@ import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
-import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -90,8 +88,8 @@ import jakarta.persistence.Table;
 public class KickstartData extends BaseDomainHelper {
 
     @Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_KS_ID_SEQ")
-	@SequenceGenerator(name = "RHN_KS_ID_SEQ", sequenceName = "RHN_KS_ID_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_KS_ID_SEQ")
+    @SequenceGenerator(name = "RHN_KS_ID_SEQ", sequenceName = "RHN_KS_ID_SEQ", allocationSize = 1)
     private Long id;
 
     @Column(name = "ks_type", updatable = false, insertable = false)

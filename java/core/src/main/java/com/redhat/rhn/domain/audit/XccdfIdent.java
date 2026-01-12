@@ -19,8 +19,8 @@ import java.io.Serializable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -37,8 +37,8 @@ import jakarta.persistence.Table;
 public class XccdfIdent implements Serializable {
 
     @Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rhn_xccdf_ident_seq")
-	@SequenceGenerator(name = "rhn_xccdf_ident_seq", sequenceName = "rhn_xccdf_ident_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rhn_xccdf_ident_seq")
+    @SequenceGenerator(name = "rhn_xccdf_ident_seq", sequenceName = "rhn_xccdf_ident_id_seq", allocationSize = 1)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

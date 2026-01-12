@@ -25,8 +25,8 @@ import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
@@ -62,8 +62,8 @@ public abstract class ImageProfile extends BaseDomainHelper {
      */
     @Id
     @Column(name = "profile_id")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "imgprof_seq")
-	@SequenceGenerator(name = "imgprof_seq", sequenceName = "suse_imgprof_prid_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "imgprof_seq")
+    @SequenceGenerator(name = "imgprof_seq", sequenceName = "suse_imgprof_prid_seq", allocationSize = 1)
     public Long getProfileId() {
         return profileId;
     }
