@@ -25,8 +25,8 @@ import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
@@ -83,8 +83,8 @@ public class SCCOrderItem extends BaseDomainHelper {
      */
     @Id
     @Column(name = "id")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sccorderitem_seq")
-	@SequenceGenerator(name = "sccorderitem_seq", sequenceName = "suse_sccorder_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sccorderitem_seq")
+    @SequenceGenerator(name = "sccorderitem_seq", sequenceName = "suse_sccorder_id_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }

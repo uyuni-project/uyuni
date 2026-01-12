@@ -69,7 +69,7 @@ import java.util.Map;
 public class ForceRecreationListType implements UserCollectionType {
 
     /**
-     * @return 
+     * @return
      */
     @Override
     public CollectionClassification getClassification() {
@@ -77,7 +77,7 @@ public class ForceRecreationListType implements UserCollectionType {
     }
 
     /**
-     * @return 
+     * @return
      */
     @Override
     public Class<?> getCollectionClass() {

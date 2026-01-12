@@ -23,8 +23,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
@@ -37,8 +37,8 @@ import jakarta.persistence.Table;
 @Table(name = "rhnProductName")
 public class ProductName extends BaseDomainHelper {
     @Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "productname_seq")
-	@SequenceGenerator(name = "productname_seq", sequenceName = "rhn_productname_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "productname_seq")
+    @SequenceGenerator(name = "productname_seq", sequenceName = "rhn_productname_id_seq", allocationSize = 1)
     private Long id;
 
     @Column

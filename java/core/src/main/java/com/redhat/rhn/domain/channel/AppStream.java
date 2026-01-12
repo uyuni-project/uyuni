@@ -12,15 +12,14 @@ package com.redhat.rhn.domain.channel;
 
 import com.redhat.rhn.domain.rhnpackage.Package;
 
-
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
@@ -34,8 +33,8 @@ import jakarta.persistence.Table;
 @Table(name = "suseAppstream")
 public class AppStream {
     @Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "appstreams_module_seq")
-	@SequenceGenerator(name = "appstreams_module_seq", sequenceName = "suse_as_module_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "appstreams_module_seq")
+    @SequenceGenerator(name = "appstreams_module_seq", sequenceName = "suse_as_module_seq", allocationSize = 1)
     private Long id;
 
     @Column(nullable = false)

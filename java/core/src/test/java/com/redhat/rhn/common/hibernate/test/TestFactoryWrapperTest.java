@@ -126,7 +126,7 @@ public class TestFactoryWrapperTest extends HibernateBaseTest {
         TestInterface recordReloaded = reload(record);
         assertTrue(HibernateFactory.getSession().contains(recordReloaded));
         assertEquals(id, recordReloaded.getId());
-        assertTrue(record != recordReloaded );
+        assertTrue(record != recordReloaded);
     }
 
     /**

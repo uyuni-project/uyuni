@@ -193,7 +193,7 @@ public class HibernateTest extends HibernateBaseTest {
         // Find the entity
         TestInterface loaded = TestFactory.lookupByFoobar(key);
         assertEquals(100, loaded.getPin().intValue());
-        
+
         // Modify in memory
         loaded.setPin(200);
         assertEquals(200, loaded.getPin().intValue(), "In-memory value should be 200");
@@ -202,7 +202,7 @@ public class HibernateTest extends HibernateBaseTest {
         // So it will persist the modified value (200) and reload it
         TestInterface reloaded = HibernateFactory.reload(loaded);
         assertEquals(200, reloaded.getPin().intValue(), "Reload flushes changes, so modified value is persisted");
-        
+
         // Verify it was actually persisted to DB
         HibernateFactory.commitTransaction();
         HibernateFactory.closeSession();
@@ -432,7 +432,7 @@ public class HibernateTest extends HibernateBaseTest {
         // Modify in memory (change your mind scenario)
         retrieved.setPin(999);
         retrieved.setTestColumn("XYZ");
-        
+
         // Verify in-memory changes
         assertEquals(999, retrieved.getPin().intValue());
         assertEquals("XYZ", retrieved.getTestColumn());

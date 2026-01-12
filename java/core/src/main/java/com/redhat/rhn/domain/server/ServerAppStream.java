@@ -16,8 +16,8 @@ import java.util.Map;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -28,8 +28,10 @@ import jakarta.persistence.Table;
 @Table(name = "suseServerAppstream")
 public class ServerAppStream implements Serializable  {
     @Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "appstreams_servermodule_seq")
-	@SequenceGenerator(name = "appstreams_servermodule_seq", sequenceName = "suse_as_servermodule_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "appstreams_servermodule_seq")
+    @SequenceGenerator(
+            name = "appstreams_servermodule_seq", sequenceName = "suse_as_servermodule_seq", allocationSize = 1
+    )
     private Long id;
 
     @Column(nullable = false)

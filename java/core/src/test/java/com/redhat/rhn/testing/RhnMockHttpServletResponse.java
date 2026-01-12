@@ -294,7 +294,7 @@ public class RhnMockHttpServletResponse implements HttpServletResponse {
     }
 
     @Override
-    public void sendRedirect(String location, int status, boolean encode) {
+    public void sendRedirect(String location, int statusIn, boolean encode) {
     }
 
 }
