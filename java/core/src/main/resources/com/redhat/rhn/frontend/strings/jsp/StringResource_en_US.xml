@@ -24091,6 +24091,15 @@ given channel.</source>
       <trans-unit id="channel.jsp.sync.status.created" xml:space="preserve">
         <source> New Created </source>
       </trans-unit>
+      <trans-unit id="channel.jsp.repoautosync" xml:space="preserve">
+        <source>Automatic Repository Synchronization</source>
+      </trans-unit>
+      <trans-unit id="channel.jsp.repoautosync.true" xml:space="preserve">
+        <source> Enabled </source>
+      </trans-unit>
+        <trans-unit id="channel.jsp.repoautosync.false" xml:space="preserve">
+        <source> Disabled </source>
+      </trans-unit>
       <trans-unit id="channel.jsp.gpgcheck" xml:space="preserve">
         <source>Enable GPG Check </source>
       </trans-unit>
