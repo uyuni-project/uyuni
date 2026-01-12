@@ -68,7 +68,6 @@ import java.util.Set;
 import java.util.function.Function;
 
 import jakarta.servlet.http.HttpServletResponse;
-
 import spark.Request;
 import spark.Response;
 import spark.Route;

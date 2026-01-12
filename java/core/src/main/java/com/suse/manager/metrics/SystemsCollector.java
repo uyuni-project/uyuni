@@ -18,9 +18,8 @@ import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.Tuple;
-
 import io.prometheus.client.Collector;
+import jakarta.persistence.Tuple;
 
 public class SystemsCollector extends Collector {
 

@@ -18,7 +18,6 @@ import com.redhat.rhn.domain.server.MinionServer;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.hibernate.annotations.Type;
 import org.hibernate.type.YesNoConverter;
 
 import java.io.Serial;
@@ -31,8 +30,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
@@ -52,8 +51,10 @@ public class AccessToken implements Serializable {
     private static final long serialVersionUID = -6987986592710703016L;
 
     @Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suse_chan_access_token_seq")
-	@SequenceGenerator(name = "suse_chan_access_token_seq", sequenceName = "suse_chan_access_token_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suse_chan_access_token_seq")
+    @SequenceGenerator(
+            name = "suse_chan_access_token_seq", sequenceName = "suse_chan_access_token_id_seq", allocationSize = 1
+    )
     private Long id;
 
     @Column

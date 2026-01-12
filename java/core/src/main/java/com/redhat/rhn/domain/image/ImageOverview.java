@@ -27,7 +27,6 @@ import com.redhat.rhn.domain.server.MinionServer;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.Immutable;
-import org.hibernate.annotations.Type;
 import org.hibernate.type.YesNoConverter;
 
 import java.util.Date;

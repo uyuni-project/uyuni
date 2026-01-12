@@ -26,12 +26,12 @@ import java.util.List;
 
 public class TestFactory extends HibernateFactory {
 
-    private static final Logger log = LogManager.getLogger(TestFactory.class);
-    private static final TestFactory singleton = new TestFactory();
+    private static final Logger LOG = LogManager.getLogger(TestFactory.class);
+    private static final TestFactory SINGLETON = new TestFactory();
 
     @Override
     protected Logger getLogger() {
-        return log;
+        return LOG;
     }
 
     public static TestInterface createTest() {
@@ -39,7 +39,7 @@ public class TestFactory extends HibernateFactory {
     }
 
     public static TestInterface lookupByFoobar(String f) {
-        return singleton.lookupObjectByParam(TestEntity.class, "foobar", f);
+        return SINGLETON.lookupObjectByParam(TestEntity.class, "foobar", f);
     }
 
     public static List<TestInterface> lookupAll() {
@@ -48,7 +48,7 @@ public class TestFactory extends HibernateFactory {
     }
 
     public static TestInterface save(TestInterface t) {
-        return singleton.saveObject(t);
+        return SINGLETON.saveObject(t);
     }
 
     public static Session getSession() {

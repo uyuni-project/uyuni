@@ -19,7 +19,6 @@ package com.redhat.rhn.domain.user.legacy;
 import com.redhat.rhn.domain.user.RhnTimeZone;
 import com.redhat.rhn.domain.user.User;
 
-import org.hibernate.annotations.Type;
 import org.hibernate.type.YesNoConverter;
 
 import java.io.Serializable;

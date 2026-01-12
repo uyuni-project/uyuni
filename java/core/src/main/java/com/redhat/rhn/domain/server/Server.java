@@ -89,8 +89,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
@@ -119,8 +119,8 @@ public class Server extends BaseDomainHelper implements Identifiable {
     private static Logger log = LogManager.getLogger(Server.class);
 
     @Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rhn_server_seq")
-	@SequenceGenerator(name = "rhn_server_seq", sequenceName = "rhn_server_id_seq", allocationSize = 1,
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rhn_server_seq")
+    @SequenceGenerator(name = "rhn_server_seq", sequenceName = "rhn_server_id_seq", allocationSize = 1,
     initialValue = 1000010000)
     private Long id;
 

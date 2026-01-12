@@ -21,8 +21,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -38,8 +38,8 @@ import jakarta.persistence.Table;
 public class PackageState {
 
     @Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suse_pkg_state_seq")
-	@SequenceGenerator(name = "suse_pkg_state_seq", sequenceName = "suse_pkg_state_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suse_pkg_state_seq")
+    @SequenceGenerator(name = "suse_pkg_state_seq", sequenceName = "suse_pkg_state_id_seq", allocationSize = 1)
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "name_id")

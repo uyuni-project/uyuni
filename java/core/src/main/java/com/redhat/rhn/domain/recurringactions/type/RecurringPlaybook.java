@@ -17,17 +17,11 @@ package com.redhat.rhn.domain.recurringactions.type;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 
-import org.hibernate.annotations.JdbcType;
-import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.YesNoConverter;
-import org.hibernate.type.descriptor.jdbc.VarbinaryJdbcType;
-
-import java.sql.Types;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 

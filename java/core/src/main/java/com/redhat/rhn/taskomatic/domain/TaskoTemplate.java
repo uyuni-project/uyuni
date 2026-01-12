@@ -17,15 +17,14 @@ package com.redhat.rhn.taskomatic.domain;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
-
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -41,8 +40,8 @@ import jakarta.persistence.Table;
 @Table(name = "rhnTaskoTemplate")
 public class TaskoTemplate extends BaseDomainHelper {
     @Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tasko_template_seq")
-	@SequenceGenerator(name = "tasko_template_seq", sequenceName = "RHN_TASKO_TEMPLATE_ID_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tasko_template_seq")
+    @SequenceGenerator(name = "tasko_template_seq", sequenceName = "RHN_TASKO_TEMPLATE_ID_SEQ", allocationSize = 1)
     @Column(name = "id", nullable = false)
     private Long id;
 

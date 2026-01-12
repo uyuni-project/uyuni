@@ -15,7 +15,6 @@ import com.redhat.rhn.domain.action.Action;
 
 import com.suse.utils.Json;
 
-import org.hibernate.annotations.Type;
 import org.hibernate.type.YesNoConverter;
 
 import java.util.ArrayList;
@@ -33,8 +32,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -50,8 +49,10 @@ import jakarta.persistence.Table;
 public class ApplyStatesActionDetails extends BaseDomainHelper {
 
     @Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_ACT_APPLY_STATES_ID_SEQ")
-	@SequenceGenerator(name = "RHN_ACT_APPLY_STATES_ID_SEQ", sequenceName = "RHN_ACT_APPLY_STATES_ID_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_ACT_APPLY_STATES_ID_SEQ")
+    @SequenceGenerator(
+            name = "RHN_ACT_APPLY_STATES_ID_SEQ", sequenceName = "RHN_ACT_APPLY_STATES_ID_SEQ", allocationSize = 1
+    )
     private long id;
 
     @Column

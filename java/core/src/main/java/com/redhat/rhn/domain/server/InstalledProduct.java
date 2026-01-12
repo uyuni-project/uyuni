@@ -18,7 +18,6 @@ import com.redhat.rhn.domain.rhnpackage.PackageArch;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.hibernate.annotations.Type;
 import org.hibernate.type.YesNoConverter;
 
 import java.util.Objects;
@@ -27,8 +26,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -43,8 +42,8 @@ import jakarta.persistence.Table;
 public class InstalledProduct extends BaseDomainHelper {
 
     @Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suse_inst_pr_seq")
-	@SequenceGenerator(name = "suse_inst_pr_seq", sequenceName = "suse_inst_pr_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suse_inst_pr_seq")
+    @SequenceGenerator(name = "suse_inst_pr_seq", sequenceName = "suse_inst_pr_id_seq", allocationSize = 1)
     private Long id;
 
     @Column

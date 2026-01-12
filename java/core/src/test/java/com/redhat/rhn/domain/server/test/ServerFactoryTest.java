@@ -96,7 +96,6 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
-import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.ConfigTestUtils;
@@ -523,14 +522,15 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         assertEquals(dmi, server.getDmi());
 
-        Server serverManaged = ServerFactory.save(server);
-        //Evict from session to make sure that we get a fresh server
-        //from the db.
-        flushAndEvict(serverManaged);
-        assertFalse(HibernateFactory.getSession().contains(serverManaged));
+        //Evict from session to make sure that we get a fresh server from the db.
+        flushAndEvict(server);
 
-        Server server2 = ServerFactory.lookupByIdAndOrg(serverManaged.getId(), user.getOrg());
-        assertEquals(serverManaged.getDmi(), server2.getDmi());
+        Server server2 = ServerFactory.lookupByIdAndOrg(server.getId(), user.getOrg());
+        assertEquals(dmi, server2.getDmi());
+
+        // set server back to a managed instance
+        server = server2;
+        assertTrue(HibernateFactory.getSession().contains(server));
     }
 
     /**
@@ -602,24 +602,29 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         if (type.getAssociatedEntitlement().equals(EntitlementManager.SALT) && stype == TYPE_SERVER_NORMAL) {
             stype = TYPE_SERVER_MINION;
         }
-        Server server = createUnentitledTestServer(owner, ensureOwnerAccess, stype, dateCreated);
+        Server newS = createUnentitledTestServer(owner, ensureOwnerAccess, stype,
+                dateCreated);
 
         if (!type.getAssociatedEntitlement().isBase()) {
-            EntitlementServerGroup mgmt = ServerGroupFactory.lookupEntitled(EntitlementManager.SALT, owner.getOrg());
+            EntitlementServerGroup mgmt = ServerGroupFactory.lookupEntitled(
+                    EntitlementManager.SALT, owner.getOrg());
             if (mgmt == null) {
-                mgmt = ServerGroupFactory.lookupEntitled(EntitlementManager.SALT, owner.getOrg());
-                server = ServerFactory.lookupById(server.getId());
+                newS = TestUtils.saveAndReload(newS);
+                mgmt = ServerGroupFactory.lookupEntitled(
+                        EntitlementManager.SALT,
+                        owner.getOrg());
+                newS = ServerFactory.lookupById(newS.getId());
             }
             assertNotNull(mgmt);
             assertNotNull(mgmt.getGroupType().getAssociatedEntitlement());
-            SYSTEM_ENTITLEMENT_MANAGER.addEntitlementToServer(server, mgmt.getGroupType().getAssociatedEntitlement());
+            SYSTEM_ENTITLEMENT_MANAGER.addEntitlementToServer(newS, mgmt.getGroupType().getAssociatedEntitlement());
         }
 
         EntitlementServerGroup sg = ServerGroupTestUtils.createEntitled(owner.getOrg(), type);
 
-        SYSTEM_ENTITLEMENT_MANAGER.addEntitlementToServer(server, sg.getGroupType().getAssociatedEntitlement());
+        SYSTEM_ENTITLEMENT_MANAGER.addEntitlementToServer(newS, sg.getGroupType().getAssociatedEntitlement());
         HibernateFactory.getSession().flush();
-        return server;
+        return newS;
     }
 
     /**
@@ -633,13 +638,13 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
      */
     public static Server createUnentitledTestServer(User owner, boolean ensureOwnerAccess,
                     int stype, Date dateCreated) {
-        Server serverTransient = createServer(stype);
+        Server unentitledTServerTransient = createServer(stype);
 
-        populateServer(serverTransient, owner, stype);
-        createProvisionState(serverTransient, "Test Description", "Test Label");
-        createServerInfo(serverTransient, dateCreated, 0L);
+        populateServer(unentitledTServerTransient, owner, stype);
+        createProvisionState(unentitledTServerTransient, "Test Description", "Test Label");
+        createServerInfo(unentitledTServerTransient, dateCreated, 0L);
 
-        Server server = TestUtils.save(serverTransient);
+        Server unentitledTServer = TestUtils.save(unentitledTServerTransient);
 
         NetworkInterface netint = new NetworkInterface();
         netint.setHwaddr("AA:AA:BB:BB:CC:CC");
@@ -647,8 +652,8 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         netint.setName(TestUtils.randomString());
 
-        netint.setServer(server);
-        server.addNetworkInterface(netint);
+        netint.setServer(unentitledTServer);
+        unentitledTServer.addNetworkInterface(netint);
 
         /* Since we added a server to the Org we need
          * to update the User's permissions as associated with
@@ -677,20 +682,20 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
          */
         if (ensureOwnerAccess) {
             ManagedServerGroup sg2 = ServerGroupTestUtils.createManaged(owner);
-            ServerFactory.addServerToGroup(server, sg2);
+            ServerFactory.addServerToGroup(unentitledTServer, sg2);
             TestUtils.saveAndFlush(sg2);
         }
 
-        Long id = server.getId();
+        Long id = unentitledTServer.getId();
         HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().evict(server);
+        HibernateFactory.getSession().evict(unentitledTServer);
 
-        Server managedServer = ServerFactory.lookupByIdAndOrg(id, owner.getOrg());
-        assertNotNull(managedServer.getEntitledGroupTypes());
-        assertNotNull(managedServer.getManagedGroups());
-        assertNotNull(managedServer.getServerInfo());
-        assertNotNull(managedServer.getServerInfo().getCheckinCounter());
-        return managedServer;
+        Server lookupServer = ServerFactory.lookupByIdAndOrg(id, owner.getOrg());
+        assertNotNull(lookupServer.getEntitledGroupTypes());
+        assertNotNull(lookupServer.getManagedGroups());
+        assertNotNull(lookupServer.getServerInfo());
+        assertNotNull(lookupServer.getServerInfo().getCheckinCounter());
+        return lookupServer;
     }
 
     private static void populateServer(Server s, User owner, int type) {
@@ -804,8 +809,8 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         HibernateFactory.getSession().clear();
 
         // retrieve servers and verify that they are compatible
-        Server server = ServerFactory.lookupByIdAndOrg(serverA.getId(), user.getOrg());
-        List<Row> list = ServerFactory.compatibleWithServer(user, server);
+        Server serverLookup = ServerFactory.lookupByIdAndOrg(serverA.getId(), user.getOrg());
+        List<Row> list = ServerFactory.compatibleWithServer(user, serverLookup);
         assertNotNull(list, "List is null");
         assertFalse(list.isEmpty(), "List is empty");
         boolean found = false;
@@ -825,8 +830,8 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         admin.addPermanentRole(RoleFactory.ORG_ADMIN);
 
         // Non-org admin user who is a member of the server group
-        User groupAdmin = UserTestUtils.createUser("testUser2", admin.getOrg().getId());
-        groupAdmin.removePermanentRole(RoleFactory.ORG_ADMIN);
+        User regular = UserTestUtils.createUser("testUser2", admin.getOrg().getId());
+        regular.removePermanentRole(RoleFactory.ORG_ADMIN);
 
         // User who shouldn't be able to admin the system
         User nonGroupAdminUser = UserTestUtils.createUser("testUser3", admin.getOrg().getId());
@@ -835,23 +840,23 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         ManagedServerGroup group = ServerGroupTestUtils.createManaged(admin);
 
         // Create server and add it to the group
-        Server server = createTestServer(admin, true);
-        SERVER_GROUP_MANAGER.addServers(group, Set.of(server), admin);
+        Server serverToSearch = createTestServer(admin, true);
+        SERVER_GROUP_MANAGER.addServers(group, Set.of(serverToSearch), admin);
         assertFalse(group.getServers().isEmpty());
-        
+
         // Associate group admin with the server group
-        SERVER_GROUP_MANAGER.associateAdmins(group, Set.of(groupAdmin), admin);
-        assertTrue(SERVER_GROUP_MANAGER.canAccess(groupAdmin, group));
-        
+        SERVER_GROUP_MANAGER.associateAdmins(group, Set.of(regular), admin);
+        assertTrue(SERVER_GROUP_MANAGER.canAccess(regular, group));
+
         // Save setup state
-        Long serverId = server.getId();
+        Long serverId = serverToSearch.getId();
         String adminLogin = admin.getLogin();
-        String groupAdminLogin = groupAdmin.getLogin();
+        String groupAdminLogin = regular.getLogin();
         String nonGroupAdminLogin = nonGroupAdminUser.getLogin();
-        
+
         ServerGroupFactory.save(group);
         UserFactory.save(admin);
-        UserFactory.save(groupAdmin);
+        UserFactory.save(regular);
         UserFactory.save(nonGroupAdminUser);
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
@@ -998,8 +1003,8 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testLookupSnapshotById() {
-        Server server = ServerFactoryTest.createTestServer(user, true);
-        ServerSnapshot snap = TestUtils.saveAndFlush(generateSnapshot(server));
+        Server server2 = ServerFactoryTest.createTestServer(user, true);
+        ServerSnapshot snap = TestUtils.saveAndFlush(generateSnapshot(server2));
 
         ServerSnapshot snap2 = ServerFactory.lookupSnapshotById(snap.getId().intValue());
         assertEquals(snap, snap2);
@@ -1008,8 +1013,8 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testDeleteSnapshot() {
-        Server server = ServerFactoryTest.createTestServer(user, true);
-        ServerSnapshot serverSnapshotNew = generateSnapshot(server);
+        Server server2 = ServerFactoryTest.createTestServer(user, true);
+        ServerSnapshot serverSnapshotNew = generateSnapshot(server2);
         ServerSnapshot serverSnapshot = TestUtils.saveAndFlush(serverSnapshotNew);
         ServerFactory.deleteSnapshot(serverSnapshot);
         ServerSnapshot snap2 = ServerFactory.lookupSnapshotById(
@@ -1020,8 +1025,8 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testGetSnapshotTags() {
-        Server server = ServerFactoryTest.createTestServer(user, true);
-        ServerSnapshot snap = TestUtils.saveAndFlush(generateSnapshot(server));
+        Server server2 = ServerFactoryTest.createTestServer(user, true);
+        ServerSnapshot snap = TestUtils.saveAndFlush(generateSnapshot(server2));
 
         SnapshotTagName nameNew = new SnapshotTagName();
         nameNew.setName("blah");
@@ -1029,11 +1034,11 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         SnapshotTag tagNew = new SnapshotTag();
         tagNew.setName(name);
-        tagNew.setOrg(server.getOrg());
+        tagNew.setOrg(server2.getOrg());
         SnapshotTag tag = TestUtils.saveAndFlush(tagNew);
 
         ServerSnapshotTagLink link = new ServerSnapshotTagLink();
-        link.setServer(server);
+        link.setServer(server2);
         link.setSnapshot(snap);
         link.setTag(tag);
         TestUtils.saveAndFlush(link);

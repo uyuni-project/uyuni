@@ -20,8 +20,8 @@ import java.io.Serializable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -78,8 +78,8 @@ public class ContentProjectFilter implements Serializable {
      * @return id
      */
     @Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "content_project_filter_seq")
-	@SequenceGenerator(name = "content_project_filter_seq", sequenceName = "suse_ct_f_p_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "content_project_filter_seq")
+    @SequenceGenerator(name = "content_project_filter_seq", sequenceName = "suse_ct_f_p_seq", allocationSize = 1)
     public Long getId() {
         return id;
     }

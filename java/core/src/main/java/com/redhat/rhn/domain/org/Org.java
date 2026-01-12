@@ -70,8 +70,8 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
@@ -97,8 +97,8 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
     protected static Logger log = LogManager.getLogger(Org.class);
 
     @Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "web_customer_seq")
-	@SequenceGenerator(name = "web_customer_seq", sequenceName = "web_customer_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "web_customer_seq")
+    @SequenceGenerator(name = "web_customer_seq", sequenceName = "web_customer_id_seq", allocationSize = 1)
     @Column(name = "id")
     private Long id;
 

@@ -84,7 +84,6 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 import jakarta.servlet.http.HttpServletResponse;
-
 import spark.Request;
 import spark.Response;
 import spark.route.HttpMethod;

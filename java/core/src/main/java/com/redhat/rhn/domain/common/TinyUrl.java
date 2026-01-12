@@ -17,7 +17,6 @@ package com.redhat.rhn.domain.common;
 import com.redhat.rhn.common.conf.ConfigException;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.Type;
 import org.hibernate.type.YesNoConverter;
 
 import java.net.MalformedURLException;

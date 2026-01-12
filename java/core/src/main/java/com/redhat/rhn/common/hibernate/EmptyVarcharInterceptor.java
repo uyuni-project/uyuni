@@ -89,14 +89,10 @@ public class EmptyVarcharInterceptor implements Interceptor, Serializable /*exte
     @Override
     public boolean onFlushDirty(Object entity, Object id, Object[] currentState, Object[] previousState,
                                 String[] propertyNames, Type[] types) {
-//    public boolean onFlushDirty(Object entity, Serializable id, Object[] currentState, Object[] previousState,
-//                                String[] propertyNames, Type[] types) {
         return emptyStringToNull(entity, id, currentState, propertyNames,
                 types, autoConvert);
     }
-//    default boolean onFlushDirty(Object entity, Object id, Object[] currentState, Object[] previousState, String[] propertyNames, Type[] types) {
-//        return false;
-//    }
+
     /**
      * Flag indicating if the interceptor correct the varchar errors automatically
      *

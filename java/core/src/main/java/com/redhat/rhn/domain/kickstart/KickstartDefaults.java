@@ -17,7 +17,6 @@ package com.redhat.rhn.domain.kickstart;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.rhnpackage.profile.Profile;
 
-import org.hibernate.annotations.Type;
 import org.hibernate.type.YesNoConverter;
 
 import jakarta.persistence.Column;

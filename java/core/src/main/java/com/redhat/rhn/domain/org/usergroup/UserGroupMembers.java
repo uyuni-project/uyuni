@@ -19,7 +19,6 @@ import com.redhat.rhn.domain.user.legacy.UserImpl;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.hibernate.annotations.Type;
 import org.hibernate.type.YesNoConverter;
 
 import jakarta.persistence.Convert;

@@ -15,7 +15,6 @@ import com.redhat.rhn.domain.channel.Channel;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.hibernate.annotations.Type;
 import org.hibernate.type.YesNoConverter;
 
 import java.io.Serializable;
@@ -23,8 +22,8 @@ import java.io.Serializable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -40,8 +39,10 @@ public class SUSEProductChannel extends BaseDomainHelper implements Serializable
 
     /** The id. */
     @Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suse_product_channel_seq")
-	@SequenceGenerator(name = "suse_product_channel_seq", sequenceName = "suse_product_channel_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suse_product_channel_seq")
+    @SequenceGenerator(
+            name = "suse_product_channel_seq", sequenceName = "suse_product_channel_id_seq", allocationSize = 1
+    )
     private Long id;
 
     /** The product. */

@@ -15,8 +15,6 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.Identifiable;
 import com.redhat.rhn.domain.org.Org;
 
-import io.hypersistence.utils.hibernate.type.json.JsonType;
-
 import org.hibernate.annotations.Type;
 
 import java.io.Serializable;
@@ -25,10 +23,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 
+import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -51,8 +50,8 @@ import jakarta.persistence.criteria.Root;
 public class Pillar implements Identifiable, Serializable {
 
     @Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pillar_seq")
-	@SequenceGenerator(name = "pillar_seq", sequenceName = "suse_salt_pillar_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "pillar_seq")
+    @SequenceGenerator(name = "pillar_seq", sequenceName = "suse_salt_pillar_id_seq", allocationSize = 1)
     @Column(name = "id")
     private Long id;
 
