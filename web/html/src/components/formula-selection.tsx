@@ -248,8 +248,8 @@ class FormulaSelection extends Component<Props, State> {
     if (this.state.messages !== prevState.messages && this.state.messages.length > 0) {
       showInfoToastr(
         <>
-          {this.state.messages.map((msg, i) => (
-            <div key={msg}>{msg}</div>
+          {this.state.messages.map((msg, index) => (
+            <div key={`error${index}`}>{msg}</div>
           ))}
         </>
       );
@@ -257,8 +257,8 @@ class FormulaSelection extends Component<Props, State> {
     if (this.state.errors !== prevState.errors && this.state.errors.length > 0) {
       showErrorToastr(
         <>
-          {this.state.errors.map((err, i) => (
-            <div key={err}>{err}</div>
+          {this.state.errors.map((err, index) => (
+            <div key={`error${index}`}>{err}</div>
           ))}
         </>,
         { autoHide: false }
