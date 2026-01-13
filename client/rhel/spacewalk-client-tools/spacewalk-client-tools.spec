@@ -85,6 +85,9 @@ Group:          System Environment/Base
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210 || 0%{?mageia} >= 6
 BuildArch:      noarch
 %endif
+%if 0%{?debian} || 0%{?ubuntu}
+ExclusiveArch:  do_not_build
+%endif
 %if 0%{?suse_version}
 BuildRequires:  update-desktop-files
 %endif
