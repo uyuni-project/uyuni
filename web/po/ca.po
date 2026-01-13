@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-09 10:26+0000\n"
-"PO-Revision-Date: 2026-01-12 20:04+0000\n"
+"PO-Revision-Date: 2026-01-13 14:04+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/web/ca/>\n"
 "Language: ca\n"
@@ -2346,10 +2346,8 @@ msgid "No hub is currently configured for this server. Refresh this page after c
 msgstr "Actualment no hi ha cap concentrador configurat per a aquest servidor. Actualitzeu aquesta pàgina després de configurar aquest servidor com a perifèric per veure els detalls del concentrador."
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:89
-#, fuzzy
-#| msgid "This server is currently registered as peripheral of hub {fqdn}. "
 msgid "This server is currently registered as peripheral of hub {fqdn}. This page shows the details of the hub server."
-msgstr "Aquest servidor està actualment registrat com a perifèric del concentrador {fqdn}. "
+msgstr "Aquest servidor està actualment registrat com a perifèric del concentrador {fqdn}. Aquesta pàgina mostra els detalls del servidor concentrador."
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:108
 msgid "Successfully scheduled a channels synchronization."
@@ -2372,10 +2370,8 @@ msgid "{fqdn} - Peripheral Details"
 msgstr "{fqdn} - Detalls del perifèric"
 
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:51
-#, fuzzy
-#| msgid "The server {fqdn} is currently registered as peripheral of this hub. "
 msgid "The server {fqdn} is currently registered as peripheral of this hub. This page shows the details of the peripheral server."
-msgstr "El servidor {fqdn} està actualment registrat com a perifèric d'aquest concentrador. "
+msgstr "El servidor {fqdn} està actualment registrat com a perifèric d'aquest concentrador. Aquesta pàgina mostra els detalls del servidor perifèric."
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:24
 msgid "Peripherals Configuration"
@@ -2919,10 +2915,8 @@ msgid "AppStreams"
 msgstr "AppStreams"
 
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:59
-#, fuzzy
-#| msgid "Please review the changes below before scheduling an action to apply the changes on the system."
 msgid "Please review the changes below before scheduling an action to apply the changes."
-msgstr "Reviseu els canvis següents abans de programar una acció per aplicar els canvis al sistema."
+msgstr "Reviseu els canvis següents abans de programar una acció per aplicar-los."
 
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:77
 msgid "Streams to be enabled:"
@@ -4158,26 +4152,20 @@ msgid "The page you requested, {currentUrl}, was not found."
 msgstr "No s'ha trobat la pàgina que heu sol·licitat, {currentUrl}."
 
 #: ../html/src/manager/errors/not-found.tsx:10
-#, fuzzy
-#| msgid "If you typed this address into your browser, double-check the spelling and capitalization."
 msgid "If you typed this address into your browser, double-check the spelling and capitalization. The address you are copying may also be outdated."
-msgstr "Si heu escrit aquesta adreça al navegador, reviseu-ne l'ortografia i les majúscules."
+msgstr "Si heu escrit aquesta adreça al navegador, reviseu l'ortografia i les majúscules. L'adreça que copieu també pot estar desactualitzada."
 
 #: ../html/src/manager/errors/not-found.tsx:16
-#, fuzzy
-#| msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
 msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your browser to try a different link, or use the top (or left) navigation bars to find the page you are looking for."
-msgstr "Si heu seguit un enllaç, és possible que l'enllaç sigui incorrecte o obsolet. Feu clic al botó Enrere a "
+msgstr "Si heu seguit un enllaç, és possible que sigui incorrecte o que estigui desactualitzat. Feu clic al botó Enrere del navegador per provar un enllaç diferent o useu les barres de navegació superiors (o esquerra) per trobar la pàgina que cerqueu."
 
 #: ../html/src/manager/errors/not-found.tsx:23
 msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top (or left) navigation bars to find the page you are looking for, and if you find the document be sure to update your bookmark."
 msgstr "Si heu fet servir un marcador, és possible que la pàgina s'hagi mogut a una ubicació diferent des que es va crear. Feu servir les barres de navegació superiors (o esquerra) per trobar la pàgina que busqueu i, si trobeu el document, assegureu-vos d'actualitzar el marcador."
 
 #: ../html/src/manager/errors/not-found.tsx:30
-#, fuzzy
-#| msgid "If you feel you've reached this page in error, please contact us with details of how you received "
 msgid "If you feel you've reached this page in error, please contact us with details of how you received this message."
-msgstr "Si creieu que heu arribat a aquesta pàgina per error, poseu-vos en contacte amb nosaltres i expliqueu com heu rebut "
+msgstr "Si creieu que heu arribat a aquesta pàgina per error, poseu-vos en contacte amb nosaltres i expliqueu com heu rebut aquest missatge."
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.tsx:27
 msgid "Applying the config channels has been scheduled for each minion server in this group"
@@ -5263,10 +5251,8 @@ msgid "Nothing configured. Please add paths in the "
 msgstr "No s'ha configurat res. Afegiu camins a "
 
 #: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:197
-#, fuzzy
-#| msgid "Add Peripheral"
 msgid "Add Variable"
-msgstr "Afegeix perifèric"
+msgstr "Afegeix una variable"
 
 #: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:222
 #: ../html/src/manager/minion/ansible/variables/boolean-editor.tsx:48
@@ -5276,34 +5262,24 @@ msgstr "Cert"
 
 #: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:226
 #: ../html/src/manager/minion/ansible/variables/boolean-editor.tsx:51
-#, fuzzy
-#| msgid "false"
 msgid "False"
-msgstr "fals"
+msgstr "Fals"
 
 #: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:244
-#, fuzzy
-#| msgid "Edit "
 msgid "Edit YAML"
-msgstr "Edita "
+msgstr "Edita YAML"
 
 #: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:255
-#, fuzzy
-#| msgid "Collapse All Sections"
 msgid "Collapse All"
-msgstr "Redueix totes les seccions"
+msgstr "Replega-ho tot"
 
 #: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:255
-#, fuzzy
-#| msgid "Expand All Sections"
 msgid "Expand All"
-msgstr "Expandeix totes les seccions"
+msgstr "Expandeix-ho tot"
 
 #: ../html/src/manager/minion/ansible/edit-ansible-vars-modal.tsx:65
-#, fuzzy
-#| msgid "Edit profile"
 msgid "Edit variables"
-msgstr "Edita el perfil"
+msgstr "Edita les variables"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:139
 msgid "Loading playbook contents.."
@@ -5329,16 +5305,12 @@ msgid "Change Playbook"
 msgstr "Canvia el llibre de reproducció"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:167
-#, fuzzy
-#| msgid "Change Playbook"
 msgid "Choose a different Playbook"
-msgstr "Canvia el llibre de reproducció"
+msgstr "Trieu un altre llibre de jugades"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:173
-#, fuzzy
-#| msgid "Select the current Playbook"
 msgid "Save the current Playbook"
-msgstr "Selecciona el llibre de reproducció actual"
+msgstr "Desa el llibre de jugades actual"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:183
 msgid "Playbook \"{name}\""
@@ -5374,75 +5346,53 @@ msgstr "L'execució del llibre de reproducció ha estat"
 
 #: ../html/src/manager/minion/ansible/variables/boolean-editor.tsx:27
 #: ../html/src/manager/minion/ansible/variables/boolean-editor.tsx:56
-#, fuzzy
-#| msgid "Add token"
 msgid "Add Boolean"
-msgstr "Afegeix un testimoni"
+msgstr "Afegeix un valor boleà"
 
 #: ../html/src/manager/minion/ansible/variables/dictionary-editor.tsx:93
 msgid "Key-Value Pairs"
-msgstr ""
+msgstr "Parells clau-valor"
 
 #: ../html/src/manager/minion/ansible/variables/dictionary-editor.tsx:115
-#, fuzzy
-#| msgid "Add item"
 msgid "Add Item"
 msgstr "Afegeix-hi un element"
 
 #: ../html/src/manager/minion/ansible/variables/dictionary-editor.tsx:120
-#, fuzzy
-#| msgid "Delete Image"
 msgid "Delete Item"
-msgstr "Suprimeix la imatge"
+msgstr "Suprimeix l'element"
 
 #: ../html/src/manager/minion/ansible/variables/dictionary-editor.tsx:131
-#, fuzzy
-#| msgid "Add Calendar"
 msgid "Add Key-Value Pair"
-msgstr "Afegeix un calendari"
+msgstr "Afegeix un parell clau-valor"
 
 #: ../html/src/manager/minion/ansible/variables/dictionary-editor.tsx:131
-#, fuzzy
-#| msgid "Add token"
 msgid "Add Dictionary"
-msgstr "Afegeix un testimoni"
+msgstr "Afegeix un diccionari"
 
 #: ../html/src/manager/minion/ansible/variables/list-editor.tsx:49
-#, fuzzy
-#| msgid "Systems"
 msgid "Items"
-msgstr "Tipus de sistema"
+msgstr "Elements"
 
 #: ../html/src/manager/minion/ansible/variables/list-editor.tsx:69
-#, fuzzy
-#| msgid "Add item"
 msgid "Add List Item"
-msgstr "Afegeix-hi un element"
+msgstr "Afegeix un element de llista"
 
 #: ../html/src/manager/minion/ansible/variables/list-editor.tsx:76
-#, fuzzy
-#| msgid "Delete selected"
 msgid "Delete List Item"
-msgstr "Suprimeix els seleccionats"
+msgstr "Suprimeix l'element de la llista"
 
 #: ../html/src/manager/minion/ansible/variables/list-editor.tsx:87
-#, fuzzy
-#| msgid "Add item"
 msgid "Add List"
-msgstr "Afegeix-hi un element"
+msgstr "Afegeix-hi una llista"
 
 #: ../html/src/manager/minion/ansible/variables/string-editor.tsx:31
 #: ../html/src/manager/minion/ansible/variables/string-editor.tsx:58
-#, fuzzy
-#| msgid "Add token"
 msgid "Add String"
-msgstr "Afegeix un testimoni"
+msgstr "Afegeix-hi una cadena"
 
 #: ../html/src/manager/minion/ansible/variables/string-editor.tsx:36
-#, fuzzy
-#| msgid "New value"
 msgid "Name and value"
-msgstr "Valor nou"
+msgstr "Nom i valor"
 
 #: ../html/src/manager/minion/coco/coco-settings.tsx:66
 msgid "Settings"
@@ -6301,10 +6251,8 @@ msgid "Flush fact cache:"
 msgstr "Neteja la memòria cau de fets:"
 
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:126
-#, fuzzy
-#| msgid "Disable"
 msgid "Variables"
-msgstr "Desactiva"
+msgstr "Variables"
 
 #. Value options for filtering by Action Type in recurring actions list
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:10
@@ -6612,53 +6560,39 @@ msgstr "Tipus de sistema"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-channel-selection.tsx:16
 msgid "No modular channels are available for the selected systems in SSM."
-msgstr ""
+msgstr "No hi ha canals modulars disponibles per als sistemes seleccionats a SSM."
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-channel-selection.tsx:19
-#, fuzzy
-#| msgid "Select Channels"
 msgid "Select Channel"
-msgstr "Seleccioneu els canals"
+msgstr "Seleccioneu el canal"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-channel-selection.tsx:21
 msgid "First, select the channel containing the AppStreams to be configured upon the selected systems."
-msgstr ""
+msgstr "Primer, seleccioneu el canal que conté els AppStreams que es configuraran als sistemes seleccionats."
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:18
-#, fuzzy
-#| msgid "Base Channel"
 msgid "Change Channel"
-msgstr "Canal base"
+msgstr "Canvia de canal"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:21
-#, fuzzy
-#| msgid "Config channel"
 msgid "Change channel"
-msgstr "Canal de configuració"
+msgstr "Canvia de canal"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:74
-#, fuzzy
-#| msgid "The following AppStream modules are currently available to the system."
 msgid "The following AppStream modules are available on the selected channel."
-msgstr "Els següents mòduls d'AppStream estan actualment disponibles per al sistema."
+msgstr "Els següents mòduls d'AppStream estan disponibles al canal seleccionat."
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:98
-#, fuzzy
-#| msgid "AppStreams"
 msgid "({count} AppStreams)"
-msgstr "AppStreams"
+msgstr "({count} AppStreams)"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:123
-#, fuzzy
-#| msgid "No change"
 msgid "Don't change"
 msgstr "Sense canvi"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:135
-#, fuzzy
-#| msgid "Enable"
 msgid "Enable "
-msgstr "Activa"
+msgstr "Activa "
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:41
 msgid "Error Details"
@@ -6949,10 +6883,8 @@ msgid "Product Migration - Schedule"
 msgstr "Migració de productes - Planificació"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:105
-#, fuzzy
-#| msgid "Base Product"
 msgid "Unknown base product"
-msgstr "Producte de base"
+msgstr "Producte de base desconegut"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:119
 msgid "Show product details"
