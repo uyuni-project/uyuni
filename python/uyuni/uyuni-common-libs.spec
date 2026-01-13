@@ -57,6 +57,9 @@ URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
 BuildRequires:  fdupes
 BuildRequires:  make
+%if 0%{?debian} || 0%{?ubuntu}
+ExclusiveArch:  do_not_build
+%endif
 
 %description
 Uyuni server and client libs
