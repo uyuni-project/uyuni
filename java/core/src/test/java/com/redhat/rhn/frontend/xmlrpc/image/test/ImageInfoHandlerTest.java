@@ -136,7 +136,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         assertTrue(ret > 0);
 
         Optional<ImageInfo> info = ImageInfoFactory
-                .lookupByName("my-external-image", "1.0", store.getId());
+                .lookupByName("my-external-image", "1.0", store);
         assertTrue(info.isPresent());
 
         dr = ActionManager.recentlyScheduledActions(admin, null, 30);

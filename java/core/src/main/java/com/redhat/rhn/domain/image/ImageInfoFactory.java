@@ -228,7 +228,7 @@ public class ImageInfoFactory extends HibernateFactory {
         }
 
         // Check if the image name:version is available
-        if (lookupByName(name, version, store.getId()).isPresent()) {
+        if (lookupByName(name, version, store).isPresent()) {
             throw new IllegalArgumentException("Image already exists.");
         }
 
@@ -476,21 +476,34 @@ public class ImageInfoFactory extends HibernateFactory {
      *
      * @param name             the name
      * @param version          the version/tag
-     * @param imageStoreId the image store id
+     * @param imageStore       the image store
      * @return the optional
      */
-    public static Optional<ImageInfo> lookupByName(String name, String version, long imageStoreId) {
-        CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<ImageInfo> query = builder.createQuery(ImageInfo.class);
-
-        Root<ImageInfo> root = query.from(ImageInfo.class);
-        query.where(builder.and(
-                builder.equal(root.get("name"), name),
-                StringUtils.isEmpty(version) ?
-                        builder.isNull(root.get("version")) : builder.equal(root.get("version"), version),
-                builder.equal(root.get("store"), imageStoreId)))
-                .orderBy(builder.desc(root.get("revisionNumber")));
-        return getSession().createQuery(query).setMaxResults(1).uniqueResultOptional();
+    public static Optional<ImageInfo> lookupByName(String name, String version, ImageStore imageStore) {
+        if (StringUtils.isEmpty(version)) {
+            return getSession()
+                    .createQuery("""
+                                    FROM ImageInfo WHERE name = :name
+                                    AND version IS NULL
+                                    AND store = :imageStore
+                                    ORDER BY revisionNumber""", ImageInfo.class)
+                    .setParameter("name", name)
+                    .setParameter("imageStore", imageStore)
+                    .setMaxResults(1)
+                    .uniqueResultOptional();
+        }
+        else {
+            return getSession()
+                    .createQuery("""
+                                    FROM ImageInfo WHERE name = :name
+                                    AND version = :version
+                                    AND store = :imageStore ORDER BY revisionNumber""", ImageInfo.class)
+                    .setParameter("name", name)
+                    .setParameter("version", version)
+                    .setParameter("imageStore", imageStore)
+                    .setMaxResults(1)
+                    .uniqueResultOptional();
+        }
     }
 
     /**
