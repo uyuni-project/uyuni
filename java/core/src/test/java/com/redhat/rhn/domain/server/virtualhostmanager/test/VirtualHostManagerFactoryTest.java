@@ -112,6 +112,9 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
         VirtualHostManagerFactory.getInstance().updateVirtualHostManager(vhm, "mynewlabel",
                 updConfig);
 
+        // flush before query
+        HibernateFactory.getSession().flush();
+
         vhm = factory.lookupByLabel("mynewlabel");
         assertNotNull(vhm);
         assertEquals("TheUpdatedFlashGordon", vhm.getCredentials().getUsername());
@@ -182,6 +185,10 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
         assertNotNull(factory.lookupByLabel(myLabel));
 
         factory.delete(vhm);
+
+        // flush before query
+        HibernateFactory.getSession().flush();
+
         assertNull(factory.lookupByLabel(myLabel));
     }
 
@@ -277,6 +284,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
         VirtualHostManager vhm =
                 factory.createVirtualHostManager(label, org, module, parameters);
         factory.save(vhm);
+        HibernateFactory.getSession().flush();
         return vhm;
     }
 }
