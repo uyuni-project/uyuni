@@ -194,22 +194,25 @@ public class ErrataTest extends BaseTestCaseWithUser {
         String bug = "Bug Fix Advisory";
         Date now = new Date();
 
-        err.setAdvisory(foo);
-        assertEquals("foo", err.getAdvisory());
         err.setAdvisory(null);
         assertNull(err.getAdvisory());
+        err.setAdvisory(foo);
+        assertEquals("foo", err.getAdvisory());
 
-        err.setAdvisoryName(foo);
-        assertEquals("foo", err.getAdvisoryName());
         err.setAdvisoryName(null);
         assertNull(err.getAdvisoryName());
+        err.setAdvisoryName(foo);
+        assertEquals("foo", err.getAdvisoryName());
 
+        err.setAdvisoryRel(null);
+        assertNull(err.getAdvisoryRel());
         err.setAdvisoryRel(one);
         assertEquals(err.getAdvisoryRel(), one);
         assertNotEquals(err.getAdvisoryRel(), two);
-        err.setAdvisoryRel(null);
-        assertNull(err.getAdvisoryRel());
 
+        err.setAdvisoryType(null);
+        assertNull(err.getAdvisoryType());
+        assertFalse(err.isSecurityAdvisory());
         err.setAdvisoryType(foo);
         assertEquals("foo", err.getAdvisoryType());
         assertFalse(err.isBugFix());
@@ -224,64 +227,59 @@ public class ErrataTest extends BaseTestCaseWithUser {
         err.setAdvisoryType(security);
         assertTrue(err.isSecurityAdvisory());
         assertFalse(err.isBugFix());
-        err.setAdvisoryType(null);
-        assertNull(err.getAdvisoryType());
-        assertFalse(err.isSecurityAdvisory());
 
-        err.setDescription(foo);
-        assertEquals("foo", err.getDescription());
         err.setDescription(null);
         assertNull(err.getDescription());
+        err.setDescription(foo);
+        assertEquals("foo", err.getDescription());
 
-        err.setIssueDate(now);
-        assertEquals(err.getIssueDate(), now);
         err.setIssueDate(null);
         assertNull(err.getIssueDate());
+        err.setIssueDate(now);
+        assertEquals(err.getIssueDate(), now);
 
-        err.setLastModified(now);
-        assertEquals(err.getLastModified(), now);
         err.setLastModified(null);
         assertNull(err.getLastModified());
+        err.setLastModified(now);
+        assertEquals(err.getLastModified(), now);
 
-        err.setLocallyModified(Boolean.TRUE);
-        assertTrue(err.getLocallyModified());
         err.setLocallyModified(Boolean.FALSE);
         assertFalse(err.getLocallyModified());
+        err.setLocallyModified(Boolean.TRUE);
+        assertTrue(err.getLocallyModified());
 
         err.setNotes(foo);
         assertEquals("foo", err.getNotes());
-        err.setNotes(null);
-        assertNull(err.getNotes());
 
-        err.setProduct(foo);
-        assertEquals("foo", err.getProduct());
         err.setProduct(null);
         assertNull(err.getProduct());
+        err.setProduct(foo);
+        assertEquals("foo", err.getProduct());
 
         err.setRefersTo(foo);
         assertEquals("foo", err.getRefersTo());
         err.setRefersTo(null);
         assertNull(err.getRefersTo());
 
-        err.setSolution(foo);
-        assertEquals("foo", err.getSolution());
         err.setSolution(null);
         assertNull(err.getSolution());
+        err.setSolution(foo);
+        assertEquals("foo", err.getSolution());
 
-        err.setSynopsis(foo);
-        assertEquals("foo", err.getSynopsis());
         err.setSynopsis(null);
         assertNull(err.getSynopsis());
+        err.setSynopsis(foo);
+        assertEquals("foo", err.getSynopsis());
 
         err.setTopic(foo);
         assertEquals("foo", err.getTopic());
         err.setTopic(null);
         assertNull(err.getTopic());
 
-        err.setUpdateDate(now);
-        assertEquals(err.getUpdateDate(), now);
         err.setUpdateDate(null);
         assertNull(err.getUpdateDate());
+        err.setUpdateDate(now);
+        assertEquals(err.getUpdateDate(), now);
 
         Org org1 = user.getOrg();
 
@@ -290,6 +288,7 @@ public class ErrataTest extends BaseTestCaseWithUser {
         err.setOrg(null);
         assertNull(err.getOrg());
 
+        //createTestChannel calls flush, so previous errata fields with non-null constraint should not be left null
         Channel c1 = ChannelFactoryTest.createTestChannel(user.getOrg());
         err.addChannel(c1);
         assertEquals(1, err.getChannels().size());
