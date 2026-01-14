@@ -71,7 +71,7 @@ PKGLIST16_SALT = [
 ]
 
 ONLYSLE16 = [
-    "gio-branding-SLE-16",
+    "gio-branding-SLE",
 ]
 
 PKGLIST16_X86_ARM = [
