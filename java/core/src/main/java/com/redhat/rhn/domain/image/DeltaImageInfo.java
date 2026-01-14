@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.server.Pillar;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
@@ -43,7 +44,7 @@ public class DeltaImageInfo extends BaseDomainHelper {
      * @return the source image info
      */
     @Id
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "source_image_id", nullable = false)
     public ImageInfo getSourceImageInfo() {
         return sourceImageInfo;
@@ -60,7 +61,7 @@ public class DeltaImageInfo extends BaseDomainHelper {
      * @return the target image info
      */
     @Id
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "target_image_id", nullable = false)
     public ImageInfo getTargetImageInfo() {
         return targetImageInfo;
@@ -92,7 +93,7 @@ public class DeltaImageInfo extends BaseDomainHelper {
     /**
      * @return the pillar
      */
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pillar_id")
     public Pillar getPillar() {
         return pillar;
