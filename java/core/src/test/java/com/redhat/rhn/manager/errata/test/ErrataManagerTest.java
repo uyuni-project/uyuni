@@ -121,6 +121,9 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         e.setAdvisoryName(TestUtils.randomString());
         ErrataFactory.save(e);
 
+        //flush before query
+        HibernateFactory.getSession().flush();
+
         Errata e2 = ErrataManager.lookupErrata(e.getId(), user);
         assertEquals(e.getAdvisoryName(), e2.getAdvisoryName());
     }
@@ -260,6 +263,9 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         User user = UserTestUtils.createUser(this);
         Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
 
+        //flush before query
+        HibernateFactory.getSession().flush();
+
         // Check for the case where the errata belongs to the users org
         Errata check = ErrataManager.lookupErrata(errata.getId(), user);
         assertEquals(check.getAdvisory(), errata.getAdvisory());
@@ -273,6 +279,9 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         errata.setOrg(null);
         ErrataFactory.save(errata);
 
+        //flush before query
+        HibernateFactory.getSession().flush();
+
         assertThrows(LookupException.class, () -> {
             ErrataManager.lookupErrata(errata.getId(), user);
         });
@@ -281,6 +290,9 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         Org org2 = UserTestUtils.createOrg("testOrg2");
         errata.setOrg(org2);
         ErrataFactory.save(errata);
+
+        //flush before query
+        HibernateFactory.getSession().flush();
 
         try {
             ErrataManager.lookupErrata(errata.getId(), user);
