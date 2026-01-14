@@ -1669,8 +1669,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
 
-        assertTrue(ImageInfoFactory.lookupByName(imageName, imageVersion, store.getId()).isPresent());
-        ImageInfo imgInfo = ImageInfoFactory.lookupByName(imageName, imageVersion, store.getId()).orElse(null);
+        assertTrue(ImageInfoFactory.lookupByName(imageName, imageVersion, store).isPresent());
+        ImageInfo imgInfo = ImageInfoFactory.lookupByName(imageName, imageVersion, store).orElse(null);
         assertNotNull(imgInfo);
 
         // other assertions after inspection

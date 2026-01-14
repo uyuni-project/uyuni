@@ -167,7 +167,7 @@ public class KubernetesManager {
 
                         Optional<ImageInfo> imgByRepoNameTag =
                                 ImageStoreFactory.lookupBylabelAndOrg(repo, virtHostMgr.getOrg())
-                                        .flatMap(st -> ImageInfoFactory.lookupByName(name, tag, st.getId()));
+                                        .flatMap(st -> ImageInfoFactory.lookupByName(name, tag, st));
                         usage = imgByRepoNameTag
                                 .map(imgInfo -> imgToUsage.get(imgInfo.getId()))
                                 .map(Optional::of).orElseGet(() -> imgByRepoNameTag
