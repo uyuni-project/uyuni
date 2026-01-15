@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.action.errata.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -68,6 +69,7 @@ public class ChannelActionTest extends RhnBaseTestCase {
 
         //create the errata
         Errata errata = ErrataFactoryTest.createTestErrata(usr.getOrg().getId());
+        HibernateFactory.getSession().flush();
 
         //We can't publish without selecting channels. Make sure we get an error.
         request.addParameter("eid", errata.getId().toString());
@@ -172,6 +174,7 @@ public class ChannelActionTest extends RhnBaseTestCase {
 
         User user = ah.getUser();
         Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        HibernateFactory.getSession().flush();
 
 
         for (int i = 0; i < 4; i++) {
