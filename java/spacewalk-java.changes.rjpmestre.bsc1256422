@@ -1,0 +1,2 @@
+- Fix return type for sync/content/listProducts
+  (bsc#1256422)
