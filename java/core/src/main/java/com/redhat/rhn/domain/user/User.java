@@ -677,4 +677,14 @@ public interface User extends Serializable {
      * @param accessGroupIn the access group
      */
     void removeFromGroup(AccessGroup accessGroupIn);
+
+    /**
+     * @return beta features enabled flag
+     */
+    boolean getBetaFeaturesEnabled();
+
+    /**
+     * @param betaFeaturesEnabledIn beta features enabled to set
+     */
+    void setBetaFeaturesEnabled(boolean betaFeaturesEnabledIn);
 }

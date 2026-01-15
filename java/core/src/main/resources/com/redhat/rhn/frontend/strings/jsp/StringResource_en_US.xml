@@ -1183,6 +1183,24 @@
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="preferences.jsp.betafeatures" xml:space="preserve">
+        <source> Enable beta features</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/UserPreferences</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="preferences.jsp.betaheader" xml:space="preserve">
+        <source>Beta Features</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/UserPreferences</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="preferences.jsp.betadescription" xml:space="preserve">
+        <source>Beta features are experimental and may not be fully tested. Enable this option to access new functionality that is still under development. Use with caution in production environments.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/UserPreferences</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="preferences.jsp.listsize" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ List Page Size</source>
         <context-group name="ctx">
