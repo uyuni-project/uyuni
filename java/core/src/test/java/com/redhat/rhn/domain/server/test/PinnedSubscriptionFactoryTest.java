@@ -17,6 +17,7 @@ package com.redhat.rhn.domain.server.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
@@ -48,6 +49,7 @@ public class PinnedSubscriptionFactoryTest extends BaseTestCaseWithUser {
         subscription.setSubscriptionId(10L);
         subscription.setSystemId(100L);
         PinnedSubscriptionFactory.getInstance().save(subscription);
+        HibernateFactory.getSession().flush();
 
         List<PinnedSubscription> subs = PinnedSubscriptionFactory.getInstance()
                 .listPinnedSubscriptions();
@@ -63,6 +65,7 @@ public class PinnedSubscriptionFactoryTest extends BaseTestCaseWithUser {
 
         PinnedSubscriptionFactory.getInstance().save(subscription);
         PinnedSubscriptionFactory.getInstance().remove(subscription);
+        HibernateFactory.getSession().flush();
 
         assertTrue(PinnedSubscriptionFactory.getInstance().listPinnedSubscriptions()
                 .isEmpty());
@@ -74,6 +77,7 @@ public class PinnedSubscriptionFactoryTest extends BaseTestCaseWithUser {
         subscription.setSubscriptionId(10L);
         subscription.setSystemId(100L);
         PinnedSubscriptionFactory.getInstance().save(subscription);
+        HibernateFactory.getSession().flush();
 
         assertEquals(1, PinnedSubscriptionFactory.getInstance().listPinnedSubscriptions()
                 .size());
@@ -113,6 +117,7 @@ public class PinnedSubscriptionFactoryTest extends BaseTestCaseWithUser {
         selfPin.setSubscriptionId(item.getSccId());
         selfPin.setSystemId(MatcherJsonIO.SELF_SYSTEM_ID);
         PinnedSubscriptionFactory.getInstance().save(selfPin);
+        HibernateFactory.getSession().flush();
 
         assertEquals(2, PinnedSubscriptionFactory.getInstance().listPinnedSubscriptions()
                 .size());
