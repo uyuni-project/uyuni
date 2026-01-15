@@ -13,4 +13,4 @@
 -- in this software or its documentation.
 --
 
--- This file is currently intentionally left blank.
+CREATE EXTENSION pg_trgm;
