@@ -44,7 +44,7 @@
         <dependency org="suse" name="httpclient" rev="4.5.14" />
         <dependency org="suse" name="httpcore" rev="4.4.14" />
         <dependency org="suse" name="httpcore-nio" rev="4.4.14" />
-        <dependency org="suse" name="ical4j" rev="3.0.18" />
+        <dependency org="suse" name="ical4j" rev="3.2.19" />
         <dependency org="suse" name="jackson-annotations" rev="2.17.3" />
         <dependency org="suse" name="jackson-core" rev="2.17.3" />
         <dependency org="suse" name="jackson-databind" rev="2.17.3" />
