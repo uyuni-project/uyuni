@@ -98,6 +98,9 @@ hubAPI: false
 # cocoReplicas is the number of replicas for the confidential computing attestation deployment.
 cocoReplicas: 0
 
+# saline needs to be set to true to be deployed for salt master monitoring
+saline: false
+
 global:
   # fqdn is the fully qualified name the server will answer as.
   # Changing this value renames the server and changes the server FQDN in the database, handle with care.
