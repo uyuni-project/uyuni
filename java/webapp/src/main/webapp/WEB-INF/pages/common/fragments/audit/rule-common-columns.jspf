@@ -29,7 +29,17 @@
 <rl:column headerkey="system.audit.xccdfdetails.jsp.action">
    <c:if test="${current.label eq 'fail'}">
        <div class="action-button-wrapper">
-             <button type="button" style="padding: 2px;" id="remediate_rule" class="btn-default" >Remediate</button>
+           <c:choose>
+               <c:when test="${not empty param.sid}">
+                   <button type="button" style="padding: 2px;" id="remediate_rule" class="btn-default" 
+                           onclick="window.location.href='/rhn/manager/audit/scap/scan/rule-result-details/${param.sid}/${current.id}'">Remediate</button>
+               </c:when>
+               <c:otherwise>
+                   <button type="button" style="padding: 2px;" id="remediate_rule" class="btn-default" 
+                           onclick="window.location.href='/rhn/manager/audit/scap/scan/rule-result-details/${current.testResult.server.id}/${current.id}'">Remediate</button>
+               </c:otherwise>
+           </c:choose>
        </div>
    </c:if>
 </rl:column>
+

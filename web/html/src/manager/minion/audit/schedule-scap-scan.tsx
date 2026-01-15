@@ -1,4 +1,4 @@
-import "./schedule-scap-scan.css";
+import "./audit-common.css";
 
 import * as React from "react";
 import SpaRenderer from "core/spa/spa-renderer";
