@@ -428,6 +428,20 @@ nav.navbar-pf {
           color: $aside-menu-text;
         }
       }
+      // Beta badge styling
+      .menu-beta-badge {
+        display: inline-block;
+        font-size: 0.65em;
+        font-weight: 600;
+        padding: 2px 6px;
+        margin-left: 6px;
+        border-radius: 3px;
+        background-color: #f0ad4e;
+        color: #fff;
+        vertical-align: middle;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
     }
     /* First Level */
     > ul {

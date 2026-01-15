@@ -36,6 +36,7 @@ public class MenuItem {
     private String target = "";
     private String icon = "";
     private boolean isVisible = true;
+    private boolean isBeta = false;
     private List<MenuItem> submenu;
 
     /**
@@ -308,6 +309,26 @@ public class MenuItem {
      */
     public MenuItem withTarget(String targetIn) {
         this.target = targetIn;
+        return this;
+    }
+
+    /**
+     * Gets isBeta flag
+     *
+     * @return true if this is a beta feature
+     */
+    public boolean getIsBeta() {
+        return this.isBeta;
+    }
+
+    /**
+     * Mark this menu item as a beta feature
+     *
+     * @param isBetaIn the beta flag
+     * @return this MenuItem
+     */
+    public MenuItem withBeta(boolean isBetaIn) {
+        this.isBeta = isBetaIn;
         return this;
     }
 }
