@@ -87,11 +87,32 @@ public class IcalUtils {
      * @return the optional upcoming maintenance windows
      */
     public Optional<List<MaintenanceWindowData>> calculateUpcomingMaintenanceWindows(MaintenanceSchedule schedule) {
+        return calculateUpcomingMaintenanceWindows(schedule, Instant.now());
+    }
+
+    /**
+     * Given MaintenanceSchedule calculate upcoming maintenance windows
+     *
+     * The windows are returned as a list of triples consisting of:
+     * - window start date as a human-readable string
+     * - window end date as a human-readable string
+     * - start date as number of milliseconds since the epoch
+     *
+     * The formatting is done by {@link LocalizationService}.
+     *
+     * The upper limit of returned maintenance windows is currently hardcoded to 10.
+     *
+     * @param schedule the given MaintenanceSchedule
+     * @param startDate the starting instant to compute the windows
+     * @return the optional upcoming maintenance windows
+     */
+    public Optional<List<MaintenanceWindowData>> calculateUpcomingMaintenanceWindows(MaintenanceSchedule schedule,
+                                                                                     Instant startDate) {
         Optional<String> multiScheduleName = getScheduleNameForMulti(schedule);
 
         Stream<Pair<Instant, Instant>> periodStream = schedule.getCalendarOpt()
                 .flatMap(this::parseCalendar)
-                .map(c -> calculateUpcomingPeriods(c, multiScheduleName, Instant.now(), 10))
+                .map(c -> calculateUpcomingPeriods(c, multiScheduleName, startDate, 10))
                 .orElseGet(Stream::empty);
 
         List<MaintenanceWindowData> result = periodStream
