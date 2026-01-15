@@ -1,11 +1,25 @@
 <rl:column headerkey="system.audit.xccdfdetails.jsp.idref" sortattr="documentIdref"
     sortable="true">
     <c:choose>
-      <c:when test="${not empty param.sid}">
-        <a href="/rhn/manager/audit/scap/scan/rule-result-details/${param.sid}/${current.id}">
+      <c:when test="${user.betaFeaturesEnabled}">
+        <c:choose>
+          <c:when test="${not empty param.sid}">
+            <a href="/rhn/manager/audit/scap/scan/rule-result-details/${param.sid}/${current.id}">
+          </c:when>
+          <c:otherwise>
+            <a href="/rhn/manager/audit/scap/scan/rule-result-details/${current.testResult.server.id}/${current.id}">
+          </c:otherwise>
+        </c:choose>
       </c:when>
       <c:otherwise>
-        <a href="/rhn/manager/audit/scap/scan/rule-result-details/${current.testResult.server.id}/${current.id}">
+        <c:choose>
+          <c:when test="${not empty param.sid}">
+            <a href="/rhn/systems/details/audit/RuleDetails.do?sid=${param.sid}&rrid=${current.id}">
+          </c:when>
+          <c:otherwise>
+            <a href="/rhn/systems/details/audit/RuleDetails.do?sid=${current.testResult.server.id}&rrid=${current.id}">
+          </c:otherwise>
+        </c:choose>
       </c:otherwise>
     </c:choose>
     <c:choose>
@@ -26,20 +40,22 @@
 <rl:column headerkey="system.audit.xccdfdetails.jsp.result" sortattr="label" sortable="true" filterattr="label">
   <c:out value="${current.label}"/>
 </rl:column>
-<rl:column headerkey="system.audit.xccdfdetails.jsp.action">
-   <c:if test="${current.label eq 'fail'}">
-       <div class="action-button-wrapper">
-           <c:choose>
-               <c:when test="${not empty param.sid}">
-                   <button type="button" style="padding: 2px;" id="remediate_rule" class="btn-default" 
-                           onclick="window.location.href='/rhn/manager/audit/scap/scan/rule-result-details/${param.sid}/${current.id}'">Remediate</button>
-               </c:when>
-               <c:otherwise>
-                   <button type="button" style="padding: 2px;" id="remediate_rule" class="btn-default" 
-                           onclick="window.location.href='/rhn/manager/audit/scap/scan/rule-result-details/${current.testResult.server.id}/${current.id}'">Remediate</button>
-               </c:otherwise>
-           </c:choose>
-       </div>
-   </c:if>
-</rl:column>
+<c:if test="${user.betaFeaturesEnabled}">
+    <rl:column headerkey="system.audit.xccdfdetails.jsp.action">
+       <c:if test="${current.label eq 'fail'}">
+           <div class="action-button-wrapper">
+               <c:choose>
+                   <c:when test="${not empty param.sid}">
+                       <button type="button" style="padding: 2px;" id="remediate_rule" class="btn-default" 
+                               onclick="window.location.href='/rhn/manager/audit/scap/scan/rule-result-details/${param.sid}/${current.id}'">Remediate</button>
+                   </c:when>
+                   <c:otherwise>
+                       <button type="button" style="padding: 2px;" id="remediate_rule" class="btn-default" 
+                               onclick="window.location.href='/rhn/manager/audit/scap/scan/rule-result-details/${current.testResult.server.id}/${current.id}'">Remediate</button>
+                   </c:otherwise>
+               </c:choose>
+           </div>
+       </c:if>
+    </rl:column>
+</c:if>
 

@@ -19,8 +19,7 @@ import static java.util.Collections.singletonList;
 import static java.util.Collections.singletonMap;
 import static java.util.stream.Collectors.toList;
 
-import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.conf.ConfigDefaults;
+
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.server.ServerAction;
@@ -128,7 +127,7 @@ public class ScapAction extends Action {
     @Override
     public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
         // Check if beta features are enabled
-        boolean useBetaMode = Config.get().getBoolean(ConfigDefaults.BETA_FEATURES_ENABLED, true);
+        boolean useBetaMode = getSchedulerUser() != null && getSchedulerUser().getBetaFeaturesEnabled();
         
         if (useBetaMode) {
             return buildSaltCallsBeta(minionSummaries);

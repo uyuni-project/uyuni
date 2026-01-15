@@ -137,7 +137,9 @@ public class RecurringActionController {
      * @return the ModelAndView object to render the page
      */
     public static ModelAndView recurringActions(Request request, Response response, User user) {
-        return new ModelAndView(new HashMap<>(), "templates/schedule/recurring-actions.jade");
+        Map<String, Object> data = new HashMap<>();
+        data.put("betaEnabled", user.getBetaFeaturesEnabled());
+        return new ModelAndView(data, "templates/schedule/recurring-actions.jade");
     }
 
     /**

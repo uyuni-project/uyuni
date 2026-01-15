@@ -31,6 +31,7 @@ declare global {
     isControlNode?: boolean;
     timezone?: any;
     localTime?: any;
+    betaEnabled?: boolean;
   }
 }
 
@@ -163,6 +164,7 @@ class RecurringActions extends Component<Props, State> {
             onEdit={this.handleEditAction}
             onError={this.handleResponseError}
             onSetMessages={this.setMessages}
+            betaEnabled={window.betaEnabled}
           />
         ) : (this.state.action === "edit" && this.state.selected) ||
           (this.state.action === "create" && this.isFilteredList()) ? (
