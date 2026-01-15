@@ -314,7 +314,11 @@ class RecurringActionsDetails extends Component<RecurringActionsDetailsProps, Re
               data={this.state.details.policies}
               hideHeaderFooter="both"
             >
-              <Column header={t("Policy Name")} columnKey="policyName" cell={(row) => row.policyName} />
+              <Column
+                header={t("Policy Name")}
+                columnKey="policyName"
+                cell={(row) => <a href={`/rhn/manager/audit/scap/policy/details/${row.id}`}>{row.policyName}</a>}
+              />
               <Column header={t("Data Stream")} columnKey="dataStreamName" cell={(row) => row.dataStreamName} />
               <Column header={t("XCCDF Profile")} columnKey="xccdfProfileId" cell={(row) => row.xccdfProfileId} />
               <Column
