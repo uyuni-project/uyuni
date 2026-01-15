@@ -275,7 +275,7 @@ public class UserFactory extends HibernateFactory {
         User returnedUser  = getSession().createQuery("""
                 FROM com.redhat.rhn.domain.user.legacy.UserImpl AS u
                 WHERE u.loginUc = :loginUc
-                AND org_id = :orgId
+                AND u.org.id = :orgId
                 """, UserImpl.class)
                 .setParameter("orgId", user.getOrg().getId())
                 .setParameter(LOGIN_UC, login.toUpperCase())

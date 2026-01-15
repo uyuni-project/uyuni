@@ -335,8 +335,8 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         Channel c = ChannelFactoryTest.createTestChannel(admin);
         Server s = ServerFactoryTest.createTestServer(admin);
         SystemManager.subscribeServerToChannel(admin, s, c);
-        flushAndEvict(c);
         flushAndEvict(s);
+        flushAndEvict(c);
         addAccessGroup(admin, AccessGroupFactory.CHANNEL_ADMIN);
 
         Object[] result = csh.listSubscribedSystems(admin, c.getLabel());
@@ -717,7 +717,6 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         admin.getOrg().addOwnedChannel(channel);
         OrgFactory.save(admin.getOrg());
         ChannelFactory.save(channel);
-        flushAndEvict(channel);
 
         assertNull(channel.getMaintainerName());
         assertNull(channel.getMaintainerEmail());
