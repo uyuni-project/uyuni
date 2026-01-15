@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -54,7 +55,7 @@ public class ChannelHandlerTest extends BaseHandlerTestCase {
         admin.getOrg().addOwnedChannel(channel);
         OrgFactory.save(admin.getOrg());
         ChannelFactory.save(channel);
-        flushAndEvict(channel);
+        HibernateFactory.getSession().flush();
 
         List<Map<String, Object>> result = handler.listSoftwareChannels(admin);
         assertNotNull(result);
@@ -76,7 +77,7 @@ public class ChannelHandlerTest extends BaseHandlerTestCase {
         admin.getOrg().addOwnedChannel(channel);
         OrgFactory.save(admin.getOrg());
         ChannelFactory.save(channel);
-        flushAndEvict(channel);
+        HibernateFactory.getSession().flush();
 
         // execute
         Object[] result = handler.listAllChannels(admin);
@@ -104,7 +105,7 @@ public class ChannelHandlerTest extends BaseHandlerTestCase {
         admin.getOrg().addOwnedChannel(channel);
         OrgFactory.save(admin.getOrg());
         ChannelFactory.save(channel);
-        flushAndEvict(channel);
+        HibernateFactory.getSession().flush();
 
         Object[] result = handler.listManageableChannels(regular);
 
@@ -175,7 +176,7 @@ public class ChannelHandlerTest extends BaseHandlerTestCase {
         admin.getOrg().addOwnedChannel(channel);
         OrgFactory.save(admin.getOrg());
         ChannelFactory.save(channel);
-        flushAndEvict(channel);
+        HibernateFactory.getSession().flush();
 
         // execute
         Object[] result = handler.listMyChannels(admin);
@@ -213,7 +214,7 @@ public class ChannelHandlerTest extends BaseHandlerTestCase {
 
         OrgFactory.save(admin.getOrg());
         ChannelFactory.save(channel);
-        flushAndEvict(channel);
+        HibernateFactory.getSession().flush();
 
         // execute
         Object[] result = handler.listSharedChannels(admin);
@@ -244,7 +245,7 @@ public class ChannelHandlerTest extends BaseHandlerTestCase {
         admin.getOrg().addOwnedChannel(channel);
         OrgFactory.save(admin.getOrg());
         ChannelFactory.save(channel);
-        flushAndEvict(channel);
+        HibernateFactory.getSession().flush();
 
         // execute
         Object[] result = handler.listRetiredChannels(admin);
