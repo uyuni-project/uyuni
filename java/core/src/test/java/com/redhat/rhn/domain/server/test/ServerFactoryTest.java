@@ -645,6 +645,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         createServerInfo(unentitledTServerTransient, dateCreated, 0L);
 
         Server unentitledTServer = TestUtils.save(unentitledTServerTransient);
+        owner.addServer(unentitledTServer);
 
         NetworkInterface netint = new NetworkInterface();
         netint.setHwaddr("AA:AA:BB:BB:CC:CC");
