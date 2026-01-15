@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
@@ -55,6 +56,7 @@ public class BaseErrataSetupActionTest extends RhnBaseTestCase {
 
         User user = requestContext.getCurrentUser();
         Errata published = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        HibernateFactory.getSession().flush();
 
         //test lookup exception
         request.addParameter("eid", Long.valueOf(-92861).toString());
