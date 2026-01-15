@@ -124,7 +124,7 @@ public class RecurringActionJob extends RhnJavaJob {
                     if (scapPolicyType.getScapPolicy().getTailoringFile() != null &&
                             scapPolicyType.getScapPolicy().getTailoringProfileId() != null) {
                         parameters += " --tailoring-file " + scapPolicyType.getScapPolicy().getTailoringFile().getFileName() +
-                                " --tailoring-id " + scapPolicyType.getScapPolicy().getTailoringProfileId();
+                                " --tailoring-profile-id " + scapPolicyType.getScapPolicy().getTailoringProfileId();
                     }
                     
                     ActionManager.scheduleXccdfEval(
