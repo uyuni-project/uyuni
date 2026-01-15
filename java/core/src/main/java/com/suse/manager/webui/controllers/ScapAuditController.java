@@ -543,7 +543,7 @@ public class ScapAuditController {
 
         if (policy.getTailoringFile() != null) {
             policyData.put("tailoringFile", policy.getTailoringFile().getId());
-            policyData.put("tailoringFileName", policy.getTailoringFile().getFileName());
+            policyData.put("tailoringFileName", policy.getTailoringFile().getDisplayFileName());
         }
 
         data.put("policyData", GSON.toJson(policyData));
@@ -595,7 +595,7 @@ public class ScapAuditController {
 
         if (policy.getTailoringFile() != null) {
             policyData.put("tailoringFile", policy.getTailoringFile().getFileName());
-            policyData.put("tailoringFileName", policy.getTailoringFile().getName());
+            policyData.put("tailoringFileName", policy.getTailoringFile().getDisplayFileName());
         }
 
         return json(res, policyData);
@@ -648,7 +648,7 @@ public class ScapAuditController {
             ScapAction action = ActionManager.scheduleXccdfEval(
                     user,
                     reqData.getIds(),
-                    reqData.getDataStreamPath(),
+                    reqData.getDataStreamName(),
                     reqData.buildOscapParameters(),
                     reqData.getOvalFiles(), // OVAL files
                     earliest,
@@ -973,9 +973,10 @@ public class ScapAuditController {
      */
     private static String generateUniqueFileName(Long orgId, String tailoringFileName, String originalFilename) {
         // Sanitize the tailoring file name to make it filesystem-safe
+        // Underscores are reserved as delimiters, so they're converted to hyphens
         String sanitizedName = tailoringFileName
-            .replaceAll("[^a-zA-Z0-9-_]", "_")  // Replace non-alphanumeric chars with underscore
-            .replaceAll("_{2,}", "_")            // Replace multiple underscores with single
+            .replaceAll("[^a-zA-Z0-9-]", "-")  // Replace non-alphanumeric chars (including _) with hyphen
+            .replaceAll("-{2,}", "-")           // Replace multiple hyphens with single hyphen
             .toLowerCase();
 
         return orgId + "_" + sanitizedName + "_" + originalFilename;

@@ -67,13 +67,6 @@ public class AuditScanScheduleJson {
     }
 
     /**
-     * @return the full path to the SCAP data stream file
-     */
-    public String getDataStreamPath() {
-        return "/usr/share/xml/scap/ssg/content/" + dataStreamName;
-    }
-
-    /**
      * @return the raw data stream name
      */
     public String getDataStreamName() {
@@ -106,9 +99,9 @@ public class AuditScanScheduleJson {
         
         // Tailoring file and profile (optional)
         if (StringUtils.isNotEmpty(tailoringFile)) {
-            params.append(" --tailoring-file /usr/share/scap/").append(tailoringFile);
+            params.append(" --tailoring-file ").append(tailoringFile);
             if (StringUtils.isNotEmpty(tailoringProfileID)) {
-                params.append(" --tailoring-id ").append(tailoringProfileID);
+                params.append(" --tailoring-profile-id ").append(tailoringProfileID);
             }
         }
         
