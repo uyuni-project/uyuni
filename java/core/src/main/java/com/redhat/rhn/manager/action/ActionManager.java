@@ -1689,6 +1689,27 @@ public class ActionManager extends BaseManager {
                                                String path, String parameters, String ovalFiles, Date earliestAction,
                                                Integer policyId)
             throws TaskomaticApiException {
+        return scheduleXccdfEval(scheduler, serverIds, path, parameters, ovalFiles, earliestAction, policyId, false);
+    }
+
+    /**
+     * Schedules Xccdf evaluation with custom action name.
+     *
+     * @param scheduler      User scheduling the action.
+     * @param serverIds      Server IDs for which the action affects.
+     * @param path           Path for the Xccdf content.
+     * @param parameters     Additional parameters for oscap tool.
+     * @param ovalFiles      OVAL files to include.
+     * @param earliestAction Date of earliest action to be executed.
+     * @param policyId       Optional SCAP policy ID to link this scan to.
+     * @param recurring      Whether this is a recurring action.
+     * @return scheduled Scap Action
+     * @throws TaskomaticApiException if there was a Taskomatic error (typically: Taskomatic is down)
+     */
+    public static ScapAction scheduleXccdfEval(User scheduler, Set<Long> serverIds,
+                                               String path, String parameters, String ovalFiles, Date earliestAction,
+                                               Integer policyId, boolean recurring)
+            throws TaskomaticApiException {
         if (serverIds.isEmpty()) {
             return null;
         }
@@ -1715,9 +1736,12 @@ public class ActionManager extends BaseManager {
             scapDetails.setScapPolicyId(policyId);
         }
 
+        // Use helper method to define action name based on recurring flag
+        String finalActionName = defineScapActionName(recurring);
+
         ScapAction action = (ScapAction) ActionFactory.createAndSaveAction(ActionFactory.TYPE_SCAP_XCCDF_EVAL,
                 scheduler,
-                ActionFactory.TYPE_SCAP_XCCDF_EVAL.getName(),
+                finalActionName,
                 earliestAction);
         ActionFactory.scheduleForExecution(action, serverIds);
 
@@ -1978,6 +2002,19 @@ public class ActionManager extends BaseManager {
         }
         statesDescription.append(mods.isEmpty() ? "highstate" : "states " + mods);
         return statesDescription.toString();
+    }
+
+    /**
+     * Define SCAP action name.
+     *
+     * @param recurring - whether the SCAP scan is being applied recurring
+     * @return - the name of the action
+     */
+    public static String defineScapActionName(boolean recurring) {
+        if (recurring) {
+            return "Recurring - OpenSCAP xccdf scanning";
+        }
+        return "OpenSCAP xccdf scanning";
     }
 
     /**
