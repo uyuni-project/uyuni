@@ -302,10 +302,10 @@ public class ActionFactory extends HibernateFactory {
                                                                                  String actionTypeLabel) {
         Session session = HibernateFactory.getSession();
         return session.createQuery("""
-                        FROM ServerAction AS sa WHERE
-                            sa.server.id = :serverId
-                            AND sa.parentAction.actionType.label = :label
-                            AND status in ( 0, 1 )""", ServerAction.class)
+                        FROM ServerAction WHERE
+                            server.id = :serverId
+                            AND parentAction.actionType.label = :label
+                            AND status.id in ( 0, 1 )""", ServerAction.class)
                 .setParameter("serverId", serverId)
                 .setParameter("label", actionTypeLabel)
                 .list().stream()
