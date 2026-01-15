@@ -249,7 +249,7 @@ public class MinionServerFactory extends HibernateFactory {
                         JOIN   sa.server AS s
                         JOIN   s.contactMethod AS c
                         WHERE  type(s) = com.redhat.rhn.domain.server.MinionServer
-                        AND    action_id = :id
+                        AND    sa.parentAction.id = :id
                         AND    sa.status IN (:allowedStatues)
                         """, MinionSummary.class)
                        .setParameter("id", actionId)
