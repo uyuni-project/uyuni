@@ -520,8 +520,7 @@ public class ConfigurationFactory extends HibernateFactory {
      */
      static ConfigChannelType lookupConfigChannelTypeByLabel(String label) {
         Session session = HibernateFactory.getSession();
-        return (ConfigChannelType)
-            session.createQuery("FROM ConfigChannelType AS t WHERE t.label = :label")
+        return session.createQuery("FROM ConfigChannelType AS t WHERE t.label = :label", ConfigChannelType.class)
                                         .setParameter("label", label, StandardBasicTypes.STRING)
                                         //Retrieve from cache if there
                                         .setCacheable(true)

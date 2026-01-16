@@ -1872,11 +1872,10 @@ public class ChannelFactory extends HibernateFactory {
      * @return true of the channels contains any distros
      */
     public static boolean containsDistributions(Channel ch) {
-        Session session = getSession();
-        String sql
-                = "SELECT COUNT(*) FROM rhnKickstartableTree WHERE channel_id = :channelId";
-        Number count = (Number) session.createNativeQuery(sql)
-                .setParameter("channelId", ch.getId(), StandardBasicTypes.LONG).getSingleResult();
+        String sql = "SELECT COUNT(*) FROM rhnKickstartableTree WHERE channel_id = :channelId";
+        Long count = getSession().createNativeQuery(sql, Long.class)
+                .setParameter("channelId", ch.getId(), StandardBasicTypes.LONG)
+                .getSingleResult();
         return count.intValue() > 0;
     }
 
