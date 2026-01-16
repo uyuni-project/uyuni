@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 SUSE LLC
+ * Copyright (c) 2021--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -146,11 +146,11 @@ public class AnsibleFactory extends HibernateFactory {
      * @return the list of inventory servers
      */
     public static List<Server> listAnsibleInventoryServersExcludingPath(InventoryPath path) {
-        return HibernateFactory.getSession().createNativeQuery("""
-                 SELECT DISTINCT s.*, 0 as clazz_ FROM suseAnsibleInventoryServers ais
-                 JOIN rhnServer s ON ais.server_id = s.id
-                 WHERE ais.inventory_id != :inventory_id""", Server.class)
-                .setParameter("inventory_id", path.getId())
+        return HibernateFactory.getSession().createQuery("""
+                 SELECT DISTINCT p.inventoryServers
+                 FROM InventoryPath p
+                 WHERE p.id != :inventoryId""", Server.class)
+                .setParameter("inventoryId", path.getId())
                 .getResultList();
     }
 
@@ -177,8 +177,7 @@ public class AnsibleFactory extends HibernateFactory {
      * @return the updated {@link AnsiblePath}
      */
     public static AnsiblePath saveAnsiblePath(AnsiblePath path) {
-        HibernateFactory.getSession().merge(path);
-        return path;
+        return HibernateFactory.getSession().merge(path);
     }
 
     /**
