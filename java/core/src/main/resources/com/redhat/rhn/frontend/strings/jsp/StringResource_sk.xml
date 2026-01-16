@@ -1017,7 +1017,7 @@
       </trans-unit>
       <trans-unit id="404.jsp.reason2" xml:space="preserve">
         <source>If you followed a link, the link may be incorrect or outdated.  Click on the back button in your browser to try a different link, or use the top navigation icon to navigate to the homepage.</source>
-        <target state="translated">Ak ste prešli na odkaz, môže byť nesprávny alebo neaktuálny.  Kliknite na tlačidlo späť v prehliadači a vyskúšajte iné prepojenie alebo použite hornú navigačnú ikonu na prechod na domovskú stránku.</target>
+        <target state="translated">Ak ste prešli na odkaz, môže byť nesprávny alebo neaktuálny.  Kliknite na tlačidlo späť v prehliadači a vyskúšajte iný odkaz alebo použite hornú navigačnú ikonu na prechod na domovskú stránku.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">404 error page</context>
           <context context-type="paramnotes">
@@ -29418,18 +29418,18 @@ given channel.</source>
         <source> New Created </source>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="ssm.overview.appstreams" xml:space="preserve">
-            <source>AppStreams</source>
+      <trans-unit id="ssm.overview.appstreams" xml:space="preserve">
+        <source>AppStreams</source>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="ssm.overview.appstreams.manage" xml:space="preserve">
-            <source>&lt;a href="/rhn/manager/systems/ssm/appstreams"&gt;Enable and disable&lt;/a&gt; AppStreams on the selected systems</source>
+      </trans-unit>
+      <trans-unit id="ssm.overview.appstreams.manage" xml:space="preserve">
+        <source>&lt;a href="/rhn/manager/systems/ssm/appstreams"&gt;Enable and disable&lt;/a&gt; AppStreams on the selected systems</source>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="task.status.root-ca-cert-update" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="task.status.root-ca-cert-update" xml:space="preserve">
         <source>CA Certificates Update</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

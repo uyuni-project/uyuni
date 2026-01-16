@@ -11816,6 +11816,13 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>Collection of systems not registered, but present in branch {0} pxe entries.</source>
       <target state="new"/>
   </trans-unit>
+      <trans-unit id="Access Control" xml:space="preserve">
+        <source>Access Control</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
       </body>
   </file>
 </xliff>
