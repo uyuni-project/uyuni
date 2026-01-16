@@ -20,6 +20,7 @@ import com.suse.manager.matcher.MatcherJsonIO;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.query.Query;
 import org.hibernate.type.StandardBasicTypes;
 
 import java.util.List;
@@ -70,11 +71,8 @@ public class PinnedSubscriptionFactory extends HibernateFactory {
      */
     @SuppressWarnings("unchecked")
     public List<PinnedSubscription> listPinnedSubscriptions() {
-        String sql = "SELECT * FROM susePinnedSubscription";
-
-        TypedQuery<PinnedSubscription> query
-                = getSession().createNativeQuery(sql, PinnedSubscription.class);
-        return query.getResultList();
+        return getSession().createQuery("FROM PinnedSubscription", PinnedSubscription.class)
+                .getResultList();
     }
 
     /**
@@ -99,8 +97,7 @@ public class PinnedSubscriptionFactory extends HibernateFactory {
      * Clean stale pins.
      */
     public void cleanStalePins() {
-        getSession()
-            .createQuery("""
+        getSession().createMutationQuery("""
                     DELETE FROM PinnedSubscription
                     WHERE id IN (
                         SELECT id FROM PinnedSubscription
@@ -110,7 +107,7 @@ public class PinnedSubscriptionFactory extends HibernateFactory {
                             ) AND systemId <> :selfSystemId
                     )
                     """)
-            .setParameter("selfSystemId", MatcherJsonIO.SELF_SYSTEM_ID, StandardBasicTypes.LONG)
+            .setParameter("selfSystemId", MatcherJsonIO.SELF_SYSTEM_ID)
             .executeUpdate();
     }
 
@@ -120,9 +117,9 @@ public class PinnedSubscriptionFactory extends HibernateFactory {
      * @return PinnedSubscription object
      */
     public PinnedSubscription lookupById(Long id) {
-        String sql = "SELECT * FROM susePinnedSubscription WHERE id = :id";
         return getSession()
-                .createNativeQuery(sql, PinnedSubscription.class).setParameter("id", id)
+                .createQuery("FROM PinnedSubscription p WHERE p.id = :id", PinnedSubscription.class)
+                .setParameter("id", id)
                 .uniqueResult();
     }
 
