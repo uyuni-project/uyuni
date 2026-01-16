@@ -50,7 +50,7 @@ public class NoteTest extends RhnBaseTestCase {
         assertNotEquals(note1, new Date());
 
         Session session = HibernateFactory.getSession();
-        note2 = (Note) session.createQuery("FROM Note AS n WHERE n.id = :id")
+        note2 = session.createQuery("FROM Note AS n WHERE n.id = :id", Note.class)
                                   .setParameter("id", note1.getId(), StandardBasicTypes.LONG)
                                   .getSingleResultOrNull();
         assertEquals(note1, note2);

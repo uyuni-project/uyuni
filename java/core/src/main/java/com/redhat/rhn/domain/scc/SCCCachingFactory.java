@@ -642,7 +642,7 @@ import jakarta.persistence.Tuple;
                         SELECT reg.scc_login, reg.scc_passwd, si.checkin FROM suseSCCRegCache reg
                         JOIN rhnServer s ON reg.server_id = s.id JOIN rhnServerInfo si ON s.id = si.server_id
                         WHERE reg.scc_regerror_timestamp IS NULL AND reg.creds_id = :cred AND reg.scc_id IS NOT NULL
-                        """)
+                        """, Object[].class)
                 .setParameter("cred", cred.getId(), StandardBasicTypes.LONG)
                 .getResultList();
 
