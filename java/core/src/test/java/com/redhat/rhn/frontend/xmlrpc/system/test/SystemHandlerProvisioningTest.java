@@ -37,6 +37,7 @@ import com.redhat.rhn.frontend.xmlrpc.system.SystemHandler;
 import com.redhat.rhn.frontend.xmlrpc.system.XmlRpcSystemHelper;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
+import com.redhat.rhn.manager.kickstart.KickstartScheduleCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 import com.redhat.rhn.manager.system.ServerGroupManager;
@@ -64,6 +65,7 @@ import org.cobbler.SystemRecord;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.jmock.junit5.JUnit5Mockery;
 import org.jmock.lib.concurrent.Synchroniser;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -113,6 +115,19 @@ public class SystemHandlerProvisioningTest extends BaseHandlerTestCase {
         public void setUp() throws Exception {
                 super.setUp();
                 mockRequest = mockContext.mock(HttpServletRequest.class);
+
+                TaskomaticApi testApi = new TaskomaticApi() {
+                        @Override
+                        public void scheduleActionExecution(Action action) {
+                                // do not call API in a test
+                        }
+                };
+                KickstartScheduleCommand.setTaskomaticApi(testApi);
+        }
+
+        @AfterEach
+        public void tearDown() throws Exception {
+                KickstartScheduleCommand.setTaskomaticApi(new TaskomaticApi());
         }
 
         @Test
