@@ -92,7 +92,14 @@ timezone: "Etc/UTC"
 # Email will be the email used for the notifications sent by the server.
 email: "admin@uyuni.lab.org"
 
+# hubAPI is a boolean to enable or disable the Hub XML-RPC API deployment.
 hubAPI: false
+
+# cocoReplicas is the number of replicas for the confidential computing attestation deployment.
+cocoReplicas: 0
+
+# saline needs to be set to true to be deployed for salt master monitoring
+saline: false
 
 global:
   # fqdn is the fully qualified name the server will answer as.

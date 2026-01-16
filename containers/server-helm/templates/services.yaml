@@ -255,3 +255,27 @@ spec:
     app.kubernetes.io/component: hub-xmlrpc
   type: ClusterIP
 {{- end }}
+{{- if default .Values.saline false }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/component: saline
+    app.kubernetes.io/part-of: uyuni
+  name: saline
+  namespace: "{{ .Release.Namespace }}"
+{{- if .Values.servicesAnnotations }}
+  annotations:
+{{ toYaml .Values.servicesAnnotations | indent 4 }}
+{{- end }}
+spec:
+  ports:
+    - name: saline
+      port: 8216
+      protocol: TCP
+      targetPort: 8216
+  selector:
+    app.kubernetes.io/component: saline
+  type: ClusterIP
+{{- end }}
