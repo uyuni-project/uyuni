@@ -114,7 +114,7 @@ public class ChannelActionTest extends RhnBaseTestCase {
         Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         //get the id for errata and flush so things get stored to the db
         Long id = errata.getId();
-        flushAndEvict(errata);
+        clearSession();
 
         //We can't take away all channels. make sure we get an error
         request.addParameter("eid", id.toString());
