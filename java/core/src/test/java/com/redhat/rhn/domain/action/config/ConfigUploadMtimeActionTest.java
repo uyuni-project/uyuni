@@ -1,0 +1,119 @@
+/*
+ * Copyright (c) 2009--2012 Red Hat, Inc.
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
+package com.redhat.rhn.domain.action.config;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.ActionFactoryTest;
+import com.redhat.rhn.domain.action.server.ServerActionTest;
+import com.redhat.rhn.domain.config.ConfigChannel;
+import com.redhat.rhn.domain.config.ConfigRevision;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactoryTest;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.testing.ConfigTestUtils;
+import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.TestUtils;
+import com.redhat.rhn.testing.UserTestUtils;
+
+import org.junit.jupiter.api.Test;
+
+public class ConfigUploadMtimeActionTest extends RhnBaseTestCase {
+
+    /**
+     * Test fetching a ConfigUploadAction
+     * @throws Exception something bad happened
+     */
+    @Test
+    public void testLookupConfigUploadAction() throws Exception {
+        User user = UserTestUtils.createUser(this);
+        Action newA = ActionFactoryTest.createAction(user, ActionFactory.TYPE_CONFIGFILES_MTIME_UPLOAD);
+        Long id = newA.getId();
+        Action a = ActionFactory.lookupById(id);
+
+        assertNotNull(a);
+        assertInstanceOf(ConfigUploadMtimeAction.class, a);
+        ConfigUploadMtimeAction cfa = (ConfigUploadMtimeAction) a;
+        assertNotNull(cfa.getConfigDateFileActions());
+        ConfigDateFileAction cfda = (ConfigDateFileAction)
+            cfa.getConfigDateFileActions().toArray()[0];
+        assertNotNull(cfda.getParentAction());
+        // Check the ConfigChannel
+        assertNotNull(cfa.getConfigChannels());
+        ConfigChannel cc = cfa.getConfigChannels()[0];
+        assertNotNull(cc.getId());
+        // Check the Server
+        assertNotNull(cfa.getServers());
+        Server serv = cfa.getServers()[0];
+        assertNotNull(serv.getId());
+        ConfigChannelAssociation association =
+                cfa.getConfigChannelAssociations().iterator().next();
+        assertNotNull(association.getParentAction().getId());
+        assertNotNull(association.getServer().getId());
+        assertNotNull(association.getConfigChannel().getId());
+        // Check the ConfigDateDetails
+        assertNotNull(cfa.getConfigDateDetails().getActionId());
+    }
+
+    @Test
+    public void testCreate() throws Exception {
+        User usr = UserTestUtils.createUser(this);
+
+        ConfigUploadMtimeAction testAction = (ConfigUploadMtimeAction)ActionFactoryTest
+                .createAction(usr, ActionFactory.TYPE_CONFIGFILES_MTIME_UPLOAD);
+
+        ConfigDateFileAction cfda = new ConfigDateFileAction();
+        cfda.setFileName("/tmp/rhn-java-" + TestUtils.randomString());
+        cfda.setFileType("W");
+        testAction.addConfigDateFileAction(cfda);
+
+        Server newS = ServerFactoryTest.createTestServer(usr);
+        ConfigRevision cr = ConfigTestUtils.createConfigRevision(usr.getOrg());
+
+        testAction.addConfigChannelAndServer(cr.getConfigFile()
+                .getConfigChannel(), newS);
+        // rhnActionConfigChannel requires a ServerAction to exist
+        testAction.addServerAction(ServerActionTest.createServerAction(newS, testAction));
+
+        ActionFactory.save(testAction);
+        flushAndEvict(testAction);
+        /*
+         * Get action back out of db and make sure it committed correctly
+         */
+        Action same = ActionFactory.lookupById(testAction.getId());
+
+        assertInstanceOf(ConfigUploadMtimeAction.class, same);
+        ConfigUploadMtimeAction sameAction = (ConfigUploadMtimeAction) same;
+
+        assertNotNull(sameAction.getConfigDateFileActions());
+        assertEquals(2, sameAction.getConfigDateFileActions().size());
+        assertNotNull(sameAction.getConfigDateFileActions().toArray()[0]);
+        assertNotNull(sameAction.getConfigDateFileActions().toArray()[1]);
+
+        assertNotNull(sameAction.getConfigChannelAssociations());
+        assertEquals(2, sameAction.getConfigChannelAssociations().size());
+        assertNotNull(sameAction.getConfigChannelAssociations().toArray()[0]);
+        assertNotNull(sameAction.getConfigChannelAssociations().toArray()[1]);
+
+        assertNotNull(sameAction.getConfigDateDetails());
+        assertEquals(sameAction.getName(), testAction.getName());
+        assertEquals(sameAction.getId(), testAction.getId());
+    }
+
+}

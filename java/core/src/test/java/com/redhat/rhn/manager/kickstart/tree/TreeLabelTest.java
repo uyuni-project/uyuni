@@ -1,0 +1,100 @@
+/*
+ * Copyright (c) 2009--2010 Red Hat, Inc.
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
+package com.redhat.rhn.manager.kickstart.tree;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import com.redhat.rhn.domain.channel.ChannelFactoryTest;
+import com.redhat.rhn.domain.kickstart.KickstartFactory;
+import com.redhat.rhn.domain.kickstart.KickstartableTree;
+import com.redhat.rhn.domain.kickstart.KickstartableTreeTest;
+import com.redhat.rhn.testing.BaseTestCaseWithUser;
+
+import org.junit.jupiter.api.Test;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+/**
+ * TreeLabelTest
+ */
+public class TreeLabelTest extends BaseTestCaseWithUser {
+
+    @Test
+    public void testValidLabel() {
+        // ^([0-9A-Za-z@.]{1,255})$
+        // ^([1-zA-Z0-1@.\s]{1,255})$
+        // a-zA-Z\d\-\._
+        // qr/^[a-zA-Z\d\-\._]*$/
+
+        String regEx = BaseTreeEditOperation.VALIDATE_LABEL_REGEX;
+        Pattern pattern = Pattern.compile(regEx);
+        String invalid = "jlkasf*(*&^^(((";
+        Matcher matcher = pattern.matcher(invalid);
+        assertFalse(matcher.matches());
+
+        invalid = "asdf asdf asdf";
+        matcher = pattern.matcher(invalid);
+        assertFalse(matcher.matches());
+
+        invalid = "asdf *";
+        matcher = pattern.matcher(invalid);
+        assertFalse(matcher.matches());
+
+        String valid = "jlkasf_";
+        matcher = pattern.matcher(valid);
+        assertTrue(matcher.matches());
+
+        valid = "jlkasf_asdf-ajksldf";
+        matcher = pattern.matcher(valid);
+        assertTrue(matcher.matches());
+
+        valid = "jlkasf_asdf-ajksldf";
+        matcher = pattern.matcher(valid);
+        assertTrue(matcher.matches());
+
+        //"The Distribution Label field should contain only letters, numbers, hyphens,
+        // and underscores. It must also be at least 4 characters long."
+        valid = "jlkasf_asdf-ajksldf890234";
+        matcher = pattern.matcher(valid);
+        assertTrue(matcher.matches());
+
+        // Periods (dots) are not valid see bsc#1219317
+        invalid = "jlkasf_asdf-ajksldf.890234";
+        matcher = pattern.matcher(invalid);
+        assertFalse(matcher.matches());
+    }
+
+    @Test
+    public void testValidateLabel() throws Exception {
+
+        KickstartableTree tree = KickstartableTreeTest.createTestKickstartableTree(
+                ChannelFactoryTest.createTestChannel(user));
+        KickstartFactory.saveKickstartableTree(tree);
+        tree = (KickstartableTree) reload(tree);
+        tree.setLabel("jlkasf_asdf-ajksldfX890234");
+        TreeEditOperation cmd = new TreeEditOperation(tree.getId(), user);
+        assertTrue(cmd.validateLabel());
+
+        tree.setLabel("jlkasf_asdf-ajksldf.890234**((*(*(9");
+        assertFalse(cmd.validateLabel());
+
+        // Periods (dots) are not valid see bsc#1219317
+        tree.setLabel("foo.bla");
+        assertFalse(cmd.validateLabel());
+    }
+
+}
