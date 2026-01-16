@@ -575,18 +575,21 @@ public class KickstartFactory extends HibernateFactory {
      */
     public static KickstartableTree lookupKickstartTreeByLabel(String label, Org org) {
         Session session = HibernateFactory.getSession();
-        KickstartableTree retval = (KickstartableTree)
-                session.createQuery("FROM KickstartableTree AS k WHERE k.label = :label AND k.org.id = :org_id")
-                .setParameter(LABEL, label, StandardBasicTypes.STRING)
-                .setParameter(ORG_ID, org.getId(), StandardBasicTypes.LONG)
-                .uniqueResult();
+        KickstartableTree retval = session
+            .createQuery(
+                "FROM KickstartableTree AS k WHERE k.label = :label AND k.org.id = :org_id", KickstartableTree.class
+            )
+            .setParameter(LABEL, label, StandardBasicTypes.STRING)
+            .setParameter(ORG_ID, org.getId(), StandardBasicTypes.LONG)
+            .uniqueResult();
         // If we don't find by label + org then
         // we try by label and NULL org (RHN owned channel)
         if (retval == null) {
-            retval = (KickstartableTree)
-                    session.createQuery("FROM KickstartableTree AS k WHERE k.label = :label AND k.org IS NULL")
-                    .setParameter(LABEL, label)
-                    .uniqueResult();
+            retval = session.createQuery(
+                    "FROM KickstartableTree AS k WHERE k.label = :label AND k.org IS NULL", KickstartableTree.class
+                )
+                .setParameter(LABEL, label)
+                .uniqueResult();
         }
         return retval;
     }
