@@ -1150,6 +1150,10 @@ public class ErrataFactory extends HibernateFactory {
                                         AND ce.channel_id = ac.channel_id
                                         AND ac.org_id = :orgId))
                         """, Tuple.class)
+                .addSynchronizedEntityClass(Errata.class)
+                .addSynchronizedEntityClass(ClonedErrata.class)
+                .addSynchronizedEntityClass(Org.class)
+                .addSynchronizedEntityClass(Channel.class)
                 .addEntity("e", Errata.class)
                 .setParameter("orgId", orgId)
                 .setParameterList("eids", ids)
