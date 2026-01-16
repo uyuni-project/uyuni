@@ -261,7 +261,7 @@ public class TestUtils {
      */
     public static Object lookupFromCacheById(Long id, String queryname) {
         Session session = HibernateFactory.getSession();
-        return session.getNamedQuery(queryname)
+        return session.createNamedQuery(queryname, Object.class)
                         .setParameter("id", id, StandardBasicTypes.LONG)
                         //Retrieve from cache if there
                         .setCacheable(true)
@@ -291,7 +291,7 @@ public class TestUtils {
     public static Object lookupFromCacheByLabel(String label,
                                                 String queryname) {
         Session session = HibernateFactory.getSession();
-        return session.getNamedQuery(queryname)
+        return session.createNamedQuery(queryname, Object.class)
                       .setParameter("label", label, StandardBasicTypes.STRING)
                       //Retrieve from cache if there
                       .setCacheable(true)
