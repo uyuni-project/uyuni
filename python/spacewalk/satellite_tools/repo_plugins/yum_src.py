@@ -1437,7 +1437,14 @@ password={passwd}
         url = "media.1/products"
         media_products_path = os.path.join(self._get_repodata_path(), url)
         grabber = urlgrabber.grabber.URLGrabber()
-        mirror_group = MirrorGroup(grabber, self.repo.urls)
+        urls = []
+        for url in self.repo.urls:
+            # A URL might contain an auth token
+            if url.endswith("/"):
+                url = url[:-1]
+            urls.append(url)
+        mirror_group = MirrorGroup(grabber, urls)
+
         try:
             urlgrabber_opts = {}
             self.set_download_parameters(urlgrabber_opts, url, media_products_path)

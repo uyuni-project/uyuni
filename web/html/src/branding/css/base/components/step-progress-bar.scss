@@ -1,0 +1,107 @@
+.progress-bar-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.progress-bar-container {
+  flex-grow: 1;
+}
+
+.steps-container {
+  display: flex;
+  gap: 0.3em;
+  position: sticky;
+  top: 0;
+  padding: 15px 0 10px 0;
+  background-color: $white;
+  z-index: 10;
+
+  .steps {
+    flex-basis: 100%;
+    display: inline-flex;
+    gap: 0.4em;
+    align-items: center;
+
+    .step-circle {
+      width: 18px;
+      height: 18px;
+      border-radius: 10px;
+      border: 2px solid $eos-bc-gray-500;
+      text-align: center;
+      font-size: 11px;
+      line-height: 14px;
+    }
+    .step-title {
+      font-weight: bold;
+      color: $eos-bc-gray-500;
+      text-align: left;
+      width: max-content;
+    }
+    .step-line {
+      flex-grow: 1;
+      height: 2px;
+      background-color: $eos-bc-gray-300;
+      span {
+        height: 2px;
+        width: 0;
+        display: flex;
+      }
+    }
+
+    &.active {
+      .step-circle {
+        border: 2px solid $eos-bc-gray-900;
+        background: radial-gradient(circle, $eos-bc-gray-900 50%, transparent 11%);
+        transition: all 0.5s ease-in;
+      }
+      .step-title {
+        color: $eos-bc-gray-1000;
+      }
+      .step-line span {
+        background-color: $eos-bc-green-500;
+        width: 0;
+        transition: width 0.5s linear;
+      }
+    }
+
+    &.completed {
+      .step-circle {
+        background-color: $eos-bc-green-500;
+        border-color: $eos-bc-green-500;
+        color: $white;
+
+        i {
+          margin-right: 0;
+        }
+      }
+      .step-title {
+        color: $eos-bc-gray-1000;
+      }
+      .step-line span {
+        background-color: $eos-bc-green-500;
+        width: 100%;
+        transition: width 0.5s linear;
+      }
+    }
+
+    &:last-child {
+      flex-basis: 0;
+    }
+  }
+}
+
+.progress-bar-footer {
+  position: sticky;
+  bottom: -4em;
+  width: 100%;
+  background: $white;
+  padding: 10px 0;
+  justify-content: space-between;
+  border-top: 1px solid $eos-bc-gray-300;
+}
+
+.main-content {
+  margin: 20px 0;
+  text-align: left;
+}

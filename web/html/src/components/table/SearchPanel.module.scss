@@ -1,5 +1,6 @@
 :global(.old-theme),
 :global(.new-theme) {
+  .inlineSearchPanel,
   .searchPanel {
     display: flex;
     flex-wrap: wrap;
@@ -23,5 +24,10 @@
         padding: 0;
       }
     }
+  }
+
+  .inlineSearchPanel {
+    flex: 0;
+    flex-wrap: initial; 
   }
 }

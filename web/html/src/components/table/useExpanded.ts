@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 export const useExpanded = <T>() => {
-  const [expanded, setExpanded] = useState(new Set<T>());
+  const [expanded, setExpanded] = useState<Set<T>>(new Set());
 
   return {
     toggle(item: T) {
@@ -16,5 +16,12 @@ export const useExpanded = <T>() => {
     has(item: T) {
       return expanded.has(item);
     },
+    set(items: T[]) {
+      setExpanded(new Set(items));
+    },
+    clear() {
+      setExpanded(new Set());
+    },
+    values: Array.from(expanded),
   };
 };

@@ -1,3 +1,5 @@
+@import "branding/css/variables.scss";
+
 :global(.old-theme),
 :global(.new-theme) {
   .fieldWrapper {
@@ -9,5 +11,6 @@
   .helpBlock {
     display: block;
     margin-top: 5px;
+    color: $eos-bc-red-900;
   }
 }

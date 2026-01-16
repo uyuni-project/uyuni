@@ -102,6 +102,36 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     VALUES ('', '/hub/scc/connect/organizations/virtualization_hosts', 'PUT', 'W', False)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES('', '/manager/admin/access-control', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES('', '/manager/admin/access-control/create', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES('', '/manager/admin/access-control/show-access-group/:id', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES('', '/manager/api/admin/access-control/access-group/list_custom', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES('', '/manager/api/admin/access-control/access-group/list_namespaces', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES('', '/manager/api/admin/access-control/access-group/organizations/:orgId/users', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES('', '/manager/api/admin/access-control/access-group/organizations', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES('', '/manager/api/admin/access-control/access-group/organizations/:orgId/access-groups', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES('', '/manager/api/admin/access-control/access-group/save', 'POST', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES('', '/manager/api/admin/access-control/access-group/delete/:id', 'DELETE', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
 
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('', '/manager/admin/hub/hub-details', 'GET', 'W', True)

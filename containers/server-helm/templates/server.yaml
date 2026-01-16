@@ -1,0 +1,329 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: server
+    app.kubernetes.io/part-of: uyuni
+  name: uyuni
+  namespace: "{{ .Release.Namespace }}"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: server
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: server
+        app.kubernetes.io/part-of: uyuni
+    spec:
+      containers:
+      - env:
+        - name: TZ
+          value: {{ .Values.timezone | default "Etc/UTC" }}
+{{- if and .Values.mirror (or .Values.mirror.claimName .Values.mirror.hostPath) }}
+          - name: MIRROR_PATH
+            value: /mirror
+{{- end }}
+        image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+        imagePullPolicy: {{ .Values.pullPolicy }}
+        lifecycle:
+          preStop:
+            exec:
+              command:
+              - /bin/sh
+              - -c
+              - spacewalk-service stop && systemctl stop postgresql
+        livenessProbe:
+          failureThreshold: 5
+          httpGet:
+            path: /rhn/manager/api/api/getVersion
+            port: 80
+            scheme: HTTP
+          initialDelaySeconds: 60
+          periodSeconds: 60
+          successThreshold: 1
+          timeoutSeconds: 20
+        name: uyuni
+        ports:
+        - containerPort: 80
+        - containerPort: 4505
+        - containerPort: 4506
+        - containerPort: 25151
+{{- if .Values.exposeJavaDebug | default false }}
+        - containerPort: 8001
+        - containerPort: 8002
+        - containerPort: 8003
+{{- end }}
+        - containerPort: 69
+          protocol: UDP
+        - containerPort: 9100
+{{- if .Values.enableMonitoring | default true }}
+        - containerPort: 5556
+        - containerPort: 5557
+        - containerPort: 9187
+        - containerPort: 9800
+{{- end }}
+        readinessProbe:
+          failureThreshold: 5
+          httpGet:
+            path: /rhn/manager/api/api/getVersion
+            port: 80
+            scheme: HTTP
+          periodSeconds: 30
+          successThreshold: 1
+          timeoutSeconds: 20
+        volumeMounts:
+        - mountPath: /var/lib/cobbler
+          name: var-cobbler
+        - mountPath: /var/lib/rhn/search
+          name: var-search
+        - mountPath: /var/lib/salt
+          name: var-salt
+        - mountPath: /var/cache
+          name: var-cache
+        - mountPath: /var/spacewalk
+          name: var-spacewalk
+        - mountPath: /var/log
+          name: var-log
+        - mountPath: /srv/salt
+          name: srv-salt
+        - mountPath: /srv/www/
+          name: srv-www
+        - mountPath: /srv/tftpboot
+          name: srv-tftpboot
+        - mountPath: /srv/formula_metadata
+          name: srv-formulametadata
+        - mountPath: /srv/pillar
+          name: srv-pillar
+        - mountPath: /srv/susemanager
+          name: srv-susemanager
+        - mountPath: /srv/spacewalk
+          name: srv-spacewalk
+        - mountPath: /root
+          name: root
+        - mountPath: /etc/pki/trust/anchors/
+          name: ca-certs
+        - mountPath: /run/salt/master
+          name: run-salt-master
+        - mountPath: /etc/apache2
+          name: etc-apache2
+        - mountPath: /etc/systemd/system/multi-user.target.wants
+          name: etc-systemd-multi
+        - mountPath: /etc/systemd/system/sockets.target.wants
+          name: etc-systemd-sockets
+        - mountPath: /etc/salt
+          name: etc-salt
+        - mountPath: /etc/tomcat
+          name: etc-tomcat
+        - mountPath: /etc/cobbler
+          name: etc-cobbler
+        - mountPath: /etc/sysconfig
+          name: etc-sysconfig
+        - mountPath: /etc/postfix
+          name: etc-postfix
+        - mountPath: /etc/sssd
+          name: etc-sssd
+        - mountPath: /etc/rhn
+          name: etc-rhn
+        - mountPath: /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT
+          name: ca-cert
+          readOnly: true
+          subPath: ca.crt
+        - mountPath: /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
+          name: ca-cert
+          readOnly: true
+          subPath: ca.crt
+        - mountPath: /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT
+          name: ca-cert
+          readOnly: true
+          subPath: ca.crt
+        - mountPath: /etc/pki/trust/anchors/DB-RHN-ORG-TRUSTED-SSL-CERT
+          name: db-ca-cert
+          readOnly: true
+          subPath: ca.crt
+        - mountPath: /etc/pki/
+          name: tls
+        - mountPath: /run
+          name: run
+        - mountPath: /sys/fs/cgroup
+          name: sys-fs-cgroup
+{{- if and .Values.mirror (or .Values.mirror.claimName .Values.mirror.hostPath) }}
+        - name: mirror
+          mountPath: /mirror
+{{- end }}
+{{- if .Values.registrySecret }}
+      imagePullSecrets:
+      - name: {{ .Values.registrySecret }}
+{{- end }}
+      initContainers:
+      - command:
+        - sh
+        - -c
+        - |2
+          until pg_isready -U $MANAGER_USER -h $MANAGER_DB_HOST -p $MANAGER_DB_PORT -d $MANAGER_DB_NAME; do
+            sleep 60
+          done
+
+          until pg_isready -U $REPORT_DB_USER -h $REPORT_DB_HOST -p $REPORT_DB_PORT -d $REPORT_DB_NAME; do
+            sleep 60
+          done
+        env:
+          - name: MANAGER_DB_HOST
+            value: db
+          - name: MANAGER_DB_PORT
+            value: "5432"
+          - name: MANAGER_DB_NAME
+            value: susemanager
+          - name: MANAGER_USER
+            valueFrom:
+              secretKeyRef:
+                key: username
+                name: db-credentials
+                optional: false
+          - name: REPORT_DB_HOST
+            value: reportdb
+          - name: REPORT_DB_PORT
+            value: "5432"
+          - name: REPORT_DB_NAME
+            value: reportdb
+          - name: REPORT_DB_USER
+            valueFrom:
+              secretKeyRef:
+                key: username
+                name: reportdb-credentials
+                optional: false
+        image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+        imagePullPolicy: {{ .Values.pullPolicy }}
+        name: db-waiter
+      - command:
+        - sh
+        - -c
+        - |2
+          until test -e /root/.MANAGER_SETUP_COMPLETE; do
+            sleep 60
+          done
+        image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+        imagePullPolicy: {{ .Values.pullPolicy }}
+        name: setup-waiter
+        volumeMounts:
+        - mountPath: /root
+          name: root
+      volumes:
+      - name: var-cobbler
+        persistentVolumeClaim:
+          claimName: var-cobbler
+      - name: var-search
+        persistentVolumeClaim:
+          claimName: var-search
+      - name: var-salt
+        persistentVolumeClaim:
+          claimName: var-salt
+      - name: var-cache
+        persistentVolumeClaim:
+          claimName: var-cache
+      - name: var-spacewalk
+        persistentVolumeClaim:
+          claimName: var-spacewalk
+      - name: var-log
+        persistentVolumeClaim:
+          claimName: var-log
+      - name: srv-salt
+        persistentVolumeClaim:
+          claimName: srv-salt
+      - name: srv-www
+        persistentVolumeClaim:
+          claimName: srv-www
+      - name: srv-tftpboot
+        persistentVolumeClaim:
+          claimName: srv-tftpboot
+      - name: srv-formulametadata
+        persistentVolumeClaim:
+          claimName: srv-formulametadata
+      - name: srv-pillar
+        persistentVolumeClaim:
+          claimName: srv-pillar
+      - name: srv-susemanager
+        persistentVolumeClaim:
+          claimName: srv-susemanager
+      - name: srv-spacewalk
+        persistentVolumeClaim:
+          claimName: srv-spacewalk
+      - name: root
+        persistentVolumeClaim:
+          claimName: root
+      - name: ca-certs
+        persistentVolumeClaim:
+          claimName: ca-certs
+      - name: run-salt-master
+        persistentVolumeClaim:
+          claimName: run-salt-master
+      - name: etc-apache2
+        persistentVolumeClaim:
+          claimName: etc-apache2
+      - name: etc-systemd-multi
+        persistentVolumeClaim:
+          claimName: etc-systemd-multi
+      - name: etc-systemd-sockets
+        persistentVolumeClaim:
+          claimName: etc-systemd-sockets
+      - name: etc-salt
+        persistentVolumeClaim:
+          claimName: etc-salt
+      - name: etc-tomcat
+        persistentVolumeClaim:
+          claimName: etc-tomcat
+      - name: etc-cobbler
+        persistentVolumeClaim:
+          claimName: etc-cobbler
+      - name: etc-sysconfig
+        persistentVolumeClaim:
+          claimName: etc-sysconfig
+      - name: etc-postfix
+        persistentVolumeClaim:
+          claimName: etc-postfix
+      - name: etc-sssd
+        persistentVolumeClaim:
+          claimName: etc-sssd
+      - name: etc-rhn
+        persistentVolumeClaim:
+          claimName: etc-rhn
+      - configMap:
+          defaultMode: 420
+          name: uyuni-ca
+        name: ca-cert
+      - configMap:
+          defaultMode: 420
+          name: db-ca
+        name: db-ca-cert
+      - name: tls
+        secret:
+          defaultMode: 420
+          items:
+          - key: tls.crt
+            path: tls/certs/spacewalk.crt
+          - key: tls.key
+            mode: 256
+            path: tls/private/spacewalk.key
+          secretName: uyuni-cert
+      - emptyDir:
+          medium: Memory
+          sizeLimit: 256Mi
+        name: run
+      - hostPath:
+          path: /sys/fs/cgroup
+          type: Directory
+        name: sys-fs-cgroup
+{{- if .Values.mirror }}
+  {{- if .Values.mirror.claimName }}
+      - name: mirror
+        persistentVolumeClaim:
+          claimName: {{ .Values.mirror.claimName }}
+  {{- else if .Values.mirror.hostPath }}
+      - name: mirror
+        hostPath:
+          path: {{ .Values.mirror.hostPath }}
+  {{- end }}
+{{- end }}

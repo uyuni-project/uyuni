@@ -71,7 +71,7 @@ PKGLIST16_SALT = [
 ]
 
 ONLYSLE16 = [
-    "gio-branding-SLE-16",
+    "gio-branding-SLE",
 ]
 
 PKGLIST16_X86_ARM = [
@@ -1079,26 +1079,26 @@ DATA = {
         "DEST": DOCUMENT_ROOT + "/pub/repositories/slmicro/6/1/bootstrap/",
     },
     "SL-MICRO-6.2-aarch64": {
-        "PDID": [2914, 3112],
-        "BETAPDID": [3116],
+        "PDID": [2914, 3247],
+        "BETAPDID": [3251],
         "PKGLIST": PKGLISTMICRO_BUNDLE_ONLY,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/slmicro/6/2/bootstrap/",
     },
     "SL-MICRO-6.2-ppc64le": {
-        "PDID": [2916, 3114],
-        "BETAPDID": [3118],
+        "PDID": [2916, 3249],
+        "BETAPDID": [3253],
         "PKGLIST": PKGLISTMICRO_BUNDLE_ONLY,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/slmicro/6/2/bootstrap/",
     },
     "SL-MICRO-6.2-s390x": {
-        "PDID": [2915, 3113],
-        "BETAPDID": [3117],
+        "PDID": [2915, 3248],
+        "BETAPDID": [3252],
         "PKGLIST": PKGLISTMICRO_BUNDLE_ONLY,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/slmicro/6/2/bootstrap/",
     },
     "SL-MICRO-6.2-x86_64": {
-        "PDID": [2913, 3111],
-        "BETAPDID": [3115],
+        "PDID": [2913, 3246],
+        "BETAPDID": [3250],
         "PKGLIST": PKGLISTMICRO_BUNDLE_ONLY,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/slmicro/6/2/bootstrap/",
     },

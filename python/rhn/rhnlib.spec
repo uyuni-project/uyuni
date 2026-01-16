@@ -58,6 +58,9 @@ Group:          Development/Libraries
 BuildArch:      noarch
 %endif
 BuildRequires:  make
+%if 0%{?debian} || 0%{?ubuntu}
+ExclusiveArch:  do_not_build
+%endif
 
 %description
 rhnlib is a collection of python modules used by the Spacewalk (http://spacewalk.redhat.com) software.

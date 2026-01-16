@@ -1,7 +1,8 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: uyuni/server:latest
 
-FROM registry.suse.com/bci/bci-init:15.7
+ARG INIT_BASE=registry.suse.com/bci/bci-init:15.7
+FROM $INIT_BASE
 
 ARG PRODUCT_PATTERN_PREFIX="patterns-uyuni"
 

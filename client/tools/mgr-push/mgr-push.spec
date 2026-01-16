@@ -54,6 +54,9 @@ Obsoletes:      %{oldname} < %{oldversion}
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210
 BuildArch:      noarch
 %endif
+%if 0%{?debian} || 0%{?ubuntu}
+ExclusiveArch:  do_not_build
+%endif
 
 %description
 mgr-push uploads package headers to the %{productprettyname}

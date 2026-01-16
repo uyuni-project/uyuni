@@ -15,6 +15,7 @@
 package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.manager.content.ContentSyncException;
 import com.redhat.rhn.manager.content.ContentSyncManager;
@@ -30,6 +31,7 @@ import org.quartz.JobExecutionException;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Taskomatic job for refreshing data about channels, products and subscriptions.
@@ -49,9 +51,7 @@ public class MgrSyncRefresh extends RhnJavaJob {
      */
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        if (log.isDebugEnabled()) {
-            log.debug("Refreshing mgr-sync data");
-        }
+        log.info("Refreshing mgr-sync data");
 
         // Measure time to calculate the total duration
         Date start = new Date();
@@ -78,6 +78,7 @@ public class MgrSyncRefresh extends RhnJavaJob {
         }
 
         // Perform the refresh
+        log.info("Starting ContentSyncManager syncRefresh");
         try {
             ContentSyncManager csm = new ContentSyncManager();
             csm.syncRefresh(600);
@@ -85,28 +86,32 @@ public class MgrSyncRefresh extends RhnJavaJob {
         catch (ContentSyncException e) {
             log.error("Error during mgr-sync refresh", e);
         }
+        log.info("End of ContentSyncManager syncRefresh");
 
         try {
-            // Schedule sync of all vendor channels
+            // Schedule sync of all vendor channels and custom channels if the case
             if (!noRepoSync) {
                 final TaskomaticApi taskoApi = new TaskomaticApi();
 
-                log.debug("Scheduling synchronization of all vendor channels");
+                log.info("Scheduling synchronization of all vendor channels");
                 taskoApi.scheduleSingleRepoSync(ChannelFactory.listVendorChannels());
 
                 if (ConfigDefaults.get().isCustomChannelManagementUnificationEnabled()) {
-                    log.debug("Scheduling synchronization of all custom channels");
-                    taskoApi.scheduleSingleRepoSync(ChannelFactory.listCustomChannelsWithRepositories());
+                    List<Channel> customChannelsWithRepos = ChannelFactory.listCustomChannelsWithRepositories();
+                    log.info("Scheduling synchronization of %d custom channels"
+                            .formatted(customChannelsWithRepos.size()));
+                    taskoApi.scheduleSingleRepoSync(customChannelsWithRepos);
                 }
+            }
+            else {
+                log.info("No repo-sync scheduled");
             }
         }
         catch (TaskomaticApiException e) {
             throw new JobExecutionException(e);
         }
 
-        if (log.isDebugEnabled()) {
-            long duration = new Date().getTime() - start.getTime();
-            log.debug("Total duration was: {} ms", duration);
-        }
+        long duration = new Date().getTime() - start.getTime();
+        log.info("Total duration was: {} ms", duration);
     }
 }

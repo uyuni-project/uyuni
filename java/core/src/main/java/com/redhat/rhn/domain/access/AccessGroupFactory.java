@@ -13,13 +13,21 @@ package com.redhat.rhn.domain.access;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.UserFactory;
+
+import com.suse.manager.webui.utils.gson.AccessGroupJson;
+import com.suse.manager.webui.utils.gson.AccessGroupUserJson;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.type.StandardBasicTypes;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+
+import javax.persistence.Tuple;
 
 /**
  * Factory class for RBAC's {@link AccessGroup} entities
@@ -88,6 +96,81 @@ public class AccessGroupFactory extends HibernateFactory {
     }
 
     /**
+     * Lists all custom access groups for a given org.
+     * @param org the org
+     * @return the list of custom access groups
+     */
+    public static List<AccessGroupJson> listCustom(Org org) {
+        String sql = """
+            SELECT
+                ag.id as id,
+                ag.label as name,
+                ag.description as description,
+                ag.org_id as org_id,
+                wc.name as org_name,
+                COALESCE(uag.users, 0) as users,
+                COALESCE(agn.permissions, 0) as permissions
+            FROM access.accessgroup ag
+            LEFT JOIN (
+                SELECT group_id, count(*) AS users
+                FROM access.useraccessgroup
+                GROUP BY group_id
+            ) uag ON ag.id = uag.group_id
+            LEFT JOIN (
+                SELECT group_id, count(*) AS permissions
+                FROM access.accessgroupnamespace
+                GROUP BY group_id
+            ) agn ON ag.id = agn.group_id
+            LEFT JOIN web_customer wc ON wc.id = ag.org_id
+            WHERE ag.org_id = :org_id
+        """;
+        return getSession()
+                .createNativeQuery(sql, Tuple.class)
+                .setParameter("org_id", org.getId())
+                .getResultList()
+                .stream()
+                .map(AccessGroupJson::new)
+                .toList();
+    }
+
+    /**
+     * Lists all the users of a given organization
+     * @param orgId the org id
+     * @return the list of users as json object
+     */
+    public static List<AccessGroupUserJson> listUsers(Long orgId) {
+        return getSession().createNativeQuery("""
+                 SELECT wc.id,
+                        wc.login,
+                        wupi.email,
+                        concat(wupi.last_name, ', ', wupi.first_names) AS name,
+                        wcu.name AS org_name
+                 FROM web_contact wc
+                 JOIN web_user_personal_info wupi ON wc.id = wupi.web_user_id
+                 JOIN web_customer wcu ON wc.org_id = wcu.id
+                 WHERE wcu.id = :org_id
+                 """, Tuple.class)
+                .setParameter("org_id", orgId)
+                .stream().map(AccessGroupUserJson::new)
+                .toList();
+    }
+
+    /**
+     * Lists all the users that are subscribed to the given access group
+     * @param groupId the access group id
+     * @return the list of users
+     */
+    public static List<User> listAccessGroupUsers(Long groupId) {
+        List<Long> ids = getSession().createNativeQuery(
+                "SELECT uag.user_id FROM access.useraccessgroup uag WHERE uag.group_id = :group_id", Tuple.class)
+                .setParameter("group_id", groupId)
+                .addScalar("user_id", StandardBasicTypes.LONG)
+                .stream().map(tuple -> tuple.get("user_Id", Long.class))
+                .toList();
+        return UserFactory.lookupByIds(ids);
+    }
+
+    /**
      * Looks up an access group by its label.
      * @param label the label of the access group
      * @param org the org to search in
@@ -99,6 +182,18 @@ public class AccessGroupFactory extends HibernateFactory {
                         AccessGroup.class)
                 .setParameter("label", label)
                 .setParameter("org", org)
+                .uniqueResultOptional();
+    }
+
+    /**
+     * Looks up an access group by its id.
+     * @param id the id of the access group
+     * @return an {@code Optional} containing the access group, or an empty {@code Optional} if not found
+     */
+    public static Optional<AccessGroup> lookupById(Long id) {
+        return getSession()
+                .createQuery("SELECT a FROM AccessGroup a WHERE a.id = :id", AccessGroup.class)
+                .setParameter("id", id)
                 .uniqueResultOptional();
     }
 
