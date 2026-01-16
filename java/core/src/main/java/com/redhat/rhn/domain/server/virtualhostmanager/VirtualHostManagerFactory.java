@@ -22,6 +22,7 @@ import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.VHMCredentials;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.scc.SCCSubscription;
 
 import com.suse.manager.gatherer.GathererRunner;
 import com.suse.manager.model.gatherer.GathererModule;
@@ -100,11 +101,8 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      * exist
      */
     public VirtualHostManager lookupByLabel(String label) {
-        return HibernateFactory.getSession().createNativeQuery("""
-                                  SELECT * from suseVirtualHostManager
-                                  WHERE label = :label
-                                  """, VirtualHostManager.class)
-                .setParameter("label", label, StandardBasicTypes.STRING)
+        return getSession().createQuery("FROM VirtualHostManager v WHERE v.label = :label", VirtualHostManager.class)
+                .setParameter("label", label)
                 .uniqueResult();
     }
 
@@ -126,13 +124,10 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      * exist
      */
     public VirtualHostManager lookupByIdAndOrg(Long id, Org org) {
-        return HibernateFactory.getSession().createNativeQuery("""
-                                      SELECT * from suseVirtualHostManager
-                                      WHERE id = :id
-                                      AND  org_id = :org
-                                      """, VirtualHostManager.class)
-                .setParameter("org", org.getId(), StandardBasicTypes.LONG)
-                .setParameter("id", id, StandardBasicTypes.LONG)
+        return getSession().createQuery("FROM suseVirtualHostManager v WHERE v.id = :id AND v.org.id = :orgId",
+                        VirtualHostManager.class)
+                .setParameter("orgId", org.getId())
+                .setParameter("id", id)
                 .uniqueResult();
     }
 
@@ -144,13 +139,10 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      * inside the organization
      */
     public List<VirtualHostManager> lookupByIdsAndOrg(List<Long> ids, Org org) {
-        return HibernateFactory.getSession().createNativeQuery("""
-                                      SELECT * from suseSCCSubscription
-                                      WHERE id IN (:ids)
-                                      AND  org_id = :org
-                                      """, VirtualHostManager.class)
-                .setParameter("org", org.getId(), StandardBasicTypes.LONG)
-                .setParameterList("ids", ids, StandardBasicTypes.LONG)
+        return getSession().createQuery("FROM VirtualHostManager v WHERE v.id IN (:ids) AND v.org.id = :orgId",
+                        VirtualHostManager.class)
+                .setParameter("orgId", org.getId())
+                .setParameterList("ids", ids)
                 .getResultList();
     }
 
@@ -162,13 +154,10 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      * exist
      */
     public VirtualHostManager lookupByLabelAndOrg(String label, Org org) {
-        return HibernateFactory.getSession().createNativeQuery("""
-                                  SELECT * from suseVirtualHostManager
-                                  WHERE label = :label
-                                  AND org_id = :org
-                                  """, VirtualHostManager.class)
-                .setParameter("label", label, StandardBasicTypes.STRING)
-                .setParameter("org", org.getId(), StandardBasicTypes.LONG)
+        return getSession().createQuery("FROM VirtualHostManager v WHERE v.label = :label AND org.id = :orgId",
+                        VirtualHostManager.class)
+                .setParameter("label", label)
+                .setParameter("orgId", org.getId())
                 .uniqueResult();
     }
 
@@ -178,12 +167,10 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      * @return a list of corresponding Virtual Host Managers
      */
     public List<VirtualHostManager> listVirtualHostManagers(Org org) {
-        return  getSession().createNativeQuery("""
-                                      SELECT * from suseVirtualHostManager
-                                      WHERE  org_id = :org
-                                      ORDER BY label
-                                      """, VirtualHostManager.class)
-                .setParameter("org", org.getId(), StandardBasicTypes.LONG)
+        return getSession()
+                .createQuery("FROM VirtualHostManager v WHERE v.org.id = :orgId ORDER BY v.label",
+                        VirtualHostManager.class)
+                .setParameter("orgId", org.getId())
                 .getResultList();
     }
 
@@ -192,9 +179,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      * @return list of all Virtual Host Managers
      */
     public List<VirtualHostManager> listVirtualHostManagers() {
-        return HibernateFactory.getSession().createNativeQuery("SELECT * from suseVirtualHostManager",
-                        VirtualHostManager.class)
-                    .getResultList();
+        return getSession().createQuery("FROM suseVirtualHostManager", VirtualHostManager.class).getResultList();
     }
 
     /**
@@ -473,12 +458,9 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      * @param identifier node identifier
      * @return the node with the given identifier or null
      */
-    public Optional<VirtualHostManagerNodeInfo> lookupNodeInfoByIdentifier(
-            String identifier) {
-            return getSession().createNativeQuery("""
-                                      SELECT * from suseVirtualHostManagerNodeInfo
-                                      WHERE  identifier = :identifier
-                                      """, VirtualHostManagerNodeInfo.class)
+    public Optional<VirtualHostManagerNodeInfo> lookupNodeInfoByIdentifier(String identifier) {
+            return getSession().createQuery("FROM VirtualHostManagerNodeInfo v WHERE v.identifier = :identifier",
+                            VirtualHostManagerNodeInfo.class)
                     .setParameter("identifier", identifier, StandardBasicTypes.STRING)
                     .uniqueResultOptional();
     }
