@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-16 09:56+0100\n"
-"PO-Revision-Date: 2026-01-10 20:04+0000\n"
+"PO-Revision-Date: 2026-01-16 18:04+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 5.15.1\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #: ../html/javascript/spacewalk-essentials.js:409
 msgid "remaining"
@@ -2183,16 +2183,12 @@ msgid "Organization"
 msgstr "Organizácia"
 
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:134
-#, fuzzy
-#| msgid "Select Organization"
 msgid "Search for organizations..."
-msgstr "Vybrať organizáciu"
+msgstr "Hľadať organizácie..."
 
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:135
-#, fuzzy
-#| msgid "Organizations"
 msgid "No Organizations Found"
-msgstr "Organizácie"
+msgstr "Nenašli sa žiadne organizácie"
 
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:144
 msgid "Copy Permissions From"
@@ -2200,13 +2196,11 @@ msgstr ""
 
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:147
 msgid "Search for existing access groups..."
-msgstr ""
+msgstr "Hľadať existujúce prístupové skupiny..."
 
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:148
-#, fuzzy
-#| msgid " No group"
 msgid "No Access group"
-msgstr " Žiadna skupina"
+msgstr "Žiadna prístupová skupina"
 
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:156
 msgid "This action copy permissions from an existing access group to a new one. Once created, the new access group will function independently, unaffected by future updates to the original."
@@ -2214,36 +2208,28 @@ msgstr ""
 
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:71
 msgid "Edit Access Group"
-msgstr ""
+msgstr "Upraviť prístupovú skupinu"
 
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:76
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:134
-#, fuzzy
-#| msgid "Deleted successfully."
 msgid "Delete Access Group"
-msgstr "Úspešne vymazané."
+msgstr "Vymazať prístupovú skupinu"
 
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:88
-#, fuzzy
-#| msgid "Management"
 msgid "Access Group Management"
-msgstr "Správa"
+msgstr "Správa prístupových skupín"
 
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:93
 msgid "Create Access Group"
-msgstr ""
+msgstr "Vytvoriť prístupovú skupinu"
 
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:104
-#, fuzzy
-#| msgid "No subscriptions found."
 msgid "No Access Group found."
-msgstr "Nenašli sa žiadne predplatné."
+msgstr "Nenašla sa žiadna prístupová skupina."
 
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:105
-#, fuzzy
-#| msgid "Filter by description"
 msgid "Filter by name or description"
-msgstr "Filtrovať podľa popisu"
+msgstr "Filtrovať podľa názvu alebo popisu"
 
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:127
 #, fuzzy
@@ -2304,10 +2290,8 @@ msgstr "Filtrovať podľa názvu"
 
 #: ../html/src/manager/admin/access-control/access-group-review.tsx:160
 #: ../html/src/manager/admin/access-control/access-group-user.tsx:134
-#, fuzzy
-#| msgid "systems selected"
 msgid "No Users selected."
-msgstr "vybrané systémy"
+msgstr "Žiadni používatelia neboli vybraní."
 
 #: ../html/src/manager/admin/access-control/access-group-review.tsx:163
 #: ../html/src/manager/admin/access-control/access-group-user.tsx:137
@@ -2323,10 +2307,8 @@ msgid "Real Name"
 msgstr "Názov kanála"
 
 #: ../html/src/manager/admin/access-control/access-group-review.tsx:171
-#, fuzzy
-#| msgid "No profile selected"
 msgid "No permissions selected."
-msgstr "Žiadny profil nebol vybraný"
+msgstr "Neboli vybrané žiadne oprávnenia."
 
 #: ../html/src/manager/admin/access-control/access-group-tab-container.tsx:49
 msgid "Update Access Group"
