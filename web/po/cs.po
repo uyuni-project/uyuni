@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-09 10:26+0000\n"
+"POT-Creation-Date: 2026-01-16 09:56+0100\n"
 "PO-Revision-Date: 2024-08-22 17:47+0000\n"
 "Last-Translator: Aleš Kastner <alkas@volny.cz>\n"
 "Language-Team: Czech <https://l10n.opensuse.org/projects/uyuni/web/cs/>\n"
@@ -172,6 +172,11 @@ msgstr "Název úkolu"
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:233
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:269
 #: ../html/src/components/input/form/Form.example.tsx:23
+#: ../html/src/components/steps-progress-bar.stories.tsx:9
+#: ../html/src/manager/admin/access-control/access-group-details.tsx:113
+#: ../html/src/manager/admin/access-control/access-group-list.tsx:107
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:354
+#: ../html/src/manager/admin/access-control/access-group-review.tsx:175
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:410
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:169
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:97
@@ -262,6 +267,8 @@ msgstr "Doba provedení"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:111
 #: ../html/src/components/hub/TokenTable.tsx:104
+#: ../html/src/manager/admin/access-control/access-group-list.tsx:130
+#: ../html/src/manager/admin/access-control/access-group-user.tsx:142
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:427
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:198
 #: ../html/src/manager/images/image-profiles.tsx:191
@@ -277,6 +284,7 @@ msgstr "Akce"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:116
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:54
+#: ../html/src/manager/admin/access-control/access-group.tsx:183
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:199
 #: ../html/src/manager/images/image-view-patches.tsx:87
 #: ../html/src/manager/images/image-view.tsx:695
@@ -435,6 +443,8 @@ msgstr "Opravdu chcete {action} vybrané položky {name}? (Vybráno {count} polo
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:295
 #: ../html/src/components/large-text-attachment.tsx:188
 #: ../html/src/components/panels/CreatorPanel.tsx:111
+#: ../html/src/components/steps-progress-bar.tsx:62
+#: ../html/src/manager/admin/access-control/access-group-tab-container.tsx:48
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:56
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:62
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:181
@@ -461,7 +471,7 @@ msgstr "Zrušit"
 #: ../html/src/components/large-text-attachment.tsx:208
 #: ../html/src/components/large-text-attachment.tsx:221
 #: ../html/src/components/panels/CreatorPanel.tsx:95
-#: ../html/src/components/table/Table.tsx:197
+#: ../html/src/components/table/Table.tsx:239
 #: ../html/src/manager/admin/payg/payg.tsx:70
 #: ../html/src/manager/admin/payg/payg.tsx:71
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:162
@@ -518,6 +528,7 @@ msgstr ""
 #: ../html/src/components/input/form/Form.example.tsx:25
 #: ../html/src/components/input/text/Text.example.tsx:25
 #: ../html/src/components/input/text/Text.example.tsx:34
+#: ../html/src/components/steps-progress-bar.stories.tsx:11
 msgid "Minimum 2 characters"
 msgstr "Aspoň dva znaky"
 
@@ -1134,6 +1145,8 @@ msgid "The token that grant access to the remote server to establish the connect
 msgstr ""
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:196
+#: ../html/src/manager/admin/access-control/access-group-review.tsx:162
+#: ../html/src/manager/admin/access-control/access-group-user.tsx:136
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:106
 #: ../html/src/manager/images/image-store-edit.tsx:171
 #: ../html/src/manager/login/susemanager/login.tsx:87
@@ -1623,6 +1636,8 @@ msgstr "Odstranit"
 #: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:24
 #: ../html/src/components/input/form-multi-input/single-field.example.tsx:24
 #: ../html/src/components/input/form-multi-input/table-fields.example.tsx:32
+#: ../html/src/manager/admin/access-control/access-group-list.tsx:122
+#: ../html/src/manager/admin/access-control/access-group.tsx:206
 msgid "Users"
 msgstr "Uživatelé"
 
@@ -2001,7 +2016,7 @@ msgid "Normal Configuration Channel"
 msgstr "Normální konfigurační kanál"
 
 #: ../html/src/components/ranking-table.tsx:44
-#: ../html/src/components/table/TableDataHandler.tsx:412
+#: ../html/src/components/table/TableDataHandler.tsx:436
 msgid "There are no entries to show."
 msgstr "Žádné položky k zobrazení."
 
@@ -2104,6 +2119,10 @@ msgid "Channel Label"
 msgstr "Označení kanálu"
 
 #: ../html/src/components/states-picker.tsx:465
+#: ../html/src/manager/admin/access-control/access-group-details.tsx:120
+#: ../html/src/manager/admin/access-control/access-group-list.tsx:111
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:374
+#: ../html/src/manager/admin/access-control/access-group-review.tsx:176
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:45
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:78
 #: ../html/src/manager/admin/payg-shared/info/payg-info-form.tsx:21
@@ -2249,10 +2268,14 @@ msgid "Hub Org"
 msgstr ""
 
 #: ../html/src/components/table/nested-data.example.tsx:71
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:382
+#: ../html/src/manager/admin/access-control/access-group-review.tsx:179
 msgid "View"
 msgstr ""
 
 #: ../html/src/components/table/nested-data.example.tsx:72
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:403
+#: ../html/src/manager/admin/access-control/access-group-review.tsx:194
 msgid "Modify"
 msgstr ""
 
@@ -2347,6 +2370,217 @@ msgstr "nedefinováno"
 #: ../html/src/core/intl/index.test.tsx:18
 #: ../html/src/core/intl/index.test.tsx:19
 msgid "foo {insert} bar"
+msgstr ""
+
+#: ../html/src/manager/admin/access-control/access-group-details.tsx:51
+msgid "An unexpected error occurred while fetching organizations."
+msgstr ""
+
+#: ../html/src/manager/admin/access-control/access-group-details.tsx:64
+#: ../html/src/manager/admin/access-control/access-group-list.tsx:51
+#, fuzzy
+msgid "An unexpected error occurred while fetching access groups."
+msgstr "Chyba během zavádění dat. Zkontrolujte záznamy."
+
+#. Value options for filtering by Target Type in recurring actions list
+#: ../html/src/manager/admin/access-control/access-group-details.tsx:131
+#: ../html/src/manager/admin/access-control/access-group-list.tsx:118
+#: ../html/src/manager/proxy/container-config.tsx:323
+#: ../html/src/manager/recurring/recurring-actions-utils.tsx:8
+#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:4
+#: ../html/src/manager/state/highstate-summary.tsx:163
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:175
+#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:63
+msgid "Organization"
+msgstr "Organizace"
+
+#: ../html/src/manager/admin/access-control/access-group-details.tsx:134
+#, fuzzy
+#| msgid "Organization"
+msgid "Search for organizations..."
+msgstr "Organizace"
+
+#: ../html/src/manager/admin/access-control/access-group-details.tsx:135
+#, fuzzy
+#| msgid "Organizations"
+msgid "No Organizations Found"
+msgstr "Organizace"
+
+#: ../html/src/manager/admin/access-control/access-group-details.tsx:144
+msgid "Copy Permissions From"
+msgstr ""
+
+#: ../html/src/manager/admin/access-control/access-group-details.tsx:147
+msgid "Search for existing access groups..."
+msgstr ""
+
+#: ../html/src/manager/admin/access-control/access-group-details.tsx:148
+#, fuzzy
+#| msgid " No group"
+msgid "No Access group"
+msgstr " Žádná skupina"
+
+#: ../html/src/manager/admin/access-control/access-group-details.tsx:156
+msgid "This action copy permissions from an existing access group to a new one. Once created, the new access group will function independently, unaffected by future updates to the original."
+msgstr ""
+
+#: ../html/src/manager/admin/access-control/access-group-list.tsx:71
+msgid "Edit Access Group"
+msgstr ""
+
+#: ../html/src/manager/admin/access-control/access-group-list.tsx:76
+#: ../html/src/manager/admin/access-control/access-group-list.tsx:134
+#, fuzzy
+#| msgid "Deleted successfully."
+msgid "Delete Access Group"
+msgstr "Úspěšně odstraněno."
+
+#: ../html/src/manager/admin/access-control/access-group-list.tsx:88
+#, fuzzy
+msgid "Access Group Management"
+msgstr "Uzel správy"
+
+#: ../html/src/manager/admin/access-control/access-group-list.tsx:93
+msgid "Create Access Group"
+msgstr ""
+
+#: ../html/src/manager/admin/access-control/access-group-list.tsx:104
+#, fuzzy
+#| msgid "No subscriptions found."
+msgid "No Access Group found."
+msgstr "Nenašlo se žádné předplatné."
+
+#: ../html/src/manager/admin/access-control/access-group-list.tsx:105
+#, fuzzy
+#| msgid "Filter by description"
+msgid "Filter by name or description"
+msgstr "Filtrovat podle popisu"
+
+#: ../html/src/manager/admin/access-control/access-group-list.tsx:127
+#, fuzzy
+#| msgid "Version"
+msgid "permissions"
+msgstr "Verze"
+
+#: ../html/src/manager/admin/access-control/access-group-list.tsx:135
+#, fuzzy
+#| msgid "Are you sure you want to delete the selected store?"
+msgid "Are you sure you want to delete the selected Access Group?"
+msgstr "Opravdu chcete smazat vybrané úložiště?"
+
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:155
+#, fuzzy
+msgid "An unexpected error occurred while fetching namespaces."
+msgstr "Chyba během zavádění dat. Zkontrolujte záznamy."
+
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:216
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:363
+msgid "API"
+msgstr ""
+
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:219
+msgid "Web"
+msgstr ""
+
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:222
+#, fuzzy
+#| msgid "Delete selected"
+msgid "Only selected"
+msgstr "Odstranit vybrané"
+
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:282
+#: ../html/src/manager/admin/access-control/access-group-review.tsx:128
+#: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:255
+#, fuzzy
+#| msgid "Expand All Sections"
+msgid "Expand All"
+msgstr "Rozbalit všechny sekce"
+
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:282
+#: ../html/src/manager/admin/access-control/access-group-review.tsx:128
+#: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:255
+#, fuzzy
+#| msgid "Collapse All Sections"
+msgid "Collapse All"
+msgstr "Sbalit všechny sekce"
+
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:338
+msgid "Review and modify the permissions for this custom group as needed."
+msgstr ""
+
+#: ../html/src/manager/admin/access-control/access-group-permissions.tsx:347
+#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:195
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:384
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:281
+#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:143
+msgid "Filter by name"
+msgstr "Filtrovat podle názvu"
+
+#: ../html/src/manager/admin/access-control/access-group-review.tsx:160
+#: ../html/src/manager/admin/access-control/access-group-user.tsx:134
+#, fuzzy
+#| msgid "systems selected"
+msgid "No Users selected."
+msgstr "vybrané systémy"
+
+#: ../html/src/manager/admin/access-control/access-group-review.tsx:163
+#: ../html/src/manager/admin/access-control/access-group-user.tsx:137
+#: ../html/src/manager/proxy/container-config.tsx:325
+msgid "Email"
+msgstr "E-mail"
+
+#: ../html/src/manager/admin/access-control/access-group-review.tsx:164
+#: ../html/src/manager/admin/access-control/access-group-user.tsx:138
+#, fuzzy
+#| msgid "Channel Name"
+msgid "Real Name"
+msgstr "Název kanálu"
+
+#: ../html/src/manager/admin/access-control/access-group-review.tsx:171
+#, fuzzy
+#| msgid "No profile selected"
+msgid "No permissions selected."
+msgstr "Není vybrán žádný profil"
+
+#: ../html/src/manager/admin/access-control/access-group-tab-container.tsx:49
+msgid "Update Access Group"
+msgstr ""
+
+#: ../html/src/manager/admin/access-control/access-group-user.tsx:48
+#, fuzzy
+#| msgid "An error occurred on save."
+msgid "An unexpected error occurred while fetching users."
+msgstr "Při ukládání došlo k chybě."
+
+#: ../html/src/manager/admin/access-control/access-group-user.tsx:118
+#, fuzzy
+#| msgid "Search in states"
+msgid "Search & Add Users"
+msgstr "Vyhledávat ve stavech"
+
+#: ../html/src/manager/admin/access-control/access-group.tsx:173
+#, fuzzy
+msgid "Access Group successfully created."
+msgstr "Naplánováno úspěšně"
+
+#: ../html/src/manager/admin/access-control/access-group.tsx:195
+msgid "Namespaces & Permissions"
+msgstr ""
+
+#: ../html/src/manager/admin/access-control/access-group.tsx:211
+#, fuzzy
+#| msgid "Overview"
+msgid "Review"
+msgstr "Přehled"
+
+#: ../html/src/manager/admin/access-control/access-group.tsx:219
+#, fuzzy
+#| msgid "Schedule Details"
+msgid "Access Group Details"
+msgstr "Podrobnosti plánu"
+
+#: ../html/src/manager/admin/access-control/access-group.tsx:224
+msgid "Create: Access Group"
 msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:20
@@ -3112,13 +3346,6 @@ msgstr "Data se obnovují každých "
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:189
 msgid " seconds"
 msgstr " sekund"
-
-#: ../html/src/manager/admin/task-engine-status/taskotop.tsx:195
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:384
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:281
-#: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:143
-msgid "Filter by name"
-msgstr "Filtrovat podle názvu"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:197
 msgid "Task Id"
@@ -5610,18 +5837,6 @@ msgstr ""
 msgid "Edit YAML"
 msgstr "Upravit "
 
-#: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:255
-#, fuzzy
-#| msgid "Collapse All Sections"
-msgid "Collapse All"
-msgstr "Sbalit všechny sekce"
-
-#: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:255
-#, fuzzy
-#| msgid "Expand All Sections"
-msgid "Expand All"
-msgstr "Rozbalit všechny sekce"
-
 #: ../html/src/manager/minion/ansible/edit-ansible-vars-modal.tsx:65
 #, fuzzy
 #| msgid "Edit profile"
@@ -6464,23 +6679,9 @@ msgstr "Dvoupísmenný kód země"
 msgid "City"
 msgstr "Město"
 
-#. Value options for filtering by Target Type in recurring actions list
-#: ../html/src/manager/proxy/container-config.tsx:323
-#: ../html/src/manager/recurring/recurring-actions-utils.tsx:8
-#: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:4
-#: ../html/src/manager/state/highstate-summary.tsx:163
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:175
-#: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:63
-msgid "Organization"
-msgstr "Organizace"
-
 #: ../html/src/manager/proxy/container-config.tsx:324
 msgid "Organization Unit"
 msgstr "Organizační jednotka"
-
-#: ../html/src/manager/proxy/container-config.tsx:325
-msgid "Email"
-msgstr "E-mail"
 
 #: ../html/src/manager/proxy/container-config.tsx:333
 msgid "The root CA"
