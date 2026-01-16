@@ -95,8 +95,15 @@ const AccessGroup = (props: AccessGroupProps) => {
 
   const handleFormChange = (newAccessGroupState) => {
     setAccessGroupState((prevState) => {
-      const agChanged = prevState.accessGroups.join(",") !== newAccessGroupState.accessGroups.join(",");
+      const prevAccessGroups = Array.isArray(prevState.accessGroups)
+        ? prevState.accessGroups
+        : [];
 
+      const nextAccessGroups = Array.isArray(newAccessGroupState.accessGroups)
+        ? newAccessGroupState.accessGroups
+        : [];
+
+      const agChanged = prevAccessGroups.join(",") !== nextAccessGroups.join(",");
       return {
         ...prevState,
         name: newAccessGroupState.name,
@@ -107,8 +114,7 @@ const AccessGroup = (props: AccessGroupProps) => {
           prevState.orgId !== newAccessGroupState.orgId || prevState.users.length === 0
             ? []
             : newAccessGroupState.users,
-        accessGroups: newAccessGroupState.accessGroups,
-
+        accessGroups: nextAccessGroups,
         ...(agChanged && {
           permissions: {},
           permissionsModified: false,
