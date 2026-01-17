@@ -12111,13 +12111,13 @@ Per a esmenar aquesta situació, afegiu credencials SCC lt;a href""/rhn/admin/se
         <source>Collection of systems not registered, but present in branch {0} pxe entries.</source>
         <target state="translated">Conjunt de sistemes no registrats, però presents a les entrades de pxe de la branca {0}.</target>
       </trans-unit>
-    <trans-unit id="Access Control" xml:space="preserve">
+      <trans-unit id="Access Control" xml:space="preserve">
         <source>Access Control</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="translated">Control d'accés</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
