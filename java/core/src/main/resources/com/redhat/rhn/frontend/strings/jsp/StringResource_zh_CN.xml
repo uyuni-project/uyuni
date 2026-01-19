@@ -7751,7 +7751,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target state="final">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; {0} 个软件包的去除</target>
+        <target state="final">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; 去除 {0} 个软件包</target>
       </trans-unit>
       <trans-unit approved="yes" id="message.packageremovals" xml:space="preserve">
         <source>{0} package removals have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
@@ -7759,7 +7759,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target state="final">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; {0} 个软件包的去除</target>
+        <target state="final">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt;去除 {0} 个软件包</target>
       </trans-unit>
       <trans-unit approved="yes" id="message.packageupgrade" xml:space="preserve">
         <source>{0} package upgrade has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
@@ -7767,7 +7767,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target state="final">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; {0} 个软件包的升级</target>
+        <target state="final">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt;升级 {0} 个软件包</target>
       </trans-unit>
       <trans-unit approved="yes" id="message.packageupgrades" xml:space="preserve">
         <source>{0} package upgrades have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
@@ -7775,7 +7775,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target state="final">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; {0} 个软件包的升级</target>
+        <target state="final">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt;升级 {0} 个软件包</target>
       </trans-unit>
       <trans-unit approved="yes" id="message.packageinstall" xml:space="preserve">
         <source>{0} package install has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
@@ -7783,7 +7783,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target state="final">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; {0} 个软件包的安装</target>
+        <target state="final">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt;安装 {0} 个软件包</target>
       </trans-unit>
       <trans-unit approved="yes" id="message.packageinstalls" xml:space="preserve">
         <source>{0} package installs have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
@@ -7791,7 +7791,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target state="final">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; {0} 个软件包的安装</target>
+        <target state="final">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt;安装 {0} 个软件包</target>
       </trans-unit>
       <trans-unit id="message.systeminstalls" xml:space="preserve">
         <source>Package install has been scheduled for {0} system(s).</source>
@@ -7806,7 +7806,7 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target state="final">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; {0} 个软件包的校验</target>
+        <target state="final">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt;校验 {0} 个软件包</target>
       </trans-unit>
       <trans-unit approved="yes" id="message.packageverifys" xml:space="preserve">
         <source>{0} package verifications have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
@@ -7814,35 +7814,35 @@ organization. You may grant or remove the organization administrator role in the
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList.do</context>
         </context-group>
-        <target state="final">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; {0} 个软件包的校验</target>
+        <target state="final">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt;校验 {0} 个软件包</target>
       </trans-unit>
       <trans-unit approved="yes" id="message.patchremoval" xml:space="preserve">
         <source>{0} patch removal has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
         </context-group>
-        <target state="final">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; {0} 个补丁的去除</target>
+        <target state="final">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt;去除 {0} 个补丁</target>
       </trans-unit>
       <trans-unit approved="yes" id="message.patchremovals" xml:space="preserve">
         <source>{0} patch removals have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
         </context-group>
-        <target state="final">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; {0} 个补丁的去除</target>
+        <target state="final">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt;去除 {0} 个补丁</target>
       </trans-unit>
       <trans-unit approved="yes" id="message.patchinstall" xml:space="preserve">
         <source>{0} patch install has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
         </context-group>
-        <target state="final">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; {0} 个补丁的安装</target>
+        <target state="final">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt;安装 {0} 个补丁</target>
       </trans-unit>
       <trans-unit approved="yes" id="message.patchinstalls" xml:space="preserve">
         <source>{0} patch installs have been &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt;</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
         </context-group>
-        <target state="final">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt; {0} 个补丁的安装</target>
+        <target state="final">已为 &lt;a href="/rhn/systems/details/Overview.do?sid={2}"&gt;{3}&lt;/a&gt; &lt;a href="/rhn/systems/details/history/Pending.do?sid={2}"&gt;安排&lt;/a&gt;安装 {0} 个补丁</target>
       </trans-unit>
       <trans-unit approved="yes" id="message.xccdfeval" xml:space="preserve">
         <source>XCCDF scan has been &lt;a href="/rhn/systems/details/history/Pending.do?sid={1}"&gt;scheduled&lt;/a&gt; for &lt;a href="/rhn/systems/details/Overview.do?sid={1}"&gt;{2}&lt;/a&gt;</source>
@@ -9440,11 +9440,13 @@ organization.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/config/GeneralConfig.do</context>
         </context-group>
-        <target state="final">组织是一种在系统集、系统组、软件通道、自动安装配置文件、
-激活密钥、配置通道和文件、用户 - 您用 @@PRODUCT_NAME@@ 进行
+        <target state="final">组织是一种在系统集、系统组、软件通道、
+自动安装配置文件、激活密钥、配置通道和文件、
+用户 - 您用 @@PRODUCT_NAME@@ 进行
 管理的一切之间放置边界的方式。
-每个组织都由至少一个组织管理员进行管理，且整个 @@PRODUCT_NAME@@ 由
-一个 @@PRODUCT_NAME@@ 管理员来管理。对应多个组织的一个 @@PRODUCT_NAME@@
+每个组织都由至少一个组织管理员进行管理，
+且整个 @@PRODUCT_NAME@@ 由一个 @@PRODUCT_NAME@@ 管理员
+来管理。对应多个组织的一个 @@PRODUCT_NAME@@
 中的组织与对应一个组织的多个 @@PRODUCT_NAME@@ 中的组织功能类似。
 </target>
       </trans-unit>
@@ -13868,9 +13870,9 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
           <context context-type="sourcefile">/rhn/activationkeys/configuration/* pages</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="activation-keys.config.rank.jsp.para1" xml:space="preserve">
+      <trans-unit id="activation-keys.config.rank.jsp.para1" xml:space="preserve" approved="yes">
         <source>This activation key is subscribed to the configuration channels listed below in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it. In other words, the channel listed last will be applied first.</source>
-        <target state="needs-adaptation">此激活密钥订阅了下列配置通道，通道按排名以从高到低的顺序列出。特定通道中的文件将覆盖级别比其低的通道中文件路径和文件名相同的文件。</target>
+        <target state="final">此激活密钥订阅了下列配置通道，通道按排名以从高到低的顺序列出。某一通道中的文件将覆盖其下方通道中文件路径和文件名相同的文件。即列在最后的通道将最先应用。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/activationkeys/configuration/* pages</context>
         </context-group>
@@ -23414,9 +23416,9 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           <context context-type="sourcefile">/rhn/systems/details/configuration/RankChannels.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="sdc.config.rank.jsp.para1" xml:space="preserve">
+      <trans-unit id="sdc.config.rank.jsp.para1" xml:space="preserve" approved="yes">
         <source>This system is subscribed to the configuration channels listed below in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it. In other words, the channel listed last will be applied first.</source>
-        <target state="needs-adaptation">此系统订阅了下列配置通道，通道按排名以从高到低的顺序列出。特定通道中的文件将覆盖级别比其低的通道中文件路径和文件名相同的文件。</target>
+        <target state="final">此系统订阅了下列配置通道，通道按排名以从高到低的顺序列出。某一通道中的文件将覆盖其下方通道中文件路径和文件名相同的文件。即列在最后的通道将最先应用。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/RankChannels.do</context>
         </context-group>
@@ -25518,8 +25520,8 @@ given channel.</source>
         @@PRODUCT_NAME@@ 解决方案脱离公共互联网，同时对其
         系统进行更好的优化和控制。
         将 @@PRODUCT_NAME@@ Proxy 服务器与 @@PRODUCT_NAME@@ 服务器结合使用，
-        可将客户的单个系统连接到本地托管的 Proxy。
-        Proxy 与 @@PRODUCT_NAME@@ 中央服务器通信，在本地聚合数据并执行一些任务。
+        可将客户的单个系统连接到本地托管的代理。
+        该代理会与 @@PRODUCT_NAME@@ 中央服务器通信，在本地聚合数据并执行一些任务。
         @@PRODUCT_NAME@@ 数据库中存储的所有信息都保留在 @@PRODUCT_NAME@@ 服务器上。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/help/about</context>
@@ -27197,7 +27199,7 @@ given channel.</source>
         </context-group>
         <target state="translated">结束时间</target>
       </trans-unit>
-      <trans-unit approved="yes" id="confirmprivate.jsp.confirmmsg" xml:space="preserve">
+      <trans-unit approved="no" id="confirmprivate.jsp.confirmmsg" xml:space="preserve">
         <source>Are you sure you want to set this channel to
         &lt;strong&gt;private&lt;/strong&gt;, accessible only by systems in your
         organization? There are system(s) in other organization(s) listed below
@@ -27208,10 +27210,11 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/manage/ConfirmPrivate.do</context>
         </context-group>
-        <target state="final">您确定要将此通道设置为
-        &lt;strong&gt;专用&lt;/strong&gt;且只能由您组织中的系统访问吗？
-        下面列出的是其他组织中订阅了由此通道提供的内容的系统。
-        去除对此通道的访问权限可能会对这些系统产生负面影响。例如：那些
+        <target state="translated">您确定要将此通道设置为
+        &lt;strong&gt;专用&lt;/strong&gt;且只能由您组织中的
+        系统访问吗？下面列出的是其他组织中订阅了由此
+        通道提供的内容的系统。去除对此通道的访问权限可能
+        会对这些系统产生负面影响。例如：那些
         系统将无法再收到此通道提供的内容的关键
         安全更新。</target>
       </trans-unit>
@@ -29114,7 +29117,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target state="final">为 &lt;abbr title="内容生命周期管理"&gt;CLM&lt;/abbr&gt; 创建在线增补过滤器</target>
+        <target state="final">为 &lt;abbr title="内容生命周期管理"&gt;CLM&lt;/abbr&gt; 创建实时修补过滤器</target>
       </trans-unit>
       <trans-unit approved="yes" id="channel.jsp.appstreams" xml:space="preserve">
         <source>AppStreams</source>
@@ -29664,18 +29667,18 @@ given channel.</source>
         <source> New Created </source>
         <target state="final"> 已新建 </target>
       </trans-unit>
-    <trans-unit id="ssm.overview.appstreams" xml:space="preserve">
-            <source>AppStreams</source>
-        <target state="new"/>
-  </trans-unit>
-        <trans-unit id="ssm.overview.appstreams.manage" xml:space="preserve">
-            <source>&lt;a href="/rhn/manager/systems/ssm/appstreams"&gt;Enable and disable&lt;/a&gt; AppStreams on the selected systems</source>
-        <target state="new"/>
-  </trans-unit>
-        <trans-unit id="task.status.root-ca-cert-update" xml:space="preserve">
+      <trans-unit id="ssm.overview.appstreams" xml:space="preserve" approved="yes">
+        <source>AppStreams</source>
+        <target state="final">AppStream</target>
+      </trans-unit>
+      <trans-unit id="ssm.overview.appstreams.manage" xml:space="preserve" approved="yes">
+        <source>&lt;a href="/rhn/manager/systems/ssm/appstreams"&gt;Enable and disable&lt;/a&gt; AppStreams on the selected systems</source>
+        <target state="final">在所选系统上&lt;a href="/rhn/manager/systems/ssm/appstreams"&gt;启用和禁用&lt;/a&gt; AppStream</target>
+      </trans-unit>
+      <trans-unit id="task.status.root-ca-cert-update" xml:space="preserve" approved="yes">
         <source>CA Certificates Update</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">CA 证书更新</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
