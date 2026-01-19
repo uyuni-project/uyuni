@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-16 09:56+0100\n"
-"PO-Revision-Date: 2026-01-16 18:04+0000\n"
+"PO-Revision-Date: 2026-01-19 21:04+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -2161,14 +2161,12 @@ msgstr "foo {insert} panel"
 
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:51
 msgid "An unexpected error occurred while fetching organizations."
-msgstr ""
+msgstr "Pri načítaní organizácií došlo k neočakávanej chybe."
 
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:64
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:51
-#, fuzzy
-#| msgid "An error occurred while displaying the list of packages."
 msgid "An unexpected error occurred while fetching access groups."
-msgstr "Pri zobrazovaní zoznamu balíkov sa vyskytla chyba."
+msgstr "Pri načítaní prístupových skupín došlo k neočakávanej chybe."
 
 #. Value options for filtering by Target Type in recurring actions list
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:131
@@ -2192,7 +2190,7 @@ msgstr "Nenašli sa žiadne organizácie"
 
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:144
 msgid "Copy Permissions From"
-msgstr ""
+msgstr "Kopírovať oprávnenia z"
 
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:147
 msgid "Search for existing access groups..."
@@ -2204,7 +2202,7 @@ msgstr "Žiadna prístupová skupina"
 
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:156
 msgid "This action copy permissions from an existing access group to a new one. Once created, the new access group will function independently, unaffected by future updates to the original."
-msgstr ""
+msgstr "Táto akcia skopíruje oprávnenia z existujúcej prístupovej skupiny do novej. Po vytvorení bude nová prístupová skupina fungovať nezávisle, bez vplyvu budúcich aktualizácií pôvodnej skupiny."
 
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:71
 msgid "Edit Access Group"
@@ -2232,37 +2230,29 @@ msgid "Filter by name or description"
 msgstr "Filtrovať podľa názvu alebo popisu"
 
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:127
-#, fuzzy
-#| msgid "Version"
 msgid "permissions"
-msgstr "Verzia"
+msgstr "oprávnenia"
 
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:135
-#, fuzzy
-#| msgid "Are you sure you want to delete the selected store?"
 msgid "Are you sure you want to delete the selected Access Group?"
-msgstr "Naozaj chcete vymazať vybrané úložisko?"
+msgstr "Naozaj chcete vymazať vybranú prístupovú skupinu?"
 
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:155
-#, fuzzy
-#| msgid "An error occurred while displaying the list of packages."
 msgid "An unexpected error occurred while fetching namespaces."
-msgstr "Pri zobrazovaní zoznamu balíkov sa vyskytla chyba."
+msgstr "Pri načítaní menných priestorov došlo k neočakávanej chybe."
 
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:216
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:363
 msgid "API"
-msgstr ""
+msgstr "API"
 
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:219
 msgid "Web"
-msgstr ""
+msgstr "Web"
 
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:222
-#, fuzzy
-#| msgid "Delete selected"
 msgid "Only selected"
-msgstr "Vymazať vybrané"
+msgstr "Iba vybrané"
 
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:282
 #: ../html/src/manager/admin/access-control/access-group-review.tsx:128
