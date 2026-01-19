@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LCC
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -39,6 +40,7 @@ import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.server.test.VirtualInstanceManufacturer;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
@@ -166,7 +168,6 @@ public class ServerTestUtils {
                                                   SystemEntitlementManager systemEntitlementManager)
         throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        TestUtils.saveAndFlush(user);
         Server host = null;
         if (salt) {
             host = MinionServerFactoryTest.createTestMinionServer(user);
@@ -187,6 +188,7 @@ public class ServerTestUtils {
             vi.setConfirmed((long) 0);
             host.addGuest(vi);
         }
+        UserFactory.getInstance().syncServerGroupPerms(user);
 
         return host;
     }

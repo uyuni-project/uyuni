@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LLC
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -114,22 +115,17 @@ public class PackageTest extends BaseTestCaseWithUser {
     public static Package createTestPackage(Org org, PackageArch arch) {
         Package p = new Package();
         populateTestPackage(p, org, arch);
-
-        TestUtils.saveAndFlush(p);
-
-        return p;
+        return TestUtils.saveAndFlush(p);
     }
 
     public static Package createTestPackage(Org org) {
         Package p = populateTestPackage(new Package(), org);
-        TestUtils.saveAndFlush(p);
-        return p;
+        return TestUtils.saveAndFlush(p);
     }
 
     public static Package createTestPackage(Org org, String packageName) {
         Package p = populateTestPackage(new Package(), packageName, org);
-        TestUtils.saveAndFlush(p);
-        return p;
+        return TestUtils.saveAndFlush(p);
     }
 
     public static Package populateTestPackage(Package p, Org org, PackageName name, PackageEvr evr, PackageArch arch) {

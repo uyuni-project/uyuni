@@ -16,7 +16,7 @@ package com.redhat.rhn.frontend.dto;
 
 import java.util.Optional;
 
-import javax.persistence.Tuple;
+import jakarta.persistence.Tuple;
 
 /**
  * Base class for DTO objects that can be constructed from a Tuple

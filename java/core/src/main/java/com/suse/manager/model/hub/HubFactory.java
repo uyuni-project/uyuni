@@ -30,11 +30,11 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.persistence.Tuple;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Path;
-import javax.persistence.criteria.Root;
+import jakarta.persistence.Tuple;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Path;
+import jakarta.persistence.criteria.Root;
 
 public class HubFactory extends HibernateFactory {
 
@@ -47,18 +47,22 @@ public class HubFactory extends HibernateFactory {
 
     /**
      * Save a {@link IssHub} object
+     *
      * @param issServer object to save
+     * @return the managed {@link IssHub} instance
      */
-    public void save(IssServer issServer) {
-        saveObject(issServer);
+    public IssServer save(IssServer issServer) {
+        return saveObject(issServer);
     }
 
     /**
      * Save a {@link IssPeripheralChannels} object
+     *
      * @param issPeripheralChannelsIn object to save
+     * @return the managed {@link IssPeripheralChannels} instance
      */
-    public void save(IssPeripheralChannels issPeripheralChannelsIn) {
-        saveObject(issPeripheralChannelsIn);
+    public IssPeripheralChannels save(IssPeripheralChannels issPeripheralChannelsIn) {
+        return saveObject(issPeripheralChannelsIn);
     }
 
     /**
@@ -266,7 +270,7 @@ public class HubFactory extends HibernateFactory {
         }
 
         // Store the new token
-        getSession().saveOrUpdate(accessToken);
+        getSession().merge(accessToken);
         return accessToken;
     }
 

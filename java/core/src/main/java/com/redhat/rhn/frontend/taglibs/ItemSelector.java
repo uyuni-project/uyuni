@@ -25,7 +25,7 @@ import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import java.util.Arrays;
 import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 
 /**

@@ -54,7 +54,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.annotations.Type;
+import org.hibernate.type.YesNoConverter;
 
 import java.util.Collections;
 import java.util.Date;
@@ -63,22 +63,23 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 /**
  * Class UserImpl that reflects the DB representation of web_contact
@@ -107,7 +108,7 @@ public class UserImpl extends BaseDomainHelper implements User {
     private String password;  // Note: access = field can be added if using field-based access
 
     @Column(name = "read_only", nullable = false)
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private boolean readOnly;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, optional = false)
@@ -156,7 +157,8 @@ public class UserImpl extends BaseDomainHelper implements User {
 
     @ManyToMany
     @JoinTable(
-            name = "access.userNamespace",
+            schema = "access",
+            name = "userNamespace",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "namespace_id")
     )
@@ -164,7 +166,8 @@ public class UserImpl extends BaseDomainHelper implements User {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "access.userAccessGroup",
+            schema = "access",
+            name = "userAccessGroup",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "group_id")
     )
@@ -403,8 +406,8 @@ public class UserImpl extends BaseDomainHelper implements User {
             UserGroupImpl ug = org.getUserGroup(label);
             if (ug != null) {
                 UserGroupMembers ugm = new UserGroupMembers(this, ug, temporary);
-                groupMembers.add(ugm);
-                UserGroupFactory.save(ugm);
+                UserGroupMembers managedUgm = UserGroupFactory.save(ugm);
+                groupMembers.add(managedUgm);
             }
             else {
                 throw new IllegalArgumentException("Org doesn't have role: " + label);

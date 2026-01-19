@@ -281,8 +281,7 @@ public class PackageTestUtils {
                           pc.setCreated(new Date());
                           pc.setModified(new Date());
 
-                          TestUtils.saveAndFlush(pc);
-                          return pc;
+                          return TestUtils.saveAndFlush(pc);
                       });
     }
 }

@@ -18,7 +18,7 @@ import com.redhat.rhn.frontend.dto.BaseTupleDto;
 
 import java.util.Objects;
 
-import javax.persistence.Tuple;
+import jakarta.persistence.Tuple;
 
 /**
  * Test Dto class for PagedSqlQueryBuilder test

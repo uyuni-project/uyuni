@@ -27,9 +27,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 
 public class PaygSshDataFactory extends HibernateFactory {
 
@@ -54,11 +54,13 @@ public class PaygSshDataFactory extends HibernateFactory {
 
     /**
      * Save the payg ssh data object to the database
+     *
      * @param sshData payg ssh data object
+     * @return the managed {@link PaygSshData} instance
      */
-    public static void savePaygSshData(PaygSshData sshData) {
+    public static PaygSshData savePaygSshData(PaygSshData sshData) {
         sshData.setModified(new Date());
-        SINGLETON.saveObject(sshData);
+        return SINGLETON.saveObject(sshData);
     }
 
     /**

@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LLC
  * Copyright (c) 2009--2013 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -124,25 +125,24 @@ public class ChannelFamilyFactoryTest extends RhnBaseTestCase {
         cfam.setLabel(label);
         cfam.setName(name);
 
-        ChannelFamilyFactory.save(cfam);
-        cfam = TestUtils.reload(cfam);
+        ChannelFamily channelFamily = ChannelFamilyFactory.save(cfam);
 
         if (nullOrg) {
             PublicChannelFamily pcf = new PublicChannelFamily();
-            pcf.setChannelFamily(cfam);
+            pcf.setChannelFamily(channelFamily);
             HibernateFactory.getSession().persist(pcf);
 
-            cfam.setPublicChannelFamily(pcf);
+            channelFamily.setPublicChannelFamily(pcf);
         }
         else {
             PrivateChannelFamily pcf = new PrivateChannelFamily();
             pcf.setOrg(user.getOrg());
-            pcf.setChannelFamily(cfam);
+            pcf.setChannelFamily(channelFamily);
             HibernateFactory.getSession().persist(pcf);
 
-            cfam.addPrivateChannelFamily(pcf);
+            channelFamily.addPrivateChannelFamily(pcf);
         }
 
-        return TestUtils.reload(cfam);
+        return TestUtils.reload(channelFamily);
     }
 }

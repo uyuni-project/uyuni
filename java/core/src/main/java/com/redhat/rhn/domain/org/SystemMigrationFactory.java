@@ -89,10 +89,12 @@ import java.util.List;
 
     /**
      * Commit the SystemMigration
+     *
      * @param migration SystemMigration object we want to commit.
+     * @return the managed {@link SystemMigration} instance
      */
-    public static void save(SystemMigration migration) {
-        singleton.saveObject(migration);
+    public static SystemMigration save(SystemMigration migration) {
+        return singleton.saveObject(migration);
     }
 }
 

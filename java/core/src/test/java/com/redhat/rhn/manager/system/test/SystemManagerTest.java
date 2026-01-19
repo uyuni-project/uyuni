@@ -152,6 +152,7 @@ import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.io.FileUtils;
 import org.cobbler.test.MockConnection;
 import org.hibernate.Session;
+import org.hibernate.type.StandardBasicTypes;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.AfterEach;
@@ -181,6 +182,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
+
+import jakarta.persistence.Tuple;
 
 
 public class SystemManagerTest extends JMockBaseTestCaseWithUser {
@@ -278,10 +281,14 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
      */
     private Integer numberOfSnapshots(Long sid) {
         Session session = HibernateFactory.getSession();
-        return session.createQuery("SELECT COUNT(s) FROM ServerSnapshot s WHERE s.server.id = :sid", Long.class)
-                .setParameter("sid", sid)
-                .uniqueResult()
-                .intValue();
+        return session.createNativeQuery("Select count(*) as cnt " +
+                                                         "  from rhnSnapshot " +
+                                                         " where server_id = " + sid, Tuple.class)
+                                         .addScalar("cnt", StandardBasicTypes.INTEGER)
+                                        .stream()
+                .map(t -> t.get(0, Integer.class))
+                .findFirst().orElse(0);
+
     }
 
     @Test

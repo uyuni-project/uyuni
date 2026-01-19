@@ -36,7 +36,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Iterator;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 public class SystemDetailsMessageFilterTest extends MockObjectTestCase implements SaltTestCaseUtils {
     protected Path tmpSaltRoot;

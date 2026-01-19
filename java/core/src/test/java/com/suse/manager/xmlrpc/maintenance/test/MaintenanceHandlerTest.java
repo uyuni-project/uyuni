@@ -16,7 +16,6 @@ package com.suse.manager.xmlrpc.maintenance.test;
 
 import static java.util.Collections.emptyList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.util.FileUtils;
@@ -42,9 +41,11 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import redstone.xmlrpc.XmlRpcSerializer;
 
@@ -98,12 +99,14 @@ public class MaintenanceHandlerTest extends BaseHandlerTestCase {
         Action coreAction2 = MaintenanceTestUtils.createActionForServerAt(
                 admin, ActionFactory.TYPE_ERRATA, coreServer, "2020-05-21T09:15:00+02:00"); //moved
 
-        assertNotNull(sapAction1);
-        assertNotNull(sapActionEx);
-        assertNotNull(sapAction2);
-        assertNotNull(coreAction1);
-        assertNotNull(coreActionEx);
-        assertNotNull(coreAction2);
+        assertEquals(
+                new HashSet<>(ActionFactory.listActionsForServer(admin, sapServer)),
+                Set.of(sapAction1, sapActionEx, sapAction2)
+        );
+        assertEquals(
+                new HashSet<>(ActionFactory.listActionsForServer(admin, coreServer)),
+                Set.of(coreAction1, coreActionEx, coreAction2)
+        );
 
         /* update the calendar */
         Map<String, String> details = new HashMap<>();

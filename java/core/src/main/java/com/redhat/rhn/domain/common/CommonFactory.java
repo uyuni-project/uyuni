@@ -54,9 +54,10 @@ public class CommonFactory extends HibernateFactory {
      * Save a FileList to the DB.
      *
      * @param fIn FileList to save
+     * @return the managed {@link FileList} instance
      */
-    public static void saveFileList(FileList fIn) {
-        singleton.saveObject(fIn);
+    public static FileList saveFileList(FileList fIn) {
+        return singleton.saveObject(fIn);
     }
 
     /**
@@ -143,10 +144,12 @@ public class CommonFactory extends HibernateFactory {
 
     /**
      * Save a TinyUrl to the DB
+     *
      * @param urlIn to save.
+     * @return the managed {@link TinyUrl} instance
      */
-    public static void saveTinyUrl(TinyUrl urlIn) {
-        singleton.saveObject(urlIn);
+    public static TinyUrl saveTinyUrl(TinyUrl urlIn) {
+        return singleton.saveObject(urlIn);
     }
 
     /**
