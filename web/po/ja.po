@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-16 09:56+0100\n"
-"PO-Revision-Date: 2026-01-19 13:04+0000\n"
+"PO-Revision-Date: 2026-01-20 00:04+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -35,7 +35,7 @@ msgstr "Internet Explorer ブラウザはサポート対象外です。Firefox, 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure.tsx:60
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:67
 msgid "Action has been successfully added to the action chain <link>\"{name}\"</link>."
-msgstr "動作を動作チェーン<link>\"{name}\"</link>に追加しました 。"
+msgstr "動作を動作チェーン<link>\"{name}\"</link>に正常に追加しました 。"
 
 #: ../html/src/components/CoCoScansList.tsx:75
 #: ../html/src/components/package/PackageListActionScheduler.tsx:91
@@ -730,7 +730,7 @@ msgstr "アクセストークンがクリップボードにコピーされまし
 #. Vendor channels can't sync orgs
 #: ../html/src/components/hub/ChannelSelectorTable.tsx:33
 msgid "Vendor"
-msgstr "ベンダチャンネルは組織を同期できません"
+msgstr "ベンダ"
 
 #: ../html/src/components/hub/ChannelSelectorTable.tsx:50
 msgid "Select Organization"
@@ -1894,7 +1894,7 @@ msgstr "状態のランキングをドラッグして編集してください。
 
 #: ../html/src/components/states-picker.tsx:449
 msgid "Edit the ranking of the configuration channels by dragging them. They are listed in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it. In other words, the bottom ones will be applied first."
-msgstr "設定チャンネルのランキングをドラッグして編集してください。設定チャンネルは順位の高いチャンネルから順に表示されています。特定のチャンネルからのファイルは、そのチャンネルより順位の低いチャンネルの同じファイルパスを持つファイルと同じ名前を持つファイルを上書きします。つまり、最下位のチャンネルが最初に適用されます。"
+msgstr "設定チャンネルのランキングをドラッグして編集してください。設定チャンネルは順位の高いチャンネルから順に表示されています。特定のチャンネルからのファイルはそれより下にあるチャンネルの同じファイルパスと同じ名前を持つファイルを上書きします。つまり、最下位のチャンネルが最初に適用されます。"
 
 #: ../html/src/components/states-picker.tsx:455
 msgid "There are no states assigned."
@@ -2239,7 +2239,7 @@ msgstr "選択したアクセスグループを削除してよろしいですか
 
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:155
 msgid "An unexpected error occurred while fetching namespaces."
-msgstr "ネームスペースをフェッチ中に予期しないエラーが発生しました。"
+msgstr "ネームスペースのフェッチ中に予期しないエラーが発生しました。"
 
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:216
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:363
@@ -3135,7 +3135,7 @@ msgstr "影響を受ける、割り当てられていないチャンネルで利
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:45
 msgid "The client is affected by a vulnerability and we have a patch for it, but the channel(s) offering the patch are not assigned to the client."
-msgstr "このクライアントは脆弱性の影響を受けており、それに対するパッチがありますが、パッチを提供するチャンネルがクライアントに割り当てられていません。"
+msgstr "クライアントは脆弱性の影響を受けており、それに対するパッチがありますが、パッチを提供するチャンネルがクライアントに割り当てられていません。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:51
 msgid "Affected, patches available in a Product Migration target"
@@ -3143,7 +3143,7 @@ msgstr "影響を受ける、製品の移行ターゲットで利用可能なパ
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:53
 msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch requires migrating the product to a newer version."
-msgstr "このクライアントは脆弱性の影響を受けており、それに対するパッチがありますが、パッチを適用するには、製品を新しいバージョンに移行する必要があります。"
+msgstr "クライアントは脆弱性の影響を受けており、それに対するパッチがありますが、パッチを適用するには製品を新しいバージョンに移行する必要があります。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:59
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:60
@@ -3188,7 +3188,7 @@ msgstr "影響を受ける、割り当てられたチャンネルで部分的な
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:89
 msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch will only update some of the vulnerable packages."
-msgstr "このクライアントは脆弱性の影響を受けており、それに対するパッチがありますが、パッチを適用しても脆弱なパッケージの一部のみが更新されます。"
+msgstr "クライアントは脆弱性の影響を受けており、それに対するパッチがありますが、パッチを適用しても脆弱なパッケージの一部のみが更新されます。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:95
 msgid "Unknown, CVE metadata not available"
@@ -5974,7 +5974,7 @@ msgstr "Program Temporary Fixes (PTFs)の削除"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:27
 msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. These PTFs may be scheduled for removal by selecting them and clicking \"Remove PTF\" below. Please note that removing any non-obsolete PTF will result in the installation of the most recent versions of the packages that are part of the PTF."
-msgstr "このシステムには現在、以下のProgram Temporary Fixes (PTFs)がインストールされています。これらのPTFは選択して下の［PTFの削除］をクリックすることで削除がスケジュールされます。廃止されていないPTFを削除すると、そのPTFに含まれるパッケージの最新バージョンがインストールされることに注意してください。"
+msgstr "以下のProgram Temporary Fixes (PTFs)は現在、このシステムにインストールされています。これらのPTFは選択して下の［PTFの削除］をクリックすることで削除をスケジュールできます。廃止されていないPTFを削除すると、そのPTFに含まれるパッケージの最新バージョンがインストールされることに注意してください。"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:32
 msgid "No Program Temporary Fixes (PTFs) installed."
