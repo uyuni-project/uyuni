@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-09 10:26+0000\n"
-"PO-Revision-Date: 2026-01-19 10:04+0000\n"
+"PO-Revision-Date: 2026-01-20 00:04+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/spacecmd/ja/>\n"
 "Language: ja\n"
@@ -7996,19 +7996,19 @@ msgstr "初期段階は正常に終了しました。まだ実行中のアクシ
 
 #: ../src/spacecmd/system.py:5059
 msgid "system_needrebootafterupdate: Shows whether a reboot would be needed if available patches were applied"
-msgstr "system_needrebootafterupdate: 利用可能なパッチを適用した場合に再起動が必要かどうかを表示する"
+msgstr "system_needrebootafterupdate: 利用可能なパッチを適用した場合に再起動が必要かどうかを示します"
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:5108
 #, python-brace-format
 msgid "System '{}' needs to be rebooted after update"
-msgstr "システム「{}」は更新後に再起動が必要"
+msgstr "システム '{}' は更新後に再起動が必要です"
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:5117
 #, python-brace-format
 msgid "No reboot needed for system '{}' after applying available updates"
-msgstr "利用可能な更新を適用後、システム「{}」の再起動は不要"
+msgstr "利用可能な更新を適用後、システム '{}' の再起動は不要です"
 
 #: ../src/spacecmd/user.py:53
 msgid "user_create: Create an user"
