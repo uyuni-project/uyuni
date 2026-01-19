@@ -16,10 +16,9 @@ CREATE TABLE suseScapTailoringFile
     file_name            TEXT NOT NULL,
     description          TEXT,
     org_id               BIGINT NOT NULL
-                         CONSTRAINT suse_trailingf_oid_fk
+                         CONSTRAINT suse_tailoringf_oid_fk
                            REFERENCES web_customer (id)
                            ON DELETE CASCADE,
-    susescappolicy_id    BIGINT REFERENCES suseScapPolicy (id) ON DELETE SET NULL,
     created              TIMESTAMPTZ DEFAULT current_timestamp NOT NULL,
     modified             TIMESTAMPTZ DEFAULT current_timestamp NOT NULL
 );

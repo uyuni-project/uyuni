@@ -22,8 +22,8 @@ CREATE TABLE suseXccdfRuleFixCustom
                                    ON DELETE CASCADE,
     custom_remediation_bash     TEXT,
     custom_remediation_salt     TEXT,
-    created                     TIMESTAMP WITH TIME ZONE,
-    modified                    TIMESTAMP WITH TIME ZONE,
+    created                     TIMESTAMPTZ DEFAULT current_timestamp NOT NULL,
+    modified                    TIMESTAMPTZ DEFAULT current_timestamp NOT NULL,
     created_by                  BIGINT
                                    CONSTRAINT suse_xccdf_rulefixcustom_cby_fk
                                    REFERENCES web_contact (id)
@@ -38,6 +38,6 @@ CREATE TABLE suseXccdfRuleFixCustom
     )
 );
 
-CREATE UNIQUE INDEX idx_rulefixcustom_org
+CREATE UNIQUE INDEX suseXccdfRuleFixCustom_rulefix_org_uq
     ON suseXccdfRuleFixCustom (rule_fix_id, org_id);
 
