@@ -1,1 +1,1 @@
-- Disable build as debian package and EL8 and later
+- Disable build for Debian, Ubuntu and Enterprise Linux 8 and newer
