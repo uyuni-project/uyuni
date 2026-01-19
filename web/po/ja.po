@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-16 09:56+0100\n"
-"PO-Revision-Date: 2026-01-19 10:04+0000\n"
+"PO-Revision-Date: 2026-01-19 13:04+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -1623,6 +1623,10 @@ msgid ""
 "            other {<dropdown></dropdown> of # pages}\n"
 "        }"
 msgstr ""
+"{total, plural,\n"
+"            one {<dropdown></dropdown> / #ページ}\n"
+"            other {<dropdown></dropdown> / #ページ}\n"
+"        }"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:56
 msgid "Sunday"
@@ -1886,11 +1890,11 @@ msgstr "チャンネルランクの編集"
 
 #: ../html/src/components/states-picker.tsx:446
 msgid "Edit the ranking of the states by dragging them. They are listed in order from highest to lowest rank. In other words, the bottom ones will be applied first."
-msgstr ""
+msgstr "状態のランキングをドラッグして編集してください。状態は順位の高い状態から順に表示されています。つまり、最下位の状態が最初に適用されます。"
 
 #: ../html/src/components/states-picker.tsx:449
 msgid "Edit the ranking of the configuration channels by dragging them. They are listed in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it. In other words, the bottom ones will be applied first."
-msgstr ""
+msgstr "設定チャンネルのランキングをドラッグして編集してください。設定チャンネルは順位の高いチャンネルから順に表示されています。特定のチャンネルからのファイルは、そのチャンネルより順位の低いチャンネルの同じファイルパスを持つファイルと同じ名前を持つファイルを上書きします。つまり、最下位のチャンネルが最初に適用されます。"
 
 #: ../html/src/components/states-picker.tsx:455
 msgid "There are no states assigned."
@@ -2137,6 +2141,10 @@ msgid ""
 "            other {{fooCount} items}\n"
 "          }."
 msgstr ""
+"数値には常に複数形を使用してください: {fooCount, plural,\n"
+"            one {1項目のみ}\n"
+"            other {{fooCount} 個の項目}\n"
+"          }。"
 
 #: ../html/src/core/intl/index.test.tsx:9
 msgid "foo"
@@ -2153,7 +2161,7 @@ msgstr "foo {insert} バー"
 
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:51
 msgid "An unexpected error occurred while fetching organizations."
-msgstr ""
+msgstr "組織のフェッチ中に予期しないエラーが発生しました。"
 
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:64
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:51
@@ -2182,11 +2190,11 @@ msgstr "組織が見つかりません"
 
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:144
 msgid "Copy Permissions From"
-msgstr ""
+msgstr "許可のコピー元"
 
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:147
 msgid "Search for existing access groups..."
-msgstr ""
+msgstr "既存のアクセスグループを検索..."
 
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:148
 msgid "No Access group"
@@ -2194,11 +2202,11 @@ msgstr "アクセス不可グループ"
 
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:156
 msgid "This action copy permissions from an existing access group to a new one. Once created, the new access group will function independently, unaffected by future updates to the original."
-msgstr ""
+msgstr "このアクションは、既存のアクセスグループから新しいアクセスグループに許可をコピーします。作成されると、新しいアクセスグループは独立して機能し、元のグループに対する今後の更新の影響を受けません。"
 
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:71
 msgid "Edit Access Group"
-msgstr ""
+msgstr "アクセスグループの編集"
 
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:76
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:134
@@ -2211,7 +2219,7 @@ msgstr "アクセスグループ管理"
 
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:93
 msgid "Create Access Group"
-msgstr ""
+msgstr "アクセスグループの作成"
 
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:104
 msgid "No Access Group found."
@@ -2236,11 +2244,11 @@ msgstr "ネームスペースをフェッチ中に予期しないエラーが発
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:216
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:363
 msgid "API"
-msgstr ""
+msgstr "API"
 
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:219
 msgid "Web"
-msgstr ""
+msgstr "Web"
 
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:222
 msgid "Only selected"
@@ -2260,7 +2268,7 @@ msgstr "すべて折りたたむ"
 
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:338
 msgid "Review and modify the permissions for this custom group as needed."
-msgstr ""
+msgstr "必要に応じて、このカスタムグループの許可を確認し、変更します。"
 
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:347
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:195
@@ -2292,7 +2300,7 @@ msgstr "許可が選択されていません。"
 
 #: ../html/src/manager/admin/access-control/access-group-tab-container.tsx:49
 msgid "Update Access Group"
-msgstr ""
+msgstr "アクセスグループの更新"
 
 #: ../html/src/manager/admin/access-control/access-group-user.tsx:48
 msgid "An unexpected error occurred while fetching users."
@@ -2308,7 +2316,7 @@ msgstr "アクセスグループが正常に作成されました。"
 
 #: ../html/src/manager/admin/access-control/access-group.tsx:195
 msgid "Namespaces & Permissions"
-msgstr ""
+msgstr "ネームスペースと許可"
 
 #: ../html/src/manager/admin/access-control/access-group.tsx:211
 msgid "Review"
@@ -2320,7 +2328,7 @@ msgstr "アクセスグループの詳細"
 
 #: ../html/src/manager/admin/access-control/access-group.tsx:224
 msgid "Create: Access Group"
-msgstr ""
+msgstr "作成: アクセスグループ"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:20
 msgid "Restart is needed for the configuration changes to take effect."
@@ -2529,7 +2537,7 @@ msgstr "ハブの詳細"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:80
 msgid "No hub is currently configured for this server. Refresh this page after configuring this server as a peripheral, to see the hub details"
-msgstr ""
+msgstr "現在、このサーバにはハブが設定されていません。このサーバを周辺機器として設定した後、このページを更新し、ハブの詳細を確認してください"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:89
 msgid "This server is currently registered as peripheral of hub {fqdn}. This page shows the details of the hub server."
@@ -5522,7 +5530,7 @@ msgstr "ブール値の追加"
 
 #: ../html/src/manager/minion/ansible/variables/dictionary-editor.tsx:93
 msgid "Key-Value Pairs"
-msgstr ""
+msgstr "キーと値のペア"
 
 #: ../html/src/manager/minion/ansible/variables/dictionary-editor.tsx:115
 msgid "Add Item"
@@ -5946,7 +5954,7 @@ msgstr "Program Temporary Fixes (PTFs)のインストール"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:27
 msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. These packages are only meant to address a specific open issue. Please follow the instructions from customer support before proceeding with the installation."
-msgstr ""
+msgstr "以下のProgram Temporary Fixes (PTFs)は、このシステムにインストールできます。これらのパッケージは特定の未解決の問題に対処することのみを目的としています。インストールを続行する前に、カスタマサポートの指示に従ってください。"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:31
 msgid "No Program Temporary Fixes (PTFs) available."
@@ -5966,7 +5974,7 @@ msgstr "Program Temporary Fixes (PTFs)の削除"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:27
 msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. These PTFs may be scheduled for removal by selecting them and clicking \"Remove PTF\" below. Please note that removing any non-obsolete PTF will result in the installation of the most recent versions of the packages that are part of the PTF."
-msgstr ""
+msgstr "このシステムには現在、以下のProgram Temporary Fixes (PTFs)がインストールされています。これらのPTFは選択して下の［PTFの削除］をクリックすることで削除がスケジュールされます。廃止されていないPTFを削除すると、そのPTFに含まれるパッケージの最新バージョンがインストールされることに注意してください。"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:32
 msgid "No Program Temporary Fixes (PTFs) installed."
@@ -6717,7 +6725,7 @@ msgstr "システムタイプ"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-channel-selection.tsx:16
 msgid "No modular channels are available for the selected systems in SSM."
-msgstr ""
+msgstr "SSMでは、選択したシステムに対して利用可能なモジュラチャンネルはありません。"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-channel-selection.tsx:19
 msgid "Select Channel"
@@ -6725,7 +6733,7 @@ msgstr "チャンネルの選択"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-channel-selection.tsx:21
 msgid "First, select the channel containing the AppStreams to be configured upon the selected systems."
-msgstr ""
+msgstr "まず、選択したシステム上で設定するAppStreamを含むチャンネルを選択します。"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:18
 msgid "Change Channel"
@@ -6757,11 +6765,11 @@ msgstr "エラーの詳細"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:51
 msgid "Standard Output:"
-msgstr ""
+msgstr "標準出力:"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:67
 msgid "Standard Error:"
-msgstr ""
+msgstr "標準エラー:"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:83
 msgid "Result:"
