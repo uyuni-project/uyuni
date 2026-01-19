@@ -124,6 +124,8 @@ public class PaygSshDataFactory extends HibernateFactory {
                         FROM suseCredentials sc INNER JOIN susepaygsshdata sd ON sc.payg_ssh_data_id = sd.id
                         WHERE sd.host = :hostname
                         """, BaseCredentials.class)
+                .addSynchronizedEntityClass(BaseCredentials.class)
+                .addSynchronizedEntityClass(PaygSshData.class)
                 .setParameter("hostname", hostname)
                 .uniqueResultOptional()
                 .flatMap(creds -> creds.castAs(CloudCredentials.class));
@@ -138,14 +140,15 @@ public class PaygSshDataFactory extends HibernateFactory {
         return getSession()
                 .createNativeQuery("SELECT sc.* FROM suseCredentials sc WHERE sc.payg_ssh_data_id = :sshDataId",
                         BaseCredentials.class)
-            .setParameter("sshDataId", sshData.getId())
-            .uniqueResultOptional()
-            .flatMap(creds -> creds.castAs(CloudCredentials.class))
-            .map(creds -> {
-                getSession().evict(creds.getPaygSshData());
-                creds.setPaygSshData(sshData);
-                return creds;
-            });
+                .addSynchronizedEntityClass(BaseCredentials.class)
+                .setParameter("sshDataId", sshData.getId())
+                .uniqueResultOptional()
+                .flatMap(creds -> creds.castAs(CloudCredentials.class))
+                .map(creds -> {
+                    getSession().evict(creds.getPaygSshData());
+                    creds.setPaygSshData(sshData);
+                    return creds;
+                });
     }
 
     /**

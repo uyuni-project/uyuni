@@ -24,13 +24,20 @@ import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.common.ChecksumType;
+import com.redhat.rhn.domain.errata.ClonedErrata;
+import com.redhat.rhn.domain.errata.Errata;
+import com.redhat.rhn.domain.kickstart.KickstartInstallType;
+import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.product.ChannelTemplate;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.scc.SCCRepository;
+import com.redhat.rhn.domain.scc.SCCRepositoryAuth;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.legacy.UserImpl;
 import com.redhat.rhn.manager.appstreams.AppStreamsManager;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.content.ContentSyncManager;
@@ -129,6 +136,8 @@ public class ChannelFactory extends HibernateFactory {
                                  AND    scur.user_id = :userId
                                  AND    deny_reason IS NULL)
                 """, Channel.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(ClonedChannel.class)
                 .setParameter("cid", id)
                 .setParameter("userId", userIn.getId())
                 .uniqueResult();
@@ -157,6 +166,8 @@ public class ChannelFactory extends HibernateFactory {
                                  AND    scur.user_id = :userId
                                  AND    deny_reason IS NULL)
                 """, Channel.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(ClonedChannel.class)
                 .setParameter(LABEL, label)
                 .setParameter("userId", userIn.getId())
                 .uniqueResult();
@@ -206,10 +217,13 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static List<ContentSource> lookupOrphanVendorContentSources() {
         return getSession().createNativeQuery("""
-                SELECT cs.* FROM rhnContentSource cs
+                SELECT cs.* 
+                FROM rhnContentSource cs
                 WHERE cs.org_id IS NULL
                 AND NOT EXISTS (SELECT 1 FROM suseSccRepositoryAuth a WHERE a.source_id = cs.id)
                 """, ContentSource.class)
+                .addSynchronizedEntityClass(ContentSource.class)
+                .addSynchronizedEntityClass(SCCRepositoryAuth.class)
                 .list();
     }
 
@@ -228,6 +242,9 @@ public class ChannelFactory extends HibernateFactory {
                 WHERE     c.org_id is NULL
                 AND       ccs.source_id IS NULL
                 """, Channel.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(ClonedChannel.class)
+                .addSynchronizedEntityClass(ContentSource.class)
                 .list();
     }
 
@@ -241,6 +258,8 @@ public class ChannelFactory extends HibernateFactory {
                  AND NOT EXISTS (SELECT 1 FROM rhnChannelContentSource ccs WHERE ccs.source_id = cs.id)
                  AND NOT EXISTS (SELECT 1 FROM suseSccRepositoryAuth sccra WHERE sccra.source_id = cs.id)
                  """, ContentSource.class)
+                .addSynchronizedEntityClass(ContentSource.class)
+                .addSynchronizedEntityClass(SCCRepositoryAuth.class)
                 .list();
         unused.forEach(ChannelFactory::remove);
     }
@@ -260,6 +279,9 @@ public class ChannelFactory extends HibernateFactory {
                 WHERE           c.org_id IS NULL
                 AND             c.id = :cid
                 """, SCCRepository.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(ChannelTemplate.class)
+                .addSynchronizedEntityClass(SCCRepository.class)
                 .setParameter("cid", c.getId())
                 .uniqueResultOptional();
     }
@@ -281,6 +303,10 @@ public class ChannelFactory extends HibernateFactory {
                         WHERE r.scc_id = :sccId
                         ORDER BY c.label
                         """, Channel.class)
+                .addSynchronizedEntityClass(SCCRepository.class)
+                .addSynchronizedEntityClass(ChannelTemplate.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(ClonedChannel.class)
                 .setParameter("sccId", sccId)
                 .list();
     }
@@ -526,6 +552,9 @@ public class ChannelFactory extends HibernateFactory {
                 AND             sc.channel_id = c.id
                 AND             c.parent_channel IS NULL
                 """, Channel.class)
+                .addSynchronizedEntityClass(Server.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(ClonedChannel.class)
                 .setParameter("sid", sid)
                 .uniqueResult();
     }
@@ -569,6 +598,8 @@ public class ChannelFactory extends HibernateFactory {
                                 AND     sc.org_trust_id = :org_id
                                 AND     sc.id = c.id
                 """, Channel.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(ClonedChannel.class)
                 .setParameter(ORG_ID, orgid)
                 .setParameter("cid", cid)
                 .list();
@@ -594,6 +625,8 @@ public class ChannelFactory extends HibernateFactory {
                                  AND    scur.user_id = :userId
                                  AND    scur.role = 'subscribe') IS NULL
                 """, Channel.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(ClonedChannel.class)
                 .setParameter("userId", user.getId())
                 .setParameter("cid", baseChannel.getId())
                 .list();
@@ -615,6 +648,8 @@ public class ChannelFactory extends HibernateFactory {
                             JOIN rhnAvailableChannels cfp ON c.id = cfp.channel_id
                             WHERE cfp.org_id = :org_id
                         """, Channel.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(ClonedChannel.class)
                 .setParameter(ORG_ID, orgId)
                 .list();
     }
@@ -625,7 +660,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return list of channel architectures
      */
     public static List<ChannelArch> getChannelArchitectures() {
-        return getSession().createNativeQuery("SELECT * FROM rhnChannelArch", ChannelArch.class).getResultList();
+        return getSession().createQuery("FROM ChannelArch", ChannelArch.class).getResultList();
     }
 
     /**
@@ -670,6 +705,11 @@ public class ChannelFactory extends HibernateFactory {
                               LIMIT 1
                        )) THEN 1 ELSE 0 END AS result
                 """, Tuple.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(ChannelFamily.class)
+                .addSynchronizedEntityClass(PrivateChannelFamily.class)
+                .addSynchronizedEntityClass(PublicChannelFamily.class)
+                .addSynchronizedEntityClass(Org.class)
                 .addScalar("result", StandardBasicTypes.INTEGER)
                 .setParameter("channel_label", channelLabel)
                 .setParameter(ORG_ID, orgId)
@@ -696,6 +736,7 @@ public class ChannelFactory extends HibernateFactory {
                 AND    scur.channel_id = c.id
                 AND    deny_reason IS NULL
                 """, Tuple.class)
+                .addSynchronizedEntityClass(Channel.class)
                 .setParameter("channelLabel", channelLabel)
                 .setParameter("userId", userId)
                 .stream()
@@ -709,10 +750,8 @@ public class ChannelFactory extends HibernateFactory {
      * @return a ChannelArch by label
      */
     public static ChannelArch findArchByLabel(String label) {
-        Session session = getSession();
-        String sql = "SELECT * FROM rhnChannelArch WHERE label = :label";
-        return session.createNativeQuery(sql, ChannelArch.class)
-                .setParameter(LABEL, label, StandardBasicTypes.STRING)
+        return getSession().createQuery("FROM ChannelArch WHERE label = :label", ChannelArch.class)
+                .setParameter(LABEL, label)
                 .uniqueResult();
     }
 
@@ -736,6 +775,8 @@ public class ChannelFactory extends HibernateFactory {
                                 WHERE  scv.label = :label
                                 AND    scv.org_trust_id = :orgId))
                 """, Channel.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(ClonedChannel.class)
                 .setParameter(LABEL, label)
                 .setParameter("orgId", org.getId())
                 .uniqueResult();
@@ -762,6 +803,8 @@ public class ChannelFactory extends HibernateFactory {
                 LEFT JOIN rhnChannelCloned cl ON c.id = cl.id
                 WHERE c.label = :label""";
         return session.createNativeQuery(sql, Channel.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(ClonedChannel.class)
                 .setParameter(LABEL, label, StandardBasicTypes.STRING)
                 .uniqueResult();
     }
@@ -775,8 +818,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return true if the given channel is globally subscribable for the
      */
     public static boolean isGloballySubscribable(Org org, Channel c) {
-        SelectMode mode = ModeFactory.getMode(
-                CHANNEL_QUERIES, "is_not_globally_subscribable");
+        SelectMode mode = ModeFactory.getMode(CHANNEL_QUERIES, "is_not_globally_subscribable");
         Map<String, Object> params = new HashMap<>();
         params.put(ORG_ID, org.getId());
         params.put("cid", c.getId());
@@ -826,8 +868,7 @@ public class ChannelFactory extends HibernateFactory {
      * @param label   the label of the setting to remove
      */
     private static void removeOrgChannelSetting(Org org, Channel channel, String label) {
-        WriteMode m = ModeFactory.getWriteMode(CHANNEL_QUERIES,
-                "remove_org_channel_setting");
+        WriteMode m = ModeFactory.getWriteMode(CHANNEL_QUERIES, "remove_org_channel_setting");
         Map<String, Object> params = new HashMap<>();
         params.put(ORG_ID, org.getId());
         params.put("cid", channel.getId());
@@ -843,8 +884,7 @@ public class ChannelFactory extends HibernateFactory {
      * @param label   the label of the setting to add
      */
     private static void addOrgChannelSetting(Org org, Channel channel, String label) {
-        WriteMode m = ModeFactory.getWriteMode(CHANNEL_QUERIES,
-                "add_org_channel_setting");
+        WriteMode m = ModeFactory.getWriteMode(CHANNEL_QUERIES, "add_org_channel_setting");
         Map<String, Object> params = new HashMap<>();
         params.put(ORG_ID, org.getId());
         params.put("cid", channel.getId());
@@ -857,8 +897,7 @@ public class ChannelFactory extends HibernateFactory {
      * @param pid Package id from rhnPackage
      */
     public static void addChannelPackage(Long cid, Long pid) {
-        WriteMode m = ModeFactory.getWriteMode(CHANNEL_QUERIES,
-                "add_channel_package");
+        WriteMode m = ModeFactory.getWriteMode(CHANNEL_QUERIES, "add_channel_package");
         Map<String, Object> params = new HashMap<>();
         params.put("cid", cid);
         params.put("pid", pid);
@@ -893,8 +932,7 @@ public class ChannelFactory extends HibernateFactory {
      * @param label     the label
      */
     public static void refreshNewestPackageCache(Long channelId, String label) {
-        CallableMode m = ModeFactory.getCallableMode(CHANNEL_QUERIES,
-                "refresh_newest_package");
+        CallableMode m = ModeFactory.getCallableMode(CHANNEL_QUERIES, "refresh_newest_package");
         Map<String, Object> inParams = new HashMap<>();
         inParams.put("cid", channelId);
         inParams.put(LABEL, label);
@@ -909,8 +947,7 @@ public class ChannelFactory extends HibernateFactory {
      * @param toChannelId   cloned channle id
      */
     public static void cloneNewestPackageCache(Long fromChannelId, Long toChannelId) {
-        WriteMode m = ModeFactory.getWriteMode(CHANNEL_QUERIES,
-                "clone_newest_package");
+        WriteMode m = ModeFactory.getWriteMode(CHANNEL_QUERIES, "clone_newest_package");
         Map<String, Object> params = new HashMap<>();
         params.put("from_cid", fromChannelId);
         params.put("to_cid", toChannelId);
@@ -970,6 +1007,9 @@ public class ChannelFactory extends HibernateFactory {
                 AND       ach.channel_depth = 1
                 ORDER BY  rhn_channel.channel_priority(ach.parent_or_self_id), UPPER(ach.channel_name)
                 """, Channel.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(ClonedChannel.class)
+                .addSynchronizedEntityClass(ChannelArch.class)
                 .setParameter(ORG_ID, org.getId())
                 .setCacheable(false)
                 .list();
@@ -998,6 +1038,11 @@ public class ChannelFactory extends HibernateFactory {
                 AND             (ksit.label LIKE 'rhel%' OR ksit.label LIKE 'fedora%')
                 ORDER BY        rhn_channel.channel_priority(ach.parent_or_self_id), UPPER(ach.channel_name)
                 """, Channel.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(ClonedChannel.class)
+                .addSynchronizedEntityClass(ChannelArch.class)
+                .addSynchronizedEntityClass(KickstartableTree.class)
+                .addSynchronizedEntityClass(KickstartInstallType.class)
                 .setParameter(ORG_ID, org.getId())
                 .setCacheable(false)
                 .list();
@@ -1023,6 +1068,8 @@ public class ChannelFactory extends HibernateFactory {
                 AND             c.parent_channel IS NULL
                 ORDER BY        c.name
                 """, Channel.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(ClonedChannel.class)
                 .setParameter("user_id", user.getId())
                 .list();
     }
@@ -1033,9 +1080,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return List of ChecksumTypes instances
      */
     public static List<ChecksumType> listYumSupportedChecksums() {
-        return getSession().createQuery("""
-                 FROM com.redhat.rhn.domain.common.ChecksumType as t
-                 WHERE t.label LIKE 'sha%'""", ChecksumType.class)
+        return getSession().createQuery("FROM ChecksumType as t WHERE t.label LIKE 'sha%'", ChecksumType.class)
                 .setCacheable(true)
                 .list();
     }
@@ -1055,6 +1100,9 @@ public class ChannelFactory extends HibernateFactory {
                 WHERE     c.org_id = :org_id
                 AND       c.id in (SELECT DISTINCT a.channel_id FROM suseAppstream a)
                 """, Channel.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(ClonedChannel.class)
+                .addSynchronizedEntityClass(AppStream.class)
                 .setParameter(ORG_ID, user.getOrg().getId())
                 .list();
     }
@@ -1069,9 +1117,7 @@ public class ChannelFactory extends HibernateFactory {
         if (checksum == null) {
             return null;
         }
-        return getSession().createQuery("""
-                 FROM com.redhat.rhn.domain.common.ChecksumType AS t
-                 WHERE t.label = :label""", ChecksumType.class)
+        return getSession().createQuery("FROM ChecksumType AS t WHERE t.label = :label", ChecksumType.class)
                 .setParameter(LABEL, checksum)
                 .setCacheable(true)
                 .uniqueResult();
@@ -1093,6 +1139,9 @@ public class ChannelFactory extends HibernateFactory {
                 WHERE  cp.channel_id = :cid
                 AND    ep.errata_id in (:eids)
                 """, Tuple.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(Package.class)
+                .addSynchronizedEntityClass(Errata.class)
                 .addScalar("id", StandardBasicTypes.BIG_INTEGER)
                 .setParameter("cid", chan.getId())
                 .setParameterList("eids", eids)
@@ -1139,6 +1188,7 @@ public class ChannelFactory extends HibernateFactory {
         }
         return getSession().createNativeQuery(
                 "SELECT cp.package_id FROM rhnChannelPackage cp WHERE cp.channel_id = :cid", Tuple.class)
+                .addSynchronizedEntityClass(Channel.class)
                 .addScalar("package_id", StandardBasicTypes.BIG_INTEGER)
                 .setParameter("cid", cid)
                 .stream()
@@ -1162,6 +1212,8 @@ public class ChannelFactory extends HibernateFactory {
                 INNER JOIN rhnErrataCloned errataCloned ON errataCloned.id = channelErrata.errata_id
                 WHERE      channelErrata.channel_id = :cid
                 """, Tuple.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(ClonedErrata.class)
                 .addScalar("original_id", StandardBasicTypes.BIG_INTEGER)
                 .setParameter("cid", cid)
                 .stream()
@@ -1179,6 +1231,7 @@ public class ChannelFactory extends HibernateFactory {
         return getSession().createNativeQuery("""
                 SELECT COUNT(*) AS package_count FROM rhnChannelPackage cp WHERE cp.channel_id = :cid
                 """, Tuple.class)
+                .addSynchronizedEntityClass(Channel.class)
                 .addScalar("package_count", StandardBasicTypes.BIG_INTEGER)
                 .setParameter("cid", channel.getId())
                 .stream()
@@ -1196,6 +1249,8 @@ public class ChannelFactory extends HibernateFactory {
         return getSession().createNativeQuery("""
                 SELECT COUNT(*) AS errata_count from rhnChannelErrata ce WHERE ce.channel_id = :cid
                 """, Tuple.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(Errata.class)
                 .addScalar("errata_count", StandardBasicTypes.BIG_INTEGER)
                 .setParameter("cid", channel.getId())
                 .stream()
@@ -1236,9 +1291,8 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static ChannelSyncFlag lookupChannelReposyncFlag(Channel channel) {
         return getSession()
-                .createNativeQuery(
-                        "SELECT * FROM rhnChannelSyncFlag WHERE channel_id = :channel", ChannelSyncFlag.class)
-                .setParameter("channel", channel.getId(), StandardBasicTypes.LONG)
+                .createQuery("FROM ChannelSyncFlag c WHERE c.id = :channelId", ChannelSyncFlag.class)
+                .setParameter("channelId", channel.getId())
                 .uniqueResult();
     }
 
@@ -1313,6 +1367,8 @@ public class ChannelFactory extends HibernateFactory {
                         AND dcm.for_org_id = :for_org_id
                         AND pn.label = :product_name
                         """, DistChannelMap.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(ProductName.class)
                 .setParameter("for_org_id", org.getId())
                 .setParameter("product_name", productName)
                 .setParameter("release", release)
@@ -1362,6 +1418,8 @@ public class ChannelFactory extends HibernateFactory {
                         AND dcm.release = :release
                         AND dcm.org_id IS NULL
                         """, DistChannelMap.class)
+                .addSynchronizedEntityClass(ChannelArch.class)
+                .addSynchronizedEntityClass(DistChannelMap.class)
                 .setParameter("release", server.getRelease())
                 .setParameter("server_arch_id", server.getServerArch().getId())
                 .list();
@@ -1399,6 +1457,11 @@ public class ChannelFactory extends HibernateFactory {
                                 AND    rset.user_id = :user_id
                                 AND    sc.channel_id = :channel_id)
                 """, Channel.class)
+                .addSynchronizedEntityClass(Server.class)
+                .addSynchronizedEntityClass(ChannelArch.class)
+                .addSynchronizedEntityClass(DistChannelMap.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(ClonedChannel.class)
                 .setParameter("user_id", user.getId())
                 .setParameter("channel_id", channel.getId())
                 .list();
@@ -1436,6 +1499,11 @@ public class ChannelFactory extends HibernateFactory {
                                  AND       rset.user_id = :user_id
                                  AND       sc.channel_id IS NULL)
                 """, Channel.class)
+                .addSynchronizedEntityClass(Server.class)
+                .addSynchronizedEntityClass(ChannelArch.class)
+                .addSynchronizedEntityClass(DistChannelMap.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(ClonedChannel.class)
                 .setParameter("user_id", user.getId())
                 .list();
     }
@@ -1477,6 +1545,10 @@ public class ChannelFactory extends HibernateFactory {
                                 AND    rset.user_id = :user_id
                                 AND    sc.channel_id = :channel_id)
                 ORDER BY UPPER(c.name)""", Channel.class)
+                .addSynchronizedEntityClass(Server.class)
+                .addSynchronizedEntityClass(ChannelArch.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(ClonedChannel.class)
                 .setParameter("user_id", user.getId())
                 .setParameter(ORG_ID, user.getOrg().getId())
                 .setParameter("channel_id", channel.getId())
@@ -1520,6 +1592,10 @@ public class ChannelFactory extends HibernateFactory {
                                  AND       rset.user_id = :user_id
                                  AND       sc.channel_id IS NULL)
                 ORDER BY UPPER(c.name)""", Channel.class)
+                .addSynchronizedEntityClass(Server.class)
+                .addSynchronizedEntityClass(ChannelArch.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(ClonedChannel.class)
                 .setParameter("user_id", user.getId())
                 .setParameter(ORG_ID, user.getOrg().getId())
                 .list();
@@ -1561,6 +1637,12 @@ public class ChannelFactory extends HibernateFactory {
                             AND    scur.user_id = :user_id
                             AND    scur.role = 'subscribe') is null
                 """, Tuple.class)
+                .addSynchronizedEntityClass(ChannelFamily.class)
+                .addSynchronizedEntityClass(Server.class)
+                .addSynchronizedEntityClass(ChannelArch.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(ClonedChannel.class)
+                .addSynchronizedEntityClass(UserImpl.class)
                 .addScalar("channelId", StandardBasicTypes.BIG_INTEGER)
                 .addScalar("channelName", StandardBasicTypes.STRING)
                 .addScalar("channelOrg", StandardBasicTypes.BIG_INTEGER)
@@ -1638,6 +1720,8 @@ public class ChannelFactory extends HibernateFactory {
                          channel.parent_channel NULLS FIRST,
                          channel.label
                 """, Channel.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(ClonedChannel.class)
                 .setParameter("userId", user.getId())
                 .list();
     }
@@ -1649,9 +1733,8 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static List<Channel> listRedHatBaseChannels() {
         return getSession().createQuery("""
-                FROM com.redhat.rhn.domain.channel.Channel AS c
-                WHERE c.org IS NULL
-                AND parentChannel IS NULL
+                FROM Channel AS c
+                WHERE c.org IS NULL AND parentChannel IS NULL
                 ORDER BY c.name""", Channel.class)
                 .list();
     }
@@ -1675,6 +1758,8 @@ public class ChannelFactory extends HibernateFactory {
                 AND             SCURV.user_id = :userId
                 AND             SCURV.deny_reason IS NULL
                 """, Channel.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(ClonedChannel.class)
                 .setParameter("userId", user.getId())
                 .list();
     }
@@ -1686,11 +1771,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return The channel that was cloned, null if none
      */
     public static Channel lookupOriginalChannel(Channel chan) {
-        return getSession().createQuery("""
-                SELECT c.original
-                FROM com.redhat.rhn.domain.channel.ClonedChannel AS c
-                WHERE c = :clone
-                """, Channel.class)
+        return getSession().createQuery("SELECT c.original FROM ClonedChannel AS c WHERE c = :clone", Channel.class)
                 .setParameter("clone", chan)
                 .uniqueResult();
     }
@@ -1719,10 +1800,7 @@ public class ChannelFactory extends HibernateFactory {
      * channels in the satellite.
      */
     public static List<String> findChannelArchLabelsSyncdChannels() {
-        return getSession().createQuery("""
-                SELECT DISTINCT c.channelArch.label
-                FROM com.redhat.rhn.domain.channel.Channel AS c
-                """, String.class)
+        return getSession().createQuery("SELECT DISTINCT c.channelArch.label FROM Channel AS c", String.class)
                 .list();
     }
 
@@ -1745,6 +1823,8 @@ public class ChannelFactory extends HibernateFactory {
                 AND             c.parent_channel IS NULL
                 ORDER BY        c.name
                 """, Channel.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(ClonedChannel.class)
                 .setParameter("user_id", user.getId())
                 .list();
     }
@@ -1769,6 +1849,8 @@ public class ChannelFactory extends HibernateFactory {
                 AND             c.parent_channel IS NULL
                 ORDER BY        c.name
                 """, Channel.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(ClonedChannel.class)
                 .setParameter(ORG_ID, user.getOrg().getId())
                 .setParameter("user_id", user.getId())
                 .list();
@@ -1780,10 +1862,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return list of base channels
      */
     public static List<Channel> listAllBaseChannels() {
-        return getSession().createQuery("""
-                FROM com.redhat.rhn.domain.channel.Channel AS c
-                WHERE parentChannel IS NULL
-                """, Channel.class)
+        return getSession().createQuery("FROM Channel AS c WHERE c.parentChannel IS NULL", Channel.class)
                 .list();
     }
 
@@ -1795,8 +1874,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return list of children of the parent
      */
     public static List<Channel> listAllChildrenForChannel(Channel parent) {
-        return getSession().createQuery(
-                "FROM com.redhat.rhn.domain.channel.Channel AS c WHERE c.parentChannel = :parent", Channel.class)
+        return getSession().createQuery("FROM Channel AS c WHERE c.parentChannel = :parent", Channel.class)
                 .setParameter("parent", parent)
                 .list();
     }
@@ -1808,8 +1886,7 @@ public class ChannelFactory extends HibernateFactory {
      * @param fileName to look up
      * @return Package if found
      */
-    public static Package lookupPackageByFilename(Channel channel,
-                                                  String fileName) {
+    public static Package lookupPackageByFilename(Channel channel, String fileName) {
 
         List<Package> pkgs = getSession()
                 .createNativeQuery("""
@@ -1822,6 +1899,8 @@ public class ChannelFactory extends HibernateFactory {
                         AND      P.path LIKE :pathlike
                         ORDER BY chanprio DESC, p.build_time
                 """, Package.class)
+                .addSynchronizedEntityClass(Package.class)
+                .addSynchronizedEntityClass(Channel.class)
                 .setParameter("pathlike", "%/" + fileName, StandardBasicTypes.STRING)
                 .setParameter("channel_id", channel.getId(), StandardBasicTypes.LONG)
                 .list();
@@ -1855,6 +1934,8 @@ public class ChannelFactory extends HibernateFactory {
                 AND      P.header_end   = :headerEnd
                 ORDER BY chanprio DESC, p.build_time
                 """, Package.class)
+                .addSynchronizedEntityClass(Package.class)
+                .addSynchronizedEntityClass(Channel.class)
                 .setParameter("pathlike", "%/" + fileName, StandardBasicTypes.STRING)
                 .setParameter("channel_id", channel.getId(), StandardBasicTypes.LONG)
                 .setParameter("headerStart", headerStart, StandardBasicTypes.INTEGER)
@@ -1872,10 +1953,11 @@ public class ChannelFactory extends HibernateFactory {
      * @return true of the channels contains any distros
      */
     public static boolean containsDistributions(Channel ch) {
-        String sql = "SELECT COUNT(*) FROM rhnKickstartableTree WHERE channel_id = :channelId";
-        Long count = getSession().createNativeQuery(sql, Long.class)
-                .setParameter("channelId", ch.getId(), StandardBasicTypes.LONG)
+        Long count = getSession()
+                .createQuery("SELECT COUNT(k) FROM KickstartableTree k WHERE k.channel.id = :channelId", Long.class)
+                .setParameter("channelId", ch.getId())
                 .getSingleResult();
+
         return count.intValue() > 0;
     }
 
@@ -1904,8 +1986,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return list of channel managers
      */
     public static List<Long> listManagerIdsForChannel(Org org, Long channelId) {
-        SelectMode m = ModeFactory.getMode(CHANNEL_QUERIES,
-                "managers_for_channel_in_org");
+        SelectMode m = ModeFactory.getMode(CHANNEL_QUERIES, "managers_for_channel_in_org");
         Map<String, Object> params = new HashMap<>();
         params.put(ORG_ID, org.getId());
         params.put("channel_id", channelId);
@@ -1925,8 +2006,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return list of channel subscribers
      */
     public static List<Long> listSubscriberIdsForChannel(Org org, Long channelId) {
-        SelectMode m = ModeFactory.getMode(CHANNEL_QUERIES,
-                "subscribers_for_channel_in_org");
+        SelectMode m = ModeFactory.getMode(CHANNEL_QUERIES, "subscribers_for_channel_in_org");
         Map<String, Object> params = new HashMap<>();
         params.put(ORG_ID, org.getId());
         params.put("channel_id", channelId);
@@ -1954,8 +2034,7 @@ public class ChannelFactory extends HibernateFactory {
      * @param cid  channel id we're cloning into
      */
     public static void addErrataToChannel(Set<Long> eids, Long cid) {
-        WriteMode m = ModeFactory.getWriteMode(CHANNEL_QUERIES,
-                "add_cloned_erratum_to_channel");
+        WriteMode m = ModeFactory.getWriteMode(CHANNEL_QUERIES, "add_cloned_erratum_to_channel");
         Map<String, Object> params = new HashMap<>();
         params.put("cid", cid);
         for (Long eid : eids) {
@@ -1979,11 +2058,7 @@ public class ChannelFactory extends HibernateFactory {
      * @return list of vendor channels
      */
     public static List<Channel> listVendorChannels() {
-        return getSession().createQuery("""
-                FROM com.redhat.rhn.domain.channel.Channel AS c
-                WHERE c.org IS NULL
-                """, Channel.class)
-                .list();
+        return getSession().createQuery("FROM Channel AS c WHERE c.org IS NULL", Channel.class).list();
     }
 
     /**
@@ -2002,11 +2077,8 @@ public class ChannelFactory extends HibernateFactory {
      * @return list of vendor channels
      */
     public static List<Channel> listCustomChannelsWithRepositories() {
-        return getSession().createQuery("""
-                FROM com.redhat.rhn.domain.channel.Channel AS c
-                WHERE c.org IS NOT NULL
-                AND   c.sources IS NOT EMPTY
-                """, Channel.class)
+        return getSession()
+                .createQuery("FROM Channel AS c WHERE c.org IS NOT NULL AND c.sources IS NOT EMPTY", Channel.class)
                 .list();
     }
 
@@ -2016,8 +2088,8 @@ public class ChannelFactory extends HibernateFactory {
      * @return list of vendor content sources
      */
     public static List<ContentSource> listVendorContentSources() {
-        return getSession().createNativeQuery("SELECT * FROM rhnContentSource WHERE org_id IS NULL",
-                ContentSource.class).getResultList();
+        return getSession().createQuery("FROM ContentSource c WHERE c.org IS NULL", ContentSource.class)
+                .getResultList();
     }
 
     /**
@@ -2027,11 +2099,9 @@ public class ChannelFactory extends HibernateFactory {
      * @return a list of {@link ContentSource}
      */
     public static List<ContentSource> findCustomContentSourcesForHubFqdn(String fqdn) {
-        return getSession().createNativeQuery("""
-                SELECT * FROM rhnContentSource
-                 WHERE org_id IS NOT NULL
-                 AND source_url like :urlstart
-                """, ContentSource.class)
+        return getSession().createQuery("""
+                    FROM ContentSource c 
+                    WHERE c.org IS NOT NULL AND c.sourceUrl like :urlstart""", ContentSource.class)
                 .setParameter("urlstart", "https://%s/%%".formatted(fqdn))
                 .list();
     }
@@ -2090,11 +2160,10 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static ChannelProduct findChannelProduct(String product, String version) {
         Session session = getSession();
-        String sql
-                = "SELECT * FROM rhnChannelProduct WHERE product = :product AND version = :version";
-        return session.createNativeQuery(sql, ChannelProduct.class)
-                .setParameter("product", product, StandardBasicTypes.STRING)
-                .setParameter("version", version, StandardBasicTypes.STRING)
+        return session.createQuery("FROM ChannelProduct cp WHERE cp.product = :product AND cp.version = :version",
+                        ChannelProduct.class)
+                .setParameter("product", product)
+                .setParameter("version", version)
                 .uniqueResult();
     }
 

@@ -59,11 +59,13 @@ public class SaltEventFactory extends HibernateFactory {
                 .addScalar("count", StandardBasicTypes.LONG)
                 .list();
 
-        return IntStream.range(0, queuesCount).mapToLong(i -> countObjects.stream()
-                .filter(c -> c.get(0, Integer.class).equals(i))
-                .map(c -> c.get(1, Long.class))
-                .findFirst()
-                .orElse(0L)).boxed().collect(Collectors.toList());
+        return IntStream.range(0, queuesCount)
+                .mapToLong(i -> countObjects.stream()
+                        .filter(c -> c.get(0, Integer.class).equals(i))
+                        .map(c -> c.get(1, Long.class))
+                        .findFirst()
+                        .orElse(0L)
+                ).boxed().collect(Collectors.toList());
     }
 
     /**
@@ -74,7 +76,7 @@ public class SaltEventFactory extends HibernateFactory {
      */
     public static Stream<SaltEvent> popSaltEvents(int limit, int queue) {
         Session session = HibernateFactory.getSession();
-        List<Tuple> eventObjects = session.createNativeQuery("""
+        return session.createNativeQuery("""
                         DELETE FROM suseSaltEvent
                         WHERE id IN (
                                      SELECT id FROM suseSaltEvent
@@ -90,9 +92,7 @@ public class SaltEventFactory extends HibernateFactory {
                 .addScalar("minion_id", StandardBasicTypes.STRING)
                 .addScalar("data", StandardBasicTypes.STRING)
                 .addScalar("queue", StandardBasicTypes.INTEGER)
-                .list();
-
-        return eventObjects.stream()
+                .stream()
                 .map(o -> new SaltEvent(o.get(0, Long.class), o.get(1, String.class),
                         o.get(2, String.class), o.get(3, Integer.class)));
     }
@@ -104,7 +104,7 @@ public class SaltEventFactory extends HibernateFactory {
      */
     public static List<Long> deleteSaltEvents(Collection<Long> ids) {
         Session session = HibernateFactory.getSession();
-        return session.createNativeQuery("DELETE FROM suseSaltEvent WHERE id IN :ids RETURNING id")
+        return session.createNativeQuery("DELETE FROM suseSaltEvent WHERE id IN :ids RETURNING id", Long.class)
                 .setParameter("ids", ids)
                 .addScalar("id", StandardBasicTypes.LONG)
                 .list();
@@ -118,7 +118,7 @@ public class SaltEventFactory extends HibernateFactory {
      * @return the number of updated events
      */
     public static int fixQueueNumbers(int maxQueueNum) {
-        return getSession().createNativeQuery("UPDATE suseSaltEvent SET queue = :q WHERE queue > :q")
+        return getSession().createNativeMutationQuery("UPDATE suseSaltEvent SET queue = :q WHERE queue > :q")
                 .setParameter("q", maxQueueNum)
                 .executeUpdate();
     }

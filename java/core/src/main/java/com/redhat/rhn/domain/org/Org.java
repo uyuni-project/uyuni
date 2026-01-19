@@ -34,7 +34,9 @@ import com.redhat.rhn.domain.iss.IssSlave;
 import com.redhat.rhn.domain.org.usergroup.UserGroup;
 import com.redhat.rhn.domain.org.usergroup.UserGroupFactory;
 import com.redhat.rhn.domain.org.usergroup.UserGroupImpl;
+import com.redhat.rhn.domain.org.usergroup.UserGroupMembers;
 import com.redhat.rhn.domain.role.Role;
+import com.redhat.rhn.domain.role.RoleImpl;
 import com.redhat.rhn.domain.server.EntitlementServerGroup;
 import com.redhat.rhn.domain.server.ManagedServerGroup;
 import com.redhat.rhn.domain.server.Pillar;
@@ -406,23 +408,7 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
      * @return Returns the number of active org admins in this org.
      */
     public int numActiveOrgAdmins() {
-        Session session = HibernateFactory.getSession();
-        return session.createNativeQuery("""
-                            SELECT ugm.user_id FROM rhnUserGroupMembers ugm
-                            JOIN rhnWebContactEnabled wce ON wce.id = ugm.user_id
-                            WHERE ugm.user_group_id =
-                                (SELECT id FROM rhnUserGroup
-                                    WHERE org_id = :org_id
-                                    AND group_type = (SELECT id FROM rhnUserGroupType WHERE label = 'org_admin'))
-                            AND wce.read_only = 'N'
-                            ORDER BY ugm.user_id
-                        """, Tuple.class)
-                .setParameter(ORG_ID_KEY, this.getId())
-                .addScalar(USER_ID_KEY, StandardBasicTypes.LONG)
-                .stream()
-                .map(t -> t.get(0, Long.class))
-                .toList()
-                .size();
+        return OrgFactory.countActiveOrgAdmins(id).intValue();
     }
 
     /**

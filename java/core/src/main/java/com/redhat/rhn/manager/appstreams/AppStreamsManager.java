@@ -23,6 +23,8 @@ import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.appstream.AppStreamActionDetails;
 import com.redhat.rhn.domain.channel.AppStream;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerAppStream;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
@@ -50,32 +52,6 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 
 public class AppStreamsManager {
-
-    private static final String SSM_CHANNEL_APPSTREAMS_SQL = """
-        SELECT
-            a.name AS name,
-            a.stream AS stream,
-            a.arch AS arch,
-            COUNT(DISTINCT ssm.server_id) AS systemCount
-        FROM suseAppstream a
-        LEFT JOIN suseServerAppstream sa
-        ON a.name = sa.name
-            AND a.stream = sa.stream
-            AND a.version = sa.version
-            AND a.context = sa.context
-            AND a.arch = sa.arch
-        LEFT JOIN (
-            SELECT ST.element AS server_id
-            FROM rhnSet ST
-            JOIN rhnServerChannel rsc ON ST.element = rsc.server_id
-            WHERE ST.user_id = :user_id
-            AND ST.label = :set_label
-            AND rsc.channel_id = :channel_id
-        ) ssm ON sa.server_id = ssm.server_id
-        WHERE a.channel_id = :channel_id
-        GROUP BY a.name, a.stream, a.arch
-        ORDER BY a.name, a.stream
-    """;
 
     private AppStreamsManager() {
         // hidden constructor
@@ -159,9 +135,38 @@ public class AppStreamsManager {
      * containing module detail and the calculated system counts.
      */
     public static List<SsmAppStreamModuleResponse> listSsmChannelAppStreams(Long channelId, User user) {
+        String sql = """
+                SELECT
+                    a.name AS name,
+                    a.stream AS stream,
+                    a.arch AS arch,
+                    COUNT(DISTINCT ssm.server_id) AS systemCount
+                FROM suseAppstream a
+                LEFT JOIN suseServerAppstream sa
+                ON a.name = sa.name
+                    AND a.stream = sa.stream
+                    AND a.version = sa.version
+                    AND a.context = sa.context
+                    AND a.arch = sa.arch
+                LEFT JOIN (
+                    SELECT ST.element AS server_id
+                    FROM rhnSet ST
+                    JOIN rhnServerChannel rsc ON ST.element = rsc.server_id
+                    WHERE ST.user_id = :user_id
+                    AND ST.label = :set_label
+                    AND rsc.channel_id = :channel_id
+                ) ssm ON sa.server_id = ssm.server_id
+                WHERE a.channel_id = :channel_id
+                GROUP BY a.name, a.stream, a.arch
+                ORDER BY a.name, a.stream
+                """;
+
         return HibernateFactory
                 .getSession()
-                .createNativeQuery(SSM_CHANNEL_APPSTREAMS_SQL, Tuple.class)
+                .createNativeQuery(sql, Tuple.class)
+                .addSynchronizedEntityClass(AppStream.class)
+                .addSynchronizedEntityClass(ServerAppStream.class)
+                .addSynchronizedEntityClass(Server.class)
                 .setParameter("channel_id", channelId)
                 .setParameter("user_id", user.getId())
                 .setParameter("set_label", RhnSetDecl.SYSTEMS.getLabel())
