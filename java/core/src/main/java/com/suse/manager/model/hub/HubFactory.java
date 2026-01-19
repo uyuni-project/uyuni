@@ -353,7 +353,7 @@ public class HubFactory extends HibernateFactory {
      */
     public int removeAccessTokensFor(String serverFqdn) {
         return getSession()
-                .createNativeQuery("DELETE FROM suseISSAccessToken WHERE server_fqdn = :fqdn")
+                .createMutationQuery("DELETE FROM IssAccessToken t WHERE t.serverFqdn = :fqdn")
                 .setParameter("fqdn", serverFqdn)
                 .executeUpdate();
     }
@@ -365,7 +365,7 @@ public class HubFactory extends HibernateFactory {
      */
     public boolean removeAccessTokenById(long id) {
         int tokenRemoved = getSession()
-            .createNativeQuery("DELETE FROM suseISSAccessToken WHERE id = :id")
+            .createMutationQuery("DELETE FROM IssAccessToken t WHERE t.id = :id")
             .setParameter("id", id)
             .executeUpdate();
 
@@ -404,6 +404,9 @@ public class HubFactory extends HibernateFactory {
                           LEFT JOIN suseissperipheral p ON k.server_fqdn = p.fqdn
                 ORDER BY k.created DESC
                 """, Tuple.class)
+            .addSynchronizedEntityClass(IssAccessToken.class)
+            .addSynchronizedEntityClass(IssHub.class)
+            .addSynchronizedEntityClass(IssPeripheral.class)
             .addScalar("id", StandardBasicTypes.LONG)
             .addScalar("type", StandardBasicTypes.STRING)
             .addScalar("server_fqdn", StandardBasicTypes.STRING)

@@ -30,17 +30,26 @@ import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
 import com.redhat.rhn.common.util.RpmVersionComparator;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionStatus;
+import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.ReportDBCredentials;
 import com.redhat.rhn.domain.dto.SystemIDInfo;
 import com.redhat.rhn.domain.entitlement.Entitlement;
+import com.redhat.rhn.domain.errata.Errata;
+import com.redhat.rhn.domain.errata.Keyword;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.product.Tuple2;
+import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
+import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.legacy.UserImpl;
 import com.redhat.rhn.frontend.dto.HistoryEvent;
@@ -264,9 +273,9 @@ public class ServerFactory extends HibernateFactory {
      * */
     public static Set<OsReleasePair> listAllServersOsAndRelease() {
 
-        return getSession().createNativeQuery("""
-                SELECT DISTINCT s.os, s.release FROM rhnServer s
-                """, Tuple.class)
+        return getSession()
+                .createNativeQuery("SELECT DISTINCT s.os, s.release FROM rhnServer s", Tuple.class)
+                .addSynchronizedEntityClass(Server.class)
                 .addScalar("os", StandardBasicTypes.STRING)
                 .addScalar("release", StandardBasicTypes.STRING)
                 .stream()
@@ -291,6 +300,9 @@ public class ServerFactory extends HibernateFactory {
                                WHERE  USP.user_id = :user_id
                                AND    USP.server_id = s.id)
                 """, Tuple.class)
+                .addSynchronizedEntityClass(Server.class)
+                .addSynchronizedEntityClass(MinionServer.class)
+                .addSynchronizedEntityClass(UserImpl.class)
                 .setParameter("user_id", id)
                 .addScalar("minion_id", StandardBasicTypes.STRING)
                 .addScalar("server_id", StandardBasicTypes.LONG)
@@ -590,6 +602,13 @@ public class ServerFactory extends HibernateFactory {
                                    AND    AEU.errata_id = E.id )
                 ORDER BY E.id
                 """, Tuple.class)
+                .addSynchronizedEntityClass(Errata.class)
+                .addSynchronizedEntityClass(Server.class)
+                .addSynchronizedEntityClass(Package.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(ErrataAction.class)
+                .addSynchronizedEntityClass(ServerAction.class)
+                .addSynchronizedEntityClass(ActionStatus.class)
                 .setParameterList("serverIds", serverIds)
                 .setParameter("user_id", user.getId())
                 .addScalar("serverId", StandardBasicTypes.LONG)
@@ -762,6 +781,12 @@ public class ServerFactory extends HibernateFactory {
                        AND EXISTS(SELECT 1 FROM rhnServerFeaturesView SFV WHERE SFV.server_id = ST.element
                        AND SFV.label = 'ftr_config')
                     ORDER BY S.name, SCC.position""", Tuple.class)
+                .addSynchronizedEntityClass(Server.class)
+                .addSynchronizedEntityClass(MinionServer.class)
+                .addSynchronizedEntityClass(ConfigChannel.class)
+                .addSynchronizedEntityClass(Feature.class)
+                .addSynchronizedEntityClass(ServerGroupType.class)
+                .addSynchronizedEntityClass(ServerGroup.class)
                 .addScalar("id", StandardBasicTypes.LONG)
                 .addScalar("machine_id", StandardBasicTypes.STRING)
                 .addScalar("minion_id", StandardBasicTypes.STRING)
@@ -828,6 +853,13 @@ public class ServerFactory extends HibernateFactory {
                                    AND EXISTS(SELECT 1 FROM rhnServerFeaturesView SFV WHERE SFV.server_id = S.id
                                    AND SFV.label = 'ftr_config')
                                 ORDER BY S.name, SCC.position""", Tuple.class)
+                .addSynchronizedEntityClass(Server.class)
+                .addSynchronizedEntityClass(MinionServer.class)
+                .addSynchronizedEntityClass(ConfigChannel.class)
+                .addSynchronizedEntityClass(Feature.class)
+                .addSynchronizedEntityClass(ServerGroupType.class)
+                .addSynchronizedEntityClass(ServerGroup.class)
+                .addSynchronizedEntityClass(UserImpl.class)
                 .addScalar("id", StandardBasicTypes.LONG)
                 .addScalar("machine_id", StandardBasicTypes.STRING)
                 .addScalar("minion_id", StandardBasicTypes.STRING)
@@ -1060,14 +1092,10 @@ public class ServerFactory extends HibernateFactory {
      * @return list of User objects that can administer the system
      */
     public static List<User> listAdministrators(Server server) {
-        return getSession().createNativeQuery("""
-                select     wc.*
-                from       WEB_CONTACT wc
-                inner join rhnUserServerPerms usp on wc.id = usp.user_id
-                inner join rhnServer S on S.id = usp.server_id
-                where      s.id = :sid
-                and        s.org_id = :org_id
-                """, UserImpl.class)
+        return getSession().createQuery("""
+                                FROM UserImpl u JOIN u.servers s
+                                WHERE s.id = :sid AND s.org.id = :org_id
+                                """, UserImpl.class)
                 .setParameter("sid", server.getId())
                 .setParameter("org_id", server.getOrg().getId())
                 .stream()
@@ -1081,15 +1109,11 @@ public class ServerFactory extends HibernateFactory {
      * @return channel arch
      */
     public static ChannelArch findCompatibleChannelArch(ServerArch serverArch) {
-        Session session = HibernateFactory.getSession();
-        return session.createNativeQuery(
-                        """
-                            SELECT ca.* FROM rhnServerChannelArchCompat sc
-                            JOIN rhnChannelArch ca ON sc.channel_arch_id = ca.id
-                            WHERE sc.server_arch_id = :server_arch_id
-                            """, ChannelArch.class)
-                .setParameter("server_arch_id", serverArch.getId())
-                //Retrieve from cache if there
+        return getSession().createQuery("""
+                                    FROM ChannelArch a JOIN a.compatibleServerArches ca
+                                    WHERE ca.id = :serverArchId
+                                    """, ChannelArch.class)
+                .setParameter("serverArchId", serverArch.getId())
                 .setCacheable(true)
                 .uniqueResult();
     }
@@ -1127,6 +1151,10 @@ public class ServerFactory extends HibernateFactory {
                 where      S.org_id = :orgId
                 and        USP.user_id = :userId
                 """, Server.class)
+                .addSynchronizedEntityClass(Server.class)
+                .addSynchronizedEntityClass(UserImpl.class)
+                .addSynchronizedEntityClass(ProxyInfo.class)
+                .addSynchronizedEntityClass(MinionServer.class)
                 .setParameter("userId", user.getId())
                 .setParameter("orgId", user.getOrg().getId())
                 .list();
@@ -1179,6 +1207,10 @@ public class ServerFactory extends HibernateFactory {
                 and              ST.label = :label
                 and              S.id not in (SELECT server_id FROM rhnProxyInfo)
                 """, Server.class)
+                .addSynchronizedEntityClass(Server.class)
+                .addSynchronizedEntityClass(MgrServerInfo.class)
+                .addSynchronizedEntityClass(ProxyInfo.class)
+                .addSynchronizedEntityClass(MinionServer.class)
                 .setParameter("userId", user.getId())
                 .setParameter("label", RhnSetDecl.SYSTEMS.getLabel())
                 .list();
@@ -1727,6 +1759,12 @@ public class ServerFactory extends HibernateFactory {
                 WHERE           e.id in (:errataIds)
                 AND             sc.server_id in (:serverIds)
                 """, Tuple.class)
+                .addSynchronizedEntityClass(Keyword.class)
+                .addSynchronizedEntityClass(Errata.class)
+                .addSynchronizedEntityClass(Package.class)
+                .addSynchronizedEntityClass(PackageName.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(Server.class)
                 .setParameterList("serverIds", serverIds)
                 .setParameterList("errataIds", errataIds)
                 .addScalar("errataId", StandardBasicTypes.LONG)
@@ -1808,6 +1846,14 @@ public class ServerFactory extends HibernateFactory {
                        END AS packageVersion
                 FROM NewPackageForServerErrata pse
                 """, Tuple.class)
+                .addSynchronizedEntityClass(Errata.class)
+                .addSynchronizedEntityClass(Package.class)
+                .addSynchronizedEntityClass(PackageName.class)
+                .addSynchronizedEntityClass(PackageEvr.class)
+                .addSynchronizedEntityClass(PackageArch.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(Server.class)
+                .addSynchronizedEntityClass(InstalledPackage.class)
                 .setParameterList("serverIds", serverIds)
                 .setParameterList("errataIds", errataIds)
                 .addScalar("serverId", StandardBasicTypes.LONG)
@@ -1873,6 +1919,8 @@ public class ServerFactory extends HibernateFactory {
                 JOIN   rhnServerChannel sc ON s.id=sc.server_id AND sc.channel_id=:channel_id
                 JOIN   rhnSet rset ON rset.element = s.id AND rset.user_id = :user_id AND rset.label = 'system_list'
                 """, Tuple.class)
+                .addSynchronizedEntityClass(Server.class)
+                .addSynchronizedEntityClass(Channel.class)
                 .setParameter("user_id", user.getId())
                 .setParameter("channel_id", channelId)
                 .addScalar("serverId", StandardBasicTypes.LONG)
@@ -1928,7 +1976,6 @@ public class ServerFactory extends HibernateFactory {
         if (systemIds.isEmpty()) {
             return new HashSet<>();
         }
-//        getSession().flush();
         return getSession().createNativeQuery(
                 """
                         SELECT sa.* FROM rhnServerAction sa
@@ -1938,7 +1985,8 @@ public class ServerFactory extends HibernateFactory {
                     """, ServerAction.class
                 )
                 .addSynchronizedEntityClass(Action.class)
-//                .addSynchronizedEntityClass(ServerAction.class)
+                .addSynchronizedEntityClass(ServerAction.class)
+                .addSynchronizedEntityClass(ActionType.class)
                 .setParameterList("systemIds", systemIds, StandardBasicTypes.LONG)
                 .getResultList().stream().map(ServerAction::getServerId).collect(Collectors.toSet());
     }

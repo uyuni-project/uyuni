@@ -33,7 +33,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import jakarta.persistence.NoResultException;
 import jakarta.persistence.TypedQuery;
 
 /**
@@ -80,24 +79,20 @@ public class ChannelFamilyFactory extends HibernateFactory {
      * @return the ChannelFamily found
      */
     public static ChannelFamily lookupByLabel(String label, Org org) {
-        String sql = "SELECT * FROM rhnChannelFamily WHERE label = :label AND (org_id = :org OR org_id IS NULL)";
-        Query<ChannelFamily> query = getSession().createNativeQuery(sql, ChannelFamily.class);
-        query.setParameter("label", label);
+        Query<ChannelFamily> query = getSession()
+                .createQuery("FROM ChannelFamily cf WHERE cf.label = :label AND (cf.org IS NULL OR cf.org.id = :orgId)",
+                        ChannelFamily.class)
+                .setParameter("label", label);
 
         // Handle org being null
         if (org != null) {
-            query.setParameter("org", org.getId());
+            query.setParameter("orgId", org.getId());
         }
         else {
-            query.setParameter("org", -1);
+            query.setParameter("orgId", -1);
         }
 
-        try {
-            return query.getSingleResult();
-        }
-        catch (NoResultException e) {
-            return null;
-        }
+        return query.getSingleResultOrNull();
     }
 
     /**
@@ -234,19 +229,20 @@ public class ChannelFamilyFactory extends HibernateFactory {
      * @param org owning the Channel.  Pass in NULL if you want a NULL org channel
      * @return List of Channel objects
      */
-    @SuppressWarnings("unchecked")
     public static List<ChannelFamily> lookupByLabelLike(String label, Org org) {
-        String sql = "SELECT * FROM rhnChannelFamily WHERE label LIKE :label AND (org_id = :org OR org_id IS NULL)";
-        Query<ChannelFamily> query = getSession().createNativeQuery(sql, ChannelFamily.class);
-        query.setParameter("label", label);
+        Query<ChannelFamily> query = getSession().createQuery("""
+                    FROM ChannelFamily cf
+                    WHERE cf.label LIKE :label AND (cf.org IS NULL OR cf.org.id = :orgId)""", ChannelFamily.class)
+                .setParameter("label", label);
 
         // Handle org being null
         if (org != null) {
-            query.setParameter("org", org.getId());
+            query.setParameter("orgId", org.getId());
         }
         else {
-            query.setParameter("org", -1);
+            query.setParameter("orgId", -1);
         }
+
         return query.getResultList();
     }
 
@@ -254,11 +250,7 @@ public class ChannelFamilyFactory extends HibernateFactory {
      * Return all channel families from the database.
      * @return list of all channel families
      */
-    @SuppressWarnings("unchecked")
     public static List<ChannelFamily> getAllChannelFamilies() {
-        String sql = "SELECT * FROM rhnChannelFamily";
-        TypedQuery<ChannelFamily> query =
-                getSession().createNativeQuery(sql, ChannelFamily.class);
-        return query.getResultList();
+        return getSession().createQuery("FROM ChannelFamily cf", ChannelFamily.class).getResultList();
     }
 }

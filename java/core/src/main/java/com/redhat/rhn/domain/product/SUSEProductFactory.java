@@ -26,7 +26,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
-import org.hibernate.type.StandardBasicTypes;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -165,20 +164,14 @@ public class SUSEProductFactory extends HibernateFactory {
      * @param products products to keep
      */
     public static void removeAllExcept(Collection<SUSEProduct> products) {
-        if (!products.isEmpty()) {
-            List<Long> ids = products.stream().map(SUSEProduct::getId).collect(Collectors.toList());
-
-            List<SUSEProduct> productIds =  getSession().createNativeQuery("""
-                                      SELECT * from suseProducts
-                                      WHERE id NOT IN (:ids)
-                                      """, SUSEProduct.class)
-                    .setParameterList("ids", ids, StandardBasicTypes.LONG)
-                    .getResultList();
-
-            for (SUSEProduct product : productIds) {
-                remove(product);
-            }
+        if (products.isEmpty()) {
+            return;
         }
+
+        List<Long> ids = products.stream().map(SUSEProduct::getId).toList();
+        getSession().createMutationQuery("DELETE FROM SUSEProduct sp WHERE sp.id NOT IN (:ids)")
+                .setParameter("ids", ids)
+                .executeUpdate();
     }
 
 
@@ -423,30 +416,29 @@ public class SUSEProductFactory extends HibernateFactory {
      * release even if the corresponding parameters are not null
      * @return product or null if it is not found
      */
-    @SuppressWarnings("unchecked")
     public static SUSEProduct findSUSEProduct(String name, String version, String release,
             String arch, boolean imprecise) {
 
-        StringBuilder sqlQuery = new StringBuilder("SELECT * FROM suseProducts WHERE LOWER(name) = :name");
+        StringBuilder hqlQuery = new StringBuilder("FROM SUSEProduct sp WHERE LOWER(sp.name) = :name");
 
         if (version == null) {
-            sqlQuery.append(" AND version is NULL");
+            hqlQuery.append(" AND sp.version is NULL");
         }
         else if (imprecise) {
-            sqlQuery.append(" AND (version IS NULL OR LOWER(version) = :version)");
+            hqlQuery.append(" AND (sp.version IS NULL OR LOWER(sp.version) = :version)");
         }
         else { // (!imprecise)
-            sqlQuery.append(" AND LOWER(version) = :version");
+            hqlQuery.append(" AND LOWER(sp.version) = :version");
         }
 
         if (release == null) {
-            sqlQuery.append(" AND release is NULL");
+            hqlQuery.append(" AND sp.release is NULL");
         }
         else if (imprecise) {
-            sqlQuery.append(" AND (release IS NULL OR LOWER(release) = :release)");
+            hqlQuery.append(" AND (sp.release IS NULL OR LOWER(sp.release) = :release)");
         }
         else { // (!imprecise)
-            sqlQuery.append(" AND LOWER(release) = :release");
+            hqlQuery.append(" AND LOWER(sp.release) = :release");
         }
 
         PackageArch parch = PackageFactory.lookupPackageArchByLabel(arch);
@@ -455,24 +447,24 @@ public class SUSEProductFactory extends HibernateFactory {
             archTypeId = parch.getId();
         }
         if (imprecise || archTypeId == -1) {
-            sqlQuery.append(" AND (arch_type_id IS NULL OR arch_type_id = :arch)");
+            hqlQuery.append(" AND (sp.arch IS NULL OR sp.arch.id = :arch)");
         }
         else {
-            sqlQuery.append(" AND arch_type_id = :arch");
+            hqlQuery.append(" AND sp.arch.id = :arch");
         }
 
         // Add ordering
-        sqlQuery.append(" ORDER BY name ASC, version ASC, release ASC, arch_type_id ASC");
+        hqlQuery.append(" ORDER BY sp.name ASC, sp.version ASC, sp.release ASC, sp.arch.id ASC");
 
         // Execute the query
-        Query<SUSEProduct> query = getSession().createNativeQuery(sqlQuery.toString(), SUSEProduct.class)
-                .setParameter("name", name.toLowerCase(), StandardBasicTypes.STRING)
-                .setParameter("arch", archTypeId, StandardBasicTypes.LONG);
+        Query<SUSEProduct> query = getSession().createQuery(hqlQuery.toString(), SUSEProduct.class)
+                .setParameter("name", name.toLowerCase())
+                .setParameter("arch", archTypeId);
         if (version != null) {
-            query.setParameter("version", version.toLowerCase(), StandardBasicTypes.STRING);
+            query.setParameter("version", version.toLowerCase());
         }
         if (release != null) {
-            query.setParameter("release", release.toLowerCase(), StandardBasicTypes.STRING);
+            query.setParameter("release", release.toLowerCase());
         }
 
 
@@ -496,11 +488,8 @@ public class SUSEProductFactory extends HibernateFactory {
      * @return SUSE product for given productId
      */
     public static SUSEProduct lookupByProductId(long productId) {
-        return getSession().createNativeQuery("""
-                                  SELECT * from suseProducts
-                                  WHERE product_id = :product
-                                  """, SUSEProduct.class)
-                .setParameter("product", productId, StandardBasicTypes.LONG)
+        return getSession().createQuery("FROM SUSEProduct sp WHERE sp.productId = :product", SUSEProduct.class)
+                .setParameter("product", productId)
                 .uniqueResult();
     }
 
@@ -509,8 +498,7 @@ public class SUSEProductFactory extends HibernateFactory {
      * @return map of SUSE products with productId as key
      */
     public static Map<Long, SUSEProduct> productsByProductIds() {
-        return getSession().createNativeQuery("SELECT * from suseProducts ", SUSEProduct.class)
-                .getResultList()
+        return getSession().createQuery("FROM SUSEProduct", SUSEProduct.class)
                 .stream()
                 .collect(Collectors.toMap(SUSEProduct::getProductId, p -> p));
     }
@@ -520,10 +508,8 @@ public class SUSEProductFactory extends HibernateFactory {
      * @return SUSEProductExtensions which are recommended
      */
     public static List<SUSEProductExtension> allRecommendedExtensions() {
-        return getSession().createNativeQuery("""
-                                      SELECT * from suseProductExtension
-                                      WHERE recommended = 'Y'
-                                      """, SUSEProductExtension.class)
+        return getSession()
+                .createQuery("FROM SUSEProductExtension e WHERE e.recommended = true", SUSEProductExtension.class)
                 .getResultList();
     }
 
@@ -561,7 +547,7 @@ public class SUSEProductFactory extends HibernateFactory {
      * @return list of SUSE product channel relationships
      */
     public static List<SUSEProductChannel> findAllSUSEProductChannels() {
-        return getSession().createNativeQuery("SELECT * from SUSEProductChannel", SUSEProductChannel.class)
+        return getSession().createQuery("FROM SUSEProductChannel pc", SUSEProductChannel.class)
                 .getResultList();
     }
 
@@ -575,15 +561,15 @@ public class SUSEProductFactory extends HibernateFactory {
     public static Optional<SUSEProductExtension> findSUSEProductExtension(SUSEProduct root,
                                                            SUSEProduct base,
                                                            SUSEProduct ext) {
-        return getSession().createNativeQuery("""
-                                  SELECT * from suseProductExtension
-                                  WHERE base_pdid = :baseid
-                                  AND ext_pdid = :extid
-                                  AND root_pdid = :rootid
-                                  """, SUSEProductExtension.class)
-                .setParameter("baseid", base.getId(), StandardBasicTypes.LONG)
-                .setParameter("extid", ext.getId(), StandardBasicTypes.LONG)
-                .setParameter("rootid", root.getId(), StandardBasicTypes.LONG)
+        return getSession().createQuery("""
+                                FROM SUSEProductExtension pe
+                                WHERE pe.baseProduct = :base
+                                AND pe.extensionProduct = :ext
+                                AND pe.rootProduct = :root
+                                """, SUSEProductExtension.class)
+                .setParameter("base", base)
+                .setParameter("ext", ext)
+                .setParameter("root", root)
                 .uniqueResultOptional();
     }
 
@@ -592,7 +578,8 @@ public class SUSEProductFactory extends HibernateFactory {
      * @return list of product extension
      */
     public static List<SUSEProductExtension> findAllSUSEProductExtensions() {
-        return getSession().createNativeQuery("SELECT * from suseProductExtension", SUSEProductExtension.class)
+        return getSession()
+                .createQuery("FROM SUSEProductExtension pe", SUSEProductExtension.class)
                 .getResultList();
     }
 
@@ -604,12 +591,12 @@ public class SUSEProductFactory extends HibernateFactory {
      */
     public static List<SUSEProduct> findAllExtensionProductsForRootOf(SUSEProduct base, SUSEProduct root) {
         return getSession().createQuery("""
-                SELECT ext
-                FROM   SUSEProductExtension pe
-                JOIN   SUSEProduct ext ON pe.extensionProduct = ext
-                WHERE  pe.baseProduct = :base
-                AND    pe.rootProduct = :root
-                """, SUSEProduct.class)
+                                SELECT ext
+                                FROM   SUSEProductExtension pe
+                                JOIN   SUSEProduct ext ON pe.extensionProduct = ext
+                                WHERE  pe.baseProduct = :base
+                                AND    pe.rootProduct = :root
+                                """, SUSEProduct.class)
                 .setParameter("base", base)
                 .setParameter("root", root)
                 .list();
@@ -622,13 +609,13 @@ public class SUSEProductFactory extends HibernateFactory {
      * @return list of product extension of the given product
      */
     public static List<SUSEProductExtension> findAllProductExtensionsOf(SUSEProduct product, SUSEProduct root) {
-        return getSession().createNativeQuery("""
-                                      SELECT * from suseProductExtension
-                                      WHERE base_pdid = :baseid
-                                      AND root_pdid = :rootid
-                                      """, SUSEProductExtension.class)
-                    .setParameter("baseid", product.getId(), StandardBasicTypes.LONG)
-                    .setParameter("rootid", root.getId(), StandardBasicTypes.LONG)
+        return getSession().createQuery("""
+                                FROM  SUSEProductExtension pe
+                                WHERE pe.baseProduct = :base
+                                AND   pe.rootProduct = :root
+                                """, SUSEProductExtension.class)
+                    .setParameter("base", product)
+                    .setParameter("root", root)
                     .getResultList();
     }
 
@@ -640,12 +627,12 @@ public class SUSEProductFactory extends HibernateFactory {
      */
     public static List<SUSEProduct> findAllBaseProductsOf(SUSEProduct ext, SUSEProduct root) {
         return getSession().createQuery("""
-                SELECT base
-                FROM   SUSEProductExtension pe
-                JOIN   SUSEProduct base ON base = pe.baseProduct
-                WHERE  pe.extensionProduct = :ext
-                AND    pe.rootProduct = :root
-                """, SUSEProduct.class)
+                                SELECT base
+                                FROM   SUSEProductExtension pe
+                                JOIN   SUSEProduct base ON base = pe.baseProduct
+                                WHERE  pe.extensionProduct = :ext
+                                AND    pe.rootProduct = :root
+                                """, SUSEProduct.class)
                 .setParameter("ext", ext)
                 .setParameter("root", root)
                 .list();
@@ -703,57 +690,54 @@ public class SUSEProductFactory extends HibernateFactory {
      * @param isBaseProduct is base product flag
      * @return {@link Optional} of installed product or {@link Optional#empty()} if not found
      */
-    @SuppressWarnings("unchecked")
     public static Optional<InstalledProduct> findInstalledProduct(String name,
             String version, String release, PackageArch arch, boolean isBaseProduct) {
 
 
-        StringBuilder sqlQuery = new StringBuilder("SELECT * FROM suseInstalledProduct WHERE LOWER(name) = :name");
+        StringBuilder hqlQuery = new StringBuilder("FROM InstalledProduct ip WHERE LOWER(ip.name) = :name");
 
         if (version == null) {
-            sqlQuery.append(" AND (version IS NULL OR LOWER(version) = :version");
+            hqlQuery.append(" AND (ip.version IS NULL OR LOWER(ip.version) = :version");
             version = "";
         }
         else {
-            sqlQuery.append(" AND LOWER(version) = :version");
+            hqlQuery.append(" AND LOWER(ip.version) = :version");
         }
 
 
         if (release == null) {
-            sqlQuery.append(" AND (release IS NULL OR LOWER(release) = :release)");
+            hqlQuery.append(" AND (ip.release IS NULL OR LOWER(ip.release) = :release)");
             release = "";
         }
         else {
-            sqlQuery.append(" AND LOWER(release) = :release");
+            hqlQuery.append(" AND LOWER(ip.release) = :release");
         }
 
         Long archTypeId = (long) -1;
         if (arch != null) {
             archTypeId = arch.getId();
         }
-        sqlQuery.append(" AND arch_type_id = :arch");
+        hqlQuery.append(" AND ip.arch.id = :arch");
 
         if (isBaseProduct) {
-            sqlQuery.append(" AND is_baseproduct = 'Y'");
+            hqlQuery.append(" AND ip.baseproduct = true");
         }
         else {
-            sqlQuery.append(" AND is_baseproduct = 'N'");
+            hqlQuery.append(" AND ip.baseproduct = false");
         }
 
 
         // Add ordering
-        sqlQuery.append(" ORDER BY name ASC, version ASC, release ASC, arch_type_id ASC");
+        hqlQuery.append(" ORDER BY ip.name ASC, ip.version ASC, ip.release ASC, ip.arch.id ASC");
 
         // Execute the query
-        Query<InstalledProduct> query = getSession().createNativeQuery(sqlQuery.toString(), InstalledProduct.class)
-                .setParameter("name", name.toLowerCase(), StandardBasicTypes.STRING)
-                .setParameter("version", version.toLowerCase(), StandardBasicTypes.STRING)
-                .setParameter("release", release.toLowerCase(), StandardBasicTypes.STRING)
-                .setParameter("arch", archTypeId, StandardBasicTypes.LONG);
-
-        List<InstalledProduct> result = query.getResultList();
-
-        return result.stream().findFirst();
+        return getSession().createQuery(hqlQuery.toString(), InstalledProduct.class)
+                .setParameter("name", name.toLowerCase())
+                .setParameter("version", version.toLowerCase())
+                .setParameter("release", release.toLowerCase())
+                .setParameter("arch", archTypeId)
+                .stream()
+                .findFirst();
     }
 
     /**

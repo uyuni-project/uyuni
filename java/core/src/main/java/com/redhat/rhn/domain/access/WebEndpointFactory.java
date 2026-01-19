@@ -59,6 +59,8 @@ public class WebEndpointFactory extends HibernateFactory {
                         AND e.scope = :scope
                         LIMIT 1
                         """, WebEndpoint.class)
+                .addSynchronizedEntityClass(WebEndpoint.class)
+                .addSynchronizedEntityClass(Namespace.class)
                 .setParameter("user_id", userId)
                 .setParameter("endpoint", endpoint)
                 .setParameter("http_method", httpMethod)
@@ -82,6 +84,8 @@ public class WebEndpointFactory extends HibernateFactory {
                         AND e.http_method = :http_method
                         LIMIT 1
                         """, WebEndpoint.class)
+                .addSynchronizedEntityClass(WebEndpoint.class)
+                .addSynchronizedEntityClass(Namespace.class)
                 .setParameter("user_id", userId)
                 .setParameter("endpoint", endpoint)
                 .setParameter("http_method", httpMethod)
@@ -105,6 +109,8 @@ public class WebEndpointFactory extends HibernateFactory {
                         AND e.class_method = :class_method
                         LIMIT 1
                         """, WebEndpoint.class)
+                .addSynchronizedEntityClass(WebEndpoint.class)
+                .addSynchronizedEntityClass(Namespace.class)
                 .setParameter("user_id", userId)
                 .setParameter("class_method", classMethod)
                 .setParameter("scope", scope.name())
@@ -119,10 +125,8 @@ public class WebEndpointFactory extends HibernateFactory {
         // Get all endpoints that don't require authorization
         // TODO: Cache
         return getSession()
-                .createNativeQuery("SELECT endpoint FROM access.endpoint WHERE auth_required = false", Tuple.class)
-                .addScalar("endpoint", StandardBasicTypes.STRING)
+                .createQuery("SELECT w.endpoint FROM WebEndpoint w WHERE w.authRequired = false ", String.class)
                 .getResultStream()
-                .map(r -> r.get(0, String.class))
                 .collect(Collectors.toUnmodifiableSet());
     }
 
@@ -133,12 +137,10 @@ public class WebEndpointFactory extends HibernateFactory {
     public static Set<String> getUnauthorizedApiMethods() {
         // Get API handler class and methods that don't require authorization
         // TODO: Cache
-        return getSession().createNativeQuery(
-                        "SELECT class_method FROM access.endpoint WHERE scope = 'A' AND auth_required = false",
-                        Tuple.class)
-                .addScalar("class_method", StandardBasicTypes.STRING)
+        return getSession()
+                .createQuery("SELECT w.className FROM WebEndpoint w WHERE w.scope =  :scope AND w.authRequired = false ", String.class)
+                .setParameter("scope", WebEndpoint.Scope.A)
                 .getResultStream()
-                .map(r -> r.get(0, String.class))
                 .collect(Collectors.toUnmodifiableSet());
     }
 

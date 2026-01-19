@@ -543,6 +543,9 @@ public class TaskoFactory extends HibernateFactory {
 
         // Create the native query
         return getSession().createNativeQuery(sql, TaskoRun.class)
+                .addSynchronizedEntityClass(TaskoRun.class)
+                .addSynchronizedEntityClass(TaskoTemplate.class)
+                .addSynchronizedEntityClass(TaskoBunch.class)
                 // Set the parameters for bunchName and status
                 .setParameter("bunchName", bunchName)
                 .setParameter("status1", TaskoRun.STATUS_RUNNING)

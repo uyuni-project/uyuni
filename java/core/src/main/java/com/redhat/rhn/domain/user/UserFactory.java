@@ -25,8 +25,11 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.org.usergroup.UserGroupImpl;
+import com.redhat.rhn.domain.org.usergroup.UserGroupMembers;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.role.RoleImpl;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.legacy.UserImpl;
 import com.redhat.rhn.manager.session.SessionManager;
@@ -98,9 +101,7 @@ public class UserFactory extends HibernateFactory {
      * @return the responsible user (first org admin) of the org.
      */
     public static User findResponsibleUser(Long orgId, Role r) {
-        Session session = HibernateFactory.getSession();
-
-        Optional<Object> obj = session.createNativeQuery("""
+        return getSession().createNativeQuery("""
                         SELECT ugm.user_id AS user_id
                         FROM   rhnUserGroupMembers ugm
                         WHERE  ugm.user_group_id = (SELECT id
@@ -108,18 +109,15 @@ public class UserFactory extends HibernateFactory {
                                                     WHERE  org_id = :org_id
                                                     AND    group_type = :type_id)
                         ORDER BY ugm.user_id
-                        """)
+                        """, Long.class)
+                .addSynchronizedEntityClass(UserGroupMembers.class)
+                .addSynchronizedEntityClass(UserGroupImpl.class)
                 .setParameter("org_id", orgId)
                 .setParameter("type_id", r.getId())
                 // only care about the first one
                 .getResultStream()
-                .findFirst();
-        return obj.flatMap(o -> {
-                    if (o instanceof BigDecimal bd) {
-                        return Optional.of(UserFactory.lookupById(bd.longValue()));
-                    }
-                    return Optional.empty();
-                })
+                .findFirst()
+                .map(UserFactory::lookupById)
                 .orElse(null);
     }
 
@@ -712,11 +710,13 @@ public class UserFactory extends HibernateFactory {
                 )
                 """;
 
-        Query<UserImpl> query = HibernateFactory.getSession().createNativeQuery(sql, UserImpl.class);
-        query.setParameter("org_id", inOrg.getId());
-
-        // Execute the query and return the result
-        return query.getResultList();
+        return getSession().createNativeQuery(sql, UserImpl.class)
+                .addSynchronizedEntityClass(UserImpl.class)
+                .addSynchronizedEntityClass(UserGroupMembers.class)
+                .addSynchronizedEntityClass(UserGroupImpl.class)
+                .addSynchronizedEntityClass(RoleImpl.class)
+                .setParameter("org_id", inOrg.getId())
+                .getResultList();
     }
 
     /**

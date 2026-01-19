@@ -71,11 +71,13 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.legacy.UserImpl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
@@ -646,16 +648,15 @@ public class ActionFactory extends HibernateFactory {
      * @return the count
      */
     public static Integer getServerActionCountByStatus(Action action, ActionStatus status) {
-        return getSession().createNativeQuery("""
-                SELECT COUNT(sa.server_id) AS count
-                FROM   rhnServerAction sa
-                WHERE  sa.action_id = :aid
-                AND    sa.status = :stid
-                """, Tuple.class)
+        return getSession()
+                .createQuery("""
+                        SELECT COUNT(sa.server.id)
+                        FROM ServerAction sa
+                        WHERE sa.parentAction.id = :aid AND sa.status.id = :stid""", Long.class)
                 .setParameter("aid", action.getId())
                 .setParameter("stid", status.getId())
                 .uniqueResult()
-                .get("count", Number.class).intValue();
+                .intValue();
     }
 
 
@@ -685,8 +686,11 @@ public class ActionFactory extends HibernateFactory {
                                AND        rA.action_type = :actionTypeId
                               )
                 """, Action.class)
+                .addSynchronizedEntityClass(Action.class)
                 .addSynchronizedEntityClass(Server.class)
                 .addSynchronizedEntityClass(ServerAction.class)
+                .addSynchronizedEntityClass(ActionStatus.class)
+                .addSynchronizedEntityClass(UserImpl.class)
                 .setParameter("userId", user.getId())
                 .setParameter("actionTypeId", type.getId())
                 .setParameter("serverId", server.getId())
@@ -871,7 +875,8 @@ public class ActionFactory extends HibernateFactory {
      * @return return a list of server actions
      */
     public static List<ServerAction> listPendingServerActionsByTypes(List<ActionType> typesIn) {
-        return getSession().createNativeQuery("""
+        return getSession()
+                .createNativeQuery("""
             SELECT sa.*
               FROM rhnAction a
               JOIN rhnserveraction sa ON a.id = sa.action_id
@@ -881,6 +886,7 @@ public class ActionFactory extends HibernateFactory {
             """, ServerAction.class)
                 .setParameterList("types", typesIn.stream().map(ActionType::getId).toList())
                 .addSynchronizedEntityClass(Action.class)
+                .addSynchronizedEntityClass(ServerAction.class)
                 .list();
     }
 
@@ -1060,6 +1066,9 @@ public class ActionFactory extends HibernateFactory {
                               INNER JOIN suseMinionInfo mi on sa.server_id = mi.server_id
                               WHERE      sa.status in (0, 1))
                 """, Action.class)
+                .addSynchronizedEntityClass(Action.class)
+                .addSynchronizedEntityClass(ServerAction.class)
+                .addSynchronizedEntityClass(MinionServer.class)
                 .list();
     }
 
@@ -1173,6 +1182,7 @@ public class ActionFactory extends HibernateFactory {
                         AND    status = 0
                         RETURNING server_id
                         """, Tuple.class)
+                .addSynchronizedEntityClass(ServerAction.class)
                 .setParameter("rejection_reason", rejectionReason)
                 .setParameter("completion_time", new Date());
 

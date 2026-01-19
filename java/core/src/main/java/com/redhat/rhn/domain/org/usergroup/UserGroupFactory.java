@@ -191,7 +191,7 @@ public class UserGroupFactory extends HibernateFactory {
      */
     public static int deleteTemporaryRoles() {
         return HibernateFactory.getSession()
-        .createNativeQuery("DELETE FROM rhnUserGroupMembers ugs WHERE temporary = 'Y'")
+        .createMutationQuery("DELETE FROM UserGroupMembers ugs WHERE ugs.id.temporary = true")
         .executeUpdate();
     }
 

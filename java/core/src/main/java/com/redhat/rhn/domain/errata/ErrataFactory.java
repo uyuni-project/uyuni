@@ -32,7 +32,11 @@ import com.redhat.rhn.domain.common.ChecksumFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.product.Tuple2;
 import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.rhnpackage.PackageArch;
+import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageName;
+import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.dto.ErrataPackageFile;
@@ -802,6 +806,10 @@ public class ErrataFactory extends HibernateFactory {
                                 WHERE pid IN (:pids) AND sid IN (:sids)
                                 """,
                         Tuple.class)
+                .addSynchronizedEntityClass(Package.class)
+                .addSynchronizedEntityClass(Server.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(Errata.class)
                 .addScalar("pid", StandardBasicTypes.LONG)
                 .addScalar("sid", StandardBasicTypes.LONG)
                 .setParameter("pids", pids)
@@ -837,6 +845,13 @@ public class ErrataFactory extends HibernateFactory {
                                 AND sid IN (:sids)
                                 """,
                         Tuple.class)
+                .addSynchronizedEntityClass(Package.class)
+                .addSynchronizedEntityClass(PackageEvr.class)
+                .addSynchronizedEntityClass(PackageName.class)
+                .addSynchronizedEntityClass(PackageArch.class)
+                .addSynchronizedEntityClass(Server.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(Errata.class)
                 .addScalar("pid", StandardBasicTypes.LONG)
                 .addScalar("sid", StandardBasicTypes.LONG)
                 .setParameter("nevras", nevras)
@@ -877,6 +892,9 @@ public class ErrataFactory extends HibernateFactory {
                                     (SELECT channel_id FROM rhnAvailableChannels WHERE org_id = :org_id)
                                 """,
                         Tuple.class)
+                .addSynchronizedEntityClass(Errata.class)
+                .addSynchronizedEntityClass(Keyword.class)
+                .addSynchronizedEntityClass(Channel.class)
                 .addScalar("id", StandardBasicTypes.LONG) //0
                 .addScalar("advisory", StandardBasicTypes.STRING) //1
                 .addScalar("advisoryName", StandardBasicTypes.STRING) //2
@@ -948,6 +966,10 @@ public class ErrataFactory extends HibernateFactory {
                                 ORDER BY e.id
                                 """,
                         Tuple.class)
+                .addSynchronizedEntityClass(Errata.class)
+                .addSynchronizedEntityClass(Keyword.class)
+                .addSynchronizedEntityClass(Package.class)
+                .addSynchronizedEntityClass(PackageName.class)
                 .addScalar("id", StandardBasicTypes.LONG) //0
                 .addScalar("advisory", StandardBasicTypes.STRING) //1
                 .addScalar("advisoryName", StandardBasicTypes.STRING) //2
@@ -1047,6 +1069,11 @@ public class ErrataFactory extends HibernateFactory {
                                 ORDER BY e.id
                                 """,
                         Tuple.class)
+                .addSynchronizedEntityClass(Errata.class)
+                .addSynchronizedEntityClass(Keyword.class)
+                .addSynchronizedEntityClass(Package.class)
+                .addSynchronizedEntityClass(PackageName.class)
+                .addSynchronizedEntityClass(Channel.class)
                 .addScalar("id", StandardBasicTypes.LONG) //0
                 .addScalar("advisory", StandardBasicTypes.STRING) //1
                 .addScalar("advisoryName", StandardBasicTypes.STRING) //2
