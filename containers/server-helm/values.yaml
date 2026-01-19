@@ -8,7 +8,6 @@ version: latest
 images:
     # server: <registry>/<image>/<version>
 
-
 ## Ref: https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
 ##
 pullPolicy: "IfNotPresent"
@@ -17,24 +16,20 @@ pullPolicy: "IfNotPresent"
 ## registry with authentication. Leave empty for no authentication.
 registrySecret: ""
 
-## uyuni server overall Persistent Volume access modes
-## Must match those of existing PV or dynamic provisioner
-## Ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
+## The time zone to set in the containers
 ##
-accessModes:
-  - ReadWriteOnce
+timezone: "Etc/UTC"
 
-## If defined, storageClassName: <storageClass>
-## If set to "-", storageClassName: "", which disables dynamic provisioning
-## If undefined (the default) or set to null, no storageClassName spec is
-##   set, choosing the default provisioner.  (gp2 on AWS, standard on
-##   GKE, AWS & OpenStack)
+## Email will be the email used for the notifications sent by the server.
 ##
-# storageClass: "-"
+email: "admin@uyuni.lab.org"
 
-## matchPvByLabel adds selectors on each claim to select a PV with a 'data' label matching the PVC name.
-## This can be helpful for static PV management.
-matchPvByLabel: false
+global:
+  ## fqdn is the fully qualified name the server will answer as.
+  ## Changing this value renames the server and changes the server FQDN in the database, handle with care.
+  ## This value is required.
+  ##
+  fqdn:
 
 ## mirror defines a volume or host path to mount in the container as server.susemanager.fromdir value.
 ## Use either claimName or hostPath to reference the volume source.
@@ -43,35 +38,702 @@ matchPvByLabel: false
 ## Note that hostPath will not work on multi-node cluster
 ##
 ## If the value is set before the first run of the server, the rhn.conf file will be adjusted during the setup.
+##
 #mirror:
 #  claimName: mirror
 #  hostPath: /srv/mirror
 
-# Customize the volume sizes with the volumes dictionary.
-# The keys are the volume names.
-# TODO Allow setting different storage class per volume
-#volumes:
-#  var-pgsql:
-#    size: 50Gi
-#  var-spacewalk:
-#    size: 100Gi
+##
+volumes:
+  ## var-pgsql is the volume for the database,
+  ## a fast and big enough persistent volume will be needed.
+  ##
+  var-pgsql:
+    ## size is the requested volume size.
+    # The size of the postgresql data volume needs to be at least 50Gi.
+    ## This value is required.
+    size: 50Gi
+
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default storage class.
+    storageClass:
+
+    ## extraLabels adds custom labels to the PVC metadata
+    extraLabels:
+
+    ## annotations sets annotations to the PVC.
+    ## This may be useful to configure some storage backends
+    annotations:
+
+    ## volumeName sets the volumeName to bind to if defined.
+    #volumeName:
+
+    ## selector is rendered with toYAML and can be used to bind to a specific PV.
+    selector:
+
+  ## var-spacewalk contains the synchronized packages and needs to be sized depending on the distributions to manage.
+  ##
+  var-spacewalk:
+    ## size is the requested volume size.
+    ## See https://www.uyuni-project.org/uyuni-docs/en/uyuni/installation-and-upgrade/uyuni-install-requirements.html
+    ## how to estimate the size depending on the distributions.
+    ## This value is required.
+    size: 100Gi
+
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default storage class.
+    storageClass:
+
+    ## extraLabels adds custom labels to the PVC metadata
+    extraLabels:
+
+    ## annotations sets annotations to the PVC.
+    ## This may be useful to configure some storage backends
+    annotations:
+
+    ## volumeName sets the volumeName to bind to if defined.
+    #volumeName:
+
+    ## selector is rendered with toYAML and can be used to bind to a specific PV.
+    selector:
+
+  ## var-cache is the volume holding the cache for the server.
+  ##
+  var-cache:
+    ## size is the requested volume size.
+    ## See https://www.uyuni-project.org/uyuni-docs/en/uyuni/installation-and-upgrade/uyuni-install-requirements.html
+    ## how to estimate the size.
+    ## This value is required.
+    size: 10Gi
+
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default storage class.
+    storageClass:
+
+    ## extraLabels adds custom labels to the PVC metadata
+    extraLabels:
+
+    ## annotations sets annotations to the PVC.
+    ## This may be useful to configure some storage backends
+    annotations:
+
+    ## volumeName sets the volumeName to bind to if defined.
+    #volumeName:
+
+    ## selector is rendered with toYAML and can be used to bind to a specific PV.
+    selector:
+
+  ## var-log is the volume holding the log files for the server pod.
+  ##
+  var-log:
+    ## size is the requested volume size.
+    ## This value is required.
+    size: 2Gi
+
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default storage class.
+    storageClass:
+
+    ## extraLabels adds custom labels to the PVC metadata
+    extraLabels:
+
+    ## annotations sets annotations to the PVC.
+    ## This may be useful to configure some storage backends
+    annotations:
+
+    ## volumeName sets the volumeName to bind to if defined.
+    #volumeName:
+
+    ## selector is rendered with toYAML and can be used to bind to a specific PV.
+    selector:
+
+  ## srv-www is the volume containing the files published over HTTP.
+  ## This also includes the unpacked auto-installation distribution ISOs.
+  srv-www:
+    ## size is the requested volume size.
+    ## Take into account the number and size of the distributions unpacked ISO images to use for auto-installation.
+    ## This value is required.
+    size: 100Gi
+
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default storage class.
+    storageClass:
+
+    ## extraLabels adds custom labels to the PVC metadata
+    extraLabels:
+
+    ## annotations sets annotations to the PVC.
+    ## This may be useful to configure some storage backends
+    annotations:
+
+    ## volumeName sets the volumeName to bind to if defined.
+    #volumeName:
+
+    ## selector is rendered with toYAML and can be used to bind to a specific PV.
+    selector:
+
+  srv-tftpboot:
+    ## size is the requested volume size.
+    ## This value is required.
+    size: 300Mi
+
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default storage class.
+    storageClass:
+
+    ## extraLabels adds custom labels to the PVC metadata
+    extraLabels:
+
+    ## annotations sets annotations to the PVC.
+    ## This may be useful to configure some storage backends
+    annotations:
+
+    ## volumeName sets the volumeName to bind to if defined.
+    #volumeName:
+
+    ## selector is rendered with toYAML and can be used to bind to a specific PV.
+    selector:
+
+  ca-certs:
+    ## size is the requested volume size.
+    ## This value is required.
+    size: 10Mi
+
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default storage class.
+    storageClass:
+
+    ## extraLabels adds custom labels to the PVC metadata
+    extraLabels:
+
+    ## annotations sets annotations to the PVC.
+    ## This may be useful to configure some storage backends
+    annotations:
+
+    ## volumeName sets the volumeName to bind to if defined.
+    #volumeName:
+
+    ## selector is rendered with toYAML and can be used to bind to a specific PV.
+    selector:
+
+  etc-apache2:
+    ## size is the requested volume size.
+    ## This value is required.
+    size: 1Mi
+
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default storage class.
+    storageClass:
+
+    ## extraLabels adds custom labels to the PVC metadata
+    extraLabels:
+
+    ## annotations sets annotations to the PVC.
+    ## This may be useful to configure some storage backends
+    annotations:
+
+    ## volumeName sets the volumeName to bind to if defined.
+    #volumeName:
+
+    ## selector is rendered with toYAML and can be used to bind to a specific PV.
+    selector:
+
+  etc-cobbler:
+    ## size is the requested volume size.
+    ## This value is required.
+    size: 1Mi
+
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default storage class.
+    storageClass:
+
+    ## extraLabels adds custom labels to the PVC metadata
+    extraLabels:
+
+    ## annotations sets annotations to the PVC.
+    ## This may be useful to configure some storage backends
+    annotations:
+
+    ## volumeName sets the volumeName to bind to if defined.
+    #volumeName:
+
+    ## selector is rendered with toYAML and can be used to bind to a specific PV.
+    selector:
+
+  etc-postfix:
+    ## size is the requested volume size.
+    ## This value is required.
+    size: 1Mi
+
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default storage class.
+    storageClass:
+
+    ## extraLabels adds custom labels to the PVC metadata
+    extraLabels:
+
+    ## annotations sets annotations to the PVC.
+    ## This may be useful to configure some storage backends
+    annotations:
+
+    ## volumeName sets the volumeName to bind to if defined.
+    #volumeName:
+
+    ## selector is rendered with toYAML and can be used to bind to a specific PV.
+    selector:
+
+  etc-rhn:
+    ## size is the requested volume size.
+    ## This value is required.
+    size: 1Mi
+
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default storage class.
+    storageClass:
+
+    ## extraLabels adds custom labels to the PVC metadata
+    extraLabels:
+
+    ## annotations sets annotations to the PVC.
+    ## This may be useful to configure some storage backends
+    annotations:
+
+    ## volumeName sets the volumeName to bind to if defined.
+    #volumeName:
+
+    ## selector is rendered with toYAML and can be used to bind to a specific PV.
+    selector:
+
+  etc-salt:
+    ## size is the requested volume size.
+    ## This value is required.
+    size: 1Mi
+
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default storage class.
+    storageClass:
+
+    ## extraLabels adds custom labels to the PVC metadata
+    extraLabels:
+
+    ## annotations sets annotations to the PVC.
+    ## This may be useful to configure some storage backends
+    annotations:
+
+    ## volumeName sets the volumeName to bind to if defined.
+    #volumeName:
+
+    ## selector is rendered with toYAML and can be used to bind to a specific PV.
+    selector:
+
+  etc-sssd:
+    ## size is the requested volume size.
+    ## This value is required.
+    size: 1Mi
+
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default storage class.
+    storageClass:
+
+    ## extraLabels adds custom labels to the PVC metadata
+    extraLabels:
+
+    ## annotations sets annotations to the PVC.
+    ## This may be useful to configure some storage backends
+    annotations:
+
+    ## volumeName sets the volumeName to bind to if defined.
+    #volumeName:
+
+    ## selector is rendered with toYAML and can be used to bind to a specific PV.
+    selector:
+
+  etc-sysconfig:
+    ## size is the requested volume size.
+    ## This value is required.
+    size: 20Mi
+
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default storage class.
+    storageClass:
+
+    ## extraLabels adds custom labels to the PVC metadata
+    extraLabels:
+
+    ## annotations sets annotations to the PVC.
+    ## This may be useful to configure some storage backends
+    annotations:
+
+    ## volumeName sets the volumeName to bind to if defined.
+    #volumeName:
+
+    ## selector is rendered with toYAML and can be used to bind to a specific PV.
+    selector:
+
+  etc-systemd-multi:
+    ## size is the requested volume size.
+    ## This value is required.
+    size: 1Mi
+
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default storage class.
+    storageClass:
+
+    ## extraLabels adds custom labels to the PVC metadata
+    extraLabels:
+
+    ## annotations sets annotations to the PVC.
+    ## This may be useful to configure some storage backends
+    annotations:
+
+    ## volumeName sets the volumeName to bind to if defined.
+    #volumeName:
+
+    ## selector is rendered with toYAML and can be used to bind to a specific PV.
+    selector:
+
+  etc-systemd-sockets:
+    ## size is the requested volume size.
+    ## This value is required.
+    size: 1Mi
+
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default storage class.
+    storageClass:
+
+    ## extraLabels adds custom labels to the PVC metadata
+    extraLabels:
+
+    ## annotations sets annotations to the PVC.
+    ## This may be useful to configure some storage backends
+    annotations:
+
+    ## volumeName sets the volumeName to bind to if defined.
+    #volumeName:
+
+    ## selector is rendered with toYAML and can be used to bind to a specific PV.
+    selector:
+
+  etc-tomcat:
+    ## size is the requested volume size.
+    ## This value is required.
+    size: 1Mi
+
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default storage class.
+    storageClass:
+
+    ## extraLabels adds custom labels to the PVC metadata
+    extraLabels:
+
+    ## annotations sets annotations to the PVC.
+    ## This may be useful to configure some storage backends
+    annotations:
+
+    ## volumeName sets the volumeName to bind to if defined.
+    #volumeName:
+
+    ## selector is rendered with toYAML and can be used to bind to a specific PV.
+    selector:
+
+  root:
+    ## size is the requested volume size.
+    ## This value is required.
+    size: 1Mi
+
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default storage class.
+    storageClass:
+
+    ## extraLabels adds custom labels to the PVC metadata
+    extraLabels:
+
+    ## annotations sets annotations to the PVC.
+    ## This may be useful to configure some storage backends
+    annotations:
+
+    ## volumeName sets the volumeName to bind to if defined.
+    #volumeName:
+
+    ## selector is rendered with toYAML and can be used to bind to a specific PV.
+    selector:
+
+  run-salt-master:
+    ## size is the requested volume size.
+    ## This value is required.
+    size: 10Mi
+
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default storage class.
+    storageClass:
+
+    ## extraLabels adds custom labels to the PVC metadata
+    extraLabels:
+
+    ## annotations sets annotations to the PVC.
+    ## This may be useful to configure some storage backends
+    annotations:
+
+    ## volumeName sets the volumeName to bind to if defined.
+    #volumeName:
+
+    ## selector is rendered with toYAML and can be used to bind to a specific PV.
+    selector:
+
+  ## srv-formulametadata contains the custom Salt Formulas metadata.
+  srv-formulametadata:
+    ## size is the requested volume size.
+    ## This value is required.
+    size: 10Mi
+
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default storage class.
+    storageClass:
+
+    ## extraLabels adds custom labels to the PVC metadata
+    extraLabels:
+
+    ## annotations sets annotations to the PVC.
+    ## This may be useful to configure some storage backends
+    annotations:
+
+    ## volumeName sets the volumeName to bind to if defined.
+    #volumeName:
+
+    ## selector is rendered with toYAML and can be used to bind to a specific PV.
+    selector:
+
+  ## srv-pillar contains the custom Salt pillar.
+  srv-pillar:
+    ## size is the requested volume size.
+    ## This value is required.
+    size: 10Mi
+
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default storage class.
+    storageClass:
+
+    ## extraLabels adds custom labels to the PVC metadata
+    extraLabels:
+
+    ## annotations sets annotations to the PVC.
+    ## This may be useful to configure some storage backends
+    annotations:
+
+    ## volumeName sets the volumeName to bind to if defined.
+    #volumeName:
+
+    ## selector is rendered with toYAML and can be used to bind to a specific PV.
+    selector:
+
+  ## srv-salt contains the custom Salt states.
+  srv-salt:
+    ## size is the requested volume size.
+    ## This value is required.
+    size: 10Mi
+
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default storage class.
+    storageClass:
+
+    ## extraLabels adds custom labels to the PVC metadata
+    extraLabels:
+
+    ## annotations sets annotations to the PVC.
+    ## This may be useful to configure some storage backends
+    annotations:
+
+    ## volumeName sets the volumeName to bind to if defined.
+    #volumeName:
+
+    ## selector is rendered with toYAML and can be used to bind to a specific PV.
+    selector:
+
+  srv-spacewalk:
+    ## size is the requested volume size.
+    ## This value is required.
+    size: 10Mi
+
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default storage class.
+    storageClass:
+
+    ## extraLabels adds custom labels to the PVC metadata
+    extraLabels:
+
+    ## annotations sets annotations to the PVC.
+    ## This may be useful to configure some storage backends
+    annotations:
+
+    ## volumeName sets the volumeName to bind to if defined.
+    #volumeName:
+
+    ## selector is rendered with toYAML and can be used to bind to a specific PV.
+    selector:
+
+  srv-susemanager:
+    ## size is the requested volume size.
+    ## This value is required.
+    size: 1Mi
+
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default storage class.
+    storageClass:
+
+    ## extraLabels adds custom labels to the PVC metadata
+    extraLabels:
+
+    ## annotations sets annotations to the PVC.
+    ## This may be useful to configure some storage backends
+    annotations:
+
+    ## volumeName sets the volumeName to bind to if defined.
+    #volumeName:
+
+    ## selector is rendered with toYAML and can be used to bind to a specific PV.
+    selector:
+
+  var-cobbler:
+    ## size is the requested volume size.
+    ## This value is required.
+    size: 10Mi
+
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default storage class.
+    storageClass:
+
+    ## extraLabels adds custom labels to the PVC metadata
+    extraLabels:
+
+    ## annotations sets annotations to the PVC.
+    ## This may be useful to configure some storage backends
+    annotations:
+
+    ## volumeName sets the volumeName to bind to if defined.
+    #volumeName:
+
+    ## selector is rendered with toYAML and can be used to bind to a specific PV.
+    selector:
+
+  var-salt:
+    ## size is the requested volume size.
+    ## This value is required.
+    size: 10Mi
+
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default storage class.
+    storageClass:
+
+    ## extraLabels adds custom labels to the PVC metadata
+    extraLabels:
+
+    ## annotations sets annotations to the PVC.
+    ## This may be useful to configure some storage backends
+    annotations:
+
+    ## volumeName sets the volumeName to bind to if defined.
+    #volumeName:
+
+    ## selector is rendered with toYAML and can be used to bind to a specific PV.
+    selector:
+
+  var-search:
+    ## size is the requested volume size.
+    ## This value is required.
+    size: 10Gi
+
+    ## If defined, storageClassName: <storageClass>
+    ## If set to "-", storageClassName: "", which disables dynamic provisioning
+    ## If undefined (the default) or set to null, no storageClassName spec is
+    ##   set, choosing the default storage class.
+    storageClass:
+
+    ## extraLabels adds custom labels to the PVC metadata
+    extraLabels:
+
+    ## annotations sets annotations to the PVC.
+    ## This may be useful to configure some storage backends
+    annotations:
+
+    ## volumeName sets the volumeName to bind to if defined.
+    #volumeName:
+
+    ## selector is rendered with toYAML and can be used to bind to a specific PV.
+    selector:
 
 ## servicesAnnotations are annotations to set on both TCP and UDP services.
 ## This can be useful to share the same IP when using metallb
-# servicesAnnotations:
+##
+servicesAnnotations:
 
 ## exposeJavaDebug will expose the 8001, 8002 and 8003 ports to connect a Java debugger
 ## to taskomatic, search server and tomcat respectively
-# exposeJavaDebug: true
+##
+exposeJavaDebug: false
 
 ## enableMonitoring will expose the 9100 9187 5556 5557 9800 ports for prometheus to scrape
+##
 enableMonitoring: true
 
 ingress:
   ## ingress.type defines the ingress that is used in the cluster.
   ## It can be either "nginx", "traefik" or any other value.
+  ##
   type: "traefik"
   ## Specify the ingress class name to use. Empty, means that the default one will be used.
+  ##
   class: ""
   ## annotations can be used to set custom annotations on the created ingress rules.
   ## This can be used to configure another ingress than the ones already wired with the ingress.type.
@@ -85,24 +747,14 @@ ingress:
   #  sslRedirect:
   #  nossl:
 
-
-# The time zone to set in the containers
-timezone: "Etc/UTC"
-
-# Email will be the email used for the notifications sent by the server.
-email: "admin@uyuni.lab.org"
-
-# hubAPI is a boolean to enable or disable the Hub XML-RPC API deployment.
+## hubAPI is a boolean to enable or disable the Hub XML-RPC API deployment.
+##
 hubAPI: false
 
-# cocoReplicas is the number of replicas for the confidential computing attestation deployment.
+## cocoReplicas is the number of replicas for the confidential computing attestation deployment.
+##
 cocoReplicas: 0
 
-# saline needs to be set to true to be deployed for salt master monitoring
+## saline needs to be set to true to be deployed for salt master monitoring
+##
 saline: false
-
-global:
-  # fqdn is the fully qualified name the server will answer as.
-  # Changing this value renames the server and changes the server FQDN in the database, handle with care.
-  # This value is required.
-  fqdn:
