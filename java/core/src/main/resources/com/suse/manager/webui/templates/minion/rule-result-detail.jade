@@ -10,6 +10,7 @@ script(type='text/javascript').
     window.parentScanUrl = "!{parentScanUrl}";
     window.parentScanProfile = "!{parentScanProfile}";
     window.remediation =  "#{remediation}";
+    window.benchmarkId = "#{benchmarkId}";
     window.minions = [{id: #{server.id}}];
 
 script(src='/javascript/ace-editor/src-min-noconflict/ace.js?cb=#{webBuildtimestamp}')

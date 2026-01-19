@@ -108,6 +108,7 @@ import com.redhat.rhn.domain.audit.XccdfIdent;
 import com.redhat.rhn.domain.audit.XccdfIdentSystem;
 import com.redhat.rhn.domain.audit.XccdfProfile;
 import com.redhat.rhn.domain.audit.XccdfRuleFix;
+import com.redhat.rhn.domain.audit.XccdfRuleFixCustom;
 import com.redhat.rhn.domain.audit.XccdfRuleResult;
 import com.redhat.rhn.domain.audit.XccdfRuleResultType;
 import com.redhat.rhn.domain.audit.XccdfTestResult;
@@ -780,6 +781,7 @@ public class AnnotationRegistry {
             XccdfIdentSystem.class,
             XccdfProfile.class,
             XccdfRuleFix.class,
+            XccdfRuleFixCustom.class,
             XccdfRuleResult.class,
             XccdfRuleResultType.class,
             WebSessionImpl.class,

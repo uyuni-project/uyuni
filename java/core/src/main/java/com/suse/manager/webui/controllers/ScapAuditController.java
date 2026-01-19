@@ -15,10 +15,18 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
+import com.redhat.rhn.domain.audit.ScriptType;
+
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
+import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.scap.ScapAction;
+import com.redhat.rhn.domain.action.script.ScriptActionDetails;
+import com.redhat.rhn.domain.action.script.ScriptRunAction;
+import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.audit.*;
+import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 
@@ -26,13 +34,17 @@ import com.redhat.rhn.frontend.dto.XccdfRuleResultDto;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.audit.ScapManager;
 import com.redhat.rhn.manager.audit.scap.xml.BenchMark;
+import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.webui.controllers.utils.RequestUtil;
+import com.suse.manager.webui.services.impl.SaltService;
 import com.suse.manager.webui.utils.gson.AuditScanScheduleJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.manager.webui.utils.gson.ScapPolicyComplianceSummary;
 import com.suse.manager.webui.utils.gson.ScapPolicyJson;
 import com.suse.manager.webui.utils.gson.ScapPolicyScanHistory;
+import com.suse.salt.netapi.calls.modules.Cmd;
 import com.suse.utils.Json;
 
 import com.google.gson.reflect.TypeToken;
@@ -62,12 +74,14 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.*;
+import static spark.Spark.delete;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
 public class ScapAuditController {
     private static final Logger LOG = LogManager.getLogger(ScapAuditController.class);
     private static final Gson GSON = Json.GSON;
+    private final TaskomaticApi taskomaticApi = new TaskomaticApi();
     private static final String TAILORING_FILES_DIR = "/srv/susemanager/scap/tailoring-files/";
     private static final String SCAP_CONTENT_DIR = "/srv/susemanager/scap/ssg/content";
 
@@ -130,6 +144,15 @@ public class ScapAuditController {
         get("/manager/audit/scap/scan/rule-result-details/:sid/:rrid",
           withCsrfToken(withDocsLocale(withUserAndServer(ScapAuditController::createRuleResultView))), jade);
 
+        // Custom remediation routes
+        get("/manager/api/audit/scap/custom-remediation/:identifier/:benchmarkId",
+                withUser(this::getCustomRemediation));
+        post("/manager/api/audit/scap/custom-remediation",
+                withUser(this::saveCustomRemediation));
+        delete("/manager/api/audit/scap/custom-remediation/:identifier/:benchmarkId/:scriptType",
+                withUser(this::deleteCustomRemediation));
+        post("/manager/api/audit/scap/scan/rule-apply-remediation",
+                withUser(this::applyRemediation));
 
     }
     /**
@@ -928,10 +951,12 @@ public class ScapAuditController {
         String serverId = req.params("sid");
         Long ruleResultId = Long.parseLong(req.params("rrid"));
         XccdfRuleResultDto ruleResult = ScapManager.ruleResultById(ruleResultId);
-        /*Optional<XccdfRuleFix> xccdfRuleFix =
-                ScapFactory.lookupRuleRemediation(ruleResult.getTestResult().getIdentifier(),
-                        ruleResult.getDocumentIdref());*/
-        Optional<XccdfRuleFix> xccdfRuleFix = ScapFactory.lookupRuleRemediation(ruleResult.getDocumentIdref());
+        
+        // Use both benchmark ID and rule identifier for correct lookup
+        // benchmarkId from benchmark.identifier, ruleId from documentIdref
+        Optional<XccdfRuleFix> xccdfRuleFix =
+                ScapFactory.lookupRuleRemediation(ruleResult.getTestResult().getBenchmark().getIdentifier(),
+                        ruleResult.getDocumentIdref());
         String remediation = xccdfRuleFix.map(fix -> fix.getRemediation())
           .orElse("No remediation available");
 
@@ -942,6 +967,7 @@ public class ScapAuditController {
         data.put("parentScanProfile",ruleResult.getTestResult().getIdentifier());
         data.put("remediation", StringEscapeUtils.escapeJson(remediation));
         data.put("profileId", "----");
+        data.put("benchmarkId", ruleResult.getTestResult().getBenchmark().getIdentifier());
         return new ModelAndView(data, "templates/minion/rule-result-detail.jade");
     }
 
@@ -1242,6 +1268,270 @@ public class ScapAuditController {
         catch (Exception e) {
             LOG.error("Error deleting SCAP policies", e);
             return json(res, ResultJson.error(e.getMessage()));
+        }
+    }
+
+    /**
+     * Get custom remediation for a rule.
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the current user
+     * @return JSON response
+     */
+    private String getCustomRemediation(Request request, Response response, User user) {
+        String identifier = request.params(":identifier");
+        String benchmarkId = request.params(":benchmarkId");
+
+        Optional<XccdfRuleFixCustom> customOpt = ScapFactory.lookupCustomRemediationByIdentifier(
+                identifier, benchmarkId, user.getOrg());
+
+        if (customOpt.isPresent()) {
+            XccdfRuleFixCustom custom = customOpt.get();
+            Map<String, Object> data = new HashMap<>();
+            data.put("identifier", identifier);
+            data.put("benchmarkId", benchmarkId);
+            data.put("customRemediationBash", custom.getCustomRemediationBash());
+            data.put("customRemediationSalt", custom.getCustomRemediationSalt());
+            data.put("created", custom.getCreated());
+            data.put("modified", custom.getModified());
+
+            return success(response, ResultJson.success(data));
+        }
+
+        return json(response, HttpStatus.SC_NOT_FOUND,
+                ResultJson.error("No custom remediation found"), new TypeToken<>() { });
+    }
+
+    /**
+     * Save custom remediation for a rule.
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the current user
+     * @return JSON response
+     */
+    private String saveCustomRemediation(Request request, Response response, User user) {
+        if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
+            return json(response, HttpStatus.SC_FORBIDDEN,
+                    ResultJson.error("Only organization administrators can save custom remediation"), new TypeToken<>() { });
+        }
+
+        CustomRemediationJson data;
+        try {
+            data = GSON.fromJson(request.body(), CustomRemediationJson.class);
+        } catch (JsonParseException e) {
+            return json(response, HttpStatus.SC_BAD_REQUEST,
+                    ResultJson.error("Invalid JSON request body"));
+        }
+
+        String identifier = data.getIdentifier();
+        String benchmarkId = data.getBenchmarkId();
+        ScriptType scriptType = ScriptType.fromValue(data.getScriptType());
+        String remediationContent = data.getRemediation();
+
+        if (identifier == null || identifier.isEmpty()) {
+            return json(response, HttpStatus.SC_BAD_REQUEST,
+                    ResultJson.error("Rule identifier is required"), new TypeToken<>() { });
+        }
+
+        if (benchmarkId == null || benchmarkId.isEmpty()) {
+            return json(response, HttpStatus.SC_BAD_REQUEST,
+                    ResultJson.error("Benchmark ID is required"), new TypeToken<>() { });
+        }
+
+        if (scriptType == null) {
+            return json(response, HttpStatus.SC_BAD_REQUEST,
+                    ResultJson.error("Script type must be 'bash' or 'salt'"), new TypeToken<>() { });
+        }
+
+        if (remediationContent == null || remediationContent.isEmpty()) {
+            return json(response, HttpStatus.SC_BAD_REQUEST,
+                    ResultJson.error("Remediation content is required"), new TypeToken<>() { });
+        }
+
+        try {
+            ScapFactory.saveCustomRemediation(identifier, benchmarkId, scriptType,
+                    remediationContent, user.getOrg(), user);
+
+            return success(response, ResultJson.success("Custom remediation saved successfully"));
+        } catch (IllegalArgumentException e) {
+            return json(response, HttpStatus.SC_BAD_REQUEST,
+                    ResultJson.error(e.getMessage()), new TypeToken<>() { });
+        } catch (Exception e) {
+            return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
+                    ResultJson.error("Failed to save custom remediation: " + e.getMessage()), new TypeToken<>() { });
+        }
+    }
+
+    /**
+     * Delete custom remediation for a rule.
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the current user
+     * @return JSON response
+     */
+    private String deleteCustomRemediation(Request request, Response response, User user) {
+        if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
+            return json(response, HttpStatus.SC_FORBIDDEN,
+                    ResultJson.error("Only organization administrators can delete custom remediation"), new TypeToken<>() { });
+        }
+
+        String identifier = request.params(":identifier");
+        String benchmarkId = request.params(":benchmarkId");
+        ScriptType scriptType = ScriptType.fromValue(request.params(":scriptType"));
+
+        if (scriptType == null) {
+            return json(response, HttpStatus.SC_BAD_REQUEST,
+                    ResultJson.error("Invalid script type"), new TypeToken<>() { });
+        }
+
+        boolean deleted = ScapFactory.deleteCustomRemediation(identifier, benchmarkId,
+                scriptType, user.getOrg());
+
+        if (deleted) {
+            return success(response, ResultJson.success("Custom remediation deleted successfully"));
+        }
+
+        return json(response, HttpStatus.SC_NOT_FOUND,
+                ResultJson.error("No custom remediation found"), new TypeToken<>() { });
+    }
+
+    /**
+     * Apply remediation (bash or Salt) to a system.
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the current user
+     * @return JSON response
+     */
+    /**
+     * Apply remediation (bash or Salt) to a system.
+     *
+     * @param request the request
+     * @param response the response
+     * @param user the current user
+     * @return JSON response
+     */
+    private String applyRemediation(Request request, Response response, User user) {
+        try {
+            // Parse request body
+            ApplyRemediationJson body;
+            try {
+                body = GSON.fromJson(request.body(), ApplyRemediationJson.class);
+            } catch (JsonParseException e) {
+                return json(response, HttpStatus.SC_BAD_REQUEST,
+                        ResultJson.error("Invalid JSON request body"), new TypeToken<>() { });
+            }
+
+            Long serverId = body.getServerId();
+            String ruleIdentifier = body.getRuleIdentifier();
+            ScriptType scriptType = ScriptType.fromValue(body.getScriptType());
+            String remediationContent = body.getRemediationContent();
+            
+            // Authorization check
+            if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
+                return json(response, HttpStatus.SC_FORBIDDEN,
+                        ResultJson.error("Only organization administrators can apply remediation"), new TypeToken<>() { });
+            }
+            
+            // Validate server
+            Server server = SystemManager.lookupByIdAndUser(serverId, user);
+            if (server == null) {
+                return json(response, HttpStatus.SC_NOT_FOUND,
+                        ResultJson.error("Server not found or access denied"), new TypeToken<>() { });
+            }
+            
+            // Validate remediation content
+            if (remediationContent == null || remediationContent.trim().isEmpty()) {
+                return json(response, HttpStatus.SC_BAD_REQUEST,
+                        ResultJson.error("Remediation content cannot be empty"), new TypeToken<>() { });
+            }
+            
+            if (scriptType == null) {
+                return json(response, HttpStatus.SC_BAD_REQUEST,
+                         ResultJson.error("Invalid script type. Must be 'bash' or 'salt'"), new TypeToken<>() { });
+            }
+
+            // Create action based on script type
+            Action action;
+            String successMessage;
+            
+            if (scriptType == ScriptType.BASH) {
+                // Execute bash script via ScriptAction
+                ScriptActionDetails scriptDetails = ActionFactory.createScriptActionDetails(
+                        "root", "root", 300L, remediationContent);
+                
+                ScriptRunAction scriptAction = (ScriptRunAction) ActionFactory.createAction(
+                        ActionFactory.TYPE_SCRIPT_RUN);
+                scriptAction.setName("SCAP Remediation: " + ruleIdentifier);
+                scriptAction.setOrg(user.getOrg());
+                scriptAction.setSchedulerUser(user);
+                scriptAction.setEarliestAction(new Date());
+                scriptAction.setScriptActionDetails(scriptDetails);
+                
+                ActionFactory.addServerToAction(serverId, scriptAction);
+                ActionFactory.save(scriptAction);
+                
+                action = scriptAction;
+                successMessage = "Bash remediation scheduled successfully";
+                
+            } else if (scriptType == ScriptType.SALT) {
+                // Execute Salt state via ApplyStatesAction with pillar data
+                if (server.getMinionId() == null) {
+                    return json(response, HttpStatus.SC_BAD_REQUEST,
+                            ResultJson.error("Server is not a Salt minion"), new TypeToken<>() { });
+                }
+
+                List<Long> serverIds = Collections.singletonList(serverId);
+
+                // Pass Salt state content via pillar data
+                // The remediation content is expected to be valid Salt state YAML
+                Map<String, Object> pillar = new HashMap<>();
+                pillar.put("scap_remediation_state", remediationContent);
+
+                // Schedule apply states action with scap_remediation state module
+                ApplyStatesAction saltAction = ActionManager.scheduleApplyStates(
+                        user,
+                        serverIds,
+                        Collections.singletonList("scap_remediation"),
+                        Optional.of(pillar),
+                        new Date(),
+                        Optional.empty()
+                );
+
+                // Set custom action name to match Bash remediation naming
+                saltAction.setName("SCAP Remediation: " + ruleIdentifier);
+                ActionFactory.save(saltAction);
+
+                action = saltAction;
+                successMessage = "Salt remediation scheduled successfully";
+            } else {
+                // Should be unreachable due to scriptType check above
+                return json(response, HttpStatus.SC_BAD_REQUEST,
+                       ResultJson.error("Invalid script type"), new TypeToken<>() { });
+            }
+            
+            // Schedule execution with Taskomatic (common for both Bash and Salt)
+            try {
+                taskomaticApi.scheduleActionExecution(action);
+            } catch (TaskomaticApiException e) {
+                LOG.error("Failed to schedule remediation action", e);
+                return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
+                        ResultJson.error("Failed to schedule remediation: " + e.getMessage()), new TypeToken<>() { });
+            }
+            
+            // Return success response
+            Map<String, Object> result = new HashMap<>();
+            result.put("actionId", action.getId());
+            result.put("message", successMessage);
+            return success(response, ResultJson.success(result));
+
+        } catch (Exception e) {
+            LOG.error("Error applying remediation", e);
+            return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
+                    ResultJson.error("Failed to apply remediation: " + e.getMessage()), new TypeToken<>() { });
         }
     }
 }

@@ -18,6 +18,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.user.User;
 
 import java.util.Date;
 import java.util.List;
@@ -382,17 +383,126 @@ public class ScapFactory extends HibernateFactory {
         return getSession().createQuery(criteria).getResultStream().findFirst();
     }
 
+
     /**
-     * Find a {@link XccdfRuleFix} by identifier.
-     * @param identifier identifier
-     * @return the {@link XccdfRuleFix} if any
+     * Lookup custom remediation for a rule and organization.
+     * @param ruleFixId the XccdfRuleFix ID
+     * @param org the organization
+     * @return optional custom remediation
      */
-    public static Optional<XccdfRuleFix> lookupRuleRemediation(String identifier) {
+    public static Optional<XccdfRuleFixCustom> lookupCustomRemediation(Long ruleFixId, Org org) {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<XccdfRuleFix> criteria = builder.createQuery(XccdfRuleFix.class);
-        Root<XccdfRuleFix> root = criteria.from(XccdfRuleFix.class);
-        criteria.where(builder.equal(root.get("identifier"), identifier));
-        return getSession().createQuery(criteria).getResultStream().findFirst();
+        CriteriaQuery<XccdfRuleFixCustom> criteria = builder.createQuery(XccdfRuleFixCustom.class);
+        Root<XccdfRuleFixCustom> root = criteria.from(XccdfRuleFixCustom.class);
+        criteria.where(
+            builder.and(
+                builder.equal(root.get("ruleFix").get("id"), ruleFixId),
+                builder.equal(root.get("org"), org)
+            )
+        );
+        return getSession().createQuery(criteria).uniqueResultOptional();
+    }
+
+    /**
+     * Lookup custom remediation by identifier, benchmark, and organization.
+     * @param identifier the rule identifier
+     * @param benchmarkId the benchmark ID
+     * @param org the organization
+     * @return optional custom remediation
+     */
+    public static Optional<XccdfRuleFixCustom> lookupCustomRemediationByIdentifier(
+            String identifier, String benchmarkId, Org org) {
+        // First find the global rule fix
+        Optional<XccdfRuleFix> ruleFix = lookupRuleRemediation(benchmarkId, identifier);
+        if (ruleFix.isEmpty()) {
+            return Optional.empty();
+        }
+        
+        // Then find the custom remediation for this org
+        return lookupCustomRemediation(ruleFix.get().getId(), org);
+    }
+
+    /**
+     * Save or update custom remediation.
+     * @param identifier the rule identifier
+     * @param benchmarkId the benchmark ID
+     * @param scriptType the script type (BASH or SALT)
+     * @param remediationContent the script content
+     * @param org the organization
+     * @param user the user making the change
+     */
+    public static void saveCustomRemediation(String identifier, String benchmarkId,
+                                            ScriptType scriptType, String remediationContent,
+                                            Org org, User user) {
+        // Get or create the global rule fix
+        XccdfRuleFix ruleFix = lookupRuleRemediation(benchmarkId, identifier)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "No SCAP rule fix found for identifier: " + identifier));
+        
+        // Get or create custom remediation for this org
+        XccdfRuleFixCustom custom = lookupCustomRemediation(ruleFix.getId(), org)
+                .orElseGet(() -> {
+                    XccdfRuleFixCustom newCustom = new XccdfRuleFixCustom();
+                    newCustom.setRuleFix(ruleFix);
+                    newCustom.setOrg(org);
+                    newCustom.setCreated(new Date());
+                    newCustom.setCreatedBy(user);
+                    return newCustom;
+                });
+        
+        // Update the appropriate script type
+        if (scriptType == ScriptType.BASH) {
+            custom.setCustomRemediationBash(remediationContent);
+        } else if (scriptType == ScriptType.SALT) {
+            custom.setCustomRemediationSalt(remediationContent);
+        } else {
+            throw new IllegalArgumentException("Unsupported script type: " + scriptType);
+        }
+        
+        custom.setModified(new Date());
+        custom.setModifiedBy(user);
+        
+        singleton.saveObject(custom);
+    }
+
+    /**
+     * Delete custom remediation for a specific script type.
+     * @param identifier the rule identifier
+     * @param benchmarkId the benchmark ID
+     * @param scriptType the script type (BASH or SALT)
+     * @param org the organization
+     * @return true if deleted, false if not found
+     */
+    public static boolean deleteCustomRemediation(String identifier, String benchmarkId,
+                                                 ScriptType scriptType, Org org) {
+        Optional<XccdfRuleFixCustom> customOpt = lookupCustomRemediationByIdentifier(
+                identifier, benchmarkId, org);
+        
+        if (customOpt.isEmpty()) {
+            return false;
+        }
+        
+        XccdfRuleFixCustom custom = customOpt.get();
+        
+        if (scriptType == ScriptType.BASH) {
+            custom.setCustomRemediationBash(null);
+        } else if (scriptType == ScriptType.SALT) {
+            custom.setCustomRemediationSalt(null);
+        } else {
+            return false;
+        }
+        
+        custom.setModified(new Date());
+        
+        // If both are null, delete the entire custom record
+        if (custom.getCustomRemediationBash() == null && 
+            custom.getCustomRemediationSalt() == null) {
+            getSession().delete(custom);
+        } else {
+            singleton.saveObject(custom);
+        }
+        
+        return true;
     }
 
 
