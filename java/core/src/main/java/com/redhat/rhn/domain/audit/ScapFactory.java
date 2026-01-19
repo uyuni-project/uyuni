@@ -121,12 +121,9 @@ public class ScapFactory extends HibernateFactory {
      * @return optional of XccdfRuleResultType
      */
     public static Optional<XccdfRuleResultType> lookupRuleResultType(String label) {
-        String sql = "SELECT * FROM rhnXccdfRuleResultType WHERE label = :label";
-        XccdfRuleResultType result =
-                getSession().createNativeQuery(sql, XccdfRuleResultType.class)
-                        .setParameter("label", label, StandardBasicTypes.STRING)
-                        .getResultStream().findFirst().orElse(null);
-        return Optional.ofNullable(result);
+        return getSession().createQuery("FROM XccdfRuleResultType WHERE label = :label", XccdfRuleResultType.class)
+                        .setParameter("label", label)
+                        .uniqueResultOptional();
     }
 
     /**

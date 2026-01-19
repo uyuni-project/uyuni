@@ -258,7 +258,7 @@ public class ScriptRunAction extends ScriptAction {
      */
     @Override
     public void removeInvalidResults() {
-        HibernateFactory.getSession().createNativeQuery("""
+        HibernateFactory.getSession().createNativeMutationQuery("""
                   DELETE FROM rhnServerActionScriptResult sr WHERE sr.action_script_id = (
                   SELECT as.id FROM rhnActionScript as WHERE as.action_id = :action)
                   AND sr.server_id IN

@@ -152,6 +152,10 @@ public class VirtualInstanceFactory extends HibernateFactory {
                                   and sgm.server_id = host.id
                           ))
                         """, Tuple.class)
+                .addSynchronizedEntityClass(VirtualInstance.class)
+                .addSynchronizedEntityClass(Server.class)
+                .addSynchronizedEntityClass(ServerGroup.class)
+                .addSynchronizedEntityClass(ServerGroupType.class)
                 .setParameter("org_id", org.getId(), StandardBasicTypes.LONG)
                 .addScalar("guest_id", StandardBasicTypes.LONG)
                 .addScalar("guest_org_id", StandardBasicTypes.LONG)

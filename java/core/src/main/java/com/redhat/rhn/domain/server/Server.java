@@ -665,7 +665,8 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * Save configuration channels to the database. Only needed if the server has been created using the constructor
      */
     public void storeConfigChannels() {
-        HibernateFactory.getSession().createNativeQuery("DELETE FROM rhnServerConfigChannel WHERE server_id = :sid ;")
+        HibernateFactory.getSession()
+                .createNativeMutationQuery("DELETE FROM rhnServerConfigChannel WHERE server_id = :sid")
                 .setParameter("sid", getId())
                 .executeUpdate();
 
@@ -676,7 +677,8 @@ public class Server extends BaseDomainHelper implements Identifiable {
                     .collect(Collectors.joining(","));
 
 
-            HibernateFactory.getSession().createNativeQuery(
+            HibernateFactory.getSession()
+                    .createNativeMutationQuery(
                             "INSERT INTO rhnServerConfigChannel (server_id, config_channel_id, position) " +
                                     "VALUES " + values + ";")
                     .executeUpdate();

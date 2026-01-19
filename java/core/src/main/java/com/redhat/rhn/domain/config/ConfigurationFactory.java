@@ -350,14 +350,13 @@ public class ConfigurationFactory extends HibernateFactory {
      * @return the list of global config channels
      */
     public static List<ConfigChannel> listGlobalChannels() {
-        return  getSession().createNativeQuery("""
-                                      SELECT * from rhnConfigChannel
-                                      WHERE
-                                      confchan_type_id = :confchan_type_id_normal
-                                      OR confchan_type_id = :confchan_type_id_state
+        return  getSession().createQuery("""
+                                      FROM ConfigChannel cc
+                                      WHERE cc.configChannelType.id = :idNormal
+                                      OR cc.configChannelType.id = :idState
                                       """, ConfigChannel.class)
-                .setParameter("confchan_type_id_normal", ConfigChannelType.normal().getId(), StandardBasicTypes.LONG)
-                .setParameter("confchan_type_id_state", ConfigChannelType.state().getId(), StandardBasicTypes.LONG)
+                .setParameter("idNormal", ConfigChannelType.normal().getId())
+                .setParameter("idState", ConfigChannelType.state().getId())
                 .getResultList();
     }
 
@@ -367,8 +366,7 @@ public class ConfigurationFactory extends HibernateFactory {
      * @return the ConfigChannel found or null if not found.
      */
     public static ConfigChannel lookupConfigChannelById(Long id) {
-        Session session = HibernateFactory.getSession();
-        return session.find(ConfigChannel.class, id);
+        return getSession().find(ConfigChannel.class, id);
     }
 
     /**
@@ -382,15 +380,15 @@ public class ConfigurationFactory extends HibernateFactory {
     public static ConfigChannel lookupConfigChannelByLabel(String label,
                                                             Org org,
                                                           ConfigChannelType cct) {
-        return  getSession().createNativeQuery("""
-                                      SELECT * from rhnConfigChannel
-                                      WHERE label = :label
-                                      AND org_id = :org_id
-                                      AND confchan_type_id = :confchan_type_id
+        return  getSession().createQuery("""
+                                      FROM ConfigChannel cc
+                                      WHERE cc.label = :label
+                                      AND cc.org.id = :orgId
+                                      AND cc.configChannelType.id = :typeId
                                       """, ConfigChannel.class)
-                .setParameter("label", label, StandardBasicTypes.STRING)
-                .setParameter("org_id", org.getId(), StandardBasicTypes.LONG)
-                .setParameter("confchan_type_id", cct.getId(), StandardBasicTypes.LONG)
+                .setParameter("label", label)
+                .setParameter("orgId", org.getId())
+                .setParameter("typeId", cct.getId())
                 .uniqueResult();
     }
 
@@ -403,18 +401,16 @@ public class ConfigurationFactory extends HibernateFactory {
      */
     public static Optional<ConfigChannel> lookupGlobalConfigChannelByLabel(String label, Org org) {
 
-        return  getSession().createNativeQuery("""
-                                      SELECT * from rhnConfigChannel
-                                      WHERE label = :label
-                                      AND org_id = :org_id
-                                      AND (
-                                      confchan_type_id = :confchan_type_id_normal
-                                      OR confchan_type_id = :confchan_type_id_state)
+        return  getSession().createQuery("""
+                                      FROM ConfigChannel cc
+                                      WHERE cc.label = :label
+                                      AND cc.org.id = :orgId
+                                      AND ( cc.configChannelType.id = :idNormal OR cc.configChannelType.id = :idState)
                                       """, ConfigChannel.class)
-                .setParameter("label", label, StandardBasicTypes.STRING)
-                .setParameter("org_id", org.getId(), StandardBasicTypes.LONG)
-                .setParameter("confchan_type_id_normal", ConfigChannelType.normal().getId(), StandardBasicTypes.LONG)
-                .setParameter("confchan_type_id_state", ConfigChannelType.state().getId(), StandardBasicTypes.LONG)
+                .setParameter("label", label)
+                .setParameter("orgId", org.getId())
+                .setParameter("idNormal", ConfigChannelType.normal().getId())
+                .setParameter("idState", ConfigChannelType.state().getId())
                 .uniqueResultOptional();
     }
 
