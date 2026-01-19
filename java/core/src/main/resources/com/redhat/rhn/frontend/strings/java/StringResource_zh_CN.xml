@@ -12000,124 +12000,124 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>Unable to identify a valid migration target for the selected systems.</source>
         <target state="final">无法为所选系统识别有效的迁移目标。</target>
       </trans-unit>
-      <trans-unit id="virt.refresh_list" xml:space="preserve">
+      <trans-unit id="virt.refresh_list" xml:space="preserve" approved="yes">
         <source>Virtualization List Refresh</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">虚拟化列表刷新</target>
       </trans-unit>
-      <trans-unit id="notification.proxybackupfailed" xml:space="preserve">
+      <trans-unit id="notification.proxybackupfailed" xml:space="preserve" approved="yes">
         <source>Failed to process proxy backup event</source>
-        <target state="new"/>
+        <target state="final">代理备份事件处理失败</target>
       </trans-unit>
-      <trans-unit id="notification.proxybackupnominion" xml:space="preserve">
+      <trans-unit id="notification.proxybackupnominion" xml:space="preserve" approved="yes">
         <source>No system with {0} name</source>
-        <target state="new"/>
+        <target state="final">没有名称为 {0} 的系统</target>
       </trans-unit>
-      <trans-unit id="notification.pxeeventfailed" xml:space="preserve">
+      <trans-unit id="notification.pxeeventfailed" xml:space="preserve" approved="yes">
         <source>Processing of a PXE event for the minion {0} failed</source>
-        <target state="new"/>
+        <target state="final">受控端 {0} 的 PXE 事件处理失败</target>
       </trans-unit>
-      <trans-unit id="event.proxymigrationstarted" xml:space="preserve">
+      <trans-unit id="event.proxymigrationstarted" xml:space="preserve" approved="yes">
         <source>Proxy migration: started</source>
-        <target state="new"/>
+        <target state="final">代理迁移：已启动</target>
       </trans-unit>
-      <trans-unit id="event.proxymigrationstarteddetails" xml:space="preserve">
+      <trans-unit id="event.proxymigrationstarteddetails" xml:space="preserve" approved="yes">
         <source>Received event with client side data, starting data migration</source>
-        <target state="new"/>
+        <target state="final">接收到含客户端数据的事件，正在启动数据迁移</target>
       </trans-unit>
-      <trans-unit id="event.proxymigrationfailed" xml:space="preserve">
+      <trans-unit id="event.proxymigrationfailed" xml:space="preserve" approved="yes">
         <source>Proxy migration: failed</source>
-        <target state="new"/>
+        <target state="final">代理迁移：失败</target>
       </trans-unit>
-      <trans-unit id="event.proxymigrationfailedincomplete" xml:space="preserve">
+      <trans-unit id="event.proxymigrationfailedincomplete" xml:space="preserve" approved="yes">
         <source>Received incomplete backup data. Try retrying the migration.</source>
-        <target state="new"/>
+        <target state="final">接收到不完整的备份数据。请重试迁移操作。</target>
       </trans-unit>
-      <trans-unit id="event.proxymigrationfailedparsing" xml:space="preserve">
+      <trans-unit id="event.proxymigrationfailedparsing" xml:space="preserve" approved="yes">
         <source>Unable to parse uploaded data. See log file for details</source>
-        <target state="new"/>
+        <target state="final">无法解析上载的数据。请查看日志文件了解详细信息。</target>
       </trans-unit>
-      <trans-unit id="event.proxymigrationcreated" xml:space="preserve">
+      <trans-unit id="event.proxymigrationcreated" xml:space="preserve" approved="yes">
         <source>Proxy migration: new configuration created</source>
-        <target state="new"/>
+        <target state="final">代理迁移：已创建新配置</target>
       </trans-unit>
-      <trans-unit id="event.proxymigrationcreateddetails" xml:space="preserve">
+      <trans-unit id="event.proxymigrationcreateddetails" xml:space="preserve" approved="yes">
         <source>Reinstallation of the proxy will now autoconfigure it on the first boot</source>
-        <target state="new"/>
+        <target state="final">代理重新安装后，将在首次引导时自动完成配置</target>
       </trans-unit>
-      <trans-unit id="event.rbsmigrationstarted" xml:space="preserve">
+      <trans-unit id="event.rbsmigrationstarted" xml:space="preserve" approved="yes">
         <source>Retail Branch Server migration: started</source>
-        <target state="new"/>
+        <target state="final">零售分支服务器迁移：已启动</target>
       </trans-unit>
-      <trans-unit id="event.rbsmigrationstarteddetails" xml:space="preserve">
+      <trans-unit id="event.rbsmigrationstarteddetails" xml:space="preserve" approved="yes">
         <source>Proxy detected as a Retail Branch Server, migration started</source>
-        <target state="new"/>
+        <target state="final">检测到该代理为零售分支服务器，迁移已启动</target>
       </trans-unit>
-      <trans-unit id="event.rbsmigrationfinishedok" xml:space="preserve">
+      <trans-unit id="event.rbsmigrationfinishedok" xml:space="preserve" approved="yes">
         <source>Retail Branch Server migration: finished successfully</source>
-        <target state="new"/>
+        <target state="final">零售分支服务器迁移：成功完成</target>
       </trans-unit>
-      <trans-unit id="event.rbsmigrationfinishederror" xml:space="preserve">
+      <trans-unit id="event.rbsmigrationfinishederror" xml:space="preserve" approved="yes">
         <source>Retail Branch Server migration: finished with errors</source>
-        <target state="new"/>
+        <target state="final">零售分支服务器迁移：已完成，但出现错误</target>
       </trans-unit>
-      <trans-unit id="event.rbsmigrationfinisheddetails" xml:space="preserve">
+      <trans-unit id="event.rbsmigrationfinisheddetails" xml:space="preserve" approved="yes">
         <source>Proxy was detected to be a Retail Branch Server, branch migration was performed.<ul>{0}</ul></source>
-        <target state="new"/>
+        <target state="final">检测到该代理为零售分支服务器，已执行分支迁移。<ul>{0}</ul></target>
       </trans-unit>
-      <trans-unit id="event.rbsmigrationfailed" xml:space="preserve">
+      <trans-unit id="event.rbsmigrationfailed" xml:space="preserve" approved="yes">
         <source>Retail Branch Server migration: failed</source>
-        <target state="new"/>
+        <target state="final">零售分支服务器迁移：失败</target>
       </trans-unit>
-      <trans-unit id="event.rbsmigrationfaileddetails" xml:space="preserve">
+      <trans-unit id="event.rbsmigrationfaileddetails" xml:space="preserve" approved="yes">
         <source>Failed to migrate the branch server. See log files for details.</source>
-        <target state="new"/>
+        <target state="final">分支服务器迁移失败。请查看日志文件了解详细信息。</target>
       </trans-unit>
-      <trans-unit id="event.proxymigrationfinished" xml:space="preserve">
+      <trans-unit id="event.proxymigrationfinished" xml:space="preserve" approved="yes">
         <source>Proxy migration: finished</source>
-        <target state="new"/>
+        <target state="final">代理迁移：已完成</target>
       </trans-unit>
-      <trans-unit id="event.proxymigrationfinisheddetails" xml:space="preserve">
+      <trans-unit id="event.proxymigrationfinisheddetails" xml:space="preserve" approved="yes">
         <source>All data were migrated. Proceed with reinstallation of the proxy host.</source>
-        <target state="new"/>
+        <target state="final">所有数据均已迁移。请继续执行代理主机的重新安装操作。</target>
       </trans-unit>
-      <trans-unit id="event.pxemigrationnoentries" xml:space="preserve">
+      <trans-unit id="event.pxemigrationnoentries" xml:space="preserve" approved="yes">
         <source>No PXE entries found in a backup configuration for branch {0}</source>
-        <target state="new"/>
+        <target state="final">在分支 {0} 的备份配置中未找到 PXE 条目</target>
       </trans-unit>
-      <trans-unit id="event.pxemigrationlost" xml:space="preserve">
+      <trans-unit id="event.pxemigrationlost" xml:space="preserve" approved="yes">
         <source>Lost and found: system with HW address {0} in branch {1} was not found as registered system.</source>
-        <target state="new"/>
+        <target state="final">异常记录：检测到分支 {1} 中硬件地址为 {0} 的系统不是已注册系统。</target>
       </trans-unit>
-      <trans-unit id="event.pxemigrationduplicate" xml:space="preserve">
+      <trans-unit id="event.pxemigrationduplicate" xml:space="preserve" approved="yes">
         <source>Multiple minions found with the same MAC address {0}. Cannot choose one, ignoring</source>
-        <target state="new"/>
+        <target state="final">发现多个受控端使用相同的 MAC 地址 {0}。无法选择单个受控端，已忽略</target>
       </trans-unit>
-      <trans-unit id="event.pxemigrationnogroup" xml:space="preserve">
+      <trans-unit id="event.pxemigrationnogroup" xml:space="preserve" approved="yes">
         <source>Not processing minion '{0}' as it is not part of a branch group.</source>
-        <target state="new"/>
+        <target state="final">不处理受控端 '{0}'，因为其不属于分支组。</target>
       </trans-unit>
-      <trans-unit id="event.pxemigrationnoimage" xml:space="preserve">
+      <trans-unit id="event.pxemigrationnoimage" xml:space="preserve" approved="yes">
         <source>Image not found: system '{0}' is using unknown image '{1}'. Using default boot image.</source>
-        <target state="new"/>
+        <target state="final">未找到映像：系统 '{0}' 正在使用未知映像 '{1}'。已启用默认引导映像。</target>
       </trans-unit>
-      <trans-unit id="event.pxemigrationsaltboot" xml:space="preserve">
+      <trans-unit id="event.pxemigrationsaltboot" xml:space="preserve" approved="yes">
         <source>Failed to create Saltboot system: {0}</source>
-        <target state="new"/>
+        <target state="final">Saltboot 系统创建失败：{0}</target>
       </trans-unit>
-      <trans-unit id="rbsmigration.lostfounddescription" xml:space="preserve">
+      <trans-unit id="rbsmigration.lostfounddescription" xml:space="preserve" approved="yes">
         <source>Collection of systems not registered, but present in branch {0} pxe entries.</source>
-        <target state="new"/>
+        <target state="final">未注册但存在于分支 {0} PXE 条目中的系统集合。</target>
       </trans-unit>
-    <trans-unit id="Access Control" xml:space="preserve">
+      <trans-unit id="Access Control" xml:space="preserve" approved="yes">
         <source>Access Control</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">访问控制</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
