@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-16 09:56+0100\n"
-"PO-Revision-Date: 2026-01-19 07:04+0000\n"
+"PO-Revision-Date: 2026-01-19 10:04+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/zh_CN/>\n"
 "Language: zh_CN\n"
@@ -4168,7 +4168,7 @@ msgstr "过滤器"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:92
 msgid "Attach/Detach Filters"
-msgstr "挂接/分离过滤器"
+msgstr "关联过滤器/解除过滤器关联"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:109
 msgid "Filter edited successfully"
