@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-16 09:56+0100\n"
-"PO-Revision-Date: 2026-01-06 12:04+0000\n"
+"PO-Revision-Date: 2026-01-19 07:04+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/zh_CN/>\n"
 "Language: zh_CN\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.15.1\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #: ../html/javascript/spacewalk-essentials.js:409
 msgid "remaining"
@@ -34,8 +34,6 @@ msgstr "不支持 Internet Explorer 浏览器。请尝试使用 Firefox、Chrome
 #: ../html/src/manager/state/highstate.tsx:63
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure.tsx:60
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:67
-#, fuzzy
-#| msgid "Action has been successfully added to the action chain <link>'{name}'</link>."
 msgid "Action has been successfully added to the action chain <link>\"{name}\"</link>."
 msgstr "操作已成功添加到操作链 <link>\"{name}\"</link>。"
 
@@ -93,10 +91,8 @@ msgid "Formula saved. Applying the highstate is not needed for this formula."
 msgstr "公式已保存。无需对此公式应用 highstate。"
 
 #: ../html/src/components/FormulaForm.tsx:134
-#, fuzzy
-#| msgid "Multiple Group formulas detected. Only one formula for \"{0}\" can be used on each system!"
 msgid "Multiple Group formulas detected. Only one formula for \"{name}\" can be used on each system!"
-msgstr "检测到多个组公式。在每个系统上只能对 \"{0}\" 使用一个公式！"
+msgstr "检测到多个组公式。每个系统上仅可使用 \"{name}\" 的一个公式！"
 
 #: ../html/src/components/FormulaForm.tsx:165
 msgid "Please input required fields: {fields}"
@@ -198,7 +194,7 @@ msgstr "认证"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:41
 msgid "No attestation report available. Schedule an execution to create one."
-msgstr ""
+msgstr "无可用认证报告。请安排执行以创建报告。"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:48
 msgid "Attestation"
@@ -734,7 +730,7 @@ msgstr "访问令牌已复制到剪贴板"
 #. Vendor channels can't sync orgs
 #: ../html/src/components/hub/ChannelSelectorTable.tsx:33
 msgid "Vendor"
-msgstr ""
+msgstr "供应商"
 
 #: ../html/src/components/hub/ChannelSelectorTable.tsx:50
 msgid "Select Organization"
@@ -1627,6 +1623,10 @@ msgid ""
 "            other {<dropdown></dropdown> of # pages}\n"
 "        }"
 msgstr ""
+"{total, plural,\n"
+"            one {第 <dropdown></dropdown> 页，共 # 页}\n"
+"            other {第 <dropdown></dropdown> 页，共 # 页}\n"
+"        }"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:56
 msgid "Sunday"
@@ -1890,11 +1890,11 @@ msgstr "编辑通道排名"
 
 #: ../html/src/components/states-picker.tsx:446
 msgid "Edit the ranking of the states by dragging them. They are listed in order from highest to lowest rank. In other words, the bottom ones will be applied first."
-msgstr ""
+msgstr "可通过拖拽调整状态的排名。状态按排名从高到低的顺序列出，即下方的状态将优先应用。"
 
 #: ../html/src/components/states-picker.tsx:449
 msgid "Edit the ranking of the configuration channels by dragging them. They are listed in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it. In other words, the bottom ones will be applied first."
-msgstr ""
+msgstr "可通过拖拽调整配置通道的排名。通道按排名从高到低的顺序列出。某一通道中的文件将覆盖其下方通道中文件路径和文件名相同的文件。即下方的通道将优先应用。"
 
 #: ../html/src/components/states-picker.tsx:455
 msgid "There are no states assigned."
@@ -2141,6 +2141,10 @@ msgid ""
 "            other {{fooCount} items}\n"
 "          }."
 msgstr ""
+"数字表述统一使用复数形式：{fooCount, plural,\n"
+"            one {仅 1 项}\n"
+"            other {{fooCount} 项}\n"
+"          }。"
 
 #: ../html/src/core/intl/index.test.tsx:9
 msgid "foo"
@@ -2157,14 +2161,12 @@ msgstr "foo {insert} bar"
 
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:51
 msgid "An unexpected error occurred while fetching organizations."
-msgstr ""
+msgstr "提取组织时发生意外错误。"
 
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:64
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:51
-#, fuzzy
-#| msgid "An error occurred while displaying the list of packages."
 msgid "An unexpected error occurred while fetching access groups."
-msgstr "显示软件包列表时发生错误。"
+msgstr "提取访问组时发生意外错误。"
 
 #. Value options for filtering by Target Type in recurring actions list
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:131
@@ -2179,120 +2181,94 @@ msgid "Organization"
 msgstr "组织"
 
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:134
-#, fuzzy
-#| msgid "Select Organization"
 msgid "Search for organizations..."
-msgstr "选择组织"
+msgstr "搜索组织..."
 
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:135
-#, fuzzy
-#| msgid "Organizations"
 msgid "No Organizations Found"
-msgstr "组织"
+msgstr "未找到组织"
 
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:144
 msgid "Copy Permissions From"
-msgstr ""
+msgstr "从以下对象复制权限："
 
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:147
 msgid "Search for existing access groups..."
-msgstr ""
+msgstr "搜索现有访问组..."
 
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:148
-#, fuzzy
-#| msgid " No group"
 msgid "No Access group"
-msgstr " 无组"
+msgstr "无访问组"
 
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:156
 msgid "This action copy permissions from an existing access group to a new one. Once created, the new access group will function independently, unaffected by future updates to the original."
-msgstr ""
+msgstr "此操作会从现有访问组将权限复制到新访问组。新访问组创建后将独立运行，不受原访问组后续更新的影响。"
 
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:71
 msgid "Edit Access Group"
-msgstr ""
+msgstr "编辑访问组"
 
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:76
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:134
-#, fuzzy
-#| msgid "Deleted successfully."
 msgid "Delete Access Group"
-msgstr "已成功删除。"
+msgstr "删除访问组"
 
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:88
-#, fuzzy
-#| msgid "Management"
 msgid "Access Group Management"
-msgstr "管理"
+msgstr "访问组管理"
 
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:93
 msgid "Create Access Group"
-msgstr ""
+msgstr "创建访问组"
 
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:104
-#, fuzzy
-#| msgid "No subscriptions found."
 msgid "No Access Group found."
-msgstr "找不到订阅。"
+msgstr "未找到访问组。"
 
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:105
-#, fuzzy
-#| msgid "Filter by description"
 msgid "Filter by name or description"
-msgstr "按说明过滤"
+msgstr "按名称或说明过滤"
 
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:127
-#, fuzzy
-#| msgid "Version"
 msgid "permissions"
-msgstr "版本"
+msgstr "权限"
 
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:135
-#, fuzzy
-#| msgid "Are you sure you want to delete the selected store?"
 msgid "Are you sure you want to delete the selected Access Group?"
-msgstr "您确定要删除选定的存储区吗？"
+msgstr "您确定要删除所选访问组吗？"
 
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:155
-#, fuzzy
-#| msgid "An error occurred while displaying the list of packages."
 msgid "An unexpected error occurred while fetching namespaces."
-msgstr "显示软件包列表时发生错误。"
+msgstr "提取名称空间时发生意外错误。"
 
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:216
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:363
 msgid "API"
-msgstr ""
+msgstr "API"
 
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:219
 msgid "Web"
-msgstr ""
+msgstr "Web"
 
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:222
-#, fuzzy
-#| msgid "Delete selected"
 msgid "Only selected"
-msgstr "删除选定项"
+msgstr "仅选中项"
 
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:282
 #: ../html/src/manager/admin/access-control/access-group-review.tsx:128
 #: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:255
-#, fuzzy
-#| msgid "Expand All Sections"
 msgid "Expand All"
-msgstr "展开所有部分"
+msgstr "全部展开"
 
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:282
 #: ../html/src/manager/admin/access-control/access-group-review.tsx:128
 #: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:255
-#, fuzzy
-#| msgid "Collapse All Sections"
 msgid "Collapse All"
-msgstr "折叠所有部分"
+msgstr "全部折叠"
 
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:338
 msgid "Review and modify the permissions for this custom group as needed."
-msgstr ""
+msgstr "查看并根据需要修改此自定义组的权限。"
 
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:347
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:195
@@ -2304,10 +2280,8 @@ msgstr "按名称过滤"
 
 #: ../html/src/manager/admin/access-control/access-group-review.tsx:160
 #: ../html/src/manager/admin/access-control/access-group-user.tsx:134
-#, fuzzy
-#| msgid "systems selected"
 msgid "No Users selected."
-msgstr "个系统已选定"
+msgstr "未选择用户。"
 
 #: ../html/src/manager/admin/access-control/access-group-review.tsx:163
 #: ../html/src/manager/admin/access-control/access-group-user.tsx:137
@@ -2317,58 +2291,44 @@ msgstr "电子邮件"
 
 #: ../html/src/manager/admin/access-control/access-group-review.tsx:164
 #: ../html/src/manager/admin/access-control/access-group-user.tsx:138
-#, fuzzy
-#| msgid "Channel Name"
 msgid "Real Name"
-msgstr "通道名称"
+msgstr "真实姓名"
 
 #: ../html/src/manager/admin/access-control/access-group-review.tsx:171
-#, fuzzy
-#| msgid "No profile selected"
 msgid "No permissions selected."
-msgstr "未选择配置文件"
+msgstr "未选择权限。"
 
 #: ../html/src/manager/admin/access-control/access-group-tab-container.tsx:49
 msgid "Update Access Group"
-msgstr ""
+msgstr "更新访问组"
 
 #: ../html/src/manager/admin/access-control/access-group-user.tsx:48
-#, fuzzy
-#| msgid "An error occurred on save."
 msgid "An unexpected error occurred while fetching users."
-msgstr "保存时出错。"
+msgstr "提取用户时发生意外错误。"
 
 #: ../html/src/manager/admin/access-control/access-group-user.tsx:118
-#, fuzzy
-#| msgid "Search in states"
 msgid "Search & Add Users"
-msgstr "在状态中搜索"
+msgstr "搜索并添加用户"
 
 #: ../html/src/manager/admin/access-control/access-group.tsx:173
-#, fuzzy
-#| msgid "Schedule successfully created."
 msgid "Access Group successfully created."
-msgstr "成功创建日程安排。"
+msgstr "访问组创建成功。"
 
 #: ../html/src/manager/admin/access-control/access-group.tsx:195
 msgid "Namespaces & Permissions"
-msgstr ""
+msgstr "名称空间及权限"
 
 #: ../html/src/manager/admin/access-control/access-group.tsx:211
-#, fuzzy
-#| msgid "Overview"
 msgid "Review"
-msgstr "概述"
+msgstr "查看"
 
 #: ../html/src/manager/admin/access-control/access-group.tsx:219
-#, fuzzy
-#| msgid "Schedule Details"
 msgid "Access Group Details"
-msgstr "日程安排细节"
+msgstr "访问组详细信息"
 
 #: ../html/src/manager/admin/access-control/access-group.tsx:224
 msgid "Create: Access Group"
-msgstr ""
+msgstr "创建：访问组"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:20
 msgid "Restart is needed for the configuration changes to take effect."
@@ -2577,13 +2537,11 @@ msgstr "Hub 细节"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:80
 msgid "No hub is currently configured for this server. Refresh this page after configuring this server as a peripheral, to see the hub details"
-msgstr ""
+msgstr "此服务器目前未配置 Hub。将此服务器配置为外设后，请刷新此页面以查看 Hub 详细信息"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:89
-#, fuzzy
-#| msgid "This server is currently registered as peripheral of hub {fqdn}. "
 msgid "This server is currently registered as peripheral of hub {fqdn}. This page shows the details of the hub server."
-msgstr "此服务器目前注册为 Hub {fqdn} 的外设。 "
+msgstr "此服务器目前注册为 Hub {fqdn} 的外设。此页面显示该 Hub 服务器的详细信息。"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:108
 msgid "Successfully scheduled a channels synchronization."
@@ -2606,10 +2564,8 @@ msgid "{fqdn} - Peripheral Details"
 msgstr "{fqdn} - 外设详细信息"
 
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:51
-#, fuzzy
-#| msgid "The server {fqdn} is currently registered as peripheral of this hub. "
 msgid "The server {fqdn} is currently registered as peripheral of this hub. This page shows the details of the peripheral server."
-msgstr "服务器 {fqdn} 目前注册为此 Hub 的外设。 "
+msgstr "服务器 {fqdn} 目前注册为此 Hub 的外设。此页面显示该外设服务器的详细信息。"
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:24
 msgid "Peripherals Configuration"
@@ -2841,10 +2797,8 @@ msgid "Selected channels were scheduled successfully for syncing."
 msgstr "已成功安排同步选定的通道。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:269
-#, fuzzy
-#| msgid "The following channel installations for '{product}' failed. Please check log files."
 msgid "The following channel installations for \"{product}\" failed. Please check log files."
-msgstr "\"{product}\" 的下列通道安装失败。请检查日志文件。"
+msgstr "\"{product}\" 的下列通道安装失败。请查看日志文件。"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:296
 msgid "A refresh of the product data is currently running in the background. Please try again later."
@@ -3148,10 +3102,8 @@ msgid "AppStreams"
 msgstr "AppStreams"
 
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:59
-#, fuzzy
-#| msgid "Please review the changes below before scheduling an action to apply the changes on the system."
 msgid "Please review the changes below before scheduling an action to apply the changes."
-msgstr "请先查看下面的更改，然后再安排执行某个操作以在系统上应用这些更改。"
+msgstr "请先查看下面的更改，然后再安排执行某个操作以应用这些更改。"
 
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:77
 msgid "Streams to be enabled:"
@@ -3182,20 +3134,16 @@ msgid "Affected, patches available in channels which are not assigned"
 msgstr "受影响，通道中有可用补丁，但未指派"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:45
-#, fuzzy
-#| msgid "The client is affected by a vulnerability and we have a patch for it,"
 msgid "The client is affected by a vulnerability and we have a patch for it, but the channel(s) offering the patch are not assigned to the client."
-msgstr "该客户端受到某个漏洞的影响，我们已针对它提供了一个补丁，"
+msgstr "客户端存在漏洞且已有对应补丁，但提供该补丁的通道未分配给此客户端。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:51
 msgid "Affected, patches available in a Product Migration target"
 msgstr "受影响，产品迁移目标中有可用补丁"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:53
-#, fuzzy
-#| msgid "The client is affected by a vulnerability and we have a patch for it,"
 msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch requires migrating the product to a newer version."
-msgstr "该客户端受到某个漏洞的影响，我们已针对它提供了一个补丁，"
+msgstr "客户端存在漏洞且已有对应补丁，但应用补丁需要将产品升级至更新版本。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:59
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:60
@@ -3231,20 +3179,16 @@ msgid "Affected, patch is unavailable in relevant channels"
 msgstr "受影响，相关通道中未提供补丁"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:81
-#, fuzzy
-#| msgid "The client is affected by a vulnerability for which a patch has not yet been released."
 msgid "The client is affected by a vulnerability for which a patch has been released, but the patch can't be found in the relevant channels."
-msgstr "该客户端受到某个漏洞的影响，尚未针对该漏洞发布补丁。"
+msgstr "客户端存在漏洞且对应补丁已发布，但在相关通道中未找到该补丁。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:87
 msgid "Affected, partial patch available in assigned channel"
 msgstr "受影响，指派的通道中提供了局部补丁"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:89
-#, fuzzy
-#| msgid "The client is affected by a vulnerability and we have a patch for it,"
 msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch will only update some of the vulnerable packages."
-msgstr "该客户端受到某个漏洞的影响，我们已针对它提供了一个补丁，"
+msgstr "客户端存在漏洞且已有对应补丁，但应用该补丁仅能更新部分存在漏洞的软件包。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:95
 msgid "Unknown, CVE metadata not available"
@@ -4395,26 +4339,20 @@ msgid "The page you requested, {currentUrl}, was not found."
 msgstr "未找到您请求的页面 {currentUrl}。"
 
 #: ../html/src/manager/errors/not-found.tsx:10
-#, fuzzy
-#| msgid "If you typed this address into your browser, double-check the spelling and capitalization."
 msgid "If you typed this address into your browser, double-check the spelling and capitalization. The address you are copying may also be outdated."
-msgstr "如果您是手动在浏览器中输入的地址，请核对拼写和大小写。"
+msgstr "如果您是手动在浏览器中输入此地址，请仔细检查拼写和大小写。您复制的地址也可能已过期。"
 
 #: ../html/src/manager/errors/not-found.tsx:16
-#, fuzzy
-#| msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
 msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your browser to try a different link, or use the top (or left) navigation bars to find the page you are looking for."
-msgstr "如果您是通过链接跳转至此，则表明链接可能不正确或已过期。请单击浏览器的后退按钮 "
+msgstr "如果您是通过链接跳转至此页面，该链接可能有误或已过期。请单击浏览器的 \"后退\" 按钮尝试其他链接，或通过顶部（或左侧）导航栏查找目标页面。"
 
 #: ../html/src/manager/errors/not-found.tsx:23
 msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top (or left) navigation bars to find the page you are looking for, and if you find the document be sure to update your bookmark."
 msgstr "如果您使用的是书签，该页面可能自创建书签以来已移到其他位置。请使用顶部（或左侧）导航栏找到所需的页面；如果您要查找文档，请务必更新书签。"
 
 #: ../html/src/manager/errors/not-found.tsx:30
-#, fuzzy
-#| msgid "If you feel you've reached this page in error, please contact us with details of how you received "
 msgid "If you feel you've reached this page in error, please contact us with details of how you received this message."
-msgstr "如果您认为误进入此页面，请联系我们并详细说明访问路径 "
+msgstr "如果您认为误进入此页面，请联系我们并告知您收到此消息的相关详细信息。"
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.tsx:27
 msgid "Applying the config channels has been scheduled for each minion server in this group"
@@ -4841,10 +4779,8 @@ msgstr "编辑存储区"
 
 #: ../html/src/manager/images/image-view-overview.tsx:469
 #: ../html/src/manager/images/image-view.tsx:756
-#, fuzzy
-#| msgid "Instance Details for '{name}'"
 msgid "Instance Details for \"{name}\""
-msgstr "\"{name}\" 的实例细节"
+msgstr "\"{name}\" 的实例详细信息"
 
 #: ../html/src/manager/images/image-view-overview.tsx:524
 #: ../html/src/manager/images/image-view-overview.tsx:525
@@ -5280,8 +5216,6 @@ msgid "Current Schedule"
 msgstr "当前日程安排"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:117
-#, fuzzy
-#| msgid "Url '{url}' is invalid"
 msgid "Url \"{url}\" is invalid"
 msgstr "URL \"{url}\" 无效"
 
@@ -5504,10 +5438,8 @@ msgid "Nothing configured. Please add paths in the "
 msgstr "未配置任何设置。请在以下位置添加路径 "
 
 #: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:197
-#, fuzzy
-#| msgid "Add Peripheral"
 msgid "Add Variable"
-msgstr "添加外设"
+msgstr "添加变量"
 
 #: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:222
 #: ../html/src/manager/minion/ansible/variables/boolean-editor.tsx:48
@@ -5517,22 +5449,16 @@ msgstr "True"
 
 #: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:226
 #: ../html/src/manager/minion/ansible/variables/boolean-editor.tsx:51
-#, fuzzy
-#| msgid "false"
 msgid "False"
 msgstr "False"
 
 #: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:244
-#, fuzzy
-#| msgid "Edit "
 msgid "Edit YAML"
-msgstr "编辑 "
+msgstr "编辑 YAML"
 
 #: ../html/src/manager/minion/ansible/edit-ansible-vars-modal.tsx:65
-#, fuzzy
-#| msgid "Edit profile"
 msgid "Edit variables"
-msgstr "编辑配置文件"
+msgstr "编辑变量"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:139
 msgid "Loading playbook contents.."
@@ -5558,20 +5484,14 @@ msgid "Change Playbook"
 msgstr "更改剧本"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:167
-#, fuzzy
-#| msgid "Change Playbook"
 msgid "Choose a different Playbook"
-msgstr "更改剧本"
+msgstr "选择其他剧本"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:173
-#, fuzzy
-#| msgid "Select the current Playbook"
 msgid "Save the current Playbook"
-msgstr "选择当前剧本"
+msgstr "保存当前剧本"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:183
-#, fuzzy
-#| msgid "Playbook '{name}'"
 msgid "Playbook \"{name}\""
 msgstr "剧本 \"{name}\""
 
@@ -5605,75 +5525,53 @@ msgstr "剧本的执行已"
 
 #: ../html/src/manager/minion/ansible/variables/boolean-editor.tsx:27
 #: ../html/src/manager/minion/ansible/variables/boolean-editor.tsx:56
-#, fuzzy
-#| msgid "Add token"
 msgid "Add Boolean"
-msgstr "添加令牌"
+msgstr "添加布尔值"
 
 #: ../html/src/manager/minion/ansible/variables/dictionary-editor.tsx:93
 msgid "Key-Value Pairs"
-msgstr ""
+msgstr "键值对"
 
 #: ../html/src/manager/minion/ansible/variables/dictionary-editor.tsx:115
-#, fuzzy
-#| msgid "Add item"
 msgid "Add Item"
 msgstr "添加项"
 
 #: ../html/src/manager/minion/ansible/variables/dictionary-editor.tsx:120
-#, fuzzy
-#| msgid "Delete Image"
 msgid "Delete Item"
-msgstr "删除映像"
+msgstr "删除项"
 
 #: ../html/src/manager/minion/ansible/variables/dictionary-editor.tsx:131
-#, fuzzy
-#| msgid "Add Calendar"
 msgid "Add Key-Value Pair"
-msgstr "添加日历"
+msgstr "添加键值对"
 
 #: ../html/src/manager/minion/ansible/variables/dictionary-editor.tsx:131
-#, fuzzy
-#| msgid "Add token"
 msgid "Add Dictionary"
-msgstr "添加令牌"
+msgstr "添加字典"
 
 #: ../html/src/manager/minion/ansible/variables/list-editor.tsx:49
-#, fuzzy
-#| msgid "Systems"
 msgid "Items"
-msgstr "系统"
+msgstr "项"
 
 #: ../html/src/manager/minion/ansible/variables/list-editor.tsx:69
-#, fuzzy
-#| msgid "Add item"
 msgid "Add List Item"
-msgstr "添加项"
+msgstr "添加列表项"
 
 #: ../html/src/manager/minion/ansible/variables/list-editor.tsx:76
-#, fuzzy
-#| msgid "Delete cluster"
 msgid "Delete List Item"
-msgstr "删除群集"
+msgstr "删除列表项"
 
 #: ../html/src/manager/minion/ansible/variables/list-editor.tsx:87
-#, fuzzy
-#| msgid "Add item"
 msgid "Add List"
-msgstr "添加项"
+msgstr "添加列表"
 
 #: ../html/src/manager/minion/ansible/variables/string-editor.tsx:31
 #: ../html/src/manager/minion/ansible/variables/string-editor.tsx:58
-#, fuzzy
-#| msgid "Add token"
 msgid "Add String"
-msgstr "添加令牌"
+msgstr "添加字符串"
 
 #: ../html/src/manager/minion/ansible/variables/string-editor.tsx:36
-#, fuzzy
-#| msgid "New value"
 msgid "Name and value"
-msgstr "新值"
+msgstr "名称和值"
 
 #: ../html/src/manager/minion/coco/coco-settings.tsx:66
 msgid "Settings"
@@ -6056,7 +5954,7 @@ msgstr "安装程序临时修复 (PTF)"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:27
 msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. These packages are only meant to address a specific open issue. Please follow the instructions from customer support before proceeding with the installation."
-msgstr ""
+msgstr "以下程序临时修复 (PTF) 可安装至此系统。此类软件包仅用于解决特定已知问题。请先按照客户支持提供的说明操作，然后再进行安装。"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:31
 msgid "No Program Temporary Fixes (PTFs) available."
@@ -6076,7 +5974,7 @@ msgstr "去除程序临时修复 (PTF)"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:27
 msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. These PTFs may be scheduled for removal by selecting them and clicking \"Remove PTF\" below. Please note that removing any non-obsolete PTF will result in the installation of the most recent versions of the packages that are part of the PTF."
-msgstr ""
+msgstr "该系统目前已安装以下程序临时修复 (PTF)。可选中需要去除的 PTF 并单击下方 \"去除 PTF\" 以安排去除操作。请注意，去除任何非过时的 PTF 将导致安装该 PTF 所包含软件包的最新版本。"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:32
 msgid "No Program Temporary Fixes (PTFs) installed."
@@ -6518,10 +6416,8 @@ msgid "Flush fact cache:"
 msgstr "刷新事实缓存："
 
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:126
-#, fuzzy
-#| msgid "Disable"
 msgid "Variables"
-msgstr "禁用"
+msgstr "变量"
 
 #. Value options for filtering by Action Type in recurring actions list
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:10
@@ -6829,53 +6725,39 @@ msgstr "系统类型"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-channel-selection.tsx:16
 msgid "No modular channels are available for the selected systems in SSM."
-msgstr ""
+msgstr "SSM 中的所选系统没有可用模块化通道。"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-channel-selection.tsx:19
-#, fuzzy
-#| msgid "Select Channels"
 msgid "Select Channel"
 msgstr "选择通道"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-channel-selection.tsx:21
 msgid "First, select the channel containing the AppStreams to be configured upon the selected systems."
-msgstr ""
+msgstr "首先，请选择包含要在所选系统上配置的 AppStream 的通道。"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:18
-#, fuzzy
-#| msgid "Base Channel"
 msgid "Change Channel"
-msgstr "基础通道"
+msgstr "更改通道"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:21
-#, fuzzy
-#| msgid "Config channel"
 msgid "Change channel"
-msgstr "配置通道"
+msgstr "更改通道"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:74
-#, fuzzy
-#| msgid "The following AppStream modules are currently available to the system."
 msgid "The following AppStream modules are available on the selected channel."
-msgstr "以下 AppStream 模块目前可用于该系统。"
+msgstr "所选通道中提供以下 AppStream 模块。"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:98
-#, fuzzy
-#| msgid "AppStreams"
 msgid "({count} AppStreams)"
-msgstr "AppStreams"
+msgstr "（{count} 个 AppStream）"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:123
-#, fuzzy
-#| msgid "No change"
 msgid "Don't change"
-msgstr "无更改"
+msgstr "不更改"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:135
-#, fuzzy
-#| msgid "Enable"
 msgid "Enable "
-msgstr "启用"
+msgstr "启用 "
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:41
 msgid "Error Details"
@@ -6883,17 +6765,15 @@ msgstr "错误细节"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:51
 msgid "Standard Output:"
-msgstr ""
+msgstr "标准输："
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:67
 msgid "Standard Error:"
-msgstr ""
+msgstr "标准错误："
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:83
-#, fuzzy
-#| msgid "Result Type:"
 msgid "Result:"
-msgstr "结果类型："
+msgstr "结果："
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:340
 msgid "Request interrupted or invalid response received from the server. Please check if your minion was bootstrapped correctly."
@@ -7168,10 +7048,8 @@ msgid "Product Migration - Schedule"
 msgstr "产品迁移 - 安排"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:105
-#, fuzzy
-#| msgid "Base Product"
 msgid "Unknown base product"
-msgstr "基础产品"
+msgstr "未知基础产品"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:119
 msgid "Show product details"
