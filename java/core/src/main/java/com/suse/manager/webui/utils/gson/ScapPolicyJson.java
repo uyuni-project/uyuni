@@ -23,8 +23,8 @@ public class ScapPolicyJson {
     /** The earliest execution date (serialized as a String) */
     private String earliest; // Changed to String for manual transformation
 
-    /** The SCAP xccdf data stream name */
-    private String dataStreamName;
+    /** The SCAP content ID */
+    private Long scapContentId;
 
     /** The XCCDF profile ID */
     private String xccdfProfileId;
@@ -44,12 +44,12 @@ public class ScapPolicyJson {
     /** Whether to fetch remote resources during SCAP scan */
     private Boolean fetchRemoteResources;
 
-    public String getDataStreamName() {
-        return dataStreamName;
+    public Long getScapContentId() {
+        return scapContentId;
     }
 
-    public void setDataStreamName(String dataStreamNameIn) {
-        this.dataStreamName = dataStreamNameIn;
+    public void setScapContentId(Long scapContentIdIn) {
+        this.scapContentId = scapContentIdIn;
     }
 
     public String getXccdfProfileId() {
@@ -143,7 +143,7 @@ public class ScapPolicyJson {
         return "ScapPolicyJson{" +
                 "policyName='" + policyName + '\'' +
                 ", earliest='" + earliest + '\'' +
-                ", dataStreamName='" + dataStreamName + '\'' +
+                ", scapContentId=" + scapContentId +
                 ", xccdfProfileId='" + xccdfProfileId + '\'' +
                 ", tailoringFile='" + tailoringFile + '\'' +
                 ", tailoringProfileId='" + tailoringProfileId + '\'' +

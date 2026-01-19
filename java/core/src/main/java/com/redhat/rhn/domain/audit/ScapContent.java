@@ -15,7 +15,7 @@
 package com.redhat.rhn.domain.audit;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
-import com.redhat.rhn.domain.org.Org;
+
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -25,8 +25,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
+
 import javax.persistence.Table;
 
 /**
@@ -41,7 +40,6 @@ public class ScapContent extends BaseDomainHelper {
     private String dataStreamFileName;
     private String xccdfFileName;
     private String description;
-    private Org org;
 
     /**
      * ScapContent Default constructor
@@ -65,10 +63,7 @@ public class ScapContent extends BaseDomainHelper {
      */
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suse_scap_content_seq")
-    @SequenceGenerator(name = "suse_scap_content_seq",
-            sequenceName = "suse_scap_content_id_seq",
-            allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }
@@ -149,23 +144,7 @@ public class ScapContent extends BaseDomainHelper {
         this.description = descriptionIn;
     }
 
-    /**
-     * Gets the organization.
-     * @return the org
-     */
-    @ManyToOne
-    @javax.persistence.JoinColumn(name = "org_id")
-    public Org getOrg() {
-        return org;
-    }
 
-    /**
-     * Sets the organization.
-     * @param orgIn the org to set
-     */
-    public void setOrg(Org orgIn) {
-        this.org = orgIn;
-    }
 
     /**
      * {@inheritDoc}
@@ -183,7 +162,6 @@ public class ScapContent extends BaseDomainHelper {
         ScapContent castOther = (ScapContent) other;
         return new EqualsBuilder()
                 .append(name, castOther.name)
-                .append(org, castOther.org)
                 .isEquals();
     }
 
@@ -194,7 +172,6 @@ public class ScapContent extends BaseDomainHelper {
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
                 .append(name)
-                .append(org)
                 .toHashCode();
     }
 

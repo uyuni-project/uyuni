@@ -15,13 +15,13 @@ public class XccdfRuleFix {
     private Long id;
     private String identifier;
     private String remediation;
-    private String benchMarkId;
+    private String benchmarkIdentifier;
     public XccdfRuleFix() {
 
     }
 
-    public XccdfRuleFix(String benchMarkIdIn, String identifierIn, String fixIn) {
-        this.benchMarkId = benchMarkIdIn;
+    public XccdfRuleFix(String benchmarkIdentifierIn, String identifierIn, String fixIn) {
+        this.benchmarkIdentifier = benchmarkIdentifierIn;
         this.identifier = identifierIn;
         this.remediation = fixIn;
     }
@@ -36,13 +36,13 @@ public class XccdfRuleFix {
         return id;
     }
 
-    @Column(name = "benchmark_id")
-    public String getBenchMarkId() {
-        return benchMarkId;
+    @Column(name = "benchmark_identifier")
+    public String getBenchmarkIdentifier() {
+        return benchmarkIdentifier;
     }
 
-    public void setBenchMarkId(String benchMarkId) {
-        this.benchMarkId = benchMarkId;
+    public void setBenchmarkIdentifier(String benchmarkIdentifier) {
+        this.benchmarkIdentifier = benchmarkIdentifier;
     }
 
     @Column(name = "identifier")
@@ -74,7 +74,7 @@ public class XccdfRuleFix {
 
         XccdfRuleFix castOther = (XccdfRuleFix) other;
         return new EqualsBuilder()
-                .append(benchMarkId, castOther.benchMarkId)
+                .append(benchmarkIdentifier, castOther.benchmarkIdentifier)
                 .append(identifier, castOther.identifier)
                 .isEquals();
     }
@@ -84,7 +84,7 @@ public class XccdfRuleFix {
      */
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
-                .append(benchMarkId)
+                .append(benchmarkIdentifier)
                 .append(identifier)
                 .toHashCode();
     }

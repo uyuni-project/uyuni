@@ -24,9 +24,8 @@ public class ScapPolicy extends BaseDomainHelper {
     // The description of the SCAP policy
     private String description;
 
-    // The name of the data stream associated with the SCAP policy
-    @Expose
-    private String dataStreamName;
+    // Reference to the SCAP content file used by this policy
+    private ScapContent scapContent;
 
     // The XCCDF profile ID used by this SCAP policy
     private String xccdfProfileId;
@@ -60,12 +59,12 @@ public class ScapPolicy extends BaseDomainHelper {
     /**
      * Constructor for creating a ScapPolicy with the essential details.
      * @param policyName the name of the policy
-     * @param dataStreamName the name of the data stream
+     * @param scapContent the SCAP content
      * @param xccdfProfileId the XCCDF profile ID
      */
-    public ScapPolicy(String policyName, String dataStreamName, String xccdfProfileId) {
+    public ScapPolicy(String policyName, ScapContent scapContent, String xccdfProfileId) {
         this.policyName = policyName;
-        this.dataStreamName = dataStreamName;
+        this.scapContent = scapContent;
         this.xccdfProfileId = xccdfProfileId;
     }
 
@@ -118,20 +117,31 @@ public class ScapPolicy extends BaseDomainHelper {
     }
 
     /**
-     * Get the data stream name for this SCAP policy.
-     * @return the data stream name
+     * Get the SCAP content file associated with this policy.
+     * @return the SCAP content
      */
-    @Column(name = "data_stream_name")
-    public String getDataStreamName() {
-        return dataStreamName;
+    @ManyToOne
+    @JoinColumn(name = "scap_content_id", nullable = false)
+    public ScapContent getScapContent() {
+        return scapContent;
     }
 
     /**
-     * Set the data stream name for this SCAP policy.
-     * @param dataStreamName the data stream name to set
+     * Set the SCAP content file for this policy.
+     * @param scapContent the SCAP content to set
      */
-    public void setDataStreamName(String dataStreamName) {
-        this.dataStreamName = dataStreamName;
+    public void setScapContent(ScapContent scapContent) {
+        this.scapContent = scapContent;
+    }
+
+    /**
+     * Get the data stream name for this SCAP policy.
+     * Delegates to the associated SCAP content.
+     * @return the data stream file name from the SCAP content
+     */
+    @Transient
+    public String getDataStreamName() {
+        return scapContent != null ? scapContent.getDataStreamFileName() : null;
     }
 
     /**
@@ -268,7 +278,7 @@ public class ScapPolicy extends BaseDomainHelper {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ScapPolicy that = (ScapPolicy) o;
-        return policyName.equals(that.policyName) && dataStreamName.equals(that.dataStreamName) && xccdfProfileId.equals(that.xccdfProfileId);
+        return policyName.equals(that.policyName) && scapContent.equals(that.scapContent) && xccdfProfileId.equals(that.xccdfProfileId);
     }
 
     /**
@@ -278,7 +288,7 @@ public class ScapPolicy extends BaseDomainHelper {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(policyName, dataStreamName, xccdfProfileId);
+        return Objects.hash(policyName, scapContent, xccdfProfileId);
     }
 
     /**

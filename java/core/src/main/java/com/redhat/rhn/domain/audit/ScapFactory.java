@@ -95,6 +95,7 @@ public class ScapFactory extends HibernateFactory {
         results.forEach(ScapFactory::delete);
     }
 
+
     /**
      * Find a {@link XccdfBenchmark} by id.
      * @param benchmarkId benchmark id
@@ -216,7 +217,7 @@ public class ScapFactory extends HibernateFactory {
      * @param tailoringFile TailoringFile object
      */
     public static void deleteTailoringFile(TailoringFile tailoringFile) {
-        getSession().delete(tailoringFile);
+        singleton.removeObject(tailoringFile);
     }
     /**
      * Save the tailoringFile object to the database
@@ -280,7 +281,7 @@ public class ScapFactory extends HibernateFactory {
      * @param scapPolicy ScapPolicy object
      */
     public static void deleteScapPolicy(ScapPolicy scapPolicy) {
-        getSession().delete(scapPolicy);
+        singleton.removeObject(scapPolicy);
     }
     /**
      * Save the scapPolicy object to the database
@@ -293,49 +294,34 @@ public class ScapFactory extends HibernateFactory {
 
     /**
      * List all SCAP content objects in the database
-     * @param org the organization
      * @return Returns a list of SCAP content
      */
-    public static List<ScapContent> listScapContent(Org org) {
-        CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<ScapContent> criteria = builder.createQuery(ScapContent.class);
-        Root<ScapContent> root = criteria.from(ScapContent.class);
-        criteria.where(builder.equal(root.get("org"), org));
-        return getSession().createQuery(criteria).getResultList();
+    public static List<ScapContent> listScapContent() {
+        return getSession().createQuery("FROM ScapContent", ScapContent.class).getResultList();
     }
 
     /**
-     * Lookup for a SCAP content object based on the id and organization
+     * Lookup for a SCAP content object based on the id
      * @param id SCAP content ID
-     * @param org the organization
      * @return optional of SCAP content object
      */
-    public static Optional<ScapContent> lookupScapContentByIdAndOrg(Integer id, Org org) {
+    public static Optional<ScapContent> lookupScapContentById(Long id) {
         if (Objects.isNull(id)) {
             return Optional.empty();
         }
-        CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<ScapContent> select = builder.createQuery(ScapContent.class);
-        Root<ScapContent> root = select.from(ScapContent.class);
-        select.where(builder.and(
-                builder.equal(root.get("id"), id),
-                builder.equal(root.get("org"), org)));
-        return getSession().createQuery(select).uniqueResultOptional();
+        return Optional.ofNullable(singleton.lookupObjectByParam(ScapContent.class, "id", id));
     }
 
     /**
-     * Lookup for SCAP content by an id list and organization
+     * Lookup for SCAP content by an id list
      * @param ids SCAP content id list
-     * @param org the organization
-     * @return Returns a list of SCAP content with the given ids if it exists inside the organization
+     * @return Returns a list of SCAP content with the given ids
      */
-    public static List<ScapContent> lookupScapContentByIds(List<Long> ids, Org org) {
+    public static List<ScapContent> lookupScapContentByIds(List<Long> ids) {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaQuery<ScapContent> criteria = builder.createQuery(ScapContent.class);
         Root<ScapContent> root = criteria.from(ScapContent.class);
-        criteria.where(builder.and(
-                root.get("id").in(ids),
-                builder.equal(root.get("org"), org)));
+        criteria.where(root.get("id").in(ids));
         return getSession().createQuery(criteria).getResultList();
     }
 
@@ -344,7 +330,7 @@ public class ScapFactory extends HibernateFactory {
      * @param scapContent ScapContent object
      */
     public static void deleteScapContent(ScapContent scapContent) {
-        getSession().delete(scapContent);
+        singleton.removeObject(scapContent);
     }
 
     /**
@@ -376,7 +362,7 @@ public class ScapFactory extends HibernateFactory {
         Root<XccdfRuleFix> root = criteria.from(XccdfRuleFix.class);
         criteria.where(
             builder.and(
-                builder.equal(root.get("benchMarkId"), benchmarkId),
+                builder.equal(root.get("benchmarkIdentifier"), benchmarkId),
                 builder.equal(root.get("identifier"), identifier)
             )
         );
@@ -497,7 +483,7 @@ public class ScapFactory extends HibernateFactory {
         // If both are null, delete the entire custom record
         if (custom.getCustomRemediationBash() == null && 
             custom.getCustomRemediationSalt() == null) {
-            getSession().delete(custom);
+            singleton.removeObject(custom);
         } else {
             singleton.saveObject(custom);
         }

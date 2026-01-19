@@ -38,13 +38,13 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.webui.controllers.utils.RequestUtil;
-import com.suse.manager.webui.services.impl.SaltService;
+
 import com.suse.manager.webui.utils.gson.AuditScanScheduleJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.manager.webui.utils.gson.ScapPolicyComplianceSummary;
 import com.suse.manager.webui.utils.gson.ScapPolicyJson;
 import com.suse.manager.webui.utils.gson.ScapPolicyScanHistory;
-import com.suse.salt.netapi.calls.modules.Cmd;
+
 import com.suse.utils.Json;
 
 import com.google.gson.reflect.TypeToken;
@@ -700,7 +700,7 @@ public class ScapAuditController {
      */
     public ModelAndView listScapContentView(Request req, Response res, User user) {
         Map<String, Object> data = new HashMap<>();
-        List<ScapContent> scapContentList = ScapFactory.listScapContent(user.getOrg());
+        List<ScapContent> scapContentList = ScapFactory.listScapContent();
         data.put("scapContent", GSON.toJson(scapContentList));
         return new ModelAndView(data, "templates/audit/list-scap-content.jade");
     }
@@ -730,7 +730,7 @@ public class ScapAuditController {
     public ModelAndView updateScapContentView(Request req, Response res, User user) {
         Map<String, Object> data = new HashMap<>();
         Integer id = Integer.parseInt(req.params("id"));
-        Optional<ScapContent> scapContent = ScapFactory.lookupScapContentByIdAndOrg(id, user.getOrg());
+        Optional<ScapContent> scapContent = ScapFactory.lookupScapContentById(Long.valueOf(id));
 
         if (scapContent.isPresent()) {
             Map<String, Object> contentData = new HashMap<>();
@@ -773,7 +773,7 @@ public class ScapAuditController {
             String idParam = RequestUtil.findStringParam(items, "id")
               .orElseThrow(() ->
                 new IllegalArgumentException("ID parameter missing"));
-            Optional<ScapContent> scapContent = ScapFactory.lookupScapContentByIdAndOrg(Integer.parseInt(idParam), user.getOrg());
+            Optional<ScapContent> scapContent = ScapFactory.lookupScapContentById(Long.valueOf(idParam));
 
             if (scapContent.isEmpty()) {
                 return result(res, ResultJson.error("SCAP content not found"));
@@ -796,7 +796,7 @@ public class ScapAuditController {
     public String deleteScapContent(Request req, Response res, User user) {
         List<Integer> ids = GSON.fromJson(req.body(), new TypeToken<List<Integer>>() { }.getType());
         List<ScapContent> scapContentList = ScapFactory.lookupScapContentByIds(
-                ids.stream().map(Long::valueOf).collect(Collectors.toList()), user.getOrg());
+                ids.stream().map(Long::valueOf).collect(Collectors.toList()));
 
         scapContentList.forEach(content -> {
             try {
@@ -849,10 +849,6 @@ public class ScapAuditController {
             ScapContent scapContent = existingContent != null ? existingContent : new ScapContent();
             scapContent.setName(name.trim());
             description.ifPresent(scapContent::setDescription);
-
-            if (existingContent == null) {
-                scapContent.setOrg(user.getOrg());
-            }
 
             ensureDirectoryExists(SCAP_CONTENT_DIR);
 
@@ -1108,8 +1104,8 @@ public class ScapAuditController {
         if (policyJson.getPolicyName() == null || policyJson.getPolicyName().trim().isEmpty()) {
             return "Policy name is required";
         }
-        if (policyJson.getDataStreamName() == null || policyJson.getDataStreamName().trim().isEmpty()) {
-            return "Data stream name is required";
+        if (policyJson.getScapContentId() == null) {
+            return "SCAP Content ID is required";
         }
         if (policyJson.getXccdfProfileId() == null || policyJson.getXccdfProfileId().trim().isEmpty()) {
             return "XCCDF profile ID is required";
@@ -1162,9 +1158,17 @@ public class ScapAuditController {
             }
 
             // Create new SCAP policy
+            // Lookup SCAP Content
+            // Lookup SCAP Content
+            ScapContent content = ScapFactory.lookupScapContentById(policyJson.getScapContentId()).orElse(null);
+            if (content == null) {
+                return json(res, ResultJson.error("SCAP Content not found for ID: " + policyJson.getScapContentId()));
+            }
+
+            // Create new SCAP policy
             ScapPolicy scapPolicy = new ScapPolicy(
                 policyJson.getPolicyName().trim(),
-                policyJson.getDataStreamName().trim(),
+                content,
                 policyJson.getXccdfProfileId().trim()
             );
             scapPolicy.setOrg(user.getOrg());
@@ -1217,7 +1221,12 @@ public class ScapAuditController {
 
             // Update core fields
             setIfNotEmpty(policyJson.getPolicyName(), scapPolicy::setPolicyName);
-            setIfNotEmpty(policyJson.getDataStreamName(), scapPolicy::setDataStreamName);
+            if (policyJson.getScapContentId() != null) {
+                ScapContent content = ScapFactory.lookupScapContentById(policyJson.getScapContentId()).orElse(null);
+                if (content != null) {
+                    scapPolicy.setScapContent(content);
+                }
+            }
             setIfNotEmpty(policyJson.getXccdfProfileId(), scapPolicy::setXccdfProfileId);
 
             // Handle tailoring file - set to null if empty to allow clearing

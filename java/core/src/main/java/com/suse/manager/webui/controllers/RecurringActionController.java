@@ -51,7 +51,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
-import com.redhat.rhn.manager.org.OrgManager;
+
 import com.redhat.rhn.manager.recurringactions.RecurringActionManager;
 import com.redhat.rhn.manager.recurringactions.StateConfigFactory;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
@@ -319,7 +319,7 @@ public class RecurringActionController {
                 ScapPolicyJson policyJson = new ScapPolicyJson();
                 policyJson.setId(policy.getId());
                 policyJson.setPolicyName(policy.getPolicyName());
-                policyJson.setDataStreamName(policy.getDataStreamName());
+                policyJson.setScapContentId(policy.getScapContent().getId());
                 policyJson.setXccdfProfileId(policy.getXccdfProfileId());
                 if (policy.getDescription() != null) {
                     policyJson.setDescription(policy.getDescription());
