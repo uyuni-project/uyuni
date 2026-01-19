@@ -18,7 +18,7 @@ include:
 {%- set dnf_supports_params = is_dnf and salt['pkg.version_cmp'](is_dnf, "4.0.9") >= 0 %}
 
 {%- if is_dnf and not dnf_supports_params %}
-{%- set dnf_plugins = salt['cmd.run']("/usr/bin/find /usr/lib -type d -name dnf-plugins -printf '%T@ %p\n' | /usr/bin/sort -nr | /usr/bin/cut -d ' ' -s -f 2- | /usr/bin/head -n 1", python_shell=True) %}
+{%- set dnf_plugins = salt['cmd.run']("command -p find /usr/lib -type d -name dnf-plugins -printf '%T@ %p\n' | command -p sort -nr | command -p cut -d ' ' -s -f 2- | command -p head -n 1", python_shell=True) %}
 {%- if dnf_plugins %}
 mgrchannels_susemanagerplugin_dnf:
   file.managed:
@@ -44,7 +44,7 @@ mgrchannels_enable_dnf_plugins:
     - pattern: plugins=.*
     - repl: plugins=1
 {#- default is '1' when option is not specififed #}
-    - onlyif: /usr/bin/grep -e 'plugins=0' -e 'plugins=False' -e 'plugins=no' /etc/dnf/dnf.conf
+    - onlyif: command -p grep -e 'plugins=0' -e 'plugins=False' -e 'plugins=no' /etc/dnf/dnf.conf
 {%- endif %}
 
 {# this break the susemanagerplugin as it overwrite HTTP headers (bsc#1214601) #}
@@ -53,7 +53,7 @@ mgrchannels_disable_dnf_rhui_plugin:
     - name: /etc/yum/pluginconf.d/dnf_rhui_plugin.conf
     - pattern: enabled=.*
     - repl: enabled=0
-    - onlyif: /usr/bin/grep -e 'enabled=1' -e 'enabled=True' -e 'enabled=yes' /etc/yum/pluginconf.d/dnf_rhui_plugin.conf
+    - onlyif: command -p grep -e 'enabled=1' -e 'enabled=True' -e 'enabled=yes' /etc/yum/pluginconf.d/dnf_rhui_plugin.conf
 
 {%- endif %}
 
@@ -81,7 +81,7 @@ mgrchannels_enable_yum_plugins:
     - name: /etc/yum.conf
     - pattern: plugins=.*
     - repl: plugins=1
-    - onlyif: /usr/bin/grep plugins=0 /etc/yum.conf
+    - onlyif: command -p grep plugins=0 /etc/yum.conf
 
 {%- endif %}
 {%- endif %}
@@ -145,20 +145,20 @@ aptauth_conf:
 {%- if is_dnf %}
 mgrchannels_dnf_clean_all:
   cmd.run:
-    - name: /usr/bin/dnf clean all
+    - name: command -p dnf clean all
     - runas: root
     - onchanges:
        - file: "/etc/yum.repos.d/susemanager:channels.repo"
-    -  unless: "/usr/bin/dnf repolist | /usr/bin/grep \"repolist: 0$\""
+    -  unless: "command -p dnf repolist | command -p grep \"repolist: 0$\""
 {%- endif %}
 {%- if is_yum %}
 mgrchannels_yum_clean_all:
   cmd.run:
-    - name: /usr/bin/yum clean all
+    - name: command -p yum clean all
     - runas: root
     - onchanges: 
        - file: "/etc/yum.repos.d/susemanager:channels.repo"
-    -  unless: "/usr/bin/yum repolist | /usr/bin/grep \"repolist: 0$\""
+    -  unless: "command -p yum repolist | command -p grep \"repolist: 0$\""
 {%- endif %}
 {%- elif grains['os_family'] == 'Debian' %}
 install_gnupg_debian:

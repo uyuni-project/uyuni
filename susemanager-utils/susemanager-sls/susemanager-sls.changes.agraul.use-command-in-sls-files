@@ -1,0 +1,2 @@
+- Use `command` to find and execute commands from Salt states
+  (bsc#1253780, bsc#1255634)

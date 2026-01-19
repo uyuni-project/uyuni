@@ -7,7 +7,7 @@ mgr_ca_cert:
 
 mgr_update_ca_certs:
   cmd.run:
-    - name: /usr/sbin/update-ca-certificates
+    - name: command -p update-ca-certificates
     - runas: root
     - onchanges:
       - file: mgr_ca_cert

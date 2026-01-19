@@ -24,8 +24,8 @@ modules:
 {% elif grains['os_family'] == 'Debian' %}
 debianrelease:
   cmd.run:
-    - name: /usr/bin/cat /etc/os-release
-    - onlyif: /usr/bin/test -f /etc/os-release
+    - name: command -p cat /etc/os-release
+    - onlyif: command -p test -f /etc/os-release
 {% endif %}
 
 include:
@@ -55,7 +55,7 @@ reboot_required:
     - name: reboot_info.reboot_required
     {%- if grains['os_family'] == 'RedHat' and grains['osmajorrelease'] < 8 %}
     - onlyif:
-      - which needs-restarting
+      - command -v needs-restarting
     {%- endif %}
 {%- endif %}
 

@@ -17,7 +17,7 @@ mgr_split_ca:
 
 c_rehash:
   cmd.run:
-    - name: /usr/bin/c_rehash
+    - name: command -p c_rehash
     - runas: root
     - onchanges:
       - file: mgr_ca_cert
@@ -27,7 +27,7 @@ c_rehash:
 
 update-ca-certificates:
   cmd.run:
-    - name: /usr/sbin/update-ca-certificates
+    - name: command -p update-ca-certificates
     - runas: root
     - onchanges:
       - file: mgr_ca_cert

@@ -4,17 +4,17 @@ include:
 {%- if grains['os_family'] == 'Suse' %}
 mgr_keep_system_up2date_updatestack:
   cmd.run:
-    - name: /usr/bin/zypper --non-interactive patch --updatestack-only
+    - name: command -p zypper --non-interactive patch --updatestack-only
     - success_retcodes:
       - 104
       - 103
       - 106
       - 0
-    - onlyif: '/usr/bin/zypper patch-check --updatestack-only; r=$?; /usr/bin/test $r -eq 100 || /usr/bin/test $r -eq 101'
+    - onlyif: 'command -p zypper patch-check --updatestack-only; r=$?; command -p test $r -eq 100 || command -p test $r -eq 101'
     - require:
       - sls: channels
 
-{% set patch_need_reboot = salt['cmd.retcode']('/usr/bin/zypper -x list-patches | /usr/bin/grep \'restart="true"\' > /dev/null', python_shell=True) %}
+{% set patch_need_reboot = salt['cmd.retcode']('command -p zypper -x list-patches | command -p grep \'restart="true"\' > /dev/null', python_shell=True) %}
 
 {% else %}
 
