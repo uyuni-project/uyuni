@@ -12068,7 +12068,7 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
       </trans-unit>
       <trans-unit id="event.rbsmigrationfaileddetails" xml:space="preserve" approved="yes">
         <source>Failed to migrate the branch server. See log files for details.</source>
-        <target state="final">ブランチサーバに移行に失敗しました。詳細についてはログファイルを参照してください。</target>
+        <target state="final">ブランチサーバの移行に失敗しました。詳細についてはログファイルを参照してください。</target>
       </trans-unit>
       <trans-unit id="event.proxymigrationfinished" xml:space="preserve" approved="yes">
         <source>Proxy migration: finished</source>
@@ -12084,7 +12084,7 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
       </trans-unit>
       <trans-unit id="event.pxemigrationlost" xml:space="preserve" approved="yes">
         <source>Lost and found: system with HW address {0} in branch {1} was not found as registered system.</source>
-        <target state="final">紛失と発見: ブランチ {1} 内のHWアドレス {0} のシステムが登録済みシステムとして見つかりませんでした。</target>
+        <target state="final">紛失と発見: ブランチ {1} 内のHWアドレス {0} を持つシステムが登録済みシステムとして見つかりませんでした。</target>
       </trans-unit>
       <trans-unit id="event.pxemigrationduplicate" xml:space="preserve" approved="yes">
         <source>Multiple minions found with the same MAC address {0}. Cannot choose one, ignoring</source>
