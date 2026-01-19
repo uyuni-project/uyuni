@@ -8,15 +8,15 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-09 10:26+0000\n"
-"PO-Revision-Date: 2025-12-09 13:07+0000\n"
-"Last-Translator: Julia Faltenbacher <julia.faltenbacher@suse.com>\n"
+"PO-Revision-Date: 2026-01-19 10:04+0000\n"
+"Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/spacecmd/ja/>\n"
 "Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #: ../src/spacecmd/activationkey.py:53
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -4054,34 +4054,6 @@ msgid "proxy_container_config_generate_cert: create a proxy system and return it
 msgstr "proxy_container_config_generate_cert: プロキシシステムを作成し、その設定ファイルを返します"
 
 #: ../src/spacecmd/proxy.py:119
-#, fuzzy
-#| msgid ""
-#| "usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
-#| "\n"
-#| "parameters:\n"
-#| "  PROXY_FQDN  the unique, DNS-resolvable FQDN of this proxy.\n"
-#| "  SERVER_FQDN the fully qualified domain name of the server to connect to proxy to.\n"
-#| "  MAX_CACHE   the maximum cache size in MB. 60% of the storage is a good value.\n"
-#| "  EMAIL       the email of the proxy administrator\n"
-#| "\n"
-#| "options:\n"
-#| "  -o, --output Path where to create the generated configuration. Default: 'config.tar.gz'\n"
-#| "  -p, --ssh-port SSH port the proxy listens one. Default: 8022\n"
-#| "  --ca-crt path to the certificate of the CA to use to generate a new proxy certificate.\n"
-#| "           Using /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT by default.\n"
-#| "  --ca-key path to the private key of the CA to use to generate a new proxy certificate.\n"
-#| "           Using /root/ssl-build/RHN-ORG-PRIVATE-SSL-KEY by default.\n"
-#| "  --ca-pass path to a file containing the password of the CA private key, will be prompted if not passed.\n"
-#| "  --ssl-cname alternate name of the proxy to set in the certificate. Can be provided multiple times\n"
-#| "  --ssl-country country code to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
-#| "  --ssl-state state name to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
-#| "  --ssl-city the city name to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
-#| "  --ssl-org the organization name to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
-#| "  --ssl-org-unit the organization unit name to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
-#| "  --ssl-email the email to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
-#| "\n"
-#| "examples:\n"
-#| "  proxy_container_config proxy.lab server.lab 1024 proxy@acme.org --ca-pass password-file\n"
 msgid ""
 "usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
 "\n"
@@ -8024,19 +7996,19 @@ msgstr "初期段階は正常に終了しました。まだ実行中のアクシ
 
 #: ../src/spacecmd/system.py:5059
 msgid "system_needrebootafterupdate: Shows whether a reboot would be needed if available patches were applied"
-msgstr ""
+msgstr "system_needrebootafterupdate: 利用可能なパッチを適用した場合に再起動が必要かどうかを表示する"
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:5108
 #, python-brace-format
 msgid "System '{}' needs to be rebooted after update"
-msgstr ""
+msgstr "システム「{}」は更新後に再起動が必要"
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:5117
 #, python-brace-format
 msgid "No reboot needed for system '{}' after applying available updates"
-msgstr ""
+msgstr "利用可能な更新を適用後、システム「{}」の再起動は不要"
 
 #: ../src/spacecmd/user.py:53
 msgid "user_create: Create an user"
