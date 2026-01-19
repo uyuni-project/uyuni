@@ -6,20 +6,8 @@ Feature: Very first settings
   As the admin user
   I want to create the organisation, the first users and set the HTTP proxy
 
-@skip_if_containerized_server
-  Scenario: Create admin user and first organization
-    Given I access the host the first time
-    When I go to the home page
-    And I enter "SUSE Test" as "orgName"
-    And I enter "admin" as "login"
-    And I enter "admin" as "desiredpassword"
-    And I enter "admin" as "desiredpasswordConfirm"
-    And I select "Mr." from "prefix"
-    And I enter "Admin" as "firstNames"
-    And I enter "Admin" as "lastName"
-    And I enter "galaxy-noise@localhost" as "email"
-    And I click on "Create Organization"
-    Then I am logged in
+  Scenario: Cleanup Salt files
+    When I run "rm -Rf /srv/salt/*" on "server"
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section

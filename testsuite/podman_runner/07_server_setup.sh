@@ -133,7 +133,7 @@ $PODMAN_CMD run --cap-add AUDIT_CONTROL \
     -v ${src_dir}/client:/client \
     -v ${src_dir}/susemanager-utils:/susemanager-utils \
     -v ${src_dir}/susemanager:/susemanager \
-    -v ${src_dir}/susemanager/bin/mgr-setup:/usr/lib/susemanager/bin/mgr-setup \
+    -v ${src_dir}/containers/server-image/root/docker-entrypoint-init.d/00-mgrSetup.sh:/docker-entrypoint-init.d/00-mgrSetup.sh \
     -v ${src_dir}/spacewalk/setup/share/tomcat_java_opts.conf:/etc/tomcat/conf.d/tomcat_java_opts.conf \
     -v ${src_dir}/spacewalk/setup/share/tomcat_java_opts_suse.conf:/etc/tomcat/conf.d/tomcat_java_opts_suse.conf \
     -v ${src_dir}/java/conf/default/rhn_taskomatic_daemon.conf:/usr/share/rhn/config-defaults/rhn_taskomatic_daemon.conf \
@@ -167,6 +167,12 @@ $PODMAN_CMD run --cap-add AUDIT_CONTROL \
     -e ISS_PARENT=""  \
     -e SCC_USER="test"  \
     -e SCC_PASS="test"  \
+    -e ORG_NAME='SUSE Test'  \
+    -e ADMIN_USER="admin"  \
+    -e ADMIN_PASS="admin"  \
+    -e ADMIN_FIRST_NAME="Admin"  \
+    -e ADMIN_LAST_NAME="Admin"  \
+    -e NO_SSL="N"  \
     --cgroupns=host \
     -h server \
     --name=server-setup \
@@ -174,7 +180,7 @@ $PODMAN_CMD run --cap-add AUDIT_CONTROL \
     ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-server-all-in-one-dev:$UYUNI_VERSION \
     bash -xc "/testsuite/podman_runner/provide-db-schema.sh && \
              cp /manager/spacewalk/config/var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf /var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf && \
-             /usr/lib/susemanager/bin/mgr-setup && \
+             /docker-entrypoint-init.d/00-mgrSetup.sh && \
              /usr/bin/spacewalk-schema-upgrade -y && \
              /testsuite/podman_runner/run_db_migrations.sh susemanager-schema && \
              /testsuite/podman_runner/run_db_migrations.sh uyuni-reportdb-schema && \

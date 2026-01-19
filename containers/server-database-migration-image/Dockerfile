@@ -27,6 +27,8 @@ ARG VENDOR="Uyuni project"
 ARG URL="https://www.uyuni-project.org/"
 ARG REFERENCE_PREFIX="registry.opensuse.org/uyuni"
 
+ADD --chown=root:root root.tar.gz /
+
 # Build Service required labels
 # labelprefix=org.opensuse.uyuni.server-database-migration
 LABEL org.opencontainers.image.name=server-database-migration-image
@@ -40,3 +42,5 @@ LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server-database-migration:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix
 LABEL org.uyuni.version="${PRODUCT_VERSION}"
+
+ENTRYPOINT ["/etc/init.d/00-pgsqlVersionUpgrade.sh"]
