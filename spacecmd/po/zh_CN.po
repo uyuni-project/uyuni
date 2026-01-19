@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-09 10:26+0000\n"
-"PO-Revision-Date: 2025-11-24 05:04+0000\n"
+"PO-Revision-Date: 2026-01-19 07:04+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/spacecmd/zh_CN/>\n"
 "Language: zh_CN\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #: ../src/spacecmd/activationkey.py:53
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -4059,34 +4059,6 @@ msgid "proxy_container_config_generate_cert: create a proxy system and return it
 msgstr "proxy_container_config_generate_cert：创建代理系统并返回其配置文件"
 
 #: ../src/spacecmd/proxy.py:119
-#, fuzzy
-#| msgid ""
-#| "usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
-#| "\n"
-#| "parameters:\n"
-#| "  PROXY_FQDN  the unique, DNS-resolvable FQDN of this proxy.\n"
-#| "  SERVER_FQDN the fully qualified domain name of the server to connect to proxy to.\n"
-#| "  MAX_CACHE   the maximum cache size in MB. 60% of the storage is a good value.\n"
-#| "  EMAIL       the email of the proxy administrator\n"
-#| "\n"
-#| "options:\n"
-#| "  -o, --output Path where to create the generated configuration. Default: 'config.tar.gz'\n"
-#| "  -p, --ssh-port SSH port the proxy listens one. Default: 8022\n"
-#| "  --ca-crt path to the certificate of the CA to use to generate a new proxy certificate.\n"
-#| "           Using /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT by default.\n"
-#| "  --ca-key path to the private key of the CA to use to generate a new proxy certificate.\n"
-#| "           Using /root/ssl-build/RHN-ORG-PRIVATE-SSL-KEY by default.\n"
-#| "  --ca-pass path to a file containing the password of the CA private key, will be prompted if not passed.\n"
-#| "  --ssl-cname alternate name of the proxy to set in the certificate. Can be provided multiple times\n"
-#| "  --ssl-country country code to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
-#| "  --ssl-state state name to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
-#| "  --ssl-city the city name to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
-#| "  --ssl-org the organization name to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
-#| "  --ssl-org-unit the organization unit name to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
-#| "  --ssl-email the email to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
-#| "\n"
-#| "examples:\n"
-#| "  proxy_container_config proxy.lab server.lab 1024 proxy@acme.org --ca-pass password-file\n"
 msgid ""
 "usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
 "\n"
@@ -4121,12 +4093,12 @@ msgstr ""
 "  PROXY_FQDN  此代理的唯一且可由 DNS 解析的完全限定域名。\n"
 "  SERVER_FQDN 代理要连接到的服务器的完全限定域名。\n"
 "  MAX_CACHE   最大缓存大小（以 MB 为单位）。理想值为存储空间的 60%。\n"
-"  EMAIL      代理管理员的电子邮件\n"
+"  EMAIL      代理管理员的电子邮件地址\n"
 "\n"
 "选项：\n"
 "  -o、--output 用于创建生成的配置的路径。默认值为 \"config.tar.gz\"\n"
 "  -p、--ssh-port 代理要侦听的 SSH 端口。默认端口为 8022\n"
-"  --ca-crt 用于生成新代理证书的 CA 的证书路径。\n"
+"  --ca-cert 用于生成新代理证书的 CA 的证书路径。\n"
 "           默认使用 /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT。\n"
 "  --ca-key 用于生成新代理证书的 CA 的私用密钥路径。\n"
 "           默认使用 /root/ssl-build/RHN-ORG-PRIVATE-SSL-KEY。\n"
@@ -8029,19 +8001,19 @@ msgstr "已成功完成初始阶段。对于仍在运行的操作，请查看事
 
 #: ../src/spacecmd/system.py:5059
 msgid "system_needrebootafterupdate: Shows whether a reboot would be needed if available patches were applied"
-msgstr ""
+msgstr "system_needrebootafterupdate：显示应用可用补丁后是否需要重引导"
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:5108
 #, python-brace-format
 msgid "System '{}' needs to be rebooted after update"
-msgstr ""
+msgstr "系统 '{}' 更新后需要重引导"
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:5117
 #, python-brace-format
 msgid "No reboot needed for system '{}' after applying available updates"
-msgstr ""
+msgstr "系统 '{}' 应用可用更新后无需重引导"
 
 #: ../src/spacecmd/user.py:53
 msgid "user_create: Create an user"
