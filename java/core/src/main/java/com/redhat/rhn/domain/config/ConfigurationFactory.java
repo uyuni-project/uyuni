@@ -266,13 +266,15 @@ public class ConfigurationFactory extends HibernateFactory {
      * use a stored procedure for inserting, we have to decide whether to
      * insert or update here.  If the channel's id is null, we insert.
      * @param channel The channel to save or update
+     * @return the updated instance
      */
-    public static void commit(ConfigChannel channel) {
+    public static ConfigChannel commit(ConfigChannel channel) {
         if (channel.getId() == null) {
             saveNewConfigChannel(channel);
+            return channel;
         }
         else {
-            save(channel);
+            return save(channel);
         }
     }
 
