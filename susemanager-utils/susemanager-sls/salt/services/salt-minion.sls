@@ -1,8 +1,8 @@
 {% include 'bootstrap/remove_traditional_stack.sls' %}
 {%- set salt_minion_name = 'salt-minion' %}
 {%- set susemanager_minion_config = '/etc/salt/minion.d/susemanager.conf' %}
-{# Prefer venv-salt-minion if installed #}
-{%- if salt['pkg.version']('venv-salt-minion') %}
+{# Use venv-salt-minion if the state applied with it #}
+{%- if '/venv-salt-minion/' in grains['pythonexecutable'] %}
 {%- set salt_minion_name = 'venv-salt-minion' %}
 {%- set susemanager_minion_config = '/etc/venv-salt-minion/minion.d/susemanager.conf' %}
 {%- endif -%}
