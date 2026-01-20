@@ -95,13 +95,9 @@ const AccessGroup = (props: AccessGroupProps) => {
 
   const handleFormChange = (newAccessGroupState) => {
     setAccessGroupState((prevState) => {
-      const prevAccessGroups = Array.isArray(prevState.accessGroups)
-        ? prevState.accessGroups
-        : [];
+      const prevAccessGroups = Array.isArray(prevState.accessGroups) ? prevState.accessGroups : [];
 
-      const nextAccessGroups = Array.isArray(newAccessGroupState.accessGroups)
-        ? newAccessGroupState.accessGroups
-        : [];
+      const nextAccessGroups = Array.isArray(newAccessGroupState.accessGroups) ? newAccessGroupState.accessGroups : [];
 
       const agChanged = prevAccessGroups.join(",") !== nextAccessGroups.join(",");
       return {
