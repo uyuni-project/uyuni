@@ -107,7 +107,6 @@ Requires(post): user(%{apache_user})
 %endif
 Requires(pre):  salt
 Requires:       cobbler
-Requires:       openslp-server
 Requires:       spacewalk-admin
 Requires:       spacewalk-setup
 %ifarch %{ix86} x86_64
@@ -216,11 +215,9 @@ ln -s mgr-setup %{buildroot}/%{_prefix}/lib/susemanager/bin/migration.sh
 ln -s pg-migrate-94-to-96.sh %{buildroot}/%{_prefix}/lib/susemanager/bin/pg-migrate.sh
 
 mkdir -p %{buildroot}/%{_datadir}/rhn/config-defaults
-mkdir -p %{buildroot}/%{_sysconfdir}/slp.reg.d
 mkdir -p %{buildroot}/%{_sysconfdir}/logrotate.d
 install -m 0644 rhn-conf/rhn_server_susemanager.conf %{buildroot}/%{_datadir}/rhn/config-defaults
 install -m 0644 etc/logrotate.d/susemanager-tools %{buildroot}/%{_sysconfdir}/logrotate.d
-install -m 0644 etc/slp.reg.d/susemanager.reg %{buildroot}/%{_sysconfdir}/slp.reg.d
 make -C src install PREFIX=%{buildroot} PYTHON_BIN=%{pythonX} MANDIR=%{_mandir}
 install -d -m 755 %{buildroot}/%{wwwroot}/os-images/
 mkdir -p %{buildroot}%{_sysconfdir}/apache2/conf.d
@@ -284,9 +281,7 @@ sed -i '/You can access .* via https:\/\//d' /tmp/motd 2> /dev/null ||:
 %dir %{_prefix}/lib/susemanager
 %dir %{_prefix}/lib/susemanager/bin/
 %dir %{_prefix}/lib/susemanager/hooks/
-%dir %{_sysconfdir}/slp.reg.d
 %{_prefix}/lib/susemanager/bin/*
-%config %{_sysconfdir}/slp.reg.d/susemanager.reg
 %attr(775,%{salt_user},susemanager) %dir %{wwwroot}/os-images/
 %if 0%{?suse_version} > 1320
 %{_prefix}/lib/firewalld/services/suse-manager-server.xml
