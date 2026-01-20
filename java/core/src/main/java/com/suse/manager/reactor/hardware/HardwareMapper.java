@@ -858,7 +858,7 @@ public class HardwareMapper {
                 ifaceEntity = new NetworkInterface();
             }
             // else update the existing interface
-            final NetworkInterface iface = ifaceEntity;
+            NetworkInterface iface = ifaceEntity;
 
             iface.setHwaddr(saltIface.getHWAddr());
             iface.setModule(netModules.get(name).orElse(null));
@@ -868,11 +868,7 @@ public class HardwareMapper {
             server.addNetworkInterface(iface);
 
             // we have to do this because we need the id of the interface afterwards
-            ServerFactory.saveNetworkInterface(iface);
-            // flush & refresh iface because generated="insert"
-            // on interfaceId does not seem to work
-            HibernateFactory.getSession().flush();
-            HibernateFactory.getSession().refresh(iface);
+            iface = ServerFactory.saveNetworkInterface(iface);
 
             List<ServerNetAddress4> dbipv4 = ServerNetworkFactory.findServerNetAddress4(iface.getInterfaceId());
             List<Network.INet> saltipv4 = Optional.ofNullable(saltIface.getInet()).orElse(new LinkedList<>());
