@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-16 09:56+0100\n"
-"PO-Revision-Date: 2026-01-19 21:04+0000\n"
+"PO-Revision-Date: 2026-01-20 21:04+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -2268,7 +2268,7 @@ msgstr "Zbaliť všetko"
 
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:338
 msgid "Review and modify the permissions for this custom group as needed."
-msgstr ""
+msgstr "Podľa potreby preverte a upravte oprávnenia pre túto vlastnú skupinu."
 
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:347
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:195
@@ -2291,10 +2291,8 @@ msgstr "Email"
 
 #: ../html/src/manager/admin/access-control/access-group-review.tsx:164
 #: ../html/src/manager/admin/access-control/access-group-user.tsx:138
-#, fuzzy
-#| msgid "Channel Name"
 msgid "Real Name"
-msgstr "Názov kanála"
+msgstr "Skutočné meno"
 
 #: ../html/src/manager/admin/access-control/access-group-review.tsx:171
 msgid "No permissions selected."
@@ -2302,45 +2300,35 @@ msgstr "Neboli vybrané žiadne oprávnenia."
 
 #: ../html/src/manager/admin/access-control/access-group-tab-container.tsx:49
 msgid "Update Access Group"
-msgstr ""
+msgstr "Aktualizovať prístupovú skupinu"
 
 #: ../html/src/manager/admin/access-control/access-group-user.tsx:48
-#, fuzzy
-#| msgid "An error occurred on save."
 msgid "An unexpected error occurred while fetching users."
-msgstr "Pri ukladaní sa vyskytla chyba."
+msgstr "Pri načítavaní používateľov došlo k neočakávanej chybe."
 
 #: ../html/src/manager/admin/access-control/access-group-user.tsx:118
-#, fuzzy
-#| msgid "Search in states"
 msgid "Search & Add Users"
-msgstr "Hľadať v stavoch"
+msgstr "Hľadať a pridať používateľov"
 
 #: ../html/src/manager/admin/access-control/access-group.tsx:173
-#, fuzzy
-#| msgid "Schedule successfully created."
 msgid "Access Group successfully created."
-msgstr "Naplánované úspešne."
+msgstr "Prístupová skupina bola úspešne vytvorená."
 
 #: ../html/src/manager/admin/access-control/access-group.tsx:195
 msgid "Namespaces & Permissions"
-msgstr ""
+msgstr "Menné priestory a oprávnenia"
 
 #: ../html/src/manager/admin/access-control/access-group.tsx:211
-#, fuzzy
-#| msgid "Overview"
 msgid "Review"
-msgstr "Prehľad"
+msgstr "Zhodnotenie"
 
 #: ../html/src/manager/admin/access-control/access-group.tsx:219
-#, fuzzy
-#| msgid "Schedule Details"
 msgid "Access Group Details"
-msgstr "Podrobnosti plánu"
+msgstr "Podrobnosti prístupovej skupiny"
 
 #: ../html/src/manager/admin/access-control/access-group.tsx:224
 msgid "Create: Access Group"
-msgstr ""
+msgstr "Vytvoriť: Prístupová skupina"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:20
 msgid "Restart is needed for the configuration changes to take effect."
