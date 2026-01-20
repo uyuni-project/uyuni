@@ -29656,7 +29656,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="ssm.overview.appstreams.manage" xml:space="preserve">
         <source>&lt;a href="/rhn/manager/systems/ssm/appstreams"&gt;Enable and disable&lt;/a&gt; AppStreams on the selected systems</source>
-        <target state="translated">&lt;a href="/rhn/manager/systems/ssm/appstreams"선택한 시스템의 AppStreams&gt;활성화 및 비활성화&lt;/a&gt;</target>
+        <target state="needs-translation">&lt;a href="/rhn/manager/systems/ssm/appstreams"선택한 시스템의 AppStreams&gt;활성화 및 비활성화&lt;/a&gt;</target>
       </trans-unit>
       <trans-unit id="task.status.root-ca-cert-update" xml:space="preserve">
         <source>CA Certificates Update</source>
