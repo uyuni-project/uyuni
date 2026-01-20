@@ -11998,124 +11998,124 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>Unable to identify a valid migration target for the selected systems.</source>
         <target state="final">선택된 시스템에 대해 유효한 마이그레이션 대상을 식별할 수 없습니다.</target>
       </trans-unit>
-    <trans-unit id="virt.refresh_list" xml:space="preserve">
+      <trans-unit id="virt.refresh_list" xml:space="preserve">
         <source>Virtualization List Refresh</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">가상화 목록 새로 고침</target>
+      </trans-unit>
       <trans-unit id="notification.proxybackupfailed" xml:space="preserve">
         <source>Failed to process proxy backup event</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">프록시 백업 이벤트 처리 실패</target>
+      </trans-unit>
       <trans-unit id="notification.proxybackupnominion" xml:space="preserve">
         <source>No system with {0} name</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">이름이 {0}인 시스템 없음</target>
+      </trans-unit>
       <trans-unit id="notification.pxeeventfailed" xml:space="preserve">
         <source>Processing of a PXE event for the minion {0} failed</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">미니언 {0}에 대한 PXE 이벤트 처리 실패</target>
+      </trans-unit>
       <trans-unit id="event.proxymigrationstarted" xml:space="preserve">
         <source>Proxy migration: started</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">프록시 마이그레이션: 시작됨</target>
+      </trans-unit>
       <trans-unit id="event.proxymigrationstarteddetails" xml:space="preserve">
         <source>Received event with client side data, starting data migration</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">클라이언트 측 데이터로 이벤트 수신, 데이터 마이그레이션 시작</target>
+      </trans-unit>
       <trans-unit id="event.proxymigrationfailed" xml:space="preserve">
         <source>Proxy migration: failed</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">프록시 마이그레이션: 실패</target>
+      </trans-unit>
       <trans-unit id="event.proxymigrationfailedincomplete" xml:space="preserve">
         <source>Received incomplete backup data. Try retrying the migration.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">불완전한 백업 데이터가 수신되었습니다. 마이그레이션을 다시 시도하십시오.</target>
+      </trans-unit>
       <trans-unit id="event.proxymigrationfailedparsing" xml:space="preserve">
         <source>Unable to parse uploaded data. See log file for details</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">업로드된 데이터를 구문 분석할 수 없습니다. 자세한 내용은 로그 파일을 참조하십시오.</target>
+      </trans-unit>
       <trans-unit id="event.proxymigrationcreated" xml:space="preserve">
         <source>Proxy migration: new configuration created</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">프록시 마이그레이션: 새 구성이 생성됨</target>
+      </trans-unit>
       <trans-unit id="event.proxymigrationcreateddetails" xml:space="preserve">
         <source>Reinstallation of the proxy will now autoconfigure it on the first boot</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">프록시를 재설치하면 이제 처음 부팅할 때 프록시가 자동으로 구성됩니다.</target>
+      </trans-unit>
       <trans-unit id="event.rbsmigrationstarted" xml:space="preserve">
         <source>Retail Branch Server migration: started</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">리테일 브랜치 서버 마이그레이션: 시작됨</target>
+      </trans-unit>
       <trans-unit id="event.rbsmigrationstarteddetails" xml:space="preserve">
         <source>Proxy detected as a Retail Branch Server, migration started</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">프록시가 리테일 브랜치 서버로 감지됨, 마이그레이션 시작됨</target>
+      </trans-unit>
       <trans-unit id="event.rbsmigrationfinishedok" xml:space="preserve">
         <source>Retail Branch Server migration: finished successfully</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">리테일 브랜치 서버 마이그레이션: 성공적으로 완료됨</target>
+      </trans-unit>
       <trans-unit id="event.rbsmigrationfinishederror" xml:space="preserve">
         <source>Retail Branch Server migration: finished with errors</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">리테일 브랜치 서버 마이그레이션: 오류와 함께 완료됨</target>
+      </trans-unit>
       <trans-unit id="event.rbsmigrationfinisheddetails" xml:space="preserve">
         <source>Proxy was detected to be a Retail Branch Server, branch migration was performed.<ul>{0}</ul></source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">프록시가 리테일 브랜치 서버로 감지됨, 브랜치 마이그레이션이 수행되었습니다.</target>
+      </trans-unit>
       <trans-unit id="event.rbsmigrationfailed" xml:space="preserve">
         <source>Retail Branch Server migration: failed</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">리테일 브랜치 서버 마이그레이션: 실패</target>
+      </trans-unit>
       <trans-unit id="event.rbsmigrationfaileddetails" xml:space="preserve">
         <source>Failed to migrate the branch server. See log files for details.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">브랜치 서버를 마이그레이션하지 못했습니다. 자세한 내용은 로그 파일을 참조하십시오.</target>
+      </trans-unit>
       <trans-unit id="event.proxymigrationfinished" xml:space="preserve">
         <source>Proxy migration: finished</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">프록시 마이그레이션: 완료</target>
+      </trans-unit>
       <trans-unit id="event.proxymigrationfinisheddetails" xml:space="preserve">
         <source>All data were migrated. Proceed with reinstallation of the proxy host.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">모든 데이터가 마이그레이션되었습니다. 프록시 호스트 재설치를 진행하십시오.</target>
+      </trans-unit>
       <trans-unit id="event.pxemigrationnoentries" xml:space="preserve">
         <source>No PXE entries found in a backup configuration for branch {0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">브랜치 {0}에 대한 백업 구성에 PXE 항목이 없습니다.</target>
+      </trans-unit>
       <trans-unit id="event.pxemigrationlost" xml:space="preserve">
         <source>Lost and found: system with HW address {0} in branch {1} was not found as registered system.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">분실: {1} 브랜치에서 하드웨어 주소가 {0}인 시스템을 등록된 시스템으로 찾을 수 없습니다.</target>
+      </trans-unit>
       <trans-unit id="event.pxemigrationduplicate" xml:space="preserve">
         <source>Multiple minions found with the same MAC address {0}. Cannot choose one, ignoring</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">동일한 MAC 주소 {0}를 가진 미니언이 여러 개 발견되었습니다. 하나를 선택할 수 없으므로 무시합니다.</target>
+      </trans-unit>
       <trans-unit id="event.pxemigrationnogroup" xml:space="preserve">
         <source>Not processing minion '{0}' as it is not part of a branch group.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">'{0}'은(는) 미니언 그룹에 속하지 않으므로 처리되지 않습니다.</target>
+      </trans-unit>
       <trans-unit id="event.pxemigrationnoimage" xml:space="preserve">
         <source>Image not found: system '{0}' is using unknown image '{1}'. Using default boot image.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">이미지 없음: 시스템 ‘{0}'에서 알 수 없는 이미지 ’{1}'을(를) 사용하고 있습니다. 기본 부팅 이미지를 사용합니다.</target>
+      </trans-unit>
       <trans-unit id="event.pxemigrationsaltboot" xml:space="preserve">
         <source>Failed to create Saltboot system: {0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">Saltboot 시스템 생성 실패: {0}</target>
+      </trans-unit>
       <trans-unit id="rbsmigration.lostfounddescription" xml:space="preserve">
         <source>Collection of systems not registered, but present in branch {0} pxe entries.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="needs-translation">등록되지 않았지만 {0} pxe 항목에 존재하는 시스템 모음.</target>
+      </trans-unit>
       <trans-unit id="Access Control" xml:space="preserve">
         <source>Access Control</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="needs-translation">액세스 제어</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
