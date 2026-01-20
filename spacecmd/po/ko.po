@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-09 10:26+0000\n"
-"PO-Revision-Date: 2025-11-17 09:04+0000\n"
+"PO-Revision-Date: 2026-01-20 04:04+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd/ko/>\n"
 "Language: ko\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #: ../src/spacecmd/activationkey.py:53
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -2510,6 +2510,7 @@ msgid "File Preservations"
 msgstr "파일 보존"
 
 #: ../src/spacecmd/kickstart.py:543
+#, fuzzy
 msgid "Variables"
 msgstr "변수"
 
@@ -8023,20 +8024,21 @@ msgid "Initial phase successfully finished. Check event history for actions stil
 msgstr "초기 단계가 완료되었습니다. 아직 실행 중인 작업에 대한 이벤트 기록을 확인하십시오."
 
 #: ../src/spacecmd/system.py:5059
+#, fuzzy
 msgid "system_needrebootafterupdate: Shows whether a reboot would be needed if available patches were applied"
-msgstr ""
+msgstr "system_needrebootafterupdate: 사용 가능한 패치가 적용된 경우 재부팅이 필요한지 여부를 표시합니다"
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:5108
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid "System '{}' needs to be rebooted after update"
-msgstr ""
+msgstr "시스템 '{}'은(는) 업데이트 후 재부팅해야 합니다."
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:5117
-#, python-brace-format
+#, fuzzy, python-brace-format
 msgid "No reboot needed for system '{}' after applying available updates"
-msgstr ""
+msgstr "사용 가능한 업데이트를 적용한 후 시스템 '{}'은(는) 재부팅이 필요 없습니다."
 
 #: ../src/spacecmd/user.py:53
 msgid "user_create: Create an user"
