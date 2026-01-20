@@ -13865,9 +13865,9 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <context context-type="sourcefile">/rhn/activationkeys/configuration/* pages</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="activation-keys.config.rank.jsp.para1" xml:space="preserve">
+      <trans-unit id="activation-keys.config.rank.jsp.para1" xml:space="preserve" approved="yes">
         <source>This activation key is subscribed to the configuration channels listed below in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it. In other words, the channel listed last will be applied first.</source>
-        <target state="needs-translation">이 활성화 키는 최상위 순위에서 최하위 순위 순서로 아래 목록에 있는 구성 채널에 등록되어 있습니다. 특정 채널에 있는 파일은 아래 목록의 채널에서의 동일한 파일 경로 및 파일명을 갖는 파일을 덮어쓰게 됩니다. 즉, 마지막에 나열된 채널이 먼저 적용됩니다.</target>
+        <target state="final">이 활성화 키는 아래에 나열된 구성 채널에 순위 기준 내림차순으로 등록되어 있습니다. 특정 채널의 파일은 그보다 아래에 있는 채널의 동일한 경로 및 동일한 이름의 파일을 덮어씁니다. 다시 말해, 가장 마지막에 나열된 채널이 가장 먼저 적용됩니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/activationkeys/configuration/* pages</context>
         </context-group>
@@ -23409,9 +23409,9 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           <context context-type="sourcefile">/rhn/systems/details/configuration/RankChannels.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="sdc.config.rank.jsp.para1" xml:space="preserve">
+      <trans-unit id="sdc.config.rank.jsp.para1" xml:space="preserve" approved="yes">
         <source>This system is subscribed to the configuration channels listed below in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it. In other words, the channel listed last will be applied first.</source>
-        <target state="needs-translation">이 시스템은 최상위 순위에서 최하위 순위 순서로 아래 목록에 있는 구성 채널에 등록되어 있습니다. 특정 채널에 있는 파일은 아래 목록의 채널에 있는 파일 경로 및 파일명과 동일하게 파일을 덮어쓰게 됩니다. 즉, 마지막에 나열된 채널이 먼저 적용됩니다.</target>
+        <target state="final">이 시스템은 아래에 나열된 구성 채널에 순위 기준 내림차순으로 등록되어 있습니다. 특정 채널의 파일은 그보다 아래에 있는 채널의 동일한 경로 및 동일한 이름의 파일을 덮어씁니다. 다시 말해, 가장 마지막에 나열된 채널이 가장 먼저 적용됩니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/RankChannels.do</context>
         </context-group>
@@ -29650,17 +29650,17 @@ given channel.</source>
         <source> New Created </source>
         <target state="final"> 새로 생성됨 </target>
       </trans-unit>
-      <trans-unit id="ssm.overview.appstreams" xml:space="preserve">
+      <trans-unit id="ssm.overview.appstreams" xml:space="preserve" approved="yes">
         <source>AppStreams</source>
-        <target state="needs-translation">AppStreams</target>
+        <target state="final">AppStreams</target>
       </trans-unit>
-      <trans-unit id="ssm.overview.appstreams.manage" xml:space="preserve">
+      <trans-unit id="ssm.overview.appstreams.manage" xml:space="preserve" approved="yes">
         <source>&lt;a href="/rhn/manager/systems/ssm/appstreams"&gt;Enable and disable&lt;/a&gt; AppStreams on the selected systems</source>
-        <target state="needs-translation">&lt;a href="/rhn/manager/systems/ssm/appstreams"선택한 시스템의 AppStreams&gt;활성화 및 비활성화&lt;/a&gt;</target>
+        <target state="final">선택한 시스템의 AppStreams &lt;a href="/rhn/manager/systems/ssm/appstreams"&gt;활성화 및 비활성화&lt;/a&gt;</target>
       </trans-unit>
-      <trans-unit id="task.status.root-ca-cert-update" xml:space="preserve">
+      <trans-unit id="task.status.root-ca-cert-update" xml:space="preserve" approved="yes">
         <source>CA Certificates Update</source>
-        <target state="needs-translation">CA 인증서 업데이트</target>
+        <target state="final">CA 인증서 업데이트</target>
       </trans-unit>
     </body>
   </file>
