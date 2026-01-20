@@ -10,18 +10,8 @@ Manager's PostgreSQL database. Additionally, it sends notifications via the
 LISTEN/NOTIFY mechanism to alert SUSE Multi-Linux Manager of newly available events.
 
 mgr_events.py tries to keep the I/O low in high load scenarios. Therefore
-events are INSERTed once they come in, but not necessarily COMMITted
-immediately.
-
-The algorithm is an implementation of token bucket:
- - a COMMIT costs one token
- - initially, commit_burst tokens are available
- - every commit_interval seconds, one new token is generated
-   (up to commit_burst)
- - when an event arrives and there are tokens available it is COMMITted
-   immediately
- - when an event arrives but no tokens are available, the event is INSERTed but
-   not COMMITted yet. COMMIT will happen as soon as a token is available
+events are INSERTed with the separate thread without blocking the event bus
+and COMMITted every `commit_interval`.
 
 .. versionadded:: 2018.3.0
 
@@ -63,9 +53,11 @@ default for host is 'localhost'.
 
 # Import python libs
 from __future__ import absolute_import, print_function, unicode_literals
+import json
 import logging
+import re
+import threading
 import time
-import fnmatch
 
 try:
     import psycopg2
@@ -75,10 +67,8 @@ except ImportError:
     HAS_PSYCOPG2 = False
 
 # Import salt libs
-import salt.version
 import salt.ext.tornado
 import salt.utils.event
-import json
 
 log = logging.getLogger(__name__)
 
@@ -100,11 +90,28 @@ class Responder:
         self.config.setdefault("postgres_db", {})
         self.config["postgres_db"].setdefault("host", "localhost")
         self.config["postgres_db"].setdefault("notify_channel", "suseSaltEvent")
-        self.counters = [0 for i in range(config["events"]["thread_pool_size"] + 1)]
-        self.tokens = config["commit_burst"]
+        self._commit_interval = config["commit_interval"]
+        self._commit_burst = config["commit_burst"]
+        self._thread_pool_size = config["events"]["thread_pool_size"]
+        self.counter = 0
+        self.counters = [0] * (self._thread_pool_size + 1)
+        # Pass salt job returns: salt/job/*/ret/*
+        self.re_job_ret = re.compile(r"salt\/job\/\d+\/ret\/.*")
+        # Pass all additional significant events
+        self.re_additional = [
+            re.compile(r"salt\/minion\/([^\/]+)\/start"),
+            re.compile(r"salt\/beacon\/.*"),
+            re.compile(r"salt\/batch\/([^\/]+)\/start"),
+            re.compile(r"suse\/manager\/(image_deployed|image_synced|pxe_update)"),
+            re.compile(r"suse\/systemid\/generate"),
+            re.compile(r"suse\/proxy\/backup_finished"),
+        ]
+        self._queue = []
         self.event_bus = event_bus
         self._connect_to_database()
-        self.event_bus.io_loop.call_later(config["commit_interval"], self.add_token)
+        self._queue_thread = threading.Thread(target=self.queue_thread)
+        self._queue_thread.start()
+        self._insert_exceptions = 0
 
     def _connect_to_database(self):
         db_config = self.config.get("postgres_db")
@@ -118,58 +125,61 @@ class Responder:
             conn_string = "dbname='{dbname}' user='{user}' host='{host}' password='{password}'".format(
                 **db_config
             )
-        log.debug("%s: connecting to database", __name__)
+        log.debug("connecting to database")
         while True:
             try:
                 self.connection = psycopg2.connect(conn_string)
                 break
             except psycopg2.OperationalError as err:
-                log.error("%s: %s", __name__, err)
-                log.error("%s: Retrying in 5 seconds.", __name__)
+                log.error("DB Error: %s", err)
+                log.error("Retrying in 5 seconds.")
                 time.sleep(5)
         self.cursor = self.connection.cursor()
 
+    def match_additional_events(self, tag):
+        for p in self.re_additional:
+            if p.match(tag):
+                return True
+        return False
+
     def _insert(self, tag, data):
-        self.db_keepalive()
         if (
-            any(
-                [
-                    fnmatch.fnmatch(tag, "salt/minion/*/start"),
-                    fnmatch.fnmatch(tag, "salt/job/*/ret/*"),
-                    fnmatch.fnmatch(tag, "salt/beacon/*"),
-                    fnmatch.fnmatch(tag, "salt/batch/*/start"),
-                    fnmatch.fnmatch(tag, "suse/manager/image_deployed"),
-                    fnmatch.fnmatch(tag, "suse/manager/image_synced"),
-                    fnmatch.fnmatch(tag, "suse/manager/pxe_update"),
-                    fnmatch.fnmatch(tag, "suse/systemid/generate"),
-                    fnmatch.fnmatch(tag, "suse/proxy/backup_finished"),
-                ]
+            # Pass all salt/job/*/ret/* events
+            self.re_job_ret.match(tag)
+            and not (
+                # Except mine updates
+                data.get("fun") == "mine.update"
+                or (
+                    # And presence test.ping returns
+                    data.get("fun") == "test.ping"
+                    and data.get("metadata", {}).get("batch-mode")
+                )
             )
-            and not self._is_salt_mine_event(tag, data)
-            and not self._is_presence_ping(tag, data)
-        ):
+        ) or self.match_additional_events(tag):
+            # Pass all significant events also
             try:
                 queue = self._get_queue(data.get("id"))
-                log.debug("%s: Adding event to queue %d -> %s", __name__, queue, tag)
+                log.debug("Adding event to queue %d -> %s", queue, tag)
                 self.cursor.execute(
                     "INSERT INTO suseSaltEvent (minion_id, data, queue) VALUES (%s, %s, %s);",
                     (data.get("id"), json.dumps({"tag": tag, "data": data}), queue),
                 )
+                self.counter += 1
                 self.counters[queue] += 1
-                self.attempt_commit()
             # pylint: disable-next=broad-exception-caught
             except Exception as err:
-                log.error("%s: %s", __name__, err)
+                log.error("Error while inserting data to the table: %s", err)
                 try:
                     self.connection.commit()
                 # pylint: disable-next=broad-exception-caught
                 except Exception as err2:
-                    log.error("%s: Error commiting: %s", __name__, err2)
+                    log.error("Error commiting: %s", err2)
                     self.connection.close()
+                raise
             finally:
-                log.debug("%s: %s", __name__, self.cursor.query)
+                log.debug("Cursor query: %s", self.cursor.query)
         else:
-            log.debug("%s: Discarding event -> %s", __name__, tag)
+            log.debug("Discarding event -> %s", tag)
 
     def _get_queue(self, minion_id):
         if minion_id:
@@ -195,60 +205,74 @@ class Responder:
         return 0
 
     def trace_log(self):
-        log.trace("%s: queues sizes -> %s", __name__, self.counters)
-        log.trace("%s: tokens -> %s", __name__, self.tokens)
+        if self.counter or self._queue:
+            log.trace("queues sizes [%d] -> %s", len(self._queue), self.counters)
 
-    def _is_salt_mine_event(self, tag, data):
-        return fnmatch.fnmatch(tag, "salt/job/*/ret/*") and self._is_salt_mine_update(
-            data
-        )
-
-    def _is_salt_mine_update(self, data):
-        return data.get("fun") == "mine.update"
-
-    def _is_presence_ping(self, tag, data):
-        return (
-            fnmatch.fnmatch(tag, "salt/job/*/ret/*")
-            and self._is_test_ping(data)
-            and self._is_batch_mode(data)
-        )
-
-    def _is_test_ping(self, data):
-        return data.get("fun") == "test.ping"
-
-    def _is_batch_mode(self, data):
-        return data.get("metadata", {}).get("batch-mode")
+    def push_events_from_queue(self):
+        while self._queue and (
+            self.counter < self._commit_burst or self._commit_burst == 0
+        ):
+            tag, data = self._queue.pop(0)
+            try:
+                self._insert(tag, data)
+            # pylint: disable-next=broad-exception-caught
+            except Exception:
+                # Exception while inserting the data, put the data back to the queue
+                # and repeat the attempt of pushing it with the next cycle of queue_thread
+                # The exception was logged before in _insert
+                # The event could cause exception on inserting by its payload.
+                # We need to prevent the situation when such event is getting stuck
+                # the processing the rest part of the queue.
+                # The amount of attempts to be pushed to the DB is limited
+                self._insert_exceptions += 1
+                if self._insert_exceptions < 5:
+                    self._queue.insert(0, (tag, data))
+                else:
+                    # Reset the counter on droping the event from the queue
+                    log.error(
+                        "The event '%s' was dropped as reached the maximum attempts to be pushed",
+                        tag,
+                    )
+                    self._insert_exceptions = 0
+                break
+            else:
+                # Reset the counter if there was no exception
+                self._insert_exceptions = 0
 
     @salt.ext.tornado.gen.coroutine
     def add_event_to_queue(self, raw):
-        # FIXME: Drop once we only use Salt >= 3004
-        if salt.version.SaltStackVersion(*salt.version.__version_info__).major < 3004:
-            tag, data = self.event_bus.unpack(raw, self.event_bus.serial)
-        else:
+        try:
             tag, data = self.event_bus.unpack(raw)
-        self._insert(tag, data)
+            self._queue.append((tag, data))
+        # pylint: disable-next=broad-exception-caught
+        except Exception as e:
+            log.warning("Unable to unpack the event data: %s", e)
 
     def db_keepalive(self):
         if self.connection.closed:
-            log.error("%s: Diconnected from database. Trying to reconnect...", __name__)
+            log.error("Diconnected from database. Trying to reconnect...")
             self._connect_to_database()
 
-    @salt.ext.tornado.gen.coroutine
-    def add_token(self):
-        self.tokens = min(self.tokens + 1, self.config["commit_burst"])
-        self.attempt_commit()
-        self.trace_log()
-        self.event_bus.io_loop.call_later(
-            self.config["commit_interval"], self.add_token
-        )
+    def queue_thread(self):
+        while True:
+            try:
+                self.db_keepalive()
+                self.push_events_from_queue()
+                self.trace_log()
+                self.attempt_commit()
+            # pylint: disable-next=broad-exception-caught
+            except Exception as e:
+                log.error(
+                    "Exception while processing the events queue: %s", e, exc_info=True
+                )
+            time.sleep(self._commit_interval)
 
     def attempt_commit(self):
         """
         Committing to the database.
         """
-        self.db_keepalive()
-        if self.tokens > 0 and sum(self.counters) > 0:
-            log.debug("%s: commit", __name__)
+        if self.counter > 0:
+            log.debug("DB: commit")
             self.cursor.execute(
                 # pylint: disable-next=consider-using-f-string
                 "NOTIFY {}, '{}';".format(
@@ -257,10 +281,8 @@ class Responder:
                 )
             )
             self.connection.commit()
-            self.counters = [
-                0 for i in range(0, self.config["events"]["thread_pool_size"] + 1)
-            ]
-            self.tokens -= 1
+            self.counter = 0
+            self.counters = [0] * (self._thread_pool_size + 1)
 
 
 def start(**config):
