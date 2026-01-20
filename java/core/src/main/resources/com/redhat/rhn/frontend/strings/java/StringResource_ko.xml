@@ -12023,7 +12023,7 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
       </trans-unit>
       <trans-unit id="event.proxymigrationstarteddetails" xml:space="preserve">
         <source>Received event with client side data, starting data migration</source>
-        <target state="translated">클라이언트 측 데이터로 이벤트 수신, 데이터 마이그레이션 시작</target>
+        <target state="needs-translation">클라이언트 측 데이터로 이벤트 수신, 데이터 마이그레이션 시작</target>
       </trans-unit>
       <trans-unit id="event.proxymigrationfailed" xml:space="preserve">
         <source>Proxy migration: failed</source>
@@ -12063,7 +12063,7 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
       </trans-unit>
       <trans-unit id="event.rbsmigrationfinisheddetails" xml:space="preserve">
         <source>Proxy was detected to be a Retail Branch Server, branch migration was performed.<ul>{0}</ul></source>
-        <target state="translated">프록시가 리테일 브랜치 서버로 감지됨, 브랜치 마이그레이션이 수행되었습니다.</target>
+        <target state="needs-translation">프록시가 리테일 브랜치 서버로 감지됨, 브랜치 마이그레이션이 수행되었습니다.</target>
       </trans-unit>
       <trans-unit id="event.rbsmigrationfailed" xml:space="preserve">
         <source>Retail Branch Server migration: failed</source>
