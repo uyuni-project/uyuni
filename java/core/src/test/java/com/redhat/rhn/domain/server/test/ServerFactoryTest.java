@@ -644,8 +644,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         createProvisionState(unentitledTServerTransient, "Test Description", "Test Label");
         createServerInfo(unentitledTServerTransient, dateCreated, 0L);
 
-        Server unentitledTServer = TestUtils.save(unentitledTServerTransient);
-        owner.addServer(unentitledTServer);
+        Server unentitledTServer = ServerFactory.save(unentitledTServerTransient);
 
         NetworkInterface netint = new NetworkInterface();
         netint.setHwaddr("AA:AA:BB:BB:CC:CC");
@@ -684,12 +683,9 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         if (ensureOwnerAccess) {
             ManagedServerGroup sg2 = ServerGroupTestUtils.createManaged(owner);
             ServerFactory.addServerToGroup(unentitledTServer, sg2);
-            TestUtils.saveAndFlush(sg2);
         }
 
         Long id = unentitledTServer.getId();
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().evict(unentitledTServer);
 
         Server lookupServer = ServerFactory.lookupByIdAndOrg(id, owner.getOrg());
         assertNotNull(lookupServer.getEntitledGroupTypes());
