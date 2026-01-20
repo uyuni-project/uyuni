@@ -45,7 +45,7 @@ public class UnsubscribeActionTest extends RhnMockStrutsTestCase {
 
         //create a global channel
         ConfigChannel channel = ConfigTestUtils.createConfigChannel(user.getOrg());
-        ConfigurationFactory.commit(channel);
+        channel = ConfigurationFactory.commit(channel);
 
         //create a server and add it to the two required server groups
         //provisioning for config management and enterprise for server grouping
