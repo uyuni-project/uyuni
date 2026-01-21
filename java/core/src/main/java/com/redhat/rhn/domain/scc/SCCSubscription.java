@@ -44,7 +44,7 @@ import jakarta.persistence.Table;
 @Table(name = "suseSCCSubscription")
 public class SCCSubscription extends BaseDomainHelper {
 
-    private long id;
+    private Long id;
     private long sccId;
     private Credentials credentials;
 
@@ -64,7 +64,7 @@ public class SCCSubscription extends BaseDomainHelper {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sccsub_seq")
     @SequenceGenerator(name = "sccsub_seq", sequenceName = "suse_sccsub_id_seq", allocationSize = 1)
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -72,7 +72,7 @@ public class SCCSubscription extends BaseDomainHelper {
      * @return the sccId
      */
     @Column(name = "scc_id")
-    public long getSccId() {
+    public Long getSccId() {
         return sccId;
     }
 

@@ -35,7 +35,7 @@ import jakarta.persistence.Table;
 @Table(name = "suseContentEnvironmentDiff")
 public class ContentEnvironmentDiff extends BaseDomainHelper {
 
-    private long id;
+    private Long id;
     private ContentProject project;
     private ContentEnvironment environment;
     private Channel channel;
@@ -77,11 +77,11 @@ public class ContentEnvironmentDiff extends BaseDomainHelper {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long idIn) {
+    public void setId(Long idIn) {
         id = idIn;
     }
 

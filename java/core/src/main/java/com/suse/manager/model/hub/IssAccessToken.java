@@ -38,7 +38,7 @@ import jakarta.persistence.Transient;
 @Table(name = "suseISSAccessToken")
 public class IssAccessToken extends BaseDomainHelper {
 
-    private long id;
+    private Long id;
 
     private String token;
 
@@ -96,11 +96,11 @@ public class IssAccessToken extends BaseDomainHelper {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long idIn) {
+    public void setId(Long idIn) {
         this.id = idIn;
     }
 

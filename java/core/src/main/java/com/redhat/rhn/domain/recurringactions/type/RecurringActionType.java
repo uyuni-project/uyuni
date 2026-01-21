@@ -35,7 +35,7 @@ import jakarta.persistence.Transient;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class RecurringActionType implements Serializable {
 
-    private long id;
+    private Long id;
     private RecurringAction recurringAction;
 
     public enum ActionType {
@@ -71,7 +71,7 @@ public abstract class RecurringActionType implements Serializable {
      * @return recurring action id
      */
     @Id
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -80,7 +80,7 @@ public abstract class RecurringActionType implements Serializable {
      *
      * @param idIn recurring action id
      */
-    public void setId(long idIn) {
+    public void setId(Long idIn) {
         id = idIn;
     }
 
