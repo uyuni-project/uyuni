@@ -769,7 +769,7 @@ public class ActionFactory extends HibernateFactory {
      * @return action
      */
     public static Action save(Action actionIn) {
-        /**
+        /*
          * If we are trying to commit a package action, make sure
          * the packageEvr stored proc is called first so that
          * the foreign key constraint holds.
@@ -1004,7 +1004,7 @@ public class ActionFactory extends HibernateFactory {
      */
     public static void rescheduleFailedServerActions(Action action, Long tries) {
         updateActionEarliestDate(action);
-        HibernateFactory.getSession().createQuery("""
+        HibernateFactory.getSession().createMutationQuery("""
                         UPDATE ServerAction sa
                         SET    sa.status = :queued,
                                sa.remainingTries = :tries,
@@ -1033,7 +1033,7 @@ public class ActionFactory extends HibernateFactory {
      */
     public static void rescheduleAllServerActions(Action action, Long tries) {
         updateActionEarliestDate(action);
-        HibernateFactory.getSession().createQuery("""
+        HibernateFactory.getSession().createMutationQuery("""
                         UPDATE  ServerAction sa
                         SET     sa.status = :queued,
                                 sa.remainingTries = :tries,
@@ -1081,7 +1081,7 @@ public class ActionFactory extends HibernateFactory {
     public static void rescheduleSingleServerAction(Action action, Long tries,
             Long server) {
         updateActionEarliestDate(action);
-        HibernateFactory.getSession().createQuery("""
+        HibernateFactory.getSession().createMutationQuery("""
                         UPDATE ServerAction sa
                         SET    sa.status = :queued,
                                sa.remainingTries = :tries,

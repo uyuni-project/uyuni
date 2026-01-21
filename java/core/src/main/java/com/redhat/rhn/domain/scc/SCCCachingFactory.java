@@ -47,13 +47,9 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import jakarta.persistence.Tuple;
 
 /**
  * Factory class for populating and reading from SCC caching tables.
@@ -568,19 +564,17 @@ import jakarta.persistence.Tuple;
      *
      * @return list of {@link SCCRegCacheItem}
      */
-    @SuppressWarnings("unchecked")
     public static List<SCCRegCacheItem> listDeregisterItems() {
         int regErrorExpireTime = Config.get().getInt(ConfigDefaults.REG_ERROR_EXPIRE_TIME, 168);
         Calendar retryTime = Calendar.getInstance();
         retryTime.add(Calendar.HOUR, -1 * regErrorExpireTime);
 
         return getSession().createQuery("""
-                        SELECT rci FROM SCCRegCacheItem as rci
+                        FROM SCCRegCacheItem as rci
                         WHERE rci.server is NULL
-                        AND (rci.registrationErrorTime IS NULL
-                             OR rci.registrationErrorTime < :retryTime)
+                        AND (rci.registrationErrorTime IS NULL OR rci.registrationErrorTime < :retryTime)
                         ORDER BY rci.sccId ASC
-                        """)
+                        """, SCCRegCacheItem.class)
                 .setParameter("retryTime", new Date(retryTime.getTimeInMillis()))
                 .getResultList();
     }
