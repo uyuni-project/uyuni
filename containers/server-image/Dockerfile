@@ -49,7 +49,7 @@ RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf && \
         ipmitool \
         javamail \
         locale-formula \
-        postgresql16 \
+        postgresql18 \
         prometheus-exporters-formula \
         prometheus-formula \
         prometheus-jmx_exporter \
