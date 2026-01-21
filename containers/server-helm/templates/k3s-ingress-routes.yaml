@@ -1,5 +1,5 @@
 {{- if eq ((.Values.ingress).type) "traefik" }}
-apiVersion: traefik.containo.us/v1alpha1
+apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
   name: uyuni-https-redirect
@@ -11,7 +11,7 @@ spec:
     scheme: https
     permanent: true
 ---
-apiVersion: traefik.containo.us/v1alpha1
+apiVersion: traefik.io/v1alpha1
 kind: IngressRouteTCP
 metadata:
   name: reportdb-pgsql-route
@@ -24,10 +24,10 @@ spec:
   routes:
     - match: HostSNI(`*`)
       services:
-      - name: reportdb 
+      - name: reportdb
         port: 5432
 ---
-apiVersion: traefik.containo.us/v1alpha1
+apiVersion: traefik.io/v1alpha1
 kind: IngressRouteTCP
 metadata:
   name: salt-publish-route
@@ -43,7 +43,7 @@ spec:
       - name: salt
         port: 4505
 ---
-apiVersion: traefik.containo.us/v1alpha1
+apiVersion: traefik.io/v1alpha1
 kind: IngressRouteTCP
 metadata:
   name: salt-request-route
@@ -56,10 +56,10 @@ spec:
   routes:
     - match: HostSNI(`*`)
       services:
-      - name: salt 
+      - name: salt
         port: 4506
 ---
-apiVersion: traefik.containo.us/v1alpha1
+apiVersion: traefik.io/v1alpha1
 kind: IngressRouteTCP
 metadata:
   name: cobbler-route
@@ -75,7 +75,7 @@ spec:
       - name: cobbler
         port: 25151
 ---
-apiVersion: traefik.containo.us/v1alpha1
+apiVersion: traefik.io/v1alpha1
 kind: IngressRouteTCP
 metadata:
   annotations: {}
@@ -91,9 +91,9 @@ spec:
       services:
         - name: web
           port: 80
-{{- if .Values.enableMonitoring | default true }}
+{{- if ne .Values.enableMonitoring false }}
 ---
-apiVersion: traefik.containo.us/v1alpha1
+apiVersion: traefik.io/v1alpha1
 kind: IngressRouteTCP
 metadata:
   name: db-xport-route
@@ -106,10 +106,10 @@ spec:
   routes:
     - match: HostSNI(`*`)
       services:
-      - name: db 
+      - name: db
         port: 9187
 ---
-apiVersion: traefik.containo.us/v1alpha1
+apiVersion: traefik.io/v1alpha1
 kind: IngressRouteTCP
 metadata:
   name: tasko-jmx-route
@@ -122,10 +122,10 @@ spec:
   routes:
     - match: HostSNI(`*`)
       services:
-      - name: taskomatic 
+      - name: taskomatic
         port: 5556
 ---
-apiVersion: traefik.containo.us/v1alpha1
+apiVersion: traefik.io/v1alpha1
 kind: IngressRouteTCP
 metadata:
   name: tomcat-jmx-route
@@ -138,12 +138,12 @@ spec:
   routes:
     - match: HostSNI(`*`)
       services:
-      - name: tomcat 
+      - name: tomcat
         port: 5557
 {{- end }}
 {{- if .Values.exposeJavaDebug }}
 ---
-apiVersion: traefik.containo.us/v1alpha1
+apiVersion: traefik.io/v1alpha1
 kind: IngressRouteTCP
 metadata:
   name: tomcat-debug-route
@@ -156,10 +156,10 @@ spec:
   routes:
     - match: HostSNI(`*`)
       services:
-      - name: tomcat 
+      - name: tomcat
         port: 8003
 ---
-apiVersion: traefik.containo.us/v1alpha1
+apiVersion: traefik.io/v1alpha1
 kind: IngressRouteTCP
 metadata:
   name: search-debug-route
@@ -175,7 +175,7 @@ spec:
       - name: search
         port: 8002
 ---
-apiVersion: traefik.containo.us/v1alpha1
+apiVersion: traefik.io/v1alpha1
 kind: IngressRouteTCP
 metadata:
   name: tasko-debug-route
@@ -188,11 +188,11 @@ spec:
   routes:
     - match: HostSNI(`*`)
       services:
-      - name: taskomatic 
+      - name: taskomatic
         port: 8001
 {{- end }}
 ---
-apiVersion: traefik.containo.us/v1alpha1
+apiVersion: traefik.io/v1alpha1
 kind: IngressRouteUDP
 metadata:
   name: tftp-route
@@ -204,6 +204,6 @@ spec:
     - tftp
   routes:
     - services:
-      - name: tftp 
+      - name: tftp
         port: 69
 {{- end }}
