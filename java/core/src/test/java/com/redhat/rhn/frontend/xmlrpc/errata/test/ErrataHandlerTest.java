@@ -32,6 +32,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.Row;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelTestUtility;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -793,6 +794,8 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         // delete an errata
         int result = handler.delete(admin, errata.getAdvisory());
         assertEquals(1, result);
+
+        HibernateFactory.closeSession();
         errata = TestUtils.reload(errata);
         assertNull(errata);
     }
