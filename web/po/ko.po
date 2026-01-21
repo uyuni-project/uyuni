@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-16 09:56+0100\n"
-"PO-Revision-Date: 2026-01-21 03:04+0000\n"
+"PO-Revision-Date: 2026-01-21 11:04+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -3188,7 +3188,7 @@ msgstr "영향을 받음, 할당된 채널에서 부분 패치 사용 가능"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:89
 msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch will only update some of the vulnerable packages."
-msgstr "클라이언트가 취약점의 영향을 받으며 이에 대한 패치가 있지만,"
+msgstr "클라이언트가 취약점의 영향을 받으며 이에 대한 패치가 있지만, 패치를 적용하면 취약한 패키지 중 일부만 업데이트됩니다."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:95
 msgid "Unknown, CVE metadata not available"
