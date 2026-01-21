@@ -172,12 +172,6 @@ public class Errata extends BaseDomainHelper {
         return channels;
     }
 
-    /**
-     * @param channelsIn sets channels
-     */
-    public void setChannels(Set<Channel> channelsIn) {
-        this.channels = channelsIn;
-    }
 
     /**
      * Getter for cloned
@@ -759,8 +753,17 @@ public class Errata extends BaseDomainHelper {
      * @param packageIn The package to add.
      */
     public void addPackage(Package packageIn) {
-        if (packages.add(packageIn)) {
-            packageIn.getErrata().add(this);
+        packages.add(packageIn);
+        packageIn.getErrata().add(this);
+    }
+
+    /**
+     * Adds multiple packages to the errata
+     * @param packagesIn The collection of packages to add
+     */
+    public void addPackages(Collection<Package> packagesIn) {
+        for (Package pkg : packagesIn) {
+            addPackage(pkg);
         }
     }
 
@@ -769,26 +772,16 @@ public class Errata extends BaseDomainHelper {
      * @param packageIn The package to remove.
      */
     public void removePackage(Package packageIn) {
-        if (packages.remove(packageIn)) {
-            packageIn.getErrata().remove(this);
-        }
+        packages.remove(packageIn);
+        packageIn.getErrata().remove(this);
     }
 
-    /**
-     * Adds multiple packages to the errata
-     * @param packagesIn The collection of packages to add
-     */
-    public void addPackages(java.util.Collection<Package> packagesIn) {
-        for (Package pkg : packagesIn) {
-            addPackage(pkg);
-        }
-    }
 
     /**
      * Removes multiple packages from the errata
      * @param packagesIn The collection of packages to remove
      */
-    public void removePackages(java.util.Collection<Package> packagesIn) {
+    public void removePackages(Collection<Package> packagesIn) {
         for (Package pkg : packagesIn) {
             removePackage(pkg);
         }
@@ -802,34 +795,19 @@ public class Errata extends BaseDomainHelper {
     }
 
     /**
-     * @param p The packages to set.
-     */
-    public void setPackages(Set<Package> p) {
-        this.packages = p;
-    }
-
-    /**
      * Replace all packages with a new set, maintaining bidirectional sync
      * @param packagesIn the new packages to set
      */
     public void replacePackages(Collection<Package> packagesIn) {
-        this.clearPackages();
-        for (Package pkg : packagesIn) {
-            addPackage(pkg);
-        }
+        clearPackages();
+        addPackages(packagesIn);
     }
 
     /**
      * Clears out the Packages associated with this errata.
      */
     public void clearPackages() {
-        if (this.getPackages() != null && !this.getPackages().isEmpty()) {
-            List<Package> packagesCopy = new ArrayList<>(this.getPackages());
-            for (Package pkg : packagesCopy) {
-                this.removePackage(pkg);
-            }
-            this.getPackages().clear();
-        }
+        removePackages(new ArrayList<>(this.getPackages()));
     }
 
     /**
@@ -862,13 +840,11 @@ public class Errata extends BaseDomainHelper {
      * Clears out the Channels associated with this errata.
      */
     public void clearChannels() {
-        if (this.getChannels() != null && !this.getChannels().isEmpty()) {
-            List<Channel> channelsCopy = new ArrayList<>(this.getChannels());
-            for (Channel channel : channelsCopy) {
-                channel.removeErrata(this);
-            }
-            this.getChannels().clear();
+        List<Channel> channelsCopy = new ArrayList<>(this.getChannels());
+        for (Channel channel : channelsCopy) {
+            channel.removeErrata(this);
         }
+
         Iterator<ErrataFile> i = IteratorUtils.getIterator(this.getFiles());
         while (i.hasNext()) {
             ErrataFile pf = i.next();
