@@ -1,0 +1,118 @@
+suite: test ingress providers
+templates:
+  - ingress.yaml
+tests:
+  - it: should use traefik annotations on the SSL ingress
+    set:
+      global.fqdn: uyuni.example.com
+      ingress:
+        type: "traefik"
+    documentSelector:
+      path: metadata.name
+      value: uyuni-ingress-ssl
+    asserts:
+      - equal:
+          path: metadata.annotations["traefik.ingress.kubernetes.io/router.tls"]
+          value: "true"
+
+  - it: should verify TLS is disabled on the No-SSL ingress
+    set:
+      global.fqdn: uyuni.example.com
+      ingress:
+        type: "traefik"
+    documentSelector:
+      path: metadata.name
+      value: uyuni-ingress-nossl
+    asserts:
+      - equal:
+          path: metadata.annotations["traefik.ingress.kubernetes.io/router.tls"]
+          value: "false"
+
+  - it: should verify redirect middleware on the redirect ingress
+    set:
+      global.fqdn: uyuni.example.com
+      ingress:
+        type: "traefik"
+    documentSelector:
+      path: metadata.name
+      value: uyuni-ingress-ssl-redirect
+    asserts:
+      - equal:
+          path: metadata.annotations["traefik.ingress.kubernetes.io/router.middlewares"]
+          value: "default-uyuni-https-redirect@kubernetescrd"
+
+  - it: should switch to nginx annotations
+    set:
+      global.fqdn: uyuni.example.com
+      ingress:
+        type: "nginx"
+    asserts:
+      - equal:
+          path: metadata.annotations["nginx.ingress.kubernetes.io/ssl-redirect"]
+          value: "false"
+    documentSelector:
+      path: metadata.name
+      value: uyuni-ingress-nossl
+
+  - it: should render custom annotations for all ingress types
+    set:
+      global.fqdn: uyuni.example.com
+      ingress:
+        type: "traefik"
+        annotations:
+          ssl:
+            cert-manager.io/cluster-issuer: "uyuni-issuer"
+            external-dns.alpha.kubernetes.io/ttl: "60"
+          sslRedirect:
+            traefik.ingress.kubernetes.io/router.priority: "100"
+          nossl:
+            custom.annotation/test: "nossl-only"
+    asserts:
+      # Test SSL Ingress custom annotations
+      - equal:
+          path: metadata.annotations["cert-manager.io/cluster-issuer"]
+          value: "uyuni-issuer"
+        documentSelector:
+          path: metadata.name
+          value: uyuni-ingress-ssl
+      - equal:
+          path: metadata.annotations["external-dns.alpha.kubernetes.io/ttl"]
+          value: "60"
+        documentSelector:
+          path: metadata.name
+          value: uyuni-ingress-ssl
+
+      # Test SSL Redirect Ingress custom annotations
+      - equal:
+          path: metadata.annotations["traefik.ingress.kubernetes.io/router.priority"]
+          value: "100"
+        documentSelector:
+          path: metadata.name
+          value: uyuni-ingress-ssl-redirect
+
+      # Test No-SSL Ingress custom annotations
+      - equal:
+          path: metadata.annotations["custom.annotation/test"]
+          value: "nossl-only"
+        documentSelector:
+          path: metadata.name
+          value: uyuni-ingress-nossl
+
+  - it: should render the ingress class name when provided
+    set:
+      global.fqdn: uyuni.example.com
+      ingress:
+        class: "nginx-internal"
+    asserts:
+      - equal:
+          path: spec.ingressClassName
+          value: "nginx-internal"
+        documentSelector:
+          path: metadata.name
+          value: uyuni-ingress-ssl
+      - equal:
+          path: spec.ingressClassName
+          value: "nginx-internal"
+        documentSelector:
+          path: metadata.name
+          value: uyuni-ingress-nossl
