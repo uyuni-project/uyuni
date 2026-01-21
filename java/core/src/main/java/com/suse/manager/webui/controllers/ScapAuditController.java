@@ -14,9 +14,6 @@ package com.suse.manager.webui.controllers;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-
-import com.redhat.rhn.domain.audit.ScriptType;
-
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.domain.action.Action;
@@ -84,6 +81,7 @@ public class ScapAuditController {
     private final TaskomaticApi taskomaticApi = new TaskomaticApi();
     private static final String TAILORING_FILES_DIR = "/srv/susemanager/scap/tailoring-files/";
     private static final String SCAP_CONTENT_DIR = "/srv/susemanager/scap/ssg/content";
+    private static final String REMEDIATION_ACTION_PREFIX = "SCAP Remediation: ";
 
 
     /**
@@ -1288,7 +1286,7 @@ public class ScapAuditController {
      * @param user the current user
      * @return JSON response
      */
-    private String getCustomRemediation(Request request, Response response, User user) {
+    public String getCustomRemediation(Request request, Response response, User user) {
         String identifier = request.params(":identifier");
         String benchmarkId = request.params(":benchmarkId");
 
@@ -1320,7 +1318,7 @@ public class ScapAuditController {
      * @param user the current user
      * @return JSON response
      */
-    private String saveCustomRemediation(Request request, Response response, User user) {
+    public String saveCustomRemediation(Request request, Response response, User user) {
         if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
             return json(response, HttpStatus.SC_FORBIDDEN,
                     ResultJson.error("Only organization administrators can save custom remediation"), new TypeToken<>() { });
@@ -1381,7 +1379,7 @@ public class ScapAuditController {
      * @param user the current user
      * @return JSON response
      */
-    private String deleteCustomRemediation(Request request, Response response, User user) {
+    public String deleteCustomRemediation(Request request, Response response, User user) {
         if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
             return json(response, HttpStatus.SC_FORBIDDEN,
                     ResultJson.error("Only organization administrators can delete custom remediation"), new TypeToken<>() { });
@@ -1406,141 +1404,128 @@ public class ScapAuditController {
         return json(response, HttpStatus.SC_NOT_FOUND,
                 ResultJson.error("No custom remediation found"), new TypeToken<>() { });
     }
-
-    /**
+    
+     /**
      * Apply remediation (bash or Salt) to a system.
-     *
-     * @param request the request
-     * @param response the response
+     * @param request the HTTP request containing remediation details
+     * @param response the HTTP response
      * @param user the current user
-     * @return JSON response
+     * @return JSON response with action ID and status message
      */
-    /**
-     * Apply remediation (bash or Salt) to a system.
-     *
-     * @param request the request
-     * @param response the response
-     * @param user the current user
-     * @return JSON response
-     */
-    private String applyRemediation(Request request, Response response, User user) {
+    String applyRemediation(Request request, Response response, User user) {
+        Action action;
+        String successMessage;
         try {
-            // Parse request body
-            ApplyRemediationJson body;
-            try {
-                body = GSON.fromJson(request.body(), ApplyRemediationJson.class);
-            } catch (JsonParseException e) {
-                return json(response, HttpStatus.SC_BAD_REQUEST,
-                        ResultJson.error("Invalid JSON request body"), new TypeToken<>() { });
-            }
-
-            Long serverId = body.getServerId();
-            String ruleIdentifier = body.getRuleIdentifier();
-            ScriptType scriptType = ScriptType.fromValue(body.getScriptType());
-            String remediationContent = body.getRemediationContent();
-            
-            // Authorization check
             if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
-                return json(response, HttpStatus.SC_FORBIDDEN,
-                        ResultJson.error("Only organization administrators can apply remediation"), new TypeToken<>() { });
+                return result(response, ResultJson.error("Only organization administrators can apply remediation"));
             }
-            
-            // Validate server
-            Server server = SystemManager.lookupByIdAndUser(serverId, user);
+
+            ApplyRemediationJson body = GSON.fromJson(request.body(), ApplyRemediationJson.class);
+            String validationError = validateRemediationBody(body);
+            if (validationError != null) {
+                return result(response, ResultJson.error(validationError));
+            }
+            Server server = SystemManager.lookupByIdAndUser(body.getServerId(), user);
             if (server == null) {
-                return json(response, HttpStatus.SC_NOT_FOUND,
-                        ResultJson.error("Server not found or access denied"), new TypeToken<>() { });
-            }
-            
-            // Validate remediation content
-            if (remediationContent == null || remediationContent.trim().isEmpty()) {
-                return json(response, HttpStatus.SC_BAD_REQUEST,
-                        ResultJson.error("Remediation content cannot be empty"), new TypeToken<>() { });
-            }
-            
-            if (scriptType == null) {
-                return json(response, HttpStatus.SC_BAD_REQUEST,
-                         ResultJson.error("Invalid script type. Must be 'bash' or 'salt'"), new TypeToken<>() { });
+                response.status(HttpStatus.SC_NOT_FOUND);
+                return result(response, ResultJson.error("Server not found or access denied"));
             }
 
-            // Create action based on script type
-            Action action;
-            String successMessage;
-            
+            ScriptType scriptType = ScriptType.fromValue(body.getScriptType());
             if (scriptType == ScriptType.BASH) {
-                // Execute bash script via ScriptAction
-                ScriptActionDetails scriptDetails = ActionFactory.createScriptActionDetails(
-                        "root", "root", 300L, remediationContent);
-                
-                ScriptRunAction scriptAction = (ScriptRunAction) ActionFactory.createAction(
-                        ActionFactory.TYPE_SCRIPT_RUN);
-                scriptAction.setName("SCAP Remediation: " + ruleIdentifier);
-                scriptAction.setOrg(user.getOrg());
-                scriptAction.setSchedulerUser(user);
-                scriptAction.setEarliestAction(new Date());
-                scriptAction.setScriptActionDetails(scriptDetails);
-                
-                ActionFactory.addServerToAction(serverId, scriptAction);
-                ActionFactory.save(scriptAction);
-                
-                action = scriptAction;
+                action = createBashRemediationAction(body, user, server);
                 successMessage = "Bash remediation scheduled successfully";
-                
             } else if (scriptType == ScriptType.SALT) {
-                // Execute Salt state via ApplyStatesAction with pillar data
-                if (server.getMinionId() == null) {
-                    return json(response, HttpStatus.SC_BAD_REQUEST,
-                            ResultJson.error("Server is not a Salt minion"), new TypeToken<>() { });
-                }
-
-                List<Long> serverIds = Collections.singletonList(serverId);
-
-                // Pass Salt state content via pillar data
-                // The remediation content is expected to be valid Salt state YAML
-                Map<String, Object> pillar = new HashMap<>();
-                pillar.put("scap_remediation_state", remediationContent);
-
-                // Schedule apply states action with scap_remediation state module
-                ApplyStatesAction saltAction = ActionManager.scheduleApplyStates(
-                        user,
-                        serverIds,
-                        Collections.singletonList("scap_remediation"),
-                        Optional.of(pillar),
-                        new Date(),
-                        Optional.empty()
-                );
-
-                // Set custom action name to match Bash remediation naming
-                saltAction.setName("SCAP Remediation: " + ruleIdentifier);
-                ActionFactory.save(saltAction);
-
-                action = saltAction;
+                action = createSaltRemediationAction(body, user, server);
                 successMessage = "Salt remediation scheduled successfully";
             } else {
-                // Should be unreachable due to scriptType check above
-                return json(response, HttpStatus.SC_BAD_REQUEST,
-                       ResultJson.error("Invalid script type"), new TypeToken<>() { });
+                return result(response, ResultJson.error("Invalid script type"));
             }
-            
-            // Schedule execution with Taskomatic (common for both Bash and Salt)
-            try {
-                taskomaticApi.scheduleActionExecution(action);
-            } catch (TaskomaticApiException e) {
-                LOG.error("Failed to schedule remediation action", e);
-                return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
-                        ResultJson.error("Failed to schedule remediation: " + e.getMessage()), new TypeToken<>() { });
-            }
-            
-            // Return success response
-            Map<String, Object> result = new HashMap<>();
-            result.put("actionId", action.getId());
-            result.put("message", successMessage);
-            return success(response, ResultJson.success(result));
 
+            taskomaticApi.scheduleActionExecution(action);
+            Map<String, Object> result = Map.of(
+                "actionId", action.getId(),
+                "message", successMessage
+            );
+            return result(response, ResultJson.success(result));
+        } catch (JsonParseException e) {
+            return result(response, ResultJson.error("Invalid JSON request body"));
+        } catch (TaskomaticApiException e) {
+            LOG.error("Failed to schedule remediation action", e);
+            return result(response, ResultJson.error("Failed to schedule remediation: " + e.getMessage()));
         } catch (Exception e) {
             LOG.error("Error applying remediation", e);
-            return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
-                    ResultJson.error("Failed to apply remediation: " + e.getMessage()), new TypeToken<>() { });
+            return result(response, ResultJson.error("Failed to apply remediation: " + e.getMessage()));
         }
     }
-}
+    
+    /**
+     * Validate the remediation request body.
+     *
+     * @param body the parsed request body
+     * @return error message if validation fails, null otherwise
+     */
+    public String validateRemediationBody(ApplyRemediationJson body) {
+        if (body.getRemediationContent() == null || body.getRemediationContent().trim().isEmpty()) {
+            return "Remediation content cannot be empty";
+        }
+        if (body.getScriptType() == null || ScriptType.fromValue(body.getScriptType()) == null) {
+            return "Invalid script type. Must be 'bash' or 'salt'";
+        }
+        return null;
+    }
+
+    /**
+     * Create a Bash script action for remediation.
+     * This creates a ScriptRunAction that executes the remediation script as root.
+     *
+     * @param body the remediation request containing script content
+     * @param user the user scheduling the action
+     * @param server the target server
+     * @return the created and saved ScriptRunAction
+     */
+    Action createBashRemediationAction(ApplyRemediationJson body, User user, Server server) {
+        final long scriptTimeout = 300L; // 5 minutes timeout for remediation scripts
+        ScriptActionDetails scriptDetails = ActionFactory.createScriptActionDetails(
+                "root", "root", scriptTimeout, body.getRemediationContent());
+        ScriptRunAction action = (ScriptRunAction) ActionFactory.createAction(ActionFactory.TYPE_SCRIPT_RUN);
+        action.setName(REMEDIATION_ACTION_PREFIX + body.getRuleIdentifier());
+        action.setOrg(user.getOrg());
+        action.setSchedulerUser(user);
+        action.setEarliestAction(new Date());
+        action.setScriptActionDetails(scriptDetails);
+        ActionFactory.addServerToAction(server.getId(), action);
+        ActionFactory.save(action);
+        return action;
+    }
+    /**
+     * Create a Salt state action for remediation.
+     * This creates an ApplyStatesAction that applies the scap_remediation state
+     * with the remediation content passed via pillar data.
+     *
+     * @param body the remediation request containing Salt state content
+     * @param user the user scheduling the action
+     * @param server the target server (must be a Salt minion)
+     * @return the created and saved ApplyStatesAction
+     */
+    Action createSaltRemediationAction(ApplyRemediationJson body, User user, Server server) {
+        // Pass Salt state content via pillar data
+        Map<String, Object> pillar = new HashMap<>();
+        pillar.put("scap_remediation_state", body.getRemediationContent());
+        // Schedule apply states action with scap_remediation state module
+        ApplyStatesAction action = ActionManager.scheduleApplyStates(
+                user,
+                Collections.singletonList(server.getId()),
+                Collections.singletonList("scap_remediation"),
+                Optional.of(pillar),
+                new Date(),
+                Optional.empty()
+        );
+        // Set custom action name to match Bash remediation naming
+        action.setName(REMEDIATION_ACTION_PREFIX + body.getRuleIdentifier());
+        // Note: scheduleApplyStates already saves the action, but we need to save again
+        // after modifying the name to persist the change
+        ActionFactory.save(action);
+        return action;
+    }
+} 
