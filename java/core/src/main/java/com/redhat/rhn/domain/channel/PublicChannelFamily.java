@@ -38,7 +38,7 @@ public class PublicChannelFamily extends BaseDomainHelper {
     /** The id, which is also the associated channel family id */
     @Id
     @Column(name = "channel_family_id")
-    private long id;
+    private Long id;
 
     /** The channel family. */
     @OneToOne(fetch = FetchType.LAZY)
@@ -50,7 +50,7 @@ public class PublicChannelFamily extends BaseDomainHelper {
      * Gets the channel family id.
      * @return the channel family id.
      */
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -58,7 +58,7 @@ public class PublicChannelFamily extends BaseDomainHelper {
      * Sets the channel family id.
      * @param idIn The channel family id to set.
      */
-    public void setId(long idIn) {
+    public void setId(Long idIn) {
         this.id = idIn;
     }
 
