@@ -37,8 +37,7 @@ public class CopyFileSandboxActionTest extends RhnMockStrutsTestCase {
         Long crid = revision.getId();
 
         //Create a channel to appear in the list.
-        ConfigChannel channel = ConfigTestUtils.createConfigChannel(user.getOrg(),
-                ConfigChannelType.sandbox());
+        ConfigChannel channel = ConfigTestUtils.createConfigChannel(user.getOrg(), ConfigChannelType.sandbox());
         //This is a sandbox channel, which means that we need to give it a server
         //for it to be a valid channel,  the function below does that.
         ConfigTestUtils.giveUserChanAccess(user, channel);

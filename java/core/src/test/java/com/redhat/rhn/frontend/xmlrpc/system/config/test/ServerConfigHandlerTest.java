@@ -36,7 +36,6 @@ import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.config.ConfigFileState;
 import com.redhat.rhn.domain.config.ConfigFileType;
 import com.redhat.rhn.domain.config.ConfigRevision;
-import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -142,23 +141,17 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
                 ConfigFileState.normal(), "/etc/foo1");
         revisions.add(ConfigTestUtils.createConfigRevision(g1f1));
 
-        ConfigurationFactory.commit(gcc1);
-
         ConfigFile g1f2 = gcc1.createConfigFile(
                 ConfigFileState.normal(), "/etc/foo2");
         revisions.add(ConfigTestUtils.createConfigRevision(g1f2));
-        ConfigurationFactory.commit(gcc2);
 
         ConfigFile g2f2 = gcc2.createConfigFile(
                 ConfigFileState.normal(), "/etc/foo4");
         revisions.add(ConfigTestUtils.createConfigRevision(g2f2));
-        ConfigurationFactory.commit(gcc2);
 
         ConfigFile g2f3 = gcc2.createConfigFile(
                 ConfigFileState.normal(), "/etc/foo3");
         revisions.add(ConfigTestUtils.createConfigRevision(g2f3));
-        ConfigurationFactory.commit(gcc2);
-
 
         // System 1 - both g1f1 and g1f2 should deploy here
         List<Number> systems  = new ArrayList<>();
