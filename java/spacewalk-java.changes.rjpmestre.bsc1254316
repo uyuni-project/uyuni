@@ -1,0 +1,1 @@
+- Add check for virt vm_info availability (bsc#1254316)
