@@ -133,8 +133,7 @@ public class ConfigurationManager extends BaseManager {
      */
     public void save(ConfigChannel cc, Optional<String> channelOldLabel) {
         ConfigurationFactory.commit(cc);
-        ConfigChannelSaltManager.getInstance()
-                .generateConfigChannelFiles(cc, channelOldLabel);
+        ConfigChannelSaltManager.getInstance().generateConfigChannelFiles(cc, channelOldLabel);
 
         if (!channelOldLabel.filter(ol -> cc.getLabel().equals(ol)).isPresent()) {
             SaltStateGeneratorService.INSTANCE.regenerateConfigStates(cc);

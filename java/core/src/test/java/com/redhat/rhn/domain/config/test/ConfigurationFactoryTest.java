@@ -67,9 +67,9 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testSaveNewConfigChannel() {
+    public void testCreateNewConfigChannel() {
         String label = "testlabel";
-        ConfigChannel channel = ConfigurationFactory.saveNewConfigChannel(user.getOrg(),
+        ConfigChannel channel = ConfigurationFactory.createNewConfigChannel(user.getOrg(),
                 ConfigChannelType.normal(), "testname",
                 label, "testdescription");
         assertNotNull(channel.getId());
@@ -84,7 +84,6 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
 
         //now change something and hopefully avoid a database problem.
         channel2.setName("newName");
-        ConfigurationFactory.commit(channel2);
         //now look up the new way
         ConfigChannel channel3 =
             ConfigurationFactory.lookupConfigChannelByLabel(label, user.getOrg(),

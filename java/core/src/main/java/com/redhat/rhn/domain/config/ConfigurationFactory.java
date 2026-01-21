@@ -87,14 +87,6 @@ public class ConfigurationFactory extends HibernateFactory {
     }
 
     /**
-     * Create a new ConfigChannel object.
-     * @return new ConfigChannel object
-     */
-    public static ConfigChannel newConfigChannel() {
-        return new ConfigChannel();
-    }
-
-    /**
      * Create a new ConfigContent object.
      * @return new ConfigContent object
      */
@@ -113,42 +105,11 @@ public class ConfigurationFactory extends HibernateFactory {
      * @param description The description of this configuration channel.
      * @return The newly saved configuration channel.
      */
-    public static ConfigChannel saveNewConfigChannel(Org org, ConfigChannelType type,
-            String name, String label, String description) {
-        ConfigChannel out = new ConfigChannel();
-        out.setOrg(org);
-        out.setName(name);
-        out.setLabel(label);
-        out.setDescription(description);
-        out.setConfigChannelType(type);
-        saveNewConfigChannel(out);
-        return out;
-    }
-
-    /**
-     * Save a new configuration channel.
-     * Note, this method uses a stored procedure, so it must be used for all newly
-     * created configuration channels.
-     * @param channel The channel object to persist.
-     */
-    public static void saveNewConfigChannel(ConfigChannel channel) {
-        CallableMode m = ModeFactory.getCallableMode(CONFIG_QUERIES,
-            "create_new_config_channel");
-        Map<String, Object> inParams = new HashMap<>();
-        Map<String, Integer> outParams = new HashMap<>();
-
-        inParams.put("org_id_in", channel.getOrgId());
-        inParams.put("type_in", channel.getConfigChannelType().getLabel());
-        inParams.put("name_in", channel.getName());
-        inParams.put("label_in", channel.getLabel());
-        inParams.put("description_in", channel.getDescription());
-        //Outparam
-        outParams.put("channelId", Types.NUMERIC);
-
-        Map<String, Object> result = m.execute(inParams, outParams);
-
-        Long channelId = (Long) result.get("channelId");
-        channel.setId(channelId);
+    public static ConfigChannel createNewConfigChannel(Org org, ConfigChannelType type,
+                                                       String name, String label, String description) {
+        var configChannel = new ConfigChannel(org, type, name, label, description);
+        getSession().persist(configChannel);
+        return configChannel;
     }
 
     /**
@@ -249,18 +210,6 @@ public class ConfigurationFactory extends HibernateFactory {
         return (Long) result.get("configRevisionId");
     }
 
-    private static ConfigChannel save(ConfigChannel channel) {
-        return singleton.saveObject(channel);
-    }
-
-    private static ConfigFile save(ConfigFile file) {
-        return singleton.saveObject(file);
-    }
-
-    private static ConfigRevision save(ConfigRevision revision) {
-        return singleton.saveObject(revision);
-    }
-
     /**
      * Save or update a config channel.  Since config channels
      * use a stored procedure for inserting, we have to decide whether to
@@ -269,13 +218,7 @@ public class ConfigurationFactory extends HibernateFactory {
      * @return the updated instance
      */
     public static ConfigChannel commit(ConfigChannel channel) {
-        if (channel.getId() == null) {
-            saveNewConfigChannel(channel);
-            return channel;
-        }
-        else {
-            return save(channel);
-        }
+        return singleton.saveObject(channel);
     }
 
     /**
@@ -292,7 +235,7 @@ public class ConfigurationFactory extends HibernateFactory {
             file = getSession().find(ConfigFile.class, fileId);
         }
         else {
-            save(file);
+            singleton.saveObject(file);
         }
         return file;
     }
@@ -343,7 +286,7 @@ public class ConfigurationFactory extends HibernateFactory {
         }
         // And now, because saveNewConfigRevision doesn't store -every-thing
         // about a revision, we have to commit it -again-.  Sigh.  See BZ212236
-        save(revision);
+        singleton.saveObject(revision);
         return revision;
     }
 
@@ -787,32 +730,17 @@ public class ConfigurationFactory extends HibernateFactory {
      * @param type The type of the config channel. Either sandbox or local override.
      * @return The new local config channel.
      */
-    public static ConfigChannel createNewLocalChannel(Server server,
-            ConfigChannelType type) {
-        ConfigChannel retval = newConfigChannel();
-        retval.setOrg(server.getOrg());
-        retval.setConfigChannelType(type);
-        retval.setCreated(new Date());
-        retval.setModified(new Date());
-
-        //The name of the channel should always be the server name for
-        //local config channels.  See bug #203406
-        retval.setName(server.getName());
-        retval.setLabel(server.getId().toString());
-
-        //This is an english string. However, users should never see a description of
-        //a local config channel. For all purposes, this is a useless field that only
-        //exists because we currently treat local config channels exactly the same as
-        //global config channels.
-        retval.setDescription("Auto-generated " + type.getLabel() + " config channel");
-
-        //TODO: put the following line back. It is not here now because Server.findLocal
-        //      does this task for us. It belongs here, but this would currently cause
-        //      an infinite loop based on how setSandboxOverride works.
-        //server.setSandboxOverride(retval)
-        commit(retval);
-
-        return retval;
+    public static ConfigChannel createNewLocalChannel(Server server, ConfigChannelType type) {
+        return createNewConfigChannel(
+                server.getOrg(),
+                type,
+                //The name of the channel should always be the server name for local config channels. See bug #203406
+                server.getName(),
+                server.getId().toString(),
+                //This is a useless field that only exists because we currently treat local config channels exactly
+                // the same as global config channels.
+                "Auto-generated " + type.getLabel() + " config channel"
+        );
     }
 
     /**
