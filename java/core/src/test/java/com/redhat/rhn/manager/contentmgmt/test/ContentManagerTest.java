@@ -61,6 +61,7 @@ import com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher;
 import com.redhat.rhn.domain.contentmgmt.PackageFilter;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
 import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
+import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.org.Org;
@@ -282,7 +283,10 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         contentManager.removeEnvironment("fst", "cplabel", user);
         // the target is removed
         assertFalse(HibernateFactory.getSession()
-                .createQuery("select t from SoftwareEnvironmentTarget t where t.channel = :channel")
+                .createQuery("""
+                             from SoftwareEnvironmentTarget t
+                             where t.channel = :channel
+                             """, SoftwareEnvironmentTarget.class)
                 .setParameter("channel", channel)
                 .uniqueResultOptional()
                 .isPresent());
@@ -611,7 +615,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         contentManager.removeProject("cplabel", user);
         // we can't use ContentManager.lookupSource because the project does not exist
         assertTrue(HibernateFactory.getSession()
-                .createQuery("SELECT 1 FROM SoftwareProjectSource s where s.contentProject = :cp")
+                .createQuery("FROM SoftwareProjectSource s where s.contentProject = :cp", SoftwareProjectSource.class)
                 .setParameter("cp", cp)
                 .list()
                 .isEmpty());

@@ -180,7 +180,7 @@ public class SCCProxyFactory extends HibernateFactory {
      * @param peripheralFqdn the given peripheral fqn
      */
     public void deregisterProxyEntriesForPeripheral(String peripheralFqdn) {
-        getSession().createQuery("""
+        getSession().createMutationQuery("""
                         UPDATE SCCProxyRecord p
                         SET p.status = :removalPending
                         WHERE p.peripheralFqdn = :fqdn
@@ -194,7 +194,7 @@ public class SCCProxyFactory extends HibernateFactory {
      * set all proxy entries as if they have to be registered again
      */
     public void setReregisterProxyEntries() {
-        getSession().createQuery("""
+        getSession().createMutationQuery("""
                         UPDATE SCCProxyRecord p
                         SET p.sccId = NULL, p.status = :creationPending
                         WHERE p.status = :created
@@ -208,7 +208,7 @@ public class SCCProxyFactory extends HibernateFactory {
      * remove all proxy entries with status "removal pending"
      */
     public void removeRemovalPendingProxyEntries() {
-        getSession().createQuery("""
+        getSession().createMutationQuery("""
                         DELETE SCCProxyRecord p
                         WHERE p.status = :removalPending
                         """)

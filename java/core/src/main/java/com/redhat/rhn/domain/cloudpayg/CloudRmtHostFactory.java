@@ -92,7 +92,7 @@ public class CloudRmtHostFactory extends HibernateFactory {
      */
     public static List<CloudRmtHost> lookupCloudRmtHosts() {
         log.debug("Retrieving repositories from cache");
-        return getSession().createQuery("FROM CloudRmtHost").list();
+        return getSession().createQuery("FROM CloudRmtHost", CloudRmtHost.class).list();
     }
 
     /**
