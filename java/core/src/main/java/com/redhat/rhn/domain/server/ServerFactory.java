@@ -1438,7 +1438,7 @@ public class ServerFactory extends HibernateFactory {
     public static void deleteSnapshots(Org org, Date startDate, Date endDate) {
 
         if ((startDate != null) && (endDate != null)) {
-            getSession().createQuery("""
+            getSession().createMutationQuery("""
                             DELETE FROM ServerSnapshot AS s
                             WHERE s.org = :org AND
                             s.created >= :start_date AND
@@ -1449,7 +1449,7 @@ public class ServerFactory extends HibernateFactory {
                     .executeUpdate();
         }
         else if (startDate != null) {
-            getSession().createQuery("""
+            getSession().createMutationQuery("""
                             DELETE FROM ServerSnapshot AS s
                             WHERE s.org = :org AND
                             s.created >= :start_date""")
@@ -1458,7 +1458,7 @@ public class ServerFactory extends HibernateFactory {
                     .executeUpdate();
         }
         else {
-            getSession().createQuery("""
+            getSession().createMutationQuery("""
                             DELETE FROM ServerSnapshot AS s
                             WHERE s.org = :org""")
                     .setParameter("org", org)
@@ -1486,7 +1486,7 @@ public class ServerFactory extends HibernateFactory {
             Date startDate, Date endDate) {
 
         if ((startDate != null) && (endDate != null)) {
-            getSession().createQuery("""
+            getSession().createMutationQuery("""
                             DELETE FROM ServerSnapshot AS s
                             WHERE s.server = :server AND
                             s.org = :org AND
@@ -1499,7 +1499,7 @@ public class ServerFactory extends HibernateFactory {
                     .executeUpdate();
         }
         else if (startDate != null) {
-            getSession().createQuery("""
+            getSession().createMutationQuery("""
                             DELETE FROM ServerSnapshot AS s
                             WHERE s.server = :server AND
                             s.org = :org AND
@@ -1510,7 +1510,7 @@ public class ServerFactory extends HibernateFactory {
                     .executeUpdate();
         }
         else {
-            getSession().createQuery("""
+            getSession().createMutationQuery("""
                             DELETE FROM ServerSnapshot AS s
                             WHERE s.server = :server AND
                             s.org = :org""")
@@ -2002,7 +2002,7 @@ public class ServerFactory extends HibernateFactory {
         if (systemIds.isEmpty()) {
             return 0;
         }
-        return getSession().createQuery("""
+        return getSession().createMutationQuery("""
                 UPDATE Server s
                 SET    s.maintenanceSchedule = :schedule
                 WHERE  s.id IN (:systemIds)

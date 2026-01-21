@@ -352,10 +352,9 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
     private List<ServerAction> getServerActions(Action parentAction) {
         Session session = HibernateFactory.getSession();
-        Query query = session.createQuery("from ServerAction sa where " +
-            "sa.parentAction = :parent_action");
-        query.setParameter("parent_action", parentAction);
-        return query.list();
+        return session.createQuery("from ServerAction sa where sa.parentAction = :parent_action", ServerAction.class)
+                .setParameter("parent_action", parentAction)
+                .list();
     }
 
     private void assertServerActionCount(Action parentAction, int expected) {
@@ -377,20 +376,22 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
     public void assertServerActionCount(User user, int expected) {
         Session session = HibernateFactory.getSession();
-        Query query = session.createQuery("from ServerAction sa where " +
-            "sa.parentAction.schedulerUser = :user");
-        query.setParameter("user", user);
-        List results = query.list();
-        int initialSize = results.size();
+        int initialSize = session.createQuery("""
+                                              from ServerAction sa
+                                              where sa.parentAction.schedulerUser = :user
+                                              """, ServerAction.class)
+                .setParameter("user", user)
+                .list()
+                .size();
         assertEquals(expected, initialSize);
     }
 
     public void assertActionsForUser(User user, int expected) {
         Session session = HibernateFactory.getSession();
-        Query query = session.createQuery("from Action a where a.schedulerUser = :user");
-        query.setParameter("user", user);
-        List results = query.list();
-        int initialSize = results.size();
+        int initialSize = session.createQuery("from Action a where a.schedulerUser = :user", Action.class)
+                .setParameter("user", user)
+                .list()
+                .size();
         assertEquals(expected, initialSize);
     }
 
