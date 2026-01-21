@@ -532,10 +532,14 @@ public abstract class HibernateFactory {
      */
     public static <T> T reload(T obj) throws HibernateException {
         Session session = getSession();
-        Serializable id = (Serializable) session.getEntityManagerFactory().getPersistenceUnitUtil().getIdentifier(obj);
         session.flush();
-        session.evict(obj);
 
+        if (session.contains(obj)) {
+            session.refresh(obj);
+            return obj;
+        }
+
+        Serializable id = (Serializable) session.getEntityManagerFactory().getPersistenceUnitUtil().getIdentifier(obj);
         return (T) session.find(obj.getClass(), id);
     }
 
