@@ -230,8 +230,7 @@ public class ErrataManager extends BaseManager {
         log.debug("addChannelsToErrata - storing errata");
         ErrataFactory.save(errata);
 
-        errata = HibernateFactory.reload(errata);
-        log.debug("addChannelsToErrata - errata reloaded from DB");
+        log.debug("addChannelsToErrata - errata saved");
         return errata;
     }
 
@@ -1240,7 +1239,7 @@ public class ErrataManager extends BaseManager {
         ErrataCacheManager.insertCacheForChannelPackages(chan.getId(), null, pids);
 
         //Remove the errata from the channel
-        chan.getErratas().remove(errata);
+        chan.removeErrata(errata);
         List<Long> eList = new ArrayList<>();
         eList.add(errata.getId());
         //First delete the cache entries
@@ -1287,7 +1286,7 @@ public class ErrataManager extends BaseManager {
 
 
         //Remove the errata from the channel
-        chan.getErratas().removeAll(excludedErrata);
+        chan.removeErratas(excludedErrata);
         List<Long> eList = excludedErrata.stream().map(Errata::getId).collect(toList());
         //First delete the cache entries
         ErrataCacheManager.deleteCacheEntriesForChannelErrata(chan.getId(), eList);

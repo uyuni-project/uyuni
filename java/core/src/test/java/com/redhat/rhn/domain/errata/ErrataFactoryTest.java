@@ -277,15 +277,10 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
             Channel chan = ChannelTestUtils.createBaseChannel(user);
             Errata e = ErrataFactoryTest.createTestErrata(user.getId());
             Package p = PackageTest.createTestPackage(user.getOrg());
-            chan.getErratas().add(e);
-            chan.getPackages().add(p);
-            e.getPackages().add(p);
+            chan.addErrata(e);
+            chan.addPackage(p);
+            e.addPackage(p);
             ChannelFactory.save(chan);
-
-            chan = TestUtils.saveAndReload(chan);
-            e = TestUtils.saveAndReload(e);
-            p = TestUtils.saveAndReload(p);
-
 
             List<Long> list = ErrataFactory.listErrataChannelPackages(chan.getId(),
                     e.getId());
@@ -306,7 +301,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
     public void testListErrataByChannel() throws Exception {
         Channel chan = ChannelTestUtils.createBaseChannel(user);
         Errata e = ErrataFactoryTest.createTestErrata(user.getId());
-        chan.getErratas().add(e);
+        chan.addErrata(e);
 
         List<Errata> errata = ErrataFactory.listByChannel(user.getOrg(), chan);
         assertEquals(1, errata.size());
@@ -373,10 +368,10 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
 
         Channel originalChannel = ChannelFactoryTest.createBaseChannel(user);
         Channel cloneChannel = ChannelFactoryTest.createTestClonedChannel(originalChannel, user);
-        originalChannel.getErratas().add(originalErratum);
-        originalChannel.getPackages().addAll(originalErratum.getPackages());
-        cloneChannel.getErratas().add(clonedErratum);
-        cloneChannel.getPackages().addAll(clonedErratum.getPackages());
+        originalChannel.addErrata(originalErratum);
+        originalChannel.addPackages(originalErratum.getPackages());
+        cloneChannel.addErrata(clonedErratum);
+        cloneChannel.addPackages(clonedErratum.getPackages());
 
         // install an older pkg on server
         Package pkg = clonedErratum.getPackages().iterator().next();

@@ -760,24 +760,10 @@ public class Package extends BaseDomainHelper {
     }
 
     /**
-     * @param errataIn The errata to set.
-     */
-    public void setErrata(Set<Errata> errataIn) {
-        this.errata = errataIn;
-    }
-
-    /**
      * @return Returns the channels.
      */
     public Set<Channel> getChannels() {
         return channels;
-    }
-
-    /**
-     * @param channelsIn The channels to set.
-     */
-    public void setChannels(Set<Channel> channelsIn) {
-        this.channels = channelsIn;
     }
 
     /**
