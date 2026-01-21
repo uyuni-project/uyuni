@@ -120,7 +120,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
     @Test
     public void testAlignEntities() {
         // let's add a package to the target. it should be removed after aligning
-        tgtChannel.getPackages().add(PackageTest.createTestPackage(user.getOrg()));
+        tgtChannel.addPackage(PackageTest.createTestPackage(user.getOrg()));
         contentManager.alignEnvironmentTargetSync(emptyList(), srcChannel, tgtChannel, user);
 
         // check that newest packages cache has been updated
@@ -144,7 +144,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
     public void testNewestPackagesCacheRefreshed() {
         Package pack2 = PackageTest.createTestPackage(user.getOrg());
 
-        tgtChannel.getPackages().add(pack2);
+        tgtChannel.addPackage(pack2);
         ChannelFactory.refreshNewestPackageCache(tgtChannel, "java::alignPackages");
         assertEquals(pack2.getId(),
                 ChannelManager.getLatestPackageEqual(tgtChannel.getId(), pack2.getPackageName().getName()));
@@ -179,10 +179,10 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         ChannelTestUtility.testAddPackage(srcChannel, pack4);
         ChannelTestUtility.testAddPackage(srcChannel, pack5);
 
-        tgtChannel.getPackages().add(pack2);
-        tgtChannel.getPackages().add(pack3);
-        tgtChannel.getPackages().add(pack5);
-        tgtChannel.getPackages().add(pack6);
+        tgtChannel.addPackage(pack2);
+        tgtChannel.addPackage(pack3);
+        tgtChannel.addPackage(pack5);
+        tgtChannel.addPackage(pack6);
 
         ChannelFactory.refreshNewestPackageCache(tgtChannel, "java::alignPackages");
 
@@ -231,7 +231,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         Server server = ServerFactoryTest.createTestServer(user);
         SystemManager.subscribeServerToChannel(user, server, tgtChannel);
         // we want to test the cache update when channel with no errata is used
-        srcChannel.getErratas().clear();
+        srcChannel.clearErratas();
 
         InstalledPackage olderPkg = copyPackage(pkg, of("0.9.9"));
         setInstalledPackage(server, olderPkg);
@@ -254,7 +254,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
     public void testServerNeededCacheRemovedNoErrata() throws Exception {
         Server server = ServerFactoryTest.createTestServer(user);
         // we want to test the cache update when channel with no errata is used
-        srcChannel.getErratas().clear();
+        srcChannel.clearErratas();
 
         Package otherPkg = PackageTest.createTestPackage(user.getOrg());
         ChannelTestUtility.testAddPackage(tgtChannel, otherPkg);
@@ -651,7 +651,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         setInstalledPackage(server, installedPkg);
 
         // clear the existing patch
-        srcChannel.getErratas().clear();
+        srcChannel.clearErratas();
 
         // pkg2 is a part of a retracted patch
         Package pkg2 = PackageTest.createTestPackage(user.getOrg());

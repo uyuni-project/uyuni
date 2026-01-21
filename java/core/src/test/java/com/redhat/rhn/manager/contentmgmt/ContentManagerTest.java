@@ -1060,21 +1060,22 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
 
         // Remove a package from the original channel
         Package existingPackage = channel1.getPackages().iterator().next();
-        assertTrue(channel1.getPackages().remove(existingPackage));
+        channel1.removePackage(existingPackage);
+        assertFalse(channel1.getPackages().contains(existingPackage));
 
         // Add an errata with package to the original channel
         Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         Set<Package> errataPackages = errata.getPackages();
         Package pack = errataPackages.iterator().next();
         channel1.addErrata(errata);
-        channel1.getPackages().addAll(errataPackages);
+        channel1.addPackages(errataPackages);
 
         // add a package to the original channel and a filter for it to the project
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "name", "filtered-package");
         ContentFilter filter = contentManager.createFilter(
                 "my-filter", Rule.DENY, ContentFilter.EntityType.PACKAGE, criteria, user);
         Package testFilteredPackage = PackageTest.createTestPackage(user.getOrg(), "filtered-package");
-        channel1.getPackages().add(testFilteredPackage);
+        channel1.addPackage(testFilteredPackage);
         ChannelFactory.save(channel1);
         contentManager.attachFilter("cplabel", filter.getId(), user);
 

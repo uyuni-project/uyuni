@@ -189,13 +189,13 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
             inverseJoinColumns = @JoinColumn(name = "org_trust_id"))
     private Set<Org> trustedOrgs;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     @JoinTable(name = "rhnChannelErrata",
             joinColumns = @JoinColumn(name = "channel_id"),
             inverseJoinColumns = @JoinColumn(name = "errata_id"))
-    private Set<Errata> erratas;
+    private Set<Errata> erratas = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     @JoinTable(name = "rhnChannelPackage",
             joinColumns = @JoinColumn(name = "channel_id"),
             inverseJoinColumns = @JoinColumn(name = "package_id"))
@@ -604,41 +604,12 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     }
 
     /**
-     * Sets the erratas set for this channel
-     * @param erratasIn The set of erratas
-     */
-    public void setErratas(Set<Errata> erratasIn) {
-        this.erratas = erratasIn;
-    }
-
-    /**
      * Adds a single errata to the channel
      * @param errataIn The errata to add
      */
     public void addErrata(Errata errataIn) {
-        if (erratas.add(errataIn)) {
-            errataIn.getChannels().add(this);
-        }
-    }
-
-    /**
-     * Removes a single errata from the channel
-     * @param errataIn The errata to remove
-     */
-    public void removeErrata(Errata errataIn) {
-        if (erratas.remove(errataIn)) {
-            errataIn.getChannels().remove(this);
-        }
-    }
-
-    /**
-     * Adds a single package to the channel
-     * @param packageIn The package to add
-     */
-    public void addPackage(Package packageIn) {
-        if (packages.add(packageIn)) {
-            packageIn.getChannels().add(this);
-        }
+        erratas.add(errataIn);
+        errataIn.getChannels().add(this);
     }
 
     /**
@@ -652,6 +623,16 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     }
 
     /**
+     * Removes a single errata from the channel
+     * @param errataIn The errata to remove
+     */
+    public void removeErrata(Errata errataIn) {
+        erratas.remove(errataIn);
+        errataIn.getChannels().remove(this);
+    }
+
+
+    /**
      * Removes multiple erratas from the channel
      * @param erratasIn The collection of erratas to remove
      */
@@ -659,6 +640,22 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
         for (Errata errata : erratasIn) {
             removeErrata(errata);
         }
+    }
+
+    /**
+     * Clears out the errata associated with this channel.
+     */
+    public void clearErratas() {
+        removeErratas(new ArrayList<>(getErratas()));
+    }
+
+    /**
+     * Adds a single package to the channel
+     * @param packageIn The package to add
+     */
+    public void addPackage(Package packageIn) {
+        packages.add(packageIn);
+        packageIn.getChannels().add(this);
     }
 
     /**
@@ -672,14 +669,22 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     }
 
     /**
+     * Removes a package from the packages set.
+     * @param packageIn The package to remove.
+     */
+    public void removePackage(Package packageIn) {
+        packages.remove(packageIn);
+        packageIn.getChannels().remove(this);
+    }
+
+
+    /**
      * Removes multiple packages from the channel
      * @param packagesIn The collection of packages to remove
      */
     public void removePackages(Collection<Package> packagesIn) {
         for (Package pkg : packagesIn) {
-            if (packages.remove(pkg)) {
-                pkg.getChannels().remove(this);
-            }
+            removePackage(pkg);
         }
     }
 
@@ -710,15 +715,6 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
         return ChannelFactory.getErrataCount(this);
     }
 
-
-    /**
-     * Sets the packages set for this channel
-     * @param packagesIn The set of erratas
-     */
-    public void setPackages(Set<Package> packagesIn) {
-        this.packages = packagesIn;
-    }
-
     /**
      *
      * @param sourcesIn The set of yum repo sources
@@ -733,15 +729,6 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
      */
     public Set<ContentSource> getSources() {
         return sources;
-    }
-
-    /**
-     * Removes a package from the packages set.
-     * @param packageIn The package to remove.
-     */
-    public void removePackage(Package packageIn) {
-        packages.remove(packageIn);
-        packageIn.getChannels().remove(this);
     }
 
     /**
