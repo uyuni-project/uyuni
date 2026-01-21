@@ -38,7 +38,7 @@ public class PlaybookActionDetails extends BaseDomainHelper {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "act_playbook_seq")
     @SequenceGenerator(name = "act_playbook_seq", sequenceName = "rhn_act_playbook_id_seq", allocationSize = 1)
-    private long id;
+    private Long id;
 
     @Column(name = "playbook_path")
     private String playbookPath;
@@ -64,14 +64,14 @@ public class PlaybookActionDetails extends BaseDomainHelper {
     /**
      * @return the id
      */
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
     /**
      * @param idIn the id to set
      */
-    protected void setId(long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 

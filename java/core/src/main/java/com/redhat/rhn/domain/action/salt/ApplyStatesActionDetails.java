@@ -53,7 +53,7 @@ public class ApplyStatesActionDetails extends BaseDomainHelper {
     @SequenceGenerator(
             name = "RHN_ACT_APPLY_STATES_ID_SEQ", sequenceName = "RHN_ACT_APPLY_STATES_ID_SEQ", allocationSize = 1
     )
-    private long id;
+    private Long id;
 
     @Column
     private String states;
@@ -79,14 +79,14 @@ public class ApplyStatesActionDetails extends BaseDomainHelper {
     /**
      * @return the id
      */
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
     /**
      * @param idIn the id to set
      */
-    protected void setId(long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 
