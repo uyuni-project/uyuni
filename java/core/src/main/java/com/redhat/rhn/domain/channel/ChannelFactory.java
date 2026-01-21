@@ -1771,8 +1771,9 @@ public class ChannelFactory extends HibernateFactory {
      * @return The channel that was cloned, null if none
      */
     public static Channel lookupOriginalChannel(Channel chan) {
-        return getSession().createQuery("SELECT c.original FROM ClonedChannel AS c WHERE c = :clone", Channel.class)
-                .setParameter("clone", chan)
+        return getSession()
+                .createQuery("SELECT c.original FROM ClonedChannel AS c WHERE c.id = :cloneId", Channel.class)
+                .setParameter("cloneId", chan.getId())
                 .uniqueResult();
     }
 

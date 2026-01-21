@@ -17,6 +17,7 @@ package com.redhat.rhn.manager.channel.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -24,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.channel.Modules;
 import com.redhat.rhn.domain.channel.ProductName;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -161,6 +163,7 @@ public class CloneChannelCommandTest extends BaseTestCaseWithUser {
         // Asserts that the channel actually exists after cloning
         Channel gotChannelTest1 = ChannelFactory.lookupByIdAndUser(clonedChildChannel1.getId(), user);
         assertNotNull(gotChannelTest1);
+        assertInstanceOf(ClonedChannel.class, gotChannelTest1);
     }
 
 
