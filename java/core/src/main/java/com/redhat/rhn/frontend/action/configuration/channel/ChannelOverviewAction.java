@@ -227,7 +227,7 @@ public class ChannelOverviewAction extends RhnAction {
         // Creating a new channel?
         if (cc == null && isSubmitted(form)) {
             ConfigChannelType type = ConfigChannelType.lookup(request.getParameter("type"));
-            cc = helper.create(u, type);
+            cc = new ConfigChannel(u.getOrg(), type);
         }
         return cc;
     }

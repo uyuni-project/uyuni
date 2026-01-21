@@ -155,7 +155,7 @@ public class ConfigChannelHandler extends BaseHandler {
         try {
             helper.validate(label, name, description);
             ConfigChannelType ct = helper.getGlobalChannelType(type);
-            ConfigChannel cc = helper.create(user, ct);
+            ConfigChannel cc = new ConfigChannel(user.getOrg(), ct);
             helper.update(cc, name, label, description);
             ConfigurationManager.getInstance().save(cc, empty());
             cc  = HibernateFactory.reload(cc);

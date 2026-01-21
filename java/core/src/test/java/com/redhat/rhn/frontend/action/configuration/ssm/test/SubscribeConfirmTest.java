@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.action.configuration.ssm.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetFactory;
@@ -28,7 +29,6 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
 import com.redhat.rhn.testing.ServerTestUtils;
-import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
 
@@ -111,16 +111,15 @@ public class SubscribeConfirmTest extends RhnMockStrutsTestCase {
         channelRanking.addElement(channel1.getId(), 3L);
         RhnSetFactory.save(channelRanking);
 
-        TestUtils.flushAndEvict(server1);
-        TestUtils.flushAndEvict(server2);
-        TestUtils.flushAndEvict(server3);
-
         // Send confirm request
         setRequestPathInfo("/systems/ssm/config/SubscribeConfirm");
         addDispatchCall("ssm.config.subscribeconfirm.jsp.confirm");
         addRequestParameter(SubscribeConfirm.POSITION, SubscribeConfirm.LOWEST);
         actionPerform();
         verifyForward("success");
+
+        // Ensure we get a new session and execute the query to extract  the server
+        HibernateFactory.closeSession();
 
         /*
          * Expected channels by server for LOWEST, in order:
@@ -202,16 +201,15 @@ public class SubscribeConfirmTest extends RhnMockStrutsTestCase {
         channelRanking.addElement(channel1.getId(), 3L);
         RhnSetFactory.save(channelRanking);
 
-        TestUtils.flushAndEvict(server1);
-        TestUtils.flushAndEvict(server2);
-        TestUtils.flushAndEvict(server3);
-
         // Send confirm request
         setRequestPathInfo("/systems/ssm/config/SubscribeConfirm");
         addDispatchCall("ssm.config.subscribeconfirm.jsp.confirm");
         addRequestParameter(SubscribeConfirm.POSITION, SubscribeConfirm.HIGHEST);
         actionPerform();
         verifyForward("success");
+
+        // Ensure we get a new session and execute the query to extract  the server
+        HibernateFactory.closeSession();
 
         /*
          * Expected channels by server for HIGHEST, in order:
@@ -292,16 +290,15 @@ public class SubscribeConfirmTest extends RhnMockStrutsTestCase {
         channelRanking.addElement(channel3.getId(), 2L);
         RhnSetFactory.save(channelRanking);
 
-        TestUtils.flushAndEvict(server1);
-        TestUtils.flushAndEvict(server2);
-        TestUtils.flushAndEvict(server3);
-
         // Send confirm request
         setRequestPathInfo("/systems/ssm/config/SubscribeConfirm");
         addDispatchCall("ssm.config.subscribeconfirm.jsp.confirm");
         addRequestParameter(SubscribeConfirm.POSITION, SubscribeConfirm.REPLACE);
         actionPerform();
         verifyForward("success");
+
+        // Ensure we get a new session and execute the query to extract  the server
+        HibernateFactory.closeSession();
 
         /*
          * Expected channels by server for REPLACE, in order:
