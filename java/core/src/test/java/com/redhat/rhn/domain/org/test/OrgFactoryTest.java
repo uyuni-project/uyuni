@@ -60,14 +60,12 @@ public class OrgFactoryTest extends RhnBaseTestCase {
         Org trusted = createTestOrg();
         org.getTrustedOrgs().add(trusted);
         OrgFactory.save(org);
-        flushAndEvict(org);
         org = OrgFactory.lookupById(org.getId());
         trusted = OrgFactory.lookupById(trusted.getId());
         assertContains(org.getTrustedOrgs(), trusted);
         assertContains(trusted.getTrustedOrgs(), org);
         org.getTrustedOrgs().remove(trusted);
         OrgFactory.save(org);
-        flushAndEvict(org);
         org = OrgFactory.lookupById(org.getId());
         trusted = OrgFactory.lookupById(trusted.getId());
         assertFalse(org.getTrustedOrgs().contains(trusted));
@@ -99,7 +97,6 @@ public class OrgFactoryTest extends RhnBaseTestCase {
         org1.setName(changedName);
         org1 = OrgFactory.save(org1);
         Long id = org1.getId();
-        flushAndEvict(org1);
         Org org2 = OrgFactory.lookupById(id);
         assertEquals(changedName, org2.getName());
     }
@@ -112,7 +109,6 @@ public class OrgFactoryTest extends RhnBaseTestCase {
         org1.getOrgConfig().setStagingContentEnabled(!staging);
         OrgFactory.save(org1);
         assertEquals(!staging, org1.getOrgConfig().isStagingContentEnabled());
-        flushAndEvict(org1);
         Org org2 = OrgFactory.lookupById(id);
         assertEquals(!staging, org2.getOrgConfig().isStagingContentEnabled());
     }
@@ -153,7 +149,6 @@ public class OrgFactoryTest extends RhnBaseTestCase {
         org1 = OrgFactory.save(org1);
         // build the channels set
         Channel channel1 = ChannelFactoryTest.createTestChannel(org1);
-        flushAndEvict(channel1);
         org1.addOwnedChannel(channel1);
         assertTrue(org1.getId() > 0);
         return org1;
@@ -174,7 +169,6 @@ public class OrgFactoryTest extends RhnBaseTestCase {
         orig.setName("org created by OrgFactory test: " + TestUtils.randomString());
         // build the channels set
         Channel channel1 = ChannelFactoryTest.createTestChannel(orig);
-        flushAndEvict(channel1);
         orig.addOwnedChannel(channel1);
         orig = OrgFactory.save(orig);
         assertTrue(orig.getId() > 0);
@@ -187,7 +181,6 @@ public class OrgFactoryTest extends RhnBaseTestCase {
         orig.setToken(token);
 
         Long origId = orig.getId();
-        flushAndEvict(orig);
         Org lookup = OrgFactory.lookupById(origId);
         assertEquals(token.getId(), lookup.getToken().getId());
         lookup.setToken(null);

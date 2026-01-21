@@ -52,7 +52,6 @@ public class TokenPackageTest extends BaseTestCaseWithUser {
 
         //make sure we got written to the db
         assertNotNull(pkg.getId());
-        TestUtils.flushAndEvict(pkg);
 
         TokenPackage lookup = TokenPackageFactory.lookupPackage(pkg.getToken(),
                 pkg.getPackageName(), pkg.getPackageArch());
