@@ -16,7 +16,6 @@
 package com.redhat.rhn.testing;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNotSame;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 
@@ -84,9 +83,7 @@ public interface HibernateTestCaseUtils {
      */
     default <T> T reload(T obj) throws HibernateException {
         assertNotNull(obj);
-        T result = TestUtils.reload(obj);
-        assertNotSame(obj, result);
-        return result;
+        return TestUtils.reload(obj);
     }
 
 }

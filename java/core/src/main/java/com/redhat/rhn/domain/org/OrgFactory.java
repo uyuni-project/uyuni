@@ -201,9 +201,7 @@ public class OrgFactory extends HibernateFactory {
         retval.addRole(RoleFactory.IMAGE_ADMIN);
 
         // Save the object since we may have in memory items to write\
-        singleton.saveInternal(retval);
-        retval = HibernateFactory.reload(retval);
-        return retval;
+        return getSession().merge(retval);
     }
 
     /**
