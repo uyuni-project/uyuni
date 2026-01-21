@@ -73,7 +73,7 @@ public class PtfPackagesCacheManagerTest extends BaseTestCaseWithUser {
     @Test
     public void ensurePtfPackagesNotAreInsertedByPackageInNeededCache() {
         // channel has original and ptf packages
-        subscribedChannel.getPackages().addAll(List.of(originalPackage, ptfPackage, newerPackage));
+        subscribedChannel.addPackages(List.of(originalPackage, ptfPackage, newerPackage));
 
         // original is installed on the server
         PackageTestUtils.installPackageOnServer(originalPackage, server);
@@ -105,7 +105,7 @@ public class PtfPackagesCacheManagerTest extends BaseTestCaseWithUser {
     @Test
     public void ensurePtfPackagesNotAreInsertedByErrataInNeededCache() throws Exception {
         // channel has original and ptf packages
-        subscribedChannel.getPackages().addAll(List.of(originalPackage, ptfPackage, newerPackage));
+        subscribedChannel.addPackages(List.of(originalPackage, ptfPackage, newerPackage));
 
         Errata errataPtf = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         errataPtf.addPackage(ptfPackage);
@@ -141,7 +141,7 @@ public class PtfPackagesCacheManagerTest extends BaseTestCaseWithUser {
     @Test
     public void ensureHigherVersionCalculationIsCorrectWithPtfPackages() {
         // channel has original and ptf packages
-        subscribedChannel.getPackages().addAll(List.of(originalPackage, ptfPackage, newerPackage));
+        subscribedChannel.addPackages(List.of(originalPackage, ptfPackage, newerPackage));
 
         // original is installed on the server
         PackageTestUtils.installPackageOnServer(originalPackage, server);

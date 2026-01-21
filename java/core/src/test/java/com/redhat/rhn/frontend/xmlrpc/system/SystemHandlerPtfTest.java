@@ -178,7 +178,7 @@ public class SystemHandlerPtfTest extends BaseHandlerTestCase {
 
     @Test
     public void listLatestAvailablePackageDoesNotConsiderPtfPackages() {
-        channel.getPackages().addAll(List.of(standard, standardUpdated, standardUpdatedPtf));
+        channel.addPackages(List.of(standard, standardUpdated, standardUpdatedPtf));
         PackageTestUtils.installPackageOnServer(standard, server);
 
         List<Map<String, Object>> results = handler.listLatestAvailablePackage(admin,
@@ -194,7 +194,7 @@ public class SystemHandlerPtfTest extends BaseHandlerTestCase {
 
     @Test
     public void installingPtfPackageFailsWithPtfPackageFault() {
-        channel.getPackages().add(ptfPackage);
+        channel.addPackage(ptfPackage);
 
         assertThrows(PtfPackageFault.class, () -> {
             handler.schedulePackageInstall(admin, List.of(server.getId().intValue()),
@@ -204,7 +204,7 @@ public class SystemHandlerPtfTest extends BaseHandlerTestCase {
 
     @Test
     public void upgradingToPtfPackageFailsWithPtfPackageFault() {
-        channel.getPackages().addAll(List.of(standard, standardUpdated));
+        channel.addPackages(List.of(standard, standardUpdated));
         PackageTestUtils.installPackageOnServer(standard, server);
 
         assertThrows(PtfPackageFault.class, () -> {
@@ -215,7 +215,7 @@ public class SystemHandlerPtfTest extends BaseHandlerTestCase {
 
     @Test
     public void removingPtfPackageFailsWithPtfPackageFault() {
-        channel.getPackages().add(ptfPackage);
+        channel.addPackage(ptfPackage);
         PackageTestUtils.installPackageOnServer(ptfPackage, server);
 
         assertThrows(PtfPackageFault.class, () -> {
@@ -226,7 +226,7 @@ public class SystemHandlerPtfTest extends BaseHandlerTestCase {
 
     @Test
     public void masterPtfPackagesCanBeInstalled() {
-        channel.getPackages().add(ptfMaster);
+        channel.addPackage(ptfMaster);
 
         Long[] scheduledActions = handler.schedulePackageInstall(admin, List.of(server.getId().intValue()),
             List.of(ptfMaster.getId().intValue()), new Date());
@@ -241,7 +241,7 @@ public class SystemHandlerPtfTest extends BaseHandlerTestCase {
 
     @Test
     public void removingMasterPtfFailsWithPtfMasterFault() {
-        channel.getPackages().add(ptfMaster);
+        channel.addPackage(ptfMaster);
         PackageTestUtils.installPackageOnServer(ptfMaster, server);
 
         assertThrows(PtfMasterFault.class, () -> {

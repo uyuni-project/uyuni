@@ -133,7 +133,7 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
         ErrataFactory.save(vendorPatch);
 
         // channel has all 3 packages
-        channel.getPackages().addAll(List.of(oldPkg, newerPkg, newestPkg));
+        channel.addPackages(List.of(oldPkg, newerPkg, newestPkg));
 
         // clone the channel
         CloneChannelCommand ccc = new CloneChannelCommand(CURRENT_STATE, channel);
@@ -170,7 +170,7 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
         ErrataFactory.save(vendorPatch);
 
         // channel has all 3 packages
-        channel.getPackages().addAll(List.of(oldPkg, newerPkg, newestPkg));
+        channel.addPackages(List.of(oldPkg, newerPkg, newestPkg));
 
         // clone the channel
         CloneChannelCommand ccc = new CloneChannelCommand(CURRENT_STATE, channel);
@@ -208,7 +208,7 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
         ErrataFactory.save(vendorPatch);
 
         // channel has all 3 packages
-        channel.getPackages().addAll(List.of(oldPkg, newerPkg, newestPkg));
+        channel.addPackages(List.of(oldPkg, newerPkg, newestPkg));
 
         // clone the channel
         CloneChannelCommand ccc = new CloneChannelCommand(CURRENT_STATE, channel);
@@ -246,7 +246,7 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
         ErrataFactory.save(vendorPatch);
 
         // channel has all 3 packages
-        channel.getPackages().addAll(List.of(oldPkg, newerPkg, newestPkg));
+        channel.addPackages(List.of(oldPkg, newerPkg, newestPkg));
 
         // clone the channel
         CloneChannelCommand ccc = new CloneChannelCommand(CURRENT_STATE, channel);

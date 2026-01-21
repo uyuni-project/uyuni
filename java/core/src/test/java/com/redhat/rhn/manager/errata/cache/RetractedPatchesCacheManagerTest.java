@@ -77,7 +77,7 @@ public class RetractedPatchesCacheManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testRetractedPatchesInCache() throws Exception {
         // channel has all packages
-        subscribedChannel.getPackages().addAll(List.of(oldPkg, newerPkg, newestPkg));
+        subscribedChannel.addPackages(List.of(oldPkg, newerPkg, newestPkg));
 
         // oldest is installed on the server
         PackageTestUtils.installPackageOnServer(oldPkg, server);
@@ -114,7 +114,7 @@ public class RetractedPatchesCacheManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testRetractedPackagesInCache() throws Exception {
         // channel has all packages
-        subscribedChannel.getPackages().addAll(List.of(oldPkg, newerPkg, newestPkg));
+        subscribedChannel.addPackages(List.of(oldPkg, newerPkg, newestPkg));
 
         // oldest is installed on the server
         PackageTestUtils.installPackageOnServer(oldPkg, server);
@@ -154,7 +154,7 @@ public class RetractedPatchesCacheManagerTest extends BaseTestCaseWithUser {
         ErrataFactory.save(vendorPatch);
 
         // channel has all 3 packages
-        subscribedChannel.getPackages().addAll(List.of(oldPkg, newerPkg, newestPkg));
+        subscribedChannel.addPackages(List.of(oldPkg, newerPkg, newestPkg));
 
         // clone the channel
         CloneChannelCommand ccc = new CloneChannelCommand(CURRENT_STATE, subscribedChannel);
