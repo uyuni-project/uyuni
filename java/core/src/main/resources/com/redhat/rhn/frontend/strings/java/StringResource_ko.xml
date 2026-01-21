@@ -3549,7 +3549,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/InProgressSystems</context>
         </context-group>
-        <target>선택된 시스템이 없음</target>
+        <target state="final">선택된 시스템이 없습니다.</target>
       </trans-unit>
       <trans-unit id="systemgroups.none" xml:space="preserve">
         <source>No system groups selected.</source>
@@ -6834,13 +6834,13 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target>설정 파일 배포판 생성 중 오류: {0} 파일이 비어있음.</target>
       </trans-unit>
-      <trans-unit approved="yes" id="error.configtoolarge" xml:space="preserve">
+      <trans-unit approved="no" id="error.configtoolarge" xml:space="preserve">
         <source>Error creating Configuration File Revision:  File too large.  The maximum file size is {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/ManageConfigRevision.do</context>
           <context context-type="paramnotes">Error creating Configuration File Revision:  File too large.  The maximum file size is 128 KB</context>
         </context-group>
-        <target>구성 파일 리비전 생성 중 오류: 파일 크기가 너무 큼. 최대 파일 크기는 {0}임.</target>
+        <target state="translated">구성 파일 리비전 생성 중 오류: 파일 크기가 너무 큽니다. 최대 파일 크기는 {0}입니다.</target>
       </trans-unit>
       <trans-unit id="config_revisions.failure" xml:space="preserve">
         <source>{0} revision deletions failed.</source>
@@ -8324,14 +8324,14 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
-        <target>1개의 가상 시스템 삭제됨</target>
+        <target state="final">1개의 가상 시스템이 삭제되었습니다.</target>
       </trans-unit>
       <trans-unit approved="yes" id="systems.details.virt.virt.deleted" xml:space="preserve">
         <source>Deleted {0} virtual systems.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
-        <target>{0} 가상 시스템 삭제됨</target>
+        <target state="final">{0} 가상 시스템이 삭제되었습니다.</target>
       </trans-unit>
       <trans-unit id="virt.shutdown" xml:space="preserve">
         <source>Shutdown</source>
@@ -9258,7 +9258,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit approved="yes" id="ARM hard. FP" xml:space="preserve">
         <source>ARM hard. FP</source>
-        <target>ARM hard. FP</target>
+        <target state="final">ARM hard. FP</target>
       </trans-unit>
       <trans-unit id="arm Debian" xml:space="preserve">
         <source>arm Debian</source>
@@ -9374,7 +9374,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit approved="yes" id="api.kickstart.invalidkickstartinstalltype" xml:space="preserve">
         <source>Invalid autoinstall type: {0}.</source>
-        <target>잘못된 자동 설치 유형: {0}</target>
+        <target state="final">잘못된 자동 설치 유형: {0}.</target>
       </trans-unit>
       <trans-unit approved="yes" id="edit.channel.invalidgpgfp" xml:space="preserve">
         <source>Invalid GPG Fingerprint</source>
@@ -9543,7 +9543,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit approved="yes" id="message.channelcreated" xml:space="preserve">
         <source>Channel &lt;strong&gt;{0}&lt;/strong&gt; created.</source>
-        <target>채널 &lt;strong&gt;{0}&lt;/strong&gt; 생성됨</target>
+        <target state="final">&lt;strong&gt;{0}&lt;/strong&gt; 채널이 생성되었습니다.</target>
       </trans-unit>
       <trans-unit id="message.channelcloned" xml:space="preserve">
         <source>Channel &lt;strong&gt;{0}&lt;/strong&gt; cloned from channel &lt;strong&gt;{1}&lt;/strong&gt;.</source>
@@ -9571,7 +9571,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit approved="yes" id="message.channelupdated" xml:space="preserve">
         <source>Channel &lt;strong&gt;{0}&lt;/strong&gt; updated.</source>
-        <target>채널 &lt;strong&gt;{0}&lt;/strong&gt; 업데이트됨</target>
+        <target state="final">&lt;strong&gt;{0}&lt;/strong&gt; 채널이 업데이트되었습니다.</target>
       </trans-unit>
       <trans-unit id="message.failactionsuccess" xml:space="preserve">
         <source>Status of action &lt;strong&gt;{0}&lt;/strong&gt; has been set to failed.</source>
@@ -9789,7 +9789,7 @@ tree will not be usable for autoinstalling.</source>
         <target state="final">
 @@PRODUCT_NAME@@이(가) @@PRODUCT_NAME@@에서 Cobbler로
 자동 설치 가능 배포를 동기화하는 동안 발생한 오류 목록은 다음과 같습니다.
-자동 설치 시스템에서 배포를 사용하려면 오류를 수정해야 함:
+자동 설치 시스템에서 배포를 사용하려면 이러한 오류를 수정해야 합니다.
 
 {0}
 
@@ -11054,7 +11054,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>&lt;p&gt;@@PRODUCT_NAME@@ {0} has reached the end of its lifecycle. General support has ended on &lt;strong&gt;{1}&lt;/strong&gt;. To continue receiving support, this @@PRODUCT_NAME@@ server instance &lt;strong&gt;must be&lt;/strong&gt; upgraded.&lt;/p&gt;
           &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the section &lt;em&gt;Upgrade&lt;/em&gt; of the &lt;em&gt;Installation/Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
         <target state="final">&lt;p&gt;@@PRODUCT_NAME@@ {0}의 수명 주기가 다했습니다. &lt;strong&gt;{1}&lt;/strong&gt;에 일반 지원이 종료되었습니다. 계속해서 지원받으려면 &lt;strong&gt;반드시&lt;/strong&gt; @@PRODUCT_NAME@@ 서버 인스턴스를 업그레이드해야 합니다.&lt;/p&gt;
-          &lt;p&gt;@@PRODUCT_NAME@@ 업그레이드 방법에 대한 추가 정보는 공식 문서의 &lt;em&gt;설치/업그레이드 가이드&lt;/em&gt; &gt; &lt;em&gt;업그레이드&lt;/em&gt;를 참고하십시오.&lt;/p&gt;</target>
+          &lt;p&gt;@@PRODUCT_NAME@@ 업그레이드 방법에 대한 추가 정보는 공식 문서에서 &lt;em&gt;설치/업그레이드 가이드&lt;/em&gt;의 &gt; &lt;em&gt;업그레이드&lt;/em&gt;를 참고하십시오.&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit approved="yes" id="notification.endoflife.expiring.summary" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ {0} is approaching end of life</source>
@@ -11064,7 +11064,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>&lt;p&gt;@@PRODUCT_NAME@@ {0} is approaching the end of its lifecycle. Please consider upgrading this server instance before general support ends on &lt;strong&gt;{1}&lt;/strong&gt;.&lt;/p&gt;
           &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the section &lt;em&gt;Upgrade&lt;/em&gt; of the &lt;em&gt;Installation/Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
         <target state="final">&lt;p&gt;@@PRODUCT_NAME@@ {0}의 수명이 곧 다합니다. &lt;strong&gt;{1}&lt;/strong&gt;에 일반 지원이 종료되기 전, 서버 인스턴스 업그레이드를 고려해 보십시오.&lt;/p&gt;
-          &lt;p&gt;@@PRODUCT_NAME@@ 업그레이드 방법에 대한 추가 정보는 공식 문서의 &lt;em&gt;설치/업그레이드 가이드&lt;/em&gt; &gt; &lt;em&gt;업그레이드&lt;/em&gt;를 참고하십시오.&lt;/p&gt;</target>
+          &lt;p&gt;@@PRODUCT_NAME@@ 업그레이드 방법에 대한 추가 정보는 공식 문서에서 &lt;em&gt;설치/업그레이드 가이드&lt;/em&gt;의 &gt; &lt;em&gt;업그레이드&lt;/em&gt;를 참고하십시오.&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit approved="yes" id="help.credentials.invalidemailvalue" xml:space="preserve">
         <source>Please fill in a valid email.</source>
