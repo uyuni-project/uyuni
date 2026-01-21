@@ -583,6 +583,36 @@ public class UserManager extends BaseManager {
         return user;
     }
 
+    /**
+     * Login the user
+     * <p>
+     * This method does not perform any authentication.
+     * It should be used together with a proper authentication mechanism (e.g. OIDC)
+     *
+     * @param login the username to log in
+     * @return Returns the user if login is successful, or null otherwise.
+     * @throws LoginException if login fails.  The message is a string resource key.
+     */
+    public static User loginUser(String login) throws LoginException {
+        String exceptionType = null;
+        try {
+            User user = UserFactory.lookupByLogin(login);
+            if (user.isDisabled()) {
+                exceptionType = "account.disabled";
+            }
+            else if (user.isReadOnly()) {
+                exceptionType = "error.user_readonly";
+            }
+            else {
+                return performLoginActions(user);
+            }
+        }
+        catch (LookupException le) {
+            exceptionType = "error.invalid_login";
+        }
+
+        throw new LoginException(exceptionType);
+    }
 
     /**
      * Login the user with the given username and password.
