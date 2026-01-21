@@ -46,6 +46,7 @@ public abstract class BaseCredentials extends BaseDomainHelper implements Creden
 
     private Long id;
     private User user;
+    private String internalType;
 
     /**
      * Get the ID of this object.
@@ -87,6 +88,15 @@ public abstract class BaseCredentials extends BaseDomainHelper implements Creden
     @Override
     public void setUser(User userIn) {
         this.user = userIn;
+    }
+
+    @Column(name = "type", updatable = false, insertable = false)
+    protected String getInternalType() {
+        return internalType;
+    }
+
+    protected void setInternalType(String internalTypeIn) {
+        this.internalType = internalTypeIn;
     }
 
     @Override

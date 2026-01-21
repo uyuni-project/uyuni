@@ -296,7 +296,7 @@ import java.util.stream.Stream;
      */
     public static boolean refreshNeeded(Optional<Date> lastRefreshDateIn) {
         return getSession()
-                .createQuery("SELECT MAX(modified) FROM BaseCredentials WHERE type IN ('scc', 'cloudrmt')",
+                .createQuery("SELECT MAX(b.modified) FROM BaseCredentials b WHERE b.internalType IN ('scc', 'cloudrmt')",
                         Date.class)
                 .uniqueResultOptional()
                 .map(credsLastModified -> {
