@@ -134,36 +134,29 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
         Map<String, Object> retval = new HashMap<>();
         Errata e = ErrataFactoryTest.createTestErrata(userIn.getOrg().getId());
         e.setAdvisoryType(errataType);
-        e = TestUtils.saveAndReload(e);
         retval.put("errata", e);
         Server s = ServerFactoryTest.createTestServer(userIn);
         ServerFactory.save(s);
-        TestUtils.flushAndEvict(s);
         retval.put("server", s);
         Package p = PackageTest.createTestPackage(userIn.getOrg());
         PackageEvr evr = PackageEvrFactory.lookupOrCreatePackageEvr(
                 p.getPackageEvr().getEpoch(), p.getPackageEvr().getVersion(), "2", s.getPackageType());
-        evr = TestUtils.saveAndReload(evr);
         Package newPackage = PackageTest.createTestPackage(userIn.getOrg());
         newPackage.setPackageName(p.getPackageName());
         newPackage.setPackageEvr(evr);
-        newPackage = TestUtils.saveAndReload(newPackage);
 
         InstalledPackage ip = new InstalledPackage();
         ip.setServer(s);
         ip.setArch(p.getPackageArch());
         ip.setEvr(p.getPackageEvr());
         ip.setName(p.getPackageName());
-
-        HibernateFactory.getSession().merge(ip);
+        TestUtils.save(ip);
 
         retval.put("package", p);
         retval.put("newpackage", newPackage);
         userIn.addPermanentRole(RoleFactory.ORG_ADMIN);
         UserFactory.save(userIn);
-        TestUtils.flushAndEvict(userIn);
-        int rows = ErrataCacheManager.insertNeededErrataCache(
-                s.getId(), e.getId(), p.getId());
+        int rows = ErrataCacheManager.insertNeededErrataCache(s.getId(), e.getId(), p.getId());
         assertEquals(1, rows);
         return retval;
     }
