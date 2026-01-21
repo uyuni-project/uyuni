@@ -25,7 +25,7 @@ import jakarta.persistence.Table;
 @Table(name = "suseErrataAdvisoryMap")
 public class ErrataAdvisoryMap extends BaseDomainHelper {
 
-    private long id;
+    private Long id;
     private String patchId;
     private String announcementId;
     private String advisoryUri;
@@ -53,11 +53,11 @@ public class ErrataAdvisoryMap extends BaseDomainHelper {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long idIn) {
+    public void setId(Long idIn) {
         id = idIn;
     }
 

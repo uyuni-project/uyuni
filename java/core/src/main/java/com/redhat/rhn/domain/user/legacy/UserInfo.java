@@ -45,7 +45,7 @@ public class UserInfo extends AbstractUserChild implements Serializable {
 
     @Id
     @Column(name = "user_id")
-    private long id;
+    private Long id;
 
     @Column(name = "page_size")
     private int pageSize;

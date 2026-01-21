@@ -34,7 +34,7 @@ public class InventoryActionDetails extends BaseDomainHelper {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "act_inventory_seq")
     @SequenceGenerator(name = "act_inventory_seq", sequenceName = "rhn_act_inventory_id_seq", allocationSize = 1)
-    private long id;
+    private Long id;
 
     @Column(name = "inventory_path")
     private String inventoryPath;
@@ -46,14 +46,14 @@ public class InventoryActionDetails extends BaseDomainHelper {
     /**
      * @return the id
      */
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
     /**
      * @param idIn the id to set
      */
-    protected void setId(long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 
