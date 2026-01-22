@@ -105,8 +105,7 @@ public class CobblerUnregisteredSystemCreateCommand extends
          */
         public void setIpaddr(String ip) {
             this.ipAddress = ip;
-            ServerNetAddress4 netAddr = new ServerNetAddress4();
-            netAddr.setAddress(this.ipAddress);
+            ServerNetAddress4 netAddr = new ServerNetAddress4(getInterfaceId(), ip);
             ArrayList<ServerNetAddress4> iplist = new ArrayList<>();
             iplist.add(netAddr);
             this.setSa4(iplist);
