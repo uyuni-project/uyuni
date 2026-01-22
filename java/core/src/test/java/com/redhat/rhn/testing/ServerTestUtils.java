@@ -88,9 +88,8 @@ public class ServerTestUtils {
         Server retval = ServerFactoryTest.createTestServer(creator, true, serverGroupType);
         Channel baseChannel = ChannelTestUtils.createBaseChannel(creator);
         retval.addChannel(baseChannel);
-        ServerFactory.save(retval);
-        retval = TestUtils.reload(retval);
-        return retval;
+        retval = ServerFactory.save(retval);
+        return TestUtils.reload(retval);
     }
 
     /**

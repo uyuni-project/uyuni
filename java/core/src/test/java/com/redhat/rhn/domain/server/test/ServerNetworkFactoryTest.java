@@ -17,7 +17,6 @@ package com.redhat.rhn.domain.server.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -25,7 +24,6 @@ import com.redhat.rhn.domain.server.ServerNetAddress4;
 import com.redhat.rhn.domain.server.ServerNetAddress6;
 import com.redhat.rhn.domain.server.ServerNetworkFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
-import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -76,11 +74,9 @@ public class ServerNetworkFactoryTest extends BaseTestCaseWithUser {
         s.addNetworkInterface(netint);
         netint = ServerFactory.saveNetworkInterface(netint);
 
-        ServerNetAddress4 a4 = new ServerNetAddress4();
+        ServerNetAddress4 a4 = new ServerNetAddress4(netint.getInterfaceId(), "1.2.3.4");
         a4.setNetmask("255.255.0.0");
-        a4.setAddress("1.2.3.4");
         a4.setBroadcast("1.2.255.255");
-        a4.setInterfaceId(netint.getInterfaceId());
         ServerNetworkFactory.saveServerNetAddress4(a4);
 
         List<ServerNetAddress4> iPv4Addresses = netint.getIPv4Addresses();

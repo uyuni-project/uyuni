@@ -124,8 +124,8 @@ public class ServerTest extends BaseTestCaseWithUser {
     @Test
     public void testCapabilities() throws Exception {
         Server s = ServerFactoryTest.createTestServer(user, true);
-        SystemManagerTest.giveCapability(s.getId(),
-                SystemManager.CAP_CONFIGFILES_DEPLOY, 1L);
+        SystemManagerTest.giveCapability(s.getId(), SystemManager.CAP_CONFIGFILES_DEPLOY, 1L);
+        s = HibernateFactory.reload(s);
         assertFalse(s.getCapabilities().isEmpty());
         boolean containsDeploy = false;
         for (ClientCapability c : s.getCapabilities()) {
@@ -140,10 +140,9 @@ public class ServerTest extends BaseTestCaseWithUser {
     @Test
     public void testRemoveCapability() throws Exception {
         Server s = ServerFactoryTest.createTestServer(user, true);
-        SystemManagerTest.giveCapability(s.getId(),
-                SystemManager.CAP_CONFIGFILES_DEPLOY, 1L);
-        SystemManagerTest.giveCapability(s.getId(),
-                SystemManager.CAP_SCRIPT_RUN, 2L);
+        SystemManagerTest.giveCapability(s.getId(), SystemManager.CAP_CONFIGFILES_DEPLOY, 1L);
+        SystemManagerTest.giveCapability(s.getId(), SystemManager.CAP_SCRIPT_RUN, 2L);
+        s = HibernateFactory.reload(s);
         assertEquals(2, s.getCapabilities().size());
         Optional<ClientCapability> cap1 = s.getCapabilities()
                 .stream().filter(c -> c.getCapability().getName().equals(SystemManager.CAP_SCRIPT_RUN))
@@ -329,26 +328,18 @@ public class ServerTest extends BaseTestCaseWithUser {
         Server s = ServerTestUtils.createTestSystem(user);
         assertNull(s.getIpAddress());
 
-
         String hwAddr = "AA:AA:BB:BB:CC:CC";
         String ipAddr = "172.31.1.102";
 
-        NetworkInterfaceTest.createTestNetworkInterface(s, "aaa",
-                ipAddr, hwAddr);
+        NetworkInterfaceTest.createTestNetworkInterface(s, "aaa", ipAddr, hwAddr);
+        NetworkInterfaceTest.createTestNetworkInterface(s, "bbb", ipAddr, hwAddr);
+        NetworkInterfaceTest.createTestNetworkInterface(s, "zzz", ipAddr, hwAddr);
+        NetworkInterfaceTest.createTestNetworkInterface(s, "eth0", ipAddr, hwAddr);
+        NetworkInterfaceTest.createTestNetworkInterface(s, "eth1", ipAddr, hwAddr);
 
-        NetworkInterfaceTest.createTestNetworkInterface(s, "bbb",
-                ipAddr, hwAddr);
-
-        NetworkInterfaceTest.createTestNetworkInterface(s, "zzz",
-                ipAddr, hwAddr);
-
-        NetworkInterfaceTest.createTestNetworkInterface(s, "eth0",
-                ipAddr, hwAddr);
-
-        NetworkInterfaceTest.createTestNetworkInterface(s, "eth1",
-                ipAddr, hwAddr);
-
-        s = TestUtils.saveAndReload(s);
+        HibernateFactory.getSession().flush();
+        HibernateFactory.closeSession();
+        s = ServerFactory.lookupById(s.getId());
 
         assertNotNull(s.getIpAddress());
 

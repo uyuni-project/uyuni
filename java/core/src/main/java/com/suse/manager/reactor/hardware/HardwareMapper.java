@@ -15,7 +15,6 @@
 package com.suse.manager.reactor.hardware;
 
 import com.redhat.rhn.GlobalInstanceHolder;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.entitlement.VirtualizationEntitlement;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
@@ -888,9 +887,7 @@ public class HardwareMapper {
                 }
                 if (!found) {
                     // insert
-                    ServerNetAddress4 ipv4 = new ServerNetAddress4();
-                    ipv4.setInterfaceId(iface.getInterfaceId());
-                    ipv4.setAddress(inet.getAddress().orElse(null));
+                    var ipv4 = new ServerNetAddress4(iface.getInterfaceId(), inet.getAddress().orElse(null));
                     ipv4.setNetmask(inet.getNetmask().orElse(null));
                     ipv4.setBroadcast(inet.getBroadcast().orElse(null));
 
