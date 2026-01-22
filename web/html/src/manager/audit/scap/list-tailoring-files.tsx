@@ -97,14 +97,14 @@ class TailoringFiles extends React.Component<Props, State> {
     this.setState({ selectedItems: items });
   };
 
-  searchData = (datum: TailoringFileData, criteria?: string): boolean => {
+  searchData = (data: TailoringFileData, criteria?: string): boolean => {
     if (!criteria) {
       return true;
     }
     const searchTerm = criteria.toLowerCase();
     return (
-      datum.name?.toLowerCase().includes(searchTerm) ||
-      datum.fileName?.toLowerCase().includes(searchTerm)
+      data.name?.toLowerCase().includes(searchTerm) ||
+      data.fileName?.toLowerCase().includes(searchTerm)
     );
   };
 
@@ -165,6 +165,7 @@ class TailoringFiles extends React.Component<Props, State> {
               comparator={Utils.sortByText}
               header={t("Label")}
               cell={(row) => row.name}
+              
             />
             <Column
               key="fileName"
@@ -173,14 +174,15 @@ class TailoringFiles extends React.Component<Props, State> {
               comparator={Utils.sortByText}
               header={t("Tailoring File Name")}
               cell={(row) => row.displayfileName}
+              
             />
             <Column
               key="actions"
               columnKey="actions"
               width="15%"
               header={t("Actions")}
-              columnClass="text-right"
-              headerClass="text-right"
+              columnClass="text-center"
+              headerClass="text-center"
               cell={this.renderActionsColumn}
             />
           </Table>

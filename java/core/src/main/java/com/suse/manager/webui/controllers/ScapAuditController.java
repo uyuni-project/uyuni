@@ -16,6 +16,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
+import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.scap.ScapAction;
@@ -23,7 +24,6 @@ import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.audit.*;
-import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 
@@ -34,7 +34,7 @@ import com.redhat.rhn.manager.audit.scap.xml.BenchMark;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
-import com.suse.manager.webui.controllers.utils.RequestUtil;
+import com.suse.manager.webui.controllers.utils.MultipartRequestUtil;
 
 import com.suse.manager.webui.utils.gson.AuditScanScheduleJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
@@ -57,7 +57,6 @@ import org.apache.logging.log4j.Logger;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
-import spark.Spark;
 import spark.template.jade.JadeTemplateEngine;
 
 import java.io.File;
@@ -67,12 +66,14 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.suse.manager.webui.utils.SparkApplicationHelper.*;
 import static spark.Spark.delete;
 import static spark.Spark.get;
+import static spark.Spark.halt;
 import static spark.Spark.post;
 
 public class ScapAuditController {
@@ -90,6 +91,7 @@ public class ScapAuditController {
      * @param jade the Jade engine to use to render the pages
      */
     public void initRoutes(JadeTemplateEngine jade) {
+        // Tailoring files routes
         get("/manager/audit/scap/tailoring-files",
                 withUserPreferences(withCsrfToken(withUser(this::listTailoringFilesView))), jade);
         get("/manager/audit/scap/tailoring-file/create",
@@ -196,47 +198,33 @@ public class ScapAuditController {
      * @param user the user
      * @return the json response
      */
-    public String createTailoringFile(Request request, Response response, User user) {
+  public String createTailoringFile(Request request, Response response, User user) {
+        File writtenFile = null;
+
         try {
-            List<DiskFileItem> items = RequestUtil.parseMultipartRequest(request);
+            List<DiskFileItem> items = MultipartRequestUtil.parseMultipartRequest(request);
+            String rawName = MultipartRequestUtil.getRequiredString(items, "name");
+            DiskFileItem fileItem = MultipartRequestUtil.getRequiredFileItem(items, "tailoring_file");
+            Optional<String> description = MultipartRequestUtil.findStringParam(items, "description");
+            // We do this FIRST. If it fails, the DB is never touched, so no "zombie" records.
+            writtenFile = writeNewTailoringFile(user, rawName, fileItem);
 
-            String nameParam = RequestUtil.findStringParam(items, "name")
-                    .orElseThrow(() ->
-                            new IllegalArgumentException("Name parameter missing"));
-            Optional<String> descriptionParam = RequestUtil.findStringParam(items, "description");
-            DiskFileItem tailoringFileParam = RequestUtil.findFileItem(items, "tailoring_file")
-                    .orElseThrow(() ->
-                            new IllegalArgumentException("Tailoring_file parameter missing"));
-
-            ensureDirectoryExists(TAILORING_FILES_DIR);
-
-            // Step 1: Create database entry with original filename (temporary)
-            String originalFilename = tailoringFileParam.getName();
-            TailoringFile tailoringFile = new TailoringFile(nameParam, originalFilename);
+            TailoringFile tailoringFile = new TailoringFile(rawName, writtenFile.getName());
             tailoringFile.setOrg(user.getOrg());
-            descriptionParam.ifPresent(tailoringFile::setDescription);
-            ScapFactory.saveTailoringFile(tailoringFile);
-
-            // Step 2: Generate unique filename using org ID, name, and original filename
-            String uniqueFilename = generateUniqueFileName(
-                user.getOrg().getId(),
-                nameParam,
-                originalFilename
-            );
-
-            // Step 3: Save file with unique filename
-            saveFileToDirectory(tailoringFileParam, TAILORING_FILES_DIR, uniqueFilename);
-
-            // Step 4: Update database with unique filename
-            tailoringFile.setFileName(uniqueFilename);
+            description.ifPresent(tailoringFile::setDescription);
             ScapFactory.saveTailoringFile(tailoringFile);
 
             return result(response, ResultJson.success());
-        }
-        catch (Exception e) {
+
+        } catch (Exception e) {
+            // Rollback using FileUtils
+            if (writtenFile != null) {
+                FileUtils.deleteFile(writtenFile.toPath());
+            }
             return handleTailoringFileException(response, e, "creating");
         }
     }
+
     /**
      * Returns a view to display update form of tailoring file
      *
@@ -246,21 +234,29 @@ public class ScapAuditController {
      * @return the model and view
      */
     public ModelAndView updateTailoringFileView(Request req, Response res, User user) {
-        Integer tailoringFileId  = Integer.parseInt(req.params("id"));
-
-        Optional<TailoringFile> tailoringFile =
+        try {
+        int tailoringFileId  = Integer.parseInt(req.params("id"));
+        Optional<TailoringFile> fileOpt =
                 ScapFactory.lookupTailoringFileByIdAndOrg(tailoringFileId, user.getOrg());
-        if (tailoringFile.isEmpty()) {
+        if (fileOpt.isEmpty()) {
             res.redirect("/rhn/manager/audit/scap/tailoring-file/create");
+            return null;
         }
-        Map<String, Object> data = new HashMap<>();
-        data.put("name", tailoringFile.map(TailoringFile::getName).orElse(null));
-        data.put("id", tailoringFileId);
-        data.put("description", tailoringFile.map(TailoringFile::getDescription).orElse(null));
-        data.put("tailoringFileName", tailoringFile
-            .map(TailoringFile::getDisplayFileName)
-            .orElse(null));
-        return new ModelAndView(data, "templates/audit/create-tailoring-file.jade");
+        TailoringFile tailoringFile = fileOpt.get();
+        Map<String, Object> jsData = new HashMap<>();
+        jsData.put("name", tailoringFile.getName());
+        jsData.put("id", tailoringFileId);
+        jsData.put("description", tailoringFile.getDescription());
+        jsData.put("tailoringFileName", tailoringFile.getDisplayFileName());
+        jsData.put("isUpdate", true);
+
+        Map<String, Object> model = new HashMap<>();
+        model.put("tailoringFileDataJson", Json.GSON.toJson(jsData));
+        return new ModelAndView(model, "templates/audit/create-tailoring-file.jade");
+        } catch (Exception e) {
+            LOG.error("Failed to load update tailoring file view", e);
+            throw halt(500, "Failed to load update tailoring file view");
+        }
     }
     /**
      * Update an existing Tailoring file
@@ -271,56 +267,41 @@ public class ScapAuditController {
      * @return the json response
      */
     public String updateTailoringFile(Request request, Response response, User user) {
+        File newWrittenFile = null;
+        File oldFileToDelete = null;
+
         try {
-            List<DiskFileItem> items = RequestUtil.parseMultipartRequest(request);
+            // 1. Parse
+            List<DiskFileItem> items = MultipartRequestUtil.parseMultipartRequest(request);
+            Integer id = MultipartRequestUtil.getRequiredInt(items, "id");
+            String name = MultipartRequestUtil.getRequiredString(items, "name");
+            Optional<String> description = MultipartRequestUtil.findStringParam(items, "description");
+            TailoringFile tailoringFile = ScapFactory.lookupTailoringFileByIdAndOrg(id, user.getOrg())
+                    .orElseThrow(() -> new IllegalArgumentException("Tailoring file not found"));
 
-            String nameParam = RequestUtil.findStringParam(items, "name")
-                    .orElseThrow(() ->
-                            new IllegalArgumentException("Name parameter missing"));
-            Optional<String> descriptionParam = RequestUtil.findStringParam(items, "description");
-            String idParam = RequestUtil.findStringParam(items, "id")
-                    .orElseThrow(() ->
-                            new IllegalArgumentException("ID parameter missing"));
+            oldFileToDelete = new File(TAILORING_FILES_DIR, tailoringFile.getFileName());
 
-            Integer tailoringFileId = Integer.parseInt(idParam);
-            Optional<TailoringFile> existingFile =
-                    ScapFactory.lookupTailoringFileByIdAndOrg(tailoringFileId, user.getOrg());
-
-            if (existingFile.isEmpty()) {
-                return notFound(response, "Tailoring file not found");
-            }
-            TailoringFile tailoringFile = existingFile.get();
-            tailoringFile.setName(nameParam);
-            descriptionParam.ifPresent(tailoringFile::setDescription);
-
-            // Check if a new file was uploaded
-            Optional<DiskFileItem> tailoringFileParam = RequestUtil.findFileItem(items, "tailoring_file");
-            if (tailoringFileParam.isPresent() && tailoringFileParam.get().getSize() > 0) {
-                ensureDirectoryExists(TAILORING_FILES_DIR);
-
-                // Delete old file if it exists (using the unique filename from DB)
-                File oldFile = new File(TAILORING_FILES_DIR, tailoringFile.getFileName());
-                if (oldFile.exists()) {
-                    oldFile.delete();
-                }
-
-                // Generate unique filename for the new file using org ID, name, and original filename
-                String originalFilename = tailoringFileParam.get().getName();
-                String uniqueFilename = generateUniqueFileName(
-                    user.getOrg().getId(),
-                    nameParam,
-                    originalFilename
-                );
-
-                // Save new file with unique filename
-                saveFileToDirectory(tailoringFileParam.get(), TAILORING_FILES_DIR, uniqueFilename);
-                tailoringFile.setFileName(uniqueFilename);
+            Optional<DiskFileItem> fileItem = MultipartRequestUtil.findFileItem(items, "tailoring_file");
+            if (fileItem.isPresent()) {
+                 newWrittenFile = writeNewTailoringFile(user, name, fileItem.get());
+                 tailoringFile.setFileName(newWrittenFile.getName());
             }
 
+            tailoringFile.setName(name);
+            description.ifPresent(tailoringFile::setDescription);
             ScapFactory.saveTailoringFile(tailoringFile);
+
+            if (newWrittenFile != null) {
+                FileUtils.deleteFile(oldFileToDelete.toPath());
+            }
+
             return result(response, ResultJson.success());
-        }
-        catch (Exception e) {
+
+        } catch (Exception e) {
+            // Rollback: Delete the new file if it was created
+            if (newWrittenFile != null) {
+                FileUtils.deleteFile(newWrittenFile.toPath());
+            }
             return handleTailoringFileException(response, e, "updating");
         }
     }
@@ -333,72 +314,84 @@ public class ScapAuditController {
      * @param user the authorized user
      * @return the result JSON object
      */
-    public Object deleteTailoringFile(Request req, Response res, User user) {
-        List<Long> ids;
+    public String deleteTailoringFile(Request req, Response res, User user) {
         try {
-            ids = Arrays.asList(GSON.fromJson(req.body(), Long[].class));
+            List<Long> ids = Arrays.asList(GSON.fromJson(req.body(), Long[].class));
+            List<TailoringFile> tailoringFiles =
+                    ScapFactory.lookupTailoringFilesByIds(ids, user.getOrg());
+            
+            if (tailoringFiles.size() < ids.size()) {
+                return json(res, HttpStatus.SC_NOT_FOUND,
+                        ResultJson.error("One or more tailoring files not found"), new TypeToken<>() { });
+            }
+
+            int deletedCount = 0;
+            for (TailoringFile file : tailoringFiles) {
+                ScapFactory.deleteTailoringFile(file);
+                Path filePath = Paths.get(TAILORING_FILES_DIR, file.getFileName());
+                FileUtils.deleteFile(filePath);
+                deletedCount++;
+            }
+            
+            return result(res, ResultJson.success(deletedCount));
         }
         catch (JsonParseException e) {
-            Spark.halt(HttpStatus.SC_BAD_REQUEST);
-            return null;
+            LOG.error("Invalid JSON in delete tailoring file request", e);
+            return json(res, HttpStatus.SC_BAD_REQUEST,
+                    ResultJson.error("Invalid request format"), new TypeToken<>() { });
         }
-
-        List<TailoringFile> tailoringFiles =
-                ScapFactory.lookupTailoringFilesByIds(ids, user.getOrg());
-        if (tailoringFiles.size() < ids.size()) {
-            return result(res, ResultJson.error("not_found"));
-        }
-
-        tailoringFiles.forEach(ScapFactory::deleteTailoringFile);
-        return result(res, ResultJson.success(tailoringFiles.size()));
-    }
-
-    // TODO: Consider moving these generic file utilities to a shared utility class
-    //       for reuse across other controllers
-
-    /**
-     * Ensures the provided directory exists
-     * @param directoryIn the directory to check
-     * @throws IOException if directory creation fails
-     */
-    private void ensureDirectoryExists(String directoryIn) throws IOException {
-        File directory = new File(directoryIn);
-        if (!directory.exists()) {
-            LOG.info("Creating the requested files directory: {}", directoryIn);
-            if (!directory.mkdirs()) {
-                throw new IOException("Failed to create directory: " + directoryIn);
-            }
+        catch (Exception e) {
+            LOG.error("Error deleting tailoring files", e);
+            return json(res, HttpStatus.SC_INTERNAL_SERVER_ERROR,
+                    ResultJson.error("Failed to delete tailoring files: " + e.getMessage()), new TypeToken<>() { });
         }
     }
 
     /**
-     * Saves a file to the tailoring files directory
-     * @param fileItem the file to save
-     * @param directory the directory to save the file to
-     * @throws IOException if file saving fails
+     * Write a new tailoring file to disk
+     * @param user the user
+     * @param rawName the raw name of the file
+     * @param item the file item
+     * @return the file
+     * @throws Exception if the file cannot be written
      */
-    private void saveFileToDirectory(DiskFileItem fileItem, String directory) throws IOException {
-        File outputFile = new File(directory, fileItem.getName());
-        try (InputStream in = fileItem.getInputStream();
-             FileOutputStream out = new FileOutputStream(outputFile)) {
-            IOUtils.copy(in, out);
+    private File writeNewTailoringFile(User user, String rawName, DiskFileItem item) throws Exception {
+        Files.createDirectories(Paths.get(TAILORING_FILES_DIR));
+        String safeName = sanitizeFileName(rawName);
+        String uniqueFilename = generateUniqueFileName(
+                user.getOrg().getId(), 
+                safeName,
+                item.getName()
+        );
+
+        Path safePath = FileUtils.validateCanonicalPath(TAILORING_FILES_DIR, uniqueFilename);
+        try (var in = item.getInputStream()) {
+            Files.copy(in, safePath, StandardCopyOption.REPLACE_EXISTING);
         }
+        return safePath.toFile();
     }
 
     /**
      * Saves a file to the specified directory with a custom filename
-     * @param fileItem the file to save
-     * @param directory the directory to save the file to
-     * @param customFilename the custom filename to use
-     * @throws IOException if file saving fails
+     * @param fileItem
+     * @param targetDir
+     * @param fileName
+     * @throws Exception
      */
-    private void saveFileToDirectory(DiskFileItem fileItem, String directory, String customFilename) throws IOException {
-        File outputFile = new File(directory, customFilename);
-        try (InputStream in = fileItem.getInputStream();
-             FileOutputStream out = new FileOutputStream(outputFile)) {
-            IOUtils.copy(in, out);
+    private void saveFileToDirectory(DiskFileItem fileItem, String targetDir, String fileName) throws Exception {
+        Path directoryPath = Paths.get(targetDir);
+        Path destinationPath = directoryPath.resolve(fileName).normalize();
+
+        if (!destinationPath.startsWith(directoryPath.normalize())) {
+            throw new SecurityException("Access denied: " +
+            "Attempt to write outside of the target directory.");
+        }
+
+        try (var inputStream = fileItem.getInputStream()) {
+            Files.copy(inputStream, destinationPath, StandardCopyOption.REPLACE_EXISTING);
         }
     }
+
 
     /**
      * Handles exceptions for tailoring file operations

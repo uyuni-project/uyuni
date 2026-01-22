@@ -22,6 +22,7 @@ declare global {
       id: number | null;
       description: string | null;
       tailoringFileName: string | null;
+      isUpdate: boolean;
     };
   }
 }
@@ -43,7 +44,7 @@ class TailoringFile extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     // Initialize model from backend data if editing
-    const data = window.tailoringFileData || { name: null, id: null, description: null, tailoringFileName: null };
+    const data = window.tailoringFileData || { name: null, id: null, description: null, tailoringFileName: null, isUpdate: false };
     this.state = {
       model: {
         name: data.name || "",
@@ -54,7 +55,7 @@ class TailoringFile extends React.Component<Props, State> {
   }
 
   isEditMode = (): boolean => {
-    return window.tailoringFileData?.id != null;
+    return !!window.tailoringFileData?.isUpdate;
   };
 
   getTailoringFileId = (): number | null | undefined => {
@@ -152,7 +153,7 @@ class TailoringFile extends React.Component<Props, State> {
           <Text
             name="name"
             label={t("Name")}
-            required
+            required={true}
             labelClass="col-md-3"
             divClass="col-md-6"
           />
