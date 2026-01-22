@@ -255,7 +255,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     @OneToMany(mappedBy = "hostSystem", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<VirtualInstance> virtualGuests = new HashSet<>();
 
-    @OneToOne(mappedBy = "guestSystem", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @OneToOne(mappedBy = "guestSystem", fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST })
     private VirtualInstance virtualInstance;
 
     @OneToOne(mappedBy = "server", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
