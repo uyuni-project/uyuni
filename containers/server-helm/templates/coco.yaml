@@ -1,4 +1,4 @@
-{{- if gt (default .Values.cocoReplicas 0 | int) 0 }}
+{{- if gt (default .Values.coco.replicas 0 | int) 0 }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -8,7 +8,7 @@ metadata:
   name: coco-attestation
   namespace: "{{ .Release.Namespace }}"
 spec:
-  replicas: {{ default .Values.cocoReplicas 0 | int }}
+  replicas: {{ default .Values.coco.replicas 0 | int }}
   selector:
     matchLabels:
       app.kubernetes.io/component: coco-attestation
@@ -37,9 +37,9 @@ spec:
               name: db-credentials
               optional: false
         - name: database_connection
-          # TODO Move to a config map
+          # TODO Move to a config map
           value: "jdbc:postgresql://db:5432/susemanager"
-        image: {{- include "deployment.container.image" (dict "name" "server-attestation" "global" .) | indent 1}}
+        image: {{ include "uyuni.image" (dict "name" "server-attestation" "global" . "local" .Values.coco) }}
         imagePullPolicy: {{ .Values.pullPolicy }}
         name: hub-xmlrpc
 {{- if .Values.registrySecret }}
@@ -67,7 +67,7 @@ spec:
                 key: username
                 name: db-credentials
                 optional: false
-        image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+        image: {{ include "uyuni.image" (dict "name" "server" "global" . "local" .Values.server) }}
         imagePullPolicy: {{ .Values.pullPolicy }}
         name: db-waiter
 {{- end }}

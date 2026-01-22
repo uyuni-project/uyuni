@@ -1,3 +1,4 @@
+{{- if .Values.db.enable }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -54,7 +55,7 @@ spec:
                 secretKeyRef:
                   key: password
                   name: reportdb-credentials
-          image: {{- include "deployment.container.image" (dict "name" "server-postgresql" "global" .) | indent 1}}
+          image: {{ include "uyuni.image" (dict "name" "server-postgresql" "global" . "local" .Values.db) }}
           imagePullPolicy: {{ .Values.pullPolicy }}
           name: db
           volumeMounts:
@@ -83,3 +84,4 @@ spec:
               - key: ca.crt
                 path: trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT
             secretName: db-cert
+{{- end }}

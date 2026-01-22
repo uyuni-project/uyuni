@@ -155,7 +155,7 @@ spec:
                   name: {{ .Values.registrySecret }}
                   optional: false
 {{- end }}
-          image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+          image: {{ include "uyuni.image" (dict "name" "server" "global" . "local" .Values.server) }}
           imagePullPolicy: {{ .Values.pullPolicy }}
           name: setup
           volumeMounts:
@@ -270,7 +270,7 @@ spec:
                     cp -a $vol/. /mnt$vol;
                 fi
               done
-          image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+          image: {{ include "uyuni.image" (dict "name" "server" "global" . "local" .Values.server) }}
           imagePullPolicy: {{ .Values.pullPolicy }}
           name: init-volumes
           volumeMounts:
@@ -362,7 +362,7 @@ spec:
                   key: username
                   name: reportdb-credentials
                   optional: false
-          image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+          image: {{ include "uyuni.image" (dict "name" "server" "global" . "local" .Values.server) }}
           imagePullPolicy: {{ .Values.pullPolicy }}
           name: db-waiter
       restartPolicy: Never
