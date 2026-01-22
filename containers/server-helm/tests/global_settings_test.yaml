@@ -10,7 +10,8 @@ tests:
     set:
       global.fqdn: uyuni.example.com
       timezone: "Europe/Berlin"
-      saline: true
+      saline:
+        enable: true
     asserts:
       - equal:
           path: spec.template.spec.containers[0].env[0].value

@@ -23,11 +23,11 @@ spec:
       - env:
         - name: TZ
           value: {{ .Values.timezone | default "Etc/UTC" }}
-{{- if and .Values.mirror (or .Values.mirror.claimName .Values.mirror.hostPath) }}
+{{- if and .Values.server.mirror (or .Values.server.mirror.claimName .Values.server.mirror.hostPath) }}
           - name: MIRROR_PATH
             value: /mirror
 {{- end }}
-        image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+        image: {{ include "uyuni.image" (dict "name" "server" "global" . "local" .Values.server) }}
         imagePullPolicy: {{ .Values.pullPolicy }}
         lifecycle:
           preStop:
@@ -150,7 +150,7 @@ spec:
           name: run
         - mountPath: /sys/fs/cgroup
           name: sys-fs-cgroup
-{{- if and .Values.mirror (or .Values.mirror.claimName .Values.mirror.hostPath) }}
+{{- if and .Values.server.mirror (or .Values.server.mirror.claimName .Values.server.mirror.hostPath) }}
         - name: mirror
           mountPath: /mirror
 {{- end }}
@@ -195,7 +195,7 @@ spec:
                 key: username
                 name: reportdb-credentials
                 optional: false
-        image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+        image: {{ include "uyuni.image" (dict "name" "server" "global" . "local" .Values.server) }}
         imagePullPolicy: {{ .Values.pullPolicy }}
         name: db-waiter
       - command:
@@ -205,7 +205,7 @@ spec:
           until test -e /root/.MANAGER_SETUP_COMPLETE; do
             sleep 60
           done
-        image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+        image: {{ include "uyuni.image" (dict "name" "server" "global" . "local" .Values.server) }}
         imagePullPolicy: {{ .Values.pullPolicy }}
         name: setup-waiter
         volumeMounts:
@@ -316,14 +316,14 @@ spec:
           path: /sys/fs/cgroup
           type: Directory
         name: sys-fs-cgroup
-{{- if .Values.mirror }}
-  {{- if .Values.mirror.claimName }}
+{{- if .Values.server.mirror }}
+  {{- if .Values.server.mirror.claimName }}
       - name: mirror
         persistentVolumeClaim:
-          claimName: {{ .Values.mirror.claimName }}
-  {{- else if .Values.mirror.hostPath }}
+          claimName: {{ .Values.server.mirror.claimName }}
+  {{- else if .Values.server.mirror.hostPath }}
       - name: mirror
         hostPath:
-          path: {{ .Values.mirror.hostPath }}
+          path: {{ .Values.server.mirror.hostPath }}
   {{- end }}
 {{- end }}

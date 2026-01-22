@@ -1,0 +1,37 @@
+suite: test database deployment
+templates:
+  - db.yaml
+tests:
+  - it: should render db deployment with default values
+    set:
+      global.fqdn: uyuni.example.com
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: metadata.name
+          value: db
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: registry.opensuse.org/uyuni/server-postgresql:latest
+
+  - it: should override image when values.images is provided
+    set:
+      global.fqdn: uyuni.example.com
+      db:
+        image: my-custom-registry/db
+        tag: 5.0.0
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: my-custom-registry/db:5.0.0
+
+  - it: should not render db deployment if disabled
+    set:
+      global.fqdn: uyuni.example.com
+      db:
+        enable: false
+    asserts:
+      - hasDocuments:
+          count: 0
+        template: db.yaml

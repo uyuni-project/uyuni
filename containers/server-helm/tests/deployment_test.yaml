@@ -18,8 +18,9 @@ tests:
   - it: should override image when values.images is provided
     set:
       global.fqdn: uyuni.example.com
-      images:
-        server: my-custom-registry/uyuni-server:5.0.0
+      server:
+        image: my-custom-registry/uyuni-server
+        tag: 5.0.0
     asserts:
       - equal:
           path: spec.template.spec.containers[0].image

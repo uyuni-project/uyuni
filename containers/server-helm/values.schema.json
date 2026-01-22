@@ -11,9 +11,9 @@
       "description": "The default repository for images",
       "default": "registry.opensuse.org/uyuni"
     },
-    "version": {
+    "tag": {
       "type": "string",
-      "description": "The default image version (tag)",
+      "description": "The default tag to use for images",
       "default": "latest"
     },
     "images": {
@@ -38,11 +38,6 @@
       "description": "The time zone to set in the containers",
       "default": "Etc/UTC"
     },
-    "email": {
-      "type": "string",
-      "description": "Email address for notifications sent by the server",
-      "default": "admin@uyuni.lab.org"
-    },
     "global": {
       "type": "object",
       "required": [
@@ -55,15 +50,29 @@
         }
       }
     },
-    "mirror": {
-      "type": "object",
-      "description": "Defines a volume or host path to mount as server.susemanager.fromdir",
+    "server": {
+      "type": ["object", "null"],
+      "description": "configuration of the server component",
+      "allOf": [
+        { "$ref": "#/definitions/imageConfig" }
+      ],
       "properties": {
-        "claimName": {
-          "type": "string"
+        "email": {
+          "type": "string",
+          "description": "Email address for notifications sent by the server",
+          "default": "admin@uyuni.lab.org"
         },
-        "hostPath": {
-          "type": "string"
+        "mirror": {
+          "type": "object",
+          "description": "Defines a volume or host path to mount as server.susemanager.fromdir",
+          "properties": {
+            "claimName": {
+              "type": "string"
+            },
+            "hostPath": {
+              "type": "string"
+            }
+          }
         }
       }
     },
@@ -139,23 +148,77 @@
       }
     },
     "hubAPI": {
-      "type": "boolean",
-      "description": "Enable or disable the Hub XML-RPC API deployment",
-      "default": false
+      "type": ["object", "null"],
+      "description": "configuration of the hub API component",
+      "allOf": [
+        { "$ref": "#/definitions/imageConfig" }
+      ],
+      "properties": {
+        "enable": {
+          "type": "boolean",
+          "description": "Enable or disable the Hub XML-RPC API deployment",
+          "default": false
+        }
+      }
     },
-    "cocoReplicas": {
-      "type": "integer",
-      "description": "Number of replicas for confidential computing attestation",
-      "minimum": 0,
-      "default": 0
+    "coco": {
+      "type": ["object", "null"],
+      "description": "configuration of the confidential computing attestation component",
+      "allOf": [
+        { "$ref": "#/definitions/imageConfig" }
+      ],
+      "properties": {
+        "replicas": {
+          "type": "integer",
+          "description": "Number of replicas for confidential computing attestation",
+          "minimum": 0,
+          "default": 0
+        }
+      }
     },
     "saline": {
-      "type": "boolean",
-      "description": "Deploy Saline for salt master monitoring",
-      "default": false
+      "type": ["object", "null"],
+      "description": "configuration of the saline component",
+      "allOf": [
+        { "$ref": "#/definitions/imageConfig" }
+      ],
+      "properties": {
+        "enable": {
+          "type": "boolean",
+          "description": "Deploy Saline for salt master monitoring",
+          "default": false
+        }
+      }
+    },
+    "db": {
+      "type": ["object", "null"],
+      "description": "configuration of the PostgreSQL database",
+      "allOf": [
+        { "$ref": "#/definitions/imageConfig" }
+      ],
+      "properties": {
+        "enable": {
+          "type": "boolean",
+          "description": "Deploy a PostgreSQL instance.",
+          "default": true
+        }
+      }
     }
   },
   "definitions": {
+    "imageConfig": {
+      "type": ["object", "null"],
+      "properties": {
+        "image": {
+          "type": ["string", "null"],
+          "description": "The image full URL without tag"
+        },
+        "tag": {
+          "type": ["string", "null"],
+          "description": "The image tag"
+        }
+      }
+    },
     "volumeConfig": {
       "type": "object",
       "properties": {
