@@ -1,4 +1,4 @@
-{{- if default .Values.saline false }}
+{{- if default .Values.saline.enable false }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -26,7 +26,7 @@ spec:
           value: "YES"
         - name: TZ
           value: {{ .Values.timezone | default "Etc/UTC" }}
-        image: {{- include "deployment.container.image" (dict "name" "server-saline" "global" .) | indent 1}}
+        image: {{ include "uyuni.image" (dict "name" "server-saline" "global" . "local" .Values.saline) }}
         imagePullPolicy: {{ .Values.pullPolicy }}
         name: saline
         ports:
@@ -48,7 +48,7 @@ spec:
           until curl -L http://web/rhn/manager/api/api/getVersion; do
             sleep 60
           done
-        image: {{- include "deployment.container.image" (dict "name" "server-saline" "global" .) | indent 1}}
+        image: {{ include "uyuni.image" (dict "name" "server-saline" "global" . "local" .Values.saline) }}
         imagePullPolicy: {{ .Values.pullPolicy }}
         name: server-waiter
       volumes:
