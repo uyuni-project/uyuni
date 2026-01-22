@@ -22,8 +22,6 @@ spec:
     spec:
       containers:
       - env:
-        - name: HUB_API_URL
-          value: http://web/rpc/api
         - name: database_user
           valueFrom:
             secretKeyRef:
@@ -36,12 +34,27 @@ spec:
               key: password
               name: db-credentials
               optional: false
-        - name: database_connection
-          # TODO Move to a config map
-          value: "jdbc:postgresql://db:5432/susemanager"
+        - name: database_host
+          valueFrom:
+            configMapKeyRef:
+              key: db_host
+              name: uyuni-config
+              optional: false
+        - name: database_port
+          valueFrom:
+            configMapKeyRef:
+              key: db_port
+              name: uyuni-config
+              optional: false
+        - name: database_name
+          valueFrom:
+            configMapKeyRef:
+              key: db_name
+              name: uyuni-config
+              optional: false
         image: {{ include "uyuni.image" (dict "name" "server-attestation" "global" . "local" .Values.coco) }}
         imagePullPolicy: {{ .Values.pullPolicy }}
-        name: hub-xmlrpc
+        name: coco
 {{- if .Values.registrySecret }}
       imagePullSecrets:
       - name: {{ .Values.registrySecret }}
@@ -56,16 +69,24 @@ spec:
           done
         env:
           - name: MANAGER_DB_HOST
-            value: db
+            valueFrom:
+              configMapKeyRef:
+                key: db_host
+                name: uyuni-config
+                optional: false
           - name: MANAGER_DB_PORT
-            value: "5432"
+            valueFrom:
+              configMapKeyRef:
+                key: db_port
+                name: uyuni-config
+                optional: false
           - name: MANAGER_DB_NAME
             value: susemanager
           - name: MANAGER_USER
             valueFrom:
-              secretKeyRef:
-                key: username
-                name: db-credentials
+              configMapKeyRef:
+                key: db_name
+                name: uyuni-config
                 optional: false
         image: {{ include "uyuni.image" (dict "name" "server" "global" . "local" .Values.server) }}
         imagePullPolicy: {{ .Values.pullPolicy }}

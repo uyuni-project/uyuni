@@ -800,3 +800,25 @@ db:
   ## enable to deploy a PostgreSQL instance.
   ## WARNING: using a third party database is not tested and supported for now.
   enable: true
+
+  ## Configuration of the internal database connection
+  ## WARNING: Only taken into account if db is disabled
+  internal:
+    ## Host name to use for the internal database.
+    ## It should be added to the SANs of the database TLS certificate
+    host:
+    ## Port to use to connect to the internal database
+    port: 5432
+    ## Name of the postgresql database to connect to
+    name:
+
+  ## Configuration of the report database connection
+  ## WARNING: Only taken into account if db is disabled
+  report:
+    ## Host name to use for the report database.
+    ## It should be added to the SANs of the database TLS certificate
+    host:
+    ## Port to use to connect to the internal database
+    port: 5432
+    ## Name of the postgresql database to connect to
+    name:

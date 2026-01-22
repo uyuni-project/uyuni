@@ -201,7 +201,9 @@
           "type": "boolean",
           "description": "Deploy a PostgreSQL instance.",
           "default": true
-        }
+        },
+        "internal": { "ref": "#/definitions/dbConnectionConfig" },
+        "report": { "ref": "#/definitions/dbConnectionConfig" }
       }
     }
   },
@@ -218,6 +220,24 @@
           "description": "The image tag"
         }
       }
+    },
+    "dbConnectionConfig": {
+        "type": ["object", "null"],
+        "properties": {
+            "host": {
+                "type": ["string", "null"],
+                "description": "FQDN to use to connect to the database"
+            },
+            "port": {
+                "type": ["integer", "null"],
+                "description": "port to use to connect to the database",
+                "default": 5432
+            },
+            "name": {
+                "type": ["string", "null"],
+                "description": "Postgresql database name to connect to"
+            }
+        }
     },
     "volumeConfig": {
       "type": "object",

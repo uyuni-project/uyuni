@@ -339,11 +339,23 @@ spec:
               done
           env:
             - name: MANAGER_DB_HOST
-              value: db
+              valueFrom:
+                configMapKeyRef:
+                  key: "db_host"
+                  name: uyuni-config
+                  optional: false
             - name: MANAGER_DB_PORT
-              value: "5432"
+              valueFrom:
+                configMapKeyRef:
+                  key: "db_port"
+                  name: uyuni-config
+                  optional: false
             - name: MANAGER_DB_NAME
-              value: susemanager
+              valueFrom:
+                configMapKeyRef:
+                  key: "db_name"
+                  name: uyuni-config
+                  optional: false
             - name: MANAGER_USER
               valueFrom:
                 secretKeyRef:
@@ -351,11 +363,23 @@ spec:
                   name: db-credentials
                   optional: false
             - name: REPORT_DB_HOST
-              value: reportdb
+              valueFrom:
+                configMapKeyRef:
+                  key: "reportdb_host"
+                  name: uyuni-config
+                  optional: false
             - name: REPORT_DB_PORT
-              value: "5432"
+              valueFrom:
+                configMapKeyRef:
+                  key: "reportdb_port"
+                  name: uyuni-config
+                  optional: false
             - name: REPORT_DB_NAME
-              value: reportdb
+              valueFrom:
+                configMapKeyRef:
+                  key: "reportdb_name"
+                  name: uyuni-config
+                  optional: false
             - name: REPORT_DB_USER
               valueFrom:
                 secretKeyRef:
