@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SUSE LLC
+ * Copyright (c) 2024--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -31,11 +31,21 @@ import com.google.gson.reflect.TypeToken;
 
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.lang.reflect.InaccessibleObjectException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import spark.RequestResponseFactory;
 import spark.Response;
@@ -43,20 +53,74 @@ import spark.Response;
 
 public class JsonSerializationTest {
 
+    /**
+     * This test demonstrates that serializing certain internal JDK classes will fail.
+     * Due to Java's module system (Java 9+), reflection on such internal classes is
+     * restricted, causing Gson to throw an InaccessibleObjectException.
+     */
     @Test
-    public void testOptionalEncodingFail() {
+    public void testEncodingFail() {
         Response response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
+
         Optional<String> optString = Optional.of("test");
-        assertThrows(InaccessibleObjectException.class, () -> {
-            json(response, optString);
-        });
+        Set<Object> emptySet = Collections.emptySet();
+        List<Object> emptyList = Collections.emptyList();
+        LocalDate localDate = LocalDate.of(2021, 6, 25);
+
+        // When serializing without type information, Gson must use reflection on the actual runtime class.
+        // For JDK internal classes like {@code java.util.Optional} or with internal implementations like
+        // {@code Collections.emptySet()}, Java's module system blocks this reflection
+        // causing {@code InaccessibleObjectException}.
+        assertThrows(InaccessibleObjectException.class, () -> json(response, optString));
+        assertThrows(InaccessibleObjectException.class, () -> json(response, emptySet));
+        assertThrows(InaccessibleObjectException.class, () -> json(response, emptyList));
+        // This will fail because there is a type adapter registered for LocalDateTime, but not for LocalDate
+        // specifically
+        assertThrows(InaccessibleObjectException.class, () -> json(response, localDate));
     }
 
+    /**
+     * This test demonstrates how providing explicit type information via {@code TypeToken} allows serialization of
+     * JDK internal classes (that would otherwise fail see {@link #testEncodingFail()}).
+     */
     @Test
-    public void testOptionalEncodingSuccess() {
+    public void testEncodingSuccessWithTypeInfo() {
         Response response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
         Optional<String> optString = Optional.of("test");
-        json(response, optString, new TypeToken<>() { });
+        Set<Object> emptySet = Collections.emptySet();
+        List<Object> emptyList = Collections.emptyList();
+        LocalDateTime localDateTime = LocalDateTime.of(LocalDate.of(2021, 6, 25), LocalTime.of(0, 56));
+
+        //
+        assertEquals("\"test\"", json(response, optString, new TypeToken<>() { }));
+        assertEquals("[]", json(response, emptySet, new TypeToken<>() { }));
+        assertEquals("[]", json(response, emptyList, new TypeToken<>() { }));
+        assertEquals("\"2021-06-25T00:56\"", json(response, localDateTime, new TypeToken<>() { }));
+    }
+
+    /**
+     * This test verifies successful serialization of various common data types.
+     * @param input The input object to serialize
+     * @param expectedJson The expected JSON string output
+     */
+    @ParameterizedTest
+    @MethodSource("successfulEncodingCases")
+    public void testEncodingSuccess(Object input, String expectedJson) {
+        Response response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
+        assertEquals(expectedJson, json(response, input));
+    }
+
+    static Stream<Arguments> successfulEncodingCases() {
+        return Stream.of(
+                Arguments.of(null, "null"),
+                Arguments.of("", "\"\""),
+                Arguments.of("text", "\"text\""),
+                Arguments.of(999, "999"),
+                Arguments.of(List.of(), "[]"),
+                Arguments.of(List.of(1, 2, 3), "[1,2,3]"),
+                Arguments.of(new HashSet<>(), "[]"),
+                Arguments.of(new HashSet<>(List.of("a", "b", "c")), "[\"a\",\"b\",\"c\"]")
+        );
     }
 
     private void assertEqualResponse(Function<Response, String> oldFn, Function<Response, String> newFn) {
