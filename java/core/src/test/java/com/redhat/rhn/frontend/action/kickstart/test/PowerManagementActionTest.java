@@ -93,11 +93,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
 
         Server server = ServerFactoryTest.createTestServer(user, true);
         NetworkInterface networkInterface = server.getNetworkInterfaces().iterator().next();
-        ServerNetAddress4 ip4 = new ServerNetAddress4() {
-            {
-                setAddress(EXPECTED_ADDRESS);
-            }
-        };
+        ServerNetAddress4 ip4 = new ServerNetAddress4(networkInterface.getInterfaceId(), EXPECTED_ADDRESS);
         ArrayList<ServerNetAddress4> iplist = new ArrayList<>();
         iplist.add(ip4);
         networkInterface.setSa4(iplist);

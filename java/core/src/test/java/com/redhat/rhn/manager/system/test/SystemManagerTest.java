@@ -2199,9 +2199,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         ServerFactory.getSession().flush();
         ServerFactory.getSession().refresh(iface);
 
-        ServerNetAddress4 ipv4 = new ServerNetAddress4();
-        ipv4.setInterfaceId(iface.getInterfaceId());
-        ipv4.setAddress(ip4address);
+        ServerNetAddress4 ipv4 = new ServerNetAddress4(iface.getInterfaceId(), ip4address);
         ServerNetworkFactory.saveServerNetAddress4(ipv4);
     }
 
