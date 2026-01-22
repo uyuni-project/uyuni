@@ -72,7 +72,7 @@ spec:
       volumes:
         - name: var-pgsql
           persistentVolumeClaim:
-            claimName: var-pgsql
+            claimName: {{ include "uyuni.pgPVCName" . }}
         - name: tls-secret
           secret:
             items:
