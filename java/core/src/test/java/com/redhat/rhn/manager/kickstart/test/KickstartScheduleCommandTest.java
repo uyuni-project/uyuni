@@ -335,7 +335,6 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
                 cmd.getKickstartSession());
         assertNotNull(key);
 
-        TestUtils.flushAndEvict(ksdata);
         assertNotNull(KickstartFactory.
                 lookupKickstartSessionByServer(server.getId()));
         return cmd;
