@@ -29677,6 +29677,13 @@ lt;/pgt;
         <source>CA Certificates Update</source>
         <target state="translated">Actualització de certificats de CA</target>
       </trans-unit>
-    </body>
+    <trans-unit id="system.event.actionId" xml:space="preserve">
+          <source>Action ID</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
+  </trans-unit>
+        </body>
   </file>
 </xliff>
