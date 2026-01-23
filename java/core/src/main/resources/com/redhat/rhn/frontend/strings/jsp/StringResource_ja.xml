@@ -13867,9 +13867,9 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <context context-type="sourcefile">/rhn/activationkeys/configuration/* pages</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="activation-keys.config.rank.jsp.para1" xml:space="preserve">
+      <trans-unit id="activation-keys.config.rank.jsp.para1" xml:space="preserve" approved="yes">
         <source>This activation key is subscribed to the configuration channels listed below in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it. In other words, the channel listed last will be applied first.</source>
-        <target state="needs-adaptation">このアクティベーションキーは以下に表示される設定ファイルチャンネルにサブスクライブされています。設定ファイルチャンネルは順位の高いチャンネルから順に表示されています。特定のチャンネルからのファイルは、そのチャンネルより順位の低いチャンネルの同じファイルパスを持つファイルと同じ名前を持つファイルを上書きします。</target>
+        <target state="final">このアクティベーションキーは以下に表示される設定チャンネルに順位の高い順から低い順でサブスクライブされています。特定のチャンネルからのファイルはそれより下にあるチャンネルの同じファイルパスと同じ名前を持つファイルを上書きします。つまり、最後に表示されているチャンネルが最初に適用されます。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/activationkeys/configuration/* pages</context>
         </context-group>
@@ -23412,9 +23412,9 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           <context context-type="sourcefile">/rhn/systems/details/configuration/RankChannels.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="sdc.config.rank.jsp.para1" xml:space="preserve">
+      <trans-unit id="sdc.config.rank.jsp.para1" xml:space="preserve" approved="yes">
         <source>This system is subscribed to the configuration channels listed below in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it. In other words, the channel listed last will be applied first.</source>
-        <target state="needs-adaptation">このシステムは以下に表示される設定ファイルに順位の高い順から低い順でサブスクライブされています。特定チャンネルからのファイルはそれより下にあるチャンネルの同じファイルパスと同じ名前を持つファイルを上書きします。</target>
+        <target state="final">このシステムは以下に表示される設定チャンネルに順位の高い順から低い順でサブスクライブされています。特定のチャンネルからのファイルはそれより下にあるチャンネルの同じファイルパスと同じ名前を持つファイルを上書きします。つまり、最後に表示されているチャンネルが最初に適用されます。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/configuration/RankChannels.do</context>
         </context-group>
@@ -29664,18 +29664,25 @@ given channel.</source>
         <source> New Created </source>
         <target state="final"> 新規作成 </target>
       </trans-unit>
-    <trans-unit id="ssm.overview.appstreams" xml:space="preserve">
-            <source>AppStreams</source>
-        <target state="new"/>
-  </trans-unit>
-        <trans-unit id="ssm.overview.appstreams.manage" xml:space="preserve">
-            <source>&lt;a href="/rhn/manager/systems/ssm/appstreams"&gt;Enable and disable&lt;/a&gt; AppStreams on the selected systems</source>
-        <target state="new"/>
-  </trans-unit>
-        <trans-unit id="task.status.root-ca-cert-update" xml:space="preserve">
+      <trans-unit id="ssm.overview.appstreams" xml:space="preserve" approved="yes">
+        <source>AppStreams</source>
+        <target state="final">AppStream</target>
+      </trans-unit>
+      <trans-unit id="ssm.overview.appstreams.manage" xml:space="preserve" approved="yes">
+        <source>&lt;a href="/rhn/manager/systems/ssm/appstreams"&gt;Enable and disable&lt;/a&gt; AppStreams on the selected systems</source>
+        <target state="final">選択したシステムにおけるAppStreamの&lt;a href="/rhn/manager/systems/ssm/appstreams"&gt;有効化と無効化&lt;/a&gt;</target>
+      </trans-unit>
+      <trans-unit id="task.status.root-ca-cert-update" xml:space="preserve" approved="yes">
         <source>CA Certificates Update</source>
-      <target state="new"/>
+        <target state="final">CA証明書の更新</target>
+      </trans-unit>
+    <trans-unit id="system.event.actionId" xml:space="preserve">
+          <source>Action ID</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        <target state="new"/>
   </trans-unit>
-      </body>
+        </body>
   </file>
 </xliff>

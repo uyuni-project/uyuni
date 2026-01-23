@@ -11995,124 +11995,124 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>Unable to identify a valid migration target for the selected systems.</source>
         <target state="final">選択したシステムの有効な移行ターゲットを特定できません。</target>
       </trans-unit>
-      <trans-unit id="virt.refresh_list" xml:space="preserve">
+      <trans-unit id="virt.refresh_list" xml:space="preserve" approved="yes">
         <source>Virtualization List Refresh</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">仮想化リストの更新</target>
       </trans-unit>
-      <trans-unit id="notification.proxybackupfailed" xml:space="preserve">
+      <trans-unit id="notification.proxybackupfailed" xml:space="preserve" approved="yes">
         <source>Failed to process proxy backup event</source>
-        <target state="new"/>
+        <target state="final">プロキシバックアップイベントの処理に失敗しました</target>
       </trans-unit>
-      <trans-unit id="notification.proxybackupnominion" xml:space="preserve">
+      <trans-unit id="notification.proxybackupnominion" xml:space="preserve" approved="yes">
         <source>No system with {0} name</source>
-        <target state="new"/>
+        <target state="final">{0} という名前のシステムはありません</target>
       </trans-unit>
-      <trans-unit id="notification.pxeeventfailed" xml:space="preserve">
+      <trans-unit id="notification.pxeeventfailed" xml:space="preserve" approved="yes">
         <source>Processing of a PXE event for the minion {0} failed</source>
-        <target state="new"/>
+        <target state="final">minion {0} のPXEイベントの処理に失敗しました</target>
       </trans-unit>
-      <trans-unit id="event.proxymigrationstarted" xml:space="preserve">
+      <trans-unit id="event.proxymigrationstarted" xml:space="preserve" approved="yes">
         <source>Proxy migration: started</source>
-        <target state="new"/>
+        <target state="final">プロキシ移行: 開始</target>
       </trans-unit>
-      <trans-unit id="event.proxymigrationstarteddetails" xml:space="preserve">
+      <trans-unit id="event.proxymigrationstarteddetails" xml:space="preserve" approved="yes">
         <source>Received event with client side data, starting data migration</source>
-        <target state="new"/>
+        <target state="final">クライアント側データを含むイベントを受信し、データ移行を開始します</target>
       </trans-unit>
-      <trans-unit id="event.proxymigrationfailed" xml:space="preserve">
+      <trans-unit id="event.proxymigrationfailed" xml:space="preserve" approved="yes">
         <source>Proxy migration: failed</source>
-        <target state="new"/>
+        <target state="final">プロキシ移行: 失敗</target>
       </trans-unit>
-      <trans-unit id="event.proxymigrationfailedincomplete" xml:space="preserve">
+      <trans-unit id="event.proxymigrationfailedincomplete" xml:space="preserve" approved="yes">
         <source>Received incomplete backup data. Try retrying the migration.</source>
-        <target state="new"/>
+        <target state="final">不完全なバックアップデータを受信しました。移行を再試行してください。</target>
       </trans-unit>
-      <trans-unit id="event.proxymigrationfailedparsing" xml:space="preserve">
+      <trans-unit id="event.proxymigrationfailedparsing" xml:space="preserve" approved="yes">
         <source>Unable to parse uploaded data. See log file for details</source>
-        <target state="new"/>
+        <target state="final">アップロードされたデータを解析できません。詳細についてはログファイルを参照してください</target>
       </trans-unit>
-      <trans-unit id="event.proxymigrationcreated" xml:space="preserve">
+      <trans-unit id="event.proxymigrationcreated" xml:space="preserve" approved="yes">
         <source>Proxy migration: new configuration created</source>
-        <target state="new"/>
+        <target state="final">プロキシ移行: 新しい設定が作成されました</target>
       </trans-unit>
-      <trans-unit id="event.proxymigrationcreateddetails" xml:space="preserve">
+      <trans-unit id="event.proxymigrationcreateddetails" xml:space="preserve" approved="yes">
         <source>Reinstallation of the proxy will now autoconfigure it on the first boot</source>
-        <target state="new"/>
+        <target state="final">プロキシの再インストールにより、初回起動時に自動設定されるようになりました</target>
       </trans-unit>
-      <trans-unit id="event.rbsmigrationstarted" xml:space="preserve">
+      <trans-unit id="event.rbsmigrationstarted" xml:space="preserve" approved="yes">
         <source>Retail Branch Server migration: started</source>
-        <target state="new"/>
+        <target state="final">Retail Branch Serverの移行: 開始</target>
       </trans-unit>
-      <trans-unit id="event.rbsmigrationstarteddetails" xml:space="preserve">
+      <trans-unit id="event.rbsmigrationstarteddetails" xml:space="preserve" approved="yes">
         <source>Proxy detected as a Retail Branch Server, migration started</source>
-        <target state="new"/>
+        <target state="final">プロキシがRetail Branch Serverとして検出され、移行が開始されました</target>
       </trans-unit>
-      <trans-unit id="event.rbsmigrationfinishedok" xml:space="preserve">
+      <trans-unit id="event.rbsmigrationfinishedok" xml:space="preserve" approved="yes">
         <source>Retail Branch Server migration: finished successfully</source>
-        <target state="new"/>
+        <target state="final">Retail Branch Serverの移行: 正常に完了</target>
       </trans-unit>
-      <trans-unit id="event.rbsmigrationfinishederror" xml:space="preserve">
+      <trans-unit id="event.rbsmigrationfinishederror" xml:space="preserve" approved="yes">
         <source>Retail Branch Server migration: finished with errors</source>
-        <target state="new"/>
+        <target state="final">Retail Branch Serverの移行: エラーで完了</target>
       </trans-unit>
-      <trans-unit id="event.rbsmigrationfinisheddetails" xml:space="preserve">
+      <trans-unit id="event.rbsmigrationfinisheddetails" xml:space="preserve" approved="yes">
         <source>Proxy was detected to be a Retail Branch Server, branch migration was performed.<ul>{0}</ul></source>
-        <target state="new"/>
+        <target state="final">プロキシがRetail Branch Serverとして検出されたため、ブランチの移行が実行されました。<ul>{0}</ul></target>
       </trans-unit>
-      <trans-unit id="event.rbsmigrationfailed" xml:space="preserve">
+      <trans-unit id="event.rbsmigrationfailed" xml:space="preserve" approved="yes">
         <source>Retail Branch Server migration: failed</source>
-        <target state="new"/>
+        <target state="final">Retail Branch Serverの移行: 失敗</target>
       </trans-unit>
-      <trans-unit id="event.rbsmigrationfaileddetails" xml:space="preserve">
+      <trans-unit id="event.rbsmigrationfaileddetails" xml:space="preserve" approved="yes">
         <source>Failed to migrate the branch server. See log files for details.</source>
-        <target state="new"/>
+        <target state="final">ブランチサーバの移行に失敗しました。詳細についてはログファイルを参照してください。</target>
       </trans-unit>
-      <trans-unit id="event.proxymigrationfinished" xml:space="preserve">
+      <trans-unit id="event.proxymigrationfinished" xml:space="preserve" approved="yes">
         <source>Proxy migration: finished</source>
-        <target state="new"/>
+        <target state="final">プロキシ移行: 完了</target>
       </trans-unit>
-      <trans-unit id="event.proxymigrationfinisheddetails" xml:space="preserve">
+      <trans-unit id="event.proxymigrationfinisheddetails" xml:space="preserve" approved="yes">
         <source>All data were migrated. Proceed with reinstallation of the proxy host.</source>
-        <target state="new"/>
+        <target state="final">すべてのデータが移行されました。プロキシホストの再インストールを続行してください。</target>
       </trans-unit>
-      <trans-unit id="event.pxemigrationnoentries" xml:space="preserve">
+      <trans-unit id="event.pxemigrationnoentries" xml:space="preserve" approved="yes">
         <source>No PXE entries found in a backup configuration for branch {0}</source>
-        <target state="new"/>
+        <target state="final">ブランチ {0} のバックアップ設定にPXEエントリが見つかりません</target>
       </trans-unit>
-      <trans-unit id="event.pxemigrationlost" xml:space="preserve">
+      <trans-unit id="event.pxemigrationlost" xml:space="preserve" approved="yes">
         <source>Lost and found: system with HW address {0} in branch {1} was not found as registered system.</source>
-        <target state="new"/>
+        <target state="final">紛失と発見: ブランチ {1} 内のHWアドレス {0} を持つシステムが登録済みシステムとして見つかりませんでした。</target>
       </trans-unit>
-      <trans-unit id="event.pxemigrationduplicate" xml:space="preserve">
+      <trans-unit id="event.pxemigrationduplicate" xml:space="preserve" approved="yes">
         <source>Multiple minions found with the same MAC address {0}. Cannot choose one, ignoring</source>
-        <target state="new"/>
+        <target state="final">同じMACアドレス {0} を持つ複数のminionが見つかりました。1つを選択できません。無視します</target>
       </trans-unit>
-      <trans-unit id="event.pxemigrationnogroup" xml:space="preserve">
+      <trans-unit id="event.pxemigrationnogroup" xml:space="preserve" approved="yes">
         <source>Not processing minion '{0}' as it is not part of a branch group.</source>
-        <target state="new"/>
+        <target state="final">minion '{0}' はブランチグループに属していないため、処理されません。</target>
       </trans-unit>
-      <trans-unit id="event.pxemigrationnoimage" xml:space="preserve">
+      <trans-unit id="event.pxemigrationnoimage" xml:space="preserve" approved="yes">
         <source>Image not found: system '{0}' is using unknown image '{1}'. Using default boot image.</source>
-        <target state="new"/>
+        <target state="final">イメージが見つからない: システム '{0}' は不明なイメージ '{1}' を使用しています。デフォルトのブートイメージを使用します。</target>
       </trans-unit>
-      <trans-unit id="event.pxemigrationsaltboot" xml:space="preserve">
+      <trans-unit id="event.pxemigrationsaltboot" xml:space="preserve" approved="yes">
         <source>Failed to create Saltboot system: {0}</source>
-        <target state="new"/>
+        <target state="final">Saltbootシステムの作成に失敗しました: {0}</target>
       </trans-unit>
-      <trans-unit id="rbsmigration.lostfounddescription" xml:space="preserve">
+      <trans-unit id="rbsmigration.lostfounddescription" xml:space="preserve" approved="yes">
         <source>Collection of systems not registered, but present in branch {0} pxe entries.</source>
-        <target state="new"/>
+        <target state="final">登録されていないが、ブランチ {0} のpxeエントリに存在するシステムのコレクション。</target>
       </trans-unit>
-    <trans-unit id="Access Control" xml:space="preserve">
+      <trans-unit id="Access Control" xml:space="preserve" approved="yes">
         <source>Access Control</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">アクセス制御</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

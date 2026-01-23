@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-09 10:26+0000\n"
-"PO-Revision-Date: 2025-11-17 09:04+0000\n"
+"PO-Revision-Date: 2026-01-21 03:04+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd/ko/>\n"
 "Language: ko\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #: ../src/spacecmd/activationkey.py:53
 msgid "activationkey_addpackages: Add packages to an activation key"
@@ -4054,34 +4054,6 @@ msgid "proxy_container_config_generate_cert: create a proxy system and return it
 msgstr "proxy_container_config_generate_cert: 프록시 시스템을 생성하고 구성 파일을 반환합니다."
 
 #: ../src/spacecmd/proxy.py:119
-#, fuzzy
-#| msgid ""
-#| "usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
-#| "\n"
-#| "parameters:\n"
-#| "  PROXY_FQDN  the unique, DNS-resolvable FQDN of this proxy.\n"
-#| "  SERVER_FQDN the fully qualified domain name of the server to connect to proxy to.\n"
-#| "  MAX_CACHE   the maximum cache size in MB. 60% of the storage is a good value.\n"
-#| "  EMAIL       the email of the proxy administrator\n"
-#| "\n"
-#| "options:\n"
-#| "  -o, --output Path where to create the generated configuration. Default: 'config.tar.gz'\n"
-#| "  -p, --ssh-port SSH port the proxy listens one. Default: 8022\n"
-#| "  --ca-crt path to the certificate of the CA to use to generate a new proxy certificate.\n"
-#| "           Using /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT by default.\n"
-#| "  --ca-key path to the private key of the CA to use to generate a new proxy certificate.\n"
-#| "           Using /root/ssl-build/RHN-ORG-PRIVATE-SSL-KEY by default.\n"
-#| "  --ca-pass path to a file containing the password of the CA private key, will be prompted if not passed.\n"
-#| "  --ssl-cname alternate name of the proxy to set in the certificate. Can be provided multiple times\n"
-#| "  --ssl-country country code to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
-#| "  --ssl-state state name to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
-#| "  --ssl-city the city name to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
-#| "  --ssl-org the organization name to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
-#| "  --ssl-org-unit the organization unit name to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
-#| "  --ssl-email the email to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
-#| "\n"
-#| "examples:\n"
-#| "  proxy_container_config proxy.lab server.lab 1024 proxy@acme.org --ca-pass password-file\n"
 msgid ""
 "usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
 "\n"
@@ -4120,12 +4092,12 @@ msgstr ""
 "\n"
 "옵션:\n"
 "  -o, --output 생성된 구성을 생성할 경로입니다. 기본값: 'config.tar.gz'\n"
-"  -p, --ssh-port SSH 포트는 하나를 수신합니다. 기본값: 8022\n"
+"  -p, --ssh-port 프록시가 수신 대기할 SSH 포트입니다. 기본값: 8022\n"
 "  --ca-crt 새 프록시 인증서를 생성하기 위해 사용할 CA 인증서의 경로입니다.\n"
 "           기본적으로 /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT를 사용합니다.\n"
 "  --ca-key 새 프록시 인증서를 생성하기 위해 사용할 CA의 개인 키에 대한 경로입니다.\n"
 "           기본적으로 /root/ssl-build/RHN-ORG-PRIVATE-SSL-KEY를 사용합니다.\n"
-"  --ca-pass CA 개인 키의 암호가 포함된 파일의 경로가 전달되지 않으면 메시지가 표시됩니다.\n"
+"  --ca-pass CA 개인 키의 암호가 포함된 파일의 경로이며 전달되지 않으면 메시지가 표시됩니다.\n"
 "  --ssl-cname 인증서에 설정할 프록시의 대체 이름입니다. 여러 번 제공될 수 있습니다.\n"
 "  --ssl-country 인증서에 설정할 국가 코드입니다. 생략하면 mgr-ssl-tool의 기본값이 사용됩니다.\n"
 "  --ssl-state 인증서에 설정할 상태 이름입니다. 생략하면 mgr-ssl-tool의 기본값이 사용됩니다.\n"
@@ -8024,19 +7996,19 @@ msgstr "초기 단계가 완료되었습니다. 아직 실행 중인 작업에 �
 
 #: ../src/spacecmd/system.py:5059
 msgid "system_needrebootafterupdate: Shows whether a reboot would be needed if available patches were applied"
-msgstr ""
+msgstr "system_needrebootafterupdate: 사용 가능한 패치가 적용된 경우 재부팅이 필요한지 여부를 표시합니다"
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:5108
 #, python-brace-format
 msgid "System '{}' needs to be rebooted after update"
-msgstr ""
+msgstr "시스템 '{}'은(는) 업데이트 후 재부팅해야 합니다."
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:5117
 #, python-brace-format
 msgid "No reboot needed for system '{}' after applying available updates"
-msgstr ""
+msgstr "사용 가능한 업데이트를 적용한 후 시스템 '{}'을(를) 재부팅할 필요 없습니다."
 
 #: ../src/spacecmd/user.py:53
 msgid "user_create: Create an user"

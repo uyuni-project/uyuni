@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-16 09:56+0100\n"
-"PO-Revision-Date: 2025-11-17 12:04+0000\n"
+"PO-Revision-Date: 2026-01-21 11:04+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #: ../html/javascript/spacewalk-essentials.js:409
 msgid "remaining"
@@ -34,10 +34,8 @@ msgstr "Internet Explorer 브라우저는 지원되지 않습니다. Firefox, Ch
 #: ../html/src/manager/state/highstate.tsx:63
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure.tsx:60
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:67
-#, fuzzy
-#| msgid "Action has been successfully added to the action chain <link>'{name}'</link>."
 msgid "Action has been successfully added to the action chain <link>\"{name}\"</link>."
-msgstr "작업이 작업 체인 <link>'{name}'</link>에 추가되었습니다."
+msgstr "작업이 작업 체인 <link>\"{name}\"</link>에 추가되었습니다."
 
 #: ../html/src/components/CoCoScansList.tsx:75
 #: ../html/src/components/package/PackageListActionScheduler.tsx:91
@@ -93,10 +91,8 @@ msgid "Formula saved. Applying the highstate is not needed for this formula."
 msgstr "수식이 저장되었습니다. 이 수식에는 highstate를 적용할 필요가 없습니다."
 
 #: ../html/src/components/FormulaForm.tsx:134
-#, fuzzy
-#| msgid "Multiple Group formulas detected. Only one formula for \"{0}\" can be used on each system!"
 msgid "Multiple Group formulas detected. Only one formula for \"{name}\" can be used on each system!"
-msgstr "여러 그룹 수식이 감지되었습니다. 각 시스템에서 \"{0}\"에 대한 1개의 수식만 사용할 수 있습니다!"
+msgstr "여러 그룹 수식이 감지되었습니다. 각 시스템에서 \"{name}\"에 대한 1개의 수식만 사용할 수 있습니다."
 
 #: ../html/src/components/FormulaForm.tsx:165
 msgid "Please input required fields: {fields}"
@@ -198,7 +194,7 @@ msgstr "증명"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:41
 msgid "No attestation report available. Schedule an execution to create one."
-msgstr ""
+msgstr "인증 보고서가 없습니다. 생성하려면 실행을 예약하십시오."
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:48
 msgid "Attestation"
@@ -734,7 +730,7 @@ msgstr "액세스 토큰이 클립보드에 복사되었습니다."
 #. Vendor channels can't sync orgs
 #: ../html/src/components/hub/ChannelSelectorTable.tsx:33
 msgid "Vendor"
-msgstr ""
+msgstr "벤더"
 
 #: ../html/src/components/hub/ChannelSelectorTable.tsx:50
 msgid "Select Organization"
@@ -1627,6 +1623,10 @@ msgid ""
 "            other {<dropdown></dropdown> of # pages}\n"
 "        }"
 msgstr ""
+"{total, plural,\n"
+"            one {<dropdown></dropdown> / #페이지}\n"
+"            other {<dropdown></dropdown> / #페이지}\n"
+"        }"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:56
 msgid "Sunday"
@@ -1890,11 +1890,11 @@ msgstr "채널 순위 편집"
 
 #: ../html/src/components/states-picker.tsx:446
 msgid "Edit the ranking of the states by dragging them. They are listed in order from highest to lowest rank. In other words, the bottom ones will be applied first."
-msgstr ""
+msgstr "상태를 드래그하여 순위를 편집하십시오. 순위 기준 내림차순으로 나열됩니다. 즉, 가장 낮은 순위가 먼저 적용됩니다."
 
 #: ../html/src/components/states-picker.tsx:449
 msgid "Edit the ranking of the configuration channels by dragging them. They are listed in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it. In other words, the bottom ones will be applied first."
-msgstr ""
+msgstr "구성 채널의 순위를 드래그하여 편집하십시오. 순위 기준 내림차순으로 나열됩니다. 특정 채널의 파일은 그보다 아래에 있는 채널의 동일한 경로 및 동일한 이름의 파일을 덮어씁니다. 즉, 가장 낮은 순위가 먼저 적용됩니다."
 
 #: ../html/src/components/states-picker.tsx:455
 msgid "There are no states assigned."
@@ -2141,6 +2141,10 @@ msgid ""
 "            other {{fooCount} items}\n"
 "          }."
 msgstr ""
+"항상 번호에 복수형 사용: {fooCount, plural,\n"
+"            one {1개 항목}\n"
+"            other {{fooCount}개 항목}\n"
+"          }."
 
 #: ../html/src/core/intl/index.test.tsx:9
 msgid "foo"
@@ -2157,14 +2161,12 @@ msgstr "foo {insert} 바"
 
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:51
 msgid "An unexpected error occurred while fetching organizations."
-msgstr ""
+msgstr "조직을 가져오는 동안 예기치 않은 오류가 발생했습니다."
 
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:64
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:51
-#, fuzzy
-#| msgid "An error occurred while displaying the list of packages."
 msgid "An unexpected error occurred while fetching access groups."
-msgstr "패키지 목록을 표시하는 동안 오류가 발생했습니다."
+msgstr "액세스 그룹을 가져오는 동안 예기치 않은 오류가 발생했습니다."
 
 #. Value options for filtering by Target Type in recurring actions list
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:131
@@ -2179,120 +2181,94 @@ msgid "Organization"
 msgstr "조직"
 
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:134
-#, fuzzy
-#| msgid "Select Organization"
 msgid "Search for organizations..."
-msgstr "조직 선택"
+msgstr "조직 검색 중..."
 
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:135
-#, fuzzy
-#| msgid "Organizations"
 msgid "No Organizations Found"
-msgstr "조직"
+msgstr "조직 없음"
 
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:144
 msgid "Copy Permissions From"
-msgstr ""
+msgstr "다음에서 권한 복사:"
 
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:147
 msgid "Search for existing access groups..."
-msgstr ""
+msgstr "기존 액세스 그룹 검색 중..."
 
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:148
-#, fuzzy
-#| msgid " No group"
 msgid "No Access group"
-msgstr " 그룹 없음"
+msgstr "액세스 그룹 없음"
 
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:156
 msgid "This action copy permissions from an existing access group to a new one. Once created, the new access group will function independently, unaffected by future updates to the original."
-msgstr ""
+msgstr "이 작업은 기존 액세스 그룹의 권한을 새 액세스 그룹으로 복사합니다. 새 액세스 그룹이 생성되면 기존 그룹을 업데이트해도 영향을 받지 않고 독립적으로 작동합니다."
 
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:71
 msgid "Edit Access Group"
-msgstr ""
+msgstr "액세스 그룹 편집"
 
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:76
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:134
-#, fuzzy
-#| msgid "Deleted successfully."
 msgid "Delete Access Group"
-msgstr "삭제되었습니다."
+msgstr "액세스 그룹 삭제"
 
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:88
-#, fuzzy
-#| msgid "Management"
 msgid "Access Group Management"
-msgstr "관리"
+msgstr "액세스 그룹 관리"
 
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:93
 msgid "Create Access Group"
-msgstr ""
+msgstr "액세스 그룹 생성"
 
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:104
-#, fuzzy
-#| msgid "No subscriptions found."
 msgid "No Access Group found."
-msgstr "구독을 찾을 수 없습니다."
+msgstr "액세스 그룹이 없습니다."
 
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:105
-#, fuzzy
-#| msgid "Filter by description"
 msgid "Filter by name or description"
-msgstr "설명을 기준으로 필터링"
+msgstr "이름 또는 설명을 기준으로 필터링"
 
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:127
-#, fuzzy
-#| msgid "Version"
 msgid "permissions"
-msgstr "버전"
+msgstr "권한"
 
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:135
-#, fuzzy
-#| msgid "Are you sure you want to delete the selected store?"
 msgid "Are you sure you want to delete the selected Access Group?"
-msgstr "선택한 저장소를 삭제하시겠습니까?"
+msgstr "선택한 액세스 그룹을 삭제하시겠습니까?"
 
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:155
-#, fuzzy
-#| msgid "An error occurred while displaying the list of packages."
 msgid "An unexpected error occurred while fetching namespaces."
-msgstr "패키지 목록을 표시하는 동안 오류가 발생했습니다."
+msgstr "네임스페이스를 가져오는 동안 예기치 않은 오류가 발생했습니다."
 
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:216
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:363
 msgid "API"
-msgstr ""
+msgstr "API"
 
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:219
 msgid "Web"
-msgstr ""
+msgstr "웹"
 
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:222
-#, fuzzy
-#| msgid "Delete selected"
 msgid "Only selected"
-msgstr "선택 항목 삭제"
+msgstr "선택한 항목만"
 
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:282
 #: ../html/src/manager/admin/access-control/access-group-review.tsx:128
 #: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:255
-#, fuzzy
-#| msgid "Expand All Sections"
 msgid "Expand All"
-msgstr "전체 섹션 확장"
+msgstr "모두 확장"
 
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:282
 #: ../html/src/manager/admin/access-control/access-group-review.tsx:128
 #: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:255
-#, fuzzy
-#| msgid "Collapse All Sections"
 msgid "Collapse All"
-msgstr "전체 섹션 축소"
+msgstr "모두 축소"
 
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:338
 msgid "Review and modify the permissions for this custom group as needed."
-msgstr ""
+msgstr "필요에 따라 이 사용자 정의 그룹의 권한을 검토 및 수정하십시오."
 
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:347
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:195
@@ -2304,10 +2280,8 @@ msgstr "이름을 기준으로 필터링"
 
 #: ../html/src/manager/admin/access-control/access-group-review.tsx:160
 #: ../html/src/manager/admin/access-control/access-group-user.tsx:134
-#, fuzzy
-#| msgid "systems selected"
 msgid "No Users selected."
-msgstr "시스템 선택됨"
+msgstr "사용자를 선택하지 않았습니다."
 
 #: ../html/src/manager/admin/access-control/access-group-review.tsx:163
 #: ../html/src/manager/admin/access-control/access-group-user.tsx:137
@@ -2317,58 +2291,44 @@ msgstr "전자 메일"
 
 #: ../html/src/manager/admin/access-control/access-group-review.tsx:164
 #: ../html/src/manager/admin/access-control/access-group-user.tsx:138
-#, fuzzy
-#| msgid "Channel Name"
 msgid "Real Name"
-msgstr "채널 이름"
+msgstr "실제 이름"
 
 #: ../html/src/manager/admin/access-control/access-group-review.tsx:171
-#, fuzzy
-#| msgid "No profile selected"
 msgid "No permissions selected."
-msgstr "프로파일을 선택하지 않음"
+msgstr "권한을 선택하지 않았습니다."
 
 #: ../html/src/manager/admin/access-control/access-group-tab-container.tsx:49
 msgid "Update Access Group"
-msgstr ""
+msgstr "액세스 그룹 업데이트"
 
 #: ../html/src/manager/admin/access-control/access-group-user.tsx:48
-#, fuzzy
-#| msgid "An error occurred on save."
 msgid "An unexpected error occurred while fetching users."
-msgstr "저장하는 동안 오류가 발생했습니다."
+msgstr "사용자를 가져오는 동안 예기치 않은 오류가 발생했습니다."
 
 #: ../html/src/manager/admin/access-control/access-group-user.tsx:118
-#, fuzzy
-#| msgid "Search in states"
 msgid "Search & Add Users"
-msgstr "상태에서 검색"
+msgstr "사용자 검색 및 추가"
 
 #: ../html/src/manager/admin/access-control/access-group.tsx:173
-#, fuzzy
-#| msgid "Schedule successfully created."
 msgid "Access Group successfully created."
-msgstr "일정을 생성했습니다."
+msgstr "액세스 그룹을 생성했습니다."
 
 #: ../html/src/manager/admin/access-control/access-group.tsx:195
 msgid "Namespaces & Permissions"
-msgstr ""
+msgstr "네임스페이스 및 권한"
 
 #: ../html/src/manager/admin/access-control/access-group.tsx:211
-#, fuzzy
-#| msgid "Overview"
 msgid "Review"
-msgstr "개요"
+msgstr "검토"
 
 #: ../html/src/manager/admin/access-control/access-group.tsx:219
-#, fuzzy
-#| msgid "Schedule Details"
 msgid "Access Group Details"
-msgstr "일정 세부 사항"
+msgstr "액세스 그룹 세부 사항"
 
 #: ../html/src/manager/admin/access-control/access-group.tsx:224
 msgid "Create: Access Group"
-msgstr ""
+msgstr "생성: 액세스 그룹"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:20
 msgid "Restart is needed for the configuration changes to take effect."
@@ -2577,13 +2537,11 @@ msgstr "허브 상세 정보"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:80
 msgid "No hub is currently configured for this server. Refresh this page after configuring this server as a peripheral, to see the hub details"
-msgstr ""
+msgstr "현재 이 서버에 구성된 허브가 없습니다. 허브 상세 정보를 확인하려면 이 서버를 주변기기로 구성한 후 이 페이지를 새로 고치십시오."
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:89
-#, fuzzy
-#| msgid "This server is currently registered as peripheral of hub {fqdn}. "
 msgid "This server is currently registered as peripheral of hub {fqdn}. This page shows the details of the hub server."
-msgstr "이 서버는 현재 허브 {fqdn}의 주변기기로 등록되어 있습니다. "
+msgstr "이 서버는 현재 허브 {fqdn}의 주변기기로 등록되어 있습니다. 이 페이지에는 허브 서버의 세부 정보가 표시됩니다."
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:108
 msgid "Successfully scheduled a channels synchronization."
@@ -2606,10 +2564,8 @@ msgid "{fqdn} - Peripheral Details"
 msgstr "{fqdn} - 주변 장치 세부 정보"
 
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:51
-#, fuzzy
-#| msgid "The server {fqdn} is currently registered as peripheral of this hub. "
 msgid "The server {fqdn} is currently registered as peripheral of this hub. This page shows the details of the peripheral server."
-msgstr "이 서버 {fqdn}은 현재 이 허브의 주변기기로 등록되어 있습니다. "
+msgstr "{fqdn} 서버는 현재 이 허브의 주변기기로 등록되어 있습니다. 이 페이지에는 주변기기 서버의 세부 정보가 표시됩니다."
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:24
 msgid "Peripherals Configuration"
@@ -2841,10 +2797,8 @@ msgid "Selected channels were scheduled successfully for syncing."
 msgstr "선택한 채널의 동기화가 예정되었습니다."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:269
-#, fuzzy
-#| msgid "The following channel installations for '{product}' failed. Please check log files."
 msgid "The following channel installations for \"{product}\" failed. Please check log files."
-msgstr "'{product}'에 대한 다음 채널 설치에 실패했습니다. 로그 파일을 확인하십시오."
+msgstr "\"{product}\"에 대한 다음 채널 설치에 실패했습니다. 로그 파일을 확인하십시오."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:296
 msgid "A refresh of the product data is currently running in the background. Please try again later."
@@ -3148,10 +3102,8 @@ msgid "AppStreams"
 msgstr "AppStreams"
 
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:59
-#, fuzzy
-#| msgid "Please review the changes below before scheduling an action to apply the changes on the system."
 msgid "Please review the changes below before scheduling an action to apply the changes."
-msgstr "시스템에서 변경 사항을 적용하기 위한 작업을 예약하기 전에 아래의 변경 사항을 검토하십시오."
+msgstr "변경 사항을 적용하기 위한 작업을 예약하기 전에 아래의 변경 사항을 검토하십시오."
 
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:77
 msgid "Streams to be enabled:"
@@ -3182,20 +3134,16 @@ msgid "Affected, patches available in channels which are not assigned"
 msgstr "할당되지 않은 채널에서 사용 가능한 패치가 적용됨"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:45
-#, fuzzy
-#| msgid "The client is affected by a vulnerability and we have a patch for it,"
 msgid "The client is affected by a vulnerability and we have a patch for it, but the channel(s) offering the patch are not assigned to the client."
-msgstr "클라이언트가 취약점의 영향을 받으며 이에 대한 패치가 있습니다."
+msgstr "클라이언트가 취약점의 영향을 받으며 이에 대한 패치가 있지만, 패치를 제공하는 채널이 클라이언트에 할당되지 않았습니다."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:51
 msgid "Affected, patches available in a Product Migration target"
 msgstr "제품 마이그레이션 대상에서 사용 가능한 패치가 적용됨"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:53
-#, fuzzy
-#| msgid "The client is affected by a vulnerability and we have a patch for it,"
 msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch requires migrating the product to a newer version."
-msgstr "클라이언트가 취약점의 영향을 받으며 이에 대한 패치가 있습니다."
+msgstr "클라이언트가 취약점의 영향을 받으며 이에 대한 패치가 있지만, 패치를 적용하려면 제품을 최신 버전으로 마이그레이션해야 합니다."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:59
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:60
@@ -3231,20 +3179,16 @@ msgid "Affected, patch is unavailable in relevant channels"
 msgstr "영향을 받음, 관련 채널에서 패치를 사용할 수 없음"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:81
-#, fuzzy
-#| msgid "The client is affected by a vulnerability for which a patch has not yet been released."
 msgid "The client is affected by a vulnerability for which a patch has been released, but the patch can't be found in the relevant channels."
-msgstr "이 클라이언트는 아직 패치가 릴리스되지 않은 취약점의 영향을 받습니다."
+msgstr "클라이언트가 패치가 릴리스된 취약점의 영향을 받지만, 관련 채널에서 패치를 찾을 수 없습니다."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:87
 msgid "Affected, partial patch available in assigned channel"
 msgstr "영향을 받음, 할당된 채널에서 부분 패치 사용 가능"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:89
-#, fuzzy
-#| msgid "The client is affected by a vulnerability and we have a patch for it,"
 msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch will only update some of the vulnerable packages."
-msgstr "클라이언트가 취약점의 영향을 받으며 이에 대한 패치가 있습니다."
+msgstr "클라이언트가 취약점의 영향을 받으며 이에 대한 패치가 있지만, 패치를 적용하면 취약한 패키지 중 일부만 업데이트됩니다."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:95
 msgid "Unknown, CVE metadata not available"
@@ -4395,26 +4339,20 @@ msgid "The page you requested, {currentUrl}, was not found."
 msgstr "요청한 페이지 {currentUrl}을(를) 찾을 수 없습니다."
 
 #: ../html/src/manager/errors/not-found.tsx:10
-#, fuzzy
-#| msgid "If you typed this address into your browser, double-check the spelling and capitalization."
 msgid "If you typed this address into your browser, double-check the spelling and capitalization. The address you are copying may also be outdated."
-msgstr "이 주소를 브라우저에 입력한 경우 맞춤법과 대/소문자를 다시 확인하십시오."
+msgstr "이 주소를 브라우저에 입력한 경우 철자와 대/소문자를 다시 확인하십시오. 복사하려는 주소가 오래되었을 수도 있습니다."
 
 #: ../html/src/manager/errors/not-found.tsx:16
-#, fuzzy
-#| msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
 msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your browser to try a different link, or use the top (or left) navigation bars to find the page you are looking for."
-msgstr "링크를 따라간 경우 링크가 잘못되었거나 오래되었을 수 있습니다. 뒤로 버튼을 클릭하십시오. "
+msgstr "링크를 따라온 경우 해당 링크가 잘못되었거나 오래되었을 수 있습니다. 브라우저의 뒤로 가기 버튼을 클릭하여 다른 링크를 시도하거나, 상단(또는 좌측) 내비게이션 바를 사용하여 찾고 있는 페이지를 찾아보십시오."
 
 #: ../html/src/manager/errors/not-found.tsx:23
 msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top (or left) navigation bars to find the page you are looking for, and if you find the document be sure to update your bookmark."
 msgstr "책갈피를 사용한 경우 책갈피가 생성된 후 해당 페이지가 다른 위치로 이동되었을 수 있습니다. 상단(또는 왼쪽)에 있는 탐색 모음을 사용하여 찾고 있는 페이지를 찾으십시오. 문서를 찾으면 책갈피를 업데이트해야 합니다."
 
 #: ../html/src/manager/errors/not-found.tsx:30
-#, fuzzy
-#| msgid "If you feel you've reached this page in error, please contact us with details of how you received "
 msgid "If you feel you've reached this page in error, please contact us with details of how you received this message."
-msgstr "이 페이지에 실수로 접속했다고 생각되는 경우, 접속 경로에 대한 상세 내용을 기재하여 문의해 주시기 바랍니다. "
+msgstr "이 페이지에 실수로 접속했다고 생각되는 경우, 이 메시지를 받은 경로에 대한 자세한 내용과 함께 문의해 주십시오."
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.tsx:27
 msgid "Applying the config channels has been scheduled for each minion server in this group"
@@ -4841,10 +4779,8 @@ msgstr "저장소 편집"
 
 #: ../html/src/manager/images/image-view-overview.tsx:469
 #: ../html/src/manager/images/image-view.tsx:756
-#, fuzzy
-#| msgid "Instance Details for '{name}'"
 msgid "Instance Details for \"{name}\""
-msgstr "'{name}'용 인스턴스 세부 사항"
+msgstr "\"{name}\"용 인스턴스 세부 사항"
 
 #: ../html/src/manager/images/image-view-overview.tsx:524
 #: ../html/src/manager/images/image-view-overview.tsx:525
@@ -5280,10 +5216,8 @@ msgid "Current Schedule"
 msgstr "현재 일정"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:117
-#, fuzzy
-#| msgid "Url '{url}' is invalid"
 msgid "Url \"{url}\" is invalid"
-msgstr "'{url}' URL이 잘못됨"
+msgstr "\"{url}\" URL이 잘못됨"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:142
 msgid "Calendar data"
@@ -5504,10 +5438,8 @@ msgid "Nothing configured. Please add paths in the "
 msgstr "구성된 항목이 없습니다. 다음에 경로 추가: "
 
 #: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:197
-#, fuzzy
-#| msgid "Add Peripheral"
 msgid "Add Variable"
-msgstr "주변기기 추가"
+msgstr "변수 추가"
 
 #: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:222
 #: ../html/src/manager/minion/ansible/variables/boolean-editor.tsx:48
@@ -5517,22 +5449,16 @@ msgstr "참"
 
 #: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:226
 #: ../html/src/manager/minion/ansible/variables/boolean-editor.tsx:51
-#, fuzzy
-#| msgid "false"
 msgid "False"
-msgstr "false"
+msgstr "거짓"
 
 #: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:244
-#, fuzzy
-#| msgid "Edit "
 msgid "Edit YAML"
-msgstr "편집 "
+msgstr "YAML 편집"
 
 #: ../html/src/manager/minion/ansible/edit-ansible-vars-modal.tsx:65
-#, fuzzy
-#| msgid "Edit profile"
 msgid "Edit variables"
-msgstr "프로파일 편집"
+msgstr "변수 편집"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:139
 msgid "Loading playbook contents.."
@@ -5558,22 +5484,16 @@ msgid "Change Playbook"
 msgstr "플레이북 변경"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:167
-#, fuzzy
-#| msgid "Change Playbook"
 msgid "Choose a different Playbook"
-msgstr "플레이북 변경"
+msgstr "다른 플레이북 선택"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:173
-#, fuzzy
-#| msgid "Select the current Playbook"
 msgid "Save the current Playbook"
-msgstr "현재 플레이북 선택"
+msgstr "현재 플레이북 저장"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:183
-#, fuzzy
-#| msgid "Playbook '{name}'"
 msgid "Playbook \"{name}\""
-msgstr "'{name}' 플레이북"
+msgstr "\"{name}\" 플레이북"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:192
 msgid "Schedule Playbook Execution"
@@ -5605,75 +5525,53 @@ msgstr "플레이븍 실행이"
 
 #: ../html/src/manager/minion/ansible/variables/boolean-editor.tsx:27
 #: ../html/src/manager/minion/ansible/variables/boolean-editor.tsx:56
-#, fuzzy
-#| msgid "Add token"
 msgid "Add Boolean"
-msgstr "토큰 추가"
+msgstr "부울 추가"
 
 #: ../html/src/manager/minion/ansible/variables/dictionary-editor.tsx:93
 msgid "Key-Value Pairs"
-msgstr ""
+msgstr "키-값 쌍"
 
 #: ../html/src/manager/minion/ansible/variables/dictionary-editor.tsx:115
-#, fuzzy
-#| msgid "Add item"
 msgid "Add Item"
 msgstr "항목 추가"
 
 #: ../html/src/manager/minion/ansible/variables/dictionary-editor.tsx:120
-#, fuzzy
-#| msgid "Delete Image"
 msgid "Delete Item"
-msgstr "이미지 삭제"
+msgstr "항목 삭제"
 
 #: ../html/src/manager/minion/ansible/variables/dictionary-editor.tsx:131
-#, fuzzy
-#| msgid "Add Calendar"
 msgid "Add Key-Value Pair"
-msgstr "달력 추가"
+msgstr "키-값 쌍 추가"
 
 #: ../html/src/manager/minion/ansible/variables/dictionary-editor.tsx:131
-#, fuzzy
-#| msgid "Add token"
 msgid "Add Dictionary"
-msgstr "토큰 추가"
+msgstr "딕셔너리 추가"
 
 #: ../html/src/manager/minion/ansible/variables/list-editor.tsx:49
-#, fuzzy
-#| msgid "Systems"
 msgid "Items"
-msgstr "시스템"
+msgstr "항목"
 
 #: ../html/src/manager/minion/ansible/variables/list-editor.tsx:69
-#, fuzzy
-#| msgid "Add item"
 msgid "Add List Item"
-msgstr "항목 추가"
+msgstr "목록 항목 추가"
 
 #: ../html/src/manager/minion/ansible/variables/list-editor.tsx:76
-#, fuzzy
-#| msgid "Delete cluster"
 msgid "Delete List Item"
-msgstr "클러스터 삭제"
+msgstr "목록 항목 삭제"
 
 #: ../html/src/manager/minion/ansible/variables/list-editor.tsx:87
-#, fuzzy
-#| msgid "Add item"
 msgid "Add List"
-msgstr "항목 추가"
+msgstr "목록 추가"
 
 #: ../html/src/manager/minion/ansible/variables/string-editor.tsx:31
 #: ../html/src/manager/minion/ansible/variables/string-editor.tsx:58
-#, fuzzy
-#| msgid "Add token"
 msgid "Add String"
-msgstr "토큰 추가"
+msgstr "문자열 추가"
 
 #: ../html/src/manager/minion/ansible/variables/string-editor.tsx:36
-#, fuzzy
-#| msgid "New value"
 msgid "Name and value"
-msgstr "새 값"
+msgstr "이름 및 값"
 
 #: ../html/src/manager/minion/coco/coco-settings.tsx:66
 msgid "Settings"
@@ -6056,7 +5954,7 @@ msgstr "프로그램 임시 수정(PTF) 설치"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:27
 msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. These packages are only meant to address a specific open issue. Please follow the instructions from customer support before proceeding with the installation."
-msgstr ""
+msgstr "이 시스템에 설치할 수 있는 프로그램 임시 수정(PTF)은 다음과 같습니다. 이 패키지의 용도는 특정 미해결 문제를 해결하는 것입니다. 설치를 진행하기 전에 고객 지원팀의 안내를 따르십시오."
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:31
 msgid "No Program Temporary Fixes (PTFs) available."
@@ -6076,7 +5974,7 @@ msgstr "프로그램 임시 수정(PTF) 제거"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:27
 msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. These PTFs may be scheduled for removal by selecting them and clicking \"Remove PTF\" below. Please note that removing any non-obsolete PTF will result in the installation of the most recent versions of the packages that are part of the PTF."
-msgstr ""
+msgstr "현재 이 시스템에는 다음 프로그램 임시 수정(PTF)이 설치되어 있습니다. 이러한 PTF를 선택하고 아래 \"PTF 제거\"를 클릭하여 제거를 예약할 수 있습니다. 유효한 PTF를 제거하면 해당 PTF에 포함된 패키지의 최신 버전이 설치됨에 유의하세요."
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:32
 msgid "No Program Temporary Fixes (PTFs) installed."
@@ -6518,10 +6416,8 @@ msgid "Flush fact cache:"
 msgstr "팩트 캐시 플러시:"
 
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:126
-#, fuzzy
-#| msgid "Disable"
 msgid "Variables"
-msgstr "비활성화"
+msgstr "변수"
 
 #. Value options for filtering by Action Type in recurring actions list
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:10
@@ -6829,53 +6725,39 @@ msgstr "시스템 유형"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-channel-selection.tsx:16
 msgid "No modular channels are available for the selected systems in SSM."
-msgstr ""
+msgstr "SSM에서 선택한 시스템에는 모듈형 채널을 사용할 수 없습니다."
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-channel-selection.tsx:19
-#, fuzzy
-#| msgid "Select Channels"
 msgid "Select Channel"
 msgstr "채널 선택"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-channel-selection.tsx:21
 msgid "First, select the channel containing the AppStreams to be configured upon the selected systems."
-msgstr ""
+msgstr "먼저, 선택한 시스템에서 구성할 AppStreams가 포함된 채널을 선택하십시오."
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:18
-#, fuzzy
-#| msgid "Base Channel"
 msgid "Change Channel"
-msgstr "기본 채널"
+msgstr "채널 변경"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:21
-#, fuzzy
-#| msgid "Config channel"
 msgid "Change channel"
-msgstr "채널 구성"
+msgstr "채널 변경"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:74
-#, fuzzy
-#| msgid "The following AppStream modules are currently available to the system."
 msgid "The following AppStream modules are available on the selected channel."
-msgstr "현재 시스템에서 사용할 수 있는 AppStream 모듈은 다음과 같습니다."
+msgstr "선택한 채널에서 다음 AppStream 모듈을 사용할 수 있습니다."
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:98
-#, fuzzy
-#| msgid "AppStreams"
 msgid "({count} AppStreams)"
-msgstr "AppStreams"
+msgstr "({count}개 AppStreams)"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:123
-#, fuzzy
-#| msgid "No change"
 msgid "Don't change"
-msgstr "변경 사항 없음"
+msgstr "변경 금지"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:135
-#, fuzzy
-#| msgid "Enable"
 msgid "Enable "
-msgstr "활성화"
+msgstr "활성화 "
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:41
 msgid "Error Details"
@@ -6883,17 +6765,15 @@ msgstr "오류 세부 정보"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:51
 msgid "Standard Output:"
-msgstr ""
+msgstr "표준 출력:"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:67
 msgid "Standard Error:"
-msgstr ""
+msgstr "표준 오류:"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:83
-#, fuzzy
-#| msgid "Result Type:"
 msgid "Result:"
-msgstr "결과 유형:"
+msgstr "결과:"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:340
 msgid "Request interrupted or invalid response received from the server. Please check if your minion was bootstrapped correctly."
@@ -7168,10 +7048,8 @@ msgid "Product Migration - Schedule"
 msgstr "제품 마이그레이션 - 스케줄"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:105
-#, fuzzy
-#| msgid "Base Product"
 msgid "Unknown base product"
-msgstr "기본 제품"
+msgstr "알 수 없는 기본 제품"
 
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:119
 msgid "Show product details"

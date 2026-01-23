@@ -3549,7 +3549,7 @@ user before attempting to deactivate their account.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/InProgressSystems</context>
         </context-group>
-        <target>선택된 시스템이 없음</target>
+        <target state="final">선택된 시스템이 없습니다.</target>
       </trans-unit>
       <trans-unit id="systemgroups.none" xml:space="preserve">
         <source>No system groups selected.</source>
@@ -6834,13 +6834,13 @@ Follow this url to see the full list of inactive systems:
         </context-group>
         <target>설정 파일 배포판 생성 중 오류: {0} 파일이 비어있음.</target>
       </trans-unit>
-      <trans-unit approved="yes" id="error.configtoolarge" xml:space="preserve">
+      <trans-unit approved="no" id="error.configtoolarge" xml:space="preserve">
         <source>Error creating Configuration File Revision:  File too large.  The maximum file size is {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/ManageConfigRevision.do</context>
           <context context-type="paramnotes">Error creating Configuration File Revision:  File too large.  The maximum file size is 128 KB</context>
         </context-group>
-        <target>구성 파일 리비전 생성 중 오류: 파일 크기가 너무 큼. 최대 파일 크기는 {0}임.</target>
+        <target state="translated">구성 파일 리비전 생성 중 오류: 파일 크기가 너무 큽니다. 최대 파일 크기는 {0}입니다.</target>
       </trans-unit>
       <trans-unit id="config_revisions.failure" xml:space="preserve">
         <source>{0} revision deletions failed.</source>
@@ -8324,14 +8324,14 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
-        <target>1개의 가상 시스템 삭제됨</target>
+        <target state="final">1개의 가상 시스템이 삭제되었습니다.</target>
       </trans-unit>
       <trans-unit approved="yes" id="systems.details.virt.virt.deleted" xml:space="preserve">
         <source>Deleted {0} virtual systems.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/system/details/virtualization/VirtualGuestsConfirm.do</context>
         </context-group>
-        <target>{0} 가상 시스템 삭제됨</target>
+        <target state="final">{0} 가상 시스템이 삭제되었습니다.</target>
       </trans-unit>
       <trans-unit id="virt.shutdown" xml:space="preserve">
         <source>Shutdown</source>
@@ -9258,7 +9258,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit approved="yes" id="ARM hard. FP" xml:space="preserve">
         <source>ARM hard. FP</source>
-        <target>ARM hard. FP</target>
+        <target state="final">ARM hard. FP</target>
       </trans-unit>
       <trans-unit id="arm Debian" xml:space="preserve">
         <source>arm Debian</source>
@@ -9374,7 +9374,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit approved="yes" id="api.kickstart.invalidkickstartinstalltype" xml:space="preserve">
         <source>Invalid autoinstall type: {0}.</source>
-        <target>잘못된 자동 설치 유형: {0}</target>
+        <target state="final">잘못된 자동 설치 유형: {0}.</target>
       </trans-unit>
       <trans-unit approved="yes" id="edit.channel.invalidgpgfp" xml:space="preserve">
         <source>Invalid GPG Fingerprint</source>
@@ -9543,7 +9543,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit approved="yes" id="message.channelcreated" xml:space="preserve">
         <source>Channel &lt;strong&gt;{0}&lt;/strong&gt; created.</source>
-        <target>채널 &lt;strong&gt;{0}&lt;/strong&gt; 생성됨</target>
+        <target state="final">&lt;strong&gt;{0}&lt;/strong&gt; 채널이 생성되었습니다.</target>
       </trans-unit>
       <trans-unit id="message.channelcloned" xml:space="preserve">
         <source>Channel &lt;strong&gt;{0}&lt;/strong&gt; cloned from channel &lt;strong&gt;{1}&lt;/strong&gt;.</source>
@@ -9571,7 +9571,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit approved="yes" id="message.channelupdated" xml:space="preserve">
         <source>Channel &lt;strong&gt;{0}&lt;/strong&gt; updated.</source>
-        <target>채널 &lt;strong&gt;{0}&lt;/strong&gt; 업데이트됨</target>
+        <target state="final">&lt;strong&gt;{0}&lt;/strong&gt; 채널이 업데이트되었습니다.</target>
       </trans-unit>
       <trans-unit id="message.failactionsuccess" xml:space="preserve">
         <source>Status of action &lt;strong&gt;{0}&lt;/strong&gt; has been set to failed.</source>
@@ -9789,7 +9789,7 @@ tree will not be usable for autoinstalling.</source>
         <target state="final">
 @@PRODUCT_NAME@@이(가) @@PRODUCT_NAME@@에서 Cobbler로
 자동 설치 가능 배포를 동기화하는 동안 발생한 오류 목록은 다음과 같습니다.
-자동 설치 시스템에서 배포를 사용하려면 오류를 수정해야 함:
+자동 설치 시스템에서 배포를 사용하려면 이러한 오류를 수정해야 합니다.
 
 {0}
 
@@ -11054,7 +11054,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>&lt;p&gt;@@PRODUCT_NAME@@ {0} has reached the end of its lifecycle. General support has ended on &lt;strong&gt;{1}&lt;/strong&gt;. To continue receiving support, this @@PRODUCT_NAME@@ server instance &lt;strong&gt;must be&lt;/strong&gt; upgraded.&lt;/p&gt;
           &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the section &lt;em&gt;Upgrade&lt;/em&gt; of the &lt;em&gt;Installation/Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
         <target state="final">&lt;p&gt;@@PRODUCT_NAME@@ {0}의 수명 주기가 다했습니다. &lt;strong&gt;{1}&lt;/strong&gt;에 일반 지원이 종료되었습니다. 계속해서 지원받으려면 &lt;strong&gt;반드시&lt;/strong&gt; @@PRODUCT_NAME@@ 서버 인스턴스를 업그레이드해야 합니다.&lt;/p&gt;
-          &lt;p&gt;@@PRODUCT_NAME@@ 업그레이드 방법에 대한 추가 정보는 공식 문서의 &lt;em&gt;설치/업그레이드 가이드&lt;/em&gt; &gt; &lt;em&gt;업그레이드&lt;/em&gt;를 참고하십시오.&lt;/p&gt;</target>
+          &lt;p&gt;@@PRODUCT_NAME@@ 업그레이드 방법에 대한 추가 정보는 공식 문서에서 &lt;em&gt;설치/업그레이드 가이드&lt;/em&gt;의 &gt; &lt;em&gt;업그레이드&lt;/em&gt;를 참고하십시오.&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit approved="yes" id="notification.endoflife.expiring.summary" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ {0} is approaching end of life</source>
@@ -11064,7 +11064,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>&lt;p&gt;@@PRODUCT_NAME@@ {0} is approaching the end of its lifecycle. Please consider upgrading this server instance before general support ends on &lt;strong&gt;{1}&lt;/strong&gt;.&lt;/p&gt;
           &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the section &lt;em&gt;Upgrade&lt;/em&gt; of the &lt;em&gt;Installation/Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
         <target state="final">&lt;p&gt;@@PRODUCT_NAME@@ {0}의 수명이 곧 다합니다. &lt;strong&gt;{1}&lt;/strong&gt;에 일반 지원이 종료되기 전, 서버 인스턴스 업그레이드를 고려해 보십시오.&lt;/p&gt;
-          &lt;p&gt;@@PRODUCT_NAME@@ 업그레이드 방법에 대한 추가 정보는 공식 문서의 &lt;em&gt;설치/업그레이드 가이드&lt;/em&gt; &gt; &lt;em&gt;업그레이드&lt;/em&gt;를 참고하십시오.&lt;/p&gt;</target>
+          &lt;p&gt;@@PRODUCT_NAME@@ 업그레이드 방법에 대한 추가 정보는 공식 문서에서 &lt;em&gt;설치/업그레이드 가이드&lt;/em&gt;의 &gt; &lt;em&gt;업그레이드&lt;/em&gt;를 참고하십시오.&lt;/p&gt;</target>
       </trans-unit>
       <trans-unit approved="yes" id="help.credentials.invalidemailvalue" xml:space="preserve">
         <source>Please fill in a valid email.</source>
@@ -11998,124 +11998,124 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>Unable to identify a valid migration target for the selected systems.</source>
         <target state="final">선택된 시스템에 대해 유효한 마이그레이션 대상을 식별할 수 없습니다.</target>
       </trans-unit>
-    <trans-unit id="virt.refresh_list" xml:space="preserve">
+      <trans-unit id="virt.refresh_list" xml:space="preserve" approved="yes">
         <source>Virtualization List Refresh</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.proxybackupfailed" xml:space="preserve">
+        <target state="final">가상화 목록 새로 고침</target>
+      </trans-unit>
+      <trans-unit id="notification.proxybackupfailed" xml:space="preserve" approved="yes">
         <source>Failed to process proxy backup event</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.proxybackupnominion" xml:space="preserve">
+        <target state="final">프록시 백업 이벤트 처리 실패</target>
+      </trans-unit>
+      <trans-unit id="notification.proxybackupnominion" xml:space="preserve" approved="yes">
         <source>No system with {0} name</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.pxeeventfailed" xml:space="preserve">
+        <target state="final">이름이 {0}인 시스템 없음</target>
+      </trans-unit>
+      <trans-unit id="notification.pxeeventfailed" xml:space="preserve" approved="yes">
         <source>Processing of a PXE event for the minion {0} failed</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="event.proxymigrationstarted" xml:space="preserve">
+        <target state="final">미니언 {0}에 대한 PXE 이벤트 처리 실패</target>
+      </trans-unit>
+      <trans-unit id="event.proxymigrationstarted" xml:space="preserve" approved="yes">
         <source>Proxy migration: started</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="event.proxymigrationstarteddetails" xml:space="preserve">
+        <target state="final">프록시 마이그레이션: 시작됨</target>
+      </trans-unit>
+      <trans-unit id="event.proxymigrationstarteddetails" xml:space="preserve" approved="yes">
         <source>Received event with client side data, starting data migration</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="event.proxymigrationfailed" xml:space="preserve">
+        <target state="final">클라이언트 측 데이터로 이벤트 수신, 데이터 마이그레이션 시작</target>
+      </trans-unit>
+      <trans-unit id="event.proxymigrationfailed" xml:space="preserve" approved="yes">
         <source>Proxy migration: failed</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="event.proxymigrationfailedincomplete" xml:space="preserve">
+        <target state="final">프록시 마이그레이션: 실패</target>
+      </trans-unit>
+      <trans-unit id="event.proxymigrationfailedincomplete" xml:space="preserve" approved="yes">
         <source>Received incomplete backup data. Try retrying the migration.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="event.proxymigrationfailedparsing" xml:space="preserve">
+        <target state="final">불완전한 백업 데이터가 수신되었습니다. 마이그레이션을 다시 시도하십시오.</target>
+      </trans-unit>
+      <trans-unit id="event.proxymigrationfailedparsing" xml:space="preserve" approved="yes">
         <source>Unable to parse uploaded data. See log file for details</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="event.proxymigrationcreated" xml:space="preserve">
+        <target state="final">업로드된 데이터를 구문 분석할 수 없습니다. 자세한 내용은 로그 파일을 참조하십시오.</target>
+      </trans-unit>
+      <trans-unit id="event.proxymigrationcreated" xml:space="preserve" approved="yes">
         <source>Proxy migration: new configuration created</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="event.proxymigrationcreateddetails" xml:space="preserve">
+        <target state="final">프록시 마이그레이션: 새 구성이 생성됨</target>
+      </trans-unit>
+      <trans-unit id="event.proxymigrationcreateddetails" xml:space="preserve" approved="yes">
         <source>Reinstallation of the proxy will now autoconfigure it on the first boot</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="event.rbsmigrationstarted" xml:space="preserve">
+        <target state="final">프록시를 재설치하면 이제 처음 부팅할 때 프록시가 자동으로 구성됩니다.</target>
+      </trans-unit>
+      <trans-unit id="event.rbsmigrationstarted" xml:space="preserve" approved="yes">
         <source>Retail Branch Server migration: started</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="event.rbsmigrationstarteddetails" xml:space="preserve">
+        <target state="final">리테일 브랜치 서버 마이그레이션: 시작됨</target>
+      </trans-unit>
+      <trans-unit id="event.rbsmigrationstarteddetails" xml:space="preserve" approved="yes">
         <source>Proxy detected as a Retail Branch Server, migration started</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="event.rbsmigrationfinishedok" xml:space="preserve">
+        <target state="final">프록시가 리테일 브랜치 서버로 감지됨, 마이그레이션 시작됨</target>
+      </trans-unit>
+      <trans-unit id="event.rbsmigrationfinishedok" xml:space="preserve" approved="yes">
         <source>Retail Branch Server migration: finished successfully</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="event.rbsmigrationfinishederror" xml:space="preserve">
+        <target state="final">리테일 브랜치 서버 마이그레이션: 완료됨</target>
+      </trans-unit>
+      <trans-unit id="event.rbsmigrationfinishederror" xml:space="preserve" approved="yes">
         <source>Retail Branch Server migration: finished with errors</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="event.rbsmigrationfinisheddetails" xml:space="preserve">
+        <target state="final">리테일 브랜치 서버 마이그레이션: 완료됨, 오류 발생</target>
+      </trans-unit>
+      <trans-unit id="event.rbsmigrationfinisheddetails" xml:space="preserve" approved="yes">
         <source>Proxy was detected to be a Retail Branch Server, branch migration was performed.<ul>{0}</ul></source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="event.rbsmigrationfailed" xml:space="preserve">
+        <target state="final">프록시가 리테일 브랜치 서버로 감지됨, 브랜치 마이그레이션이 수행됨.<ul>{0}</ul></target>
+      </trans-unit>
+      <trans-unit id="event.rbsmigrationfailed" xml:space="preserve" approved="yes">
         <source>Retail Branch Server migration: failed</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="event.rbsmigrationfaileddetails" xml:space="preserve">
+        <target state="final">리테일 브랜치 서버 마이그레이션: 실패</target>
+      </trans-unit>
+      <trans-unit id="event.rbsmigrationfaileddetails" xml:space="preserve" approved="yes">
         <source>Failed to migrate the branch server. See log files for details.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="event.proxymigrationfinished" xml:space="preserve">
+        <target state="final">브랜치 서버를 마이그레이션하지 못했습니다. 자세한 내용은 로그 파일을 참조하십시오.</target>
+      </trans-unit>
+      <trans-unit id="event.proxymigrationfinished" xml:space="preserve" approved="yes">
         <source>Proxy migration: finished</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="event.proxymigrationfinisheddetails" xml:space="preserve">
+        <target state="final">프록시 마이그레이션: 완료</target>
+      </trans-unit>
+      <trans-unit id="event.proxymigrationfinisheddetails" xml:space="preserve" approved="yes">
         <source>All data were migrated. Proceed with reinstallation of the proxy host.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="event.pxemigrationnoentries" xml:space="preserve">
+        <target state="final">모든 데이터가 마이그레이션되었습니다. 프록시 호스트 재설치를 진행하십시오.</target>
+      </trans-unit>
+      <trans-unit id="event.pxemigrationnoentries" xml:space="preserve" approved="yes">
         <source>No PXE entries found in a backup configuration for branch {0}</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="event.pxemigrationlost" xml:space="preserve">
+        <target state="final">브랜치 {0}에 대한 백업 구성에 PXE 항목이 없습니다.</target>
+      </trans-unit>
+      <trans-unit id="event.pxemigrationlost" xml:space="preserve" approved="yes">
         <source>Lost and found: system with HW address {0} in branch {1} was not found as registered system.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="event.pxemigrationduplicate" xml:space="preserve">
+        <target state="final">분실: {1} 브랜치에서 하드웨어 주소가 {0}인 시스템을 등록된 시스템으로 찾을 수 없습니다.</target>
+      </trans-unit>
+      <trans-unit id="event.pxemigrationduplicate" xml:space="preserve" approved="yes">
         <source>Multiple minions found with the same MAC address {0}. Cannot choose one, ignoring</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="event.pxemigrationnogroup" xml:space="preserve">
+        <target state="final">동일한 MAC 주소({0})를 가진 미니언이 여러 개 발견되었습니다. 하나를 선택할 수 없으므로 무시합니다.</target>
+      </trans-unit>
+      <trans-unit id="event.pxemigrationnogroup" xml:space="preserve" approved="yes">
         <source>Not processing minion '{0}' as it is not part of a branch group.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="event.pxemigrationnoimage" xml:space="preserve">
+        <target state="final">{0} 미니언은 브랜치 그룹에 속하지 않으므로 처리되지 않습니다.</target>
+      </trans-unit>
+      <trans-unit id="event.pxemigrationnoimage" xml:space="preserve" approved="yes">
         <source>Image not found: system '{0}' is using unknown image '{1}'. Using default boot image.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="event.pxemigrationsaltboot" xml:space="preserve">
+        <target state="final">이미지 없음: 시스템 '{0}'에서 알 수 없는 이미지 '{1}'을(를) 사용하고 있습니다. 기본 부팅 이미지를 사용합니다.</target>
+      </trans-unit>
+      <trans-unit id="event.pxemigrationsaltboot" xml:space="preserve" approved="yes">
         <source>Failed to create Saltboot system: {0}</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="rbsmigration.lostfounddescription" xml:space="preserve">
+        <target state="final">Saltboot 시스템 생성 실패: {0}</target>
+      </trans-unit>
+      <trans-unit id="rbsmigration.lostfounddescription" xml:space="preserve" approved="yes">
         <source>Collection of systems not registered, but present in branch {0} pxe entries.</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="Access Control" xml:space="preserve">
+        <target state="final">등록되지 않았지만 브랜치 {0} pxe 항목에 존재하는 시스템 모음.</target>
+      </trans-unit>
+      <trans-unit id="Access Control" xml:space="preserve" approved="yes">
         <source>Access Control</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">액세스 제어</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
