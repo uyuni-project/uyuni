@@ -198,9 +198,17 @@ public class MinionServer extends Server implements SaltConfigurable {
      */
     @Override
     public boolean equals(Object other) {
-        if (!(other instanceof MinionServer otherMinion)) {
+        MinionServer otherMinion;
+        if (other instanceof MinionServer) {
+            otherMinion = (MinionServer) other;
+        }
+        else if (other instanceof Server server && server.asMinionServer().isPresent()) {
+            otherMinion = server.asMinionServer().get();
+        }
+        else {
             return false;
         }
+
         return new EqualsBuilder()
                 .appendSuper(super.equals(otherMinion))
                 .append(getMachineId(), otherMinion.getMachineId())
