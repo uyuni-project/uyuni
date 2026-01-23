@@ -25,6 +25,8 @@ import fnmatch
 import requests
 import logging
 from functools import cmp_to_key
+
+from lzreposync.deb_metadata_parser import parse_deb_packages_metadata
 from uyuni.common import fileutils
 from spacewalk.common.suseLib import get_proxy
 from spacewalk.common.rhnConfig import cfg_component
@@ -143,6 +145,7 @@ class DebRepo:
         parts = url.rsplit("/dists/", 1)
         self.base_url = [parts[0]]
         self.timeout = timeout
+        self.url_without_arch = None  # The url without getting to the arch path
 
         parsed_url = urlparse.urlparse(url)
         query = urlparse.parse_qsl(parsed_url.query)
@@ -174,6 +177,8 @@ class DebRepo:
             path_list.extend(suite.split("/"))
             if component:
                 path_list.extend(component.split("/"))
+            parsed_url_without_arch = parsed_url._replace(path="/".join(path_list))
+            self.url_without_arch = urlparse.urlunparse(parsed_url_without_arch)
             if "/" not in suite:
                 if arch is None:
                     rhnSQL.initDB()
@@ -221,6 +226,7 @@ class DebRepo:
         self.gpg_verify = gpg_verify
 
         self.basecachedir = cache_dir
+        # TODO: FIX for some reason this is not working (I might be passing the cache dir in a bad format)
         if not os.path.isdir(self.basecachedir):
             # pylint: disable-next=invalid-name
             with cfg_component(component=None) as CFG:
@@ -295,6 +301,8 @@ class DebRepo:
                 )
                 if not data.ok:
                     return ""
+                if not os.path.exists(self.basecachedir):
+                    os.makedirs(self.basecachedir)
                 filename = os.path.join(
                     self.basecachedir, os.path.basename(urlparse.urlparse(url).path)
                 )
@@ -394,6 +402,92 @@ class DebRepo:
             if package.is_populated():
                 to_return.append(package)
         return to_return
+
+    def get_packages_metadata(self):
+        packages_file = self.download_packages_file()
+        translation_file = self.download_translation_file()
+        if not packages_file:
+            print("Error downloading 'Packages' md file. Leaving...")
+            return
+
+        base_url = (
+            self.base_url[0] if isinstance(self.base_url, list) else self.base_url
+        )
+        packages = parse_deb_packages_metadata(
+            packages_file, translation_file, base_url, self.basecachedir
+        )
+        yield from packages
+        packages_file.close()  # TODO optimize
+
+    def download_packages_file(self):
+        """
+        Locate and download the 'Packages' (.xz or .gz) metadata file.
+        Return the decompressed file
+        """
+        decompressed = None
+        for extension in FORMAT_PRIORITY:
+            scheme, netloc, path, query, fragid = urlparse.urlsplit(self.url)
+
+            packages_url = urlparse.urlunsplit(
+                (
+                    scheme,
+                    netloc,
+                    path
+                    + ("/" if not path.endswith("/") else "")
+                    + "Packages"
+                    + extension,
+                    query,
+                    fragid,
+                )
+            )
+            filename = self._download(packages_url)
+            if filename:
+                if query:
+                    newfilename = filename.split("?")[0]
+                    os.rename(filename, newfilename)
+                    filename = newfilename
+                decompressed = fileutils.decompress_open(filename)
+            if decompressed:
+                return decompressed
+            print(f"ERROR: Download of Packages{extension} md file failed.")
+        return None
+
+    def download_translation_file(self):
+        """
+        Locate and download the 'Translation' (.xz or .gz) description file.
+        Return the decompressed file
+        """
+        decompressed = None
+        for extension in FORMAT_PRIORITY:
+            scheme, netloc, path, query, fragid = urlparse.urlsplit(
+                self.url_without_arch
+            )
+            translation_url = urlparse.urlunsplit(
+                (
+                    scheme,
+                    netloc,
+                    path
+                    + ("/" if not path.endswith("/") else "")
+                    + "/i18n/"
+                    + "Translation-en"
+                    + extension,
+                    query,
+                    fragid,
+                )
+            )
+            filename = self._download(translation_url)
+            if filename:
+                if query:
+                    newfilename = filename.split("?")[0]
+                    os.rename(filename, newfilename)
+                    filename = newfilename
+                decompressed = fileutils.decompress_open(filename)
+            if decompressed:
+                return decompressed
+            print(
+                f"ERROR: Download of Translation{extension} descriptions file failed."
+            )
+        return None
 
 
 # pylint: disable-next=missing-class-docstring
