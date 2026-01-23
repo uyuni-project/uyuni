@@ -28,6 +28,7 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -58,9 +59,9 @@ public class ActionChain extends BaseDomainHelper {
     private boolean dispatched;
 
 
-    @ManyToOne(optional = false)
+    @ManyToOne(targetEntity = UserImpl.class, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
-    private UserImpl user;
+    private User user;
 
     @OneToMany(mappedBy = "actionChain", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ActionChainEntry> entries;

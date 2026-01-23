@@ -27,6 +27,7 @@ import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -50,11 +51,11 @@ public class StateChange implements Comparable<StateChange>, Serializable {
     @Column(name = "date_completed")
     private Date date = new Date();
 
-    @ManyToOne(targetEntity = UserImpl.class)
+    @ManyToOne(targetEntity = UserImpl.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "web_contact_id", nullable = false)
     private User user;
 
-    @ManyToOne(targetEntity = UserImpl.class)
+    @ManyToOne(targetEntity = UserImpl.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "web_contact_from_id", nullable = false)
     private User changedBy;
 
