@@ -143,12 +143,7 @@ public class PaygSshDataFactory extends HibernateFactory {
                 .addSynchronizedEntityClass(BaseCredentials.class)
                 .setParameter("sshDataId", sshData.getId())
                 .uniqueResultOptional()
-                .flatMap(creds -> creds.castAs(CloudCredentials.class))
-                .map(creds -> {
-                    getSession().evict(creds.getPaygSshData());
-                    creds.setPaygSshData(sshData);
-                    return creds;
-                });
+                .flatMap(creds -> creds.castAs(CloudCredentials.class));
     }
 
     /**

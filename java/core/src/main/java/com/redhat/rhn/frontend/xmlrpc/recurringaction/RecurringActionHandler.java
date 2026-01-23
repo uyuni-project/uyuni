@@ -170,8 +170,9 @@ public class RecurringActionHandler extends BaseHandler {
             throw new InvalidArgsException("No action id provided");
         }
         RecurringAction action = lookupById(user, ((Integer) actionProps.get("id")));
-        // detach the object and prevent hibernate from auto flushing when fields become dirty
-        HibernateFactory.getSession().evict(action);
+        // This detach is needed because the code first modifies the object, and only after flushing (to execute an
+        // additional query on RecurringAction) validates the values.
+        HibernateFactory.getSession().detach(action);
 
         if (actionProps.containsKey("name")) {
             action.setName((String) actionProps.get("name"));
@@ -180,18 +181,16 @@ public class RecurringActionHandler extends BaseHandler {
             action.setCronExpr((String) actionProps.get("cron_expr"));
         }
         if (actionProps.containsKey("test")) {
-            if (actionProps.containsKey("test")) {
-                boolean testMode = Boolean.parseBoolean(actionProps.get("test").toString());
-                RecurringActionType actionType = action.getRecurringActionType();
-                if (RecurringActionType.ActionType.HIGHSTATE.equals(actionType.getActionType())) {
-                    ((RecurringHighstate) action.getRecurringActionType()).setTestMode(testMode);
-                }
-                else if (RecurringActionType.ActionType.CUSTOMSTATE.equals(actionType.getActionType())) {
-                    ((RecurringState) action.getRecurringActionType()).setTestMode(testMode);
-                }
-                else if (RecurringActionType.ActionType.PLAYBOOK.equals(actionType.getActionType())) {
-                    ((RecurringPlaybook) action.getRecurringActionType()).setTestMode(testMode);
-                }
+            boolean testMode = Boolean.parseBoolean(actionProps.get("test").toString());
+            RecurringActionType actionType = action.getRecurringActionType();
+            if (RecurringActionType.ActionType.HIGHSTATE.equals(actionType.getActionType())) {
+                ((RecurringHighstate) action.getRecurringActionType()).setTestMode(testMode);
+            }
+            else if (RecurringActionType.ActionType.CUSTOMSTATE.equals(actionType.getActionType())) {
+                ((RecurringState) action.getRecurringActionType()).setTestMode(testMode);
+            }
+            else if (RecurringActionType.ActionType.PLAYBOOK.equals(actionType.getActionType())) {
+                ((RecurringPlaybook) action.getRecurringActionType()).setTestMode(testMode);
             }
         }
         if (actionProps.containsKey("active")) {

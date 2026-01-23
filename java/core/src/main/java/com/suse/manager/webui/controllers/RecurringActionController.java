@@ -329,7 +329,9 @@ public class RecurringActionController {
 
         try {
             RecurringAction action = createOrGetAction(user, json);
-            HibernateFactory.getSession().evict(action); // entity -> detached, prevent hibernate flushes
+            // This detach is needed because the code first modifies the object, and only after flushing (to execute an
+            // additional query on RecurringAction) validates the values.
+            HibernateFactory.getSession().detach(action);
             mapJsonToAction(json, action);
             RecurringActionManager.saveAndSchedule(action, user);
         }
