@@ -28,6 +28,7 @@ import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.JoinColumn;
@@ -52,7 +53,7 @@ public class ImagePackage implements Comparable<ImagePackage>, Serializable {
      * @return imageInfo
      */
     @Id
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "image_info_id")
     public ImageInfo getImageInfo() {
         return imageInfo;
