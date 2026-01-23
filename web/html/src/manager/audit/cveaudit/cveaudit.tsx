@@ -327,7 +327,7 @@ class CVEAudit extends Component<Props, State> {
               />
             </div>
             <div className="action-button-wrapper">
-              <a
+              <LinkButton
                 href={
                   "/rhn/manager/api/audit/cve.csv?cveIdentifier=CVE-" +
                   this.state.cveYear +
@@ -338,12 +338,11 @@ class CVEAudit extends Component<Props, State> {
                   "&statuses=" +
                   this.state.statuses
                 }
+                text= {t("Download CSV")}
                 data-senna-off="true"
                 className="btn btn-default"
-              >
-                <IconTag type="item-download-csv" />
-                {t("Download CSV")}
-              </a>
+                icon="spacewalk-icon-download-csv"
+              />
             </div>
           </div>
           {this.state.auditExecuted && (

@@ -141,6 +141,23 @@ body {
     }
   }
 
+  .wizard-spin {
+    width: 23px;
+    height: 23px;
+    margin: 6px 14px;
+
+    > .fa-spin {
+      position: absolute;
+    }
+  }
+
+  .credentials-screen-spinner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
   #wizard-faq {
     display: flex;
     flex-direction: column;
