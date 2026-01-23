@@ -380,15 +380,17 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         //subscribe to base channel.
         SystemManager.subscribeServerToChannel(admin, server, base);
-        TestUtils.flushAndEvict(server);
-        server = reload(server);
         assertNotNull(server.getBaseChannel());
 
         List cids = new ArrayList<>();
         cids.add(child1.getId().intValue());
         cids.add(child2.getId().intValue());
 
+        clearSession();
+
         int result = handler.setChildChannels(admin, sid, cids);
+
+        server = TestUtils.reload(server);
         Optional<Action> first = ActionFactory.listActionsForServer(admin, server).stream()
                 .filter(a -> a.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS))
                 .findFirst();
@@ -399,10 +401,10 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         sa.execute(first.get(), false, false, Optional.empty());
         finishedActions.add(first.get().getId());
 
-        TestUtils.flushAndEvict(server);
-        server = TestUtils.reload(server);
         assertEquals(1, result);
         assertEquals(3, server.getChannels().size());
+
+        clearSession();
 
         //Try 'unsubscribing' from child1...
         cids = new ArrayList<>();
@@ -410,6 +412,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertEquals(1, cids.size());
 
         result = handler.setChildChannels(admin, sid, cids);
+        server = TestUtils.reload(server);
         first = ActionFactory.listActionsForServer(admin, server).stream()
                 .filter(a -> !finishedActions.contains(a.getId()))
                 .filter(a -> a.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS))
@@ -421,10 +424,10 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         sa.execute(first.get(), false, false, Optional.empty());
         finishedActions.add(first.get().getId());
 
-        TestUtils.flushAndEvict(server);
-        server = TestUtils.reload(server);
         assertEquals(1, result);
         assertEquals(2, server.getChannels().size());
+
+        clearSession();
 
         //Try putting an invalid channel in there
         cids = new ArrayList<>();
@@ -436,6 +439,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             handler.setChildChannels(admin, sid, finalCids);
         }, "SystemHandler.setChildChannels allowed invalid child channel to be set.");
         assertEquals(2, server.getChannels().size());
+
+        clearSession();
 
         Channel base2 = ChannelFactoryTest.createTestChannel(admin);
         base2.setParentChannel(null);
@@ -451,9 +456,9 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             //success
         }
 
-        TestUtils.flushAndEvict(server);
-        server = reload(server);
         assertEquals(2, server.getChannels().size());
+
+        clearSession();
 
         // try setting the base channel of an s390 server to
         // IA-32.
@@ -464,8 +469,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             ia32Children.add(child2.getId().intValue());
 
             // change the arch of the server
-            finalServer.setServerArch(
-                    ServerFactory.lookupServerArchByLabel("s390-redhat-linux"));
+            finalServer.setServerArch(ServerFactory.lookupServerArchByLabel("s390-redhat-linux"));
             ServerFactory.save(finalServer);
 
             handler.setChildChannels(admin, sid, ia32Children);
@@ -495,20 +499,18 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         child2.setParentChannel(base);
         String child2Label = child2.getLabel();
 
-        TestUtils.flushAndEvict(child1);
-        TestUtils.flushAndEvict(child2);
-
         //subscribe to base channel.
         SystemManager.subscribeServerToChannel(admin, server, base);
-        TestUtils.saveAndFlush(server);
-        server = reload(server);
+        server = ServerFactory.save(server);
         assertNotNull(server.getBaseChannel());
 
         List<String> channelLabels = new ArrayList<>();
         channelLabels.add(child1Label);
         channelLabels.add(child2Label);
 
+        clearSession();
         int result = handler.setChildChannels(admin, sid, channelLabels);
+        server = TestUtils.reload(server);
         Optional<Action> first = ActionFactory.listActionsForServer(admin, server).stream()
                 .filter(a -> a.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS))
                 .findFirst();
@@ -519,17 +521,18 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         sa.execute(first.get(), false, false, Optional.empty());
         finishedActions.add(first.get().getId());
 
-        TestUtils.flushAndEvict(server);
-        server = TestUtils.reload(server);
         assertEquals(1, result);
         assertEquals(3, server.getChannels().size());
 
         //Try 'unsubscribing' from child1...
+        clearSession();
+
         channelLabels = new ArrayList<>();
         channelLabels.add(child2Label);
         assertEquals(1, channelLabels.size());
 
         result = handler.setChildChannels(admin, sid, channelLabels);
+        server = TestUtils.reload(server);
         first = ActionFactory.listActionsForServer(admin, server).stream()
                 .filter(a -> !finishedActions.contains(a.getId()))
                 .filter(a -> a.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS))
@@ -541,12 +544,12 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         sa.execute(first.get(), false, false, Optional.empty());
         finishedActions.add(first.get().getId());
 
-        TestUtils.flushAndEvict(server);
-        server = TestUtils.reload(server);
         assertEquals(1, result);
         assertEquals(2, server.getChannels().size());
 
         //Try putting an invalid channel in there
+        clearSession();
+
         channelLabels = new ArrayList<>();
         channelLabels.add("invalid-unknown-channel-label");
         assertEquals(1, channelLabels.size());
@@ -557,8 +560,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         }, "SystemHandler.setChildChannels allowed invalid child channel to be set.");
         assertEquals(2, server.getChannels().size());
 
-        TestUtils.flushAndEvict(server);
-        server = TestUtils.reload(server);
+        clearSession();
 
         Channel base2 = ChannelFactoryTest.createTestChannel(admin);
         base2.setParentChannel(null);
@@ -574,12 +576,13 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             //success
         }
 
-        TestUtils.flushAndEvict(server);
-        server = reload(server);
+        server = TestUtils.reload(server);
         assertEquals(2, server.getChannels().size());
 
         // try setting the base channel of an s390 server to
         // IA-32.
+        clearSession();
+
         Server finalServer = server;
         assertThrows(InvalidChannelException.class, () -> {
             List ia32Children = new ArrayList<>();
@@ -1706,31 +1709,24 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Errata secondErrata = ErrataFactoryTest.createTestErrata(admin.getOrg().getId());
         secondErrata.setAdvisoryType(ErrataFactory.ERRATA_TYPE_BUG);
 
-        TestUtils.flushAndEvict(firstErrata);
-        TestUtils.flushAndEvict(secondErrata);
-
         Server firstServer = ServerFactoryTest.createTestServer(admin);
         Server secondServer = ServerFactoryTest.createTestServer(admin);
         ServerFactory.save(firstServer);
         ServerFactory.save(secondServer);
-        TestUtils.flushAndEvict(firstServer);
-        TestUtils.flushAndEvict(secondServer);
 
         UserFactory.save(admin);
-        TestUtils.flushAndEvict(admin);
 
         Package packageOne = firstErrata.getPackages().iterator().next();
         Package packageTwo = secondErrata.getPackages().iterator().next();
 
-        ErrataCacheManager.insertNeededErrataCache(
-                firstServer.getId(), firstErrata.getId(), packageOne.getId());
-        ErrataCacheManager.insertNeededErrataCache(
-                secondServer.getId(), secondErrata.getId(), packageTwo.getId());
+        ErrataCacheManager.insertNeededErrataCache(firstServer.getId(), firstErrata.getId(), packageOne.getId());
+        ErrataCacheManager.insertNeededErrataCache(secondServer.getId(), secondErrata.getId(), packageTwo.getId());
 
         List<Integer> sids = Arrays.asList(firstServer.getId().intValue(), secondServer.getId().intValue());
 
-        List<Map<String, Object>> list = handler.getRelevantErrata(admin, sids);
+        clearSession();
 
+        List<Map<String, Object>> list = handler.getRelevantErrata(admin, sids);
         assertEquals(list.size(), 2);
     }
 
@@ -2528,8 +2524,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Long sid = testServer.getId();
         Package pack = PackageTest.createTestPackage(admin.getOrg());
 
-        ErrataCacheManager.insertNeededErrataCache(sid, null,
-                pack.getId());
+        ErrataCacheManager.insertNeededErrataCache(sid, null, pack.getId());
         SystemsOverviewUpdateWorker.doUpdate(sid);
 
         Object [] array =  handler.listOutOfDateSystems(regular);
