@@ -29677,13 +29677,13 @@ lt;/pgt;
         <source>CA Certificates Update</source>
         <target state="translated">Actualització de certificats de CA</target>
       </trans-unit>
-    <trans-unit id="system.event.actionId" xml:space="preserve">
-          <source>Action ID</source>
+      <trans-unit id="system.event.actionId" xml:space="preserve">
+        <source>Action ID</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
-        <target state="new"/>
-  </trans-unit>
-        </body>
+        <target state="translated">ID de l'acció</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
