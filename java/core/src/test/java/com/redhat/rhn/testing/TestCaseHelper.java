@@ -25,7 +25,7 @@ import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.recurringactions.RecurringActionManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
-import org.cobbler.test.MockConnection;
+import org.cobbler.MockConnection;
 import org.hibernate.TransactionException;
 
 /**

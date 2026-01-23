@@ -1,0 +1,138 @@
+/*
+ * Copyright (c) 2009--2014 Red Hat, Inc.
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
+package com.redhat.rhn.frontend.xmlrpc.kickstart.filepreservation;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.domain.common.CommonFactory;
+import com.redhat.rhn.domain.common.FileList;
+import com.redhat.rhn.frontend.dto.FilePreservationDto;
+import com.redhat.rhn.frontend.xmlrpc.BaseHandlerTestCase;
+import com.redhat.rhn.manager.kickstart.KickstartLister;
+
+import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Test cases for the {@link FilePreservationListHandler}.
+ *
+ */
+public class FilePreservationListHandlerTest extends BaseHandlerTestCase {
+
+    private FilePreservationListHandler handler = new FilePreservationListHandler();
+
+    @Test
+    public void testListAll() {
+        // Setup
+        KickstartLister lister = KickstartLister.getInstance();
+        int initialSize = lister.preservationListsInOrg(admin.getOrg(), null).size();
+        createFileList();
+
+        // Test
+        List<FilePreservationDto> list = handler.listAllFilePreservations(admin);
+
+        // Verify
+        assertNotNull(list);
+        assertEquals(initialSize + 1, list.size());
+
+        DataResult<FilePreservationDto> dataResult = lister.preservationListsInOrg(
+                admin.getOrg(), null);
+        boolean found = false;
+        for (FilePreservationDto expected : dataResult) {
+            for (FilePreservationDto received : list) {
+                if (expected.getId().equals(received.getId()) &&
+                    expected.getLabel().equals(received.getLabel()) &&
+                    expected.getCreated().equals(received.getCreated()) &&
+                    expected.getModified().equals(received.getModified())) {
+                    found = true;
+                    break;
+                }
+            }
+        }
+        assertTrue(found);
+    }
+
+    @Test
+    public void testCreate() {
+        // Setup
+        KickstartLister lister = KickstartLister.getInstance();
+        int initialSize = lister.preservationListsInOrg(admin.getOrg(), null).size();
+
+        // Test
+        List<String> files = new ArrayList<>();
+        files.add("file1");
+        files.add("file2");
+        int result = handler.create(admin, "list1", files);
+
+        // Verify
+        assertEquals(1, result);
+        assertEquals(initialSize + 1, handler.listAllFilePreservations(admin).size());
+
+        FileList entryCreated = CommonFactory.lookupFileList("list1", admin.getOrg());
+        assertNotNull(entryCreated);
+        assertEquals("list1", entryCreated.getLabel());
+        assertEquals(2, entryCreated.getFileNames().size());
+    }
+
+    @Test
+    public void testDelete() {
+        // Setup
+        KickstartLister lister = KickstartLister.getInstance();
+        int initialSize = lister.preservationListsInOrg(admin.getOrg(), null).size();
+        FileList fileList = createFileList();
+
+        assertEquals(initialSize + 1, handler.listAllFilePreservations(admin).size());
+
+        // Test
+        int result = handler.delete(admin, fileList.getLabel());
+
+        // Verify
+        assertEquals(1, result);
+        assertEquals(initialSize, handler.listAllFilePreservations(admin).size());
+
+        FileList entryDeleted = CommonFactory.lookupFileList(fileList.getLabel(),
+                admin.getOrg());
+        assertNull(entryDeleted);
+    }
+
+    @Test
+    public void testGetDetails() {
+        // Setup
+        FileList fileList = createFileList();
+
+        // Test
+        FileList details = handler.getDetails(admin, fileList.getLabel());
+
+        // Verify
+        assertNotNull(details);
+        assertEquals(fileList.getLabel(), details.getLabel());
+        assertEquals(fileList.getFileNames(), details.getFileNames());
+    }
+
+    private FileList createFileList() {
+        List<String> files = new ArrayList<>();
+        files.add("file1");
+        files.add("file2");
+        int result = handler.create(admin, "list1", files);
+        assertEquals(1, result);
+        return CommonFactory.lookupFileList("list1", admin.getOrg());
+    }
+}
