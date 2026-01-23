@@ -42,7 +42,6 @@ public class KickstartLocaleCommandTest extends BaseTestCaseWithUser {
         cmd.setTimezone("America/New_York");
 
         cmd.store();
-        flushAndEvict(cmd.getKickstartData());
 
         String tz2 = cmd.getTimezone();
         assertEquals("America/New_York", tz2);
@@ -59,7 +58,6 @@ public class KickstartLocaleCommandTest extends BaseTestCaseWithUser {
         cmd.useUtc();
 
         cmd.store();
-        flushAndEvict(cmd.getKickstartData());
 
         // the timezone should be America/New_York
         String tz2 = cmd.getTimezone();
@@ -76,7 +74,6 @@ public class KickstartLocaleCommandTest extends BaseTestCaseWithUser {
         // do something like: --utc --utc America/New_York
         cmd.useUtc();
         cmd.store();
-        flushAndEvict(cmd.getKickstartData());
 
         timezoneCommand = cmd.getKickstartData().getCommand("timezone");
         args = timezoneCommand.getArguments();
@@ -84,7 +81,6 @@ public class KickstartLocaleCommandTest extends BaseTestCaseWithUser {
 
         cmd.doNotUseUtc();
         cmd.store();
-        flushAndEvict(cmd.getKickstartData());
 
         assertFalse(cmd.getKickstartData().isUsingUtc());
     }
