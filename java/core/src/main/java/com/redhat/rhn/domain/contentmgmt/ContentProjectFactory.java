@@ -401,10 +401,7 @@ public class ContentProjectFactory extends HibernateFactory {
         // then remove the target and its channel
         target.getContentEnvironment().removeTarget(target);
         INSTANCE.removeObject(target);
-        target.asSoftwareTarget().map(SoftwareEnvironmentTarget::getChannel).ifPresent(channel -> {
-            HibernateFactory.getSession().evict(channel);
-            ChannelFactory.remove(channel);
-        });
+        target.asSoftwareTarget().map(SoftwareEnvironmentTarget::getChannel).ifPresent(ChannelFactory::remove);
     }
 
     /**

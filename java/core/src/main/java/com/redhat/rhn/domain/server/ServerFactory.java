@@ -1014,9 +1014,7 @@ public class ServerFactory extends HibernateFactory {
      * @param server The server to delete
      */
     public static void delete(Server server) {
-        HibernateFactory.getSession().evict(server);
-        CallableMode m = ModeFactory.getCallableMode(SYSTEM_QUERIES,
-                "delete_server");
+        CallableMode m = ModeFactory.getCallableMode(SYSTEM_QUERIES, "delete_server");
         Map<String, Object> in = new HashMap<>();
         in.put("server_id", server.getId());
         m.execute(in, new HashMap<>());
@@ -1024,8 +1022,7 @@ public class ServerFactory extends HibernateFactory {
     }
 
     private static void updateServerPerms(Server server) {
-        CallableMode m = ModeFactory.getCallableMode(SYSTEM_QUERIES,
-                "update_perms_for_server");
+        CallableMode m = ModeFactory.getCallableMode(SYSTEM_QUERIES, "update_perms_for_server");
         Map<String, Object> inParams = new HashMap<>();
         inParams.put("sid", server.getId());
         m.execute(inParams, new HashMap<>());

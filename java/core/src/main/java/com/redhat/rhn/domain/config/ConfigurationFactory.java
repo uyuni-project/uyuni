@@ -279,9 +279,6 @@ public class ConfigurationFactory extends HibernateFactory {
                     revision.getConfigInfo().getFilemode(),
                     revision.getConfigInfo().getSelinuxCtx(),
                     targetPath);
-            //if the object did not change, we now have two hibernate objects
-            //with the same identifier.  Evict one so that hibernate doesn't get mad.
-            getSession().evict(revision.getConfigInfo());
             revision.setConfigInfo(info);
         }
         // And now, because saveNewConfigRevision doesn't store -every-thing
