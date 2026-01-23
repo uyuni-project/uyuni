@@ -2,10 +2,12 @@ const ToolTip = (props) => <span title={props.title}>{props.content}</span>;
 
 const CsvLink = (props) => (
   <div className="spacewalk-csv-download">
-    <a className="btn btn-default" href={"/rhn/manager/subscription-matching/" + props.name} data-senna-off="true">
-      <i className="fa spacewalk-icon-download-csv"></i>
-      {t("Download CSV")}
-    </a>
+    <LinkButton
+      className="btn btn-default"
+      href={"/rhn/manager/subscription-matching/" + props.name} data-senna-off="true"
+      text={t("Download CSV")}
+      icon="spacewalk-icon-download-csv"
+    />
   </div>
 );
 

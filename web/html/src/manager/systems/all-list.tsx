@@ -29,10 +29,13 @@ const DownloadCSVButton = ({ search }) => {
     url += `?${searchParams.toString()}`;
   }
   return (
-    <a role="button" title="Download CSV" href={url} className="btn btn-default" data-senna-off="true">
-      <IconTag type="item-download-csv" />
-      {t("Download CSV")}
-    </a>
+    <LinkButton
+      text={t("Download CSV")}
+      href={url}
+      className="btn btn-default"
+      icon="spacewalk-icon-download-csv"
+      data-senna-off="true"
+    />
   );
 };
 
