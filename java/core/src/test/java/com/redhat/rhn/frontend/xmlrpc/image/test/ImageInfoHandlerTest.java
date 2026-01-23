@@ -63,7 +63,6 @@ import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.ImageTestUtils;
-import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
@@ -239,19 +238,16 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         Errata e = ErrataFactoryTest.createTestErrata(admin.getOrg().getId());
         e.setAdvisoryType(ErrataFactory.ERRATA_TYPE_BUG);
         e.setChannels(errataChannels);
-        TestUtils.flushAndEvict(e);
 
         ImageInfo inf1 = createImageInfo("myimage", "1.0.0", store, admin);
-        TestUtils.flushAndEvict(inf1);
-
         UserFactory.save(admin);
-        TestUtils.flushAndEvict(admin);
 
         Package p = e.getPackages().iterator().next();
-        ErrataCacheManager.insertImageNeededErrataCache(
-                inf1.getId(), e.getId(), p.getId());
-        List<ErrataOverview> array = handler.getRelevantErrata(admin,
-                inf1.getId().intValue());
+        ErrataCacheManager.insertImageNeededErrataCache(inf1.getId(), e.getId(), p.getId());
+
+        clearSession();
+
+        List<ErrataOverview> array = handler.getRelevantErrata(admin, inf1.getId().intValue());
         assertEquals(1, array.size());
         ErrataOverview errata = array.get(0);
         assertEquals(e.getId().intValue(), errata.getId().intValue());
@@ -265,8 +261,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         createImagePackage(PackageTest.createTestPackage(admin.getOrg()), inf1);
         createImagePackage(PackageTest.createTestPackage(admin.getOrg()), inf1);
 
-        List<Map<String, Object>> result = handler.listPackages(admin,
-                inf1.getId().intValue());
+        List<Map<String, Object>> result = handler.listPackages(admin, inf1.getId().intValue());
         assertEquals(2, result.size());
     }
 
