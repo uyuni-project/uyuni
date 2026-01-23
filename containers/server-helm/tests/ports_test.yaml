@@ -1,0 +1,102 @@
+suite: test monitoring and debug ports
+templates:
+  - server.yaml
+  - services.yaml
+tests:
+  - it: should include monitoring and base ports by default
+    set:
+      global.fqdn: uyuni.example.com
+      enableMonitoring: true
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].ports
+          content:
+            containerPort: 9187
+        template: server.yaml
+        documentSelector:
+          path: metadata.name
+          value: uyuni
+      - contains:
+          path: spec.ports
+          content:
+            name: jmx
+            port: 5556
+            protocol: TCP
+            targetPort: 5556
+        template: services.yaml
+        documentSelector:
+          path: metadata.name
+          value: taskomatic
+      # Test Database Service Ports
+      - contains:
+          path: spec.ports
+          content:
+            name: pgsql
+            port: 5432
+            targetPort: 5432
+            protocol: TCP
+        template: services.yaml
+        documentSelector:
+          path: metadata.name
+          value: db
+      - contains:
+          path: spec.ports
+          content:
+            name: pgsql
+            port: 5432
+            targetPort: 5432
+            protocol: TCP
+        template: services.yaml
+        documentSelector:
+          path: metadata.name
+          value: reportdb
+
+  - it: should remove monitoring ports when disabled
+    set:
+      global.fqdn: uyuni.example.com
+      enableMonitoring: false
+    asserts:
+      - notContains:
+          path: spec.template.spec.containers[0].ports
+          content:
+            containerPort: 9187
+        template: server.yaml
+        documentSelector:
+          path: metadata.name
+          value: uyuni
+      - hasDocuments:
+          count: 0
+        template: services.yaml
+        documentSelector:
+          path: metadata.name
+          value: taskomatic
+          skipEmptyTemplates: true
+
+  - it: should keep taskomatic service if monitoring is off but debug is on
+    set:
+      global.fqdn: uyuni.example.com
+      enableMonitoring: false
+      exposeJavaDebug: true
+    asserts:
+      - contains:
+          path: spec.ports
+          content:
+            name: debug
+            port: 8001
+            protocol: TCP
+            targetPort: 8001
+        template: services.yaml
+        documentSelector:
+          path: metadata.name
+          value: taskomatic
+      - notContains:
+          path: spec.ports
+          content:
+            name: jmx
+            port: 5556
+            protocol: TCP
+            targetPort: 5556
+        template: services.yaml
+        documentSelector:
+          path: metadata.name
+          value: taskomatic

@@ -136,7 +136,6 @@ import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.common.ArchType;
 import com.redhat.rhn.domain.common.Checksum;
 import com.redhat.rhn.domain.common.ChecksumType;
-import com.redhat.rhn.domain.common.ExceptionMessage;
 import com.redhat.rhn.domain.common.FileList;
 import com.redhat.rhn.domain.common.ProvisionState;
 import com.redhat.rhn.domain.common.RhnConfiguration;
@@ -508,7 +507,6 @@ public class AnnotationRegistry {
             ErrataFile.class,
             ErrataFileType.class,
             ErrataFilter.class,
-            ExceptionMessage.class,
             ExtGroup.class,
             Feature.class,
             FileList.class,

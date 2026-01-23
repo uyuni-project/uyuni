@@ -604,12 +604,12 @@ public class MenuTree {
     private MenuItem getExternalLinksNode(String docsLocale) {
         return new MenuItem("External Links").withIcon("fa-link")
             .addChild(new MenuItem("header.jsp.knowledgebase")
-                    .withPrimaryUrl("https://www.suse.com/support/kb/?id=SUSE+Manager")
+                    .withPrimaryUrl("https://www.suse.com/support/kb/?id=SUSE+Manager+Server")
                     .withTarget("_blank"))
             .addChild(new MenuItem("header.jsp.documentation")
                     .withPrimaryUrl(ConfigDefaults.get().isUyuni() ?
                             "https://www.uyuni-project.org/uyuni-docs/" + docsLocale + "/uyuni/index.html" :
-                            "https://documentation.suse.com/suma/" + getMajorMinorProductVersion() + "/")
+                            "https://documentation.suse.com/multi-linux-manager/" + getMajorMinorProductVersion() + "/")
                     .withTarget("_blank"));
     }
 

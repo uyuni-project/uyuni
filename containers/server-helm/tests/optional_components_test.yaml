@@ -1,0 +1,82 @@
+suite: test optional components (hub, coco, saline)
+templates:
+  - hub.yaml
+  - coco.yaml
+  - saline.yaml
+tests:
+  - it: should not render optional components by default
+    set:
+      global.fqdn: uyuni.example.com
+    asserts:
+      - hasDocuments:
+          count: 0
+        template: hub.yaml
+      - hasDocuments:
+          count: 0
+        template: coco.yaml
+      - hasDocuments:
+          count: 0
+        template: saline.yaml
+
+  - it: should render hub-xmlrpc when hubAPI is true
+    set:
+      global.fqdn: uyuni.example.com
+      hubAPI: true
+      pullPolicy: Always
+    asserts:
+      - equal:
+          path: metadata.name
+          value: hub-xmlrpc
+        template: hub.yaml
+        documentSelector:
+          path: metadata.name
+          value: hub-xmlrpc
+      - equal:
+          path: spec.template.spec.containers[0].imagePullPolicy
+          value: "Always"
+        template: hub.yaml
+        documentSelector:
+          path: metadata.name
+          value: hub-xmlrpc
+
+  - it: should render coco-attestation with correct replicas
+    set:
+      global.fqdn: uyuni.example.com
+      cocoReplicas: 3
+      pullPolicy: Always
+    asserts:
+      - equal:
+          path: spec.replicas
+          value: 3
+        template: coco.yaml
+        documentSelector:
+          path: metadata.name
+          value: coco-attestation
+      - equal:
+          path: spec.template.spec.containers[0].imagePullPolicy
+          value: "Always"
+        template: coco.yaml
+        documentSelector:
+          path: metadata.name
+          value: coco-attestation
+
+  - it: should render saline when enabled
+    set:
+      global.fqdn: uyuni.example.com
+      saline: true
+      pullPolicy: Always
+    asserts:
+      - equal:
+          path: metadata.name
+          value: saline
+        template: saline.yaml
+        documentSelector:
+          path: metadata.name
+          value: saline
+      - equal:
+          path: spec.template.spec.containers[0].imagePullPolicy
+          value: "Always"
+        template: saline.yaml
+        documentSelector:
+          path: metadata.name
+          value: saline

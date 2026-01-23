@@ -1,0 +1,40 @@
+name: Helm Chart CI
+
+on:
+  pull_request:
+    branches: [ master ]
+    paths:
+      - 'containers/server-helm/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Helm unit tests
+        uses: d3adb5/helm-unittest-action@v2
+        with:
+          install-mode: if-not-present
+          charts: containers/server-helm
+
+      - name: Helm Lint
+        # Validates Chart.yaml and values.yaml against your schema
+        run: helm lint --set global.fqdn=example.org containers/server-helm
+
+      - name: Run Unit Tests
+        run: |
+          # Executes tests defined in containers/server-helm/tests/
+          helm unittest containers/server-helm
+
+      - name: Set up Kubeconform
+        uses: bmuschko/setup-kubeconform@v1
+
+      - name: Validate Kubernetes Manifests
+        run: |
+          # Render templates and validate against K8s and Traefik schemas
+          helm template containers/server-helm --set global.fqdn=test.local | kubeconform \
+            -summary -strict \
+            -schema-location default \
+            -schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json'

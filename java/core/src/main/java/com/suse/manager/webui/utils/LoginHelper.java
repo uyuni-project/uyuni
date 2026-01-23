@@ -69,10 +69,10 @@ public class LoginHelper {
 
     private static Logger log = LogManager.getLogger(LoginHelper.class);
     private static final String DEFAULT_KERB_USER_PASSWORD = "0";
-    private static final Long MIN_PG_DB_VERSION = 140001L;
-    private static final Long MAX_PG_DB_VERSION = 169999L;
-    private static final String MIN_PG_DB_VERSION_STRING = "14";
-    private static final String MAX_PG_DB_VERSION_STRING = "16";
+    private static final Long MIN_PG_DB_VERSION = 160001L;
+    private static final Long MAX_PG_DB_VERSION = 189999L;
+    private static final String MIN_PG_DB_VERSION_STRING = "16";
+    private static final String MAX_PG_DB_VERSION_STRING = "18";
     public static final String DEFAULT_URL_BOUNCE = "/rhn/YourRhn.do";
 
     /**

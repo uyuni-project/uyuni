@@ -1,4 +1,4 @@
-# Copyright 2017-2025 SUSE LLC
+# Copyright 2017-2026 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Synchronize products in the products page of the Setup Wizard
@@ -40,7 +40,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP3 x86_64"
     And I select "SUSE Linux Enterprise Server LTSS 15 SP3 x86_64" as a product
     Then I should see the "SUSE Linux Enterprise Server LTSS 15 SP3 x86_64" selected
-    And I open the sub-list of the product "Basesystem Module 15 SP3 x86_64"
+    When I open the sub-list of the product "Basesystem Module 15 SP3 x86_64"
     And I select "Desktop Applications Module 15 SP3 x86_64" as a product
     Then I should see the "Desktop Applications Module 15 SP3 x86_64" selected
     When I open the sub-list of the product "Desktop Applications Module 15 SP3 x86_64"
@@ -113,7 +113,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I open the sub-list of the product "Desktop Applications Module 15 SP5 x86_64"
     And I select "Development Tools Module 15 SP5 x86_64" as a product
     Then I should see the "Development Tools Module 15 SP5 x86_64" selected
-    And I select "SUSE Linux Enterprise Server LTSS 15 SP5 x86_64" as a product
+    When I select "SUSE Linux Enterprise Server LTSS 15 SP5 x86_64" as a product
     Then I should see the "SUSE Linux Enterprise Server LTSS 15 SP5 x86_64" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
@@ -150,8 +150,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I open the sub-list of the product "Desktop Applications Module 15 SP6 x86_64"
     And I select "Development Tools Module 15 SP6 x86_64" as a product
     Then I should see the "Development Tools Module 15 SP6 x86_64" selected
-    And I select "SUSE Linux Enterprise Server LTSS 15 SP6 x86_64 (ALPHA)" as a product
-    Then I should see the "SUSE Linux Enterprise Server LTSS 15 SP6 x86_64 (ALPHA)" selected
+    When I select "SUSE Linux Enterprise Server LTSS 15 SP6 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Server LTSS 15 SP6 x86_64" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Enterprise Server 15 SP6 x86_64" product has been added

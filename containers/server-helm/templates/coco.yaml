@@ -1,0 +1,74 @@
+{{- if gt (default .Values.cocoReplicas 0 | int) 0 }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: coco-attestation
+    app.kubernetes.io/part-of: uyuni
+  name: coco-attestation
+  namespace: "{{ .Release.Namespace }}"
+spec:
+  replicas: {{ default .Values.cocoReplicas 0 | int }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: coco-attestation
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: coco-attestation
+        app.kubernetes.io/part-of: uyuni
+    spec:
+      containers:
+      - env:
+        - name: HUB_API_URL
+          value: http://web/rpc/api
+        - name: database_user
+          valueFrom:
+            secretKeyRef:
+              key: username
+              name: db-credentials
+              optional: false
+        - name: database_password
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: db-credentials
+              optional: false
+        - name: database_connection
+          # TODO Move to a config map
+          value: "jdbc:postgresql://db:5432/susemanager"
+        image: {{- include "deployment.container.image" (dict "name" "server-attestation" "global" .) | indent 1}}
+        imagePullPolicy: {{ .Values.pullPolicy }}
+        name: hub-xmlrpc
+{{- if .Values.registrySecret }}
+      imagePullSecrets:
+      - name: {{ .Values.registrySecret }}
+{{- end }}
+      initContainers:
+      - command:
+        - sh
+        - -c
+        - |2
+          until pg_isready -U $MANAGER_USER -h $MANAGER_DB_HOST -p $MANAGER_DB_PORT -d $MANAGER_DB_NAME; do
+            sleep 60
+          done
+        env:
+          - name: MANAGER_DB_HOST
+            value: db
+          - name: MANAGER_DB_PORT
+            value: "5432"
+          - name: MANAGER_DB_NAME
+            value: susemanager
+          - name: MANAGER_USER
+            valueFrom:
+              secretKeyRef:
+                key: username
+                name: db-credentials
+                optional: false
+        image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+        imagePullPolicy: {{ .Values.pullPolicy }}
+        name: db-waiter
+{{- end }}
+

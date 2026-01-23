@@ -40,7 +40,7 @@ spec:
             name: hub-xmlrpc
             port:
               number: 2830
-        path: /hub
+        path: /hub/rpc/api
         pathType: Prefix
   {{- end }}
   {{- if eq ((.Values.ingress).type) "traefik" }}
@@ -80,7 +80,7 @@ spec:
             name: hub-xmlrpc
             port:
               number: 2830
-        path: /hub
+        path: /hub/rpc/api
         pathType: Prefix
     {{- end }}
   {{- end }}

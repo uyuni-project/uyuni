@@ -1,0 +1,26 @@
+suite: test server deployment
+templates:
+  - server.yaml
+tests:
+  - it: should render server deployment with default values
+    set:
+      global.fqdn: uyuni.example.com
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: metadata.name
+          value: uyuni
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: registry.opensuse.org/uyuni/server:latest
+
+  - it: should override image when values.images is provided
+    set:
+      global.fqdn: uyuni.example.com
+      images:
+        server: my-custom-registry/uyuni-server:5.0.0
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: my-custom-registry/uyuni-server:5.0.0

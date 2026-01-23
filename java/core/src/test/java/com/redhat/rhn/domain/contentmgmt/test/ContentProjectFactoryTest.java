@@ -43,7 +43,6 @@ import com.redhat.rhn.domain.contentmgmt.ContentProjectHistoryEntry;
 import com.redhat.rhn.domain.contentmgmt.EnvironmentTarget;
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
-import com.redhat.rhn.domain.contentmgmt.ProjectSource.State;
 import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
 import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 import com.redhat.rhn.domain.kickstart.test.KickstartableTreeTest;
@@ -456,13 +455,13 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         ContentProjectFactory.save(swSource);
 
         ProjectSource fromDb = cp.getSources().get(0);
-        assertEquals(State.ATTACHED, fromDb.getState());
+        assertEquals(ProjectSource.State.ATTACHED, fromDb.getState());
 
-        fromDb.setState(State.DETACHED);
+        fromDb.setState(ProjectSource.State.DETACHED);
         ContentProjectFactory.save(fromDb);
 
         fromDb = cp.getSources().get(0);
-        assertEquals(State.DETACHED, fromDb.getState());
+        assertEquals(ProjectSource.State.DETACHED, fromDb.getState());
     }
 
     /**

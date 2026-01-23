@@ -9,10 +9,10 @@ use File::Basename;
 use Getopt::Long ();
 use Pod::Usage ();
 
-my $MIN_PG_DB_VERSION = 130001;
-my $MAX_PG_DB_VERSION = 169999;
-my $MIN_PG_DB_VERSION_STRING = "13";
-my $MAX_PG_DB_VERSION_STRING = "16";
+my $MIN_PG_DB_VERSION = 140001;
+my $MAX_PG_DB_VERSION = 189999;
+my $MIN_PG_DB_VERSION_STRING = "14";
+my $MAX_PG_DB_VERSION_STRING = "18";
 
 my $config_file = Spacewalk::Setup::DEFAULT_RHN_CONF_LOCATION;
 

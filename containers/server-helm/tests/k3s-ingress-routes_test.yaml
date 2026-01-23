@@ -1,0 +1,31 @@
+suite: test ingress providers
+templates:
+  - k3s-ingress-routes.yaml
+tests:
+  - it: should route database exporters port with traefik ingress and monitoring enabled
+    set:
+      global.fqdn: uyuni.example.com
+      ingress:
+        type: "traefik"
+      enableMonitoring: true
+    asserts:
+      - equal:
+          path: spec.routes[0].services[0].port
+          value: 9187
+        documentSelector:
+          path: metadata.name
+          value: db-xport-route
+  
+  - it: should not route database exporters port with traefik ingress and monitoring disabled
+    set:
+      global.fqdn: uyuni.example.com
+      ingress:
+        type: "traefik"
+      enableMonitoring: false
+    asserts:
+      - hasDocuments:
+          count: 0
+        documentSelector:
+          path: metadata.name
+          value: db-xport-route
+          skipEmptyTemplates: true

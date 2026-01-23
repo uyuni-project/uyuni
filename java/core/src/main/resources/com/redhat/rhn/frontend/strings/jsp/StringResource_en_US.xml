@@ -13071,6 +13071,12 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         </trans-unit>
+        <trans-unit id="system.event.actionId">
+          <source>Action ID</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">System Events Pages</context>
+        </context-group>
+        </trans-unit>
         <trans-unit id="system.event.summaryText">
           <source>{0} scheduled by {1}</source>
         <context-group name="ctx">

@@ -34,10 +34,12 @@ metadata:
 {{- end }}
 spec:
   ports:
+{{- if ne .Values.enableMonitoring false }}
     - name: exporter
       port: 9187
       protocol: TCP
       targetPort: 9187
+{{- end }}
     - name: pgsql
       port: 5432
       protocol: TCP
@@ -118,7 +120,7 @@ spec:
   type: ClusterIP
 ---
 {{- end }}
-{{- if or (.Values.enableMonitoring | default true) (.Values.exposeJavaDebug | default false)  }}
+{{- if or (ne .Values.enableMonitoring false) (.Values.exposeJavaDebug | default false)  }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -133,7 +135,7 @@ metadata:
 {{- end }}
 spec:
   ports:
-{{- if .Values.enableMonitoring | default true }}
+{{- if ne .Values.enableMonitoring false }}
     - name: jmx
       port: 5556
       protocol: TCP
@@ -194,7 +196,7 @@ spec:
       port: 9100
       protocol: TCP
       targetPort: 9100
-{{- if .Values.enableMonitoring | default true }}
+{{- if ne .Values.enableMonitoring false }}
     - name: jmx
       port: 5557
       protocol: TCP
@@ -253,5 +255,29 @@ spec:
       targetPort: 2830
   selector:
     app.kubernetes.io/component: hub-xmlrpc
+  type: ClusterIP
+{{- end }}
+{{- if default .Values.saline false }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/component: saline
+    app.kubernetes.io/part-of: uyuni
+  name: saline
+  namespace: "{{ .Release.Namespace }}"
+{{- if .Values.servicesAnnotations }}
+  annotations:
+{{ toYaml .Values.servicesAnnotations | indent 4 }}
+{{- end }}
+spec:
+  ports:
+    - name: saline
+      port: 8216
+      protocol: TCP
+      targetPort: 8216
+  selector:
+    app.kubernetes.io/component: saline
   type: ClusterIP
 {{- end }}
