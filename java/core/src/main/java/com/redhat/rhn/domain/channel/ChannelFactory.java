@@ -495,14 +495,7 @@ public class ChannelFactory extends HibernateFactory {
      * @param c Action to be removed from database.
      */
     public static void remove(Channel c) {
-        // When we change delete_channel to return the number of rows
-        // affected, we can delete all of the CallableMode code below
-        // and simply use singleton.removeObject(c); Until then I'm
-        // using DataSource.  I must say that working with existing
-        // schema, while a reality in most software projects, SUCKS!
-
-        CallableMode m = ModeFactory.getCallableMode(
-                CHANNEL_QUERIES, "delete_channel");
+        CallableMode m = ModeFactory.getCallableMode(CHANNEL_QUERIES, "delete_channel");
         Map<String, Object> inParams = new HashMap<>();
         inParams.put("cid", c.getId());
 
@@ -1142,7 +1135,7 @@ public class ChannelFactory extends HibernateFactory {
                 .addSynchronizedEntityClass(Channel.class)
                 .addSynchronizedEntityClass(Package.class)
                 .addSynchronizedEntityClass(Errata.class)
-                .addScalar("id", StandardBasicTypes.BIG_INTEGER)
+                .addScalar("package_id", StandardBasicTypes.BIG_INTEGER)
                 .setParameter("cid", chan.getId())
                 .setParameterList("eids", eids)
                 .stream()
