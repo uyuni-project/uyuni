@@ -14,6 +14,7 @@
  */
 package com.suse.cloud;
 
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.http.HttpClientAdapter;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
@@ -90,6 +91,10 @@ public class CloudPaygManager {
      * @return if this is a PAYG cloud instance
      */
     public boolean isPaygInstance() {
+        //  uyuni cannot run as PAYG, that is a MLM feature only
+        if (ConfigDefaults.get().isUyuni()) {
+            return false;
+        }
         checkRefreshCache(false);
         return complainceInfo.isPaygInstance();
     }
@@ -118,6 +123,10 @@ public class CloudPaygManager {
      * @return true if not payg or all components works as they should, otherwise false
      */
     public boolean isCompliant() {
+        //  uyuni cannot run as PAYG, that is a MLM feature only
+        if (ConfigDefaults.get().isUyuni()) {
+            return true;
+        }
         checkRefreshCache(false);
         return isCompliant;
     }
