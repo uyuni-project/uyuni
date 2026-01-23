@@ -16,6 +16,7 @@ import Network from "utils/network";
 import { ContainerConfigMessages } from "./container-config-messages";
 
 enum SSLMode {
+  NoSSL = "no-ssl",
   UseSSL = "use-ssl",
   CreateSSL = "create-ssl",
 }
@@ -41,7 +42,7 @@ const initialModel = {
   proxyPort: "8022",
 };
 
-export function ProxyConfig() {
+export function ProxyConfig({ noSSL }: { noSSL: boolean }) {
   const [messages, setMessages] = useState<React.ReactNode[]>([]);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState<boolean | undefined>();
@@ -127,11 +128,9 @@ export function ProxyConfig() {
             setSuccess(false);
             setMessages([
               <>
-                {JSON.parse(xhr.responseText)
-                  .split("\n")
-                  .map((line: string) => (
-                    <p key={line}>{line}</p>
-                  ))}
+                {xhr.responseJSON.messages.map((line: string) => (
+                  <p key={line}>{line}</p>
+                ))}
               </>,
             ]);
             setLoading(false);
@@ -254,9 +253,10 @@ export function ProxyConfig() {
           required
           labelClass="col-md-3"
           divClass="col-md-6"
-          defaultValue={SSLMode.CreateSSL}
+          defaultValue={noSSL ? SSLMode.NoSSL : SSLMode.CreateSSL}
           items={[
-            { label: t("Generate"), value: SSLMode.CreateSSL },
+            { label: t("Skip SSL configuration"), value: SSLMode.NoSSL },
+            ...(!noSSL ? [{ label: t("Generate"), value: SSLMode.CreateSSL }] : []),
             { label: t("Use existing"), value: SSLMode.UseSSL },
           ]}
         />
