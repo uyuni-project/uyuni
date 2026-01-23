@@ -535,8 +535,7 @@ public abstract class HibernateFactory {
         session.flush();
 
         if (session.contains(obj)) {
-            session.refresh(obj);
-            return obj;
+            session.detach(obj);
         }
 
         Serializable id = (Serializable) session.getEntityManagerFactory().getPersistenceUnitUtil().getIdentifier(obj);
