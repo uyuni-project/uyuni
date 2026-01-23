@@ -74,7 +74,6 @@ public abstract class BaseTreeEditOperation extends BasePersistOperation {
     @Override
     public ValidatorError store() {
         if (!this.validateLabel()) {
-            HibernateFactory.getSession().evict(this.tree);
             return new ValidatorError("kickstart.tree.invalidlabel");
         }
 
