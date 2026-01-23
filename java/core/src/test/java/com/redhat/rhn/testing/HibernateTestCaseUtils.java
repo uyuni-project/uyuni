@@ -57,7 +57,7 @@ public interface HibernateTestCaseUtils {
     default void flushAndEvict(Object obj) throws HibernateException {
         Session session = HibernateFactory.getSession();
         session.flush();
-        session.evict(obj);
+        session.clear();
     }
 
     /**
