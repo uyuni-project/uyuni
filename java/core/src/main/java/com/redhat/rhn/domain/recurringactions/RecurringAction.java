@@ -30,6 +30,7 @@ import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -57,7 +58,7 @@ public abstract class RecurringAction extends BaseDomainHelper {
     private String name;
     private String cronExpr;
     private boolean active;
-    private UserImpl creator;
+    private User creator;
     private RecurringActionType recurringActionType;
     private RecurringActionType.ActionType actionType;
 
@@ -223,9 +224,9 @@ public abstract class RecurringAction extends BaseDomainHelper {
      *
      * @return creator
      */
-    @ManyToOne
+    @ManyToOne(targetEntity = UserImpl.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_id")
-    public UserImpl getCreator() {
+    public User getCreator() {
         return creator;
     }
 
@@ -234,7 +235,7 @@ public abstract class RecurringAction extends BaseDomainHelper {
      *
      * @param creatorIn the creator
      */
-    public void setCreator(UserImpl creatorIn) {
+    public void setCreator(User creatorIn) {
         creator = creatorIn;
     }
 

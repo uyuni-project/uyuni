@@ -71,9 +71,9 @@ public class StateRevision {
     @Column(name = "created", insertable = false, updatable = false)
     private Date created;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = UserImpl.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_id")
-    private UserImpl creator;
+    private User creator;
 
     /**
      * @return the id
@@ -106,7 +106,7 @@ public class StateRevision {
     /**
      * @return the creator
      */
-    public UserImpl getCreator() {
+    public User getCreator() {
         return creator;
     }
 
@@ -114,12 +114,7 @@ public class StateRevision {
      * @param creatorIn the creator to set
      */
     public void setCreator(User creatorIn) {
-        if (creatorIn instanceof UserImpl userImpl) {
-            this.creator = userImpl;
-        }
-        else {
-            this.creator = null;
-        }
+        this.creator = creatorIn;
     }
 
     /**

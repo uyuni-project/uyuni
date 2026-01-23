@@ -100,7 +100,7 @@ public class ImageInfoCustomDataValue extends BaseDomainHelper {
     /**
      * @return Returns the creator.
      */
-    @ManyToOne(targetEntity = UserImpl.class)
+    @ManyToOne(targetEntity = UserImpl.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by", nullable = true)
     public User getCreator() {
         return creator;
@@ -108,7 +108,7 @@ public class ImageInfoCustomDataValue extends BaseDomainHelper {
     /**
      * @return Returns the lastModifier.
      */
-    @ManyToOne(targetEntity = UserImpl.class)
+    @ManyToOne(targetEntity = UserImpl.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "last_modified_by", nullable = true)
     public User getLastModifier() {
         return lastModifier;
