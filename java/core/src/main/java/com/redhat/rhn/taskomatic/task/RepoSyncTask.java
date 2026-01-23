@@ -102,6 +102,12 @@ public class RepoSyncTask extends RhnJavaJob {
             if (csf.isNoStrict()) {
                 params.add("--no-strict");
             }
+            // Check for ad-hoc 'metadata_only' override from the schedule
+            boolean metadataOnly = jobDataMap.containsKey("metadata_only") &&
+                    Boolean.parseBoolean(jobDataMap.get("metadata_only").toString());
+            if (metadataOnly) {
+                params.add("--metadata-only");
+            }
 
             log.info("Syncing repos for channel: {}", channel.getName());
 
