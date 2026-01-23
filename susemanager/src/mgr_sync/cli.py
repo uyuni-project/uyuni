@@ -130,6 +130,13 @@ def _create_add_subparser(subparsers):
         default=False,
         help="do not syncronize product channels automatically after adding",
     )
+    add_parser.add_argument(
+        "--metadata-only",
+        action="store_true",
+        dest="metadata_only",
+        default=False,
+        help="do not import any package",
+    )
 
 
 def _create_list_subparser(subparsers):
