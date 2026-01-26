@@ -326,4 +326,6 @@ setup_mirror
 setup_iss
 setup_admin_user
 
+touch ${MANAGER_COMPLETE}
+
 exit 0
