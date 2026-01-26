@@ -208,7 +208,7 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
         Server server = ServerFactoryTest.createTestServer(userIn);
         Errata e = ErrataFactoryTest.createTestErrata(oid);
 
-        e = (Errata) TestUtils.reload(e);
+        e = TestUtils.reload(e);
         Long sid = server.getId();
         Long eid = e.getId();
 
@@ -229,7 +229,7 @@ public class ErrataCacheManagerTest extends RhnBaseTestCase {
         Errata e = ErrataFactoryTest.createTestErrata(oid);
         Long sid = server.getId();
 
-        e = (Errata) TestUtils.saveAndReload(e);
+        e = TestUtils.saveAndReload(e);
         Long eid = e.getId();
 
         Package p = e.getPackages().iterator().next();

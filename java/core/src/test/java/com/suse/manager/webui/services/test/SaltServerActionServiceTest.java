@@ -495,7 +495,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         ActionFactory.addConfigRevisionToAction(revision1, minion3, configAction);
         ActionFactory.addConfigRevisionToAction(revision3, minion4, configAction);
 
-        TestUtils.saveAndReload(configAction);
+        configAction = TestUtils.saveAndReload(configAction);
 
         Map<LocalCall<?>, List<MinionSummary>> result =
                 saltServerActionService.callsForAction(configAction);

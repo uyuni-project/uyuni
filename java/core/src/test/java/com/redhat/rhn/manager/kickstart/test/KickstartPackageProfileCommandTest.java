@@ -39,7 +39,7 @@ public class KickstartPackageProfileCommandTest extends BaseKickstartCommandTest
         Profile p = k.getKickstartDefaults().getProfile();
         k.getKickstartDefaults().setProfile(null);
         KickstartFactory.saveKickstartData(k);
-        k = (KickstartData) TestUtils.reload(k);
+        k = TestUtils.reload(k);
         assertNull(k.getKickstartDefaults().getProfile());
         TestUtils.flushAndEvict(k);
 
@@ -48,7 +48,7 @@ public class KickstartPackageProfileCommandTest extends BaseKickstartCommandTest
 
         cmd.setProfile(p);
         cmd.store();
-        k = (KickstartData) TestUtils.reload(k);
+        k = TestUtils.reload(k);
         assertNotNull(k.getKickstartDefaults().getProfile());
     }
 

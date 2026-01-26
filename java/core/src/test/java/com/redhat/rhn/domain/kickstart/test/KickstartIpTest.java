@@ -61,7 +61,7 @@ public class KickstartIpTest extends BaseTestCaseWithUser {
         ksdata.addIpRange(ip1);
         ksdata.addIpRange(ip2);
         KickstartFactory.saveKickstartData(ksdata);
-        ksdata = (KickstartData) TestUtils.reload(ksdata);
+        ksdata = TestUtils.reload(ksdata);
         assertEquals(ip1.getKsdata(), ip2.getKsdata());
         return ksdata;
     }

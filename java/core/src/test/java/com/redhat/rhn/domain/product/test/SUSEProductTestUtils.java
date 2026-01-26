@@ -175,7 +175,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
         ltssSP1ProdRepo.setChannelName(baseChannel.getLabel());
         ltssSP1ProdRepo.setChannelLabel(channel.getLabel());
         ltssSP1ProdRepo.setMandatory(true);
-        TestUtils.saveAndReload(ltssSP1ProdRepo);
+        ltssSP1ProdRepo = TestUtils.saveAndReload(ltssSP1ProdRepo);
     }
 
     /**

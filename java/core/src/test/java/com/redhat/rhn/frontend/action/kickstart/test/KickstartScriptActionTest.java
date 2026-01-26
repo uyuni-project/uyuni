@@ -158,7 +158,7 @@ public class KickstartScriptActionTest extends BaseKickstartEditTestCase {
         // Lets zero out the scripts
         ksdataIn.getScripts().clear();
         KickstartFactory.saveKickstartData(ksdataIn);
-        ksdataIn = (KickstartData) TestUtils.reload(ksdataIn);
+        ksdataIn = TestUtils.reload(ksdataIn);
         return ksdataIn;
     }
 

@@ -139,7 +139,7 @@ public class ProxyConfigUpdateSavePillarsTest extends BaseTestCaseWithUser {
 
         // action
         new ProxyConfigUpdateSavePillars().handle(proxyConfigUpdateContext);
-        TestUtils.reload(this.minion);
+        minion = TestUtils.reload(minion);
 
         //
         commonAssertions(proxyConfigUpdateContext, null);
@@ -154,10 +154,10 @@ public class ProxyConfigUpdateSavePillarsTest extends BaseTestCaseWithUser {
     public void testHandleWhenUsingRpm() {
         ProxyConfigUpdateContext proxyConfigUpdateContext = getCommonContext(this.minion, SOURCE_MODE_RPM);
 
-        this.minion.getPillarByCategory(PROXY_PILLAR_CATEGORY).ifPresent(p -> fail("Proxy pillar already exists"));
+        minion.getPillarByCategory(PROXY_PILLAR_CATEGORY).ifPresent(p -> fail("Proxy pillar already exists"));
 
         new ProxyConfigUpdateSavePillars().handle(proxyConfigUpdateContext);
-        TestUtils.reload(this.minion);
+        minion = TestUtils.reload(minion);
 
         commonAssertions(proxyConfigUpdateContext, null);
     }
@@ -190,7 +190,7 @@ public class ProxyConfigUpdateSavePillarsTest extends BaseTestCaseWithUser {
 
         // action
         new ProxyConfigUpdateSavePillars().handle(proxyConfigUpdateContext);
-        TestUtils.reload(minion);
+        minion = TestUtils.reload(minion);
 
         // assertions
         commonAssertions(proxyConfigUpdateContext, registryUrls);

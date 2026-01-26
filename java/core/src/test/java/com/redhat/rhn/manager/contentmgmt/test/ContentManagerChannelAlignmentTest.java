@@ -133,7 +133,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
                         .collect(toSet()));
 
         // check that packages and errata have been aligned
-        tgtChannel = (Channel) TestUtils.reload(tgtChannel);
+        tgtChannel = TestUtils.reload(tgtChannel);
         assertEquals(srcChannel.getPackages(), tgtChannel.getPackages());
         assertEquals(srcChannel.getErratas(), tgtChannel.getErratas());
     }
@@ -477,7 +477,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         contentManager.alignEnvironmentTargetSync(Arrays.asList(filter, filter2), srcChan, tgtChan, user);
 
         assertEquals(2, tgtChan.getErrataCount());
-        tgtChan = (Channel) TestUtils.reload(tgtChan);
+        tgtChan = TestUtils.reload(tgtChan);
         assertContains(tgtChan.getErratas(), e1);
         assertContains(tgtChan.getErratas(), e5);
     }
@@ -522,13 +522,13 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
 
         // using only DENY filter filters the erratum out
         contentManager.alignEnvironmentTargetSync(List.of(denyFilter), srcChannel, tgtChannel, user);
-        tgtChannel = (Channel) TestUtils.reload(tgtChannel);
+        tgtChannel = TestUtils.reload(tgtChannel);
         assertFalse(tgtChannel.getErratas().contains(errata));
 
         // but in combination of DENY & ALLOW filter, the ALLOW filter makes the erratum unfiltered
         ContentFilter allowFilter = contentManager.createFilter("allowfilter123", ALLOW, ERRATUM, criteria, user);
         contentManager.alignEnvironmentTargetSync(List.of(allowFilter, denyFilter), srcChannel, tgtChannel, user);
-        tgtChannel = (Channel) TestUtils.reload(tgtChannel);
+        tgtChannel = TestUtils.reload(tgtChannel);
         assertTrue(tgtChannel.getErratas().contains(errata));
     }
 
@@ -567,7 +567,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
 
         contentManager.alignEnvironmentTargetSync(List.of(allowFilter, denyFilter), srcChan, tgtChannel, user);
 
-        tgtChannel = (Channel) TestUtils.reload(tgtChannel);
+        tgtChannel = TestUtils.reload(tgtChannel);
         assertTrue(tgtChannel.getErratas().contains(e1));
         assertFalse(tgtChannel.getErratas().contains(e2));
         assertTrue(tgtChannel.getErratas().contains(e3));
@@ -593,7 +593,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
 
         contentManager.alignEnvironmentTargetSync(singleton(filter), srcChannel, tgtChannel, user);
 
-        tgtChannel = (Channel) TestUtils.reload(tgtChannel);
+        tgtChannel = TestUtils.reload(tgtChannel);
 
         assertEquals(1, tgtChannel.getPackageCount());
         assertEquals(0, tgtChannel.getErrataCount());

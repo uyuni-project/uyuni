@@ -50,7 +50,7 @@ public class KickstartScriptCommandTest extends BaseKickstartCommandTestCase {
         // Lets zero out the scripts
         ksdata.getScripts().clear();
         KickstartFactory.saveKickstartData(ksdata);
-        ksdata = (KickstartData) TestUtils.reload(ksdata);
+        ksdata = TestUtils.reload(ksdata);
         assertEquals(0, ksdata.getScripts().size());
 
         // Now make sure we add a new one.
@@ -65,7 +65,7 @@ public class KickstartScriptCommandTest extends BaseKickstartCommandTestCase {
         cmd.setScript(language, contents, KickstartScript.TYPE_PRE, chroot, false, null,
                 false);
         cmd.store();
-        ksdata = (KickstartData) TestUtils.reload(ksdata);
+        ksdata = TestUtils.reload(ksdata);
         assertEquals(contents, cmd.getContents());
         assertEquals(language, cmd.getLanguage());
         assertFalse(ksdata.getScripts().isEmpty());
@@ -82,7 +82,7 @@ public class KickstartScriptCommandTest extends BaseKickstartCommandTestCase {
         cmd.setScript(language, contents, KickstartScript.TYPE_PRE, chroot, true, null,
                 false);
         cmd.store();
-        ksdata = (KickstartData) TestUtils.reload(ksdata);
+        ksdata = TestUtils.reload(ksdata);
         assertEquals(contents, cmd.getContents());
         assertEquals(language, cmd.getLanguage());
         assertFalse(ksdata.getScripts().isEmpty());
@@ -96,7 +96,7 @@ public class KickstartScriptCommandTest extends BaseKickstartCommandTestCase {
         KickstartScriptDeleteCommand cmd = new KickstartScriptDeleteCommand(ksdata.getId(),
                 kss.getId(), user);
         cmd.store();
-        ksdata = (KickstartData) TestUtils.reload(ksdata);
+        ksdata = TestUtils.reload(ksdata);
         assertEquals(4, ksdata.getScripts().size());
     }
 

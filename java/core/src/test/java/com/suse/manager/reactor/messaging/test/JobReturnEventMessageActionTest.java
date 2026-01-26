@@ -1593,7 +1593,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         Long actionId = ImageInfoFactory.scheduleInspect(imgInfo, new Date(), user);
 
         ImageInspectAction inspectAction = (ImageInspectAction) ActionFactory.lookupById(actionId);
-        TestUtils.reload(inspectAction);
+        inspectAction = TestUtils.reload(inspectAction);
 
         // Process the image inspect return event
         Map<String, String> placeholders = new HashMap<>();
@@ -1624,7 +1624,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         // schedule the build
         long actionId = ImageInfoFactory.scheduleBuild(server.getId(), imageVersion, profile, new Date(), user);
         ImageBuildAction buildAction = (ImageBuildAction) ActionFactory.lookupById(actionId);
-        TestUtils.reload(buildAction);
+        buildAction = TestUtils.reload(buildAction);
         Optional<ImageInfo> imgInfoBuild = ImageInfoFactory.lookupByBuildAction(buildAction);
         assertTrue(imgInfoBuild.isPresent());
 
@@ -1653,7 +1653,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         Long actionId = ImageInfoFactory.scheduleImport(
                 server.getId(), imageName, imageVersion, store, Optional.empty(), new Date(), user);
         Action action = ActionFactory.lookupById(actionId);
-        TestUtils.reload(action);
+        action = TestUtils.reload(action);
 
         // Process the image inspect return event
         Map<String, String> placeholders = new HashMap<>();
@@ -1941,7 +1941,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         // schedule the build
         long actionId = ImageInfoFactory.scheduleBuild(server.getId(), "foo123", profile, new Date(), user);
         ImageBuildAction buildAction = (ImageBuildAction) ActionFactory.lookupById(actionId);
-        TestUtils.reload(buildAction);
+        buildAction = TestUtils.reload(buildAction);
         Optional<ImageInfo> imgInfoBuild = ImageInfoFactory.lookupByBuildAction(buildAction);
         assertTrue(imgInfoBuild.isPresent());
 
@@ -1973,7 +1973,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 new Date(), user);
         ImageBuildAction buildAction =
                 (ImageBuildAction) ActionFactory.lookupById(actionId);
-        TestUtils.reload(buildAction);
+        buildAction = TestUtils.reload(buildAction);
         Optional<ImageInfo> imgInfoBuild = ImageInfoFactory.lookupByBuildAction(buildAction);
         assertTrue(imgInfoBuild.isPresent());
         // Basic image info and image list is taken from ImageInfo
@@ -1989,7 +1989,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         // schedule an inspect action
         ImageInspectAction inspectAction = (ImageInspectAction) ActionFactory.lookupById(actionId);
-        TestUtils.reload(inspectAction);
+        inspectAction = TestUtils.reload(inspectAction);
         // Process the image inspect return event
         Optional<JobReturnEvent> event = JobReturnEvent
                 .parse(getJobReturnEvent(returnEventJson, actionId));

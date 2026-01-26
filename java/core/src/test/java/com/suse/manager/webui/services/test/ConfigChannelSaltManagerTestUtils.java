@@ -43,7 +43,7 @@ public class ConfigChannelSaltManagerTestUtils {
      */
     public static ConfigChannel createTestChannel(User user) {
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg());
-        return (ConfigChannel) TestUtils.reload(cc);
+        return TestUtils.reload(cc);
     }
 
     /**

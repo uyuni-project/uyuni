@@ -89,14 +89,14 @@ public class MinionActionExecutorTest extends JMockBaseTestCaseWithUser {
         ServerAction sa1 = ActionFactoryTest.addServerAction(user, a1, ServerAction::setStatusCompleted);
         ServerAction sa2 = ActionFactoryTest.addServerAction(user, a1, ServerAction::setStatusQueued);
 
-        TestUtils.saveAndReload(a1);
+        final Action a1Reloaded = TestUtils.saveAndReload(a1);
 
         SaltServerActionService saltServerActionService = mock(SaltServerActionService.class);
 
         checking(expectations -> {
             expectations.ignoring(jobDetail).getJobDataMap();
             expectations.will(returnValue(new JobDataMap(Map.of(
-                "action_id", String.valueOf(a1.getId()),
+                "action_id", String.valueOf(a1Reloaded.getId()),
                 "user_id", String.valueOf(user.getId()),
                 "staging_job", String.valueOf(false),
                 "force_pkg_list_refresh", String.valueOf(false)
@@ -112,7 +112,7 @@ public class MinionActionExecutorTest extends JMockBaseTestCaseWithUser {
             expectations.will(returnValue(new TriggerKey("dummyTrigger")));
 
             expectations.never(saltServerActionService).execute(
-                expectations.with(a1),
+                expectations.with(a1Reloaded),
                 expectations.with(false),
                 expectations.with(false),
                 expectations.with(Optional.empty())
