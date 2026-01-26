@@ -42,8 +42,10 @@ public class TreeEditOperation extends BaseTreeEditOperation {
      */
     public TreeEditOperation(Long treeId, User userIn) {
         super(userIn);
-        this.tree = KickstartFactory.
-            lookupKickstartTreeByIdAndOrg(treeId, userIn.getOrg());
+        this.tree = KickstartFactory.lookupKickstartTreeByIdAndOrg(treeId, userIn.getOrg());
+
+        // Detach this instance to ensure changes are not auto-flushed until we merge it
+        KickstartFactory.getSession().detach(this.tree);
     }
 
 
