@@ -320,7 +320,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
                         admin, server.getId().intValue(),
                         path, isDir, data, commitToLocal);
 
-            server = (Server) HibernateFactory.reload(server);
+            server = (Server) TestUtils.reload(server);
             ConfigChannel cc = commitToLocal ? server.getLocalOverride() :
                                                      server.getSandboxOverride();
             assertRev(rev, path, contents, group, owner, perms, isDir, cc, start, end,
@@ -341,7 +341,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
         data.put(ConfigRevisionSerializer.SELINUX_CTX, selinuxCtx);
         ConfigRevision rev = handler.createOrUpdateSymlink(admin,
                     server.getId().intValue(), path, data, commitToLocal);
-        server = (Server) HibernateFactory.reload(server);
+        server = (Server) TestUtils.reload(server);
         ConfigChannel cc = commitToLocal ? server.getLocalOverride() :
             server.getSandboxOverride();
 

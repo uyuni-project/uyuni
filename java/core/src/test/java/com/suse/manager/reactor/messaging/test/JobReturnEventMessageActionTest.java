@@ -2149,7 +2149,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
-        MinionServer reloaded = HibernateFactory.reload(minion);
+        MinionServer reloaded = TestUtils.reload(minion);
         // check that tokens are really gone
         assertEquals(0, reloaded.getAccessTokens().size());
     }
