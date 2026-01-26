@@ -51,7 +51,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import jakarta.persistence.Tuple;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
@@ -719,10 +718,9 @@ public class KickstartFactory extends HibernateFactory {
     public static List<KickstartableTree> lookupKickstartTrees() {
         Session session = HibernateFactory.getSession();
         return session.createQuery("""
-                        SELECT k FROM KickstartableTree AS k,
-                        com.redhat.rhn.domain.channel.Channel AS c
-                        WHERE c.id = k.channel
-                        AND c.parentChannel IS NULL
+                        SELECT k
+                        FROM KickstartableTree AS k, Channel AS c
+                        WHERE c.id = k.channel.id AND c.parentChannel IS NULL
                         ORDER BY k.label""", KickstartableTree.class)
                 .list();
     }
