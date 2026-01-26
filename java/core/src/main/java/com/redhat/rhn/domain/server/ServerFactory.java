@@ -937,9 +937,10 @@ public class ServerFactory extends HibernateFactory {
      * Insert or Update a Server.
      * @param serverIn Server to be stored in database.
      * @return the managed {@link Server} instance
+     * @param <T> the type of {@link Server}
      */
-    public static Server save(Server serverIn) {
-        Server managed = SINGLETON.saveObject(serverIn);
+    public static <T extends Server> T save(T serverIn) {
+        T managed = SINGLETON.saveObject(serverIn);
         updateServerPerms(managed);
         return managed;
     }
