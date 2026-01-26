@@ -138,7 +138,7 @@ public class ChannelTest extends BaseTestCaseWithUser {
     public void testDistChannelMap() throws Exception {
         Channel c = ChannelFactoryTest.createTestChannel(user);
         ChannelTestUtils.addDistMapToChannel(c);
-        c = (Channel) reload(c);
+        c = (Channel) TestUtils.reload(c);
         assertNotNull(c.getDistChannelMaps());
         assertFalse(c.getDistChannelMaps().isEmpty());
     }

@@ -26,6 +26,7 @@ import com.redhat.rhn.manager.common.BaseFileListEditCommand;
 import com.redhat.rhn.manager.common.CreateFileListCommand;
 import com.redhat.rhn.manager.common.EditFileListCommand;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
 
@@ -86,7 +87,7 @@ public class FileListEditCommandTest extends BaseTestCaseWithUser {
 
         assertEquals("1", f.getPath());
         assertEquals(8, cmd.getFileList().getFileNames().size());
-        list = (FileList) reload(list);
+        list = (FileList) TestUtils.reload(list);
         assertNotNull(list.getId());
         assertNotNull(list.getOrg());
         assertEquals(files, cmd.getFileListString());
@@ -97,7 +98,7 @@ public class FileListEditCommandTest extends BaseTestCaseWithUser {
     public void testEdit() throws Exception {
         FileList list = FileListTest.createTestFileList(user.getOrg());
         CommonFactory.saveFileList(list);
-        flushAndEvict(list);
+        TestUtils.flushAndEvict(list);
         setupKey(new EditFileListCommand(user, list.getId()));
         assertNotNull(cmd.getFileList());
         assertNull(cmd.store());

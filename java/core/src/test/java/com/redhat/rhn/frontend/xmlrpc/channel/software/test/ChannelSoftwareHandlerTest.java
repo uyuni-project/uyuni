@@ -335,8 +335,8 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         Channel c = ChannelFactoryTest.createTestChannel(admin);
         Server s = ServerFactoryTest.createTestServer(admin);
         SystemManager.subscribeServerToChannel(admin, s, c);
-        flushAndEvict(s);
-        flushAndEvict(c);
+        TestUtils.flushAndEvict(s);
+        TestUtils.flushAndEvict(c);
         addAccessGroup(admin, AccessGroupFactory.CHANNEL_ADMIN);
 
         Object[] result = csh.listSubscribedSystems(admin, c.getLabel());
@@ -390,7 +390,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         addAccessGroup(admin, AccessGroupFactory.CHANNEL_ADMIN);
         Channel c = ChannelFactoryTest.createTestChannel(admin);
         String label = c.getLabel();
-        c = reload(c);
+        c = TestUtils.reload(c);
 
         try {
             assertEquals(1, csh.delete(admin, label));
@@ -402,7 +402,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
             return;
         }
         // taskomatic is up
-        assertNull(reload(c));
+        assertNull(TestUtils.reload(c));
     }
 
     @Test
@@ -413,12 +413,12 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         Channel c = ChannelFactoryTest.createTestChannel(admin);
         Channel cClone1 = ChannelFactoryTest.createTestClonedChannel(c, admin);
         Channel cClone2 = ChannelFactoryTest.createTestClonedChannel(cClone1, admin);
-        cClone2 = reload(cClone2);
+        cClone2 = TestUtils.reload(cClone2);
 
         assertEquals(1, csh.delete(admin, cClone2.getLabel()));
-        assertNotNull(reload(c));
-        assertNotNull(reload(cClone1));
-        assertNull(reload(cClone2));
+        assertNotNull(TestUtils.reload(c));
+        assertNotNull(TestUtils.reload(cClone1));
+        assertNull(TestUtils.reload(cClone2));
     }
 
     @Test
@@ -429,7 +429,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         Channel c = ChannelFactoryTest.createTestChannel(admin);
         Channel cClone1 = ChannelFactoryTest.createTestClonedChannel(c, admin);
         Channel cClone2 = ChannelFactoryTest.createTestClonedChannel(cClone1, admin);
-        cClone1 = reload(cClone1);
+        cClone1 = TestUtils.reload(cClone1);
         try {
             csh.delete(admin, cClone1.getLabel());
             fail();
@@ -440,9 +440,9 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
                     exc.getMessage(),
                     "Unable to delete channel. The channel you have tried to delete has been cloned. " +
                     "You must delete the clones before you can delete this channel.");
-            assertNotNull(reload(c));
-            assertNotNull(reload(cClone1));
-            assertNotNull(reload(cClone2));
+            assertNotNull(TestUtils.reload(c));
+            assertNotNull(TestUtils.reload(cClone1));
+            assertNotNull(TestUtils.reload(cClone2));
         }
     }
 

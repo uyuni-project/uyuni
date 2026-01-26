@@ -46,6 +46,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestStatics;
+import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.hub.HubClientFactory;
@@ -583,7 +584,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         hub.setMirrorCredentials(sccCredentials);
         hubFactory.save(hub);
 
-        clearSession();
+        TestUtils.clearSession();
 
         sccCredentials = hubManager.storeSCCCredentials(hubToken, "dummy-username", "dummy-password");
         assertEquals(id, sccCredentials.getId());
@@ -616,7 +617,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
                 .storeCredentials(with(equal(expectedUsername)), with(any(String.class)));
         }});
 
-        clearSession();
+        TestUtils.clearSession();
 
         HubSCCCredentials newCredentials = hubManager.regenerateCredentials(satAdmin, peripheralId);
 

@@ -37,10 +37,10 @@ import java.util.Date;
 /**
  * RhnBaseTestCase is the base class for all RHN TestCases.
  * It ensures that the HibernateSession is closed after each
- * test to similuate what happens when the code is run
+ * test to simulate what happens when the code is run
  * in a web application server.
  */
-public abstract class RhnBaseTestCase implements HibernateTestCaseUtils, SaltTestCaseUtils  {
+public abstract class RhnBaseTestCase implements SaltTestCaseUtils  {
 
     protected Path tmpSaltRoot;
 

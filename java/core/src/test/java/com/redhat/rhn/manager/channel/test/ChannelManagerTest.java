@@ -234,8 +234,8 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         OrgFactory.save(user.getOrg());
         ChannelFactory.save(channel);
         ChannelFactory.save(childChannel);
-        flushAndEvict(channel);
-        flushAndEvict(childChannel);
+        TestUtils.flushAndEvict(channel);
+        TestUtils.flushAndEvict(childChannel);
 
         DataResult<ChannelTreeNode> dr = ChannelManager.allChannelTree(user, null);
         assertNotEmpty(dr);
@@ -309,9 +309,9 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         TestUtils.saveAndFlush(user);
 
         Channel c = ChannelFactoryTest.createTestChannel(user);
-        c = (Channel) reload(c);
+        c = (Channel) TestUtils.reload(c);
         ChannelManager.deleteChannel(user, c.getLabel(), true);
-        assertNull(reload(c));
+        assertNull(TestUtils.reload(c));
     }
 
     @Test
@@ -323,11 +323,11 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         Channel c = ChannelFactoryTest.createTestChannel(user);
         Channel cClone1 = ChannelFactoryTest.createTestClonedChannel(c, user);
         Channel cClone2 = ChannelFactoryTest.createTestClonedChannel(cClone1, user);
-        cClone2 = (Channel) reload(cClone2);
+        cClone2 = (Channel) TestUtils.reload(cClone2);
         ChannelManager.deleteChannel(user, cClone2.getLabel(), true);
-        assertNotNull(reload(c));
-        assertNotNull(reload(cClone1));
-        assertNull(reload(cClone2));
+        assertNotNull(TestUtils.reload(c));
+        assertNotNull(TestUtils.reload(cClone1));
+        assertNull(TestUtils.reload(cClone2));
     }
 
     @Test
@@ -339,7 +339,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         Channel c = ChannelFactoryTest.createTestChannel(user);
         Channel cClone1 = ChannelFactoryTest.createTestClonedChannel(c, user);
         Channel cClone2 = ChannelFactoryTest.createTestClonedChannel(cClone1, user);
-        cClone1 = (Channel) reload(cClone1);
+        cClone1 = (Channel) TestUtils.reload(cClone1);
         try {
             ChannelManager.deleteChannel(user, cClone1.getLabel(), true);
             fail();
@@ -347,9 +347,9 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         catch (ValidatorException exc) {
             assertEquals(exc.getResult().getErrors().size(), 1);
             assertEquals(exc.getResult().getErrors().get(0).getKey(), "api.channel.delete.hasclones");
-            assertNotNull(reload(c));
-            assertNotNull(reload(cClone1));
-            assertNotNull(reload(cClone2));
+            assertNotNull(TestUtils.reload(c));
+            assertNotNull(TestUtils.reload(cClone1));
+            assertNotNull(TestUtils.reload(cClone2));
         }
     }
 

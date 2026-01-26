@@ -225,7 +225,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testLastModified() throws Exception {
         Errata testErrata = createTestErrata(user.getOrg().getId());
-        testErrata = reload(testErrata);
+        testErrata = TestUtils.reload(testErrata);
         assertNotNull(testErrata.getLastModified());
     }
 

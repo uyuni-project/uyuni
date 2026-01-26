@@ -102,7 +102,7 @@ public class KickstartSessionTest extends BaseTestCaseWithUser {
         session2.setState(KickstartFactory.SESSION_STATE_CREATED);
         session2.markFailed("some failed message");
         KickstartFactory.saveKickstartSession(session2);
-        session2 = (KickstartSession) reload(session2);
+        session2 = (KickstartSession) TestUtils.reload(session2);
         assertEquals(KickstartFactory.SESSION_STATE_FAILED,
                 session2.getState(), "Got wrong status: " + session2.getState().getLabel());
     }
@@ -113,14 +113,14 @@ public class KickstartSessionTest extends BaseTestCaseWithUser {
         ksession = addHistory(ksession);
         Thread.sleep(2000);
         KickstartFactory.saveKickstartSession(ksession);
-        ksession = (KickstartSession) reload(ksession);
+        ksession = (KickstartSession) TestUtils.reload(ksession);
         assertNotNull(ksession.getHistory());
         assertEquals(2, ksession.getHistory().size());
 
         ksession.addHistory(KickstartFactory.SESSION_STATE_FAILED, "FAILED");
 
         KickstartFactory.saveKickstartSession(ksession);
-        ksession = (KickstartSession) reload(ksession);
+        ksession = (KickstartSession) TestUtils.reload(ksession);
         assertTrue(ksession.getMostRecentHistory().startsWith("FAILED"));
     }
 

@@ -41,6 +41,7 @@ import com.redhat.rhn.taskomatic.task.payg.beans.PaygInstanceInfo;
 import com.redhat.rhn.taskomatic.task.payg.beans.PaygProductInfo;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.MockFileLocks;
+import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.cloud.CloudPaygManager;
 import com.suse.cloud.test.TestCloudPaygManagerBuilder;
@@ -447,7 +448,7 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
     @Test
     public void doNotCallContentSyncManagerIfNoSshDataConnectionIsDefined() throws JobExecutionException {
         PaygSshDataFactory.lookupPaygSshData().forEach(PaygSshDataFactory::deletePaygSshData);
-        commitAndCloseSession();
+        TestUtils.commitAndCloseSession();
 
         checking(new Expectations() {{
             never(contentSyncManagerMock).updateRepositoriesPayg();

@@ -735,7 +735,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         KickstartData ksData = KickstartDataTest.createKickstartWithOptions(user.getOrg());
         KickstartSession ksSession = KickstartSessionTest.createKickstartSession(server, ksData, parentAction);
         TestUtils.saveAndFlush(ksSession);
-        ksSession = reload(ksSession);
+        ksSession = TestUtils.reload(ksSession);
 
         List<Action> actionList = createActionList(parentAction);
 

@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.kickstart.KickstartSession;
 import com.redhat.rhn.domain.kickstart.test.KickstartSessionTest;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.manager.kickstart.KickstartSessionUpdateCommand;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
 
@@ -35,7 +36,7 @@ public class KickstartSessionUpdateCommandTest extends BaseKickstartCommandTestC
         KickstartSession session =
             KickstartSessionTest.createKickstartSession(ksdata, user);
         KickstartFactory.saveKickstartSession(session);
-        session = (KickstartSession) reload(session);
+        session = (KickstartSession) TestUtils.reload(session);
         KickstartSessionUpdateCommand cmd =
             new KickstartSessionUpdateCommand(session.getId());
         cmd.setSessionState(KickstartFactory.SESSION_STATE_CONFIG_ACCESSED);

@@ -117,7 +117,7 @@ public class ServerTest extends BaseTestCaseWithUser {
         s = ServerFactory.lookupById(s.getId());
         systemEntitlementManager.setBaseEntitlement(s, EntitlementManager.MANAGEMENT);
         TestUtils.saveAndFlush(s);
-        s = reload(s);
+        s = TestUtils.reload(s);
         assertEquals(s.getBaseEntitlement(), EntitlementManager.MANAGEMENT);
     }
 

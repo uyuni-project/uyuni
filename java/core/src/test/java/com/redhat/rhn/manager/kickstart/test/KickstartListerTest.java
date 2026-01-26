@@ -76,7 +76,7 @@ public class KickstartListerTest extends BaseTestCaseWithUser {
        Org o = UserTestUtils.createOrg();
        CryptoKey key = CryptoTest.createTestKey(o);
        KickstartFactory.saveCryptoKey(key);
-       flushAndEvict(key);
+       TestUtils.flushAndEvict(key);
 
        DataResult<CryptoKeyDto> dr = KickstartLister.getInstance().cryptoKeysInOrg(o);
         assertFalse(dr.isEmpty());
@@ -88,7 +88,7 @@ public class KickstartListerTest extends BaseTestCaseWithUser {
        Org o = UserTestUtils.createOrg();
        FileList f = FileListTest.createTestFileList(o);
        CommonFactory.saveFileList(f);
-       flushAndEvict(f);
+       TestUtils.flushAndEvict(f);
 
        DataResult<FilePreservationDto> dr = KickstartLister.getInstance().preservationListsInOrg(o, null);
        assertNotNull(dr.get(0));
