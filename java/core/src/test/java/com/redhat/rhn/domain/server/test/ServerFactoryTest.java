@@ -277,7 +277,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         ManagedServerGroup sg1 = SERVER_GROUP_MANAGER.create(user, "FooFooFOO", "Foo Description");
         SERVER_GROUP_MANAGER.addServers(sg1, servers, user);
 
-        server = reload(server);
+        server = TestUtils.reload(server);
         assertEquals(1, server.getEntitledGroupTypes().size());
         assertEquals(1, server.getManagedGroups().size());
 
@@ -415,7 +415,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         assertTrue(membersBefore.intValue() < membersAfter.intValue());
 
         ServerFactory.removeServerFromGroup(testServer, group);
-        group = reload(group);
+        group = TestUtils.reload(group);
 
         Long membersFinally = group.getCurrentMembers();
         assertEquals(membersBefore, membersFinally);
@@ -443,7 +443,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         ServerFactory.save(server);
         //Evict from session to make sure that we get a fresh server
         //from the db.
-        flushAndEvict(server);
+        TestUtils.flushAndEvict(server);
         Server server2 = ServerFactory.lookupByIdAndOrg(server.getId(),
                 user.getOrg());
         notes = server2.getNotes();
@@ -477,7 +477,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         //Evict from session to make sure that we get a fresh server
         //from the db.
-        flushAndEvict(server);
+        TestUtils.flushAndEvict(server);
 
         Server server2 = ServerFactory.lookupByIdAndOrg(server.getId(),
                 user.getOrg());
@@ -498,7 +498,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         ServerFactory.save(server);
         //Evict from session to make sure that we get a fresh server
         //from the db.
-        flushAndEvict(server);
+        TestUtils.flushAndEvict(server);
 
         Server server2 = ServerFactory.lookupByIdAndOrg(server.getId(),
                 user.getOrg());
@@ -523,7 +523,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         assertEquals(dmi, server.getDmi());
 
         //Evict from session to make sure that we get a fresh server from the db.
-        flushAndEvict(server);
+        TestUtils.flushAndEvict(server);
 
         Server server2 = ServerFactory.lookupByIdAndOrg(server.getId(), user.getOrg());
         assertEquals(dmi, server2.getDmi());

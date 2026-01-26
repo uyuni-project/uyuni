@@ -76,7 +76,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         Long id = c3.getId();
         assertNotNull(c.getChannelArch());
         ChannelFactory.remove(c3);
-        flushAndEvict(c3);
+        TestUtils.flushAndEvict(c3);
         assertNull(ChannelFactory.lookupById(id));
     }
 
@@ -366,7 +366,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         ChannelFactory.save(original);
         TestUtils.flushAndEvict(original);
 
-        original = reload(original);
+        original = TestUtils.reload(original);
         assertEquals(1, ChannelFactory.getPackageCount(original));
     }
 
@@ -614,7 +614,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         // trusted org added to org
         org1.getTrustedOrgs().add(org3);
         c1.setAccess(Channel.PUBLIC);
-        clearSession();
+        TestUtils.clearSession();
 
         assertTrue(ChannelFactory.isAccessibleBy(c1.getLabel(), org1.getId()));
         assertFalse(ChannelFactory.isAccessibleBy(c1.getLabel(), org2.getId()));
@@ -631,7 +631,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         Org org4Reloaded = OrgFactory.lookupById(org4.getId());
         c2Reloaded.getTrustedOrgs().add(org4Reloaded);
         c2Reloaded.setAccess(Channel.PROTECTED);
-        clearSession();
+        TestUtils.clearSession();
 
         assertTrue(ChannelFactory.isAccessibleBy(c1.getLabel(), org1.getId()));
         assertFalse(ChannelFactory.isAccessibleBy(c1.getLabel(), org2.getId()));
@@ -724,7 +724,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         csf.setQuitOnError(true);
 
         ChannelFactory.save(csf);
-        flushAndEvict(csf);
+        TestUtils.flushAndEvict(csf);
 
         assertNotNull(csf);
         assertTrue(csf.isCreateTree());

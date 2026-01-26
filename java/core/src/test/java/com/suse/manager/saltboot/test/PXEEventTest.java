@@ -398,7 +398,7 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
         action.execute(pxemsg);
 
         // Validate pillar data, there shouldn't be any saltboot redeploy pillars
-        minion = reload(minion);
+        minion = TestUtils.reload(minion);
         assertTrue(minion.getPillarByCategory(SALTBOOT_PILLAR).isPresent());
         Pillar returnedPillar = minion.getPillarByCategory(SALTBOOT_PILLAR).get();
         Map<String, Object> saltboot = (Map<String, Object>)returnedPillar.getPillar().get("saltboot");
@@ -468,8 +468,8 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
         action.execute(pxemsg);
 
         // Validate pillar data
-        minion = reload(minion);
-        hwtypeGroup = reload(hwtypeGroup);
+        minion = TestUtils.reload(minion);
+        hwtypeGroup = TestUtils.reload(hwtypeGroup);
         assertFalse(minion.getPillarByCategory(SALTBOOT_PILLAR).isPresent());
         assertTrue(hwtypeGroup.getPillarByCategory(SALTBOOT_FORMULA).isPresent());
         Pillar returnedPillar = hwtypeGroup.getPillarByCategory(SALTBOOT_FORMULA).get();
@@ -545,8 +545,8 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
 
         // Validate pillar data
         // group data should not be touched, minion data should be reset
-        minion = reload(minion);
-        hwtypeGroup = reload(hwtypeGroup);
+        minion = TestUtils.reload(minion);
+        hwtypeGroup = TestUtils.reload(hwtypeGroup);
         assertTrue(minion.getPillarByCategory(SALTBOOT_PILLAR).isPresent());
         assertTrue(hwtypeGroup.getPillarByCategory(SALTBOOT_FORMULA).isPresent());
         returnedPillar = hwtypeGroup.getPillarByCategory(SALTBOOT_FORMULA).get();
@@ -621,8 +621,8 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
         action.execute(pxemsg);
 
         // Validate pillar data
-        minion = reload(minion);
-        hwtypeGroup = reload(hwtypeGroup);
+        minion = TestUtils.reload(minion);
+        hwtypeGroup = TestUtils.reload(hwtypeGroup);
         assertFalse(minion.getPillarByCategory(SALTBOOT_PILLAR).isPresent());
         assertTrue(hwtypeGroup.getPillarByCategory(SALTBOOT_FORMULA).isPresent());
         Pillar returnedPillar = hwtypeGroup.getPillarByCategory(SALTBOOT_FORMULA).get();

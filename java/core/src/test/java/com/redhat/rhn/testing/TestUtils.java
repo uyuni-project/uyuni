@@ -15,6 +15,8 @@
 
 package com.redhat.rhn.testing;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
@@ -228,106 +230,6 @@ public class TestUtils {
     }
 
     /**
-     * Finds a single instance of a persistent object.
-     * @param query The query to find the persistent object should
-     * be formulated to ensure a single object is returned or
-     * an error will occur.
-     * @return Object found or null if not
-     */
-    public static Object lookupTestObject(String query) {
-        Session session = HibernateFactory.getSession();
-        Query q = session.createQuery(query);
-        return q.uniqueResult();
-    }
-
-    /**
-     * Finds a list of persistent objects.
-     * @param query The query to find the persistent objects.
-     * @return Object found or null if not
-     */
-    public static List lookupTestObjects(String query) {
-        Session session = HibernateFactory.getSession();
-        Query q = session.createQuery(query);
-        return q.list();
-    }
-
-
-    /**
-     * Helper method to get a single object from the 2nd level cache by id
-     * @param id Id of the object you want
-     * @param queryname Queryname for the query you want to run.
-     *        queryname *MUST* have an :id attribute in it.
-     * @return Returns the object corresponding to id
-     */
-    public static Object lookupFromCacheById(Long id, String queryname) {
-        Session session = HibernateFactory.getSession();
-        return session.createNamedQuery(queryname, Object.class)
-                        .setParameter("id", id, StandardBasicTypes.LONG)
-                        //Retrieve from cache if there
-                        .setCacheable(true)
-                        .uniqueResult();
-    }
-
-    /**
-     * Helper method to get a single object from the 2nd level cache by id
-     *
-     * @param <T>      type of object to retrieve
-     * @param id       id of the object to retrieve
-     * @param objClass class name of the object to retrieve
-     * @return Returns the object corresponding to the given id
-     */
-    public static <T> T lookupFromCacheById(Long id, Class<T> objClass) {
-        Session session = HibernateFactory.getSession();
-        return session.find(objClass, id);
-    }
-
-    /**
-     * Helper method to get a single object from the 2nd level cache by label
-     * @param label Label of the object you want
-     * @param queryname Queryname for the query you want to run.
-     *        queryname *MUST* have a :label attribute in it.
-     * @return Returns the object corresponding to label
-     */
-    public static Object lookupFromCacheByLabel(String label,
-                                                String queryname) {
-        Session session = HibernateFactory.getSession();
-        return session.createNamedQuery(queryname, Object.class)
-                      .setParameter("label", label, StandardBasicTypes.STRING)
-                      //Retrieve from cache if there
-                      .setCacheable(true)
-                      .uniqueResult();
-    }
-
-    /**
-     * Helper method to get a ChannelArch from the 2nd level cache by id
-     * @param id Id of the ChannelArch
-     * @return Returns the ChannelArch corresponding to id
-     */
-    public static ChannelArch lookupChannelArchFromCacheById(Long id) {
-        Session session = HibernateFactory.getSession();
-        return session.createQuery("FROM ChannelArch AS c WHERE c.id = :id", ChannelArch.class)
-                .setParameter("id", id, StandardBasicTypes.LONG)
-                //Retrieve from cache if there
-                .setCacheable(true)
-                .uniqueResult();
-    }
-
-    /**
-     * Helper method to get a ChannelArch from the 2nd level cache by label
-     * @param label label of the ChannelArch
-     * @return Returns the ChannelArch corresponding to label
-     */
-    public static ChannelArch lookupChannelArchFromCacheByLabel(String label) {
-        Session session = HibernateFactory.getSession();
-        return session.createQuery("FROM ChannelArch AS c WHERE c.label = :label", ChannelArch.class)
-                .setParameter("label", label, StandardBasicTypes.STRING)
-                //Retrieve from cache if there
-                .setCacheable(true)
-                .uniqueResult();
-    }
-
-
-    /**
      * Print the first few lines from a stacktrace so we can figure out who the caller
      * is.  This is similiar to doing a Thread.dumpStack() but it just doesn't spit out
      * as many lines of the stacktrace.
@@ -349,113 +251,6 @@ public class TestUtils {
                                "." + elements[i].getMethodName() + " : " +
                                elements[i].getLineNumber());
         }
-    }
-
-    /**
-     * Util to flush and evict an object from the Hibernate Session
-     * @param obj to flush
-     * @throws HibernateException if something bad happens
-     */
-    public static void flushAndEvict(Object obj) throws HibernateException {
-        Session session = HibernateFactory.getSession();
-        session.flush();
-        session.evict(obj);
-    }
-
-    /**
-     * Util to reload an object from the DB using Hibernate.
-     * @param objClass of object being looked up
-     * @param id of object
-     * @param <T> type of object to reload
-     * @return Object found or NULL if not
-     * @throws HibernateException if something goes wrong.
-     */
-    public static <T> T reload(Class<T> objClass, Serializable id)
-            throws HibernateException {
-        Session session = HibernateFactory.getSession();
-        session.flush();
-        /*
-         * In hibernate 3, the following doesn't work:
-         * Object obj = session.getReference(objClass, id)
-         * load returns the proxy class instead of the persisted class, ie,
-         * Filter$$EnhancerByCGLIB$$9bcc734d_2 instead of Filter.
-         * session.get is set to not return the proxy class, so that is what we'll use.
-         */
-        T obj = (T)session.find(objClass, id);
-        return reload(obj);
-    }
-
-    /**
-     * Util to reload an object using Hibernate
-     * @param obj to be reloaded
-     * @param <T> type of object to reload
-     * @return Object found if not, null
-     * @throws HibernateException if something bad happens.
-     */
-    public static <T> T reload(T obj) throws HibernateException {
-        return (T)HibernateFactory.reload(obj);
-    }
-
-    /**
-     * Helper method to save objects to the database and flush
-     * the session.
-     * @param entity object to save.
-     * @param <T> the entity type
-     * @return the managed entity
-     * @throws HibernateException HibernateException
-     */
-    public static <T> T save(T entity) throws HibernateException {
-        Session session = HibernateFactory.getSession();
-
-        // if the entity happens to be already managed, return it
-        if (session.contains(entity)) {
-            return entity;
-        }
-
-        Object id = session.getEntityManagerFactory().getPersistenceUnitUtil().getIdentifier(entity);
-        T managed = entity;
-
-        if (id == null) {
-            // new entity - use persist() to avoid cascading issues
-            session.persist(entity);
-        }
-        else {
-            // detached entity - use merge() and return managed instance
-            managed = session.merge(entity);
-        }
-
-        return managed;
-    }
-
-
-    public static <T> T saveAndFlush(T entity) throws HibernateException {
-        T managed = save(entity);
-        Session session = HibernateFactory.getSession();
-        session.flush();
-        return managed;
-    }
-
-    /**
-     * Removes an object from the database.
-     * @param toRemove Object to be removed.
-     * @return Number of rows affected.
-     */
-    public static int removeObject(Object toRemove) {
-        Session session = null;
-        int numDeleted = 0;
-
-        try {
-            session = HibernateFactory.getSession();
-
-            session.remove(toRemove);
-            numDeleted++;
-
-        }
-        catch (HibernateException he) {
-            throw new HibernateRuntimeException("Error removing " + toRemove, he);
-        }
-
-        return numDeleted;
     }
 
     /**
@@ -591,30 +386,6 @@ public class TestUtils {
     }
 
     /**
-     * Save and reload an object from DB
-     * @param o to save and reload.
-     * @param <T> type of object to save and reload
-     * @return Object fresh from DB
-     */
-    public static <T> T saveAndReload(T o) {
-        T managed = TestUtils.saveAndFlush(o);
-        return reload(managed);
-    }
-
-    /**
-     * Merge an object from DB
-     * @param o to merge
-     * @param <T> type of object to merge
-     * @return Object fresh from DB
-     */
-    public static <T> T merge(T o) {
-        Session session = HibernateFactory.getSession();
-        session.merge(o);
-        session.flush();
-        return reload(o);
-    }
-
-    /**
      * Get a private field from a class. Good for testing
      * the inner state of a class's member variables.
      *
@@ -683,6 +454,240 @@ public class TestUtils {
                         .replaceAll("\\.", "/") + "/" + file).getPath()
         ));
     }
+
+    //=========================================================================
+    // HIBERNATE METHODS
+    //=========================================================================
+
+    /**
+     * Finds a single instance of a persistent object.
+     * @param query The query to find the persistent object should
+     * be formulated to ensure a single object is returned or
+     * an error will occur.
+     * @return Object found or null if not
+     */
+    public static Object lookupTestObject(String query) {
+        Session session = HibernateFactory.getSession();
+        Query q = session.createQuery(query);
+        return q.uniqueResult();
+    }
+
+    /**
+     * Finds a list of persistent objects.
+     * @param query The query to find the persistent objects.
+     * @return Object found or null if not
+     */
+    public static List lookupTestObjects(String query) {
+        Session session = HibernateFactory.getSession();
+        Query q = session.createQuery(query);
+        return q.list();
+    }
+
+
+    /**
+     * Helper method to get a single object from the 2nd level cache by id
+     * @param id Id of the object you want
+     * @param queryname Queryname for the query you want to run.
+     *        queryname *MUST* have an :id attribute in it.
+     * @return Returns the object corresponding to id
+     */
+    public static Object lookupFromCacheById(Long id, String queryname) {
+        Session session = HibernateFactory.getSession();
+        return session.createNamedQuery(queryname, Object.class)
+                .setParameter("id", id, StandardBasicTypes.LONG)
+                //Retrieve from cache if there
+                .setCacheable(true)
+                .uniqueResult();
+    }
+
+    /**
+     * Helper method to get a single object from the 2nd level cache by id
+     *
+     * @param <T>      type of object to retrieve
+     * @param id       id of the object to retrieve
+     * @param objClass class name of the object to retrieve
+     * @return Returns the object corresponding to the given id
+     */
+    public static <T> T lookupFromCacheById(Long id, Class<T> objClass) {
+        Session session = HibernateFactory.getSession();
+        return session.find(objClass, id);
+    }
+
+    /**
+     * Helper method to get a single object from the 2nd level cache by label
+     * @param label Label of the object you want
+     * @param queryname Queryname for the query you want to run.
+     *        queryname *MUST* have a :label attribute in it.
+     * @return Returns the object corresponding to label
+     */
+    public static Object lookupFromCacheByLabel(String label,
+                                                String queryname) {
+        Session session = HibernateFactory.getSession();
+        return session.createNamedQuery(queryname, Object.class)
+                .setParameter("label", label, StandardBasicTypes.STRING)
+                //Retrieve from cache if there
+                .setCacheable(true)
+                .uniqueResult();
+    }
+
+    /**
+     * Helper method to get a ChannelArch from the 2nd level cache by id
+     * @param id Id of the ChannelArch
+     * @return Returns the ChannelArch corresponding to id
+     */
+    public static ChannelArch lookupChannelArchFromCacheById(Long id) {
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM ChannelArch AS c WHERE c.id = :id", ChannelArch.class)
+                .setParameter("id", id, StandardBasicTypes.LONG)
+                //Retrieve from cache if there
+                .setCacheable(true)
+                .uniqueResult();
+    }
+
+    /**
+     * Helper method to get a ChannelArch from the 2nd level cache by label
+     * @param label label of the ChannelArch
+     * @return Returns the ChannelArch corresponding to label
+     */
+    public static ChannelArch lookupChannelArchFromCacheByLabel(String label) {
+        Session session = HibernateFactory.getSession();
+        return session.createQuery("FROM ChannelArch AS c WHERE c.label = :label", ChannelArch.class)
+                .setParameter("label", label, StandardBasicTypes.STRING)
+                //Retrieve from cache if there
+                .setCacheable(true)
+                .uniqueResult();
+    }
+
+    /**
+     * Util to flush and evict an object from the Hibernate Session
+     * @param obj to flush
+     * @throws HibernateException if something bad happens
+     */
+    public static void flushAndEvict(Object obj) throws HibernateException {
+        Session session = HibernateFactory.getSession();
+        session.flush();
+        session.evict(obj);
+    }
+
+    /**
+     * Util to reload an object using Hibernate
+     * @param obj to be reloaded
+     * @param <T> type of object to reload
+     * @return Object found if not, null
+     * @throws HibernateException if something bad happens.
+     */
+    public static <T> T reload(T obj) throws HibernateException {
+        assertNotNull(obj);
+        return (T)HibernateFactory.reload(obj);
+    }
+
+    /**
+     * Save and reload an object from DB
+     * @param o to save and reload.
+     * @param <T> type of object to save and reload
+     * @return Object fresh from DB
+     */
+    public static <T> T saveAndReload(T o) {
+        T managed = TestUtils.saveAndFlush(o);
+        return reload(managed);
+    }
+
+    /**
+     * Merge an object from DB
+     * @param o to merge
+     * @param <T> type of object to merge
+     * @return Object fresh from DB
+     */
+    public static <T> T merge(T o) {
+        Session session = HibernateFactory.getSession();
+        session.merge(o);
+        session.flush();
+        return reload(o);
+    }
+
+    /**
+     * Helper method to save objects to the database and flush
+     * the session.
+     * @param entity object to save.
+     * @param <T> the entity type
+     * @return the managed entity
+     * @throws HibernateException HibernateException
+     */
+    public static <T> T save(T entity) throws HibernateException {
+        Session session = HibernateFactory.getSession();
+
+        // if the entity happens to be already managed, return it
+        if (session.contains(entity)) {
+            return entity;
+        }
+
+        Object id = session.getEntityManagerFactory().getPersistenceUnitUtil().getIdentifier(entity);
+        T managed = entity;
+
+        if (id == null) {
+            // new entity - use persist() to avoid cascading issues
+            session.persist(entity);
+        }
+        else {
+            // detached entity - use merge() and return managed instance
+            managed = session.merge(entity);
+        }
+
+        return managed;
+    }
+
+
+    public static <T> T saveAndFlush(T entity) throws HibernateException {
+        T managed = save(entity);
+        Session session = HibernateFactory.getSession();
+        session.flush();
+        return managed;
+    }
+
+    /**
+     * Removes an object from the database.
+     * @param toRemove Object to be removed.
+     * @return Number of rows affected.
+     */
+    public static int removeObject(Object toRemove) {
+        Session session = null;
+        int numDeleted = 0;
+
+        try {
+            session = HibernateFactory.getSession();
+
+            session.remove(toRemove);
+            numDeleted++;
+
+        }
+        catch (HibernateException he) {
+            throw new HibernateRuntimeException("Error removing " + toRemove, he);
+        }
+
+        return numDeleted;
+    }
+
+
+    /**
+     * Clears hibernate session
+     */
+    public static void clearSession() {
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().clear();
+    }
+
+    /**
+     * PLEASE Refrain from using this unless you really have to.
+     *
+     * Try clearSession() instead
+     * @throws HibernateException hibernate exception
+     */
+    public static void commitAndCloseSession() throws HibernateException {
+        HibernateFactory.commitTransaction();
+        HibernateFactory.closeSession();
+    }
+
+
 }
 
 

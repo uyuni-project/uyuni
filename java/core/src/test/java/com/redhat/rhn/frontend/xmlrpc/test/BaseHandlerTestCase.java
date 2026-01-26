@@ -27,6 +27,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestStatics;
+import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.AfterEach;
@@ -92,7 +93,7 @@ public class BaseHandlerTestCase extends RhnBaseTestCase {
             UserFactory.deleteUser(regular.getId());
             UserFactory.deleteUser(satAdmin.getId());
             OrgFactory.deleteOrg(admin.getOrg().getId(), admin);
-            commitAndCloseSession();
+            TestUtils.commitAndCloseSession();
         }
         committed = false;
     }

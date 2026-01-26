@@ -83,7 +83,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
     private void flushAndEvictGuest(VirtualInstance guest) {
         Session session = VirtualInstanceFactory.getSession();
 
-        flushAndEvict(guest);
+        TestUtils.flushAndEvict(guest);
 
         if (guest.isRegisteredGuest()) {
             session.evict(guest.getGuestSystem());
@@ -116,7 +116,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
 
         virtualInstanceDAO.saveVirtualInstance(guest);
 
-        flushAndEvict(guest);
+        TestUtils.flushAndEvict(guest);
 
         VirtualInstance retrievedGuest = virtualInstanceDAO.lookupById(guest
                 .getId());
@@ -152,7 +152,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
                 .inStoppedState().build();
 
         virtualInstanceDAO.saveVirtualInstance(guest);
-        flushAndEvict(guest);
+        TestUtils.flushAndEvict(guest);
 
         VirtualInstance retrievedGuest = virtualInstanceDAO.lookupById(guest
                 .getId());

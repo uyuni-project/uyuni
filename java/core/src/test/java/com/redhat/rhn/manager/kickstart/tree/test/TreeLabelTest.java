@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.kickstart.test.KickstartableTreeTest;
 import com.redhat.rhn.manager.kickstart.tree.BaseTreeEditOperation;
 import com.redhat.rhn.manager.kickstart.tree.TreeEditOperation;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
 
@@ -86,7 +87,7 @@ public class TreeLabelTest extends BaseTestCaseWithUser {
         KickstartableTree tree = KickstartableTreeTest.createTestKickstartableTree(
                 ChannelFactoryTest.createTestChannel(user));
         KickstartFactory.saveKickstartableTree(tree);
-        tree = (KickstartableTree) reload(tree);
+        tree = (KickstartableTree) TestUtils.reload(tree);
         tree.setLabel("jlkasf_asdf-ajksldfX890234");
         TreeEditOperation cmd = new TreeEditOperation(tree.getId(), user);
         assertTrue(cmd.validateLabel());

@@ -49,7 +49,7 @@ public class CPUTest extends BaseTestCaseWithUser {
         server.setCpu(unit);
 
         ServerFactory.save(server);
-        flushAndEvict(server);
+        TestUtils.flushAndEvict(server);
 
         assertNotNull(unit.getId());
         Server server2 = ServerFactory.lookupByIdAndOrg(server.getId(),

@@ -98,7 +98,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
 
         //Evict the user and look back up. This make sure our changes got saved
         //to the db.
-        clearSession();
+        TestUtils.clearSession();
 
         User usr = UserFactory.lookupById(id);
         assertFalse(usr.isDisabled());
@@ -221,7 +221,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
         usr.setFirstNames("UserFactoryTest.testCommitUser.change " +
                     TestUtils.randomString());
         UserFactory.save(usr);
-        flushAndEvict(usr);
+        TestUtils.flushAndEvict(usr);
 
         // Now lets manually test to see if the user got updated
         HibernateFactory.getSession().doWork(connection -> {

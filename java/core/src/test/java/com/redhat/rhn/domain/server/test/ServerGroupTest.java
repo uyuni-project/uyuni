@@ -130,7 +130,7 @@ public class ServerGroupTest extends RhnBaseTestCase {
 
         group.setPillars(pillars);
         TestUtils.saveAndFlush(group);
-        group = reload(group);
+        group = TestUtils.reload(group);
 
         Pillar actual = group.getPillars().stream()
                 .filter(item -> "category1".equals(item.getCategory()))

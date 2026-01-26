@@ -43,8 +43,8 @@ public class TreeEditOperationTest extends TreeOperationTestBase {
         String nlabel = "newlabel" + TestUtils.randomString();
         cmd.setLabel(nlabel);
         assertNull(cmd.store());
-        flushAndEvict(cmd.getTree());
-        tree = (KickstartableTree) reload(tree);
+        TestUtils.flushAndEvict(cmd.getTree());
+        tree = (KickstartableTree) TestUtils.reload(tree);
         assertEquals(nlabel, tree.getLabel());
     }
 
@@ -56,12 +56,12 @@ public class TreeEditOperationTest extends TreeOperationTestBase {
         TreeEditOperation cmd = new TreeEditOperation(tid, user);
         cmd.setBasePath(KickstartableTreeTest.KICKSTART_TREE_PATH.getAbsolutePath());
         assertNull(cmd.store());
-        flushAndEvict(cmd.getTree());
+        TestUtils.flushAndEvict(cmd.getTree());
 
         TreeEditOperation newcmd = new TreeEditOperation(tid, user);
         newcmd.setLabel("testInvalidEdit " + TestUtils.randomString());
         assertNotNull(newcmd.store());
-        flushAndEvict(newcmd.getTree());
+        TestUtils.flushAndEvict(newcmd.getTree());
 
         KickstartableTree lookedUp = KickstartFactory.
             lookupKickstartTreeByIdAndOrg(tid, user.getOrg());

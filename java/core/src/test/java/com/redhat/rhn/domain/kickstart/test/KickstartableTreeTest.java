@@ -118,7 +118,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
         kwithnullorg.setLabel(label);
         kwithnullorg.setOrg(null);
         TestUtils.saveAndFlush(kwithnullorg);
-        flushAndEvict(kwithnullorg);
+        TestUtils.flushAndEvict(kwithnullorg);
         KickstartableTree lookedUp = KickstartFactory.lookupKickstartTreeByLabel(label, o);
         assertNotNull(lookedUp);
         assertNull(lookedUp.getOrgId());
@@ -148,7 +148,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
             createKickstartWithOptions(user.getOrg());
         ksdata.getKickstartDefaults().setKstree(k);
         KickstartFactory.saveKickstartData(ksdata);
-        flushAndEvict(ksdata);
+        TestUtils.flushAndEvict(ksdata);
 
         List<KickstartData> profiles = KickstartFactory.lookupKickstartDatasByTree(k);
         assertNotNull(profiles);

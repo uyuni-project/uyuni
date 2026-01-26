@@ -50,7 +50,7 @@ public class KickstartActivationKeysTest extends BaseKickstartCommandTestCase {
 
         ActivationKey key = ActivationKeyFactory.createNewKey(user, note);
         ActivationKeyFactory.save(key);
-        key = (ActivationKey) reload(key);
+        key = (ActivationKey) TestUtils.reload(key);
 
         DataResult<ActivationKeyDto> dr = KickstartLister.getInstance()
             .getActivationKeysInOrg(ksdata.getOrg(), null);

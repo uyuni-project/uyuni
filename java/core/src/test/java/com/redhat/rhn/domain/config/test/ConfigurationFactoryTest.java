@@ -75,7 +75,7 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
         assertNotNull(channel.getId());
 
         //evict it so we can look it back up
-        flushAndEvict(channel);
+        TestUtils.flushAndEvict(channel);
 
         ConfigChannel channel2 =
             ConfigurationFactory.lookupConfigChannelById(channel.getId());
@@ -104,7 +104,7 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
         assertNotNull(file.getId());
 
         //evict it so we can look it back up
-        flushAndEvict(file);
+        TestUtils.flushAndEvict(file);
 
         ConfigFile file2 = ConfigurationFactory.lookupConfigFileById(file.getId());
         assertNotNull(file2);
@@ -132,7 +132,7 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
         assertNotNull(revision.getId());
 
         //evict it so we can look it back up
-        flushAndEvict(revision);
+        TestUtils.flushAndEvict(revision);
 
         ConfigRevision revision2 =
             ConfigurationFactory.lookupConfigRevisionById(revision.getId());

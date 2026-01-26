@@ -30,6 +30,7 @@ import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
 import com.redhat.rhn.domain.test.TestEntity;
 import com.redhat.rhn.domain.test.TestFactory;
 import com.redhat.rhn.domain.test.TestInterface;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
 
@@ -118,12 +119,12 @@ public class TestFactoryWrapperTest extends HibernateBaseTest {
         Long id = record.getId();
 
         // evict and confirm record is detached
-        flushAndEvict(record);
+        TestUtils.flushAndEvict(record);
         assertFalse(HibernateFactory.getSession().contains(record));
         assertNotNull(id);
 
         // verify reload retrieves the same record but on a different instance
-        TestInterface recordReloaded = reload(record);
+        TestInterface recordReloaded = TestUtils.reload(record);
         assertTrue(HibernateFactory.getSession().contains(recordReloaded));
         assertEquals(id, recordReloaded.getId());
         assertTrue(record != recordReloaded);
@@ -169,7 +170,7 @@ public class TestFactoryWrapperTest extends HibernateBaseTest {
         TestFactory.save(obj);
 
         // verify lookup returns the same instance
-        flushAndEvict(obj);
+        TestUtils.flushAndEvict(obj);
         assertFalse(HibernateFactory.getSession().contains(obj));
 
         // re-attach the instance

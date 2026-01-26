@@ -2205,7 +2205,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
             csm.updateSUSEProducts(csm.getProducts());
             csm.updateRepositories(null);
 
-            clearSession();
+            TestUtils.clearSession();
 
             SUSEProduct sles = SUSEProductFactory.lookupByProductId(1117);
             SUSEProduct slewe = SUSEProductFactory.lookupByProductId(1222);
@@ -2218,12 +2218,12 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
             SUSEProductTestUtils.createVendorSUSEProductEnvironment(
                     user, "/com/redhat/rhn/manager/content/test/smallBase", true);
 
-            clearSession();
+            TestUtils.clearSession();
 
             csm = new SUSEProductTestUtils.TestContentSyncManager();
             csm.linkAndRefreshContentSource(null);
 
-            clearSession();
+            TestUtils.clearSession();
 
             sles = SUSEProductFactory.lookupByProductId(1117);
             slewe = SUSEProductFactory.lookupByProductId(1222);

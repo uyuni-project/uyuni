@@ -320,7 +320,7 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
         handler.renameProfile(admin, ks.getLabel(),
                 newLabel);
 
-        ks = (KickstartData) reload(ks);
+        ks = (KickstartData) TestUtils.reload(ks);
         assertEquals(newLabel, ks.getLabel());
     }
 

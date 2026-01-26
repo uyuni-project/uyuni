@@ -75,7 +75,7 @@ public class TokenTest extends RhnBaseTestCase {
     public void testLookupByServer() throws Exception {
         Token t = createTestToken();
         Server s = t.getServer();
-        flushAndEvict(t);
+        TestUtils.flushAndEvict(t);
         assertNotNull(TokenFactory.listByServer(s));
     }
 
@@ -84,7 +84,7 @@ public class TokenTest extends RhnBaseTestCase {
         Token t = createTestToken();
         Long id = t.getId();
         TokenFactory.removeToken(t);
-        flushAndEvict(t);
+        TestUtils.flushAndEvict(t);
         assertNull(TokenFactory.lookupById(id));
     }
 
@@ -94,7 +94,7 @@ public class TokenTest extends RhnBaseTestCase {
         Channel c = ChannelFactoryTest.createTestChannel(t.getCreator());
         t.addChannel(c);
         TokenFactory.save(t);
-        t = reload(t);
+        t = TestUtils.reload(t);
         assertNotNull(t.getChannels());
         assertEquals(1, t.getChannels().size());
 
@@ -122,7 +122,7 @@ public class TokenTest extends RhnBaseTestCase {
         ls.add(global1);
         ls.add(global2);
 
-        t = reload(t);
+        t = TestUtils.reload(t);
         assertNotNull(t.getConfigChannelsFor(user));
         assertEquals(2, t.getConfigChannelsFor(user).size());
         assertEquals(ls, t.getConfigChannelsFor(user));

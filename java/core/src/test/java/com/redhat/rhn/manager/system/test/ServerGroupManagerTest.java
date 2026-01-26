@@ -105,7 +105,7 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
     public void testRemove() {
         user.addToGroup(AccessGroupFactory.SYSTEM_GROUP_ADMIN);
         ManagedServerGroup sg = manager.create(user, NAME, DESCRIPTION);
-        sg = (ManagedServerGroup) reload(sg);
+        sg = (ManagedServerGroup) TestUtils.reload(sg);
         User newUser = UserTestUtils.createUser(TEST_DIFF_USER, user.getOrg().getId());
         try {
             manager.remove(newUser, sg);
