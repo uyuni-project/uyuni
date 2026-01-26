@@ -281,6 +281,8 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         env.addTarget(tgt);
 
         contentManager.removeEnvironment("fst", "cplabel", user);
+        TestUtils.clearSession();
+
         // the target is removed
         assertFalse(HibernateFactory.getSession()
                 .createQuery("""
