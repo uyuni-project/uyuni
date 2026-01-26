@@ -293,7 +293,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         assertEquals(1, result.values().size());
         List<MinionSummary> summaries = result.values().iterator().next();
         assertTrue(summaries.isEmpty());
-        ServerAction serverAction = HibernateFactory.reload(action.getServerActions().iterator().next());
+        ServerAction serverAction = TestUtils.reload(action.getServerActions().iterator().next());
         assertTrue(serverAction.isStatusFailed());
     }
 

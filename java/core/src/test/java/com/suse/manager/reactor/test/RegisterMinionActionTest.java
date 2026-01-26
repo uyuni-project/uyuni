@@ -652,7 +652,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
         assertEquals(MINION_ID, minion.getName());
         // assigned channels are preserved
-        Set<Channel> originalChannels = HibernateFactory.reload(server).getChannels();
+        Set<Channel> originalChannels = TestUtils.reload(server).getChannels();
         assertEquals(originalChannels, minion.getChannels());
 
         // Invalid Activation Key should be reported because

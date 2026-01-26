@@ -52,6 +52,7 @@ import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
+import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -417,8 +418,8 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         assertFalse(sndEntryFromDb.getCreated().before(fstEntryFromDb.getCreated()));
 
         UserFactory.deleteUser(user.getId());
-        fstEntryFromDb = (ContentProjectHistoryEntry) HibernateFactory.reload(fstEntryFromDb);
-        sndEntryFromDb = (ContentProjectHistoryEntry) HibernateFactory.reload(sndEntryFromDb);
+        fstEntryFromDb = (ContentProjectHistoryEntry) TestUtils.reload(fstEntryFromDb);
+        sndEntryFromDb = (ContentProjectHistoryEntry) TestUtils.reload(sndEntryFromDb);
         assertNull(fstEntryFromDb.getUser());
         assertNull(sndEntryFromDb.getUser());
     }
@@ -659,7 +660,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         assertEquals(1, numOfUpgradedTgts);
 
         tgtsByStatus.forEach((oldStatus, tgt) -> {
-            tgt = (EnvironmentTarget) HibernateFactory.reload(tgt);
+            tgt = (EnvironmentTarget) TestUtils.reload(tgt);
             if (oldStatus.equals(EnvironmentTarget.Status.BUILDING)) {
                 // we expect the building targets to be set to FAILED
                 assertEquals(EnvironmentTarget.Status.FAILED, tgt.getStatus());

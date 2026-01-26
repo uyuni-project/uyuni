@@ -1120,7 +1120,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
         Channel origCh = ChannelFactoryTest.createTestChannel(user);
         ChannelManager.forceBecomingCloneOf(regularCh, origCh);
-        regularCh = HibernateFactory.reload(regularCh);
+        regularCh = TestUtils.reload(regularCh);
 
         assertTrue(regularCh.asCloned().isPresent());
         assertEquals(origCh, regularCh.asCloned().orElseThrow().getOriginal());

@@ -39,6 +39,7 @@ import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.struts.Globals;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
+import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -578,7 +579,15 @@ public class TestUtils {
      */
     public static <T> T reload(T obj) throws HibernateException {
         assertNotNull(obj);
-        return (T)HibernateFactory.reload(obj);
+        Session session = HibernateFactory.getSession();
+        session.flush();
+
+        if (session.contains(obj)) {
+            session.detach(obj);
+        }
+
+        Serializable id = (Serializable) session.getEntityManagerFactory().getPersistenceUnitUtil().getIdentifier(obj);
+        return (T) session.find(obj.getClass(), id);
     }
 
     /**

@@ -1324,8 +1324,8 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
 
-        minion = HibernateFactory.reload(minion);
-        HibernateFactory.reload(proxy);
+        minion = TestUtils.reload(minion);
+        TestUtils.reload(proxy);
 
         Server s = ServerFactory.lookupById(minion.getId());
         assertEquals(serverPaths.stream().findFirst().get(),
@@ -1359,8 +1359,8 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
-        proxiedProxy = HibernateFactory.reload(proxiedProxy);
-        proxy = HibernateFactory.reload(proxy);
+        proxiedProxy = TestUtils.reload(proxiedProxy);
+        proxy = TestUtils.reload(proxy);
 
         Server minion = ServerTestUtils.createTestSystem();
         Set<ServerPath> serverPath1 = ServerFactory.createServerPaths(minion, proxiedProxy, "proxy2");
@@ -1368,9 +1368,9 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
-        minion = HibernateFactory.reload(minion);
-        proxiedProxy = HibernateFactory.reload(proxiedProxy);
-        proxy = HibernateFactory.reload(proxy);
+        minion = TestUtils.reload(minion);
+        proxiedProxy = TestUtils.reload(proxiedProxy);
+        proxy = TestUtils.reload(proxy);
 
         proxyPaths = minion.getServerPaths();
         assertEquals(2, proxyPaths.size());
@@ -1537,8 +1537,8 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         ServerFactory.setMaintenanceScheduleToSystems(schedule, Set.of(sys1.getId(), sys2.getId()));
 
-        assertEquals(schedule, HibernateFactory.reload(sys1).getMaintenanceScheduleOpt().get());
-        assertEquals(schedule, HibernateFactory.reload(sys2).getMaintenanceScheduleOpt().get());
+        assertEquals(schedule, TestUtils.reload(sys1).getMaintenanceScheduleOpt().get());
+        assertEquals(schedule, TestUtils.reload(sys2).getMaintenanceScheduleOpt().get());
     }
 
     @Test

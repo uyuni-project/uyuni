@@ -125,7 +125,7 @@ public class ServerTest extends BaseTestCaseWithUser {
     public void testCapabilities() throws Exception {
         Server s = ServerFactoryTest.createTestServer(user, true);
         SystemManagerTest.giveCapability(s.getId(), SystemManager.CAP_CONFIGFILES_DEPLOY, 1L);
-        s = HibernateFactory.reload(s);
+        s = TestUtils.reload(s);
         assertFalse(s.getCapabilities().isEmpty());
         boolean containsDeploy = false;
         for (ClientCapability c : s.getCapabilities()) {
@@ -142,7 +142,7 @@ public class ServerTest extends BaseTestCaseWithUser {
         Server s = ServerFactoryTest.createTestServer(user, true);
         SystemManagerTest.giveCapability(s.getId(), SystemManager.CAP_CONFIGFILES_DEPLOY, 1L);
         SystemManagerTest.giveCapability(s.getId(), SystemManager.CAP_SCRIPT_RUN, 2L);
-        s = HibernateFactory.reload(s);
+        s = TestUtils.reload(s);
         assertEquals(2, s.getCapabilities().size());
         Optional<ClientCapability> cap1 = s.getCapabilities()
                 .stream().filter(c -> c.getCapability().getName().equals(SystemManager.CAP_SCRIPT_RUN))

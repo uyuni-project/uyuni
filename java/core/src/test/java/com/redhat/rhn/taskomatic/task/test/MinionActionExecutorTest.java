@@ -127,8 +127,8 @@ public class MinionActionExecutorTest extends JMockBaseTestCaseWithUser {
 
         HibernateFactory.getSession().clear();
 
-        sa1 = HibernateFactory.reload(sa1);
-        sa2 = HibernateFactory.reload(sa2);
+        sa1 = TestUtils.reload(sa1);
+        sa2 = TestUtils.reload(sa2);
 
         context().assertIsSatisfied();
 

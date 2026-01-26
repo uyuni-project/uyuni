@@ -825,7 +825,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         ActionFactory.save(a1);
 
         ActionManager.rescheduleAction(a1);
-        sa = (ServerAction) ActionFactory.reload(sa);
+        sa = (ServerAction) TestUtils.reload(sa);
         assertTrue(sa.isStatusQueued());
         assertTrue(sa.getRemainingTries() > 0);
     }

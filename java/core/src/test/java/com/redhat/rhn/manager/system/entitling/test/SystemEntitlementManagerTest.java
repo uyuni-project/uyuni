@@ -197,7 +197,7 @@ public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerTestUtils.createTestSystem(user, ServerConstants.getServerGroupTypeEnterpriseEntitled());
         server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
-        server = HibernateFactory.reload(server);
+        server = TestUtils.reload(server);
 
         assertFalse(systemEntitlementManager.canEntitleServer(server, EntitlementManager.ANSIBLE_CONTROL_NODE));
         systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.ANSIBLE_CONTROL_NODE);
@@ -215,7 +215,7 @@ public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = MinionServerFactoryTest.createTestMinionServer(user);
         server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
-        server = HibernateFactory.reload(server);
+        server = TestUtils.reload(server);
 
         assertTrue(systemEntitlementManager.canEntitleServer(server, EntitlementManager.ANSIBLE_CONTROL_NODE));
         systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.ANSIBLE_CONTROL_NODE);
@@ -230,7 +230,7 @@ public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
         User user = UserTestUtils.createUser(this);
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerFactoryTest.createTestProxyServer(user, true);
-        server = HibernateFactory.reload(server);
+        server = TestUtils.reload(server);
 
         assertTrue(server.hasProxyEntitlement());
         assertNotNull(server.getProxyInfo());

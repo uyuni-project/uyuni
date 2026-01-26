@@ -843,7 +843,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
 
         // 3. remove a source and rebuild
         contentManager.detachSource("cplabel", SW_CHANNEL, channel.getLabel(), user);
-        cp = (ContentProject) HibernateFactory.reload(cp);
+        cp = (ContentProject) TestUtils.reload(cp);
         contentManager.buildProject("cplabel", empty(), false, user);
         assertEquals(Long.valueOf(3), env.getVersion());
 
@@ -1111,8 +1111,8 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         // We need to clear and reload as buildProject uses mode queries inside a doWithoutAutoFlush area
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
-        cp = HibernateFactory.reload(cp);
-        devEnv = HibernateFactory.reload(devEnv);
+        cp = TestUtils.reload(cp);
+        devEnv = TestUtils.reload(devEnv);
 
         contentManager.diffProject(cp);
         diffDev = ContentManager.listEnvironmentDifference(user, "cplabel", "dev");
@@ -1147,8 +1147,8 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         // We need to clear and reload as promoteProject uses mode queries inside a doWithoutAutoFlush area
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
-        cp = HibernateFactory.reload(cp);
-        testEnv = HibernateFactory.reload(testEnv);
+        cp = TestUtils.reload(cp);
+        testEnv = TestUtils.reload(testEnv);
 
         assertEquals(devEnv.getVersion(), testEnv.getVersion());
         testTgts = testEnv.getTargets();
@@ -1189,8 +1189,8 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         // We need to clear and reload as promoteProject uses mode queries inside a doWithoutAutoFlush area
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
-        prodEnv = HibernateFactory.reload(prodEnv);
-        cp = HibernateFactory.reload(cp);
+        prodEnv = TestUtils.reload(prodEnv);
+        cp = TestUtils.reload(cp);
 
         assertEquals(devEnv.getVersion(), prodEnv.getVersion());
         prodTgts = prodEnv.getTargets();

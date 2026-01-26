@@ -168,7 +168,7 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         KickstartData ks  = KickstartDataTest.createKickstartWithChannel(admin.getOrg());
         int id = handler.addScript(admin, ks.getLabel(), "sample",
                 "This is a script", "", "post", true);
-        ks = (KickstartData) HibernateFactory.reload(ks);
+        ks = (KickstartData) TestUtils.reload(ks);
         boolean found = false;
 
         for (KickstartScript script : handler.listScripts(admin, ks.getLabel())) {
@@ -188,7 +188,7 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         for (KickstartScript script : scripts) {
             handler.removeScript(admin, ks.getLabel(), script.getId().intValue());
         }
-        ks = (KickstartData) HibernateFactory.reload(ks);
+        ks = (KickstartData) TestUtils.reload(ks);
 
         int idPost1 =
                 handler.addScript(admin, ks.getLabel(), "myPost1", "This is a script",
@@ -208,7 +208,7 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         int idPre2 =
                 handler.addScript(admin, ks.getLabel(), "myPre2", "This is a script",
                         "", "pre", false);
-        ks = (KickstartData) HibernateFactory.reload(ks);
+        ks = (KickstartData) TestUtils.reload(ks);
 
         // make sure they're in the proper order initially
         scripts = handler.listScripts(admin, ks.getLabel());
@@ -250,7 +250,7 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         KickstartData ks  = KickstartDataTest.createKickstartWithChannel(admin.getOrg());
         int id = handler.addScript(admin, ks.getLabel(), "sample",
                 "This is a script", "", "post", true);
-        ks = (KickstartData) HibernateFactory.reload(ks);
+        ks = (KickstartData) TestUtils.reload(ks);
         boolean found = false;
         for (KickstartScript script : ks.getScripts()) {
             if (script.getId().intValue() == id &&
