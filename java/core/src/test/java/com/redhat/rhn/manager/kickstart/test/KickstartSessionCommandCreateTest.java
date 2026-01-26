@@ -58,7 +58,7 @@ public class KickstartSessionCommandCreateTest extends BaseKickstartCommandTestC
         assertNull(cmd.store());
         assertNotNull(cmd.getKickstartSession());
         KickstartSession sess = cmd.getKickstartSession();
-        sess = (KickstartSession) TestUtils.reload(sess);
+        sess = TestUtils.reload(sess);
         assertNotNull(sess);
         assertNotNull(ActivationKeyFactory.
                 lookupByKickstartSession(sess));

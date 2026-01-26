@@ -843,7 +843,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
 
         // 3. remove a source and rebuild
         contentManager.detachSource("cplabel", SW_CHANNEL, channel.getLabel(), user);
-        cp = (ContentProject) TestUtils.reload(cp);
+        cp = TestUtils.reload(cp);
         contentManager.buildProject("cplabel", empty(), false, user);
         assertEquals(Long.valueOf(3), env.getVersion());
 

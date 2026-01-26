@@ -362,7 +362,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         prd.setVersion("12.1");
         prd.setArch(p.getPackageArch());
         prd.setBaseproduct(true);
-        TestUtils.saveAndReload(prd);
+        prd = TestUtils.saveAndReload(prd);
         info.setInstalledProducts(Collections.singleton(prd));
         ImageInfoFactory.save(info);
         TestUtils.saveAndFlush(info);

@@ -45,9 +45,9 @@ public class FilePreservationListsCommandTest extends BaseKickstartCommandTestCa
         CommonFactory.saveFileList(list2);
         CommonFactory.saveFileList(list3);
 
-        list1 = (FileList) TestUtils.reload(list1);
-        list2 = (FileList) TestUtils.reload(list2);
-        list3 = (FileList) TestUtils.reload(list3);
+        list1 = TestUtils.reload(list1);
+        list2 = TestUtils.reload(list2);
+        list3 = TestUtils.reload(list3);
 
         ArrayList ids = new ArrayList<>();
         ids.add(list1.getId());

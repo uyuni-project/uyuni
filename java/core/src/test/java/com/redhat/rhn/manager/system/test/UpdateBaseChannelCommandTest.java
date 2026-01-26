@@ -70,7 +70,7 @@ public class UpdateBaseChannelCommandTest extends BaseTestCaseWithUser {
         TestUtils.flushAndEvict(parent);
         TestUtils.flushAndEvict(child);
 
-        s = (Server) TestUtils.reload(s);
+        s = TestUtils.reload(s);
 
         Set<Channel> channels = new HashSet<>();
         channels.add(parent);
@@ -85,7 +85,7 @@ public class UpdateBaseChannelCommandTest extends BaseTestCaseWithUser {
         channels.add(parent1);
         channels.add(child1);
         TestUtils.flushAndEvict(s);
-        s = (Server) TestUtils.reload(s);
+        s = TestUtils.reload(s);
         assertEquals(channels, s.getChannels());
     }
 }

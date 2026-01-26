@@ -309,7 +309,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         TestUtils.saveAndFlush(user);
 
         Channel c = ChannelFactoryTest.createTestChannel(user);
-        c = (Channel) TestUtils.reload(c);
+        c = TestUtils.reload(c);
         ChannelManager.deleteChannel(user, c.getLabel(), true);
         assertNull(TestUtils.reload(c));
     }
@@ -323,7 +323,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         Channel c = ChannelFactoryTest.createTestChannel(user);
         Channel cClone1 = ChannelFactoryTest.createTestClonedChannel(c, user);
         Channel cClone2 = ChannelFactoryTest.createTestClonedChannel(cClone1, user);
-        cClone2 = (Channel) TestUtils.reload(cClone2);
+        cClone2 = TestUtils.reload(cClone2);
         ChannelManager.deleteChannel(user, cClone2.getLabel(), true);
         assertNotNull(TestUtils.reload(c));
         assertNotNull(TestUtils.reload(cClone1));
@@ -339,7 +339,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         Channel c = ChannelFactoryTest.createTestChannel(user);
         Channel cClone1 = ChannelFactoryTest.createTestClonedChannel(c, user);
         Channel cClone2 = ChannelFactoryTest.createTestClonedChannel(cClone1, user);
-        cClone1 = (Channel) TestUtils.reload(cClone1);
+        cClone1 = TestUtils.reload(cClone1);
         try {
             ChannelManager.deleteChannel(user, cClone1.getLabel(), true);
             fail();
@@ -371,7 +371,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         errataList.add(e);
         ErrataFactory.addToChannel(errataList, c, user, false);
 
-        e = (Errata) TestUtils.saveAndReload(e);
+        e = TestUtils.saveAndReload(e);
 
         List<ErrataOverview> errata = ChannelManager.listErrata(c, null, null, false, user);
         boolean found = false;
@@ -435,13 +435,13 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
         Channel c = ChannelTestUtils.createTestChannel(user);
         c.setName("A Channel");
-        TestUtils.saveAndReload(c);
+        c = TestUtils.saveAndReload(c);
         c = ChannelTestUtils.createTestChannel(user);
         c.setName("C Channel");
-        TestUtils.saveAndReload(c);
+        c = TestUtils.saveAndReload(c);
         c = ChannelTestUtils.createTestChannel(user);
         c.setName("B Channel");
-        TestUtils.saveAndReload(c);
+        c = TestUtils.saveAndReload(c);
 
         List<String> channelNames = ChannelManager.listBaseChannelsForSystem(user, s).stream()
                 .map(EssentialChannelDto::getName).toList();
@@ -494,8 +494,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         rcm.setProduct(product);
         rcm.setVersion(version);
         rcm.setRelease(release);
-        TestUtils.saveAndReload(rcm);
-        return rcm;
+        return TestUtils.saveAndReload(rcm);
     }
 
     @Test
@@ -713,7 +712,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
         s.addChannel(chans[0]);
         s.addChannel(chans[1]);
-        TestUtils.saveAndReload(s);
+        s = TestUtils.saveAndReload(s);
 
         assertNotNull(ChannelManager.subscribeToChildChannelWithPackageName(user,
                 s, ChannelManager.TOOLS_CHANNEL_PACKAGE_NAME));
@@ -758,7 +757,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         // generate the multiple channels with package exception:
         s.addChannel(chans[0]);
         s.addChannel(chans[1]);
-        TestUtils.saveAndReload(s);
+        s = TestUtils.saveAndReload(s);
 
         int channelCountBefore = s.getChannels().size();
         assertNotNull(ChannelManager.subscribeToChildChannelWithPackageName(user,
@@ -955,7 +954,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         errataList.add(e);
         ErrataFactory.addToChannel(errataList, c, user, false);
 
-        e = (Errata) TestUtils.saveAndReload(e);
+        e = TestUtils.saveAndReload(e);
 
         assertTrue(e.getChannels().contains(c));
 
@@ -963,7 +962,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         eids.add(e.getId());
 
         ChannelManager.removeErrata(c, eids, user);
-        e = (Errata) TestUtils.saveAndReload(e);
+        e = TestUtils.saveAndReload(e);
         assertFalse(e.getChannels().contains(c));
         c = ChannelManager.lookupByLabel(user.getOrg(), c.getLabel());
         assertFalse(c.getErratas().contains(eids));
@@ -988,10 +987,10 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
         c.addErrata(e);
 
-        c = (Channel) TestUtils.saveAndReload(c);
-        e = (Errata) TestUtils.saveAndReload(e);
+        c = TestUtils.saveAndReload(c);
+        e = TestUtils.saveAndReload(e);
 
-        bothP = (Package) TestUtils.saveAndReload(bothP);
+        bothP = TestUtils.saveAndReload(bothP);
 
 
         List<PackageDto> list = ChannelManager.listErrataPackages(c, e);

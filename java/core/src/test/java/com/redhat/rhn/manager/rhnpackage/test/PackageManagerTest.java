@@ -553,8 +553,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         //   Create upgraded package EVR so package will show up from the query
         PackageEvr upgradedPackageEvr =
             PackageEvrFactory.lookupOrCreatePackageEvr("1", "1.0.0", "2", server.getPackageType());
-        upgradedPackageEvr =
-            (PackageEvr)TestUtils.saveAndReload(upgradedPackageEvr);
+        upgradedPackageEvr = TestUtils.saveAndReload(upgradedPackageEvr);
 
         ServerTestUtils.populateServerErrataPackages(org, server,
             upgradedPackageEvr, ErrataFactory.ERRATA_TYPE_SECURITY);

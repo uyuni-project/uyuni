@@ -142,7 +142,7 @@ public class KickstartHelperTest extends BaseTestCaseWithUser {
         KickstartSession session =
             KickstartSessionTest.createKickstartSession(ksdata, user);
         KickstartFactory.saveKickstartSession(session);
-        session = (KickstartSession) TestUtils.reload(session);
+        session = TestUtils.reload(session);
         assertNotSame(session.getState(), KickstartFactory.SESSION_STATE_CONFIG_ACCESSED);
 
         String encodedSession = SessionSwap.encodeData(session.getId().toString());

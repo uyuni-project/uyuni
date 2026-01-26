@@ -55,7 +55,7 @@ public class CryptoKeyCommandTest extends BaseTestCaseWithUser {
     public void testCreateCommand() throws Exception {
         setupKey(new CreateCryptoKeyCommand(user.getOrg()));
         CryptoKey key = cmd.getCryptoKey();
-        key = (CryptoKey) TestUtils.reload(key);
+        key = TestUtils.reload(key);
         assertNotNull(key.getId());
         assertNotNull(key.getKey());
     }
