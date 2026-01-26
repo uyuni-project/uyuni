@@ -37,6 +37,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelTestUtility;
+import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.contentmgmt.ContentFilter;
 import com.redhat.rhn.domain.contentmgmt.FilterCriteria;
@@ -109,8 +110,6 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         srcChannel.setChecksumType(ChannelFactory.findChecksumTypeByLabel("sha256"));
         ChannelTestUtility.testAddPackage(srcChannel, pkg);
         srcChannel.addErrata(errata);
-        srcChannel = TestUtils.reload(srcChannel);
-        errata = TestUtils.reload(errata);
 
         tgtChannel = ChannelTestUtils.createBaseChannel(user);
     }
@@ -410,6 +409,8 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
 
         contentManager.alignEnvironmentTargetSync(emptyList(), srcChannel, tgtChannel, user);
 
+        HibernateFactory.getSession().refresh(errata);
+
         // check that packages and errata have been aligned
         assertEquals(srcChannel.getPackages(), tgtChannel.getPackages());
         assertContains(errata.getChannels(), srcChannel);
@@ -698,13 +699,20 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
         // server has the pkg installed and is subscribed to the target channel
         Server server = ServerFactoryTest.createTestServer(user);
         SystemManager.subscribeServerToChannel(user, server, tgtChannel);
-
         // let's make the tgt clone of source (as it should be in CLM scenario)
         ChannelManager.addCloneInfo(srcChannel.getId(), tgtChannel.getId());
-        tgtChannel = TestUtils.reload(tgtChannel);
 
         InstalledPackage installedPkg = copyPackage(pkg, empty());
         setInstalledPackage(server, installedPkg);
+
+        // Target channel has become a clone. We need to get the proper instance from the database and reload also the
+        // server because it references the old instance
+        TestUtils.clearSession();
+
+        srcChannel = TestUtils.reload(srcChannel);
+        tgtChannel = HibernateFactory.getSession().find(ClonedChannel.class, tgtChannel.getId());
+        server = TestUtils.reload(server);
+        pkg = TestUtils.reload(pkg);
 
         // create a (non-retracted) patch that upgrades pkg to 2.0.0
         Package pkg2 = PackageTest.createTestPackage(user.getOrg());

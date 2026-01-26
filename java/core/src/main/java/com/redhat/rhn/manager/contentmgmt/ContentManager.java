@@ -1181,8 +1181,9 @@ public class ContentManager {
         alignErrata(src, tgt, errataFilters, user);
 
         // alignErrata() modifies the database directly, leaving the in-memory object with stale packages.
-        // We need to flush and manually prune these items from the list so the cache calculation
-        // reflects the actual reality of the channel.
+        // We should call getSession().refresh(tgt) but we can't since due to our ClonedChannel mapping the instance
+        // type might change and JPA does not support that. The least dangerous option is to call flush and manually
+        // prune these items from the list so the cache calculation reflects the actual reality of the channel.
         HibernateFactory.getSession().flush();
         List<Long> realIds = ChannelFactory.getPackageIds(tgt.getId());
         tgt.getPackages().removeIf(p -> !realIds.contains(p.getId()));
