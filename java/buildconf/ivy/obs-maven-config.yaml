@@ -338,14 +338,14 @@ artifacts:
   - artifact: jakarta.xml.bind-api
     package: jaxb-api
     repository: Uyuni_Jakarta
-  - artifact: jaxb-runtime
-    package: jaxb-api
-    repository: Uyuni_Jakarta
   - artifact: jaxb-core
-    package: jaxb-api
+    package: jaxb-core
+    repository: Uyuni_Jakarta
+  - artifact: jaxb-runtime
+    package: jaxb-runtime
     repository: Uyuni_Jakarta
   - artifact: txw2
-    package: jaxb-api
+    package: jaxb-txw2
     repository: Uyuni_Jakarta
   - artifact: jakarta.activation-api
     package: jakarta-activation
