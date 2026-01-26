@@ -33,6 +33,7 @@ import com.redhat.rhn.domain.session.WebSessionFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.session.SessionManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.Test;
@@ -228,7 +229,7 @@ public class SessionManagerTest extends RhnBaseTestCase {
         // this works because it's in the same second.
         assertTrue(actualDuration > duration - tolerance);
         assertTrue(actualDuration < duration + tolerance);
-        flushAndEvict(s);
+        TestUtils.flushAndEvict(s);
         SessionManager.purgeUserSessions(u);
 
         try {

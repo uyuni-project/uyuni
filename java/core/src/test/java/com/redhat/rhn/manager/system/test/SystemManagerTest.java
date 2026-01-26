@@ -751,7 +751,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(server.isProxy());
         server = SystemManager.deactivateProxy(server);
         ServerFactory.save(server);
-        server = reload(server);
+        server = TestUtils.reload(server);
         assertFalse(server.isProxy());
     }
 

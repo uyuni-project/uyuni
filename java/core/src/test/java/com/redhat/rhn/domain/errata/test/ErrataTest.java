@@ -59,7 +59,7 @@ public class ErrataTest extends BaseTestCaseWithUser {
         assertEquals(1, e.getNotificationQueue().size()); //should be only 1
         //save errata and evict
         ErrataFactory.save(e);
-        flushAndEvict(e);
+        TestUtils.flushAndEvict(e);
 
         Errata e2 = ErrataManager.lookupErrata(id, user); //lookup the errata
         assertEquals(1, e2.getNotificationQueue().size()); //should be only 1
@@ -90,7 +90,7 @@ public class ErrataTest extends BaseTestCaseWithUser {
         Long id = errata.getId();
 
         //Evict so we know we're going to the db for the next one
-        flushAndEvict(errata);
+        TestUtils.flushAndEvict(errata);
         Errata errata2 = ErrataManager.lookupErrata(id, user);
 
         assertEquals(id, errata2.getId());
@@ -138,7 +138,7 @@ public class ErrataTest extends BaseTestCaseWithUser {
         assertFalse(e.getPackages().isEmpty());
         Channel c = ChannelTestUtils.createTestChannel(user);
         Package p = PackageManagerTest.addPackageToChannel("some-errata-package", c);
-        c = reload(c);
+        c = TestUtils.reload(c);
 
         // Add the package to an errataFile
         ErrataFile ef;
@@ -153,7 +153,7 @@ public class ErrataTest extends BaseTestCaseWithUser {
         e.addChannel(c);
 
         ErrataFactory.save(e);
-        e = reload(e);
+        e = TestUtils.reload(e);
 
         assertEquals(1, e.getChannels().size());
 

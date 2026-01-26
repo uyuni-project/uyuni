@@ -125,7 +125,7 @@ public class ActionFormatterTest extends RhnBaseTestCase {
     public void testScriptFormatter() throws Exception {
 
         Action a = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
-        a = (Action) reload(a);
+        a = (Action) TestUtils.reload(a);
         a.setSchedulerUser(user);
         ActionFormatter af = a.getFormatter();
         assertNotNull(af);

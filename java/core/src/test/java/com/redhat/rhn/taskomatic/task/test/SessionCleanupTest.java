@@ -53,7 +53,7 @@ public class SessionCleanupTest extends RhnBaseTestCase {
             commit it to the database in order for the py/sql calls to work correctly
             due to py/sql and Hibernate's JUnit test behavior not playing well together
         */
-        commitAndCloseSession();
+        TestUtils.commitAndCloseSession();
 
         /*
             set delete batch size to 1 to make sure only one entry is deleted.

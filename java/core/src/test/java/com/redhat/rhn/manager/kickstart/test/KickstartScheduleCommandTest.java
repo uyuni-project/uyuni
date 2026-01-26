@@ -227,7 +227,7 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
 
         FileList list1 = KickstartDataTest.createFileList1(user.getOrg());
         CommonFactory.saveFileList(list1);
-        list1 = reload(list1);
+        list1 = TestUtils.reload(list1);
         ksdata.addPreserveFileList(list1);
         KickstartFactory.saveKickstartData(ksdata);
 
@@ -235,7 +235,7 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
                 scheduleKickstartAction(this.ksdata, this.user,
                         server, new Date(), "extraoptions", "localhost");
         ActionFactory.save(kickstartAction);
-        flushAndEvict(kickstartAction);
+        TestUtils.flushAndEvict(kickstartAction);
         assertNotNull(kickstartAction.getId());
         assertNotNull(kickstartAction.getKickstartActionDetails().
                 getFileLists());

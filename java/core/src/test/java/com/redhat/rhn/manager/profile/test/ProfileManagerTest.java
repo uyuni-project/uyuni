@@ -109,7 +109,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         // This call has an embedded transaction in the stored procedure:
         // lookup_transaction_package(:operation, :n, :e, :v, :r, :a)
         // which can cause deadlocks.  We are forced to call commitAndCloseTransaction()
-        commitAndCloseSession();
+        TestUtils.commitAndCloseSession();
         commitHappened();
 
         PackageAction action = ProfileManager.syncToSystem(

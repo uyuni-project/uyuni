@@ -39,6 +39,7 @@ import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -141,7 +142,7 @@ public class KickstartHelperTest extends BaseTestCaseWithUser {
         KickstartSession session =
             KickstartSessionTest.createKickstartSession(ksdata, user);
         KickstartFactory.saveKickstartSession(session);
-        session = (KickstartSession) reload(session);
+        session = (KickstartSession) TestUtils.reload(session);
         assertNotSame(session.getState(), KickstartFactory.SESSION_STATE_CONFIG_ACCESSED);
 
         String encodedSession = SessionSwap.encodeData(session.getId().toString());

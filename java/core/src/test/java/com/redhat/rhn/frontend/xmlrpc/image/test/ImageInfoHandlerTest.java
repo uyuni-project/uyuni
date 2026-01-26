@@ -63,6 +63,7 @@ import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.ImageTestUtils;
+import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.webui.services.impl.SaltSSHService;
 import com.suse.manager.webui.services.impl.SaltService;
@@ -245,7 +246,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         Package p = e.getPackages().iterator().next();
         ErrataCacheManager.insertImageNeededErrataCache(inf1.getId(), e.getId(), p.getId());
 
-        clearSession();
+        TestUtils.clearSession();
 
         List<ErrataOverview> array = handler.getRelevantErrata(admin, inf1.getId().intValue());
         assertEquals(1, array.size());

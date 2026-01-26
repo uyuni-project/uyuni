@@ -213,7 +213,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
                                                 baseChannel, true, null);
 
 
-        temp = (ActivationKey)reload(key2);
+        temp = (ActivationKey)TestUtils.reload(key2);
         assertTrue(temp.getKey().endsWith(keyName));
         assertEquals(note, temp.getNote());
         assertEquals(usageLimit, temp.getUsageLimit());

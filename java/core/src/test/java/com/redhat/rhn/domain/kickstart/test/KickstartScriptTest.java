@@ -61,7 +61,7 @@ public class KickstartScriptTest extends BaseTestCaseWithUser {
     public void testScript() throws Exception {
         KickstartData ksdata = KickstartDataTest.createKickstartWithOptions(user.getOrg());
         KickstartFactory.saveKickstartData(ksdata);
-        ksdata = (KickstartData) reload(ksdata);
+        ksdata = (KickstartData) TestUtils.reload(ksdata);
         assertNotNull(ksdata.getScripts());
         assertEquals(5, ksdata.getScripts().size());
         KickstartScript ks2 = ksdata.getScripts().iterator().next();
@@ -71,7 +71,7 @@ public class KickstartScriptTest extends BaseTestCaseWithUser {
         // Test delete
         ksdata.removeScript(ks2);
         KickstartFactory.saveKickstartData(ksdata);
-        ksdata = (KickstartData) reload(ksdata);
+        ksdata = (KickstartData) TestUtils.reload(ksdata);
         assertEquals(4, ksdata.getScripts().size());
     }
 
@@ -84,7 +84,7 @@ public class KickstartScriptTest extends BaseTestCaseWithUser {
         ksdata.addScript(kss2);
         assertTrue(kss1.getPosition() < kss2.getPosition());
         KickstartFactory.saveKickstartData(ksdata);
-        reload(ksdata);
+        TestUtils.reload(ksdata);
         assertTrue(kss1.getPosition() < kss2.getPosition());
     }
 
@@ -94,7 +94,7 @@ public class KickstartScriptTest extends BaseTestCaseWithUser {
         KickstartData ksdata = KickstartDataTest.createKickstartWithOptions(user.getOrg());
         ksdata.getScripts().clear();
         KickstartFactory.saveKickstartData(ksdata);
-        ksdata = (KickstartData) reload(ksdata);
+        ksdata = (KickstartData) TestUtils.reload(ksdata);
 
         // Create 2 scripts, one with data, one without.
         KickstartScript script = createPost(ksdata);
@@ -112,7 +112,7 @@ public class KickstartScriptTest extends BaseTestCaseWithUser {
         TestUtils.saveAndFlush(scriptEmpty);
 
         KickstartFactory.saveKickstartData(ksdata);
-        ksdata = (KickstartData) reload(ksdata);
+        ksdata = (KickstartData) TestUtils.reload(ksdata);
         Iterator i = ksdata.getScripts().iterator();
         boolean found = false;
         assertEquals(2, ksdata.getScripts().size());

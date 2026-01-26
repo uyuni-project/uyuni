@@ -31,6 +31,7 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.SessionSetHelper;
 import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
+import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.Test;
@@ -81,7 +82,7 @@ public class SyncActionsTest extends RhnMockStrutsTestCase {
         // lookup_transaction_package(:operation, :n, :e, :v, :r, :a)
         // which can cause deadlocks.  We are forced commit the transaction
         // and close the session.
-        commitAndCloseSession();
+        TestUtils.commitAndCloseSession();
         commitHappened();
 
         SyncSystemsProfilesAction action = new SyncSystemsProfilesAction();

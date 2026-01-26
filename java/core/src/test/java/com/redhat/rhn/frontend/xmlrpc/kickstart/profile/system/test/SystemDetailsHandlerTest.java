@@ -213,7 +213,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         CryptoKey key = CryptoTest.createTestKey(userNotOrgOne.getOrg());
         KickstartFactory.saveCryptoKey(key);
         assertNotNull(KickstartFactory.lookupCryptoKeyById(key.getId(), key.getOrg()));
-        flushAndEvict(key);
+        TestUtils.flushAndEvict(key);
 
         //   Create profile to add the key to
         KickstartData profile = createProfile(userNotOrgOne);
@@ -258,7 +258,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         CryptoKey key = CryptoTest.createTestKey(userNotOrgOne.getOrg());
         KickstartFactory.saveCryptoKey(key);
         assertNotNull(KickstartFactory.lookupCryptoKeyById(key.getId(), key.getOrg()));
-        flushAndEvict(key);
+        TestUtils.flushAndEvict(key);
 
         //   Create profile to add the key to
         KickstartData profile = createProfile(userNotOrgOne);
@@ -293,7 +293,7 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
         CryptoKey key = CryptoTest.createTestKey(userNotOrgOne.getOrg());
         KickstartFactory.saveCryptoKey(key);
         assertNotNull(KickstartFactory.lookupCryptoKeyById(key.getId(), key.getOrg()));
-        flushAndEvict(key);
+        TestUtils.flushAndEvict(key);
 
         //   Create profile to add the key to
         KickstartData profile = createProfile(userNotOrgOne);

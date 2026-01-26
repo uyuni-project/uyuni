@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.common.CommonFactory;
 import com.redhat.rhn.domain.common.FileList;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.manager.kickstart.FilePreservationListsCommand;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
 
@@ -44,9 +45,9 @@ public class FilePreservationListsCommandTest extends BaseKickstartCommandTestCa
         CommonFactory.saveFileList(list2);
         CommonFactory.saveFileList(list3);
 
-        list1 = (FileList) reload(list1);
-        list2 = (FileList) reload(list2);
-        list3 = (FileList) reload(list3);
+        list1 = (FileList) TestUtils.reload(list1);
+        list2 = (FileList) TestUtils.reload(list2);
+        list3 = (FileList) TestUtils.reload(list3);
 
         ArrayList ids = new ArrayList<>();
         ids.add(list1.getId());
@@ -56,11 +57,11 @@ public class FilePreservationListsCommandTest extends BaseKickstartCommandTestCa
         cmd.addFileListsByIds(ids);
         cmd.store();
 
-        flushAndEvict(cmd.getKickstartData());
+        TestUtils.flushAndEvict(cmd.getKickstartData());
         assertEquals(3, cmd.getKickstartData().getPreserveFileLists().size());
         cmd.removeFileListsByIds(ids);
         cmd.store();
-        flushAndEvict(cmd.getKickstartData());
+        TestUtils.flushAndEvict(cmd.getKickstartData());
 
         assertTrue(cmd.getKickstartData().getPreserveFileLists().isEmpty());
     }
