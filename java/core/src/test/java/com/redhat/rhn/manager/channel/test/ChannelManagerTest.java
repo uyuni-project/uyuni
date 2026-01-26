@@ -51,6 +51,7 @@ import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
+import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
@@ -96,7 +97,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -107,7 +107,6 @@ import java.util.Set;
 /**
  * ChannelManagerTest
  */
-@SuppressWarnings("deprecation")
 @ExtendWith(JUnit5Mockery.class)
 public class ChannelManagerTest extends BaseTestCaseWithUser {
 
@@ -234,8 +233,8 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         OrgFactory.save(user.getOrg());
         ChannelFactory.save(channel);
         ChannelFactory.save(childChannel);
-        TestUtils.flushAndEvict(channel);
-        TestUtils.flushAndEvict(childChannel);
+
+        TestUtils.clearSession();
 
         DataResult<ChannelTreeNode> dr = ChannelManager.allChannelTree(user, null);
         assertNotEmpty(dr);
@@ -286,17 +285,22 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     public void testUpdateSystemsChannelsInfo() throws Exception {
         ActionManager.setTaskomaticApi(getTaskomaticApi());
 
-        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
         Channel base = ChannelFactoryTest.createBaseChannel(user);
         Channel child = ChannelFactoryTest.createTestChannel(user);
+
+        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
         testMinionServer.addChannel(base);
         testMinionServer.addChannel(child);
-        assertTrue(AccessTokenFactory.generate(testMinionServer, Collections.singleton(base)).isPresent());
-        assertTrue(AccessTokenFactory.generate(testMinionServer, Collections.singleton(child)).isPresent());
-        MinionServer minionServer = TestUtils.saveAndReload(testMinionServer);
+        assertTrue(AccessTokenFactory.generate(testMinionServer, Set.of(base)).isPresent());
+        assertTrue(AccessTokenFactory.generate(testMinionServer, Set.of(child)).isPresent());
+        MinionServer minionServer = TestUtils.save(testMinionServer);
 
         ChannelManager.deleteChannel(user, child.getLabel(), true);
-        Optional<Long> actionId = ChannelManager.applyChannelState(user, Collections.singletonList(minionServer));
+        Optional<Long> actionId = ChannelManager.applyChannelState(user, List.of(minionServer));
+        TestUtils.clearSession();
+
+        minionServer = MinionServerFactory.findByMinionId(minionServer.getMinionId()).orElse(null);
+        assertNotNull(minionServer);
         assertEquals(1, minionServer.getChannels().size());
         assertTrue(actionId.isPresent());
     }
@@ -953,19 +957,15 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         errataList.add(e);
         ErrataFactory.addToChannel(errataList, c, user, false);
-
-        e = TestUtils.saveAndReload(e);
-
         assertTrue(e.getChannels().contains(c));
 
-        Set<Long> eids = new HashSet<>();
-        eids.add(e.getId());
+        ChannelManager.removeErrata(c, Set.of(e.getId()), user);
+        TestUtils.clearSession();
 
-        ChannelManager.removeErrata(c, eids, user);
-        e = TestUtils.saveAndReload(e);
+        e = ErrataFactory.lookupErrataById(e.getId());
         assertFalse(e.getChannels().contains(c));
         c = ChannelManager.lookupByLabel(user.getOrg(), c.getLabel());
-        assertFalse(c.getErratas().contains(eids));
+        assertFalse(c.getErratas().contains(e));
     }
 
     @Test
