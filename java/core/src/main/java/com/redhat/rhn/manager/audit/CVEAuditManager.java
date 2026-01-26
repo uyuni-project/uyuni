@@ -191,20 +191,16 @@ public class CVEAuditManager {
      * @param parentChannelID ID of a parent channel
      * @return list of channels relevant for given channel products
      */
-    public static List<Channel> findProductChannels(List<Long> channelProductIDs,
-            Long parentChannelID) {
-        CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<Channel> query = builder.createQuery(Channel.class);
-
-        Root<Channel> root = query.from(Channel.class);
-        query.where(builder.and(
-                root.get("product").get("id").in(channelProductIDs),
-                builder.or(
-                        builder.equal(root.get("id"), parentChannelID),
-                        builder.equal(root.get("parentChannel"), parentChannelID)
-                )
-        ));
-        return getSession().createQuery(query).list();
+    public static List<Channel> findProductChannels(List<Long> channelProductIDs, Long parentChannelID) {
+        return getSession()
+                .createQuery("""
+                        FROM Channel ch
+                        WHERE ch.product.id IN (:channelProductIDs)
+                                AND (ch.id = :parentChannelId OR ch.parentChannel.id = :parentChannelId)
+                        """, Channel.class)
+                .setParameterList("channelProductIDs", channelProductIDs)
+                .setParameter("parentChannelId", parentChannelID)
+                .list();
     }
 
     /**
