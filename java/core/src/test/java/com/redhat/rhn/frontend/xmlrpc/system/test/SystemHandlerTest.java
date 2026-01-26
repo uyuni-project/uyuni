@@ -2767,7 +2767,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         products.add(installedPrd);
 
         server.setInstalledProducts(products);
-        TestUtils.saveAndReload(server);
+        server = TestUtils.saveAndReload(server);
 
         assertNotNull(server.getInstalledProductSet().orElse(null));
 
@@ -2825,7 +2825,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         products.add(installedExt);
 
         server.setInstalledProducts(products);
-        TestUtils.saveAndReload(server);
+        server = TestUtils.saveAndReload(server);
 
         assertNotNull(server.getInstalledProductSet().orElse(null));
 
@@ -2892,7 +2892,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         products.add(installedExt2);
 
         server.setInstalledProducts(products);
-        TestUtils.saveAndReload(server);
+        server = TestUtils.saveAndReload(server);
 
         assertNotNull(server.getInstalledProductSet().orElse(null));
 
@@ -2930,7 +2930,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         products.add(new InstalledProduct("unknown-product", "1", arch, null, false));
 
         server.setInstalledProducts(products);
-        TestUtils.saveAndReload(server);
+        server = TestUtils.saveAndReload(server);
 
         results = handler.getInstalledProducts(admin, server.getId().intValue());
 
@@ -3118,7 +3118,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertEquals("", result);
 
         server.setKernelLiveVersion(testVersion);
-        TestUtils.saveAndReload(server);
+        server = TestUtils.saveAndReload(server);
 
         result = handler.getKernelLivePatch(admin, server.getId().intValue());
         assertEquals(testVersion, result);

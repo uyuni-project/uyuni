@@ -87,7 +87,7 @@ public class FileListEditCommandTest extends BaseTestCaseWithUser {
 
         assertEquals("1", f.getPath());
         assertEquals(8, cmd.getFileList().getFileNames().size());
-        list = (FileList) TestUtils.reload(list);
+        list = TestUtils.reload(list);
         assertNotNull(list.getId());
         assertNotNull(list.getOrg());
         assertEquals(files, cmd.getFileListString());

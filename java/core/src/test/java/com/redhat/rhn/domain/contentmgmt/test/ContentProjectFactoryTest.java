@@ -418,8 +418,8 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         assertFalse(sndEntryFromDb.getCreated().before(fstEntryFromDb.getCreated()));
 
         UserFactory.deleteUser(user.getId());
-        fstEntryFromDb = (ContentProjectHistoryEntry) TestUtils.reload(fstEntryFromDb);
-        sndEntryFromDb = (ContentProjectHistoryEntry) TestUtils.reload(sndEntryFromDb);
+        fstEntryFromDb = TestUtils.reload(fstEntryFromDb);
+        sndEntryFromDb = TestUtils.reload(sndEntryFromDb);
         assertNull(fstEntryFromDb.getUser());
         assertNull(sndEntryFromDb.getUser());
     }

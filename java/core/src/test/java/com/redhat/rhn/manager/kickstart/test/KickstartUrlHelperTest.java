@@ -136,7 +136,7 @@ public class KickstartUrlHelperTest extends BaseKickstartCommandTestCase {
         KickstartSession session =
             KickstartSessionTest.createKickstartSession(ksdata, user);
         TestUtils.saveAndFlush(session);
-        session = (KickstartSession) TestUtils.reload(session);
+        session = TestUtils.reload(session);
         String encodedId = SessionSwap.encodeData(session.getId().toString());
         String expected = "http://spacewalk.example.com/" +
             "ty/" + "";
@@ -161,7 +161,7 @@ public class KickstartUrlHelperTest extends BaseKickstartCommandTestCase {
         KickstartSession session =
             KickstartSessionTest.createKickstartSession(ksdata, user);
         TestUtils.saveAndFlush(session);
-        session = (KickstartSession) TestUtils.reload(session);
+        session = TestUtils.reload(session);
         String encodedId = SessionSwap.encodeData(session.getId().toString());
         String expected = "/ty/" + "";
         String url = helper.getKickstartMediaPath(session, new Date());

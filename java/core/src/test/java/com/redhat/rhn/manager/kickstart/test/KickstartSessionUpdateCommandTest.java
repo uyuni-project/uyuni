@@ -36,7 +36,7 @@ public class KickstartSessionUpdateCommandTest extends BaseKickstartCommandTestC
         KickstartSession session =
             KickstartSessionTest.createKickstartSession(ksdata, user);
         KickstartFactory.saveKickstartSession(session);
-        session = (KickstartSession) TestUtils.reload(session);
+        session = TestUtils.reload(session);
         KickstartSessionUpdateCommand cmd =
             new KickstartSessionUpdateCommand(session.getId());
         cmd.setSessionState(KickstartFactory.SESSION_STATE_CONFIG_ACCESSED);

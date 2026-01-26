@@ -62,7 +62,7 @@ public class ActivationKeysTest extends BaseKickstartEditTestCase {
             KickstartData ksdata) {
         ActivationKey key = ActivationKeyFactory.createNewKey(user, "some key");
         ActivationKeyFactory.save(key);
-        key = (ActivationKey) TestUtils.reload(key);
+        key = TestUtils.reload(key);
         Token t = TokenFactory.lookupById(key.getId());
         ksdata.addDefaultRegToken(t);
         return key;

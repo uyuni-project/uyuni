@@ -203,7 +203,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
         assertEquals(0, entry.getSortOrder().intValue());
 
         // test that entries are correct after reload()
-        TestUtils.reload(actionChain);
+        actionChain = TestUtils.reload(actionChain);
         assertEquals(1, actionChain.getEntries().size());
 
         ActionChainEntry secondEntry = ActionChainFactory.queueActionChainEntry(action,
@@ -316,7 +316,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
 
         TestUtils.saveAndFlush(actionChain);
         ActionChainFactory.removeActionChainEntrySortGaps(actionChain, 1);
-        TestUtils.saveAndReload(actionChain);
+        actionChain = TestUtils.saveAndReload(actionChain);
 
         List<Integer> result = new ArrayList<>();
         result.add(0);

@@ -40,7 +40,7 @@ public class CryptoTest extends BaseTestCaseWithUser {
     public void testCryptoKey() {
         CryptoKey key = createTestKey(user.getOrg());
         KickstartFactory.saveCryptoKey(key);
-        key = (CryptoKey) TestUtils.reload(key);
+        key = TestUtils.reload(key);
         assertNotNull(key.getId());
         String testString = "aaaaaabbbbb";
         key.setKey(new String(testString).getBytes(StandardCharsets.UTF_8));
@@ -58,7 +58,7 @@ public class CryptoTest extends BaseTestCaseWithUser {
         }
         key.setKey(buffer.toString().getBytes());
         KickstartFactory.saveCryptoKey(key);
-        key = (CryptoKey) TestUtils.reload(key);
+        key = TestUtils.reload(key);
         assertNotNull("You dont have the Oracle 10G drivers installed on your system!!!",
                 key.getKeyString());
     }
@@ -84,7 +84,7 @@ public class CryptoTest extends BaseTestCaseWithUser {
         KickstartFactory.saveCryptoKey(key);
         ksdata.addCryptoKey(key);
         KickstartFactory.saveKickstartData(ksdata);
-        ksdata = (KickstartData) TestUtils.reload(ksdata);
+        ksdata = TestUtils.reload(ksdata);
         return ksdata;
     }
 

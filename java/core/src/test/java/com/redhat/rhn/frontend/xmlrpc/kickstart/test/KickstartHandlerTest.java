@@ -287,7 +287,7 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
         KickstartData ks  = KickstartDataTest.createKickstartWithProfile(admin);
         String label = ks.getLabel();
         KickstartFactory.saveKickstartData(ks);
-        TestUtils.reload(ks);
+        ks = TestUtils.reload(ks);
 
         List<KickstartDto> list = handler.listKickstarts(admin);
         boolean foundKs = false;
@@ -304,7 +304,7 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
     public void testRenameProfile() throws Exception {
         KickstartData ks  = KickstartDataTest.createKickstartWithProfile(admin);
         KickstartFactory.saveKickstartData(ks);
-        ks = (KickstartData) TestUtils.reload(ks);
+        ks = TestUtils.reload(ks);
 
         String newLabel = TestUtils.randomString();
 
@@ -320,7 +320,7 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
         handler.renameProfile(admin, ks.getLabel(),
                 newLabel);
 
-        ks = (KickstartData) TestUtils.reload(ks);
+        ks = TestUtils.reload(ks);
         assertEquals(newLabel, ks.getLabel());
     }
 

@@ -104,7 +104,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
         serverPackages.add(testInstPack);
 
         ServerFactory.save(testServer);
-        testServer = (Server) TestUtils.reload(testServer);
+        testServer = TestUtils.reload(testServer);
 
         InstalledPackage pack = PackageFactory.lookupByNameAndServer(
                 testInstPack.getName().getName(), testServer);
@@ -170,7 +170,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
        TestUtils.saveAndFlush(provideProduct);
 
        ServerFactory.save(testServer);
-       testServer = (Server) TestUtils.reload(testServer);
+       testServer = TestUtils.reload(testServer);
 
        List<Package> missing = PackageFactory.
                findMissingProductPackagesOnServer(testServer.getId());
@@ -195,7 +195,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
         TestUtils.saveAndFlush(provideProduct);
 
         ServerFactory.save(testServer);
-        testServer = (Server) TestUtils.reload(testServer);
+        testServer = TestUtils.reload(testServer);
 
         List<Package> missing = PackageFactory.
                 findMissingProductPackagesOnServer(testServer.getId());
@@ -229,7 +229,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
        serverPackages.add(testInstPack);
 
        ServerFactory.save(testServer);
-       testServer = (Server) TestUtils.reload(testServer);
+       testServer = TestUtils.reload(testServer);
 
        List<Package> missing = PackageFactory.
                findMissingProductPackagesOnServer(testServer.getId());
@@ -281,7 +281,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
        serverPackages.add(testInstPack);
 
        ServerFactory.save(testServer);
-       testServer = (Server) TestUtils.reload(testServer);
+       testServer = TestUtils.reload(testServer);
 
        List<Package> missing = PackageFactory.
                findMissingProductPackagesOnServer(testServer.getId());
@@ -332,7 +332,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
        serverPackages.add(testInstPack);
 
        ServerFactory.save(testServer);
-       testServer = (Server) TestUtils.reload(testServer);
+       testServer = TestUtils.reload(testServer);
 
        List<Package> missing = PackageFactory.
                findMissingProductPackagesOnServer(testServer.getId());

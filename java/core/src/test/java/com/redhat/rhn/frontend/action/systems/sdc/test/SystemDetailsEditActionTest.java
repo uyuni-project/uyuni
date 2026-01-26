@@ -97,7 +97,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
         request.addParameter(SystemDetailsEditAction.RACK, "Imperial PC Rack");
         request.addParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
         actionPerform();
-        TestUtils.reload(s);
+        s = TestUtils.reload(s);
         verifyActionMessage("sdc.details.edit.propertieschanged");
         verifyForwardPath("/systems/details/Overview.do?sid=" + s.getId());
         assertEquals("Augustus", s.getName());

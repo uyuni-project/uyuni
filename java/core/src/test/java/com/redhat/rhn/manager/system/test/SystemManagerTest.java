@@ -883,8 +883,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         // that comes with the errata.
         PackageEvr upgradedPackageEvr =
                 PackageEvrFactory.lookupOrCreatePackageEvr("1", "1.0.0", "2", server.getPackageType());
-        upgradedPackageEvr =
-                TestUtils.saveAndReload(upgradedPackageEvr);
+        upgradedPackageEvr = TestUtils.saveAndReload(upgradedPackageEvr);
 
         ServerTestUtils.populateServerErrataPackages(org, server,
                 upgradedPackageEvr, ErrataFactory.ERRATA_TYPE_SECURITY);

@@ -44,7 +44,7 @@ public class TreeEditOperationTest extends TreeOperationTestBase {
         cmd.setLabel(nlabel);
         assertNull(cmd.store());
         TestUtils.flushAndEvict(cmd.getTree());
-        tree = (KickstartableTree) TestUtils.reload(tree);
+        tree = TestUtils.reload(tree);
         assertEquals(nlabel, tree.getLabel());
     }
 

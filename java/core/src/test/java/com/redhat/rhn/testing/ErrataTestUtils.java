@@ -163,7 +163,7 @@ public class ErrataTestUtils {
 
         channelFamily.setPublicChannelFamily(pcf);
 
-        channelFamily = (ChannelFamily) TestUtils.reload(channelFamily);
+        channelFamily = TestUtils.reload(channelFamily);
         return channelFamily;
     }
 

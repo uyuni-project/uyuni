@@ -63,7 +63,7 @@ public class BaseSessionTestCase extends RhnMockStrutsTestCase {
         sess.setServerProfile(p);
         TestUtils.saveAndFlush(sess);
         KickstartFactory.saveKickstartSession(sess);
-        sess = (KickstartSession) TestUtils.reload(sess);
+        sess = TestUtils.reload(sess);
     }
 
 

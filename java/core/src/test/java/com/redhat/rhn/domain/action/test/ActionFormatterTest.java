@@ -83,14 +83,14 @@ public class ActionFormatterTest extends RhnBaseTestCase {
         ActionFormatter af = areboot.getFormatter();
         ServerAction sa = (ServerAction) areboot.getServerActions().toArray()[0];
         sa.setStatusFailed();
-        TestUtils.saveAndReload(sa);
+        sa = TestUtils.saveAndReload(sa);
         assertTrue(af.getNotes().startsWith(
                 "<a href=\"/rhn/schedule/FailedSystems.do?aid="));
         assertTrue(af.getNotes().endsWith(
                 ">1 system</a></strong> failed to complete this action.<br/><br/>"));
 
         sa.setStatusCompleted();
-        TestUtils.saveAndReload(sa);
+        sa = TestUtils.saveAndReload(sa);
         assertTrue(af.getNotes().startsWith(
                 "<a href=\"/rhn/schedule/CompletedSystems.do?aid="));
         assertTrue(af.getNotes().endsWith(
@@ -125,7 +125,7 @@ public class ActionFormatterTest extends RhnBaseTestCase {
     public void testScriptFormatter() throws Exception {
 
         Action a = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
-        a = (Action) TestUtils.reload(a);
+        a = TestUtils.reload(a);
         a.setSchedulerUser(user);
         ActionFormatter af = a.getFormatter();
         assertNotNull(af);

@@ -72,7 +72,7 @@ public class KickstartPartitionCommandTest extends BaseTestCaseWithUser {
 
         assertNull(cmd.setPartitionData(partitions));
         assertNull(cmd.store());
-        k = (KickstartData) TestUtils.reload(k);
+        k = TestUtils.reload(k);
         assertNotNull(k.getPartitionData());
         assertTrue(k.getPartitionData().contains("partition swap.02 --size=8888 --ondisk=sda"));
 

@@ -1325,7 +1325,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         HibernateFactory.getSession().clear();
 
         minion = TestUtils.reload(minion);
-        TestUtils.reload(proxy);
+        proxy = TestUtils.reload(proxy);
 
         Server s = ServerFactory.lookupById(minion.getId());
         assertEquals(serverPaths.stream().findFirst().get(),
