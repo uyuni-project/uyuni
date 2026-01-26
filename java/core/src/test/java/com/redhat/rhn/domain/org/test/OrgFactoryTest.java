@@ -264,11 +264,11 @@ public class OrgFactoryTest extends RhnBaseTestCase {
         Org org = createTestOrg();
 
         org.getOrgConfig().setClmSyncPatches(false);
-        org = HibernateFactory.reload(org);
+        org = TestUtils.reload(org);
         assertFalse(org.getOrgConfig().isClmSyncPatches());
 
         org.getOrgConfig().setClmSyncPatches(true);
-        org = HibernateFactory.reload(org);
+        org = TestUtils.reload(org);
         assertTrue(org.getOrgConfig().isClmSyncPatches());
     }
 

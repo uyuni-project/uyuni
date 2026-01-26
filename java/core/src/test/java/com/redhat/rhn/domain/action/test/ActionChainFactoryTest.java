@@ -203,7 +203,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
         assertEquals(0, entry.getSortOrder().intValue());
 
         // test that entries are correct after reload()
-        HibernateFactory.reload(actionChain);
+        TestUtils.reload(actionChain);
         assertEquals(1, actionChain.getEntries().size());
 
         ActionChainEntry secondEntry = ActionChainFactory.queueActionChainEntry(action,

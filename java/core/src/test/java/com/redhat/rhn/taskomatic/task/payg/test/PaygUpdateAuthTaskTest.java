@@ -309,7 +309,7 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
                 will(throwException(new JSchException("My JSchException exception")));
             }});
         paygUpdateAuthTask.execute(null);
-        paygData = HibernateFactory.reload(paygData);
+        paygData = TestUtils.reload(paygData);
         assertContains(paygData.getErrorMessage(), "My JSchException exception");
         assertEquals(paygData.getStatus(), PaygSshData.Status.E);
     }
@@ -333,14 +333,14 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
             }});
         // First Call with error
         paygUpdateAuthTask.execute(null);
-        paygData = HibernateFactory.reload(paygData);
+        paygData = TestUtils.reload(paygData);
         assertContains(paygData.getErrorMessage(), "My PaygDataExtractException");
         assertEquals(paygData.getStatus(), PaygSshData.Status.E);
         assertEquals(0, UserNotificationFactory.listAllNotificationMessages().size());
 
         // Second Call with error
         paygUpdateAuthTask.execute(null);
-        paygData = HibernateFactory.reload(paygData);
+        paygData = TestUtils.reload(paygData);
         assertContains(paygData.getErrorMessage(), "My PaygDataExtractException");
         assertEquals(paygData.getStatus(), PaygSshData.Status.E);
         assertEquals(1, UserNotificationFactory.listAllNotificationMessages().size());
@@ -370,7 +370,7 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
             }});
         // first call successfull - set credentials and a header
         paygUpdateAuthTask.execute(null);
-        paygData = HibernateFactory.reload(paygData);
+        paygData = TestUtils.reload(paygData);
         assertEquals(paygData.getStatus(), PaygSshData.Status.S);
         Optional<CloudRMTCredentials> creds = paygData.getCredentials().castAs(CloudRMTCredentials.class);
         assertTrue(creds.isPresent());
@@ -380,7 +380,7 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
 
         // second call failed - set status to Error, but keep credentials
         paygUpdateAuthTask.execute(null);
-        paygData = HibernateFactory.reload(paygData);
+        paygData = TestUtils.reload(paygData);
 
         assertContains(paygData.getErrorMessage(), "My PaygDataExtractException");
         assertEquals(paygData.getStatus(), PaygSshData.Status.E);
@@ -393,7 +393,7 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
 
         // third call failed - invalidate credentials
         paygUpdateAuthTask.execute(null);
-        paygData = HibernateFactory.reload(paygData);
+        paygData = TestUtils.reload(paygData);
 
         assertContains(paygData.getErrorMessage(), "My PaygDataExtractException");
         assertEquals(paygData.getStatus(), PaygSshData.Status.E);
@@ -407,7 +407,7 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
 
         // forth call successfull - restore credentials and a header again
         paygUpdateAuthTask.execute(null);
-        paygData = HibernateFactory.reload(paygData);
+        paygData = TestUtils.reload(paygData);
         assertEquals(paygData.getStatus(), PaygSshData.Status.S);
         creds = paygData.getCredentials().castAs(CloudRMTCredentials.class);
         assertTrue(creds.isPresent());
@@ -425,7 +425,7 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
                 will(throwException(new Exception("My Exception")));
             }});
         paygUpdateAuthTask.execute(null);
-        paygData = HibernateFactory.reload(paygData);
+        paygData = TestUtils.reload(paygData);
         assertNull(paygData.getErrorMessage());
         assertEquals(paygData.getStatus(), PaygSshData.Status.E);
     }
@@ -439,7 +439,7 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
                 will(returnValue(paygInstanceInfo));
             }});
         paygUpdateAuthTask.execute(null);
-        paygData = HibernateFactory.reload(paygData);
+        paygData = TestUtils.reload(paygData);
         assertNull(paygData.getErrorMessage());
         assertEquals(paygData.getStatus(), PaygSshData.Status.S);
         assertEquals(0, UserNotificationFactory.listAllNotificationMessages().size());
