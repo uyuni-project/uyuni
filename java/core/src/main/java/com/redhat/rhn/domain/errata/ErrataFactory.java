@@ -481,17 +481,7 @@ public class ErrataFactory extends HibernateFactory {
      * @return Errata if found, otherwise null
      */
     public static Errata lookupErrataById(Long id) {
-        Errata retval;
-        try {
-            retval = getSession().createQuery("FROM Errata AS e WHERE e.id = :id", Errata.class)
-                    .setParameter("id", id, StandardBasicTypes.LONG)
-                    .uniqueResult();
-        }
-        catch (HibernateException he) {
-            log.error("Error loading Errata from DB", he);
-            throw new HibernateRuntimeException("Error loading Errata from db");
-        }
-        return retval;
+        return getSession().find(Errata.class, id);
     }
 
     /**
