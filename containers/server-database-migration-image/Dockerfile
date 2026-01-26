@@ -43,4 +43,4 @@ LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server-database-migration:${PR
 # endlabelprefix
 LABEL org.uyuni.version="${PRODUCT_VERSION}"
 
-ENTRYPOINT ["/etc/init.d/00-pgsqlVersionUpgrade.sh"]
+ENTRYPOINT ["/docker-entrypoint-initdb.d/00-pgsqlVersionUpgrade.sh"]
