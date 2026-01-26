@@ -47,7 +47,6 @@ import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
-import com.redhat.rhn.domain.action.server.test.ServerActionTest;
 import com.redhat.rhn.domain.action.supportdata.SupportDataAction;
 import com.redhat.rhn.domain.action.supportdata.SupportDataActionDetails;
 import com.redhat.rhn.domain.channel.Channel;
@@ -1629,19 +1628,14 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         event.setServer(server);
         event.setDetails("details");
         event.setSummary("summary");
+        server.getHistory().add(event);
+        server = ServerFactory.save(server);
 
-        Set<ServerHistoryEvent> history = server.getHistory();
-        server.setHistory(history);
-        TestUtils.saveAndFlush(event);
-        TestUtils.saveAndFlush(server);
-
-        Action action = ActionManager.scheduleApplyStates(admin, Collections.singletonList(server.getId()),
-                Arrays.asList("channels", "packages"), new Date());
-
-        final ServerAction serverAction = ServerActionTest.createServerAction(server, action);
+        var action = ActionManager.scheduleApplyStates(admin, List.of(server.getId()), List.of("channels", "packages"), new Date());
+        var serverAction = action.getServerAction(server.getId());
         serverAction.setStatusPickedUp();
 
-        ActionFactory.save(action);
+        action = ActionFactory.save(action);
         TestUtils.clearSession();
 
         // Retrieve the action event detail
@@ -1682,19 +1676,17 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         Errata e = ErrataFactoryTest.createTestErrata(admin.getOrg().getId());
         e.setAdvisoryType(ErrataFactory.ERRATA_TYPE_BUG);
-        TestUtils.flushAndEvict(e);
+
         Server s = ServerFactoryTest.createTestServer(admin);
         ServerFactory.save(s);
-        TestUtils.flushAndEvict(s);
-
         UserFactory.save(admin);
-        TestUtils.flushAndEvict(admin);
-        Package p = e.getPackages().iterator().next();
-        ErrataCacheManager.insertNeededErrataCache(
-                s.getId(), e.getId(), p.getId());
 
-        List<ErrataOverview> list = handler.getRelevantErrata(admin,
-                s.getId().intValue());
+        Package p = e.getPackages().iterator().next();
+        ErrataCacheManager.insertNeededErrataCache(s.getId(), e.getId(), p.getId());
+
+        TestUtils.clearSession();
+
+        List<ErrataOverview> list = handler.getRelevantErrata(admin, s.getId().intValue());
         assertEquals(list.size(), 1);
         ErrataOverview errata = list.get(0);
         assertEquals(e.getId().intValue(), errata.getId().intValue());
