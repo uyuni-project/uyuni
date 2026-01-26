@@ -189,10 +189,8 @@ public class MinionServerFactory extends HibernateFactory {
        return HibernateFactory.getSession()
                .createQuery("""
                        SELECT sa
-                       FROM   ServerAction AS sa
-                       JOIN   sa.server AS s
-                       WHERE  type(s) != com.redhat.rhn.domain.server.MinionServer
-                       AND    action_id = :id
+                       FROM   ServerAction AS sa JOIN sa.server AS s
+                       WHERE  type(s) != MinionServer AND sa.parentAction.id = :id
                 """, ServerAction.class)
                .setParameter("id", actionId)
                .getResultList();

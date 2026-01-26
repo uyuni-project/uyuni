@@ -309,6 +309,22 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
     }
 
     /**
+     * Retrieve the server action for the specified server, if present
+     * @param serverId the server id
+     * @return the {@link ServerAction}, or null if no server action is found for the given server
+     */
+    public ServerAction getServerAction(Long serverId) {
+        if (serverId == null || serverActions == null || serverActions.isEmpty()) {
+            return null;
+        }
+
+        return serverActions.stream()
+                .filter(sa -> serverId.equals(sa.getServerId()))
+                .findFirst()
+                .orElse(null);
+    }
+
+    /**
     * Set the Scheduler User who scheduled this Action
     * @param schedulerIn the User who did the scheduling
     */

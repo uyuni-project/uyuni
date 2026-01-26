@@ -22,7 +22,6 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
-import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
 import com.redhat.rhn.domain.action.ansible.InventoryAction;
@@ -91,6 +90,7 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
+import org.hibernate.query.QueryFlushMode;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -327,15 +327,22 @@ public class ActionFactory extends HibernateFactory {
     public static void scheduleForExecution(Action action, Set<Long> serverIds) {
         maintenanceManager.canActionBeScheduled(serverIds, action);
 
-        Map<String, Object> params = new HashMap<>();
-        params.put("status_id", ActionFactory.STATUS_QUEUED.getId());
-        params.put("tries", ActionFactory.REMAINING_TRIES);
-        params.put("parent_id", action.getId());
+        HibernateFactory.getSession()
+                .createMutationQuery("""
+                        INSERT INTO ServerAction (serverId, parentAction, status, remainingTries)
+                             SELECT s.id, :parentAction, :status, :tries
+                               FROM Server s
+                              WHERE s.id IN (:ids)
+                        """)
+                // Ensure the actions and the servers currently in session are flushed to the database
+                .setQueryFlushMode(QueryFlushMode.FLUSH)
+                .setParameterList("ids", serverIds)
+                .setParameter("parentAction", action)
+                .setParameter("status", ActionFactory.STATUS_QUEUED)
+                .setParameter("tries",  ActionFactory.REMAINING_TRIES)
+                .executeUpdate();
 
-        WriteMode m = ModeFactory.getWriteMode("Action_queries", "insert_server_actions");
-        List<Long> sidList = new ArrayList<>();
-        sidList.addAll(serverIds);
-        m.executeUpdate(params, sidList);
+        getSession().refresh(action);
     }
 
     /**
@@ -767,8 +774,9 @@ public class ActionFactory extends HibernateFactory {
      * Insert or Update a Action.
      * @param actionIn Action to be stored in database.
      * @return action
+     * @param <T> The type of the action
      */
-    public static Action save(Action actionIn) {
+    public static <T extends Action> T save(T actionIn) {
         /*
          * If we are trying to commit a package action, make sure
          * the packageEvr stored proc is called first so that
@@ -789,7 +797,7 @@ public class ActionFactory extends HibernateFactory {
         }
 
 
-        Action action = singleton.saveObject(actionIn);
+        T action = singleton.saveObject(actionIn);
         if (action.getServerActions() != null) {
             action.getServerActions().stream()
                     .map(sa -> sa.getServerId())
