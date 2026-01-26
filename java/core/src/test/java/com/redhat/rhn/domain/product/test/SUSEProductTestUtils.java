@@ -602,8 +602,6 @@ public class SUSEProductTestUtils extends HibernateFactory {
         csm.updateChannelFamilies(channelFamilies);
         csm.updateSUSEProducts(products, staticTree, addRepos);
         if (withRepos) {
-            HibernateFactory.getSession().flush();
-            HibernateFactory.getSession().clear();
             csm.refreshRepositoriesAuthentication(repositories, contentSyncSource, null);
         }
         ManagerInfoFactory.setLastMgrSyncRefresh();
