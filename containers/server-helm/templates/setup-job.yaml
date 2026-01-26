@@ -12,7 +12,7 @@ spec:
   template:
     metadata:
       labels:
-        app.kubernetes.io/component: server
+        app.kubernetes.io/component: server-setup
         app.kubernetes.io/part-of: uyuni
     spec:
       containers:
