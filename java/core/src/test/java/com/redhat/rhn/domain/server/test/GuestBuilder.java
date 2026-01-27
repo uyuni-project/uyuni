@@ -80,15 +80,6 @@ public class GuestBuilder {
 
         guestDAO.saveVirtualInstance(guest);
         session.flush();
-        session.evict(guest);
-
-        if (guest.isRegisteredGuest()) {
-            session.evict(guest.getGuestSystem());
-        }
-
-        if (guest.getHostSystem() != null) {
-            session.evict(guest.getHostSystem());
-        }
 
         isSaveRequired = false;
     }
