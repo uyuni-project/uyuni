@@ -21,7 +21,7 @@ REGISTRY_PORT=":5000"
 
 # --- Run Containers ---
 
-$PODMAN_CMD run -d --security-opt seccomp=unconfined --network network -v /tmp/testing:/tmp --name controller -h controller -v ${src_dir}/testsuite:/testsuite ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-controller-dev:$UYUNI_VERSION
+$PODMAN_CMD run -d --pull newer --security-opt seccomp=unconfined --network network -v /tmp/testing:/tmp --name controller -h controller -v ${src_dir}/testsuite:/testsuite ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-controller-dev:$UYUNI_VERSION
 cat <<EOF | $PODMAN_CMD exec -i controller bash --login -c 'cat > /etc/profile.local'
 # Generated /etc/profile.local for testsuite environment
 export SCC_CREDENTIALS="test|test"
@@ -50,10 +50,10 @@ export TAGS="\"not @flaky\""
 EOF
 
 $PODMAN_CMD exec controller bash --login -c 'source /etc/profile.local'
-$PODMAN_CMD run -d --network network --name ${AUTH_REGISTRY} -h ${AUTH_REGISTRY} -e AUTH_REGISTRY=${AUTH_REGISTRY} -e AUTH_REGISTRY_USER=${AUTH_REGISTRY_USER} -e AUTH_REGISTRY_PASSWD=${AUTH_REGISTRY_PASSWD} -p 5001:5000 docker.io/library/registry:2
-$PODMAN_CMD run -d --network network --name ${NO_AUTH_REGISTRY} -h ${NO_AUTH_REGISTRY} -e NO_AUTH_REGISTRY=${NO_AUTH_REGISTRY} -e REGISTRY_HTTP_ADDR="0.0.0.0:5000" -p 5002:5000 docker.io/library/registry:2
+$PODMAN_CMD run --pull newer -d --network network --name ${AUTH_REGISTRY} -h ${AUTH_REGISTRY} -e AUTH_REGISTRY=${AUTH_REGISTRY} -e AUTH_REGISTRY_USER=${AUTH_REGISTRY_USER} -e AUTH_REGISTRY_PASSWD=${AUTH_REGISTRY_PASSWD} -p 5001:5000 docker.io/library/registry:2
+$PODMAN_CMD run --pull newer -d --network network --name ${NO_AUTH_REGISTRY} -h ${NO_AUTH_REGISTRY} -e NO_AUTH_REGISTRY=${NO_AUTH_REGISTRY} -e REGISTRY_HTTP_ADDR="0.0.0.0:5000" -p 5002:5000 docker.io/library/registry:2
 
-$PODMAN_CMD run --privileged -d --network network -v ${src_dir}/testsuite/dockerfiles/server-all-in-one-dev/mirror:/mirror -v ${src_dir}/testsuite:/testsuite -v /tmp/testing/buildhost_product_uuid:/sys/class/dmi/id/product_uuid -v /tmp/testing:/tmp -v ${src_dir}/testsuite/podman_runner/salt-minion-entry-point.sh:/salt-minion-entry-point.sh --volume /run/dbus/system_bus_socket:/run/dbus/system_bus_socket:ro -v /var/run/docker.sock:/var/run/docker.sock --name buildhost -h buildhost ghcr.io/$UYUNI_PROJECT/uyuni/ci-buildhost:$UYUNI_VERSION bash -c "/salt-minion-entry-point.sh server 1-SUSE-KEY-x86_64"
+$PODMAN_CMD run --pull newer --privileged -d --network network -v ${src_dir}/testsuite/dockerfiles/server-all-in-one-dev/mirror:/mirror -v ${src_dir}/testsuite:/testsuite -v /tmp/testing/buildhost_product_uuid:/sys/class/dmi/id/product_uuid -v /tmp/testing:/tmp -v ${src_dir}/testsuite/podman_runner/salt-minion-entry-point.sh:/salt-minion-entry-point.sh --volume /run/dbus/system_bus_socket:/run/dbus/system_bus_socket:ro -v /var/run/docker.sock:/var/run/docker.sock --name buildhost -h buildhost ghcr.io/$UYUNI_PROJECT/uyuni/ci-buildhost:$UYUNI_VERSION bash -c "/salt-minion-entry-point.sh server 1-SUSE-KEY-x86_64"
 $PODMAN_CMD exec buildhost bash -c "sed -e 's/http:\/\/download.opensuse.org/file:\/\/\/mirror\/download.opensuse.org/g' -i /etc/zypp/repos.d/*"
 $PODMAN_CMD exec buildhost bash -c "sed -e 's/https:\/\/download.opensuse.org/file:\/\/\/mirror\/download.opensuse.org/g' -i /etc/zypp/repos.d/*"
 
