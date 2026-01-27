@@ -62,6 +62,10 @@
             <artifactId>jakarta.mail</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.eclipse.angus</groupId>
+            <artifactId>jakarta.mail</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.ongres.scram</groupId>
             <artifactId>client</artifactId>
         </dependency>
