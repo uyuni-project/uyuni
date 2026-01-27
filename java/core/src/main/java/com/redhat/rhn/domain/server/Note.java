@@ -143,8 +143,6 @@ public class Note extends BaseDomainHelper {
                                   .append(note, castOther.note)
                                   .append(creator, castOther.creator)
                                   .append(server, castOther.server)
-                                  .append(getCreated(), castOther.getCreated())
-                                  .append(getModified(), castOther.getModified())
                                   .isEquals();
     }
 
@@ -158,8 +156,6 @@ public class Note extends BaseDomainHelper {
                                     .append(note)
                                     .append(creator)
                                     .append(server)
-                                    .append(getCreated())
-                                    .append(getModified())
                                     .toHashCode();
     }
 }
