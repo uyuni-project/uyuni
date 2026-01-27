@@ -270,16 +270,16 @@ public class HubFactory extends HibernateFactory {
         }
 
         // Store the new token
-        getSession().merge(accessToken);
-        return accessToken;
+        return getSession().merge(accessToken);
     }
 
     /**
      * Updates an existing access token
      * @param accessToken the access token to update
+     * @return the updated {@link  IssAccessToken}
      */
-    public void updateToken(IssAccessToken accessToken) {
-        getSession().merge(accessToken);
+    public IssAccessToken updateToken(IssAccessToken accessToken) {
+        return getSession().merge(accessToken);
     }
 
     /**
