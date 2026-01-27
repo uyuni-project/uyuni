@@ -808,11 +808,12 @@ public class HubManager {
      * Updates the give token in the database
      * @param user the user performing the operation
      * @param issAccessToken the token
+     * @return the updated {@link IssAccessToken}
      */
-    public void updateToken(User user, IssAccessToken issAccessToken) {
+    public IssAccessToken updateToken(User user, IssAccessToken issAccessToken) {
         ensureSatAdmin(user);
 
-        hubFactory.updateToken(issAccessToken);
+        return hubFactory.updateToken(issAccessToken);
     }
 
     private ManagerInfoJson collectManagerInfo() {
