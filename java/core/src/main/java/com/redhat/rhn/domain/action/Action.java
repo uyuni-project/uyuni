@@ -408,14 +408,10 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
         return new EqualsBuilder().append(this.getId(), castOther.getId())
                                   .append(this.getOrg(), castOther.getOrg())
                                   .append(this.getName(), castOther.getName())
-                                  .append(this.getEarliestAction(),
-                                          castOther.getEarliestAction())
+                                  .append(this.getEarliestAction(), castOther.getEarliestAction())
                                   .append(this.getVersion(), castOther.getVersion())
                                   .append(this.getArchived(), castOther.getArchived())
-                                  .append(this.getCreated(), castOther.getCreated())
-                                  .append(this.getModified(), castOther.getModified())
-                                  .append(this.getPrerequisite(),
-                                          castOther.getPrerequisite())
+                                  .append(this.getPrerequisite(), castOther.getPrerequisite())
                                   .append(this.getActionType(), castOther.getActionType())
                                   .isEquals();
     }
@@ -430,8 +426,6 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
                                     .append(this.getEarliestAction())
                                     .append(this.getVersion())
                                     .append(this.getArchived())
-                                    .append(this.getCreated())
-                                    .append(this.getModified())
                                     .append(this.getPrerequisite())
                                     .append(this.getActionType()).toHashCode();
     }

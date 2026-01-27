@@ -20,7 +20,6 @@ import static com.suse.manager.model.maintenance.MaintenanceSchedule.ScheduleTyp
 import static java.util.Optional.of;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -30,8 +29,6 @@ import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
-import com.redhat.rhn.domain.action.HardwareRefreshAction;
-import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.server.test.ServerActionTest;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
@@ -468,6 +465,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         /* remove the calendar */
         mcal = mm.lookupCalendarByUserAndLabel(
                 user, "multicalendar").orElseThrow(() -> new RuntimeException("Cannot find Calendar"));
+        TestUtils.clearSession();
         List<RescheduleResult> results = mm.remove(user, mcal, false);
         assertEquals(1, results.size());
         assertFalse(results.get(0).isSuccess());
@@ -569,13 +567,14 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         /* remove the calendar */
         mcal = mm.lookupCalendarByUserAndLabel(user, "multicalendar")
                 .orElseThrow(() -> new RuntimeException("Cannot find Calendar"));
+        TestUtils.clearSession();
         List<RescheduleResult> results = mm.remove(user, mcal, true);
         assertEquals(2, results.size());
         for (RescheduleResult r : results) {
             assertTrue(r.isSuccess());
             if (r.getScheduleName().equals("SAP Maintenance Window")) {
                 r.getActionsServers().keySet().forEach(a -> {
-                    assertInstanceOf(ErrataAction.class, a);
+                    assertEquals(ActionFactory.TYPE_ERRATA, a.getActionType());
 
                     assertEquals(sapAction1, a);
                     r.getActionsServers().get(a).forEach(s -> assertEquals(sapServer.getId(), s.getId()));
@@ -583,7 +582,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
             }
             else if (r.getScheduleName().equals("Core Server Window")) {
                 r.getActionsServers().keySet().forEach(a -> {
-                    assertInstanceOf(HardwareRefreshAction.class, a);
+                    assertEquals(ActionFactory.TYPE_HARDWARE_REFRESH_LIST, a.getActionType());
 
                     assertEquals(coreAction3, a);
                     r.getActionsServers().get(a).forEach(s -> assertEquals(coreServer.getId(), s.getId()));
