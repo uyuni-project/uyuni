@@ -68,7 +68,7 @@ public class AttestationFactory extends HibernateFactory {
      */
     public Optional<ServerCoCoAttestationConfig> lookupConfigByServerId(long serverId) {
         return getSession()
-                .createQuery("FROM ServerCoCoAttestationConfig WHERE server_id = :serverId",
+                .createQuery("FROM ServerCoCoAttestationConfig WHERE server.id = :serverId",
                         ServerCoCoAttestationConfig.class)
                 .setParameter("serverId", serverId)
                 .uniqueResultOptional();

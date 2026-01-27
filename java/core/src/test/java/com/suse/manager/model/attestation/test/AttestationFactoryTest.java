@@ -120,7 +120,6 @@ public class AttestationFactoryTest extends BaseTestCaseWithUser {
     public void testAttestationConfigurationLookup() {
         ServerCoCoAttestationConfig cnf = attestationFactory.createConfigForServer(server,
                 CoCoEnvironmentType.KVM_AMD_EPYC_MILAN, true, true);
-        HibernateFactory.getSession().flush();
         Server srv = ServerFactory.lookupByIdAndOrg(server.getId(), user.getOrg());
         Optional<ServerCoCoAttestationConfig> cocoAttCnf = srv.getOptCocoAttestationConfig();
         assertNotNull(cocoAttCnf);
@@ -136,6 +135,7 @@ public class AttestationFactoryTest extends BaseTestCaseWithUser {
             fail("config not initialzed");
         }
 
+        TestUtils.clearSession();
         Optional<ServerCoCoAttestationConfig> optConfig = attestationFactory.lookupConfigByServerId(srv.getId());
         if (optConfig.isPresent()) {
             assertEquals(cnf, optConfig.get());
@@ -161,8 +161,8 @@ public class AttestationFactoryTest extends BaseTestCaseWithUser {
         action.addCocoAttestationReport(report);
 
         Long actionId = action.getId();
-        TestUtils.flushAndEvict(action);
 
+        TestUtils.clearSession();
         Action a1 = ActionFactory.lookupByUserAndId(user, actionId);
         assertNotNull(a1);
         Set<ServerCoCoAttestationReport> reports = a1.getCocoAttestationReports();
@@ -177,8 +177,8 @@ public class AttestationFactoryTest extends BaseTestCaseWithUser {
         ServerCoCoAttestationReport report = attestationFactory.createReportForServer(server);
         Long reportId = report.getId();
         attestationFactory.initResultsForReport(report);
-        TestUtils.flushAndEvict(report);
 
+        TestUtils.clearSession();
         Optional<ServerCoCoAttestationReport> optReport = attestationFactory.lookupReportById(reportId);
         List<CoCoAttestationResult> results = optReport.orElseThrow().getResults();
         assertNotEmpty(results);
