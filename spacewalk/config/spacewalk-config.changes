@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Jan 27 09:31:39 WET 2026 - psuarezhernandez@suse.com
+
+- version 5.2.3-0
+  * Enable HSTS in Apache config (bsc#1255176)
+  * Force SameSite=Lax on all Set-Cookie headers (bsc#1253711)
+
+-------------------------------------------------------------------
 Thu Nov 27 10:45:37 CET 2025 - michael.calmer@suse.com
 
 - version 5.2.2-0
