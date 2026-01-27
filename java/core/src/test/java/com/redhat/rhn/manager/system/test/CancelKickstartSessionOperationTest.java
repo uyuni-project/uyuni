@@ -14,6 +14,7 @@
  */
 package com.redhat.rhn.manager.system.test;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.redhat.rhn.domain.action.Action;
@@ -43,22 +44,19 @@ public class CancelKickstartSessionOperationTest extends BaseTestCaseWithUser {
         KickstartData k = KickstartDataTest.createKickstartWithOptions(user.getOrg());
         KickstartSession ksession = KickstartSessionTest.createKickstartSession(k, user);
         Server s = ksession.getOldServer();
-        Action a = ActionFactoryTest.createAction(user,
-                ActionFactory.TYPE_KICKSTART_INITIATE);
+        Action a = ActionFactoryTest.createAction(user, ActionFactory.TYPE_KICKSTART_INITIATE);
         ksession.setAction(a);
         ActionFactory.save(a);
         KickstartFactory.saveKickstartData(k);
-        TestUtils.flushAndEvict(k);
         TestUtils.saveAndFlush(ksession);
-        TestUtils.flushAndEvict(ksession);
 
-        CancelKickstartSessionOperation dso =
-            new CancelKickstartSessionOperation(user, s.getId());
+        CancelKickstartSessionOperation dso = new CancelKickstartSessionOperation(user, s.getId());
         dso.store();
 
-        KickstartSession lookedUp = KickstartFactory.
-            lookupKickstartSessionByServer(s.getId());
-        assertNull(lookedUp.getAction());
+        TestUtils.clearSession();
 
+        KickstartSession lookedUp = KickstartFactory.lookupKickstartSessionByServer(s.getId());
+        assertNotNull(lookedUp);
+        assertNull(lookedUp.getAction());
     }
 }
