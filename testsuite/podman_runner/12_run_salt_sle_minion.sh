@@ -11,7 +11,7 @@ src_dir=$(cd $(dirname "$0")/../.. && pwd -P)
 
 echo opensuseminionproductuuid > /tmp/testing/opensuse_product_uuid
 
-$PODMAN_CMD run --privileged -d --network network -v /tmp/testing/opensuse_product_uuid:/sys/class/dmi/id/product_uuid -v /tmp/testing:/tmp -v ${src_dir}/testsuite/podman_runner/salt-minion-entry-point.sh:/salt-minion-entry-point.sh --volume /run/dbus/system_bus_socket:/run/dbus/system_bus_socket:ro -p 9091:9090 --name sle_minion -h sle_minion ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-opensuse-minion:$UYUNI_VERSION bash -c "/salt-minion-entry-point.sh server 1-SUSE-KEY-x86_64"
+$PODMAN_CMD run --pull newer --privileged -d --network network -v /tmp/testing/opensuse_product_uuid:/sys/class/dmi/id/product_uuid -v /tmp/testing:/tmp -v ${src_dir}/testsuite/podman_runner/salt-minion-entry-point.sh:/salt-minion-entry-point.sh --volume /run/dbus/system_bus_socket:/run/dbus/system_bus_socket:ro -p 9091:9090 --name sle_minion -h sle_minion ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-opensuse-minion:$UYUNI_VERSION bash -c "/salt-minion-entry-point.sh server 1-SUSE-KEY-x86_64"
 $PODMAN_CMD exec sle_minion bash -c "ssh-keygen -A && /usr/sbin/sshd -e"
 $PODMAN_CMD exec sle_minion bash -c "if [ ! -d /root/.ssh ];then mkdir /root/.ssh/;chmod 700 /root/.ssh;fi;cp /tmp/authorized_keys /root/.ssh/"
 $PODMAN_CMD exec -d sle_minion prometheus
