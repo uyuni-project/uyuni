@@ -1360,6 +1360,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
 
+        sa = TestUtils.reload(sa);
         assertEquals(
                 List.of(sa),
             action.getServerActions().stream().filter(
@@ -1428,6 +1429,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         ScapAction.setXccdfResumeXsl(resumeXsl);
         messageAction.execute(message);
 
+        TestUtils.clearSession();
+        sa = TestUtils.reload(sa);
         assertTrue(sa.isStatusCompleted());
     }
 
@@ -1452,6 +1455,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         ImageStore store = ImageTestUtils.createImageStore("test-docker-registry:5000", user);
         ImageProfile profile = ImageTestUtils.createImageProfile(imageName, store, user);
 
+        HibernateFactory.getSession().flush();
         ImageInfo imgInfoBuild1 = doTestContainerImageBuild(server, imageName, imageVersion, profile,
                 // assert initial revision number
                 imgInfo -> assertEquals(1, imgInfo.getRevisionNumber()));
@@ -1868,15 +1872,15 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                         images.get("POS_Image_JeOS6").get("6.0.0-1").get("hash"));
         });
 
-        HibernateFactory.getSession().flush();
+        TestUtils.clearSession();
+        image = TestUtils.reload(image);
 
         ImageInfoFactory.delete(image, saltServiceMock);
 
-        HibernateFactory.getSession().flush();
+        user = TestUtils.reload(user);
 
-        assertFalse(user.getOrg().getPillars().stream()
-                   .filter(item -> (("Image" + image.getId()).equals(item.getCategory())))
-                   .findAny().isPresent());
+        String imageCategory = "Image" + image.getId();
+        assertFalse(user.getOrg().getPillars().stream().anyMatch(item -> (imageCategory.equals(item.getCategory()))));
     }
 
     @Test
@@ -2090,6 +2094,9 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         // Process the event message
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
+
+        TestUtils.clearSession();
+        sa = TestUtils.reload(sa);
 
         assertTrue(sa.isStatusCompleted());
         assertEquals(0L, (long)sa.getResultCode());
