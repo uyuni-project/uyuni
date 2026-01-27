@@ -1,4 +1,32 @@
 -------------------------------------------------------------------
+Tue Jan 27 09:47:12 WET 2026 - psuarezhernandez@suse.com
+
+- version 5.2.7-0
+  * Added Action ID info to the Systems event history page.
+  * Enhanced Ansible UI to support editing playbook variables.
+  * Implemented a new StepsProgressBar component for managing RBAC.
+  * Knowledgebase menu updated to point to new URL. (bsc#1250557)
+  * Updated the Documentation link in the sidenav.
+  * Create an API endpoint to perform an immediate repo-sync
+    from command line (bsc#1251808)
+  * Fix synchronized CLM channels end of life date
+    in hub-peripheral scenario
+  * Add OpenID Connect login endpoint for MCP security integration
+  * Ignore commented lines in /etc/hosts when updating it
+    (bsc#1253736)
+  * Set supported postgresql versions between 16 to 18
+  * Improved selection of channels to syncronize to a peripheral
+  * Update jose4j version
+  * Add multi-thread support for message queue (bsc#1247722)
+  * Fix ungrouped systems list menu item (bsc#1254251)
+  * Add AppStreams to SSM
+  * Ensure SSM product migration works when the installed base
+    product is not detected
+  * Ensure consistency of pending package updates
+    after CLM build (bsc#1253007)
+  * Fix NPE when retrieving VM info (bsc#1254316)
+
+-------------------------------------------------------------------
 Tue Dec 09 13:45:08 CET 2025 - michael.calmer@suse.com
 
 - version 5.2.6-0

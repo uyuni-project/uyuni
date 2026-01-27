@@ -1,1 +1,0 @@
-- Fix NPE when retrieving VM info (bsc#1254316)
