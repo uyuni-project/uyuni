@@ -22,7 +22,6 @@ import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.VHMCredentials;
 import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.domain.scc.SCCSubscription;
 
 import com.suse.manager.gatherer.GathererRunner;
 import com.suse.manager.model.gatherer.GathererModule;
@@ -124,7 +123,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      * exist
      */
     public VirtualHostManager lookupByIdAndOrg(Long id, Org org) {
-        return getSession().createQuery("FROM suseVirtualHostManager v WHERE v.id = :id AND v.org.id = :orgId",
+        return getSession().createQuery("FROM VirtualHostManager v WHERE v.id = :id AND v.org.id = :orgId",
                         VirtualHostManager.class)
                 .setParameter("orgId", org.getId())
                 .setParameter("id", id)
@@ -179,7 +178,7 @@ public class VirtualHostManagerFactory extends HibernateFactory {
      * @return list of all Virtual Host Managers
      */
     public List<VirtualHostManager> listVirtualHostManagers() {
-        return getSession().createQuery("FROM suseVirtualHostManager", VirtualHostManager.class).getResultList();
+        return getSession().createQuery("FROM VirtualHostManager", VirtualHostManager.class).getResultList();
     }
 
     /**
