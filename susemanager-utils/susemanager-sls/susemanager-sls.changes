@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Tue Jan 27 09:30:16 WET 2026 - psuarezhernandez@suse.com
+
+- version 5.2.4-0
+  * Add proxy backup salt sate implementation (bsc#1257147)
+  * Avoid possible disablelocalrepos state fail on RH like clients
+  * Avoid possible issues in salt state switching to the salt bundle.
+    Improve the speed of applying the state.
+  * Fix error on shutdown for sles 12 (bsc#1255634)
+  * Perform refresh repo metadata just once on disabling local repos
+  * Use more better to check if states applied with the salt bundle
+
+-------------------------------------------------------------------
 Tue Dec 09 13:38:22 CET 2025 - michael.calmer@suse.com
 
 - version 5.2.3-0
