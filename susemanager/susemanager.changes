@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jan 27 10:33:52 WET 2026 - psuarezhernandez@suse.com
+
+- version 5.2.4-0
+  * Add bootstrap repo data for SLES/SAP/LEAP 16
+
+-------------------------------------------------------------------
 Tue Jan 27 09:29:59 WET 2026 - psuarezhernandez@suse.com
 
 - version 5.2.3-0
