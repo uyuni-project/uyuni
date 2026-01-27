@@ -1,1 +1,5 @@
-- Initial release, based on server-migraion-14-16 image
+-------------------------------------------------------------------
+Tue Jan 27 09:26:08 WET 2026 - psuarezhernandez@suse.com
+
+- version 5.2.1
+  * Initial release, based on server-migraion-14-16 image
