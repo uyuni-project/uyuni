@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Jan 27 09:31:23 WET 2026 - psuarezhernandez@suse.com
+
+- version 5.2.3-0
+  * Add missing SUSE Linux Enterprise 16.0 and openSUSE Leap 16.0
+    repositories
+
+-------------------------------------------------------------------
 Thu Nov 27 11:12:40 CET 2025 - michael.calmer@suse.com
 
 - version 5.2.2-0
