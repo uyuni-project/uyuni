@@ -16,6 +16,19 @@ You must have **Podman** and **Docker** installed and available on the host wher
 During the execution of the scripts, it will install nginx in your system.
 Last but not least, you must also have access to the Uyuni project and OpenSUSE mirrors on the internet.
 
+Podman may need to be configured to use `localhost:5001` and `localhost:5002` as insecure ones.
+Add the following to a `/etc/containers/registries.conf.d/999-ci-runner.conf` file:
+
+```toml[[registry]]
+location = "localhost:5002"
+insecure = true
+
+[[registry]]
+location = "localhost:5001"
+insecure = true
+
+```
+
 ### Required Environment Variables
 
 Before running these scripts, you must export the following environment variables:
