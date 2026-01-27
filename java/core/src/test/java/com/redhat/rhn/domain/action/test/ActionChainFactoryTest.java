@@ -197,8 +197,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
 
         assertEquals(0, actionChain.getEntries().size());
 
-        ActionChainEntry entry = ActionChainFactory.queueActionChainEntry(action,
-            actionChain, server);
+        ActionChainEntry entry = ActionChainFactory.queueActionChainEntry(action, actionChain, server);
         assertNotNull(entry);
         assertEquals(0, entry.getSortOrder().intValue());
 
@@ -206,20 +205,20 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
         actionChain = TestUtils.reload(actionChain);
         assertEquals(1, actionChain.getEntries().size());
 
-        ActionChainEntry secondEntry = ActionChainFactory.queueActionChainEntry(action,
-            actionChain, server);
+        Action secondAction = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
+        secondAction.setOrg(user.getOrg());
+        ActionChainEntry secondEntry = ActionChainFactory.queueActionChainEntry(secondAction, actionChain, server);
         assertNotNull(secondEntry);
         assertEquals(1, secondEntry.getSortOrder().intValue());
-
-        // test that entries are correct after flush()
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
         assertEquals(2, actionChain.getEntries().size());
 
-        ActionChain secondActionChain = ActionChainFactory.createActionChain(
-            TestUtils.randomString(), user);
-        ActionChainEntry thirdEntry = ActionChainFactory.queueActionChainEntry(action,
-            secondActionChain, server);
+        // test that entries are correct after flush()
+        TestUtils.clearSession();
+        actionChain = TestUtils.reload(actionChain);
+        assertEquals(2, actionChain.getEntries().size());
+
+        ActionChain secondActionChain = ActionChainFactory.createActionChain(TestUtils.randomString(), user);
+        ActionChainEntry thirdEntry = ActionChainFactory.queueActionChainEntry(action, secondActionChain, server);
         assertNotNull(thirdEntry);
         assertEquals(0, thirdEntry.getSortOrder().intValue());
     }
@@ -294,29 +293,24 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testRemoveActionChainEntrySortGaps() throws Exception {
-
-        ActionChain actionChain =
-                ActionChainFactory.createActionChain(TestUtils.randomString(), user);
+        ActionChain actionChain = ActionChainFactory.createActionChain(TestUtils.randomString(), user);
         Action action;
         for (int i = 0; i < 2; i++) {
             action = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
             action.setOrg(user.getOrg());
-            ActionChainFactory.queueActionChainEntry(action, actionChain,
-                ServerFactoryTest.createTestServer(user), 0);
-            TestUtils.saveAndFlush(action);
+            ActionChainFactory.queueActionChainEntry(action, actionChain, ServerFactoryTest.createTestServer(user), 0);
         }
 
         for (int i = 0; i < 2; i++) {
             action = ActionFactory.createAction(ActionFactory.TYPE_PACKAGES_UPDATE);
             action.setOrg(user.getOrg());
-            ActionChainFactory.queueActionChainEntry(action, actionChain,
-                ServerFactoryTest.createTestServer(user), 2);
-            TestUtils.saveAndFlush(action);
+            ActionChainFactory.queueActionChainEntry(action, actionChain, ServerFactoryTest.createTestServer(user), 2);
         }
 
-        TestUtils.saveAndFlush(actionChain);
         ActionChainFactory.removeActionChainEntrySortGaps(actionChain, 1);
-        actionChain = TestUtils.saveAndReload(actionChain);
+
+        TestUtils.clearSession();
+        actionChain = TestUtils.reload(actionChain);
 
         List<Integer> result = new ArrayList<>();
         result.add(0);
