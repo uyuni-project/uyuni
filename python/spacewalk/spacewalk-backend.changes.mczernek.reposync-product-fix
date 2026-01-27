@@ -1,2 +1,0 @@
-- Fix reposync mediaproduct fetch when
-  URL contains auth token (bsc#1252388)

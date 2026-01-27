@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Jan 27 09:31:18 WET 2026 - psuarezhernandez@suse.com
+
+- version 5.2.4-0
+  * Fix reposync mediaproduct fetch when
+    URL contains auth token (bsc#1252388)
+
+-------------------------------------------------------------------
 Tue Dec 09 13:46:36 CET 2025 - michael.calmer@suse.com
 
 - version 5.2.3-0
