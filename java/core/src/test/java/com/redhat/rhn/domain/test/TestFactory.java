@@ -28,6 +28,7 @@ public class TestFactory extends HibernateFactory {
 
     private static final Logger LOG = LogManager.getLogger(TestFactory.class);
     private static final TestFactory SINGLETON = new TestFactory();
+    public static final TestConnectionManager CONNECTION_MANAGER = new TestConnectionManager();
 
     @Override
     protected Logger getLogger() {
@@ -52,7 +53,7 @@ public class TestFactory extends HibernateFactory {
     }
 
     public static Session getSession() {
-        setConnectionManager(new TestConnectionManager());
+        setConnectionManager(CONNECTION_MANAGER);
         return HibernateFactory.getSession();
     }
 }
