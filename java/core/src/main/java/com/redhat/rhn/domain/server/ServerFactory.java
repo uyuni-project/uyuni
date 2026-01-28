@@ -1137,22 +1137,12 @@ public class ServerFactory extends HibernateFactory {
      * @return a list of Proxy Server objects
      */
     public static List<Server> lookupProxiesByOrg(User user) {
-
-        return getSession().createNativeQuery("""
-                select     S.*,
-                           mi.*,
-                           case when mi.server_id is not null then 1 else 0 end as clazz_
-                from       rhnServer S
-                inner join rhnUserServerPerms USP on USP.server_id = S.id
-                inner join rhnProxyInfo rpi on rpi.server_id = S.id
-                left join  suseMinionInfo mi on mi.server_id = S.id
-                where      S.org_id = :orgId
-                and        USP.user_id = :userId
-                """, Server.class)
-                .addSynchronizedEntityClass(Server.class)
-                .addSynchronizedEntityClass(UserImpl.class)
-                .addSynchronizedEntityClass(ProxyInfo.class)
-                .addSynchronizedEntityClass(MinionServer.class)
+        return getSession().createQuery("""
+                                SELECT usp.server
+                                FROM UserServerPermission usp
+                                WHERE usp.user.id = :userId
+                                        AND usp.server.org.id = :orgId
+                                """, Server.class)
                 .setParameter("userId", user.getId())
                 .setParameter("orgId", user.getOrg().getId())
                 .list();
