@@ -102,6 +102,12 @@ public class RepoSyncTask extends RhnJavaJob {
             if (csf.isNoStrict()) {
                 params.add("--no-strict");
             }
+            // Check for ad-hoc 'no_packages' override from the schedule
+            boolean noPackages = jobDataMap.containsKey("no_packages") &&
+                    Boolean.parseBoolean(jobDataMap.get("no_packages").toString());
+            if (noPackages) {
+                params.add("--no-packages");
+            }
 
             log.info("Syncing repos for channel: {}", channel.getName());
 
