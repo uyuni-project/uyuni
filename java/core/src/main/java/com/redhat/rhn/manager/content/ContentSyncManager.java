@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014--2021 SUSE LLC
+ * Copyright (c) 2014--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -541,7 +541,7 @@ public class ContentSyncManager {
 
                         return new MgrSyncProductDto(
                                 ext.getFriendlyName(), ext.getProductId(), ext.getId(), ext.getVersion(), isRecommended,
-                                baseChannel, extChildChannels, Collections.emptySet()
+                                baseChannel, extChildChannels, new HashSet<>()
                         );
                     }).collect(Collectors.toSet());
 
