@@ -470,7 +470,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         ServerArch a = ServerFactory.lookupServerArchByName("x86_64");
         server.setServerArch(a);
-        TestUtils.saveAndFlush(server);
+        server = TestUtils.saveAndFlush(server);
         entitlementManager.addEntitlementToServer(server, EntitlementManager.ANSIBLE_CONTROL_NODE);
         return server;
     }

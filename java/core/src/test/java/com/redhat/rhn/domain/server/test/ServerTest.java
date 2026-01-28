@@ -83,7 +83,7 @@ public class ServerTest extends BaseTestCaseWithUser {
                 "Channel 2", "cfg-channel-2");
         s.subscribeConfigChannels(List.of(channel1, channel2), user);
         long sid = s.getId();
-        TestUtils.saveAndFlush(s);
+        s = TestUtils.saveAndFlush(s);
         RhnSetDecl.SYSTEMS.get(user).addElement(sid);
         RhnSet ssm = RhnSetDecl.SYSTEMS.get(user);
         ssm.addElement(sid);
@@ -116,7 +116,7 @@ public class ServerTest extends BaseTestCaseWithUser {
         HibernateFactory.getSession().clear();
         s = ServerFactory.lookupById(s.getId());
         systemEntitlementManager.setBaseEntitlement(s, EntitlementManager.MANAGEMENT);
-        TestUtils.saveAndFlush(s);
+        s = TestUtils.saveAndFlush(s);
         s = TestUtils.reload(s);
         assertEquals(s.getBaseEntitlement(), EntitlementManager.MANAGEMENT);
     }

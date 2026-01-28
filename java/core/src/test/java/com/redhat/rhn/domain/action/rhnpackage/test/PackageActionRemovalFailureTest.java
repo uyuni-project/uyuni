@@ -63,7 +63,7 @@ public class PackageActionRemovalFailureTest extends RhnBaseTestCase {
         failure.setFlags(1L);
         failure.setSense(1L);
 
-        TestUtils.saveAndFlush(failure);
+        failure = TestUtils.saveAndFlush(failure);
 
         PackageActionRemovalFailure failure2 = lookupByKey(server, pkgaction, name);
         assertNotNull(failure2);

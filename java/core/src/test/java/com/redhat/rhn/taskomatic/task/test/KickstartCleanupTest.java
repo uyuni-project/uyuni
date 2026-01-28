@@ -60,7 +60,7 @@ public class KickstartCleanupTest extends RhnBaseTestCase {
         KickstartSessionState inProgressState = lookupByLabel("in_progress");
         KickstartSession ksession = createSession();
         ksession.setState(inProgressState);
-        TestUtils.saveAndFlush(ksession);
+        ksession = TestUtils.saveAndFlush(ksession);
         backdateKickstartSession(ksession, 2);
         session.clear();
         ksession = session.getReference(KickstartSession.class, ksession.getId());
@@ -78,7 +78,7 @@ public class KickstartCleanupTest extends RhnBaseTestCase {
         KickstartSessionState createdState = lookupByLabel("created");
         KickstartSession ksession = createSession();
         ksession.setState(createdState);
-        TestUtils.saveAndFlush(ksession);
+        ksession = TestUtils.saveAndFlush(ksession);
         backdateKickstartSession(ksession, 7);
         session.clear();
         ksession = session.getReference(KickstartSession.class, ksession.getId());
@@ -120,7 +120,7 @@ public class KickstartCleanupTest extends RhnBaseTestCase {
         KickstartVirtualizationType type = KickstartFactory.
          lookupKickstartVirtualizationTypeByLabel(KickstartVirtualizationType.XEN_PARAVIRT);
         ksession.setVirtualizationType(type);
-        TestUtils.saveAndFlush(ksession);
+        ksession = TestUtils.saveAndFlush(ksession);
         return ksession;
     }
 

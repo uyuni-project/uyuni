@@ -265,8 +265,8 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         Channel parent = ChannelFactoryTest.createBaseChannel(user);
         Channel child = ChannelFactoryTest.createTestChannel(user);
         child.setParentChannel(parent);
-        TestUtils.saveAndFlush(child);
-        TestUtils.saveAndFlush(parent);
+        child = TestUtils.saveAndFlush(child);
+        parent = TestUtils.saveAndFlush(parent);
 
         List<Channel> dr =
                 ChannelManager.userAccessibleChildChannels(user.getOrg().getId(),
@@ -310,7 +310,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         // thanks mmccune for the tip
         user.getOrg().addRole(RoleFactory.CHANNEL_ADMIN);
         user.addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
-        TestUtils.saveAndFlush(user);
+        user = TestUtils.saveAndFlush(user);
 
         Channel c = ChannelFactoryTest.createTestChannel(user);
         c = TestUtils.reload(c);
@@ -322,7 +322,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     public void testDeleteClonedChannel() throws Exception {
         user.getOrg().addRole(RoleFactory.CHANNEL_ADMIN);
         user.addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
-        TestUtils.saveAndFlush(user);
+        user = TestUtils.saveAndFlush(user);
 
         Channel c = ChannelFactoryTest.createTestChannel(user);
         Channel cClone1 = ChannelFactoryTest.createTestClonedChannel(c, user);
@@ -338,7 +338,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     public void testDeleteChannelWithClones() throws Exception {
         user.getOrg().addRole(RoleFactory.CHANNEL_ADMIN);
         user.addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
-        TestUtils.saveAndFlush(user);
+        user = TestUtils.saveAndFlush(user);
 
         Channel c = ChannelFactoryTest.createTestChannel(user);
         Channel cClone1 = ChannelFactoryTest.createTestClonedChannel(c, user);
@@ -690,7 +690,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testChildrenAvailableToSet() {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        TestUtils.saveAndFlush(user);
+        user = TestUtils.saveAndFlush(user);
 
         DataResult<ChildChannelDto> childChannels =
                 ChannelManager.childrenAvailableToSet(user);
@@ -857,8 +857,8 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
         child.setParentChannel(parent);
 
-        TestUtils.saveAndFlush(child);
-        TestUtils.saveAndFlush(parent);
+        child = TestUtils.saveAndFlush(child);
+        parent = TestUtils.saveAndFlush(parent);
         TestUtils.flushAndEvict(child);
 
         Channel parent1 = ChannelFactoryTest.createTestClonedChannel(parent, user);
@@ -866,8 +866,8 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
         child1.setParentChannel(parent1);
 
-        TestUtils.saveAndFlush(child1);
-        TestUtils.saveAndFlush(parent1);
+        child1 = TestUtils.saveAndFlush(child1);
+        parent1 = TestUtils.saveAndFlush(parent1);
         TestUtils.flushAndEvict(child1);
 
         Map<Channel, Channel> children = ChannelManager.
@@ -881,8 +881,8 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         Channel child2 = ChannelFactoryTest.createTestClonedChannel(child1, user);
         child2.setParentChannel(parent2);
 
-        TestUtils.saveAndFlush(child2);
-        TestUtils.saveAndFlush(parent2);
+        child2 = TestUtils.saveAndFlush(child2);
+        parent2 = TestUtils.saveAndFlush(parent2);
         TestUtils.flushAndEvict(child2);
 
         children = ChannelManager.
@@ -902,8 +902,8 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         child.setParentChannel(parent);
         child.setProductName(pn);
 
-        TestUtils.saveAndFlush(child);
-        TestUtils.saveAndFlush(parent);
+        child = TestUtils.saveAndFlush(child);
+        parent = TestUtils.saveAndFlush(parent);
         TestUtils.flushAndEvict(child);
 
         Channel parent1 = ChannelFactoryTest.createBaseChannel(user);
@@ -912,8 +912,8 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         child1.setParentChannel(parent1);
         child1.setProductName(pn);
 
-        TestUtils.saveAndFlush(child1);
-        TestUtils.saveAndFlush(parent1);
+        child1 = TestUtils.saveAndFlush(child1);
+        parent1 = TestUtils.saveAndFlush(parent1);
         TestUtils.flushAndEvict(child1);
 
         Map<Channel, Channel> children = ChannelManager.findCompatibleChildren(parent, parent1, user);
@@ -1133,8 +1133,8 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
         child.setParentChannel(parent);
 
-        TestUtils.saveAndFlush(child);
-        TestUtils.saveAndFlush(parent);
+        child = TestUtils.saveAndFlush(child);
+        parent = TestUtils.saveAndFlush(parent);
         TestUtils.flushAndEvict(child);
 
         Channel parent1 = ChannelFactoryTest.createTestClonedChannel(parent, user);
@@ -1145,9 +1145,9 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         ClonedChannel damagedChild2 = (ClonedChannel)ChannelFactoryTest.createTestClonedChannel(child1, user);
         child1.setOriginal(damagedChild2);
 
-        TestUtils.saveAndFlush(child1);
-        TestUtils.saveAndFlush(parent1);
-        TestUtils.saveAndFlush(damagedChild2);
+        child1 = TestUtils.saveAndFlush(child1);
+        parent1 = TestUtils.saveAndFlush(parent1);
+        damagedChild2 = TestUtils.saveAndFlush(damagedChild2);
         TestUtils.flushAndEvict(child1);
 
         //now create the damage: child 2 is cloned but for unknown reasons has null original

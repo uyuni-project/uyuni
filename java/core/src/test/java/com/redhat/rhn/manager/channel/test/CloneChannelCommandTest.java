@@ -240,7 +240,7 @@ public class CloneChannelCommandTest extends BaseTestCaseWithUser {
 
         ProductName pn = ChannelFactoryTest.lookupOrCreateProductName("sap-ha");
         childrenChannel.setProductName(pn);
-        TestUtils.saveAndFlush(pn);
+        pn = TestUtils.saveAndFlush(pn);
         ChannelFactory.save(childrenChannel);
 
         return childrenChannel;

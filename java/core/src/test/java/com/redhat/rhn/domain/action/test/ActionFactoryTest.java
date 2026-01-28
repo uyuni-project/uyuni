@@ -646,7 +646,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         PackageName name = new PackageName();
         name.setName(testname);
         d.setPackageName(name);
-        TestUtils.saveAndFlush(name);
+        name = TestUtils.saveAndFlush(name);
 
         //create packageEvr
         PackageEvr evr = PackageEvrFactory.lookupOrCreatePackageEvr("" +

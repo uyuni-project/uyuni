@@ -98,7 +98,7 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
                 createKickstartSession(ksdata, user);
         ksession.setNewServer(server);
         ksession.setOldServer(server);
-        TestUtils.saveAndFlush(ksession);
+        ksession = TestUtils.saveAndFlush(ksession);
     }
 
     private static void assertCmdSuccess(KickstartScheduleCommand cmd) {
@@ -138,7 +138,7 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
                 KickstartVirtualizationType.none());
         x86ks.getChannel().setChannelArch(ChannelFactory.lookupArchByName("x86_64"));
         TestUtils.saveAndFlush(x86ks.getChannel());
-        TestUtils.saveAndFlush(x86ks);
+        x86ks = TestUtils.saveAndFlush(x86ks);
 
 
         server.setServerArch(ServerConstants.getArchI686());
@@ -294,7 +294,7 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
                 KickstartScheduleCommand.UP2DATE_VERSION, "0",
                 c.getChannelArch().getArchType().getPackageType());
         p.setPackageEvr(pevr);
-        TestUtils.saveAndFlush(p);
+        p = TestUtils.saveAndFlush(p);
     }
 
     // Like the number of params on this one?  Nice eh?  At least its private and

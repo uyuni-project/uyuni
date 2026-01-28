@@ -329,14 +329,14 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
         for (int i = 0; i < 2; i++) {
             action = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
              action.setOrg(user.getOrg());
-            TestUtils.saveAndFlush(action);
+            action = TestUtils.saveAndFlush(action);
             ActionChainFactory.queueActionChainEntry(action, actionChain,
                 ServerFactoryTest.createTestServer(user), 0);
         }
 
         action = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
         action.setOrg(user.getOrg());
-        TestUtils.saveAndFlush(action);
+        action = TestUtils.saveAndFlush(action);
         ActionChainEntry toRemove =
                 ActionChainFactory.queueActionChainEntry(action, actionChain,
                         ServerFactoryTest.createTestServer(user), 1);
@@ -344,7 +344,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
         for (int i = 0; i < 2; i++) {
             action = ActionFactory.createAction(ActionFactory.TYPE_PACKAGES_UPDATE);
             action.setOrg(user.getOrg());
-            TestUtils.saveAndFlush(action);
+            action = TestUtils.saveAndFlush(action);
             ActionChainFactory.queueActionChainEntry(action, actionChain,
                 ServerFactoryTest.createTestServer(user), 2);
         }
@@ -408,13 +408,13 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
             Action action = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
             action.setOrg(user.getOrg());
             ActionChainFactory.queueActionChainEntry(action, actionChain, server1, i);
-            TestUtils.saveAndFlush(action);
+            action = TestUtils.saveAndFlush(action);
             sortOrders.put(action.getId(), i);
             if (i % 2 == 0) {
                 action = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
                 action.setOrg(user.getOrg());
                 ActionChainFactory.queueActionChainEntry(action, actionChain, server2, i);
-                TestUtils.saveAndFlush(action);
+                action = TestUtils.saveAndFlush(action);
                 sortOrders.put(action.getId(), i);
             }
         }
@@ -499,7 +499,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
             Action action = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
             action.setOrg(user.getOrg());
             ActionChainFactory.queueActionChainEntry(action, actionChain, server1, i);
-            TestUtils.saveAndFlush(action);
+            action = TestUtils.saveAndFlush(action);
             sortOrders.put(action.getId(), i);
             if (i == 0) {
                 firstActionIdServer1 = action.getId();
@@ -508,7 +508,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
             action = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
             action.setOrg(user.getOrg());
             ActionChainFactory.queueActionChainEntry(action, actionChain, server2, i);
-            TestUtils.saveAndFlush(action);
+            action = TestUtils.saveAndFlush(action);
             sortOrders.put(action.getId(), i);
             if (i == 0) {
                 firstActionIdServer2 = action.getId();

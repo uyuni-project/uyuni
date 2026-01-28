@@ -1563,7 +1563,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         Channel akBaseChannel = ChannelFactoryTest.createBaseChannel(user, "channel-x86_64");
         Channel akChildChannel = ChannelFactoryTest.createTestChannel(user, "channel-x86_64");
         akChildChannel.setParentChannel(akBaseChannel);
-        TestUtils.saveAndFlush(akChildChannel);
+        akChildChannel = TestUtils.saveAndFlush(akChildChannel);
 
         Channel assignedChannel = ChannelTestUtils.createBaseChannel(user);
         ServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
@@ -1571,6 +1571,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         server.setMachineId(MACHINE_ID);
         server.addChannel(assignedChannel);
         ServerFactory.save(server);
+
+        Channel akChildChannelCopy = akChildChannel;
         executeTest((key) -> new Expectations() {
             {
                 allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
@@ -1579,7 +1581,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         }, (contactMethod) -> {
             ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
             key.setBaseChannel(akBaseChannel);
-            key.addChannel(akChildChannel);
+            key.addChannel(akChildChannelCopy);
             key.setOrg(user.getOrg());
             ActivationKeyFactory.save(key);
             return key.getKey();
@@ -1593,7 +1595,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
             HashSet<Channel> channels = new HashSet<>();
             channels.add(akBaseChannel);
-            channels.add(akChildChannel);
+            channels.add(akChildChannelCopy);
             assertEquals(channels, minion.getChannels());
             assertTrue(minion.getFqdns().isEmpty());
         }, DEFAULT_CONTACT_METHOD);
@@ -1611,10 +1613,10 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         Channel akBaseChannel = ChannelFactoryTest.createBaseChannel(user, "channel-x86_64");
         Channel akChildChannel = ChannelFactoryTest.createTestChannel(user, "channel-x86_64");
         akChildChannel.setParentChannel(akBaseChannel);
-        TestUtils.saveAndFlush(akChildChannel);
+        akChildChannel = TestUtils.saveAndFlush(akChildChannel);
         Channel assignedChildChannel = ChannelFactoryTest.createTestChannel(user, "channel-x86_64");
         assignedChildChannel.setParentChannel(akBaseChannel);
-        TestUtils.saveAndFlush(assignedChildChannel);
+        assignedChildChannel = TestUtils.saveAndFlush(assignedChildChannel);
 
         ServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
         Server server = ServerTestUtils.createTestSystem(user, ServerConstants.getServerGroupTypeEnterpriseEntitled());
@@ -1622,6 +1624,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         server.addChannel(akBaseChannel);
         server.addChannel(assignedChildChannel);
         ServerFactory.save(server);
+        Channel akChildChannelCopy = akChildChannel;
         executeTest((key) -> new Expectations() {
             {
                 allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
@@ -1630,7 +1633,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         }, (contactMethod) -> {
             ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
             key.setBaseChannel(akBaseChannel);
-            key.addChannel(akChildChannel);
+            key.addChannel(akChildChannelCopy);
             key.setOrg(user.getOrg());
             ActivationKeyFactory.save(key);
             return key.getKey();
@@ -1644,7 +1647,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
             HashSet<Channel> channels = new HashSet<>();
             channels.add(akBaseChannel);
-            channels.add(akChildChannel);
+            channels.add(akChildChannelCopy);
             assertEquals(channels, minion.getChannels());
             assertTrue(minion.getFqdns().isEmpty());
         }, DEFAULT_CONTACT_METHOD);
@@ -1660,7 +1663,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         Channel assignedChannel = ChannelFactoryTest.createBaseChannel(user, "channel-x86_64");
         Channel assignedChildChannel = ChannelFactoryTest.createTestChannel(user, "channel-x86_64");
         assignedChildChannel.setParentChannel(assignedChannel);
-        TestUtils.saveAndFlush(assignedChildChannel);
+        assignedChildChannel = TestUtils.saveAndFlush(assignedChildChannel);
 
         ServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
         Server server = ServerTestUtils.createTestSystem(user, ServerConstants.getServerGroupTypeEnterpriseEntitled());
@@ -1669,6 +1672,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         server.addChannel(assignedChannel);
         server.addChannel(assignedChildChannel);
         ServerFactory.save(server);
+
+        Channel assignedChildChannelCopy = assignedChildChannel;
         executeTest((key) -> new Expectations() {
             {
                 allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
@@ -1685,7 +1690,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
             HashSet<Channel> channels = new HashSet<>();
             channels.add(assignedChannel);
-            channels.add(assignedChildChannel);
+            channels.add(assignedChildChannelCopy);
             assertEquals(channels, minion.getChannels());
             assertTrue(minion.getFqdns().isEmpty());
         }, DEFAULT_CONTACT_METHOD);
@@ -1696,7 +1701,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         Channel assignedChannel = ChannelFactoryTest.createBaseChannel(user, "channel-x86_64");
         Channel assignedChildChannel = ChannelFactoryTest.createTestChannel(user, "channel-x86_64");
         assignedChildChannel.setParentChannel(assignedChannel);
-        TestUtils.saveAndFlush(assignedChildChannel);
+        assignedChildChannel = TestUtils.saveAndFlush(assignedChildChannel);
 
         MinionServer oldMinion = MinionServerFactoryTest.createTestMinionServer(user);
         oldMinion.addChannel(assignedChannel);

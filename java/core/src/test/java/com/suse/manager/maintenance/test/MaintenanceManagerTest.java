@@ -90,7 +90,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
     public void setUp() throws Exception {
         super.setUp();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        TestUtils.saveAndFlush(user);
+        user = TestUtils.saveAndFlush(user);
     }
 
     @Test

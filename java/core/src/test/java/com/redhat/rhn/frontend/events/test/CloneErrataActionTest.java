@@ -57,7 +57,7 @@ public class CloneErrataActionTest extends BaseTestCaseWithUser {
         super.setUp();
         admin = UserTestUtils.createUser("admin", user.getOrg().getId());
         admin.addPermanentRole(RoleFactory.ORG_ADMIN);
-        TestUtils.saveAndFlush(admin);
+        admin = TestUtils.saveAndFlush(admin);
     }
 
     /**

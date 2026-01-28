@@ -128,7 +128,7 @@ public class OrgFactoryTest extends RhnBaseTestCase {
         pillars.add(new Pillar("category2", pillar2, org));
         org.setPillars(pillars);
 
-        TestUtils.saveAndFlush(org);
+        org = TestUtils.saveAndFlush(org);
         Org org2 = OrgFactory.lookupById(org.getId());
 
         Pillar actual = org2.getPillars().stream()

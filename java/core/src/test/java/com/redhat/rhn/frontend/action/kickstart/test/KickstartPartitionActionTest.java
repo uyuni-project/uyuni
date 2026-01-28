@@ -42,7 +42,7 @@ public class KickstartPartitionActionTest extends RhnPostMockStrutsTestCase {
         super.setUp();
 
         this.ksdata = KickstartDataTest.createKickstartWithOptions(user.getOrg());
-        TestUtils.saveAndFlush(ksdata);
+        ksdata = TestUtils.saveAndFlush(ksdata);
         addRequestParameter(RequestContext.KICKSTART_ID, this.ksdata.getId().toString());
     }
 

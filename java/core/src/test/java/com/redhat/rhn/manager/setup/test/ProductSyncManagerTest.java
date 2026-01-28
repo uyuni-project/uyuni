@@ -546,7 +546,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
             family = new ChannelFamily();
             family.setLabel("7261");
             family.setName("SUSE Linux Enterprise Server");
-            TestUtils.saveAndFlush(family);
+            family = TestUtils.saveAndFlush(family);
         }
         return family;
     }

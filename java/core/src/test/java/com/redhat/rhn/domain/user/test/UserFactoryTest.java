@@ -319,7 +319,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
 
         UserServerPreference usp = new UserServerPreference(user, s, UserServerPreferenceId.RECEIVE_NOTIFICATIONS);
         usp.setValue("0");
-        TestUtils.saveAndFlush(usp);
+        usp = TestUtils.saveAndFlush(usp);
 
         usp = factory.lookupServerPreferenceByUserServerAndName(user, s,
                                       UserServerPreferenceId.RECEIVE_NOTIFICATIONS);

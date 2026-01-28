@@ -46,7 +46,7 @@ public class KickstartSessionCommandCreateTest extends BaseKickstartCommandTestC
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Profile p = ProfileManagerTest.createProfileWithServer(user);
         ksdata.getKickstartDefaults().setProfile(p);
-        TestUtils.saveAndFlush(ksdata);
+        ksdata = TestUtils.saveAndFlush(ksdata);
         Channel toolsChannel = ChannelFactoryTest.createTestChannel(user);
         KickstartScheduleCommandTest.setupChannelForKickstarting(toolsChannel);
         toolsChannel.setParentChannel(ksdata.getChannel());

@@ -151,7 +151,7 @@ public class ChannelTest extends BaseTestCaseWithUser {
 
         c.setChannelFamily(cfam);
 
-        TestUtils.saveAndFlush(c);
+        c = TestUtils.saveAndFlush(c);
 
         Channel c2 = ChannelFactory.lookupById(c.getId());
         assertTrue(c2.isProxy());
