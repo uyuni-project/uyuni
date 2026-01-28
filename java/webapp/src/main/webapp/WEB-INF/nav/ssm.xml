@@ -24,6 +24,10 @@
         </rhn-tab>
     </rhn-tab>
 
+    <rhn-tab name="AppStreams" acl="authorized_for(systems.software.appstreams); all_systems_in_set_have_feature(ftr_package_updates)">
+        <rhn-tab-url>/rhn/manager/systems/ssm/appstreams</rhn-tab-url>
+    </rhn-tab>
+
     <rhn-tab name="Product Migration" acl="authorized_for(systems.software.migration); all_systems_in_set_have_feature(ftr_package_updates)">
         <rhn-tab-url>/rhn/manager/systems/ssm/product-migration</rhn-tab-url>
     </rhn-tab>

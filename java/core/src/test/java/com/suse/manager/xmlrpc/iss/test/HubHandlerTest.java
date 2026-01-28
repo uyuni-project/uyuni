@@ -106,7 +106,7 @@ public class HubHandlerTest extends BaseHandlerTestCase {
 
         hubManagerMock = context.mock(HubManager.class);
         migratorFactoryMock = context.mock(IssMigratorFactory.class);
-        hubHandler = new HubHandler(hubManagerMock, migratorFactoryMock);
+        hubHandler = new HubHandler(hubManagerMock, migratorFactoryMock, null);
     }
 
     @Test

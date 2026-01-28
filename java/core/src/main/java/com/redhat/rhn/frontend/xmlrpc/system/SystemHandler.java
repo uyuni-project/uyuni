@@ -2436,21 +2436,16 @@ public class SystemHandler extends BaseHandler {
 
             Action action = sAction.getParentAction();
 
-            if (action.getFailedCount() != null) {
-                result.put("failed_count", action.getFailedCount());
-            }
-            if (action.getActionTypeName() != null) {
-                result.put("action_type", action.getActionTypeName());
-            }
-            if (action.getSuccessfulCount() != null) {
-                result.put("successful_count", action.getSuccessfulCount());
-            }
-            if (action.getEarliestAction() != null) {
-                result.put("earliest_action", action.getEarliestAction().toString());
-            }
-            if (action.getArchived() != null) {
-                result.put("archived", action.getArchived());
-            }
+            safePutKeyValLong("failed_count", action.getFailedCount(), result);
+
+            safePutKeyValString("action_type", action.getActionTypeName(), result);
+
+            safePutKeyValLong("successful_count", action.getSuccessfulCount(), result);
+
+            safePutKeyValDateAsString("earliest_action", action.getEarliestAction(), result);
+
+            safePutKeyValLong("archived", action.getArchived(), result);
+
             if ((action.getSchedulerUser() != null) &&
                     (action.getSchedulerUser().getLogin() != null)) {
                 result.put("scheduler_user", action.getSchedulerUser().getLogin());
@@ -2458,39 +2453,32 @@ public class SystemHandler extends BaseHandler {
             if (action.getPrerequisite() != null) {
                 result.put("prerequisite", action.getPrerequisite().getId());
             }
-            if (action.getName() != null) {
-                result.put("name", action.getName());
-            }
-            if (action.getId() != null) {
-                result.put("id", action.getId());
-            }
+
+            safePutKeyValString("name", action.getName(), result);
+
+            safePutKeyValLong("id", action.getId(), result);
+
             if (action.getVersion() != null) {
                 result.put("version", action.getVersion().toString());
             }
 
-            if (sAction.getCompletionTime() != null) {
-                result.put("completion_time", sAction.getCompletionTime().toString());
-            }
-            if (sAction.getPickupTime() != null) {
-                result.put("pickup_time", sAction.getPickupTime().toString());
-            }
-            if (sAction.getModified() != null) {
-                result.put("modified", sAction.getModified().toString());
-                result.put("modified_date", sAction.getModified());
-            }
-            if (sAction.getCreated() != null) {
-                result.put("created", sAction.getCreated().toString());
-                result.put("created_date", sAction.getCreated());
-            }
-            if (sAction.getCompletionTime() != null) {
-                result.put("completed_date", sAction.getCompletionTime());
-            }
-            if (sAction.getPickupTime() != null) {
-                result.put("pickup_date", sAction.getPickupTime());
-            }
-            if (sAction.getResultMsg() != null) {
-                result.put("result_msg", sAction.getResultMsg());
-            }
+            safePutKeyValDateAsString("completion_time", sAction.getCompletionTime(), result);
+
+            safePutKeyValDateAsString("pickup_time", sAction.getPickupTime(), result);
+
+            safePutKeyValDateAsString("modified", sAction.getModified(), result);
+
+            safePutKeyValDate("modified_date", sAction.getModified(), result);
+
+            safePutKeyValDateAsString("created", sAction.getCreated(), result);
+
+            safePutKeyValDate("created_date", sAction.getCreated(), result);
+
+            safePutKeyValDate("completed_date", sAction.getCompletionTime(), result);
+
+            safePutKeyValDate("pickup_date", sAction.getPickupTime(), result);
+
+            safePutKeyValString("result_msg", sAction.getResultMsg(), result);
 
             final List<Map<String, String>> additionalInfo = action.createActionSpecificDetails(sAction);
             if (!additionalInfo.isEmpty()) {
@@ -2500,6 +2488,30 @@ public class SystemHandler extends BaseHandler {
             results.add(result);
         }
         return results;
+    }
+
+    private void safePutKeyValLong(String key, Long value, Map<String, Object> result) {
+        if (value != null) {
+            result.put(key, value);
+        }
+    }
+
+    private void safePutKeyValString(String key, String value, Map<String, Object> result) {
+        if (value != null) {
+            result.put(key, value);
+        }
+    }
+
+    private void safePutKeyValDate(String key, Date value, Map<String, Object> result) {
+        if (value != null) {
+            result.put(key, value);
+        }
+    }
+
+    private void safePutKeyValDateAsString(String key, Date value, Map<String, Object> result) {
+        if (value != null) {
+            result.put(key, value.toString());
+        }
     }
 
     /**
@@ -8004,50 +8016,7 @@ public class SystemHandler extends BaseHandler {
             targets = DistUpgradeManager.removeIncompatibleTargets(installedProducts, targets);
         }
         if (!targets.isEmpty()) {
-            SUSEProductSet targetProducts = null;
-            if (StringUtils.isBlank(targetIdent)) {
-                log.info("Target migration id is empty. " +
-                        "Looking for the closest product version having synced channels.");
-                List<SUSEProductSet> syncedTargets = targets.stream()
-                        .filter(ps -> {
-                            if (log.isDebugEnabled()) {
-                                if (ps.getIsEveryChannelSynced()) {
-                                    log.debug("{} is completely synced.", ps);
-                                }
-                                else {
-                                    log.debug("Discarding {}. Is not completely synced.", ps);
-                                }
-                            }
-                            return ps.getIsEveryChannelSynced();
-                        })
-                        .toList();
-                targetProducts = !syncedTargets.isEmpty() ? syncedTargets.get(syncedTargets.size() - 1) : null;
-                log.info("Using migration target: {}", targetProducts);
-            }
-            else {
-                for (SUSEProductSet target : targets) {
-                    String ident = target.getSerializedProductIDs();
-                    if (ident.equals(targetIdent)) {
-                        targetProducts = target;
-                        break;
-                    }
-                }
-            }
-            if (targetProducts == null) {
-                String targetsInfo = "Possible targets with incompletely synced channels: " +
-                        System.getProperty("line.separator") +
-                        targets.stream().map(t -> t + " : " +
-                                t.getMissingChannelsMessage())
-                                .collect(Collectors.joining(System.getProperty("line.separator")));
-                log.error("No target products found for migration: {}", targetsInfo);
-                throw new FaultException(-1, "productMigrationNoTarget",
-                        "No target found for Product migration. " + targetsInfo);
-            }
-            if (!targetProducts.getIsEveryChannelSynced()) {
-                throw new FaultException(-1, "productMigrationNoTarget",
-                        "Target not available, the following channels are not synced: " +
-                        targetProducts.getMissingChannelsMessage());
-            }
+            SUSEProductSet targetProducts = getTargetProducts(targetIdent, targets);
 
             // See if vendor channels are matching the given base channel
             EssentialChannelDto baseChannel = DistUpgradeManager.getProductBaseChannelDto(
@@ -8113,6 +8082,55 @@ public class SystemHandler extends BaseHandler {
         // We didn't find target products if we are still here
         throw new FaultException(-1, "productMigrationNoTarget",
                 "No target found for Product migration");
+    }
+
+    private SUSEProductSet getTargetProducts(String targetIdent, List<SUSEProductSet> targets) {
+        SUSEProductSet targetProducts = null;
+        if (StringUtils.isBlank(targetIdent)) {
+            log.info("Target migration id is empty. " +
+                    "Looking for the closest product version having synced channels.");
+            List<SUSEProductSet> syncedTargets = targets.stream()
+                    .filter(ps -> {
+                        if (log.isDebugEnabled()) {
+                            if (ps.getIsEveryChannelSynced()) {
+                                log.debug("{} is completely synced.", ps);
+                            }
+                            else {
+                                log.debug("Discarding {}. Is not completely synced.", ps);
+                            }
+                        }
+                        return ps.getIsEveryChannelSynced();
+                    })
+                    .toList();
+            targetProducts = !syncedTargets.isEmpty() ? syncedTargets.get(syncedTargets.size() - 1) : null;
+            log.info("Using migration target: {}", targetProducts);
+        }
+        else {
+            for (SUSEProductSet target : targets) {
+                String ident = target.getSerializedProductIDs();
+                if (ident.equals(targetIdent)) {
+                    targetProducts = target;
+                    break;
+                }
+            }
+        }
+        if (targetProducts == null) {
+            String targetsInfo = "Possible targets with incompletely synced channels: " +
+                    System.getProperty("line.separator") +
+                    targets.stream().map(t -> t + " : " +
+                                    t.getMissingChannelsMessage())
+                            .collect(Collectors.joining(System.getProperty("line.separator")));
+            log.error("No target products found for migration: {}", targetsInfo);
+            throw new FaultException(-1, "productMigrationNoTarget",
+                    "No target found for Product migration. " + targetsInfo);
+        }
+        if (!targetProducts.getIsEveryChannelSynced()) {
+            throw new FaultException(-1, "productMigrationNoTarget",
+                    "Target not available, the following channels are not synced: " +
+                            targetProducts.getMissingChannelsMessage());
+        }
+
+        return targetProducts;
     }
 
     /**

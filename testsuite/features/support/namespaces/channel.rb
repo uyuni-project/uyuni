@@ -26,7 +26,7 @@ class NamespaceChannel
   #
   # @param label [String] The label of the channel you want to verify.
   # @return [Boolean] true if the channel is valid, false otherwise.
-  def verify_channel(label)
+  def channel_verified?(label)
     @test.call('channel.listSoftwareChannels', sessionKey: @test.token)
          .map { |c| c['label'] }
          .include?(label)

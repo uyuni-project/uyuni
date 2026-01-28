@@ -1,4 +1,4 @@
-# Copyright 2017-2025 SUSE LLC
+# Copyright 2017-2026 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Synchronize products in the products page of the Setup Wizard
@@ -40,7 +40,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP3 x86_64"
     And I select "SUSE Linux Enterprise Server LTSS 15 SP3 x86_64" as a product
     Then I should see the "SUSE Linux Enterprise Server LTSS 15 SP3 x86_64" selected
-    And I open the sub-list of the product "Basesystem Module 15 SP3 x86_64"
+    When I open the sub-list of the product "Basesystem Module 15 SP3 x86_64"
     And I select "Desktop Applications Module 15 SP3 x86_64" as a product
     Then I should see the "Desktop Applications Module 15 SP3 x86_64" selected
     When I open the sub-list of the product "Desktop Applications Module 15 SP3 x86_64"
@@ -113,6 +113,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I open the sub-list of the product "Desktop Applications Module 15 SP5 x86_64"
     And I select "Development Tools Module 15 SP5 x86_64" as a product
     Then I should see the "Development Tools Module 15 SP5 x86_64" selected
+    When I select "SUSE Linux Enterprise Server LTSS 15 SP5 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Server LTSS 15 SP5 x86_64" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Enterprise Server 15 SP5 x86_64" product has been added
@@ -148,6 +150,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I open the sub-list of the product "Desktop Applications Module 15 SP6 x86_64"
     And I select "Development Tools Module 15 SP6 x86_64" as a product
     Then I should see the "Development Tools Module 15 SP6 x86_64" selected
+    When I select "SUSE Linux Enterprise Server LTSS 15 SP6 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Server LTSS 15 SP6 x86_64" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Enterprise Server 15 SP6 x86_64" product has been added
@@ -443,12 +447,12 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
-    And I enter "openSUSE Tumbleweed aarch64" as the filtered product description
-    And I select "openSUSE Tumbleweed aarch64" as a product
-    Then I should see the "openSUSE Tumbleweed aarch64" selected
+    And I enter "openSUSE Leap 15.6 aarch64" as the filtered product description
+    And I select "openSUSE Leap 15.6 aarch64" as a product
+    Then I should see the "openSUSE Leap 15.6 aarch64" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-    And I wait until I see "openSUSE Tumbleweed aarch64" product has been added
+    And I wait until I see "openSUSE Leap 15.6 aarch64" product has been added
     And I wait until all synchronized channels for "leap15.6-aarch64" have finished
 
 @uyuni
@@ -539,20 +543,6 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @susemanager
 @centos7_minion
-  Scenario: Add SUSE Liberty Linux 7
-    Given I am authorized for the "Admin" section
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    And I wait until I do not see "currently running" text
-    And I wait until I do not see "Loading" text
-    And I enter "SUSE Liberty Linux 7" as the filtered product description
-    And I select "SUSE Liberty Linux 7 x86_64" as a product
-    Then I should see the "SUSE Liberty Linux 7 x86_64" selected
-    When I click the Add Product button
-    And I wait until I see "SUSE Liberty Linux 7 x86_64" product has been added
-    And I wait until all synchronized channels for "res7" have finished
-
-@susemanager
-@centos7_minion
   Scenario: Add SUSE Liberty Linux 7 LTSS
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
@@ -571,7 +561,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @centos7_minion
   Scenario: Add CentOS 7
     When I use spacewalk-common-channel to add all "centos7" channels with arch "x86_64"
-    And I wait until all synchronized channels for "res7" have finished
+    And I wait until all synchronized channels for "sll-7-ltss" have finished
 
 @susemanager
 @liberty9_minion
@@ -676,26 +666,6 @@ Feature: Synchronize products in the products page of the Setup Wizard
   Scenario: Add Rocky Linux 9
     When I use spacewalk-common-channel to add all "rockylinux9" channels with arch "x86_64"
     And I wait until all synchronized channels for "rockylinux9" have finished
-
-@susemanager
-@ubuntu2004_minion
-  Scenario: Add Ubuntu 20.04
-    Given I am authorized for the "Admin" section
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    And I wait until I do not see "currently running" text
-    And I wait until I do not see "Loading" text
-    And I enter "Ubuntu 20.04" as the filtered product description
-    And I select "Ubuntu 20.04" as a product
-    Then I should see the "Ubuntu 20.04" selected
-    When I click the Add Product button
-    And I wait until I see "Ubuntu 20.04" product has been added
-    And I wait until all synchronized channels for "ubuntu-2004" have finished
-
-@uyuni
-@ubuntu2004_minion
-  Scenario: Add Ubuntu 20.04
-    When I use spacewalk-common-channel to add all "ubuntu-2004" channels with arch "amd64-deb"
-    And I wait until all synchronized channels for "ubuntu-2004" have finished
 
 @susemanager
 @ubuntu2204_minion
@@ -881,6 +851,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until all synchronized channels for "suse-multi-linux-manager-retail-branch-server-51-sp7" have finished
 
 # There are no channels for Retail under Uyuni
+
 
   Scenario: Detect product loading issues from the UI in Build Validation
     Given I am authorized for the "Admin" section

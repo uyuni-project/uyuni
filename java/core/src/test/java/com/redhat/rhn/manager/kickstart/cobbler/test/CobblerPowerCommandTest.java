@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerPowerCommand;
-import com.redhat.rhn.manager.kickstart.cobbler.CobblerPowerCommand.Operation;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerPowerSettingsUpdateCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerSystemCreateCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
@@ -45,7 +44,7 @@ public class CobblerPowerCommandTest extends BaseTestCaseWithUser {
     public void testStore() throws Exception {
         CobblerConnection connection = CobblerXMLRPCHelper.getConnection("test");
 
-        for (Operation operation : CobblerPowerCommand.Operation.values()) {
+        for (CobblerPowerCommand.Operation operation : CobblerPowerCommand.Operation.values()) {
             Server server = ServerTestUtils.createTestSystem(user);
 
             // test powering on without configuring first

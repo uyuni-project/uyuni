@@ -2,6 +2,9 @@
 # pylint: disable=missing-module-docstring,invalid-name
 
 # Requires https://pypi.org/project/python-libarchive/ being installed
+#
+# IMPORTANT: The current version of python-libarchive in Leap and TW
+# are not compatible. You must install it from pypi
 
 from argparse import ArgumentParser
 from configparser import ConfigParser

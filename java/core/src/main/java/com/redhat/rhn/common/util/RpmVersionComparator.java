@@ -31,8 +31,11 @@ public class RpmVersionComparator implements Comparator<String> {
     /**
      * {@inheritDoc}
      */
+    // This method was written on purpose to mimic the original C code.
+    // Therefore, it's marked as "won't fix" for SonarCloud java rule
+    // S3776 (Cognitive Complexity of methods should not be too high)
     @Override
-    public int compare(String o1, String o2) {
+    public int compare(String o1, String o2) { //NOSONAR
         if (o1 == null) {
             o1 = "";
         }

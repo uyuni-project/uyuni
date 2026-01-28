@@ -9,3 +9,9 @@
     --bs-tooltip-bg: #{$eos-bc-gray-1000};
   }
 }
+
+.tooltip.wide-tooltip .tooltip-inner {
+  max-width: 400px;
+  text-align: left;
+  white-space: pre-line;
+}

@@ -12111,6 +12111,13 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
         <source>Collection of systems not registered, but present in branch {0} pxe entries.</source>
         <target state="translated">Zoznam systémov, ktoré nie sú registrované, ale sú prítomné v pxe záznamoch pobočky {0}.</target>
       </trans-unit>
+      <trans-unit id="Access Control" xml:space="preserve">
+        <source>Access Control</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Navigation Menu</context>
+        </context-group>
+        <target state="translated">Riadenie prístupu</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -53,6 +53,7 @@ import com.redhat.rhn.domain.action.supportdata.SupportDataActionDetails;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
+import com.redhat.rhn.domain.channel.ChannelTestUtility;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.errata.Errata;
@@ -2341,7 +2342,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         Package testPackage = PackageTest.createTestPackage(admin.getOrg());
 
-        testChannel.addPackage(testPackage);
+        ChannelTestUtility.testAddPackage(testChannel, testPackage);
 
         Set<InstalledPackage> instPackages = testServer.getPackages();
         InstalledPackage testInstPack = new InstalledPackage();
@@ -2393,8 +2394,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Package p1 = PackageTest.createTestPackage(admin.getOrg());
         Package p2 = PackageTest.createTestPackage(admin.getOrg());
 
-        testChannel.addPackage(p1);
-        testChannel.addPackage(p2);
+        ChannelTestUtility.testAddPackage(testChannel, p1);
+        ChannelTestUtility.testAddPackage(testChannel, p2);
         ChannelFactory.save(testChannel);
 
         Server s1 = ServerFactoryTest.createTestServer(admin, true,
@@ -3361,7 +3362,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         server.addChannel(baseChannel);
 
         Package pkg = PackageTest.createTestPackage(admin.getOrg());
-        server.getBaseChannel().addPackage(pkg);
+        ChannelTestUtility.testAddPackage(server.getBaseChannel(), pkg);
         TestUtils.saveAndFlush(pkg);
 
         SystemHandler systemHandler = getMockedHandler();

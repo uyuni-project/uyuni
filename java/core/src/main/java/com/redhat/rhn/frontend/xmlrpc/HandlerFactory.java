@@ -86,12 +86,17 @@ import com.redhat.rhn.frontend.xmlrpc.virtualhostmanager.VirtualHostManagerHandl
 import com.redhat.rhn.manager.access.AccessGroupManager;
 import com.redhat.rhn.manager.formula.FormulaManager;
 import com.redhat.rhn.manager.org.MigrationManager;
+import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
 import com.redhat.rhn.manager.system.AnsibleManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
+import com.suse.manager.hub.HubClientFactory;
+import com.suse.manager.hub.HubManager;
+import com.suse.manager.hub.migration.IssMigratorFactory;
+import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.utils.SaltKeyUtils;
 import com.suse.manager.webui.controllers.bootstrap.RegularMinionBootstrapper;
 import com.suse.manager.webui.controllers.bootstrap.SSHMinionBootstrapper;
@@ -168,6 +173,12 @@ public class HandlerFactory {
         AdminConfigurationHandler adminConfigurationHandler = new AdminConfigurationHandler(
                                   orgHandler, serverGroupHandler, userHandler, activationKeyHandler,
                                   systemHandler, channelHandler, channelSoftwareHandler, saltApi);
+        HubFactory hubFactory = new HubFactory();
+        HubClientFactory hubClientFactory = new HubClientFactory();
+        MirrorCredentialsManager mirrorCredentialsManager = new MirrorCredentialsManager();
+        IssMigratorFactory migratorFactory = new IssMigratorFactory();
+        HubManager hubManager = new HubManager(hubFactory, hubClientFactory, mirrorCredentialsManager, taskomaticApi,
+                systemEntitlementManager);
 
         factory.addHandler("access", new AccessHandler(accessGroupManager));
         factory.addHandler("actionchain", new ActionChainHandler());
@@ -217,7 +228,7 @@ public class HandlerFactory {
         factory.addHandler("saltkey", new SaltKeyHandler(saltKeyUtils));
         factory.addHandler("schedule", new ScheduleHandler());
         factory.addHandler("subscriptionmatching.pinnedsubscription", new PinnedSubscriptionHandler());
-        factory.addHandler("sync.hub", new HubHandler());
+        factory.addHandler("sync.hub", new HubHandler(hubManager, migratorFactory, taskomaticApi));
         factory.addHandler("sync.content", new ContentSyncHandler());
         factory.addHandler("system", systemHandler);
         factory.addHandler("system.appstreams", new SystemAppStreamHandler());

@@ -7,13 +7,6 @@ Note that in the case of a k3s or rke2 cluster the kubeconfig will be discovered
 
 # Preparing the installation
 
-## Podman specific setup
-
-Podman stores its volumes in `/var/lib/containers/storage/volumes/`.
-In order to provide custom storage for the volumes, mount disks on that path or even the expected volume path inside it like `/var/lib/containers/storage/volumes/var-spacewalk`.
-
-**This needs to be performed before installing Uyuni as the volumes will be populated at that time.**
-
 ## RKE2 specific setup
 
 RKE2 doesn't have automatically provisioning Persistent Volume by default.
@@ -132,91 +125,21 @@ helm pull --destination . oci://registry.opensuse.org/uyuni/server-helm
 # TODO Set the mgradm parameters
 ```
 
-## For Podman
-
-With Podman it is possible to preload the container images and avoid it to be fetched from a registry.
-For this, on a machine with internet access, pull the image using `podman`, `docker` or `skopeo` and save it as a `tar` archive.
-For example:
-
-```bash
-podman pull registry.opensuse.org/uyuni/server:latest
-podman save --output server.tar registry.opensuse.org/uyuni/server:latest
-```
-
-or
-
-```bash
-skopeo copy docker://registry.opensuse.org/uyuni/server:latest docker-archive:server.tar:registry.opensuse.org/uyuni/server:latest
-```
-
-Transfer the resulting `server-image.tar` to the server and load it using the following command:
-
-```bash
-podman load -i server.tar
-```
-
-To prevent pulling the images pass the `--image-pullPolicy=never` parameter to `mgradm install` or `mgradm migrate`.
-
-# Migrating from a regular server
-
-In order to migrate a regular Uyuni server to containers, a new machine is required: it is not possible to perform an in-place migration.
-The old server is designated as the source server and the new machine is the destination one.
-
-The migration procedure does not perform any hostname rename.
-The fully qualified domain name will be the same on the new server than on the source one.
-This means the DNS records need to be adjusted after the migration to use the new server.
-
-## Preparing
-
-### Stop the source server
-
-Stop the source services:
-
-```bash
-spacewalk-service stop
-systemctl stop postgresql
-```
-
-### Preparing the SSH connection
-
-The `SSH` configuration and agent should be ready on the host for a passwordless connection to the source server.
-The migration script only uses the source server fully qualified domain name in the SSH command.
-This means that every other configuration required to connect needs to be defined in the `~/.ssh/config` file.
-
-For a passwordless connection, the migration script will use an SSH agent on the server.
-If none is running yet, run `eval $(ssh-agent)`.
-Add the SSH key to the running agent using `ssh-add /path/to/the/private/key`.
-The private key password will be prompted.
-
-### In case SELinux is enabled
-
-Verify that SELinux is enabled on the new host by running `getenforce`. If the output is `Enforcing`, SELinux is enabled.
-In such case, we temporarily provide [this custom policy](uyuni-selinux-policy.cil) to allow the migration script to run. This file needs to be copied to `/root/uyuni-selinux-policy.cil` on the new host.
-The migration script will load the policy into the new host and pass it as podman argument to run the migration script.
-
-In the future, we plan to ship this custom policy packaged in a RPM and this step will not be required anymore.
-
-### Prepare for Kubernetes
-
-Since the migration job will start the container from scratch the Persistent Volumes need to be defined before running the `mgradm migrate command`.
-Refer to the installation section for more details on the volumes preparation.
-
-## Migrating
-
-Run the following command to install a new Uyuni server from the source one after replacing the `uyuni.source.fqdn` by the proper source server FQDN:
-This command will synchronize all the data from the source server to the new one: this can take time!
-
-```bash
-mgradm migrate podman uyuni.source.fqdn
-```
-
-or
-
-```bash
-mgradm migrate kubernetes uyuni.source.fqdn
-```
-
 # Installing Uyuni
+
+## Expected resources
+
+TODO document the expected secrets and configurations.
+
+## Creating the CA configmaps from cert-manager self-signed CA secret
+
+TODO Is this only needed in that case? How to handle the ACME or openbao cases?
+
+```
+kubectl get -n uyuni secret uyuni-ca -o 'jsonpath={.data.ca\.crt}' | base64 -d >ca.crt
+kubectl create configmap -n uyuni uyuni-ca --from-file ca.crt=ca.crt
+kubectl create configmap -n uyuni db-ca --from-file ca.crt=ca.crt
+```
 
 ## Installing
 

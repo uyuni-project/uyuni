@@ -16,12 +16,14 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.IOFaultException;
+import com.redhat.rhn.frontend.xmlrpc.InvalidOperationException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidTokenException;
 import com.redhat.rhn.frontend.xmlrpc.PermissionCheckFailureException;
 import com.redhat.rhn.frontend.xmlrpc.TokenAlreadyExistsException;
 import com.redhat.rhn.frontend.xmlrpc.TokenCreationException;
 import com.redhat.rhn.frontend.xmlrpc.TokenExchangeFailedException;
+import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.api.ReadOnly;
@@ -49,6 +51,7 @@ import org.hibernate.exception.ConstraintViolationException;
 
 import java.io.IOException;
 import java.security.cert.CertificateException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -67,12 +70,13 @@ public class HubHandler extends BaseHandler {
     private final HubManager hubManager;
 
     private final IssMigratorFactory migratorFactory;
+    private final TaskomaticApi taskomaticApi;
 
     /**
      * Default constructor
      */
     public HubHandler() {
-        this(new HubManager(), new IssMigratorFactory());
+        this(new HubManager(), new IssMigratorFactory(), new TaskomaticApi());
     }
 
     /**
@@ -80,17 +84,19 @@ public class HubHandler extends BaseHandler {
      * @param hubManagerIn the hub manager
      */
     public HubHandler(HubManager hubManagerIn) {
-        this(hubManagerIn, new IssMigratorFactory());
+        this(hubManagerIn, new IssMigratorFactory(), new TaskomaticApi());
     }
 
     /**
      * Builds a handler with the specified dependencies
      * @param hubManagerIn the hub manager
      * @param migratorFactoryIn the migrator factory
+     * @param taskomaticApiIn taskomatic api
      */
-    public HubHandler(HubManager hubManagerIn, IssMigratorFactory migratorFactoryIn) {
+    public HubHandler(HubManager hubManagerIn, IssMigratorFactory migratorFactoryIn, TaskomaticApi taskomaticApiIn) {
         this.hubManager = hubManagerIn;
         this.migratorFactory = migratorFactoryIn;
+        this.taskomaticApi = taskomaticApiIn;
     }
 
     protected String logAndGetErrorMessage(Throwable ex, String message, Object... args) {
@@ -820,5 +826,63 @@ public class HubHandler extends BaseHandler {
         ensureSatAdmin(loggedInUser);
         HubFactory hubFactory = new HubFactory();
         return hubFactory.isISSPeripheral();
+    }
+
+    /**
+     * Schedules mgr-sync refresh with reposync on peripheral server
+     * @param loggedInUser the logged in user
+     * @return return true if schedule was successful
+     *
+     * @apidoc.doc Schedules mgr-sync refresh with reposync on peripheral server
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #return_int_success()
+     */
+    public int scheduleUpdateTask(User loggedInUser) {
+        return scheduleUpdateTask(loggedInUser, new Date(), true);
+    }
+
+    /**
+     * Schedules mgr-sync refresh with reposync on peripheral server
+     * @param loggedInUser the logged in user
+     * @param earliest earliest time the task will be executed
+     * @return return true if schedule was successful
+     *
+     * @apidoc.doc Schedules mgr-sync refresh with reposync on peripheral server
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("$date", "earliest", "earliest time the task will be executed.")
+     * @apidoc.returntype #return_int_success()
+     */
+    public int scheduleUpdateTask(User loggedInUser, Date earliest) {
+        return scheduleUpdateTask(loggedInUser, earliest, true);
+    }
+
+
+    /**
+     * Schedules mgr-sync refresh with reposync on peripheral server
+     * @param loggedInUser the logged in user
+     * @param earliest earliest time the task will be executed
+     * @param withReposync if true reposync will be run after mgr-sync refresh
+     * @return return true if schedule was successful
+     *
+     * @apidoc.doc Schedules mgr-sync refresh with reposync on peripheral server
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("$date", "earliest", "earliest time the task will be executed.")
+     * @apidoc.param #param_desc("boolean", "withReposync", "if true reposync will be run after mgr-sync refresh")
+     * @apidoc.returntype #return_int_success()
+     */
+    public int scheduleUpdateTask(User loggedInUser, Date earliest, boolean withReposync) {
+        if (isISSPeripheral(loggedInUser)) {
+            try {
+                ensureSatAdmin(loggedInUser);
+                taskomaticApi.scheduleProductRefresh(earliest, withReposync);
+                return 1;
+            }
+            catch (TaskomaticApiException e) {
+                throw new com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException(e.getMessage());
+            }
+        }
+        else {
+            throw new InvalidOperationException("only available on peripheral servers");
+        }
     }
 }

@@ -691,7 +691,7 @@ def configfile_getinfo(self, args, options, file_info=None, interactive=False):
                 ):
                     options.file = prompt_user(_("File:"))
 
-                    contents = read_file(options.file)
+                    contents = read_file(options.file, options.binary)
 
                     if options.binary is None and self.file_is_binary(options.file):
                         options.binary = True
@@ -713,7 +713,7 @@ def configfile_getinfo(self, args, options, file_info=None, interactive=False):
 
         if not options.symlink and not options.directory:
             if options.file:
-                contents = read_file(options.file)
+                contents = read_file(options.file, options.binary)
 
                 if options.binary is None:
                     options.binary = self.file_is_binary(options.file)
@@ -758,7 +758,9 @@ def configfile_getinfo(self, args, options, file_info=None, interactive=False):
                 options.mode = "0644"
 
         logging.debug("base64 encoding contents")
-        contents = base64.b64encode(contents.encode("utf8")).decode()
+        if not options.binary:
+            contents = contents.encode("utf8")
+        contents = base64.b64encode(contents).decode()
 
         file_info = {
             "contents": "".join(contents),

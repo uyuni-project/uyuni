@@ -1,0 +1,62 @@
+{{- if default .Values.saline false }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app.kubernetes.io/component: saline
+    app.kubernetes.io/part-of: uyuni
+  name: saline
+  namespace: "{{ .Release.Namespace }}"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: saline
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: saline
+        app.kubernetes.io/part-of: uyuni
+    spec:
+      containers:
+      - env:
+        - name: NOSSL
+          value: "YES"
+        - name: TZ
+          value: {{ .Values.timezone | default "Etc/UTC" }}
+        image: {{- include "deployment.container.image" (dict "name" "server-saline" "global" .) | indent 1}}
+        imagePullPolicy: {{ .Values.pullPolicy }}
+        name: saline
+        ports:
+        - containerPort: 8216
+        volumeMounts:
+        - mountPath: /run/salt/master
+          name: run-salt-master
+        - mountPath: /etc/salt
+          name: etc-salt
+{{- if .Values.registrySecret }}
+      imagePullSecrets:
+      - name: {{ .Values.registrySecret }}
+{{- end }}
+      initContainers:
+      - command:
+        - sh
+        - -c
+        - |2
+          until curl -L http://web/rhn/manager/api/api/getVersion; do
+            sleep 60
+          done
+        image: {{- include "deployment.container.image" (dict "name" "server-saline" "global" .) | indent 1}}
+        imagePullPolicy: {{ .Values.pullPolicy }}
+        name: server-waiter
+      volumes:
+      - name: run-salt-master
+        persistentVolumeClaim:
+          claimName: run-salt-master
+      - name: etc-salt
+        persistentVolumeClaim:
+          claimName: etc-salt
+{{- end }}
+

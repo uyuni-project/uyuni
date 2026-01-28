@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.common.messaging;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.frontend.events.AlignSoftwareTargetAction;
@@ -71,6 +72,7 @@ import java.util.Map;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 /**
@@ -80,8 +82,10 @@ public class MessageQueue {
     private static final Logger LOGGER = LogManager.getLogger(MessageQueue.class);
     private static final Map<Class<? extends EventMessage>, List<MessageAction>> ACTIONS = new HashMap<>();
     private static final BlockingQueue<Runnable> MESSAGE_QUEUE = new LinkedBlockingQueue<>();
-    private static MessageDispatcher dispatcher = null;
-    private static int messageCount;
+    private static List<MessageDispatcher> dispatchers = new ArrayList<>();
+    private static final AtomicInteger MESSAGE_COUNT = new AtomicInteger(0);
+
+    private static final int THREAD_POOL_SIZE = Config.get().getInt("java.message_queue.threads", 1);
 
     /**
      * Util class so we don't have a usable constructor
@@ -109,7 +113,7 @@ public class MessageQueue {
                     ActionExecutor executor = new ActionExecutor(handlers, msg);
                     try {
                         MESSAGE_QUEUE.put(executor);
-                        messageCount++;
+                        MESSAGE_COUNT.incrementAndGet();
                     }
                     catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
@@ -140,7 +144,7 @@ public class MessageQueue {
         ActionExecutor retval = (ActionExecutor) MESSAGE_QUEUE.poll(500, TimeUnit.MILLISECONDS);
         if (retval != null) {
             synchronized (ACTIONS) {
-                messageCount--;
+                MESSAGE_COUNT.decrementAndGet();
             }
         }
         return retval;
@@ -156,13 +160,19 @@ public class MessageQueue {
         if (isMessaging()) {
             return;
         }
-        dispatcher = new MessageDispatcher();
-        Thread dispatcherThread = new Thread(dispatcher);
-        dispatcherThread.setName("RHN Message Dispatcher");
-        dispatcherThread.setDaemon(false);
-        dispatcherThread.start();
+        dispatchers.clear();
+
+        for (int i = 0; i < THREAD_POOL_SIZE; i++) {
+            MessageDispatcher dispatcher = new MessageDispatcher();
+            Thread dispatcherThread = new Thread(dispatcher);
+            dispatcherThread.setName("Message Dispatcher-" + i);
+            dispatcherThread.setDaemon(false);
+            dispatcherThread.start();
+            dispatchers.add(dispatcher);
+        }
+
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("startMessaging() - end");
+            LOGGER.debug("startMessaging() - started {} threads", THREAD_POOL_SIZE);
         }
     }
 
@@ -173,7 +183,14 @@ public class MessageQueue {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("stopMessaging() - start");
         }
-        dispatcher.stop();
+
+        for (MessageDispatcher dispatcher : dispatchers) {
+            if (dispatcher != null) {
+                dispatcher.stop();
+            }
+        }
+        dispatchers.clear();
+
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("stopMessaging() - end");
         }
@@ -184,7 +201,7 @@ public class MessageQueue {
      * @return int number of messages in queue.
      */
     public static int getMessageCount() {
-        return messageCount;
+        return MESSAGE_COUNT.get();
     }
 
     /**
@@ -252,8 +269,8 @@ public class MessageQueue {
      * publish MessageEvents to
      * @return boolean true if MessageQueue is running.
      */
-    public static boolean isMessaging() {
-        return (dispatcher != null && !dispatcher.isStopped());
+    public static synchronized boolean isMessaging() {
+        return !dispatchers.isEmpty() && dispatchers.stream().anyMatch(d -> d != null && !d.isStopped());
     }
 
 

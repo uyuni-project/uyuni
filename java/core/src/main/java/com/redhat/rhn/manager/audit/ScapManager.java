@@ -70,6 +70,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.xml.XMLConstants;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
@@ -463,7 +464,23 @@ public class ScapManager extends BaseManager {
         StreamSource in = new StreamSource(resultsXml);
         try (OutputStream resumeOut = new FileOutputStream(output)) {
             StreamResult out = new StreamResult(resumeOut);
+
+            // Prevent XXE Attack: Ensure using the correct factory class to create TrasformerFactory instance
+            // This will instruct Java to use to version which supports using ACCESS_EXTERNAL_DTD argument,
+            // using com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl
+            // instead of org.apache.xalan.processor.TransformerFactoryImpl
+            System.setProperty("javax.xml.transform.TransformerFactory",
+                    "com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl");
+
             TransformerFactory factory = TransformerFactory.newInstance();
+
+            //disable access to external entities in xml parsing
+            factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+            factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
+
+            //secure processing
+            factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+
             Transformer transformer = factory.newTransformer(xslStream);
             transformer.transform(in, out);
         }

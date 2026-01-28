@@ -527,78 +527,34 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
         return mapping.findForward("second");
     }
 
-    protected void addRequestAttributes(RequestContext ctx,
-            KickstartScheduleCommand cmd, DynaActionForm form) {
+    protected void addRequestAttributes(RequestContext ctx, KickstartScheduleCommand cmd, DynaActionForm form) {
         ctx.getRequest().setAttribute(RequestContext.SYSTEM, cmd.getServer());
-        ctx.getRequest()
-        .setAttribute(RequestContext.KICKSTART, cmd.getKsdata());
+        ctx.getRequest().setAttribute(RequestContext.KICKSTART, cmd.getKsdata());
         if (cmd.getKsdata() != null) {
             ctx.getRequest().setAttribute("profile", cmd.getKsdata());
             ctx.getRequest().setAttribute("distro", cmd.getKsdata().getTree());
-            CobblerConnection con = CobblerXMLRPCHelper.
-                    getConnection(ctx.getCurrentUser());
+            CobblerConnection con = CobblerXMLRPCHelper.getConnection(ctx.getCurrentUser());
 
-            Distro distro = Distro.lookupById(con,
-                    cmd.getKsdata().getTree().getCobblerId());
+            Distro distro = Distro.lookupById(con, cmd.getKsdata().getTree().getCobblerId());
 
-            if (distro.getKernelOptions().isEmpty()) {
-                ctx.getRequest().setAttribute("distro_kernel_params",
-                        CobblerObject.INHERIT_KEY);
-            }
-            else {
-                ctx.getRequest().setAttribute("distro_kernel_params",
-                        (distro.getKernelOptions().get() instanceof Map) ?
-                            distro.convertOptionsMap(distro.getKernelOptions().get()) :
-                            distro.getKernelOptions().get());
-            }
-            if (distro.getKernelOptionsPost().isEmpty()) {
-                ctx.getRequest().setAttribute("distro_post_kernel_params",
-                        CobblerObject.INHERIT_KEY);
-            }
-            else {
-                ctx.getRequest().setAttribute("distro_post_kernel_params",
-                        (distro.getKernelOptionsPost().get() instanceof Map) ?
-                            distro.convertOptionsMap(distro.getKernelOptionsPost().get()) :
-                            distro.getKernelOptionsPost().get());
-            }
+            addKernelParamsAttribute(ctx, distro, "distro_kernel_params");
+            addPostKernelParamsAttribute(ctx, distro, "distro_post_kernel_params");
 
-            org.cobbler.Profile profile = org.cobbler.Profile.
-                        lookupById(con, cmd.getKsdata().getCobblerId());
+            org.cobbler.Profile profile = org.cobbler.Profile.lookupById(con, cmd.getKsdata().getCobblerId());
 
-            if (profile.getKernelOptions().isEmpty()) {
-                ctx.getRequest().setAttribute("profile_kernel_params",
-                        CobblerObject.INHERIT_KEY);
-            }
-            else {
-                ctx.getRequest().setAttribute("profile_kernel_params",
-                        (profile.getKernelOptions().get() instanceof Map) ?
-                             profile.convertOptionsMap(profile.getKernelOptions().get()) :
-                             profile.getKernelOptions().get());
-            }
-            if (profile.getKernelOptionsPost().isEmpty()) {
-                ctx.getRequest().setAttribute("profile_post_kernel_params",
-                        CobblerObject.INHERIT_KEY);
-            }
-            else {
-                ctx.getRequest().setAttribute("profile_post_kernel_params",
-                        (profile.getKernelOptionsPost().get() instanceof Map) ?
-                             profile.convertOptionsMap(profile.getKernelOptionsPost().get()) :
-                             profile.getKernelOptionsPost().get());
-            }
+            addKernelParamsAttribute(ctx, profile, "profile_kernel_params");
+            addPostKernelParamsAttribute(ctx, profile, "profile_post_kernel_params");
 
             if (cmd.getServer().getCobblerId() != null) {
-                SystemRecord rec = SystemRecord.
-                        lookupById(con, cmd.getServer().getCobblerId());
-                if (rec != null && rec.getProfile() != null &&
-                    profile.getName().equals(rec.getProfile().getName())) {
+                SystemRecord rec = SystemRecord.lookupById(con, cmd.getServer().getCobblerId());
+                if (rec != null && rec.getProfile() != null && profile.getName().equals(rec.getProfile().getName())) {
                     if (StringUtils.isBlank(form.getString(KERNEL_PARAMS_TYPE))) {
                         form.set(KERNEL_PARAMS_TYPE, KERNEL_PARAMS_CUSTOM);
                         if (rec.getKernelOptions().isEmpty()) {
                             form.set(KERNEL_PARAMS, CobblerObject.INHERIT_KEY);
                         }
                         else {
-                            form.set(KERNEL_PARAMS,
-                                    profile.convertOptionsMap(rec.getKernelOptions().get()));
+                            form.set(KERNEL_PARAMS, profile.convertOptionsMap(rec.getKernelOptions().get()));
                         }
                     }
 
@@ -608,8 +564,7 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
                             form.set(POST_KERNEL_PARAMS, CobblerObject.INHERIT_KEY);
                         }
                         else {
-                            form.set(POST_KERNEL_PARAMS,
-                                    profile.convertOptionsMap(rec.getKernelOptionsPost().get()));
+                            form.set(POST_KERNEL_PARAMS, profile.convertOptionsMap(rec.getKernelOptionsPost().get()));
                         }
                     }
                 }
@@ -619,7 +574,29 @@ public class ScheduleKickstartWizardAction extends RhnWizardAction {
         setupBondInfo(form, ctx, cmd);
     }
 
+    private void addKernelParamsAttribute(RequestContext ctx, CobblerObject cobblerObject, String attrString) {
+        if (cobblerObject.getKernelOptions().isEmpty()) {
+            ctx.getRequest().setAttribute(attrString, CobblerObject.INHERIT_KEY);
+        }
+        else {
+            ctx.getRequest().setAttribute(attrString,
+                    (cobblerObject.getKernelOptions().get() instanceof Map) ?
+                            cobblerObject.convertOptionsMap(cobblerObject.getKernelOptions().get()) :
+                            cobblerObject.getKernelOptions().get());
+        }
+    }
 
+    private void addPostKernelParamsAttribute(RequestContext ctx, CobblerObject cobblerObject, String attrString) {
+        if (cobblerObject.getKernelOptionsPost().isEmpty()) {
+            ctx.getRequest().setAttribute(attrString, CobblerObject.INHERIT_KEY);
+        }
+        else {
+            ctx.getRequest().setAttribute(attrString,
+                    (cobblerObject.getKernelOptionsPost().get() instanceof Map) ?
+                            cobblerObject.convertOptionsMap(cobblerObject.getKernelOptionsPost().get()) :
+                            cobblerObject.getKernelOptionsPost().get());
+        }
+    }
 
     /**
      * The third step in the wizard

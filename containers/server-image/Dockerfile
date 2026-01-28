@@ -1,7 +1,8 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: uyuni/server:latest
 
-FROM registry.suse.com/bci/bci-init:15.7
+ARG INIT_BASE=registry.suse.com/bci/bci-init:15.7
+FROM $INIT_BASE
 
 ARG PRODUCT_PATTERN_PREFIX="patterns-uyuni"
 
@@ -48,7 +49,7 @@ RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf && \
         ipmitool \
         javamail \
         locale-formula \
-        postgresql16 \
+        postgresql18 \
         prometheus-exporters-formula \
         prometheus-formula \
         prometheus-jmx_exporter \
@@ -124,7 +125,7 @@ LABEL org.opencontainers.image.description="All-in-one ${PRODUCT} server image"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opencontainers.image.version=5.2.4
+LABEL org.opencontainers.image.version=5.2.5
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix

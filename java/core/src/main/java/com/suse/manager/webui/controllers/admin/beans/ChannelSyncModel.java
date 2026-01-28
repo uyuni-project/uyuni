@@ -15,4 +15,9 @@ import com.suse.manager.model.hub.OrgInfoJson;
 
 import java.util.List;
 
-public record ChannelSyncModel(List<OrgInfoJson> peripheralOrgs, List<ChannelSyncDetail> channels) { }
+public record ChannelSyncModel(
+    List<OrgInfoJson> peripheralOrgs,
+    List<ChannelSyncDetail> channels,
+    List<Object[]> mandatoryMap,
+    List<Object[]> reversedMandatoryMap
+) { }

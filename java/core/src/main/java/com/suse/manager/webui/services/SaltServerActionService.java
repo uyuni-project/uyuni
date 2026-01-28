@@ -51,6 +51,7 @@ import com.suse.salt.netapi.calls.modules.State;
 import com.suse.salt.netapi.calls.modules.State.ApplyResult;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.errors.GenericError;
+import com.suse.salt.netapi.errors.SaltError;
 import com.suse.salt.netapi.exception.SaltException;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.results.Ret;
@@ -432,47 +433,10 @@ public class SaltServerActionService {
                                 stateResult.getName().map(x -> x.fold(Arrays::asList, List::of)
                                         .contains(SaltParameters.SYSTEM_REBOOT)).orElse(false));
 
-                boolean refreshPkg = false;
-                Optional<User> scheduler = Optional.empty();
-                for (Map.Entry<String, StateApplyResult<Ret<JsonElement>>> entry : actionChainResult.entrySet()) {
-                    String stateIdKey = entry.getKey();
-                    StateApplyResult<Ret<JsonElement>> stateResult = entry.getValue();
+                Pair<Boolean, Optional<User>> result = handleActionChainResult(actionChainResult, minionId);
+                boolean refreshPkg = result.getLeft();
+                Optional<User> scheduler = result.getRight();
 
-                    Optional<SaltActionChainGeneratorService.ActionChainStateId> actionChainStateId =
-                            SaltActionChainGeneratorService.parseActionChainStateId(stateIdKey);
-                    if (actionChainStateId.isPresent()) {
-                        SaltActionChainGeneratorService.ActionChainStateId stateId = actionChainStateId.get();
-                        // only reboot needs special handling,
-                        // for salt pkg update there's no need to split the sls in case of salt-ssh minions
-
-                        Action action = ActionFactory.lookupById(stateId.getActionId());
-                        if (stateResult.getName().map(x -> x.fold(Arrays::asList, List::of)
-                                .contains(SaltParameters.SYSTEM_REBOOT)).orElse(false) && stateResult.isResult() &&
-                                action.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
-
-                            Optional<ServerAction> rebootServerAction =
-                                    action.getServerActions().stream()
-                                            .filter(sa -> sa.getServer().asMinionServer()
-                                                    .map(m -> m.getMinionId().equals(minionId)).orElse(false))
-                                            .findFirst();
-                            rebootServerAction.ifPresentOrElse(
-                                    ract -> {
-                                        if (ract.isStatusQueued()) {
-                                            setActionAsPickedUp(ract);
-                                        }
-                                    },
-                                    () -> LOG.error("Action of type {} found in action chain result but not " +
-                                            "in actions for minion {}", SaltParameters.SYSTEM_REBOOT, minionId));
-                        }
-
-                        if (stateResult.isResult() &&
-                                saltUtils.shouldRefreshPackageList(stateResult.getName(),
-                                        Optional.of(stateResult.getChanges().getRet()))) {
-                            scheduler = Optional.ofNullable(action.getSchedulerUser());
-                            refreshPkg = true;
-                        }
-                    }
-                }
                 Optional<MinionServer> minionServer = MinionServerFactory.findByMinionId(minionId);
                 if (refreshPkg) {
                     Optional<User> finalScheduler = scheduler;
@@ -503,6 +467,54 @@ public class SaltServerActionService {
             return false;
         }
         return true;
+    }
+
+    private Pair<Boolean, Optional<User>> handleActionChainResult(
+            Map<String, StateApplyResult<Ret<JsonElement>>> actionChainResult, String minionId) {
+        boolean refreshPkg = false;
+        Optional<User> scheduler = Optional.empty();
+
+        for (Map.Entry<String, StateApplyResult<Ret<JsonElement>>> entry : actionChainResult.entrySet()) {
+            String stateIdKey = entry.getKey();
+            StateApplyResult<Ret<JsonElement>> stateResult = entry.getValue();
+
+            Optional<SaltActionChainGeneratorService.ActionChainStateId> actionChainStateId =
+                    SaltActionChainGeneratorService.parseActionChainStateId(stateIdKey);
+            if (actionChainStateId.isPresent()) {
+                SaltActionChainGeneratorService.ActionChainStateId stateId = actionChainStateId.get();
+                // only reboot needs special handling,
+                // for salt pkg update there's no need to split the sls in case of salt-ssh minions
+
+                Action action = ActionFactory.lookupById(stateId.getActionId());
+                if (stateResult.getName().map(x -> x.fold(Arrays::asList, List::of)
+                        .contains(SaltParameters.SYSTEM_REBOOT)).orElse(false) && stateResult.isResult() &&
+                        action.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
+
+                    Optional<ServerAction> rebootServerAction =
+                            action.getServerActions().stream()
+                                    .filter(sa -> sa.getServer().asMinionServer()
+                                            .map(m -> m.getMinionId().equals(minionId)).orElse(false))
+                                    .findFirst();
+                    rebootServerAction.ifPresentOrElse(
+                            ract -> {
+                                if (ract.isStatusQueued()) {
+                                    setActionAsPickedUp(ract);
+                                }
+                            },
+                            () -> LOG.error("Action of type {} found in action chain result but not " +
+                                    "in actions for minion {}", SaltParameters.SYSTEM_REBOOT, minionId));
+                }
+
+                if (stateResult.isResult() &&
+                        saltUtils.shouldRefreshPackageList(stateResult.getName(),
+                                Optional.of(stateResult.getChanges().getRet()))) {
+                    scheduler = Optional.ofNullable(action.getSchedulerUser());
+                    refreshPkg = true;
+                }
+            }
+        }
+
+        return Pair.of(refreshPkg, scheduler);
     }
 
     private Optional<Map<String, StateApplyResult<Ret<JsonElement>>>> getActionChainResult(
@@ -888,86 +900,96 @@ public class SaltServerActionService {
                     return;
                 }
 
-                result.ifPresentOrElse(r -> {
-                    LOG.trace("Salt call result: {}", r);
-
-                    r.consume(error -> {
-                        String errorString = error.toString();
-                        if (sa.getRemainingTries() > 0 && errorString.contains("System is going down")) {
-                            // SSH login is blocked when a reboot is ongoing. Reschedule this action later again
-                            LOG.info("System is going down. Configure re-try in 3 minutes");
-                            sa.setStatusQueued();
-                            sa.setRemainingTries((sa.getRemainingTries() - 1L));
-                            sa.setPickupTime(null);
-                            sa.setCompletionTime(null);
-                            action.setEarliestAction(Date.from(Instant.now().plus(3, ChronoUnit.MINUTES)));
-                            ActionFactory.save(action);
-                            // We commit as we need to take care that the new date is in DB when we
-                            // call taskomatic to execute the action again.
-                            HibernateFactory.commitTransaction();
-                            try {
-                                taskomaticApi.scheduleActionExecution(action);
-                            }
-                            catch (TaskomaticApiException e) {
-                                LOG.error("Unable to reschedule failed Salt SSH Action: {}", errorString, e);
-                                sa.setStatusFailed();
-                                sa.setResultMsg(errorString);
-                                sa.setCompletionTime(new Date());
-                            }
-                        }
-                        else {
+                result.ifPresentOrElse(
+                        r -> {
+                            LOG.trace("Salt call result: {}", r);
+                            r.consume(error ->
+                                            handleConsumerError(error, sa, action),
+                                    jsonResult ->
+                                            handleConsumerResult(jsonResult, sa, action, call, minion,
+                                                    forcePkgRefresh));
+                        }, () -> {
+                            LOG.error("Action '{}' failed. Got not result from Salt, probably minion is down or " +
+                                    "could not be contacted.", action.getName());
                             sa.setStatusFailed();
-                            sa.setResultMsg(error.fold(
-                                    e -> "function " + e.getFunctionName() + " not available.",
-                                    e -> "module " + e.getModuleName() + " not supported.",
-                                    e -> "error parsing json.",
-                                    GenericError::getMessage,
-                                    e -> "salt ssh error: " + e.getRetcode() + " " + e.getMessage()
-                            ));
-                            LOG.error(sa.getResultMsg());
+                            sa.setResultMsg("Minion is down or could not be contacted.");
                             sa.setCompletionTime(new Date());
-                        }
-                    }, jsonResult -> {
-                        String function = (String) call.getPayload().get("fun");
-
-                        /* bsc#1197591 ssh push reboot has an answer that is not a failure but the action needs to stay
-                        *  in picked up, in this way SSHServiceDriver::getCandidates can schedule a reboot correctly
-                        */
-                        if (!action.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
-                            saltUtils.updateServerAction(sa, 0L, true, "n/a", jsonResult,
-                                    Optional.of(Xor.right(function)), null);
-                        }
-
-                        else if (sa.isStatusQueued()) {
-                            setActionAsPickedUp(sa);
-                        }
-
-                        // Perform a "check-in" after every executed action
-                        minion.updateServerInfo();
-
-                        // Perform a package profile update in the end if necessary
-                        if (forcePkgRefresh || saltUtils.shouldRefreshPackageList(
-                                Optional.of(Xor.right(function)), Optional.of(jsonResult))) {
-                            LOG.info("Scheduling a package profile update");
-
-                            try {
-                                ActionManager.schedulePackageRefresh(
-                                        Optional.ofNullable(action.getSchedulerUser()), minion, new Date());
-                            }
-                            catch (TaskomaticApiException e) {
-                                LOG.error("Could not schedule package refresh for minion: {}", minion.getMinionId(), e);
-                            }
-                        }
-                    });
-                }, () -> {
-                    LOG.error("Action '{}' failed. Got not result from Salt, probably minion is down or " +
-                            "could not be contacted.", action.getName());
-                    sa.setStatusFailed();
-                    sa.setResultMsg("Minion is down or could not be contacted.");
-                    sa.setCompletionTime(new Date());
-                });
+                        });
             }
         });
+    }
+
+    private void handleConsumerError(SaltError error, ServerAction sa, Action action) {
+        String errorString = error.toString();
+        if (sa.getRemainingTries() > 0 && errorString.contains("System is going down")) {
+            // SSH login is blocked when a reboot is ongoing. Reschedule this action later again
+            LOG.info("System is going down. Configure re-try in 3 minutes");
+            sa.setStatusQueued();
+            sa.setRemainingTries((sa.getRemainingTries() - 1L));
+            sa.setPickupTime(null);
+            sa.setCompletionTime(null);
+            action.setEarliestAction(Date.from(Instant.now().plus(3, ChronoUnit.MINUTES)));
+            ActionFactory.save(action);
+            // We commit as we need to take care that the new date is in DB when we
+            // call taskomatic to execute the action again.
+            HibernateFactory.commitTransaction();
+            try {
+                taskomaticApi.scheduleActionExecution(action);
+            }
+            catch (TaskomaticApiException e) {
+                LOG.error("Unable to reschedule failed Salt SSH Action: {}", errorString, e);
+                sa.setStatusFailed();
+                sa.setResultMsg(errorString);
+                sa.setCompletionTime(new Date());
+            }
+        }
+        else {
+            sa.setStatusFailed();
+            sa.setResultMsg(error.fold(
+                    e -> "function " + e.getFunctionName() + " not available.",
+                    e -> "module " + e.getModuleName() + " not supported.",
+                    e -> "error parsing json.",
+                    GenericError::getMessage,
+                    e -> "salt ssh error: " + e.getRetcode() + " " + e.getMessage()
+            ));
+            LOG.error(sa.getResultMsg());
+            sa.setCompletionTime(new Date());
+        }
+    }
+
+    private void handleConsumerResult(JsonElement jsonResult, ServerAction sa, Action action, LocalCall<?> call,
+                                      MinionServer minion, boolean forcePkgRefresh) {
+
+        String function = (String) call.getPayload().get("fun");
+
+        /* bsc#1197591 ssh push reboot has an answer that is not a failure but the action needs to stay
+         *  in picked up, in this way SSHServiceDriver::getCandidates can schedule a reboot correctly
+         */
+        if (!action.getActionType().equals(ActionFactory.TYPE_REBOOT)) {
+            saltUtils.updateServerAction(sa, 0L, true, "n/a", jsonResult,
+                    Optional.of(Xor.right(function)), null);
+        }
+
+        else if (sa.isStatusQueued()) {
+            setActionAsPickedUp(sa);
+        }
+
+        // Perform a "check-in" after every executed action
+        minion.updateServerInfo();
+
+        // Perform a package profile update in the end if necessary
+        if (forcePkgRefresh || saltUtils.shouldRefreshPackageList(
+                Optional.of(Xor.right(function)), Optional.of(jsonResult))) {
+            LOG.info("Scheduling a package profile update");
+
+            try {
+                ActionManager.schedulePackageRefresh(
+                        Optional.ofNullable(action.getSchedulerUser()), minion, new Date());
+            }
+            catch (TaskomaticApiException e) {
+                LOG.error("Could not schedule package refresh for minion: {}", minion.getMinionId(), e);
+            }
+        }
     }
 
     /**

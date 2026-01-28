@@ -422,7 +422,7 @@ Then(/^I should see the image for "([^"]*)" is built$/) do |host|
   end
 end
 
-Then(/^I open the details page of the image for "([^"]*)"$/) do |host|
+When(/^I open the details page of the image for "([^"]*)"$/) do |host|
   name = compute_kiwi_profile_name(host)
 
   begin

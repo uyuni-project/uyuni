@@ -40,7 +40,7 @@
 %endif
 
 Name:           rhnlib
-Version:        5.2.2
+Version:        5.2.3
 Release:        0
 Summary:        Python libraries for the Spacewalk project
 License:        GPL-2.0-only
@@ -58,6 +58,9 @@ Group:          Development/Libraries
 BuildArch:      noarch
 %endif
 BuildRequires:  make
+%if 0%{?debian} || 0%{?ubuntu}
+ExclusiveArch:  do_not_build
+%endif
 
 %description
 rhnlib is a collection of python modules used by the Spacewalk (http://spacewalk.redhat.com) software.

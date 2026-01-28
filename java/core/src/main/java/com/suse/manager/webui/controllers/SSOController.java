@@ -91,78 +91,84 @@ public final class SSOController {
      * @return the response object
      */
     public static Object getACS(Request request, Response response) {
-        if (ssoConfig.isPresent() && ConfigDefaults.get().isSingleSignOnEnabled()) {
-            try {
-                final Auth auth = new Auth(ssoConfig.get(), request.raw(), response.raw());
-                auth.processResponse();
+        if (!ssoConfig.isPresent()) {
+            return null;
+        }
+        if (!ConfigDefaults.get().isSingleSignOnEnabled()) {
+            return null;
+        }
 
-                final List<String> errors = auth.getErrors();
+        try {
+            final Auth auth = new Auth(ssoConfig.get(), request.raw(), response.raw());
+            auth.processResponse();
 
-                if (errors.isEmpty()) {
-                    final Map<String, List<String>> attributes = auth.getAttributes();
-                    final String nameId = auth.getNameId();
+            final List<String> errors = auth.getErrors();
 
-                    request.raw().getSession().setAttribute("attributes", attributes);
-                    request.raw().getSession().setAttribute("nameId", nameId);
+            if (errors.isEmpty()) {
+                final Map<String, List<String>> attributes = auth.getAttributes();
+                final String nameId = auth.getNameId();
 
-                    final String relayState = request.raw().getParameter("RelayState");
+                request.raw().getSession().setAttribute("attributes", attributes);
+                request.raw().getSession().setAttribute("nameId", nameId);
 
-                    final Collection<String> keys = attributes.keySet();
+                final String relayState = request.raw().getParameter("RelayState");
 
-                    if (keys.contains("uid") && !attributes.get("uid").isEmpty()) {
-                        final Optional uidOpt = Optional.ofNullable(attributes.get("uid").get(0));
-                        if (uidOpt.isPresent()) {
-                            final User user = UserFactory.lookupByLogin(String.valueOf(uidOpt.get()));
-                            user.setLastLoggedIn(new Date());
-                            UserManager.storeUser(user);
-                            PxtSessionDelegateFactory.getInstance().newPxtSessionDelegate().updateWebUserId(
-                                    request.raw(), response.raw(), user.getId());
-                            if (relayState != null && !relayState.isEmpty() &&
-                                    !relayState.equals(ServletUtils.getSelfRoutedURLNoQuery(request.raw()))) {
-                                // If the execution is at this point of the code, it means that the request successfully
-                                // passed Auth.processResponse(), meaning that it containes a "SAMLResponse" parameter
-                                // as an encoded64 XML file. This XML file has been in turn validated (signature)
-                                // and it has a correct timestamp, so has not been forged by an attacker.
-                                // The other parameter sent with the http request is named "RelayState", which usually
-                                // has always a value of "/rhn/YourRhn.do" (sent by SSO, pointing to the main web page).
-                                // As a precautionary measure, we can allow redirection only if RelayState parameter
-                                // points to "/rhn/" pages, hence validating against redirection to external urls
-                                if (relayState.startsWith("/rhn/")) {
-                                    response.redirect(relayState);
-                                    return response;
-                                }
+                final Collection<String> keys = attributes.keySet();
+
+                if (keys.contains("uid") && !attributes.get("uid").isEmpty()) {
+                    final Optional uidOpt = Optional.ofNullable(attributes.get("uid").get(0));
+                    if (uidOpt.isPresent()) {
+                        final User user = UserFactory.lookupByLogin(String.valueOf(uidOpt.get()));
+                        user.setLastLoggedIn(new Date());
+                        UserManager.storeUser(user);
+                        PxtSessionDelegateFactory.getInstance().newPxtSessionDelegate().updateWebUserId(
+                                request.raw(), response.raw(), user.getId());
+                        if (relayState != null && !relayState.isEmpty() &&
+                                !relayState.equals(ServletUtils.getSelfRoutedURLNoQuery(request.raw()))) {
+                            // If the execution is at this point of the code, it means that the request successfully
+                            // passed Auth.processResponse(), meaning that it containes a "SAMLResponse" parameter
+                            // as an encoded64 XML file. This XML file has been in turn validated (signature)
+                            // and it has a correct timestamp, so has not been forged by an attacker.
+                            // The other parameter sent with the http request is named "RelayState", which usually
+                            // has always a value of "/rhn/YourRhn.do" (sent by SSO, pointing to the main web page).
+                            // As a precautionary measure, we can allow redirection only if RelayState parameter
+                            // points to "/rhn/" pages, hence validating against redirection to external urls
+                            if (relayState.startsWith("/rhn/")) {
+                                response.redirect(relayState);
+                                return response;
                             }
                         }
                     }
-                    else {
-                        LOG.error("SAML attribute named 'uid' not found in SAML attributes. Cannot log the user in. " +
-                                "Please check with your Identity Provider (IdP) the presence of this attribute.");
-                    }
                 }
                 else {
-                    String allErrors = StringUtils.join(errors, ", ");
-                    LOG.error(allErrors);
-                    final String errorReason = auth.getLastErrorReason();
-                    if (errorReason != null && !errorReason.isEmpty()) {
-                        LOG.error(auth.getLastErrorReason());
-                    }
+                    LOG.error("SAML attribute named 'uid' not found in SAML attributes. Cannot log the user in. " +
+                            "Please check with your Identity Provider (IdP) the presence of this attribute.");
                 }
-                response.redirect("/");
-                return response;
             }
-            catch (LookupException e) {
-                LOG.error("Unable to find user: {}", e.getMessage(), e);
-                return "Internal error during SSO authentication phase. Have you created the corresponding user in " +
-                        "SUSE Manager? See product documentation";
+            else {
+                String allErrors = StringUtils.join(errors, ", ");
+                LOG.error(allErrors);
+                final String errorReason = auth.getLastErrorReason();
+                if (errorReason != null && !errorReason.isEmpty()) {
+                    LOG.error(auth.getLastErrorReason());
+                }
             }
-            catch (SettingsException e) {
-                LOG.error("Unable to parse settings for SSO: {}", e.getMessage(), e);
-                return "Internal error during SSO authentication phase - please check the logs " + e.getMessage();
-            }
-            catch (Exception e) {
-                LOG.error(e.getMessage(), e);
-            }
+            response.redirect("/");
+            return response;
         }
+        catch (LookupException e) {
+            LOG.error("Unable to find user: {}", e.getMessage(), e);
+            return "Internal error during SSO authentication phase. Have you created the corresponding user in " +
+                    "SUSE Manager? See product documentation";
+        }
+        catch (SettingsException e) {
+            LOG.error("Unable to parse settings for SSO: {}", e.getMessage(), e);
+            return "Internal error during SSO authentication phase - please check the logs " + e.getMessage();
+        }
+        catch (Exception e) {
+            LOG.error(e.getMessage(), e);
+        }
+
         return null;
     }
 

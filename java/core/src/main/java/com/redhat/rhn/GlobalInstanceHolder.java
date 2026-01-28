@@ -41,6 +41,7 @@ import com.suse.manager.webui.services.ThrottlingService;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.manager.webui.services.impl.SaltService;
+import com.suse.manager.webui.utils.AccessControlNamespaceTreeHelper;
 import com.suse.manager.webui.utils.MinionActionUtils;
 import com.suse.manager.webui.utils.UserPreferenceUtils;
 import com.suse.manager.webui.utils.ViewHelper;
@@ -91,4 +92,6 @@ public class GlobalInstanceHolder {
 
     public static final ViewHelper VIEW_HELPER = ViewHelper.getInstance();
     public static final ThrottlingService THROTTLING_SERVICE = new ThrottlingService();
+    public static final AccessControlNamespaceTreeHelper ACCESS_CONTROL_NAMESPACE_TREE_HELPER =
+            new AccessControlNamespaceTreeHelper();
 }

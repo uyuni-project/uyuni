@@ -14,6 +14,7 @@ import SchedulePlaybook from "./schedule-playbook";
 type PropsType = {
   minionServerId: number;
   pathContentType: string;
+  recurringDetails?: any;
   isRecurring?: boolean;
   onSelectPlaybook?: (playbook: any) => void;
 };
@@ -59,6 +60,7 @@ class AnsiblePathContent extends Component<PropsType, StateType> {
       return (
         <SchedulePlaybook
           playbook={this.state.selectedPlaybook}
+          recurringDetails={this.props.recurringDetails}
           isRecurring={this.props.isRecurring}
           onBack={() => this.setState({ selectedPlaybook: null })}
           onSelectPlaybook={this.props.onSelectPlaybook}

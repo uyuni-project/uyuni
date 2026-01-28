@@ -62,23 +62,6 @@ public class ChannelInfoDetailsJson {
         originalChannelLabel = null;
     }
 
-    private Date longToDate(Long longIn) {
-        if (null == longIn) {
-            return new Date();
-        }
-        else {
-            return new Date(longIn);
-        }
-    }
-
-    private Long dateToLong(Date dateIn) {
-        if (null != dateIn) {
-            return dateIn.getTime();
-        }
-
-        return 0L;
-    }
-
     /**
      * @return Returns the label.
      */
@@ -287,14 +270,24 @@ public class ChannelInfoDetailsJson {
      * @return Returns the endOfLife.
      */
     public Date getEndOfLifeDate() {
-        return longToDate(endOfLifeDate);
+        if (null == endOfLifeDate) {
+            return null;
+        }
+        else {
+            return new Date(endOfLifeDate);
+        }
     }
 
     /**
      * @param endOfLifeDateIn The endOfLife to set.
      */
     public void setEndOfLifeDate(Date endOfLifeDateIn) {
-        this.endOfLifeDate = dateToLong(endOfLifeDateIn);
+        if (null != endOfLifeDateIn) {
+            this.endOfLifeDate = endOfLifeDateIn.getTime();
+        }
+        else {
+            this.endOfLifeDate = null;
+        }
     }
 
     /**

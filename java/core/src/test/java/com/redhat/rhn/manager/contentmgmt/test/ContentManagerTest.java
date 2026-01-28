@@ -38,6 +38,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
+import com.redhat.rhn.domain.channel.ChannelTestUtility;
 import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.channel.Modules;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -2104,7 +2105,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         channel.setChecksumType(ChannelFactory.findChecksumTypeByLabel("sha1"));
         Package pack = PackageTest.createTestPackage(user.getOrg());
         Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        channel.addPackage(pack);
+        ChannelTestUtility.testAddPackage(channel, pack);
         channel.addErrata(errata);
         ChannelFactory.save(channel);
         return channel;

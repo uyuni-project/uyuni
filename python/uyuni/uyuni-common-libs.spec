@@ -47,7 +47,7 @@
 %endif
 
 Name:           uyuni-common-libs
-Version:        5.2.1
+Version:        5.2.2
 Release:        0
 Summary:        Uyuni server and client libs
 License:        GPL-2.0-only
@@ -57,6 +57,9 @@ URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
 BuildRequires:  fdupes
 BuildRequires:  make
+%if 0%{?debian} || 0%{?ubuntu}
+ExclusiveArch:  do_not_build
+%endif
 
 %description
 Uyuni server and client libs

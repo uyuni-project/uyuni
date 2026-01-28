@@ -67,7 +67,7 @@
 %bcond_with    test
 
 Name:           spacewalk-client-tools
-Version:        5.2.2
+Version:        5.2.3
 Release:        0
 Summary:        Support programs and libraries for %{productprettyname}
 License:        GPL-2.0-only
@@ -84,6 +84,9 @@ Group:          System Environment/Base
 %endif
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210 || 0%{?mageia} >= 6
 BuildArch:      noarch
+%endif
+%if 0%{?debian} || 0%{?ubuntu}
+ExclusiveArch:  do_not_build
 %endif
 %if 0%{?suse_version}
 BuildRequires:  update-desktop-files

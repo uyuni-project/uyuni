@@ -33,6 +33,7 @@ import com.redhat.rhn.FaultException;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelTestUtility;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.errata.AdvisoryStatus;
 import com.redhat.rhn.domain.errata.Bug;
@@ -724,7 +725,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         chanPack.setPackageName(errataPack.getPackageName());
         chanPack.setPackageEvr(evr);
 
-        channel.addPackage(chanPack);
+        ChannelTestUtility.testAddPackage(channel, chanPack);
 
         Long orgId = admin.getOrg().getId();
         if (vendor) {

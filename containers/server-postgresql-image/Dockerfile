@@ -1,10 +1,18 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: uyuni/server-postgresql:latest
 
-ARG PG_BASE=registry.opensuse.org/opensuse/postgres:16
-# or ARG BASE=registry.suse.com/suse/postgres:16
-FROM $PG_BASE
+ARG BASE=registry.suse.com/bci/bci-base:15.7
+ARG PG_BASE=registry.opensuse.org/opensuse/postgres:18
 
+FROM $BASE AS builder
+RUN zypper --non-interactive install --download-only postgresql18-contrib && \
+    mkdir -p /opt/contrib /opt/results && \
+    find /var/cache/zypp/packages -name postgresql18-contrib* -exec cp {} /opt/contrib \; && \
+    cd /opt/contrib && rpm2cpio postgresql18-contrib.rpm | cpio -idmv && \
+    find . -name pg_trgm* -exec cp --parents {} ../results/ \;
+
+FROM $PG_BASE
+COPY --from=builder /opt/results/ /
 ADD --chown=root:root root.tar.gz /
 
 # LABELs
@@ -21,7 +29,7 @@ LABEL org.opencontainers.image.description="${PRODUCT} PostgreSQL container imag
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opencontainers.image.version=5.2.2
+LABEL org.opencontainers.image.version=5.2.3
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server-postgresql:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix

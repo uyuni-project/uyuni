@@ -68,6 +68,12 @@ header {
     float: none !important;
   }
 
+  #spacewalk-content,
+  .flipped {
+    height: 100%;
+    overflow: auto;
+  }
+
   #page-body {
     flex: 1 1 auto;
     overflow: auto;
@@ -1255,7 +1261,7 @@ select.small-select {
 }
 
 tr.changed > td {
-  background-color: $table-row-selected!important;
+  background-color: $table-row-selected !important;
 }
 
 // let a button has a div style
@@ -1276,6 +1282,6 @@ tr.changed > td {
   font-size: 1.6em;
   color: $eos-bc-gray-900;
   > i {
-    font-size: .4em;
+    font-size: 0.4em;
   }
 }

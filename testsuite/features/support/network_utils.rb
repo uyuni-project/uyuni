@@ -1,13 +1,10 @@
-# Copyright (c) 2025 SUSE LLC.
+# Copyright (c) 2026 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'net/scp'
 require 'net/ssh'
 require 'openssl'
 require 'stringio'
-
-Net::SSH::Transport::Algorithms::ALGORITHMS.each_value { |algs| algs.reject! { |a| a.match(/^ecd(sa|h)-sha2/) } }
-Net::SSH::KnownHosts::SUPPORTED_TYPE.reject! { |t| t.match(/^ecd(sa|h)-sha2/) }
 
 # This method is used to execute a command on a remote host using SSH and return the output of the command.
 #
@@ -74,8 +71,13 @@ def scp_download_command(remote_path, local_path, host, port: 22, timeout: DEFAU
   end
 end
 
-private
-
+# This helper method executes a command on an SSH session and returns the output.
+# It's an internal helper used by ssh_command.
+#
+# @param [Net::SSH::Connection::Session] ssh The SSH session object.
+# @param [String] command The command to execute on the remote host.
+# @param [Integer] timeout The timeout to use when waiting for the command to complete.
+# @return [Array] An array containing the stdout, stderr, and exit code of the command.
 def ssh_exec!(ssh, command, timeout: 10)
   stdout = ''
   stderr = ''

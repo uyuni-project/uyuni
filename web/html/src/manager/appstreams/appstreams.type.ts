@@ -18,4 +18,12 @@ export type AppStreamModule = {
   context: string;
   arch: string;
   enabled: boolean;
+  systemCount: number;
+};
+
+export type SSMAppStreamChannel = {
+  id: number;
+  name: string;
+  modular: boolean;
+  parentId: number | null;
 };

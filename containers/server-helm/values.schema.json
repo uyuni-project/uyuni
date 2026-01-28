@@ -1,0 +1,189 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "title": "Values",
+  "type": "object",
+  "required": [
+    "global"
+  ],
+  "properties": {
+    "repository": {
+      "type": "string",
+      "description": "The default repository for images",
+      "default": "registry.opensuse.org/uyuni"
+    },
+    "version": {
+      "type": "string",
+      "description": "The default image version (tag)",
+      "default": "latest"
+    },
+    "images": {
+      "type": ["object", "null"],
+      "description": "Allows overriding the default URI for specific images",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "pullPolicy": {
+      "type": "string",
+      "enum": ["Always", "IfNotPresent", "Never"],
+      "default": "IfNotPresent"
+    },
+    "registrySecret": {
+      "type": "string",
+      "description": "Name of the secret containing credentials for the registry",
+      "default": ""
+    },
+    "timezone": {
+      "type": "string",
+      "description": "The time zone to set in the containers",
+      "default": "Etc/UTC"
+    },
+    "email": {
+      "type": "string",
+      "description": "Email address for notifications sent by the server",
+      "default": "admin@uyuni.lab.org"
+    },
+    "global": {
+      "type": "object",
+      "required": [
+        "fqdn"
+      ],
+      "properties": {
+        "fqdn": {
+          "type": "string",
+          "description": "The fully qualified domain name the server will answer to"
+        }
+      }
+    },
+    "mirror": {
+      "type": "object",
+      "description": "Defines a volume or host path to mount as server.susemanager.fromdir",
+      "properties": {
+        "claimName": {
+          "type": "string"
+        },
+        "hostPath": {
+          "type": "string"
+        }
+      }
+    },
+    "volumes": {
+      "type": "object",
+      "description": "Defines the volume claims for the server components",
+      "properties": {
+        "var-pgsql": { "$ref": "#/definitions/volumeConfig" },
+        "var-spacewalk": { "$ref": "#/definitions/volumeConfig" },
+        "var-cache": { "$ref": "#/definitions/volumeConfig" },
+        "var-log": { "$ref": "#/definitions/volumeConfig" },
+        "srv-www": { "$ref": "#/definitions/volumeConfig" },
+        "srv-tftpboot": { "$ref": "#/definitions/volumeConfig" },
+        "ca-certs": { "$ref": "#/definitions/volumeConfig" },
+        "etc-apache2": { "$ref": "#/definitions/volumeConfig" },
+        "etc-cobbler": { "$ref": "#/definitions/volumeConfig" },
+        "etc-postfix": { "$ref": "#/definitions/volumeConfig" },
+        "etc-rhn": { "$ref": "#/definitions/volumeConfig" },
+        "etc-salt": { "$ref": "#/definitions/volumeConfig" },
+        "etc-sssd": { "$ref": "#/definitions/volumeConfig" },
+        "etc-sysconfig": { "$ref": "#/definitions/volumeConfig" },
+        "etc-systemd-multi": { "$ref": "#/definitions/volumeConfig" },
+        "etc-systemd-sockets": { "$ref": "#/definitions/volumeConfig" },
+        "etc-tomcat": { "$ref": "#/definitions/volumeConfig" },
+        "root": { "$ref": "#/definitions/volumeConfig" },
+        "run-salt-master": { "$ref": "#/definitions/volumeConfig" },
+        "srv-formulametadata": { "$ref": "#/definitions/volumeConfig" },
+        "srv-pillar": { "$ref": "#/definitions/volumeConfig" },
+        "srv-salt": { "$ref": "#/definitions/volumeConfig" },
+        "srv-spacewalk": { "$ref": "#/definitions/volumeConfig" },
+        "srv-susemanager": { "$ref": "#/definitions/volumeConfig" },
+        "var-cobbler": { "$ref": "#/definitions/volumeConfig" },
+        "var-salt": { "$ref": "#/definitions/volumeConfig" },
+        "var-search": { "$ref": "#/definitions/volumeConfig" }
+      }
+    },
+    "servicesAnnotations": {
+      "type": ["object", "null"],
+      "description": "Annotations to set on both TCP and UDP services"
+    },
+    "exposeJavaDebug": {
+      "type": "boolean",
+      "description": "Expose ports 8001, 8002, and 8003 for Java debugging",
+      "default": false
+    },
+    "enableMonitoring": {
+      "type": "boolean",
+      "description": "Expose metrics ports for Prometheus scraping",
+      "default": true
+    },
+    "ingress": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Type of ingress used (e.g., nginx, traefik)",
+          "default": "traefik"
+        },
+        "class": {
+          "type": "string",
+          "description": "Ingress class name",
+          "default": ""
+        },
+        "annotations": {
+          "type": "object",
+          "description": "Custom annotations for ingress rules",
+          "properties": {
+            "ssl": { "type": "object" },
+            "sslRedirect": { "type": "object" },
+            "nossl": { "type": "object" }
+          }
+        }
+      }
+    },
+    "hubAPI": {
+      "type": "boolean",
+      "description": "Enable or disable the Hub XML-RPC API deployment",
+      "default": false
+    },
+    "cocoReplicas": {
+      "type": "integer",
+      "description": "Number of replicas for confidential computing attestation",
+      "minimum": 0,
+      "default": 0
+    },
+    "saline": {
+      "type": "boolean",
+      "description": "Deploy Saline for salt master monitoring",
+      "default": false
+    }
+  },
+  "definitions": {
+    "volumeConfig": {
+      "type": "object",
+      "properties": {
+        "size": {
+          "type": "string",
+          "description": "Requested volume size"
+        },
+        "storageClass": {
+          "type": ["string", "null"],
+          "description": "storage class to use for the volume claim"
+        },
+        "extraLabels": {
+          "type": ["object", "null"],
+          "description": "labels to add to the volume claim"
+        },
+        "annotations": {
+          "type": ["object", "null"],
+          "description": "annotations to set to the volume claim"
+        },
+        "volumeName": {
+          "type": ["string", "null"],
+          "description": "volume to force binding to if set"
+        },
+        "selector": {
+          "type": ["object", "null"],
+          "description": "selector to set on the volume claim"
+        }
+      }
+    }
+  }
+}

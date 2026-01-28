@@ -3,7 +3,7 @@
   <file datatype="plaintext" original="" source-language="en" target-language="ja">
     <body>
       <!-- New Account Email -->
-      <trans-unit id="email.newaccount.subject" xml:space="preserve">
+      <trans-unit id="email.newaccount.subject" xml:space="preserve" approved="yes">
         <source>Your @@PRODUCT_NAME@@ Account is ready</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/ChangeEmail.do</context>
@@ -13,9 +13,9 @@
           <context context-type="sourcefile">/rhn/account/ChangeEmail.do</context>
           <context context-type="sourcefile">/users/ChangeEmail.do</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@ アカウントの準備が整いました</target>
+        <target state="final">@@PRODUCT_NAME@@ アカウントの準備が整いました</target>
       </trans-unit>
-      <trans-unit id="email.newaccountbycreator.body" xml:space="preserve">
+      <trans-unit id="email.newaccountbycreator.body" xml:space="preserve" approved="yes">
         <source>Hello,
 
 A @@PRODUCT_NAME@@ login has been created for you by {0} {1}. Your
@@ -32,7 +32,7 @@ Important: Please change your password upon logging in.
 
 Thank you for using @@PRODUCT_NAME@@.
 {6}</source>
-        <target state="translated">こんにちは。
+        <target state="final">こんにちは。
 
 {0} {1} によって @@PRODUCT_NAME@@ ログインが作成されました。
 ご利用の @@PRODUCT_NAME@@ のログインは、有効な @@VENDOR_NAME@@ サブスクリプションと
@@ -62,7 +62,7 @@ Thank you for using @@PRODUCT_NAME@@.
           </context>
         </context-group>
       </trans-unit>
-      <trans-unit id="email.newaccount.body" xml:space="preserve">
+      <trans-unit id="email.newaccount.body" xml:space="preserve" approved="yes">
         <source>Hello,
 
 A @@PRODUCT_NAME@@ login has been created for you. Your
@@ -79,7 +79,7 @@ Important: Please change your password upon logging in.
 
 Thank you for using @@PRODUCT_NAME@@.
 {4}</source>
-        <target state="translated">こんにちは。
+        <target state="final">こんにちは。
 
 @@PRODUCT_NAME@@ ログインが作成されました。
 ご利用の @@PRODUCT_NAME@@ のログインは、有効な @@VENDOR_NAME@@ サブスクリプションと
@@ -109,7 +109,7 @@ Thank you for using @@PRODUCT_NAME@@.
           </context>
         </context-group>
       </trans-unit>
-      <trans-unit id="email.newaccount.pam.body" xml:space="preserve">
+      <trans-unit id="email.newaccount.pam.body" xml:space="preserve" approved="yes">
         <source>Hello,
 
 A @@PRODUCT_NAME@@ login has been created for you by {0} {1}.  Your
@@ -136,7 +136,7 @@ Thank you for using @@PRODUCT_NAME@@.
               --the @@PRODUCT_NAME@@ Team
           </context>
         </context-group>
-        <target state="translated">こんにちは。
+        <target state="final">こんにちは。
 
 {0} {1} によって @@PRODUCT_NAME@@ ログインが作成されました。
 ご利用の @@PRODUCT_NAME@@ のログインは、有効な @@VENDOR_NAME@@ サブスクリプションと
@@ -151,7 +151,7 @@ Thank you for using @@PRODUCT_NAME@@.
 {6}</target>
       </trans-unit>
       <!-- New User Email -->
-      <trans-unit id="email.newuser.subject" xml:space="preserve">
+      <trans-unit id="email.newuser.subject" xml:space="preserve" approved="yes">
         <source>@@PRODUCT_NAME@@ User Created: {0} ({1}, {2} &lt;{3}&gt;)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/account/ChangeEmail.do</context>
@@ -163,9 +163,9 @@ Thank you for using @@PRODUCT_NAME@@.
           <context context-type="sourcefile">/users/ChangeEmail.do</context>
           <context context-type="paramnotes">@@PRODUCT_NAME@@ User Created: dugb (Bordon, Duglas &lt;dugb@meko.com&gt;)</context>
         </context-group>
-        <target>@@PRODUCT_NAME@@ ユーザーが作成されました: {0} ({1}, {2} &lt;{3}&gt;)</target>
+        <target state="final">@@PRODUCT_NAME@@ ユーザーが作成されました: {0} ({1}, {2} &lt;{3}&gt;)</target>
       </trans-unit>
-      <trans-unit id="email.newuser.body" xml:space="preserve">
+      <trans-unit id="email.newuser.body" xml:space="preserve" approved="yes">
         <source>Hello,
 
 A new user has been added to your account.
@@ -191,7 +191,7 @@ Thank you for using @@PRODUCT_NAME@@.
               Thank you for using @@PRODUCT_NAME@@.
               --the @@PRODUCT_NAME@@ Team</context>
         </context-group>
-        <target state="translated">こんにちは。
+        <target state="final">こんにちは。
 
 新しいユーザーがアカウントに追加されました。
 
@@ -205,8 +205,8 @@ Thank you for using @@PRODUCT_NAME@@.
 @@PRODUCT_NAME@@ をご利用いただき、ありがとうございます。
 {2}</target>
       </trans-unit>
-      <trans-unit id="email.errata.notification.body.summary" xml:space="preserve">
-          <source>
+      <trans-unit id="email.errata.notification.body.summary" xml:space="preserve" approved="yes">
+        <source>
 @@PRODUCT_NAME@@ has determined that the following advisory is applicable to
 one or more of the systems you have registered:
 
@@ -223,7 +223,7 @@ Summary:
 ------------------------------------------------------------------------------
     </source>
         <context-group name="ctx">
-            <context context-type="paramnotes">
+          <context context-type="paramnotes">
         {0} - Errata Details URL
         {1} - errata advisory type
         {2} - errata advisory
@@ -233,8 +233,8 @@ Summary:
         {6} - errata notes
         {7} - errata refs
       </context>
-          </context-group>
-        <target state="translated">
+        </context-group>
+        <target state="final">
 @@PRODUCT_NAME@@ は以下のアドバイザリーが、登録した 1 つまたは複数のシステムに
 適用可能であると判断しました。
 
@@ -255,7 +255,7 @@ Summary:
         </context-group>
       </trans-unit>
       <trans-unit approved="yes" id="email.errata.notification.body.affectedheader" xml:space="preserve">
-          <source>
+        <source>
 ---------------------
 Affected Systems List
 ---------------------
@@ -275,12 +275,12 @@ package profile for that server is out of date.
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="email.errata.notification.body.onesystem" xml:space="preserve">
-          <source>
+      <trans-unit id="email.errata.notification.body.onesystem" xml:space="preserve" approved="yes">
+        <source>
 There is 1 affected system registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
     </source>
-        <target state="translated">
+        <target state="final">
 '概要' で登録された 1 つのシステムが影響を受けています (明示的にパッチアラートを
 有効にしたシステムのみが表示されます)。
     </target>
@@ -288,17 +288,17 @@ which you have explicitly enabled Patch Alerts are shown).
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="email.errata.notification.body.numsystems" xml:space="preserve">
-          <source>
+      <trans-unit id="email.errata.notification.body.numsystems" xml:space="preserve" approved="yes">
+        <source>
 There are {0} affected systems registered in 'Overview' (only systems for
 which you have explicitly enabled Patch Alerts are shown).
     </source>
         <context-group name="ctx">
-            <context context-type="paramnotes">
+          <context context-type="paramnotes">
         {0} - system count
       </context>
-          </context-group>
-        <target state="translated">
+        </context-group>
+        <target state="final">
 '概要' で登録された {0} 個のシステムが影響を受けています (明示的にパッチアラートを
 有効にしたシステムのみが表示されます)。
     </target>
@@ -307,7 +307,7 @@ which you have explicitly enabled Patch Alerts are shown).
         </context-group>
       </trans-unit>
       <trans-unit approved="yes" id="email.errata.notification.body.affected" xml:space="preserve">
-          <source>
+        <source>
 Release    Arch       Profile Name
 ---------- ---------- ---------------------------------------------
 {0}
@@ -322,11 +322,11 @@ You may address the issues outlined in this advisory in two ways:
      - run the Update Agent on each affected server.
     </source>
         <context-group name="ctx">
-            <context context-type="paramnotes">
+          <context context-type="paramnotes">
         {0} - systems affected list
         {1} - system list URL
       </context>
-          </context-group>
+        </context-group>
         <target state="final">
 リリース    アーキテクチャー       プロファイル名
 ---------- ---------- ---------------------------------------------
@@ -344,8 +344,8 @@ You may address the issues outlined in this advisory in two ways:
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="email.errata.notification.body.preferences" xml:space="preserve">
-          <source>
+      <trans-unit id="email.errata.notification.body.preferences" xml:space="preserve" approved="yes">
+        <source>
 Changing Notification Preferences
 ---------------------------------
 To enable/disable your Patch Alert preferences globally please log in to @@PRODUCT_NAME@@
@@ -361,13 +361,13 @@ click the "Details" tab.
 {2}
     </source>
         <context-group name="ctx">
-            <context context-type="paramnotes">
+          <context context-type="paramnotes">
         {0} - account preferences URL
         {1} - email footer
         {2} - account info
       </context>
-          </context-group>
-        <target state="translated">
+        </context-group>
+        <target state="final">
 通知設定の変更
 ---------------------------------
 パッチアラート設定をグローバルで有効または無効にするには、@@PRODUCT_NAME@@ にログインし、
@@ -386,7 +386,7 @@ click the "Details" tab.
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="dailysummary.email.subject" xml:space="preserve">
+      <trans-unit id="dailysummary.email.subject" xml:space="preserve" approved="yes">
         <source>@@PRODUCT_NAME@@ Daily Status Report for {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: DailySummary.java</context>
@@ -396,7 +396,7 @@ click the "Details" tab.
           <context context-type="sourcefile">Taskomatic task: DailySummary.java</context>
           <context context-type="paramnotes">{0} - current time in short format</context>
         </context-group>
-        <target>{0} の @@PRODUCT_NAME@@ デイリーステータスレポート</target>
+        <target state="final">{0} の @@PRODUCT_NAME@@ デイリーステータスレポート</target>
       </trans-unit>
       <trans-unit approved="yes" id="dailysummary.email.body" xml:space="preserve">
         <source>{7}
@@ -454,7 +454,7 @@ https://{4}/rhn/account/UserPreferences.do
 {6}
 </target>
       </trans-unit>
-      <trans-unit id="email.forgotten.password" xml:space="preserve">
+      <trans-unit id="email.forgotten.password" xml:space="preserve" approved="yes">
         <source>
 [ This is an automated email sent to {0} at your request. ]
 
@@ -471,7 +471,7 @@ please contact your @@PRODUCT_NAME@@ administrator for further assistance.
 
 Thank you for using @@PRODUCT_NAME@@.
         </source>
-        <target state="translated">
+        <target state="final">
 [ この電子メールは、あなたからのリクエストで {0} 宛に自動送信されているものです。 ]
 
 ログイン {2} に対する @@PRODUCT_NAME@@ パスワードのリセット要求が行なわれました。
@@ -542,7 +542,7 @@ Thank you for using @@PRODUCT_NAME@@.
 @@PRODUCT_NAME@@ をご利用いただき、ありがとうございます。
         </target>
       </trans-unit>
-      <trans-unit id="email.reset.password" xml:space="preserve">
+      <trans-unit id="email.reset.password" xml:space="preserve" approved="yes">
         <source>
 [ This is an automated email sent to {0}. ]
 
@@ -554,7 +554,7 @@ administrator at {2} for further assistance.
 
 Thank you for using @@PRODUCT_NAME@@.
         </source>
-        <target state="translated">
+        <target state="final">
 [ この電子メールは {0} 宛に自動送信されているものです。 ]
 
 {2} で要求されたとおり、ログイン {1} に対する @@PRODUCT_NAME@@ パスワードの
@@ -575,7 +575,7 @@ Thank you for using @@PRODUCT_NAME@@.
         </context-group>
       </trans-unit>
       <trans-unit approved="yes" id="dailysummary.email.notpaygcompliant" xml:space="preserve">
-          <source>Warning: This @@PRODUCT_NAME@@ PAYG instance is not compliant and some of its functions are disabled.
+        <source>Warning: This @@PRODUCT_NAME@@ PAYG instance is not compliant and some of its functions are disabled.
 Please contact your administrator to amend the situation before continuing using the product.
           </source>
         <target state="final">警告: この @@PRODUCT_NAME@@ PAYGインスタンスは準拠していないため、一部の機能が無効になっています。

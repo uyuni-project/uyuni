@@ -1,0 +1,115 @@
+suite: test persistent volume claims
+templates:
+  - pvcs.yaml
+tests:
+  - it: should render all PVCs with default sizes
+    set:
+      global.fqdn: uyuni.example.com
+    asserts:
+      - equal:
+          path: spec.resources.requests.storage
+          value: 50Gi
+        documentSelector:
+          path: metadata.name
+          value: var-pgsql
+      
+      - equal:
+          path: spec.resources.requests.storage
+          value: 100Gi
+        documentSelector:
+          path: metadata.name
+          value: var-spacewalk
+
+      # Verify the API version and Kind for a specific document
+      - isKind:
+          of: PersistentVolumeClaim
+        documentSelector:
+          path: metadata.name
+          value: var-cache
+      - equal:
+          path: apiVersion
+          value: v1
+        documentSelector:
+          path: metadata.name
+          value: var-cache
+
+  - it: should support custom storageClass
+    set:
+      global.fqdn: uyuni.example.com
+      volumes:
+        var-pgsql:
+          storageClass: "fast-ssd"
+    asserts:
+      - equal:
+          path: spec.storageClassName
+          value: "fast-ssd"
+        documentSelector:
+          path: metadata.name
+          value: var-pgsql
+
+  - it: should render extraLabels and annotations when provided
+    set:
+      global.fqdn: uyuni.example.com
+      volumes:
+        var-pgsql:
+          extraLabels:
+            custom-label: "database-storage"
+            team: "devops"
+          annotations:
+            backup.velero.io/backup-volumes: "true"
+    asserts:
+      - equal:
+          path: metadata.labels["custom-label"]
+          value: "database-storage"
+        documentSelector:
+          path: metadata.name
+          value: var-pgsql
+      - equal:
+          path: metadata.labels["team"]
+          value: "devops"
+        documentSelector:
+          path: metadata.name
+          value: var-pgsql
+      - equal:
+          path: metadata.annotations["backup.velero.io/backup-volumes"]
+          value: "true"
+        documentSelector:
+          path: metadata.name
+          value: var-pgsql
+
+  - it: should render volumeName and selector when provided
+    set:
+      global.fqdn: uyuni.example.com
+      volumes:
+        var-spacewalk:
+          volumeName: "manual-pv-spacewalk"
+          selector:
+            matchLabels:
+              storage-tier: "gold"
+    asserts:
+      - equal:
+          path: spec.volumeName
+          value: "manual-pv-spacewalk"
+        documentSelector:
+          path: metadata.name
+          value: var-spacewalk
+      - equal:
+          path: spec.selector.matchLabels["storage-tier"]
+          value: "gold"
+        documentSelector:
+          path: metadata.name
+          value: var-spacewalk
+
+  - it: should handle the "-" storageClass override correctly
+    set:
+      global.fqdn: uyuni.example.com
+      volumes:
+        var-cache:
+          storageClass: "-"
+    asserts:
+      - equal:
+          path: spec.storageClassName
+          value: ""
+        documentSelector:
+          path: metadata.name
+          value: var-cache

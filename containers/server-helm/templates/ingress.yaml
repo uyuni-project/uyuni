@@ -1,4 +1,3 @@
-{{- if not .Values.migration }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -6,33 +5,45 @@ metadata:
   name: uyuni-ingress-ssl
   namespace: "{{ .Release.Namespace }}"
   annotations:
-  {{- if eq .Values.ingress "traefik" }}
+  {{- if eq ((.Values.ingress).type) "traefik" }}
     traefik.ingress.kubernetes.io/router.tls: "true"
-    traefik.ingress.kubernetes.io/router.tls.domains.n.main: "{{ .Values.fqdn }}"
+    traefik.ingress.kubernetes.io/router.tls.domains.n.main: "{{ required "global.fqdn is needed!" .Values.global.fqdn }}"
     traefik.ingress.kubernetes.io/router.entrypoints: "websecure,web"
   {{- end }}
-  {{- if .Values.ingressSslAnnotations }}
-{{ toYaml .Values.ingressSslAnnotations | indent 4 }}
+  {{- if (((.Values.ingress).annotations).ssl) }}
+{{ toYaml .Values.ingress.annotations.ssl | indent 4 }}
   {{- end }}
   labels:
-    app: uyuni
+    app.kubernetes.io/part-of: uyuni
 spec:
+  {{- if ((.Values.ingress).class) }}
+  ingressClassName: {{ .Values.ingress.class }}
+  {{- end }}
   tls:
     - hosts:
-      - {{ .Values.fqdn }}
+      - {{ required "global.fqdn is needed!" .Values.global.fqdn }}
       secretName: uyuni-cert
   rules:
-  - host: {{ .Values.fqdn }}
+  - host: {{ required "global.fqdn is needed!" .Values.global.fqdn }}
     http:
       paths:
       - backend:
           service:
-            name: uyuni-tcp
+            name: web 
             port:
               number: 80
         path: /
         pathType: Prefix
-  {{- if eq .Values.ingress "traefik" }}
+  {{- if default .Values.hubAPI false }}
+      - backend:
+          service:
+            name: hub-xmlrpc
+            port:
+              number: 2830
+        path: /hub/rpc/api
+        pathType: Prefix
+  {{- end }}
+  {{- if eq ((.Values.ingress).type) "traefik" }}
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -43,20 +54,35 @@ metadata:
   annotations:
     traefik.ingress.kubernetes.io/router.middlewares: "default-uyuni-https-redirect@kubernetescrd"
     traefik.ingress.kubernetes.io/router.entrypoints: "web"
+  {{- if (((.Values.ingress).annotations).sslRedirect) }}
+{{ toYaml .Values.ingress.annotations.sslRedirect | indent 4 }}
+  {{- end }}
   labels:
-    app: uyuni
+    app.kubernetes.io/part-of: uyuni
 spec:
+  {{- if ((.Values.ingress).class) }}
+  ingressClassName: {{ .Values.ingress.class }}
+  {{- end }}
   rules:
-  - host: {{ .Values.fqdn }}
+  - host: {{ required "global.fqdn is needed!" .Values.global.fqdn }}
     http:
       paths:
       - backend:
           service:
-            name: uyuni-tcp
+            name: web 
             port:
               number: 80
         path: /
         pathType: Prefix
+    {{- if default .Values.hubAPI false }}
+      - backend:
+          service:
+            name: hub-xmlrpc
+            port:
+              number: 2830
+        path: /hub/rpc/api
+        pathType: Prefix
+    {{- end }}
   {{- end }}
 ---
 apiVersion: networking.k8s.io/v1
@@ -66,122 +92,141 @@ metadata:
   name: uyuni-ingress-nossl
   namespace: "{{ .Release.Namespace }}"
   annotations:
-  {{- if eq .Values.ingress "nginx" }}
+  {{- if eq ((.Values.ingress).type) "nginx" }}
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
-  {{- else if eq .Values.ingress "traefik" }}
+  {{- else if eq ((.Values.ingress).type) "traefik" }}
     traefik.ingress.kubernetes.io/router.tls: "false"
     traefik.ingress.kubernetes.io/router.entrypoints: "web"
   {{- end }}
+  {{- if (((.Values.ingress).annotations).nossl) }}
+{{ toYaml .Values.ingress.annotations.nossl | indent 4 }}
+  {{- end }}
   labels:
-    app: uyuni
+    app.kubernetes.io/part-of: uyuni
 spec:
+  {{- if ((.Values.ingress).class) }}
+  ingressClassName: {{ .Values.ingress.class }}
+  {{- end }}
   rules:
-  - host: {{ .Values.fqdn }}
+  - host: {{ required "global.fqdn is needed!" .Values.global.fqdn }}
     http:
       paths:
       - backend:
           service:
-            name: uyuni-tcp
+            name: web
             port:
               number: 80
         path: /pub
         pathType: Prefix
       - backend:
           service:
-            name: uyuni-tcp
+            name: web
             port:
               number: 80
-        path: /rhn/([^/])+/DownloadFile
+        path: /rhn/kickstart/DownloadFile
         pathType: Prefix
       - backend:
           service:
-            name: uyuni-tcp
+            name: web
             port:
               number: 80
-        path: /(rhn/)?rpc/api
+        path: /rhn/common/DownloadFile
         pathType: Prefix
       - backend:
           service:
-            name: uyuni-tcp
+            name: web
+            port:
+              number: 80
+        path: /rhn/rpc/api
+        pathType: Prefix
+      - backend:
+          service:
+            name: web
+            port:
+              number: 80
+        path: /rpc/api
+        pathType: Prefix
+      - backend:
+          service:
+            name: web
             port:
               number: 80
         path: /rhn/errors
         pathType: Prefix
       - backend:
           service:
-            name: uyuni-tcp
+            name: web
             port:
               number: 80
         path: /rhn/ty/TinyUrl
         pathType: Prefix
       - backend:
           service:
-            name: uyuni-tcp
+            name: web
             port:
               number: 80
         path: /rhn/websocket
         pathType: Prefix
       - backend:
           service:
-            name: uyuni-tcp
+            name: web
             port:
               number: 80
         path: /rhn/metrics
         pathType: Prefix
       - backend:
           service:
-            name: uyuni-tcp
+            name: web
             port:
               number: 80
         path: /cobbler_api
         pathType: Prefix
       - backend:
           service:
-            name: uyuni-tcp
+            name: web
             port:
               number: 80
         path: /cblr
         pathType: Prefix
       - backend:
           service:
-            name: uyuni-tcp
+            name: web
             port:
               number: 80
         path: /httpboot
         pathType: Prefix
       - backend:
           service:
-            name: uyuni-tcp
+            name: web
             port:
               number: 80
         path: /images
         pathType: Prefix
       - backend:
           service:
-            name: uyuni-tcp
+            name: web
             port:
               number: 80
         path: /cobbler
         pathType: Prefix
       - backend:
           service:
-            name: uyuni-tcp
+            name: web
             port:
               number: 80
         path: /os-images
         pathType: Prefix
       - backend:
           service:
-            name: uyuni-tcp
+            name: web
             port:
               number: 80
         path: /tftp
         pathType: Prefix
       - backend:
           service:
-            name: uyuni-tcp
+            name: web
             port:
               number: 80
         path: /docs
         pathType: Prefix
-{{- end }}

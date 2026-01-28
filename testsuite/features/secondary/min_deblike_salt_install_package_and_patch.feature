@@ -42,7 +42,7 @@ Feature: Install and upgrade package on the Debian-like minion via Salt through 
     When I follow "Software" in the content area
     And I follow "Install"
     And I check "andromeda-dummy-2.0" in the list
-    And I click on "Install Selected Packages"
+    And I click on "Install Packages"
     And I click on "Confirm"
     And I should see a "1 package install has been scheduled for" text
     When I wait until event "Package Install/Upgrade scheduled" is completed
