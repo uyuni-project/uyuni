@@ -42,6 +42,7 @@ import java.util.List;
  *
  * @author Jason Dobies
  */
+@Disabled
 public class SsmOperationDataPopulatorTest extends RhnBaseTestCase {
 
     @Override
@@ -52,7 +53,6 @@ public class SsmOperationDataPopulatorTest extends RhnBaseTestCase {
     }
 
     @Test
-    @Disabled
     public void populateDataSet() throws Exception {
         // The following control the data that are created in this call
         String userLoginName = "admin";

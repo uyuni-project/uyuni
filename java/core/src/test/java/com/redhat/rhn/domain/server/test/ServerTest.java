@@ -337,8 +337,7 @@ public class ServerTest extends BaseTestCaseWithUser {
         NetworkInterfaceTest.createTestNetworkInterface(s, "eth0", ipAddr, hwAddr);
         NetworkInterfaceTest.createTestNetworkInterface(s, "eth1", ipAddr, hwAddr);
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.closeSession();
+        TestUtils.clearSession();
         s = ServerFactory.lookupById(s.getId());
 
         assertNotNull(s.getIpAddress());

@@ -1212,6 +1212,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         action = ActionManager.schedulePackageRefresh(admin, server, new Date());
         ActionFactory.save(action);
         TestUtils.commitAndCloseSession();
+        commitHappened();
 
         results = handler.listSystemEvents(admin, server.getId().intValue());
         assertEquals(3, results.size());
