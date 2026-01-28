@@ -8,6 +8,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I refresh SCC
 
 @scc_credentials
+@obsolete
   Scenario: Let the products page appear
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
@@ -17,6 +18,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I should not see a "WebYaST 1.3" text
 
 @scc_credentials
+@obsolete
   Scenario: Use the products and architecture filters
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
@@ -28,6 +30,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @scc_credentials
 @susemanager
+@obsolete
   Scenario: View the channels list in the products page
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
@@ -41,6 +44,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @scc_credentials
 @susemanager
+@obsolete
   Scenario: Synchronize SLES 15 SP7 product with recommended sub-products, including MLM Client Tools
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
@@ -73,11 +77,18 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Then the SLE15 SP7 product should be added
     When I wait until all synchronized channels for "sles15-sp7" have finished
 
+@scc_credentials
+@susemanager
+@fast
+  Scenario: Partially synchronize SLES 15 SP7 product with recommended sub-products, including Client Tools
+    When I sync all channels for "sles15-sp7", synchronizing only client tools dependencies
+    And I sync channel "managertools-sle15-pool-x86_64-sp7"
+    And I sync channel "managertools-sle15-updates-x86_64-sp7"
+
 @uyuni
   Scenario: Partially add openSUSE Tumbleweed product, only including the required packages to generate the bootstrap repository
     When I use spacewalk-common-channel to add channel "opensuse_tumbleweed" with arch "x86_64"
-    And I kill running spacewalk-repo-sync for "opensuse_tumbleweed-x86_64" channel
-    And I use spacewalk-repo-sync to sync channel "opensuse_tumbleweed-x86_64" including only client tools dependencies
+    And I sync all channels for "tumbleweed", synchronizing only client tools dependencies
     And I use spacewalk-common-channel to add all "tumbleweed-client-tools-x86_64" channels with arch "x86_64"
 
 @containerized_server
@@ -90,6 +101,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @scc_credentials
 @uyuni
 @build_host
+@obsolete
   Scenario: Synchronize SLES 15 SP7 product with recommended sub-products for Retail feature
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
@@ -114,9 +126,17 @@ Feature: Synchronize products in the products page of the Setup Wizard
       # TODO: Refactor the scenarios in order to not require a full synchronization of SLES 15 SP7 product in Uyuni
     # When I kill running spacewalk-repo-sync for "sles15-sp7"
 
-@proxy
+@scc_credentials
+@uyuni
+@fast
+  Scenario: Partially synchronize SLES 15 SP7 product with recommended sub-products for Retail feature
+    When I sync all channels for "sles15-sp7", synchronizing only client tools dependencies
+    And I use spacewalk-common-channel to add channel "sles15-sp7-devel-uyuni-client" with arch "x86_64"
+
+  @proxy
 @susemanager
 @transactional_server
+@obsolete
   Scenario: Add SL Micro 6.1 as base OS for proxy
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
@@ -134,7 +154,16 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @proxy
 @susemanager
+@transactional_server
+@fast
+  Scenario: Partially add SL Micro 6.1 as base OS for proxy
+    When I sync all channels for "sl-micro-6.1", synchronizing only client tools dependencies
+    And I sync channel "managertools-sl-micro-6.1-x86_64"
+
+@proxy
+@susemanager
 @skip_if_transactional_server
+@obsolete
   Scenario: Add SLES 15 SP7 as base OS for proxy
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
@@ -147,6 +176,15 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Enterprise Server 15 SP7 (BETA)" product has been added
     And I wait until all synchronized channels for "sles15-sp7" have finished
+
+@proxy
+@susemanager
+@skip_if_transactional_server
+@fast
+  Scenario: Partially add SLES 15 SP7 as base OS for proxy
+    When I sync all channels for "sles15-sp7", synchronizing only client tools dependencies
+    And I sync channel "managertools-sle15-pool-x86_64-sp7"
+    And I sync channel "managertools-sle15-updates-x86_64-sp7"
 
 @proxy
 @susemanager
@@ -220,12 +258,14 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @scc_credentials
 @susemanager
+@obsolete
   Scenario: Installer update channels got enabled when products were added
     When I execute mgr-sync "list channels" with user "admin" and password "admin"
     And I should get "    [I] SLE15-SP7-Installer-Updates for x86_64 SUSE Linux Enterprise Server 15 SP7 x86_64 [sle15-sp7-installer-updates-x86_64]"
 
 @scc_credentials
 @skip_if_github_validation
+@obsolete
   Scenario: Detect product loading issues from the UI
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"

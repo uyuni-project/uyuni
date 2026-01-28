@@ -215,6 +215,37 @@ PACKAGE_BY_CLIENT = {
   'salt_migration_minion' => 'bison'
 }.freeze
 
+CLIENT_BY_OS_PRODUCT_VERSION = {
+  'tumbleweed' => 'sle_minion',
+  'sles12-sp5' => 'sle12sp5_minion',
+  'sles15-sp3' => 'sle15sp3_minion',
+  'sles15-sp4' => 'sle15sp4_minion',
+  'sles15-sp5' => 'sle15sp5_minion',
+  'sles15-sp6' => 'sle15sp6_minion',
+  'sles15-sp7' => 'sle15sp7_minion',
+  'suse-microos-5.1' => 'slemicro51_minion',
+  'suse-microos-5.2' => 'slemicro52_minion',
+  'sle-micro-5.3' => 'slemicro53_minion',
+  'sle-micro-5.4' => 'slemicro54_minion',
+  'sle-micro-5.5' => 'slemicro55_minion',
+  'sl-micro-6.0' => 'slmicro60_minion',
+  'sl-micro-6.1' => 'slmicro61_minion',
+  'almalinux8' => 'alma8_minion',
+  'almalinux9' => 'alma9_minion',
+  'amazonlinux2023' => 'amazon2023_minion',
+  'centos7' => 'centos7_minion',
+  'el9' => 'liberty9_minion',
+  'oraclelinux9' => 'oracle9_minion',
+  'sll-9' => 'rhel9_minion',
+  'rockylinux8' => 'rocky8_minion',
+  'rockylinux9' => 'rocky9_minion',
+  'ubuntu-2004' => 'ubuntu2004_minion',
+  'ubuntu-2204' => 'ubuntu2204_minion',
+  'ubuntu-2404' => 'ubuntu2404_minion',
+  'debian-12' => 'debian12_minion',
+  'leap15.6-aarch64' => 'opensuse156arm_minion'
+}.freeze
+
 # Names of our base/parent channels
 # The keys are the RemoteNode targets
 # The values can be found in the webUI under Software -> Manage -> Channels -> Create Channel
@@ -1376,8 +1407,8 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
   }
 }.freeze
 
-CLIENT_TOOLS_DEPENDENCIES_BY_BASE_CHANNEL = {
-  'opensuse_tumbleweed-x86_64' => %w[
+CLIENT_TOOLS_DEPENDENCIES_BY_PRODUCT = {
+  'tumbleweed' => %w[
     dmidecode
     libunwind
     golang-github-prometheus-node_exporter
@@ -1392,6 +1423,17 @@ CLIENT_TOOLS_DEPENDENCIES_BY_BASE_CHANNEL = {
     libgomp1
     python313-resolvelib
     librpmbuild10
+  ],
+  'sles15-sp4' => %w[
+    dmidecode
+    libunwind
+  ],
+  'sles15-sp7' => %w[
+    dmidecode
+    libunwind
+  ],
+  'sl-micro-6.1' => %w[
+    dmidecode
   ]
 }.freeze
 
