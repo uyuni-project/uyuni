@@ -1934,7 +1934,7 @@ public class ActionManager extends BaseManager {
         test.ifPresent(actionDetails::setTest);
         actionDetails.setDirect(direct);
         action.setDetails(actionDetails);
-        ActionFactory.save(action);
+        action = ActionFactory.save(action);
 
         ActionFactory.scheduleForExecution(action, new HashSet<>(sids));
         return action;

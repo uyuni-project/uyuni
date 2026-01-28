@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.manager.kickstart.KickstartEditCommand;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
 
@@ -65,7 +66,7 @@ public class KickstartEditCommandTest extends BaseKickstartCommandTestCase {
         k1.setOrgDefault(Boolean.TRUE);
         assertTrue(k1.isOrgDefault());
         KickstartFactory.saveKickstartData(k1);
-        flushAndEvict(k1);
+        TestUtils.flushAndEvict(k1);
 
         KickstartEditCommand command = new KickstartEditCommand(ksdata.getId(), user);
         command.setIsOrgDefault(Boolean.TRUE);

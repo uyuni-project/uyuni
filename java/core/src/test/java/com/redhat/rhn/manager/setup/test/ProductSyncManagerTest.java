@@ -546,7 +546,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
             family = new ChannelFamily();
             family.setLabel("7261");
             family.setName("SUSE Linux Enterprise Server");
-            TestUtils.saveAndFlush(family);
+            family = TestUtils.saveAndFlush(family);
         }
         return family;
     }
@@ -564,7 +564,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
         template.setParentChannelLabel(prefix + "-" + Objects.requireNonNullElse(rootChannelLabel, channelLabel));
         template.setChannelName(channelName);
         template.setMandatory(true);
-        TestUtils.saveAndReload(template);
+        template = TestUtils.saveAndReload(template);
     }
 
     private static void createProductExtension(SUSEProduct product, SUSEProduct parent, SUSEProduct root) {
@@ -573,7 +573,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
         productExtension.setBaseProduct(parent);
         productExtension.setRootProduct(root);
         productExtension.setRecommended(true);
-        TestUtils.saveAndReload(productExtension);
+        productExtension = TestUtils.saveAndReload(productExtension);
     }
 
     private static SUSEProduct createProduct(String prefix, String name, String version, String desc,
@@ -587,7 +587,6 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
         product.setChannelFamily(family);
         product.setBase(isBase);
         product.setReleaseStage(ReleaseStage.released);
-        TestUtils.saveAndReload(product);
-        return product;
+        return TestUtils.saveAndReload(product);
     }
 }

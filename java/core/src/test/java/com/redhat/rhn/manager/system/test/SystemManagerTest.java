@@ -644,8 +644,8 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         Channel channel = ChannelFactoryTest.createTestChannel(user);
         srvr.addChannel(channel);
         srvr1.addChannel(channel);
-        TestUtils.saveAndFlush(srvr);
-        TestUtils.saveAndFlush(srvr1);
+        srvr = TestUtils.saveAndFlush(srvr);
+        srvr1 = TestUtils.saveAndFlush(srvr1);
         UserManager.storeUser(user);
 
 
@@ -751,7 +751,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(server.isProxy());
         server = SystemManager.deactivateProxy(server);
         ServerFactory.save(server);
-        server = reload(server);
+        server = TestUtils.reload(server);
         assertFalse(server.isProxy());
     }
 
@@ -883,8 +883,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         // that comes with the errata.
         PackageEvr upgradedPackageEvr =
                 PackageEvrFactory.lookupOrCreatePackageEvr("1", "1.0.0", "2", server.getPackageType());
-        upgradedPackageEvr =
-                TestUtils.saveAndReload(upgradedPackageEvr);
+        upgradedPackageEvr = TestUtils.saveAndReload(upgradedPackageEvr);
 
         ServerTestUtils.populateServerErrataPackages(org, server,
                 upgradedPackageEvr, ErrataFactory.ERRATA_TYPE_SECURITY);
@@ -1069,7 +1068,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
                 pack.getPackageEvr().getId()));
 
         ChannelTestUtility.testAddPackage(server.getBaseChannel(), pack);
-        TestUtils.saveAndFlush(pack);
+        pack = TestUtils.saveAndFlush(pack);
         assertTrue(SystemManager.hasPackageAvailable(server,
                 pack.getPackageName().getId(), pack.getPackageArch().getId(),
                 pack.getPackageEvr().getId()));
@@ -2146,7 +2145,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         systemEntitlementManager.setBaseEntitlement(proxy, EntitlementManager.FOREIGN);
         ServerFactory.save(proxy);
-        TestUtils.saveAndFlush(proxy);
+        proxy = TestUtils.saveAndFlush(proxy);
     }
 
     private Map<String, String> readTarData(byte[] data) throws IOException {
@@ -2199,9 +2198,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         ServerFactory.getSession().flush();
         ServerFactory.getSession().refresh(iface);
 
-        ServerNetAddress4 ipv4 = new ServerNetAddress4();
-        ipv4.setInterfaceId(iface.getInterfaceId());
-        ipv4.setAddress(ip4address);
+        ServerNetAddress4 ipv4 = new ServerNetAddress4(iface.getInterfaceId(), ip4address);
         ServerNetworkFactory.saveServerNetAddress4(ipv4);
     }
 

@@ -138,7 +138,7 @@ public class ChannelTest extends BaseTestCaseWithUser {
     public void testDistChannelMap() throws Exception {
         Channel c = ChannelFactoryTest.createTestChannel(user);
         ChannelTestUtils.addDistMapToChannel(c);
-        c = (Channel) reload(c);
+        c = (Channel) TestUtils.reload(c);
         assertNotNull(c.getDistChannelMaps());
         assertFalse(c.getDistChannelMaps().isEmpty());
     }
@@ -151,7 +151,7 @@ public class ChannelTest extends BaseTestCaseWithUser {
 
         c.setChannelFamily(cfam);
 
-        TestUtils.saveAndFlush(c);
+        c = TestUtils.saveAndFlush(c);
 
         Channel c2 = ChannelFactory.lookupById(c.getId());
         assertTrue(c2.isProxy());
@@ -225,9 +225,9 @@ public class ChannelTest extends BaseTestCaseWithUser {
         List<ContentSourceType> cst = ChannelFactory.listContentSourceTypes();
         cs.setType(cst.get(0));
         cs.setOrg(user.getOrg());
-        cs = (ContentSource) TestUtils.saveAndReload(cs);
+        cs = TestUtils.saveAndReload(cs);
         c.getSources().add(cs);
-        c = (Channel) TestUtils.saveAndReload(c);
+        c = TestUtils.saveAndReload(c);
         assertNotEmpty(c.getSources());
     }
 

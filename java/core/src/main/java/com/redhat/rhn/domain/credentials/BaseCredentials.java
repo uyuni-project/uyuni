@@ -22,6 +22,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -46,6 +47,7 @@ public abstract class BaseCredentials extends BaseDomainHelper implements Creden
 
     private Long id;
     private User user;
+    private String internalType;
 
     /**
      * Get the ID of this object.
@@ -74,7 +76,7 @@ public abstract class BaseCredentials extends BaseDomainHelper implements Creden
      * @return user
      */
     @Override
-    @ManyToOne(targetEntity = UserImpl.class)
+    @ManyToOne(targetEntity = UserImpl.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     public User getUser() {
         return this.user;
@@ -87,6 +89,15 @@ public abstract class BaseCredentials extends BaseDomainHelper implements Creden
     @Override
     public void setUser(User userIn) {
         this.user = userIn;
+    }
+
+    @Column(name = "type", updatable = false, insertable = false)
+    protected String getInternalType() {
+        return internalType;
+    }
+
+    protected void setInternalType(String internalTypeIn) {
+        this.internalType = internalTypeIn;
     }
 
     @Override

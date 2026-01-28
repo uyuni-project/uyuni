@@ -90,13 +90,17 @@ public class StateFactory extends HibernateFactory {
     public static Optional<OrgStateRevision> latestStateRevision(Org org) {
         String sql =
                 """
-                        SELECT DISTINCT ON (org_id) *, null as created, null as creator_id FROM
-                        suseOrgStateRevision WHERE org_id = :org
-                        ORDER BY org_id, state_revision_id desc limit 1;
+                        SELECT DISTINCT ON (org_id) *, null as created, null as creator_id
+                        FROM suseOrgStateRevision
+                        WHERE org_id = :org
+                        ORDER BY org_id, state_revision_id desc
+                        LIMIT 1;
                 """;
-        Query<OrgStateRevision> query = getSession().createNativeQuery(sql, OrgStateRevision.class);
-        query.setParameter("org", org.getId(), StandardBasicTypes.LONG);
-        return query.uniqueResultOptional();
+
+        return getSession().createNativeQuery(sql, OrgStateRevision.class)
+                .addSynchronizedEntityClass(OrgStateRevision.class)
+                .setParameter("org", org.getId(), StandardBasicTypes.LONG)
+                .uniqueResultOptional();
     }
 
     /**
@@ -104,17 +108,19 @@ public class StateFactory extends HibernateFactory {
      * @param group the server group
      * @return the optional {@link OrgStateRevision}
      */
-    public static Optional<ServerGroupStateRevision> latestStateRevision(
-            ServerGroup group) {
+    public static Optional<ServerGroupStateRevision> latestStateRevision(ServerGroup group) {
         String sql =
                 """
-                        SELECT DISTINCT ON (group_id) *, null as created, null as creator_id FROM
-                        suseServerGroupStateRevision WHERE group_id = :group
-                        ORDER BY group_id, state_revision_id desc limit 1;
+                        SELECT DISTINCT ON (group_id) *, null as created, null as creator_id
+                        FROM suseServerGroupStateRevision
+                        WHERE group_id = :group
+                        ORDER BY group_id, state_revision_id desc
+                        LIMIT 1;
                 """;
-        Query<ServerGroupStateRevision> query = getSession().createNativeQuery(sql, ServerGroupStateRevision.class);
-        query.setParameter("group", group.getId(), StandardBasicTypes.LONG);
-        return query.uniqueResultOptional();
+        return getSession().createNativeQuery(sql, ServerGroupStateRevision.class)
+                .addSynchronizedEntityClass(ServerGroupStateRevision.class)
+                .setParameter("group", group.getId(), StandardBasicTypes.LONG)
+                .uniqueResultOptional();
     }
 
     /**
@@ -125,13 +131,16 @@ public class StateFactory extends HibernateFactory {
     public static Optional<ServerStateRevision> latestStateRevision(MinionServer server) {
         String sql =
                 """
-                        SELECT DISTINCT ON (server_id) *, null as created, null as creator_id FROM
-                        suseServerStateRevision WHERE server_id = :server
-                        ORDER BY server_id, state_revision_id desc limit 1;
+                        SELECT DISTINCT ON (server_id) *, null as created, null as creator_id
+                        FROM suseServerStateRevision
+                        WHERE server_id = :server
+                        ORDER BY server_id, state_revision_id desc
+                        limit 1;
                 """;
-        Query<ServerStateRevision> query = getSession().createNativeQuery(sql, ServerStateRevision.class);
-        query.setParameter("server", server.getId(), StandardBasicTypes.LONG);
-        return query.uniqueResultOptional();
+        return getSession().createNativeQuery(sql, ServerStateRevision.class)
+                .addSynchronizedEntityClass(ServerStateRevision.class)
+                .setParameter("server", server.getId(), StandardBasicTypes.LONG)
+                .uniqueResultOptional();
     }
 
     /**
@@ -218,7 +227,7 @@ public class StateFactory extends HibernateFactory {
      */
     public static StateRevisionsUsage latestStateRevisionsByConfigChannel(ConfigChannel configChannelIn) {
 
-        List<Long[]> idList = getSession().createNativeQuery("""
+        List<Object[]> idList = getSession().createNativeQuery("""
             SELECT srcc.state_revision_id AS state_revision_id, srvrev.entity_id AS server_id,
                     grprev.entity_id AS group_id, orgrev.entity_id AS org_id
                     FROM rhnconfigchannel cc
@@ -246,7 +255,12 @@ public class StateFactory extends HibernateFactory {
                     ) orgrev ON orgrev.state_revision_id=srcc.state_revision_id
                     WHERE cc.org_id = :orgId AND cc.id = :channelId
                     AND (srvrev.entity_id IS NOT NULL OR grprev.entity_id IS NOT NULL OR orgrev.entity_id IS NOT NULL)
-                   """)
+                   """, Object[].class)
+                .addSynchronizedEntityClass(ConfigChannel.class)
+                .addSynchronizedEntityClass(StateRevision.class)
+                .addSynchronizedEntityClass(ServerStateRevision.class)
+                .addSynchronizedEntityClass(ServerGroupStateRevision.class)
+                .addSynchronizedEntityClass(OrgStateRevision.class)
                 .setParameter("orgId", configChannelIn.getOrgId())
                 .setParameter("channelId", configChannelIn.getId())
                 .addScalar("state_revision_id", StandardBasicTypes.LONG)
@@ -257,16 +271,14 @@ public class StateFactory extends HibernateFactory {
 
         StateRevisionsUsage usage = new StateRevisionsUsage();
         for (Object[] ids : idList) {
-            Long stateId = (Long)ids[0];
+            Long stateId = (Long) ids[0];
 
             if (ids[1] != null) {
-                ServerStateRevision rev =
-                        getSession().find(ServerStateRevision.class, stateId);
+                ServerStateRevision rev = getSession().find(ServerStateRevision.class, stateId);
                 usage.getServerStateRevisions().add(rev);
             }
             else if (ids[2] != null) {
-                ServerGroupStateRevision rev =
-                        getSession().find(ServerGroupStateRevision.class, stateId);
+                ServerGroupStateRevision rev = getSession().find(ServerGroupStateRevision.class, stateId);
                 usage.getServerGroupStateRevisions().add(rev);
             }
             else if (ids[3] != null) {
@@ -289,7 +301,10 @@ public class StateFactory extends HibernateFactory {
                             FROM suseServerGroupStateRevision gsr GROUP BY gsr.group_id) latest
                         JOIN susestaterevisionconfigchannel cc ON latest.state_revision_id = cc.state_revision_id
                         WHERE cc.config_channel_id = :channelId
-                        """)
+                        """, Long.class)
+                .addSynchronizedEntityClass(ServerGroupStateRevision.class)
+                .addSynchronizedEntityClass(StateRevision.class)
+                .addSynchronizedEntityClass(ConfigChannel.class)
                 .setParameter("channelId", channel.getId())
                 .addScalar("group_id", StandardBasicTypes.LONG)
                 .list();

@@ -51,6 +51,23 @@ public class ServerNetAddress4 extends BaseDomainHelper implements Serializable 
     private String broadcast;
 
     /**
+     * Hibernate constructor
+     */
+    protected ServerNetAddress4() {
+        // Nothing to do
+    }
+
+    /**
+     * Create a new instance
+     * @param interfaceIdIn the id of the {@link NetworkInterface}
+     * @param addressIn the IPv4 address
+     */
+    public ServerNetAddress4(Long interfaceIdIn, String addressIn) {
+        this.interfaceId = interfaceIdIn;
+        this.address = addressIn;
+    }
+
+    /**
      * @return Returns the interfaceId.
      */
     public Long getInterfaceId() {
@@ -60,7 +77,7 @@ public class ServerNetAddress4 extends BaseDomainHelper implements Serializable 
     /**
      * @param id Set the interfaceId.
      */
-    public void setInterfaceId(Long id) {
+    protected void setInterfaceId(Long id) {
         this.interfaceId = id;
     }
 

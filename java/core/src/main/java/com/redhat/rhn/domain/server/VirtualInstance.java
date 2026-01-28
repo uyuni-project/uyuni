@@ -54,11 +54,11 @@ public class VirtualInstance extends BaseDomainHelper {
     @SequenceGenerator(name = "rhn_vi_seq", sequenceName = "rhn_vi_id_seq", allocationSize = 1)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST })
     @JoinColumn(name = "virtual_system_id")
     private Server guestSystem;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST })
     @JoinColumn(name = "host_system_id")
     private Server hostSystem;
 

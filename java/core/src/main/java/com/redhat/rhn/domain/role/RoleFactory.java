@@ -56,8 +56,8 @@ public class RoleFactory extends HibernateFactory {
      */
     public static Role lookupById(Long id) {
         Session session = HibernateFactory.getSession();
-        return session.createNativeQuery("SELECT * FROM RHNUSERGROUPTYPE where id = :id", RoleImpl.class)
-                .setParameter("id", id, StandardBasicTypes.LONG)
+        return session.createQuery("FROM RoleImpl r where r.id = :id", RoleImpl.class)
+                .setParameter("id", id)
                 .setCacheable(true)
                 .uniqueResult();
     }
@@ -69,8 +69,8 @@ public class RoleFactory extends HibernateFactory {
      */
     public static Role lookupByLabel(String name) {
         Session session = HibernateFactory.getSession();
-        return session.createNativeQuery("SELECT * FROM RHNUSERGROUPTYPE where label = :label", RoleImpl.class)
-                .setParameter("label", name, StandardBasicTypes.STRING)
+        return session.createQuery("FROM RoleImpl r where r.label = :label", RoleImpl.class)
+                .setParameter("label", name)
                 .setCacheable(true)
                 .uniqueResult();
     }

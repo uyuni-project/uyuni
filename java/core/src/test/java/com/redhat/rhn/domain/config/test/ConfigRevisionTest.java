@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ConfigTestUtils;
+import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.Test;
@@ -43,7 +44,7 @@ public class ConfigRevisionTest extends BaseTestCaseWithUser {
         cr.setChangedById(user.getId());
         ConfigurationFactory.commit(cr);
         Long crid = cr.getId();
-        flushAndEvict(cr);
+        TestUtils.flushAndEvict(cr);
         cr = ConfigurationFactory.lookupConfigRevisionById(crid);
         assertNotNull(cr);
         assertNotNull(cr.getId());

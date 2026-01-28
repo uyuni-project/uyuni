@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.domain.rhnpackage.profile.Profile;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.manager.kickstart.KickstartPackageProfileCommand;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
 
@@ -38,16 +39,16 @@ public class KickstartPackageProfileCommandTest extends BaseKickstartCommandTest
         Profile p = k.getKickstartDefaults().getProfile();
         k.getKickstartDefaults().setProfile(null);
         KickstartFactory.saveKickstartData(k);
-        k = (KickstartData) reload(k);
+        k = TestUtils.reload(k);
         assertNull(k.getKickstartDefaults().getProfile());
-        flushAndEvict(k);
+        TestUtils.flushAndEvict(k);
 
         KickstartPackageProfileCommand cmd = new
             KickstartPackageProfileCommand(k.getId(), user);
 
         cmd.setProfile(p);
         cmd.store();
-        k = (KickstartData) reload(k);
+        k = TestUtils.reload(k);
         assertNotNull(k.getKickstartDefaults().getProfile());
     }
 

@@ -38,6 +38,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import jakarta.persistence.FlushModeType;
 import jakarta.persistence.PersistenceException;
 import jakarta.persistence.Tuple;
 
@@ -313,6 +314,11 @@ public class PagedSqlQueryBuilder {
         String sql = String.format(
                 "SELECT %s FROM %s WHERE %s%s",
                 select, from, whereWithFilter, sortSql);
+
+        // Flush the session to ensure the database connection is up to date with the hibernate session
+        if (session.getFlushMode().equals(FlushModeType.AUTO)) {
+            session.flush();
+        }
 
         Query<Tuple> query = session.createNativeQuery(sql, Tuple.class);
 

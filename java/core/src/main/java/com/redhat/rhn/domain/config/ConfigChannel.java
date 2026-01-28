@@ -29,10 +29,13 @@ import java.util.SortedSet;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
 /**
@@ -41,7 +44,10 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "rhnConfigChannel")
 public class ConfigChannel extends BaseDomainHelper implements Identifiable {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rhn_confchan_seq")
+    @SequenceGenerator(name = "rhn_confchan_seq", sequenceName = "rhn_confchan_id_seq", allocationSize = 1)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -66,11 +72,36 @@ public class ConfigChannel extends BaseDomainHelper implements Identifiable {
     private SortedSet<ConfigFile> configFiles;
 
     /**
-     * Protected constructor
-     * Use ConfigurationFactory to create a new channel.
+     * Default constructor, used by hibernate
      */
     protected ConfigChannel() {
+        // Nothing to do
+    }
 
+    /**
+     /**
+     * Create a new instance
+     * @param orgIn The org for this configuration channel.
+     * @param typeIn The type. Please use the constants located in this class.
+     */
+    public ConfigChannel(Org orgIn, ConfigChannelType typeIn) {
+        this(orgIn, typeIn, null, null, null);
+    }
+
+    /**
+     * Create a new instance
+     * @param orgIn The org for this configuration channel.
+     * @param typeIn The type.  Please use the constants located in this class.
+     * @param nameIn The name of this configuration channel.
+     * @param labelIn The label for this configuration channel.
+     * @param descriptionIn The description of this configuration channel.
+     */
+    public ConfigChannel(Org orgIn, ConfigChannelType typeIn, String nameIn, String labelIn, String descriptionIn) {
+        this.org = orgIn;
+        this.name = nameIn;
+        this.label = labelIn;
+        this.description = descriptionIn;
+        this.configChannelType = typeIn;
     }
 
     /**

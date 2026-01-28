@@ -129,15 +129,13 @@ public class PinnedSubscriptionFactory extends HibernateFactory {
      * @param subscriptionId the subscription id
      * @return PinnedSubscription object
      */
-    public PinnedSubscription lookupBySystemIdAndSubscriptionId(Long systemId,
-            Long subscriptionId) {
-
-        String sql = "SELECT * FROM susePinnedSubscription " +
-                "WHERE system_id = :systemId AND subscription_id = :subscriptionId";
-        return getSession()
-                .createNativeQuery(sql, PinnedSubscription.class)
-                .setParameter("systemId", systemId, StandardBasicTypes.LONG)
-                .setParameter("subscriptionId", subscriptionId, StandardBasicTypes.LONG)
+    public PinnedSubscription lookupBySystemIdAndSubscriptionId(Long systemId, Long subscriptionId) {
+        return getSession().createQuery("""
+                        FROM PinnedSubscription p
+                        WHERE p.systemId = :systemId AND p.subscriptionId = :subscriptionId
+                        """, PinnedSubscription.class)
+                .setParameter("systemId", systemId)
+                .setParameter("subscriptionId", subscriptionId)
                 .uniqueResult();
     }
 }

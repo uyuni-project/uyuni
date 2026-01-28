@@ -117,8 +117,8 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
         String label = "treewithnullorg: " + TestUtils.randomString();
         kwithnullorg.setLabel(label);
         kwithnullorg.setOrg(null);
-        TestUtils.saveAndFlush(kwithnullorg);
-        flushAndEvict(kwithnullorg);
+        kwithnullorg = TestUtils.saveAndFlush(kwithnullorg);
+        TestUtils.flushAndEvict(kwithnullorg);
         KickstartableTree lookedUp = KickstartFactory.lookupKickstartTreeByLabel(label, o);
         assertNotNull(lookedUp);
         assertNull(lookedUp.getOrgId());
@@ -148,7 +148,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
             createKickstartWithOptions(user.getOrg());
         ksdata.getKickstartDefaults().setKstree(k);
         KickstartFactory.saveKickstartData(ksdata);
-        flushAndEvict(ksdata);
+        TestUtils.flushAndEvict(ksdata);
 
         List<KickstartData> profiles = KickstartFactory.lookupKickstartDatasByTree(k);
         assertNotNull(profiles);
@@ -163,7 +163,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
      */
     private KickstartableTree lookupById(Long id) {
         Session session = HibernateFactory.getSession();
-        return (KickstartableTree) session.createQuery("FROM KickstartableTree AS k WHERE k.id = :id")
+        return session.createQuery("FROM KickstartableTree AS k WHERE k.id = :id", KickstartableTree.class)
                           .setParameter("id", id)
                           .uniqueResult();
     }

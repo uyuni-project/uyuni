@@ -30,6 +30,7 @@ import com.redhat.rhn.domain.task.TaskFactory;
 import com.redhat.rhn.manager.satellite.UpgradeCommand;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ConfigTestUtils;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.AfterEach;
@@ -309,7 +310,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
 
     private ConfigChannel createTestStateChannel() {
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg(), ConfigChannelType.state());
-        return HibernateFactory.reload(cc);
+        return TestUtils.reload(cc);
     }
 
     private void createTask(String taskName) {

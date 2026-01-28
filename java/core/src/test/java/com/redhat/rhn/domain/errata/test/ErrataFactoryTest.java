@@ -225,7 +225,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testLastModified() throws Exception {
         Errata testErrata = createTestErrata(user.getOrg().getId());
-        testErrata = reload(testErrata);
+        testErrata = TestUtils.reload(testErrata);
         assertNotNull(testErrata.getLastModified());
     }
 
@@ -312,10 +312,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
                     "test errata file" + TestUtils.randomString(), errataFilePackages);
 
         e.addFile(ef);
-        Severity s = new Severity();
-        s.setLabel(Severity.IMPORTANT_LABEL);
-        s.setRank(1);
-        e.setSeverity(s);
+        e.setSeverity(Severity.getById(1));
     }
 
     public static void updateNeedsErrataCache(Long packageId, Long serverId,

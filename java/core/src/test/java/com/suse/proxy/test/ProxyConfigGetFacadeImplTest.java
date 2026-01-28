@@ -109,7 +109,7 @@ public class ProxyConfigGetFacadeImplTest extends BaseTestCaseWithUser {
         pillar.add(ProxyConfigUtils.PROXY_FQDN_FIELD, DUMMY_PROXY_FQDN);
         pillar.add(ProxyConfigUtils.PARENT_FQDN_FIELD, DUMMY_PARENT_FQDN);
         minion.addPillar(pillar);
-        TestUtils.saveAndFlush(minion);
+        minion = TestUtils.saveAndFlush(minion);
 
         //
         ProxyConfig proxyConfig = new ProxyConfigGetFacadeImpl().getProxyConfig(minion);

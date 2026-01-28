@@ -14,15 +14,10 @@
  */
 package com.redhat.rhn.domain.server;
 
-import com.redhat.rhn.common.db.datasource.CallableMode;
-import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * ServerFactory - the singleton class used to fetch and store
@@ -62,12 +57,6 @@ public class ServerNoteFactory extends HibernateFactory {
      * @param note The note to delete
      */
     public static void delete(Note note) {
-        HibernateFactory.getSession().evict(note);
-        CallableMode m = ModeFactory.getCallableMode("System_queries", "delete_note");
-        Map<String, Object> map = new HashMap<>();
-        map.put("id", note.getId());
-        map.put("server_id", note.getServer().getId());
-        m.execute(map, new HashMap<>());
-        HibernateFactory.getSession().evict(note);
+        singleton.removeObject(note);
     }
 }

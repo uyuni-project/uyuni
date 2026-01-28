@@ -312,18 +312,17 @@ public class ImageInfoFactory extends HibernateFactory {
      * @param saltApi the SaltApi used to delete the related file
      */
     public static void delete(ImageInfo imageInfo, SaltApi saltApi) {
-        imageInfo.getDeltaSourceFor().stream().forEach(delta -> deleteDeltaImage(delta, saltApi));
-        imageInfo.getDeltaTargetFor().stream().forEach(delta -> deleteDeltaImage(delta, saltApi));
+        imageInfo.getDeltaSourceFor().forEach(delta -> deleteDeltaImage(delta, saltApi));
+        imageInfo.getDeltaTargetFor().forEach(delta -> deleteDeltaImage(delta, saltApi));
 
         // delete saltboot image profile and distro
         SaltbootUtils.deleteSaltbootDistro(imageInfo);
 
         // delete files
-        imageInfo.getImageFiles().stream().forEach(f -> {
-            if (!f.isExternal()) {
-                removeImageFile(OSImageStoreUtils.getOSImageFilePath(f), saltApi);
-            }
-        });
+        imageInfo.getImageFiles().stream()
+                .filter(f -> !f.isExternal())
+                .forEach(f -> removeImageFile(OSImageStoreUtils.getOSImageFilePath(f), saltApi));
+
         instance.removeObject(imageInfo);
     }
 
@@ -635,12 +634,12 @@ public class ImageInfoFactory extends HibernateFactory {
         query.where(builder.and(
                 builder.equal(root.get("name"), image.getName()),
                 builder.equal(root.get("version"), image.getVersion()),
-                builder.equal(root.get("store"),
+                builder.equal(root.get("store").get("id"),
                               Optional.ofNullable(image.getStore()).map(store -> store.getId()).orElse(null)),
                 builder.isFalse(root.get("obsolete")),
                 builder.lessThan(root.get("revisionNumber"), image.getRevisionNumber())
                 ));
-        getSession().createQuery(query).getResultList().stream().forEach(obsImage -> {
+        getSession().createQuery(query).stream().forEach(obsImage -> {
             obsImage.setObsolete(true);
         });
     }

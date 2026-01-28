@@ -64,7 +64,7 @@ public class PackageCapabilityTest extends RhnBaseTestCase {
         p.setCreated(new Date());
         p.setModified(new Date());
 
-        TestUtils.saveAndFlush(p);
+        p = TestUtils.saveAndFlush(p);
         return p;
     }
 

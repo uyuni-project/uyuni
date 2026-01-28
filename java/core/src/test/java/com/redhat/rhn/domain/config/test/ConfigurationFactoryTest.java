@@ -67,15 +67,15 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testSaveNewConfigChannel() {
+    public void testCreateNewConfigChannel() {
         String label = "testlabel";
-        ConfigChannel channel = ConfigurationFactory.saveNewConfigChannel(user.getOrg(),
+        ConfigChannel channel = ConfigurationFactory.createNewConfigChannel(user.getOrg(),
                 ConfigChannelType.normal(), "testname",
                 label, "testdescription");
         assertNotNull(channel.getId());
 
         //evict it so we can look it back up
-        flushAndEvict(channel);
+        TestUtils.flushAndEvict(channel);
 
         ConfigChannel channel2 =
             ConfigurationFactory.lookupConfigChannelById(channel.getId());
@@ -84,7 +84,6 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
 
         //now change something and hopefully avoid a database problem.
         channel2.setName("newName");
-        ConfigurationFactory.commit(channel2);
         //now look up the new way
         ConfigChannel channel3 =
             ConfigurationFactory.lookupConfigChannelByLabel(label, user.getOrg(),
@@ -105,7 +104,7 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
         assertNotNull(file.getId());
 
         //evict it so we can look it back up
-        flushAndEvict(file);
+        TestUtils.flushAndEvict(file);
 
         ConfigFile file2 = ConfigurationFactory.lookupConfigFileById(file.getId());
         assertNotNull(file2);
@@ -133,7 +132,7 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
         assertNotNull(revision.getId());
 
         //evict it so we can look it back up
-        flushAndEvict(revision);
+        TestUtils.flushAndEvict(revision);
 
         ConfigRevision revision2 =
             ConfigurationFactory.lookupConfigRevisionById(revision.getId());

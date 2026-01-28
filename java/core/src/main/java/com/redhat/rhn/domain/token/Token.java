@@ -45,6 +45,7 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -87,9 +88,9 @@ public class Token implements Identifiable {
     @JoinColumn(name = "org_id")
     private Org org;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = UserImpl.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private UserImpl creator;
+    private User creator;
 
     @ManyToOne
     @JoinColumn(name = "server_id")

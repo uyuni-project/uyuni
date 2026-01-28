@@ -53,7 +53,7 @@ public class ActionChainEditActionTest extends RhnPostMockStrutsTestCase {
     public void testNotSubmitted() {
         String label = TestUtils.randomString();
         ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
-        TestUtils.saveAndFlush(actionChain);
+        actionChain = TestUtils.saveAndFlush(actionChain);
 
         addRequestParameter(ActionChainEditAction.ACTION_CHAIN_ID_PARAMETER, actionChain
             .getId().toString());
@@ -79,7 +79,7 @@ public class ActionChainEditActionTest extends RhnPostMockStrutsTestCase {
     public void testDelete() {
         String label = TestUtils.randomString();
         ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
-        TestUtils.saveAndFlush(actionChain);
+        actionChain = TestUtils.saveAndFlush(actionChain);
 
         addRequestParameter(ActionChainEditAction.ACTION_CHAIN_ID_PARAMETER, actionChain
             .getId().toString());
@@ -103,7 +103,7 @@ public class ActionChainEditActionTest extends RhnPostMockStrutsTestCase {
         action.setOrg(user.getOrg());
         ActionChainEntry entry = ActionChainFactory.queueActionChainEntry(action,
             actionChain, ServerFactoryTest.createTestServer(user), 0);
-        TestUtils.saveAndFlush(actionChain);
+        actionChain = TestUtils.saveAndFlush(actionChain);
 
         addRequestParameter(ActionChainEditAction.ACTION_CHAIN_ID_PARAMETER, actionChain
             .getId().toString());

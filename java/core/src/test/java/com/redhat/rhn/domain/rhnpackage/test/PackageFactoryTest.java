@@ -104,7 +104,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
         serverPackages.add(testInstPack);
 
         ServerFactory.save(testServer);
-        testServer = (Server) reload(testServer);
+        testServer = TestUtils.reload(testServer);
 
         InstalledPackage pack = PackageFactory.lookupByNameAndServer(
                 testInstPack.getName().getName(), testServer);
@@ -132,7 +132,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
         Package pkg = PackageTest.createTestPackage(user.getOrg());
         Long id = pkg.getId();
         Org org = pkg.getOrg();
-        com.redhat.rhn.testing.TestUtils.flushAndEvict(pkg);
+        TestUtils.flushAndEvict(pkg);
         pkg = PackageFactory.lookupByIdAndOrg(id, org);
         PackageFactory.deletePackage(pkg);
 
@@ -167,10 +167,10 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
        provideProduct.setCapability(productCap);
        provideProduct.setPack(testPackage);
        provideProduct.setSense(0L);
-       TestUtils.saveAndFlush(provideProduct);
+       provideProduct = TestUtils.saveAndFlush(provideProduct);
 
        ServerFactory.save(testServer);
-       testServer = (Server) reload(testServer);
+       testServer = TestUtils.reload(testServer);
 
        List<Package> missing = PackageFactory.
                findMissingProductPackagesOnServer(testServer.getId());
@@ -192,10 +192,10 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
         provideProduct.setCapability(productCap);
         provideProduct.setPack(testPackage);
         provideProduct.setSense(0L);
-        TestUtils.saveAndFlush(provideProduct);
+        provideProduct = TestUtils.saveAndFlush(provideProduct);
 
         ServerFactory.save(testServer);
-        testServer = (Server) reload(testServer);
+        testServer = TestUtils.reload(testServer);
 
         List<Package> missing = PackageFactory.
                 findMissingProductPackagesOnServer(testServer.getId());
@@ -218,7 +218,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
        provideProduct.setCapability(productCap);
        provideProduct.setPack(testPackage);
        provideProduct.setSense(0L);
-       TestUtils.saveAndFlush(provideProduct);
+       provideProduct = TestUtils.saveAndFlush(provideProduct);
 
        InstalledPackage testInstPack = new InstalledPackage();
        testInstPack.setArch(testPackage.getPackageArch());
@@ -229,7 +229,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
        serverPackages.add(testInstPack);
 
        ServerFactory.save(testServer);
-       testServer = (Server) reload(testServer);
+       testServer = TestUtils.reload(testServer);
 
        List<Package> missing = PackageFactory.
                findMissingProductPackagesOnServer(testServer.getId());
@@ -253,7 +253,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
        provideProduct.setPack(testPackage1);
        provideProduct.setSense(0L);
 
-       TestUtils.saveAndFlush(provideProduct);
+       provideProduct = TestUtils.saveAndFlush(provideProduct);
 
        Package testPackage2 = ErrataTestUtils.createTestPackage(user, channel, "x86_64");
 
@@ -270,7 +270,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
        provideProduct3.setPack(testPackage2);
        provideProduct3.setSense(0L);
 
-       TestUtils.saveAndFlush(provideProduct3);
+       provideProduct3 = TestUtils.saveAndFlush(provideProduct3);
 
        InstalledPackage testInstPack = new InstalledPackage();
        testInstPack.setArch(testPackage2.getPackageArch());
@@ -281,7 +281,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
        serverPackages.add(testInstPack);
 
        ServerFactory.save(testServer);
-       testServer = (Server) reload(testServer);
+       testServer = TestUtils.reload(testServer);
 
        List<Package> missing = PackageFactory.
                findMissingProductPackagesOnServer(testServer.getId());
@@ -304,7 +304,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
        provideProduct.setCapability(productCap);
        provideProduct.setPack(testPackage1);
        provideProduct.setSense(0L);
-       TestUtils.saveAndFlush(provideProduct);
+       provideProduct = TestUtils.saveAndFlush(provideProduct);
 
        Package testPackage2 = ErrataTestUtils.createTestPackage(user, channel, "x86_64");
 
@@ -312,7 +312,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
        provideProduct2.setCapability(productCap);
        provideProduct2.setPack(testPackage2);
        provideProduct2.setSense(0L);
-       TestUtils.saveAndFlush(provideProduct2);
+       provideProduct2 = TestUtils.saveAndFlush(provideProduct2);
 
        PackageCapability pkg1Cap = PackageCapabilityTest.createTestCapability(
                testPackage1.getPackageName().getName());
@@ -321,7 +321,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
        provideProduct3.setCapability(pkg1Cap);
        provideProduct3.setPack(testPackage2);
        provideProduct3.setSense(0L);
-       TestUtils.saveAndFlush(provideProduct3);
+       provideProduct3 = TestUtils.saveAndFlush(provideProduct3);
 
        InstalledPackage testInstPack = new InstalledPackage();
        testInstPack.setArch(testPackage1.getPackageArch());
@@ -332,7 +332,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
        serverPackages.add(testInstPack);
 
        ServerFactory.save(testServer);
-       testServer = (Server) reload(testServer);
+       testServer = TestUtils.reload(testServer);
 
        List<Package> missing = PackageFactory.
                findMissingProductPackagesOnServer(testServer.getId());
@@ -381,7 +381,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
        prop.setCapability(cap);
        prop.setPack(pkg);
        prop.setSense(0L);
-       TestUtils.saveAndFlush(prop);
+       prop = TestUtils.saveAndFlush(prop);
    }
 }
 

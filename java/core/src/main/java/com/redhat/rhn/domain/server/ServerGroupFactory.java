@@ -26,6 +26,8 @@ import com.redhat.rhn.domain.dto.SystemGroupID;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.formula.FormulaFactory;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.org.usergroup.UserGroupImpl;
+import com.redhat.rhn.domain.org.usergroup.UserGroupMembers;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.legacy.UserImpl;
 
@@ -80,6 +82,9 @@ public class ServerGroupFactory extends HibernateFactory {
                                 AND sg.group_type IS NULL
                                 AND umsg.user_id = :uid
                                 """, ServerGroup.class)
+                .addSynchronizedEntityClass(ServerGroup.class)
+                .addSynchronizedEntityClass(UserImpl.class)
+                .addSynchronizedEntityClass(UserGroupMembers.class)
                 .setParameter("uid", user.getId())
                 .list();
     }
@@ -108,6 +113,9 @@ public class ServerGroupFactory extends HibernateFactory {
                                         WHERE sgm.server_group_id = sg.id
                                         AND sgm.server_id = s.id)
                                 """, ServerGroup.class)
+                .addSynchronizedEntityClass(ServerGroupType.class)
+                .addSynchronizedEntityClass(ServerGroup.class)
+                .addSynchronizedEntityClass(Server.class)
                 .setParameter("sid", serverId)
                 .setParameter("entitlement_label", baseEnt.getLabel())
                 .uniqueResultOptional();
@@ -140,6 +148,9 @@ public class ServerGroupFactory extends HibernateFactory {
                                             WHERE sgm.server_group_id = sg.id
                                             AND sgm.server_id = s.id)
                                 """, ServerGroup.class)
+                .addSynchronizedEntityClass(ServerGroupType.class)
+                .addSynchronizedEntityClass(ServerGroup.class)
+                .addSynchronizedEntityClass(Server.class)
                 .setParameter("sid", serverId)
                 .setParameter("addon_entitlement_label", addOnEnt.getLabel())
                 .setParameter("base_ent_id", baseEntId)
@@ -316,6 +327,8 @@ public class ServerGroupFactory extends HibernateFactory {
                                 AND NOT EXISTS
                                     (SELECT 1 FROM rhnUserServerGroupPerms usgp WHERE usgp.server_group_id = sg.id)
                                 """, ServerGroup.class)
+                .addSynchronizedEntityClass(ServerGroup.class)
+                .addSynchronizedEntityClass(ManagedServerGroup.class)
                 .setParameter("org_id", org.getId())
                 .list();
     }
@@ -334,6 +347,10 @@ public class ServerGroupFactory extends HibernateFactory {
                                 INNER JOIN rhnServerGroup SG ON SG.id = umsg.server_group_id
                                 WHERE sg.id = :sgid AND sg.org_id = :org_id
                                 """, UserImpl.class)
+                .addSynchronizedEntityClass(UserImpl.class)
+                .addSynchronizedEntityClass(ServerGroup.class)
+                .addSynchronizedEntityClass(UserGroupImpl.class)
+                .addSynchronizedEntityClass(UserGroupMembers.class)
                 .setParameter("sgid", sg.getId())
                 .setParameter("org_id", sg.getOrg().getId())
                 .list();
@@ -359,6 +376,8 @@ public class ServerGroupFactory extends HibernateFactory {
                                 WHERE sgm.server_group_id = :sgid
                                 AND s.org_id = :org_id
                                 """, Tuple.class)
+                .addSynchronizedEntityClass(Server.class)
+                .addSynchronizedEntityClass(ServerGroup.class)
                 .setParameter("sgid", sg.getId())
                 .setParameter("org_id", sg.getOrg().getId())
                 .addScalar("id", StandardBasicTypes.LONG)
@@ -384,6 +403,9 @@ public class ServerGroupFactory extends HibernateFactory {
                                 WHERE sgm.server_group_id = :sgid
                                 AND s.org_id = :org_id
                                 """, Tuple.class)
+                .addSynchronizedEntityClass(MinionServer.class)
+                .addSynchronizedEntityClass(Server.class)
+                .addSynchronizedEntityClass(ServerGroup.class)
                 .setParameter("sgid", serverGroup.getId())
                 .setParameter("org_id", serverGroup.getOrg().getId())
                 .addScalar("server_id", StandardBasicTypes.LONG)
@@ -407,6 +429,7 @@ public class ServerGroupFactory extends HibernateFactory {
         Session session = HibernateFactory.getSession();
         Tuple members = session.createNativeQuery(
                         "SELECT current_members FROM rhnServerGroup WHERE id = :sgid", Tuple.class)
+                .addSynchronizedEntityClass(ServerGroup.class)
                 .setParameter("sgid", sg.getId())
                 .addScalar("current_members", StandardBasicTypes.LONG)
                 .uniqueResult();
@@ -465,13 +488,13 @@ public class ServerGroupFactory extends HibernateFactory {
                                 WHERE
                                 si.checkin >= current_timestamp - numtodsinterval(:threshold, 'day') AND
                                 sgm.server_group_id = :sgid
-                                """, Tuple.class)
+                                """, Long.class)
+                .addSynchronizedEntityClass(Server.class)
+                .addSynchronizedEntityClass(ServerInfo.class)
                 .setParameter("sgid", sg.getId())
                 .setParameter("threshold", threshold)
                 .addScalar("id", StandardBasicTypes.LONG)
-                .stream()
-                .map(t -> t.get(0, Long.class))
-                .collect(toList());
+                .getResultList();
     }
 
     /**
@@ -492,13 +515,13 @@ public class ServerGroupFactory extends HibernateFactory {
                                 WHERE
                                 si.checkin < current_timestamp - numtodsinterval(:threshold, 'day') AND
                                 sgm.server_group_id = :sgid
-                                """, Tuple.class)
+                                """, Long.class)
+                .addSynchronizedEntityClass(Server.class)
+                .addSynchronizedEntityClass(ServerInfo.class)
                 .setParameter("sgid", sg.getId())
                 .setParameter("threshold", threshold)
                 .addScalar("id", StandardBasicTypes.LONG)
-                .stream()
-                .map(t -> t.get(0, Long.class))
-                .collect(toList());
+                .getResultList();
     }
 
     /**

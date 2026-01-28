@@ -332,8 +332,8 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
 
         ActionFactory.rescheduleSingleServerAction(a1, 5L, sa.getServerId());
 
-        a1 = HibernateFactory.reload(a1);
-        sa = HibernateFactory.reload(sa);
+        a1 = TestUtils.reload(a1);
+        sa = TestUtils.reload(sa);
 
         assertTrue(sa.isStatusQueued());
         assertTrue(sa.getRemainingTries() > 0);
@@ -357,7 +357,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         ActionFactory.save(a1);
 
         ActionFactory.rescheduleFailedServerActions(a1, 5L);
-        sa1 = HibernateFactory.reload(sa1);
+        sa1 = TestUtils.reload(sa1);
 
         assertTrue(sa1.isStatusQueued());
         assertTrue(sa1.getRemainingTries() > 0);
@@ -384,8 +384,8 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
 
         ActionFactory.rescheduleAllServerActions(a1, 5L);
 
-        sa1 = HibernateFactory.reload(sa1);
-        sa2 = HibernateFactory.reload(sa2);
+        sa1 = TestUtils.reload(sa1);
+        sa2 = TestUtils.reload(sa2);
 
         assertTrue(sa1.isStatusQueued());
         assertTrue(sa1.getRemainingTries() > 0);
@@ -423,14 +423,14 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
 
         // Should NOT update if already in final state.
         ActionFactory.updateServerActionsPickedUp(a1, list);
-        HibernateFactory.reload(sa1);
+        sa1 = TestUtils.reload(sa1);
         assertTrue(sa1.isStatusFailed());
 
         list.clear();
         list.add(sa2.getServerId());
         //Should update to STATUS_COMPLETED
         ActionFactory.updateServerActions(a1, list, ActionFactory.STATUS_COMPLETED);
-        HibernateFactory.reload(sa2);
+        sa2 = TestUtils.reload(sa2);
         assertTrue(sa2.isStatusCompleted());
     }
 
@@ -444,16 +444,16 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         ServerAction sa3 = addServerAction(user, a2, ServerAction::setStatusQueued);
         ServerAction sa4 = addServerAction(user, a2, ServerAction::setStatusPickedUp);
 
-        TestUtils.saveAndReload(a1);
-        TestUtils.saveAndReload(a2);
+        a1 = TestUtils.saveAndReload(a1);
+        a2 = TestUtils.saveAndReload(a2);
 
         List<Long> actionIds = Stream.of(a1, a2).map(Action::getId).collect(Collectors.toList());
         ActionFactory.rejectScheduledActions(actionIds, "Test Rejection Reason");
 
-        sa1 = HibernateFactory.reload(sa1);
-        sa2 = HibernateFactory.reload(sa2);
-        sa3 = HibernateFactory.reload(sa3);
-        sa4 = HibernateFactory.reload(sa4);
+        sa1 = TestUtils.reload(sa1);
+        sa2 = TestUtils.reload(sa2);
+        sa3 = TestUtils.reload(sa3);
+        sa4 = TestUtils.reload(sa4);
 
         assertTrue(sa1.isStatusCompleted());
 
@@ -646,7 +646,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         PackageName name = new PackageName();
         name.setName(testname);
         d.setPackageName(name);
-        TestUtils.saveAndFlush(name);
+        name = TestUtils.saveAndFlush(name);
 
         //create packageEvr
         PackageEvr evr = PackageEvrFactory.lookupOrCreatePackageEvr("" +

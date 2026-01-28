@@ -51,7 +51,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import jakarta.persistence.Tuple;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
@@ -719,10 +718,9 @@ public class KickstartFactory extends HibernateFactory {
     public static List<KickstartableTree> lookupKickstartTrees() {
         Session session = HibernateFactory.getSession();
         return session.createQuery("""
-                        SELECT k FROM KickstartableTree AS k,
-                        com.redhat.rhn.domain.channel.Channel AS c
-                        WHERE c.id = k.channel
-                        AND c.parentChannel IS NULL
+                        SELECT k
+                        FROM KickstartableTree AS k, Channel AS c
+                        WHERE c.id = k.channel.id AND c.parentChannel IS NULL
                         ORDER BY k.label""", KickstartableTree.class)
                 .list();
     }
@@ -934,16 +932,11 @@ public class KickstartFactory extends HibernateFactory {
      * @return List of KickstartData objects if found
      */
     public static List<KickstartData> lookupKickstartDatasByTree(KickstartableTree tree) {
-        return getSession().createNativeQuery("""
-                        SELECT k.* FROM rhnKickstartDefaults ksd, rhnksdata k
-                        WHERE k.id = ksd.kickstart_id
-                        AND ksd.kstree_id = :kstree_id
-                        """, Tuple.class)
-                .addEntity("k", KickstartData.class)
-                .setParameter("kstree_id", tree.getId())
-                .stream()
-                .map(t -> t.get(0, KickstartData.class))
-                .collect(Collectors.toList());
+        return getSession().createQuery("""
+                        SELECT kd.ksdata FROM KickstartDefaults kd WHERE kd.kstree.id = :treeId
+                        """, KickstartData.class)
+                .setParameter("treeId", tree.getId())
+                .list();
     }
 
     /**
@@ -952,9 +945,7 @@ public class KickstartFactory extends HibernateFactory {
      * @return List of KickstartData objects if found
      */
     public static List<KickstartData> listAllKickstartData() {
-        return HibernateFactory.getSession().createNativeQuery("""
-                                      SELECT DISTINCT * from rhnksdata
-                                      """, KickstartData.class).getResultList();
+        return getSession().createQuery("FROM KickstartData kd", KickstartData.class).getResultList();
     }
 
     /**
@@ -963,9 +954,7 @@ public class KickstartFactory extends HibernateFactory {
      * @return List of KickstartData objects if found
      */
     public static List<KickstartData> lookupKickstartDataByUpdateable() {
-        Session session = HibernateFactory.getSession();
-        return session.createQuery("FROM KickstartData AS t WHERE NOT t.updateType = 'none' ",
-                        KickstartData.class)
+        return getSession().createQuery("FROM KickstartData AS t WHERE NOT t.updateType = 'none'", KickstartData.class)
                 .list();
     }
 

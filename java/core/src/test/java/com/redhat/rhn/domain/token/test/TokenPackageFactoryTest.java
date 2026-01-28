@@ -56,10 +56,6 @@ public class TokenPackageFactoryTest extends BaseTestCaseWithUser {
         assertNotNull(pkg3);
         pkg3.getPackageName().setName("aName");
 
-        TestUtils.flushAndEvict(pkg1);
-        TestUtils.flushAndEvict(pkg2);
-        TestUtils.flushAndEvict(pkg3);
-
         //make sure we got written to the db
         assertNotNull(pkg1.getId());
         assertNotNull(pkg2.getId());
@@ -103,8 +99,7 @@ public class TokenPackageFactoryTest extends BaseTestCaseWithUser {
         pkg2.setPackageArch(parch);
         key.getPackages().add(pkg2);
 
-        TestUtils.flushAndEvict(pkg1);
-        TestUtils.flushAndEvict(pkg2);
+        key = TestUtils.reload(key);
 
         //make sure we got written to the db
         assertNotNull(pkg1.getId());
@@ -147,8 +142,6 @@ public class TokenPackageFactoryTest extends BaseTestCaseWithUser {
         ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
         TokenPackage pkg = TokenPackageTest.createTestPackage(key);
         assertNotNull(pkg);
-
-        TestUtils.flushAndEvict(pkg);
 
         //make sure we got written to the db
         assertNotNull(pkg.getId());

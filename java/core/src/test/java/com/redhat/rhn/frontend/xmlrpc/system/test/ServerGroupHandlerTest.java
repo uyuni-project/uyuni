@@ -371,8 +371,8 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.HOUR, -442);
         server.getServerInfo().setCheckin(cal.getTime());
-        TestUtils.saveAndFlush(server);
-        TestUtils.saveAndFlush(group);
+        server = TestUtils.saveAndFlush(server);
+        group = TestUtils.saveAndFlush(group);
 
         List<Long> list = handler.listInactiveSystemsInGroup(admin, group.getName(), 1);
         assertEquals(1, list.size());
@@ -395,8 +395,8 @@ public class ServerGroupHandlerTest extends BaseHandlerTestCase {
 
         manager.addServers(group, test, admin);
 
-        TestUtils.saveAndFlush(server);
-        TestUtils.saveAndFlush(group);
+        server = TestUtils.saveAndFlush(server);
+        group = TestUtils.saveAndFlush(group);
 
         List<Long> list = handler.listActiveSystemsInGroup(admin, group.getName());
 

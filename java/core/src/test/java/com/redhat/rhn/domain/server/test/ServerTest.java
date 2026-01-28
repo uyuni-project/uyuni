@@ -83,7 +83,7 @@ public class ServerTest extends BaseTestCaseWithUser {
                 "Channel 2", "cfg-channel-2");
         s.subscribeConfigChannels(List.of(channel1, channel2), user);
         long sid = s.getId();
-        TestUtils.saveAndFlush(s);
+        s = TestUtils.saveAndFlush(s);
         RhnSetDecl.SYSTEMS.get(user).addElement(sid);
         RhnSet ssm = RhnSetDecl.SYSTEMS.get(user);
         ssm.addElement(sid);
@@ -116,16 +116,16 @@ public class ServerTest extends BaseTestCaseWithUser {
         HibernateFactory.getSession().clear();
         s = ServerFactory.lookupById(s.getId());
         systemEntitlementManager.setBaseEntitlement(s, EntitlementManager.MANAGEMENT);
-        TestUtils.saveAndFlush(s);
-        s = reload(s);
+        s = TestUtils.saveAndFlush(s);
+        s = TestUtils.reload(s);
         assertEquals(s.getBaseEntitlement(), EntitlementManager.MANAGEMENT);
     }
 
     @Test
     public void testCapabilities() throws Exception {
         Server s = ServerFactoryTest.createTestServer(user, true);
-        SystemManagerTest.giveCapability(s.getId(),
-                SystemManager.CAP_CONFIGFILES_DEPLOY, 1L);
+        SystemManagerTest.giveCapability(s.getId(), SystemManager.CAP_CONFIGFILES_DEPLOY, 1L);
+        s = TestUtils.reload(s);
         assertFalse(s.getCapabilities().isEmpty());
         boolean containsDeploy = false;
         for (ClientCapability c : s.getCapabilities()) {
@@ -140,10 +140,9 @@ public class ServerTest extends BaseTestCaseWithUser {
     @Test
     public void testRemoveCapability() throws Exception {
         Server s = ServerFactoryTest.createTestServer(user, true);
-        SystemManagerTest.giveCapability(s.getId(),
-                SystemManager.CAP_CONFIGFILES_DEPLOY, 1L);
-        SystemManagerTest.giveCapability(s.getId(),
-                SystemManager.CAP_SCRIPT_RUN, 2L);
+        SystemManagerTest.giveCapability(s.getId(), SystemManager.CAP_CONFIGFILES_DEPLOY, 1L);
+        SystemManagerTest.giveCapability(s.getId(), SystemManager.CAP_SCRIPT_RUN, 2L);
+        s = TestUtils.reload(s);
         assertEquals(2, s.getCapabilities().size());
         Optional<ClientCapability> cap1 = s.getCapabilities()
                 .stream().filter(c -> c.getCapability().getName().equals(SystemManager.CAP_SCRIPT_RUN))
@@ -160,7 +159,7 @@ public class ServerTest extends BaseTestCaseWithUser {
     public void testNetworkInterfaces() throws Exception {
         Server s = ServerTestUtils.createTestSystem(user);
         NetworkInterfaceTest.createTestNetworkInterface(s);
-        TestUtils.saveAndReload(s);
+        s = TestUtils.saveAndReload(s);
         Server s2 = ServerTestUtils.createTestSystem(user);
         s2 = TestUtils.saveAndReload(s2);
         NetworkInterfaceTest.createTestNetworkInterface(s2);
@@ -329,26 +328,18 @@ public class ServerTest extends BaseTestCaseWithUser {
         Server s = ServerTestUtils.createTestSystem(user);
         assertNull(s.getIpAddress());
 
-
         String hwAddr = "AA:AA:BB:BB:CC:CC";
         String ipAddr = "172.31.1.102";
 
-        NetworkInterfaceTest.createTestNetworkInterface(s, "aaa",
-                ipAddr, hwAddr);
+        NetworkInterfaceTest.createTestNetworkInterface(s, "aaa", ipAddr, hwAddr);
+        NetworkInterfaceTest.createTestNetworkInterface(s, "bbb", ipAddr, hwAddr);
+        NetworkInterfaceTest.createTestNetworkInterface(s, "zzz", ipAddr, hwAddr);
+        NetworkInterfaceTest.createTestNetworkInterface(s, "eth0", ipAddr, hwAddr);
+        NetworkInterfaceTest.createTestNetworkInterface(s, "eth1", ipAddr, hwAddr);
 
-        NetworkInterfaceTest.createTestNetworkInterface(s, "bbb",
-                ipAddr, hwAddr);
-
-        NetworkInterfaceTest.createTestNetworkInterface(s, "zzz",
-                ipAddr, hwAddr);
-
-        NetworkInterfaceTest.createTestNetworkInterface(s, "eth0",
-                ipAddr, hwAddr);
-
-        NetworkInterfaceTest.createTestNetworkInterface(s, "eth1",
-                ipAddr, hwAddr);
-
-        s = TestUtils.saveAndReload(s);
+        HibernateFactory.getSession().flush();
+        HibernateFactory.closeSession();
+        s = ServerFactory.lookupById(s.getId());
 
         assertNotNull(s.getIpAddress());
 

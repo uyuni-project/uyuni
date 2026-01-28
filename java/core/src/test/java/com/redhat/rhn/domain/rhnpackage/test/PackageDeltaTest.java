@@ -36,7 +36,7 @@ public class PackageDeltaTest extends RhnBaseTestCase {
         PackageDelta p = new PackageDelta();
         p.setLabel("Test Label " + TestUtils.randomString());
         assertNull(p.getId());
-        TestUtils.saveAndFlush(p);
+        p = TestUtils.saveAndFlush(p);
         assertNotNull(p.getId());
     }
 }

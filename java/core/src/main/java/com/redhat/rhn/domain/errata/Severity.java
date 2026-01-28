@@ -22,7 +22,6 @@ import org.hibernate.annotations.Immutable;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Map;
 
 import jakarta.persistence.Column;
@@ -50,21 +49,37 @@ public class Severity implements Serializable {
     //dummy rank for webui selects
     public static final Integer UNSPECIFIED_RANK = 4;
 
+    private static final Map<Integer, String> SEVERITY_MAP = Map.of(
+            0, CRITICAL_LABEL,
+            1, IMPORTANT_LABEL,
+            2, MODERATE_LABEL,
+            3, LOW_LABEL
+    );
+
     @Serial
     private static final long serialVersionUID = 9009862760448217549L;
 
     @Id
-    private long id;
+    private Long id;
     @Column
     private int rank;
     @Column
     private String label;
 
     /**
+     * Protected constructor accesible only by hibernate, to avoid create directly a severity instance.
+     * <p>
+     * Use {@link #getById(int)} or {@link #getByName(String)}.
+     */
+    protected Severity() {
+        // Nothing to do
+    }
+
+    /**
      * Severity id
      * @param idIn id to set
      */
-    public void setId(long idIn) {
+    public void setId(Long idIn) {
         id = idIn;
     }
 
@@ -72,7 +87,7 @@ public class Severity implements Serializable {
      * Severity id
      * @return id from DB
      */
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -138,19 +153,6 @@ public class Severity implements Serializable {
     }
 
     /**
-     * Returns id to label mapping
-     * @return id to label map
-     */
-    public static Map<Integer, String> getIdToLabelMap() {
-        Map<Integer, String> severityMap = new HashMap<>();
-        severityMap.put(0, CRITICAL_LABEL);
-        severityMap.put(1, IMPORTANT_LABEL);
-        severityMap.put(2, MODERATE_LABEL);
-        severityMap.put(3, LOW_LABEL);
-        return severityMap;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -165,13 +167,13 @@ public class Severity implements Serializable {
      * @param id severity_id
      */
     public static Severity getById(Integer id) {
-        Map<Integer, String> severityMap = getIdToLabelMap();
-        Severity newSeverity = new Severity();
-        if (severityMap.get(id) == null) {
+        if (id == null || !SEVERITY_MAP.containsKey(id)) {
             return null;
         }
-        newSeverity.setId(id);
-        newSeverity.setLabel(severityMap.get(id));
+
+        Severity newSeverity = new Severity();
+        newSeverity.setId(Integer.valueOf(id).longValue());
+        newSeverity.setLabel(SEVERITY_MAP.get(id));
         newSeverity.setRank(id);
         return newSeverity;
     }
@@ -182,22 +184,23 @@ public class Severity implements Serializable {
      * @param name severity_name
      */
     public static Severity getByName(String name) {
-        Integer id = null;
         String key = getLabelForTranslation(name);
         if (UNSPECIFIED_LABEL.equals(key)) {
             return null;
         }
-        Map<Integer, String> severityMap = getIdToLabelMap();
-        Severity newSeverity = new Severity();
-        for (Map.Entry<Integer, String> entry : severityMap.entrySet()) {
+
+        for (Map.Entry<Integer, String> entry : SEVERITY_MAP.entrySet()) {
             if (entry.getValue().equals(key)) {
-                id = entry.getKey();
+                Severity newSeverity = new Severity();
+                newSeverity.setId(entry.getKey().longValue());
+                newSeverity.setLabel(entry.getValue());
+                newSeverity.setRank(entry.getKey());
+                return newSeverity;
             }
         }
-        newSeverity.setId(id);
-        newSeverity.setLabel(severityMap.get(id));
-        newSeverity.setRank(id);
-        return newSeverity;
+
+        // This return should never be reachable, since getLabelForTranslation() throws when the give name is missing.
+        return null;
     }
 
 }

@@ -43,7 +43,7 @@ public class ActionPackageDetails extends BaseDomainHelper {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "actiondpd_seq")
     @SequenceGenerator(name = "actiondpd_seq", sequenceName = "rhn_actiondpd_id_seq", allocationSize = 1)
-    private long id;
+    private Long id;
 
     @Column(name = "allow_vendor_change")
     @Convert(converter = YesNoConverter.class)
@@ -72,7 +72,7 @@ public class ActionPackageDetails extends BaseDomainHelper {
      * Return the ID.
      * @return id
      */
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -80,7 +80,7 @@ public class ActionPackageDetails extends BaseDomainHelper {
      * Set the ID.
      * @param idIn id
      */
-    protected void setId(long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 
