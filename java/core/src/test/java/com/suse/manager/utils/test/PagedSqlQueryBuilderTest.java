@@ -40,6 +40,7 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+import jakarta.persistence.FlushModeType;
 import jakarta.persistence.Tuple;
 import jakarta.persistence.TupleElement;
 
@@ -119,6 +120,8 @@ public class PagedSqlQueryBuilderTest extends MockObjectTestCase {
         context().checking(new Expectations() {{
             oneOf(sessionMock).createNativeQuery(expectedSql, Tuple.class); will(returnValue(mockQuery));
             oneOf(sessionMock).createNativeQuery(expectedCountSql, Tuple.class); will(returnValue(mockCountQuery));
+            oneOf(sessionMock).getFlushMode(); will(returnValue(FlushModeType.AUTO));
+            oneOf(sessionMock).flush();
             oneOf(mockQuery).setFirstResult(49); will(returnValue(mockQuery));
             oneOf(mockQuery).setMaxResults(25); will(returnValue(mockQuery));
             oneOf(mockQuery).setParameter("value", 123); will(returnValue(mockQuery));
