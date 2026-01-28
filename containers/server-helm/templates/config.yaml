@@ -7,4 +7,19 @@ metadata:
   namespace: "{{ .Release.Namespace }}"
 data:
   fqdn: {{ required "global.fqdn is needed!" .Values.global.fqdn }}
-  email: {{ .Values.email }}
+  email: {{ required "server.email is needed!" .Values.server.email }}
+  {{- if .Values.db.enable }}
+  db_host: db
+  db_port: "5432"
+  db_name: "susemanager"
+  reportdb_host: reportdb
+  reportdb_port: "5432"
+  reportdb_name: reportdb
+  {{- else }}
+  db_host: {{ .Values.db.internal.host | default "db" }}
+  db_port: "{{ .Values.db.internal.port | default 5432 }}"
+  db_name: {{ .Values.db.internal.name | default "susemanager " }}
+  reportdb_host: {{ .Values.db.report.host | default "reportdb" }}
+  reportdb_port: "{{ .Values.db.report.port | default 5432 }}"
+  reportdb_name: {{ .Values.db.report.name | default "reportdb" }}
+  {{- end }}
