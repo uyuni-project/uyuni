@@ -333,6 +333,7 @@ import com.redhat.rhn.domain.server.ServerSnapshotTagLink;
 import com.redhat.rhn.domain.server.ServerUuid;
 import com.redhat.rhn.domain.server.SnapshotTag;
 import com.redhat.rhn.domain.server.SnapshotTagName;
+import com.redhat.rhn.domain.server.UserServerPermission;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceInfo;
 import com.redhat.rhn.domain.server.VirtualInstanceState;
@@ -759,6 +760,7 @@ public class AnnotationRegistry {
             UserImpl.class,
             UserInfo.class,
             UserNotification.class,
+            UserServerPermission.class,
             UserServerPreference.class,
             VHMCredentials.class,
             VirtualHostManager.class,
