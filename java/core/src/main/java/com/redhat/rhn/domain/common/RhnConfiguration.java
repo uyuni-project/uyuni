@@ -24,8 +24,6 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 
 
 @Entity
@@ -64,11 +62,9 @@ public class RhnConfiguration extends BaseDomainHelper {
     private String defaultValue;
 
     @Column(name = "created", nullable = false, updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
     private Date created;
 
     @Column(name = "modified", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
     private Date modified;
 
     /**

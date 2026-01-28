@@ -29,8 +29,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 
 /**
  * ScriptResult
@@ -113,11 +111,9 @@ public class ScriptResult implements Serializable {
     private ScriptResultId id;
 
     @Column(name = "start_date")
-    @Temporal(TemporalType.TIMESTAMP)
     private Date startDate;
 
     @Column(name = "stop_date")
-    @Temporal(TemporalType.TIMESTAMP)
     private Date stopDate;
 
     @Column(name = "return_code")

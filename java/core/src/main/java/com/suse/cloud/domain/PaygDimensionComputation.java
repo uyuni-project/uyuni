@@ -30,8 +30,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 
 /**
  * Entity that represent the result of computation made by
@@ -73,7 +71,6 @@ public class PaygDimensionComputation {
         this.id = idIn;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "timestamp")
     public Date getTimestamp() {
         return timestamp;

@@ -31,8 +31,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import jakarta.persistence.Transient;
 
 /**
@@ -136,7 +134,6 @@ public class NotificationMessage implements Serializable {
     * @return Returns the created date.
     */
     @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created")
     public Date getCreated() {
         return created;

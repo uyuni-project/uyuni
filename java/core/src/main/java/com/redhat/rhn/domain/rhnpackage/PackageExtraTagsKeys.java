@@ -29,8 +29,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 
 /**
  * Entity bean for rhnPackageExtraTagKey.
@@ -103,7 +101,6 @@ public class PackageExtraTagsKeys implements Serializable {
      * @return created to get
      */
     @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created")
     public Date getCreated() {
         return created;
