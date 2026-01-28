@@ -1209,7 +1209,7 @@ public class ContentManager {
 
         // now request repo regen
         tgt.setLastModified(new Date());
-        HibernateFactory.getSession().merge(tgt);
+        tgt = HibernateFactory.getSession().merge(tgt);
         ChannelManager.queueChannelChange(tgt.getLabel(), "java::alignChannel", "Channel aligned");
     }
 

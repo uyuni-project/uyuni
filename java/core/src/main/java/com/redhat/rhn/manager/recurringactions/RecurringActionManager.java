@@ -340,7 +340,7 @@ public class RecurringActionManager extends BaseManager {
      */
     public static RecurringAction saveAndSchedule(RecurringAction action, User user) throws TaskomaticApiException {
         validateAction(action, user);
-        RecurringAction saved = (RecurringAction) HibernateFactory.getSession().merge(action);
+        RecurringAction saved = HibernateFactory.getSession().merge(action);
         taskomaticApi.scheduleRecurringAction(saved, user);
         saveStateConfig(saved);
         return saved;
