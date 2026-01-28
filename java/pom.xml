@@ -400,12 +400,17 @@
             <dependency>
                 <groupId>org.mnode.ical4j</groupId>
                 <artifactId>ical4j</artifactId>
-                <version>3.0.18</version>
+                <version>3.2.19</version>
                 <exclusions>
                     <exclusion>
                         <!-- Not used anywhere by ical4j -->
                         <groupId>org.apache.commons</groupId>
                         <artifactId>commons-collections4</artifactId>
+                    </exclusion>
+                    <!-- We use slf4j 1.7.36 -->
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
