@@ -1,0 +1,90 @@
+suite: test global values parsing
+templates:
+  - templates/config.yaml
+  - templates/ingress.yaml
+  - templates/volumes.yaml
+tests:
+  - it: should correctly parse global.config and render related templates
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+        log_level: 2
+      global.httpd: "httpd_content: test httpd"
+      global.ssh: "ssh_content: test ssh"
+    asserts:
+      # Use matchRegex to find patterns within the multi-line string
+      - matchRegex:
+          path: data["config.yaml"]
+          pattern: "max_cache_size_mb: 2048"
+        template: config.yaml
+        documentSelector:
+          path: metadata.name
+          value: proxy-configmap
+      - matchRegex:
+          path: data["config.yaml"]
+          pattern: "proxy_fqdn: proxy.example.org"
+        template: config.yaml
+        documentSelector:
+          path: metadata.name
+          value: proxy-configmap
+      - matchRegex:
+          path: data["config.yaml"]
+          pattern: "server: parent.example.org"
+        template: config.yaml
+        documentSelector:
+          path: metadata.name
+          value: proxy-configmap
+      - matchRegex:
+          path: data["config.yaml"]
+          pattern: "log_level: 2"
+        template: config.yaml
+        documentSelector:
+          path: metadata.name
+          value: proxy-configmap
+
+      # Equal assertions remain the same for single-value fields
+      - equal:
+          path: stringData["httpd.yaml"]
+          value: "httpd_content: test httpd\n"
+        template: config.yaml
+        documentSelector:
+          path: metadata.name
+          value: httpd
+      - equal:
+          path: stringData["ssh.yaml"]
+          value: "ssh_content: test ssh\n"
+        template: config.yaml
+        documentSelector:
+          path: metadata.name
+          value: ssh
+
+      - equal:
+          path: spec.rules[0].host
+          value: proxy.example.org
+        template: templates/ingress.yaml
+
+      - equal:
+          path: spec.resources.requests.storage
+          value: "2048Mi"
+        template: templates/volumes.yaml
+
+  - it: should use default log_level when not provided in global.config
+    set:
+      global.config: |
+        max_cache_size_mb: 512
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+      global.httpd: "httpd_content: true"
+      global.ssh: "ssh_content: true"
+    asserts:
+      - matchRegex:
+          path: data["config.yaml"]
+          pattern: "log_level: 1"
+        template: config.yaml
+        documentSelector:
+          path: metadata.name
+          value: proxy-configmap

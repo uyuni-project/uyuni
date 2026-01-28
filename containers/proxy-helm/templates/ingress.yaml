@@ -1,26 +1,39 @@
+{{- $config := .Values.global.config | fromYaml }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: uyuni-proxy-ingress-nossl
+  name: uyuni-proxy-ssl
   namespace: "{{ .Release.Namespace }}"
   annotations:
-  {{- if eq .Values.ingress "nginx" }}
+  {{- if eq .Values.ingress.type "nginx" }}
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
-  {{- else if eq .Values.ingress "traefik" }}
-    traefik.ingress.kubernetes.io/router.tls: "false"
-    traefik.ingress.kubernetes.io/router.entrypoints: "web"
+  {{- else if eq .Values.ingress.type "traefik" }}
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.tls.domains.n.main: "{{ $config.proxy_fqdn }}"
+    traefik.ingress.kubernetes.io/router.entrypoints: "websecure,web"
+  {{- end }}
+  {{- if (((.Values.ingress).annotations).ssl) }}
+{{ toYaml .Values.ingress.annotations.ssl | indent 4 }}
   {{- end }}
   labels:
-    app: uyuni-proxy
+    app.kubernetes.io/part-of: uyuni
+    app.kubernetes.io/component: proxy
 spec:
+  {{- if ((.Values.ingress).class) }}
+  ingressClassName: {{ .Values.ingress.class }}
+  {{- end }}
   rules:
-  - host: {{ .Values.fqdn }}
+  - host: {{ $config.proxy_fqdn }}
     http:
       paths:
       - backend:
           service:
-            name: uyuni-proxy-tcp
+            name: web
             port:
               number: 80
         path: /
         pathType: Prefix
+  tls:
+  - hosts:
+    - {{ $config.proxy_fqdn }}
+    secretName: proxy-cert

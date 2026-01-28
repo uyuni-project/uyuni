@@ -1,0 +1,106 @@
+suite: test global values parsing
+templates:
+  - templates/volumes.yaml
+tests:
+  - it: should create the squid cache volume with defaults
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+        log_level: 2
+      global.httpd: "httpd_content: test httpd"
+      global.ssh: "ssh_content: test ssh"
+    asserts:
+      - notExists:
+          path: metadata.annotations
+      
+      - equal:
+          path: metadata.labels
+          value:
+            app.kubernetes.io/component: proxy
+            app.kubernetes.io/part-of: uyuni
+
+      - isNull:
+          path: spec.storageClassName
+
+      - notExists:
+          path: spec.selector
+  
+  - it: should create the squid cache volume with cleared class
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+        log_level: 2
+      global.httpd: "httpd_content: test httpd"
+      global.ssh: "ssh_content: test ssh"
+      volumes:
+        squid:
+          storageClass: "-"
+    asserts:
+      - notExists:
+          path: metadata.annotations
+      
+      - equal:
+          path: metadata.labels
+          value:
+            app.kubernetes.io/component: proxy
+            app.kubernetes.io/part-of: uyuni
+
+      - equal:
+          path: spec.storageClassName
+          value: ""
+
+      - notExists:
+          path: spec.selector
+
+  - it: should create the squid cache volume with options
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+        log_level: 2
+      global.httpd: "httpd_content: test httpd"
+      global.ssh: "ssh_content: test ssh"
+      volumes:
+        squid:
+          storageClass: testClass
+          extraLabels:
+            label1: value1
+            label2: value2
+          annotations:
+            testAnnotation1: value1
+            testAnnotation2: value2
+          selector:
+            matchLabels:
+              storage-tier: "gold"
+    asserts:
+      - equal:
+          path: metadata.annotations
+          value:
+            testAnnotation1: value1
+            testAnnotation2: value2
+      
+      - equal:
+          path: metadata.labels
+          value:
+            app.kubernetes.io/component: proxy
+            app.kubernetes.io/part-of: uyuni
+            label1: value1
+            label2: value2
+
+      - equal:
+          path: spec.storageClassName
+          value: testClass
+
+      - equal:
+          path: spec.selector
+          value:
+            matchLabels:
+              storage-tier: "gold"

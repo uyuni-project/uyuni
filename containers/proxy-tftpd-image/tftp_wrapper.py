@@ -425,7 +425,7 @@ def get_arguments():
     parser.add_argument(
         "--caPath",
         type=str,
-        default="/usr/share/uyuni/ca.crt",
+        default="/etc/uyuni/ca.crt",
         help="Path to CA certificate",
     )
     parser.add_argument(
@@ -445,7 +445,13 @@ def main():
     try:
         with open(args.configFile, encoding="utf-8") as source:
             config = yaml.safe_load(source)
-            args.proxy_fqdn = config["proxy_fqdn"]
+            # Accept both the old and the new config for proxy_fqdn to ease upgrade
+            proxy_fqdn = (
+                config["global"]["proxy_fqdn"]
+                if "global" in config
+                else config["proxy_fqdn"]
+            )
+            args.proxy_fqdn = proxy_fqdn
             args.server_fqdn = config["server"]
             args.replace_fqdns = config.get("replace_fqdns", [])
             log_level = (

@@ -18,9 +18,9 @@ with open(config_path + "config.yaml", encoding="utf-8") as source:
     logging.getLogger().setLevel(log_level)
 
     # store SSL CA certificate
-    os.mkdir("/usr/share/uyuni/")
-    with open("/usr/share/uyuni/ca.crt", "w", encoding="utf-8") as file:
-        file.write(config.get("ca_crt"))
+    if "ca_crt" in config and not os.path.exists("/etc/uyuni/ca.crt"):
+        with open("/etc/uyuni/ca.crt", "w", encoding="utf-8") as file:
+            file.write(config.get("ca_crt"))
 
     tftp_config = "/etc/sysconfig/tftp"
     tftp_root = "/srv/tftpboot"
