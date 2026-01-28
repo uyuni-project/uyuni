@@ -27,7 +27,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OrderColumn;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
@@ -54,7 +54,7 @@ public class TaskoBunch extends BaseDomainHelper {
     private String orgBunch;
 
     @OneToMany(mappedBy = "bunch", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    @OrderColumn(name = "ordering")
+    @OrderBy("ordering")
     private List<TaskoTemplate> templates;
 
     /**
