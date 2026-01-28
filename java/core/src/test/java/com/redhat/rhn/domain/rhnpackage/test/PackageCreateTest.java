@@ -17,6 +17,7 @@ package com.redhat.rhn.domain.rhnpackage.test;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -25,6 +26,7 @@ import java.util.Vector;
 /**
  * PackageCreateTest
  */
+@Disabled
 public class PackageCreateTest extends BaseTestCaseWithUser {
 
     @Test

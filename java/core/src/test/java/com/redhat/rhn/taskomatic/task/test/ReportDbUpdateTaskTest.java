@@ -66,6 +66,10 @@ public class ReportDbUpdateTaskTest extends JMockBaseTestCaseWithUser {
     @AfterEach
     public void after() {
         if (reportDbConnectionManager != null) {
+//            if (reportDbConnectionManager.isTransactionPending()) {
+//                reportDbConnectionManager.rollbackTransaction();
+//            }
+
             reportDbConnectionManager.closeSession();
         }
     }
