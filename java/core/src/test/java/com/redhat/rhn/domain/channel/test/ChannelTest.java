@@ -225,9 +225,9 @@ public class ChannelTest extends BaseTestCaseWithUser {
         List<ContentSourceType> cst = ChannelFactory.listContentSourceTypes();
         cs.setType(cst.get(0));
         cs.setOrg(user.getOrg());
-        cs = (ContentSource) TestUtils.saveAndReload(cs);
+        cs = TestUtils.saveAndReload(cs);
         c.getSources().add(cs);
-        c = (Channel) TestUtils.saveAndReload(c);
+        c = TestUtils.saveAndReload(c);
         assertNotEmpty(c.getSources());
     }
 
