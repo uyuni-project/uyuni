@@ -34,7 +34,7 @@ spec:
               number: 80
         path: /
         pathType: Prefix
-  {{- if default .Values.hubAPI false }}
+  {{- if default .Values.hubAPI.enable false }}
       - backend:
           service:
             name: hub-xmlrpc
@@ -74,7 +74,7 @@ spec:
               number: 80
         path: /
         pathType: Prefix
-    {{- if default .Values.hubAPI false }}
+    {{- if default .Values.hubAPI.enable false }}
       - backend:
           service:
             name: hub-xmlrpc

@@ -37,6 +37,24 @@ public interface Configuration {
     String getDatabaseConnectionString();
 
     /**
+     * Retrieves the database hostname string
+     * @return the host string to use as part of the JDBC connection URL
+     */
+    String getDatabaseHostString();
+
+    /**
+     * Retrieves the database port integer
+     * @return the port integern to use as part of the JDBC connection URL
+     */
+    int getDatabasePort();
+
+    /**
+     * Retrieves the database name string
+     * @return the postgresql database name string to use as part of the JDBC connection URL
+     */
+    String getDatabaseNameString();
+
+    /**
      * Retrieves the number of attestation results to process at a time.
      * @return the maximum number of attestation results to process.
      */
