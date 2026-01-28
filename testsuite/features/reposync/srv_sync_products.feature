@@ -224,6 +224,11 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I execute mgr-sync "list channels" with user "admin" and password "admin"
     And I should get "    [I] SLE15-SP7-Installer-Updates for x86_64 SUSE Linux Enterprise Server 15 SP7 x86_64 [sle15-sp7-installer-updates-x86_64]"
 
+  @scc_credentials
+  Scenario: Verify all channels are solved
+    When I wait until all synchronized channels have solved their dependencies
+    Then all channels have been synced without errors
+
 @scc_credentials
 @skip_if_github_validation
   Scenario: Detect product loading issues from the UI
