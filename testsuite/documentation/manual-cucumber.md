@@ -91,7 +91,7 @@ General server smoke tests are: <a name="generalserversmoke"/>
 1. Make sure the credentials are accepted, from Web UI
 1. Synchronize x86_64 repositories, from Web UI or ``spacewalk-repo-sync``
 1. Add custom client-side channels as needed (tools, salt, python...)
-1. Depending on which client you want to test, see the corresponding entry in the server documentation [for example the one for sle clients](https://suma-head-srv.mgr.suse.de/docs/en/suse-manager/client-configuration/clients-sle.html)
+1. Depending on which client you want to test, see the corresponding entry in the server documentation [for example the one for sle clients](https://documentation.suse.com/multi-linux-manager/5.1/en/docs/client-configuration/clients-sle.html)
 1. Synchronize the custom channels for BETA with ``spacewalk-repo-sync -c <name> -u <url>``
 1. Perform package search
 1. Create corresponding activation key
