@@ -79,7 +79,7 @@ public class CPUTest extends BaseTestCaseWithUser {
         cpu.setNrCPU(NR_SOCKET * NR_CORES * NR_THREADS);
 
         assertNull(cpu.getId());
-        TestUtils.saveAndFlush(cpu);
+        cpu = TestUtils.saveAndFlush(cpu);
         assertNotNull(cpu.getId());
 
         return cpu;

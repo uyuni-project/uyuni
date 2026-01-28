@@ -117,7 +117,7 @@ public class ServerTestUtils {
         if (redhatRelease == null) {
             redhatRelease = new PackageName();
             redhatRelease.setName(REDHAT_RELEASE);
-            TestUtils.saveAndFlush(redhatRelease);
+            redhatRelease = TestUtils.saveAndFlush(redhatRelease);
         }
 
         testInstPack.setName(redhatRelease);
@@ -258,10 +258,10 @@ public class ServerTestUtils {
 
         Errata errata = ErrataFactoryTest.createTestErrata(org.getId());
         errata.setAdvisoryType(errataType);
-        TestUtils.saveAndFlush(errata);
+        errata = TestUtils.saveAndFlush(errata);
 
         Package installedPackage = PackageTest.createTestPackage(org);
-        TestUtils.saveAndFlush(installedPackage);
+        installedPackage = TestUtils.saveAndFlush(installedPackage);
 
         Session session = HibernateFactory.getSession();
         session.flush();
@@ -269,7 +269,7 @@ public class ServerTestUtils {
         Package upgradedPackage = PackageTest.createTestPackage(org);
         upgradedPackage.setPackageName(installedPackage.getPackageName());
         upgradedPackage.setPackageEvr(upgradedPackageEvr);
-        TestUtils.saveAndFlush(upgradedPackage);
+        upgradedPackage = TestUtils.saveAndFlush(upgradedPackage);
 
         ErrataCacheManager.insertNeededErrataCache(
                 server.getId(), errata.getId(), installedPackage.getId());

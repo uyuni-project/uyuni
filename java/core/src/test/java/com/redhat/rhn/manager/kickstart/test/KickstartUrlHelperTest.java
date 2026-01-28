@@ -135,7 +135,7 @@ public class KickstartUrlHelperTest extends BaseKickstartCommandTestCase {
         // /ks/dist/session/35x45fed383beaeb31a184166b4c1040633/ks-f9-x86_64
         KickstartSession session =
             KickstartSessionTest.createKickstartSession(ksdata, user);
-        TestUtils.saveAndFlush(session);
+        session = TestUtils.saveAndFlush(session);
         session = TestUtils.reload(session);
         String encodedId = SessionSwap.encodeData(session.getId().toString());
         String expected = "http://spacewalk.example.com/" +
@@ -160,7 +160,7 @@ public class KickstartUrlHelperTest extends BaseKickstartCommandTestCase {
         // /ks/dist/session/35x45fed383beaeb31a184166b4c1040633/ks-f9-x86_64
         KickstartSession session =
             KickstartSessionTest.createKickstartSession(ksdata, user);
-        TestUtils.saveAndFlush(session);
+        session = TestUtils.saveAndFlush(session);
         session = TestUtils.reload(session);
         String encodedId = SessionSwap.encodeData(session.getId().toString());
         String expected = "/ty/" + "";

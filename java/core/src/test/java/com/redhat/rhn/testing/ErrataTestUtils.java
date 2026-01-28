@@ -137,7 +137,7 @@ public class ErrataTestUtils {
         Channel channel = createTestChannel(user);
         channel.setParentChannel(parent);
         Channel managed = TestUtils.saveAndFlush(channel);
-        TestUtils.saveAndFlush(parent);
+        parent = TestUtils.saveAndFlush(parent);
 
         return managed;
     }
@@ -294,7 +294,7 @@ public class ErrataTestUtils {
 
         for (Package package1 : packages) {
             ChannelTestUtility.testAddPackage(clonedChannel, package1);
-            TestUtils.saveAndFlush(clonedChannel);
+            clonedChannel = TestUtils.saveAndFlush(clonedChannel);
         }
 
         return TestUtils.saveAndFlush(clonedChannel);
@@ -333,7 +333,7 @@ public class ErrataTestUtils {
         m.executeUpdate(params, list);
         HibernateFactory.getSession().refresh(channel);
 
-        TestUtils.saveAndFlush(channel);
+        channel = TestUtils.saveAndFlush(channel);
 
         if (errata != null) {
             errata.addPackage(result);

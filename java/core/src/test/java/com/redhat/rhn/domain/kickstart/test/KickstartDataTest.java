@@ -144,7 +144,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
         kf.setKsdata(k);
 
         kf.setFileList(TestUtils.saveAndReload(kf.getFileList()));
-        TestUtils.saveAndFlush(kf);
+        kf = TestUtils.saveAndFlush(kf);
 
         KickstartDefaults d = createDefaults(k, user);
         assertNotNull(d);
@@ -153,7 +153,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
         KickstartDefaultRegToken t = new KickstartDefaultRegToken();
         t.setKsdata(k);
         t.setToken(TokenTest.createTestToken());
-        TestUtils.saveAndFlush(t);
+        t = TestUtils.saveAndFlush(t);
     }
 
     @Test
@@ -253,7 +253,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
         KickstartDefaults d1 = createDefaults(k, user);
         k.setKickstartDefaults(d1);
 
-        TestUtils.saveAndFlush(k);
+        k = TestUtils.saveAndFlush(k);
 
         KickstartableTree t2 = d1.getKstree();
         assertNotNull(t2);
@@ -310,7 +310,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
                 ksdata.getTree().getChannel());
         assertNotNull(child);
         ksdata.addChildChannel(child);
-        TestUtils.saveAndFlush(ksdata);
+        ksdata = TestUtils.saveAndFlush(ksdata);
         ksdata = TestUtils.reload(ksdata);
         // Check to make sure its reloaded from DB properly
         assertNotNull(ksdata.getChildChannels());
@@ -418,7 +418,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
         d.setCfgManagementFlag(Boolean.FALSE);
         d.setRemoteCommandFlag(Boolean.FALSE);
         KickstartDefaults kickstartDefaults = TestUtils.saveAndFlush(d);
-        TestUtils.saveAndFlush(t);
+        t = TestUtils.saveAndFlush(t);
         return kickstartDefaults;
     }
 

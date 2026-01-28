@@ -731,7 +731,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         KickstartDataTest.setupTestConfiguration(user);
         KickstartData ksData = KickstartDataTest.createKickstartWithOptions(user.getOrg());
         KickstartSession ksSession = KickstartSessionTest.createKickstartSession(server, ksData, parentAction);
-        TestUtils.saveAndFlush(ksSession);
+        ksSession = TestUtils.saveAndFlush(ksSession);
         ksSession = TestUtils.reload(ksSession);
 
         List<Action> actionList = createActionList(parentAction);
@@ -993,7 +993,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                                                     "",
                                                     "localhost");
         assertNotNull(ka);
-        TestUtils.saveAndFlush(ka);
+        ka = TestUtils.saveAndFlush(ka);
         assertNotNull(ka.getId());
         KickstartActionDetails kad = ka.getKickstartActionDetails();
         KickstartAction ka2 = (KickstartAction)
@@ -1016,7 +1016,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
         KickstartSession ksSession =
             KickstartSessionTest.createKickstartSession(srvr, testKickstartData);
-        TestUtils.saveAndFlush(ksSession);
+        ksSession = TestUtils.saveAndFlush(ksSession);
 
         String kickstartHost = "localhost.localdomain";
         ProvisionVirtualInstanceCommand command =
@@ -1037,7 +1037,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                 ka.getKickstartGuestActionDetails().getKickstartHost());
 
         assertNotNull(ka);
-        TestUtils.saveAndFlush(ka);
+        ka = TestUtils.saveAndFlush(ka);
         assertNotNull(ka.getId());
         KickstartGuestActionDetails kad =
             ka.getKickstartGuestActionDetails();

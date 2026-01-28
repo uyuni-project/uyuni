@@ -230,7 +230,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
         //test set channels
         handler.setChannels(admin, serverIds, channelLabels);
 
-        TestUtils.saveAndFlush(srv1);
+        srv1 = TestUtils.saveAndFlush(srv1);
         HibernateFactory.getSession().detach(srv1);
 
         assertEquals(channels, handler.listChannels(regular, srv1.getId().intValue()));

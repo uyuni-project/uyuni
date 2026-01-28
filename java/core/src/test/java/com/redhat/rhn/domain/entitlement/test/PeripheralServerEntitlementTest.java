@@ -72,7 +72,7 @@ public class PeripheralServerEntitlementTest extends BaseEntitlementTestCase {
         assertTrue(EntitlementManager.PERIPHERAL_SERVER.isAllowedOnServer(minion));
 
         systemEntitlementManager.addEntitlementToServer(foreign, EntitlementManager.PERIPHERAL_SERVER);
-        TestUtils.saveAndFlush(foreign);
+        foreign = TestUtils.saveAndFlush(foreign);
 
         System.out.println("foreign: " + foreign.hasEntitlement(EntitlementManager.PERIPHERAL_SERVER));
         System.out.println("minion: " + minion.hasEntitlement(EntitlementManager.PERIPHERAL_SERVER));

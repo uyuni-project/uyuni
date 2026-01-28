@@ -426,8 +426,8 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         Channel parent = ChannelFactoryTest.createBaseChannel(user);
         Channel child = ChannelFactoryTest.createTestChannel(user);
         child.setParentChannel(parent);
-        TestUtils.saveAndFlush(child);
-        TestUtils.saveAndFlush(parent);
+        child = TestUtils.saveAndFlush(child);
+        parent = TestUtils.saveAndFlush(parent);
         TestUtils.flushAndEvict(child);
         List<Channel> dr = parent.getAccessibleChildrenFor(user);
 
@@ -439,7 +439,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         ProductName pn = new ProductName();
         pn.setLabel("Label - " + TestUtils.randomString());
         pn.setName("Name - " + TestUtils.randomString());
-        TestUtils.saveAndFlush(pn);
+        pn = TestUtils.saveAndFlush(pn);
         return pn;
     }
 
@@ -473,13 +473,13 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
     public void testLookupPackageByFileName() throws Exception {
         User user = UserTestUtils.createUser(this);
         Channel channel = ChannelTestUtils.createTestChannel(user);
-        TestUtils.saveAndFlush(channel);
+        channel = TestUtils.saveAndFlush(channel);
         Package p = PackageManagerTest.addPackageToChannel("some-package", channel);
         String fileName = "some-package-2.13.1-6.fc9.x86_64.rpm";
         p.setPath("redhat/1/c7d/some-package/2.13.1-6.fc9/" +
                 "x86_64/c7dd5e9b6975bc7f80f2f4657260af53/" +
                 fileName);
-        TestUtils.saveAndFlush(p);
+        p = TestUtils.saveAndFlush(p);
 
         Package lookedUp = ChannelFactory.lookupPackageByFilename(channel,
                 fileName);
@@ -493,7 +493,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         cp.setPath("redhat/1/c7d/some-package-child/2.13.1-6.fc9/" +
                 "x86_64/c7dd5e9b6975bc7f80f2f4657260af53/" +
                 fileNameChild);
-        TestUtils.saveAndFlush(child);
+        child = TestUtils.saveAndFlush(child);
 
         Package lookedUpChild = ChannelFactory.lookupPackageByFilename(channel,
                 fileNameChild);
@@ -565,10 +565,10 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         ChannelFamily pubcfam = ChannelFamilyFactoryTest.createTestChannelFamily(user4, true);
 
         c1.setChannelFamily(privcfam);
-        TestUtils.saveAndFlush(c1);
+        c1 = TestUtils.saveAndFlush(c1);
 
         c2.setChannelFamily(pubcfam);
-        TestUtils.saveAndFlush(c2);
+        c2 = TestUtils.saveAndFlush(c2);
 
         // c1 belongs to user3 org now
         assertFalse(ChannelFactory.isAccessibleBy(c1.getLabel(), org1.getId()));

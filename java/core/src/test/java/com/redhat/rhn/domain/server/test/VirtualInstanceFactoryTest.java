@@ -200,7 +200,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
         Server host = ServerTestUtils.createVirtHostWithGuest(systemEntitlementManager);
         VirtualInstance vi = host.getGuests().iterator().next();
         vi.setState(VirtualInstanceFactory.getInstance().getRunningState());
-        TestUtils.saveAndFlush(vi);
+        vi = TestUtils.saveAndFlush(vi);
         assertNotNull(vi.getState());
     }
 

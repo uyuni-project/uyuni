@@ -47,7 +47,7 @@ public class SessionCleanupTest extends RhnBaseTestCase {
         WebSessionFactory.save(s);
         assertNotNull(s.getId());
         Config c = Config.get();
-        TestUtils.saveAndFlush(s);
+        s = TestUtils.saveAndFlush(s);
 
         /*
             commit it to the database in order for the py/sql calls to work correctly

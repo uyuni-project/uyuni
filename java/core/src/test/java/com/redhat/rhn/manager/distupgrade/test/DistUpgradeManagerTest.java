@@ -519,12 +519,12 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         if (name == null) {
             name = zyppPlugin.getPackageName();
             name.setName("zypp-plugin-spacewalk");
-            TestUtils.saveAndFlush(name);
+            name = TestUtils.saveAndFlush(name);
         }
         else {
             // Handle the case that the package name exists in the DB
             zyppPlugin.setPackageName(name);
-            TestUtils.saveAndFlush(zyppPlugin);
+            zyppPlugin = TestUtils.saveAndFlush(zyppPlugin);
         }
         ErrataTestUtils.createTestInstalledPackage(zyppPlugin, server);
 
@@ -532,7 +532,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         Action action = ActionFactoryTest.createAction(user,
                 ActionFactory.TYPE_DIST_UPGRADE);
         ServerAction serverAction = ActionFactoryTest.createServerAction(server, action);
-        TestUtils.saveAndFlush(serverAction);
+        serverAction = TestUtils.saveAndFlush(serverAction);
 
         try {
             DistUpgradeManager.performServerChecks(server.getId(), user);
@@ -800,7 +800,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
         product.setRelease("test");
         product.setReleaseStage(ReleaseStage.released);
         product.setProductId(0);
-        TestUtils.saveAndFlush(product);
+        product = TestUtils.saveAndFlush(product);
         return product;
     }
 
@@ -820,7 +820,7 @@ public class DistUpgradeManagerTest extends BaseTestCaseWithUser {
                 createTestChannel(null, channelFamily);
         channel.setProduct(channelProduct);
         channel.setChannelArch(channelArch);
-        TestUtils.saveAndFlush(channel);
+        channel = TestUtils.saveAndFlush(channel);
         return channel;
     }
 

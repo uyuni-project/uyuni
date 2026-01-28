@@ -81,7 +81,7 @@ public class SnapshotHandlerTest extends BaseHandlerTestCase {
          ServerConstants.getServerGroupTypeEnterpriseEntitled());
         snap.addGroup(grp);
 
-        TestUtils.saveAndFlush(snap);
+        snap = TestUtils.saveAndFlush(snap);
         List<ServerSnapshot> list = handler.listSnapshots(admin, server.getId().intValue(), new HashMap<>());
         assertContains(list, snap);
         assertContains(snap.getGroups(), grp);
@@ -98,8 +98,8 @@ public class SnapshotHandlerTest extends BaseHandlerTestCase {
         packN.setEvr(pack.getPackageEvr());
         packN.setName(pack.getPackageName());
         snap.getPackages().add(packN);
-        TestUtils.saveAndFlush(packN);
-        TestUtils.saveAndFlush(snap);
+        packN = TestUtils.saveAndFlush(packN);
+        snap = TestUtils.saveAndFlush(snap);
         Set<PackageNevra> list = handler.listSnapshotPackages(admin,
                 snap.getId().intValue());
          assertContains(list, packN);
@@ -109,7 +109,7 @@ public class SnapshotHandlerTest extends BaseHandlerTestCase {
     public void testDeleteSnapshot() {
         Server server = ServerFactoryTest.createTestServer(admin, true);
         ServerSnapshot snap = generateSnapshot(server);
-        TestUtils.saveAndFlush(snap);
+        snap = TestUtils.saveAndFlush(snap);
 
         handler.deleteSnapshot(admin, snap.getId().intValue());
         List<ServerSnapshot> list = handler.listSnapshots(admin, server.getId().intValue(), new HashMap<>());
@@ -125,7 +125,7 @@ public class SnapshotHandlerTest extends BaseHandlerTestCase {
         generateSnapshot(server);
         generateSnapshot(server);
         generateSnapshot(server);
-        TestUtils.saveAndFlush(snap);
+        snap = TestUtils.saveAndFlush(snap);
 
         handler.deleteSnapshots(admin, server.getId().intValue(), new HashMap<>());
         List<ServerSnapshot> list = handler.listSnapshots(admin, server.getId().intValue(), new HashMap<>());

@@ -278,7 +278,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         NetworkInterface device = NetworkInterfaceTest.createTestNetworkInterface(server);
         server.addNetworkInterface(device);
         assertEquals(1, server.getNetworkInterfaces().size());
-        TestUtils.saveAndFlush(server);
+        server = TestUtils.saveAndFlush(server);
 
         List<NetworkInterface> results = handler.getNetworkDevices(admin, server.getId().intValue());
         assertEquals(1, results.size());
@@ -1112,7 +1112,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     public void testScheduleVirtProvision() throws Exception {
         Server server = ServerTestUtils.createTestSystem(admin);
         systemEntitlementManager.setBaseEntitlement(server, EntitlementManager.MANAGEMENT);
-        TestUtils.saveAndFlush(server);
+        server = TestUtils.saveAndFlush(server);
         server = TestUtils.reload(server);
         KickstartDataTest.setupTestConfiguration(admin);
         KickstartData k = KickstartDataTest.createKickstartWithProfile(admin);
@@ -1610,8 +1610,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         Set<ServerHistoryEvent> history = server.getHistory();
         server.setHistory(history);
-        TestUtils.saveAndFlush(event);
-        TestUtils.saveAndFlush(server);
+        event = TestUtils.saveAndFlush(event);
+        server = TestUtils.saveAndFlush(server);
 
         Object[] supposedHistory = handler.getEventHistory(admin,
                 server.getId().intValue());
@@ -2144,7 +2144,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         details.put("contact_method", contactMethod);
 
         handler.setDetails(admin, server.getId().intValue(), details);
-        TestUtils.saveAndFlush(server);
+        server = TestUtils.saveAndFlush(server);
         server = TestUtils.reload(server);
 
         assertEquals(profileName, server.getName());
@@ -2210,7 +2210,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         handler.setLockStatus(admin, server.getId().intValue(),
                 true);
 
-        TestUtils.saveAndFlush(server);
+        server = TestUtils.saveAndFlush(server);
         server = TestUtils.reload(server);
         assertNotNull(server.getLock());
 
@@ -2218,7 +2218,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         handler.setLockStatus(admin, server.getId().intValue(),
                 false);
 
-        TestUtils.saveAndFlush(server);
+        server = TestUtils.saveAndFlush(server);
         server = TestUtils.reload(server);
         assertNull(server.getLock());
     }
@@ -2231,7 +2231,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         details.put("base_entitlement", "unentitle");
 
         handler.setDetails(admin, server.getId().intValue(), details);
-        TestUtils.saveAndFlush(server);
+        server = TestUtils.saveAndFlush(server);
         server = TestUtils.reload(server);
 
         assertNull(server.getBaseEntitlement());
@@ -2644,7 +2644,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertEquals(0, keys.size());
 
         key.getToken().getActivatedServers().add(server);
-        TestUtils.saveAndFlush(key);
+        key = TestUtils.saveAndFlush(key);
 
         keys = handler.listActivationKeys(admin, server.getId().intValue());
         assertEquals(1, keys.size());
@@ -3350,7 +3350,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         Package pkg = PackageTest.createTestPackage(admin.getOrg());
         ChannelTestUtility.testAddPackage(server.getBaseChannel(), pkg);
-        TestUtils.saveAndFlush(pkg);
+        pkg = TestUtils.saveAndFlush(pkg);
 
         SystemHandler systemHandler = getMockedHandler();
 

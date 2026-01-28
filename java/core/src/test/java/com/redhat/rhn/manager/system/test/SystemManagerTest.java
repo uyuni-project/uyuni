@@ -644,8 +644,8 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         Channel channel = ChannelFactoryTest.createTestChannel(user);
         srvr.addChannel(channel);
         srvr1.addChannel(channel);
-        TestUtils.saveAndFlush(srvr);
-        TestUtils.saveAndFlush(srvr1);
+        srvr = TestUtils.saveAndFlush(srvr);
+        srvr1 = TestUtils.saveAndFlush(srvr1);
         UserManager.storeUser(user);
 
 
@@ -1068,7 +1068,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
                 pack.getPackageEvr().getId()));
 
         ChannelTestUtility.testAddPackage(server.getBaseChannel(), pack);
-        TestUtils.saveAndFlush(pack);
+        pack = TestUtils.saveAndFlush(pack);
         assertTrue(SystemManager.hasPackageAvailable(server,
                 pack.getPackageName().getId(), pack.getPackageArch().getId(),
                 pack.getPackageEvr().getId()));
@@ -2145,7 +2145,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         systemEntitlementManager.setBaseEntitlement(proxy, EntitlementManager.FOREIGN);
         ServerFactory.save(proxy);
-        TestUtils.saveAndFlush(proxy);
+        proxy = TestUtils.saveAndFlush(proxy);
     }
 
     private Map<String, String> readTarData(byte[] data) throws IOException {

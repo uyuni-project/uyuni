@@ -82,7 +82,7 @@ public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
         ChannelTestUtils.setupBaseChannelForVirtualization(user,
                 server.getBaseChannel());
         UserTestUtils.addVirtualization(user.getOrg());
-        TestUtils.saveAndFlush(user.getOrg());
+        user.setOrg(TestUtils.saveAndFlush(user.getOrg()));
 
         //Test Virtualization Host
         assertTrue(systemEntitlementManager.canEntitleServer(server, EntitlementManager.VIRTUALIZATION));
@@ -156,7 +156,7 @@ public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
 
         // Entitlements
         UserTestUtils.addVirtualization(user.getOrg());
-        TestUtils.saveAndFlush(user.getOrg());
+        user.setOrg(TestUtils.saveAndFlush(user.getOrg()));
 
         assertTrue(systemEntitlementManager.canEntitleServer(server, EntitlementManager.VIRTUALIZATION));
 

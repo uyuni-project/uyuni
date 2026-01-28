@@ -108,8 +108,8 @@ public class KickstartScriptTest extends BaseTestCaseWithUser {
         scriptEmpty.setPosition(2L);
         ksdata.addScript(script);
         ksdata.addScript(scriptEmpty);
-        TestUtils.saveAndFlush(script);
-        TestUtils.saveAndFlush(scriptEmpty);
+        script = TestUtils.saveAndFlush(script);
+        scriptEmpty = TestUtils.saveAndFlush(scriptEmpty);
 
         KickstartFactory.saveKickstartData(ksdata);
         ksdata = TestUtils.reload(ksdata);

@@ -134,11 +134,11 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
 
         Package p1 = new Package();
         PackageTest.populateTestPackage(p1, user.getOrg(), pname, pevr, parch);
-        TestUtils.saveAndFlush(p1);
+        p1 = TestUtils.saveAndFlush(p1);
 
         Package p2 = new Package();
         PackageTest.populateTestPackage(p2, user.getOrg(), pname, pevr, parch);
-        TestUtils.saveAndFlush(p2);
+        p2 = TestUtils.saveAndFlush(p2);
 
         Channel c1 = ChannelFactoryTest.createTestChannel(user);
         Channel c2 = ChannelFactoryTest.createTestChannel(user);
@@ -344,7 +344,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         }
 
         retval.setPackageName(pn);
-        TestUtils.saveAndFlush(retval);
+        retval = TestUtils.saveAndFlush(retval);
         PackageTest.addPackageToChannelNewestPackage(retval, c);
 
         return retval;
@@ -418,7 +418,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
             PackageEvr pevr = PackageEvrFactory.lookupOrCreatePackageEvr("0",
                     version, "0", s.getPackageType());
             p.setPackageEvr(pevr);
-            TestUtils.saveAndFlush(p);
+            p = TestUtils.saveAndFlush(p);
         }
         else {
             PackageManagerTest.associateSystemToPackage(s, p);
