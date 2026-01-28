@@ -17,7 +17,6 @@ report_db_port = 5432
 report_db_ssl_enabled = 0
 
 # Hibernate configuration
-hibernate.dialect = org.hibernate.dialect.PostgreSQLDialect
 hibernate.connection.driver_class = org.postgresql.Driver
 hibernate.connection.driver_proto = jdbc:postgresql
 # Uncomment to log all SQL statements issued by Hibernate
@@ -29,7 +28,6 @@ hibernate.id.new_generator_mappings = false
 hibernate.cache.use_second_level_cache = false
 
 # Hibernate configuration
-reporting.hibernate.dialect = org.hibernate.dialect.PostgreSQLDialect
 reporting.hibernate.connection.driver_class = org.postgresql.Driver
 reporting.hibernate.connection.driver_proto = jdbc:postgresql
 # Uncomment to log all SQL statements issued by Hibernate
