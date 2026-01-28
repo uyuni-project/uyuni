@@ -198,7 +198,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         PackageArch pa = PackageFactory.lookupPackageArchByLabel("x86_64");
         assertNotNull(pa);
         pkg1.setPackageArch(pa);
-        TestUtils.saveAndFlush(pkg1);
+        pkg1 = TestUtils.saveAndFlush(pkg1);
         packages2add.add(pkg1.getId());
 
         try {

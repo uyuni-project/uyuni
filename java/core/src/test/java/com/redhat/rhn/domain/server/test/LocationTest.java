@@ -80,7 +80,7 @@ public class LocationTest extends RhnBaseTestCase {
         loc.setServer(s);
 
         assertNull(loc.getId());
-        TestUtils.saveAndFlush(loc);
+        loc = TestUtils.saveAndFlush(loc);
         assertNotNull(loc.getId());
 
         return loc;

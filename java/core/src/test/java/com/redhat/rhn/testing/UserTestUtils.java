@@ -222,7 +222,7 @@ public class UserTestUtils {
         EntitlementServerGroup sg =
                 ServerGroupTestUtils.createEntitled(orgIn,
                         ServerConstants.getServerGroupTypeVirtualizationEntitled());
-        TestUtils.saveAndFlush(sg);
+        sg = TestUtils.saveAndFlush(sg);
     }
 
     /**
@@ -236,7 +236,7 @@ public class UserTestUtils {
         if (retval == null) {
             retval = new UserTestUtils.UserBuilder().orgId(orgIn.getId()).build();
             UserTestUtils.addUserRole(retval, RoleFactory.ORG_ADMIN);
-            TestUtils.saveAndFlush(orgIn);
+            orgIn = TestUtils.saveAndFlush(orgIn);
         }
         return retval;
     }

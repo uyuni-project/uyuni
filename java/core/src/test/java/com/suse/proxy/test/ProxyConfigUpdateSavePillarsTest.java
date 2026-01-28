@@ -121,7 +121,7 @@ public class ProxyConfigUpdateSavePillarsTest extends BaseTestCaseWithUser {
         pillar.add(ProxyConfigUtils.PARENT_FQDN_FIELD, expectedOutdatedParentFqdn);
 
         this.minion.addPillar(pillar);
-        TestUtils.saveAndFlush(this.minion);
+        this.minion = TestUtils.saveAndFlush(this.minion);
 
         //
         ProxyConfigUpdateContext proxyConfigUpdateContext = getCommonContext(this.minion, SOURCE_MODE_RPM);

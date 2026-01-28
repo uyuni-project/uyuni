@@ -81,7 +81,7 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
         ImageInfo imgInfo = createImageWithRepoDigest("jocatalin/kubernetes-bootcamp", "v1", 1,
             "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc64af");
 
-        TestUtils.saveAndFlush(imgInfo);
+        imgInfo = TestUtils.saveAndFlush(imgInfo);
 
         Set<ImageUsage> usages = manager.getImagesUsage();
 
@@ -107,7 +107,7 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
                 "ip-172-31-8-0.eu-central-1.compute.internal:5000/apache-production@sha256:" +
                         "362f5f5d8d3670c9c499ae171ce059e9fa1889c879bfc2db78b97f37998dc717");
 
-        TestUtils.saveAndFlush(imgInfo);
+        imgInfo = TestUtils.saveAndFlush(imgInfo);
 
         Set<ImageUsage> usages = manager.getImagesUsage();
 
@@ -132,11 +132,11 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
 
         ImageInfo imgInfo1 = createImageWithRepoDigest("jocatalin/kubernetes-bootcamp", "v2", 1,
             "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc1111");
-        TestUtils.saveAndFlush(imgInfo1);
+        imgInfo1 = TestUtils.saveAndFlush(imgInfo1);
 
         ImageInfo imgInfo2 = createImageWithRepoDigest("jocatalin/kubernetes-bootcamp", "v2", 2,
             "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc2222");
-        TestUtils.saveAndFlush(imgInfo2);
+        imgInfo2 = TestUtils.saveAndFlush(imgInfo2);
 
         Set<ImageUsage> usages = manager.getImagesUsage();
 
@@ -158,11 +158,11 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
 
         ImageInfo imgInfo1 = createImageWithRepoDigest("jocatalin/kubernetes-bootcamp", "v2", 1,
             "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc1111");
-        TestUtils.saveAndFlush(imgInfo1);
+        imgInfo1 = TestUtils.saveAndFlush(imgInfo1);
 
         ImageInfo imgInfo2 = createImageWithRepoDigest("jocatalin/kubernetes-bootcamp", "v2", 2,
             "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc2222");
-        TestUtils.saveAndFlush(imgInfo2);
+        imgInfo2 = TestUtils.saveAndFlush(imgInfo2);
 
         Set<ImageUsage> usages = manager.getImagesUsage();
 
@@ -200,7 +200,7 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
             "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc1111");
         imgInfo.setStore(store);
 
-        TestUtils.saveAndFlush(imgInfo);
+        imgInfo = TestUtils.saveAndFlush(imgInfo);
 
         Set<ImageUsage> usages = manager.getImagesUsage();
 
@@ -225,7 +225,7 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
         ImageInfo imgInfo = createImageWithRepoDigest("jocatalin/kubernetes-bootcamp", "v1", 1,
             "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc64af");
 
-        TestUtils.saveAndFlush(imgInfo);
+        imgInfo = TestUtils.saveAndFlush(imgInfo);
 
         Set<ImageUsage> usages = manager.getImagesUsage();
 
@@ -267,7 +267,7 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
         VirtualHostManager virtualHostManager = VirtualHostManagerFactory.getInstance().createVirtualHostManager(label,
                 user.getOrg(), VirtualHostManagerFactory.KUBERNETES, params);
 
-        TestUtils.saveAndFlush(virtualHostManager);
+        virtualHostManager = TestUtils.saveAndFlush(virtualHostManager);
         return virtualHostManager;
     }
 

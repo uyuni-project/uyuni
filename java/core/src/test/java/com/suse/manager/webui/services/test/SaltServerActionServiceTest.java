@@ -169,7 +169,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         Package p32 = ErrataTestUtils.createLaterTestPackage(user, null, channel, p64);
         p32.setPackageEvr(p64.getPackageEvr());
         p32.setPackageArch(PackageFactory.lookupPackageArchByLabel("i686"));
-        TestUtils.saveAndFlush(p32);
+        p32 = TestUtils.saveAndFlush(p32);
 
         List<Map<String, Long>> packageMaps = new ArrayList<>();
         Map<String, Long> pkg32map = new HashMap<>();
@@ -215,7 +215,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         Package p32 = ErrataTestUtils.createLaterTestPackage(user, null, channel, p64);
         p32.setPackageEvr(p64.getPackageEvr());
         p32.setPackageArch(PackageFactory.lookupPackageArchByLabel("i686"));
-        TestUtils.saveAndFlush(p32);
+        p32 = TestUtils.saveAndFlush(p32);
 
         List<Map<String, Long>> packageMaps = new ArrayList<>();
         Map<String, Long> pkg32map = new HashMap<>();
@@ -264,7 +264,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         Package p32 = ErrataTestUtils.createLaterTestPackage(user, retracted, channel, p64);
         p32.setPackageEvr(p64.getPackageEvr());
         p32.setPackageArch(PackageFactory.lookupPackageArchByLabel("i686"));
-        TestUtils.saveAndFlush(p32);
+        p32 = TestUtils.saveAndFlush(p32);
 
         List<Map<String, Long>> packageMaps = new ArrayList<>();
         Map<String, Long> pkg32map = new HashMap<>();
@@ -673,10 +673,10 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         Channel base = ChannelFactoryTest.createBaseChannel(user);
         Channel ch1 = ChannelFactoryTest.createTestChannel(user.getOrg());
         ch1.setParentChannel(base);
-        TestUtils.saveAndFlush(ch1);
+        ch1 = TestUtils.saveAndFlush(ch1);
         Channel ch2 = ChannelFactoryTest.createTestChannel(user.getOrg());
         ch2.setParentChannel(base);
-        TestUtils.saveAndFlush(ch2);
+        ch2 = TestUtils.saveAndFlush(ch2);
 
         MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
 
@@ -687,7 +687,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
         SubscribeChannelsActionDetails details = new SubscribeChannelsActionDetails();
         details.setBaseChannel(base);
-        details.setChannels(Arrays.asList(ch1, ch2).stream().collect(Collectors.toSet()));
+        details.setChannels(Set.of(ch1, ch2));
         action.setDetails(details);
         details.setParentAction(action);
         HibernateFactory.getSession().persist(details);
@@ -712,8 +712,10 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         assertEquals(3, minion1.getChannels().size());
         assertEquals(base.getId(), minion1.getBaseChannel().getId());
         assertEquals(2, minion1.getChildChannels().size());
-        assertTrue(minion1.getChildChannels().stream().anyMatch(cc -> cc.getId().equals(ch1.getId())));
-        assertTrue(minion1.getChildChannels().stream().anyMatch(cc -> cc.getId().equals(ch2.getId())));
+        Long ch1Id = ch1.getId();
+        Long ch2Id = ch2.getId();
+        assertTrue(minion1.getChildChannels().stream().anyMatch(cc -> cc.getId().equals(ch1Id)));
+        assertTrue(minion1.getChildChannels().stream().anyMatch(cc -> cc.getId().equals(ch2Id)));
 
         assertEquals(3, minion1.getAccessTokens().size());
         assertTokenChannel(minion1, base);

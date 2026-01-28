@@ -64,7 +64,7 @@ public class ServerUuidTest extends RhnBaseTestCase {
         su.setServer(s);
 
         assertNull(su.getId());
-        TestUtils.saveAndFlush(su);
+        su = TestUtils.saveAndFlush(su);
         assertNotNull(su.getId());
 
         return su;

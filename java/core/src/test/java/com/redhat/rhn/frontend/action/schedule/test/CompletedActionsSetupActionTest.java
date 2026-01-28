@@ -68,7 +68,7 @@ public class CompletedActionsSetupActionTest extends RhnPostMockStrutsTestCase {
         Action act = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
         ServerAction sAction = ActionFactoryTest.createServerAction(server, act);
         sAction.setStatusCompleted();
-        TestUtils.saveAndFlush(sAction);
+        sAction = TestUtils.saveAndFlush(sAction);
 
 
         RhnSet set = RhnSetDecl.ACTIONS_COMPLETED.get(user);

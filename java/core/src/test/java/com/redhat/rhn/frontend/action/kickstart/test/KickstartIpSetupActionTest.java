@@ -63,7 +63,7 @@ public class KickstartIpSetupActionTest extends RhnMockStrutsTestCase {
         k.addIpRange(ip1);
         k.addIpRange(ip2);
 
-        TestUtils.saveAndFlush(k);
+        k = TestUtils.saveAndFlush(k);
 
         setRequestPathInfo("/kickstart/KickstartIpRanges");
         actionPerform();

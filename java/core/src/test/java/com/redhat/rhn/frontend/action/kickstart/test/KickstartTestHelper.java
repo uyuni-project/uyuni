@@ -30,7 +30,7 @@ public class KickstartTestHelper {
         // will return something.
         KickstartData k = KickstartDataTest.createKickstartWithOptions(user.getOrg());
 
-        TestUtils.saveAndFlush(k);
+        k = TestUtils.saveAndFlush(k);
         return k;
     }
 }

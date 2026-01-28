@@ -129,7 +129,7 @@ public class ServerGroupTest extends RhnBaseTestCase {
         pillars.add(new Pillar("category2", pillar2, group));
 
         group.setPillars(pillars);
-        TestUtils.saveAndFlush(group);
+        group = TestUtils.saveAndFlush(group);
         group = TestUtils.reload(group);
 
         Pillar actual = group.getPillars().stream()

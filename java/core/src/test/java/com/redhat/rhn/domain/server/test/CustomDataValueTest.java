@@ -65,7 +65,7 @@ public class CustomDataValueTest extends RhnBaseTestCase {
         val.setServer(server);
         val.setValue("Test value");
 
-        TestUtils.saveAndFlush(val);
+        val = TestUtils.saveAndFlush(val);
 
         return val;
     }
@@ -76,7 +76,7 @@ public class CustomDataValueTest extends RhnBaseTestCase {
         val.setKey(key);
         val.setServer(server);
         val.setValue(value);
-        TestUtils.saveAndFlush(val);
+        val = TestUtils.saveAndFlush(val);
 
         return val;
     }

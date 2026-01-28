@@ -44,7 +44,7 @@ public class KickstartTroubleshootingEditTest extends BaseKickstartEditTestCase 
                             Boolean.TRUE.toString());
         actionPerform();
 
-        TestUtils.saveAndFlush(this.ksdata);
+        this.ksdata = TestUtils.saveAndFlush(this.ksdata);
         this.ksdata = TestUtils.reload(this.ksdata);
 
         assertEquals("grub", this.ksdata.getBootloaderType());
@@ -62,7 +62,7 @@ public class KickstartTroubleshootingEditTest extends BaseKickstartEditTestCase 
                             "hdc=ide-scsi");
         actionPerform();
 
-        TestUtils.saveAndFlush(this.ksdata);
+        this.ksdata = TestUtils.saveAndFlush(this.ksdata);
         this.ksdata = TestUtils.reload(this.ksdata);
 
         assertEquals("hdc=ide-scsi", this.ksdata.getKernelParams());

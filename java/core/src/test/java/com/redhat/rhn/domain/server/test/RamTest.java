@@ -42,13 +42,13 @@ public class RamTest extends RhnBaseTestCase {
         server.setRam(1024);
         server.setSwap(256);
 
-        TestUtils.saveAndFlush(server);
+        server = TestUtils.saveAndFlush(server);
         verifyInDb(server.getId(), 1024, 256);
 
         server.setRam(2048);
         server.setSwap(512);
 
-        TestUtils.saveAndFlush(server);
+        server = TestUtils.saveAndFlush(server);
         verifyInDb(server.getId(), 2048, 512);
 
         assertEquals(1, TestUtils.removeObject(server));

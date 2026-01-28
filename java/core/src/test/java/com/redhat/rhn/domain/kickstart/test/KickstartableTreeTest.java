@@ -117,7 +117,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
         String label = "treewithnullorg: " + TestUtils.randomString();
         kwithnullorg.setLabel(label);
         kwithnullorg.setOrg(null);
-        TestUtils.saveAndFlush(kwithnullorg);
+        kwithnullorg = TestUtils.saveAndFlush(kwithnullorg);
         TestUtils.flushAndEvict(kwithnullorg);
         KickstartableTree lookedUp = KickstartFactory.lookupKickstartTreeByLabel(label, o);
         assertNotNull(lookedUp);

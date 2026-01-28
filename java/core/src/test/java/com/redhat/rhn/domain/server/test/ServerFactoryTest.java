@@ -991,7 +991,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
          ServerConstants.getServerGroupTypeEnterpriseEntitled());
         snap.addGroup(grp);
 
-        TestUtils.saveAndFlush(snap);
+        snap = TestUtils.saveAndFlush(snap);
         List<ServerSnapshot> list = ServerFactory.listSnapshots(server2.getOrg(),
                 server2, null, null);
         assertContains(list, snap);
@@ -1038,7 +1038,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         link.setServer(server2);
         link.setSnapshot(snap);
         link.setTag(tag);
-        TestUtils.saveAndFlush(link);
+        link = TestUtils.saveAndFlush(link);
 
         List<SnapshotTag> tags = ServerFactory.getSnapshotTags(snap);
         assertContains(tags, tag);
@@ -1053,17 +1053,17 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         Package zypper = new Package();
         PackageTest.populateTestPackage(zypper, user.getOrg(),  PackageFactory.lookupOrCreatePackageByName("zypper"),
                 PackageEvrFactoryTest.createTestPackageEvr("1", "1.0.0", "1", PackageType.RPM), parch1);
-        TestUtils.saveAndFlush(zypper);
+        zypper = TestUtils.saveAndFlush(zypper);
 
         Package p1v1 = new Package();
         PackageTest.populateTestPackage(p1v1, user.getOrg(), p1Name,
                 PackageEvrFactoryTest.createTestPackageEvr("1", "1.0.0", "1", PackageType.RPM), parch1);
-        TestUtils.saveAndFlush(p1v1);
+        p1v1 = TestUtils.saveAndFlush(p1v1);
 
         Package p1v2 = new Package();
         PackageTest.populateTestPackage(p1v2, user.getOrg(), p1Name,
                 PackageEvrFactoryTest.createTestPackageEvr("1", "2.0.0", "1", PackageType.RPM), parch1);
-        TestUtils.saveAndFlush(p1v2);
+        p1v2 = TestUtils.saveAndFlush(p1v2);
 
         InstalledPackage p1v1InNZ = new InstalledPackage();
         p1v1InNZ.setEvr(p1v1.getPackageEvr());
@@ -1103,7 +1103,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         ChannelFactory.save(baseChan);
 
-        TestUtils.saveAndFlush(e1);
+        e1 = TestUtils.saveAndFlush(e1);
 
         List<MinionServer> minions = Arrays.asList(zypperSystem, nonZypperSystem);
         List<MinionSummary> minionSummaries = minions.stream().map(MinionSummary::new).collect(Collectors.toList());
@@ -1145,35 +1145,35 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         Package p1v1 = new Package();
         PackageTest.populateTestPackage(p1v1, user.getOrg(), p1Name,
                 PackageEvrFactoryTest.createTestPackageEvr("1", "1.0.0", "1", srv.getPackageType()), parch1);
-        TestUtils.saveAndFlush(p1v1);
+        p1v1 = TestUtils.saveAndFlush(p1v1);
 
         Package p1v2 = new Package();
         PackageTest.populateTestPackage(p1v2, user.getOrg(), p1Name,
                 PackageEvrFactoryTest.createTestPackageEvr("1", "2.0.0", "1", srv.getPackageType()), parch1);
-        TestUtils.saveAndFlush(p1v2);
+        p1v2 = TestUtils.saveAndFlush(p1v2);
 
         PackageEvr v3 = PackageEvrFactoryTest.createTestPackageEvr("1", "3.0.0", "1",
                 srv.getPackageType());
 
         Package p1v3 = new Package();
         PackageTest.populateTestPackage(p1v3, user.getOrg(), p1Name, v3, parch1);
-        TestUtils.saveAndFlush(p1v3);
+        p1v3 = TestUtils.saveAndFlush(p1v3);
 
         Package p1v4 = new Package();
         PackageTest.populateTestPackage(p1v4, user.getOrg(), p1Name,
                 PackageEvrFactoryTest.createTestPackageEvr("1", "3.0.0", "1",
                         srv.getPackageType()), parch1);
-        TestUtils.saveAndFlush(p1v4);
+        p1v4 = TestUtils.saveAndFlush(p1v4);
 
         Package p1v3arch2 = new Package();
         PackageTest.populateTestPackage(p1v3arch2, user.getOrg(), p1Name, v3, parch2);
-        TestUtils.saveAndFlush(p1v3arch2);
+        p1v3arch2 = TestUtils.saveAndFlush(p1v3arch2);
 
         Package p2v4 = new Package();
         PackageTest.populateTestPackage(p2v4, user.getOrg(), p2Name,
                 PackageEvrFactoryTest.createTestPackageEvr("1", "4.0.0", "1",
                         srv.getPackageType()), parch1);
-        TestUtils.saveAndFlush(p2v4);
+        p2v4 = TestUtils.saveAndFlush(p2v4);
 
 
         InstalledPackage p1v1In = new InstalledPackage();
@@ -1227,11 +1227,11 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         ChannelFactory.save(baseChan);
         ChannelFactory.save(childChan);
 
-        TestUtils.saveAndFlush(e1);
-        TestUtils.saveAndFlush(e2);
-        TestUtils.saveAndFlush(e3);
-        TestUtils.saveAndFlush(e4);
-        TestUtils.saveAndFlush(e5);
+        e1 = TestUtils.saveAndFlush(e1);
+        e2 = TestUtils.saveAndFlush(e2);
+        e3 = TestUtils.saveAndFlush(e3);
+        e4 = TestUtils.saveAndFlush(e4);
+        e5 = TestUtils.saveAndFlush(e5);
 
         Map<Long, Map<String, Tuple2<String, String>>> out =
                 ServerFactory.listNewestPkgsForServerErrata(serverIds, errataIds);
@@ -1263,7 +1263,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         ChannelFactory.save(baseChan);
 
-        TestUtils.saveAndFlush(e);
+        e = TestUtils.saveAndFlush(e);
 
         Map<Long, Map<Long, Set<ErrataInfo>>> out =
                 ServerFactory.listErrataNamesForServers(serverIds, errataIds);
@@ -1297,7 +1297,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         ChannelFactory.save(baseChan);
 
-        TestUtils.saveAndFlush(e);
+        e = TestUtils.saveAndFlush(e);
 
         Map<Long, Map<Long, Set<ErrataInfo>>> out =
                 ServerFactory.listErrataNamesForServers(serverIds, errataIds);

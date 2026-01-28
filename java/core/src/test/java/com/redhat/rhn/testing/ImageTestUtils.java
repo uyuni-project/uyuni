@@ -69,7 +69,7 @@ public class ImageTestUtils {
         inf.setImageArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
         inf.setOrg(user.getOrg());
         inf.setStore(store);
-        TestUtils.saveAndFlush(inf);
+        inf = TestUtils.saveAndFlush(inf);
         return inf;
     }
 
@@ -105,8 +105,7 @@ public class ImageTestUtils {
                     .add(new ImageInfoCustomDataValue(cdv, info)));
         }
 
-        TestUtils.saveAndFlush(info);
-        return info;
+        return TestUtils.saveAndFlush(info);
     }
 
     /**
@@ -140,7 +139,7 @@ public class ImageTestUtils {
         image.setOrg(user.getOrg());
         image.setChannels(channels);
         image.setBuilt(built);
-        TestUtils.saveAndFlush(image);
+        image = TestUtils.saveAndFlush(image);
         return image;
     }
 
@@ -172,14 +171,14 @@ public class ImageTestUtils {
         val.setKey(key);
         val.setProfile(profile);
         val.setValue(value);
-        TestUtils.saveAndFlush(val);
+        val = TestUtils.saveAndFlush(val);
 
         if (profile.getCustomDataValues() == null) {
             profile.setCustomDataValues(new HashSet<>());
         }
 
         profile.getCustomDataValues().add(val);
-        TestUtils.saveAndFlush(profile);
+        profile = TestUtils.saveAndFlush(profile);
 
         return val;
     }
@@ -201,14 +200,14 @@ public class ImageTestUtils {
         val.setValue(value);
         val.setCreator(user);
         val.setLastModifier(user);
-        TestUtils.saveAndFlush(val);
+        val = TestUtils.saveAndFlush(val);
 
         if (info.getCustomDataValues() == null) {
             info.setCustomDataValues(new HashSet<>());
         }
 
         info.getCustomDataValues().add(val);
-        TestUtils.saveAndFlush(info);
+        info = TestUtils.saveAndFlush(info);
 
         return val;
     }
@@ -228,7 +227,7 @@ public class ImageTestUtils {
         profile.setOrg(user.getOrg());
         profile.setPath("my/test/path");
         profile.setTargetStore(store);
-        TestUtils.saveAndFlush(profile);
+        profile = TestUtils.saveAndFlush(profile);
         return profile;
     }
 
@@ -251,7 +250,7 @@ public class ImageTestUtils {
         if (key != null) {
             profile.setToken(key.getToken());
         }
-        TestUtils.saveAndFlush(profile);
+        profile = TestUtils.saveAndFlush(profile);
         return profile;
     }
 
@@ -272,7 +271,7 @@ public class ImageTestUtils {
                 .lookupBylabelAndOrg("SUSE Manager OS Image Store", user.getOrg()).get());
         profile.setToken(key.getToken());
 
-        TestUtils.saveAndFlush(profile);
+        profile = TestUtils.saveAndFlush(profile);
         return profile;
     }
 
@@ -292,7 +291,7 @@ public class ImageTestUtils {
         ActivationKey key = ActivationKeyFactory.createNewKey(user, "mykey");
         key.setChannels(channels);
         key.setBaseChannel(baseChannel);
-        TestUtils.saveAndFlush(key);
+        key = TestUtils.saveAndFlush(key);
         return key;
     }
 
@@ -363,7 +362,7 @@ public class ImageTestUtils {
             store.setCreds(creds);
         }
 
-        TestUtils.saveAndFlush(store);
+        store = TestUtils.saveAndFlush(store);
         return store;
     }
 
@@ -381,7 +380,7 @@ public class ImageTestUtils {
         result.setArch(packageIn.getPackageArch());
         result.setName(packageIn.getPackageName());
         result.setImageInfo(image);
-        TestUtils.saveAndFlush(result);
+        result = TestUtils.saveAndFlush(result);
 
         return result;
     }

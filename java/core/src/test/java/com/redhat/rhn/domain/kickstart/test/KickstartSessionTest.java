@@ -60,7 +60,7 @@ public class KickstartSessionTest extends BaseTestCaseWithUser {
         ksession = createKickstartSession(k, user);
         s = ksession.getOldServer();
         ksession.setServerProfile(p);
-        TestUtils.saveAndFlush(ksession);
+        ksession = TestUtils.saveAndFlush(ksession);
     }
 
     @Test
@@ -176,7 +176,7 @@ public class KickstartSessionTest extends BaseTestCaseWithUser {
         Channel baseChannel = ChannelFactoryTest.createTestChannel(userIn);
         baseChannel.setParentChannel(null);
         s.addChannel(baseChannel);
-        TestUtils.saveAndFlush(s);
+        s = TestUtils.saveAndFlush(s);
         return createKickstartSession(s, k);
     }
 

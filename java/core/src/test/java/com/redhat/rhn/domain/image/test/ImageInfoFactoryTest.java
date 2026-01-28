@@ -365,7 +365,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         prd = TestUtils.saveAndReload(prd);
         info.setInstalledProducts(Collections.singleton(prd));
         ImageInfoFactory.save(info);
-        TestUtils.saveAndFlush(info);
+        info = TestUtils.saveAndFlush(info);
 
         // Update values
         CustomDataKey cdk = CustomDataKeyTest.createTestCustomDataKey(user);
@@ -374,7 +374,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         Set<ProfileCustomDataValue> cdvSet = new HashSet<>();
         cdvSet.add(val);
         profile.setCustomDataValues(cdvSet);
-        TestUtils.saveAndFlush(profile);
+        profile = TestUtils.saveAndFlush(profile);
 
         // Reschedule
         ImageInfoFactory.scheduleBuild(buildHost.getId(), "v1.0", profile, new Date(),
@@ -389,7 +389,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
         // Test without a token
         profile.setToken(null);
-        TestUtils.saveAndFlush(profile);
+        profile = TestUtils.saveAndFlush(profile);
 
         // Schedule
         ImageInfoFactory.scheduleBuild(buildHost.getId(), "v2.0", profile, new Date(),

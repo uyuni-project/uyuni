@@ -69,7 +69,7 @@ public class TokenPackageTest extends BaseTestCaseWithUser {
         TokenPackage p = new TokenPackage();
 
         p = populateTestPackage(key, p);
-        TestUtils.saveAndFlush(p);
+        p = TestUtils.saveAndFlush(p);
 
         return p;
     }
