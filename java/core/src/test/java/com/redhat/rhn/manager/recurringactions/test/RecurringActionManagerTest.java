@@ -22,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.access.AccessGroupFactory;
@@ -43,6 +42,7 @@ import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
+import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.webui.services.test.TestSaltApi;
@@ -318,9 +318,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
                 MINION, HIGHSTATE, minion.getId(), user);
         recurringAction.setCronExpr(CRON_EXPR);
         recurringAction.setName("test-recurring-action-1");
-        // Make sure action type is persisted when running the test
-        HibernateFactory.getSession().persist(recurringAction.getRecurringActionType());
-        RecurringActionManager.saveAndSchedule(recurringAction, user);
+        recurringAction = RecurringActionManager.saveAndSchedule(recurringAction, user);
 
         assertEquals(List.of(recurringAction), RecurringActionManager.listMinionRecurringActions(minion.getId(), user));
 
@@ -333,6 +331,8 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         }
 
         RecurringActionManager.deleteAndUnschedule(recurringAction, user);
+        TestUtils.clearSession();
+
         assertTrue(RecurringActionFactory.listMinionRecurringActions(minion).isEmpty());
     }
 
