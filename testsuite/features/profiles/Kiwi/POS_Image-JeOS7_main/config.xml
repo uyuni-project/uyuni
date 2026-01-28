@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<image schemaversion="7.4" name="POS_Image_JeOS7_head">
+<image schemaversion="7.4" name="POS_Image_JeOS7_main">
     <description type="system">
         <author>Admin User</author>
         <contact>noemail@example.com</contact>
@@ -53,8 +53,8 @@
     <repository type="rpm-md">
         <source path="http://download.suse.de/ibs/SUSE/Updates/SLE-Manager-Tools/15/x86_64/update/"/>
     </repository>
-    <repository type="rpm-md">  <!-- head development client toools -->
-        <source path="http://download.suse.de/ibs/Devel:/Galaxy:/Manager:/Head:/SLE15-SUSE-Manager-Tools/images/repo/SLE-15-Manager-Tools-POOL-x86_64-Media1/"/>
+    <repository type="rpm-md">  <!-- main development client tools -->
+        <source path="http://download.suse.de/ibs/Devel:/Galaxy:/Manager:/Main:/MLMTools-Beta-SLE15/images/repo/ManagerTools-Beta-SLE15-Pool-x86_64-Media1/"/>
     </repository>
     <packages type="image">
         <package name="patterns-base-minimal_base"/>
