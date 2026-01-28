@@ -30,8 +30,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import jakarta.persistence.Transient;
 
 @Entity
@@ -133,7 +131,6 @@ public class IssAccessToken extends BaseDomainHelper {
     }
 
     @Column(name = "expiration_date")
-    @Temporal(TemporalType.TIMESTAMP)
     public Date getExpirationDate() {
         return expirationDate;
     }
