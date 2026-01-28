@@ -428,9 +428,11 @@ public class HubManager {
     }
 
     private void deleteHub(IssHub hub) {
-        cleanupSccDeletingHub(hub);
         hubFactory.remove(hub);
         hubFactory.removeAccessTokensFor(hub.getFqdn());
+
+        cleanupSccDeletingHub(hub);
+
         try {
             taskomaticApi.scheduleSingleRootCaCertDelete(IssRole.HUB, hub.getFqdn());
         }
