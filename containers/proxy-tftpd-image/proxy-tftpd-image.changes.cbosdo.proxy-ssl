@@ -1,0 +1,2 @@
+- Do not load the CA if it has already been mounted
+- Use global proxy_fqdn value in configuration
