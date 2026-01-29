@@ -18,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.common.ManagerInfoFactory;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
@@ -84,7 +83,7 @@ public class SCCCachingFactoryTest extends BaseTestCaseWithUser {
             TestUtils.randomString());
 
         creds.setModified(new Date(System.currentTimeMillis()));
-        HibernateFactory.getSession().persist(creds);
+        TestUtils.persist(creds);
 
         TestUtils.flushSession();
 
@@ -107,7 +106,7 @@ public class SCCCachingFactoryTest extends BaseTestCaseWithUser {
 
         // Newer credentials -> refresh
         creds.setModified(new Date(System.currentTimeMillis()));
-        HibernateFactory.getSession().persist(creds);
+        TestUtils.persist(creds);
 
         TestUtils.flushSession();
         assertTrue(SCCCachingFactory.refreshNeeded(lastRefreshDate));

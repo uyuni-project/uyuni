@@ -854,7 +854,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         key.setDescription("test desc");
         key.setOrg(admin.getOrg());
         key.setLastModifier(admin);
-        HibernateFactory.getSession().persist(key);
+        TestUtils.persist(key);
 
 
         List<CustomDataKeyOverview> list = SystemManager.listDataKeys(admin);

@@ -26,7 +26,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
 import com.redhat.rhn.domain.channel.Channel;
@@ -554,7 +553,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         ImageInfo image = createImageInfo("test", "1.0.0", store, user);
         String category = "Image" + image.getId();
         Pillar pillarEntry = new Pillar(category, new TreeMap<String, Object>(), image.getOrg());
-        HibernateFactory.getSession().persist(pillarEntry);
+        TestUtils.persist(pillarEntry);
         image.setPillar(pillarEntry);
 
         ImageFile bundleFile = new ImageFile();

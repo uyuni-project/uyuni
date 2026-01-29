@@ -23,7 +23,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.action.Action;
@@ -929,9 +928,9 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         ProductName pn = new ProductName();
         pn.setLabel(TEST_OS);
         pn.setName(TEST_OS);
-        HibernateFactory.getSession().persist(pn);
+        TestUtils.persist(pn);
         c.setProductName(pn);
-        HibernateFactory.getSession().persist(c);
+        TestUtils.persist(c);
 
         String release = MAP_RELEASE + TestUtils.randomString();
         ChannelTestUtils.addDistMapToChannel(c, TEST_OS, release);

@@ -662,7 +662,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
     public static PackageExtraTagsKeys createExtraTagKey(String name) {
         PackageExtraTagsKeys tag1 = new PackageExtraTagsKeys();
         tag1.setName(name);
-        HibernateFactory.getSession().persist(tag1);
+        TestUtils.persist(tag1);
         return tag1;
     }
 }

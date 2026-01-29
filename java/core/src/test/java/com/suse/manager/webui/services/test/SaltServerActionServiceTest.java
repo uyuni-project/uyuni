@@ -19,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainEntry;
@@ -689,7 +688,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         details.setChannels(Set.of(ch1, ch2));
         action.setDetails(details);
         details.setParentAction(action);
-        HibernateFactory.getSession().persist(details);
+        TestUtils.persist(details);
 
         ActionFactory.addServerToAction(minion1, action);
 

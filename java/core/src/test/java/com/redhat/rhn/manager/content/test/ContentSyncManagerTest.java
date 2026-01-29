@@ -32,7 +32,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
@@ -993,16 +992,16 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testCredentials() {
         SCCCredentials sccCredentials = SUSEProductTestUtils.createSCCCredentials("scccred", user);
-        HibernateFactory.getSession().persist(sccCredentials);
+        TestUtils.persist(sccCredentials);
 
         CloudRMTCredentials rmtCredential = CredentialsFactory.createCloudRmtCredentials("rmtuser", "rmtpassword",
             "dummy");
         rmtCredential.setUser(user);
-        HibernateFactory.getSession().persist(rmtCredential);
+        TestUtils.persist(rmtCredential);
 
         VHMCredentials vhmCredentials = CredentialsFactory.createVHMCredentials("vhmuser", "vhmpassword");
         vhmCredentials.setUser(user);
-        HibernateFactory.getSession().persist(vhmCredentials);
+        TestUtils.persist(vhmCredentials);
 
         List<SCCCredentials> sccCredentials1 = CredentialsFactory.listCredentialsByType(SCCCredentials.class);
         List<CloudRMTCredentials> rmtCredentials = CredentialsFactory.listCredentialsByType(CloudRMTCredentials.class);

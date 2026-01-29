@@ -29,7 +29,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ClonedChannel;
@@ -258,7 +257,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
 
         Org org2 = OrgFactory.createOrg();
         org2.setName("test org for content project");
-        HibernateFactory.getSession().persist(org2);
+        TestUtils.persist(org2);
         ContentProject cp2 = new ContentProject("cplabel2", "cpname2", "cpdesc2", org2);
         ContentProjectFactory.save(cp2);
 

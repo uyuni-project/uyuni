@@ -702,6 +702,12 @@ public class TestUtils {
         HibernateFactory.getSession().evict(obj);
     }
 
+
+    public static void persist(Object obj) {
+        HibernateFactory.getSession().persist(obj);
+    }
+
+
     /**
      * PLEASE Refrain from using this unless you really have to.
      *

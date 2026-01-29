@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
@@ -90,7 +89,7 @@ public class SubscribeChannelsActionTest extends JMockBaseTestCaseWithUser {
         details.setChannels(Arrays.asList(ch1, ch2).stream().collect(Collectors.toSet()));
         action.setDetails(details);
         details.setParentAction(action);
-        HibernateFactory.getSession().persist(details);
+        TestUtils.persist(details);
 
         SaltServerActionService saltServerActionService = mock(SaltServerActionService.class);
         JobExecutionContext ctx = mock(JobExecutionContext.class);

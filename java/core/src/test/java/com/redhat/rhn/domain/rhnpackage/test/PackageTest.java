@@ -24,7 +24,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.SHA256Crypt;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.common.ChecksumFactory;
@@ -161,7 +160,7 @@ public class PackageTest extends BaseTestCaseWithUser {
         p.getPackageFiles().add(createTestPackageFile(p));
         p.getPackageFiles().add(createTestPackageFile(p));
 
-        HibernateFactory.getSession().persist(createTestPackageSource(srpm, org));
+        TestUtils.persist(createTestPackageSource(srpm, org));
         return p;
     }
 

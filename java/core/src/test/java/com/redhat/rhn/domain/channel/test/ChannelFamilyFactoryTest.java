@@ -19,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.PrivateChannelFamily;
@@ -130,7 +129,7 @@ public class ChannelFamilyFactoryTest extends RhnBaseTestCase {
         if (nullOrg) {
             PublicChannelFamily pcf = new PublicChannelFamily();
             pcf.setChannelFamily(channelFamily);
-            HibernateFactory.getSession().persist(pcf);
+            TestUtils.persist(pcf);
 
             channelFamily.setPublicChannelFamily(pcf);
         }
@@ -138,7 +137,7 @@ public class ChannelFamilyFactoryTest extends RhnBaseTestCase {
             PrivateChannelFamily pcf = new PrivateChannelFamily();
             pcf.setOrg(user.getOrg());
             pcf.setChannelFamily(channelFamily);
-            HibernateFactory.getSession().persist(pcf);
+            TestUtils.persist(pcf);
 
             channelFamily.addPrivateChannelFamily(pcf);
         }
