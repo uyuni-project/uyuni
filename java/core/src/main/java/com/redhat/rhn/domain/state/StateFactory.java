@@ -22,7 +22,6 @@ import com.redhat.rhn.domain.server.ServerGroup;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.query.Query;
 import org.hibernate.type.StandardBasicTypes;
 
 import java.util.LinkedList;

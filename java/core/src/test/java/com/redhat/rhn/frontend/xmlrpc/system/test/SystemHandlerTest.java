@@ -1632,7 +1632,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         server.getHistory().add(event);
         server = ServerFactory.save(server);
 
-        var action = ActionManager.scheduleApplyStates(admin, List.of(server.getId()), List.of("channels", "packages"), new Date());
+        var action = ActionManager.scheduleApplyStates(admin, List.of(server.getId()), List.of("channels", "packages"),
+                new Date());
         var serverAction = action.getServerAction(server.getId());
         serverAction.setStatusPickedUp();
 

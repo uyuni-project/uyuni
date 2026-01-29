@@ -387,7 +387,8 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testClonedVendorChannelMandadory() throws Exception {
-        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, "/com/redhat/rhn/manager/content/test/smallBase", true);
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user,
+                "/com/redhat/rhn/manager/content/test/smallBase", true);
         TestUtils.clearSession();
 
         SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1575));
@@ -522,7 +523,8 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         testMinionServer.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
         testMinionServer = ServerFactory.save(testMinionServer);
 
-        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, "/com/redhat/rhn/manager/content/test/smallBase", true);
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user,
+                "/com/redhat/rhn/manager/content/test/smallBase", true);
         TestUtils.clearSession();
 
         // SLES12 GA
@@ -610,7 +612,9 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
                         "file:///etc/pki/rpm-gpg/suse-addon-97a636db0bad8ecc.key",
                 changedLegacy.getGPGKeyUrl());
 
-        Pillar pillarChanged = testMinionServer.getPillarByCategory(MinionGeneralPillarGenerator.CATEGORY).orElseThrow();
+        Pillar pillarChanged = testMinionServer
+                .getPillarByCategory(MinionGeneralPillarGenerator.CATEGORY)
+                .orElseThrow();
         var changedChannelPillar = (Map<String, Map<String, String>>) pillarChanged.getPillar().get("channels");
         assertNotEquals(channelPillar, changedChannelPillar);
         assertEquals("file:///usr/lib/rpm/gnupg/keys/gpg-pubkey-39db7c82-5f68629b.asc " +
