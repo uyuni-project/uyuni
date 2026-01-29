@@ -134,6 +134,8 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import jakarta.persistence.Tuple;
+
 /**
  * Tests for {@link RegisterMinionEventMessageAction}.
  */
@@ -1082,9 +1084,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
                             SUSEProductFactory.getSession().flush();
                             // select from view should succeed
-                            SUSEProductFactory.getSession()
-                                    .createNativeQuery("select * from rhnServerOverview")
-                                    .list();
+                            assertFalse(queryDataFromViewServerOverview().isEmpty());
                         } : () -> {
                             assertNull(minion.getBaseChannel());
                             assertEquals(0, minion.getChannels().size());
@@ -1095,6 +1095,12 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         finally {
             MinionPendingRegistrationService.removeMinion(MINION_ID);
         }
+    }
+
+    private List<Tuple> queryDataFromViewServerOverview() {
+        return HibernateFactory.getSession()
+                .createNativeQuery("select * from rhnServerOverview", Tuple.class)
+                .list();
     }
 
     /**

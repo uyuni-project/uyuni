@@ -18,8 +18,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.Token;
@@ -88,11 +88,7 @@ public class TokenPackageFactoryTest extends BaseTestCaseWithUser {
         // a second package manually.
         TokenPackage pkg2 = new TokenPackage();
 
-        Long testid = 101L;
-        PackageArch parch = HibernateFactory.getSession().createNativeQuery("""
-                SELECT p.* from rhnPackageArch as p WHERE p.id = :id
-                """, PackageArch.class).setParameter("id", testid).getSingleResult();
-
+        PackageArch parch = PackageFactory.lookupPackageArchByLabel("i386");
 
         pkg2.setToken(key.getToken());
         pkg2.setPackageName(pkg1.getPackageName());

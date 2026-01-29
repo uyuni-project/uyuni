@@ -221,15 +221,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
     public void testLookupHostVirtualInstanceByHostId() throws Exception {
         Server host = ServerTestUtils.createVirtHostWithGuest(systemEntitlementManager);
 
-        VirtualInstance fromDb = HibernateFactory.getSession()
-                .createNativeQuery("""
-                                  SELECT * from rhnVirtualInstance
-                                  WHERE host_system_id = :host
-                                  AND  virtual_system_id IS NULL
-                                  """, VirtualInstance.class)
-                .setParameter("host", host.getId())
-                .uniqueResult();
-
+        VirtualInstance fromDb = getInstanceFromDb(host.getId());
         VirtualInstance hostVirtInstance = VirtualInstanceFactory.getInstance()
                 .lookupHostVirtInstanceByHostId(host.getId());
 
@@ -245,5 +237,16 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
                 .lookupVirtualInstanceByHostIdAndUuid(host.getId(), guest.getUuid());
 
         assertEquals(guest, fromDb);
+    }
+
+    private VirtualInstance getInstanceFromDb(Long hostSystemId) {
+        return HibernateFactory.getSession()
+                .createNativeQuery("""
+                        SELECT * from rhnVirtualInstance
+                        WHERE host_system_id = :host
+                        AND  virtual_system_id IS NULL
+                        """, VirtualInstance.class)
+                .setParameter("host", hostSystemId)
+                .uniqueResult();
     }
 }

@@ -50,10 +50,13 @@ public class CredentialsTest extends JMockBaseTestCaseWithUser {
         assertEquals("admin", creds.getUsername());
         assertEquals("secret", creds.getPassword());
 
-        Optional r = HibernateFactory.getSession()
-                .createNativeQuery("select password from suseCredentials where username = 'admin';")
-                .uniqueResultOptional();
-        // this prove that we really store encoded content in DB
-        assertEquals("c2VjcmV0", r.orElseThrow().toString());
+        // this proves that we really store encoded content in DB
+        assertEquals("c2VjcmV0", getCryptedAdminPassword());
+    }
+
+    private String getCryptedAdminPassword() {
+        return HibernateFactory.getSession()
+                .createNativeQuery("select password from suseCredentials where username = 'admin'", String.class)
+                .uniqueResult();
     }
 }

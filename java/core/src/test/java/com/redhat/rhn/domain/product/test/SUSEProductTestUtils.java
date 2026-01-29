@@ -738,9 +738,9 @@ public class SUSEProductTestUtils extends HibernateFactory {
      */
     public static void clearAllProducts() {
         Session session = getSession();
-        session.createQuery("DELETE FROM SUSEProductChannel").executeUpdate();
-        session.createQuery("DELETE FROM SUSEProduct").executeUpdate();
-        session.createQuery("DELETE FROM SUSEProductExtension").executeUpdate();
+        session.createMutationQuery("DELETE FROM SUSEProductChannel").executeUpdate();
+        session.createMutationQuery("DELETE FROM SUSEProduct").executeUpdate();
+        session.createMutationQuery("DELETE FROM SUSEProductExtension").executeUpdate();
     }
 
     /**

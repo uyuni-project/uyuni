@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.rhnset.RhnSet;
@@ -59,7 +60,6 @@ import java.util.Set;
 public class ServerTestUtils {
 
     private static final String REDHAT_RELEASE = "redhat-release";
-    private static final Long I386_PACKAGE_ARCH_ID = 101L;
 
     private ServerTestUtils() {
     }
@@ -107,9 +107,7 @@ public class ServerTestUtils {
                 release, addTo.getPackageType());
         testInstPack.setEvr(evr);
 
-        PackageArch parch = HibernateFactory.getSession().createNativeQuery("""
-                SELECT p.* from rhnPackageArch as p WHERE p.id = :id
-                """, PackageArch.class).setParameter("id", I386_PACKAGE_ARCH_ID).getSingleResult();
+        PackageArch parch = PackageFactory.lookupPackageArchByLabel("i386");
 
         testInstPack.setArch(parch);
 

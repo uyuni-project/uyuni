@@ -125,9 +125,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         Server server = ServerFactoryTest.createTestServer(user, true);
 
         // create 2 packages with same NEVRA in different channels
-        PackageArch parch = HibernateFactory.getSession().createNativeQuery("""
-                SELECT p.* from rhnPackageArch as p WHERE p.id = :id
-                """, PackageArch.class).setParameter("id", 100L).getSingleResult();
+        PackageArch parch = PackageFactory.lookupPackageArchByLabel("noarch");
 
         PackageName pname = PackageNameTest.createTestPackageName();
         PackageEvr pevr = PackageEvrFactoryTest.createTestPackageEvr(parch.getArchType().getPackageType());

@@ -372,25 +372,22 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         }
     }
 
-    public void assertServerActionCount(User user, int expected) {
-        Session session = HibernateFactory.getSession();
-        int initialSize = session.createQuery("""
+    public int serverActionsCountForUser(User user) {
+        return HibernateFactory.getSession().createQuery("""
                                               from ServerAction sa
                                               where sa.parentAction.schedulerUser = :user
                                               """, ServerAction.class)
                 .setParameter("user", user)
                 .list()
                 .size();
-        assertEquals(expected, initialSize);
     }
 
-    public void assertActionsForUser(User user, int expected) {
-        Session session = HibernateFactory.getSession();
-        int initialSize = session.createQuery("from Action a where a.schedulerUser = :user", Action.class)
+    public int actionsCountForUser(User user) {
+        return HibernateFactory.getSession()
+                .createQuery("from Action a where a.schedulerUser = :user", Action.class)
                 .setParameter("user", user)
                 .list()
                 .size();
-        assertEquals(expected, initialSize);
     }
 
     @Test
@@ -406,10 +403,11 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         } });
 
         assertServerActionCount(parent, 1);
-        assertActionsForUser(user, 1);
+        assertEquals(1, actionsCountForUser(user));
+
         ActionManager.cancelActions(user, actionList);
         assertServerActionCount(parent, 0);
-        assertActionsForUser(user, 1); // shouldn't have been deleted
+        assertEquals(1, actionsCountForUser(user)); // shouldn't have been deleted
     }
 
     @Test
@@ -439,12 +437,12 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         } });
 
         assertServerActionCount(parent, 3);
-        assertActionsForUser(user, 1);
+        assertEquals(1, actionsCountForUser(user));
 
         ActionManager.cancelActions(user, actionList);
 
         assertServerActionCount(parent, 0);
-        assertActionsForUser(user, 1); // shouldn't have been deleted
+        assertEquals(1, actionsCountForUser(user)); // shouldn't have been deleted
         context().assertIsSatisfied();
     }
 
@@ -528,12 +526,12 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                 .findFirst();
 
         assertServerActionCount(parent, 4);
-        assertActionsForUser(user, 1);
+        assertEquals(1, actionsCountForUser(user));
 
         ActionManager.cancelActions(user, actionList);
 
         assertServerActionCount(parent, 0);
-        assertActionsForUser(user, 1); // shouldn't have been deleted
+        assertEquals(1, actionsCountForUser(user)); // shouldn't have been deleted
         context().assertIsSatisfied();
     }
 
@@ -547,7 +545,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         List<Action> actionList = createActionList(parent);
 
         assertServerActionCount(parent, 1);
-        assertActionsForUser(user, 2);
+        assertEquals(2, actionsCountForUser(user));
 
         context().checking(new Expectations() { {
             allowing(taskomaticMock).deleteScheduledActions(with(any(Map.class)));
@@ -555,7 +553,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
         ActionManager.cancelActions(user, actionList);
         assertServerActionCount(parent, 0);
-        assertActionsForUser(user, 2); // shouldn't have been deleted
+        assertEquals(2, actionsCountForUser(user)); // shouldn't have been deleted
     }
 
     @Test
@@ -570,10 +568,10 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         List<Action> actionList = Collections.singletonList(parent);
 
         assertServerActionCount(parent, 2);
-        assertActionsForUser(user, 1);
+        assertEquals(1, actionsCountForUser(user));
         ActionManager.cancelActions(user, actionList);
         assertServerActionCount(parent, 0);
-        assertActionsForUser(user, 1); // shouldn't have been deleted
+        assertEquals(1, actionsCountForUser(user)); // shouldn't have been deleted
     }
 
     @Test
@@ -609,10 +607,10 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         } });
 
         assertServerActionCount(parent, 2);
-        assertActionsForUser(user, 1);
+        assertEquals(1, actionsCountForUser(user));
         ActionManager.cancelActions(user, actionList, activeServers);
         assertServerActionCount(parent, 1);
-        assertActionsForUser(user, 1); // shouldn't have been deleted
+        assertEquals(1, actionsCountForUser(user)); // shouldn't have been deleted
         // check that action was indeed not canceled on taskomatic side
         context().assertIsSatisfied();
     }
@@ -701,21 +699,20 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
             Action child = createActionWithServerActions(user, 2);
             child.setPrerequisite(parent2);
         }
-        assertServerActionCount(user, 42);
+        assertEquals(42, serverActionsCountForUser(user));
 
         List<Action> actionList = createActionList(parent1, parent2);
 
         assertServerActionCount(parent1, 3);
-        assertActionsForUser(user, 20);
+        assertEquals(20, actionsCountForUser(user));
 
         context().checking(new Expectations() { {
             allowing(taskomaticMock).deleteScheduledActions(with(any(Map.class)));
         } });
         ActionManager.cancelActions(user, actionList);
         assertServerActionCount(parent1, 0);
-        assertActionsForUser(user, 20); // shouldn't have been deleted
-        assertServerActionCount(user, 0);
-
+        assertEquals(20, actionsCountForUser(user));
+        assertEquals(0, serverActionsCountForUser(user));
     }
 
     @Test

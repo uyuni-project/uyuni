@@ -27,8 +27,6 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import org.hibernate.Session;
-import org.hibernate.type.StandardBasicTypes;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
@@ -49,13 +47,17 @@ public class NoteTest extends RhnBaseTestCase {
         assertNotEquals(note1, note2);
         assertNotEquals(note1, new Date());
 
-        Session session = HibernateFactory.getSession();
-        note2 = session.createQuery("FROM Note AS n WHERE n.id = :id", Note.class)
-                                  .setParameter("id", note1.getId(), StandardBasicTypes.LONG)
-                                  .getSingleResultOrNull();
+        note2 = lookupNoteById(note1.getId());
         assertEquals(note1, note2);
 
         TestUtils.removeObject(note1);
+    }
+
+    private Note lookupNoteById(Long noteId) {
+        return HibernateFactory.getSession()
+                .createQuery("FROM Note AS n WHERE n.id = :id", Note.class)
+                .setParameter("id", noteId)
+                .getSingleResultOrNull();
     }
 
     /**

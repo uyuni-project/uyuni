@@ -1507,9 +1507,8 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
      * @return the errata action
      */
     private ErrataAction errataActionFromAction(Action action) {
-        String sql = "SELECT * FROM rhnAction WHERE id = :id";
         return HibernateFactory.getSession()
-                            .createNativeQuery(sql, ErrataAction.class)
+                            .createNativeQuery("SELECT * FROM rhnAction WHERE id = :id", ErrataAction.class)
                             .setParameter("id", action.getId())
                             .getSingleResult();
     }

@@ -151,7 +151,6 @@ import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.io.FileUtils;
 import org.cobbler.test.MockConnection;
-import org.hibernate.Session;
 import org.hibernate.type.StandardBasicTypes;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
@@ -182,8 +181,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
-
-import jakarta.persistence.Tuple;
 
 
 public class SystemManagerTest extends JMockBaseTestCaseWithUser {
@@ -270,25 +267,21 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         Long id = server.getId();
 
         assertTrue(SystemManager.serverHasFeature(id, "ftr_snapshotting"));
-        assertEquals(Integer.valueOf(0), numberOfSnapshots(id));
+        assertEquals(0L, numberOfSnapshots(id));
         SystemManager.snapshotServer(server, "Testing snapshots");
-        assertEquals(Integer.valueOf(1), numberOfSnapshots(id));
+        assertEquals(1L, numberOfSnapshots(id));
     }
 
     /*
      * I know this is ugly, but since we haven't got the sever snapshotting feature fully
      * worked out in java yet, just do a sql query to make sure the stored proc worked.
      */
-    private Integer numberOfSnapshots(Long sid) {
-        Session session = HibernateFactory.getSession();
-        return session.createNativeQuery("Select count(*) as cnt " +
-                                                         "  from rhnSnapshot " +
-                                                         " where server_id = " + sid, Tuple.class)
-                                         .addScalar("cnt", StandardBasicTypes.INTEGER)
-                                        .stream()
-                .map(t -> t.get(0, Integer.class))
-                .findFirst().orElse(0);
-
+    private long numberOfSnapshots(Long sid) {
+        return HibernateFactory.getSession()
+                .createNativeQuery("SELECT count(*) AS cnt FROM rhnSnapshot WHERE server_id = :sid", Long.class)
+                .addScalar("cnt", StandardBasicTypes.LONG)
+                .setParameter("sid", sid)
+                .uniqueResult();
     }
 
     @Test
@@ -1544,7 +1537,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         MinionServer emptyProfileMinion = systemManager.createSystemProfile(user, "test system",
                 singletonMap("hwAddress", hwAddr));
         TestUtils.flushSession();
-        HibernateFactory.getSession().createNativeQuery("DELETE FROM suseMinionInfo").executeUpdate();
+        deleteAllMinionServers();
         TestUtils.evict(emptyProfileMinion);
 
         DataResult<EmptySystemProfileOverview> emptyProfiles = SystemManager.listEmptySystemProfiles(user, null);
@@ -2223,5 +2216,9 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         SystemsOverviewUpdateWorker.doUpdate(sid);
 
         assertEquals(1, SystemsCollector.getNumberOfOutdatedSystems());
+    }
+
+    private void deleteAllMinionServers() {
+        HibernateFactory.getSession().createNativeMutationQuery("DELETE FROM suseMinionInfo").executeUpdate();
     }
 }

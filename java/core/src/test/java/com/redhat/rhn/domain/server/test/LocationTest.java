@@ -27,11 +27,7 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import org.hibernate.Session;
-import org.hibernate.type.StandardBasicTypes;
 import org.junit.jupiter.api.Test;
-
-import java.util.Date;
 
 /**
  * LocationTest
@@ -51,15 +47,10 @@ public class LocationTest extends RhnBaseTestCase {
     @Test
     public void testLocation() throws Exception {
         Location loc1 = createTestLocation();
-        Location loc2 = new Location();
+        Location loc2 = lookupLocationById(loc1.getId());
 
-        assertNotEquals(loc1, loc2);
-        assertNotEquals(loc1, new Date());
+        assertNotEquals(new Location(), loc1);
 
-        Session session = HibernateFactory.getSession();
-        loc2 = session.createQuery("FROM Location WHERE id = :id", Location.class)
-                                      .setParameter("id", loc1.getId(), StandardBasicTypes.LONG)
-                                      .uniqueResult();
         assertEquals(loc1, loc2);
     }
 
@@ -86,4 +77,9 @@ public class LocationTest extends RhnBaseTestCase {
         return loc;
     }
 
+    private Location lookupLocationById(Long locId) {
+        return HibernateFactory.getSession().createQuery("FROM Location WHERE id = :id", Location.class)
+                .setParameter("id", locId)
+                .uniqueResult();
+    }
 }

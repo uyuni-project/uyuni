@@ -482,7 +482,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
     // flush the needed updates cache for a server and re-generate it from scratch.
     private void regenerateNeededUpdatesCache(Server server) {
         HibernateFactory.getSession()
-                .createNativeQuery("DELETE FROM rhnServerNeededCache WHERE server_id = :sid")
+                .createNativeMutationQuery("DELETE FROM rhnServerNeededCache WHERE server_id = :sid")
                 .setParameter("sid", server.getId())
                 .executeUpdate();
         ServerFactory.updateServerNeededCache(server.getId());

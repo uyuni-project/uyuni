@@ -30,7 +30,6 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import org.hibernate.Session;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -54,14 +53,17 @@ public class NetworkInterfaceTest extends RhnBaseTestCase {
         assertNotEquals(netint1, netint2);
         assertNotEquals(netint1, new Date());
 
-        Session session = HibernateFactory.getSession();
-        netint2 = session.createQuery("FROM NetworkInterface AS n WHERE n.server = :server AND n.name = :name",
-                        NetworkInterface.class)
-                .setParameter("server", netint1.getServer())
-                .setParameter("name", netint1.getName())
-                .uniqueResult();
-
+        netint2 = lookupNetworkInterfaceByServerAndName(netint1.getServer(),  netint1.getName());
         assertEquals(netint1, netint2);
+    }
+
+    private NetworkInterface lookupNetworkInterfaceByServerAndName(Server server, String name) {
+        return HibernateFactory.getSession()
+                .createQuery("FROM NetworkInterface AS n WHERE n.server = :server AND n.name = :name",
+                        NetworkInterface.class)
+                .setParameter("server", server)
+                .setParameter("name", name)
+                .uniqueResult();
     }
 
     /**
