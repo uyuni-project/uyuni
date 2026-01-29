@@ -18,12 +18,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartScript;
 import com.redhat.rhn.manager.kickstart.KickstartScriptCreateCommand;
 import com.redhat.rhn.manager.kickstart.KickstartScriptDeleteCommand;
 import com.redhat.rhn.manager.kickstart.KickstartScriptEditCommand;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -49,7 +49,7 @@ public class KickstartScriptCommandTest extends BaseKickstartCommandTestCase {
         // Lets zero out the scripts
         ksdata.getScripts().clear();
         KickstartFactory.saveKickstartData(ksdata);
-        ksdata = (KickstartData) reload(ksdata);
+        ksdata = TestUtils.reload(ksdata);
         assertEquals(0, ksdata.getScripts().size());
 
         // Now make sure we add a new one.
@@ -64,7 +64,7 @@ public class KickstartScriptCommandTest extends BaseKickstartCommandTestCase {
         cmd.setScript(language, contents, KickstartScript.TYPE_PRE, chroot, false, null,
                 false);
         cmd.store();
-        ksdata = (KickstartData) reload(ksdata);
+        ksdata = TestUtils.reload(ksdata);
         assertEquals(contents, cmd.getContents());
         assertEquals(language, cmd.getLanguage());
         assertFalse(ksdata.getScripts().isEmpty());
@@ -81,7 +81,7 @@ public class KickstartScriptCommandTest extends BaseKickstartCommandTestCase {
         cmd.setScript(language, contents, KickstartScript.TYPE_PRE, chroot, true, null,
                 false);
         cmd.store();
-        ksdata = (KickstartData) reload(ksdata);
+        ksdata = TestUtils.reload(ksdata);
         assertEquals(contents, cmd.getContents());
         assertEquals(language, cmd.getLanguage());
         assertFalse(ksdata.getScripts().isEmpty());
@@ -95,7 +95,7 @@ public class KickstartScriptCommandTest extends BaseKickstartCommandTestCase {
         KickstartScriptDeleteCommand cmd = new KickstartScriptDeleteCommand(ksdata.getId(),
                 kss.getId(), user);
         cmd.store();
-        ksdata = (KickstartData) reload(ksdata);
+        ksdata = TestUtils.reload(ksdata);
         assertEquals(4, ksdata.getScripts().size());
     }
 

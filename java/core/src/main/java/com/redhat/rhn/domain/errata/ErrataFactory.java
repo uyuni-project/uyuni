@@ -32,7 +32,11 @@ import com.redhat.rhn.domain.common.ChecksumFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.product.Tuple2;
 import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.rhnpackage.PackageArch;
+import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageName;
+import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.frontend.dto.ErrataPackageFile;
@@ -64,7 +68,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 
-import javax.persistence.Tuple;
+import jakarta.persistence.Tuple;
 
 /**
  * ErrataFactory - the singleton class used to fetch and store
@@ -477,17 +481,7 @@ public class ErrataFactory extends HibernateFactory {
      * @return Errata if found, otherwise null
      */
     public static Errata lookupErrataById(Long id) {
-        Errata retval;
-        try {
-            retval = getSession().createQuery("FROM Errata AS e WHERE e.id = :id", Errata.class)
-                    .setParameter("id", id, StandardBasicTypes.LONG)
-                    .uniqueResult();
-        }
-        catch (HibernateException he) {
-            log.error("Error loading Errata from DB", he);
-            throw new HibernateRuntimeException("Error loading Errata from db");
-        }
-        return retval;
+        return getSession().find(Errata.class, id);
     }
 
     /**
@@ -688,10 +682,12 @@ public class ErrataFactory extends HibernateFactory {
 
     /**
      * Insert or Update a Errata.
+     *
      * @param errataIn Errata to be stored in database.
+     * @return the managed {@link Errata} instance
      */
-    public static void save(Errata errataIn) {
-        singleton.saveObject(errataIn);
+    public static Errata save(Errata errataIn) {
+        return singleton.saveObject(errataIn);
     }
 
     /**
@@ -800,6 +796,10 @@ public class ErrataFactory extends HibernateFactory {
                                 WHERE pid IN (:pids) AND sid IN (:sids)
                                 """,
                         Tuple.class)
+                .addSynchronizedEntityClass(Package.class)
+                .addSynchronizedEntityClass(Server.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(Errata.class)
                 .addScalar("pid", StandardBasicTypes.LONG)
                 .addScalar("sid", StandardBasicTypes.LONG)
                 .setParameter("pids", pids)
@@ -835,6 +835,13 @@ public class ErrataFactory extends HibernateFactory {
                                 AND sid IN (:sids)
                                 """,
                         Tuple.class)
+                .addSynchronizedEntityClass(Package.class)
+                .addSynchronizedEntityClass(PackageEvr.class)
+                .addSynchronizedEntityClass(PackageName.class)
+                .addSynchronizedEntityClass(PackageArch.class)
+                .addSynchronizedEntityClass(Server.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(Errata.class)
                 .addScalar("pid", StandardBasicTypes.LONG)
                 .addScalar("sid", StandardBasicTypes.LONG)
                 .setParameter("nevras", nevras)
@@ -875,6 +882,9 @@ public class ErrataFactory extends HibernateFactory {
                                     (SELECT channel_id FROM rhnAvailableChannels WHERE org_id = :org_id)
                                 """,
                         Tuple.class)
+                .addSynchronizedEntityClass(Errata.class)
+                .addSynchronizedEntityClass(Keyword.class)
+                .addSynchronizedEntityClass(Channel.class)
                 .addScalar("id", StandardBasicTypes.LONG) //0
                 .addScalar("advisory", StandardBasicTypes.STRING) //1
                 .addScalar("advisoryName", StandardBasicTypes.STRING) //2
@@ -946,6 +956,10 @@ public class ErrataFactory extends HibernateFactory {
                                 ORDER BY e.id
                                 """,
                         Tuple.class)
+                .addSynchronizedEntityClass(Errata.class)
+                .addSynchronizedEntityClass(Keyword.class)
+                .addSynchronizedEntityClass(Package.class)
+                .addSynchronizedEntityClass(PackageName.class)
                 .addScalar("id", StandardBasicTypes.LONG) //0
                 .addScalar("advisory", StandardBasicTypes.STRING) //1
                 .addScalar("advisoryName", StandardBasicTypes.STRING) //2
@@ -1045,6 +1059,11 @@ public class ErrataFactory extends HibernateFactory {
                                 ORDER BY e.id
                                 """,
                         Tuple.class)
+                .addSynchronizedEntityClass(Errata.class)
+                .addSynchronizedEntityClass(Keyword.class)
+                .addSynchronizedEntityClass(Package.class)
+                .addSynchronizedEntityClass(PackageName.class)
+                .addSynchronizedEntityClass(Channel.class)
                 .addScalar("id", StandardBasicTypes.LONG) //0
                 .addScalar("advisory", StandardBasicTypes.STRING) //1
                 .addScalar("advisoryName", StandardBasicTypes.STRING) //2
@@ -1148,6 +1167,10 @@ public class ErrataFactory extends HibernateFactory {
                                         AND ce.channel_id = ac.channel_id
                                         AND ac.org_id = :orgId))
                         """, Tuple.class)
+                .addSynchronizedEntityClass(Errata.class)
+                .addSynchronizedEntityClass(ClonedErrata.class)
+                .addSynchronizedEntityClass(Org.class)
+                .addSynchronizedEntityClass(Channel.class)
                 .addEntity("e", Errata.class)
                 .setParameter("orgId", orgId)
                 .setParameterList("eids", ids)

@@ -414,11 +414,11 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
     public void testApplyErrata() throws Exception {
 
         Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        TestUtils.saveAndFlush(errata1);
+        errata1 = TestUtils.saveAndFlush(errata1);
         Errata errata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        TestUtils.saveAndFlush(errata2);
+        errata2 = TestUtils.saveAndFlush(errata2);
         Errata errata3 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        TestUtils.saveAndFlush(errata3);
+        errata3 = TestUtils.saveAndFlush(errata3);
 
         Channel channel1 = ChannelFactoryTest.createTestChannel(user);
         Channel channel2 = ChannelFactoryTest.createTestChannel(user);
@@ -532,19 +532,19 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
     public void testApplyErrataOnManagementStack() throws Exception {
 
         Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        TestUtils.saveAndFlush(errata1);
+        errata1 = TestUtils.saveAndFlush(errata1);
         Errata errata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        TestUtils.saveAndFlush(errata2);
+        errata2 = TestUtils.saveAndFlush(errata2);
         Errata errata3 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        TestUtils.saveAndFlush(errata2);
+        errata2 = TestUtils.saveAndFlush(errata2);
 
         // software management stack erratas
         Errata yumErrata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         yumErrata1.addKeyword("restart_suggested");
-        TestUtils.saveAndFlush(yumErrata1);
+        yumErrata1 = TestUtils.saveAndFlush(yumErrata1);
         Errata yumErrata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         yumErrata2.addKeyword("restart_suggested");
-        TestUtils.saveAndFlush(yumErrata2);
+        yumErrata2 = TestUtils.saveAndFlush(yumErrata2);
 
 
         Channel channel1 = ChannelFactoryTest.createTestChannel(user);
@@ -725,19 +725,19 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
     public void testApplyErrataOnManagementStackForZypp() throws Exception {
 
         Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        TestUtils.saveAndFlush(errata1);
+        errata1 = TestUtils.saveAndFlush(errata1);
         Errata errata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        TestUtils.saveAndFlush(errata2);
+        errata2 = TestUtils.saveAndFlush(errata2);
         Errata errata3 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        TestUtils.saveAndFlush(errata2);
+        errata2 = TestUtils.saveAndFlush(errata2);
 
         // software management stack erratas
         Errata yumErrata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         yumErrata1.addKeyword("restart_suggested");
-        TestUtils.saveAndFlush(yumErrata1);
+        yumErrata1 = TestUtils.saveAndFlush(yumErrata1);
         Errata yumErrata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         yumErrata2.addKeyword("restart_suggested");
-        TestUtils.saveAndFlush(yumErrata2);
+        yumErrata2 = TestUtils.saveAndFlush(yumErrata2);
 
 
         Channel channel1 = ChannelFactoryTest.createTestChannel(user);
@@ -760,12 +760,12 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         if (name == null) {
             name = zypperPkg.getPackageName();
             name.setName("zypper");
-            TestUtils.saveAndFlush(name);
+            name = TestUtils.saveAndFlush(name);
         }
         else {
             // Handle the case that the package name exists in the DB
             zypperPkg.setPackageName(name);
-            TestUtils.saveAndFlush(zypperPkg);
+            zypperPkg = TestUtils.saveAndFlush(zypperPkg);
         }
         createTestInstalledPackage(zypperPkg, server1);
         createTestInstalledPackage(zypperPkg, server2);
@@ -889,7 +889,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
     public void testApplyErrataNoSystems() throws Exception {
 
         Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        TestUtils.saveAndFlush(errata1);
+        errata1 = TestUtils.saveAndFlush(errata1);
 
         List<Long> errataIds = new ArrayList<>();
         errataIds.add(errata1.getId());
@@ -954,7 +954,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testApplyErrataInapplicable() throws Exception {
         Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        TestUtils.saveAndFlush(errata1);
+        errata1 = TestUtils.saveAndFlush(errata1);
 
         List<Long> errataIds = new ArrayList<>();
         errataIds.add(errata1.getId());
@@ -981,9 +981,9 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testApplyErrataMultipleErrataYum() throws Exception {
         Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        TestUtils.saveAndFlush(errata1);
+        errata1 = TestUtils.saveAndFlush(errata1);
         Errata errata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        TestUtils.saveAndFlush(errata2);
+        errata2 = TestUtils.saveAndFlush(errata2);
 
         Channel channel = ChannelFactoryTest.createTestChannel(user);
 
@@ -1078,9 +1078,9 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testApplyErrataMultipleErrataMinions() throws Exception {
         Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        TestUtils.saveAndFlush(errata1);
+        errata1 = TestUtils.saveAndFlush(errata1);
         Errata errata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        TestUtils.saveAndFlush(errata2);
+        errata2 = TestUtils.saveAndFlush(errata2);
 
         Channel channel = ChannelFactoryTest.createTestChannel(user);
 
@@ -1180,10 +1180,10 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testApplyErrataMultipleManagementStackErrataMinions() throws Exception {
         Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        TestUtils.saveAndFlush(errata1);
+        errata1 = TestUtils.saveAndFlush(errata1);
         Errata errata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         errata2.addKeyword("restart_suggested");
-        TestUtils.saveAndFlush(errata2);
+        errata2 = TestUtils.saveAndFlush(errata2);
 
         Channel channel = ChannelFactoryTest.createTestChannel(user);
 
@@ -1281,9 +1281,9 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testApplyErrataMultipleErrataActionChain() throws Exception {
         Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        TestUtils.saveAndFlush(errata1);
+        errata1 = TestUtils.saveAndFlush(errata1);
         Errata errata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        TestUtils.saveAndFlush(errata2);
+        errata2 = TestUtils.saveAndFlush(errata2);
 
         Channel channel = ChannelFactoryTest.createTestChannel(user);
 
@@ -1298,12 +1298,12 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         if (name == null) {
             name = zypperPkg.getPackageName();
             name.setName("zypper");
-            TestUtils.saveAndFlush(name);
+            name = TestUtils.saveAndFlush(name);
         }
         else {
             // Handle the case that the package name exists in the DB
             zypperPkg.setPackageName(name);
-            TestUtils.saveAndFlush(zypperPkg);
+            zypperPkg = TestUtils.saveAndFlush(zypperPkg);
         }
         createTestInstalledPackage(zypperPkg, server1);
         createTestInstalledPackage(zypperPkg, server2);
@@ -1404,9 +1404,9 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testApplyErrataMultipleErrataActionChainYum() throws Exception {
         Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        TestUtils.saveAndFlush(errata1);
+        errata1 = TestUtils.saveAndFlush(errata1);
         Errata errata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        TestUtils.saveAndFlush(errata2);
+        errata2 = TestUtils.saveAndFlush(errata2);
 
         Channel channel = ChannelFactoryTest.createTestChannel(user);
 
@@ -1523,11 +1523,11 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
     public void testUpdateStackUpdateNeeded() throws Exception {
 
         Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        TestUtils.saveAndFlush(errata1);
+        errata1 = TestUtils.saveAndFlush(errata1);
         Errata errata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        TestUtils.saveAndFlush(errata2);
+        errata2 = TestUtils.saveAndFlush(errata2);
         Errata errata3 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        TestUtils.saveAndFlush(errata3);
+        errata3 = TestUtils.saveAndFlush(errata3);
 
         Channel channel1 = ChannelFactoryTest.createTestChannel(user);
 
@@ -1567,7 +1567,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         k.setErrata(errata3);
         kw.add(k);
         errata3.setKeywords(kw);
-        TestUtils.saveAndFlush(errata3);
+        errata3 = TestUtils.saveAndFlush(errata3);
 
         assertTrue(ErrataManager.updateStackUpdateNeeded(user, server));
     }
@@ -1581,9 +1581,9 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
     public void testTruncateErrataSimple() throws Exception {
         user.addPermanentRole(ORG_ADMIN);
         Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        TestUtils.saveAndFlush(errata1);
+        errata1 = TestUtils.saveAndFlush(errata1);
         Errata errata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        TestUtils.saveAndFlush(errata2);
+        errata2 = TestUtils.saveAndFlush(errata2);
 
         Channel src = ChannelFactoryTest.createTestChannel(user);
         Channel tgt = ChannelFactoryTest.createTestChannel(user);
@@ -1605,12 +1605,12 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
     public void testTruncateErrataCloned() throws Exception {
         user.addPermanentRole(ORG_ADMIN);
         Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        TestUtils.saveAndFlush(errata1);
+        errata1 = TestUtils.saveAndFlush(errata1);
         Package pack = PackageTest.createTestPackage(user.getOrg());
         Errata errata1Clone = ErrataTestUtils.createTestClonedErrata(user, errata1, new HashSet<>(), pack);
-        TestUtils.saveAndFlush(errata1Clone);
+        errata1Clone = TestUtils.saveAndFlush(errata1Clone);
         Errata errataInTgt = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        TestUtils.saveAndFlush(errataInTgt);
+        errataInTgt = TestUtils.saveAndFlush(errataInTgt);
 
         Channel src = ChannelFactoryTest.createTestChannel(user);
         Channel tgt = ChannelFactoryTest.createTestChannel(user);
@@ -1634,7 +1634,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
     public void testPackagesOnTruncateErrata() throws Exception {
         user.addPermanentRole(ORG_ADMIN);
         Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        TestUtils.saveAndFlush(errata);
+        errata = TestUtils.saveAndFlush(errata);
         Package errataPackage = errata.getPackages().iterator().next();
         // we assume version 1.0.0 for the test
         assertEquals("1.0.0", errataPackage.getPackageEvr().getVersion());

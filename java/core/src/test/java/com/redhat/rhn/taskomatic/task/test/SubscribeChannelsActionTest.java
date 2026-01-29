@@ -72,10 +72,10 @@ public class SubscribeChannelsActionTest extends JMockBaseTestCaseWithUser {
         Channel base = ChannelFactoryTest.createBaseChannel(user);
         Channel ch1 = ChannelFactoryTest.createTestChannel(user.getOrg());
         ch1.setParentChannel(base);
-        TestUtils.saveAndFlush(ch1);
+        ch1 = TestUtils.saveAndFlush(ch1);
         Channel ch2 = ChannelFactoryTest.createTestChannel(user.getOrg());
         ch2.setParentChannel(base);
-        TestUtils.saveAndFlush(ch2);
+        ch2 = TestUtils.saveAndFlush(ch2);
         ServerAction serverAction;
         long serverId = 0;
 

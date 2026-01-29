@@ -61,6 +61,7 @@ import com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher;
 import com.redhat.rhn.domain.contentmgmt.PackageFilter;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
 import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
+import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.org.Org;
@@ -280,9 +281,14 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         env.addTarget(tgt);
 
         contentManager.removeEnvironment("fst", "cplabel", user);
+        TestUtils.clearSession();
+
         // the target is removed
         assertFalse(HibernateFactory.getSession()
-                .createQuery("select t from SoftwareEnvironmentTarget t where t.channel = :channel")
+                .createQuery("""
+                             from SoftwareEnvironmentTarget t
+                             where t.channel = :channel
+                             """, SoftwareEnvironmentTarget.class)
                 .setParameter("channel", channel)
                 .uniqueResultOptional()
                 .isPresent());
@@ -611,7 +617,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         contentManager.removeProject("cplabel", user);
         // we can't use ContentManager.lookupSource because the project does not exist
         assertTrue(HibernateFactory.getSession()
-                .createQuery("SELECT 1 FROM SoftwareProjectSource s where s.contentProject = :cp")
+                .createQuery("FROM SoftwareProjectSource s where s.contentProject = :cp", SoftwareProjectSource.class)
                 .setParameter("cp", cp)
                 .list()
                 .isEmpty());
@@ -839,7 +845,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
 
         // 3. remove a source and rebuild
         contentManager.detachSource("cplabel", SW_CHANNEL, channel.getLabel(), user);
-        cp = (ContentProject) HibernateFactory.reload(cp);
+        cp = TestUtils.reload(cp);
         contentManager.buildProject("cplabel", empty(), false, user);
         assertEquals(Long.valueOf(3), env.getVersion());
 
@@ -1107,8 +1113,8 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         // We need to clear and reload as buildProject uses mode queries inside a doWithoutAutoFlush area
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
-        cp = HibernateFactory.reload(cp);
-        devEnv = HibernateFactory.reload(devEnv);
+        cp = TestUtils.reload(cp);
+        devEnv = TestUtils.reload(devEnv);
 
         contentManager.diffProject(cp);
         diffDev = ContentManager.listEnvironmentDifference(user, "cplabel", "dev");
@@ -1143,8 +1149,8 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         // We need to clear and reload as promoteProject uses mode queries inside a doWithoutAutoFlush area
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
-        cp = HibernateFactory.reload(cp);
-        testEnv = HibernateFactory.reload(testEnv);
+        cp = TestUtils.reload(cp);
+        testEnv = TestUtils.reload(testEnv);
 
         assertEquals(devEnv.getVersion(), testEnv.getVersion());
         testTgts = testEnv.getTargets();
@@ -1185,8 +1191,8 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         // We need to clear and reload as promoteProject uses mode queries inside a doWithoutAutoFlush area
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
-        prodEnv = HibernateFactory.reload(prodEnv);
-        cp = HibernateFactory.reload(cp);
+        prodEnv = TestUtils.reload(prodEnv);
+        cp = TestUtils.reload(cp);
 
         assertEquals(devEnv.getVersion(), prodEnv.getVersion());
         prodTgts = prodEnv.getTargets();

@@ -292,14 +292,13 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         for (int i = 0; i < numServerActions; i++) {
             Server server = ServerFactoryTest.createTestServer(user, true);
             server.addChannel(baseChannel);
-            TestUtils.saveAndFlush(server);
+            ServerFactory.save(server);
 
             ServerAction child = ServerActionTest.createServerAction(server, parent);
             child.setStatusQueued();
-            TestUtils.saveAndFlush(child);
-
             parent.addServerAction(child);
         }
+
         ActionFactory.save(parent);
         return parent;
     }
@@ -325,17 +324,16 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         Action parent = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
         Channel baseChannel = ChannelFactoryTest.createTestChannel(user);
         baseChannel.setParentChannel(null);
+
         for (int i = 0; i < numServerActions; i++) {
             Server server = serverFactory.apply(i);
             server.addChannel(baseChannel);
-            TestUtils.saveAndFlush(server);
+            server = ServerFactory.save(server);
 
-            ServerAction child = ServerActionTest.createServerAction(server, parent);
-            statusSetter.accept(child);
-            TestUtils.saveAndFlush(child);
-
+            ServerAction child = ServerActionTest.createServerAction(server, parent, statusSetter);
             parent.addServerAction(child);
         }
+
         ActionFactory.save(parent);
         return parent;
     }
@@ -352,10 +350,9 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
     private List<ServerAction> getServerActions(Action parentAction) {
         Session session = HibernateFactory.getSession();
-        Query query = session.createQuery("from ServerAction sa where " +
-            "sa.parentAction = :parent_action");
-        query.setParameter("parent_action", parentAction);
-        return query.list();
+        return session.createQuery("from ServerAction sa where sa.parentAction = :parent_action", ServerAction.class)
+                .setParameter("parent_action", parentAction)
+                .list();
     }
 
     private void assertServerActionCount(Action parentAction, int expected) {
@@ -377,20 +374,22 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
     public void assertServerActionCount(User user, int expected) {
         Session session = HibernateFactory.getSession();
-        Query query = session.createQuery("from ServerAction sa where " +
-            "sa.parentAction.schedulerUser = :user");
-        query.setParameter("user", user);
-        List results = query.list();
-        int initialSize = results.size();
+        int initialSize = session.createQuery("""
+                                              from ServerAction sa
+                                              where sa.parentAction.schedulerUser = :user
+                                              """, ServerAction.class)
+                .setParameter("user", user)
+                .list()
+                .size();
         assertEquals(expected, initialSize);
     }
 
     public void assertActionsForUser(User user, int expected) {
         Session session = HibernateFactory.getSession();
-        Query query = session.createQuery("from Action a where a.schedulerUser = :user");
-        query.setParameter("user", user);
-        List results = query.list();
-        int initialSize = results.size();
+        int initialSize = session.createQuery("from Action a where a.schedulerUser = :user", Action.class)
+                .setParameter("user", user)
+                .list()
+                .size();
         assertEquals(expected, initialSize);
     }
 
@@ -471,6 +470,8 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         // Third server action stays in PICKEDUP
         ServerAction pickedUp = iterator.next();
         Server serverPickedUp = pickedUp.getServer();
+
+        TestUtils.clearSession();
 
         List<Action> actionList = createActionList(action);
         ActionManager.cancelActions(user, actionList);
@@ -626,8 +627,6 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         List<Server> servers = List.of(first, second);
 
         Action parent = ActionFactoryTest.createEmptyAction(user, ActionFactory.TYPE_SCRIPT_RUN);
-        ActionFactory.save(parent);
-
         servers.forEach(server -> {
             ServerAction serverAction = ActionFactoryTest.createServerAction(server, parent);
             if (first.equals(server)) {
@@ -637,19 +636,18 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                 serverAction.setStatusQueued();
             }
             parent.addServerAction(serverAction);
-            ActionFactory.save(serverAction);
         });
+
+        ActionFactory.save(parent);
 
         Action child = ActionFactoryTest.createEmptyAction(user, ActionFactory.TYPE_ERRATA);
         child.setPrerequisite(parent);
-        ActionFactory.save(child);
-
         servers.forEach(server -> {
             ServerAction serverAction = ActionFactoryTest.createServerAction(server, child);
             serverAction.setStatusQueued();
             child.addServerAction(serverAction);
-            ActionFactory.save(serverAction);
         });
+        ActionFactory.save(child);
 
         // Should not cancel, there are pending prerequisites
         List<Action> actionsToCancel = List.of(TestUtils.reload(child));
@@ -733,8 +731,8 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         KickstartDataTest.setupTestConfiguration(user);
         KickstartData ksData = KickstartDataTest.createKickstartWithOptions(user.getOrg());
         KickstartSession ksSession = KickstartSessionTest.createKickstartSession(server, ksData, parentAction);
-        TestUtils.saveAndFlush(ksSession);
-        ksSession = reload(ksSession);
+        ksSession = TestUtils.saveAndFlush(ksSession);
+        ksSession = TestUtils.reload(ksSession);
 
         List<Action> actionList = createActionList(parentAction);
 
@@ -824,7 +822,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         ActionFactory.save(a1);
 
         ActionManager.rescheduleAction(a1);
-        sa = (ServerAction) ActionFactory.reload(sa);
+        sa = TestUtils.reload(sa);
         assertTrue(sa.isStatusQueued());
         assertTrue(sa.getRemainingTries() > 0);
     }
@@ -995,7 +993,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                                                     "",
                                                     "localhost");
         assertNotNull(ka);
-        TestUtils.saveAndFlush(ka);
+        ka = TestUtils.saveAndFlush(ka);
         assertNotNull(ka.getId());
         KickstartActionDetails kad = ka.getKickstartActionDetails();
         KickstartAction ka2 = (KickstartAction)
@@ -1018,7 +1016,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
 
         KickstartSession ksSession =
             KickstartSessionTest.createKickstartSession(srvr, testKickstartData);
-        TestUtils.saveAndFlush(ksSession);
+        ksSession = TestUtils.saveAndFlush(ksSession);
 
         String kickstartHost = "localhost.localdomain";
         ProvisionVirtualInstanceCommand command =
@@ -1039,7 +1037,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
                 ka.getKickstartGuestActionDetails().getKickstartHost());
 
         assertNotNull(ka);
-        TestUtils.saveAndFlush(ka);
+        ka = TestUtils.saveAndFlush(ka);
         assertNotNull(ka.getId());
         KickstartGuestActionDetails kad =
             ka.getKickstartGuestActionDetails();

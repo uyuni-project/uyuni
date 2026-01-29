@@ -19,25 +19,31 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 import org.junit.jupiter.api.Test;
 
 /**
  * ConfigChannelTest
  */
-public class ConfigChannelTest extends RhnBaseTestCase {
+public class ConfigChannelTest extends BaseTestCaseWithUser {
 
     @Test
     public void testIsTypeMethods() {
-        ConfigChannel cc = ConfigurationFactory.newConfigChannel();
-        cc.setConfigChannelType(ConfigChannelType.local());
+        ConfigChannel cc = ConfigurationFactory.createNewConfigChannel(user.getOrg(), ConfigChannelType.local(),
+                "test", "test", "test");
         assertTrue(cc.isLocalChannel());
-        cc.setConfigChannelType(ConfigChannelType.normal());
+
+        cc = ConfigurationFactory.createNewConfigChannel(user.getOrg(), ConfigChannelType.normal(),
+                "test", "test", "test");
         assertTrue(cc.isNormalChannel());
-        cc.setConfigChannelType(ConfigChannelType.sandbox());
+
+        cc = ConfigurationFactory.createNewConfigChannel(user.getOrg(), ConfigChannelType.sandbox(),
+                "test", "test", "test");
         assertTrue(cc.isSandboxChannel());
-        cc.setConfigChannelType(ConfigChannelType.state());
+
+        cc = ConfigurationFactory.createNewConfigChannel(user.getOrg(), ConfigChannelType.state(),
+                "test", "test", "test");
         assertTrue(cc.isStateChannel());
     }
 }

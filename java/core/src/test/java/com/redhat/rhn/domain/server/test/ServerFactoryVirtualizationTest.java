@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -46,18 +47,13 @@ public class ServerFactoryVirtualizationTest extends RhnBaseTestCase {
 
     @Test
     public void testAddGuestToHostAndSaveHost() throws Exception {
-        VirtualInstance virtualInstance =
-                virtualInstanceFactory.newRegisteredGuestWithHost();
+        VirtualInstance virtualInstance = virtualInstanceFactory.newRegisteredGuestWithHost();
         Server host = virtualInstance.getHostSystem();
-        ServerFactory.save(host);
-        flushAndEvict(host);
 
-        Server retrievedHost = ServerFactory.lookupById(host.getId());
-
+        Server retrievedHost = TestUtils.reload(host);
         assertTrue(retrievedHost.getGuests().contains(virtualInstance));
 
         VirtualInstance retInstance = retrievedHost.getGuests().iterator().next();
-
         assertEquals(retInstance.getHostSystem(), retrievedHost);
     }
 
@@ -73,23 +69,16 @@ public class ServerFactoryVirtualizationTest extends RhnBaseTestCase {
         //     5) Retrieve the server and test that it contains the modified guest.
 
         Server host = ServerFactoryTest.createTestServer(user);
-
         host.addGuest(virtualInstanceFactory.newRegisteredGuestWithoutHost());
-
         ServerFactory.save(host);
-        flushAndEvict(host);
 
-        VirtualInstance virtualInstance = (VirtualInstance)CollectionUtils.get(
-                host.getGuests(), 0);
+        VirtualInstance virtualInstance = (VirtualInstance) CollectionUtils.get(host.getGuests(), 0);
 
         String uuid = "abcd";
         virtualInstance.setUuid(uuid);
-
         ServerFactory.save(host);
-        flushAndEvict(host);
 
         Server retrievedHost = ServerFactory.lookupById(host.getId());
-
         assertTrue(retrievedHost.getGuests().contains(virtualInstance));
     }
 
@@ -98,13 +87,9 @@ public class ServerFactoryVirtualizationTest extends RhnBaseTestCase {
         // There is a case in which it is possible to have a registered guest without
         // having its host registered. This is a test for this case.
 
-        VirtualInstance virtualInstance =
-                virtualInstanceFactory.newRegisteredGuestWithoutHost();
-
+        VirtualInstance virtualInstance = virtualInstanceFactory.newRegisteredGuestWithoutHost();
         Server guest = virtualInstance.getGuestSystem();
-
         ServerFactory.save(guest);
-        flushAndEvict(guest);
 
         Server retrievedGuest = ServerFactory.lookupById(guest.getId());
 
@@ -114,15 +99,12 @@ public class ServerFactoryVirtualizationTest extends RhnBaseTestCase {
 
     @Test
     public void testSaveAndRetrieveGuestWithAHost() throws Exception {
-        VirtualInstance virtualInstance =
-                virtualInstanceFactory.newRegisteredGuestWithHost();
+        VirtualInstance virtualInstance = virtualInstanceFactory.newRegisteredGuestWithHost();
 
         Server guest = virtualInstance.getGuestSystem();
         Server host = virtualInstance.getHostSystem();
 
         ServerFactory.save(guest);
-        flushAndEvict(guest);
-        flushAndEvict(host);
 
         Server retrievedGuest = ServerFactory.lookupById(guest.getId());
         Server retrievedHost = ServerFactory.lookupById(host.getId());
@@ -134,21 +116,17 @@ public class ServerFactoryVirtualizationTest extends RhnBaseTestCase {
 
     @Test
     public void testUpdateGuestWithoutAHost() throws Exception {
-        VirtualInstance virtualInstance =
-                virtualInstanceFactory.newRegisteredGuestWithoutHost();
+        VirtualInstance virtualInstance = virtualInstanceFactory.newRegisteredGuestWithoutHost();
 
         Server guest = virtualInstance.getGuestSystem();
 
         ServerFactory.save(guest);
-        flushAndEvict(guest);
-        flushAndEvict(virtualInstance);
 
         Server retrievedGuest = ServerFactory.lookupById(guest.getId());
         retrievedGuest.setName("the_guest");
         retrievedGuest.getVirtualInstance().setConfirmed((long) 1);
 
         ServerFactory.save(retrievedGuest);
-        flushAndEvict(retrievedGuest);
 
         Server updatedGuest = ServerFactory.lookupById(guest.getId());
 

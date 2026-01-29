@@ -37,7 +37,7 @@ public class BaseKickstartEditTestCase extends RhnPostMockStrutsTestCase {
         super.setUp();
         UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
         this.ksdata = KickstartDataTest.createKickstartWithChannel(user.getOrg());
-        TestUtils.saveAndFlush(ksdata);
+        ksdata = TestUtils.saveAndFlush(ksdata);
         addRequestParameter(RequestContext.KICKSTART_ID, this.ksdata.getId().toString());
     }
 

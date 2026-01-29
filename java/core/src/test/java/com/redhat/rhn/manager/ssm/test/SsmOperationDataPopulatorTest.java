@@ -24,6 +24,7 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.ssm.SsmOperationManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Disabled;
@@ -41,6 +42,7 @@ import java.util.List;
  *
  * @author Jason Dobies
  */
+@Disabled
 public class SsmOperationDataPopulatorTest extends RhnBaseTestCase {
 
     @Override
@@ -51,7 +53,6 @@ public class SsmOperationDataPopulatorTest extends RhnBaseTestCase {
     }
 
     @Test
-    @Disabled
     public void populateDataSet() throws Exception {
         // The following control the data that are created in this call
         String userLoginName = "admin";
@@ -82,7 +83,7 @@ public class SsmOperationDataPopulatorTest extends RhnBaseTestCase {
         // Cleanup; after the creates the RhnSet is no longer needed
         RhnSetManager.remove(serverSet);
 
-        commitAndCloseSession();
+        TestUtils.commitAndCloseSession();
     }
 
     private List<Server> createServersForUser(User user, int count) {

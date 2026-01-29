@@ -50,7 +50,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import javax.persistence.Tuple;
+import jakarta.persistence.Tuple;
 
 public class ReportDbUpdateTaskTest extends JMockBaseTestCaseWithUser {
 
@@ -66,6 +66,10 @@ public class ReportDbUpdateTaskTest extends JMockBaseTestCaseWithUser {
     @AfterEach
     public void after() {
         if (reportDbConnectionManager != null) {
+//            if (reportDbConnectionManager.isTransactionPending()) {
+//                reportDbConnectionManager.rollbackTransaction();
+//            }
+
             reportDbConnectionManager.closeSession();
         }
     }

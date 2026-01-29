@@ -21,7 +21,7 @@ import com.redhat.rhn.frontend.dto.BaseTupleDto;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Tuple;
+import jakarta.persistence.Tuple;
 
 /**
  * Simple JSON representation of {@link com.redhat.rhn.domain.access.AccessGroup} for listing roles

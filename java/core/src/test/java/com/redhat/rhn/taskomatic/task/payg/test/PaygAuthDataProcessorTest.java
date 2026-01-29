@@ -137,7 +137,7 @@ public class PaygAuthDataProcessorTest extends BaseHandlerTestCase {
     }
 
     private void assertExpectedData() {
-        PaygSshData data = HibernateFactory.reload(paygData);
+        PaygSshData data = TestUtils.reload(paygData);
         assertEquals(12, SCCCachingFactory.lookupRepositoryAuth().size());
         assertEquals(1, HibernateFactory.getSession()
                 .createQuery("SELECT a FROM BaseCredentials a", BaseCredentials.class).getResultList().size());

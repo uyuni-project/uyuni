@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LCC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -30,7 +31,6 @@ public class SourceRpmTest extends RhnBaseTestCase {
     /**
      * Simple test to make sure we can create SourceRpms and
      * commit them to the db.
-     * @throws Exception something bad happened
      */
     @Test
     public void testSourceRpm() {
@@ -42,13 +42,11 @@ public class SourceRpmTest extends RhnBaseTestCase {
 
     /**
      * Create a test SourceRpm.
-     * @return Returns a commited SourceRpm object.
-     * @throws Exception something bad happened
+     * @return the managed {@link SourceRpm} instance
      */
     public static SourceRpm createTestSourceRpm() {
         SourceRpm s = new SourceRpm();
         s.setName(TestUtils.randomString());
-        TestUtils.saveAndFlush(s);
-        return s;
+        return TestUtils.saveAndFlush(s);
     }
 }

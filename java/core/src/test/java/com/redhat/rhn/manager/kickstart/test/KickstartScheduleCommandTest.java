@@ -98,7 +98,7 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
                 createKickstartSession(ksdata, user);
         ksession.setNewServer(server);
         ksession.setOldServer(server);
-        TestUtils.saveAndFlush(ksession);
+        ksession = TestUtils.saveAndFlush(ksession);
     }
 
     private static void assertCmdSuccess(KickstartScheduleCommand cmd) {
@@ -138,7 +138,7 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
                 KickstartVirtualizationType.none());
         x86ks.getChannel().setChannelArch(ChannelFactory.lookupArchByName("x86_64"));
         TestUtils.saveAndFlush(x86ks.getChannel());
-        TestUtils.saveAndFlush(x86ks);
+        x86ks = TestUtils.saveAndFlush(x86ks);
 
 
         server.setServerArch(ServerConstants.getArchI686());
@@ -227,7 +227,7 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
 
         FileList list1 = KickstartDataTest.createFileList1(user.getOrg());
         CommonFactory.saveFileList(list1);
-        list1 = reload(list1);
+        list1 = TestUtils.reload(list1);
         ksdata.addPreserveFileList(list1);
         KickstartFactory.saveKickstartData(ksdata);
 
@@ -235,7 +235,7 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
                 scheduleKickstartAction(this.ksdata, this.user,
                         server, new Date(), "extraoptions", "localhost");
         ActionFactory.save(kickstartAction);
-        flushAndEvict(kickstartAction);
+        TestUtils.flushAndEvict(kickstartAction);
         assertNotNull(kickstartAction.getId());
         assertNotNull(kickstartAction.getKickstartActionDetails().
                 getFileLists());
@@ -294,7 +294,7 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
                 KickstartScheduleCommand.UP2DATE_VERSION, "0",
                 c.getChannelArch().getArchType().getPackageType());
         p.setPackageEvr(pevr);
-        TestUtils.saveAndFlush(p);
+        p = TestUtils.saveAndFlush(p);
     }
 
     // Like the number of params on this one?  Nice eh?  At least its private and
@@ -318,8 +318,8 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
         };
         KickstartScheduleCommand.setTaskomaticApi(testApi);
 
-        PackageManagerTest.addPackageToSystemAndChannel(
-                ConfigDefaults.get().getKickstartPackageNames().get(0), server, c);
+        PackageManagerTest.addPackageToSystemAndChannel(ConfigDefaults.get().getKickstartPackageNames().get(0),
+                server, c);
         cmd.setProfileType(profileType);
         cmd.setServerProfileId(otherServerId);
         cmd.setProfileId(profileId);
@@ -331,13 +331,10 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
         assertCmdSuccess(cmd);
 
         // verify that the kickstart session has an activation key
-        ActivationKey key = ActivationKeyFactory.lookupByKickstartSession(
-                cmd.getKickstartSession());
+        ActivationKey key = ActivationKeyFactory.lookupByKickstartSession(cmd.getKickstartSession());
         assertNotNull(key);
 
-        TestUtils.flushAndEvict(ksdata);
-        assertNotNull(KickstartFactory.
-                lookupKickstartSessionByServer(server.getId()));
+        assertNotNull(KickstartFactory.lookupKickstartSessionByServer(server.getId()));
         return cmd;
     }
 

@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LCC
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -331,8 +332,8 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
 
         ActionFactory.rescheduleSingleServerAction(a1, 5L, sa.getServerId());
 
-        a1 = HibernateFactory.reload(a1);
-        sa = HibernateFactory.reload(sa);
+        a1 = TestUtils.reload(a1);
+        sa = TestUtils.reload(sa);
 
         assertTrue(sa.isStatusQueued());
         assertTrue(sa.getRemainingTries() > 0);
@@ -356,7 +357,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         ActionFactory.save(a1);
 
         ActionFactory.rescheduleFailedServerActions(a1, 5L);
-        sa1 = HibernateFactory.reload(sa1);
+        sa1 = TestUtils.reload(sa1);
 
         assertTrue(sa1.isStatusQueued());
         assertTrue(sa1.getRemainingTries() > 0);
@@ -383,8 +384,8 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
 
         ActionFactory.rescheduleAllServerActions(a1, 5L);
 
-        sa1 = HibernateFactory.reload(sa1);
-        sa2 = HibernateFactory.reload(sa2);
+        sa1 = TestUtils.reload(sa1);
+        sa2 = TestUtils.reload(sa2);
 
         assertTrue(sa1.isStatusQueued());
         assertTrue(sa1.getRemainingTries() > 0);
@@ -412,22 +413,24 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         ServerAction sa2 = addServerAction(user, a1, ServerAction::setStatusQueued);
 
         ActionFactory.save(a1);
-        flushAndEvict(sa1);
-        flushAndEvict(sa2);
+        HibernateFactory.getSession().flush();
+        HibernateFactory.getSession().evict(sa1);
+        HibernateFactory.getSession().evict(sa2);
+        HibernateFactory.getSession().evict(a1);
 
         List<Long> list = new ArrayList<>();
         list.add(sa1.getServerId());
 
         // Should NOT update if already in final state.
         ActionFactory.updateServerActionsPickedUp(a1, list);
-        HibernateFactory.reload(sa1);
+        sa1 = TestUtils.reload(sa1);
         assertTrue(sa1.isStatusFailed());
 
         list.clear();
         list.add(sa2.getServerId());
         //Should update to STATUS_COMPLETED
         ActionFactory.updateServerActions(a1, list, ActionFactory.STATUS_COMPLETED);
-        HibernateFactory.reload(sa2);
+        sa2 = TestUtils.reload(sa2);
         assertTrue(sa2.isStatusCompleted());
     }
 
@@ -441,16 +444,16 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         ServerAction sa3 = addServerAction(user, a2, ServerAction::setStatusQueued);
         ServerAction sa4 = addServerAction(user, a2, ServerAction::setStatusPickedUp);
 
-        TestUtils.saveAndReload(a1);
-        TestUtils.saveAndReload(a2);
+        a1 = TestUtils.saveAndReload(a1);
+        a2 = TestUtils.saveAndReload(a2);
 
         List<Long> actionIds = Stream.of(a1, a2).map(Action::getId).collect(Collectors.toList());
         ActionFactory.rejectScheduledActions(actionIds, "Test Rejection Reason");
 
-        sa1 = HibernateFactory.reload(sa1);
-        sa2 = HibernateFactory.reload(sa2);
-        sa3 = HibernateFactory.reload(sa3);
-        sa4 = HibernateFactory.reload(sa4);
+        sa1 = TestUtils.reload(sa1);
+        sa2 = TestUtils.reload(sa2);
+        sa3 = TestUtils.reload(sa3);
+        sa4 = TestUtils.reload(sa4);
 
         assertTrue(sa1.isStatusCompleted());
 
@@ -532,8 +535,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         newA.setArchived(0L);
         newA.setCreated(new Date());
         newA.setModified(new Date());
-        ActionFactory.save(newA);
-        return newA;
+        return ActionFactory.save(newA);
     }
 
 
@@ -644,7 +646,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         PackageName name = new PackageName();
         name.setName(testname);
         d.setPackageName(name);
-        TestUtils.saveAndFlush(name);
+        name = TestUtils.saveAndFlush(name);
 
         //create packageEvr
         PackageEvr evr = PackageEvrFactory.lookupOrCreatePackageEvr("" +
@@ -671,9 +673,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
 
     public static ServerAction addServerAction(User user, Action newA, Consumer<ServerAction> statusSetter) {
         Server newS = ServerFactoryTest.createTestServer(user, true);
-        ServerAction serverAction = ServerActionTest.createServerAction(newS, newA, statusSetter);
-        newA.addServerAction(serverAction);
-        return serverAction;
+        return ServerActionTest.createServerAction(newS, newA, statusSetter);
     }
 
     public static Action createEmptyAction(User user, ActionType type) {

@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.kickstart.KickstartCommand;
@@ -168,7 +167,7 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         KickstartData ks  = KickstartDataTest.createKickstartWithChannel(admin.getOrg());
         int id = handler.addScript(admin, ks.getLabel(), "sample",
                 "This is a script", "", "post", true);
-        ks = (KickstartData) HibernateFactory.reload(ks);
+        ks = TestUtils.reload(ks);
         boolean found = false;
 
         for (KickstartScript script : handler.listScripts(admin, ks.getLabel())) {
@@ -188,7 +187,7 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         for (KickstartScript script : scripts) {
             handler.removeScript(admin, ks.getLabel(), script.getId().intValue());
         }
-        ks = (KickstartData) HibernateFactory.reload(ks);
+        ks = TestUtils.reload(ks);
 
         int idPost1 =
                 handler.addScript(admin, ks.getLabel(), "myPost1", "This is a script",
@@ -208,7 +207,7 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         int idPre2 =
                 handler.addScript(admin, ks.getLabel(), "myPre2", "This is a script",
                         "", "pre", false);
-        ks = (KickstartData) HibernateFactory.reload(ks);
+        ks = TestUtils.reload(ks);
 
         // make sure they're in the proper order initially
         scripts = handler.listScripts(admin, ks.getLabel());
@@ -250,7 +249,7 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         KickstartData ks  = KickstartDataTest.createKickstartWithChannel(admin.getOrg());
         int id = handler.addScript(admin, ks.getLabel(), "sample",
                 "This is a script", "", "post", true);
-        ks = (KickstartData) HibernateFactory.reload(ks);
+        ks = TestUtils.reload(ks);
         boolean found = false;
         for (KickstartScript script : ks.getScripts()) {
             if (script.getId().intValue() == id &&
@@ -272,11 +271,11 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
         script.setInterpreter("/bin/bash");
         script.setScriptType("post");
         script.setPosition(0L);
-        script = (KickstartScript) TestUtils.saveAndReload(script);
+        script = TestUtils.saveAndReload(script);
 
         assertEquals(1, handler.removeScript(admin, ks.getLabel(),
                 script.getId().intValue()));
-        ks = (KickstartData) TestUtils.saveAndReload(ks);
+        ks = TestUtils.saveAndReload(ks);
 
         boolean found = false;
         for (KickstartScript scriptTmp : ks.getScripts()) {
@@ -295,7 +294,7 @@ public class ProfileHandlerTest extends BaseHandlerTestCase {
 
         ActivationKey key = ActivationKeyTest.createTestActivationKey(admin);
         ks1.addDefaultRegToken(key.getToken());
-        ks1 = (KickstartData) TestUtils.saveAndReload(ks1);
+        ks1 = TestUtils.saveAndReload(ks1);
 
         String file = handler.downloadKickstart(admin, ks1.getLabel(), "hostName");
         assertTrue(file.contains("blahPackage"));

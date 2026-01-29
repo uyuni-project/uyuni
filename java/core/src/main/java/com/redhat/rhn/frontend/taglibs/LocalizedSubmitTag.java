@@ -18,7 +18,7 @@ import com.redhat.rhn.common.localization.LocalizationService;
 
 import org.apache.struts.taglib.html.SubmitTag;
 
-import javax.servlet.jsp.JspException;
+import jakarta.servlet.jsp.JspException;
 
 /**
  * HTML Submit tag that supports localization of the value

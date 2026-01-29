@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LCC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -49,9 +50,9 @@ public class NoteTest extends RhnBaseTestCase {
         assertNotEquals(note1, new Date());
 
         Session session = HibernateFactory.getSession();
-        note2 = (Note) session.createQuery("FROM Note AS n WHERE n.id = :id")
+        note2 = session.createQuery("FROM Note AS n WHERE n.id = :id", Note.class)
                                   .setParameter("id", note1.getId(), StandardBasicTypes.LONG)
-                                  .uniqueResult();
+                                  .getSingleResultOrNull();
         assertEquals(note1, note2);
 
         TestUtils.removeObject(note1);
@@ -71,9 +72,9 @@ public class NoteTest extends RhnBaseTestCase {
         note.setNote("I will write them always.");
 
         assertNull(note.getId());
-        TestUtils.saveAndFlush(note);
-        assertNotNull(note.getId());
+        Note managedNote = TestUtils.saveAndFlush(note);
+        assertNotNull(managedNote.getId());
 
-        return note;
+        return managedNote;
     }
 }

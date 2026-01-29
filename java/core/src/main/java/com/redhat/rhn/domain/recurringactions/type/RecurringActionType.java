@@ -19,14 +19,14 @@ import com.redhat.rhn.domain.recurringactions.RecurringAction;
 
 import java.io.Serializable;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.MapsId;
-import javax.persistence.OneToOne;
-import javax.persistence.Transient;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Transient;
 
 /**
  * Recurring Action Type base class
@@ -35,7 +35,7 @@ import javax.persistence.Transient;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class RecurringActionType implements Serializable {
 
-    private long id;
+    private Long id;
     private RecurringAction recurringAction;
 
     public enum ActionType {
@@ -71,7 +71,7 @@ public abstract class RecurringActionType implements Serializable {
      * @return recurring action id
      */
     @Id
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -80,7 +80,7 @@ public abstract class RecurringActionType implements Serializable {
      *
      * @param idIn recurring action id
      */
-    public void setId(long idIn) {
+    public void setId(Long idIn) {
         id = idIn;
     }
 

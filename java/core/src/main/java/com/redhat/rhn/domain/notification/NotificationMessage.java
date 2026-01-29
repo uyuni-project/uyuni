@@ -24,16 +24,14 @@ import org.hibernate.annotations.Type;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 /**
  * A notification NotificationMessage Object.
@@ -119,7 +117,7 @@ public class NotificationMessage implements Serializable {
      * @return notification type
      */
     @Column(columnDefinition = "type")
-    @Type(type = "com.redhat.rhn.domain.notification.types.NotificationTypeEnumType")
+    @Type(value = com.redhat.rhn.domain.notification.types.NotificationTypeEnumType.class)
     public NotificationType getType() {
         return type;
     }
@@ -136,7 +134,6 @@ public class NotificationMessage implements Serializable {
     * @return Returns the created date.
     */
     @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created")
     public Date getCreated() {
         return created;

@@ -387,14 +387,14 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testClonedVendorChannelMandadory() throws Exception {
-        SUSEProductTestUtils.createVendorSUSEProductEnvironment(
-                user, "/com/redhat/rhn/manager/content/test/smallBase", true);
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user,
+                "/com/redhat/rhn/manager/content/test/smallBase", true);
+        TestUtils.clearSession();
 
         SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1575));
         SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1576));
         SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1580));
-
-
+        TestUtils.clearSession();
 
         Channel baseChannel = ChannelFactory.lookupByLabel("sle-product-sles15-pool-x86_64");
         Channel basesystemPool = ChannelFactory.lookupByLabel("sle-module-basesystem15-pool-x86_64");
@@ -521,18 +521,19 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
     public void testUpdateChannelsPillar() throws Exception {
         MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
         testMinionServer.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
-        testMinionServer = TestUtils.saveAndReload(testMinionServer);
+        testMinionServer = ServerFactory.save(testMinionServer);
 
-        SUSEProductTestUtils.createVendorSUSEProductEnvironment(
-                user, "/com/redhat/rhn/manager/content/test/smallBase", true);
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user,
+                "/com/redhat/rhn/manager/content/test/smallBase", true);
+        TestUtils.clearSession();
 
         // SLES12 GA
         SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1117));
         SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1150));
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.clearSession();
+
+        user = TestUtils.reload(user);
+        testMinionServer = TestUtils.reload(testMinionServer);
 
         Channel pool = ChannelFactory.lookupByLabel("sles12-pool-x86_64");
         Channel update = ChannelFactory.lookupByLabel("sles12-updates-x86_64");
@@ -561,16 +562,15 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         SystemManager.subscribeServerToChannel(user, testMinionServer, update);
         SystemManager.subscribeServerToChannel(user, testMinionServer, legacy);
 
-
         // Refresh pillar data for the assigned clients
-        MinionPillarManager.INSTANCE.generatePillar(testMinionServer, true,
-                MinionPillarManager.PillarSubset.GENERAL);
+        MinionPillarManager.INSTANCE.generatePillar(testMinionServer, true, MinionPillarManager.PillarSubset.GENERAL);
         Pillar pillar = testMinionServer.getPillarByCategory(MinionGeneralPillarGenerator.CATEGORY).orElseThrow();
         Object channelPillar = pillar.getPillar().get("channels");
 
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
                 .create();
+
         InputStreamReader inReaderProducts = new InputStreamReader(ContentSyncManager.class
                 .getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/productsUnscoped.json"));
         List<SCCProductJson> productsChanged = gson.fromJson(
@@ -587,8 +587,6 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
 
         ContentSyncManager csm = new SUSEProductTestUtils.TestContentSyncManager();
         csm.updateSUSEProducts(productsChanged, staticTreeChanged, additionalRepos);
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
 
         Channel changedPool = ChannelFactory.lookupByLabel("sles12-pool-x86_64");
         Channel changedUpdate = ChannelFactory.lookupByLabel("sles12-updates-x86_64");
@@ -613,10 +611,11 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals("file:///usr/lib/rpm/gnupg/keys/gpg-pubkey-39db7c82-5f68629b.asc " +
                         "file:///etc/pki/rpm-gpg/suse-addon-97a636db0bad8ecc.key",
                 changedLegacy.getGPGKeyUrl());
-        Pillar pillarChanged = testMinionServer.getPillarByCategory(MinionGeneralPillarGenerator.CATEGORY)
+
+        Pillar pillarChanged = testMinionServer
+                .getPillarByCategory(MinionGeneralPillarGenerator.CATEGORY)
                 .orElseThrow();
-        Map<String, Map<String, String>> changedChannelPillar = (Map<String, Map<String, String>>) pillarChanged
-                .getPillar().get("channels");
+        var changedChannelPillar = (Map<String, Map<String, String>>) pillarChanged.getPillar().get("channels");
         assertNotEquals(channelPillar, changedChannelPillar);
         assertEquals("file:///usr/lib/rpm/gnupg/keys/gpg-pubkey-39db7c82-5f68629b.asc " +
                         "file:///etc/pki/rpm-gpg/suse-addon-97a636db0bad8ecc.key",
@@ -1604,12 +1603,12 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         if (SUSEProductFactory.lookupByProductId(10012345) == null) {
             p = SUSEProductTestUtils.createTestSUSEProduct(family);
             p.setProductId(10012345);
-            TestUtils.saveAndFlush(p);
+            p = TestUtils.saveAndFlush(p);
         }
         if (SUSEProductFactory.lookupByProductId(10012346) == null) {
             p = SUSEProductTestUtils.createTestSUSEProduct(family);
             p.setProductId(10012346);
-            TestUtils.saveAndFlush(p);
+            p = TestUtils.saveAndFlush(p);
         }
 
         // Update the upgrade paths
@@ -2205,7 +2204,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
             csm.updateSUSEProducts(csm.getProducts());
             csm.updateRepositories(null);
 
-            clearSession();
+            TestUtils.clearSession();
 
             SUSEProduct sles = SUSEProductFactory.lookupByProductId(1117);
             SUSEProduct slewe = SUSEProductFactory.lookupByProductId(1222);
@@ -2218,12 +2217,12 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
             SUSEProductTestUtils.createVendorSUSEProductEnvironment(
                     user, "/com/redhat/rhn/manager/content/test/smallBase", true);
 
-            clearSession();
+            TestUtils.clearSession();
 
             csm = new SUSEProductTestUtils.TestContentSyncManager();
             csm.linkAndRefreshContentSource(null);
 
-            clearSession();
+            TestUtils.clearSession();
 
             sles = SUSEProductFactory.lookupByProductId(1117);
             slewe = SUSEProductFactory.lookupByProductId(1222);
@@ -2335,12 +2334,12 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         for (Channel c : ChannelFactory.listVendorChannels()) {
             c.setLabel(TestUtils.randomString());
             c.setName(TestUtils.randomString());
-            TestUtils.saveAndFlush(c);
+            c = TestUtils.saveAndFlush(c);
         }
         for (ContentSource cs : ChannelFactory.listVendorContentSources()) {
             cs.setLabel(TestUtils.randomString());
             cs.setSourceUrl(TestUtils.randomString());
-            TestUtils.saveAndFlush(cs);
+            cs = TestUtils.saveAndFlush(cs);
         }
     }
 

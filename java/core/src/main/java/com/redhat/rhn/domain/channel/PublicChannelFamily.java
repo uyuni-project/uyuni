@@ -19,14 +19,14 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.MapsId;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 
 /**
  * POJO for a rhnPublicChannelFamily row.
@@ -38,7 +38,7 @@ public class PublicChannelFamily extends BaseDomainHelper {
     /** The id, which is also the associated channel family id */
     @Id
     @Column(name = "channel_family_id")
-    private long id;
+    private Long id;
 
     /** The channel family. */
     @OneToOne(fetch = FetchType.LAZY)
@@ -50,7 +50,7 @@ public class PublicChannelFamily extends BaseDomainHelper {
      * Gets the channel family id.
      * @return the channel family id.
      */
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -58,7 +58,7 @@ public class PublicChannelFamily extends BaseDomainHelper {
      * Sets the channel family id.
      * @param idIn The channel family id to set.
      */
-    public void setId(long idIn) {
+    public void setId(Long idIn) {
         this.id = idIn;
     }
 

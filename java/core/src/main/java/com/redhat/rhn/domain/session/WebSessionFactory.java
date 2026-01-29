@@ -65,10 +65,12 @@ public class WebSessionFactory extends HibernateFactory {
 
     /**
      * Insert or Update a Session.
+     *
      * @param webSession WebSession to be stored in database.
+     * @return the managed {@link WebSession} instance
      */
-    public static void save(WebSession webSession) {
-        singleton.saveObject(webSession);
+    public static WebSession save(WebSession webSession) {
+        return singleton.saveObject(webSession);
     }
 
     /**
@@ -86,10 +88,9 @@ public class WebSessionFactory extends HibernateFactory {
      * a deactivated user's sessions to be alive..
      * @param user the user whose sessions are to be purged.
      */
-    @SuppressWarnings("unchecked")
     public static void purgeUserSessions(User user) {
         Session session = HibernateFactory.getSession();
-        session.createQuery("DELETE FROM WebSessionImpl w WHERE w.webUserId = :user_id")
+        session.createMutationQuery("DELETE FROM WebSessionImpl w WHERE w.webUserId = :user_id")
                 .setParameter("user_id", user.getId())
                 .executeUpdate();
     }

@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LLC
  * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -23,6 +24,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerNetAddress4;
+import com.redhat.rhn.domain.server.ServerNetworkFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
@@ -123,15 +125,18 @@ public class NetworkInterfaceTest extends RhnBaseTestCase {
         netint.setHwaddr(macAddress);
         netint.setModule("test");
         netint.setName(networkName);
-        ServerNetAddress4 netAddr = new ServerNetAddress4();
-        netAddr.setAddress(ipAddress);
+        netint.setServer(server);
+        netint = TestUtils.save(netint);
+
+        ServerNetAddress4 netAddr = new ServerNetAddress4(netint.getInterfaceId(), ipAddress);
+        ServerNetworkFactory.saveServerNetAddress4(netAddr);
+
         ArrayList<ServerNetAddress4> salist = new ArrayList<>();
         salist.add(netAddr);
         netint.setSa4(salist);
+
         server.addNetworkInterface(netint);
-        netint = (NetworkInterface) TestUtils.saveAndReload(netint);
-        netAddr.setInterfaceId(netint.getInterfaceId());
-        TestUtils.saveAndFlush(netAddr);
+
         return netint;
     }
 }

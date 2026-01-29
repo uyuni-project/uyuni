@@ -20,18 +20,16 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.StringJoiner;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 
 /**
  * Entity that represent the result of computation made by
@@ -60,8 +58,11 @@ public class PaygDimensionComputation {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "paygDimensionComputation_seq")
-    @SequenceGenerator(name = "paygDimensionComputation_seq", sequenceName = "susePaygDimensionComputation_id_seq",
-            allocationSize = 1)
+    @SequenceGenerator(
+            name = "paygDimensionComputation_seq",
+            sequenceName = "susePaygDimensionComputation_id_seq",
+            allocationSize = 1
+    )
     public Long getId() {
         return id;
     }
@@ -70,7 +71,6 @@ public class PaygDimensionComputation {
         this.id = idIn;
     }
 
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "timestamp")
     public Date getTimestamp() {
         return timestamp;

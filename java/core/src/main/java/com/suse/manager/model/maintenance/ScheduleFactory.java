@@ -37,10 +37,12 @@ public class ScheduleFactory extends HibernateFactory {
 
     /**
      * Save a MaintenanceSchedule
+     *
      * @param schedule the schedule
+     * @return the managed {@link MaintenanceSchedule} instance
      */
-    public void save(MaintenanceSchedule schedule) {
-        saveObject(schedule);
+    public MaintenanceSchedule save(MaintenanceSchedule schedule) {
+        return saveObject(schedule);
     }
 
     /**

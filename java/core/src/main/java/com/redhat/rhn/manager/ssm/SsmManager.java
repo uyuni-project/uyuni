@@ -47,7 +47,6 @@ import com.suse.manager.webui.utils.gson.SsmBaseChannelChangesDto;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.type.LongType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -75,15 +74,6 @@ public class SsmManager {
     private static final Logger LOG = LogManager.getLogger(SsmManager.class);
 
     public static final String SSM_SYSTEM_FEATURE = "ftr_system_grouping";
-
-    private static final String LIST_SSM_SERVERS_IN_CHANNEL_SQL = """
-        SELECT ST.element as server_id
-        FROM rhnSet ST
-        JOIN rhnServerChannel rsc ON ST.element = rsc.server_id
-        WHERE ST.user_id = :user_id
-        AND ST.label = :set_label
-        AND rsc.channel_id = :channel_id
-    """;
 
     /** Private constructor to enforce the stateless nature of this class. */
     private SsmManager() {
@@ -362,12 +352,22 @@ public class SsmManager {
      */
     @SuppressWarnings("unchecked")
     public static Set<Long> listSsmServerIdsInChannel(User user, Long channelId) {
-        var query = HibernateFactory.getSession().createNativeQuery(LIST_SSM_SERVERS_IN_CHANNEL_SQL);
-        query.addScalar("server_id", LongType.INSTANCE);
-        query.setParameter("user_id", user.getId())
-            .setParameter("set_label", RhnSetDecl.SYSTEMS.getLabel())
-            .setParameter("channel_id", channelId);
-        List<Long> results = query.getResultList();
+        String sql = """
+                SELECT ST.element as server_id
+                FROM rhnSet ST
+                JOIN rhnServerChannel rsc ON ST.element = rsc.server_id
+                WHERE ST.user_id = :user_id
+                AND ST.label = :set_label
+                AND rsc.channel_id = :channel_id
+                """;
+
+        List<Long> results = HibernateFactory.getSession().createNativeQuery(sql, Long.class)
+                .addSynchronizedEntityClass(Server.class)
+                .addScalar("server_id", Long.class)
+                .setParameter("user_id", user.getId())
+                .setParameter("set_label", RhnSetDecl.SYSTEMS.getLabel())
+                .setParameter("channel_id", channelId)
+                .getResultList();
         return new HashSet<>(results);
     }
 

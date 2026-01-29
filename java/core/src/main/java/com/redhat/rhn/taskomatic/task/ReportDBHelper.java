@@ -269,7 +269,7 @@ public class ReportDBHelper {
 
         // PostgreSQL doesn't accept identifiers and passwords as parameters
         var sql = "ALTER USER %1$s PASSWORD '%2$s'".formatted(username, password.replace("'", "''"));
-        session.createNativeQuery(sql).executeUpdate();
+        session.createNativeMutationQuery(sql).executeUpdate();
     }
 
     /**
@@ -293,10 +293,10 @@ public class ReportDBHelper {
         //just to be sure that user doesn't have any permission, because in that case the drop role might fails
         revokeDBUser(session, dbName, username);
 
-        session.createNativeQuery(("GRANT %1$s TO current_user").formatted(username)).executeUpdate();
-        session.createNativeQuery("REASSIGN OWNED BY %1$s TO current_user".formatted(username)).executeUpdate();
-        session.createNativeQuery("DROP OWNED BY %1$s".formatted(username)).executeUpdate();
-        session.createNativeQuery("DROP ROLE %1$s".formatted(username)).executeUpdate();
+        session.createNativeMutationQuery(("GRANT %1$s TO current_user").formatted(username)).executeUpdate();
+        session.createNativeMutationQuery("REASSIGN OWNED BY %1$s TO current_user".formatted(username)).executeUpdate();
+        session.createNativeMutationQuery("DROP OWNED BY %1$s".formatted(username)).executeUpdate();
+        session.createNativeMutationQuery("DROP ROLE %1$s".formatted(username)).executeUpdate();
 
     }
 }
