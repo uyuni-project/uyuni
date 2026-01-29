@@ -26,7 +26,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.conf.Config;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -1013,7 +1012,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                 assertEquals("Y", ethNames.get("eth1").getPrimary());
         });
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         Action action = ActionFactoryTest.createAction(
                 user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
@@ -1027,7 +1026,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
     }
 
     @Test
@@ -1062,7 +1061,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             }
         );
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         Action action = ActionFactoryTest.createAction(
                 user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
@@ -1455,7 +1454,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         ImageStore store = ImageTestUtils.createImageStore("test-docker-registry:5000", user);
         ImageProfile profile = ImageTestUtils.createImageProfile(imageName, store, user);
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         ImageInfo imgInfoBuild1 = doTestContainerImageBuild(server, imageName, imageVersion, profile,
                 // assert initial revision number
                 imgInfo -> assertEquals(1, imgInfo.getRevisionNumber()));
@@ -1757,7 +1756,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             assertEquals(pathPrefix + "POS_Image_JeOS7.x86_64-7.0.0", file.getFile());
         });
         ImageInfoFactory.delete(image, saltServiceMock);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
     }
 
     @Test
@@ -1805,7 +1804,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                     info.getImageFiles().stream().findFirst().get().getFile());
         });
         ImageInfoFactory.delete(image, saltServiceMock);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
     }
 
     @Test
@@ -2146,7 +2145,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         action.addServerAction(sa);
 
         saltServerActionService.callsForAction(action);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         // artifically expire tokens
         minion.getAccessTokens().forEach(t -> t.setMinion(null));

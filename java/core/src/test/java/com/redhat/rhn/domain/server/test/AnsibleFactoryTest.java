@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.server.ansible.AnsiblePath;
 import com.redhat.rhn.domain.server.ansible.InventoryPath;
 import com.redhat.rhn.domain.server.ansible.PlaybookPath;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
 
@@ -55,7 +56,7 @@ public class AnsibleFactoryTest extends BaseTestCaseWithUser {
         assertNotNull(inventoryPath.getId());
         assertNotNull(playbookPath.getId());
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         // let's get those entities out of the session
         HibernateFactory.getSession().evict(inventoryPath);
         HibernateFactory.getSession().evict(playbookPath);

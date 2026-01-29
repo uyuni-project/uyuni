@@ -23,7 +23,6 @@ import static com.redhat.rhn.testing.ErrataTestUtils.createTestVendorChildChanne
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.redhat.rhn.GlobalInstanceHolder;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelProduct;
@@ -214,7 +213,7 @@ public class AdminConfigurationHandlerTest extends BaseHandlerTestCase {
                 TestUtils.randomString(), TestUtils.randomString());
 
         Channel channel = ChannelFactoryTest.createTestChannel(admin1);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         // the MinionServerFactoryTest.createTestMinionServer call above creates also a new group, update the number
         nGroups1 = ServerGroupFactory.listManagedGroups(org1).size();

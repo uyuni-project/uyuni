@@ -22,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainEntry;
@@ -235,7 +234,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
         ActionChainEntry entry = ActionChainFactory.queueActionChainEntry(action,
             actionChain, ServerFactoryTest.createTestServer(user), 0);
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         ActionChainEntry retrievedEntry = ActionChainFactory.getActionChainEntry(user,
             entry.getId());
@@ -534,7 +533,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
         String jobLabel = TaskomaticApi.MINION_ACTIONCHAIN_JOB_PREFIX + actionChain.getId();
         List<TaskoSchedule> schedules = TaskoFactory.listScheduleByLabel(jobLabel);
         assertEquals(1, schedules.size());
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         Action actionServer1 = ActionFactory.lookupById(firstActionIdServer1);
         tapi.deleteScheduledActions(Map.of(actionServer1, Set.of(server1)));
@@ -545,11 +544,11 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
                 ActionFactory.delete(sa);
             }
         });
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         schedules = TaskoFactory.listScheduleByLabel(jobLabel);
         assertEquals(1, schedules.size());
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         Action actionServer2 = ActionFactory.lookupById(firstActionIdServer2);
         tapi.deleteScheduledActions(Collections.singletonMap(actionServer2, Set.of(server2)));

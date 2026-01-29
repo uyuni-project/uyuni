@@ -87,7 +87,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
             attempt.setLabel(label);
             attempt.setName(label);
             HibernateFactory.getSession().persist(attempt);
-            HibernateFactory.getSession().flush();
+            TestUtils.flushSession();
         }
         return attempt;
     }
@@ -225,7 +225,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         c.setChannelFamily(cfam);
         c.setChecksumType(ct);
         Channel save = ChannelFactory.save(c);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         return save;
     }
 

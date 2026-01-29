@@ -19,7 +19,6 @@ import static org.jmock.AbstractExpectations.returnValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
@@ -125,7 +124,7 @@ public class MinionActionExecutorTest extends JMockBaseTestCaseWithUser {
             new TestCloudPaygManagerBuilder().build());
         actionExecutor.execute(context);
 
-        HibernateFactory.getSession().clear();
+        TestUtils.clearSession();
 
         sa1 = TestUtils.reload(sa1);
         sa2 = TestUtils.reload(sa2);

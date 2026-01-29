@@ -25,7 +25,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
@@ -186,7 +185,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         VirtualInstance refGuest4 = createVirtualInstance(m2hyp, g4, uuid4);
         m2hyp.addGuest(refGuest4);
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         // tell MatcherJsonIO to include self system in the JSON output, which would happen
         // if the running SUMA is an ISS Master
@@ -502,7 +501,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         // let's entitle the servers and check again
         entitleServerMonitoring(hostServer);
         entitleServerMonitoring(guestServer);
-        HibernateFactory.getSession().clear();
+        TestUtils.clearSession();
 
         systems = matcherInput.getJsonSystems(AMD64_ARCH, false, selfMonitoringEnabled, true);
         host = findSystem(hostServer.getId(), systems);
@@ -628,7 +627,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
             // this will also refresh the DB cache of subscriptions
             Collection<SCCSubscriptionJson> s;
             s = cm.updateSubscriptions();
-            HibernateFactory.getSession().flush();
+            TestUtils.flushSession();
             assertNotNull(s);
 
             body.run();
@@ -716,7 +715,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
 
             ContentSyncManager cm = new SUSEProductTestUtils.TestContentSyncManager();
             Collection<SCCSubscriptionJson> s = cm.updateSubscriptions();
-            HibernateFactory.getSession().flush();
+            TestUtils.flushSession();
 
             PinnedSubscription pin = new PinnedSubscription();
             pin.setSystemId(h1.getId());

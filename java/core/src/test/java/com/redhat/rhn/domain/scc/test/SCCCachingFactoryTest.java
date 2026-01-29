@@ -86,7 +86,7 @@ public class SCCCachingFactoryTest extends BaseTestCaseWithUser {
         creds.setModified(new Date(System.currentTimeMillis()));
         HibernateFactory.getSession().persist(creds);
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         TimeUnit.SECONDS.sleep(1);
         ManagerInfoFactory.setLastMgrSyncRefresh();
@@ -109,7 +109,7 @@ public class SCCCachingFactoryTest extends BaseTestCaseWithUser {
         creds.setModified(new Date(System.currentTimeMillis()));
         HibernateFactory.getSession().persist(creds);
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         assertTrue(SCCCachingFactory.refreshNeeded(lastRefreshDate));
     }
 

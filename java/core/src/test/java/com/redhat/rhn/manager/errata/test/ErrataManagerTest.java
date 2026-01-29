@@ -460,7 +460,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
                 server1.getId(), errata3.getId(), package3.getId());
         ErrataCacheManager.insertNeededErrataCache(
                 server2.getId(), errata3.getId(), package3.getId());
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         List<Long> errataIds = new ArrayList<>();
         errataIds.add(errata1.getId());
@@ -603,7 +603,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
                 server1.getId(), yumErrata2.getId(), yumPackage2.getId());
         ErrataCacheManager.insertNeededErrataCache(
                 server2.getId(), yumErrata1.getId(), yumPackage1.getId());
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         List<Long> errataIds = new ArrayList<>();
         errataIds.add(errata1.getId());
@@ -812,7 +812,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
                 server1.getId(), yumErrata2.getId(), yumPackage2.getId());
         ErrataCacheManager.insertNeededErrataCache(
                 server2.getId(), yumErrata1.getId(), yumPackage1.getId());
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         List<Long> errataIds = new ArrayList<>();
         errataIds.add(errata1.getId());
@@ -1010,7 +1010,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
                 server2.getId(), errata1.getId(), package1.getId());
         ErrataCacheManager.insertNeededErrataCache(
                 server2.getId(), errata2.getId(), package2.getId());
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         List<Long> errataIds = new ArrayList<>();
         errataIds.add(errata1.getId());
@@ -1109,7 +1109,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
                 server2.getId(), errata1.getId(), package1.getId());
         ErrataCacheManager.insertNeededErrataCache(
                 server2.getId(), errata2.getId(), package2.getId());
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         List<Long> errataIds = new ArrayList<>();
         errataIds.add(errata1.getId());
@@ -1212,7 +1212,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
                 server2.getId(), errata1.getId(), package1.getId());
         ErrataCacheManager.insertNeededErrataCache(
                 server2.getId(), errata2.getId(), package2.getId());
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         List<Long> errataIds = new ArrayList<>();
         errataIds.add(errata1.getId());
@@ -1326,7 +1326,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
                 server2.getId(), errata1.getId(), package1.getId());
         ErrataCacheManager.insertNeededErrataCache(
                 server2.getId(), errata2.getId(), package2.getId());
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         List<Long> errataIds = new ArrayList<>();
         errataIds.add(errata1.getId());
@@ -1433,7 +1433,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
                 server2.getId(), errata1.getId(), package1.getId());
         ErrataCacheManager.insertNeededErrataCache(
                 server2.getId(), errata2.getId(), package2.getId());
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         List<Long> errataIds = new ArrayList<>();
         errataIds.add(errata1.getId());
@@ -1557,7 +1557,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
                 server.getId(), errata2.getId(), package2.getId());
         ErrataCacheManager.insertNeededErrataCache(
                 server.getId(), errata3.getId(), package3.getId());
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         assertFalse(ErrataManager.updateStackUpdateNeeded(user, server));
 

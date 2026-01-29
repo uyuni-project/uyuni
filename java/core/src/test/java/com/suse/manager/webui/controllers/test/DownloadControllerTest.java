@@ -922,7 +922,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
 
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(user,
                 "/com/redhat/rhn/manager/content/test/smallBase", true);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         // Test case - Token passed minion has no products
         Token token = new DownloadTokenBuilder(user.getOrg().getId())

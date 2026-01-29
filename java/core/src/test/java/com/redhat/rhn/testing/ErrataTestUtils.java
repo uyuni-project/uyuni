@@ -111,7 +111,7 @@ public class ErrataTestUtils {
         parameters.put("cid", channel.getId());
 
         m.executeUpdate(parameters);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
     }
 
     /**
@@ -337,7 +337,7 @@ public class ErrataTestUtils {
 
         if (errata != null) {
             errata.addPackage(result);
-            HibernateFactory.getSession().flush();
+            TestUtils.flushSession();
             HibernateFactory.getSession().refresh(errata);
             HibernateFactory.getSession().refresh(result);
         }

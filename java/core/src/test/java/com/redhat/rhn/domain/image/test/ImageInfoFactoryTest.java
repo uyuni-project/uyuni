@@ -565,11 +565,11 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
 
         ImageInfoFactory.save(image);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         ImageInfoFactory.delete(image, saltApiMock);
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         assertFalse(user.getOrg().getPillars().stream()
               .filter(item -> (category.equals(item.getCategory())))
@@ -597,24 +597,24 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         ImageInfo img2 = createImageInfo("test", "1.0.1", store, user);
         ImageInfo img3 = createImageInfo("test", "1.0.2", store, user);
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         DeltaImageInfo delta1 = ImageInfoFactory.createDeltaImageInfo(img1, img2,
                                                  "delta1.tgz", new TreeMap<String, Object>());
         ImageInfoFactory.createDeltaImageInfo(img2, img3,
                                                  "delta2.tgz", new TreeMap<String, Object>());
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         assertEquals(3, ImageInfoFactory.listImageInfos(org).size());
         assertEquals(2, ImageInfoFactory.listDeltaImageInfos(org).size());
         assertEquals(2, org.getPillars().size()); //each delta has a pillar
-        HibernateFactory.getSession().clear();
+        TestUtils.clearSession();
 
         img3 = TestUtils.reload(img3);
         // deleting a target image should delete also the delta
         ImageInfoFactory.delete(img3, saltApiMock);
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         org = TestUtils.reload(org);
 
         assertEquals(2, ImageInfoFactory.listImageInfos(org).size());
@@ -625,7 +625,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         // deleting a delta should not delete the images
         ImageInfoFactory.deleteDeltaImage(delta1, saltApiMock);
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         org = TestUtils.reload(org);
 
         assertEquals(2, ImageInfoFactory.listImageInfos(org).size());
@@ -636,7 +636,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         // deleting a source image should delete also the delta
         ImageInfoFactory.delete(img1, saltApiMock);
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         org = TestUtils.reload(org);
 
         assertEquals(1, ImageInfoFactory.listImageInfos(org).size());

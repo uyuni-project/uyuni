@@ -82,7 +82,7 @@ public class SystemManagerMockTest extends JMockBaseTestCaseWithUser {
         AccessToken tokenBase = AccessTokenFactory.generate(minionServer, Collections.singleton(base)).get();
         AccessToken tokenChild = AccessTokenFactory.generate(minionServer, Collections.singleton(child)).get();
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         HibernateFactory.getSession().refresh(minionServer);
 
         SaltService saltServiceMock = mock(SaltService.class);

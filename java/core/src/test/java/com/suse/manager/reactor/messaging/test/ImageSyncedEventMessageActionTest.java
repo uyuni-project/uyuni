@@ -109,7 +109,7 @@ public class ImageSyncedEventMessageActionTest extends JMockBaseTestCaseWithUser
 
 
         HibernateFactory.getSession().remove(img1);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         testGroup1 = TestUtils.reload(testGroup1);
 
         assertFalse(testGroup1.getPillarByCategory(category).isPresent());

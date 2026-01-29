@@ -21,6 +21,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -41,7 +42,7 @@ public class CredentialsTest extends JMockBaseTestCaseWithUser {
     public void testSCCCredentials() throws Exception {
         SCCCredentials sccCreds = CredentialsFactory.createSCCCredentials("admin", "secret");
         CredentialsFactory.storeCredentials(sccCreds);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         Optional<SCCCredentials> loadedSccCreds = CredentialsFactory.lookupSCCCredentialsById(sccCreds.getId());
         SCCCredentials creds = loadedSccCreds.orElseThrow();

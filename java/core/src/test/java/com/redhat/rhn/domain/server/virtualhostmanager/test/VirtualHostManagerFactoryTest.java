@@ -21,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.Server;
@@ -30,6 +29,7 @@ import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -202,7 +202,7 @@ public class VirtualHostManagerFactoryTest extends BaseTestCaseWithUser {
                 SUSE_CLOUD, config);
 
         vhm.addServer(server);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         factory.delete(vhm);
         assertNotNull(ServerFactory.lookupById(serverId));

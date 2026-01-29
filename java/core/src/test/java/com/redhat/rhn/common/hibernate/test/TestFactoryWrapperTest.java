@@ -356,7 +356,7 @@ public class TestFactoryWrapperTest extends HibernateBaseTest {
         vito.getChildren().add(connie);
 
         //
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         TestFactory.closeSession();
         assertFalse(HibernateFactory.getSession().contains(vito));
         assertFalse(HibernateFactory.getSession().contains(connie));

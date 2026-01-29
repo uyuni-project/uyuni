@@ -99,7 +99,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         ContentProjectFactory.save(envint);
         ContentProjectFactory.insertEnvironment(envint, of(envdev));
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         ContentProject fromDb = ContentProjectFactory.lookupProjectByLabelAndOrg("project1", user.getOrg()).get();
         assertEquals("project1", fromDb.getLabel());
@@ -397,7 +397,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         fstEntry.setMessage("First Content Project build");
         fstEntry.setUser(user);
         ContentProjectFactory.addHistoryEntryToProject(cp, fstEntry);
-        HibernateFactory.getSession().flush(); // so that the CreationTimestamp gets updated
+        TestUtils.flushSession(); // so that the CreationTimestamp gets updated
 
         ContentProjectHistoryEntry sndEntry = new ContentProjectHistoryEntry();
         sndEntry.setMessage("Second Content Project build");

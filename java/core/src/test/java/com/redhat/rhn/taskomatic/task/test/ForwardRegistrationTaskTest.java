@@ -38,6 +38,7 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
+import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.hub.test.ControllerTestUtils;
 import com.suse.manager.model.hub.HubFactory;
@@ -542,7 +543,7 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
                 systemSize += 1;
             }
         });
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         SCCCachingFactory.initNewSystemsToForward();
         List<SCCRegCacheItem> allUnregistered = SCCCachingFactory.findSystemsToForwardRegistration();

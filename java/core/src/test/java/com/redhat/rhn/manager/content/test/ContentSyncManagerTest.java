@@ -193,7 +193,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         subscriptions.add(s2);
 
         csm.refreshSubscriptionCache(subscriptions, new SCCContentSyncSource(cred1));
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         com.redhat.rhn.domain.scc.SCCSubscription one = SCCCachingFactory.lookupSubscriptionBySccId(1L);
         assertEquals(s1.getName(), one.getName());
@@ -202,7 +202,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
 
         subscriptions.remove(s2);
         csm.refreshSubscriptionCache(subscriptions, new SCCContentSyncSource(cred1));
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         one = SCCCachingFactory.lookupSubscriptionBySccId(1L);
         assertEquals(s1.getName(), one.getName());
@@ -249,7 +249,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
                         dbs.getExpiresAt());
             }
             s = cm.updateSubscriptions();
-            HibernateFactory.getSession().flush();
+            TestUtils.flushSession();
             for (SCCOrderItem item : SCCCachingFactory.lookupOrderItems()) {
                 if (item.getSccId() == 9998L) {
                     assertEquals(10, item.getQuantity().longValue());
@@ -277,7 +277,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
             Files.copy(subJson2.toPath(), subtempFile.toPath());
             Files.copy(orderJson2.toPath(), ordertempFile.toPath());
             s = cm.updateSubscriptions();
-            HibernateFactory.getSession().flush();
+            TestUtils.flushSession();
             assertTrue(cm.hasToolsChannelSubscription(), "Should have a SUSE Manager Server Subscription");
         }
         finally {
@@ -1646,7 +1646,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         ContentSyncManager csm = new SUSEProductTestUtils.TestContentSyncManager();
         csm.setSumaProductTreeJson(Optional.of(new File("/usr/share/susemanager/scc/product_tree.json")));
         csm.updateSUSEProducts(products);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         // There should be an upgrade path from product1 to product2
         assertEquals(1, SUSEProductFactory.lookupByProductId(product1Id).getUpgrades().size());
@@ -1655,7 +1655,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         products.remove(product1);
         csm.updateSUSEProducts(Collections.singletonList(
                 product2.copy().setOnlinePredecessorIds(Collections.emptyList()).build()));
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         // There should be no upgrade paths
         assertTrue(SUSEProductFactory.lookupByProductId(product1Id).getUpgrades().isEmpty());
@@ -2251,18 +2251,18 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         spc.setProduct(product);
 
         SUSEProductFactory.save(spc);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         // change the product
         spc.setProduct(product2);
         SUSEProductFactory.save(spc);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         // removes the changed product
         SUSEProductFactory.remove(spc);
 
         // flushes again, used to fail with exception in bsc#932052
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
     }
 
     /**

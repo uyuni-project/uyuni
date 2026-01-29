@@ -753,7 +753,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         ChannelFamily channelFamily = createTestChannelFamily();
         SUSEProduct product = SUSEProductTestUtils.createTestSUSEProduct(channelFamily);
         Channel baseChannelX8664 = setupBaseAndRequiredChannels(channelFamily, product);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         executeTest(
                 (key) -> new Expectations() {{
                     allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
@@ -894,7 +894,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         Channel baseChannelX8664 = setupBaseAndRequiredChannels(channelFamily, product);
         ConfigChannel cfgChannel = ConfigTestUtils.createConfigChannel(user.getOrg(),
                 "Config channel 1", "config-channel-1");
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         executeTest(
                 (key) -> new Expectations() {{
                     MinionStartupGrains.SuseManagerGrain suseManagerGrain =
@@ -1041,7 +1041,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                         .toList() : null;
         Channel baseChannel = channels != null ? channels.get(0) : null;
         MinionPendingRegistrationService.addMinion(user, MINION_ID, ContactMethodUtil.DEFAULT);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         try {
             executeTest(
                     (key) -> new Expectations() {{
@@ -1709,7 +1709,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         ServerFactory.save(oldMinion);
 
         createTestChannelFamily();
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         executeTest(
                 (key) -> new Expectations() {{
                     MinionStartupGrains.SuseManagerGrain suseManagerGrain =

@@ -20,7 +20,6 @@ import static org.jmock.AbstractExpectations.returnValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
@@ -133,7 +132,7 @@ public class MinionActionChainExecutorTest extends JMockBaseTestCaseWithUser {
         String expectedMessage = LOCALIZATION.getMessage("task.action.rejection.reason",
             MinionActionExecutor.MAXIMUM_TIMEDELTA_FOR_SCHEDULED_ACTIONS);
 
-        HibernateFactory.getSession().clear();
+        TestUtils.clearSession();
 
         sa1 = TestUtils.reload(sa1);
         sa2 = TestUtils.reload(sa2);

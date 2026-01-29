@@ -413,7 +413,7 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         ServerAction sa2 = addServerAction(user, a1, ServerAction::setStatusQueued);
 
         ActionFactory.save(a1);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         HibernateFactory.getSession().evict(sa1);
         HibernateFactory.getSession().evict(sa2);
         HibernateFactory.getSession().evict(a1);

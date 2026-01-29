@@ -370,7 +370,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
     public void testFindAllOrgAdmins() {
         User user = new UserTestUtils.UserBuilder().orgName("findAdminsOrg").orgAdmin(true).build();
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         List<UserImpl> orgAdmins = UserFactory.getInstance().findAllOrgAdmins(user.getOrg());
         assertEquals(1, orgAdmins.size());
         assertTrue(orgAdmins.contains(user));

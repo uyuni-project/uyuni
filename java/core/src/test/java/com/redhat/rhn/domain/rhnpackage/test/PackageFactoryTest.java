@@ -19,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.org.Org;
@@ -136,7 +135,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
         pkg = PackageFactory.lookupByIdAndOrg(id, org);
         PackageFactory.deletePackage(pkg);
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
     }
 

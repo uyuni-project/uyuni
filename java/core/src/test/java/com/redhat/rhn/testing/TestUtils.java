@@ -677,12 +677,27 @@ public class TestUtils {
 
 
     /**
-     * Clears hibernate session
+     * Flushes and clears hibernate session
      */
     public static void flushAndClearSession() {
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
     }
+
+    /**
+     * Flushes hibernate session
+     */
+    public static void flushSession() {
+        HibernateFactory.getSession().flush();
+    }
+
+    /**
+     * Clears hibernate session
+     */
+    public static void clearSession() {
+        HibernateFactory.getSession().clear();
+    }
+
 
     /**
      * PLEASE Refrain from using this unless you really have to.

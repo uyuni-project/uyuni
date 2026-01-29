@@ -535,7 +535,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
                 ChannelManager.RHEL_PRODUCT_NAME, version, release2);
         ChannelManagerTest.createReleaseChannelMap(base2,
                 ChannelManager.RHEL_PRODUCT_NAME, version, release3);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         List<EssentialChannelDto> channels = ChannelManager.listBaseChannelsForSystem(user, s);
         assertTrue(channels.size() >= 2);

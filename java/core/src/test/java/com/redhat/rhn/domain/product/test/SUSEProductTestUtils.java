@@ -266,7 +266,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
 
         // Insert into suseServerInstalledProduct
         server.setInstalledProducts(products);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
     }
 
     /**
@@ -293,7 +293,7 @@ public class SUSEProductTestUtils extends HibernateFactory {
                 })
                 .forEach(server::addInstalledProduct);
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
     }
 
     /**

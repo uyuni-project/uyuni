@@ -119,7 +119,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         ChannelTestUtility.testAddPackage(channel, chanPack);
         e.addPackage(errataPack);
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         List<Errata> errataList = new ArrayList<>();
         errataList.add(e);

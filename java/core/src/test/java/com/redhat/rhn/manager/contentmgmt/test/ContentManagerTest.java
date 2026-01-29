@@ -1544,7 +1544,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
 
         contentManager.buildProject("cplabel", empty(), false, user);
         env.getTargets().iterator().next().setStatus(Status.BUILDING);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         try {
             contentManager.buildProject("cplabel", empty(), false, user);

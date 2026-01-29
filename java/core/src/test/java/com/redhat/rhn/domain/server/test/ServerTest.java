@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetFactory;
@@ -113,7 +112,7 @@ public class ServerTest extends BaseTestCaseWithUser {
         Server s = ServerTestUtils.createTestSystem(user);
         systemUnentitler.removeAllServerEntitlements(s);
         UserTestUtils.addManagement(s.getCreator().getOrg());
-        HibernateFactory.getSession().clear();
+        TestUtils.clearSession();
         s = ServerFactory.lookupById(s.getId());
         systemEntitlementManager.setBaseEntitlement(s, EntitlementManager.MANAGEMENT);
         s = TestUtils.saveAndFlush(s);
