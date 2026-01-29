@@ -414,9 +414,9 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
 
         ActionFactory.save(a1);
         TestUtils.flushSession();
-        HibernateFactory.getSession().evict(sa1);
-        HibernateFactory.getSession().evict(sa2);
-        HibernateFactory.getSession().evict(a1);
+        TestUtils.evict(sa1);
+        TestUtils.evict(sa2);
+        TestUtils.evict(a1);
 
         List<Long> list = new ArrayList<>();
         list.add(sa1.getServerId());

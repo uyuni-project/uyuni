@@ -290,7 +290,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         //Evict from session to make sure that we get a fresh server
         //from the db.
-        HibernateFactory.getSession().evict(server);
+        TestUtils.evict(server);
 
         Server server2 = ServerFactory.lookupByIdAndOrg(id, user.getOrg());
         assertEquals(1, server2.getManagedGroups().size());

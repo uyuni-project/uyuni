@@ -698,6 +698,9 @@ public class TestUtils {
         HibernateFactory.getSession().clear();
     }
 
+    public static void evict(Object obj) {
+        HibernateFactory.getSession().evict(obj);
+    }
 
     /**
      * PLEASE Refrain from using this unless you really have to.

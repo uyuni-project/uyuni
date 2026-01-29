@@ -18,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.config.ConfigContent;
@@ -33,7 +32,6 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
-import org.hibernate.Session;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -213,12 +211,11 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
 
         //We have to evict everything from the session so that hibernate
         //doesn't complain that we removed things out from under its feet.
-        Session session = HibernateFactory.getSession();
-        session.flush();
-        session.evict(channel);
-        session.evict(file);
-        session.evict(cr.getConfigFile());
-        session.evict(cr);
+        TestUtils.flushSession();
+        TestUtils.evict(channel);
+        TestUtils.evict(file);
+        TestUtils.evict(cr.getConfigFile());
+        TestUtils.evict(cr);
 
         //run the method we are testing
         ConfigurationFactory.removeConfigChannel(channel);

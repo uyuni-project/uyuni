@@ -18,7 +18,6 @@ package com.redhat.rhn.manager.system.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -89,7 +88,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
         path = ansibleManager.createAnsiblePath("inventory", minion.getId(), "/tmp/test", user);
 
         TestUtils.flushSession();
-        HibernateFactory.getSession().evict(path);
+        TestUtils.evict(path);
         assertEquals(path, AnsibleManager.lookupAnsiblePathById(path.getId(), user).get());
     }
 
@@ -159,7 +158,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
         AnsiblePath path = ansibleManager.createAnsiblePath("inventory", minion.getId(), "/tmp/test", user);
         path = ansibleManager.updateAnsiblePath(path.getId(), "/tmp/test-updated", user);
         TestUtils.flushSession();
-        HibernateFactory.getSession().evict(path);
+        TestUtils.evict(path);
         AnsiblePath updated = AnsibleManager.lookupAnsiblePathById(path.getId(), user).get();
         assertEquals(path, updated);
     }

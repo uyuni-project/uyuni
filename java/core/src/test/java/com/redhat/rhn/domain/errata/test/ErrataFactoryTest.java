@@ -505,8 +505,8 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
                 original.getPackages().iterator().next());
 
         // let's evict from the cache, otherwise hibernate does not refresh the class
-        HibernateFactory.getSession().evict(original);
-        HibernateFactory.getSession().evict(clone);
+        TestUtils.evict(original);
+        TestUtils.evict(clone);
 
         assertFalse(ErrataFactory.listErrata(
                 Set.of(original.getId()), user.getOrg().getId()).iterator().next().isCloned());

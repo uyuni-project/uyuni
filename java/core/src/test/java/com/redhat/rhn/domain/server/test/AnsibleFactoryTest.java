@@ -19,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.AnsibleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ansible.AnsiblePath;
@@ -58,8 +57,8 @@ public class AnsibleFactoryTest extends BaseTestCaseWithUser {
 
         TestUtils.flushSession();
         // let's get those entities out of the session
-        HibernateFactory.getSession().evict(inventoryPath);
-        HibernateFactory.getSession().evict(playbookPath);
+        TestUtils.evict(inventoryPath);
+        TestUtils.evict(playbookPath);
 
         assertEquals(inventoryPath, AnsibleFactory.lookupAnsiblePathById(inventoryPath.getId()).get());
         assertEquals(inventoryPath, AnsibleFactory.lookupAnsiblePathByPathAndMinion(Path.of("/tmp/test1"),
