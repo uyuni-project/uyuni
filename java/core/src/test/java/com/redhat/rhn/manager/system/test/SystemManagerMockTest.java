@@ -96,7 +96,7 @@ public class SystemManagerMockTest extends JMockBaseTestCaseWithUser {
         var systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltServiceMock);
         systemManager.deleteServer(minionServer.getOrg().getActiveOrgAdmins().get(0), minionServer.getId());
 
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         tokenBase = AccessTokenFactory.lookupById(tokenBase.getId()).orElse(null);
         tokenChild = AccessTokenFactory.lookupById(tokenChild.getId()).orElse(null);

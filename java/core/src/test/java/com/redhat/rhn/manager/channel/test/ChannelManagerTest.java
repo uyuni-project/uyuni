@@ -234,7 +234,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         ChannelFactory.save(channel);
         ChannelFactory.save(childChannel);
 
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         DataResult<ChannelTreeNode> dr = ChannelManager.allChannelTree(user, null);
         assertNotEmpty(dr);
@@ -297,7 +297,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
         ChannelManager.deleteChannel(user, child.getLabel(), true);
         Optional<Long> actionId = ChannelManager.applyChannelState(user, List.of(minionServer));
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         minionServer = MinionServerFactory.findByMinionId(minionServer.getMinionId()).orElse(null);
         assertNotNull(minionServer);
@@ -462,8 +462,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         s.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(user,
                 "/com/redhat/rhn/manager/content/test/data4", true);
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         // "mirror" the products and mandatory base channels
         SUSEProduct resProduct = SUSEProductFactory.findSUSEProduct("res", "7", "", "x86_64", true);
@@ -960,7 +959,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         assertTrue(e.getChannels().contains(c));
 
         ChannelManager.removeErrata(c, Set.of(e.getId()), user);
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         e = ErrataFactory.lookupErrataById(e.getId());
         assertFalse(e.getChannels().contains(c));

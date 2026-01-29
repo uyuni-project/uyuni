@@ -100,7 +100,7 @@ public class OrgTrustHandlerTest extends BaseHandlerTestCase {
 
         OrgFactory.save(admin.getOrg());
         ChannelFactory.save(channel);
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         // execute
         Object[] result = handler.listOrgs(admin);
@@ -138,7 +138,7 @@ public class OrgTrustHandlerTest extends BaseHandlerTestCase {
 
         OrgFactory.save(admin.getOrg());
         ChannelFactory.save(channel);
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         // execute
         Object[] result = handler.listChannelsProvided(admin, org2.getId().intValue());
@@ -170,7 +170,7 @@ public class OrgTrustHandlerTest extends BaseHandlerTestCase {
 
         OrgFactory.save(admin.getOrg());
         ChannelFactory.save(channel);
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         // execute
         Object[] result = handler.listChannelsConsumed(admin, org2.getId().intValue());
@@ -201,7 +201,7 @@ public class OrgTrustHandlerTest extends BaseHandlerTestCase {
 
         OrgFactory.save(admin.getOrg());
         ChannelFactory.save(channel);
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         // execute
         Map<String, Object> result = handler.getDetails(admin, org2.getId().intValue());
@@ -264,7 +264,7 @@ public class OrgTrustHandlerTest extends BaseHandlerTestCase {
                 orgB.getId().intValue());
         Server s = ServerFactoryTest.createTestServer(userB);
         SystemManager.subscribeServerToChannel(userB, s, c);
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
         addAccessGroup(admin, AccessGroupFactory.CHANNEL_ADMIN);
         Package pkg = PackageTest.createTestPackage(orgA);
         List<Long> packages = new ArrayList<>();

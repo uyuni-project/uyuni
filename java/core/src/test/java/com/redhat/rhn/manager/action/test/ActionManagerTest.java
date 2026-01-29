@@ -471,7 +471,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         ServerAction pickedUp = iterator.next();
         Server serverPickedUp = pickedUp.getServer();
 
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         List<Action> actionList = createActionList(action);
         ActionManager.cancelActions(user, actionList);
@@ -1121,8 +1121,7 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
         assertInstanceOf(SubscribeChannelsAction.class, action);
         SubscribeChannelsAction sca = (SubscribeChannelsAction)action;
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         Map<String, Object> params = new HashMap<>();
         params.put("details_id", sca.getDetails().getId());

@@ -465,7 +465,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         /* remove the calendar */
         mcal = mm.lookupCalendarByUserAndLabel(
                 user, "multicalendar").orElseThrow(() -> new RuntimeException("Cannot find Calendar"));
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
         List<RescheduleResult> results = mm.remove(user, mcal, false);
         assertEquals(1, results.size());
         assertFalse(results.get(0).isSuccess());
@@ -567,7 +567,7 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         /* remove the calendar */
         mcal = mm.lookupCalendarByUserAndLabel(user, "multicalendar")
                 .orElseThrow(() -> new RuntimeException("Cannot find Calendar"));
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
         List<RescheduleResult> results = mm.remove(user, mcal, true);
         assertEquals(2, results.size());
         for (RescheduleResult r : results) {

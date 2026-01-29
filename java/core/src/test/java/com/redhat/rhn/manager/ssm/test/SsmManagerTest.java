@@ -50,6 +50,7 @@ import com.redhat.rhn.manager.ssm.SsmServerDto;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.webui.utils.gson.SsmBaseChannelChangesDto;
@@ -684,8 +685,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         List<ScheduleChannelChangesResultDto> results = SsmManager.scheduleChannelChanges(
                 changes, earliest, null, user);
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         assertEquals(2, results.size());
         assertEquals(2,
@@ -789,8 +789,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         List<ScheduleChannelChangesResultDto> results = SsmManager.scheduleChannelChanges(
                 changes, earliest, null, user);
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         assertEquals(2, results.size());
         assertTrue(results.stream().allMatch(r -> r.getErrorMessage().isPresent() &&
@@ -865,8 +864,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         List<ScheduleChannelChangesResultDto> results = SsmManager.scheduleChannelChanges(
                 changes, earliest, null, user);
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         assertEquals(2, results.size());
         assertTrue(results.stream().allMatch(r -> !r.getErrorMessage().isPresent() &&
@@ -966,8 +964,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         List<ScheduleChannelChangesResultDto> results = SsmManager.scheduleChannelChanges(
                 changes, earliest, null, user);
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         assertEquals(2, results.size());
         // no errs
@@ -1051,8 +1048,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         List<ScheduleChannelChangesResultDto> results = SsmManager
                 .scheduleChannelChanges(changes, earliest, null, user);
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         assertEquals(1, results.size());
         assertEquals("incompatible_base", results.stream().findFirst().get().getErrorMessage().get());
@@ -1096,8 +1092,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         List<ScheduleChannelChangesResultDto> results = SsmManager.scheduleChannelChanges(
                 changes, earliest, null, user);
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         assertEquals(1, results.size());
         assertEquals("incompatible_base", results.stream().findFirst().get().getErrorMessage().get());

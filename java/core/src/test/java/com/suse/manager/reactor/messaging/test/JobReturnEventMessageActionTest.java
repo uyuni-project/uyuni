@@ -1429,7 +1429,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         ScapAction.setXccdfResumeXsl(resumeXsl);
         messageAction.execute(message);
 
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
         sa = TestUtils.reload(sa);
         assertTrue(sa.isStatusCompleted());
     }
@@ -1476,8 +1476,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             assertEquals(1, imgInfo.getRevisionNumber());
         });
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         ImageInfo imgInfoBuild2 = doTestContainerImageBuild(server, imageName, imageVersion, profile,
                 // assert revision number incremented
@@ -1539,8 +1538,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             assertEquals(1, imgInfo.getRevisionNumber());
         });
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         ImageInfo imgInfoBuild2 = doTestContainerImageBuild(server, imageName, imageVersion2, profile,
                 imgInfo -> {
@@ -1872,7 +1870,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
                         images.get("POS_Image_JeOS6").get("6.0.0-1").get("hash"));
         });
 
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
         image = TestUtils.reload(image);
 
         ImageInfoFactory.delete(image, saltServiceMock);
@@ -2095,7 +2093,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         JobReturnEventMessageAction messageAction = new JobReturnEventMessageAction(saltServerActionService, saltUtils);
         messageAction.execute(message);
 
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
         sa = TestUtils.reload(sa);
 
         assertTrue(sa.isStatusCompleted());
@@ -2153,8 +2151,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         // artifically expire tokens
         minion.getAccessTokens().forEach(t -> t.setMinion(null));
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         MinionServer reloaded = TestUtils.reload(minion);
         // check that tokens are really gone
@@ -2182,8 +2179,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         ActionFactory.addServerToAction(minion.getId(), runScriptAction);
 
         //need to flush to get the correct dates in database
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         applyStateAction.getServerActions().stream().findFirst().get().setStatusFailed();
 
@@ -2237,8 +2233,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         ServerAction saHighstate = ActionFactoryTest.createServerAction(minion, applyHighstate);
         applyHighstate.addServerAction(saHighstate);
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         Map<String, String> placeholders = new HashMap<>();
         placeholders.put("${minion-id}", minion.getMinionId());
@@ -2298,8 +2293,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         ServerAction saHighstate = ActionFactoryTest.createServerAction(minion, applyHighstate);
         applyHighstate.addServerAction(saHighstate);
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
         Map<String, String> placeholders = new HashMap<>();
         placeholders.put("${minion-id}", minion.getMinionId());
         placeholders.put("${action1-id}", applyHighstate.getId() + "");
@@ -2335,8 +2329,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         ServerAction saHighstate = ActionFactoryTest.createServerAction(minion, applyHighstate);
         applyHighstate.addServerAction(saHighstate);
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
         Map<String, String> placeholders = new HashMap<>();
         placeholders.put("${minion-id}", minion.getMinionId());
         placeholders.put("${action1-id}", applyHighstate.getId() + "");

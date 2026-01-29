@@ -118,7 +118,7 @@ public class SubscribeConfirmTest extends RhnMockStrutsTestCase {
         actionPerform();
         verifyForward("success");
 
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         /*
          * Expected channels by server for LOWEST, in order:
@@ -208,7 +208,7 @@ public class SubscribeConfirmTest extends RhnMockStrutsTestCase {
         verifyForward("success");
 
         // Ensure we get a new session and execute the query to extract  the server
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         /*
          * Expected channels by server for HIGHEST, in order:
@@ -297,7 +297,7 @@ public class SubscribeConfirmTest extends RhnMockStrutsTestCase {
         verifyForward("success");
 
         // Ensure we get a new session and execute the query to extract  the server
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         /*
          * Expected channels by server for REPLACE, in order:

@@ -794,7 +794,7 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
         int result = handler.delete(admin, errata.getAdvisory());
         assertEquals(1, result);
 
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
         errata = TestUtils.reload(errata);
         assertNull(errata);
     }

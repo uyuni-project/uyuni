@@ -346,8 +346,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
        Package pkg = PackageTest.createTestPackage(user.getOrg());
 
        createPackageProperties(pkg);
-       HibernateFactory.getSession().flush();
-       HibernateFactory.getSession().clear();
+       TestUtils.flushAndClearSession();
        pkg = PackageFactory.lookupByIdAndUser(pkg.getId(), user);
 
        assertEquals(1, pkg.getProvides().size());

@@ -246,7 +246,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         Package p = e.getPackages().iterator().next();
         ErrataCacheManager.insertImageNeededErrataCache(inf1.getId(), e.getId(), p.getId());
 
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         List<ErrataOverview> array = handler.getRelevantErrata(admin, inf1.getId().intValue());
         assertEquals(1, array.size());

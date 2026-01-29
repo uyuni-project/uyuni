@@ -614,7 +614,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         // trusted org added to org
         org1.getTrustedOrgs().add(org3);
         c1.setAccess(Channel.PUBLIC);
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         assertTrue(ChannelFactory.isAccessibleBy(c1.getLabel(), org1.getId()));
         assertFalse(ChannelFactory.isAccessibleBy(c1.getLabel(), org2.getId()));
@@ -631,7 +631,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         Org org4Reloaded = OrgFactory.lookupById(org4.getId());
         c2Reloaded.getTrustedOrgs().add(org4Reloaded);
         c2Reloaded.setAccess(Channel.PROTECTED);
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         assertTrue(ChannelFactory.isAccessibleBy(c1.getLabel(), org1.getId()));
         assertFalse(ChannelFactory.isAccessibleBy(c1.getLabel(), org2.getId()));

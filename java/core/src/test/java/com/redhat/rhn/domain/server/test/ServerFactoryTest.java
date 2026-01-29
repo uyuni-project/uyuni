@@ -802,8 +802,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         ServerFactory.save(serverA);
         ServerFactory.save(serverB);
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         // retrieve servers and verify that they are compatible
         Server serverLookup = ServerFactory.lookupByIdAndOrg(serverA.getId(), user.getOrg());
@@ -855,8 +854,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         UserFactory.save(admin);
         UserFactory.save(regular);
         UserFactory.save(nonGroupAdminUser);
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         //
         Server reloadedServer = ServerFactory.lookupById(serverId);
@@ -1321,8 +1319,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         Set<ServerPath> serverPaths = ServerFactory.createServerPaths(minion, proxy, proxyHostname);
         minion.getServerPaths().addAll(serverPaths);
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         minion = TestUtils.reload(minion);
         proxy = TestUtils.reload(proxy);
@@ -1332,8 +1329,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
                 s.getServerPaths().stream().findFirst().get());
 
         s.getServerPaths().remove(s.getServerPaths().stream().findFirst().get());
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         s = ServerFactory.lookupById(minion.getId());
         assertTrue(s.getServerPaths().isEmpty());
@@ -1357,8 +1353,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         assertEquals(proxy, proxyPaths.iterator().next().getId().getProxyServer());
         assertEquals("proxy1", proxyPaths.iterator().next().getHostname());
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
         proxiedProxy = TestUtils.reload(proxiedProxy);
         proxy = TestUtils.reload(proxy);
 
@@ -1366,8 +1361,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         Set<ServerPath> serverPath1 = ServerFactory.createServerPaths(minion, proxiedProxy, "proxy2");
         minion.getServerPaths().addAll(serverPath1);
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
         minion = TestUtils.reload(minion);
         proxiedProxy = TestUtils.reload(proxiedProxy);
         proxy = TestUtils.reload(proxy);
@@ -1400,8 +1394,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
                 TYPE_SERVER_PROXY);
         s.setHostname(HOSTNAME);
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         // FQDN: precise lookup
         assertEquals(s, ServerFactory.lookupProxyServer(HOSTNAME).orElseThrow());
@@ -1426,8 +1419,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         s.setHostname(hostCaseName);
         s.addFqdn(hostCaseName);
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         // FQDN: precise lookup
         assertEquals(ServerFactory.lookupProxyServer(hostCaseName).orElse(null), s);
@@ -1447,8 +1439,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         s.setHostname(hostCaseName);
         s.addFqdn(hostCaseName);
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         // FQDN: precise lookup
         assertEquals(ServerFactory.lookupProxyServer(hostCaseName.toLowerCase()).orElse(null), s);
@@ -1468,8 +1459,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         String simpleHostname = HOSTNAME.split("\\.")[0];
         s.setHostname(simpleHostname);
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         // FQDN: imprecise lookup
         assertEquals(ServerFactory.lookupProxyServer(fullyQualifiedDomainName).orElse(null), s);
@@ -1493,8 +1483,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         set.addElement(srv.getId() + "");
         RhnSetManager.store(set);
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         List<Long> servers = ServerFactory.findServersInSetByChannel(user, srv.getBaseChannel().getId());
         assertEquals(1, servers.size());
@@ -1553,8 +1542,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         s3.setName("third-system");
         s3.setOs("not-SLES");
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         List<Server> result = ServerFactory.querySlesSystems("", 20, user).toList();
 
@@ -1574,8 +1562,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         s3.setName("my-bar-system");
         s3.setOs("SLES");
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         List<Server> result = ServerFactory.querySlesSystems("foo", 20, user).toList();
 
@@ -1608,8 +1595,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         PackageTestUtils.installPackageOnServer(pkg2, srv);
         PackageTestUtils.installPackageOnServer(pkg3, srv);
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         List<PackageEvr> result = ServerFactory.getInstalledKernelVersions(srv).toList();
 

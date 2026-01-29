@@ -637,8 +637,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         testExecuteActionChain();
 
         //then inspire from JobReturnEventMessageActionTest.testActionChainPackageRefreshNeeded
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         Map<String, String> placeholders = new HashMap<>();
         placeholders.put("${minion-id}", minion.getMinionId());
@@ -696,8 +695,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
         Map<LocalCall<?>, List<MinionSummary>> calls = saltServerActionService.callsForAction(action);
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         assertEquals(1, calls.size());
 

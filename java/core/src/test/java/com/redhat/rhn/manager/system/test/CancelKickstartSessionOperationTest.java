@@ -53,7 +53,7 @@ public class CancelKickstartSessionOperationTest extends BaseTestCaseWithUser {
         CancelKickstartSessionOperation dso = new CancelKickstartSessionOperation(user, s.getId());
         dso.store();
 
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         KickstartSession lookedUp = KickstartFactory.lookupKickstartSessionByServer(s.getId());
         assertNotNull(lookedUp);

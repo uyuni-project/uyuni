@@ -74,7 +74,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         Map<String, HostJson> data = createHostData("esxi_host_1_id", null);
 
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         // check if a Server is created
         Server host = ServerFactory.lookupForeignSystemByDigitalServerId("101-esxi_host_1_id");
@@ -91,7 +91,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         Map<String, HostJson> data = createHostData("esxi_host_1_id", null);
 
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         // check if a VirtualInstance is created
         Server host = ServerFactory.lookupForeignSystemByDigitalServerId("101-esxi_host_1_id");
@@ -122,7 +122,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         // gatherer reports this host (name even doesn't have to be the same, important
         // thing is the digital server id is equal)
         Map<String, HostJson> data = createHostData("esxi_host_1_id", null);
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
         assertContains(virtualHostManager.getServers(), existingHost);
@@ -142,7 +142,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         // gatherer reports this host
         Map<String, HostJson> data = createHostData("existing_host_id", null);
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         // check if a VirtualInstance is created
         VirtualInstance virtualInstance = VirtualInstanceFactory.getInstance()
@@ -176,7 +176,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         // gatherer reports this host
         Map<String, HostJson> data = createHostData("existing_host_id", null);
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         // check if a VirtualInstance of the host is the same after processing
         VirtualInstance virtualInstanceAfter = VirtualInstanceFactory.getInstance()
@@ -198,7 +198,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
                 pairsToMap("myVM", "42309db29d991a2f681f74f4c851f4bd"));
 
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         Server newHost = ServerFactory
                 .lookupForeignSystemByDigitalServerId("101-esxi_host_1");
@@ -237,7 +237,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         Map<String, HostJson> data = createHostData("existing_host_id",
                 pairsToMap("myVM", "42309db29d991a2f681f74f4c851f4bd"));
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         // verify guest is linked to the 1st host
         Server host = ServerFactory
@@ -253,7 +253,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         data = createHostData("another_host_id",
                 pairsToMap("myVM", "42309db29d991a2f681f74f4c851f4bd"));
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         // after processing, the virtual instance should be mapped to "another_host"
         Server anotherHost = ServerFactory
@@ -277,7 +277,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
         data = createHostData("my-host-id", pairsToMap("new name", "38a4e1c14d8e440780b3b59745ba9ce5"));
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         VirtualInstance guest = VirtualInstanceFactory.getInstance()
                 .lookupVirtualInstanceByUuid("38a4e1c14d8e440780b3b59745ba9ce5").iterator().next();
@@ -300,7 +300,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         Map<String, HostJson> data = createHostData("hostid",
                 pairsToMap("guestname", "1d7d250e9fca4d3ebb04099fe9a3e129"));
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         VirtualInstance dbGuest = VirtualInstanceFactory.getInstance()
                 .lookupVirtualInstanceByUuid("1d7d250e9fca4d3ebb04099fe9a3e129").iterator().next();
@@ -336,7 +336,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
                 pairsToMap("vm name", vmUuid));
 
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         // verify that processor linked this guest to its host
         List<VirtualInstance> guestsFromDb = VirtualInstanceFactory.getInstance()
@@ -371,7 +371,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
 
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
         new VirtualHostManagerProcessor(virtualHostManager2, data).processMapping();
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         List<VirtualInstance> guests = VirtualInstanceFactory.getInstance()
                 .lookupVirtualInstanceByUuid("42309db29d991a2f681f74f4c851f4bd");
@@ -399,7 +399,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         host.setType(fullyVirtType.getLabel());
 
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         Server newHost = ServerFactory
                 .lookupForeignSystemByDigitalServerId("101-esxi_host_id");
@@ -421,7 +421,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
                 pairsToMap("my vm", "06b6-0065-9810-4186b513b33bd6190360"));
 
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         VirtualInstanceFactory factory = VirtualInstanceFactory.getInstance();
         assertTrue(factory.lookupVirtualInstanceByUuid("06b6-0065-9810-4186b513b33bd6190360").isEmpty());
@@ -450,7 +450,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
 
         // do the mapping
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         Server newHost = ServerFactory
                 .lookupForeignSystemByDigitalServerId("101-existing_host_id");
@@ -487,7 +487,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
 
         // do the mapping
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         Server newHost = ServerFactory
                 .lookupForeignSystemByDigitalServerId("101-existing_host_id");
@@ -519,7 +519,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
                 pairsToMap("myVM", "42309db29d991a2f681f74f4c851f4bd"));
 
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         // rename host
         Server host = ServerFactory.lookupForeignSystemByDigitalServerId("101-esxi_host_1_id");
@@ -529,7 +529,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
 
         data = createHostData("esxi_host_1_id", pairsToMap("renamed vm", "42309db29d991a2f681f74f4c851f4bd"));
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         // check that the guest is renamed and still belongs to the original server
         List<VirtualInstance> guests = VirtualInstanceFactory.getInstance()
@@ -553,7 +553,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         data.put(TestUtils.randomString(), myHost);
 
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         Server newHost = ServerFactory.lookupForeignSystemByDigitalServerId("101-esx_host_1");
         List<VirtualInstance> guestVM1 = VirtualInstanceFactory.getInstance()
@@ -570,7 +570,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         myHost.setVms(pairsToMap("vm1", "de5629cb8c5a4de485a8fc8d1b170412"));
 
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         newHost = ServerFactory.lookupForeignSystemByDigitalServerId("101-esx_host_1");
         guestVM1 = VirtualInstanceFactory.getInstance()
@@ -591,7 +591,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
     public void testCreateNodeInfo() {
         Map<String, HostJson> data = createHostData("kubernetes_host_1_id", "Kubernetes", null);
         new VirtualHostManagerProcessor(virtualHostManager, data).processMapping();
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         // check that aServer was not created
         Server host = ServerFactory.lookupForeignSystemByDigitalServerId("101-kubernetes_host_1_id");
@@ -615,7 +615,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         dataCreate.putAll(createHostData("kubernetes_host_1_id", "Kubernetes", null));
         dataCreate.putAll(createHostData("kubernetes_host_2_id", "Kubernetes", null));
         new VirtualHostManagerProcessor(virtualHostManager, dataCreate).processMapping();
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         // check that aServer was not created
         assertNull(ServerFactory
@@ -634,7 +634,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         Map<String, HostJson> dataUpdate = new HashMap<>();
         dataUpdate.putAll(createHostData("kubernetes_host_2_id", "Kubernetes", null));
         new VirtualHostManagerProcessor(virtualHostManager, dataUpdate).processMapping();
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         assertEquals(1, virtualHostManager.getNodes().size());
         assertTrue(virtualHostManager.getNodes().stream()
@@ -653,7 +653,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         // Process
         new VirtualHostManagerProcessor(virtualHostManager, Map.of(hostLabel, vmwareHost))
             .processMapping();
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         // Verify the server has been created
         Server server = ServerFactory.lookupForeignSystemByDigitalServerId("101-'vim.HostSystem:host-159266'");
@@ -668,7 +668,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         // Process again
         new VirtualHostManagerProcessor(virtualHostManager, Map.of(hostLabel, vmwareHost))
             .processMapping();
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         // Verify the host identifier has changed. The old one does not exits
         assertNull(ServerFactory.lookupForeignSystemByDigitalServerId("101-'vim.HostSystem:host-159266'"));
@@ -685,7 +685,7 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
         // Process again
         new VirtualHostManagerProcessor(virtualHostManager, Map.of(hostLabel, vmwareHost))
             .processMapping();
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         // The server exists and has been updated
         server = ServerFactory.lookupForeignSystemByDigitalServerId("101-55f23bba-66e1-46e7-b04b-d207dc3de2fc");

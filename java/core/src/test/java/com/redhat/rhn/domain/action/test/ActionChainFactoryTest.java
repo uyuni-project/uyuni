@@ -153,8 +153,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
         ActionChainFactory.schedule(actionChain2, new Date());
         ActionChainFactory.schedule(actionChain3, new Date());
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         List<ActionChain> list1 = ActionChainFactory.getActionChainsByServer(server1);
         assertEquals(2, list1.size());
@@ -213,7 +212,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
         assertEquals(2, actionChain.getEntries().size());
 
         // test that entries are correct after flush()
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
         actionChain = TestUtils.reload(actionChain);
         assertEquals(2, actionChain.getEntries().size());
 
@@ -309,7 +308,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
 
         ActionChainFactory.removeActionChainEntrySortGaps(actionChain, 1);
 
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
         actionChain = TestUtils.reload(actionChain);
 
         List<Integer> result = new ArrayList<>();

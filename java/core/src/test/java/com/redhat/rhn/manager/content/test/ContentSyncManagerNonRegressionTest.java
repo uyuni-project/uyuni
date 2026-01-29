@@ -17,7 +17,6 @@ package com.redhat.rhn.manager.content.test;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.product.MgrSyncChannelDto;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.manager.content.ContentSyncManager;
@@ -80,8 +79,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
         File expectedProductsCSV = new File(TestUtils.findTestData(EXPECTED_PRODUCTS_CSV).getPath());
 
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, null, true);
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
         try {
             ContentSyncManager csm = new ContentSyncManager();
 

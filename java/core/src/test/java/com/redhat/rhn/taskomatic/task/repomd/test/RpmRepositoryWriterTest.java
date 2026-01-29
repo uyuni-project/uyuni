@@ -21,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -82,8 +81,7 @@ public class RpmRepositoryWriterTest extends JMockBaseTestCaseWithUser {
             PackageManagerTest.addPackageToChannel("pkgpg" + i, channel);
         }
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         DataResult<PackageDto> pkgs = TaskManager.getChannelPackageDtos(channel, 0, 10);
         assertEquals(10, pkgs.size());
@@ -105,8 +103,7 @@ public class RpmRepositoryWriterTest extends JMockBaseTestCaseWithUser {
                 mountPointDir.toAbsolutePath().toString(), cmdExecutor);
 
         PackageManager.createRepoEntrys(channel.getId());
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         boolean cfgDefaultSignMetadata = Config.get().getBoolean(ConfigDefaults.SIGN_METADATA);
         Config.get().setBoolean(ConfigDefaults.SIGN_METADATA, "true");
@@ -143,8 +140,7 @@ public class RpmRepositoryWriterTest extends JMockBaseTestCaseWithUser {
 
         PackageManager.createRepoEntrys(channel.getId());
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         writer.writeRepomdFiles(channel);
 

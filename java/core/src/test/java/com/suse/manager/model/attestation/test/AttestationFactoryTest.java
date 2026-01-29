@@ -135,7 +135,7 @@ public class AttestationFactoryTest extends BaseTestCaseWithUser {
             fail("config not initialzed");
         }
 
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
         Optional<ServerCoCoAttestationConfig> optConfig = attestationFactory.lookupConfigByServerId(srv.getId());
         if (optConfig.isPresent()) {
             assertEquals(cnf, optConfig.get());
@@ -162,7 +162,7 @@ public class AttestationFactoryTest extends BaseTestCaseWithUser {
 
         Long actionId = action.getId();
 
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
         Action a1 = ActionFactory.lookupByUserAndId(user, actionId);
         assertNotNull(a1);
         Set<ServerCoCoAttestationReport> reports = a1.getCocoAttestationReports();
@@ -178,7 +178,7 @@ public class AttestationFactoryTest extends BaseTestCaseWithUser {
         Long reportId = report.getId();
         attestationFactory.initResultsForReport(report);
 
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
         Optional<ServerCoCoAttestationReport> optReport = attestationFactory.lookupReportById(reportId);
         List<CoCoAttestationResult> results = optReport.orElseThrow().getResults();
         assertNotEmpty(results);

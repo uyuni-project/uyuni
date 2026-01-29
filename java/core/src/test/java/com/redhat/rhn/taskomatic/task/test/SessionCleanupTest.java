@@ -61,7 +61,7 @@ public class SessionCleanupTest extends RhnBaseTestCase {
         SessionCleanup sc = new SessionCleanup();
         sc.execute(null);
 
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         assertNull(WebSessionFactory.lookupById(s.getId()));
     }

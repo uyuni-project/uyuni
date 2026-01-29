@@ -98,7 +98,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
 
         //Evict the user and look back up. This make sure our changes got saved
         //to the db.
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         User usr = UserFactory.lookupById(id);
         assertFalse(usr.isDisabled());

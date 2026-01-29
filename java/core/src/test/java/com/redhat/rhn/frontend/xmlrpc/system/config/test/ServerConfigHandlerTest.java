@@ -199,7 +199,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
 
         Server srv1 = ServerFactoryTest.createTestServer(regular, true);
         srv1.setConfigChannels(List.of(gcc2), regular);
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         //test add channels
         List<Number> serverIds = List.of(srv1.getId());
@@ -207,7 +207,7 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
 
         // Add the channels
         handler.addChannels(admin, serverIds, List.of(gcc1.getLabel()), true);
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         // Verify the channels are available
         assertEquals(channels, handler.listChannels(regular, srv1.getId().intValue()));
@@ -244,14 +244,14 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
 
         Server srv1 = ServerFactoryTest.createTestServer(regular, true);
         srv1.setConfigChannels(List.of(gcc1), regular);
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         //test add channels
         List<Number> serverIds = List.of(srv1.getId());
         List<ConfigChannel> channels = List.of(gcc1, gcc2);
 
         handler.addChannels(admin, serverIds, List.of(gcc2.getLabel()), false);
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         assertEquals(channels, handler.listChannels(regular, srv1.getId().intValue()));
     }
@@ -270,10 +270,10 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
         List<String> channelLabels = channels.stream()
                 .map(ConfigChannel::getLabel)
                 .collect(Collectors.toList());
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         assertEquals(1, handler.removeChannels(admin, serverIds, channelLabels));
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         assertEquals(0, handler.listChannels(admin, srv1.getId().intValue()).size());
     }
@@ -286,13 +286,13 @@ public class ServerConfigHandlerTest extends BaseHandlerTestCase {
 
         Server srv1 = ServerFactoryTest.createTestServer(regular, true);
         srv1.setConfigChannels(List.of(gcc2), regular);
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         // Test removing nonexisting channels
         List<Number> serverIds = List.of(srv1.getId());
 
         assertEquals(0, handler.removeChannels(admin, serverIds, List.of(gcc1.getLabel(), gcc2.getLabel())));
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         // The other channel is removed even though the result is 0
         assertEquals(0, handler.listChannels(admin, srv1.getId().intValue()).size());

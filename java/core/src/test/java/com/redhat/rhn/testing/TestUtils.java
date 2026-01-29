@@ -679,7 +679,7 @@ public class TestUtils {
     /**
      * Clears hibernate session
      */
-    public static void clearSession() {
+    public static void flushAndClearSession() {
         HibernateFactory.getSession().flush();
         HibernateFactory.getSession().clear();
     }

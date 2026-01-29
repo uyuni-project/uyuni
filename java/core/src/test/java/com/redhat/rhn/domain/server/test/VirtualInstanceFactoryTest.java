@@ -82,7 +82,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
         VirtualInstance guest = builder.createUnregisteredGuest().withVirtHost().build();
         virtualInstanceDAO.saveVirtualInstance(guest);
 
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         VirtualInstance retrievedVirtualInstance = virtualInstanceDAO.lookupById(guest.getId());
         assertEquals(guest, retrievedVirtualInstance);
@@ -94,7 +94,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
         Server guestSystem = guest.getGuestSystem();
         virtualInstanceDAO.saveVirtualInstance(guest);
 
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         VirtualInstance retrievedGuest = virtualInstanceDAO.lookupById(guest.getId());
         assertEquals(guest, retrievedGuest);
@@ -107,7 +107,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
         virtualInstanceDAO.saveVirtualInstance(vi);
         Long sid = vi.getHostSystem().getId();
 
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         //step 2 - fetch the guest from the database so that it is attached to the session
         VirtualInstance retrievedGuest = virtualInstanceDAO.lookupById(vi.getId());
@@ -126,7 +126,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
 
         virtualInstanceDAO.saveVirtualInstance(guest);
 
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         VirtualInstance retrievedGuest = virtualInstanceDAO.lookupById(guest.getId());
         assertEquals(guest.getName(), retrievedGuest.getName());
@@ -147,7 +147,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
         builder.createGuest().withNonVirtHost().withPersistence().build();
         builder.createGuest().withVirtHost().withPersistence().build();
 
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         Set<GuestAndNonVirtHostView> actualViews = virtualInstanceDAO.findGuestsWithoutAHostByOrg(user.getOrg());
         assertTrue(CollectionUtils.isEqualCollection(expectedViews, actualViews));

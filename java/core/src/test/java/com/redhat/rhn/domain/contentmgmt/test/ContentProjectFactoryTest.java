@@ -320,8 +320,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         ContentProjectFactory.save(envint);
         ContentProjectFactory.insertEnvironment(envint, of(envdev));
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         ContentProject fromDb = ContentProjectFactory.lookupProjectByLabelAndOrg("project1", user.getOrg()).get();
         List<ContentEnvironment> envs = ContentProjectFactory.listProjectEnvironments(fromDb);

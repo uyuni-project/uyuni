@@ -116,8 +116,7 @@ public class SCCCachingFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testListReposForRootProduct() throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, null, true);
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         Set<SCCRepository> repos = SCCCachingFactory.lookupRepositoriesByRootProductNameVersionArchForPayg(
                 "sles", "12", "x86_64").collect(Collectors.toSet());

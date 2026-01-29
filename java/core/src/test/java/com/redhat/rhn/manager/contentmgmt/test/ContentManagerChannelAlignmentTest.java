@@ -707,7 +707,7 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
 
         // Target channel has become a clone. We need to get the proper instance from the database and reload also the
         // server because it references the old instance
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         srcChannel = TestUtils.reload(srcChannel);
         tgtChannel = HibernateFactory.getSession().find(ClonedChannel.class, tgtChannel.getId());

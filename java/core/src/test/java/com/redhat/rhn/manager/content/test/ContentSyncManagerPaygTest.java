@@ -176,7 +176,7 @@ public class ContentSyncManagerPaygTest extends RhnBaseTestCase {
             csm.updateSubscriptions();
 
             // Clear Hibernate cache to drop half loaded objects
-            TestUtils.clearSession();
+            TestUtils.flushAndClearSession();
 
             // second run required to have the repository auth data for Cloud RMT products
             runPaygUpdateAuthTaskAndSetHost("http://localhost:" + portNumber + "/repo");

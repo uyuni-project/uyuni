@@ -47,7 +47,7 @@ public class TreeEditOperationTest extends TreeOperationTestBase {
         cmd.setBasePath(KickstartableTreeTest.KICKSTART_TREE_PATH.getAbsolutePath());
         cmd.setLabel(nlabel);
         assertNull(cmd.store());
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         KickstartableTree lookedUp = KickstartFactory.lookupKickstartTreeByIdAndOrg(tid, user.getOrg());
         assertEquals(nlabel, lookedUp.getLabel());
@@ -58,17 +58,17 @@ public class TreeEditOperationTest extends TreeOperationTestBase {
         Channel testChannel = ChannelFactoryTest.createTestChannel(user);
         KickstartableTree tree = KickstartableTreeTest.createTestKickstartableTree(testChannel);
         Long tid = tree.getId();
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         TreeEditOperation cmd = new TreeEditOperation(tid, user);
         cmd.setBasePath(KickstartableTreeTest.KICKSTART_TREE_PATH.getAbsolutePath());
         assertNull(cmd.store());
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         TreeEditOperation newcmd = new TreeEditOperation(tid, user);
         newcmd.setLabel("testInvalidEdit " + TestUtils.randomString());
         assertNotNull(newcmd.store());
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         KickstartableTree lookedUp = KickstartFactory.lookupKickstartTreeByIdAndOrg(tid, user.getOrg());
         assertFalse(lookedUp.getLabel().startsWith("testInvalidEdit"));

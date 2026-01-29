@@ -23,7 +23,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.HubSCCCredentials;
@@ -584,7 +583,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         hub.setMirrorCredentials(sccCredentials);
         hubFactory.save(hub);
 
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         sccCredentials = hubManager.storeSCCCredentials(hubToken, "dummy-username", "dummy-password");
         assertEquals(id, sccCredentials.getId());
@@ -617,7 +616,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
                 .storeCredentials(with(equal(expectedUsername)), with(any(String.class)));
         }});
 
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         HubSCCCredentials newCredentials = hubManager.regenerateCredentials(satAdmin, peripheralId);
 
@@ -820,8 +819,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
          assertNotEquals(currentToken.getToken(), newHubToken.getToken());
 
          String newRemoteToken = hubManager.replaceTokens(currentToken, newHubToken.getToken());
-         HibernateFactory.getSession().flush();
-         HibernateFactory.getSession().clear();
+         TestUtils.flushAndClearSession();
 
          assertNotNull(newRemoteToken);
          assertTrue(tokenList.stream().noneMatch(t -> t.equals(newRemoteToken)));
@@ -861,8 +859,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         }});
 
         hubManager.replaceTokensHub(satAdmin, peripherlaFqdn);
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         List<String> newTokenList = hubFactory.listAccessTokensByFqdn(peripherlaFqdn)
                 .stream().map(IssAccessToken::getToken).toList();
@@ -884,8 +881,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         );
 
         hubManager.updateServerData(satAdmin, "hub.domain.com", IssRole.valueOf("HUB"), data);
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         hub = hubFactory.lookupIssHubByFqdn("hub.domain.com").orElseGet(() -> fail("Hub Server not found"));
         assertEquals("---- BEGIN NEW ROOT CA ----", hub.getRootCa());
@@ -901,8 +897,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals("---- BEGIN ROOT CA ----", peripheral.getRootCa());
 
         hubManager.updateServerData(satAdmin, "peripheral.domain.com", IssRole.valueOf("PERIPHERAL"), data);
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         peripheral = hubFactory.lookupIssPeripheralByFqdn("peripheral.domain.com")
                 .orElseGet(() -> fail("Peripheral Server not found"));
@@ -1055,8 +1050,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
 
         peripheral.setMirrorCredentials(hubSCCCredentials);
         hubFactory.save(peripheral);
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         assertEquals(TokenType.CONSUMED, hubFactory.lookupAccessTokenFor(fqdn).getType());
         assertTrue(hubFactory.lookupIssPeripheralByFqdn(fqdn).isPresent(), "Failed to create Peripheral");
@@ -1073,8 +1067,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         IssAccessToken hubToken = hubFactory.lookupIssuedToken(hubTokenStr);
         hubManager.saveNewServer(hubToken, IssRole.HUB, rootCA, gpgKey);
         hubManager.storeSCCCredentials(hubToken, "dummy-username", "dummy-password");
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         assertEquals(TokenType.CONSUMED, hubFactory.lookupAccessTokenFor(fqdn).getType());
         assertTrue(hubFactory.lookupIssHub().isPresent(), "Failed to create Hub");

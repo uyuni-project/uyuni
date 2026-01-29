@@ -721,8 +721,8 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
             PinnedSubscription pin = new PinnedSubscription();
             pin.setSystemId(h1.getId());
             pin.setSubscriptionId(9999L);
-            pin = TestUtils.saveAndFlush(pin);
-            HibernateFactory.getSession().clear();
+            pin = TestUtils.save(pin);
+            TestUtils.flushAndClearSession();
 
             List<MatchJson> result = getMatcherJsonIO()
                     .getJsonMatches();

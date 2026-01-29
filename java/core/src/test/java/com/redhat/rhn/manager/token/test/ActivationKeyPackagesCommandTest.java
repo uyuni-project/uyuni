@@ -46,7 +46,7 @@ public class ActivationKeyPackagesCommandTest extends BaseTestCaseWithUser {
         assertEquals(3, key.getPackages().size());
 
         // execute
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
         ActivationKeyPackagesCommand command = new ActivationKeyPackagesCommand(key);
         String populated = command.populatePackages();
 
@@ -74,7 +74,7 @@ public class ActivationKeyPackagesCommandTest extends BaseTestCaseWithUser {
         int numPkgsBefore = key.getPackages().size();
 
         // execute
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
         ValidatorError result = command.parseAndUpdatePackages("pkg1.i386" + "\n" + "pkg2" + "\n");
         command.store();
 

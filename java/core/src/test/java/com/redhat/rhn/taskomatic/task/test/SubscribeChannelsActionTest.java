@@ -116,8 +116,7 @@ public class SubscribeChannelsActionTest extends JMockBaseTestCaseWithUser {
             new TestCloudPaygManagerBuilder().build());
         executor.execute(ctx);
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         MinionServer server2 = MinionServerFactory.lookupById(serverId).orElse(null);
         assertNotNull(server);

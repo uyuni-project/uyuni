@@ -331,7 +331,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         }
 
         RecurringActionManager.deleteAndUnschedule(recurringAction, user);
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
 
         assertTrue(RecurringActionFactory.listMinionRecurringActions(minion).isEmpty());
     }

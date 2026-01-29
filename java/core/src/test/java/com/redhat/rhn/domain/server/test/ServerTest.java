@@ -149,8 +149,7 @@ public class ServerTest extends BaseTestCaseWithUser {
                 .findFirst();
         s.getCapabilities().clear();
         s.getCapabilities().add(cap1.get());
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
         s = ServerFactory.lookupById(s.getId());
         assertEquals(1, s.getCapabilities().size());
     }
@@ -337,7 +336,7 @@ public class ServerTest extends BaseTestCaseWithUser {
         NetworkInterfaceTest.createTestNetworkInterface(s, "eth0", ipAddr, hwAddr);
         NetworkInterfaceTest.createTestNetworkInterface(s, "eth1", ipAddr, hwAddr);
 
-        TestUtils.clearSession();
+        TestUtils.flushAndClearSession();
         s = ServerFactory.lookupById(s.getId());
 
         assertNotNull(s.getIpAddress());
