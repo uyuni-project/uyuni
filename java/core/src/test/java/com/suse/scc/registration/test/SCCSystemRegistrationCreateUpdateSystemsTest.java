@@ -13,6 +13,9 @@ package com.suse.scc.registration.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
+
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCConfigBuilder;
@@ -65,6 +68,9 @@ public class SCCSystemRegistrationCreateUpdateSystemsTest extends AbstractSCCSys
     public void testSuccessSCCSystemRegistrationCreateUpdateSystemsWhenAllSystemRegistrationAreSuccessful()
             throws URISyntaxException {
         final int systemSize = 101;
+        final int batchSize = 50;
+        Config.get().setString(ConfigDefaults.REG_BATCH_SIZE, String.valueOf(batchSize));
+
         // setup
         final TestSCCWebClient sccWebClient = getDefaultTestSCCWebClient();
         final SCCSystemRegistrationContext context =
@@ -89,6 +95,9 @@ public class SCCSystemRegistrationCreateUpdateSystemsTest extends AbstractSCCSys
     @Test
     public void testSuccessSCCSystemRegistrationCreateUpdateSystemsWhenRestCallFail() {
         final int systemSize = 101;
+        final int batchSize = 50;
+        Config.get().setString(ConfigDefaults.REG_BATCH_SIZE, String.valueOf(batchSize));
+
         // setup
         TestSCCWebClient sccWebClient = new TestSCCWebClient(null) {
             @Override
@@ -124,6 +133,9 @@ public class SCCSystemRegistrationCreateUpdateSystemsTest extends AbstractSCCSys
     @Test
     public void testSuccessSCCSystemRegistrationCreateUpdateSystemsWhenRTE() {
         final int systemSize = 101;
+        final int batchSize = 50;
+        Config.get().setString(ConfigDefaults.REG_BATCH_SIZE, String.valueOf(batchSize));
+
         // setup
         TestSCCWebClient sccWebClient = new TestSCCWebClient(null) {
             @Override
