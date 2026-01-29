@@ -20,12 +20,8 @@ import com.suse.manager.matcher.MatcherJsonIO;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.query.Query;
-import org.hibernate.type.StandardBasicTypes;
 
 import java.util.List;
-
-import jakarta.persistence.TypedQuery;
 
 /**
  * A factory for creating PinnedSubscription objects.

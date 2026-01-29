@@ -19,14 +19,11 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.type.StandardBasicTypes;
 
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import jakarta.persistence.Tuple;
 
 public class WebEndpointFactory extends HibernateFactory {
 
@@ -138,7 +135,9 @@ public class WebEndpointFactory extends HibernateFactory {
         // Get API handler class and methods that don't require authorization
         // TODO: Cache
         return getSession()
-                .createQuery("SELECT w.className FROM WebEndpoint w WHERE w.scope =  :scope AND w.authRequired = false ", String.class)
+                .createQuery(
+                        "SELECT w.className FROM WebEndpoint w WHERE w.scope =  :scope AND w.authRequired = false ",
+                        String.class)
                 .setParameter("scope", WebEndpoint.Scope.A)
                 .getResultStream()
                 .collect(Collectors.toUnmodifiableSet());

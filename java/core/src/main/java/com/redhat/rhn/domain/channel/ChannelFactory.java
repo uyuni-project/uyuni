@@ -217,7 +217,7 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static List<ContentSource> lookupOrphanVendorContentSources() {
         return getSession().createNativeQuery("""
-                SELECT cs.* 
+                SELECT cs.*
                 FROM rhnContentSource cs
                 WHERE cs.org_id IS NULL
                 AND NOT EXISTS (SELECT 1 FROM suseSccRepositoryAuth a WHERE a.source_id = cs.id)
@@ -2094,7 +2094,7 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static List<ContentSource> findCustomContentSourcesForHubFqdn(String fqdn) {
         return getSession().createQuery("""
-                    FROM ContentSource c 
+                    FROM ContentSource c
                     WHERE c.org IS NOT NULL AND c.sourceUrl like :urlstart""", ContentSource.class)
                 .setParameter("urlstart", "https://%s/%%".formatted(fqdn))
                 .list();

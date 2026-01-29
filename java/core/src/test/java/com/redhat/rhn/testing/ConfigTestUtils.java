@@ -59,7 +59,8 @@ public class ConfigTestUtils  {
      */
     public static ConfigChannel createConfigChannel(Org org, String name, String label,
                                                     ConfigChannelType type) {
-        ConfigChannel cc = ConfigurationFactory.createNewConfigChannel(org, type, name, label, "test-config-channel-description-" + TestUtils.randomString());
+        ConfigChannel cc = ConfigurationFactory.createNewConfigChannel(org, type, name, label,
+                "test-config-channel-description-" + TestUtils.randomString());
         assertTrue(cc.getId() > 0L);
         return cc;
     }

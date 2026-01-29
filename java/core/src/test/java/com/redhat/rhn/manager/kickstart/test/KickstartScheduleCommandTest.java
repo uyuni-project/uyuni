@@ -318,7 +318,8 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
         };
         KickstartScheduleCommand.setTaskomaticApi(testApi);
 
-        PackageManagerTest.addPackageToSystemAndChannel(ConfigDefaults.get().getKickstartPackageNames().get(0), server, c);
+        PackageManagerTest.addPackageToSystemAndChannel(ConfigDefaults.get().getKickstartPackageNames().get(0),
+                server, c);
         cmd.setProfileType(profileType);
         cmd.setServerProfileId(otherServerId);
         cmd.setProfileId(profileId);
@@ -333,7 +334,7 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
         ActivationKey key = ActivationKeyFactory.lookupByKickstartSession(cmd.getKickstartSession());
         assertNotNull(key);
 
-        assertNotNull(KickstartFactory. lookupKickstartSessionByServer(server.getId()));
+        assertNotNull(KickstartFactory.lookupKickstartSessionByServer(server.getId()));
         return cmd;
     }
 
