@@ -4,8 +4,8 @@ include ../common.jade
 
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
-    window.policyId = #{policyId};
-    window.policyData = !{policyData};
+    // scapPolicyPageData contains: policyData, isEditMode, isReadOnly, scapDataStreams, tailoringFiles, policyId
+    window.scapPolicyPageData = !{scapPolicyPageDataJson};
 
 script(type='text/javascript').
     spaImportReactPage('audit/scap-policy-details')

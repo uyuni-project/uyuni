@@ -12,6 +12,15 @@ import { SearchField } from "components/table/SearchField";
 import { LinkButton } from "components/buttons";
 import moment from "moment";
 
+interface ScapPolicyDetailsPageData {
+  policyData: PolicyData;
+  isEditMode: boolean;
+  isReadOnly: boolean;
+  scapDataStreams: string[];
+  tailoringFiles: any[];
+  policyId: number;
+}
+
 type ScanHistoryEntry = {
   xid: number;
   sid: number;
@@ -68,6 +77,7 @@ const getComplianceStatus = (failCount: number) => ({
 const ScapPolicyDetails = ({ policyId, policyData }: { policyId: number; policyData: PolicyData }) => {
   const [scanHistory, setScanHistory] = useState<ScanHistoryEntry[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showLatestOnly, setShowLatestOnly] = useState(true);
   
   useEffect(() => {
     Network.get(`/rhn/manager/api/audit/scap/policy/${policyId}/scan-history`)
@@ -85,13 +95,39 @@ const ScapPolicyDetails = ({ policyId, policyData }: { policyId: number; policyD
   
   // Calculate summary stats
   const totalScans = scanHistory.length;
-  const uniqueSystems = new Set(scanHistory.map(s => s.sid)).size;
-  const compliantScans = scanHistory.filter(s => 
+  
+  // Group by SID and find latest for each to calculate compliance based on latest state
+  const latestBySid = new Map<number, ScanHistoryEntry>();
+  scanHistory.forEach(scan => {
+    const current = latestBySid.get(scan.sid);
+    if (!current || moment(scan.completed).isAfter(current.completed)) {
+      latestBySid.set(scan.sid, scan);
+    }
+  });
+  const latestScans = Array.from(latestBySid.values());
+
+  const uniqueSystems = latestScans.length;
+  
+  const compliantUniqueSystems = latestScans.filter(s => 
     (s.fail || 0) === 0
   ).length;
-  const complianceRate = totalScans > 0 
-    ? ((compliantScans / totalScans) * 100).toFixed(1) 
+  
+  const complianceRate = uniqueSystems > 0 
+    ? ((compliantUniqueSystems / uniqueSystems) * 100).toFixed(1) 
     : "0";
+  
+  // Calculate total compliant scans for the card (if keeping the original metric for that card)
+  const compliantScans = scanHistory.filter(s => (s.fail || 0) === 0).length;
+
+  // Filter for table view
+  const getFilteredHistory = () => {
+    if (!showLatestOnly) {
+      return scanHistory;
+    }
+    return latestScans;
+  };
+
+  const tableData = getFilteredHistory();
   
   return (
     <div>
@@ -149,15 +185,30 @@ const ScapPolicyDetails = ({ policyId, policyData }: { policyId: number; policyD
             {t("No scans have been performed with this policy yet.")}
           </div>
         ) : (
-          <Table
-            data={scanHistory}
-            identifier={(scan) => scan.xid}
-            initialSortColumnKey="completed"
-            initialSortDirection={-1}
-            searchField={<SearchField filter={(datum, criteria) => 
-              criteria ? datum.serverName.toLowerCase().includes(criteria.toLowerCase()) : true
-            } />}
-          >
+          <div>
+            <div className="row mb-10">
+              <div className="col-md-12">
+                <div className="checkbox">
+                  <label>
+                    <input 
+                      type="checkbox" 
+                      checked={showLatestOnly} 
+                      onChange={(e) => setShowLatestOnly(e.target.checked)} 
+                    />
+                    {t("Show only latest scan per system")}
+                  </label>
+                </div>
+              </div>
+            </div>
+            <Table
+              data={tableData}
+              identifier={(scan) => scan.xid}
+              initialSortColumnKey="completed"
+              initialSortDirection={-1}
+              searchField={<SearchField filter={(datum, criteria) => 
+                criteria ? datum.serverName.toLowerCase().includes(criteria.toLowerCase()) : true
+              } />}
+            >
               <Column
                 columnKey="serverName"
                 header={t("System")}
@@ -189,7 +240,17 @@ const ScapPolicyDetails = ({ policyId, policyData }: { policyId: number; policyD
               />
               <Column
                 columnKey="other"
-                header={t("Other")}
+                header={
+                  <span>
+                    {t("Other")}
+                    <i 
+                      className="fa fa-info-circle fa-fw" 
+                      style={{ marginLeft: "5px" }}
+                      data-bs-toggle="tooltip" 
+                      title={t("not selected or not applicable")}
+                    />
+                  </span>
+                }
                 columnClass="text-center"
                 headerClass="text-center"
                 cell={(row) => row.other || 0}
@@ -218,6 +279,7 @@ const ScapPolicyDetails = ({ policyId, policyData }: { policyId: number; policyD
                 )}
               />
             </Table>
+          </div>
         )}
       </Panel>
     </div>
@@ -225,11 +287,13 @@ const ScapPolicyDetails = ({ policyId, policyData }: { policyId: number; policyD
 };
 
 export const renderer = () => {
-  const policyId = (window as any).policyId;
-  const policyData = (window as any).policyData;
+  const pageData = (window as any).scapPolicyPageData as ScapPolicyDetailsPageData | undefined;
   
   return SpaRenderer.renderNavigationReact(
-    <ScapPolicyDetails policyId={policyId} policyData={policyData} />,
+    <ScapPolicyDetails 
+      policyId={pageData?.policyId!} 
+      policyData={pageData?.policyData!} 
+    />,
     document.getElementById("scap-policy-details")
   );
 };

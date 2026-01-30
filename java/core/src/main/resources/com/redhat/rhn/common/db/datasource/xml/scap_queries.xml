@@ -681,35 +681,34 @@
 
 <mode name="all_policies_compliance" class="com.suse.manager.webui.utils.gson.ScapPolicyComplianceSummary">
   <query params="user_id, org_id">
-  WITH PolicyCompliance AS (
-      SELECT 
-          ras.scap_policy_id,
-          tr.server_id,
-          MAX(sa.completion_time) as last_server_scan,
-          CASE WHEN NOT EXISTS (
-              SELECT 1 FROM rhnXccdfRuleresult rr
-              JOIN rhnXccdfRuleresultType rrt ON rr.result_id = rrt.id
-              WHERE rr.testresult_id = tr.id AND rrt.label = 'fail'
-          ) THEN 1 ELSE 0 END as is_compliant
-      FROM rhnXccdfTestresult tr
-      JOIN rhnActionScap ras ON tr.action_scap_id = ras.id
-      JOIN rhnServerAction sa ON sa.server_id = tr.server_id AND sa.action_id = ras.action_id
-      JOIN rhnUserServerPerms usp ON usp.server_id = tr.server_id
-      WHERE usp.user_id = :user_id
-      GROUP BY ras.scap_policy_id, tr.server_id, tr.id
-  )
-  SELECT 
-      sp.id AS id,
-      sp.policy_name,
-      sp.data_stream_name,
-      COALESCE(COUNT(pc.server_id), 0) AS total_systems,
-      COALESCE(SUM(pc.is_compliant), 0) AS compliant_systems,
-      MAX(pc.last_server_scan) AS last_scan_time
-  FROM suseScapPolicy sp
-  LEFT JOIN PolicyCompliance pc ON sp.id = pc.scap_policy_id
-  WHERE sp.org_id = :org_id
-  GROUP BY sp.id, sp.policy_name, sp.data_stream_name
-  ORDER BY sp.policy_name
+    WITH PolicyCompliance AS (
+        SELECT DISTINCT ON (ras.scap_policy_id, tr.server_id)
+            ras.scap_policy_id,
+            tr.server_id,
+            CASE WHEN NOT EXISTS (
+                SELECT 1 FROM rhnXccdfRuleresult rr
+                JOIN rhnXccdfRuleresultType rrt ON rr.result_id = rrt.id
+                WHERE rr.testresult_id = tr.id AND rrt.label = 'fail'
+            ) THEN 1 ELSE 0 END AS is_compliant
+        FROM rhnXccdfTestresult tr
+        JOIN rhnActionScap ras ON tr.action_scap_id = ras.id
+        JOIN rhnServerAction sa ON sa.server_id = tr.server_id AND sa.action_id = ras.action_id
+        JOIN rhnUserServerPerms usp ON usp.server_id = tr.server_id
+        WHERE usp.user_id = :user_id
+        ORDER BY ras.scap_policy_id, tr.server_id, sa.completion_time DESC
+    )
+    SELECT 
+        sp.id AS id,
+        sp.policy_name,
+        sc.name AS scap_content_name,
+        COALESCE(COUNT(pc.server_id), 0) AS total_systems,
+        COALESCE(SUM(pc.is_compliant), 0) AS compliant_systems
+    FROM suseScapPolicy sp
+    JOIN suseScapContent sc ON sp.scap_content_id = sc.id
+    LEFT JOIN PolicyCompliance pc ON sp.id = pc.scap_policy_id
+    WHERE sp.org_id = :org_id
+    GROUP BY sp.id, sp.policy_name, sc.name
+    ORDER BY sp.policy_name;
   </query>
 </mode>
 

@@ -21,6 +21,21 @@ enum ScapContentType {
   TailoringFile = "tailoringFile",
 }
 
+declare global {
+  interface Window {
+    scheduleData: {
+      scapContentList: any[];
+      tailoringFiles: any[];
+      scapPolicies: any[];
+      profileId: number;
+      serverId: number;
+      entityType: string;
+    };
+    profileId?: number;
+    minions?: any[];
+    entityType?: string;
+  }
+}
 const MESSAGES_COUNTER_LIMIT = 3;
 
 type StateType = {
@@ -33,6 +48,7 @@ type StateType = {
   selectedScapPolicy: number | null;
   tailoringFileProfiles: any[];
   earliest: any;
+  scapContentList: any[];
   isInvalid: boolean;
 };
 
@@ -40,15 +56,24 @@ class ScheduleAuditScan extends React.Component<{}, StateType> {
   constructor(props) {
     super(props);
 
+    // Unpack scheduleData from window
+    const scheduleData = window.scheduleData || {} as any;
+    
+    // Set window properties for backward compatibility
+    window.profileId = scheduleData.profileId || 0;
+    window.minions = scheduleData.serverId ? [{id: scheduleData.serverId}] : [];
+    window.entityType = scheduleData.entityType || "server";
+
     this.state = {
       xccdfProfiles: [],
       model: {},
       messages: [],
       errors: [],
       earliest: localizedMoment(),
-      tailoringFiles: window.tailoringFiles || [],
+      tailoringFiles: scheduleData.tailoringFiles || [],
       tailoringFileProfiles: [],
-      scapPolicies: window.scapPolicies || [],
+      scapPolicies: scheduleData.scapPolicies || [],
+      scapContentList: scheduleData.scapContentList || [],
       selectedScapPolicy: null,
       isInvalid: false,
     };
@@ -66,8 +91,9 @@ class ScheduleAuditScan extends React.Component<{}, StateType> {
     this.setState({ isInvalid: !isValid });
   };
 
-  getProfiles(type: ScapContentType, name: string) {
-    return Network.get(`/rhn/manager/api/audit/profiles/list/${type}/${name}`).then((data) => {
+  getProfiles(type: ScapContentType, id: string | number) {
+    // Both dataStream and tailoringFile now expect IDs
+    return Network.get(`/rhn/manager/api/audit/profiles/list/${type}/${id}`).then((data) => {
       if (type === ScapContentType.TailoringFile) {
         this.setState({ tailoringFileProfiles: data });
       } else {
@@ -100,17 +126,19 @@ class ScheduleAuditScan extends React.Component<{}, StateType> {
     // Fetch and populate policy details
     this.setState({ selectedScapPolicy: value });
     return Network.get(`/rhn/manager/api/audit/scap/policy/view/${value}`).then((data) => {
-      const xccdfProfiles = data.xccdfProfileId ? [{ id: data.xccdfProfileId, title: data.xccdfProfileId }] : [];
+      const xccdfProfiles = data.xccdfProfileId
+        ? [{ id: data.xccdfProfileId, title: data.xccdfProfileTitle || data.xccdfProfileId }]
+        : [];
       const tailoringFileProfiles = data.tailoringProfileId
-        ? [{ id: data.tailoringProfileId, title: data.tailoringProfileId }]
+        ? [{ id: data.tailoringProfileId, title: data.tailoringProfileTitle || data.tailoringProfileId }]
         : [];
 
       this.setState({
         model: {
           ...this.state.model,
-          dataStreamName: data.dataStreamName,
+          dataStreamName: data.scapContentId,
           xccdfProfileId: data.xccdfProfileId,
-          tailoringFile: data.tailoringFile,
+          tailoringFile: data.tailoringFileId,
           tailoringProfileID: data.tailoringProfileId,
           advancedArgs: data.advancedArgs || "",
           fetchRemoteResources: data.fetchRemoteResources || false,
@@ -128,13 +156,13 @@ class ScheduleAuditScan extends React.Component<{}, StateType> {
       ids: window.minions?.map((m) => m.id),
       earliest: this.state.earliest,
       xccdfProfileId: model.xccdfProfileId,
-      dataStreamName: model.dataStreamName,
-      tailoringFile: model.tailoringFile,
+      scapContentId: model.dataStreamName, 
+      tailoringFileId: model.tailoringFile, 
       tailoringProfileID: model.tailoringProfileID,
       ovalFiles: model.ovalFiles,
       advancedArgs: model.advancedArgs,
       fetchRemoteResources: model.fetchRemoteResources,
-      policyId: this.state.selectedScapPolicy, // Link scan to policy if selected
+      policyId: this.state.selectedScapPolicy,
     })
       .then((data) => {
         const msg = MessagesUtils.info(
@@ -218,9 +246,9 @@ class ScheduleAuditScan extends React.Component<{}, StateType> {
                       this.getProfiles(ScapContentType.DataStream, value as string);
                     }
                   }}
-                  options={window.scapDataStreams
-                    .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()))
-                    .map((k) => ({ value: k, label: k.substring(0, k.indexOf("-ds.xml")).toUpperCase() }))}
+                  options={this.state.scapContentList
+                    .sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
+                    .map((k) => ({ value: k.id, label: k.name }))}
                 />
               </div>
             </FormGroup>
@@ -255,7 +283,7 @@ class ScheduleAuditScan extends React.Component<{}, StateType> {
                   isClearable
                   value={this.state.model.tailoringFile}
                   disabled={!!selectedScapPolicy}
-                  options={tailoringFiles.map((k) => ({ value: k.fileName, label: k.name }))}
+                  options={tailoringFiles.map((k) => ({ value: k.id, label: k.name }))}
                 />
               </div>
             </FormGroup>

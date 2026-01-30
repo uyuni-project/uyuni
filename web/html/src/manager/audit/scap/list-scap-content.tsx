@@ -182,15 +182,15 @@ class ScapContent extends React.Component<Props, State> {
               width="20%"
               comparator={Utils.sortByText}
               header={t("File Name")}
-              cell={(row) => row.fileName}
+              cell={(row) => row.dataStreamFileName}
             />
             <Column
               key="actions"
               columnKey="actions"
               width="15%"
               header={t("Actions")}
-              columnClass="text-right"
-              headerClass="text-right"
+              columnClass="text-center"
+              headerClass="text-center"
               cell={this.renderActionsColumn}
             />
           </Table>

@@ -3,12 +3,7 @@ include ./minion-header.jade
 
 script(type='text/javascript').
     window.csrfToken = "#{csrf_token}";
-    window.profileId = "#{profileId}";
-    window.minions = [{id: #{server.id}}];
-    window.entityType = "#{entityType}";
-    window.scapDataStreams = !{scapDataStreams};
-    window.tailoringFiles = !{tailoringFiles};
-    window.scapPolicies = !{scapPolicies};
+    window.scheduleData = !{scheduleDataJson};
 
 script(type='text/javascript').
     spaImportReactPage('minion/audit/schedule-scap-scan')

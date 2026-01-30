@@ -148,7 +148,7 @@ class ScapPolicy extends React.Component<Props, State> {
               headerClass="text-left"
               comparator={Utils.sortByText}
               header={t("Content")}
-              cell={(row) => row.dataStreamName}
+              cell={(row) => row.scapContentName || "N/A"}
             />
             <Column
               columnKey="systems"
@@ -171,14 +171,6 @@ class ScapPolicy extends React.Component<Props, State> {
                   total={row.totalSystems || 0}
                 />
               )}
-            />
-            <Column
-              columnKey="lastScan"
-              columnClass="text-center"
-              headerClass="text-center"
-              comparator={Utils.sortByDate}
-              header={t("Last Scan")}
-              cell={(row) => row.lastScanTime ? moment(row.lastScanTime).fromNow() : t("Never")}
             />
             <Column
               width="15%"

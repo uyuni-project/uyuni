@@ -8,12 +8,10 @@ import java.time.LocalDateTime;
 public class ScapPolicyComplianceSummary {
     private Integer id;
     private String policyName;
-    private String dataStreamName;
+    private String scapContentName;
     private Long totalSystems = 0L;
     private Long compliantSystems = 0L;
     private Double compliancePercentage;
-    private transient LocalDateTime lastScanTime;
-    private String lastScanTimeString;
     
     /**
      * No-argument constructor required by database query framework
@@ -26,21 +24,18 @@ public class ScapPolicyComplianceSummary {
      * Constructor for SQL result mapping
      * @param id the policy ID
      * @param policyName the policy name
-     * @param dataStreamName the data stream name
+     * @param scapContentName the SCAP content name
      * @param totalSystems total number of systems scanned
      * @param compliantSystems number of compliant systems
-     * @param lastScanTime timestamp of last scan
      */
     public ScapPolicyComplianceSummary(Integer id, String policyName,
-                                       String dataStreamName, Long totalSystems, Long compliantSystems, 
-                                       LocalDateTime lastScanTime) {
+                                       String scapContentName, Long totalSystems, Long compliantSystems) {
         this.id = id;
         this.policyName = policyName;
-        this.dataStreamName = dataStreamName;
+        this.scapContentName = scapContentName;
         this.totalSystems = totalSystems != null ? totalSystems : 0L;
         this.compliantSystems = compliantSystems != null ? compliantSystems : 0L;
         this.compliancePercentage = calculatePercentage();
-        this.lastScanTime = lastScanTime;
     }
     
     private Double calculatePercentage() {
@@ -65,10 +60,10 @@ public class ScapPolicyComplianceSummary {
     }
     
     /**
-     * @return the data stream name
+     * @return the SCAP content name
      */
-    public String getDataStreamName() {
-        return dataStreamName;
+    public String getScapContentName() {
+        return scapContentName;
     }
     
     /**
@@ -100,13 +95,6 @@ public class ScapPolicyComplianceSummary {
     }
     
     /**
-     * @return timestamp of the last scan as ISO string, or null if never scanned
-     */
-    public String getLastScanTime() {
-        return lastScanTimeString;
-    }
-    
-    /**
      * Set the policy ID
      * @param id the policy ID
      */
@@ -123,11 +111,11 @@ public class ScapPolicyComplianceSummary {
     }
     
     /**
-     * Set the data stream name
-     * @param dataStreamName the data stream name
+     * Set the SCAP content name
+     * @param scapContentName the SCAP content name
      */
-    public void setDataStreamName(String dataStreamName) {
-        this.dataStreamName = dataStreamName;
+    public void setScapContentName(String scapContentName) {
+        this.scapContentName = scapContentName;
     }
     
     /**
@@ -146,19 +134,5 @@ public class ScapPolicyComplianceSummary {
     public void setCompliantSystems(Long compliantSystems) {
         this.compliantSystems = compliantSystems != null ? compliantSystems : 0L;
         this.compliancePercentage = calculatePercentage();
-    }
-    
-    /**
-     * Set last scan time from Timestamp (from database)
-     * @param timestamp last scan timestamp
-     */
-    public void setLastScanTime(java.sql.Timestamp timestamp) {
-        if (timestamp != null) {
-            this.lastScanTime = timestamp.toLocalDateTime();
-            this.lastScanTimeString = this.lastScanTime.toString();
-        } else {
-            this.lastScanTime = null;
-            this.lastScanTimeString = null;
-        }
     }
 }

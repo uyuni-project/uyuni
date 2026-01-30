@@ -29,13 +29,21 @@ public class AuditScanScheduleJson {
     private Optional<LocalDateTime> earliest = Optional.empty();
 
     /** The SCAP xccdf data stream name */
+    @Deprecated
     private String dataStreamName;
+
+    /** The SCAP content ID */
+    private Long scapContentId;
 
     /** The XCCDF profile ID */
     private String xccdfProfileId;
 
-    /** The Tailoring file */
+    /** The Tailoring file name */
+    @Deprecated
     private String tailoringFile;
+
+    /** The Tailoring file ID */
+    private Long tailoringFileId;
 
     /** The profile ID from the selected tailoring file */
     private String tailoringProfileID;
@@ -74,6 +82,13 @@ public class AuditScanScheduleJson {
     }
 
     /**
+     * @return the SCAP content ID
+     */
+    public Long getScapContentId() {
+        return scapContentId;
+    }
+
+    /**
      * @return the XCCDF profile ID
      */
     public String getXccdfProfileId() {
@@ -83,22 +98,51 @@ public class AuditScanScheduleJson {
     /**
      * @return the OVAL files (comma-separated)
      */
+
     public String getOvalFiles() {
         return ovalFiles;
     }
 
     /**
+     * @return the Tailoring file name
+     */
+    public String getTailoringFile() {
+        return tailoringFile;
+    }
+
+    /**
+     * @return the Tailoring profile ID
+     */
+    public String getTailoringProfileID() {
+        return tailoringProfileID;
+    }
+
+    /**
+     * @return the advanced arguments
+     */
+    public String getAdvancedArgs() {
+        return advancedArgs;
+    }
+
+    /**
      * Builds the oscap parameters string
+     * @param resolvedTailoringFile resolved tailoring file name
      * @return the formatted parameters for oscap command
      */
-    public String buildOscapParameters() {
+    public String buildOscapParameters(String resolvedTailoringFile) {
         StringBuilder params = new StringBuilder();
         
         // Profile is required
         params.append("--profile ").append(xccdfProfileId);
         
         // Tailoring file and profile (optional)
-        if (StringUtils.isNotEmpty(tailoringFile)) {
+        if (StringUtils.isNotEmpty(resolvedTailoringFile)) {
+            params.append(" --tailoring-file ").append(resolvedTailoringFile);
+            if (StringUtils.isNotEmpty(tailoringProfileID)) {
+                params.append(" --tailoring-profile-id ").append(tailoringProfileID);
+            }
+        } else if (StringUtils.isNotEmpty(tailoringFile)) {
+             // Fallback to legacy field if no resolved file passed but field exists
             params.append(" --tailoring-file ").append(tailoringFile);
             if (StringUtils.isNotEmpty(tailoringProfileID)) {
                 params.append(" --tailoring-profile-id ").append(tailoringProfileID);
@@ -117,6 +161,16 @@ public class AuditScanScheduleJson {
         
         return params.toString();
     }
+    
+    /**
+     * Builds the oscap parameters string using internal tailoring file field
+     * @deprecated use buildOscapParameters(String resolvedTailoringFile) instead
+     * @return the formatted parameters for oscap command
+     */
+    @Deprecated
+    public String buildOscapParameters() {
+        return buildOscapParameters(null);
+    }
 
     /**
      * Validates the required fields
@@ -126,7 +180,7 @@ public class AuditScanScheduleJson {
         if (ids == null || ids.isEmpty()) {
             return "No systems specified";
         }
-        if (StringUtils.isEmpty(dataStreamName)) {
+        if (StringUtils.isEmpty(dataStreamName) && scapContentId == null) {
             return "SCAP content is required";
         }
         if (StringUtils.isEmpty(xccdfProfileId)) {
@@ -140,5 +194,12 @@ public class AuditScanScheduleJson {
      */
     public Integer getPolicyId() {
         return policyId;
+    }
+
+    /**
+     * @return the tailoring file ID
+     */
+    public Long getTailoringFileId() {
+        return tailoringFileId;
     }
 }

@@ -7,19 +7,34 @@ import { Label } from "components/input/Label";
 import { Text } from "components/input/text/Text";
 import { TextArea } from "components/input/text-area/TextArea";
 import { Select } from "components/input/select/Select";
-import { Messages } from "components/messages/messages";
+import { Messages, Utils as MessageUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 import { Utils } from "utils/functions";
 import Network from "utils/network";
 import { localizedMoment } from "utils/datetime";
 import { RecurringActionsEdit } from "../../recurring/recurring-actions-edit";
 
+interface ScapPolicyPageData {
+  policyData: any | null;
+  isEditMode: boolean;
+  isReadOnly: boolean;
+  scapContentList: Array<{
+    id: number;
+    dataStreamFileName: string;
+  }>;
+  tailoringFiles: Array<{
+    id: number;
+    name: string;
+    fileName: string;
+  }>;
+}
+
 
 type Props = {};
 type State = {
   model: any;
   isInvalid?: boolean;
-  messages?: Array<{ severity: string; text: string }>;
+  messages?: any;
   errors: string[];
   dataStreams?: any;
   tailoringFiles: any;
@@ -35,9 +50,10 @@ class ScapPolicy extends React.Component<Props, State> {
 
   constructor(props) {
     super(props);
-    // policyData is already a JavaScript object from the template, not a JSON string
-    const policyData = window.policyData || null;
-    const isEditMode = window.isEditMode || false;
+    
+    const pageData = (window as any).scapPolicyPageData as ScapPolicyPageData | undefined;
+    const policyData = pageData?.policyData || null;
+    const isEditMode = pageData?.isEditMode || false;
     
     this.state = {
       model: policyData || {},
@@ -45,15 +61,16 @@ class ScapPolicy extends React.Component<Props, State> {
       messages: [],
       errors: [],
       isEditMode,
-      tailoringFiles: (window.tailoringFiles || []).map((file: any) => ({
+      tailoringFiles: (pageData?.tailoringFiles || []).map((file: any) => ({
         value: file.id,
         label: file.name,
-        fileName: file.fileName, // Keep fileName for API calls
+        fileName: file.fileName,
       })),
-      dataStreams: (window.scapDataStreams || []).sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase())).map((stream: string) => ({
-        value: stream,
-        label: stream.replace("-ds.xml", "").toUpperCase(),
-      })),
+      dataStreams: (pageData?.scapContentList || [])
+        .map((content: any) => ({
+          value: content.id,
+          label: content.dataStreamFileName.replace("-ds.xml", "").toUpperCase(),
+        })),
       tailoringFileProfiles: [],
       earliest: localizedMoment(),
       xccdfProfiles: [],
@@ -67,17 +84,17 @@ class ScapPolicy extends React.Component<Props, State> {
     if (this.state.isEditMode) {
       const { model } = this.state;
       
-      // Load XCCDF profiles if dataStreamName is set
-      if (model.dataStreamName) {
-        this.fetchProfiles("dataStream", model.dataStreamName).then(() => {
+      // Load XCCDF profiles if scapContentId is set
+      if (model.scapContentId) {
+        this.fetchProfiles("dataStream", model.scapContentId).then(() => {
           // Force a re-render after profiles are loaded to ensure Select shows the value
           this.forceUpdate();
         });
       }
       
       // Load tailoring profiles if tailoringFile is set
-      if (model.tailoringFile && model.tailoringFileName) {
-        this.fetchProfiles("tailoringFile", model.tailoringFileName).then(() => {
+      if (model.tailoringFile) {
+        this.fetchProfiles("tailoringFile", model.tailoringFile).then(() => {
           this.forceUpdate();
         });
       }
@@ -88,7 +105,7 @@ class ScapPolicy extends React.Component<Props, State> {
     try {
       // Validate required Select fields
       const { model } = this.state;
-      if (!model.dataStreamName) {
+      if (!model.scapContentId) {
         this.setState({
           messages: [{ severity: "error", text: "SCAP Content is required" }],
         });
@@ -134,7 +151,7 @@ class ScapPolicy extends React.Component<Props, State> {
     this.form = form;
   };
 
-  fetchProfiles = async (type: string, value: string) => {
+  fetchProfiles = async (type: string, value: string | number) => {
     if (!value) return;
     console.log(type);
     try {
@@ -147,6 +164,10 @@ class ScapPolicy extends React.Component<Props, State> {
       }
     } catch (error) {
       console.log(error);
+      const errorMessages = Network.responseErrorMessage(error as any);
+      this.setState({
+        messages: errorMessages
+      });
     }
   };
   handleDataStreamChange = (name, value) => {
@@ -234,13 +255,13 @@ class ScapPolicy extends React.Component<Props, State> {
             <Label name={t("SCAP Content")} className="col-md-3" required />
             <div className="col-md-6">
               <Select
-                name="dataStreamName"
+                name="scapContentId"
                 isClearable
                 options={dataStreams}
-                value={model.dataStreamName}
+                value={model.scapContentId}
                 onChange={(value) => {
-                  this.setState({ model: { ...model, dataStreamName: value as string } });
-                  this.fetchProfiles("dataStream", value as string);
+                  this.setState({ model: { ...model, scapContentId: value as number } });
+                  this.fetchProfiles("dataStream", value as number);
                 }}
               />
             </div>
@@ -268,19 +289,8 @@ class ScapPolicy extends React.Component<Props, State> {
                 options={tailoringFiles}
                 value={model.tailoringFile}
                 onChange={(value) => {
-                  // Find the selected tailoring file to get its fileName
-                  const selectedFile = tailoringFiles.find((f: any) => f.value === value);
-                  const fileName = selectedFile?.fileName || "";
-                  this.setState({ 
-                    model: { 
-                      ...model, 
-                      tailoringFile: value as string,
-                      tailoringFileName: fileName
-                    } 
-                  });
-                  if (fileName) {
-                    this.fetchProfiles("tailoringFile", fileName);
-                  }
+                  this.setState({ model: { ...model, tailoringFile: value as number } });
+                  this.fetchProfiles("tailoringFile", value as number);
                 }}
               />
             </div>
