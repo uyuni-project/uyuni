@@ -72,8 +72,6 @@ node_modules.tar.gz
 yarn.lock
 yarn-error.log
 
-rel-eng/custom/__pycache__
-
 # Intellij IDEA
 .idea/
 *.iml
@@ -93,6 +91,12 @@ python/.vscode
 # Python
 venv/
 .venv/
+*.egg-info/
+*.egg
+wheels/
+__pycache__/
+build/
+.pytest_cache/
 
 # Schema
 

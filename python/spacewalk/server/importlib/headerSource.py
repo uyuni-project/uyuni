@@ -53,6 +53,7 @@ class rpmPackage(IncompletePackage):
         checksum_type,
         checksum,
         path=None,
+        remote_path=None,
         org_id=None,
         header_start=None,
         header_end=None,
@@ -90,6 +91,7 @@ class rpmPackage(IncompletePackage):
         self["checksum"] = checksum
         self["checksums"] = {checksum_type: checksum}
         self["path"] = path
+        self["remote_path"] = remote_path
         self["org_id"] = org_id
         self["header_start"] = header_start
         self["header_end"] = header_end
@@ -174,6 +176,7 @@ class rpmBinaryPackage(Package, rpmPackage):
         checksum_type,
         checksum,
         path=None,
+        remote_path=None,
         org_id=None,
         header_start=None,
         header_end=None,
@@ -186,6 +189,7 @@ class rpmBinaryPackage(Package, rpmPackage):
             checksum_type,
             checksum,
             path,
+            remote_path,
             org_id,
             header_start,
             header_end,
@@ -375,6 +379,7 @@ class rpmSourcePackage(SourcePackage, rpmPackage):
         checksum_type,
         checksum,
         path=None,
+        remote_path=None,
         org_id=None,
         header_start=None,
         header_end=None,
@@ -387,6 +392,7 @@ class rpmSourcePackage(SourcePackage, rpmPackage):
             checksum_type,
             checksum,
             path,
+            remote_path,
             org_id,
             header_start,
             header_end,
@@ -629,6 +635,8 @@ def createPackage(
     header_start,
     header_end,
     channels,
+    expand_full_filelist=True,
+    remote_path=None,
 ):
     """
     Returns a populated instance of rpmBinaryPackage or rpmSourcePackage
@@ -642,13 +650,15 @@ def createPackage(
 
     # bug #524231 - we need to call fullFilelist() for RPM v3 file list
     # to expand correctly
-    header.hdr.fullFilelist()
+    if expand_full_filelist:
+        header.hdr.fullFilelist()
     p.populate(
         header,
         size,
         checksum_type,
         checksum,
         relpath,
+        remote_path,
         org_id,
         header_start,
         header_end,
