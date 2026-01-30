@@ -155,7 +155,7 @@ bootstrap_repo:
       - mgrcompat: disable_repo_*
 {%- endif %}
     - onlyif:
-      - ([ {{ bootstrap_repo_exists }} = "True" ])
+      - test "{{ bootstrap_repo_exists }}" = "True"
 
 {% include 'channels/gpg-keys.sls' %}
 
