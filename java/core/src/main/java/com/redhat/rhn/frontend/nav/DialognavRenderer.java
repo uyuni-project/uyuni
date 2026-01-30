@@ -113,8 +113,22 @@ public class DialognavRenderer extends Renderable {
                             String cssClass) {
         HtmlTag li = new HtmlTag("li");
 
-        if (!cssClass.equals("")) {
-            li.setAttribute("class", cssClass);
+        String combinedClass = cssClass;
+        if (node.getCssClass() != null) {
+            combinedClass = (combinedClass + " " + node.getCssClass()).trim();
+        }
+
+        // Auto-detect beta features based on ACL
+        if (node.getAcl() != null && node.getAcl().contains("user_has_beta_features_enabled")) {
+             if (combinedClass.isEmpty()) {
+                 combinedClass = "beta-feature";
+             } else if (!combinedClass.contains("beta-feature")) {
+                 combinedClass += " beta-feature";
+             }
+        }
+
+        if (!combinedClass.equals("")) {
+            li.setAttribute("class", combinedClass);
         }
 
         String href = node.getPrimaryURL();

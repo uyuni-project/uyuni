@@ -1,5 +1,7 @@
 $nav-tabs-offset: 30px;
 
+
+
 .nav-tabs {
   margin-bottom: 0.25rem;
   border-bottom: 1px solid $eos-bc-gray-100;
@@ -45,21 +47,12 @@ $nav-tabs-offset: 30px;
       }
     }
   }
-  // Style for BETA label on the specific schedule tab
-  li a[href*="schedule-scap-scan"] {
-    &::after {
-      content: " BETA";
-      display: inline-block;
-      font-size: 0.7em;
-      font-weight: 600;
-      padding: 2px 6px;
-      margin-left: 6px;
-      border-radius: 3px;
-      background-color: #f0ad4e;
-      color: #fff;
-      vertical-align: middle;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+  .beta-feature {
+    a {
+      &::after {
+        content: " BETA";
+        @extend %beta-badge-style;
+      }
     }
   }
 }
