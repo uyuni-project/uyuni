@@ -101,6 +101,9 @@ if [ -f $SSL_KEY ] ; then
     postgres_reconfig "ssl_key_file" "'$SSL_KEY'"
 fi
 
+mkdir -p /var/lib/pgsql/data/postgresql.conf.d
+postgres_reconfig "include_dir" "'postgresql.conf.d'"
+
 echo "postgresql.conf updated"
 
 rm /var/lib/pgsql/data/pg_hba.conf
