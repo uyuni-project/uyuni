@@ -10,6 +10,7 @@ sudo -i podman run --rm -d --network network -v /tmp/testing:/tmp --name control
 cat <<EOF | sudo -i podman exec -i controller bash --login -c 'cat > /etc/profile.local'
 # Generated /etc/profile.local for testsuite environment
 export SCC_CREDENTIALS="test|test"
+export BUILD_HOST=buildhost
 export AUTH_REGISTRY=${AUTH_REGISTRY}
 export AUTH_REGISTRY_CREDENTIALS="${AUTH_REGISTRY_CREDENTIALS}"
 export NO_AUTH_REGISTRY=${NO_AUTH_REGISTRY}
@@ -30,7 +31,7 @@ export CATCH_TIMEOUT_MESSAGE="False"
 export SERVER_INSTANCE_ID="None"
 export BETA_ENABLED="False"
 export GITPROFILES="https://github.com/uyuni-project/uyuni.git#:testsuite/features/profiles/github_runner"
-export PXEBOOT_IMAGE=sles15sp6
+export PXEBOOT_IMAGE=sles15sp7
 export TAGS="\"not @flaky\""
 EOF
 
