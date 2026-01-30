@@ -1,0 +1,1 @@
+- Allow LDAP users that are not visible to pam_unix (bsc#1256791)
