@@ -41,8 +41,11 @@ artifacts:
     repository: Leap
   - artifact: classmate
     repository: Leap
-  - artifact: jakarta.mail
+  - artifact: jakarta.mail-api
     package: jakarta-mail
+    repository: Uyuni_Jakarta
+  - artifact: jakarta.mail
+    package: angus-mail-core
     repository: Uyuni_Jakarta
   - artifact: commons-beanutils
     package: apache-commons-beanutils

@@ -58,8 +58,8 @@
             <artifactId>classmate</artifactId>
         </dependency>
         <dependency>
-            <groupId>suse</groupId>
-            <artifactId>jakarta.mail</artifactId>
+            <groupId>jakarta.mail</groupId>
+            <artifactId>jakarta.mail-api</artifactId>
         </dependency>
         <dependency>
             <groupId>org.eclipse.angus</groupId>
