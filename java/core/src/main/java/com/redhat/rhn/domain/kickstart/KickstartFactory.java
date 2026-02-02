@@ -1086,12 +1086,12 @@ public class KickstartFactory extends HibernateFactory {
     public static List<KickstartableTree> listUnsyncedKickstartTrees() {
         Session session = HibernateFactory.getSession();
         return session.createQuery("""
-                        SELECT k FROM KickstartableTree AS k,
-                        com.redhat.rhn.domain.channel.Channel AS c
-                        WHERE c.id = k.channel
+                        SELECT k
+                        FROM KickstartableTree AS k, Channel AS c
+                        WHERE c.id = k.channel.id
                         AND k.cobblerId IS NULL
                         AND c.parentChannel IS NULL
-                        ORDEr by k.label""", KickstartableTree.class)
+                        ORDER by k.label""", KickstartableTree.class)
                 .list();
     }
 
