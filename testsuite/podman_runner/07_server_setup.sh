@@ -164,7 +164,6 @@ $PODMAN_CMD run --cap-add AUDIT_CONTROL \
     -e REPORT_DB_PORT="5432"  \
     -e REPORT_DB_NAME="reportdb"  \
     -e EXTERNALDB_PROVIDER=""  \
-    -e ISS_PARENT=""  \
     -e SCC_USER="test"  \
     -e SCC_PASS="test"  \
     -e ORG_NAME='SUSE Test'  \

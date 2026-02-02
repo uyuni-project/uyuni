@@ -153,8 +153,6 @@ hostname=${UYUNI_FQDN}
 scc-pass = ${SCC_PASS}
 " >> /root/spacewalk-answers
     PARAM_CC="--scc"
-  elif [ -n "${ISS_PARENT}" ]; then
-    PARAM_CC="--disconnected"
   fi
 
   if [ "${NO_SSL}" = "Y" ]; then
@@ -188,27 +186,6 @@ setup_mirror() {
   # In the container case, we have the MIRROR_PATH environment variable at setup
   if [ -n "${MIRROR_PATH}" ]; then
     echo "server.susemanager.fromdir = ${MIRROR_PATH}" >> /etc/rhn/rhn.conf
-  fi
-}
-
-setup_iss() {
-  if [ -n "${ISS_PARENT}" ]; then
-    certname=$(echo "MASTER-${ISS_PARENT}-TRUSTED-SSL-CERT" | sed 's/\./_/g')
-    curl -s -S -o "/usr/share/rhn/${certname}" "http://${ISS_PARENT}/pub/RHN-ORG-TRUSTED-SSL-CERT"
-
-    if [ -e "/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT" ] && \
-       cmp -s "/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT" "/usr/share/rhn/${certname}" ; then
-      # equal - use it
-      rm -f "/usr/share/rhn/${certname}"
-      certname=RHN-ORG-TRUSTED-SSL-CERT
-    else
-      /usr/share/rhn/certs/update-ca-cert-trust.sh "${certname}"
-    fi
-
-    echo "
-    INSERT INTO rhnISSMaster (id, label, is_current_master, ca_cert)
-    VALUES (sequence_nextval('rhn_issmaster_seq'), '${ISS_PARENT}', 'Y', '/usr/share/rhn/${certname}');
-    " | spacewalk-sql -
   fi
 }
 
@@ -323,7 +300,6 @@ setup_db_postgres
 setup_reportdb
 setup_spacewalk
 setup_mirror
-setup_iss
 setup_admin_user
 
 touch ${MANAGER_COMPLETE}
