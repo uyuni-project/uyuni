@@ -25,15 +25,18 @@ import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.audit.*;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 
 import com.redhat.rhn.frontend.dto.XccdfRuleResultDto;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.audit.ScapManager;
 import com.redhat.rhn.manager.audit.scap.xml.BenchMark;
+import com.redhat.rhn.manager.audit.scap.xml.Profile;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
+import com.redhat.rhn.manager.ssm.SsmManager;
 import com.suse.manager.webui.controllers.utils.MultipartRequestUtil;
 
 import com.suse.manager.webui.utils.gson.AuditScanScheduleJson;
@@ -140,6 +143,11 @@ public class ScapAuditController {
         get("/manager/systems/details/schedule-scap-scan",
           withCsrfToken(withDocsLocale(withUserAndServer(this::scheduleAuditScanView))),
           jade);
+        // SSM Schedule
+        get("/manager/systems/ssm/audit/schedule-scap-scan",
+                withCsrfToken(withDocsLocale(withUser(this::scheduleAuditScanSsmView))),
+                jade);
+
         post("manager/api/audit/schedule/create", withUser(this::scheduleAuditScan));
 
         //rules
@@ -581,6 +589,8 @@ public class ScapAuditController {
         }
     }
 
+    
+
     /**
      * API endpoint to get SCAP policy details as JSON
      * @param req the request
@@ -588,6 +598,32 @@ public class ScapAuditController {
      * @param user the user
      * @return JSON string with policy details
      */
+    /**
+     * Helper method to retrieve profile title from a SCAP file
+     * @param baseDirectory the base directory (SCAP_CONTENT_DIR or TAILORING_FILES_DIR)
+     * @param fileName the file name
+     * @param profileId the profile ID to look up
+     * @return the profile title, or the profileId if not found
+     */
+    private String getProfileTitle(String baseDirectory, String fileName, String profileId) {
+        try {
+            Path safePath = FileUtils.validateCanonicalPath(baseDirectory, fileName);
+            File targetFile = safePath.toFile();
+            
+            if (targetFile.exists()) {
+                BenchMark benchmark = ScapManager.getProfileList(targetFile);
+                return benchmark.getProfiles().stream()
+                        .filter(p -> profileId.equals(p.getId()))
+                        .map(Profile::getTitle)
+                        .findFirst()
+                        .orElse(profileId);
+            }
+        } catch (Exception e) {
+            LOG.warn("Could not retrieve profile title for profile ID: {}", profileId, e);
+        }
+        return profileId;
+    }
+
     public String getScapPolicyDetails(Request req, Response res, User user) {
         Integer policyId = Integer.parseInt(req.params("id"));
 
@@ -606,9 +642,18 @@ public class ScapAuditController {
         policyData.put("policyName", policy.getPolicyName());
         policyData.put("description", policy.getDescription());
         
-        // Return SCAP content ID instead of filename
+        // Return SCAP content ID and profile title
         if (policy.getScapContent() != null) {
             policyData.put("scapContentId", policy.getScapContent().getId());
+            
+            if (policy.getXccdfProfileId() != null && !policy.getXccdfProfileId().isEmpty()) {
+                String profileTitle = getProfileTitle(
+                    SCAP_CONTENT_DIR,
+                    policy.getScapContent().getXccdfFileName(),
+                    policy.getXccdfProfileId()
+                );
+                policyData.put("xccdfProfileTitle", profileTitle);
+            }
         }
         
         policyData.put("xccdfProfileId", policy.getXccdfProfileId());
@@ -617,9 +662,18 @@ public class ScapAuditController {
         policyData.put("advancedArgs", policy.getAdvancedArgs());
         policyData.put("fetchRemoteResources", policy.getFetchRemoteResources());
 
-        // Return tailoring file ID instead of filename
+        // Return tailoring file ID and profile title
         if (policy.getTailoringFile() != null) {
             policyData.put("tailoringFileId", policy.getTailoringFile().getId());
+            
+            if (policy.getTailoringProfileId() != null && !policy.getTailoringProfileId().isEmpty()) {
+                String profileTitle = getProfileTitle(
+                    TAILORING_FILES_DIR,
+                    policy.getTailoringFile().getFileName(),
+                    policy.getTailoringProfileId()
+                );
+                policyData.put("tailoringProfileTitle", profileTitle);
+            }
         }
 
         return json(res, policyData);
@@ -1165,6 +1219,65 @@ public class ScapAuditController {
     }
 
     /**
+     * Processes a GET request to get a list of scap configurations for SSM
+     *
+     * @param request  the request object
+     * @param response  the response object
+     * @param user the authorized user
+     * @return the result JSON object
+     */
+    private ModelAndView scheduleAuditScanSsmView(Request request, Response response, User user) {
+        Map<String, Object> jsData = new HashMap<>();
+        
+        // Get systems in SSM
+        List<Long> sids = SsmManager.listServerIds(user);
+        List<Server> systems = ServerFactory.lookupByIdsAndOrg(new HashSet<>(sids), user.getOrg());
+        
+        jsData.put("scapContentList", getScapContentList(user));
+        
+        List<TailoringFile> tailoringFiles = ScapFactory.listTailoringFiles(user.getOrg());
+        List<TailoringFileJson> tailoringFilesDto = tailoringFiles.stream()
+                .map(tf -> new TailoringFileJson(
+                        tf.getId(),
+                        tf.getName(),
+                        tf.getFileName(),
+                        tf.getDisplayFileName(),
+                        tf.getDescription()
+                ))
+                .collect(Collectors.toList());
+        jsData.put("tailoringFiles", tailoringFilesDto);
+
+        List<ScapPolicy> scapPolicies = ScapFactory.listScapPolicies(user.getOrg());
+        List<ScapPolicyJson> scapPoliciesDto = scapPolicies.stream()
+          .map(policy -> {
+              ScapPolicyJson dto = new ScapPolicyJson();
+              dto.setId(policy.getId());
+              dto.setPolicyName(policy.getPolicyName());
+              return dto;
+          })
+          .collect(Collectors.toList());
+        jsData.put("scapPolicies", scapPoliciesDto);
+        jsData.put("entityType", "ssm");
+        
+        // Populate minions list for the frontend to create correct ID list
+        List<Map<String, Object>> minionList = systems.stream().map(s -> {
+            Map<String, Object> m = new HashMap<>();
+            m.put("id", s.getId());
+            m.put("name", s.getName());
+            return m;
+        }).collect(Collectors.toList());
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("scheduleDataJson", Json.GSON.toJson(jsData));
+        data.put("minions", Json.GSON.toJson(minionList));
+        
+        data.put("tabs", com.suse.manager.webui.utils.ViewHelper.getInstance()
+                .renderNavigationMenu(request, "/WEB-INF/nav/ssm.xml"));
+
+        return new ModelAndView(data, "templates/ssm/schedule-scap-scan.jade");
+    }
+
+    /**
      * Returns a view to display create form
      *
      * @param req the request object
@@ -1575,7 +1688,7 @@ public class ScapAuditController {
     }
     /**
      * Create a Salt state action for remediation.
-     * This creates an ApplyStatesAction that applies the scap_remediation state
+     * This creates an ApplyStatesAction that applies the scap_beta.remediation state
      * with the remediation content passed via pillar data.
      *
      * @param body the remediation request containing Salt state content
@@ -1587,11 +1700,11 @@ public class ScapAuditController {
         // Pass Salt state content via pillar data
         Map<String, Object> pillar = new HashMap<>();
         pillar.put("scap_remediation_state", body.getRemediationContent());
-        // Schedule apply states action with scap_remediation state module
+        // Schedule apply states action with scap_beta.remediation state module
         ApplyStatesAction action = ActionManager.scheduleApplyStates(
                 user,
                 Collections.singletonList(server.getId()),
-                Collections.singletonList("scap_remediation"),
+                Collections.singletonList("scap_beta.remediation"),
                 Optional.of(pillar),
                 new Date(),
                 Optional.empty()

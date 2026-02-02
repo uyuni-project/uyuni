@@ -1,9 +1,8 @@
-import "./audit-common.css";
+import "manager/minion/audit/audit-common.css";
 
 import * as React from "react";
 import SpaRenderer from "core/spa/spa-renderer";
 import Network from "utils/network";
-import { localizedMoment } from "utils";
 import { ScheduleScapScanForm } from "components/audit/schedule-scap-scan-form";
 
 declare global {
@@ -12,34 +11,18 @@ declare global {
       scapContentList: any[];
       tailoringFiles: any[];
       scapPolicies: any[];
-      profileId: number;
-      serverId: number;
-      entityType: string;
     };
-    profileId?: number;
     minions?: any[];
-    entityType?: string;
   }
 }
 
-const ScheduleAuditScan = () => {
+const ScheduleAuditScanSsm = () => {
     // Unpack scheduleData from window
     const scheduleData = window.scheduleData || {} as any;
     
-    // Set window properties for backward compatibility (component logic might rely on these if accessing direct window props, 
-    // though the new form uses props).
-    window.profileId = scheduleData.profileId || 0;
-    window.minions = scheduleData.serverId ? [{id: scheduleData.serverId}] : [];
-    window.entityType = scheduleData.entityType || "server";
-
     const tailoringFiles = scheduleData.tailoringFiles || [];
     const scapPolicies = scheduleData.scapPolicies || [];
     const scapContentList = scheduleData.scapContentList || [];
-
-    // Get system ID from URL for recurring actions link
-    const urlParams = new URLSearchParams(window.location.search);
-    const sid = urlParams.get("sid");
-    const createRecurringLink = `/rhn/manager/systems/details/recurring-actions?sid=${sid}#/create`;
 
     const onSubmit = (model) => {
         return Network.post("/rhn/manager/api/audit/schedule/create", {
@@ -63,11 +46,10 @@ const ScheduleAuditScan = () => {
             scapPolicies={scapPolicies}
             onSubmit={onSubmit}
             minions={window.minions}
-            createRecurringLink={createRecurringLink}
         />
     );
 };
 
 export const renderer = () => {
-  return SpaRenderer.renderNavigationReact(<ScheduleAuditScan />, document.getElementById("schedule-scap-scan"));
+  return SpaRenderer.renderNavigationReact(<ScheduleAuditScanSsm />, document.getElementById("schedule-scap-scan"));
 };
