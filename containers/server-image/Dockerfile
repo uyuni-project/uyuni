@@ -36,6 +36,8 @@ RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf && \
         ${USEPYTHON}-pygit2 \
         ${USEPYTHON}-ldap \
         billing-data-service \
+        #required by mgrSetup.sh
+        bind-utils \
         drbd-formula \
         ed \
         golang-github-QubitProducts-exporter_exporter \
