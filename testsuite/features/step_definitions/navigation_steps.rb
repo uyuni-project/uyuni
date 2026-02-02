@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2025 SUSE LLC.
+# Copyright (c) 2010-2026 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 ### This file contains the definitions for all steps concerning navigation through the Web UI
@@ -291,13 +291,6 @@ end
 #
 When(/^I click on "([^"]*)"$/) do |text|
   click_button_and_wait(text, match: :first)
-end
-
-#
-# Click on a button by nav item
-#
-When(/^I click on a button within the item containing "([^"]*)"$/) do |text_in_item|
-  find(:xpath, "//li[.//span[text()='#{text_in_item}']]//button").click
 end
 
 #
@@ -883,6 +876,10 @@ When(/^I check the first patch in the list, that does not require a reboot$/) do
   else
     step 'I check the first row in the list'
   end
+end
+
+When(/^I click on the Legal button$/) do
+  find_and_wait_click(:xpath, '//li[.//span[text()=\'Legal\']]//button').click
 end
 
 When(/^I click on the red confirmation button$/) do
