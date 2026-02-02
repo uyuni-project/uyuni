@@ -24,8 +24,8 @@ Feature: Main landing page options and preferences
     Given I am authorized
     When I follow the left menu "Help"
     And I switch to last opened window
-    Then I should see a "SUSE Multi-Linux Manager Guides" text
-    When I click on the Legal button
+    Then I should see a "SUSE Multi-Linux Manager Documentation" text
+    When I click on a button within the item containing "Legal"
     And I wait until I see "Copyright Notice" text
     And I follow "Copyright Notice"
     Then I should see a "Copyright Notice" text
@@ -37,8 +37,8 @@ Feature: Main landing page options and preferences
     Given I am authorized
     When I follow the left menu "Help"
     And I switch to last opened window
-    Then I should see a "SUSE Multi-Linux Manager Guides" text
-    When I click on the Legal button
+    Then I should see a "SUSE Multi-Linux Manager Documentation" text
+    When I click on a button within the item containing "Legal"
     And I wait until I see "End User License Agreement" text
     And I follow "End User License Agreement"
     Then I should see a "End User License Agreement" text
@@ -68,13 +68,14 @@ Feature: Main landing page options and preferences
     And I should see a Sign Out link
 
   Scenario: Main menu as regular user
-    Given I am authorized
+    Given I am authorized as "testing" with password "testing"
     Then I should see a "Home" link
     And I should see a "Systems" link
     And I should see a "Salt" link
     And I should see a "Images" link
     And I should see a "Patches" link
     And I should see a "Software" link
+    And I should see a "Content Lifecycle" link
     And I should see a "Audit" link
     And I should see a "Configuration" link
     And I should see a "Schedule" link
