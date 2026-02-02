@@ -119,7 +119,6 @@ Requires:       less
 Requires:       rsync
 Requires:       spacewalk-schema
 Requires:       susemanager-tools
-# mgrSetup.sh need either sqlplus or psql
 Recommends:     susemanager-branding
 BuildRequires:  uyuni-base-server
 Requires(pre):  uyuni-base-server
@@ -129,8 +128,6 @@ Requires:       firewalld
 %endif
 Requires:       postfix
 Requires:       reprepro >= 5.4
-# mgrSetup.sh calls dig
-Requires:       bind-utils
 %define python_sitelib %(%{pythonX} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")
 %global pythonsmroot %{python_sitelib}/spacewalk
 
