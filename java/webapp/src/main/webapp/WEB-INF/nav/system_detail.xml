@@ -194,7 +194,7 @@
         <rhn-tab-url>/rhn/systems/details/audit/XccdfDeleteConfirm.do</rhn-tab-url>
         <rhn-tab-url>/rhn/manager/audit/scap/scan/rule-result-details</rhn-tab-url>
       </rhn-tab>
-      <rhn-tab acl="authorized_for(systems.audit.openscap, W)" name="nav.system.audit.schedule">
+      <rhn-tab acl="authorized_for(systems.audit.openscap, W); not user_has_beta_features_enabled()" name="nav.system.audit.schedule">
         <rhn-tab-url>/rhn/systems/details/audit/ScheduleXccdf.do</rhn-tab-url>
       </rhn-tab>
     <rhn-tab acl="user_has_beta_features_enabled()" name="nav.system.audit.schedule.beta">

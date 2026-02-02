@@ -119,7 +119,9 @@ public class DialognavRenderer extends Renderable {
         }
 
         // Auto-detect beta features based on ACL
-        if (node.getAcl() != null && node.getAcl().contains("user_has_beta_features_enabled")) {
+        if (node.getAcl() != null && 
+            node.getAcl().contains("user_has_beta_features_enabled") &&
+            !node.getAcl().contains("not user_has_beta_features_enabled")) {
              if (combinedClass.isEmpty()) {
                  combinedClass = "beta-feature";
              } else if (!combinedClass.contains("beta-feature")) {
