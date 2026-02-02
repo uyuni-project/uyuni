@@ -22,22 +22,3 @@ if [ "${RUN_SCHEMA_UPDATE}" = "true" ]; then
   echo "Schema update..."
   /usr/sbin/spacewalk-startup-helper check-database
 fi
-
-if [ "${MIGRATION}" = "true" ]; then
-  echo "Updating auto-installable distributions..."
-  spacewalk-sql --select-mode - <<EOT
-  SELECT MIN(CONCAT(org_id, '-', label)) AS target, base_path INTO TEMP TABLE dist_map FROM rhnKickstartableTree GROUP BY base_path;
-  UPDATE rhnKickstartableTree SET base_path = CONCAT('/srv/www/distributions/', target)
-    from dist_map WHERE dist_map.base_path = rhnKickstartableTree.base_path;
-  DROP TABLE dist_map;
-EOT
-
-  echo "Schedule a system list update task..."
-  spacewalk-sql --select-mode - <<EOT
-  insert into rhnTaskQueue (id, org_id, task_name, task_data)
-  SELECT nextval('rhn_task_queue_id_seq'), 1, 'update_system_overview', s.id
-  from rhnserver s
-  where not exists (select 1 from rhntaskorun r join rhntaskotemplate t on r.template_id = t.id
-  join rhntaskobunch b on t.bunch_id = b.id where b.name='update-system-overview-bunch' limit 1);
-EOT
-fi
