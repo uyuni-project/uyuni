@@ -193,7 +193,7 @@ public class ScapAction extends Action {
             pillar.put("remediate", true);
         }
         
-        ret.put(State.apply(singletonList("scap-beta"),
+        ret.put(State.apply(singletonList("scap_beta.scan"),
                         Optional.of(singletonMap("mgr_scap_params", (Object)pillar))),
                 minionSummaries);
         return ret;
@@ -265,7 +265,7 @@ public class ScapAction extends Action {
                     };
             Map<String, StateApplyResult<Ret<Openscap.OpenscapResult>>> stateResult = Json.GSON.fromJson(
                     jsonResult, typeToken.getType());
-            // Look for the 'mgr_scap' state result specifically (scap-beta has multiple states)
+            // Look for the 'mgr_scap' state result specifically (scap_beta has multiple states)
             openscapResult = stateResult.entrySet().stream()
                     .filter(e -> e.getKey().contains("mgr_scap"))
                     .findFirst()
