@@ -20,10 +20,13 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -155,14 +158,7 @@ public class ScapFactory extends HibernateFactory {
     }
 
     /**
-     * Search for all tailoring files objects in the database
-     * @return list of tailoring files objects
-     */
-    public static List<TailoringFile> lookupAllTailoringFiles() {
-        return getSession().createQuery("FROM TailoringFile").list();
-    }
-    /**
-     * Search for all tailoring files objects in the database
+     * List all tailoring files objects in the database for an organization
      * @param org the organization
      * @return Returns a list of  tailoring files
      */
@@ -181,8 +177,7 @@ public class ScapFactory extends HibernateFactory {
      * @return optional of tailoring file object
      */
     public static Optional<TailoringFile> lookupTailoringFileByIdAndOrg(Integer id, Org org) {
-
-        if (Objects.isNull(id)) {
+        if (Objects. isNull(id)) {
             return Optional.empty();
         }
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
@@ -197,12 +192,15 @@ public class ScapFactory extends HibernateFactory {
 
     /**
      * Lookup for Tailoring files by an id list and organization
-     * @param ids image profile id list
+     * @param ids tailoring file id list
      * @param org the organization
-     * @return Returns a list of image profiles with the given ids if it exists
+     * @return Returns a list of tailoring files with the given ids if it exists
      * inside the organization
      */
     public static List<TailoringFile>  lookupTailoringFilesByIds(List<Long> ids, Org org) {
+        if (ids == null || ids.isEmpty()) {
+            return Collections.emptyList();
+        }
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaQuery<TailoringFile> criteria = builder.createQuery(TailoringFile.class);
         Root<TailoringFile> root = criteria.from(TailoringFile.class);
@@ -231,7 +229,7 @@ public class ScapFactory extends HibernateFactory {
     /**
      * List all SCAP polices objects in the database
      * @param org the organization
-     * @return Returns a list of  tailoring files
+     * @return Returns a list of  ScapPolicies
      */
     public static List<ScapPolicy> listScapPolicies(Org org) {
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
@@ -243,12 +241,14 @@ public class ScapFactory extends HibernateFactory {
 
     /**
      * Lookup for Scap policies by an id list and organization
-     * @param ids image profile id list
+     * @param ids ScapPolicy id list
      * @param org the organization
-     * @return Returns a list of  tailoring files
-     * inside the organization
+     * @return Returns a list of  ScapPolicies inside the organization
      */
     public static List<ScapPolicy>  lookupScapPoliciesByIds(List<Integer> ids, Org org) {
+        if (ids == null || ids.isEmpty()) {
+            return Collections.emptyList();
+        }
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaQuery<ScapPolicy> criteria = builder.createQuery(ScapPolicy.class);
         Root<ScapPolicy> root = criteria.from(ScapPolicy.class);
@@ -258,13 +258,12 @@ public class ScapFactory extends HibernateFactory {
         return getSession().createQuery(criteria).getResultList();
     }
     /**
-     * Lookup for a tailoring file object based on the id and organization
-     * @param id tailoring file ID
+     * Lookup for a ScapPolicy object based on the id and organization
+     * @param id ScapPolicy ID
      * @param org the organization
-     * @return optional of tailoring file object
+     * @return optional of ScapPolicy object
      */
     public static Optional<ScapPolicy> lookupScapPolicyByIdAndOrg(Integer id, Org org) {
-
         if (Objects.isNull(id)) {
             return Optional.empty();
         }
@@ -318,6 +317,9 @@ public class ScapFactory extends HibernateFactory {
      * @return Returns a list of SCAP content with the given ids
      */
     public static List<ScapContent> lookupScapContentByIds(List<Long> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return Collections.emptyList();
+        }
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
         CriteriaQuery<ScapContent> criteria = builder.createQuery(ScapContent.class);
         Root<ScapContent> root = criteria.from(ScapContent.class);
@@ -369,6 +371,25 @@ public class ScapFactory extends HibernateFactory {
         return getSession().createQuery(criteria).getResultStream().findFirst();
     }
 
+    /**
+     * Find all {@link XccdfRuleFix} for a given benchmark id (bulk lookup).
+     * @param benchmarkId benchmark id
+     * @return map of identifier to XccdfRuleFix
+     */
+    public static Map<String, XccdfRuleFix> lookupRuleRemediationsByBenchmark(String benchmarkId) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<XccdfRuleFix> criteria = builder.createQuery(XccdfRuleFix.class);
+        Root<XccdfRuleFix> root = criteria.from(XccdfRuleFix.class);
+        criteria.where(builder.equal(root.get("benchmarkIdentifier"), benchmarkId));
+
+        return getSession().createQuery(criteria)
+            .getResultStream()
+            .collect(Collectors.toMap(
+                XccdfRuleFix::getIdentifier,
+                fix -> fix,
+                (existing, replacement) -> existing
+            ));
+    }
 
     /**
      * Lookup custom remediation for a rule and organization.
@@ -398,13 +419,10 @@ public class ScapFactory extends HibernateFactory {
      */
     public static Optional<XccdfRuleFixCustom> lookupCustomRemediationByIdentifier(
             String identifier, String benchmarkId, Org org) {
-        // First find the global rule fix
         Optional<XccdfRuleFix> ruleFix = lookupRuleRemediation(benchmarkId, identifier);
         if (ruleFix.isEmpty()) {
             return Optional.empty();
         }
-        
-        // Then find the custom remediation for this org
         return lookupCustomRemediation(ruleFix.get().getId(), org);
     }
 
@@ -420,12 +438,9 @@ public class ScapFactory extends HibernateFactory {
     public static void saveCustomRemediation(String identifier, String benchmarkId,
                                             ScriptType scriptType, String remediationContent,
                                             Org org, User user) {
-        // Get or create the global rule fix
         XccdfRuleFix ruleFix = lookupRuleRemediation(benchmarkId, identifier)
                 .orElseThrow(() -> new IllegalArgumentException(
                         "No SCAP rule fix found for identifier: " + identifier));
-        
-        // Get or create custom remediation for this org
         XccdfRuleFixCustom custom = lookupCustomRemediation(ruleFix.getId(), org)
                 .orElseGet(() -> {
                     XccdfRuleFixCustom newCustom = new XccdfRuleFixCustom();
@@ -436,7 +451,6 @@ public class ScapFactory extends HibernateFactory {
                     return newCustom;
                 });
         
-        // Update the appropriate script type
         if (scriptType == ScriptType.BASH) {
             custom.setCustomRemediationBash(remediationContent);
         } else if (scriptType == ScriptType.SALT) {
@@ -444,10 +458,8 @@ public class ScapFactory extends HibernateFactory {
         } else {
             throw new IllegalArgumentException("Unsupported script type: " + scriptType);
         }
-        
         custom.setModified(new Date());
         custom.setModifiedBy(user);
-        
         singleton.saveObject(custom);
     }
 
@@ -461,15 +473,11 @@ public class ScapFactory extends HibernateFactory {
      */
     public static boolean deleteCustomRemediation(String identifier, String benchmarkId,
                                                  ScriptType scriptType, Org org) {
-        Optional<XccdfRuleFixCustom> customOpt = lookupCustomRemediationByIdentifier(
-                identifier, benchmarkId, org);
-        
+        Optional<XccdfRuleFixCustom> customOpt = lookupCustomRemediationByIdentifier(identifier, benchmarkId, org);
         if (customOpt.isEmpty()) {
             return false;
         }
-        
         XccdfRuleFixCustom custom = customOpt.get();
-        
         if (scriptType == ScriptType.BASH) {
             custom.setCustomRemediationBash(null);
         } else if (scriptType == ScriptType.SALT) {
@@ -490,7 +498,6 @@ public class ScapFactory extends HibernateFactory {
         
         return true;
     }
-
 
     /**
      * Get the Logger for the derived class so log messages

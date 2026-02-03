@@ -21,6 +21,7 @@ import static java.util.stream.Collectors.toList;
 
 
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionSummary;
@@ -71,7 +72,7 @@ import javax.persistence.OneToOne;
 public class ScapAction extends Action {
     private static final Logger LOG = LogManager.getLogger(ScapAction.class);
 
-    private static String xccdfResumeXsl = "/usr/share/susemanager/scap/xccdf-resume.xslt.in";
+    private static String xccdfResumeXsl = null;
 
     /**
      * Used only for testing
@@ -295,7 +296,7 @@ public class ScapAction extends Action {
                                                 openscapResult.getReturnCode(),
                                                 openscapResult.getError(),
                                                 resultsFileIn,
-                                                new File(xccdfResumeXsl));
+                                                new File(xccdfResumeXsl != null ? xccdfResumeXsl : ConfigDefaults.get().getScapXccdfResumeXsl()));
                                         serverAction.setResultMsg("Success");
                                     }
                                     catch (Exception e) {

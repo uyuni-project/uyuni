@@ -12,7 +12,6 @@
 package com.suse.manager.webui.controllers;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
@@ -43,6 +42,7 @@ import com.suse.manager.webui.utils.gson.AuditScanScheduleJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.manager.webui.utils.gson.TailoringFileJson;
 import com.suse.manager.webui.utils.gson.ScapContentJson;
+import com.suse.manager.webui.utils.gson.ScapPolicyResponseJson;
 import com.suse.manager.webui.utils.gson.ScapPolicyComplianceSummary;
 import com.suse.manager.webui.utils.gson.ScapPolicyJson;
 import com.suse.manager.webui.utils.gson.ScapPolicyScanHistory;
@@ -177,8 +177,14 @@ public class ScapAuditController {
     public ModelAndView listTailoringFilesView(Request req, Response res, User user) {
         try {
             List<TailoringFile> tailoringFiles = ScapFactory.listTailoringFiles(user.getOrg());
-            List<JsonObject> tailoringFilesJsonObjects = tailoringFiles.stream()
-                    .map(this::convertToTailoringFileJson)
+            List<TailoringFileJson> tailoringFilesJsonObjects = tailoringFiles.stream()
+                    .map(file -> new TailoringFileJson(
+                        file.getId(),
+                        file.getName(),
+                        file.getFileName(),
+                        file.getDisplayFileName(),
+                        file.getDescription()
+                    ))
                     .collect(Collectors.toList());
 
             Map<String, Object> data = new HashMap<>();
@@ -385,9 +391,6 @@ public class ScapAuditController {
         return safePath.toFile();
     }
 
-
-
-
     /**
      * Handles exceptions for tailoring file operations
      * @param response the response object
@@ -446,17 +449,8 @@ public class ScapAuditController {
      */
     public ModelAndView createScapPolicyView(Request req, Response res, User user) {
         try {
-            List<TailoringFile> tailoringFiles = ScapFactory.listTailoringFiles(user.getOrg());
-            List<JsonObject> tailoringFilesJson = tailoringFiles.stream()
-                    .map(this::convertToTailoringFileJson)
-                    .collect(Collectors.toList());
-
-            Map<String, Object> pageData = new HashMap<>();
-            pageData.put("policyData", null);
-            pageData.put("isEditMode", false);
-            pageData.put("isReadOnly", false);
-            pageData.put("scapContentList", getScapContentList(user));
-            pageData.put("tailoringFiles", tailoringFilesJson);
+            // Pass null for policy to indicate "Create Mode"
+            Map<String, Object> pageData = buildPolicyPageData(user, null, false);
 
             Map<String, Object> model = new HashMap<>();
             model.put("scapPolicyPageDataJson", GSON.toJson(pageData));
@@ -479,44 +473,16 @@ public class ScapAuditController {
     public ModelAndView editScapPolicyView(Request req, Response res, User user) {
         try {
             Integer policyId = Integer.parseInt(req.params("id"));
-
             ScapPolicy policy = ScapFactory.lookupScapPolicyByIdAndOrg(policyId, user.getOrg())
-                    .orElseGet(() -> {
-                        res.redirect("/rhn/manager/audit/scap/policies");
-                        return null;
-                    });
+                    .orElse(null);
 
             if (policy == null) {
+                res.redirect("/rhn/manager/audit/scap/policies");
                 return null;
             }
 
-            Map<String, Object> policyData = new HashMap<>();
-            policyData.put("id", policy.getId());
-            policyData.put("policyName", policy.getPolicyName());
-            policyData.put("description", policy.getDescription());
-            policyData.put("scapContentId", policy.getScapContent() != null ? policy.getScapContent().getId() : null);
-            policyData.put("xccdfProfileId", policy.getXccdfProfileId());
-            policyData.put("tailoringProfileId", policy.getTailoringProfileId());
-            policyData.put("ovalFiles", policy.getOvalFiles());
-            policyData.put("advancedArgs", policy.getAdvancedArgs());
-            policyData.put("fetchRemoteResources", policy.getFetchRemoteResources());
-
-            if (policy.getTailoringFile() != null) {
-                policyData.put("tailoringFile", policy.getTailoringFile().getId());
-                policyData.put("tailoringFileName", policy.getTailoringFile().getFileName());
-            }
-
-            List<TailoringFile> tailoringFiles = ScapFactory.listTailoringFiles(user.getOrg());
-            List<JsonObject> tailoringFilesJson = tailoringFiles.stream()
-                    .map(this::convertToTailoringFileJson)
-                    .collect(Collectors.toList());
-
-            Map<String, Object> pageData = new HashMap<>();
-            pageData.put("policyData", policyData);
-            pageData.put("isEditMode", true);
-            pageData.put("isReadOnly", false);
-            pageData.put("scapContentList", getScapContentList(user));
-            pageData.put("tailoringFiles", tailoringFilesJson);
+            // Reuse helper: policy exists, isReadOnly = false
+            Map<String, Object> pageData = buildPolicyPageData(user, policy, false);
 
             Map<String, Object> model = new HashMap<>();
             model.put("scapPolicyPageDataJson", GSON.toJson(pageData));
@@ -539,45 +505,16 @@ public class ScapAuditController {
     public ModelAndView detailScapPolicyView(Request req, Response res, User user) {
         try {
             Integer policyId = Integer.parseInt(req.params("id"));
-
             ScapPolicy policy = ScapFactory.lookupScapPolicyByIdAndOrg(policyId, user.getOrg())
-                    .orElseGet(() -> {
-                        res.redirect("/rhn/manager/audit/scap/policies");
-                        return null;
-                    });
+                    .orElse(null);
 
             if (policy == null) {
+                res.redirect("/rhn/manager/audit/scap/policies");
                 return null;
             }
 
-            Map<String, Object> policyData = new HashMap<>();
-            policyData.put("id", policy.getId());
-            policyData.put("policyName", policy.getPolicyName());
-            policyData.put("description", policy.getDescription());
-            policyData.put("scapContentId", policy.getScapContent() != null ? policy.getScapContent().getId() : null);
-            policyData.put("xccdfProfileId", policy.getXccdfProfileId());
-            policyData.put("tailoringProfileId", policy.getTailoringProfileId());
-            policyData.put("ovalFiles", policy.getOvalFiles());
-            policyData.put("advancedArgs", policy.getAdvancedArgs());
-            policyData.put("fetchRemoteResources", policy.getFetchRemoteResources());
-
-            if (policy.getTailoringFile() != null) {
-                policyData.put("tailoringFile", policy.getTailoringFile().getId());
-                policyData.put("tailoringFileName", policy.getTailoringFile().getDisplayFileName());
-            }
-
-            List<TailoringFile> tailoringFiles = ScapFactory.listTailoringFiles(user.getOrg());
-            List<JsonObject> tailoringFilesJson = tailoringFiles.stream()
-                    .map(this::convertToTailoringFileJson)
-                    .collect(Collectors.toList());
-
-            Map<String, Object> pageData = new HashMap<>();
-            pageData.put("policyData", policyData);
-            pageData.put("isEditMode", false);
-            pageData.put("isReadOnly", true);
-            pageData.put("scapContentList", getScapContentList(user));
-            pageData.put("tailoringFiles", tailoringFilesJson);
-            pageData.put("policyId", policyId);
+            // Reuse helper: policy exists, isReadOnly = TRUE
+            Map<String, Object> pageData = buildPolicyPageData(user, policy, true);
 
             Map<String, Object> model = new HashMap<>();
             model.put("scapPolicyPageDataJson", GSON.toJson(pageData));
@@ -589,7 +526,45 @@ public class ScapAuditController {
         }
     }
 
-    
+    /**
+     * Shared helper to build the page data for Create/Edit/Detail views.
+     *
+     * @param user the authorized user
+     * @param policy the policy to display, or null for create mode
+     * @param isReadOnly whether the view should be in read-only mode
+     * @return the page data map
+     */
+    private Map<String, Object> buildPolicyPageData(User user, ScapPolicy policy, boolean isReadOnly) {
+        Map<String, Object> pageData = new HashMap<>();
+        
+        pageData.put("isEditMode", policy != null && !isReadOnly);
+        pageData.put("isReadOnly", isReadOnly);
+        pageData.put("scapContentList", getScapContentList(user));
+        pageData.put("tailoringFiles", getTailoringFilesList(user));
+        if (policy != null) {
+            Map<String, Object> policyData = new HashMap<>();
+            policyData.put("id", policy.getId());
+            policyData.put("policyName", policy.getPolicyName());
+            policyData.put("description", policy.getDescription());
+            policyData.put("scapContentId", policy.getScapContent() != null ? policy.getScapContent().getId() : null);
+            policyData.put("xccdfProfileId", policy.getXccdfProfileId());
+            policyData.put("tailoringProfileId", policy.getTailoringProfileId());
+            policyData.put("ovalFiles", policy.getOvalFiles());
+            policyData.put("advancedArgs", policy.getAdvancedArgs());
+            policyData.put("fetchRemoteResources", policy.getFetchRemoteResources());
+            if (policy.getTailoringFile() != null) {
+                policyData.put("tailoringFile", policy.getTailoringFile().getId());
+                policyData.put("tailoringFileName", policy.getTailoringFile().getDisplayFileName());
+            }
+            pageData.put("policyData", policyData);
+            pageData.put("policyId", policy.getId()); // Convenient top-level ID
+        } else {
+            // Create Mode
+            pageData.put("policyData", null);
+        }
+
+        return pageData;
+    }
 
     /**
      * API endpoint to get SCAP policy details as JSON
@@ -628,81 +603,10 @@ public class ScapAuditController {
         Integer policyId = Integer.parseInt(req.params("id"));
 
         ScapPolicy policy = ScapFactory.lookupScapPolicyByIdAndOrg(policyId, user.getOrg())
-                .orElseGet(() -> {
-                    notFound(res, "Policy not found");
-                    return null;
-                });
+            .orElseThrow(() -> new IllegalArgumentException("Policy not found"));
 
-        if (policy == null) {
-            return notFound(res, "Policy not found");
-        }
-
-        Map<String, Object> policyData = new HashMap<>();
-        policyData.put("id", policy.getId());
-        policyData.put("policyName", policy.getPolicyName());
-        policyData.put("description", policy.getDescription());
-        
-        // Return SCAP content ID and profile title
-        if (policy.getScapContent() != null) {
-            policyData.put("scapContentId", policy.getScapContent().getId());
-            
-            if (policy.getXccdfProfileId() != null && !policy.getXccdfProfileId().isEmpty()) {
-                String profileTitle = getProfileTitle(
-                    SCAP_CONTENT_DIR,
-                    policy.getScapContent().getXccdfFileName(),
-                    policy.getXccdfProfileId()
-                );
-                policyData.put("xccdfProfileTitle", profileTitle);
-            }
-        }
-        
-        policyData.put("xccdfProfileId", policy.getXccdfProfileId());
-        policyData.put("tailoringProfileId", policy.getTailoringProfileId());
-        policyData.put("ovalFiles", policy.getOvalFiles());
-        policyData.put("advancedArgs", policy.getAdvancedArgs());
-        policyData.put("fetchRemoteResources", policy.getFetchRemoteResources());
-
-        // Return tailoring file ID and profile title
-        if (policy.getTailoringFile() != null) {
-            policyData.put("tailoringFileId", policy.getTailoringFile().getId());
-            
-            if (policy.getTailoringProfileId() != null && !policy.getTailoringProfileId().isEmpty()) {
-                String profileTitle = getProfileTitle(
-                    TAILORING_FILES_DIR,
-                    policy.getTailoringFile().getFileName(),
-                    policy.getTailoringProfileId()
-                );
-                policyData.put("tailoringProfileTitle", profileTitle);
-            }
-        }
-
-        return json(res, policyData);
+        return json(res, convertPolicyToResponseDto(policy));
     }
-       /**
-     * Helper method to apply common policy fields from JSON to ScapPolicy entity
-     * @param policyJson the JSON data
-     * @param scapPolicy the policy entity to update
-     * @param user the user for tailoring file lookup
-     */
-    private static void applyPolicyFields(ScapPolicyJson policyJson, ScapPolicy scapPolicy, User user) {
-        // Set optional fields - use setOrNull to allow clearing fields (empty string becomes null)
-        setOrNull(policyJson.getDescription(), scapPolicy::setDescription);
-        setOrNull(policyJson.getTailoringProfileId(), scapPolicy::setTailoringProfileId);
-        setOrNull(policyJson.getOvalFiles(), scapPolicy::setOvalFiles);
-        setOrNull(policyJson.getAdvancedArgs(), scapPolicy::setAdvancedArgs);
-
-        // Set optional tailoring file
-        Optional.ofNullable(policyJson.getTailoringFile())
-                .filter(id -> !id.isEmpty())
-                .map(Integer::parseInt)
-                .flatMap(id -> ScapFactory.lookupTailoringFileByIdAndOrg(id, user.getOrg()))
-                .ifPresent(scapPolicy::setTailoringFile);
-
-        // Set fetch remote resources flag
-        Optional.ofNullable(policyJson.getFetchRemoteResources())
-                .ifPresent(scapPolicy::setFetchRemoteResources);
-    }
-
     /**
      * Creates a new SCAP policy
      *
@@ -717,40 +621,22 @@ public class ScapAuditController {
 
             String validationError = validatePolicyFields(policyJson);
             if (validationError != null) {
-                return json(res, HttpStatus.SC_BAD_REQUEST,
-                        ResultJson.error(validationError), new TypeToken<>() { });
+                return result(res, ResultJson.error(validationError));
             }
 
-            ScapContent content = ScapFactory.lookupScapContentById(policyJson.getScapContentId())
-                    .orElseThrow(() -> new IllegalArgumentException(
-                            "SCAP Content not found for ID: " + policyJson.getScapContentId()));
-
-            ScapPolicy scapPolicy = new ScapPolicy(
-                policyJson.getPolicyName().trim(),
-                content,
-                policyJson.getXccdfProfileId().trim()
-            );
+            ScapPolicy scapPolicy = new ScapPolicy();
             scapPolicy.setOrg(user.getOrg());
 
-            applyPolicyFields(policyJson, scapPolicy, user);
+            updatePolicyFromDto(scapPolicy, policyJson, user);
+            
             ScapFactory.saveScapPolicy(scapPolicy);
 
             return result(res, ResultJson.success(scapPolicy.getId()));
-        }
-        catch (JsonParseException e) {
-            LOG.error("Invalid JSON in create SCAP policy request", e);
-            return json(res, HttpStatus.SC_BAD_REQUEST,
-                    ResultJson.error("Invalid request format"), new TypeToken<>() { });
-        }
-        catch (IllegalArgumentException e) {
-            LOG.error("Validation error creating SCAP policy", e);
-            return json(res, HttpStatus.SC_BAD_REQUEST,
-                    ResultJson.error(e.getMessage()), new TypeToken<>() { });
-        }
-        catch (Exception e) {
+        } catch (IllegalArgumentException e) {
+            return result(res, ResultJson.error(e.getMessage()));
+        } catch (Exception e) {
             LOG.error("Error creating SCAP policy", e);
-            return json(res, HttpStatus.SC_INTERNAL_SERVER_ERROR,
-                    ResultJson.error("Failed to create SCAP policy: " + e.getMessage()), new TypeToken<>() { });
+            return result(res, ResultJson.error("Failed to create SCAP policy: " + e.getMessage()));
         }
     }
 
@@ -767,51 +653,27 @@ public class ScapAuditController {
             ScapPolicyJson policyJson = GSON.fromJson(req.body(), ScapPolicyJson.class);
 
             if (policyJson.getId() == null) {
-                return json(res, HttpStatus.SC_BAD_REQUEST,
-                        ResultJson.error("Policy ID is required"), new TypeToken<>() { });
+                return result(res, ResultJson.error("Policy ID is required"));
             }
 
             String validationError = validatePolicyFields(policyJson);
             if (validationError != null) {
-                return json(res, HttpStatus.SC_BAD_REQUEST,
-                        ResultJson.error(validationError), new TypeToken<>() { });
+                return result(res, ResultJson.error(validationError));
             }
 
             ScapPolicy scapPolicy = ScapFactory.lookupScapPolicyByIdAndOrg(policyJson.getId(), user.getOrg())
                     .orElseThrow(() -> new IllegalArgumentException("SCAP policy not found"));
 
-            setIfNotEmpty(policyJson.getPolicyName(), scapPolicy::setPolicyName);
-            if (policyJson.getScapContentId() != null) {
-                ScapContent content = ScapFactory.lookupScapContentById(policyJson.getScapContentId())
-                        .orElseThrow(() -> new IllegalArgumentException(
-                                "SCAP Content not found for ID: " + policyJson.getScapContentId()));
-                scapPolicy.setScapContent(content);
-            }
-            setIfNotEmpty(policyJson.getXccdfProfileId(), scapPolicy::setXccdfProfileId);
-
-            if (policyJson.getTailoringFile() == null || policyJson.getTailoringFile().isEmpty()) {
-                scapPolicy.setTailoringFile(null);
-            }
-
-            applyPolicyFields(policyJson, scapPolicy, user);
+            updatePolicyFromDto(scapPolicy, policyJson, user);
+            
             ScapFactory.saveScapPolicy(scapPolicy);
 
             return result(res, ResultJson.success(scapPolicy.getId()));
-        }
-        catch (JsonParseException e) {
-            LOG.error("Invalid JSON in update SCAP policy request", e);
-            return json(res, HttpStatus.SC_BAD_REQUEST,
-                    ResultJson.error("Invalid request format"), new TypeToken<>() { });
-        }
-        catch (IllegalArgumentException e) {
-            LOG.error("Validation error updating SCAP policy", e);
-            return json(res, HttpStatus.SC_BAD_REQUEST,
-                    ResultJson.error(e.getMessage()), new TypeToken<>() { });
-        }
-        catch (Exception e) {
+        } catch (IllegalArgumentException e) {
+            return result(res, ResultJson.error(e.getMessage()));
+        } catch (Exception e) {
             LOG.error("Error updating SCAP policy", e);
-            return json(res, HttpStatus.SC_INTERNAL_SERVER_ERROR,
-                    ResultJson.error("Failed to update SCAP policy: " + e.getMessage()), new TypeToken<>() { });
+            return result(res, ResultJson.error("Failed to update SCAP policy: " + e.getMessage()));
         }
     }
 
@@ -831,8 +693,7 @@ public class ScapAuditController {
             List<ScapPolicy> scapPolicies = ScapFactory.lookupScapPoliciesByIds(ids, user.getOrg());
 
             if (scapPolicies.size() < ids.size()) {
-                return json(res, HttpStatus.SC_NOT_FOUND,
-                        ResultJson.error("One or more SCAP policies not found"), new TypeToken<>() { });
+                return result(res, ResultJson.error("One or more SCAP policies not found"));
             }
 
             int deletedCount = 0;
@@ -842,16 +703,11 @@ public class ScapAuditController {
             }
 
             return result(res, ResultJson.success(deletedCount));
-        }
-        catch (JsonParseException e) {
-            LOG.error("Invalid JSON in delete SCAP policy request", e);
-            return json(res, HttpStatus.SC_BAD_REQUEST,
-                    ResultJson.error("Invalid request format"), new TypeToken<>() { });
-        }
-        catch (Exception e) {
+        } catch (IllegalArgumentException e) {
+            return result(res, ResultJson.error(e.getMessage()));
+        } catch (Exception e) {
             LOG.error("Error deleting SCAP policies", e);
-            return json(res, HttpStatus.SC_INTERNAL_SERVER_ERROR,
-                    ResultJson.error("Failed to delete SCAP policies: " + e.getMessage()), new TypeToken<>() { });
+            return result(res, ResultJson.error("Failed to delete SCAP policies: " + e.getMessage()));
         }
     }
 
@@ -873,6 +729,64 @@ public class ScapAuditController {
         List<ScapPolicyScanHistory> history = m.execute(params);
         return json(res, history, new TypeToken<>() {});
     }
+    /**
+     * Resolves the profile title from the SCAP content XML file.
+     * @param dir the directory containing the SCAP content
+     * @param fileName the filename of the SCAP content
+     * @param profileId the profile ID
+     * @return the profile title
+     */
+    private String resolveProfileTitle(String dir, String fileName, String profileId) {
+        if (profileId == null || profileId.isEmpty() || fileName == null) {
+            return null;
+        }
+        return getProfileTitle(dir, fileName, profileId);
+    }
+    /**
+     * Converts a ScapPolicy entity to a response DTO
+     * @param policy the ScapPolicy entity
+     * @return the ScapPolicyResponseJson
+     */
+    private ScapPolicyResponseJson convertPolicyToResponseDto(ScapPolicy policy) {
+        String xccdfFile = (policy.getScapContent() != null) ? policy.getScapContent().getXccdfFileName() : null;
+        String xccdfTitle = resolveProfileTitle(SCAP_CONTENT_DIR, xccdfFile, policy.getXccdfProfileId());
+        String tailoringFile = (policy.getTailoringFile() != null) ? policy.getTailoringFile().getFileName() : null;
+        String tailoringTitle = resolveProfileTitle(TAILORING_FILES_DIR, tailoringFile, policy.getTailoringProfileId());
+        return new ScapPolicyResponseJson(policy, xccdfTitle, tailoringTitle);
+    }
+    /**
+     * Updates a ScapPolicy entity from the JSON DTO.
+     * Centralizes all "DTO -> Entity" mapping logic.
+     */
+    private void updatePolicyFromDto(ScapPolicy policy, ScapPolicyJson json, User user) {
+        // Basic fields - direct assignment (frontend ensures proper values)
+        policy.setPolicyName(json.getPolicyName());
+        policy.setDescription(json.getDescription());
+        policy.setXccdfProfileId(json.getXccdfProfileId());
+        policy.setOvalFiles(json.getOvalFiles());
+        policy.setAdvancedArgs(json.getAdvancedArgs());
+        policy.setTailoringProfileId(json.getTailoringProfileId());
+        policy.setFetchRemoteResources(json.getFetchRemoteResources());
+
+        // SCAP Content (Load from DB if provided)
+        // If scapContentId is null, we keep the existing SCAP content.
+        // SCAP content is required for a policy, so we don't allow clearing it via update.
+        if (json.getScapContentId() != null) {
+             ScapContent content = ScapFactory.lookupScapContentById(json.getScapContentId())
+                    .orElseThrow(() -> new IllegalArgumentException(
+                        "SCAP Content not found for ID: " + json.getScapContentId()));
+             policy.setScapContent(content);
+        }
+
+        if (json.getTailoringFile() == null || json.getTailoringFile().isEmpty()) {
+            policy.setTailoringFile(null);
+        } else {
+            int tfId = Integer.parseInt(json.getTailoringFile());
+            TailoringFile tf = ScapFactory.lookupTailoringFileByIdAndOrg(tfId, user.getOrg())
+                    .orElseThrow(() -> new IllegalArgumentException("Tailoring File not found"));
+            policy.setTailoringFile(tf);
+        }
+    }
 
     /**
      * Schedules SCAP audit scan for specified systems
@@ -883,22 +797,18 @@ public class ScapAuditController {
      */
     public String scheduleAuditScan(Request req, Response res, User user) {
         try {
-            // Parse request body into DTO
             AuditScanScheduleJson reqData = GSON.fromJson(req.body(), AuditScanScheduleJson.class);
 
-            // Validate required fields
             String validationError = reqData.validate();
             if (validationError != null) {
-                res.status(HttpStatus.SC_BAD_REQUEST);
                 return result(res, ResultJson.error(validationError));
             }
 
-            // Parse earliest date
             Date earliest = reqData.getEarliest()
                     .map(ldt -> Date.from(ldt.atZone(java.time.ZoneId.systemDefault()).toInstant()))
                     .orElse(new Date());
 
-            // Resolve SCAP Content
+            // Resolve SCAP content filename
             String dataStreamName = reqData.getDataStreamName();
             if (reqData.getScapContentId() != null) {
                 ScapContent content = ScapFactory.lookupScapContentById(reqData.getScapContentId())
@@ -906,22 +816,15 @@ public class ScapAuditController {
                 dataStreamName = content.getDataStreamFileName();
             }
 
-            // Resolve Tailoring File (if applicable)
-            // Note: We need to pass the resolved filename to build params
-            String tailoringFileName = reqData.getTailoringFile(); // Legacy field getter needed? Or direct access field
-            // Actually DTO has private field, need getter or use what we have.
-            // But we can't change buildOscapParameters easily inside DTO without logic.
-            // Better to construct params here or passed resolved name to DTO (but DTO is request obj).
-            // Let's modify logic: extract string building here or assume DTO uses string fields if set.
-            
+            // Resolve tailoring file filename (if provided)
+            String tailoringFileName = reqData.getTailoringFile();
             if (reqData.getTailoringFileId() != null) {
-                Long tfId = reqData.getTailoringFileId();
-                TailoringFile tf = ScapFactory.lookupTailoringFileByIdAndOrg(tfId.intValue(), user.getOrg())
+                TailoringFile tf = ScapFactory.lookupTailoringFileByIdAndOrg(
+                        reqData.getTailoringFileId().intValue(), user.getOrg())
                         .orElseThrow(() -> new IllegalArgumentException("Tailoring file not found"));
                 tailoringFileName = tf.getFileName();
             }
 
-            // Schedule the SCAP action
             ScapAction action = ActionManager.scheduleXccdfEval(
                     user,
                     reqData.getIds(),
@@ -932,14 +835,14 @@ public class ScapAuditController {
                     reqData.getPolicyId()
             );
 
-            // Return action ID
             return json(res, action.getId());
-
         } catch (TaskomaticApiException e) {
-            res.status(HttpStatus.SC_INTERNAL_SERVER_ERROR);
+            LOG.error("Taskomatic API error scheduling SCAP scan", e);
             return result(res, ResultJson.error("Failed to schedule SCAP scan: Taskomatic is down"));
+        } catch (IllegalArgumentException e) {
+            return result(res, ResultJson.error(e.getMessage()));
         } catch (Exception e) {
-            res.status(HttpStatus.SC_INTERNAL_SERVER_ERROR);
+            LOG.error("Error scheduling SCAP scan", e);
             return result(res, ResultJson.error("Failed to schedule SCAP scan: " + e.getMessage()));
         }
     }
@@ -1173,6 +1076,35 @@ public class ScapAuditController {
     }
 
     /**
+     * Builds common schedule page data (SCAP content, tailoring files, policies)
+     * @param user the authorized user
+     * @return map with common data for schedule scan pages
+     */
+    private Map<String, Object> buildSchedulePageData(User user) {
+        Map<String, Object> data = new HashMap<>();
+        
+        // SCAP content list
+        data.put("scapContentList", getScapContentList(user));
+        
+        // Tailoring files
+        data.put("tailoringFiles", getTailoringFilesList(user));
+        
+        // SCAP policies (ID and name only for dropdown)
+        List<ScapPolicy> scapPolicies = ScapFactory.listScapPolicies(user.getOrg());
+        List<ScapPolicyJson> scapPoliciesDto = scapPolicies.stream()
+            .map(policy -> {
+                ScapPolicyJson dto = new ScapPolicyJson();
+                dto.setId(policy.getId());
+                dto.setPolicyName(policy.getPolicyName());
+                return dto;
+            })
+            .collect(Collectors.toList());
+        data.put("scapPolicies", scapPoliciesDto);
+        
+        return data;
+    }
+
+    /**
      * Processes a GET request to get a list of scap configurations
      *
      * @param request  the request object
@@ -1182,32 +1114,7 @@ public class ScapAuditController {
      * @return the result JSON object
      */
     private ModelAndView scheduleAuditScanView(Request request, Response response, User user, Server server) {
-
-        Map<String, Object> jsData = new HashMap<>();
-        jsData.put("scapContentList", getScapContentList(user));
-        
-        List<TailoringFile> tailoringFiles = ScapFactory.listTailoringFiles(user.getOrg());
-        List<TailoringFileJson> tailoringFilesDto = tailoringFiles.stream()
-                .map(tf -> new TailoringFileJson(
-                        tf.getId(),
-                        tf.getName(),
-                        tf.getFileName(),
-                        tf.getDisplayFileName(),
-                        tf.getDescription()
-                ))
-                .collect(Collectors.toList());
-        jsData.put("tailoringFiles", tailoringFilesDto);
-
-        List<ScapPolicy> scapPolicies = ScapFactory.listScapPolicies(user.getOrg());
-        List<ScapPolicyJson> scapPoliciesDto = scapPolicies.stream()
-          .map(policy -> {
-              ScapPolicyJson dto = new ScapPolicyJson();
-              dto.setId(policy.getId());
-              dto.setPolicyName(policy.getPolicyName());
-              return dto;
-          })
-          .collect(Collectors.toList());
-        jsData.put("scapPolicies", scapPoliciesDto);
+        Map<String, Object> jsData = buildSchedulePageData(user);
         jsData.put("profileId", server.getId());
         jsData.put("serverId", server.getId());
         jsData.put("entityType", "server");
@@ -1227,39 +1134,13 @@ public class ScapAuditController {
      * @return the result JSON object
      */
     private ModelAndView scheduleAuditScanSsmView(Request request, Response response, User user) {
-        Map<String, Object> jsData = new HashMap<>();
+        Map<String, Object> jsData = buildSchedulePageData(user);
+        jsData.put("entityType", "ssm");
         
-        // Get systems in SSM
+        // Get systems in SSM for minions list
         List<Long> sids = SsmManager.listServerIds(user);
         List<Server> systems = ServerFactory.lookupByIdsAndOrg(new HashSet<>(sids), user.getOrg());
         
-        jsData.put("scapContentList", getScapContentList(user));
-        
-        List<TailoringFile> tailoringFiles = ScapFactory.listTailoringFiles(user.getOrg());
-        List<TailoringFileJson> tailoringFilesDto = tailoringFiles.stream()
-                .map(tf -> new TailoringFileJson(
-                        tf.getId(),
-                        tf.getName(),
-                        tf.getFileName(),
-                        tf.getDisplayFileName(),
-                        tf.getDescription()
-                ))
-                .collect(Collectors.toList());
-        jsData.put("tailoringFiles", tailoringFilesDto);
-
-        List<ScapPolicy> scapPolicies = ScapFactory.listScapPolicies(user.getOrg());
-        List<ScapPolicyJson> scapPoliciesDto = scapPolicies.stream()
-          .map(policy -> {
-              ScapPolicyJson dto = new ScapPolicyJson();
-              dto.setId(policy.getId());
-              dto.setPolicyName(policy.getPolicyName());
-              return dto;
-          })
-          .collect(Collectors.toList());
-        jsData.put("scapPolicies", scapPoliciesDto);
-        jsData.put("entityType", "ssm");
-        
-        // Populate minions list for the frontend to create correct ID list
         List<Map<String, Object>> minionList = systems.stream().map(s -> {
             Map<String, Object> m = new HashMap<>();
             m.put("id", s.getId());
@@ -1270,7 +1151,6 @@ public class ScapAuditController {
         Map<String, Object> data = new HashMap<>();
         data.put("scheduleDataJson", Json.GSON.toJson(jsData));
         data.put("minions", Json.GSON.toJson(minionList));
-        
         data.put("tabs", com.suse.manager.webui.utils.ViewHelper.getInstance()
                 .renderNavigationMenu(request, "/WEB-INF/nav/ssm.xml"));
 
@@ -1302,28 +1182,11 @@ public class ScapAuditController {
         Map<String, Object> data = new HashMap<>();
         data.put("identifier",ruleResult.getDocumentIdref());
         data.put("result", ruleResult.getLabel());
-        data.put("parentScanUrl","/rhn/systems/details/audit/XccdfDetails.do?sid="+serverId+ "&xid="+ruleResultId );
+        data.put("parentScanUrl","/rhn/systems/details/audit/XccdfDetails.do?sid="+serverId+ "&xid="+ruleResult.getTestResult().getId() );
         data.put("parentScanProfile",ruleResult.getTestResult().getIdentifier());
         data.put("remediation", StringEscapeUtils.escapeJson(remediation));
-        data.put("profileId", "----");
         data.put("benchmarkId", ruleResult.getTestResult().getBenchmark().getIdentifier());
         return new ModelAndView(data, "templates/minion/rule-result-detail.jade");
-    }
-
-    /**
-     * Creates a JSON object for an {@link TailoringFile} instance
-     *
-     * @param file the TailoringFile instance
-     * @return the JSON object
-     */
-    private JsonObject convertToTailoringFileJson(TailoringFile file) {
-        JsonObject json = new JsonObject();
-        json.addProperty("name", file.getName());
-        json.addProperty("id", file.getId());
-        // Display the original filename to users, not the unique internal filename
-        json.addProperty("fileName", file.getFileName());
-        json.addProperty("displayfileName", file.getDisplayFileName());
-        return json;
     }
 
     /**
@@ -1354,9 +1217,8 @@ public class ScapAuditController {
      * @return List of SCAP content DTOs
      */
     private List<ScapContentJson> getScapContentList(User user) {
-        List<ScapContent> contentList = ScapFactory.listScapContent();
-
-        return contentList.stream()
+        return ScapFactory.listScapContent()
+                .stream()
                 .map(content -> new ScapContentJson(
                     content.getId(),
                     content.getName(),
@@ -1365,6 +1227,24 @@ public class ScapAuditController {
                     content.getDescription()
                 ))
                 .sorted((a, b) -> a.getName().compareToIgnoreCase(b.getName()))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Returns a list of available tailoring files from the database
+     * @param user the authorized user
+     * @return List of tailoring file DTOs
+     */
+    private List<TailoringFileJson> getTailoringFilesList(User user) {
+        return ScapFactory.listTailoringFiles(user.getOrg())
+                .stream()
+                .map(file -> new TailoringFileJson(
+                    file.getId(),
+                    file.getName(),
+                    file.getFileName(),
+                    file.getDisplayFileName(),
+                    file.getDescription()
+                ))
                 .collect(Collectors.toList());
     }
     
@@ -1427,31 +1307,7 @@ public class ScapAuditController {
         }
    }
 
-    /**
-     * Helper method to set optional string field if not empty
-     * @param value the value to check
-     * @param setter the setter method to call if value is not empty
-     */
-    private static void setIfNotEmpty(String value, java.util.function.Consumer<String> setter) {
-        Optional.ofNullable(value)
-                .map(String::trim)
-                .filter(s -> !s.isEmpty())
-                .ifPresent(setter);
-    }
 
-    /**
-     * Helper method to set field to trimmed value or null if empty
-     * @param value the value to check
-     * @param setter the setter method to call with trimmed value or null
-     */
-    private static void setOrNull(String value, java.util.function.Consumer<String> setter) {
-        setter.accept(
-                Optional.ofNullable(value)
-                        .map(String::trim)
-                        .filter(s -> !s.isEmpty())
-                        .orElse(null)
-        );
-    }
 
     /**
      * Validates required policy fields
