@@ -1,5 +1,4 @@
-import { type ReactNode, Component } from "react";
-
+import React, { useState, useEffect, ReactNode } from "react";
 import _partition from "lodash/partition";
 import _sortBy from "lodash/sortBy";
 
@@ -9,225 +8,194 @@ import { Messages, MessageType, Utils as MessagesUtils } from "./messages/messag
 
 import Network from "../utils/network";
 
-type PoliciesPickerProps = {
-  matchUrl: (filter?: string) => any;
-  saveRequest: (policies: any[]) => any;
-  messages?: (messages: MessageType[]) => any;
-};
-
-class PoliciesPickerState {
-  filter = "";
-  policies: any[] = [];
-  search = {
-    filter: null as string | null,
-    results: [] as any[],
-  };
-  assigned: any[] = [];
-  changed = new Map();
-  messages: MessageType[] = [];
+interface Policy {
+  id: number;
+  policyName: string;
+  dataStreamName: string;
+  description: string;
+  assigned?: boolean;
+  position?: number;
 }
 
-class PoliciesPicker extends Component<PoliciesPickerProps, PoliciesPickerState> {
-  state = new PoliciesPickerState();
+interface PoliciesPickerProps {
+  matchUrl: (filter?: string) => string;
+  saveRequest: (policies: Policy[]) => Promise<Policy[]>;
+  messages?: (messages: MessageType[]) => void;
+}
 
-  constructor(props: PoliciesPickerProps) {
-    super(props);
-    this.init();
-  }
+export const PoliciesPicker = ({
+  matchUrl,
+  saveRequest,
+  messages: parentMessagesHandler,
+}: PoliciesPickerProps): JSX.Element => {
+  const [filter, setFilter] = useState("");
+  const [searchResults, setSearchResults] = useState<Policy[]>([]);
+  const [currentFilter, setCurrentFilter] = useState<string | null>(null);
+  const [messages, setMessages] = useState<MessageType[]>([]);
 
-  init = () => {
-    Network.get(this.props.matchUrl()).then((data) => {
-      data = this.getSortedList(data);
-      this.setState({
-        policies: data,
-        search: {
-          filter: this.state.filter,
-          results: data,
-        },
-      });
-    });
-  };
-
-  save = () => {
-    const policies = this.state.assigned;
-    const request = this.props.saveRequest(policies).then(
-      (data) => {
-        const newSearchResults = this.state.search.results.map((policy) => {
-          return data.filter((p) => p.id === policy.id)[0] || policy;
-        });
-
-        this.setState({
-          changed: new Map(),
-          policies: data,
-          search: {
-            filter: this.state.search.filter,
-            results: this.getSortedList(newSearchResults),
-          },
-        });
-        this.setMessages(MessagesUtils.info(t("Policy assignment has been saved.")));
-      },
-      () => {
-        this.setMessages(MessagesUtils.error(t("An error occurred on save.")));
-      }
-    );
-    return request;
-  };
-
-  onSearchChange = (event) => {
-    this.setState({
-      filter: event.target.value,
-    });
-  };
-
-  getSortedList = (data) => {
-    const [assigned, unassigned] = _partition(data, (d) => d.assigned);
-    return _sortBy(assigned, "position").concat(_sortBy(unassigned, (p) => p.policyName.toLowerCase()));
-  };
-
-  search = () => {
-    return Promise.resolve().then(() => {
-      if (this.state.filter !== this.state.search.filter) {
-        Network.get(this.props.matchUrl(this.state.filter)).then((data) => {
-          this.setState({
-            search: {
-              filter: this.state.filter,
-              results: this.getSortedList(data),
-            },
-          });
-          this.clearMessages();
-        });
-      }
-    });
-  };
-
-  handleSelectionChange = (original) => {
-    return (event) => {
-      const selectedPolicyId = parseInt(event.target.value);
-      const updatedPolicies = this.state.search.results.map((policy) => ({
-        ...policy,
-        assigned: policy.id === selectedPolicyId,
-      }));
-
-      this.setState(
-        {
-          search: {
-            ...this.state.search,
-            results: updatedPolicies,
-          },
-          assigned: updatedPolicies.filter((policy) => policy.assigned),
-        },
-        () => {
-          this.save();
-        }
-      );
-    };
-  };
-
-  tableBody = () => {
-    const elements: ReactNode[] = [];
-    const rows = this.state.search.results;
-
-    for (const policy of rows) {
-      elements.push(
-        <tr id={policy.id + "-row"} key={policy.id}>
-          <td>
-            <i className="fa spacewalk-icon-manage-configuration-files" title={t("SCAP Policy")} />
-            {policy.policyName}
-          </td>
-          <td>{policy.dataStreamName}</td>
-          <td>
-            <i
-              data-bs-toggle="tooltip"
-              className="fa fa-info-circle fa-1-5x text-primary"
-              title={policy.description}
-            />
-          </td>
-          <td>
-            <div className="form-group">
-              <input
-                id={policy.id + "-radio"}
-                type="radio"
-                name="policy-selection"
-                checked={policy.assigned || false}
-                value={policy.id}
-                onChange={this.handleSelectionChange(policy)}
-              />
-            </div>
-          </td>
-        </tr>
-      );
+  const handleMessages = (msgs: MessageType[]) => {
+    setMessages(msgs);
+    if (parentMessagesHandler) {
+      parentMessagesHandler(msgs);
     }
+  };
 
-    return (
-      <tbody className="table-content">
-        {elements.length > 0 ? (
-          elements
-        ) : (
+  const clearMessages = () => {
+    handleMessages([]);
+  };
+
+  const getSortedList = (data: Policy[]) => {
+    const [assigned, unassigned] = _partition(data, (d) => d.assigned);
+    return _sortBy(assigned, "position").concat(
+      _sortBy(unassigned, (p) => p.policyName.toLowerCase())
+    );
+  };
+
+  useEffect(() => {
+    // Initial load
+    Network.get(matchUrl()).then((data: Policy[]) => {
+      const sortedData = getSortedList(data);
+      setSearchResults(sortedData);
+      setCurrentFilter(""); // Initially filter is empty equivalent
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Only run on mount
+
+  const save = async (currentAssigned: Policy[]) => {
+    try {
+      const data = await saveRequest(currentAssigned);
+      
+      const newSearchResults = searchResults.map((policy) => {
+        return data.find((p) => p.id === policy.id) || policy;
+      });
+
+      setSearchResults(getSortedList(newSearchResults));
+      handleMessages(MessagesUtils.info(t("Policy assignment has been saved.")));
+    } catch (error) {
+      handleMessages(MessagesUtils.error(t("An error occurred on save.")));
+    }
+  };
+
+  const onSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setFilter(event.target.value);
+  };
+
+  const search = async () => {
+    if (filter !== currentFilter) {
+      try {
+        const data = await Network.get(matchUrl(filter));
+        setSearchResults(getSortedList(data));
+        setCurrentFilter(filter);
+        clearMessages();
+      } catch (error) {
+         // handle error if needed, usually Network handles disjointed
+      }
+    }
+  };
+
+  const handleSelectionChange = (policyId: number) => {
+    const updatedPolicies = searchResults.map((policy) => ({
+      ...policy,
+      assigned: policy.id === policyId,
+    }));
+
+    setSearchResults(updatedPolicies);
+    const assigned = updatedPolicies.filter((policy) => policy.assigned);
+    save(assigned);
+  };
+
+  const renderTableBody = (): ReactNode => {
+    if (searchResults.length === 0) {
+      return (
+        <tbody>
           <tr>
             <td colSpan={4}>
               <div>{t("No SCAP Policies Found")}</div>
             </td>
           </tr>
-        )}
+        </tbody>
+      );
+    }
+
+    return (
+      <tbody className="table-content">
+        {searchResults.map((policy) => (
+          <tr id={`${policy.id}-row`} key={policy.id}>
+            <td>
+              <i
+                className="fa spacewalk-icon-manage-configuration-files"
+                title={t("SCAP Policy")}
+              />
+              {policy.policyName}
+            </td>
+            <td>{policy.dataStreamName}</td>
+            <td>
+              <i
+                data-bs-toggle="tooltip"
+                className="fa fa-info-circle fa-1-5x text-primary"
+                title={policy.description}
+              />
+            </td>
+            <td>
+              <div className="form-group">
+                <input
+                  id={`${policy.id}-radio`}
+                  type="radio"
+                  name="policy-selection"
+                  checked={policy.assigned || false}
+                  value={policy.id}
+                  onChange={() => handleSelectionChange(policy.id)}
+                />
+              </div>
+            </td>
+          </tr>
+        ))}
       </tbody>
     );
   };
 
-  setMessages = (message) => {
-    this.setState({
-      messages: message,
-    });
-    if (this.props.messages) {
-      return this.props.messages(message);
-    }
-  };
-
-  clearMessages() {
-    this.setMessages([]);
-  }
-
-  render() {
-    return (
-      <span>
-        {!this.props.messages && this.state.messages ? <Messages items={this.state.messages} /> : null}
-        <div className="panel panel-default">
-          <div className="panel-body">
-            <div className={"row"} id={"search-row"}>
-              <div className={"col-md-5"}>
-                <div style={{ paddingBottom: 0.7 + "em" }}>
-                  <div className="input-group">
-                    <TextField
-                      id="search-field"
-                      value={this.state.filter}
-                      placeholder={t("Search in SCAP policies")}
-                      onChange={this.onSearchChange}
-                      onPressEnter={this.search}
+  return (
+    <span>
+      {!parentMessagesHandler && messages ? <Messages items={messages} /> : null}
+      <div className="panel panel-default">
+        <div className="panel-body">
+          <div className="row" id="search-row">
+            <div className="col-md-5">
+              <div style={{ paddingBottom: "0.7em" }}>
+                <div className="input-group">
+                  <TextField
+                    id="search-field"
+                    value={filter}
+                    placeholder={t("Search in SCAP policies")}
+                    onChange={onSearchChange}
+                    onPressEnter={search}
+                  />
+                  <span className="input-group-btn">
+                    <AsyncButton
+                      id="search-policies"
+                      text={t("Search")}
+                      action={search}
                     />
-                    <span className="input-group-btn">
-                      <AsyncButton id="search-policies" text={t("Search")} action={this.search} />
-                    </span>
-                  </div>
+                  </span>
                 </div>
               </div>
             </div>
-            <span>
-              <table className="table table-striped">
-                <thead>
-                  <tr>
-                    <th>{t("Policy Name")}</th>
-                    <th>{t("Data Stream")}</th>
-                    <th>{t("Description")}</th>
-                    <th>{t("Assign")}</th>
-                  </tr>
-                </thead>
-                {this.tableBody()}
-              </table>
-            </span>
           </div>
+          <span>
+            <table className="table table-striped">
+              <thead>
+                <tr>
+                  <th>{t("Policy Name")}</th>
+                  <th>{t("Data Stream")}</th>
+                  <th>{t("Description")}</th>
+                  <th>{t("Assign")}</th>
+                </tr>
+              </thead>
+              {renderTableBody()}
+            </table>
+          </span>
         </div>
-      </span>
-    );
-  }
-}
-
-export { PoliciesPicker };
+      </div>
+    </span>
+  );
+};

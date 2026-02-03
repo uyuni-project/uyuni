@@ -1,16 +1,22 @@
 import "./scap-policy-details.css";
 
-import * as React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import SpaRenderer from "core/spa/spa-renderer";
-import Network from "utils/network";
-import { TopPanel } from "components/panels/TopPanel";
+import moment from "moment";
+
+import { LinkButton } from "components/buttons";
 import { Panel } from "components/panels/Panel";
-import { Table } from "components/table/Table";
+import { TopPanel } from "components/panels/TopPanel";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
-import { LinkButton } from "components/buttons";
-import moment from "moment";
+import { Table } from "components/table/Table";
+
+import Network from "utils/network";
+
+const ENDPOINTS = {
+  SCAN_HISTORY: "/rhn/manager/api/audit/scap/policy",
+  POLICIES_LIST: "/rhn/manager/audit/scap/policies",
+} as const;
 
 interface ScapPolicyDetailsPageData {
   policyData: PolicyData;
@@ -50,7 +56,7 @@ type PolicyData = {
 };
 
 
-const SummaryCard = ({ value, label }: { value: string | number; label: string }) => (
+const SummaryCard = ({ value, label }: { value: string | number; label: string }): JSX.Element => (
   <div className="col-md-3">
     <div className="panel panel-default text-center">
       <div className="panel-body">
@@ -61,7 +67,7 @@ const SummaryCard = ({ value, label }: { value: string | number; label: string }
   </div>
 );
 
-const ConfigRow = ({ label, value, code = false }: { label: string; value: string; code?: boolean }) => (
+const ConfigRow = ({ label, value, code = false }: { label: string; value: string; code?: boolean }): JSX.Element => (
   <>
     <dt className="col-sm-3">{t(label)}</dt>
     <dd className="col-sm-9">{code ? <code>{value}</code> : value}</dd>
@@ -74,29 +80,26 @@ const getComplianceStatus = (failCount: number) => ({
   text: failCount === 0 ? t("Compliant") : t("Non-Compliant")
 });
 
-const ScapPolicyDetails = ({ policyId, policyData }: { policyId: number; policyData: PolicyData }) => {
+const ScapPolicyDetails = ({ policyId, policyData }: { policyId: number; policyData: PolicyData }): JSX.Element => {
   const [scanHistory, setScanHistory] = useState<ScanHistoryEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [showLatestOnly, setShowLatestOnly] = useState(true);
   
   useEffect(() => {
-    Network.get(`/rhn/manager/api/audit/scap/policy/${policyId}/scan-history`)
+    Network.get(`${ENDPOINTS.SCAN_HISTORY}/${policyId}/scan-history`)
       .then(data => {
         setScanHistory(data);
         setLoading(false);
       })
-      .catch(error => {
-        console.error("Error loading scan history:", error);
+      .catch((error: unknown) => {
         setLoading(false);
       });
   }, [policyId]);
   
   const policy: PolicyData = policyData;
   
-  // Calculate summary stats
   const totalScans = scanHistory.length;
   
-  // Group by SID and find latest for each to calculate compliance based on latest state
   const latestBySid = new Map<number, ScanHistoryEntry>();
   scanHistory.forEach(scan => {
     const current = latestBySid.get(scan.sid);
@@ -116,15 +119,18 @@ const ScapPolicyDetails = ({ policyId, policyData }: { policyId: number; policyD
     ? ((compliantUniqueSystems / uniqueSystems) * 100).toFixed(1) 
     : "0";
   
-  // Calculate total compliant scans for the card (if keeping the original metric for that card)
   const compliantScans = scanHistory.filter(s => (s.fail || 0) === 0).length;
 
-  // Filter for table view
   const getFilteredHistory = () => {
     if (!showLatestOnly) {
       return scanHistory;
     }
     return latestScans;
+  };
+
+  const searchFilter = (item: ScanHistoryEntry, criteria?: string): boolean => {
+    if (!criteria) return true;
+    return item.serverName.toLowerCase().includes(criteria.toLowerCase());
   };
 
   const tableData = getFilteredHistory();
@@ -136,7 +142,7 @@ const ScapPolicyDetails = ({ policyId, policyData }: { policyId: number; policyD
         icon="spacewalk-icon-manage-configuration-files"
         button={
           <LinkButton
-            href="/rhn/manager/audit/scap/policies"
+            href={ENDPOINTS.POLICIES_LIST}
             text={t("Back to List")}
             icon="fa-chevron-left"
             className="btn-default"
@@ -205,9 +211,7 @@ const ScapPolicyDetails = ({ policyId, policyData }: { policyId: number; policyD
               identifier={(scan) => scan.xid}
               initialSortColumnKey="completed"
               initialSortDirection={-1}
-              searchField={<SearchField filter={(datum, criteria) => 
-                criteria ? datum.serverName.toLowerCase().includes(criteria.toLowerCase()) : true
-              } />}
+              searchField={<SearchField filter={searchFilter} />}
             >
               <Column
                 columnKey="serverName"

@@ -1,5 +1,6 @@
-import * as React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import SpaRenderer from "core/spa/spa-renderer";
+
 import { SubmitButton, LinkButton } from "components/buttons";
 import { Form } from "components/input/form/Form";
 import { FormGroup } from "components/input/FormGroup";
@@ -9,365 +10,304 @@ import { TextArea } from "components/input/text-area/TextArea";
 import { Select } from "components/input/select/Select";
 import { Messages, Utils as MessageUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
+
 import { Utils } from "utils/functions";
 import Network from "utils/network";
 import { localizedMoment } from "utils/datetime";
-import { RecurringActionsEdit } from "../../recurring/recurring-actions-edit";
 
-interface ScapPolicyPageData {
-  policyData: any | null;
-  isEditMode: boolean;
-  isReadOnly: boolean;
-  scapContentList: Array<{
-    id: number;
-    dataStreamFileName: string;
-  }>;
-  tailoringFiles: Array<{
-    id: number;
-    name: string;
-    fileName: string;
-  }>;
+const ENDPOINTS = {
+  CREATE: "/rhn/manager/api/audit/scap/policy/create",
+  UPDATE: "/rhn/manager/api/audit/scap/policy/update",
+  LIST: "/rhn/manager/audit/scap/policies",
+  PROFILES: "/rhn/manager/api/audit/profiles/list",
+} as const;
+
+interface ScapContent {
+  id: number;
+  dataStreamFileName: string;
 }
 
+interface TailoringFile {
+  id: number;
+  name: string;
+  fileName: string;
+}
 
-type Props = {};
-type State = {
-  model: any;
-  isInvalid?: boolean;
-  messages?: any;
-  errors: string[];
-  dataStreams?: any;
-  tailoringFiles: any;
-  earliest: any;
-  tailoringFileProfiles: any;
-  xccdfProfiles: [];
-  selectedTailoringFile: string;
+interface Profile {
+  id: string;
+  title: string;
+}
+
+interface PolicyModel {
+  id?: number;
+  policyName?: string;
+  description?: string;
+  scapContentId?: number;
+  xccdfProfileId?: string;
+  tailoringFile?: number;
+  tailoringProfileId?: string;
+  ovalFiles?: string;
+  advancedArgs?: string;
+  fetchRemoteResources?: boolean;
+}
+
+interface ScapPolicyPageData {
+  policyData: PolicyModel | null;
   isEditMode: boolean;
-};
+  isReadOnly: boolean;
+  scapContentList: ScapContent[];
+  tailoringFiles: TailoringFile[];
+}
 
-class ScapPolicy extends React.Component<Props, State> {
-  form?: HTMLFormElement;
-
-  constructor(props) {
-    super(props);
-    
-    const pageData = (window as any).scapPolicyPageData as ScapPolicyPageData | undefined;
-    const policyData = pageData?.policyData || null;
-    const isEditMode = pageData?.isEditMode || false;
-    
-    this.state = {
-      model: policyData || {},
-      isInvalid: true,
-      messages: [],
-      errors: [],
-      isEditMode,
-      tailoringFiles: (pageData?.tailoringFiles || []).map((file: any) => ({
-        value: file.id,
-        label: file.name,
-        fileName: file.fileName,
-      })),
-      dataStreams: (pageData?.scapContentList || [])
-        .map((content: any) => ({
-          value: content.id,
-          label: content.dataStreamFileName.replace("-ds.xml", "").toUpperCase(),
-        })),
-      tailoringFileProfiles: [],
-      earliest: localizedMoment(),
-      xccdfProfiles: [],
-      selectedTailoringFile: "",
-    };
-
+declare global {
+  interface Window {
+    scapPolicyPageData?: ScapPolicyPageData;
   }
+}
 
-  componentDidMount() {
-    // In edit mode, load the profiles for the selected data stream and tailoring file
-    if (this.state.isEditMode) {
-      const { model } = this.state;
-      
-      // Load XCCDF profiles if scapContentId is set
-      if (model.scapContentId) {
-        this.fetchProfiles("dataStream", model.scapContentId).then(() => {
-          // Force a re-render after profiles are loaded to ensure Select shows the value
-          this.forceUpdate();
-        });
-      }
-      
-      // Load tailoring profiles if tailoringFile is set
-      if (model.tailoringFile) {
-        this.fetchProfiles("tailoringFile", model.tailoringFile).then(() => {
-          this.forceUpdate();
-        });
-      }
+interface SelectOption extends Record<string, unknown> {
+  value: number | string;
+  label: string;
+}
+
+const ScapPolicy = (): JSX.Element => {
+  const pageData = window.scapPolicyPageData;
+  const policyData = pageData?.policyData || null;
+  const isEditMode = pageData?.isEditMode || false;
+
+  const [model, setModel] = useState<PolicyModel>(policyData || {});
+  const [messages, setMessages] = useState<React.ReactNode>([]);
+  const [xccdfProfiles, setXccdfProfiles] = useState<Profile[]>([]);
+  const [tailoringFileProfiles, setTailoringFileProfiles] = useState<Profile[]>([]);
+  const formRef = useRef<HTMLFormElement>(null);
+
+  const tailoringFiles: SelectOption[] = (pageData?.tailoringFiles || []).map((file) => ({
+    value: file.id,
+    label: file.name,
+  }));
+
+  const dataStreams: SelectOption[] = (pageData?.scapContentList || []).map((content) => ({
+    value: content.id,
+    label: content.dataStreamFileName.replace("-ds.xml", "").toUpperCase(),
+  }));
+
+  // Load profiles on mount in edit mode
+  useEffect(() => {
+    if (isEditMode && model.scapContentId) {
+      fetchProfiles("dataStream", model.scapContentId);
     }
-  }
+    if (isEditMode && model.tailoringFile) {
+      fetchProfiles("tailoringFile", model.tailoringFile);
+    }
+  }, []); // Only run on mount
 
-  onSubmit = async () => {
+  const fetchProfiles = async (type: string, value: string | number) => {
+    if (!value) return;
+
+    try {
+      const data = await Network.get(`${ENDPOINTS.PROFILES}/${type}/${value}`);
+      if (type === "tailoringFile") {
+        setTailoringFileProfiles(data || []);
+      } else {
+        setXccdfProfiles(data || []);
+      }
+    } catch (error: unknown) {
+      const errorMessages = Network.responseErrorMessage(error as any);
+      setMessages(errorMessages);
+    }
+  };
+
+  const onSubmit = async () => {
     try {
       // Validate required Select fields
-      const { model } = this.state;
       if (!model.scapContentId) {
-        this.setState({
-          messages: [{ severity: "error", text: "SCAP Content is required" }],
-        });
+        setMessages([{ severity: "error", text: t("SCAP Content is required") }]);
         return;
       }
       if (!model.xccdfProfileId) {
-        this.setState({
-          messages: [{ severity: "error", text: "XCCDF Profile is required" }],
-        });
+        setMessages([{ severity: "error", text: t("XCCDF Profile is required") }]);
         return;
       }
 
-      const formData = new FormData(this.form);
-      const jsonPayload = Object.fromEntries(formData.entries());
-      
+      if (!formRef.current) return;
+
+      const formData = new FormData(formRef.current);
+      const jsonPayload: any = Object.fromEntries(formData.entries());
+
       // Add policy ID for update
-      if (this.state.isEditMode && this.state.model.id) {
-        jsonPayload.id = this.state.model.id;
+      if (isEditMode && model.id) {
+        jsonPayload.id = model.id;
       }
-      
+
       // Explicitly add checkbox value since unchecked checkboxes don't submit in FormData
-      jsonPayload.fetchRemoteResources = this.state.model.fetchRemoteResources || false;
-      
-      const endpoint = this.state.isEditMode 
-        ? "/rhn/manager/api/audit/scap/policy/update"
-        : "/rhn/manager/api/audit/scap/policy/create";
-      
+      jsonPayload.fetchRemoteResources = model.fetchRemoteResources || false;
+
+      const endpoint = isEditMode ? ENDPOINTS.UPDATE : ENDPOINTS.CREATE;
+
       const response = await Network.post(endpoint, jsonPayload);
 
       if (response.success) {
-        window.location.href = "/rhn/manager/audit/scap/policies";
+        window.location.href = ENDPOINTS.LIST;
       } else {
-        this.setState({ messages: response.messages });
+        setMessages(response.messages);
       }
-    } catch (error) {
-      console.log(error);
-      this.setState({
-        messages: [{ severity: "error", text: "Unexpected error." }],
-      });
+    } catch (error: unknown) {
+      setMessages([{ severity: "error", text: t("Unexpected error.") }]);
     }
   };
-  bindForm = (form: HTMLFormElement) => {
-    this.form = form;
-  };
 
-  fetchProfiles = async (type: string, value: string | number) => {
-    if (!value) return;
-    console.log(type);
-    try {
-      const data = await Network.get(`/rhn/manager/api/audit/profiles/list/${type}/${value}`);
-      if (type === "tailoringFile") {
-        this.setState({ tailoringFileProfiles: data || [] });
-      }
-      else {
-        this.setState({ xccdfProfiles: data || [] });
-      }
-    } catch (error) {
-      console.log(error);
-      const errorMessages = Network.responseErrorMessage(error as any);
-      this.setState({
-        messages: errorMessages
-      });
-    }
-  };
-  handleDataStreamChange = (name, value) => {
-    console.log(name)
-    console.log(value)
+  const title = isEditMode ? t("Edit Compliance Policy") : t("Create Compliance Policy");
 
-  };
-  
-  renderButtons = () => {
-    const buttons: React.ReactNode[] = [];
-    
-    if (this.state.isEditMode) {
-      buttons.push(
-        <LinkButton
-          key="back-btn"
-          id="back-btn"
-          className="btn-default"
-          icon="fa-arrow-left"
-          text={t("Back to List")}
-          href="/rhn/manager/audit/scap/policies"
-        />
-      );
-    }
-    
-    buttons.push(
-      <SubmitButton
-        key="submit-btn"
-        id="submit-btn"
-        className="btn-success"
-        icon={this.state.isEditMode ? "fa-save" : "fa-plus"}
-        text={this.state.isEditMode ? t("Update") : t("Create")}
-      />
-    );
-    
-    return <>{buttons}</>;
-  };
-  
-  renderSelect = (name: string, label: string, options, onChange, isRequired = false) => (
-    <Select
-      name={name}
-      label={label}
-      isClearable
-      labelClass="col-md-3"
-      divClass="col-md-6"
-      options={options}
-      onChange={onChange}
-      required={isRequired}
-    />
-  );
-  renderMessages = () => {
-    const messages = this.state.messages;
-    if (!messages || messages.length === 0) {
-      return null;
-    }
-    return <Messages items={messages} />;
-  };
+  return (
+    <TopPanel title={title} icon="spacewalk-icon-manage-configuration-files">
+      {messages}
+      <Form
+        model={model}
+        className="scap-policy-form"
+        onChange={setModel}
+        onSubmit={onSubmit}
+        formRef={formRef}
+      >
+        <Text name="policyName" label={t("Name")} required labelClass="col-md-3" divClass="col-md-6" />
 
-  render() {
-    const { model, dataStreams, tailoringFiles, tailoringFileProfiles, xccdfProfiles } = this.state;
-    const title = this.state.isEditMode ? t("Edit Compliance Policy") : t("Create Compliance Policy");
+        <TextArea name="description" label={t("Description")} labelClass="col-md-3" divClass="col-md-6" />
 
-    return (
-      <TopPanel title={title} icon="spacewalk-icon-manage-configuration-files">
-        {this.renderMessages()}
-        <Form
-          model={this.state.model}
-          className="scap-policy-form"
-          onSubmit={this.onSubmit}
-          formRef={this.bindForm}
-        >
-          <Text
-            name="policyName"
-            label={t("Name")}
-            required
-            labelClass="col-md-3"
-            divClass="col-md-6"
-          />
-          <TextArea
-            name="description"
-            label={t("Description")}
-            labelClass="col-md-3"
-            divClass="col-md-6"
-          />
-          <FormGroup>
-            <Label name={t("SCAP Content")} className="col-md-3" required />
-            <div className="col-md-6">
-              <Select
-                name="scapContentId"
-                isClearable
-                options={dataStreams}
-                value={model.scapContentId}
-                onChange={(value) => {
-                  this.setState({ model: { ...model, scapContentId: value as number } });
-                  this.fetchProfiles("dataStream", value as number);
-                }}
-              />
-            </div>
-          </FormGroup>
-          <FormGroup>
-            <Label name={t("XCCDF Profile")} className="col-md-3" required />
-            <div className="col-md-6">
-              <Select
-                name="xccdfProfileId"
-                isClearable
-                options={xccdfProfiles.map((type) => ({ value: type.id, label: type.title }))}
-                value={model.xccdfProfileId}
-                onChange={(value) => {
-                  this.setState({ model: { ...model, xccdfProfileId: value as string } });
-                }}
-              />
-            </div>
-          </FormGroup>
-          <FormGroup>
-            <Label name={t("Tailoring File")} className="col-md-3" />
-            <div className="col-md-6">
-              <Select
-                name="tailoringFile"
-                isClearable
-                options={tailoringFiles}
-                value={model.tailoringFile}
-                onChange={(value) => {
-                  this.setState({ model: { ...model, tailoringFile: value as number } });
-                  this.fetchProfiles("tailoringFile", value as number);
-                }}
-              />
-            </div>
-          </FormGroup>
-          <FormGroup>
-            <Label name={t("Tailoring Profile")} className="col-md-3" />
-            <div className="col-md-6">
-              <Select
-                name="tailoringProfileId"
-                isClearable
-                options={tailoringFileProfiles.map((type) => ({ value: type.id, label: type.title }))}
-                value={model.tailoringProfileId}
-                onChange={(value) => {
-                  this.setState({ model: { ...model, tailoringProfileId: value as string } });
-                }}
-              />
-            </div>
-          </FormGroup>
-
-          <FormGroup>
-            <Label name={t("OVAL Files")} className="col-md-3" />
-            <div className="col-md-6">
-              <Text
-                name="ovalFiles"
-                value={model.ovalFiles || ""}
-                onChange={(name, value) => this.setState({ model: { ...model, ovalFiles: value } })}
-                placeholder={t("e.g: file1.xml, file2.xml")}
-                title={t("Comma-separated list of OVAL files")}
-              />
-            </div>
-          </FormGroup>
-
-          <FormGroup>
-            <Label name={t("Advanced Arguments")} className="col-md-3" />
-            <div className="col-md-6">
-              <Text
-                name="advancedArgs"
-                placeholder={t("e.g: --results --report")}
-                title={t("Additional command-line arguments for oscap")}
-              />
-            </div>
-          </FormGroup>
-
-          <FormGroup>
-              <Label name={t("Fetch Remote Resources")} className="col-md-3" />
-              <div className="col-md-6">
-                <div className="checkbox">
-                  <label>
-                    <input
-                      type="checkbox"
-                      name="fetchRemoteResources"
-                      className="fetch-remote-checkbox"
-                      value="true"
-                      checked={model.fetchRemoteResources || false}
-                      onChange={(e) => {
-                        this.setState({
-                          model: { ...model, fetchRemoteResources: e.target.checked }
-                        });
-                      }}
-                    />
-                    <span className="fetch-remote-help">
-                      {t("This requires internet and a lot of memory, make sure this minion has enough memory available!")}
-                    </span>
-                  </label>
-                </div>
-              </div>
-          </FormGroup>
-          <hr />
-          <div className="form-group">
-            <div className="col-md-offset-3 col-md-6">{this.renderButtons()}</div>
+        <FormGroup>
+          <Label name={t("SCAP Content")} className="col-md-3" required />
+          <div className="col-md-6">
+            <Select
+              name="scapContentId"
+              isClearable
+              options={dataStreams}
+              value={model.scapContentId}
+              onChange={(value) => {
+                setModel({ ...model, scapContentId: value as number });
+                fetchProfiles("dataStream", value as number);
+              }}
+            />
           </div>
-        </Form>
-      </TopPanel>
-    );
+        </FormGroup>
+
+        <FormGroup>
+          <Label name={t("XCCDF Profile")} className="col-md-3" required />
+          <div className="col-md-6">
+            <Select
+              name="xccdfProfileId"
+              isClearable
+              options={xccdfProfiles.map((profile) => ({ value: profile.id, label: profile.title }))}
+              value={model.xccdfProfileId}
+              onChange={(value) => {
+                setModel({ ...model, xccdfProfileId: value as string });
+              }}
+            />
+          </div>
+        </FormGroup>
+
+        <FormGroup>
+          <Label name={t("Tailoring File")} className="col-md-3" />
+          <div className="col-md-6">
+            <Select
+              name="tailoringFile"
+              isClearable
+              options={tailoringFiles}
+              value={model.tailoringFile}
+              onChange={(value) => {
+                setModel({ ...model, tailoringFile: value as number });
+                fetchProfiles("tailoringFile", value as number);
+              }}
+            />
+          </div>
+        </FormGroup>
+
+        <FormGroup>
+          <Label name={t("Tailoring Profile")} className="col-md-3" />
+          <div className="col-md-6">
+            <Select
+              name="tailoringProfileId"
+              isClearable
+              options={tailoringFileProfiles.map((profile) => ({ value: profile.id, label: profile.title }))}
+              value={model.tailoringProfileId}
+              onChange={(value) => {
+                setModel({ ...model, tailoringProfileId: value as string });
+              }}
+            />
+          </div>
+        </FormGroup>
+
+        <FormGroup>
+          <Label name={t("OVAL Files")} className="col-md-3" />
+          <div className="col-md-6">
+            <Text
+              name="ovalFiles"
+              placeholder={t("e.g: file1.xml, file2.xml")}
+              title={t("Comma-separated list of OVAL files")}
+            />
+          </div>
+        </FormGroup>
+
+        <FormGroup>
+          <Label name={t("Advanced Arguments")} className="col-md-3" />
+          <div className="col-md-6">
+            <Text
+              name="advancedArgs"
+              placeholder={t("e.g: --results --report")}
+              title={t("Additional command-line arguments for oscap")}
+            />
+          </div>
+        </FormGroup>
+
+        <FormGroup>
+          <Label name={t("Fetch Remote Resources")} className="col-md-3" />
+          <div className="col-md-6">
+            <div className="checkbox">
+              <label>
+                <input
+                  type="checkbox"
+                  name="fetchRemoteResources"
+                  className="fetch-remote-checkbox"
+                  value="true"
+                  checked={model.fetchRemoteResources || false}
+                  onChange={(e) => {
+                    setModel({ ...model, fetchRemoteResources: e.target.checked });
+                  }}
+                />
+                <span className="fetch-remote-help">
+                  {t("This requires internet and a lot of memory, make sure this minion has enough memory available!")}
+                </span>
+              </label>
+            </div>
+          </div>
+        </FormGroup>
+
+        <hr />
+
+        <div className="form-group">
+          <div className="col-md-offset-3 col-md-6">
+            {isEditMode && (
+              <LinkButton
+                id="back-btn"
+                className="btn-default"
+                icon="fa-arrow-left"
+                text={t("Back to List")}
+                href={ENDPOINTS.LIST}
+              />
+            )}
+            <SubmitButton
+              id="submit-btn"
+              className="btn-success"
+              icon={isEditMode ? "fa-save" : "fa-plus"}
+              text={isEditMode ? t("Update") : t("Create")}
+            />
+          </div>
+        </div>
+      </Form>
+    </TopPanel>
+  );
+};
+
+export const renderer = () => {
+  const container = document.getElementById("scap-create-policy");
+  if (container) {
+    SpaRenderer.renderNavigationReact(<ScapPolicy />, container);
   }
-}
-
-
-export const renderer = () =>
-  SpaRenderer.renderNavigationReact(<ScapPolicy />, document.getElementById("scap-create-policy"));
+};

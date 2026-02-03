@@ -1,206 +1,206 @@
-import * as React from "react";
+import React, { useState } from "react";
 import SpaRenderer from "core/spa/spa-renderer";
-import { Messages, Utils as MessageUtils } from "components/messages/messages";
-import Network from "utils/network";
-import { TopPanel } from "components/panels/TopPanel";
+
 import { LinkButton } from "components/buttons";
-import { SearchField } from "components/table/SearchField";
-import { Column } from "components/table/Column";
-import { Table } from "components/table/Table";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
-import { Utils } from "utils/functions";
+import { Messages, Utils as MessageUtils } from "components/messages/messages";
+import { TopPanel } from "components/panels/TopPanel";
+import { Column } from "components/table/Column";
+import { SearchField } from "components/table/SearchField";
+import { Table } from "components/table/Table";
 import { ComplianceBadge } from "components/ComplianceBadge";
-import moment from "moment";
 
-type Props = {};
+import Network from "utils/network";
+import { Utils } from "utils/functions";
 
-type State = {
-  messages: any;
-  selectedItems: any;
-  selected?: any;
-  scapPolicies: any;
-};
+const ENDPOINTS = {
+  DELETE: "/rhn/manager/api/audit/scap/policy/delete",
+} as const;
 
-class ScapPolicy extends React.Component<Props, State> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      messages: [],
-      selectedItems: [],
-      scapPolicies: window.scapPolicies || []
-    };
+interface ScapPolicyData {
+  id: number;
+  policyName: string;
+  scapContentName?: string;
+  totalSystems?: number;
+  compliantSystems?: number;
+  compliancePercentage?: number;
+}
+
+declare global {
+  interface Window {
+    scapPolicies?: ScapPolicyData[];
   }
-  selectScapPolicy = (row) => {
-    this.setState({
-      selected: row,
-    });
-  };
+}
 
-  deleteScapPolicies = async (idList) => {
-    const msgMap = {
+const ScapPolicy = (): JSX.Element => {
+  const [messages, setMessages] = useState<React.ReactNode>([]);
+  const [selectedItems, setSelectedItems] = useState<number[]>([]);
+  const [selected, setSelected] = useState<ScapPolicyData | null>(null);
+  const [scapPolicies, setScapPolicies] = useState<ScapPolicyData[]>(
+    window.scapPolicies || []
+  );
+
+  const deleteScapPolicies = async (idList: number[]) => {
+    const msgMap: Record<string, string> = {
       delete_success: t("Scap Policy has been deleted."),
       delete_success_p: t("Scap Policies have been deleted."),
     };
+
     try {
-      const response = await Network.post("/rhn/manager/api/audit/scap/policy/delete", idList);
+      const response = await Network.post(ENDPOINTS.DELETE, idList);
 
       if (response.success) {
+        const key = idList.length > 1 ? "delete_success_p" : "delete_success";
+        const successMessage = MessageUtils.success(msgMap[key]);
 
-        const successMessage = MessageUtils.success(
-          msgMap[idList.length > 1 ? "delete_success_p" : "delete_success"]
-        );
-        this.setState((prevState) => ({
-          messages: <Messages items={successMessage} />,
-          scapPolicies: prevState.scapPolicies.filter((policy) => !idList.includes(policy.id)),
-          selectedItems: prevState.selectedItems.filter((item) => !idList.includes(item)),
-        }));
+        setMessages(<Messages items={successMessage} />);
+        setScapPolicies((prev) => prev.filter((p) => !idList.includes(p.id)));
+        setSelectedItems((prev) => prev.filter((id) => !idList.includes(id)));
+        setSelected(null);
       } else {
-        const errorMessage = response.messages.map((msg) =>
-          MessageUtils.error(msgMap[msg] || msg) // Handle case if the msgMap is not defined for some messages
+        const errorMsgs = response.messages.map((m: string) =>
+          MessageUtils.error(msgMap[m] || m)
         );
-
-        this.setState({
-          messages: <Messages items={errorMessage} />,
-        });
+        setMessages(<Messages items={errorMsgs} />);
       }
-    } catch (error) {
-      const errorMessage = MessageUtils.error(
-        `An unexpected error occurred while deleting the following Scap policies: ${idList.join(', ')}`
-      );
-      this.setState({
-        messages: <Messages items={errorMessage} />,
-      });
+    } catch (error: unknown) {
+      const errorMessage = `${t("An unexpected error occurred while deleting")}: ${idList.join(", ")}`;
+      setMessages(<Messages items={MessageUtils.error(errorMessage)} />);
     }
   };
 
-  handleSelectItems = (items) => {
-    this.setState({
-      selectedItems: items,
-    });
+  const searchFilter = (item: ScapPolicyData, criteria?: string): boolean => {
+    if (!criteria) return true;
+    const search = criteria.toLowerCase();
+    return (
+      (item.policyName?.toLowerCase().includes(search) ?? false) ||
+      (item.scapContentName?.toLowerCase().includes(search) ?? false)
+    );
   };
 
-  render() {
-    const renderPanelButtons = () => (
-      <div className="pull-right btn-group">
-        <LinkButton
-          id="create"
-          icon="fa-plus"
-          className="btn-default"
-          title={t("Create")}
-          text={t("Create")}
-          href="/rhn/manager/audit/scap/policy/create"
-        />
-      </div>
-    );
-    const renderActionsColumn = (row) => (
-      <div className="btn-group">
-        <LinkButton
-          className="btn-default btn-sm"
-          title={t("Details")}
-          icon="fa-list"
-          href={`/rhn/manager/audit/scap/policy/details/${row.id}`}
-        />
-        <LinkButton
-          className="btn-default btn-sm"
-          title={t("Edit")}
-          icon="fa-edit"
-          href={`/rhn/manager/audit/scap/policy/edit/${row.id}`}
-        />
-        <ModalButton
-          className="btn-default btn-sm"
-          title={t("Delete")}
-          icon="fa-trash"
-          target="delete-modal"
-          item={row}
-          onClick={this.selectScapPolicy}
-        />
-      </div>
-    );
-    return (
-      <span>
-        <TopPanel
-          title={t("Scap Policies")}
-          icon="spacewalk-icon-manage-configuration-files"
-          button={renderPanelButtons()}
-        >
-          {this.state.messages}
-          <Table
-            data={this.state.scapPolicies}
-            identifier={(scapPolicy) => scapPolicy.id}
-            initialSortColumnKey="id"
-            searchField={<SearchField filter={this.searchData} />} // TODO
-            selectable
-            selectedItems={this.state.selectedItems}
-            onSelect={this.handleSelectItems}
-          >
-            <Column
-              columnKey="name"
-              columnClass="text-left"
-              headerClass="text-left"
-              comparator={Utils.sortByText}
-              header={t("Name")}
-              cell={(row) => row.policyName}
-            />
-            <Column
-              columnKey="content"
-              columnClass="text-left"
-              headerClass="text-left"
-              comparator={Utils.sortByText}
-              header={t("Content")}
-              cell={(row) => row.scapContentName || "N/A"}
-            />
-            <Column
-              columnKey="systems"
-              columnClass="text-center"
-              headerClass="text-center"
-              comparator={Utils.sortByNumber}
-              header={t("Systems Scanned")}
-              cell={(row) => row.totalSystems || 0}
-            />
-            <Column
-              columnKey="compliance"
-              columnClass="text-center"
-              headerClass="text-center"
-              comparator={(a, b) => (a.compliancePercentage || 0) - (b.compliancePercentage || 0)}
-              header={t("Compliance")}
-              cell={(row) => (
-                <ComplianceBadge 
-                  percentage={row.compliancePercentage || 0}
-                  compliant={row.compliantSystems || 0}
-                  total={row.totalSystems || 0}
-                />
-              )}
-            />
-            <Column
-              width="15%"
-              header={t("Actions")}
-              columnClass="text-center"
-              columnKey="actions"
-              headerClass="text-center"
-              cell={renderActionsColumn}
-            />
-          </Table>
-        </TopPanel>
+  const ActionButtons = () => (
+    <div className="pull-right btn-group">
+      <LinkButton
+        id="create"
+        icon="fa-plus"
+        className="btn-default"
+        title={t("Create")}
+        text={t("Create")}
+        href="/rhn/manager/audit/scap/policy/create"
+      />
+    </div>
+  );
 
-        <DeleteDialog
-          id="delete-modal"
-          title={t("Delete Scap Policy")}
-          content={
-            <span>
-              {t("Are you sure you want to delete the Scap policy")}{" "}
-              <strong>{this.state.selected?.policyName || t("this policy")}</strong>?
-            </span>
-          }
-          item={this.state.selected}
-          onConfirm={() => this.deleteScapPolicies([this.state.selected?.id])}
-          onClosePopUp={() => this.selectScapPolicy(null)}
-        />
-      </span>
-    );
-  }
-}
+  const renderActions = (row: ScapPolicyData) => (
+    <div className="btn-group">
+      <LinkButton
+        className="btn-default btn-sm"
+        title={t("Details")}
+        icon="fa-list"
+        href={`/rhn/manager/audit/scap/policy/details/${row.id}`}
+      />
+      <LinkButton
+        className="btn-default btn-sm"
+        title={t("Edit")}
+        icon="fa-edit"
+        href={`/rhn/manager/audit/scap/policy/edit/${row.id}`}
+      />
+      <ModalButton
+        className="btn-default btn-sm"
+        title={t("Delete")}
+        icon="fa-trash"
+        target="delete-modal"
+        item={row}
+        onClick={setSelected}
+      />
+    </div>
+  );
+
+  return (
+    <>
+      <TopPanel
+        title={t("Scap Policies")}
+        icon="spacewalk-icon-manage-configuration-files"
+        button={<ActionButtons />}
+      >
+        {messages}
+        <Table
+          data={scapPolicies}
+          identifier={(policy) => policy.id}
+          initialSortColumnKey="id"
+          searchField={<SearchField filter={searchFilter} />}
+          selectable
+          selectedItems={selectedItems}
+          onSelect={setSelectedItems}
+        >
+          <Column
+            columnKey="name"
+            columnClass="text-left"
+            headerClass="text-left"
+            comparator={Utils.sortByText}
+            header={t("Name")}
+            cell={(row: ScapPolicyData) => row.policyName}
+          />
+          <Column
+            columnKey="content"
+            columnClass="text-left"
+            headerClass="text-left"
+            comparator={Utils.sortByText}
+            header={t("Content")}
+            cell={(row: ScapPolicyData) => row.scapContentName || "N/A"}
+          />
+          <Column
+            columnKey="totalSystems"
+            columnClass="text-center"
+            headerClass="text-center"
+            comparator={Utils.sortByNumber}
+            header={t("Systems Scanned")}
+            cell={(row: ScapPolicyData) => row.totalSystems || 0}
+          />
+          <Column
+            columnKey="compliance"
+            columnClass="text-center"
+            headerClass="text-center"
+            header={t("Compliance")}
+            cell={(row: ScapPolicyData) => (
+              <ComplianceBadge
+                percentage={row.compliancePercentage || 0}
+                compliant={row.compliantSystems || 0}
+                total={row.totalSystems || 0}
+              />
+            )}
+          />
+          <Column
+            width="15%"
+            header={t("Actions")}
+            columnClass="text-center"
+            columnKey="actions"
+            headerClass="text-center"
+            cell={renderActions}
+          />
+        </Table>
+      </TopPanel>
+
+      <DeleteDialog
+        id="delete-modal"
+        title={t("Delete Scap Policy")}
+        content={
+          <span>
+            {t("Are you sure you want to delete")} <strong>{selected?.policyName || t("this policy")}</strong>?
+          </span>
+        }
+        item={selected}
+        onConfirm={() => selected && deleteScapPolicies([selected.id])}
+        onClosePopUp={() => setSelected(null)}
+      />
+    </>
+  );
+};
 
 export const renderer = () => {
-  return SpaRenderer.renderNavigationReact(<ScapPolicy />, document.getElementById("scap-policies"));
-}
+  const container = document.getElementById("scap-policies");
+  if (container) {
+    SpaRenderer.renderNavigationReact(<ScapPolicy />, container);
+  }
+};

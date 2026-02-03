@@ -1,5 +1,4 @@
-import * as React from "react";
-
+import React, { useState } from "react";
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { LinkButton } from "components/buttons";
@@ -14,101 +13,70 @@ import { Table } from "components/table/Table";
 import Network from "utils/network";
 import { Utils } from "utils/functions";
 
-// Extend window to include tailoringFiles
+const ENDPOINTS = {
+  DELETE: "/rhn/manager/api/audit/scap/tailoring-file/delete",
+} as const;
+
+interface TailoringFileData {
+  id: number;
+  name: string;
+  fileName: string;
+  displayFileName: string;
+}
+
 declare global {
   interface Window {
     tailoringFiles?: TailoringFileData[];
   }
 }
 
-type TailoringFileData = {
-  id: number;
-  name: string;
-  fileName: string;
-};
+const TailoringFiles = (): JSX.Element => {
+  const [messages, setMessages] = useState<React.ReactNode>([]);
+  const [selectedItems, setSelectedItems] = useState<number[]>([]);
+  const [selected, setSelected] = useState<TailoringFileData | null>(null);
+  const [tailoringFiles, setTailoringFiles] = useState<TailoringFileData[]>(
+    window.tailoringFiles || []
+  );
 
-type Props = {};
-
-type State = {
-  messages: React.ReactNode;
-  selectedItems: number[];
-  selected?: TailoringFileData | null;
-  tailoringFiles: TailoringFileData[];
-};
-
-class TailoringFiles extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      messages: [],
-      selectedItems: [],
-      tailoringFiles: window.tailoringFiles || [],
-    };
-  }
-
-  selectTailoringFile = (row: TailoringFileData | null) => {
-    this.setState({ selected: row });
-  };
-
-  deleteTailoringFiles = async (idList: number[]) => {
-    const msgMap = {
+  const deleteTailoringFiles = async (idList: number[]) => {
+    const msgMap: Record<string, string> = {
       delete_success: t("Tailoring file has been deleted."),
       delete_success_p: t("Tailoring files have been deleted."),
     };
 
     try {
-      const response = await Network.post(
-        "/rhn/manager/api/audit/scap/tailoring-file/delete",
-        idList
-      );
+      const response = await Network.post(ENDPOINTS.DELETE, idList);
 
       if (response.success) {
-        const successMessage = MessageUtils.success(
-          msgMap[idList.length > 1 ? "delete_success_p" : "delete_success"]
-        );
-        this.setState((prevState) => ({
-          messages: <Messages items={successMessage} />,
-          tailoringFiles: prevState.tailoringFiles.filter(
-            (file) => !idList.includes(file.id)
-          ),
-          selectedItems: prevState.selectedItems.filter(
-            (item) => !idList.includes(item)
-          ),
-        }));
+        const key = idList.length > 1 ? "delete_success_p" : "delete_success";
+        const successMessage = MessageUtils.success(msgMap[key]);
+        
+        setMessages(<Messages items={successMessage} />);
+        setTailoringFiles((prev) => prev.filter((f) => !idList.includes(f.id)));
+        setSelectedItems((prev) => prev.filter((id) => !idList.includes(id)));
+        setSelected(null);
       } else {
-        const errorMessage = response.messages.map((msg) =>
-          MessageUtils.error(msgMap[msg] || msg)
+        const errorMsgs = response.messages.map((m: string) => 
+          MessageUtils.error(msgMap[m] || m)
         );
-        this.setState({
-          messages: <Messages items={errorMessage} />,
-        });
+        setMessages(<Messages items={errorMsgs} />);
       }
-    } catch (error) {
-      const errorMessage = MessageUtils.error(
-        `An unexpected error occurred while deleting the following tailoring files: ${idList.join(", ")}`
-      );
-      this.setState({
-        messages: <Messages items={errorMessage} />,
-      });
+    } catch (error: unknown) {
+      const errorMessage = `${t("An unexpected error occurred while deleting")}: ${idList.join(", ")}`;
+      setMessages(<Messages items={MessageUtils.error(errorMessage)} />);
     }
   };
 
-  handleSelectItems = (items: number[]) => {
-    this.setState({ selectedItems: items });
-  };
-
-  searchData = (data: TailoringFileData, criteria?: string): boolean => {
-    if (!criteria) {
-      return true;
-    }
-    const searchTerm = criteria.toLowerCase();
+  const searchFilter = (data: TailoringFileData, criteria?: string) => {
+    if (!criteria) return true;
+    const search = criteria.toLowerCase();
     return (
-      data.name?.toLowerCase().includes(searchTerm) ||
-      data.fileName?.toLowerCase().includes(searchTerm)
+      data.name?.toLowerCase().includes(search) ||
+      data.fileName?.toLowerCase().includes(search)
     );
   };
 
-  renderPanelButtons = () => (
+  const ActionButtons = () => (
     <div className="pull-right btn-group">
       <LinkButton
         id="create"
@@ -121,7 +89,7 @@ class TailoringFiles extends React.Component<Props, State> {
     </div>
   );
 
-  renderActionsColumn = (row: TailoringFileData) => (
+  const renderActions = (row: TailoringFileData) => (
     <div className="btn-group">
       <LinkButton
         className="btn-default btn-sm"
@@ -135,82 +103,72 @@ class TailoringFiles extends React.Component<Props, State> {
         icon="fa-trash"
         target="delete-modal"
         item={row}
-        onClick={this.selectTailoringFile}
+        onClick={setSelected}
       />
     </div>
   );
 
-  render() {
-    return (
-      <>
-        <TopPanel
-          title={t("Tailoring Files")}
-          icon="spacewalk-icon-manage-configuration-files"
-          button={this.renderPanelButtons()}
+  return (
+    <>
+      <TopPanel
+        title={t("Tailoring Files")}
+        icon="spacewalk-icon-manage-configuration-files"
+        button={<ActionButtons />}
+      >
+        {messages}
+        <Table
+          data={tailoringFiles}
+          identifier={(file) => file.id}
+          initialSortColumnKey="id"
+          searchField={<SearchField filter={searchFilter} />}
+          selectable
+          selectedItems={selectedItems}
+          onSelect={setSelectedItems}
         >
-          {this.state.messages}
-          <Table
-            data={this.state.tailoringFiles}
-            identifier={(tailoringFile) => tailoringFile.id}
-            initialSortColumnKey="id"
-            searchField={<SearchField filter={this.searchData} />}
-            selectable
-            selectedItems={this.state.selectedItems}
-            onSelect={this.handleSelectItems}
-          >
-            <Column
-              key="label"
-              columnKey="label"
-              width="35%"
-              comparator={Utils.sortByText}
-              header={t("Label")}
-              cell={(row) => row.name}
-              
-            />
-            <Column
-              key="fileName"
-              columnKey="fileName"
-              width="45%"
-              comparator={Utils.sortByText}
-              header={t("Tailoring File Name")}
-              cell={(row) => row.displayfileName}
-              
-            />
-            <Column
-              key="actions"
-              columnKey="actions"
-              width="15%"
-              header={t("Actions")}
-              columnClass="text-center"
-              headerClass="text-center"
-              cell={this.renderActionsColumn}
-            />
-          </Table>
-        </TopPanel>
+          <Column
+            columnKey="name"
+            width="35%"
+            comparator={Utils.sortByText}
+            header={t("Label")}
+            cell={(row: TailoringFileData) => row.name}
+          />
+          <Column
+            columnKey="fileName"
+            width="45%"
+            comparator={Utils.sortByText}
+            header={t("Tailoring File Name")}
+            cell={(row: TailoringFileData) => row.displayFileName}
+          />
+          <Column
+            columnKey="actions"
+            width="15%"
+            header={t("Actions")}
+            columnClass="text-center"
+            headerClass="text-center"
+            cell={renderActions}
+          />
+        </Table>
+      </TopPanel>
 
-        <DeleteDialog
-          id="delete-modal"
-          title={t("Delete Tailoring file")}
-          content={
-            <span>
-              {t("Are you sure you want to delete the Tailoring file")}{" "}
-              <strong>{this.state.selected?.name || t("this file")}</strong>?
-            </span>
-          }
-          item={this.state.selected}
-          onConfirm={() =>
-            this.deleteTailoringFiles([this.state.selected?.id!])
-          }
-          onClosePopUp={() => this.selectTailoringFile(null)}
-        />
-      </>
-    );
-  }
-}
+      <DeleteDialog
+        id="delete-modal"
+        title={t("Delete Tailoring file")}
+        content={
+          <span>
+            {t("Are you sure you want to delete")} <strong>{selected?.name || t("this file")}</strong>?
+          </span>
+        }
+        item={selected}
+        onConfirm={() => selected && deleteTailoringFiles([selected.id])}
+        onClosePopUp={() => setSelected(null)}
+      />
+    </>
+  );
+};
 
 export const renderer = () => {
-  return SpaRenderer.renderNavigationReact(
-    <TailoringFiles />,
-    document.getElementById("scap-tailoring-files")
-  );
+  const container = document.getElementById("scap-tailoring-files");
+  if (container) {
+    return SpaRenderer.renderNavigationReact(<TailoringFiles />, container);
+  }
 };

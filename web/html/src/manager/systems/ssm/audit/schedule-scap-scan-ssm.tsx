@@ -1,55 +1,66 @@
 import "manager/minion/audit/audit-common.css";
 
-import * as React from "react";
+import React from "react";
 import SpaRenderer from "core/spa/spa-renderer";
 import Network from "utils/network";
 import { ScheduleScapScanForm } from "components/audit/schedule-scap-scan-form";
 
+const ENDPOINTS = {
+  SCHEDULE_CREATE: "/rhn/manager/api/audit/schedule/create",
+} as const;
+
+interface Minion {
+  id: number;
+}
+
+interface ScheduleData {
+  scapContentList: any[];
+  tailoringFiles: any[];
+  scapPolicies: any[];
+}
+
 declare global {
   interface Window {
-    scheduleData: {
-      scapContentList: any[];
-      tailoringFiles: any[];
-      scapPolicies: any[];
-    };
-    minions?: any[];
+    minions?: Minion[];
   }
 }
 
-const ScheduleAuditScanSsm = () => {
-    // Unpack scheduleData from window
-    const scheduleData = window.scheduleData || {} as any;
-    
-    const tailoringFiles = scheduleData.tailoringFiles || [];
-    const scapPolicies = scheduleData.scapPolicies || [];
-    const scapContentList = scheduleData.scapContentList || [];
+const ScheduleAuditScanSsm = (): JSX.Element => {
+  const scheduleData = (window as any).scheduleData as ScheduleData || {};
+  
+  const tailoringFiles = scheduleData.tailoringFiles || [];
+  const scapPolicies = scheduleData.scapPolicies || [];
+  const scapContentList = scheduleData.scapContentList || [];
 
-    const onSubmit = (model) => {
-        return Network.post("/rhn/manager/api/audit/schedule/create", {
-            ids: window.minions?.map((m) => m.id),
-            earliest: model.earliest,
-            xccdfProfileId: model.xccdfProfileId,
-            scapContentId: model.dataStreamName, 
-            tailoringFileId: model.tailoringFile, 
-            tailoringProfileID: model.tailoringProfileID,
-            ovalFiles: model.ovalFiles,
-            advancedArgs: model.advancedArgs,
-            fetchRemoteResources: model.fetchRemoteResources,
-            policyId: model.selectedScapPolicy,
-        });
-    };
+  const onSubmit = async (model: any) => {
+    return Network.post(ENDPOINTS.SCHEDULE_CREATE, {
+      ids: window.minions?.map((m) => m.id),
+      earliest: model.earliest,
+      xccdfProfileId: model.xccdfProfileId,
+      scapContentId: model.dataStreamName,
+      tailoringFileId: model.tailoringFile,
+      tailoringProfileID: model.tailoringProfileID,
+      ovalFiles: model.ovalFiles,
+      advancedArgs: model.advancedArgs,
+      fetchRemoteResources: model.fetchRemoteResources,
+      policyId: model.selectedScapPolicy,
+    });
+  };
 
-    return (
-        <ScheduleScapScanForm 
-            scapContentList={scapContentList}
-            tailoringFiles={tailoringFiles}
-            scapPolicies={scapPolicies}
-            onSubmit={onSubmit}
-            minions={window.minions}
-        />
-    );
+  return (
+    <ScheduleScapScanForm
+      scapContentList={scapContentList}
+      tailoringFiles={tailoringFiles}
+      scapPolicies={scapPolicies}
+      onSubmit={onSubmit}
+      minions={window.minions}
+    />
+  );
 };
 
 export const renderer = () => {
-  return SpaRenderer.renderNavigationReact(<ScheduleAuditScanSsm />, document.getElementById("schedule-scap-scan"));
+    const container = document.getElementById("schedule-scap-scan");
+    if (container) {
+        SpaRenderer.renderNavigationReact(<ScheduleAuditScanSsm />, container);
+    }
 };

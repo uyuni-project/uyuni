@@ -1,5 +1,4 @@
-import * as React from "react";
-
+import React, { useState } from "react";
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { LinkButton } from "components/buttons";
@@ -14,103 +13,72 @@ import { Table } from "components/table/Table";
 import Network from "utils/network";
 import { Utils } from "utils/functions";
 
-// Extend window to include scapContent
+const ENDPOINTS = {
+  DELETE: "/rhn/manager/api/audit/scap/content/delete",
+} as const;
+
+interface ScapContentData {
+  id: number;
+  name: string;
+  fileName: string;
+  dataStreamFileName: string;
+  description?: string;
+}
+
 declare global {
   interface Window {
     scapContent?: ScapContentData[];
   }
 }
 
-type ScapContentData = {
-  id: number;
-  name: string;
-  fileName: string;
-  description?: string;
-};
+const ScapContent = (): JSX.Element => {
+  const [messages, setMessages] = useState<React.ReactNode>([]);
+  const [selectedItems, setSelectedItems] = useState<number[]>([]);
+  const [selected, setSelected] = useState<ScapContentData | null>(null);
+  const [scapContent, setScapContent] = useState<ScapContentData[]>(
+    window.scapContent || []
+  );
 
-type Props = {};
-
-type State = {
-  messages: React.ReactNode;
-  selectedItems: number[];
-  selected?: ScapContentData | null;
-  scapContent: ScapContentData[];
-};
-
-class ScapContent extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      messages: [],
-      selectedItems: [],
-      scapContent: window.scapContent || [],
-    };
-  }
-
-  selectScapContent = (row: ScapContentData | null) => {
-    this.setState({ selected: row });
-  };
-
-  deleteScapContent = async (idList: number[]) => {
-    const msgMap = {
+  const deleteScapContent = async (idList: number[]) => {
+    const msgMap: Record<string, string> = {
       delete_success: t("SCAP content has been deleted."),
       delete_success_p: t("SCAP content items have been deleted."),
     };
 
     try {
-      const response = await Network.post(
-        "/rhn/manager/api/audit/scap/content/delete",
-        idList
-      );
+      const response = await Network.post(ENDPOINTS.DELETE, idList);
 
       if (response.success) {
-        const successMessage = MessageUtils.success(
-          msgMap[idList.length > 1 ? "delete_success_p" : "delete_success"]
-        );
-        this.setState((prevState) => ({
-          messages: <Messages items={successMessage} />,
-          scapContent: prevState.scapContent.filter(
-            (content) => !idList.includes(content.id)
-          ),
-          selectedItems: prevState.selectedItems.filter(
-            (item) => !idList.includes(item)
-          ),
-        }));
+        const key = idList.length > 1 ? "delete_success_p" : "delete_success";
+        const successMessage = MessageUtils.success(msgMap[key]);
+
+        setMessages(<Messages items={successMessage} />);
+        setScapContent((prev) => prev.filter((c) => !idList.includes(c.id)));
+        setSelectedItems((prev) => prev.filter((id) => !idList.includes(id)));
+        setSelected(null);
       } else {
-        const errorMessage = response.messages.map((msg) =>
-          MessageUtils.error(msgMap[msg] || msg)
+        const errorMsgs = response.messages.map((m: string) =>
+          MessageUtils.error(msgMap[m] || m)
         );
-        this.setState({
-          messages: <Messages items={errorMessage} />,
-        });
+        setMessages(<Messages items={errorMsgs} />);
       }
-    } catch (error) {
-      const errorMessage = MessageUtils.error(
-        `An unexpected error occurred while deleting the following SCAP content: ${idList.join(", ")}`
-      );
-      this.setState({
-        messages: <Messages items={errorMessage} />,
-      });
+    } catch (error: unknown) {
+      const errorMessage = `${t("An unexpected error occurred while deleting")}: ${idList.join(", ")}`;
+      setMessages(<Messages items={MessageUtils.error(errorMessage)} />);
     }
   };
 
-  handleSelectItems = (items: number[]) => {
-    this.setState({ selectedItems: items });
-  };
-
-  searchData = (datum: ScapContentData, criteria?: string): boolean => {
-    if (!criteria) {
-      return true;
-    }
-    const searchTerm = criteria.toLowerCase();
+  const searchFilter = (item: ScapContentData, criteria?: string): boolean => {
+    if (!criteria) return true;
+    const search = criteria.toLowerCase();
     return (
-      datum.name?.toLowerCase().includes(searchTerm) ||
-      datum.fileName?.toLowerCase().includes(searchTerm) ||
-      datum.description?.toLowerCase().includes(searchTerm)
+      (item.name?.toLowerCase().includes(search) ?? false) ||
+      (item.fileName?.toLowerCase().includes(search) ?? false) ||
+      (item.description?.toLowerCase().includes(search) ?? false)
     );
   };
 
-  renderPanelButtons = () => (
+  const ActionButtons = () => (
     <div className="pull-right btn-group">
       <LinkButton
         id="upload"
@@ -123,7 +91,7 @@ class ScapContent extends React.Component<Props, State> {
     </div>
   );
 
-  renderActionsColumn = (row: ScapContentData) => (
+  const renderActions = (row: ScapContentData) => (
     <div className="btn-group">
       <LinkButton
         className="btn-default btn-sm"
@@ -137,88 +105,79 @@ class ScapContent extends React.Component<Props, State> {
         icon="fa-trash"
         target="delete-modal"
         item={row}
-        onClick={this.selectScapContent}
+        onClick={setSelected}
       />
     </div>
   );
 
-  render() {
-    return (
-      <>
-        <TopPanel
-          title={t("SCAP Content")}
-          icon="spacewalk-icon-manage-configuration-files"
-          button={this.renderPanelButtons()}
+  return (
+    <>
+      <TopPanel
+        title={t("SCAP Content")}
+        icon="spacewalk-icon-manage-configuration-files"
+        button={<ActionButtons />}
+      >
+        {messages}
+        <Table
+          data={scapContent}
+          identifier={(content) => content.id}
+          initialSortColumnKey="id"
+          searchField={<SearchField filter={searchFilter} />}
+          selectable
+          selectedItems={selectedItems}
+          onSelect={setSelectedItems}
         >
-          {this.state.messages}
-          <Table
-            data={this.state.scapContent}
-            identifier={(content) => content.id}
-            initialSortColumnKey="id"
-            searchField={<SearchField filter={this.searchData} />}
-            selectable
-            selectedItems={this.state.selectedItems}
-            onSelect={this.handleSelectItems}
-          >
-            <Column
-              key="name"
-              columnKey="name"
-              width="30%"
-              comparator={Utils.sortByText}
-              header={t("Name")}
-              cell={(row) => row.name}
-            />
-            <Column
-              key="description"
-              columnKey="description"
-              width="35%"
-              comparator={Utils.sortByText}
-              header={t("Description")}
-              cell={(row) => row.description || ""}
-            />
-            <Column
-              key="fileName"
-              columnKey="fileName"
-              width="20%"
-              comparator={Utils.sortByText}
-              header={t("File Name")}
-              cell={(row) => row.dataStreamFileName}
-            />
-            <Column
-              key="actions"
-              columnKey="actions"
-              width="15%"
-              header={t("Actions")}
-              columnClass="text-center"
-              headerClass="text-center"
-              cell={this.renderActionsColumn}
-            />
-          </Table>
-        </TopPanel>
+          <Column
+            columnKey="name"
+            width="30%"
+            comparator={Utils.sortByText}
+            header={t("Name")}
+            cell={(row: ScapContentData) => row.name}
+          />
+          <Column
+            columnKey="description"
+            width="35%"
+            comparator={Utils.sortByText}
+            header={t("Description")}
+            cell={(row: ScapContentData) => row.description || ""}
+          />
+          <Column
+            columnKey="fileName"
+            width="20%"
+            comparator={Utils.sortByText}
+            header={t("File Name")}
+            cell={(row: ScapContentData) => row.dataStreamFileName}
+          />
+          <Column
+            columnKey="actions"
+            width="15%"
+            header={t("Actions")}
+            columnClass="text-center"
+            headerClass="text-center"
+            cell={renderActions}
+          />
+        </Table>
+      </TopPanel>
 
-        <DeleteDialog
-          id="delete-modal"
-          title={t("Delete SCAP Content")}
-          content={
-            <span>
-              {t("Are you sure you want to delete the SCAP content")}{" "}
-              <strong>{this.state.selected?.name || t("this content")}</strong>?
-            </span>
-          }
-          item={this.state.selected}
-          onConfirm={() =>
-            this.deleteScapContent([this.state.selected?.id!])
-          }
-          onClosePopUp={() => this.selectScapContent(null)}
-        />
-      </>
-    );
-  }
-}
+      <DeleteDialog
+        id="delete-modal"
+        title={t("Delete SCAP Content")}
+        content={
+          <span>
+            {t("Are you sure you want to delete")} <strong>{selected?.name || t("this content")}</strong>?
+          </span>
+        }
+        item={selected}
+        onConfirm={() => selected && deleteScapContent([selected.id])}
+        onClosePopUp={() => setSelected(null)}
+      />
+    </>
+  );
+};
 
 export const renderer = () => {
-  return SpaRenderer.renderNavigationReact(
-    <ScapContent />,
-    document.getElementById("scap-content-list")
-  );
+  const container = document.getElementById("scap-content-list");
+  if (container) {
+    SpaRenderer.renderNavigationReact(<ScapContent />, container);
+  }
 };

@@ -1,5 +1,4 @@
-import * as React from "react";
-
+import React, { useState, useRef } from "react";
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { SubmitButton } from "components/buttons";
@@ -14,210 +13,178 @@ import { TopPanel } from "components/panels/TopPanel";
 import { Utils } from "utils/functions";
 import Network from "utils/network";
 
-// Extend window to include scapContentData
+const ENDPOINTS = {
+  CREATE: "/rhn/manager/api/audit/scap/content/create",
+  UPDATE: "/rhn/manager/api/audit/scap/content/update",
+  LIST: "/rhn/manager/audit/scap/content",
+} as const;
+
+interface ScapContentData {
+  name: string | null;
+  id: number | null;
+  description: string | null;
+  dataStreamFileName: string | null;
+  xccdfFileName: string | null;
+}
+
 declare global {
   interface Window {
-    scapContentData?: {
-      name: string | null;
-      id: number | null;
-      description: string | null;
-      dataStreamFileName: string | null;
-      xccdfFileName: string | null;
-    };
+    scapContentData?: ScapContentData;
   }
 }
 
-type Props = {};
+interface FormModel {
+  name: string;
+  description: string;
+}
 
-type State = {
-  model: {
-    name: string;
-    description: string;
-  };
-  messages: React.ReactNode;
-  isInvalid?: boolean;
-};
-
-class ScapContentForm extends React.Component<Props, State> {
-  form?: HTMLFormElement;
-
-  constructor(props: Props) {
-    super(props);
-    // Initialize model from backend data if editing
-    const data = window.scapContentData || { name: null, id: null, description: null, fileName: null };
-    this.state = {
-      model: {
-        name: data.name || "",
-        description: data.description || "",
-      },
-      messages: [],
-    };
-  }
-
-  isEditMode = (): boolean => {
-    return window.scapContentData?.id != null;
+const ScapContentForm = (): JSX.Element => {
+  const initialData = window.scapContentData || {
+    name: "",
+    id: null,
+    description: "",
+    dataStreamFileName: null,
+    xccdfFileName: null,
   };
 
-  getScapContentId = (): number | null | undefined => {
-    return window.scapContentData?.id;
-  };
+  const [model, setModel] = useState<FormModel>({
+    name: initialData.name || "",
+    description: initialData.description || "",
+  });
+  const [messages, setMessages] = useState<React.ReactNode>([]);
+  const [isInvalid, setIsInvalid] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
 
-  getCurrentDataStreamFileName = (): string | null | undefined => {
-    return window.scapContentData?.dataStreamFileName;
-  };
+  const isEdit = initialData.id != null;
 
-  onUpload = () => {
-    const formData = new FormData(this.form);
-    const isEdit = this.isEditMode();
+  const handleUpload = async () => {
+    if (!formRef.current) return;
 
-    // Add ID to form data if editing
+    const formData = new FormData(formRef.current);
+
     if (isEdit) {
-      const id = this.getScapContentId();
-      if (id != null) {
-        formData.append("id", id.toString());
-      }
+      formData.append("id", initialData.id!.toString());
     }
 
-    const endpoint = isEdit
-      ? "/rhn/manager/api/audit/scap/content/update"
-      : "/rhn/manager/api/audit/scap/content/create";
+    const endpoint = isEdit ? ENDPOINTS.UPDATE : ENDPOINTS.CREATE;
 
-    Network.post(endpoint, formData, "multipart/form-data", false)
-      .then((response) => {
-        if (response.success) {
-          Utils.urlBounce("/rhn/manager/audit/scap/content");
-        } else {
-          // Handle error response from backend
-          const errorMessages = response.messages && response.messages.length > 0
-            ? MessageUtils.error(response.messages)
-            : MessageUtils.error("An error occurred while uploading the SCAP content.");
-          this.setState({
-            messages: <Messages items={errorMessages} />,
-          });
-        }
-      })
-      .catch((error) => {
-        console.error("Upload failed:", error);
-        const errorMessage = MessageUtils.error(
-          error.messages?.[0] || "An unexpected error occurred while uploading the SCAP content."
-        );
-        this.setState({
-          messages: <Messages items={errorMessage} />,
-        });
-      });
+    try {
+      const response = await Network.post(endpoint, formData, "multipart/form-data", false);
+
+      if (response.success) {
+        Utils.urlBounce(ENDPOINTS.LIST);
+      } else {
+        const errorItems = response.messages?.length
+          ? MessageUtils.error(response.messages)
+          : MessageUtils.error(t("An error occurred while uploading the SCAP content."));
+        setMessages(<Messages items={errorItems} />);
+      }
+    } catch (error: unknown) {
+      const errorMessage = (error as any)?.messages?.[0] || t("An unexpected error occurred.");
+      setMessages(<Messages items={MessageUtils.error(errorMessage)} />);
+    }
   };
 
-  onFormChange = (model: State["model"]) => {
-    this.setState({ model });
-  };
+  return (
+    <TopPanel
+      title={t(isEdit ? "Edit SCAP Content" : "Upload SCAP Content")}
+      icon="spacewalk-icon-manage-configuration-files"
+    >
+      {messages}
+      <Form
+        model={model}
+        onChange={setModel}
+        onValidate={(valid: boolean) => setIsInvalid(!valid)}
+        onSubmit={handleUpload}
+        formRef={formRef}
+      >
+        <Text
+          name="name"
+          label={t("Name")}
+          required
+          labelClass="col-md-3"
+          divClass="col-md-6"
+        />
 
-  onValidate = (isValid: boolean) => {
-    this.setState({ isInvalid: !isValid });
-  };
+        <TextArea
+          name="description"
+          label={t("Description")}
+          labelClass="col-md-3"
+          divClass="col-md-6"
+          rows={4}
+        />
 
-  renderButtons = () => {
-    const isEdit = this.isEditMode();
-    return (
-      <SubmitButton
-        key="upload-btn"
-        id="upload-btn"
-        className="btn-success"
-        icon={isEdit ? "fa-edit" : "fa-plus"}
-        text={t(isEdit ? "Update" : "Upload")}
-        disabled={this.state.isInvalid}
-      />
-    );
-  };
-
-  render() {
-    const isEdit = this.isEditMode();
-    const currentDataStreamFileName = this.getCurrentDataStreamFileName();
-
-    return (
-      <TopPanel title={isEdit ? t("Edit SCAP Content") : t("Upload SCAP Content")} icon="spacewalk-icon-manage-configuration-files">
-        {this.state.messages}
-        <Form
-          model={this.state.model}
-          onChange={this.onFormChange}
-          onValidate={this.onValidate}
-          onSubmit={this.onUpload}
-          formRef={(form) => (this.form = form)}
-        >
-          <Text
-            name="name"
-            label={t("Name")}
-            required
-            labelClass="col-md-3"
-            divClass="col-md-6"
-          />
-          <TextArea
-            name="description"
-            label={t("Description")}
-            labelClass="col-md-3"
-            divClass="col-md-6"
-            rows={4}
-          />
-          <FormGroup>
-            <Label name={t("SCAP Datastream File")} className="col-md-3" required={!isEdit} />
-            <div className="col-md-6">
-              <input
-                type="file"
-                name="scapFile"
-                accept=".xml"
-                className="form-control"
-                required={!isEdit}
-              />
-              {isEdit && currentDataStreamFileName && (
-                <div className="help-block">
-                  {t("Current file")}: <strong>{currentDataStreamFileName}</strong>
-                  <br />
-                  {t("Upload a new file to replace the existing one")}
-                </div>
-              )}
-              {!isEdit && (
-                <div className="help-block">
-                  {t("Upload the DataStream file (*-ds.xml)")}
-                </div>
-              )}
-            </div>
-          </FormGroup>
-          <FormGroup>
-            <Label name={t("XCCDF File")} className="col-md-3" required={!isEdit} />
-            <div className="col-md-6">
-              <input
-                type="file"
-                name="xccdfFile"
-                accept=".xml"
-                className="form-control"
-                required={!isEdit}
-              />
-              {isEdit && window.scapContentData?.xccdfFileName && (
-                <div className="help-block">
-                  {t("Current file")}: <strong>{window.scapContentData.xccdfFileName}</strong>
-                  <br />
-                  {t("Upload a new file to replace the existing one")}
-                </div>
-              )}
-              {!isEdit && (
-                <div className="help-block">
-                  {t("Upload the XCCDF file (*-xccdf.xml)")}
-                </div>
-              )}
-            </div>
-          </FormGroup>
-          <hr />
-          <div className="form-group">
-            <div className="col-md-offset-3 col-md-6">{this.renderButtons()}</div>
+        <FormGroup>
+          <Label name={t("SCAP Datastream File")} className="col-md-3" required={!isEdit} />
+          <div className="col-md-6">
+            <input
+              type="file"
+              name="scapFile"
+              accept=".xml"
+              className="form-control"
+              required={!isEdit}
+            />
+            {isEdit && initialData.dataStreamFileName && (
+              <div className="help-block">
+                {t("Current file")}: <strong>{initialData.dataStreamFileName}</strong>
+                <br />
+                {t("Upload a new file to replace the existing one")}
+              </div>
+            )}
+            {!isEdit && (
+              <div className="help-block">
+                {t("Upload the DataStream file (*-ds.xml)")}
+              </div>
+            )}
           </div>
-        </Form>
-      </TopPanel>
-    );
-  }
-}
+        </FormGroup>
+
+        <FormGroup>
+          <Label name={t("XCCDF File")} className="col-md-3" required={!isEdit} />
+          <div className="col-md-6">
+            <input
+              type="file"
+              name="xccdfFile"
+              accept=".xml"
+              className="form-control"
+              required={!isEdit}
+            />
+            {isEdit && initialData.xccdfFileName && (
+              <div className="help-block">
+                {t("Current file")}: <strong>{initialData.xccdfFileName}</strong>
+                <br />
+                {t("Upload a new file to replace the existing one")}
+              </div>
+            )}
+            {!isEdit && (
+              <div className="help-block">
+                {t("Upload the XCCDF file (*-xccdf.xml)")}
+              </div>
+            )}
+          </div>
+        </FormGroup>
+
+        <hr />
+
+        <div className="form-group">
+          <div className="col-md-offset-3 col-md-6">
+            <SubmitButton
+              id="upload-btn"
+              className="btn-success"
+              icon={isEdit ? "fa-edit" : "fa-plus"}
+              text={t(isEdit ? "Update" : "Upload")}
+              disabled={isInvalid}
+            />
+          </div>
+        </div>
+      </Form>
+    </TopPanel>
+  );
+};
 
 export const renderer = () => {
-  return SpaRenderer.renderNavigationReact(
-    <ScapContentForm />,
-    document.getElementById("scap-content-form")
-  );
+  const container = document.getElementById("scap-content-form");
+  if (container) {
+    SpaRenderer.renderNavigationReact(<ScapContentForm />, container);
+  }
 };

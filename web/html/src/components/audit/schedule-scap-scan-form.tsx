@@ -1,351 +1,335 @@
-
-import * as React from "react";
+import React, { useState } from "react";
 import { Messages, Utils as MessagesUtils } from "components/messages/messages";
 import { Panel } from "components/panels/Panel";
 import Network from "utils/network";
-import { SubmitButton } from "components/buttons";
+import { SubmitButton, LinkButton } from "components/buttons";
 import { Form } from "components/input/form/Form";
 import { FormGroup } from "components/input/FormGroup";
 import { Label } from "components/input/Label";
 import { Select } from "components/input/select/Select";
 import { Text } from "components/input/text/Text";
 import { ActionSchedule } from "components/action-schedule";
-import { LinkButton } from "components/buttons";
 import { localizedMoment } from "utils";
 import { ActionLink } from "components/links";
+
+const ENDPOINTS = {
+  PROFILES_LIST: "/rhn/manager/api/audit/profiles/list",
+  POLICY_VIEW: "/rhn/manager/api/audit/scap/policy/view",
+} as const;
 
 export enum ScapContentType {
   DataStream = "dataStream",
   TailoringFile = "tailoringFile",
 }
 
-export type ScheduleScapScanFormProps = {
-  scapContentList: any[];
-  tailoringFiles: any[];
-  scapPolicies: any[];
+interface Item {
+  id: number | string;
+  name?: string;
+  title?: string;
+  policyName?: string;
+}
+
+interface ScapContent {
+  id: number;
+  name: string;
+}
+
+export interface ScheduleScapScanFormProps {
+  scapContentList: ScapContent[];
+  tailoringFiles: Item[];
+  scapPolicies: Item[];
   onSubmit: (model: any) => Promise<any>;
   earliest?: any;
-  minions?: any[];
+  minions?: { id: number }[];
   createRecurringLink?: string;
   checkMemory?: boolean;
-};
+}
 
-type StateType = {
-  xccdfProfiles: any[];
-  model: any;
-  tailoringFiles: any[];
-  messages: any[];
-  errors: string[];
-  scapPolicies: any[];
-  selectedScapPolicy: number | null;
-  tailoringFileProfiles: any[];
-  earliest: any;
-  scapContentList: any[];
-  isInvalid: boolean;
-};
+interface Profile {
+  id: string;
+  title: string;
+}
 
-export class ScheduleScapScanForm extends React.Component<ScheduleScapScanFormProps, StateType> {
-  constructor(props: ScheduleScapScanFormProps) {
-    super(props);
+interface ScapModel {
+  dataStreamName?: string | number;
+  xccdfProfileId?: string;
+  tailoringFile?: string | number;
+  tailoringProfileID?: string;
+  ovalFiles?: string;
+  advancedArgs?: string;
+  fetchRemoteResources?: boolean;
+}
 
-    this.state = {
-      xccdfProfiles: [],
-      model: {},
-      messages: [],
-      errors: [],
-      earliest: props.earliest || localizedMoment(),
-      tailoringFiles: props.tailoringFiles || [],
-      tailoringFileProfiles: [],
-      scapPolicies: props.scapPolicies || [],
-      scapContentList: props.scapContentList || [],
-      selectedScapPolicy: null,
-      isInvalid: false,
-    };
-  }
+export const ScheduleScapScanForm = ({
+  scapContentList = [],
+  tailoringFiles = [],
+  scapPolicies = [],
+  onSubmit,
+  earliest: initialEarliest,
+  minions,
+  createRecurringLink,
+}: ScheduleScapScanFormProps): JSX.Element => {
+  const [model, setModel] = useState<ScapModel>({});
+  const [xccdfProfiles, setXccdfProfiles] = useState<Profile[]>([]);
+  const [tailoringFileProfiles, setTailoringFileProfiles] = useState<Profile[]>([]);
+  const [earliest, setEarliest] = useState(initialEarliest || localizedMoment());
+  const [selectedScapPolicy, setSelectedScapPolicy] = useState<number | null>(null);
+  const [messages, setMessages] = useState<React.ReactNode>([]);
+  const [isInvalid, setIsInvalid] = useState(false);
 
-  onDateTimeChanged = (date) => {
-    this.setState({ earliest: date });
-  };
-
-  onFormChange = (model) => {
-    this.setState({ model });
-  };
-
-  onValidate = (isValid) => {
-    this.setState({ isInvalid: !isValid });
-  };
-
-  getProfiles(type: ScapContentType, id: string | number) {
-    return Network.get(`/rhn/manager/api/audit/profiles/list/${type}/${id}`).then((data) => {
+  const getProfiles = async (type: ScapContentType, id: string | number) => {
+    try {
+      const data = await Network.get(`${ENDPOINTS.PROFILES_LIST}/${type}/${id}`);
       if (type === ScapContentType.TailoringFile) {
-        this.setState({ tailoringFileProfiles: data });
+        setTailoringFileProfiles(data);
       } else {
-        this.setState({ xccdfProfiles: data });
+        setXccdfProfiles(data);
       }
       return data;
-    });
-  }
+    } catch (error: unknown) {
+      setMessages(Network.responseErrorMessage(error as any));
+    }
+  };
 
-  handleScapPolicyChange = (name, value) => {
+  const handleScapPolicyChange = async (value: number | null) => {
     if (!value) {
-      this.setState({
-        selectedScapPolicy: null,
-        model: {
-          ...this.state.model,
-          dataStreamName: null,
-          xccdfProfileId: null,
-          tailoringFile: null,
-          tailoringProfileID: null,
-          advancedArgs: "",
-          fetchRemoteResources: false,
-        },
-        xccdfProfiles: [],
-        tailoringFileProfiles: [],
-      });
+      setSelectedScapPolicy(null);
+      setModel({}); 
+      setXccdfProfiles([]);
+      setTailoringFileProfiles([]);
       return;
     }
 
-    this.setState({ selectedScapPolicy: value });
-    return Network.get(`/rhn/manager/api/audit/scap/policy/view/${value}`).then((data) => {
-      const xccdfProfiles = data.xccdfProfileId
+    setSelectedScapPolicy(value);
+    try {
+      const data = await Network.get(`${ENDPOINTS.POLICY_VIEW}/${value}`);
+      
+      const newXccdfProfiles = data.xccdfProfileId
         ? [{ id: data.xccdfProfileId, title: data.xccdfProfileTitle || data.xccdfProfileId }]
         : [];
-      const tailoringFileProfiles = data.tailoringProfileId
+        
+      const newTailoringFileProfiles = data.tailoringProfileId
         ? [{ id: data.tailoringProfileId, title: data.tailoringProfileTitle || data.tailoringProfileId }]
         : [];
 
-      this.setState({
-        model: {
-          ...this.state.model,
-          dataStreamName: data.scapContentId,
-          xccdfProfileId: data.xccdfProfileId,
-          tailoringFile: data.tailoringFileId,
-          tailoringProfileID: data.tailoringProfileId,
-          ovalFiles: data.ovalFiles || "",
-          advancedArgs: data.advancedArgs || "",
-          fetchRemoteResources: data.fetchRemoteResources || false,
-        },
-        xccdfProfiles,
-        tailoringFileProfiles,
-      });
-
-      return data;
-    });
+      setModel((prev) => ({
+        ...prev,
+        dataStreamName: data.scapContentId,
+        xccdfProfileId: data.xccdfProfileId,
+        tailoringFile: data.tailoringFileId,
+        tailoringProfileID: data.tailoringProfileId,
+        ovalFiles: data.ovalFiles || "",
+        advancedArgs: data.advancedArgs || "",
+        fetchRemoteResources: data.fetchRemoteResources || false,
+      }));
+      
+      setXccdfProfiles(newXccdfProfiles);
+      setTailoringFileProfiles(newTailoringFileProfiles);
+    } catch (error: unknown) {
+      setMessages(Network.responseErrorMessage(error as any));
+    }
   };
 
-  handleSubmit = (model) => {
-    // Inject earliest state into the model for the parent handler
+  const handleSubmit = async () => {
     const submitModel = {
-        ...model,
-        earliest: this.state.earliest,
-        selectedScapPolicy: this.state.selectedScapPolicy
+      ...model,
+      earliest,
+      selectedScapPolicy,
     };
 
-    return this.props.onSubmit(submitModel)
-      .then((data) => {
-        const msg = MessagesUtils.info(
-          <span>
-            {t("SCAP scan has been ")}
-            <ActionLink id={data}>{t("scheduled.")}</ActionLink>
-          </span>
-        );
-        this.setState({ messages: msg, errors: [] });
-      })
-      .catch((jqXHR) => {
-        this.setState({
-          messages: Network.responseErrorMessage(jqXHR),
-        });
-      });
+    try {
+      const data = await onSubmit(submitModel);
+      const msg = MessagesUtils.info(
+        <span>
+          {t("SCAP scan has been ")}
+          <ActionLink id={data}>{t("scheduled.")}</ActionLink>
+        </span>
+      );
+      setMessages(msg);
+    } catch (error: unknown) {
+      setMessages(Network.responseErrorMessage(error as any));
+    }
   };
 
-  renderButtons() {
-    return [
-      <SubmitButton
-        key="create-btn"
-        id="create-btn"
-        className="btn-success"
-        icon="fa-clock-o"
-        text={t("Schedule")}
-        disabled={this.state.isInvalid}
-      />,
-    ];
-  }
+  const renderButtons = () => (
+    <SubmitButton
+      id="create-btn"
+      className="btn-success"
+      icon="fa-clock-o"
+      text={t("Schedule")}
+      disabled={isInvalid}
+    />
+  );
 
-  render() {
-    const { errors, messages, selectedScapPolicy, xccdfProfiles, tailoringFileProfiles, tailoringFiles, scapPolicies } =
-      this.state;
+  return (
+    <div>
+      {messages}
 
-    return (
-      <div>
-        {errors.length > 0 && <Messages items={MessagesUtils.error(errors)} />}
-        {messages.length > 0 && <Messages items={messages} />}
-
-        <Panel headingLevel="h3" title="Schedule New XCCDF Scan">
-          <Form
-            model={this.state.model}
-            className="schedule-scap-scan-form"
-            onChange={this.onFormChange}
-            onSubmit={this.handleSubmit}
-            onValidate={this.onValidate}
-          >
-            <FormGroup>
-              <Label name={t("SCAP Policy")} className="col-md-3" />
-              <div className="col-md-6">
-                <Select
-                  name="scapPolicy"
-                  placeholder={t("No Policy Selected")}
-                  isClearable
-                  onChange={(value) => this.handleScapPolicyChange("scapPolicy", value)}
-                  options={scapPolicies.map((k) => ({ value: k.id, label: k.policyName }))}
-                />
-              </div>
-            </FormGroup>
-
-            <FormGroup>
-              <Label name={t("SCAP Content")} className="col-md-3" required />
-              <div className="col-md-6">
-                <Select
-                  name="dataStreamName"
-                  isClearable
-                  value={this.state.model.dataStreamName}
-                  disabled={!!selectedScapPolicy}
-                  onChange={(value) => {
-                    this.setState({ model: { ...this.state.model, dataStreamName: value as string } });
-                    if (value) {
-                      this.getProfiles(ScapContentType.DataStream, value as string);
-                    }
-                  }}
-                  options={this.state.scapContentList
-                    .sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
-                    .map((k) => ({ value: k.id, label: k.name }))}
-                />
-              </div>
-            </FormGroup>
-
-            <FormGroup>
-              <Label name={t("XCCDF Profile")} className="col-md-3" required />
-              <div className="col-md-6">
-                <Select
-                  name="xccdfProfileId"
-                  placeholder={t("Select XCCDF profile...")}
-                  value={this.state.model.xccdfProfileId}
-                  disabled={!!selectedScapPolicy}
-                  isClearable
-                  onChange={(value) => this.setState({ model: { ...this.state.model, xccdfProfileId: value } })}
-                  options={xccdfProfiles.map((k) => ({ value: k.id, label: k.title }))}
-                />
-              </div>
-            </FormGroup>
-
-            <FormGroup>
-              <Label name={t("Tailoring File")} className="col-md-3" />
-              <div className="col-md-6">
-                <Select
-                  name="tailoringFile"
-                  placeholder={t("Select Tailoring file...")}
-                  onChange={(value) => {
-                    this.setState({ model: { ...this.state.model, tailoringFile: value as string } });
-                    if (value) {
-                      this.getProfiles(ScapContentType.TailoringFile, value as string);
-                    }
-                  }}
-                  isClearable
-                  value={this.state.model.tailoringFile}
-                  disabled={!!selectedScapPolicy}
-                  options={tailoringFiles.map((k) => ({ value: k.id, label: k.name }))}
-                />
-              </div>
-            </FormGroup>
-
-            <FormGroup>
-              <Label name={t("Profile from Tailoring File")} className="col-md-3" />
-              <div className="col-md-6">
-                <Select
-                  name="tailoringProfileID"
-                  placeholder={t("Select profile...")}
-                  onChange={(value) => this.setState({ model: { ...this.state.model, tailoringProfileID: value } })}
-                  isClearable
-                  value={this.state.model.tailoringProfileID}
-                  disabled={!!selectedScapPolicy}
-                  options={tailoringFileProfiles.map((k) => ({ value: k.id, label: k.title }))}
-                />
-              </div>
-            </FormGroup>
-
-            <FormGroup>
-              <Label name={t("OVAL Files")} className="col-md-3" />
-              <div className="col-md-6">
-                <Text
-                  name="ovalFiles"
-                  disabled={!!selectedScapPolicy}
-                  placeholder={selectedScapPolicy ? "" : t("e.g: file1.xml, file2.xml")}
-                  title={t("Comma-separated list of OVAL files")}
-                />
-              </div>
-            </FormGroup>
-
-            <FormGroup>
-              <Label name={t("Advanced Arguments")} className="col-md-3" />
-              <div className="col-md-6">
-                <Text
-                  name="advancedArgs"
-                  disabled={!!selectedScapPolicy}
-                  placeholder={selectedScapPolicy ? "" : t("e.g: --results --report")}
-                  title={t("Additional command-line arguments for oscap")}
-                />
-              </div>
-            </FormGroup>
-
-            <FormGroup>
-              <Label name={t("Fetch Remote Content")} className="col-md-3" />
-              <div className="col-md-6">
-                <div className="checkbox">
-                  <label>
-                    <input
-                      type="checkbox"
-                      name="fetchRemoteResources"
-                      className="fetch-remote-checkbox"
-                      checked={this.state.model.fetchRemoteResources || false}
-                      disabled={!!selectedScapPolicy}
-                      onChange={(e) => {
-                        this.setState({
-                          model: { ...this.state.model, fetchRemoteResources: e.target.checked },
-                        });
-                      }}
-                    />
-                    <span className="fetch-remote-help">
-                      {t("This requires internet and a lot of memory, make sure this minion has enough memory available!")}
-                    </span>
-                  </label>
-                </div>
-              </div>
-            </FormGroup>
-
-            <div className="panel-body">
-              <ActionSchedule
-                earliest={this.state.earliest}
-                onDateTimeChanged={this.onDateTimeChanged}
-                systemIds={this.props.minions?.map((m) => m.id)}
-                actionType="states.apply"
+      <Panel headingLevel="h3" title={t("Schedule New XCCDF Scan")}>
+        <Form
+          model={model}
+          className="schedule-scap-scan-form"
+          onChange={setModel}
+          onSubmit={handleSubmit}
+          onValidate={(valid: boolean) => setIsInvalid(!valid)}
+        >
+          <FormGroup>
+            <Label name={t("SCAP Policy")} className="col-md-3" />
+            <div className="col-md-6">
+              <Select
+                name="scapPolicy"
+                placeholder={t("No Policy Selected")}
+                isClearable
+                onChange={(value) => handleScapPolicyChange(value as number)}
+                options={scapPolicies.map((k) => ({ value: k.id, label: k.policyName || "" }))}
               />
             </div>
+          </FormGroup>
 
-            <div className="form-group">
-              <div className="col-md-offset-3 col-md-6">
-                {this.renderButtons()}
-                {this.props.createRecurringLink && (
-                  <LinkButton
-                    icon="fa-plus"
-                    href={this.props.createRecurringLink}
-                    className="btn-default"
-                    text={t("Create Recurring")}
+          <FormGroup>
+            <Label name={t("SCAP Content")} className="col-md-3" required />
+            <div className="col-md-6">
+              <Select
+                name="dataStreamName"
+                isClearable
+                value={model.dataStreamName}
+                disabled={!!selectedScapPolicy}
+                onChange={(value) => {
+                  setModel((prev) => ({ ...prev, dataStreamName: value as string }));
+                  if (value) {
+                    getProfiles(ScapContentType.DataStream, value as string);
+                  }
+                }}
+                options={scapContentList
+                  .sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
+                  .map((k) => ({ value: k.id, label: k.name }))}
+              />
+            </div>
+          </FormGroup>
+
+          <FormGroup>
+            <Label name={t("XCCDF Profile")} className="col-md-3" required />
+            <div className="col-md-6">
+              <Select
+                name="xccdfProfileId"
+                placeholder={t("Select XCCDF profile...")}
+                value={model.xccdfProfileId}
+                disabled={!!selectedScapPolicy}
+                isClearable
+                onChange={(value) => setModel((prev) => ({ ...prev, xccdfProfileId: value as string }))}
+                options={xccdfProfiles.map((k) => ({ value: k.id, label: k.title }))}
+              />
+            </div>
+          </FormGroup>
+
+          <FormGroup>
+            <Label name={t("Tailoring File")} className="col-md-3" />
+            <div className="col-md-6">
+              <Select
+                name="tailoringFile"
+                placeholder={t("Select Tailoring file...")}
+                onChange={(value) => {
+                  setModel((prev) => ({ ...prev, tailoringFile: value as string }));
+                  if (value) {
+                    getProfiles(ScapContentType.TailoringFile, value as string);
+                  }
+                }}
+                isClearable
+                value={model.tailoringFile}
+                disabled={!!selectedScapPolicy}
+                options={tailoringFiles.map((k) => ({ value: k.id, label: k.name || "" }))}
+              />
+            </div>
+          </FormGroup>
+
+          <FormGroup>
+            <Label name={t("Profile from Tailoring File")} className="col-md-3" />
+            <div className="col-md-6">
+              <Select
+                name="tailoringProfileID"
+                placeholder={t("Select profile...")}
+                onChange={(value) => setModel((prev) => ({ ...prev, tailoringProfileID: value as string }))}
+                isClearable
+                value={model.tailoringProfileID}
+                disabled={!!selectedScapPolicy}
+                options={tailoringFileProfiles.map((k) => ({ value: k.id, label: k.title }))}
+              />
+            </div>
+          </FormGroup>
+
+          <FormGroup>
+            <Label name={t("OVAL Files")} className="col-md-3" />
+            <div className="col-md-6">
+              <Text
+                name="ovalFiles"
+                disabled={!!selectedScapPolicy}
+                placeholder={selectedScapPolicy ? "" : t("e.g: file1.xml, file2.xml")}
+                title={t("Comma-separated list of OVAL files")}
+              />
+            </div>
+          </FormGroup>
+
+          <FormGroup>
+            <Label name={t("Advanced Arguments")} className="col-md-3" />
+            <div className="col-md-6">
+              <Text
+                name="advancedArgs"
+                disabled={!!selectedScapPolicy}
+                placeholder={selectedScapPolicy ? "" : t("e.g: --results --report")}
+                title={t("Additional command-line arguments for oscap")}
+              />
+            </div>
+          </FormGroup>
+
+          <FormGroup>
+            <Label name={t("Fetch Remote Content")} className="col-md-3" />
+            <div className="col-md-6">
+              <div className="checkbox">
+                <label>
+                  <input
+                    type="checkbox"
+                    name="fetchRemoteResources"
+                    className="fetch-remote-checkbox"
+                    checked={model.fetchRemoteResources || false}
+                    disabled={!!selectedScapPolicy}
+                    onChange={(e) => {
+                      setModel((prev) => ({ ...prev, fetchRemoteResources: e.target.checked }));
+                    }}
                   />
-                )}
+                  <span className="fetch-remote-help">
+                    {t(
+                      "This requires internet and a lot of memory, make sure this minion has enough memory available!"
+                    )}
+                  </span>
+                </label>
               </div>
             </div>
-          </Form>
-        </Panel>
-      </div>
-    );
-  }
-}
+          </FormGroup>
+
+          <div className="panel-body">
+            <ActionSchedule
+              earliest={earliest}
+              onDateTimeChanged={setEarliest}
+              systemIds={minions?.map((m) => m.id)}
+              actionType="states.apply"
+            />
+          </div>
+
+          <div className="form-group">
+            <div className="col-md-offset-3 col-md-6">
+              {renderButtons()}
+              {createRecurringLink && (
+                <LinkButton
+                  icon="fa-plus"
+                  href={createRecurringLink}
+                  className="btn-default"
+                  text={t("Create Recurring")}
+                />
+              )}
+            </div>
+          </div>
+        </Form>
+      </Panel>
+    </div>
+  );
+};
