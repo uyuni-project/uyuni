@@ -177,7 +177,7 @@ public class ScapAuditController {
     public ModelAndView listTailoringFilesView(Request req, Response res, User user) {
         try {
             List<TailoringFile> tailoringFiles = ScapFactory.listTailoringFiles(user.getOrg());
-            List<TailoringFileJson> tailoringFilesJsonObjects = tailoringFiles.stream()
+            List<TailoringFileJson> tailoringFilesJson = tailoringFiles.stream()
                     .map(file -> new TailoringFileJson(
                         file.getId(),
                         file.getName(),
@@ -188,8 +188,7 @@ public class ScapAuditController {
                     .collect(Collectors.toList());
 
             Map<String, Object> data = new HashMap<>();
-            data.put("tailoringFiles", tailoringFilesJsonObjects);
-
+            data.put("tailoringFiles", GSON.toJson(tailoringFilesJson));
             return new ModelAndView(data, "templates/audit/list-tailoring-files.jade");
         } catch (Exception e) {
             LOG.error("Failed to load tailoring files view", e);

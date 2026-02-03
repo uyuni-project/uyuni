@@ -8,30 +8,24 @@ import com.redhat.rhn.domain.audit.ScapPolicy;
  */
 public class ScapPolicyResponseJson {
     
-    // Core policy fields
     private Integer id;
     private String policyName;
     private String description;
     
-    // SCAP content reference
     private Long scapContentId;
     private String xccdfProfileId;
     private String xccdfProfileTitle;  // Computed from SCAP content XML
     
-    // Tailoring file reference
+    
     private Long tailoringFileId;
-    private String tailoringFileName;      // Display filename from TailoringFile entity
+    private String tailoringFileName;      
     private String tailoringProfileId;
     private String tailoringProfileTitle;  // Computed from tailoring file XML
     
-    // Additional configuration
     private String ovalFiles;
     private String advancedArgs;
     private Boolean fetchRemoteResources;
     
-    /**
-     * Default constructor for GSON
-     */
     public ScapPolicyResponseJson() {
     }
     

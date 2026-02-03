@@ -26,7 +26,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -43,37 +42,21 @@ public class TailoringFile extends BaseDomainHelper {
 
     private Org org;
 
-    /**
-     * TailoringFile Default constructor
-     */
     public TailoringFile() {
 
     }
-    /**
-     * TailoringFile constructor
-     * @param nameIn the name
-     * @param fileNameIn the file name
-     */
     public TailoringFile(String nameIn, String fileNameIn) {
         this.name = nameIn;
         this.fileName = fileNameIn;
     }
 
-    @Id
+   @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,
-            generator = "suseScapTailoringFil_seq")
-    @SequenceGenerator(name = "suseScapTailoringFil_seq",
-            sequenceName = "suseScapTailoringFil_id_seq",
-            allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getId() {
         return id;
     }
 
-    /**
-     * Sets the id.
-     * @param idIn the new id
-     */
     public void setId(Long idIn) {
         id = idIn;
     }
@@ -83,10 +66,6 @@ public class TailoringFile extends BaseDomainHelper {
         return name;
     }
 
-    /**
-     * Sets the name.
-     * @param nameIn
-     */
     public void setName(String nameIn) {
         this.name = nameIn;
     }
@@ -96,10 +75,6 @@ public class TailoringFile extends BaseDomainHelper {
         return fileName;
     }
 
-    /**
-     *  Sets the file Name.
-     * @param fileNameIn
-     */
     public void setFileName(String fileNameIn) {
         this.fileName = fileNameIn;
     }
@@ -116,7 +91,6 @@ public class TailoringFile extends BaseDomainHelper {
         if (fileName == null) {
             return null;
         }
-        
         // Find the second underscore (after orgId_sanitizedName_)
         int firstUnderscore = fileName.indexOf('_');
         if (firstUnderscore == -1) {
@@ -127,7 +101,6 @@ public class TailoringFile extends BaseDomainHelper {
         if (secondUnderscore == -1) {
             return fileName; // Fallback: return as-is if format doesn't match
         }
-        
         // Return everything after the second underscore
         return fileName.substring(secondUnderscore + 1);
     }
@@ -137,39 +110,22 @@ public class TailoringFile extends BaseDomainHelper {
         return description;
     }
 
-    /**
-     * Sets the description.
-     * @param descriptionIn
-     */
     public void setDescription(String descriptionIn) {
         this.description = descriptionIn;
     }
 
-    /**
-     * @return the org
-     */
     @ManyToOne
     @javax.persistence.JoinColumn(name = "org_id")
     public Org getOrg() {
         return org;
     }
-    /**
-     * @param orgIn the org to set
-     */
+  
     public void setOrg(Org orgIn) {
         this.org = orgIn;
     }
-    /**
-     * {@inheritDoc}
-     */
     public boolean equals(final Object other) {
-        if (this == other) {
-            return true;
-        }
-
-        if (other == null || getClass() != other.getClass()) {
-            return false;
-        }
+        if (this == other) return true;
+        if (other == null || getClass() != other.getClass()) return false;
 
         TailoringFile castOther = (TailoringFile) other;
         return new EqualsBuilder()
@@ -178,16 +134,12 @@ public class TailoringFile extends BaseDomainHelper {
                 .isEquals();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
                 .append(name)
                 .append(org)
                 .toHashCode();
     }
-    @Override
     public String toString() {
         return super.toString();
     }

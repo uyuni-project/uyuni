@@ -41,26 +41,9 @@ public class ScapContent extends BaseDomainHelper {
     private String xccdfFileName;
     private String description;
 
-    /**
-     * ScapContent Default constructor
-     */
     public ScapContent() {
     }
-
-    /**
-     * ScapContent constructor
-     * @param nameIn the name
-     * @param dataStreamFileNameIn the datastream file name
-     */
-    public ScapContent(String nameIn, String dataStreamFileNameIn) {
-        this.name = nameIn;
-        this.dataStreamFileName = dataStreamFileNameIn;
-    }
-
-    /**
-     * Gets the id.
-     * @return the id
-     */
+    
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -68,106 +51,56 @@ public class ScapContent extends BaseDomainHelper {
         return id;
     }
 
-    /**
-     * Sets the id.
-     * @param idIn the new id
-     */
     public void setId(Long idIn) {
         id = idIn;
     }
-
-    /**
-     * Gets the name.
-     * @return the name
-     */
+    
     @Column(name = "name")
     public String getName() {
         return name;
     }
 
-    /**
-     * Sets the name.
-     * @param nameIn the new name
-     */
     public void setName(String nameIn) {
         this.name = nameIn;
     }
 
-    /**
-     * Gets the DataStream file name.
-     * @return the DataStream file name
-     */
     @Column(name = "datastream_file_name")
     public String getDataStreamFileName() {
         return dataStreamFileName;
     }
 
-    /**
-     * Sets the DataStream file name.
-     * @param dataStreamFileNameIn the new DataStream file name
-     */
     public void setDataStreamFileName(String dataStreamFileNameIn) {
         this.dataStreamFileName = dataStreamFileNameIn;
     }
 
-    /**
-     * Gets the XCCDF file name.
-     * @return the XCCDF file name
-     */
     @Column(name = "xccdf_file_name")
     public String getXccdfFileName() {
         return xccdfFileName;
     }
 
-    /**
-     * Sets the XCCDF file name.
-     * @param xccdfFileNameIn the new XCCDF file name
-     */
     public void setXccdfFileName(String xccdfFileNameIn) {
         this.xccdfFileName = xccdfFileNameIn;
     }
 
-    /**
-     * Gets the description.
-     * @return the description
-     */
     @Column(name = "description")
     public String getDescription() {
         return description;
     }
 
-    /**
-     * Sets the description.
-     * @param descriptionIn the new description
-     */
     public void setDescription(String descriptionIn) {
         this.description = descriptionIn;
     }
-
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
+   
+   @Override
     public boolean equals(final Object other) {
-        if (this == other) {
-            return true;
-        }
-
-        if (other == null || getClass() != other.getClass()) {
-            return false;
-        }
-
+        if (this == other) return true;
+        if (other == null || getClass() != other.getClass()) return false;
         ScapContent castOther = (ScapContent) other;
         return new EqualsBuilder()
                 .append(name, castOther.name)
                 .isEquals();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
@@ -175,9 +108,6 @@ public class ScapContent extends BaseDomainHelper {
                 .toHashCode();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         return super.toString();

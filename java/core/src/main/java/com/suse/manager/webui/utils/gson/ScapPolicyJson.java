@@ -21,7 +21,7 @@ public class ScapPolicyJson {
     private String description;
 
     /** The earliest execution date (serialized as a String) */
-    private String earliest; // Changed to String for manual transformation
+    private String earliest; 
 
     /** The SCAP content ID */
     private Long scapContentId;
