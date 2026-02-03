@@ -87,6 +87,7 @@ import com.redhat.rhn.domain.server.SnapshotTagName;
 import com.redhat.rhn.domain.server.UndefinedCustomDataKeyException;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
+import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.xmlrpc.ServerNotInGroupException;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
@@ -1634,6 +1635,54 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         assertTrue(ptfFullSupport.doesOsSupportPtf());
         assertTrue(ServerFactory.isPtfUninstallationSupported(ptfFullSupport));
+    }
+
+
+
+    @Test
+    public void generatedCoverageTestLookupStorageDevicesByServer() {
+        // this test has been generated programmatically to test ServerFactory.lookupStorageDevicesByServer
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        Server arg0 = ServerFactoryTest.createTestServer(user);
+        ServerFactory.lookupStorageDevicesByServer(arg0);
+    }
+
+
+    @Test
+    public void generatedCoverageTestFindSystemsPendingRebootActions() {
+        // this test has been generated programmatically to test ServerFactory.findSystemsPendingRebootActions
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        List<SystemOverview> arg0 = new ArrayList<>();
+        ServerFactory.findSystemsPendingRebootActions(arg0);
+    }
+
+
+    @Test
+    public void generatedCoverageTestLookupLatestForServer() {
+        // this test has been generated programmatically to test ServerFactory.lookupLatestForServer
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        Server arg0 = ServerFactoryTest.createTestServer(user);
+        ServerFactory.lookupLatestForServer(arg0);
+    }
+
+    @Test
+    public void generatedCoverageTestDeleteSnapshots() {
+        // this test has been generated programmatically to test ServerFactory.deleteSnapshots
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        Org arg0 = user.getOrg();
+        ServerFactory.deleteSnapshots(arg0, new Date(0), new Date(0));
+    }
+
+    @Test
+    public void generatedCoverageTestListOrgSystems() {
+        // this test has been generated programmatically to test ServerFactory.listOrgSystems
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        ServerFactory.listOrgSystems(0L);
     }
 
 }

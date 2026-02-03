@@ -81,4 +81,20 @@ public class AnsibleFactoryTest extends BaseTestCaseWithUser {
         AnsibleFactory.removeAnsiblePath(inventoryPath);
         assertTrue(AnsibleFactory.lookupAnsiblePathById(inventoryPath.getId()).isEmpty());
     }
+
+    @Test
+    public void generatedCoverageTestLookupAnsibleInventoryPath() {
+        // this test has been generated programmatically to test AnsibleFactory.lookupAnsibleInventoryPath
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        AnsibleFactory.lookupAnsibleInventoryPath(0L, "");
+    }
+
+    @Test
+    public void generatedCoverageTestListAnsiblePlaybookPaths() {
+        // this test has been generated programmatically to test AnsibleFactory.listAnsiblePlaybookPaths
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        AnsibleFactory.listAnsiblePlaybookPaths(0L);
+    }
 }

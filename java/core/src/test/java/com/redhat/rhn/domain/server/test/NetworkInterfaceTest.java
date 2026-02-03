@@ -39,8 +39,14 @@ import java.util.Date;
  * NetworkInterfaceTest
  */
 public class NetworkInterfaceTest extends RhnBaseTestCase {
+    private static class MockNetworkInterface extends NetworkInterface {
+        protected void findServerNetAddress4(Long id) {
+            super.findServerNetAddress4(id);
+        }
+}
 
-    public static final String TEST_MAC = "AA:AA:BB:BB:CC:CC";
+
+        public static final String TEST_MAC = "AA:AA:BB:BB:CC:CC";
     /**
      * Test the equals method for NetworkInterface.
      * @throws Exception something bad happened
@@ -140,5 +146,14 @@ public class NetworkInterfaceTest extends RhnBaseTestCase {
         server.addNetworkInterface(netint);
 
         return netint;
+    }
+
+    @Test
+    public void generatedCoverageTestFindServerNetAddress4() {
+        // this test has been generated programmatically to test NetworkInterface.findServerNetAddress4
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        MockNetworkInterface testObject = new MockNetworkInterface();
+        testObject.findServerNetAddress4(0L);
     }
 }

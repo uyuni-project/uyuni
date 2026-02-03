@@ -239,4 +239,25 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
         assertEquals(user.getId(), cr2.getChangedById());
         assertEquals(user.getLogin(), cr2.getChangedBy().getLogin());
     }
+
+
+    @Test
+    public void generatedCoverageTestLookupConfigRevisionByRevId() {
+        // this test has been generated programmatically to test ConfigurationFactory.lookupConfigRevisionByRevId
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        ConfigFile arg0 = ConfigurationFactory.lookupConfigFileById(0L);
+        ConfigurationFactory.lookupConfigRevisionByRevId(arg0, 0L);
+    }
+
+
+    @Test
+    public void generatedCoverageTestLookupConfigRevisions() {
+        // this test has been generated programmatically to test ConfigurationFactory.lookupConfigRevisions
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        ConfigFile arg0 = ConfigurationFactory.lookupConfigFileById(0L);
+        ConfigurationFactory.lookupConfigRevisions(arg0);
+    }
+
 }

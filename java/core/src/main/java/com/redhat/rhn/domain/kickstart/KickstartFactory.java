@@ -94,7 +94,7 @@ public class KickstartFactory extends HibernateFactory {
     private static final String ORG_ID = "org_id";
     private static final String LABEL = "label";
 
-    private KickstartFactory() {
+    protected KickstartFactory() {
         super();
     }
 
@@ -1039,7 +1039,7 @@ public class KickstartFactory extends HibernateFactory {
      * attempted to iterate all states with the given label, but these are unique and
      * this method will not attempt to do the same.
      */
-    private static void setKickstartSessionHistoryMessage(KickstartSession ksSession,
+    protected static void setKickstartSessionHistoryMessage(KickstartSession ksSession,
             KickstartSessionState state, String message) {
 
         Session session = HibernateFactory.getSession();

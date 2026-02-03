@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.common.ManagerInfoFactory;
+import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
@@ -148,5 +149,24 @@ public class SCCCachingFactoryTest extends BaseTestCaseWithUser {
     public void setUp() throws Exception {
         super.setUp();
         SCCCachingFactory.clearRepositories();
+    }
+
+
+    @Test
+    public void generatedCoverageTestClearOrderItems() {
+        // this test has been generated programmatically to test SCCCachingFactory.clearOrderItems
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        SCCCachingFactory.clearOrderItems();
+    }
+
+
+    @Test
+    public void generatedCoverageTestLookupRepositoryAuthByCredential() {
+        // this test has been generated programmatically to test SCCCachingFactory.lookupRepositoryAuthByCredential
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        Credentials arg0 = CredentialsFactory.createSCCCredentials("", "");
+        SCCCachingFactory.lookupRepositoryAuthByCredential(arg0);
     }
 }

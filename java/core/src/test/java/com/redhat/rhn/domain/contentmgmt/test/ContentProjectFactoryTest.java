@@ -713,4 +713,12 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         assertTrue(ContentProjectFactory.lookupClonesInProject(
                 testTgt.getChannel(), testTgt.getContentEnvironment().getContentProject()).isEmpty());
     }
+
+    @Test
+    public void generatedCoverageTestListSoftwareEnvironmentTarget() {
+        // this test has been generated programmatically to test ContentProjectFactory.listSoftwareEnvironmentTarget
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        ContentProjectFactory.listSoftwareEnvironmentTarget();
+    }
 }

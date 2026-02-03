@@ -732,4 +732,74 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         assertTrue(csf.isOnlyLatest());
         assertTrue(csf.isQuitOnError());
     }
+
+    @Test
+    public void generatedCoverageTestLookupContentSources() {
+        // this test has been generated programmatically to test ChannelFactory.lookupContentSources
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        User user = UserTestUtils.createUser(this);
+        Org arg0 = user.getOrg();
+        Channel arg1 = ChannelFactoryTest.createTestChannel(user);
+        ChannelFactory.lookupContentSources(arg0, arg1);
+    }
+
+    @Test
+    public void generatedCoverageTestLookupVendorContentSourceByLabel() {
+        // this test has been generated programmatically to test ChannelFactory.lookupVendorContentSourceByLabel
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        ChannelFactory.lookupVendorContentSourceByLabel("");
+    }
+
+    @Test
+    public void generatedCoverageTestLookupContentSource() {
+        // this test has been generated programmatically to test ChannelFactory.lookupContentSource
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        Org arg1 = UserTestUtils.createOrg("test");
+        ChannelFactory.lookupContentSource(0L, arg1);
+    }
+
+    @Test
+    public void generatedCoverageTestLookupContentSourceFiltersById() {
+        // this test has been generated programmatically to test ChannelFactory.lookupContentSourceFiltersById
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        ChannelFactory.lookupContentSourceFiltersById(0L);
+    }
+
+    @Test
+    public void generatedCoverageTestListAllDistChannelMaps() {
+        // this test has been generated programmatically to test ChannelFactory.listAllDistChannelMaps
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        ChannelFactory.listAllDistChannelMaps();
+    }
+
+    @Test
+    public void generatedCoverageTestListDistChannelMaps() {
+        // this test has been generated programmatically to test ChannelFactory.
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        User user = UserTestUtils.createUser(this);
+        Channel arg1 = ChannelFactoryTest.createTestChannel(user);
+        ChannelFactory.listDistChannelMaps(arg1);
+    }
+
+    @Test
+    public void generatedCoverageTestListCustomChannels() {
+        // this test has been generated programmatically to test ChannelFactory.listCustomChannels
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        ChannelFactory.listCustomChannels();
+    }
+
+    @Test
+    public void generatedCoverageTestListCustomChannelsWithRepositories() {
+        // this test has been generated programmatically to test ChannelFactory.listCustomChannelsWithRepositories
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        ChannelFactory.listCustomChannelsWithRepositories();
+    }
 }

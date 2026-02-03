@@ -16,7 +16,9 @@ package com.suse.manager.model.maintenance.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.model.maintenance.CalendarAssignment;
 import com.suse.manager.model.maintenance.CalendarFactory;
@@ -107,5 +109,15 @@ public class CalendarFactoryTest extends JMockBaseTestCaseWithUser {
             result.add(elem);
         }
         return result;
+    }
+
+    @Test
+    public void generatedCoverageTestListByUser() {
+        // this test has been generated programmatically to test CalendarFactory.listByUser
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        CalendarFactory testObject = new CalendarFactory();
+        User arg0 = UserTestUtils.createUser();
+        testObject.listByUser(arg0);
     }
 }

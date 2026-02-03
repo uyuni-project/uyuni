@@ -26,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
 import com.redhat.rhn.domain.channel.Channel;
@@ -656,4 +657,26 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
         return taskomaticApi;
     }
+
+
+    @Test
+    public void generatedCoverageTestDeleteWithObsoletes() {
+        // this test has been generated programmatically to test ImageInfoFactory.deleteWithObsoletes
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        ImageInfo arg0 = new ImageInfo();
+        arg0.setOrg(user.getOrg());
+        arg0.setName("test");
+        SaltApi arg1 = GlobalInstanceHolder.SALT_API;
+        ImageInfoFactory.deleteWithObsoletes(arg0, arg1);
+    }
+
+    @Test
+    public void generatedCoverageTestLookupDeltaImageInfo() {
+        // this test has been generated programmatically to test ImageInfoFactory.lookupDeltaImageInfo
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        ImageInfoFactory.lookupDeltaImageInfo(0L, 0L);
+    }
+
 }

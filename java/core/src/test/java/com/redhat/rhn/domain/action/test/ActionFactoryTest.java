@@ -713,4 +713,23 @@ public class ActionFactoryTest extends BaseTestCaseWithUser {
         sa.setParentActionWithCheck(newA);
         return sa;
     }
+
+    @Test
+    public void generatedCoverageTestListServerActionsForServer() {
+        // this test has been generated programmatically to test ActionFactory.listServerActionsForServer
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        Server arg0 = new Server();
+        TestUtils.save(arg0);
+        ActionFactory.listServerActionsForServer(arg0);
+    }
+
+
+    @Test
+    public void generatedCoverageTestLookupHistoryEventById() {
+        // this test has been generated programmatically to test ActionFactory.lookupHistoryEventById
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        ActionFactory.lookupHistoryEventById(0L);
+    }
 }

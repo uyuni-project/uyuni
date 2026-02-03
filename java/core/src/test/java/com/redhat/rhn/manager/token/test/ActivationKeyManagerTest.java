@@ -297,4 +297,15 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
                 ActivationKeyManager.getInstance().findAll(user);
         assertEquals(1, activationKeys.size());
     }
+
+
+    @Test
+    public void generatedCoverageTestFindAllActive() {
+        // this test has been generated programmatically to test ActivationKeyManager.findAllActive
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        ActivationKeyManager testObject = ActivationKeyManager.getInstance();
+        User arg0 = UserTestUtils.createUser();
+        testObject.findAllActive(arg0);
+    }
 }

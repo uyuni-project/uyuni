@@ -117,4 +117,13 @@ public class PinnedSubscriptionFactoryTest extends BaseTestCaseWithUser {
 
         assertEquals(2, PinnedSubscriptionFactory.getInstance().listPinnedSubscriptions().size());
     }
+
+    @Test
+    public void generatedCoverageTestLookupById() {
+        // this test has been generated programmatically to test PinnedSubscriptionFactory.lookupById
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        PinnedSubscriptionFactory testObject = PinnedSubscriptionFactory.getInstance();
+        testObject.lookupById(0L);
+    }
 }

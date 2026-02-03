@@ -192,4 +192,27 @@ public class AttestationFactoryTest extends BaseTestCaseWithUser {
                 .filter(r -> r.getResultType().equals(CoCoResultType.SEV_SNP))
                 .anyMatch(r -> r.getDescription().equals(CoCoResultType.SEV_SNP.getTypeDescription())));
     }
+
+
+    @Test
+    public void generatedCoverageTestLookupReportByServerAndAction() {
+        // this test has been generated programmatically to test AttestationFactory.lookupReportByServerAndAction
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        AttestationFactory testObject = new AttestationFactory();
+        Server arg0 = ServerFactoryTest.createTestServer(user);
+        Action arg1 = new Action();
+        TestUtils.save(arg1);
+        testObject.lookupReportByServerAndAction(arg0, arg1);
+    }
+
+
+    @Test
+    public void generatedCoverageTestLookupResultById() {
+        // this test has been generated programmatically to test AttestationFactory.lookupResultById
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        AttestationFactory testObject = new AttestationFactory();
+        testObject.lookupResultById(0L);
+    }
 }

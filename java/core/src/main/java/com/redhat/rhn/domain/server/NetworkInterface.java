@@ -183,7 +183,7 @@ public class NetworkInterface extends BaseDomainHelper implements Serializable {
      * findServerNetAddress4
      * @param id Id of the network interface to search on.
      */
-    private void findServerNetAddress4(Long id) {
+    protected void findServerNetAddress4(Long id) {
         if (sa4 != null) {
             return;
         }
