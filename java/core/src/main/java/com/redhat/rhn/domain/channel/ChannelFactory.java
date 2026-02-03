@@ -1308,7 +1308,7 @@ public class ChannelFactory extends HibernateFactory {
      */
     public static List<DistChannelMap> listAllDistChannelMaps() {
         Session session = HibernateFactory.getSession();
-        return session.createQuery("FROM DistChannelMap WHERE org_id IS NULL", DistChannelMap.class).list();
+        return session.createQuery("FROM DistChannelMap WHERE org IS NULL", DistChannelMap.class).list();
     }
 
     /**

@@ -117,7 +117,7 @@ public class TaskHelper {
                     FROM   ServerAction sa
                     JOIN   sa.server s
                     WHERE  type(s) = com.redhat.rhn.domain.server.MinionServer
-                    AND    action_id = :id
+                    AND    sa.parentAction.id = :id
                     """, Long.class)
             .setParameter("id", action.getId())
             .setMaxResults(1)

@@ -319,23 +319,23 @@ public class TaskoFactory extends HibernateFactory {
         if (orgId == null) {
             return getSession()
                     .createQuery("""
-                            FROM com.redhat.rhn.taskomatic.domain.TaskoSchedule
-                            WHERE orgId IS NULL
-                            AND bunch_id = :bunch_id
-                            AND activeFrom < :timestamp
-                            AND (activeTill IS NULL OR :timestamp < activeTill)""", TaskoSchedule.class)
+                            FROM TaskoSchedule ts
+                            WHERE ts.orgId IS NULL
+                            AND ts.bunch.id = :bunch_id
+                            AND ts.activeFrom < :timestamp
+                            AND (ts.activeTill IS NULL OR :timestamp < ts.activeTill)""", TaskoSchedule.class)
                     .setParameter("timestamp", new Date())   // use server time, not DB time
                     .setParameter("bunch_id", bunch.getId())
                     .list();
         }
         return getSession()
                 .createQuery("""
-                        FROM com.redhat.rhn.taskomatic.domain.TaskoSchedule
-                        WHERE orgId = :org_id
-                        AND bunch_id = :bunch_id
-                        AND (activeFrom < :timestamp
-                             AND (activeTill IS NULL
-                              OR :timestamp < activeTill))""", TaskoSchedule.class)
+                        FROM TaskoSchedule ts
+                        WHERE ts.orgId = :org_id
+                        AND ts.bunch.id = :bunch_id
+                        AND (ts.activeFrom < :timestamp
+                             AND (ts.activeTill IS NULL
+                              OR :timestamp < ts.activeTill))""", TaskoSchedule.class)
                 .setParameter("timestamp", new Date())   // use server time, not DB time
                 .setParameter("bunch_id", bunch.getId())
                 .setParameter("org_id", orgId)

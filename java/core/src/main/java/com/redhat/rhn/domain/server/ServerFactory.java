@@ -634,7 +634,7 @@ public class ServerFactory extends HibernateFactory {
                         FROM   ServerAction sa
                         WHERE  sa.server.id IN (:systemIds)
                         AND    sa.parentAction.actionType.label = 'reboot.reboot'
-                        AND    status in ( 0, 1 )
+                        AND    sa.status.id in ( 0, 1 )
                         """, Long.class)
                 .setParameter("systemIds", sids)
                 .list();
