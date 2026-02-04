@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * ErrataOverview
@@ -574,8 +575,8 @@ public class ErrataOverview extends BaseDto {
     /**
      * @return the severityLabel
      */
-    public String getSeverityLabel() {
-        return severityLabel;
+    public Optional<String> getSeverityLabel() {
+        return Optional.ofNullable(severityLabel);
     }
 
     /**
@@ -589,7 +590,7 @@ public class ErrataOverview extends BaseDto {
      * @return the errata severity as string.
      */
     public String getSeverity() {
-        return switch (getSeverityLabel()) {
+        return switch (getSeverityLabel().orElse("")) {
             case "errata.sev.label.critical" -> "Critical";
             case "errata.sev.label.important" -> "Important";
             case "errata.sev.label.moderate" -> "Moderate";
