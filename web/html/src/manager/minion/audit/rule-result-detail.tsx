@@ -18,7 +18,7 @@ import Network from "utils/network";
 
 declare global {
   interface Window {
-    minions?: Array<{ id: number }>;
+    minions?: any[];
     remediation?: string;
     identifier?: string;
     result?: string;

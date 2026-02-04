@@ -10,10 +10,6 @@ const ENDPOINTS = {
   SCHEDULE_CREATE: "/rhn/manager/api/audit/schedule/create",
 } as const;
 
-interface Minion {
-  id: number;
-}
-
 interface ScheduleData {
   scapContentList: any[];
   tailoringFiles: any[];
@@ -22,7 +18,7 @@ interface ScheduleData {
 
 declare global {
   interface Window {
-    minions?: Minion[];
+    minions?: any[];
   }
 }
 
