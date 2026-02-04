@@ -20,8 +20,8 @@ import static java.util.Collections.singletonMap;
 import static java.util.stream.Collectors.toList;
 
 
-import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionSummary;
@@ -54,7 +54,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -129,24 +128,25 @@ public class ScapAction extends Action {
     public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
         // Check if beta features are enabled
         boolean useBetaMode = getSchedulerUser() != null && getSchedulerUser().getBetaFeaturesEnabled();
-        
+
         if (useBetaMode) {
             return buildSaltCallsBeta(minionSummaries);
-        } else {
+        }
+        else {
             return buildSaltCalls(minionSummaries);
         }
     }
 
     /**
      * Get Salt calls for beta mode (file transfer from master to minion).
-     * 
+     *
      * @param minionSummaries list of minion summaries
      * @return map of Salt calls
      */
     private Map<LocalCall<?>, List<MinionSummary>> buildSaltCallsBeta(List<MinionSummary> minionSummaries) {
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
         Map<String, Object> pillar = new HashMap<>();
-        
+
         Matcher profileMatcher = Pattern.compile("--profile (([\\w.-])+)")
                 .matcher(scapActionDetails.getParametersContents());
         Matcher ruleMatcher = Pattern.compile("--rule (([\\w.-])+)")
@@ -164,12 +164,12 @@ public class ScapAction extends Action {
         // Beta mode: pass filenames for file transfer from master
         String xccdfFilename = new File(scapActionDetails.getPath()).getName();
         pillar.put("xccdf_filename", xccdfFilename);
-        
+
         if (scapActionDetails.getOvalfiles() != null) {
             pillar.put("ovalfiles", Arrays.stream(scapActionDetails.getOvalfiles().split(","))
                     .map(String::trim).collect(toList()));
         }
-        
+
         // tailoring_profile_id takes precedence over profile
         // Both end up setting the 'profile' pillar value
         if (tailoringIdMatcher.find()) {
@@ -178,7 +178,7 @@ public class ScapAction extends Action {
         else if (profileMatcher.find()) {
             pillar.put("profile", profileMatcher.group(1));
         }
-        
+
         if (ruleMatcher.find()) {
             pillar.put("rule", ruleMatcher.group(1));
         }
@@ -193,7 +193,7 @@ public class ScapAction extends Action {
         if (scapActionDetails.getParametersContents().contains("--remediate")) {
             pillar.put("remediate", true);
         }
-        
+
         ret.put(State.apply(singletonList("scap_beta.scan"),
                         Optional.of(singletonMap("mgr_scap_params", (Object)pillar))),
                 minionSummaries);
@@ -202,14 +202,14 @@ public class ScapAction extends Action {
 
     /**
      * Get Salt calls (files must exist on minion).
-     * 
+     *
      * @param minionSummaries list of minion summaries
      * @return map of Salt calls
      */
     private Map<LocalCall<?>, List<MinionSummary>> buildSaltCalls(List<MinionSummary> minionSummaries) {
         Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
         Map<String, Object> pillar = new HashMap<>();
-        
+
         Matcher profileMatcher = Pattern.compile("--profile (([\\w.-])+)")
                 .matcher(scapActionDetails.getParametersContents());
         Matcher ruleMatcher = Pattern.compile("--rule (([\\w.-])+)")
@@ -224,7 +224,7 @@ public class ScapAction extends Action {
         pillar.put("old_parameters", oldParameters);
 
         pillar.put("xccdffile", scapActionDetails.getPath());
-        
+
         if (scapActionDetails.getOvalfiles() != null) {
             pillar.put("ovalfiles", Arrays.stream(scapActionDetails.getOvalfiles().split(","))
                     .map(String::trim).collect(toList()));
@@ -247,7 +247,7 @@ public class ScapAction extends Action {
         if (scapActionDetails.getParametersContents().contains("--remediate")) {
             pillar.put("remediate", true);
         }
-        
+
         ret.put(State.apply(singletonList("scap"),
                         Optional.of(singletonMap("mgr_scap_params", (Object)pillar))),
                 minionSummaries);
@@ -296,7 +296,8 @@ public class ScapAction extends Action {
                                                 openscapResult.getReturnCode(),
                                                 openscapResult.getError(),
                                                 resultsFileIn,
-                                                new File(xccdfResumeXsl != null ? xccdfResumeXsl : ConfigDefaults.get().getScapXccdfResumeXsl()));
+                                                new File(xccdfResumeXsl != null ? xccdfResumeXsl :
+                                                  ConfigDefaults.get().getScapXccdfResumeXsl()));
                                         serverAction.setResultMsg("Success");
                                     }
                                     catch (Exception e) {

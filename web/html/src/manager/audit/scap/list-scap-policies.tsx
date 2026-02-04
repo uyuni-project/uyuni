@@ -4,7 +4,7 @@ import SpaRenderer from "core/spa/spa-renderer";
 import { LinkButton } from "components/buttons";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
-import { Messages, Utils as MessageUtils } from "components/messages/messages";
+import { Messages, MessageType, Utils as MessageUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
@@ -34,7 +34,7 @@ declare global {
 }
 
 const ScapPolicy = (): JSX.Element => {
-  const [messages, setMessages] = useState<React.ReactNode>([]);
+  const [messages, setMessages] = useState<MessageType[]>([]);
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const [selected, setSelected] = useState<ScapPolicyData | null>(null);
   const [scapPolicies, setScapPolicies] = useState<ScapPolicyData[]>(
@@ -54,7 +54,7 @@ const ScapPolicy = (): JSX.Element => {
         const key = idList.length > 1 ? "delete_success_p" : "delete_success";
         const successMessage = MessageUtils.success(msgMap[key]);
 
-        setMessages(<Messages items={successMessage} />);
+        setMessages(successMessage);
         setScapPolicies((prev) => prev.filter((p) => !idList.includes(p.id)));
         setSelectedItems((prev) => prev.filter((id) => !idList.includes(id)));
         setSelected(null);
@@ -62,11 +62,11 @@ const ScapPolicy = (): JSX.Element => {
         const errorMsgs = response.messages.map((m: string) =>
           MessageUtils.error(msgMap[m] || m)
         );
-        setMessages(<Messages items={errorMsgs} />);
+        setMessages(errorMsgs);
       }
     } catch (error: unknown) {
       const errorMessage = `${t("An unexpected error occurred while deleting")}: ${idList.join(", ")}`;
-      setMessages(<Messages items={MessageUtils.error(errorMessage)} />);
+      setMessages(MessageUtils.error(errorMessage));
     }
   };
 
@@ -124,7 +124,7 @@ const ScapPolicy = (): JSX.Element => {
         icon="spacewalk-icon-manage-configuration-files"
         button={<ActionButtons />}
       >
-        {messages}
+        <Messages items={messages} />
         <Table
           data={scapPolicies}
           identifier={(policy) => policy.id}

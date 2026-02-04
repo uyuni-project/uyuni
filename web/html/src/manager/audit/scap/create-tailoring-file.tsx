@@ -7,7 +7,7 @@ import { FormGroup } from "components/input/FormGroup";
 import { Label } from "components/input/Label";
 import { Text } from "components/input/text/Text";
 import { TextArea } from "components/input/text-area/TextArea";
-import { Messages, Utils as MessageUtils } from "components/messages/messages";
+import { Messages, MessageType, Utils as MessageUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 
 import { Utils } from "utils/functions";
@@ -56,7 +56,7 @@ const TailoringFile = (): JSX.Element => {
     name: initialData.name || "",
     description: initialData.description || "",
   });
-  const [messages, setMessages] = useState<React.ReactNode>([]);
+  const [messages, setMessages] = useState<MessageType[]>([]);
   const [isInvalid, setIsInvalid] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -78,14 +78,14 @@ const TailoringFile = (): JSX.Element => {
       if (response.success) {
         Utils.urlBounce(ENDPOINTS.LIST);
       } else {
-        const errorItems = response.messages?.length 
-          ? response.messages.map((msg: string) => MessageUtils.error(msg))
-          : [MessageUtils.error(t("An error occurred while saving the tailoring file."))];
-        setMessages(<Messages items={errorItems} />);
+        const errorItems = response.messages?.length
+          ? MessageUtils.error(response.messages)
+          : MessageUtils.error(t("An error occurred while saving the tailoring file."));
+        setMessages(errorItems);
       }
     } catch (error: unknown) {
       const errorMessage = (error as any)?.messages?.[0] || t("An unexpected error occurred.");
-      setMessages(<Messages items={MessageUtils.error(errorMessage)} />);
+      setMessages(MessageUtils.error(errorMessage));
     }
   };
 
@@ -94,7 +94,7 @@ const TailoringFile = (): JSX.Element => {
       title={t(isEdit ? "Edit Tailoring File" : "Upload Tailoring File")}
       icon="spacewalk-icon-manage-configuration-files"
     >
-      {messages}
+      <Messages items={messages} />
       <Form
         model={model}
         className="tailoring-file-form"

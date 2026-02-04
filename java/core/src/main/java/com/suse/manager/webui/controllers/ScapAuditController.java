@@ -1528,7 +1528,7 @@ public class ScapAuditController {
      * @param user the current user
      * @return JSON response with action ID and status message
      */
-    String applyRemediation(Request request, Response response, User user) {
+    public String applyRemediation(Request request, Response response, User user) {
         Action action;
         String successMessage;
         try {

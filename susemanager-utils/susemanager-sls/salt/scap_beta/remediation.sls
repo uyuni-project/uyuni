@@ -1,11 +1,8 @@
-# SCAP Remediation State
-# Applies custom Salt state content for SCAP compliance
+# Applies custom Salt state content for SCAP remediation
 
 {%- set remediation_content = pillar.get('scap_remediation_state') -%}
 
 {%- if remediation_content -%}
-# Injecting SCAP Remediation Content
-# Parse the YAML string and merge it into the state
 {%- set remediation_states = remediation_content | load_yaml -%}
 {%- for state_id, state_data in remediation_states.items() %}
 {{ state_id }}:
@@ -14,8 +11,6 @@
 
 {%- else -%}
 
-# Reporting success (Green) instead of failure (Red) prevents
-# false alarms in monitoring systems.
 scap_remediation_skip:
   test.succeed_without_changes:
     - name: "Skipping: No SCAP remediation state provided in pillar"

@@ -1,8 +1,18 @@
+/*
+ * Copyright (c) 2025 SUSE LLC
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ */
+
 package com.suse.manager.webui.utils.gson;
 
 import org.apache.commons.lang3.StringUtils;
 
-import javax.mail.search.SearchTerm;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Set;
@@ -30,21 +40,21 @@ public class ScapScanScheduleJson {
      * @return the name of the selected scap data stream
      */
     public String getDataStreamName() {
-        return dataStreamName.replaceAll("xccdf","ds");
+        return dataStreamName.replaceAll("xccdf", "ds");
     }
 
     /**
      * @return the name of the selected profile
      */
     public String getXccdfProfileId() {
-        return "--profile "+ xccdfProfileId;
+        return "--profile " + xccdfProfileId;
     }
 
     /**
      * @return the name of the selected tailoring file
      */
     public String getTailoringFile() {
-        return "--tailoring-file "+ tailoringFile;
+        return "--tailoring-file " + tailoringFile;
     }
 
     /**
@@ -52,8 +62,8 @@ public class ScapScanScheduleJson {
      */
     public String getTailoringProfileID() {
         // Only effective if tailoring file is selected
-        if(!this.tailoringFile.isEmpty() && !tailoringProfileID.isEmpty()) {
-            return "--profile "+ tailoringProfileID;
+        if (!this.tailoringFile.isEmpty() && !tailoringProfileID.isEmpty()) {
+            return "--profile " + tailoringProfileID;
         }
         return StringUtils.EMPTY;
 

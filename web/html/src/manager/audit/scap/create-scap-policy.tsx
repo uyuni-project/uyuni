@@ -8,7 +8,7 @@ import { Label } from "components/input/Label";
 import { Text } from "components/input/text/Text";
 import { TextArea } from "components/input/text-area/TextArea";
 import { Select } from "components/input/select/Select";
-import { Messages, Utils as MessageUtils } from "components/messages/messages";
+import { Messages, MessageType, Utils as MessageUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 
 import { Utils } from "utils/functions";
@@ -76,7 +76,7 @@ const ScapPolicy = (): JSX.Element => {
   const isEditMode = pageData?.isEditMode || false;
 
   const [model, setModel] = useState<PolicyModel>(policyData || {});
-  const [messages, setMessages] = useState<React.ReactNode>([]);
+  const [messages, setMessages] = useState<MessageType[]>([]);
   const [xccdfProfiles, setXccdfProfiles] = useState<Profile[]>([]);
   const [tailoringFileProfiles, setTailoringFileProfiles] = useState<Profile[]>([]);
   const formRef = useRef<HTMLFormElement>(null);
@@ -149,7 +149,7 @@ const ScapPolicy = (): JSX.Element => {
       if (response.success) {
         window.location.href = ENDPOINTS.LIST;
       } else {
-        setMessages(response.messages);
+        setMessages(MessageUtils.error(response.messages));
       }
     } catch (error: unknown) {
       setMessages([{ severity: "error", text: t("Unexpected error.") }]);
@@ -160,7 +160,7 @@ const ScapPolicy = (): JSX.Element => {
 
   return (
     <TopPanel title={title} icon="spacewalk-icon-manage-configuration-files">
-      {messages}
+      <Messages items={messages} />
       <Form
         model={model}
         className="scap-policy-form"

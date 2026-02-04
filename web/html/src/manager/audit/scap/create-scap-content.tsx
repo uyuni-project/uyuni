@@ -7,7 +7,7 @@ import { FormGroup } from "components/input/FormGroup";
 import { Label } from "components/input/Label";
 import { Text } from "components/input/text/Text";
 import { TextArea } from "components/input/text-area/TextArea";
-import { Messages, Utils as MessageUtils } from "components/messages/messages";
+import { Messages, MessageType, Utils as MessageUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 
 import { Utils } from "utils/functions";
@@ -51,7 +51,7 @@ const ScapContentForm = (): JSX.Element => {
     name: initialData.name || "",
     description: initialData.description || "",
   });
-  const [messages, setMessages] = useState<React.ReactNode>([]);
+  const [messages, setMessages] = useState<MessageType[]>([]);
   const [isInvalid, setIsInvalid] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -77,11 +77,11 @@ const ScapContentForm = (): JSX.Element => {
         const errorItems = response.messages?.length
           ? MessageUtils.error(response.messages)
           : MessageUtils.error(t("An error occurred while uploading the SCAP content."));
-        setMessages(<Messages items={errorItems} />);
+        setMessages(errorItems);
       }
     } catch (error: unknown) {
       const errorMessage = (error as any)?.messages?.[0] || t("An unexpected error occurred.");
-      setMessages(<Messages items={MessageUtils.error(errorMessage)} />);
+      setMessages(MessageUtils.error(errorMessage));
     }
   };
 
@@ -90,7 +90,7 @@ const ScapContentForm = (): JSX.Element => {
       title={t(isEdit ? "Edit SCAP Content" : "Upload SCAP Content")}
       icon="spacewalk-icon-manage-configuration-files"
     >
-      {messages}
+      <Messages items={messages} />
       <Form
         model={model}
         onChange={setModel}

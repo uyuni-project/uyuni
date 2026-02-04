@@ -20,6 +20,10 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.hibernate.type.StandardBasicTypes;
+
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -31,10 +35,6 @@ import java.util.stream.Collectors;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.hibernate.type.StandardBasicTypes;
 
 /**
  * ScapFactory - the singleton class used to fetch and store
@@ -177,7 +177,7 @@ public class ScapFactory extends HibernateFactory {
      * @return optional of tailoring file object
      */
     public static Optional<TailoringFile> lookupTailoringFileByIdAndOrg(Integer id, Org org) {
-        if (Objects. isNull(id)) {
+        if (Objects.isNull(id)) {
             return Optional.empty();
         }
         CriteriaBuilder builder = getSession().getCriteriaBuilder();
@@ -450,13 +450,15 @@ public class ScapFactory extends HibernateFactory {
                     newCustom.setCreatedBy(user);
                     return newCustom;
                 });
-        
+
         if (scriptType == ScriptType.BASH) {
             custom.setCustomRemediationBash(remediationContent);
-        } else if (scriptType == ScriptType.SALT) {
+        }
+        else if (scriptType == ScriptType.SALT) {
             custom.setCustomRemediationSalt(remediationContent);
-        } else {
-            throw new IllegalArgumentException("Unsupported script type: " + scriptType);
+        }
+        else {
+            throw new IllegalArgumentException("Script type must be 'bash' or 'salt'");
         }
         custom.setModified(new Date());
         custom.setModifiedBy(user);
@@ -480,22 +482,25 @@ public class ScapFactory extends HibernateFactory {
         XccdfRuleFixCustom custom = customOpt.get();
         if (scriptType == ScriptType.BASH) {
             custom.setCustomRemediationBash(null);
-        } else if (scriptType == ScriptType.SALT) {
+        }
+        else if (scriptType == ScriptType.SALT) {
             custom.setCustomRemediationSalt(null);
-        } else {
+        }
+        else {
             return false;
         }
-        
+
         custom.setModified(new Date());
-        
+
         // If both are null, delete the entire custom record
-        if (custom.getCustomRemediationBash() == null && 
+        if (custom.getCustomRemediationBash() == null &&
             custom.getCustomRemediationSalt() == null) {
             singleton.removeObject(custom);
-        } else {
+        }
+        else {
             singleton.saveObject(custom);
         }
-        
+
         return true;
     }
 

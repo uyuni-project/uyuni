@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Messages, Utils as MessagesUtils } from "components/messages/messages";
+import { Messages, MessageType, Utils as MessagesUtils } from "components/messages/messages";
 import { Panel } from "components/panels/Panel";
 import Network from "utils/network";
 import { SubmitButton, LinkButton } from "components/buttons";
@@ -74,7 +74,7 @@ export const ScheduleScapScanForm = ({
   const [tailoringFileProfiles, setTailoringFileProfiles] = useState<Profile[]>([]);
   const [earliest, setEarliest] = useState(initialEarliest || localizedMoment());
   const [selectedScapPolicy, setSelectedScapPolicy] = useState<number | null>(null);
-  const [messages, setMessages] = useState<React.ReactNode>([]);
+  const [messages, setMessages] = useState<MessageType[]>([]);
   const [isInvalid, setIsInvalid] = useState(false);
 
   const getProfiles = async (type: ScapContentType, id: string | number) => {
@@ -163,7 +163,7 @@ export const ScheduleScapScanForm = ({
 
   return (
     <div>
-      {messages}
+      <Messages items={messages} />
 
       <Panel headingLevel="h3" title={t("Schedule New XCCDF Scan")}>
         <Form

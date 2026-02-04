@@ -4,7 +4,7 @@ import SpaRenderer from "core/spa/spa-renderer";
 import { LinkButton } from "components/buttons";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
-import { Messages, Utils as MessageUtils } from "components/messages/messages";
+import { Messages, MessageType, Utils as MessageUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
@@ -31,7 +31,7 @@ declare global {
 }
 
 const TailoringFiles = (): JSX.Element => {
-  const [messages, setMessages] = useState<React.ReactNode>([]);
+  const [messages, setMessages] = useState<MessageType[]>([]);
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const [selected, setSelected] = useState<TailoringFileData | null>(null);
   const [tailoringFiles, setTailoringFiles] = useState<TailoringFileData[]>(
@@ -51,7 +51,7 @@ const TailoringFiles = (): JSX.Element => {
         const key = idList.length > 1 ? "delete_success_p" : "delete_success";
         const successMessage = MessageUtils.success(msgMap[key]);
         
-        setMessages(<Messages items={successMessage} />);
+        setMessages(successMessage);
         setTailoringFiles((prev) => prev.filter((f) => !idList.includes(f.id)));
         setSelectedItems((prev) => prev.filter((id) => !idList.includes(id)));
         setSelected(null);
@@ -59,11 +59,11 @@ const TailoringFiles = (): JSX.Element => {
         const errorMsgs = response.messages.map((m: string) => 
           MessageUtils.error(msgMap[m] || m)
         );
-        setMessages(<Messages items={errorMsgs} />);
+        setMessages(errorMsgs);
       }
     } catch (error: unknown) {
       const errorMessage = `${t("An unexpected error occurred while deleting")}: ${idList.join(", ")}`;
-      setMessages(<Messages items={MessageUtils.error(errorMessage)} />);
+      setMessages(MessageUtils.error(errorMessage));
     }
   };
 
@@ -115,7 +115,7 @@ const TailoringFiles = (): JSX.Element => {
         icon="spacewalk-icon-manage-configuration-files"
         button={<ActionButtons />}
       >
-        {messages}
+        <Messages items={messages} />
         <Table
           data={tailoringFiles}
           identifier={(file) => file.id}
