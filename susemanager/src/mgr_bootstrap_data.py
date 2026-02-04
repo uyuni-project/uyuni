@@ -32,6 +32,10 @@ RES9 = [
     "venv-salt-minion",
 ]
 
+RES10 = [
+    "venv-salt-minion",
+]
+
 OPENEULER = [
     "venv-salt-minion",
 ]
@@ -1311,6 +1315,17 @@ DATA = {
         "PKGLIST": RES9,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/res/9/bootstrap/",
     },
+    "RHEL10-x86_64": {
+        "PDID": [-35, 3041],
+        "BETAPDID": [3043],
+        "PKGLIST": RES10,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/res/10/bootstrap/",
+    },
+    "RHEL10-x86_64-uyuni": {
+        "BASECHANNEL": "rhel10-pool-uyuni-x86_64",
+        "PKGLIST": RES10,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/res/10/bootstrap/",
+    },
     "alibaba-2-x86_64-uyuni": {
         "BASECHANNEL": "alibaba-2-x86_64",
         "PKGLIST": RES7 + RES7_X86 + RES7REQ,
@@ -1375,6 +1390,38 @@ DATA = {
         "PKGLIST": RES9,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/almalinux/9/bootstrap/",
     },
+    "almalinux-10-x86_64": {
+        "PDID": [-38, 3041],
+        "BETAPDID": [3043],
+        "PKGLIST": RES10,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/almalinux/10/bootstrap/",
+    },
+    "almalinux-10-aarch64": {
+        "PDID": [-39, 3040],
+        "BETAPDID": [3042],
+        "PKGLIST": RES10,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/almalinux/10/bootstrap/",
+    },
+    "almalinux-10-x86_64-uyuni": {
+        "BASECHANNEL": "almalinux10-x86_64",
+        "PKGLIST": RES10,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/almalinux/10/bootstrap/",
+    },
+    "almalinux-10-aarch64-uyuni": {
+        "BASECHANNEL": "almalinux10-aarch64",
+        "PKGLIST": RES10,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/almalinux/10/bootstrap/",
+    },
+    "almalinux-10-ppc64le-uyuni": {
+        "BASECHANNEL": "almalinux10-ppc64le",
+        "PKGLIST": RES10,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/almalinux/10/bootstrap/",
+    },
+    "almalinux-10-s390x-uyuni": {
+        "BASECHANNEL": "almalinux10-s390x",
+        "PKGLIST": RES10,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/almalinux/10/bootstrap/",
+    },
     "rockylinux-8-x86_64": {
         "PDID": [-24, 3037],
         "BETAPDID": [3039],
@@ -1428,6 +1475,38 @@ DATA = {
         "BASECHANNEL": "rockylinux9-s390x",
         "PKGLIST": RES9,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/rockylinux/9/bootstrap/",
+    },
+    "rockylinux-10-x86_64": {
+        "PDID": [-36, 3041],
+        "BETAPDID": [3043],
+        "PKGLIST": RES10,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/rockylinux/10/bootstrap/",
+    },
+    "rockylinux-10-aarch64": {
+        "PDID": [-37, 3040],
+        "BETAPDID": [3042],
+        "PKGLIST": RES10,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/rockylinux/10/bootstrap/",
+    },
+    "rockylinux-10-x86_64-uyuni": {
+        "BASECHANNEL": "rockylinux10-x86_64",
+        "PKGLIST": RES10,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/rockylinux/10/bootstrap/",
+    },
+    "rockylinux-10-aarch64-uyuni": {
+        "BASECHANNEL": "rockylinux10-aarch64",
+        "PKGLIST": RES10,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/rockylinux/10/bootstrap/",
+    },
+    "rockylinux-10-ppc64le-uyuni": {
+        "BASECHANNEL": "rockylinux10-ppc64le",
+        "PKGLIST": RES10,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/rockylinux/10/bootstrap/",
+    },
+    "rockylinux-10-s390x-uyuni": {
+        "BASECHANNEL": "rockylinux10-s390x",
+        "PKGLIST": RES10,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/rockylinux/10/bootstrap/",
     },
     "ubuntu-22.04-amd64": {
         "PDID": [-33, 3060],

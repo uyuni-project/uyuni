@@ -2590,7 +2590,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
         return isSLES12() || isSLES15() || isSLES16() || isLeap15() || isLeap16() || isLeapMicro() ||
                 isSLEMicro5() || // Micro 6 miss the node exporter
                 isUbuntu1804() || isUbuntu2004() || isUbuntu2204() || isUbuntu2404() ||
-                isRedHat6() || isRedHat7() || isRedHat8() || isRedHat9() || // isRedHat catch also Rocky and Alma
+                isRedHat6() || isRedHat7() || isRedHat8() || isRedHat9() || isRedHat10() ||
                 isAlibaba2() || isAmazon2() || isAmazon2023() ||
                 isDebian10() || isDebian11() || isDebian12();
     }
@@ -2761,6 +2761,11 @@ public class Server extends BaseDomainHelper implements Identifiable {
     boolean isRedHat9() {
         return ServerConstants.REDHAT.equals(getOsFamily()) &&
                 (getRelease().equals("9") || getRelease().startsWith("9."));
+    }
+
+    boolean isRedHat10() {
+        return ServerConstants.REDHAT.equals(getOsFamily()) &&
+                (getRelease().equals("10") || getRelease().startsWith("10."));
     }
 
     public boolean isRedHat() {
