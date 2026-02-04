@@ -57,11 +57,13 @@ class ChannelPackageSubscription(GenericPackageImport):
     def preprocess(self):
         # Processes the package batch to a form more suitable for database
         # operations
+        print("DEBUG: ChannelPackageSubscription.preprocess() called")
         for package in self.batch:
             # if package object doesn't have multiple checksums (like satellite-sync objects)
             #   then let's fake it
             if "checksums" not in package:
                 package["checksums"] = {package["checksum_type"]: package["checksum"]}
+                print(f"DEBUG: Created package['checksums']: {package['checksums']}")
             if not isinstance(package, IncompletePackage):
                 raise TypeError(
                     # pylint: disable-next=consider-using-f-string
@@ -143,6 +145,9 @@ class ChannelPackageSubscription(GenericPackageImport):
         pass
 
     def submit(self):
+
+        print("DEBUG: About to call self.backend.lookupPackages()...")
+        print(self.checksums)
         self.backend.lookupPackages(self.batch, self.checksums)
         try:
             affected_channels = self.backend.subscribeToChannels(
@@ -159,11 +164,11 @@ class ChannelPackageSubscription(GenericPackageImport):
         else:
             # update bigger batch at once
             name_ids = []
-        self.backend.update_newest_package_cache(
-            caller=self.caller,
-            affected_channels=self.affected_channel_packages,
-            name_ids=name_ids,
-        )
+        #self.backend.update_newest_package_cache(
+            #caller=self.caller,
+            #affected_channels=self.affected_channel_packages,
+            #name_ids=name_ids,
+        #)
         # Now that channel is updated, schedule the repo generation
         if self.repogen:
             taskomatic.add_to_repodata_queue_for_channel_package_subscription(
@@ -424,12 +429,24 @@ class PackageImport(ChannelPackageSubscription):
         # Postprocess the gathered information
         self.__postprocess()
 
+
+
     def submit(self):
         upload_force = self.uploadForce
         if not upload_force and self._update_last_modified:
-            # # Force it just a little bit - kind of hacky
             upload_force = 0.5
+
+        print("--- Starting Debugging of submit() ---")
+        print("Calling processPackages with the following arguments:")
+        print(f"  batch: {len(self.batch)} packages (length)")
+        print(f"  uploadForce: {upload_force}")
+        print(f"  forceVerify: {self.forceVerify}")
+        print(f"  ignoreUploaded: {self.ignoreUploaded}")
+        print(f"  transactional: {self.transactional}")
+        print("-" * 30)
+
         try:
+            print("Executing self.backend.processPackages()...")
             self.backend.processPackages(
                 self.batch,
                 uploadForce=upload_force,
@@ -437,20 +454,38 @@ class PackageImport(ChannelPackageSubscription):
                 ignoreUploaded=self.ignoreUploaded,
                 transactional=self.transactional,
             )
+            print("self.backend.processPackages() executed successfully.")
+
+            print("Executing self._import_signatures()...")
             self._import_signatures()
-        except:
-            # Oops
-            self.backend.rollback()
+            print("Signatures imported successfully.")
+
+        except Exception as e:
+            print("--- An exception occurred during package processing ---")
+            print(f"Error type: {type(e).__name__}")
+            print(f"Error str : {e!s}")
+            try:
+                import traceback, sys
+                traceback.print_exc()
+            except Exception as e2:
+                print(f"(fallback) could not print traceback: {type(e2).__name__}: {e2}")
+            try:
+                self.backend.rollback()
+                print("Rollback successful.")
+            except Exception as rollback_e:
+                print(f"Error during rollback: {type(rollback_e).__name__}: {rollback_e}")
             raise
+
+        print("--- Package processing successful. Committing transaction... ---")
         self.backend.commit()
+        print("Transaction committed.")
+
         if not self._update_last_modified:
-            # Go though the list of objects and clear out the ones that have a
-            # force of 0.5
             for p in self.batch:
-                if p.diff and p.diff.level == 0.5:
-                    # Ignore this difference completely
+                if getattr(p, "diff", None) and p.diff.level == 0.5:
                     p.diff = None
-                    # Leave p.diff_result in place
+        print("--- Debugging finished successfully ---")
+
 
     def subscribeToChannels(self):
         affected_channels = self.backend.subscribeToChannels(self.batch)
