@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Wed Feb 04 14:07:21 CET 2026 - michael.calmer@suse.com
+
+- version 5.2.8-0
+  * Fix reposync crashing at metadata generation (bsc#1257538)
+  * Add check for virt vm_info availability (bsc#1254316)
+  * Update license to include the year 2026
+
+-------------------------------------------------------------------
 Tue Jan 27 09:47:12 WET 2026 - psuarezhernandez@suse.com
 
 - version 5.2.7-0
