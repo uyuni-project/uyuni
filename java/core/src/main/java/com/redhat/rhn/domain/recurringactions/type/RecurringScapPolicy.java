@@ -16,9 +16,15 @@
 package com.redhat.rhn.domain.recurringactions.type;
 
 import com.redhat.rhn.domain.audit.ScapPolicy;
+
 import org.hibernate.annotations.Type;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * Recurring Action type for scap policy implementation

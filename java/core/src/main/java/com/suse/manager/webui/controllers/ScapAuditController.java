@@ -11,75 +11,95 @@
 
 package com.suse.manager.webui.controllers;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonParseException;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.badRequest;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.internalServerError;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.result;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.success;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withDocsLocale;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserAndServer;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPreferences;
+import static spark.Spark.delete;
+import static spark.Spark.get;
+import static spark.Spark.halt;
+import static spark.Spark.post;
+
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
 import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
-import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
-import com.redhat.rhn.domain.audit.*;
+import com.redhat.rhn.domain.audit.ScapContent;
+import com.redhat.rhn.domain.audit.ScapFactory;
+import com.redhat.rhn.domain.audit.ScapPolicy;
+import com.redhat.rhn.domain.audit.ScriptType;
+import com.redhat.rhn.domain.audit.TailoringFile;
+import com.redhat.rhn.domain.audit.XccdfRuleFix;
+import com.redhat.rhn.domain.audit.XccdfRuleFixCustom;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
-
 import com.redhat.rhn.frontend.dto.XccdfRuleResultDto;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.audit.ScapManager;
 import com.redhat.rhn.manager.audit.scap.xml.BenchMark;
 import com.redhat.rhn.manager.audit.scap.xml.Profile;
+import com.redhat.rhn.manager.ssm.SsmManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
-import com.redhat.rhn.manager.ssm.SsmManager;
-import com.suse.manager.webui.controllers.utils.MultipartRequestUtil;
 
+import com.suse.manager.webui.controllers.utils.MultipartRequestUtil;
 import com.suse.manager.webui.utils.gson.AuditScanScheduleJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
-import com.suse.manager.webui.utils.gson.TailoringFileJson;
 import com.suse.manager.webui.utils.gson.ScapContentJson;
-import com.suse.manager.webui.utils.gson.ScapPolicyResponseJson;
 import com.suse.manager.webui.utils.gson.ScapPolicyComplianceSummary;
 import com.suse.manager.webui.utils.gson.ScapPolicyJson;
+import com.suse.manager.webui.utils.gson.ScapPolicyResponseJson;
 import com.suse.manager.webui.utils.gson.ScapPolicyScanHistory;
-
+import com.suse.manager.webui.utils.gson.TailoringFileJson;
 import com.suse.utils.Json;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.fileupload2.core.DiskFileItem;
 import org.apache.commons.fileupload2.core.FileUploadException;
-
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import spark.template.jade.JadeTemplateEngine;
 
-import java.io.File;
-
-import java.io.IOException;
-
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.*;
-import java.util.stream.Collectors;
-
-import static com.suse.manager.webui.utils.SparkApplicationHelper.*;
-import static spark.Spark.delete;
-import static spark.Spark.get;
-import static spark.Spark.halt;
-import static spark.Spark.post;
 
 public class ScapAuditController {
     private static final Logger LOG = LogManager.getLogger(ScapAuditController.class);
@@ -190,12 +210,13 @@ public class ScapAuditController {
             Map<String, Object> data = new HashMap<>();
             data.put("tailoringFiles", GSON.toJson(tailoringFilesJson));
             return new ModelAndView(data, "templates/audit/list-tailoring-files.jade");
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             LOG.error("Failed to load tailoring files view", e);
             throw halt(500, "Failed to load tailoring files view");
         }
     }
-    
+
     /**
      * Returns a view to display form to upload tailoring file
      *
@@ -235,7 +256,8 @@ public class ScapAuditController {
 
             return result(response, ResultJson.success());
 
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             // Rollback using FileUtils
             if (writtenFile != null) {
                 FileUtils.deleteFile(writtenFile.toPath());
@@ -272,7 +294,8 @@ public class ScapAuditController {
         Map<String, Object> model = new HashMap<>();
         model.put("tailoringFileDataJson", Json.GSON.toJson(jsData));
         return new ModelAndView(model, "templates/audit/create-tailoring-file.jade");
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             LOG.error("Failed to load update tailoring file view", e);
             throw halt(500, "Failed to load update tailoring file view");
         }
@@ -316,7 +339,8 @@ public class ScapAuditController {
 
             return result(response, ResultJson.success());
 
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             // Rollback: Delete the new file if it was created
             if (newWrittenFile != null) {
                 FileUtils.deleteFile(newWrittenFile.toPath());
@@ -338,7 +362,7 @@ public class ScapAuditController {
             List<Long> ids = Arrays.asList(GSON.fromJson(req.body(), Long[].class));
             List<TailoringFile> tailoringFiles =
                     ScapFactory.lookupTailoringFilesByIds(ids, user.getOrg());
-            
+
             if (tailoringFiles.size() < ids.size()) {
                 return json(res, HttpStatus.SC_NOT_FOUND,
                         ResultJson.error("One or more tailoring files not found"), new TypeToken<>() { });
@@ -351,7 +375,7 @@ public class ScapAuditController {
                 FileUtils.deleteFile(filePath);
                 deletedCount++;
             }
-            
+
             return result(res, ResultJson.success(deletedCount));
         }
         catch (JsonParseException e) {
@@ -378,7 +402,7 @@ public class ScapAuditController {
         Files.createDirectories(Paths.get(TAILORING_FILES_DIR));
         String safeName = sanitizeFileName(rawName);
         String uniqueFilename = generateUniqueFileName(
-                user.getOrg().getId(), 
+                user.getOrg().getId(),
                 safeName,
                 item.getName()
         );
@@ -426,13 +450,14 @@ public class ScapAuditController {
             Map<String, Object> params = new HashMap<>();
             params.put("user_id", user.getId());
             params.put("org_id", user.getOrg().getId());
-            
+
             List<ScapPolicyComplianceSummary> policies = m.execute(params);
             Map<String, Object> data = new HashMap<>();
             data.put("scapPolicies", GSON.toJson(policies));
 
             return new ModelAndView(data, "templates/audit/list-scap-policies.jade");
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             LOG.error("Failed to load SCAP policies view", e);
             throw halt(500, "Failed to load SCAP policies view");
         }
@@ -455,7 +480,8 @@ public class ScapAuditController {
             model.put("scapPolicyPageDataJson", GSON.toJson(pageData));
 
             return new ModelAndView(model, "templates/audit/create-scap-policy.jade");
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             LOG.error("Failed to load create SCAP policy view", e);
             throw halt(500, "Failed to load create SCAP policy view");
         }
@@ -487,7 +513,8 @@ public class ScapAuditController {
             model.put("scapPolicyPageDataJson", GSON.toJson(pageData));
 
             return new ModelAndView(model, "templates/audit/create-scap-policy.jade");
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             LOG.error("Failed to load edit SCAP policy view", e);
             throw halt(500, "Failed to load edit SCAP policy view");
         }
@@ -519,7 +546,8 @@ public class ScapAuditController {
             model.put("scapPolicyPageDataJson", GSON.toJson(pageData));
 
             return new ModelAndView(model, "templates/audit/scap-policy-details.jade");
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             LOG.error("Failed to load SCAP policy details view", e);
             throw halt(500, "Failed to load SCAP policy details view");
         }
@@ -535,7 +563,7 @@ public class ScapAuditController {
      */
     private Map<String, Object> buildPolicyPageData(User user, ScapPolicy policy, boolean isReadOnly) {
         Map<String, Object> pageData = new HashMap<>();
-        
+
         pageData.put("isEditMode", policy != null && !isReadOnly);
         pageData.put("isReadOnly", isReadOnly);
         pageData.put("scapContentList", getScapContentList(user));
@@ -557,7 +585,8 @@ public class ScapAuditController {
             }
             pageData.put("policyData", policyData);
             pageData.put("policyId", policy.getId()); // Convenient top-level ID
-        } else {
+        }
+        else {
             // Create Mode
             pageData.put("policyData", null);
         }
@@ -583,7 +612,7 @@ public class ScapAuditController {
         try {
             Path safePath = FileUtils.validateCanonicalPath(baseDirectory, fileName);
             File targetFile = safePath.toFile();
-            
+
             if (targetFile.exists()) {
                 BenchMark benchmark = ScapManager.getProfileList(targetFile);
                 return benchmark.getProfiles().stream()
@@ -592,12 +621,20 @@ public class ScapAuditController {
                         .findFirst()
                         .orElse(profileId);
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             LOG.warn("Could not retrieve profile title for profile ID: {}", profileId, e);
         }
         return profileId;
     }
 
+    /**
+     * Returns a view with SCAP policy details
+     * @param req the request object
+     * @param res the response object
+     * @param user the authorized user
+     * @return return SCAP policy details as JSON
+     */
     public String getScapPolicyDetails(Request req, Response res, User user) {
         Integer policyId = Integer.parseInt(req.params("id"));
 
@@ -627,13 +664,15 @@ public class ScapAuditController {
             scapPolicy.setOrg(user.getOrg());
 
             updatePolicyFromDto(scapPolicy, policyJson, user);
-            
+
             ScapFactory.saveScapPolicy(scapPolicy);
 
             return result(res, ResultJson.success(scapPolicy.getId()));
-        } catch (IllegalArgumentException e) {
+        }
+        catch (IllegalArgumentException e) {
             return result(res, ResultJson.error(e.getMessage()));
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             LOG.error("Error creating SCAP policy", e);
             return result(res, ResultJson.error("Failed to create SCAP policy: " + e.getMessage()));
         }
@@ -664,13 +703,15 @@ public class ScapAuditController {
                     .orElseThrow(() -> new IllegalArgumentException("SCAP policy not found"));
 
             updatePolicyFromDto(scapPolicy, policyJson, user);
-            
+
             ScapFactory.saveScapPolicy(scapPolicy);
 
             return result(res, ResultJson.success(scapPolicy.getId()));
-        } catch (IllegalArgumentException e) {
+        }
+        catch (IllegalArgumentException e) {
             return result(res, ResultJson.error(e.getMessage()));
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             LOG.error("Error updating SCAP policy", e);
             return result(res, ResultJson.error("Failed to update SCAP policy: " + e.getMessage()));
         }
@@ -702,9 +743,11 @@ public class ScapAuditController {
             }
 
             return result(res, ResultJson.success(deletedCount));
-        } catch (IllegalArgumentException e) {
+        }
+        catch (IllegalArgumentException e) {
             return result(res, ResultJson.error(e.getMessage()));
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             LOG.error("Error deleting SCAP policies", e);
             return result(res, ResultJson.error("Failed to delete SCAP policies: " + e.getMessage()));
         }
@@ -719,14 +762,14 @@ public class ScapAuditController {
      */
     public String getPolicyScanHistory(Request req, Response res, User user) {
         Integer policyId = Integer.parseInt(req.params("id"));
-        
+
         SelectMode m = ModeFactory.getMode("scap_queries", "policy_scan_history");
         Map<String, Object> params = new HashMap<>();
         params.put("user_id", user.getId());
         params.put("policy_id", policyId);
-        
+
         List<ScapPolicyScanHistory> history = m.execute(params);
-        return json(res, history, new TypeToken<>() {});
+        return json(res, history, new TypeToken<>() { });
     }
     /**
      * Resolves the profile title from the SCAP content XML file.
@@ -779,7 +822,8 @@ public class ScapAuditController {
 
         if (json.getTailoringFile() == null || json.getTailoringFile().isEmpty()) {
             policy.setTailoringFile(null);
-        } else {
+        }
+        else {
             int tfId = Integer.parseInt(json.getTailoringFile());
             TailoringFile tf = ScapFactory.lookupTailoringFileByIdAndOrg(tfId, user.getOrg())
                     .orElseThrow(() -> new IllegalArgumentException("Tailoring File not found"));
@@ -835,12 +879,15 @@ public class ScapAuditController {
             );
 
             return json(res, action.getId());
-        } catch (TaskomaticApiException e) {
+        }
+        catch (TaskomaticApiException e) {
             LOG.error("Taskomatic API error scheduling SCAP scan", e);
             return result(res, ResultJson.error("Failed to schedule SCAP scan: Taskomatic is down"));
-        } catch (IllegalArgumentException e) {
+        }
+        catch (IllegalArgumentException e) {
             return result(res, ResultJson.error(e.getMessage()));
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             LOG.error("Error scheduling SCAP scan", e);
             return result(res, ResultJson.error("Failed to schedule SCAP scan: " + e.getMessage()));
         }
@@ -896,7 +943,8 @@ public class ScapAuditController {
             contentData.put("dataStreamFileName", scapContent.get().getDataStreamFileName());
             contentData.put("xccdfFileName", scapContent.get().getXccdfFileName());
             data.put("scapContentData", GSON.toJson(contentData));
-        } else {
+        }
+        else {
             data.put("scapContentData", GSON.toJson(new HashMap<>()));
         }
 
@@ -915,7 +963,8 @@ public class ScapAuditController {
         try {
             List<DiskFileItem> items = MultipartRequestUtil.parseMultipartRequest(req);
             return handleScapContentUpload(items, res, user, null);
-        } catch (FileUploadException e) {
+        }
+        catch (FileUploadException e) {
             throw new RuntimeException(e);
         }
     }
@@ -941,7 +990,8 @@ public class ScapAuditController {
             }
 
             return handleScapContentUpload(items, res, user, scapContent.get());
-        } catch (FileUploadException e) {
+        }
+        catch (FileUploadException e) {
             throw new RuntimeException(e);
         }
     }
@@ -973,7 +1023,8 @@ public class ScapAuditController {
                     // Delete XCCDF file
                     Path xccdfFilePath = Paths.get(SCAP_CONTENT_DIR, content.getXccdfFileName());
                     Files.deleteIfExists(xccdfFilePath);
-                } catch (IOException e) {
+                }
+                catch (IOException e) {
                     LOG.error("Error deleting SCAP content files for: {}", content.getName(), e);
                 }
                 ScapFactory.deleteScapContent(content);
@@ -1001,7 +1052,8 @@ public class ScapAuditController {
      * @param existingContent existing content for update, null for create
      * @return the result as JSON
      */
-    private String handleScapContentUpload(List<DiskFileItem> items, Response res, User user, ScapContent existingContent) {
+    private String handleScapContentUpload(List<DiskFileItem> items, Response res, User user,
+                                           ScapContent existingContent) {
         File writtenDsFile = null;
         File writtenXccdfFile = null;
 
@@ -1012,8 +1064,12 @@ public class ScapAuditController {
             Optional<DiskFileItem> xccdfItemOpt = MultipartRequestUtil.findFileItem(items, "xccdfFile");
 
             if (existingContent == null) {
-                if (scapItemOpt.isEmpty()) return result(res, ResultJson.error("DataStream file is required"));
-                if (xccdfItemOpt.isEmpty()) return result(res, ResultJson.error("XCCDF file is required"));
+                if (scapItemOpt.isEmpty()) {
+                    return result(res, ResultJson.error("DataStream file is required"));
+                }
+                if (xccdfItemOpt.isEmpty()) {
+                    return result(res, ResultJson.error("XCCDF file is required"));
+                }
             }
 
             if (scapItemOpt.isPresent() && !scapItemOpt.get().getName().toLowerCase().endsWith("-ds.xml")) {
@@ -1041,13 +1097,13 @@ public class ScapAuditController {
             ScapContent scapContent = existingContent != null ? existingContent : new ScapContent();
             scapContent.setName(name.trim());
             description.ifPresent(scapContent::setDescription);
-            
+
             Files.createDirectories(Paths.get(SCAP_CONTENT_DIR));
 
             if (scapItemOpt.isPresent()) {
                 Path targetPath = FileUtils.validateCanonicalPath(SCAP_CONTENT_DIR, dsName);
                 Files.copy(scapItemOpt.get().getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
-                
+
                 writtenDsFile = targetPath.toFile();
                 scapContent.setDataStreamFileName(dsName);
             }
@@ -1055,7 +1111,7 @@ public class ScapAuditController {
             if (xccdfItemOpt.isPresent()) {
                 Path targetPath = FileUtils.validateCanonicalPath(SCAP_CONTENT_DIR, xccdfName);
                 Files.copy(xccdfItemOpt.get().getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
-                
+
                 writtenXccdfFile = targetPath.toFile();
                 scapContent.setXccdfFileName(xccdfName);
             }
@@ -1064,12 +1120,17 @@ public class ScapAuditController {
 
             return result(res, ResultJson.success());
 
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             LOG.error("Error handling SCAP content upload", e);
-            
-            if (writtenDsFile != null) FileUtils.deleteFile(writtenDsFile.toPath());
-            if (writtenXccdfFile != null) FileUtils.deleteFile(writtenXccdfFile.toPath());
-            
+
+            if (writtenDsFile != null) {
+                FileUtils.deleteFile(writtenDsFile.toPath());
+            }
+            if (writtenXccdfFile != null) {
+                FileUtils.deleteFile(writtenXccdfFile.toPath());
+            }
+
             return handleTailoringFileException(res, e, existingContent == null ? "creating" : "updating");
         }
     }
@@ -1081,13 +1142,13 @@ public class ScapAuditController {
      */
     private Map<String, Object> buildSchedulePageData(User user) {
         Map<String, Object> data = new HashMap<>();
-        
+
         // SCAP content list
         data.put("scapContentList", getScapContentList(user));
-        
+
         // Tailoring files
         data.put("tailoringFiles", getTailoringFilesList(user));
-        
+
         // SCAP policies (ID and name only for dropdown)
         List<ScapPolicy> scapPolicies = ScapFactory.listScapPolicies(user.getOrg());
         List<ScapPolicyJson> scapPoliciesDto = scapPolicies.stream()
@@ -1099,7 +1160,7 @@ public class ScapAuditController {
             })
             .collect(Collectors.toList());
         data.put("scapPolicies", scapPoliciesDto);
-        
+
         return data;
     }
 
@@ -1118,7 +1179,7 @@ public class ScapAuditController {
         jsData.put("serverId", server.getId());
         jsData.put("entityType", "server");
 
-        Map<String, Object> data = new HashMap<>(); 
+        Map<String, Object> data = new HashMap<>();
         data.put("scheduleDataJson", Json.GSON.toJson(jsData));
 
         return new ModelAndView(data, "templates/minion/schedule-scap-scan.jade");
@@ -1135,11 +1196,11 @@ public class ScapAuditController {
     private ModelAndView scheduleAuditScanSsmView(Request request, Response response, User user) {
         Map<String, Object> jsData = buildSchedulePageData(user);
         jsData.put("entityType", "ssm");
-        
+
         // Get systems in SSM for minions list
         List<Long> sids = SsmManager.listServerIds(user);
         List<Server> systems = ServerFactory.lookupByIdsAndOrg(new HashSet<>(sids), user.getOrg());
-        
+
         List<Map<String, Object>> minionList = systems.stream().map(s -> {
             Map<String, Object> m = new HashMap<>();
             m.put("id", s.getId());
@@ -1157,11 +1218,12 @@ public class ScapAuditController {
     }
 
     /**
-     * Returns a view to display create form
+     * Returns a view to display rule result detail
      *
      * @param req the request object
      * @param res the response object
      * @param user the authorized user
+     * @param server the server being audited
      * @return the model and view
      */
     public ModelAndView createRuleResultView(Request req, Response res, User user, Server server) {
@@ -1169,7 +1231,7 @@ public class ScapAuditController {
         String serverId = req.params("sid");
         Long ruleResultId = Long.parseLong(req.params("rrid"));
         XccdfRuleResultDto ruleResult = ScapManager.ruleResultById(ruleResultId);
-        
+
         // Use both benchmark ID and rule identifier for correct lookup
         // benchmarkId from benchmark.identifier, ruleId from documentIdref
         Optional<XccdfRuleFix> xccdfRuleFix =
@@ -1179,10 +1241,11 @@ public class ScapAuditController {
           .orElse("No remediation available");
 
         Map<String, Object> data = new HashMap<>();
-        data.put("identifier",ruleResult.getDocumentIdref());
+        data.put("identifier", ruleResult.getDocumentIdref());
         data.put("result", ruleResult.getLabel());
-        data.put("parentScanUrl","/rhn/systems/details/audit/XccdfDetails.do?sid="+serverId+ "&xid="+ruleResult.getTestResult().getId() );
-        data.put("parentScanProfile",ruleResult.getTestResult().getIdentifier());
+        data.put("parentScanUrl", "/rhn/systems/details/audit/XccdfDetails.do?sid=" + serverId +
+                "&xid=" + ruleResult.getTestResult().getId());
+        data.put("parentScanProfile", ruleResult.getTestResult().getIdentifier());
         data.put("remediation", StringEscapeUtils.escapeJson(remediation));
         data.put("benchmarkId", ruleResult.getTestResult().getBenchmark().getIdentifier());
         return new ModelAndView(data, "templates/minion/rule-result-detail.jade");
@@ -1246,7 +1309,7 @@ public class ScapAuditController {
                 ))
                 .collect(Collectors.toList());
     }
-    
+
     /**
      * Processes a GET request to get a list of profiles from SCAP content
      *
@@ -1267,42 +1330,46 @@ public class ScapAuditController {
                 long id = Long.parseLong(idStr);
                 ScapContent content = ScapFactory.lookupScapContentById(id)
                         .orElseThrow(() -> new IllegalArgumentException("SCAP content not found"));
-                
+
                 fileName = content.getXccdfFileName();
                 baseDirectory = SCAP_CONTENT_DIR;
 
-            } else if ("tailoringFile".equalsIgnoreCase(type)) {
+            }
+            else if ("tailoringFile".equalsIgnoreCase(type)) {
                 int id = Integer.parseInt(idStr);
                 TailoringFile tailoring = ScapFactory.lookupTailoringFileByIdAndOrg(id, user.getOrg())
                         .orElseThrow(() -> new IllegalArgumentException("Tailoring file not found"));
-                
+
                 fileName = tailoring.getFileName();
                 baseDirectory = TAILORING_FILES_DIR;
 
-            } else {
-                return json(res, HttpStatus.SC_BAD_REQUEST,
-                        ResultJson.error("Invalid content type: " + type), new TypeToken<>() {});
             }
-    
+            else {
+                return json(res, HttpStatus.SC_BAD_REQUEST,
+                        ResultJson.error("Invalid content type: " + type), new TypeToken<>() { });
+            }
+
             Path safePath = FileUtils.validateCanonicalPath(baseDirectory, fileName);
             File targetFile = safePath.toFile();
 
             if (!targetFile.exists()) {
                 LOG.error("Physical file missing: {}", targetFile.getAbsolutePath());
                 return json(res, HttpStatus.SC_NOT_FOUND,
-                        ResultJson.error("Content file missing on server"), new TypeToken<>() {});
+                        ResultJson.error("Content file missing on server"), new TypeToken<>() { });
             }
 
             BenchMark result = ScapManager.getProfileList(targetFile);
             return json(res, result.getProfiles(), new TypeToken<>() { });
 
-        } catch (IllegalArgumentException e) {
+        }
+        catch (IllegalArgumentException e) {
             return json(res, HttpStatus.SC_NOT_FOUND,
-                    ResultJson.error(e.getMessage()), new TypeToken<>() {});
-        } catch (Exception e) {
+                    ResultJson.error(e.getMessage()), new TypeToken<>() { });
+        }
+        catch (Exception e) {
             LOG.error("Error reading profile list", e);
             return json(res, HttpStatus.SC_INTERNAL_SERVER_ERROR,
-                    ResultJson.error("Server error reading profiles"), new TypeToken<>() {});
+                    ResultJson.error("Server error reading profiles"), new TypeToken<>() { });
         }
    }
 
@@ -1371,7 +1438,8 @@ public class ScapAuditController {
         CustomRemediationJson data;
         try {
             data = GSON.fromJson(request.body(), CustomRemediationJson.class);
-        } catch (JsonParseException e) {
+        }
+        catch (JsonParseException e) {
             return json(response, HttpStatus.SC_BAD_REQUEST,
                     ResultJson.error("Invalid JSON request body"), new TypeToken<>() { });
         }
@@ -1406,10 +1474,12 @@ public class ScapAuditController {
                     remediationContent, user.getOrg(), user);
 
             return success(response, ResultJson.success("Custom remediation saved successfully"));
-        } catch (IllegalArgumentException e) {
+        }
+        catch (IllegalArgumentException e) {
             return json(response, HttpStatus.SC_BAD_REQUEST,
                     ResultJson.error(e.getMessage()), new TypeToken<>() { });
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
                     ResultJson.error("Failed to save custom remediation: " + e.getMessage()), new TypeToken<>() { });
         }
@@ -1450,7 +1520,7 @@ public class ScapAuditController {
                     ResultJson.error("Failed to delete custom remediation: " + e.getMessage()), new TypeToken<>() { });
         }
     }
-    
+
      /**
      * Apply remediation (bash or Salt) to a system.
      * @param request the HTTP request containing remediation details
@@ -1478,10 +1548,12 @@ public class ScapAuditController {
             if (scriptType == ScriptType.BASH) {
                 action = createBashRemediationAction(body, user, server);
                 successMessage = "Bash remediation scheduled successfully";
-            } else if (scriptType == ScriptType.SALT) {
+            }
+            else if (scriptType == ScriptType.SALT) {
                 action = createSaltRemediationAction(body, user, server);
                 successMessage = "Salt remediation scheduled successfully";
-            } else {
+            }
+            else {
                 return result(response, ResultJson.error("Invalid script type"));
             }
 
@@ -1491,17 +1563,20 @@ public class ScapAuditController {
                 "message", successMessage
             );
             return result(response, ResultJson.success(result));
-        } catch (JsonParseException e) {
+        }
+        catch (JsonParseException e) {
             return result(response, ResultJson.error("Invalid JSON request body"));
-        } catch (TaskomaticApiException e) {
+        }
+        catch (TaskomaticApiException e) {
             LOG.error("Failed to schedule remediation action", e);
             return result(response, ResultJson.error("Failed to schedule remediation: " + e.getMessage()));
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             LOG.error("Error applying remediation", e);
             return result(response, ResultJson.error("Failed to apply remediation: " + e.getMessage()));
         }
     }
-    
+
     /**
      * Validate the remediation request body.
      *
@@ -1575,4 +1650,4 @@ public class ScapAuditController {
     private String sanitizeFileName(String input) {
         return input.replaceAll("[^a-zA-Z0-9._-]", "_");
     }
-} 
+}

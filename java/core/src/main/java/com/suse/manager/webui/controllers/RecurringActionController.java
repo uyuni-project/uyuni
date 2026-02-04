@@ -27,7 +27,6 @@ import static spark.Spark.delete;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
-import com.google.gson.JsonObject;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.localization.LocalizationService;
@@ -51,7 +50,6 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
-
 import com.redhat.rhn.manager.recurringactions.RecurringActionManager;
 import com.redhat.rhn.manager.recurringactions.StateConfigFactory;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
@@ -70,6 +68,7 @@ import com.suse.manager.webui.utils.gson.StateConfigJson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.StringUtils;
@@ -350,20 +349,21 @@ public class RecurringActionController {
         String idParam = req.queryParams("id");
         String filterParam = req.queryParams("filter");
         List<ScapPolicy> scapPolicies = ScapFactory.listScapPolicies(user.getOrg());
-        
+
         // Get assigned policy if editing existing recurring action
         Set<Integer> assignedPolicyIds = new HashSet<>();
         if (idParam != null) {
             Long id = Long.parseLong(idParam);
             Optional<RecurringAction> action = RecurringActionManager.find(id);
             if (action.isPresent() && action.get().getRecurringActionType() instanceof RecurringScapPolicy) {
-                ScapPolicy assignedPolicy = ((RecurringScapPolicy) action.get().getRecurringActionType()).getScapPolicy();
+                ScapPolicy assignedPolicy = ((RecurringScapPolicy) action.get().getRecurringActionType()).
+                  getScapPolicy();
                 if (assignedPolicy != null) {
                     assignedPolicyIds.add(assignedPolicy.getId());
                 }
             }
         }
-        
+
         // Filter policies if filter parameter is provided
         if (filterParam != null && !filterParam.trim().isEmpty()) {
             String filter = filterParam.toLowerCase();
@@ -383,29 +383,29 @@ public class RecurringActionController {
                     json.addProperty("policyName", policy.getPolicyName());
                     json.addProperty("dataStreamName", policy.getDataStreamName());
                     json.addProperty("xccdfProfileId", policy.getXccdfProfileId());
-                    
+
                     if (policy.getDescription() != null) {
                         json.addProperty("description", policy.getDescription());
                     }
-                    
+
                     if (policy.getTailoringFile() != null) {
                         json.addProperty("tailoringFileName", policy.getTailoringFile().getName());
                     }
-                    
+
                     if (policy.getTailoringProfileId() != null) {
                         json.addProperty("tailoringFileProfileId", policy.getTailoringProfileId());
                     }
-                    
+
                     // Mark as assigned if this policy is used in the recurring action
                     json.addProperty("assigned", assignedPolicyIds.contains(policy.getId()));
                     if (assignedPolicyIds.contains(policy.getId())) {
                         json.addProperty("position", 1);
                     }
-                    
+
                     return json;
                 })
                 .collect(Collectors.toList());
-        
+
         return json(res, scapPoliciesJson, new TypeToken<>() { });
     }
 
@@ -574,13 +574,15 @@ public class RecurringActionController {
                 Set<RecurringStateConfig> newConfig = getStateConfigFromJson(details.getStates(), action.getCreator());
                 ((RecurringState) action.getRecurringActionType()).saveStateConfig(newConfig);
             }
-        } else if (action.getRecurringActionType() instanceof RecurringScapPolicy recurringScapPolicy) {
+        }
+        else if (action.getRecurringActionType() instanceof RecurringScapPolicy recurringScapPolicy) {
             recurringScapPolicy.setTestMode(details.isTest());
             if (details.getPolicies() != null && !details.getPolicies().isEmpty()) {
                 details.getPolicies()
                         .stream()
                         .findFirst()
-                        .flatMap(policyJson -> ScapFactory.lookupScapPolicyByIdAndOrg(policyJson.getId(), action.getCreator().getOrg()))
+                        .flatMap(policyJson -> ScapFactory.lookupScapPolicyByIdAndOrg(policyJson.getId(),
+                          action.getCreator().getOrg()))
                         .ifPresent(recurringScapPolicy::setScapPolicy);
             }
         }

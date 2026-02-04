@@ -422,13 +422,11 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
                 new ByteArrayInputStream(resumeWithRemediation.getBytes(StandardCharsets.UTF_8)));
 
         assertNotNull(result);
-        
         // Verify remediations were saved using bulk lookup
         var fix1 = com.redhat.rhn.domain.audit.ScapFactory
                 .lookupRuleRemediation("SUSE-Security-Benchmark-YaST2", "rule-test-1");
         var fix2 = com.redhat.rhn.domain.audit.ScapFactory
                 .lookupRuleRemediation("SUSE-Security-Benchmark-YaST2", "rule-test-2");
-        
         assertTrue(fix1.isPresent(), "Remediation for rule-test-1 should be saved");
         assertTrue(fix2.isPresent(), "Remediation for rule-test-2 should be saved");
         assertEquals("#!/bin/bash\necho 'fix1'", fix1.get().getRemediation());

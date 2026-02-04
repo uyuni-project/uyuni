@@ -119,7 +119,8 @@ public class RecurringActionJob extends RhnJavaJob {
             }
             else if (actionType instanceof RecurringScapPolicy scapPolicyType) {
                 if (!action.getCreator().getBetaFeaturesEnabled()) {
-                    log.warn("RecurringScapPolicy {} execution skipped because creator does not have beta features enabled",
+                    log.warn("RecurringScapPolicy {} execution skipped because creator does not have" +
+                        " beta features enabled",
                             action.getId());
                 }
                 else if (scapPolicyType.getScapPolicy() != null) {
@@ -127,10 +128,10 @@ public class RecurringActionJob extends RhnJavaJob {
                     String parameters = "--profile " + scapPolicyType.getScapPolicy().getXccdfProfileId();
                     if (scapPolicyType.getScapPolicy().getTailoringFile() != null &&
                             scapPolicyType.getScapPolicy().getTailoringProfileId() != null) {
-                        parameters += " --tailoring-file " + scapPolicyType.getScapPolicy().getTailoringFile().getFileName() +
-                                " --tailoring-profile-id " + scapPolicyType.getScapPolicy().getTailoringProfileId();
+                        parameters += " --tailoring-file " + scapPolicyType.getScapPolicy().getTailoringFile().
+                          getFileName() + " --tailoring-profile-id " + scapPolicyType.getScapPolicy().
+                          getTailoringProfileId();
                     }
-                    
                     ActionManager.scheduleXccdfEval(
                             action.getCreator(),
                             new HashSet<>(minionIds),

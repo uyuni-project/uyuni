@@ -7,8 +7,11 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
  */
-
 package com.suse.manager.webui.utils.gson;
 
 import org.apache.commons.lang3.StringUtils;
@@ -29,7 +32,7 @@ public class AuditScanScheduleJson {
     private Optional<LocalDateTime> earliest = Optional.empty();
 
     /** The SCAP xccdf data stream name */
-    @Deprecated
+
     private String dataStreamName;
 
     /** The SCAP content ID */
@@ -39,7 +42,6 @@ public class AuditScanScheduleJson {
     private String xccdfProfileId;
 
     /** The Tailoring file name */
-    @Deprecated
     private String tailoringFile;
 
     /** The Tailoring file ID */
@@ -98,7 +100,6 @@ public class AuditScanScheduleJson {
     /**
      * @return the OVAL files (comma-separated)
      */
-
     public String getOvalFiles() {
         return ovalFiles;
     }
@@ -131,37 +132,38 @@ public class AuditScanScheduleJson {
      */
     public String buildOscapParameters(String resolvedTailoringFile) {
         StringBuilder params = new StringBuilder();
-        
+
         // Profile is required
         params.append("--profile ").append(xccdfProfileId);
-        
+
         // Tailoring file and profile (optional)
         if (StringUtils.isNotEmpty(resolvedTailoringFile)) {
             params.append(" --tailoring-file ").append(resolvedTailoringFile);
             if (StringUtils.isNotEmpty(tailoringProfileID)) {
                 params.append(" --tailoring-profile-id ").append(tailoringProfileID);
             }
-        } else if (StringUtils.isNotEmpty(tailoringFile)) {
+        }
+        else if (StringUtils.isNotEmpty(tailoringFile)) {
              // Fallback to legacy field if no resolved file passed but field exists
             params.append(" --tailoring-file ").append(tailoringFile);
             if (StringUtils.isNotEmpty(tailoringProfileID)) {
                 params.append(" --tailoring-profile-id ").append(tailoringProfileID);
             }
         }
-        
+
         // Advanced arguments (optional)
         if (StringUtils.isNotEmpty(advancedArgs)) {
             params.append(" ").append(advancedArgs);
         }
-        
+
         // Fetch remote resources (optional)
         if (fetchRemoteResources != null && fetchRemoteResources) {
             params.append(" --fetch-remote-resources");
         }
-        
+
         return params.toString();
     }
-    
+
     /**
      * Builds the oscap parameters string using internal tailoring file field
      * @deprecated use buildOscapParameters(String resolvedTailoringFile) instead

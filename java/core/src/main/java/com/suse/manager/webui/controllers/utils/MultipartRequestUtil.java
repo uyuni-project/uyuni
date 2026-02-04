@@ -19,12 +19,12 @@ import org.apache.commons.fileupload2.core.FileItem;
 import org.apache.commons.fileupload2.core.FileUploadException;
 import org.apache.commons.fileupload2.javax.JavaxServletFileUpload;
 
-import spark.Request;
-
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
+
+import spark.Request;
 
 public class MultipartRequestUtil {
     private MultipartRequestUtil() { }
@@ -56,7 +56,8 @@ public class MultipartRequestUtil {
                 .map(item -> {
                     try {
                         return item.getString(StandardCharsets.UTF_8);
-                    } catch (IOException e) {
+                    }
+                    catch (IOException e) {
                         throw new RuntimeException("Failed to read parameter: " + name, e);
                     }
                 });
@@ -83,7 +84,8 @@ public class MultipartRequestUtil {
     public static Integer getRequiredInt(List<DiskFileItem> items, String name) {
         try {
             return Integer.parseInt(getRequiredString(items, name));
-        } catch (NumberFormatException e) {
+        }
+        catch (NumberFormatException e) {
             throw new IllegalArgumentException("Parameter '" + name + "' must be a valid integer");
         }
     }
