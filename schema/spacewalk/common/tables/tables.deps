@@ -287,6 +287,9 @@ web_contact_all                    :: web_contact
 web_user_contact_permission        :: web_contact
 web_user_site_info                 :: web_contact web_user_site_type
 web_user_personal_info             :: web_contact web_user_prefix
+suseScapContent                    ::
+suseScapTailoringFile              :: web_customer
+suseScapPolicy                     :: suseScapContent suseScapTailoringFile web_customer
 rhnActionScap                      :: rhnAction
 rhnXccdfIdent                      :: rhnXccdfIdentSystem
 rhnXccdfRuleresult                 :: rhnXccdfTestresult rhnXccdfIdent rhnXccdfRuleresultType
@@ -298,6 +301,7 @@ rhnChildChannelArchCompat          :: rhnChannelArch
 rhnResetPassword                   :: web_contact
 suseUserNotification               :: suseNotificationMessage web_contact
 suseRecurringAction                :: web_customer web_contact rhnServerGroup suseMinionInfo
+suseRecurringScapPolicy            :: suseRecurringAction suseScapPolicy
 suseAnsiblePath                    :: rhnServer
 rhnActionPlaybook                  :: rhnAction
 susePaygDimensionResult            :: billing_dimension_t susePaygDimensionComputation
@@ -316,3 +320,5 @@ userNamespace                      :: schemas/access web_contact namespace
 accessGroup                        :: schemas/access web_customer
 accessGroupNamespace               :: schemas/access accessGroup namespace
 userAccessGroup                    :: schemas/access web_contact accessGroup
+suseXccdfRuleFix                   ::
+suseXccdfRuleFixCustom             :: suseXccdfRuleFix web_customer web_contact
