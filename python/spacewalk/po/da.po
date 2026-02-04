@@ -11,33 +11,34 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-08-22 09:58+0200\n"
-"PO-Revision-Date: 2011-03-04 16:08+0000\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
+"PO-Revision-Date: 2026-02-04 14:04+0000\n"
+"Last-Translator: Peter Andreasen <noesgaard@gmail.com>\n"
+"Language-Team: Danish <https://l10n.opensuse.org/projects/uyuni/backend/da/>\n"
 "Language: da\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #: ../server/apacheAuth.py:72
 #, python-format
 msgid "incomplete proxy authentication token: %s"
-msgstr ""
+msgstr "ufuldstændig token til at identificere proxy: %s"
 
 #: ../server/apacheAuth.py:103
 #, python-format
 msgid "Sent proxy signature %s does not match ours %s."
-msgstr ""
+msgstr "Sendt proxy signatur %s matcher ikke vores %s."
 
 #: ../server/apacheAuth.py:142
 msgid "declined proxy authentication"
-msgstr ""
+msgstr "afviste proxy autentificering"
 
 #: ../server/apacheRequest.py:68
 #, python-format
 msgid "Invalid request received (%s)."
-msgstr ""
+msgstr "Ugyldig forespørgsel modtaget (%s)."
 
 #. Send the message as a fault.
 #: ../server/apacheRequest.py:130
@@ -46,6 +47,8 @@ msgid ""
 "IMPORTANT MESSAGE FOLLOWS:\n"
 "%s"
 msgstr ""
+"VIGTIG MEDDELELSE FØLGER:\n"
+"%s"
 
 #: ../server/apacheRequest.py:160
 #, python-format
@@ -53,12 +56,14 @@ msgid ""
 "While running '%s': caught\n"
 "%s : %s\n"
 msgstr ""
+"Ved kørsel af '%s': fangede\n"
+"%s : %s\n"
 
 #. pylint: disable-next=consider-using-f-string
 #: ../server/apacheRequest.py:675
 #, python-format
 msgid "Invalid URI %s"
-msgstr ""
+msgstr "Ugyldig URI %s"
 
 #: ../server/handlers/app/packages.py:220
 #, python-format
@@ -67,19 +72,22 @@ msgid ""
 "                   %s Account has been deactivated on this server.\n"
 "                   Please contact your Org administrator for more help."
 msgstr ""
+"\n"
+"                   %s Konto deaktiveret på denne server.\n"
+"                   Kontakt din Org administrator for mere hjælp."
 
 #: ../server/handlers/xmlrpc/proxy.py:71
 #, python-format
 msgid "SUSE Multi-Linux Manager Proxy service not enabled for server profile: \"%s\""
-msgstr ""
+msgstr "SUSE Multi-Linux Manager Proxy service ikke aktiveret for server profil: \"%s\""
 
 #: ../server/handlers/xmlrpc/proxy.py:94
 msgid "Invalid session key"
-msgstr ""
+msgstr "Ugyldig sessionsnøgle"
 
 #: ../server/handlers/xmlrpc/proxy.py:102
 msgid "This server ID no longer exists"
-msgstr ""
+msgstr "Dette server ID findes ikke længere"
 
 #: ../server/importlib/userAuth.py:109
 msgid "You are not authorized to manage packages in the null org"
