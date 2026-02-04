@@ -1,4 +1,5 @@
-import React, { useState, useRef } from "react";
+import { useRef, useState } from "react";
+
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { SubmitButton } from "components/buttons";
@@ -18,7 +19,6 @@ const ENDPOINTS = {
   UPDATE: "/rhn/manager/api/audit/scap/tailoring-file/update",
   LIST: "/rhn/manager/audit/scap/tailoring-files",
 } as const;
-
 
 interface TailoringFileData {
   name: string | null;
@@ -65,7 +65,7 @@ const TailoringFile = (): JSX.Element => {
     if (!formRef.current) return;
 
     const formData = new FormData(formRef.current);
-    
+
     if (isEdit && initialData.id !== null) {
       formData.append("id", initialData.id.toString());
     }
@@ -74,7 +74,7 @@ const TailoringFile = (): JSX.Element => {
 
     try {
       const response = await Network.post(endpoint, formData, "multipart/form-data", false);
-      
+
       if (response.success) {
         Utils.urlBounce(ENDPOINTS.LIST);
       } else {
@@ -103,21 +103,9 @@ const TailoringFile = (): JSX.Element => {
         onValidate={(valid: boolean) => setIsInvalid(!valid)}
         formRef={formRef}
       >
-        <Text
-          name="name"
-          label={t("Name")}
-          required
-          labelClass="col-md-3"
-          divClass="col-md-6"
-        />
-        
-        <TextArea
-          name="description"
-          label={t("Description")}
-          labelClass="col-md-3"
-          divClass="col-md-6"
-          rows={4}
-        />
+        <Text name="name" label={t("Name")} required labelClass="col-md-3" divClass="col-md-6" />
+
+        <TextArea name="description" label={t("Description")} labelClass="col-md-3" divClass="col-md-6" rows={4} />
 
         {isEdit && initialData.tailoringFileName && (
           <FormGroup>
@@ -135,13 +123,7 @@ const TailoringFile = (): JSX.Element => {
             required={!isEdit}
           />
           <div className="col-md-6">
-            <input
-              name="tailoring_file"
-              type="file"
-              className="form-control"
-              accept=".xml"
-              required={!isEdit}
-            />
+            <input name="tailoring_file" type="file" className="form-control" accept=".xml" required={!isEdit} />
           </div>
         </FormGroup>
 

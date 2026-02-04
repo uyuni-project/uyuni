@@ -1,19 +1,20 @@
 import "./audit-common.css";
 
-import * as React from "react";
+import { Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
-import { Messages, Utils } from "components/messages/messages";
-import { Panel } from "components/panels/Panel";
-import Network from "utils/network";
+
+import { AceEditor } from "components/ace-editor";
+import { ActionSchedule } from "components/action-schedule";
 import { SubmitButton } from "components/buttons";
 import { Form } from "components/input/form/Form";
 import { Select } from "components/input/select/Select";
-import { ActionSchedule } from "components/action-schedule";
-import { AceEditor } from "components/ace-editor";
-import { localizedMoment } from "utils";
-import { Utils as MessagesUtils } from "components/messages/messages";
 import { ActionLink } from "components/links";
+import { Messages, Utils as MessagesUtils } from "components/messages/messages";
+import { Panel } from "components/panels/Panel";
+
+import { localizedMoment } from "utils";
+import Network from "utils/network";
 
 declare global {
   interface Window {
@@ -73,8 +74,8 @@ function htmlDecode(input: string): string {
   return doc.documentElement.textContent || "";
 }
 
-class RuleResultDetail extends React.Component<{}, StateType> {
-  constructor(props: {}) {
+class RuleResultDetail extends Component<object, StateType> {
+  constructor(props: object) {
     super(props);
 
     this.state = {
@@ -117,7 +118,7 @@ class RuleResultDetail extends React.Component<{}, StateType> {
               const editor = (window as any).ace.edit(editorElement);
               editor.setValue(content, -1);
             } catch (e2) {
-              console.warn("Failed to set editor value:", e2);
+              // Failed to set editor value
             }
           }, 200);
         }
@@ -129,7 +130,9 @@ class RuleResultDetail extends React.Component<{}, StateType> {
     const { identifier, benchmarkId } = this.state;
     if (!identifier || !benchmarkId) return;
 
-    Network.get(`/rhn/manager/api/audit/scap/custom-remediation/${encodeURIComponent(identifier)}/${encodeURIComponent(benchmarkId)}`)
+    Network.get(
+      `/rhn/manager/api/audit/scap/custom-remediation/${encodeURIComponent(identifier)}/${encodeURIComponent(benchmarkId)}`
+    )
       .then((data) => {
         if (data.success && data.data) {
           const bashContent = data.data.customRemediationBash || "";
@@ -137,7 +140,7 @@ class RuleResultDetail extends React.Component<{}, StateType> {
           const hasAny = bashContent || saltContent;
           const scriptType = bashContent ? "bash" : "salt";
           const customContent = bashContent || saltContent;
-          
+
           this.setState({
             customRemediation: customContent,
             customRemediationBash: bashContent,
@@ -148,7 +151,7 @@ class RuleResultDetail extends React.Component<{}, StateType> {
             hasCustomRemediation: !!hasAny,
             activeTabHash: hasAny ? TABS.CUSTOM : TABS.ORIGINAL,
           });
-          
+
           this.setEditorValue(customContent);
         }
       })
@@ -172,10 +175,10 @@ class RuleResultDetail extends React.Component<{}, StateType> {
   onCustomRemediationChange = (content: string) => {
     const { customScriptType } = this.state;
     const key = REMEDIATION_STATE_KEYS[customScriptType];
-    
+
     this.setState({
       customRemediation: content,
-      [key]: content
+      [key]: content,
     } as any);
   };
 
@@ -211,11 +214,11 @@ class RuleResultDetail extends React.Component<{}, StateType> {
           hasCustomRemediation: true,
           isSaving: false,
           [key]: customRemediation,
-          [savedKey]: customRemediation
+          [savedKey]: customRemediation,
         } as any);
-        
+
         // Scroll to top to show success message
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({ top: 0, behavior: "smooth" });
       })
       .catch((error) => {
         this.setState({ isSaving: false });
@@ -237,35 +240,36 @@ class RuleResultDetail extends React.Component<{}, StateType> {
         const { customScriptType, customRemediationBash, customRemediationSalt } = this.state;
         const key = REMEDIATION_STATE_KEYS[customScriptType];
         const savedKey = SAVED_REMEDIATION_STATE_KEYS[customScriptType];
-        
+
         // Check if OTHER script type still has content
-        const otherHasContent = customScriptType === SCRIPT_TYPE.BASH ? !!customRemediationSalt : !!customRemediationBash;
-        
+        const otherHasContent =
+          customScriptType === SCRIPT_TYPE.BASH ? !!customRemediationSalt : !!customRemediationBash;
+
         const updates: any = {
           messages: MessagesUtils.success("Custom remediation deleted successfully"),
           customRemediation: "",
           [key]: "",
           [savedKey]: "",
           hasCustomRemediation: otherHasContent,
-          activeTabHash: otherHasContent ? TABS.CUSTOM : TABS.ORIGINAL
+          activeTabHash: otherHasContent ? TABS.CUSTOM : TABS.ORIGINAL,
         };
-        
+
         this.setState(updates);
         this.setEditorValue("");
-        
+
         // Scroll to top to show success message
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.scrollTo({ top: 0, behavior: "smooth" });
       })
       .catch(this.handleResponseError);
   };
 
-  onApplyRemediation = (model: any) => {
-    const { activeTabHash, customRemediation, originalRemediation, identifier, benchmarkId, customScriptType } = this.state;
-    
+  onApplyRemediation = () => {
+    const { activeTabHash, customRemediation, originalRemediation, identifier, benchmarkId, customScriptType } =
+      this.state;
+
     // Determine which remediation to apply based on active tab
-    const remediationToApply = activeTabHash === TABS.CUSTOM && customRemediation
-      ? customRemediation
-      : originalRemediation;
+    const remediationToApply =
+      activeTabHash === TABS.CUSTOM && customRemediation ? customRemediation : originalRemediation;
 
     const scriptType = activeTabHash === TABS.CUSTOM ? customScriptType : SCRIPT_TYPE.BASH;
 
@@ -308,14 +312,15 @@ class RuleResultDetail extends React.Component<{}, StateType> {
           </span>
         );
 
-        const msgs = this.state.messages.concat(msg);
+        this.setState((prevState) => {
+          const msgs = prevState.messages.concat(msg);
 
-        // Do not spam UI showing old messages
-        while (msgs.length > messagesCounterLimit) {
-          msgs.shift();
-        }
-
-        this.setState({ messages: msgs });
+          // Do not spam UI showing old messages
+          while (msgs.length > messagesCounterLimit) {
+            msgs.shift();
+          }
+          return { messages: msgs };
+        });
       })
       .catch(this.handleResponseError);
   };
@@ -329,9 +334,7 @@ class RuleResultDetail extends React.Component<{}, StateType> {
   renderOriginalTab() {
     return (
       <div className={`tab-content ${this.state.activeTabHash === "#original" ? "active" : ""}`}>
-        <div className="tab-description">
-          This is the original remediation from the SCAP datastream (read-only)
-        </div>
+        <div className="tab-description">This is the original remediation from the SCAP datastream (read-only)</div>
         <div className="editor-container">
           <AceEditor
             id="originalRemediation"
@@ -356,16 +359,16 @@ class RuleResultDetail extends React.Component<{}, StateType> {
             value={this.state.customScriptType}
             onChange={(value) => {
               const newScriptType = value as "bash" | "salt";
-              const newContent = newScriptType === "bash" 
-                ? this.state.customRemediationBash 
-                : this.state.customRemediationSalt;
-              
-              this.setState({ 
-                customScriptType: newScriptType,
-                customRemediation: newContent,
+
+              this.setState((prevState) => {
+                const newContent =
+                  newScriptType === "bash" ? prevState.customRemediationBash : prevState.customRemediationSalt;
+                this.setEditorValue(newContent);
+                return {
+                  customScriptType: newScriptType,
+                  customRemediation: newContent,
+                };
               });
-              
-              this.setEditorValue(newContent);
             }}
             options={[
               { value: "bash", label: "Bash Script" },

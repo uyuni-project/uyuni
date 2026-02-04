@@ -9,8 +9,8 @@ import { DEPRECATED_Select, Form } from "components/input";
 import { Utils as MessagesUtils } from "components/messages/messages";
 import { InnerPanel } from "components/panels/InnerPanel";
 import { RecurringEventPicker } from "components/picker/recurring-event-picker";
-import { StatesPicker } from "components/states-picker";
 import { PoliciesPicker } from "components/policies-picker";
+import { StatesPicker } from "components/states-picker";
 import { Toggler } from "components/toggler";
 
 import Network from "utils/network";
@@ -98,7 +98,7 @@ class RecurringActionsEdit extends Component<Props, State> {
   matchUrl = (target?: string, filter?: string) => {
     const id = this.state.recurringActionId;
     if (target === "policy") {
-      let url = "/rhn/manager/api/recurringactions/policies?";
+      const url = "/rhn/manager/api/recurringactions/policies?";
       const params: string[] = [];
       if (id) params.push("id=" + id);
       if (filter) params.push("filter=" + encodeURIComponent(filter));
@@ -314,10 +314,7 @@ class RecurringActionsEdit extends Component<Props, State> {
               {t("SCAP Policies")}
               &nbsp;
             </h3>
-            <PoliciesPicker
-              matchUrl={(filter) => this.matchUrl("policy", filter)}
-              saveRequest={this.onSavePolicies}
-            />
+            <PoliciesPicker matchUrl={(filter) => this.matchUrl("policy", filter)} saveRequest={this.onSavePolicies} />
           </span>
         )}
         {this.state.actionTypeDescription === "Ansible Playbook" && (

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
+
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { LinkButton } from "components/buttons";
@@ -10,8 +11,8 @@ import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
 import { Table } from "components/table/Table";
 
-import Network from "utils/network";
 import { Utils } from "utils/functions";
+import Network from "utils/network";
 
 const ENDPOINTS = {
   DELETE: "/rhn/manager/api/audit/scap/tailoring-file/delete",
@@ -34,9 +35,7 @@ const TailoringFiles = (): JSX.Element => {
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const [selected, setSelected] = useState<TailoringFileData | null>(null);
-  const [tailoringFiles, setTailoringFiles] = useState<TailoringFileData[]>(
-    window.tailoringFiles || []
-  );
+  const [tailoringFiles, setTailoringFiles] = useState<TailoringFileData[]>(window.tailoringFiles || []);
 
   const deleteTailoringFiles = async (idList: number[]) => {
     const msgMap: Record<string, string> = {
@@ -50,15 +49,13 @@ const TailoringFiles = (): JSX.Element => {
       if (response.success) {
         const key = idList.length > 1 ? "delete_success_p" : "delete_success";
         const successMessage = MessageUtils.success(msgMap[key]);
-        
+
         setMessages(successMessage);
         setTailoringFiles((prev) => prev.filter((f) => !idList.includes(f.id)));
         setSelectedItems((prev) => prev.filter((id) => !idList.includes(id)));
         setSelected(null);
       } else {
-        const errorMsgs = response.messages.map((m: string) => 
-          MessageUtils.error(msgMap[m] || m)
-        );
+        const errorMsgs = response.messages.map((m: string) => MessageUtils.error(msgMap[m] || m));
         setMessages(errorMsgs);
       }
     } catch (error: unknown) {
@@ -70,10 +67,7 @@ const TailoringFiles = (): JSX.Element => {
   const searchFilter = (data: TailoringFileData, criteria?: string) => {
     if (!criteria) return true;
     const search = criteria.toLowerCase();
-    return (
-      data.name?.toLowerCase().includes(search) ||
-      data.fileName?.toLowerCase().includes(search)
-    );
+    return data.name?.toLowerCase().includes(search) || data.fileName?.toLowerCase().includes(search);
   };
 
   const ActionButtons = () => (

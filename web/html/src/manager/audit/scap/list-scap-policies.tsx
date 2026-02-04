@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
+
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { LinkButton } from "components/buttons";
+import { ComplianceBadge } from "components/ComplianceBadge";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
 import { Messages, MessageType, Utils as MessageUtils } from "components/messages/messages";
@@ -9,10 +11,9 @@ import { TopPanel } from "components/panels/TopPanel";
 import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
 import { Table } from "components/table/Table";
-import { ComplianceBadge } from "components/ComplianceBadge";
 
-import Network from "utils/network";
 import { Utils } from "utils/functions";
+import Network from "utils/network";
 
 const ENDPOINTS = {
   DELETE: "/rhn/manager/api/audit/scap/policy/delete",
@@ -37,9 +38,7 @@ const ScapPolicy = (): JSX.Element => {
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const [selected, setSelected] = useState<ScapPolicyData | null>(null);
-  const [scapPolicies, setScapPolicies] = useState<ScapPolicyData[]>(
-    window.scapPolicies || []
-  );
+  const [scapPolicies, setScapPolicies] = useState<ScapPolicyData[]>(window.scapPolicies || []);
 
   const deleteScapPolicies = async (idList: number[]) => {
     const msgMap: Record<string, string> = {
@@ -59,9 +58,7 @@ const ScapPolicy = (): JSX.Element => {
         setSelectedItems((prev) => prev.filter((id) => !idList.includes(id)));
         setSelected(null);
       } else {
-        const errorMsgs = response.messages.map((m: string) =>
-          MessageUtils.error(msgMap[m] || m)
-        );
+        const errorMsgs = response.messages.map((m: string) => MessageUtils.error(msgMap[m] || m));
         setMessages(errorMsgs);
       }
     } catch (error: unknown) {
@@ -119,11 +116,7 @@ const ScapPolicy = (): JSX.Element => {
 
   return (
     <>
-      <TopPanel
-        title={t("Scap Policies")}
-        icon="spacewalk-icon-manage-configuration-files"
-        button={<ActionButtons />}
-      >
+      <TopPanel title={t("Scap Policies")} icon="spacewalk-icon-manage-configuration-files" button={<ActionButtons />}>
         <Messages items={messages} />
         <Table
           data={scapPolicies}

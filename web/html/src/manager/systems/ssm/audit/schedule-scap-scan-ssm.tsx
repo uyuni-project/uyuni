@@ -1,9 +1,10 @@
 import "manager/minion/audit/audit-common.css";
 
-import React from "react";
 import SpaRenderer from "core/spa/spa-renderer";
-import Network from "utils/network";
+
 import { ScheduleScapScanForm } from "components/audit/schedule-scap-scan-form";
+
+import Network from "utils/network";
 
 const ENDPOINTS = {
   SCHEDULE_CREATE: "/rhn/manager/api/audit/schedule/create",
@@ -26,8 +27,8 @@ declare global {
 }
 
 const ScheduleAuditScanSsm = (): JSX.Element => {
-  const scheduleData = (window as any).scheduleData as ScheduleData || {};
-  
+  const scheduleData = ((window as any).scheduleData as ScheduleData) || {};
+
   const tailoringFiles = scheduleData.tailoringFiles || [];
   const scapPolicies = scheduleData.scapPolicies || [];
   const scapContentList = scheduleData.scapContentList || [];
@@ -59,8 +60,8 @@ const ScheduleAuditScanSsm = (): JSX.Element => {
 };
 
 export const renderer = () => {
-    const container = document.getElementById("schedule-scap-scan");
-    if (container) {
-        SpaRenderer.renderNavigationReact(<ScheduleAuditScanSsm />, container);
-    }
+  const container = document.getElementById("schedule-scap-scan");
+  if (container) {
+    SpaRenderer.renderNavigationReact(<ScheduleAuditScanSsm />, container);
+  }
 };

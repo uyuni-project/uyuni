@@ -1,9 +1,10 @@
 import "./audit-common.css";
 
-import React from "react";
 import SpaRenderer from "core/spa/spa-renderer";
-import Network from "utils/network";
+
 import { ScheduleScapScanForm } from "components/audit/schedule-scap-scan-form";
+
+import Network from "utils/network";
 
 const ENDPOINTS = {
   SCHEDULE_CREATE: "/rhn/manager/api/audit/schedule/create",

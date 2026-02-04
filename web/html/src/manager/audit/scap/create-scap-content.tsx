@@ -1,4 +1,5 @@
-import React, { useState, useRef } from "react";
+import { useRef, useState } from "react";
+
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { SubmitButton } from "components/buttons";
@@ -55,7 +56,7 @@ const ScapContentForm = (): JSX.Element => {
   const [isInvalid, setIsInvalid] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
 
-  const isEdit = initialData.id != null;
+  const isEdit = initialData.id !== undefined && initialData.id !== null;
 
   const handleUpload = async () => {
     if (!formRef.current) return;
@@ -98,32 +99,14 @@ const ScapContentForm = (): JSX.Element => {
         onSubmit={handleUpload}
         formRef={formRef}
       >
-        <Text
-          name="name"
-          label={t("Name")}
-          required
-          labelClass="col-md-3"
-          divClass="col-md-6"
-        />
+        <Text name="name" label={t("Name")} required labelClass="col-md-3" divClass="col-md-6" />
 
-        <TextArea
-          name="description"
-          label={t("Description")}
-          labelClass="col-md-3"
-          divClass="col-md-6"
-          rows={4}
-        />
+        <TextArea name="description" label={t("Description")} labelClass="col-md-3" divClass="col-md-6" rows={4} />
 
         <FormGroup>
           <Label name={t("SCAP Datastream File")} className="col-md-3" required={!isEdit} />
           <div className="col-md-6">
-            <input
-              type="file"
-              name="scapFile"
-              accept=".xml"
-              className="form-control"
-              required={!isEdit}
-            />
+            <input type="file" name="scapFile" accept=".xml" className="form-control" required={!isEdit} />
             {isEdit && initialData.dataStreamFileName && (
               <div className="help-block">
                 {t("Current file")}: <strong>{initialData.dataStreamFileName}</strong>
@@ -131,24 +114,14 @@ const ScapContentForm = (): JSX.Element => {
                 {t("Upload a new file to replace the existing one")}
               </div>
             )}
-            {!isEdit && (
-              <div className="help-block">
-                {t("Upload the DataStream file (*-ds.xml)")}
-              </div>
-            )}
+            {!isEdit && <div className="help-block">{t("Upload the DataStream file (*-ds.xml)")}</div>}
           </div>
         </FormGroup>
 
         <FormGroup>
           <Label name={t("XCCDF File")} className="col-md-3" required={!isEdit} />
           <div className="col-md-6">
-            <input
-              type="file"
-              name="xccdfFile"
-              accept=".xml"
-              className="form-control"
-              required={!isEdit}
-            />
+            <input type="file" name="xccdfFile" accept=".xml" className="form-control" required={!isEdit} />
             {isEdit && initialData.xccdfFileName && (
               <div className="help-block">
                 {t("Current file")}: <strong>{initialData.xccdfFileName}</strong>
@@ -156,11 +129,7 @@ const ScapContentForm = (): JSX.Element => {
                 {t("Upload a new file to replace the existing one")}
               </div>
             )}
-            {!isEdit && (
-              <div className="help-block">
-                {t("Upload the XCCDF file (*-xccdf.xml)")}
-              </div>
-            )}
+            {!isEdit && <div className="help-block">{t("Upload the XCCDF file (*-xccdf.xml)")}</div>}
           </div>
         </FormGroup>
 

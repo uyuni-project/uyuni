@@ -1,12 +1,12 @@
-import React, { useState, useEffect, ReactNode } from "react";
+import { ChangeEvent, ReactNode, useEffect, useState } from "react";
+
 import _partition from "lodash/partition";
 import _sortBy from "lodash/sortBy";
 
+import Network from "../utils/network";
 import { AsyncButton } from "./buttons";
 import { TextField } from "./fields";
 import { Messages, MessageType, Utils as MessagesUtils } from "./messages/messages";
-
-import Network from "../utils/network";
 
 interface Policy {
   id: number;
@@ -46,9 +46,7 @@ export const PoliciesPicker = ({
 
   const getSortedList = (data: Policy[]) => {
     const [assigned, unassigned] = _partition(data, (d) => d.assigned);
-    return _sortBy(assigned, "position").concat(
-      _sortBy(unassigned, (p) => p.policyName.toLowerCase())
-    );
+    return _sortBy(assigned, "position").concat(_sortBy(unassigned, (p) => p.policyName.toLowerCase()));
   };
 
   useEffect(() => {
@@ -58,13 +56,12 @@ export const PoliciesPicker = ({
       setSearchResults(sortedData);
       setCurrentFilter(""); // Initially filter is empty equivalent
     });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Only run on mount
 
   const save = async (currentAssigned: Policy[]) => {
     try {
       const data = await saveRequest(currentAssigned);
-      
+
       const newSearchResults = searchResults.map((policy) => {
         return data.find((p) => p.id === policy.id) || policy;
       });
@@ -76,7 +73,7 @@ export const PoliciesPicker = ({
     }
   };
 
-  const onSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
     setFilter(event.target.value);
   };
 
@@ -88,7 +85,7 @@ export const PoliciesPicker = ({
         setCurrentFilter(filter);
         clearMessages();
       } catch (error) {
-         // handle error if needed, usually Network handles disjointed
+        // handle error if needed, usually Network handles disjointed
       }
     }
   };
@@ -122,10 +119,7 @@ export const PoliciesPicker = ({
         {searchResults.map((policy) => (
           <tr id={`${policy.id}-row`} key={policy.id}>
             <td>
-              <i
-                className="fa spacewalk-icon-manage-configuration-files"
-                title={t("SCAP Policy")}
-              />
+              <i className="fa spacewalk-icon-manage-configuration-files" title={t("SCAP Policy")} />
               {policy.policyName}
             </td>
             <td>{policy.dataStreamName}</td>
@@ -171,11 +165,7 @@ export const PoliciesPicker = ({
                     onPressEnter={search}
                   />
                   <span className="input-group-btn">
-                    <AsyncButton
-                      id="search-policies"
-                      text={t("Search")}
-                      action={search}
-                    />
+                    <AsyncButton id="search-policies" text={t("Search")} action={search} />
                   </span>
                 </div>
               </div>

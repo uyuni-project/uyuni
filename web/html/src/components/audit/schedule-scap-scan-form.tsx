@@ -1,16 +1,18 @@
-import React, { useState } from "react";
-import { Messages, MessageType, Utils as MessagesUtils } from "components/messages/messages";
-import { Panel } from "components/panels/Panel";
-import Network from "utils/network";
-import { SubmitButton, LinkButton } from "components/buttons";
+import { useState } from "react";
+
+import { ActionSchedule } from "components/action-schedule";
+import { LinkButton, SubmitButton } from "components/buttons";
 import { Form } from "components/input/form/Form";
 import { FormGroup } from "components/input/FormGroup";
 import { Label } from "components/input/Label";
 import { Select } from "components/input/select/Select";
 import { Text } from "components/input/text/Text";
-import { ActionSchedule } from "components/action-schedule";
-import { localizedMoment } from "utils";
 import { ActionLink } from "components/links";
+import { Messages, MessageType, Utils as MessagesUtils } from "components/messages/messages";
+import { Panel } from "components/panels/Panel";
+
+import { localizedMoment } from "utils";
+import Network from "utils/network";
 
 const ENDPOINTS = {
   PROFILES_LIST: "/rhn/manager/api/audit/profiles/list",
@@ -94,7 +96,7 @@ export const ScheduleScapScanForm = ({
   const handleScapPolicyChange = async (value: number | null) => {
     if (!value) {
       setSelectedScapPolicy(null);
-      setModel({}); 
+      setModel({});
       setXccdfProfiles([]);
       setTailoringFileProfiles([]);
       return;
@@ -103,11 +105,11 @@ export const ScheduleScapScanForm = ({
     setSelectedScapPolicy(value);
     try {
       const data = await Network.get(`${ENDPOINTS.POLICY_VIEW}/${value}`);
-      
+
       const newXccdfProfiles = data.xccdfProfileId
         ? [{ id: data.xccdfProfileId, title: data.xccdfProfileTitle || data.xccdfProfileId }]
         : [];
-        
+
       const newTailoringFileProfiles = data.tailoringProfileId
         ? [{ id: data.tailoringProfileId, title: data.tailoringProfileTitle || data.tailoringProfileId }]
         : [];
@@ -122,7 +124,7 @@ export const ScheduleScapScanForm = ({
         advancedArgs: data.advancedArgs || "",
         fetchRemoteResources: data.fetchRemoteResources || false,
       }));
-      
+
       setXccdfProfiles(newXccdfProfiles);
       setTailoringFileProfiles(newTailoringFileProfiles);
     } catch (error: unknown) {
@@ -152,13 +154,7 @@ export const ScheduleScapScanForm = ({
   };
 
   const renderButtons = () => (
-    <SubmitButton
-      id="create-btn"
-      className="btn-success"
-      icon="fa-clock-o"
-      text={t("Schedule")}
-      disabled={isInvalid}
-    />
+    <SubmitButton id="create-btn" className="btn-success" icon="fa-clock-o" text={t("Schedule")} disabled={isInvalid} />
   );
 
   return (

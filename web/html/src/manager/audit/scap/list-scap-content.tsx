@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
+
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { LinkButton } from "components/buttons";
@@ -10,8 +11,8 @@ import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
 import { Table } from "components/table/Table";
 
-import Network from "utils/network";
 import { Utils } from "utils/functions";
+import Network from "utils/network";
 
 const ENDPOINTS = {
   DELETE: "/rhn/manager/api/audit/scap/content/delete",
@@ -35,9 +36,7 @@ const ScapContent = (): JSX.Element => {
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const [selected, setSelected] = useState<ScapContentData | null>(null);
-  const [scapContent, setScapContent] = useState<ScapContentData[]>(
-    window.scapContent || []
-  );
+  const [scapContent, setScapContent] = useState<ScapContentData[]>(window.scapContent || []);
 
   const deleteScapContent = async (idList: number[]) => {
     const msgMap: Record<string, string> = {
@@ -57,9 +56,7 @@ const ScapContent = (): JSX.Element => {
         setSelectedItems((prev) => prev.filter((id) => !idList.includes(id)));
         setSelected(null);
       } else {
-        const errorMsgs = response.messages.map((m: string) =>
-          MessageUtils.error(msgMap[m] || m)
-        );
+        const errorMsgs = response.messages.map((m: string) => MessageUtils.error(msgMap[m] || m));
         setMessages(errorMsgs);
       }
     } catch (error: unknown) {
@@ -112,11 +109,7 @@ const ScapContent = (): JSX.Element => {
 
   return (
     <>
-      <TopPanel
-        title={t("SCAP Content")}
-        icon="spacewalk-icon-manage-configuration-files"
-        button={<ActionButtons />}
-      >
+      <TopPanel title={t("SCAP Content")} icon="spacewalk-icon-manage-configuration-files" button={<ActionButtons />}>
         <Messages items={messages} />
         <Table
           data={scapContent}

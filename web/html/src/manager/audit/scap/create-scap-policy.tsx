@@ -1,19 +1,18 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
+
 import SpaRenderer from "core/spa/spa-renderer";
 
-import { SubmitButton, LinkButton } from "components/buttons";
+import { LinkButton, SubmitButton } from "components/buttons";
 import { Form } from "components/input/form/Form";
 import { FormGroup } from "components/input/FormGroup";
 import { Label } from "components/input/Label";
+import { Select } from "components/input/select/Select";
 import { Text } from "components/input/text/Text";
 import { TextArea } from "components/input/text-area/TextArea";
-import { Select } from "components/input/select/Select";
 import { Messages, MessageType, Utils as MessageUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 
-import { Utils } from "utils/functions";
 import Network from "utils/network";
-import { localizedMoment } from "utils/datetime";
 
 const ENDPOINTS = {
   CREATE: "/rhn/manager/api/audit/scap/policy/create",
@@ -161,13 +160,7 @@ const ScapPolicy = (): JSX.Element => {
   return (
     <TopPanel title={title} icon="spacewalk-icon-manage-configuration-files">
       <Messages items={messages} />
-      <Form
-        model={model}
-        className="scap-policy-form"
-        onChange={setModel}
-        onSubmit={onSubmit}
-        formRef={formRef}
-      >
+      <Form model={model} className="scap-policy-form" onChange={setModel} onSubmit={onSubmit} formRef={formRef}>
         <Text name="policyName" label={t("Name")} required labelClass="col-md-3" divClass="col-md-6" />
 
         <TextArea name="description" label={t("Description")} labelClass="col-md-3" divClass="col-md-6" />

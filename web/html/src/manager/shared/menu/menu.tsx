@@ -52,7 +52,7 @@ class Node extends Component<NodeProps> {
 
   render() {
     const betaBadge = this.props.isBeta ? <span className="menu-beta-badge">BETA</span> : null;
-    
+
     return (
       <div
         className={this.props.isLeaf ? "leafLink" : "nodeLink"}
@@ -60,9 +60,9 @@ class Node extends Component<NodeProps> {
         role="button"
       >
         {this.props.icon ? <i className={"fa " + this.props.icon}></i> : null}
-        <Link 
-          url={this.props.url} 
-          target={this.props.target} 
+        <Link
+          url={this.props.url}
+          target={this.props.target}
           label={stringToReact(this.props.label)}
           betaBadge={betaBadge}
         />

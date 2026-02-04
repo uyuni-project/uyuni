@@ -1,8 +1,8 @@
 import "./scap-policy-details.css";
 
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+
 import SpaRenderer from "core/spa/spa-renderer";
-import moment from "moment";
 
 import { LinkButton } from "components/buttons";
 import { Panel } from "components/panels/Panel";
@@ -11,6 +11,7 @@ import { Column } from "components/table/Column";
 import { SearchField } from "components/table/SearchField";
 import { Table } from "components/table/Table";
 
+import { localizedMoment } from "utils";
 import Network from "utils/network";
 
 const ENDPOINTS = {
@@ -55,7 +56,6 @@ type PolicyData = {
   fetchRemoteResources?: boolean;
 };
 
-
 const SummaryCard = ({ value, label }: { value: string | number; label: string }): JSX.Element => (
   <div className="col-md-3">
     <div className="panel panel-default text-center">
@@ -76,50 +76,46 @@ const ConfigRow = ({ label, value, code = false }: { label: string; value: strin
 
 // Helper Functions
 const getComplianceStatus = (failCount: number) => ({
-  className: failCount === 0 ? 'label-success' : 'label-danger',
-  text: failCount === 0 ? t("Compliant") : t("Non-Compliant")
+  className: failCount === 0 ? "label-success" : "label-danger",
+  text: failCount === 0 ? t("Compliant") : t("Non-Compliant"),
 });
 
 const ScapPolicyDetails = ({ policyId, policyData }: { policyId: number; policyData: PolicyData }): JSX.Element => {
   const [scanHistory, setScanHistory] = useState<ScanHistoryEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [showLatestOnly, setShowLatestOnly] = useState(true);
-  
+
   useEffect(() => {
     Network.get(`${ENDPOINTS.SCAN_HISTORY}/${policyId}/scan-history`)
-      .then(data => {
+      .then((data) => {
         setScanHistory(data);
         setLoading(false);
       })
-      .catch((error: unknown) => {
+      .catch(() => {
         setLoading(false);
       });
   }, [policyId]);
-  
+
   const policy: PolicyData = policyData;
-  
+
   const totalScans = scanHistory.length;
-  
+
   const latestBySid = new Map<number, ScanHistoryEntry>();
-  scanHistory.forEach(scan => {
+  scanHistory.forEach((scan) => {
     const current = latestBySid.get(scan.sid);
-    if (!current || moment(scan.completed).isAfter(current.completed)) {
+    if (!current || localizedMoment(scan.completed).isAfter(current.completed)) {
       latestBySid.set(scan.sid, scan);
     }
   });
   const latestScans = Array.from(latestBySid.values());
 
   const uniqueSystems = latestScans.length;
-  
-  const compliantUniqueSystems = latestScans.filter(s => 
-    (s.fail || 0) === 0
-  ).length;
-  
-  const complianceRate = uniqueSystems > 0 
-    ? ((compliantUniqueSystems / uniqueSystems) * 100).toFixed(1) 
-    : "0";
-  
-  const compliantScans = scanHistory.filter(s => (s.fail || 0) === 0).length;
+
+  const compliantUniqueSystems = latestScans.filter((s) => (s.fail || 0) === 0).length;
+
+  const complianceRate = uniqueSystems > 0 ? ((compliantUniqueSystems / uniqueSystems) * 100).toFixed(1) : "0";
+
+  const compliantScans = scanHistory.filter((s) => (s.fail || 0) === 0).length;
 
   const getFilteredHistory = () => {
     if (!showLatestOnly) {
@@ -134,7 +130,7 @@ const ScapPolicyDetails = ({ policyId, policyData }: { policyId: number; policyD
   };
 
   const tableData = getFilteredHistory();
-  
+
   return (
     <div>
       <TopPanel
@@ -156,7 +152,7 @@ const ScapPolicyDetails = ({ policyId, policyData }: { policyId: number; policyD
           <SummaryCard value={compliantScans} label="Compliant Scans" />
           <SummaryCard value={`${complianceRate}%`} label="Compliance Rate" />
         </div>
-        
+
         {/* Policy Configuration Section */}
         <div className="panel panel-default mb-20">
           <div className="panel-heading">
@@ -166,14 +162,16 @@ const ScapPolicyDetails = ({ policyId, policyData }: { policyId: number; policyD
             <dl className="row">
               <ConfigRow label="SCAP Content" value={policy.dataStreamName || t("N/A")} />
               <ConfigRow label="XCCDF Profile" value={policy.xccdfProfileId || t("N/A")} code />
-              
+
               {policy.tailoringFileName && <ConfigRow label="Tailoring File" value={policy.tailoringFileName} />}
-              {policy.tailoringProfileId && <ConfigRow label="Tailoring Profile" value={policy.tailoringProfileId} code />}
+              {policy.tailoringProfileId && (
+                <ConfigRow label="Tailoring Profile" value={policy.tailoringProfileId} code />
+              )}
               {policy.ovalFiles && <ConfigRow label="OVAL Files" value={policy.ovalFiles} />}
               {policy.advancedArgs && <ConfigRow label="Advanced Arguments" value={policy.advancedArgs} code />}
-              
+
               <ConfigRow label="Fetch Remote Resources" value={policy.fetchRemoteResources ? t("Yes") : t("No")} />
-              
+
               {policy.description && <ConfigRow label="Description" value={policy.description} />}
             </dl>
           </div>
@@ -187,19 +185,17 @@ const ScapPolicyDetails = ({ policyId, policyData }: { policyId: number; policyD
             <i className="fa fa-spinner fa-spin fa-2x" />
           </div>
         ) : scanHistory.length === 0 ? (
-          <div className="alert alert-info">
-            {t("No scans have been performed with this policy yet.")}
-          </div>
+          <div className="alert alert-info">{t("No scans have been performed with this policy yet.")}</div>
         ) : (
           <div>
             <div className="row mb-10">
               <div className="col-md-12">
                 <div className="checkbox">
                   <label>
-                    <input 
-                      type="checkbox" 
-                      checked={showLatestOnly} 
-                      onChange={(e) => setShowLatestOnly(e.target.checked)} 
+                    <input
+                      type="checkbox"
+                      checked={showLatestOnly}
+                      onChange={(e) => setShowLatestOnly(e.target.checked)}
                     />
                     {t("Show only latest scan per system")}
                   </label>
@@ -216,16 +212,12 @@ const ScapPolicyDetails = ({ policyId, policyData }: { policyId: number; policyD
               <Column
                 columnKey="serverName"
                 header={t("System")}
-                cell={(row) => (
-                  <a href={`/rhn/systems/details/Overview.do?sid=${row.sid}`}>
-                    {row.serverName}
-                  </a>
-                )}
+                cell={(row) => <a href={`/rhn/systems/details/Overview.do?sid=${row.sid}`}>{row.serverName}</a>}
               />
               <Column
                 columnKey="completed"
                 header={t("Scan Date")}
-                cell={(row) => moment(row.completed).format("YYYY-MM-DD HH:mm")}
+                cell={(row) => localizedMoment(row.completed).format("YYYY-MM-DD HH:mm")}
               />
 
               <Column
@@ -247,10 +239,10 @@ const ScapPolicyDetails = ({ policyId, policyData }: { policyId: number; policyD
                 header={
                   <span>
                     {t("Other")}
-                    <i 
-                      className="fa fa-info-circle fa-fw" 
+                    <i
+                      className="fa fa-info-circle fa-fw"
                       style={{ marginLeft: "5px" }}
-                      data-bs-toggle="tooltip" 
+                      data-bs-toggle="tooltip"
                       title={t("not selected or not applicable")}
                     />
                   </span>
@@ -292,12 +284,13 @@ const ScapPolicyDetails = ({ policyId, policyData }: { policyId: number; policyD
 
 export const renderer = () => {
   const pageData = (window as any).scapPolicyPageData as ScapPolicyDetailsPageData | undefined;
-  
+
+  if (!pageData) {
+    return null;
+  }
+
   return SpaRenderer.renderNavigationReact(
-    <ScapPolicyDetails 
-      policyId={pageData?.policyId!} 
-      policyData={pageData?.policyData!} 
-    />,
+    <ScapPolicyDetails policyId={pageData.policyId} policyData={pageData.policyData} />,
     document.getElementById("scap-policy-details")
   );
 };

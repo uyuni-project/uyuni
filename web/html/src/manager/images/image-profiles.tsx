@@ -79,7 +79,6 @@ class ImageProfiles extends Component<Props, State> {
   };
 
   selectProfile = (row) => {
-   console.log(row);
     this.setState({
       selected: row,
     });
