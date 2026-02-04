@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Feb 04 14:12:32 CET 2026 - michael.calmer@suse.com
+
+- version 5.2.5-0
+  * Add check for virt vm_info availability (bsc#1254316)
+
+-------------------------------------------------------------------
 Tue Jan 27 09:30:16 WET 2026 - psuarezhernandez@suse.com
 
 - version 5.2.4-0
