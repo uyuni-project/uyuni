@@ -290,6 +290,8 @@ web_user_personal_info             :: web_contact web_user_prefix
 suseScapContent                    ::
 suseScapTailoringFile              :: web_customer
 suseScapPolicy                     :: suseScapContent suseScapTailoringFile web_customer
+suseXccdfRulefix                   ::
+suseXccdfRuleFixCustom             :: suseXccdfRulefix web_customer web_contact
 rhnActionScap                      :: rhnAction
 rhnXccdfIdent                      :: rhnXccdfIdentSystem
 rhnXccdfRuleresult                 :: rhnXccdfTestresult rhnXccdfIdent rhnXccdfRuleresultType
@@ -320,5 +322,3 @@ userNamespace                      :: schemas/access web_contact namespace
 accessGroup                        :: schemas/access web_customer
 accessGroupNamespace               :: schemas/access accessGroup namespace
 userAccessGroup                    :: schemas/access web_contact accessGroup
-suseXccdfRuleFix                   ::
-suseXccdfRuleFixCustom             :: suseXccdfRuleFix web_customer web_contact
