@@ -82,6 +82,7 @@ public class TaskoFactoryTest extends BaseTestCaseWithUser {
         // this test has been generated programmatically to test TaskoFactory.listActiveSchedulesByOrg
         // containing a hibernate query that is not covered by any test so far
         // feel free to modify and/or complete it
+        TaskoFactory.listActiveSchedulesByOrg(null);
         TaskoFactory.listActiveSchedulesByOrg(0);
     }
 
@@ -92,6 +93,7 @@ public class TaskoFactoryTest extends BaseTestCaseWithUser {
         // containing a hibernate query that is not covered by any test so far
         // feel free to modify and/or complete it
         TaskoFactory.listActiveSchedulesByOrgAndLabel(0, "");
+        TaskoFactory.listActiveSchedulesByOrgAndLabel(null, "");
     }
 
     @Test
@@ -138,6 +140,7 @@ public class TaskoFactoryTest extends BaseTestCaseWithUser {
         // containing a hibernate query that is not covered by any test so far
         // feel free to modify and/or complete it
         TaskoFactory.listSchedulesByOrg(0);
+        TaskoFactory.listSchedulesByOrg(null);
     }
 
 
@@ -165,6 +168,7 @@ public class TaskoFactoryTest extends BaseTestCaseWithUser {
         // containing a hibernate query that is not covered by any test so far
         // feel free to modify and/or complete it
         TaskoFactory.listSchedulesByOrgAndLabel(0, "");
+        TaskoFactory.listSchedulesByOrgAndLabel(null, "");
     }
 
 

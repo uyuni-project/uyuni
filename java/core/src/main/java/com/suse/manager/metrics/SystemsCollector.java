@@ -76,7 +76,7 @@ public class SystemsCollector extends Collector {
         return getCountFromNativeQuery(selectCountQuery);
     }
 
-    private long getNumberOfInactiveSystems() {
+    protected long getNumberOfInactiveSystems() {
         String selectCountQuery = "SELECT COUNT(DISTINCT(server_id)) " +
                 "FROM rhnServerInfo " +
                 "WHERE checkin < CURRENT_TIMESTAMP - NUMTODSINTERVAL(:checkin_threshold, 'second')";

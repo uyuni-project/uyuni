@@ -13,28 +13,28 @@
  * in this software or its documentation.
  */
 
-package com.redhat.rhn.domain.access.test;
+package com.suse.manager.metrics.test;
 
-import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+
+import com.suse.manager.metrics.SystemsCollector;
 
 import org.junit.jupiter.api.Test;
 
-public class AccessGroupFactoryTest extends BaseTestCaseWithUser {
+public class SystemsCollectorTest extends BaseTestCaseWithUser {
 
-    @Test
-    public void generatedCoverageTestLookupById() {
-        // this test has been generated programmatically to test AccessGroupFactory.lookupById
-        // containing a hibernate query that is not covered by any test so far
-        // feel free to modify and/or complete it
-        AccessGroupFactory.lookupById(0L);
+    static class MockSystemsCollector extends SystemsCollector {
+        protected long getNumberOfInactiveSystems() {
+            return super.getNumberOfInactiveSystems();
+        }
     }
 
     @Test
-    public void generatedCoverageTestListCustom() {
-        // this test has been generated programmatically to test AccessGroupFactory.listCustom
+    public void generatedCoverageTestGetNumberOfInactiveSystems() {
+        // this test has been generated programmatically to test SystemsCollector.getNumberOfInactiveSystems
         // containing a hibernate query that is not covered by any test so far
         // feel free to modify and/or complete it
-        AccessGroupFactory.listCustom(user.getOrg());
+        MockSystemsCollector testObject = new MockSystemsCollector();
+        testObject.getNumberOfInactiveSystems();
     }
 }

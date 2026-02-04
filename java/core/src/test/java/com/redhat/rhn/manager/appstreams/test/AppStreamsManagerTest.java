@@ -17,11 +17,11 @@ package com.redhat.rhn.manager.appstreams.test;
 
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.manager.appstreams.AppStreamsManager;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 import org.junit.jupiter.api.Test;
 
-public class AppStreamsManagerTest extends RhnBaseTestCase {
+public class AppStreamsManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void generatedCoverageTestFindAppStream() {
@@ -39,5 +39,13 @@ public class AppStreamsManagerTest extends RhnBaseTestCase {
         Channel arg0 = new Channel();
         Channel arg1 = new Channel();
         AppStreamsManager.cloneAppStreams(arg0, arg1);
+    }
+
+    @Test
+    public void generatedCoverageTestListSsmChannelAppStreams() {
+        // this test has been generated programmatically to test AppStreamsManager.listSsmChannelAppStreams
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        AppStreamsManager.listSsmChannelAppStreams(0L, user);
     }
 }

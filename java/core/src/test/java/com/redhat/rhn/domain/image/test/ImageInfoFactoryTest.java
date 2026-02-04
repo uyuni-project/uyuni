@@ -667,6 +667,8 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         ImageInfo arg0 = new ImageInfo();
         arg0.setOrg(user.getOrg());
         arg0.setName("test");
+        arg0.setObsolete(false);
+        arg0.setBuilt(true);
         SaltApi arg1 = GlobalInstanceHolder.SALT_API;
         ImageInfoFactory.deleteWithObsoletes(arg0, arg1);
     }

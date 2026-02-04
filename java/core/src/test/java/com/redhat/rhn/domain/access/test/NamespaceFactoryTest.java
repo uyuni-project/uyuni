@@ -57,10 +57,19 @@ public class NamespaceFactoryTest extends RhnBaseTestCase {
 
     @Test
     public void generatedCoverageTestlistByIds() {
-        // this test has been generated programmatically to test NamespaceFactory.
+        // this test has been generated programmatically to test NamespaceFactory.listByIds
         // containing a hibernate query that is not covered by any test so far
         // feel free to modify and/or complete it
         List<Long> arg1 = new ArrayList<>();
+        arg1.add(0L);
         NamespaceFactory.listByIds(arg1);
+    }
+
+    @Test
+    public void generatedCoverageTestListNamespace() {
+        // this test has been generated programmatically to test NamespaceFactory.list
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        NamespaceFactory.list("");
     }
 }

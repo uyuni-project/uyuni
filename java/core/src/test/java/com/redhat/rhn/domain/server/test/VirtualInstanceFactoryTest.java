@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.GuestAndNonVirtHostView;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -248,5 +249,16 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
                         """, VirtualInstance.class)
                 .setParameter("host", hostSystemId)
                 .uniqueResult();
+    }
+
+
+    @Test
+    public void generatedCoverageTestFindGuestsWithNonVirtHostByOrg() {
+        // this test has been generated programmatically to test VirtualInstanceFactory.findGuestsWithNonVirtHostByOrg
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        VirtualInstanceFactory testObject = new VirtualInstanceFactory();
+        Org arg0 = new Org();
+        testObject.findGuestsWithNonVirtHostByOrg(arg0);
     }
 }

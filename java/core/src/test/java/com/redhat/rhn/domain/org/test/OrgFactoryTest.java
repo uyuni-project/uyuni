@@ -271,4 +271,11 @@ public class OrgFactoryTest extends RhnBaseTestCase {
         assertTrue(org.getOrgConfig().isClmSyncPatches());
     }
 
+    @Test
+    public void generatedCoverageTestGetSharedSubscribedSys() {
+        // this test has been generated programmatically to test OrgFactory.getSharedSubscribedSys
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        OrgFactory.getSharedSubscribedSys(0L, 0L);
+    }
 }

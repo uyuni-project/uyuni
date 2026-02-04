@@ -802,4 +802,23 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         // feel free to modify and/or complete it
         ChannelFactory.listCustomChannelsWithRepositories();
     }
+
+    @Test
+    public void generatedCoverageTestListAllDistChannelMapsByOrg() {
+        // this test has been generated programmatically to test ChannelFactory.listAllDistChannelMapsByOrg
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        Org arg0 = new Org();
+        ChannelFactory.listAllDistChannelMapsByOrg(arg0);
+    }
+
+    @Test
+    public void generatedCoverageTestLookupDistChannelMapByOrgReleaseArch() {
+        // this test has been generated programmatically to test ChannelFactory.lookupDistChannelMapByOrgReleaseArch
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        Org arg0 = new Org();
+        ChannelArch arg2 = new ChannelArch();
+        ChannelFactory.lookupDistChannelMapByOrgReleaseArch(arg0, "", arg2);
+    }
 }

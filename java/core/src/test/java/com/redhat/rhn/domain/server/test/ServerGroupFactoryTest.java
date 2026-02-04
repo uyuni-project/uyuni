@@ -118,4 +118,13 @@ public class ServerGroupFactoryTest extends BaseTestCaseWithUser {
         assertNull(sg1);
     }
 
+    @Test
+    public void generatedCoverageTestListMinionIdsForServerGroup() {
+        // this test has been generated programmatically to test ServerGroupFactory.listMinionIdsForServerGroup
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        ServerGroup arg0 = new ServerGroup();
+        arg0.setOrg(user.getOrg());
+        ServerGroupFactory.listMinionIdsForServerGroup(arg0);
+    }
 }

@@ -153,13 +153,24 @@ public class SCCCachingFactoryTest extends BaseTestCaseWithUser {
 
 
     @Test
+    public void generatedCoverageTestClearOrderItemsWithCredentials() {
+        // this test has been generated programmatically to test SCCCachingFactory.clearOrderItems
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        Credentials arg0 = CredentialsFactory.createSCCCredentials("", "");
+        TestUtils.save(arg0);
+        SCCCachingFactory.clearOrderItems(arg0);
+
+        SCCCachingFactory.clearOrderItems(null);
+    }
+
+    @Test
     public void generatedCoverageTestClearOrderItems() {
         // this test has been generated programmatically to test SCCCachingFactory.clearOrderItems
         // containing a hibernate query that is not covered by any test so far
         // feel free to modify and/or complete it
         SCCCachingFactory.clearOrderItems();
     }
-
 
     @Test
     public void generatedCoverageTestLookupRepositoryAuthByCredential() {
@@ -168,5 +179,7 @@ public class SCCCachingFactoryTest extends BaseTestCaseWithUser {
         // feel free to modify and/or complete it
         Credentials arg0 = CredentialsFactory.createSCCCredentials("", "");
         SCCCachingFactory.lookupRepositoryAuthByCredential(arg0);
+
+        SCCCachingFactory.lookupRepositoryAuthByCredential((Credentials)null);
     }
 }

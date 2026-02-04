@@ -1675,6 +1675,8 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         // feel free to modify and/or complete it
         Org arg0 = user.getOrg();
         ServerFactory.deleteSnapshots(arg0, new Date(0), new Date(0));
+        ServerFactory.deleteSnapshots(arg0, new Date(0), null);
+        ServerFactory.deleteSnapshots(arg0, null, null);
     }
 
     @Test
@@ -1683,6 +1685,14 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         // containing a hibernate query that is not covered by any test so far
         // feel free to modify and/or complete it
         ServerFactory.listOrgSystems(0L);
+    }
+
+    @Test
+    public void generatedCoverageTestListAllServersOsAndRelease() {
+        // this test has been generated programmatically to test ServerFactory.listAllServersOsAndRelease
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        ServerFactory.listAllServersOsAndRelease();
     }
 
 }
