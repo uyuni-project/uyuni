@@ -65,7 +65,7 @@ public class NamespaceFactory extends HibernateFactory {
     public static List<Namespace> list(String filterParam) {
         return getSession()
                 .createNativeQuery("SELECT * FROM search_namespace(:filter)", Namespace.class)
-                .addSynchronizedEntityClass(NamespaceFactory.class)
+                .addSynchronizedEntityClass(Namespace.class)
                 .setParameter("filter", filterParam)
                 .getResultList();
     }
