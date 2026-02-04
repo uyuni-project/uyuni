@@ -541,10 +541,6 @@ public class ScapManager extends BaseManager {
      */
     private static void applyXsltTransformation(InputStream xmlIn, InputStream xsltIn, OutputStream out) {
         try {
-            StreamSource xmlSource = new StreamSource(xmlIn);
-            StreamSource xsltSource = new StreamSource(xsltIn);
-            StreamResult result = new StreamResult(out);
-
             TransformerFactory factory = TransformerFactory.newInstance();
             factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
             try {
@@ -555,6 +551,9 @@ public class ScapManager extends BaseManager {
                 log.warn("XML Parser does not support disabling external DTDs. " +
                      "XXE protection might be incomplete. Error: {}", e.getMessage());
             }
+            StreamSource xmlSource = new StreamSource(xmlIn);
+            StreamSource xsltSource = new StreamSource(xsltIn);
+            StreamResult result = new StreamResult(out);
             Transformer transformer = factory.newTransformer(xsltSource);
             transformer.transform(xmlSource, result);
         }
