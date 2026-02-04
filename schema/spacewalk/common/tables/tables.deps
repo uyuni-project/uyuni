@@ -292,7 +292,7 @@ suseScapTailoringFile              :: web_customer
 suseScapPolicy                     :: suseScapContent suseScapTailoringFile web_customer
 suseXccdfRulefix                   ::
 suseXccdfRuleFixCustom             :: suseXccdfRulefix web_customer web_contact
-rhnActionScap                      :: rhnAction
+rhnActionScap                      :: rhnAction suseScapPolicy
 rhnXccdfIdent                      :: rhnXccdfIdentSystem
 rhnXccdfRuleresult                 :: rhnXccdfTestresult rhnXccdfIdent rhnXccdfRuleresultType
 rhnXccdfTestresult                 :: rhnServer rhnActionScap rhnXccdfBenchmark rhnXccdfProfile

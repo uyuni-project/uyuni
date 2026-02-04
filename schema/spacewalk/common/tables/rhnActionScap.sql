@@ -26,6 +26,10 @@ CREATE TABLE rhnActionScap
     path             VARCHAR(2048) NOT NULL,
     ovalfiles        VARCHAR(8192),
     parameters       BYTEA,
+    scap_policy_id   BIGINT
+                         CONSTRAINT rhn_act_scap_policy_fk
+                             REFERENCES suseScapPolicy (id)
+                             ON DELETE SET NULL,
 
     created             TIMESTAMPTZ
                             DEFAULT (current_timestamp) NOT NULL,
@@ -45,5 +49,8 @@ CREATE INDEX rhn_act_scap_path_idx
     ON rhnActionScap (path)
     
     ;
+
+CREATE INDEX rhn_act_scap_policy_idx
+    ON rhnActionScap (scap_policy_id);
 
 CREATE SEQUENCE rhn_act_scap_id_seq;

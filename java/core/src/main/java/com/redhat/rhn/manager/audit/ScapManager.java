@@ -543,22 +543,16 @@ public class ScapManager extends BaseManager {
         try {
             TransformerFactory factory = TransformerFactory.newInstance();
             factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-            try {
-                factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
-                factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
-            }
-            catch (IllegalArgumentException e) {
-                log.warn("XML Parser does not support disabling external DTDs. " +
-                     "XXE protection might be incomplete. Error: {}", e.getMessage());
-            }
+            factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+            factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
             StreamSource xmlSource = new StreamSource(xmlIn);
             StreamSource xsltSource = new StreamSource(xsltIn);
             StreamResult result = new StreamResult(out);
             Transformer transformer = factory.newTransformer(xsltSource);
             transformer.transform(xmlSource, result);
         }
-        catch (TransformerException e) {
-            throw new RuntimeException("XSL transform failed", e);
+        catch (TransformerException | IllegalArgumentException e) {
+            throw new RuntimeException("XSL transform failed or insecure factory configuration", e);
         }
     }
     /**
