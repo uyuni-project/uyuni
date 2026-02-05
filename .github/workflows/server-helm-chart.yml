@@ -1,4 +1,4 @@
-name: Helm Chart CI
+name: Server Helm Chart CI
 
 on:
   pull_request:

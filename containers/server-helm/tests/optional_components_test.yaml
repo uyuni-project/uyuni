@@ -21,7 +21,8 @@ tests:
   - it: should render hub-xmlrpc when hubAPI is true
     set:
       global.fqdn: uyuni.example.com
-      hubAPI: true
+      hubAPI:
+        enable: true
       pullPolicy: Always
     asserts:
       - equal:
@@ -38,11 +39,19 @@ tests:
         documentSelector:
           path: metadata.name
           value: hub-xmlrpc
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: "registry.opensuse.org/uyuni/server-hub-xmlrpc-api:latest"
+        template: hub.yaml
+        documentSelector:
+          path: metadata.name
+          value: hub-xmlrpc
 
   - it: should render coco-attestation with correct replicas
     set:
       global.fqdn: uyuni.example.com
-      cocoReplicas: 3
+      coco:
+        replicas: 3
       pullPolicy: Always
     asserts:
       - equal:
@@ -59,11 +68,19 @@ tests:
         documentSelector:
           path: metadata.name
           value: coco-attestation
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: "registry.opensuse.org/uyuni/server-attestation:latest"
+        template: coco.yaml
+        documentSelector:
+          path: metadata.name
+          value: coco-attestation
 
   - it: should render saline when enabled
     set:
       global.fqdn: uyuni.example.com
-      saline: true
+      saline:
+        enable: true
       pullPolicy: Always
     asserts:
       - equal:
@@ -80,3 +97,83 @@ tests:
         documentSelector:
           path: metadata.name
           value: saline
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: "registry.opensuse.org/uyuni/server-saline:latest"
+        template: saline.yaml
+        documentSelector:
+          path: metadata.name
+          value: saline
+
+  - it: should override the images when set
+    set:
+      global.fqdn: uyuni.example.com
+      saline:
+        enable: true
+        image: example.org/test/saline
+      coco:
+        replicas: 3
+        image: example.org/test/coco
+      hubAPI:
+        enable: true
+        image: example.org/test/hub
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: "example.org/test/saline:latest"
+        template: saline.yaml
+        documentSelector:
+          path: metadata.name
+          value: saline
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: "example.org/test/coco:latest"
+        template: coco.yaml
+        documentSelector:
+          path: metadata.name
+          value: coco-attestation
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: "example.org/test/hub:latest"
+        template: hub.yaml
+        documentSelector:
+          path: metadata.name
+          value: hub-xmlrpc
+  
+  - it: should override the images and tags when set
+    set:
+      global.fqdn: uyuni.example.com
+      saline:
+        enable: true
+        image: example.org/test/saline
+        tag: 1.1.1
+      coco:
+        replicas: 3
+        image: example.org/test/coco
+        tag: 1.1.2
+      hubAPI:
+        enable: true
+        image: example.org/test/hub
+        tag: 1.1.3
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: "example.org/test/saline:1.1.1"
+        template: saline.yaml
+        documentSelector:
+          path: metadata.name
+          value: saline
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: "example.org/test/coco:1.1.2"
+        template: coco.yaml
+        documentSelector:
+          path: metadata.name
+          value: coco-attestation
+      - equal:
+          path: spec.template.spec.containers[0].image
+          value: "example.org/test/hub:1.1.3"
+        template: hub.yaml
+        documentSelector:
+          path: metadata.name
+          value: hub-xmlrpc
