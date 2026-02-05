@@ -770,7 +770,7 @@ public class ScapAuditController {
         params.put("policy_id", policyId);
 
         List<ScapPolicyScanHistory> history = m.execute(params);
-        return json(res, history, new TypeToken<>() { });
+        return success(res, ResultJson.success(history));
     }
     /**
      * Resolves the profile title from the SCAP content XML file.

@@ -85,8 +85,8 @@ public class SystemScapHandlerTest extends BaseHandlerTestCase {
         // Create test content
         ScapContent content = new ScapContent();
         content.setName("Test Content");
-        content.setDataStreamFileName("ds.xml");
-        content.setXccdfFileName("xccdf.xml");
+        content.setDataStreamFileName("sles15-ds.xml");
+        content.setXccdfFileName("sles15-xccdf.xml");
         content.setName("test-content");
         ScapFactory.saveScapContent(content);
         List<ScapContent> result = handler.listScapContent(admin);
@@ -149,7 +149,8 @@ public class SystemScapHandlerTest extends BaseHandlerTestCase {
     public void testScheduleBetaXccdfScanWithPolicy() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin);
         ScapContent content = new ScapContent();
-        content.setDataStreamFileName("ds.xml");
+        content.setDataStreamFileName("sles15-ds.xml");
+        content.setXccdfFileName("sles15-xccdf.xml");
         content.setName("sched-content");
         ScapFactory.saveScapContent(content);
         ScapPolicy policy = new ScapPolicy();
@@ -181,7 +182,8 @@ public class SystemScapHandlerTest extends BaseHandlerTestCase {
     public void testScheduleBetaXccdfScanCustom() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin);
         ScapContent content = new ScapContent();
-        content.setDataStreamFileName("custom_ds.xml");
+        content.setDataStreamFileName("sles15-ds.xml");
+        content.setXccdfFileName("sles15-xccdf.xml");
         content.setName("custom-content");
         ScapFactory.saveScapContent(content);
         Map<String, Object> params = new HashMap<>();

@@ -463,8 +463,7 @@ public class SystemScapHandler extends BaseHandler {
         String tailoringProfileId = (String) params.getOrDefault("tailoringProfileId", null);
         String advancedArgs = (String) params.getOrDefault("advancedArgs", null);
         String ovalFiles = (String) params.getOrDefault("ovalFiles", null);
-        boolean fetchRemoteResources = params.containsKey("fetchRemoteResources") ?
-                (Boolean) params.get("fetchRemoteResources") : false;
+        boolean fetchRemoteResources = params.containsKey("fetchRemoteResources");
 
         // Build SCAP parameters
         String parameters = ScapUtils.buildOscapParameters(
