@@ -87,7 +87,6 @@ public class SystemScapHandlerTest extends BaseHandlerTestCase {
         content.setName("Test Content");
         content.setDataStreamFileName("sles15-ds.xml");
         content.setXccdfFileName("sles15-xccdf.xml");
-        content.setName("test-content");
         ScapFactory.saveScapContent(content);
         List<ScapContent> result = handler.listScapContent(admin);
         assertNotNull(result);
@@ -132,6 +131,8 @@ public class SystemScapHandlerTest extends BaseHandlerTestCase {
         policy.setOrg(admin.getOrg());
         ScapContent content = new ScapContent();
         content.setName("policy-content");
+        content.setDataStreamFileName("sles15-ds.xml");
+        content.setXccdfFileName("sles15-xccdf.xml");
         ScapFactory.saveScapContent(content);
         policy.setScapContent(content);
         ScapFactory.saveScapPolicy(policy);

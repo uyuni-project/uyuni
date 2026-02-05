@@ -415,6 +415,14 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
                 "      <rr id=\"rule-test-1\"/>\n" +
                 "      <rr id=\"rule-test-2\"/>\n" +
                 "    </pass>\n" +
+                "    <fail/>\n" +
+                "    <error/>\n" +
+                "    <unknown/>\n" +
+                "    <notapplicable/>\n" +
+                "    <notchecked/>\n" +
+                "    <notselected/>\n" +
+                "    <informational/>\n" +
+                "    <fixed/>\n" +
                 "  </TestResult>\n" +
                 "</benchmark-resume>\n";
 
@@ -462,6 +470,14 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
                 "    <pass>\n" +
                 "      <rr id=\"rule-test-3\"/>\n" +
                 "    </pass>\n" +
+                "    <fail/>\n" +
+                "    <error/>\n" +
+                "    <unknown/>\n" +
+                "    <notapplicable/>\n" +
+                "    <notchecked/>\n" +
+                "    <notselected/>\n" +
+                "    <informational/>\n" +
+                "    <fixed/>\n" +
                 "  </TestResult>\n" +
                 "</benchmark-resume>\n";
 
