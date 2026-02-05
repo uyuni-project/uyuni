@@ -474,7 +474,6 @@ public class SystemScapHandler extends BaseHandler {
                 fetchRemoteResources
         );
 
-        // Convert server IDs to Set<Long>
         Set<Long> serverIds = sids.stream()
                 .map(Integer::longValue)
                 .collect(Collectors.toSet());

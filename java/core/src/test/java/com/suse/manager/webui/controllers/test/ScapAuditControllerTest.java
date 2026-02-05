@@ -21,6 +21,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.audit.ScapContent;
 import com.redhat.rhn.domain.audit.ScapFactory;
@@ -30,6 +33,7 @@ import com.redhat.rhn.domain.audit.TailoringFile;
 import com.redhat.rhn.domain.audit.XccdfRuleFix;
 import com.redhat.rhn.domain.audit.XccdfRuleFixCustom;
 import com.redhat.rhn.testing.SparkTestUtils;
+import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.webui.controllers.ApplyRemediationJson;
 import com.suse.manager.webui.controllers.CustomRemediationJson;
@@ -39,13 +43,16 @@ import com.suse.manager.webui.utils.gson.ScapPolicyJson;
 import com.suse.utils.Json;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -59,19 +66,23 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
 
     private ScapAuditController controller;
     private static final Gson GSON = Json.GSON;
+    private static final String TEST_SCAP_FILE = "test-xccdf.xml";
+
 
     @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
         controller = new ScapAuditController();
+        System.setProperty("javax.xml.transform.TransformerFactory",
+          "com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl");
     }
 
     private ScapContent createTestScapContent() {
         ScapContent content = new ScapContent();
-        content.setName("Test Content " + System.currentTimeMillis());
-        content.setDataStreamFileName("ds-" + System.currentTimeMillis() + ".xml");
-        content.setXccdfFileName("xccdf-" + System.currentTimeMillis() + ".xml");
+        content.setName("Test Content");
+        content.setDataStreamFileName("sles-15-ds.xml");
+        content.setXccdfFileName(TEST_SCAP_FILE);
         ScapFactory.saveScapContent(content);
         return content;
     }
@@ -232,10 +243,26 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
     @Test
     public void testGetProfileList() throws Exception {
         ScapContent content = createTestScapContent();
-        Request request = getRequestWithCsrf("/manager/api/audit/profiles/list/:type/:id", "content", content.getId());
+        File testXccdfSource = new File(TestUtils.findTestData(
+          "/com/redhat/rhn/manager/audit/test/openscap/test-xccdf.xml").getPath());
+        File profileXslt = new File(TestUtils.findTestData(
+          "/com/redhat/rhn/manager/audit/test/openscap/xccdf-profiles.xslt.in").getPath());
+        // 2. Point Config to the Temp Directory
+        Config.get().setString(ConfigDefaults.SCAP_XCCDF_PROFILES_XSL, profileXslt.getPath());
+        controller.setDirectories(testXccdfSource.getParent(), testXccdfSource.getParent());
+        Request request = getRequestWithCsrf("/manager/api/audit/profiles/list/:type/:id",
+          "dataStream", content.getId());
         String responseStr = controller.getProfileList(request, response, user);
-        ResultJson<?> result = GSON.fromJson(responseStr, ResultJson.class);
-        assertTrue(result.isSuccess());
+        var listType = new TypeToken<List<Map<String, String>>>() { } .getType();
+        List<Map<String, String>> profiles = GSON.fromJson(responseStr, listType);
+
+        assertTrue(profiles.size() > 0);
+        profiles.stream().findFirst().ifPresent(s -> {
+            assertEquals("DRAFT General System Security Profile for SUSE Linux Enterprise (SLES) 16", s.get("title"));
+            assertEquals("xccdf_org.ssgproject.content_profile_base", s.get("id"));
+        });
+
+
     }
 
     @Test

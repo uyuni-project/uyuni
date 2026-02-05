@@ -31,7 +31,8 @@ import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException;
 import com.redhat.rhn.frontend.xmlrpc.system.scap.SystemScapHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
-import com.redhat.rhn.manager.action.ActionChainManager;
+import com.redhat.rhn.manager.action.ActionManager;
+import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 
 import org.jmock.Expectations;
@@ -73,7 +74,7 @@ public class SystemScapHandlerTest extends BaseHandlerTestCase {
         super.setUp();
         handler = new SystemScapHandler();
         taskomaticApi = mockContext.mock(TaskomaticApi.class);
-        ActionChainManager.setTaskomaticApi(taskomaticApi);
+        ActionManager.setTaskomaticApi(taskomaticApi);
         admin.setBetaFeaturesEnabled(true);
     }
     /**
@@ -126,15 +127,17 @@ public class SystemScapHandlerTest extends BaseHandlerTestCase {
     @Test
     public void testListPolicies() {
         // Create test policy
-        ScapPolicy policy = new ScapPolicy();
-        policy.setPolicyName("Test Policy");
-        policy.setOrg(admin.getOrg());
+
         ScapContent content = new ScapContent();
         content.setName("policy-content");
         content.setDataStreamFileName("sles15-ds.xml");
         content.setXccdfFileName("sles15-xccdf.xml");
         ScapFactory.saveScapContent(content);
+        ScapPolicy policy = new ScapPolicy();
+        policy.setPolicyName("Test Policy");
+        policy.setOrg(admin.getOrg());
         policy.setScapContent(content);
+        policy.setXccdfProfileId(content.getXccdfFileName());
         ScapFactory.saveScapPolicy(policy);
         List<ScapPolicy> result = handler.listPolicies(admin);
         assertNotNull(result);
@@ -149,6 +152,7 @@ public class SystemScapHandlerTest extends BaseHandlerTestCase {
     @Test
     public void testScheduleBetaXccdfScanWithPolicy() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin);
+        SystemManager.giveCapability(server.getId(), SystemManager.CAP_SCAP, 1L);
         ScapContent content = new ScapContent();
         content.setDataStreamFileName("sles15-ds.xml");
         content.setXccdfFileName("sles15-xccdf.xml");
@@ -182,6 +186,7 @@ public class SystemScapHandlerTest extends BaseHandlerTestCase {
     @Test
     public void testScheduleBetaXccdfScanCustom() throws Exception {
         Server server = ServerFactoryTest.createTestServer(admin);
+        SystemManager.giveCapability(server.getId(), SystemManager.CAP_SCAP, 1L);
         ScapContent content = new ScapContent();
         content.setDataStreamFileName("sles15-ds.xml");
         content.setXccdfFileName("sles15-xccdf.xml");

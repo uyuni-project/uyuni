@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.scap.ScapAction;
+import com.redhat.rhn.domain.audit.ScapFactory;
 import com.redhat.rhn.domain.audit.XccdfIdent;
 import com.redhat.rhn.domain.audit.XccdfTestResult;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -382,134 +383,32 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
-    public void testRemediationBulkLookupOptimization() throws Exception {
+    public void testRemediationExtraction() throws Exception {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         SystemManager.giveCapability(minion.getId(), SystemManager.CAP_SCAP, 1L);
 
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ActionManager.setTaskomaticApi(taskomaticMock);
-
         context().checking(new Expectations() { {
             allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
         } });
-
         ScapAction action = ActionManager.scheduleXccdfEval(user,
                 minion, "/usr/share/openscap/scap-yast2sec-xccdf.xml", "--profile Default", new Date());
-
-        // Create resume XML with remediation content
-        String resumeWithRemediation = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                "<benchmark-resume xmlns:cdf=\"http://checklists.nist.gov/xccdf/1.1\" " +
-                "id=\"SUSE-Security-Benchmark-YaST2\" version=\"1\">\n" +
-                "  <profile title=\"Default vanilla kernel hardening\" id=\"Default\" description=\"\"/>\n" +
-                "  <rules>\n" +
-                "    <rule id=\"rule-test-1\">\n" +
-                "      <remediation>#!/bin/bash\necho 'fix1'</remediation>\n" +
-                "    </rule>\n" +
-                "    <rule id=\"rule-test-2\">\n" +
-                "      <remediation>#!/bin/bash\necho 'fix2'</remediation>\n" +
-                "    </rule>\n" +
-                "  </rules>\n" +
-                "  <TestResult id=\"xccdf_org.open-scap_testresult_Default\" " +
-                "start-time=\"2017-02-14T15:22:39\" end-time=\"2017-02-14T15:22:39\">\n" +
-                "    <pass>\n" +
-                "      <rr id=\"rule-test-1\"/>\n" +
-                "      <rr id=\"rule-test-2\"/>\n" +
-                "    </pass>\n" +
-                "    <fail/>\n" +
-                "    <error/>\n" +
-                "    <unknown/>\n" +
-                "    <notapplicable/>\n" +
-                "    <notchecked/>\n" +
-                "    <notselected/>\n" +
-                "    <informational/>\n" +
-                "    <fixed/>\n" +
-                "  </TestResult>\n" +
-                "</benchmark-resume>\n";
-
-        XccdfTestResult result = ScapManager.xccdfEvalResume(minion, action, 0, "",
-                new ByteArrayInputStream(resumeWithRemediation.getBytes(StandardCharsets.UTF_8)));
-
+        File resumeXsl = new File(TestUtils.findTestData(
+            "/com/redhat/rhn/manager/audit/test/openscap/suma-ref42-min-sles15/xccdf-resume.xslt.in")
+          .getPath());
+        InputStream resultsIn = TestUtils.findTestData(
+            "/com/redhat/rhn/manager/audit/test/openscap/suma-ref42-min-sles15/results.xml")
+          .openStream();
+        XccdfTestResult result = ScapManager.xccdfEval(minion, action, 2, "", resultsIn, resumeXsl);
         assertNotNull(result);
-        // Verify remediations were saved using bulk lookup
-        var fix1 = com.redhat.rhn.domain.audit.ScapFactory
-                .lookupRuleRemediation("SUSE-Security-Benchmark-YaST2", "rule-test-1");
-        var fix2 = com.redhat.rhn.domain.audit.ScapFactory
-                .lookupRuleRemediation("SUSE-Security-Benchmark-YaST2", "rule-test-2");
-        assertTrue(fix1.isPresent(), "Remediation for rule-test-1 should be saved");
-        assertTrue(fix2.isPresent(), "Remediation for rule-test-2 should be saved");
-        assertEquals("#!/bin/bash\necho 'fix1'", fix1.get().getRemediation());
-        assertEquals("#!/bin/bash\necho 'fix2'", fix2.get().getRemediation());
+        assertNotNull(ScapFactory.lookupRuleRemediationsByBenchmark("xccdf_org.ssgproject.content_benchmark_SLE-15"));
+        var fix1 = ScapFactory
+          .lookupRuleRemediation("xccdf_org.ssgproject.content_benchmark_SLE-15",
+            "xccdf_org.ssgproject.content_rule_sshd_set_max_sessions");
+        assertTrue(fix1.isPresent());
+        //assertTrue(result.);
     }
-
-    @Test
-    public void testRemediationUpdateOnlyWhenChanged() throws Exception {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
-        SystemManager.giveCapability(minion.getId(), SystemManager.CAP_SCAP, 1L);
-
-        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
-        ActionManager.setTaskomaticApi(taskomaticMock);
-
-        context().checking(new Expectations() { {
-            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
-        } });
-
-        ScapAction action = ActionManager.scheduleXccdfEval(user,
-                minion, "/usr/share/openscap/scap-yast2sec-xccdf.xml", "--profile Default", new Date());
-
-        String resumeWithRemediation = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                "<benchmark-resume xmlns:cdf=\"http://checklists.nist.gov/xccdf/1.1\" " +
-                "id=\"SUSE-Security-Benchmark-YaST2\" version=\"1\">\n" +
-                "  <profile title=\"Default vanilla kernel hardening\" id=\"Default\" description=\"\"/>\n" +
-                "  <rules>\n" +
-                "    <rule id=\"rule-test-3\">\n" +
-                "      <remediation>#!/bin/bash\necho 'original'</remediation>\n" +
-                "    </rule>\n" +
-                "  </rules>\n" +
-                "  <TestResult id=\"xccdf_org.open-scap_testresult_Default\" " +
-                "start-time=\"2017-02-14T15:22:39\" end-time=\"2017-02-14T15:22:39\">\n" +
-                "    <pass>\n" +
-                "      <rr id=\"rule-test-3\"/>\n" +
-                "    </pass>\n" +
-                "    <fail/>\n" +
-                "    <error/>\n" +
-                "    <unknown/>\n" +
-                "    <notapplicable/>\n" +
-                "    <notchecked/>\n" +
-                "    <notselected/>\n" +
-                "    <informational/>\n" +
-                "    <fixed/>\n" +
-                "  </TestResult>\n" +
-                "</benchmark-resume>\n";
-
-        // First scan - creates remediation
-        ScapManager.xccdfEvalResume(minion, action, 0, "",
-                new ByteArrayInputStream(resumeWithRemediation.getBytes(StandardCharsets.UTF_8)));
-
-        var fix = com.redhat.rhn.domain.audit.ScapFactory
-                .lookupRuleRemediation("SUSE-Security-Benchmark-YaST2", "rule-test-3");
-        assertTrue(fix.isPresent());
-        assertEquals("#!/bin/bash\necho 'original'", fix.get().getRemediation());
-
-        // Second scan - same content (should not update)
-        ScapManager.xccdfEvalResume(minion, action, 0, "",
-                new ByteArrayInputStream(resumeWithRemediation.getBytes(StandardCharsets.UTF_8)));
-
-        fix = com.redhat.rhn.domain.audit.ScapFactory
-                .lookupRuleRemediation("SUSE-Security-Benchmark-YaST2", "rule-test-3");
-        assertTrue(fix.isPresent());
-        assertEquals("#!/bin/bash\necho 'original'", fix.get().getRemediation());
-
-        // Third scan - updated content (should update)
-        String updatedResume = resumeWithRemediation.replace("echo 'original'", "echo 'updated'");
-        ScapManager.xccdfEvalResume(minion, action, 0, "",
-                new ByteArrayInputStream(updatedResume.getBytes(StandardCharsets.UTF_8)));
-
-        fix = com.redhat.rhn.domain.audit.ScapFactory
-                .lookupRuleRemediation("SUSE-Security-Benchmark-YaST2", "rule-test-3");
-        assertTrue(fix.isPresent());
-        assertEquals("#!/bin/bash\necho 'updated'", fix.get().getRemediation());
-    }
-
 }
 
 

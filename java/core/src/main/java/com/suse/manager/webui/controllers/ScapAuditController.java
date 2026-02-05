@@ -105,11 +105,19 @@ public class ScapAuditController {
     private static final Logger LOG = LogManager.getLogger(ScapAuditController.class);
     private static final Gson GSON = Json.GSON;
     private final TaskomaticApi taskomaticApi = new TaskomaticApi();
-    private static final String TAILORING_FILES_DIR = "/srv/susemanager/scap/tailoring-files/";
-    private static final String SCAP_CONTENT_DIR = "/srv/susemanager/scap/ssg/content";
+    private String TAILORING_FILES_DIR = "/srv/susemanager/scap/tailoring-files/";
+    private String SCAP_CONTENT_DIR = "/srv/susemanager/scap/ssg/content";
     private static final String REMEDIATION_ACTION_PREFIX = "SCAP Remediation: ";
 
-
+    /**
+     * Set the directories for testing purposes
+     * @param tailoringDir
+     * @param scapDir
+     */
+    public void setDirectories(String tailoringDir, String scapDir) {
+        this.TAILORING_FILES_DIR = tailoringDir;
+        this.SCAP_CONTENT_DIR = scapDir;
+    }
     /**
      * Invoked from Router. Initialize routes for SCAP audit Views.
      *
