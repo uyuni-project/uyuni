@@ -144,8 +144,7 @@
              ${commons-compress} ${javamail} smtp jdom ${jmock-jars}
              ${log4j-jars} oro redstone-xmlrpc-client redstone-xmlrpc ${struts-jars} ${tomcat-jars}
              bcprov bcpg postgresql-jdbc ongres-scram/client ongres-scram/common
-             ${stringprep-jars} taglibs-standard-impl taglibs-standard-jstlel
-             taglibs-standard-spec logdriver quartz slf4j-api log4j/log4j-slf4j-impl
+             ${stringprep-jars} logdriver quartz slf4j-api log4j/log4j-slf4j-impl
              velocity-engine-core simple-core strutstest" />
 
   <!-- deps needed for testing, but required to build -->

@@ -97,9 +97,6 @@
         <dependency org="suse" name="statistics" rev="1.0.2" />
         <dependency org="suse" name="stax2-api" rev="3.1.4" />
         <dependency org="suse" name="struts" rev="1.2.9" />
-        <dependency org="suse" name="taglibs-standard-impl" rev="1.2.5" />
-        <dependency org="suse" name="taglibs-standard-jstlel" rev="1.2.5" />
-        <dependency org="suse" name="taglibs-standard-spec" rev="1.2.5" />
         <dependency org="suse" name="woodstox-core-asl" rev="4.4.2" />
         <dependency org="suse" name="xalan" rev="2.7.3" />
         <dependency org="suse" name="serializer" rev="2.7.3" />
