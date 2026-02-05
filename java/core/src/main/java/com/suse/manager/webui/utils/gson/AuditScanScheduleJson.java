@@ -165,16 +165,6 @@ public class AuditScanScheduleJson {
     }
 
     /**
-     * Builds the oscap parameters string using internal tailoring file field
-     * @deprecated use buildOscapParameters(String resolvedTailoringFile) instead
-     * @return the formatted parameters for oscap command
-     */
-    @Deprecated
-    public String buildOscapParameters() {
-        return buildOscapParameters(null);
-    }
-
-    /**
      * Validates the required fields
      * @return error message if validation fails, null otherwise
      */

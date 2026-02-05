@@ -53,6 +53,7 @@ public class ScapPolicy extends BaseDomainHelper {
      * Default constructor for JPA.
      */
     public ScapPolicy() {
+        // Default constructor
     }
 
     /**

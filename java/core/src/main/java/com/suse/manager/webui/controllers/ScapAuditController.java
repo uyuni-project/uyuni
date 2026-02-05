@@ -566,7 +566,7 @@ public class ScapAuditController {
 
         pageData.put("isEditMode", policy != null && !isReadOnly);
         pageData.put("isReadOnly", isReadOnly);
-        pageData.put("scapContentList", getScapContentList(user));
+        pageData.put("scapContentList", getScapContentList());
         pageData.put("tailoringFiles", getTailoringFilesList(user));
         if (policy != null) {
             Map<String, Object> policyData = new HashMap<>();
@@ -641,7 +641,8 @@ public class ScapAuditController {
         ScapPolicy policy = ScapFactory.lookupScapPolicyByIdAndOrg(policyId, user.getOrg())
             .orElseThrow(() -> new IllegalArgumentException("Policy not found"));
 
-        return json(res, convertPolicyToResponseDto(policy));
+        return json(res, convertPolicyToResponseDto(policy), new TypeToken<>() { });
+
     }
     /**
      * Creates a new SCAP policy
@@ -880,7 +881,7 @@ public class ScapAuditController {
                     reqData.getPolicyId()
             );
 
-            return json(res, action.getId());
+            return json(res, action.getId(), new TypeToken<>() { });
         }
         catch (TaskomaticApiException e) {
             LOG.error("Taskomatic API error scheduling SCAP scan", e);
@@ -964,7 +965,7 @@ public class ScapAuditController {
     public String createScapContent(Request req, Response res, User user) {
         try {
             List<DiskFileItem> items = MultipartRequestUtil.parseMultipartRequest(req);
-            return handleScapContentUpload(items, res, user, null);
+            return handleScapContentUpload(items, res, null);
         }
         catch (FileUploadException e) {
             throw new RuntimeException(e);
@@ -991,7 +992,7 @@ public class ScapAuditController {
                 return result(res, ResultJson.error("SCAP content not found"));
             }
 
-            return handleScapContentUpload(items, res, user, scapContent.get());
+            return handleScapContentUpload(items, res, scapContent.get());
         }
         catch (FileUploadException e) {
             throw new RuntimeException(e);
@@ -1050,12 +1051,10 @@ public class ScapAuditController {
      * Handles SCAP content file upload for create and update operations
      * @param items pre-parsed multipart request items
      * @param res the response object
-     * @param user the authorized user
      * @param existingContent existing content for update, null for create
      * @return the result as JSON
      */
-    private String handleScapContentUpload(List<DiskFileItem> items, Response res, User user,
-                                           ScapContent existingContent) {
+    private String handleScapContentUpload(List<DiskFileItem> items, Response res, ScapContent existingContent) {
         File writtenDsFile = null;
         File writtenXccdfFile = null;
 
@@ -1146,7 +1145,7 @@ public class ScapAuditController {
         Map<String, Object> data = new HashMap<>();
 
         // SCAP content list
-        data.put("scapContentList", getScapContentList(user));
+        data.put("scapContentList", getScapContentList());
 
         // Tailoring files
         data.put("tailoringFiles", getTailoringFilesList(user));
@@ -1280,7 +1279,7 @@ public class ScapAuditController {
      * Returns a list of available SCAP content from the database
      * @return List of SCAP content DTOs
      */
-    private List<ScapContentJson> getScapContentList(User user) {
+    private List<ScapContentJson> getScapContentList() {
         return ScapFactory.listScapContent()
                 .stream()
                 .map(content -> new ScapContentJson(
@@ -1605,7 +1604,7 @@ public class ScapAuditController {
      * @return the created and saved ScriptRunAction
      */
     private Action createBashRemediationAction(ApplyRemediationJson body, User user, Server server) {
-        final long scriptTimeout = 300L; // 5 minutes timeout for remediation scripts
+        final long scriptTimeout = 300L;
         ScriptActionDetails scriptDetails = ActionFactory.createScriptActionDetails(
                 "root", "root", scriptTimeout, body.getRemediationContent());
         ScriptRunAction action = (ScriptRunAction) ActionFactory.createAction(ActionFactory.TYPE_SCRIPT_RUN);
@@ -1641,14 +1640,15 @@ public class ScapAuditController {
                 new Date(),
                 Optional.empty()
         );
-        // Set custom action name to match Bash remediation naming
         action.setName(REMEDIATION_ACTION_PREFIX + body.getRuleIdentifier());
-        // Note: scheduleApplyStates already saves the action, but we need to save again
-        // after modifying the name to persist the change
         ActionFactory.save(action);
         return action;
     }
-    // Helper method to prevent Path Traversal (e.g., input "..\..\windows")
+    /**
+     * Sanitize a file name by removing any characters that are not allowed in file names.
+     * @param input the file name to sanitize
+     * @return the sanitized file name
+     */
     private String sanitizeFileName(String input) {
         return input.replaceAll("[^a-zA-Z0-9._-]", "_");
     }

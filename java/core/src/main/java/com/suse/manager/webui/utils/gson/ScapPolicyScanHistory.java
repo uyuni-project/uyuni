@@ -39,7 +39,7 @@ public class ScapPolicyScanHistory {
      * No-argument constructor required by database query framework
      */
     public ScapPolicyScanHistory() {
-        // No-op constructor for framework
+        // No-op constructor
     }
 
     /**
@@ -131,6 +131,13 @@ public class ScapPolicyScanHistory {
     }
 
     /**
+     * @return pass count
+     */
+    public Long getPass() {
+        return pass;
+    }
+
+    /**
      * Set fail count
      * @param failIn fail count
      */
@@ -139,11 +146,25 @@ public class ScapPolicyScanHistory {
     }
 
     /**
+     * @return fail count
+     */
+    public Long getFail() {
+        return fail;
+    }
+
+    /**
      * Set other count
      * @param otherIn other count
      */
     public void setOther(Long otherIn) {
         this.other = otherIn;
+    }
+
+    /**
+     * @return other count
+     */
+    public Long getOther() {
+        return other;
     }
 
     /**

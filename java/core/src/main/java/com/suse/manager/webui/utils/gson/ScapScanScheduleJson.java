@@ -40,7 +40,7 @@ public class ScapScanScheduleJson {
      * @return the name of the selected scap data stream
      */
     public String getDataStreamName() {
-        return dataStreamName.replaceAll("xccdf", "ds");
+        return dataStreamName.replace("xccdf", "ds");
     }
 
     /**

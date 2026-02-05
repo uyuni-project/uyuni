@@ -42,6 +42,7 @@ public class XccdfRuleFix {
      * Default constructor.
      */
     public XccdfRuleFix() {
+        // Default constructor
     }
 
     /**

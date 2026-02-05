@@ -353,7 +353,9 @@ class RuleResultDetail extends Component<object, StateType> {
     return (
       <div className={`tab-content ${this.state.activeTabHash === "#custom" ? "active" : ""}`}>
         <div className="script-type-container">
-          <label className="script-type-label">Script Type:</label>
+          <label className="script-type-label" htmlFor="customScriptType">
+            Script Type:
+          </label>
           <Select
             name="customScriptType"
             value={this.state.customScriptType}

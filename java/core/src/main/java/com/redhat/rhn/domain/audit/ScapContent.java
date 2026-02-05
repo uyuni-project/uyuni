@@ -43,6 +43,7 @@ public class ScapContent extends BaseDomainHelper {
      * Default constructor.
      */
     public ScapContent() {
+        // Default constructor
     }
 
     /**
