@@ -1,7 +1,5 @@
-<web-app xmlns= "http://java.sun.com/xml/ns/j2ee"
-     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-     xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
-     version="2.4">
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+         version="2.4">
   <!--
    =======================================
                     FILTERS
@@ -39,7 +37,7 @@
   <filter>
     <filter-name>sitemesh</filter-name>
     <filter-class>
-        com.opensymphony.module.sitemesh.filter.PageFilter
+      com.redhat.rhn.frontend.servlets.SitemeshTemplateFilter
     </filter-class>
     <async-supported>true</async-supported>
   </filter>
@@ -142,9 +140,22 @@
       sitemesh must go before AuthFilter in the list of filter-mappings
       or you will get BAD results when your sessions timeout
    -->
+
+  <!-- Map JSP on FORWARD to workaround a bug in sitemesh + tomcat 11. Acting
+       on the initial REQUEST yeld to an empty response since sitemesh acts when
+       the response is already completed -->
   <filter-mapping>
     <filter-name>sitemesh</filter-name>
-    <url-pattern>/*</url-pattern>
+    <url-pattern>/WEB-INF/pages/*</url-pattern>
+    <dispatcher>FORWARD</dispatcher>
+  </filter-mapping>
+
+  <!-- Requests not hitting struts do not have a subsequent FORWARD so we must
+       process them on REQUEST -->
+  <filter-mapping>
+    <filter-name>sitemesh</filter-name>
+    <url-pattern>/manager/*</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
   </filter-mapping>
 
   <!--
