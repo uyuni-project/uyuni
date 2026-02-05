@@ -578,7 +578,7 @@ public class ScapAuditController {
             policyData.put("tailoringProfileId", policy.getTailoringProfileId());
             policyData.put("ovalFiles", policy.getOvalFiles());
             policyData.put("advancedArgs", policy.getAdvancedArgs());
-            policyData.put("fetchRemoteResources", policy.getFetchRemoteResources());
+            policyData.put("fetchRemoteResources", policy.isFetchRemoteResources());
             if (policy.getTailoringFile() != null) {
                 policyData.put("tailoringFile", policy.getTailoringFile().getId());
                 policyData.put("tailoringFileName", policy.getTailoringFile().getDisplayFileName());
@@ -808,7 +808,9 @@ public class ScapAuditController {
         policy.setOvalFiles(json.getOvalFiles());
         policy.setAdvancedArgs(json.getAdvancedArgs());
         policy.setTailoringProfileId(json.getTailoringProfileId());
-        policy.setFetchRemoteResources(json.getFetchRemoteResources());
+        if (json.getFetchRemoteResources() != null) {
+            policy.setFetchRemoteResources(json.getFetchRemoteResources());
+        }
 
         // SCAP Content (Load from DB if provided)
         // If scapContentId is null, we keep the existing SCAP content.

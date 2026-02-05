@@ -59,7 +59,7 @@ public class ScapPolicyResponseJson {
         this.tailoringProfileId = policyIn.getTailoringProfileId();
         this.ovalFiles = policyIn.getOvalFiles();
         this.advancedArgs = policyIn.getAdvancedArgs();
-        this.fetchRemoteResources = policyIn.getFetchRemoteResources();
+        this.fetchRemoteResources = policyIn.isFetchRemoteResources();
         // SCAP Content & Profile Title
         if (policyIn.getScapContent() != null) {
             this.scapContentId = policyIn.getScapContent().getId();

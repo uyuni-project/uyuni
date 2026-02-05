@@ -202,7 +202,7 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
         Request request = getRequestWithCsrf("/manager/audit/scap/policy/details/:id", policy.getId());
         ModelAndView mv = controller.detailScapPolicyView(request, response, user);
 
-        assertEquals("templates/scap-policy-details.jade", mv.getViewName());
+        assertEquals("templates/audit/scap-policy-details.jade", mv.getViewName());
         Map<String, Object> model = (Map<String, Object>) mv.getModel();
         assertTrue(model.get("scapPolicyPageDataJson").toString().contains("Detail Policy"));
     }
@@ -451,7 +451,7 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
         assertEquals(HttpStatus.SC_BAD_REQUEST, response.raw().getStatus());
         ResultJson<?> result = GSON.fromJson(responseStr, ResultJson.class);
         assertFalse(result.isSuccess());
-        assertTrue(result.getData().toString().contains("Rule identifier is required"));
+        assertTrue(result.getMessages().contains("Rule identifier is required"));
     }
 
     @Test
@@ -470,7 +470,7 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
         assertEquals(HttpStatus.SC_BAD_REQUEST, response.raw().getStatus());
         ResultJson<?> result = GSON.fromJson(responseStr, ResultJson.class);
         assertFalse(result.isSuccess());
-        assertTrue(result.getData().toString().contains("Benchmark ID is required"));
+        assertTrue(result.getMessages().contains("Benchmark ID is required"));
     }
 
     @Test
@@ -490,7 +490,7 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
         assertEquals(HttpStatus.SC_BAD_REQUEST, response.raw().getStatus());
         ResultJson<?> result = GSON.fromJson(responseStr, ResultJson.class);
         assertFalse(result.isSuccess());
-        assertTrue(result.getData().toString().contains("Script type must be 'bash' or 'salt'"));
+        assertTrue(result.getMessages().contains("Script type must be 'bash' or 'salt'"));
     }
 
     @Test
@@ -510,7 +510,7 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
         assertEquals(HttpStatus.SC_BAD_REQUEST, response.raw().getStatus());
         ResultJson<?> result = GSON.fromJson(responseStr, ResultJson.class);
         assertFalse(result.isSuccess());
-        assertTrue(result.getData().toString().contains("Remediation content is required"));
+        assertTrue(result.getMessages().contains("Remediation content is required"));
     }
 
     // ========== Apply Remediation Helper Method Tests ==========

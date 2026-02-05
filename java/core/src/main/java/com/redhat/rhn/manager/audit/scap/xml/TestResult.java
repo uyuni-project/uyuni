@@ -36,31 +36,31 @@ public class TestResult {
     @Attribute(name = "end-time")
     private Date endTime;
 
-    @ElementList(name = "pass")
+    @ElementList(name = "pass", required = false)
     private List<TestResultRuleResult> pass;
 
-    @ElementList(name = "fail")
+    @ElementList(name = "fail", required = false)
     private List<TestResultRuleResult> fail;
 
-    @ElementList(name = "error")
+    @ElementList(name = "error", required = false)
     private List<TestResultRuleResult> error;
 
-    @ElementList(name = "unknown")
+    @ElementList(name = "unknown", required = false)
     private List<TestResultRuleResult> unknown;
 
-    @ElementList(name = "notapplicable")
+    @ElementList(name = "notapplicable", required = false)
     private List<TestResultRuleResult> notapplicable;
 
-    @ElementList(name = "notchecked")
+    @ElementList(name = "notchecked", required = false)
     private List<TestResultRuleResult> notchecked;
 
-    @ElementList(name = "notselected")
+    @ElementList(name = "notselected", required = false)
     private List<TestResultRuleResult> notselected;
 
-    @ElementList(name = "informational")
+    @ElementList(name = "informational", required = false)
     private List<TestResultRuleResult> informational;
 
-    @ElementList(name = "fixed")
+    @ElementList(name = "fixed", required = false)
     private List<TestResultRuleResult> fixed;
 
     /**

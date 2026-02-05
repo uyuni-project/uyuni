@@ -46,7 +46,7 @@ public class ScapPolicy extends BaseDomainHelper {
     private String tailoringProfileId;
     private String ovalFiles;
     private String advancedArgs;
-    private Boolean fetchRemoteResources = false;
+    private boolean fetchRemoteResources = false;
     private Org org;
 
     /**
@@ -207,15 +207,15 @@ public class ScapPolicy extends BaseDomainHelper {
     /**
      * @return the fetchRemoteResources
      */
-    @Column(name = "fetch_remote_resources")
-    public Boolean getFetchRemoteResources() {
+    @Column(name = "fetch_remote_resources", nullable = false)
+    public boolean isFetchRemoteResources() {
         return fetchRemoteResources;
     }
 
     /**
      * @param fetchRemoteResourcesIn the fetchRemoteResourcesIn to set
      */
-    public void setFetchRemoteResources(Boolean fetchRemoteResourcesIn) {
+    public void setFetchRemoteResources(boolean fetchRemoteResourcesIn) {
         this.fetchRemoteResources = fetchRemoteResourcesIn;
     }
 
