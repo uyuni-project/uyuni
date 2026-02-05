@@ -477,11 +477,6 @@ public class ConfigDefaults {
         return Config.get().getString(OIDC_JWT_USERNAME_CLAIM, "preferred_username");
     }
 
-    /**
-     * Enable beta features (e.g., SCAP file transfer from master to minion)
-     */
-    public static final String BETA_FEATURES_ENABLED = "java.beta_features_enabled";
-
 
 
     private ConfigDefaults() {

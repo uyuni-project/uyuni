@@ -1441,8 +1441,7 @@ public class ScapAuditController {
             data = GSON.fromJson(request.body(), CustomRemediationJson.class);
         }
         catch (JsonParseException e) {
-            return json(response, HttpStatus.SC_BAD_REQUEST,
-                    ResultJson.error("Invalid JSON request body"), new TypeToken<>() { });
+            return badRequest(response, "Invalid JSON request body");
         }
 
         String identifier = data.getIdentifier();
@@ -1451,23 +1450,19 @@ public class ScapAuditController {
         String remediationContent = data.getRemediation();
 
         if (identifier == null || identifier.isEmpty()) {
-            return json(response, HttpStatus.SC_BAD_REQUEST,
-                    ResultJson.error("Rule identifier is required"), new TypeToken<>() { });
+            return badRequest(response, "Rule identifier is required");
         }
 
         if (benchmarkId == null || benchmarkId.isEmpty()) {
-            return json(response, HttpStatus.SC_BAD_REQUEST,
-                    ResultJson.error("Benchmark ID is required"), new TypeToken<>() { });
+            return badRequest(response, "Benchmark ID is required");
         }
 
         if (scriptType == null) {
-            return json(response, HttpStatus.SC_BAD_REQUEST,
-                    ResultJson.error("Script type must be 'bash' or 'salt'"), new TypeToken<>() { });
+            return badRequest(response, "Script type must be 'bash' or 'salt'");
         }
 
         if (remediationContent == null || remediationContent.isEmpty()) {
-            return json(response, HttpStatus.SC_BAD_REQUEST,
-                    ResultJson.error("Remediation content is required"), new TypeToken<>() { });
+            return badRequest(response, "Remediation content is required");
         }
 
         try {
@@ -1477,12 +1472,10 @@ public class ScapAuditController {
             return success(response, ResultJson.success("Custom remediation saved successfully"));
         }
         catch (IllegalArgumentException e) {
-            return json(response, HttpStatus.SC_BAD_REQUEST,
-                    ResultJson.error(e.getMessage()), new TypeToken<>() { });
+            return badRequest(response, e.getMessage());
         }
         catch (Exception e) {
-            return json(response, HttpStatus.SC_INTERNAL_SERVER_ERROR,
-                    ResultJson.error("Failed to save custom remediation: " + e.getMessage()), new TypeToken<>() { });
+            return internalServerError(response, "Failed to save custom remediation: " + e.getMessage());
         }
     }
 

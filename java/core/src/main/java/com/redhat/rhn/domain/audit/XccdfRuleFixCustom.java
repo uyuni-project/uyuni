@@ -58,6 +58,7 @@ public class XccdfRuleFixCustom {
      * Default constructor for JPA.
      */
     public XccdfRuleFixCustom() {
+        // Default constructor for JPA.
     }
 
     /**

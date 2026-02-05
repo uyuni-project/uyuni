@@ -14,6 +14,8 @@
  */
 package com.suse.manager.webui.utils.gson;
 
+import com.suse.manager.webui.utils.ScapUtils;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDateTime;
@@ -21,7 +23,8 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * JSON DTO for scheduling SCAP audit scans
+ * JSON DTO for scheduling SCAP audi
+ * t scans
  */
 public class AuditScanScheduleJson {
 
@@ -131,37 +134,16 @@ public class AuditScanScheduleJson {
      * @return the formatted parameters for oscap command
      */
     public String buildOscapParameters(String resolvedTailoringFile) {
-        StringBuilder params = new StringBuilder();
-
-        // Profile is required
-        params.append("--profile ").append(xccdfProfileId);
-
-        // Tailoring file and profile (optional)
-        if (StringUtils.isNotEmpty(resolvedTailoringFile)) {
-            params.append(" --tailoring-file ").append(resolvedTailoringFile);
-            if (StringUtils.isNotEmpty(tailoringProfileID)) {
-                params.append(" --tailoring-profile-id ").append(tailoringProfileID);
-            }
-        }
-        else if (StringUtils.isNotEmpty(tailoringFile)) {
-             // Fallback to legacy field if no resolved file passed but field exists
-            params.append(" --tailoring-file ").append(tailoringFile);
-            if (StringUtils.isNotEmpty(tailoringProfileID)) {
-                params.append(" --tailoring-profile-id ").append(tailoringProfileID);
-            }
-        }
-
-        // Advanced arguments (optional)
-        if (StringUtils.isNotEmpty(advancedArgs)) {
-            params.append(" ").append(advancedArgs);
-        }
-
-        // Fetch remote resources (optional)
-        if (fetchRemoteResources != null && fetchRemoteResources) {
-            params.append(" --fetch-remote-resources");
-        }
-
-        return params.toString();
+        // Use the shared utility for parameter building
+        String tailoringFileToUse = StringUtils.isNotEmpty(resolvedTailoringFile) ?
+          resolvedTailoringFile : tailoringFile;
+        return ScapUtils.buildOscapParameters(
+            xccdfProfileId,
+            tailoringFileToUse,
+            tailoringProfileID,
+            advancedArgs,
+            fetchRemoteResources != null && fetchRemoteResources
+        );
     }
 
     /**
