@@ -805,8 +805,8 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
         catch (NoSuchSystemException e) {
             //should be here
         }
-        catch (Throwable t) {
-            fail("Expected NoSuchSystemException but got " + t);
+        catch (Exception e) {
+            fail("Expected NoSuchSystemException but got " + e);
         }
     }
 
