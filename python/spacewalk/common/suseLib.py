@@ -49,8 +49,7 @@ class TransferException(Exception):
         self.value = value
 
     def __str__(self):
-        # pylint: disable-next=consider-using-f-string
-        return "%s" % self.value
+        return f"{self.value}"
 
     def __unicode__(self):
         # pylint: disable-next=consider-using-f-string
@@ -91,10 +90,9 @@ class URL(object):
         p = self.paramsdict.get(key, default)
         if p:
             assert len(p) == 1, (
-                # pylint: disable-next=consider-using-f-string
                 "The query parameter contains a list of "
                 "arguments instead of a single element. "
-                "%s : %s" % (key, p)
+                f"{key} : {p}"
             )
             p = p[0]
         return p
@@ -125,20 +123,16 @@ class URL(object):
         if self.username:
             netloc = self.username
         if self.password and not stripPw:
-            # pylint: disable-next=consider-using-f-string
-            netloc = "%s:%s" % (netloc, self.password)
+            netloc = f"{netloc}:{self.password}"
         elif self.password and stripPw:
-            # pylint: disable-next=consider-using-f-string
-            netloc = "%s:%s" % (netloc, "<secret>")
+            netloc = f"{netloc}:<secret>"
         if self.host and netloc:
-            # pylint: disable-next=consider-using-f-string
-            netloc = "%s@%s" % (netloc, self.host)
+            netloc = f"{netloc}@{self.host}"
         elif self.host:
             netloc = self.host
 
         if self.port:
-            # pylint: disable-next=consider-using-f-string
-            netloc = "%s:%s" % (netloc, self.port)
+            netloc = f"{netloc}:{self.port}"
 
         # Default ULN channels URIs are like: uln:///ol7_x86_64_u8_base
         # If not netloc, we fix the path to avoid getting url:/ol7_x86_64_u8_base
@@ -155,27 +149,21 @@ class URL(object):
 
 def _curl_debug(mtype, text):
     if mtype == 0:
-        # pylint: disable-next=consider-using-f-string
-        log_debug(4, "* %s" % text)
+        log_debug(4, f"* {text}")
     elif mtype == 1:
         # HEADER_IN
-        # pylint: disable-next=consider-using-f-string
-        log_debug(4, "< %s" % text)
+        log_debug(4, f"< {text}")
     elif mtype == 2:
         # HEADER_OUT
-        # pylint: disable-next=consider-using-f-string
-        log_debug(4, "> %s" % text)
+        log_debug(4, f"> {text}")
     elif mtype == 3:
         # DATA_IN
-        # pylint: disable-next=consider-using-f-string
-        log_debug(5, "D< %s" % text)
+        log_debug(5, f"D< {text}")
     elif mtype == 4:
         # DATA_OUT
-        # pylint: disable-next=consider-using-f-string
-        log_debug(5, "D> %s" % text)
+        log_debug(5, f"D> {text}")
     else:
-        # pylint: disable-next=consider-using-f-string
-        log_debug(6, "%s: %s" % (mtype, text))
+        log_debug(6, f"{mtype}: {text}")
     return 0
 
 
@@ -188,8 +176,6 @@ def send(url, sendData=None):
     Returns the result as stringIO object.
 
     """
-    connect_retries = 10
-    try_counter = connect_retries
     timeout = 120
     if CFG.is_initialized() and CFG.has_key("TIMEOUT"):
         timeout = CFG.TIMEOUT
@@ -202,8 +188,7 @@ def send(url, sendData=None):
     proxy_url, proxy_user, proxy_pass = get_proxy(url)
     if proxy_url:
         curl.setopt(pycurl.PROXY, proxy_url)
-    # pylint: disable-next=consider-using-f-string
-    log_debug(2, "Connect to %s" % url)
+    log_debug(2, f"Connect to {url}")
     if sendData is not None:
         curl.setopt(pycurl.POSTFIELDS, sendData)
         if (
@@ -214,68 +199,45 @@ def send(url, sendData=None):
             # disable Expect header
             curl.setopt(pycurl.HTTPHEADER, ["Expect:"])
 
-    # We implement our own redirection-following, because pycurl
-    # 7.19 doesn't POST after it gets redirected. Ideally we'd be
-    # using pycurl.POSTREDIR here, but that's in 7.21.
-    curl.setopt(pycurl.FOLLOWLOCATION, False)
+    curl.setopt(pycurl.FOLLOWLOCATION, True)
 
     response = StringIO()
     curl.setopt(pycurl.WRITEFUNCTION, response.write)
 
-    try_counter = connect_retries
-    while try_counter:
-        try_counter -= 1
-        try:
-            curl.perform()
-        except pycurl.error as e:
-            if e.args[0] == 56:  # Proxy requires authentication
-                log_debug(2, e.args[1])
-                if not (proxy_user and proxy_pass):
-                    # pylint: disable-next=raise-missing-from
-                    raise TransferException(
-                        # pylint: disable-next=consider-using-f-string
-                        "Proxy requires authentication, "
-                        "but reading credentials from "
-                        "%s failed." % YAST_PROXY
-                    )
-                # pylint: disable-next=consider-using-f-string
-                curl.setopt(pycurl.PROXYUSERPWD, "%s:%s" % (proxy_user, proxy_pass))
-            elif e.args[0] == 60:
-                log_error(
-                    "Peer certificate could not be authenticated "
-                    "with known CA certificates."
-                )
+    try:
+        curl.perform()
+    except pycurl.error as e:
+        if e.args[0] == 56:  # Proxy requires authentication
+            log_debug(2, e.args[1])
+            if not (proxy_user and proxy_pass):
                 # pylint: disable-next=raise-missing-from
                 raise TransferException(
-                    "Peer certificate could not be "
-                    "authenticated with known CA "
-                    "certificates."
+                    "Proxy requires authentication, "
+                    "but reading credentials from "
+                    f"{YAST_PROXY} failed."
                 )
-            else:
-                log_error(e.args[1])
-                raise
+            curl.setopt(pycurl.PROXYUSERPWD, f"{proxy_user}:{proxy_pass}")
+        elif e.args[0] == 60:
+            log_error(
+                "Peer certificate could not be authenticated "
+                "with known CA certificates."
+            )
+            # pylint: disable-next=raise-missing-from
+            raise TransferException(
+                "Peer certificate could not be "
+                "authenticated with known CA "
+                "certificates."
+            )
+        else:
+            log_error(e.args[1])
+            raise
 
-        status = curl.getinfo(pycurl.HTTP_CODE)
-        if status == 200 or (URL(url).scheme == "file" and status == 0):
-            # OK or file
-            break
-        elif status in (301, 302):  # redirects
-            url = curl.getinfo(pycurl.REDIRECT_URL)
-            # pylint: disable-next=consider-using-f-string
-            log_debug(2, "Got redirect to %s" % url)
-            curl.setopt(pycurl.URL, url)
-    else:
+    status = curl.getinfo(pycurl.HTTP_CODE)
+    if status != 200 and not (URL(url).scheme == "file" and status == 0):
         log_error(
-            # pylint: disable-next=consider-using-f-string
-            "Connecting to %s has failed after %s "
-            "tries with HTTP error code %s."
-            % (URL(url).getURL(stripPw=True), connect_retries, status)
+            f"Connecting to {URL(url).getURL(stripPw=True)} has failed with HTTP error code {status}."
         )
-        raise TransferException(
-            # pylint: disable-next=consider-using-f-string
-            "Connection failed after %s tries with "
-            "HTTP error %s." % (connect_retries, status)
-        )
+        raise TransferException(f"Connection failed with HTTP error {status}.")
 
     # StringIO.write leaves the cursor at the end of the file
     response.seek(0)
@@ -302,47 +264,29 @@ def accessible(url):
     proxy_url, proxy_user, proxy_pass = get_proxy(url)
     if proxy_url:
         curl.setopt(pycurl.PROXY, proxy_url)
-    # pylint: disable-next=consider-using-f-string
-    log_debug(2, "Connect to %s" % url)
+    log_debug(2, f"Connect to {url}")
 
-    # We implement our own redirection-following, because pycurl
-    # 7.19 doesn't POST after it gets redirected. Ideally we'd be
-    # using pycurl.POSTREDIR here, but that's in 7.21.
-    curl.setopt(pycurl.FOLLOWLOCATION, False)
+    curl.setopt(pycurl.FOLLOWLOCATION, True)
     curl.setopt(pycurl.NOBODY, True)
 
-    try_counter = 5
-    while try_counter:
-        try_counter -= 1
-        try:
-            curl.perform()
-        except pycurl.error as e:
-            if e.args[0] == 56:  # Proxy requires authentication
-                log_debug(2, e.args[1])
-                if not (proxy_user and proxy_pass):
-                    # pylint: disable-next=raise-missing-from
-                    raise TransferException(
-                        # pylint: disable-next=consider-using-f-string
-                        "Proxy requires authentication, "
-                        "but reading credentials from "
-                        "%s failed." % YAST_PROXY
-                    )
-                # pylint: disable-next=consider-using-f-string
-                curl.setopt(pycurl.PROXYUSERPWD, "%s:%s" % (proxy_user, proxy_pass))
-            else:
-                break
+    try:
+        curl.perform()
+    except pycurl.error as e:
+        if e.args[0] == 56:  # Proxy requires authentication
+            log_debug(2, e.args[1])
+            if not (proxy_user and proxy_pass):
+                # pylint: disable-next=raise-missing-from
+                raise TransferException(
+                    "Proxy requires authentication, "
+                    "but reading credentials from "
+                    f"{YAST_PROXY} failed."
+                )
+            curl.setopt(pycurl.PROXYUSERPWD, f"{proxy_user}:{proxy_pass}")
 
-        status = curl.getinfo(pycurl.HTTP_CODE)
-        # OK or file
-        if status == 200 or (URL(url).scheme == "file" and status == 0):
-            return True
-        elif status in (301, 302):  # redirects
-            url = curl.getinfo(pycurl.REDIRECT_URL)
-            # pylint: disable-next=consider-using-f-string
-            log_debug(2, "Got redirect to %s" % url)
-            curl.setopt(pycurl.URL, url)
-        elif status >= 400:
-            break
+    status = curl.getinfo(pycurl.HTTP_CODE)
+    # OK or file
+    if status == 200 or (URL(url).scheme == "file" and status == 0):
+        return True
     return False
 
 
@@ -377,8 +321,7 @@ def findProduct(product):
     product_lower = {}
     product_lower["name"] = product["name"].lower()
 
-    # pylint: disable-next=consider-using-f-string
-    log_debug(2, "Search for product: %s" % product)
+    log_debug(2, f"Search for product: {product}")
 
     if product.get("version"):
         q_version = "or sp.version = :version"
@@ -390,20 +333,16 @@ def findProduct(product):
         q_arch = "or pat.label = :arch"
         product_lower["arch"] = product["arch"].lower()
 
-    h = rhnSQL.prepare(
-        # pylint: disable-next=consider-using-f-string
-        """
+    h = rhnSQL.prepare(f"""
     SELECT sp.id, sp.name, sp.version, pat.label as arch, sp.release
        FROM suseProducts sp
        LEFT JOIN rhnPackageArch pat ON pat.id = sp.arch_type_id
     WHERE sp.name = :name
-       AND (sp.version IS NULL %s)
-       AND (sp.release IS NULL %s)
-       AND (sp.arch_type_id IS NULL %s)
+       AND (sp.version IS NULL {q_version})
+       AND (sp.release IS NULL {q_release})
+       AND (sp.arch_type_id IS NULL {q_arch})
     ORDER BY name, version, release, arch
-    """
-        % (q_version, q_release, q_arch)
-    )
+    """)
     h.execute(**product_lower)
     rs = h.fetchall_dict()
 
@@ -430,16 +369,14 @@ def findProduct(product):
 
 def findAllExtensionProductsOf(baseId, rootId):
     vals = {"baseId": baseId, "rootID": rootId}
-    h = rhnSQL.prepare(
-        """
+    h = rhnSQL.prepare("""
         SELECT distinct ext.id, ext.release, ext.version, pa.label arch, ext.name, ext.base baseproduct
                 FROM SUSEProductExtension pe
                 JOIN SUSEProducts base on base.id = pe.base_pdid
                 JOIN SUSEProducts ext on pe.ext_pdid = ext.id
                 JOIN rhnpackagearch pa on pa.id = ext.arch_type_id
             WHERE base.id = :baseId and pe.root_pdid = :rootId and pe.recommended = 'Y';
-        """
-    )
+        """)
     h.execute(**vals)
     rs = h.fetchall_dict()
     return rs or []
@@ -464,9 +401,7 @@ def channelForProduct(product, parent_id=None, org_id=None, user_id=None):
         parent_statement = " = :parent_id "
         vals["parent_id"] = parent_id
 
-    h = rhnSQL.prepare(
-        # pylint: disable-next=consider-using-f-string
-        """
+    h = rhnSQL.prepare(f"""
         SELECT ca.label arch,
         c.id,
         c.parent_channel,
@@ -483,9 +418,7 @@ def channelForProduct(product, parent_id=None, org_id=None, user_id=None):
         JOIN rhnChannelArch ca ON c.channel_arch_id = ca.id
         WHERE spc.product_id = :pid
           AND spc.mandatory = 'Y'
-          AND c.parent_channel %s"""
-        % parent_statement
-    )
+          AND c.parent_channel {parent_statement}""")
     h.execute(**vals)
     rs = h.fetchall_dict()
     if not rs:
@@ -501,8 +434,7 @@ def channelForProduct(product, parent_id=None, org_id=None, user_id=None):
             continue
 
         ret.append(channel)
-        # pylint: disable-next=consider-using-f-string
-        log_debug(1, "Found channel %s with id %d" % (channel["label"], channel["id"]))
+        log_debug(1, f'Found channel {channel["label"]} with id {channel["id"]}')
 
     # pylint: disable-next=use-implicit-booleaness-not-comparison
     if ret == []:
@@ -548,8 +480,7 @@ def get_mirror_credentials():
     n = 1
     while True:
         try:
-            # pylint: disable-next=consider-using-f-string
-            creds.append((CFG["mirrcred_user_%s" % n], CFG["mirrcred_pass_%s" % n]))
+            creds.append((CFG[f"mirrcred_user_{n}"], CFG[f"mirrcred_pass_{n}"]))
         except (KeyError, AttributeError):
             break
         n += 1
@@ -563,8 +494,7 @@ def isAllowedSlave(hostname):
         "select 1 from rhnISSSlave where slave = :hostname and enabled = 'Y'",
         hostname=idn_puny_to_unicode(hostname),
     ):
-        # pylint: disable-next=consider-using-f-string
-        log_error('Server "%s" is not enabled for ISS.' % hostname)
+        log_error(f"Server '{hostname}' is not enabled for ISS.")
         return False
     return True
 
@@ -659,8 +589,7 @@ def _get_proxy_from_rhn_conf():
     result = None
     if CFG.http_proxy:
         # CFG.http_proxy format is <hostname>[:<port>] in 1.7
-        # pylint: disable-next=consider-using-f-string
-        url = "http://%s" % CFG.http_proxy
+        url = f"http://{CFG.http_proxy}"
         # CFG.http_proxy_password can be a list in case of legitimate
         # commas "," are part of the password. If so, we need to
         # rebuilt the original password.
