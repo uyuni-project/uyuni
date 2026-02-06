@@ -105,8 +105,8 @@ public class ScapAuditController {
     private static final Logger LOG = LogManager.getLogger(ScapAuditController.class);
     private static final Gson GSON = Json.GSON;
     private final TaskomaticApi taskomaticApi = new TaskomaticApi();
-    private String TAILORING_FILES_DIR = "/srv/susemanager/scap/tailoring-files/";
-    private String SCAP_CONTENT_DIR = "/srv/susemanager/scap/ssg/content";
+    private String tailoringFilesDir = "/srv/susemanager/scap/tailoring-files/";
+    private String scapContentDir = "/srv/susemanager/scap/ssg/content";
     private static final String REMEDIATION_ACTION_PREFIX = "SCAP Remediation: ";
 
     /**
@@ -115,8 +115,8 @@ public class ScapAuditController {
      * @param scapDir
      */
     public void setDirectories(String tailoringDir, String scapDir) {
-        this.TAILORING_FILES_DIR = tailoringDir;
-        this.SCAP_CONTENT_DIR = scapDir;
+        this.tailoringFilesDir = tailoringDir;
+        this.scapContentDir = scapDir;
     }
     /**
      * Invoked from Router. Initialize routes for SCAP audit Views.
@@ -329,7 +329,7 @@ public class ScapAuditController {
             TailoringFile tailoringFile = ScapFactory.lookupTailoringFileByIdAndOrg(id, user.getOrg())
                     .orElseThrow(() -> new IllegalArgumentException("Tailoring file not found"));
 
-            oldFileToDelete = new File(TAILORING_FILES_DIR, tailoringFile.getFileName());
+            oldFileToDelete = new File(tailoringFilesDir, tailoringFile.getFileName());
 
             Optional<DiskFileItem> fileItem = MultipartRequestUtil.findFileItem(items, "tailoring_file");
             if (fileItem.isPresent()) {
@@ -379,7 +379,7 @@ public class ScapAuditController {
             int deletedCount = 0;
             for (TailoringFile file : tailoringFiles) {
                 ScapFactory.deleteTailoringFile(file);
-                Path filePath = Paths.get(TAILORING_FILES_DIR, file.getFileName());
+                Path filePath = Paths.get(tailoringFilesDir, file.getFileName());
                 FileUtils.deleteFile(filePath);
                 deletedCount++;
             }
@@ -407,7 +407,7 @@ public class ScapAuditController {
      * @throws Exception if the file cannot be written
      */
     private File writeNewTailoringFile(User user, String rawName, DiskFileItem item) throws Exception {
-        Files.createDirectories(Paths.get(TAILORING_FILES_DIR));
+        Files.createDirectories(Paths.get(tailoringFilesDir));
         String safeName = sanitizeFileName(rawName);
         String uniqueFilename = generateUniqueFileName(
                 user.getOrg().getId(),
@@ -415,7 +415,7 @@ public class ScapAuditController {
                 item.getName()
         );
 
-        Path safePath = FileUtils.validateCanonicalPath(TAILORING_FILES_DIR, uniqueFilename);
+        Path safePath = FileUtils.validateCanonicalPath(tailoringFilesDir, uniqueFilename);
         try (var in = item.getInputStream()) {
             Files.copy(in, safePath, StandardCopyOption.REPLACE_EXISTING);
         }
@@ -800,9 +800,9 @@ public class ScapAuditController {
      */
     private ScapPolicyResponseJson convertPolicyToResponseDto(ScapPolicy policy) {
         String xccdfFile = (policy.getScapContent() != null) ? policy.getScapContent().getXccdfFileName() : null;
-        String xccdfTitle = resolveProfileTitle(SCAP_CONTENT_DIR, xccdfFile, policy.getXccdfProfileId());
+        String xccdfTitle = resolveProfileTitle(scapContentDir, xccdfFile, policy.getXccdfProfileId());
         String tailoringFile = (policy.getTailoringFile() != null) ? policy.getTailoringFile().getFileName() : null;
-        String tailoringTitle = resolveProfileTitle(TAILORING_FILES_DIR, tailoringFile, policy.getTailoringProfileId());
+        String tailoringTitle = resolveProfileTitle(tailoringFilesDir, tailoringFile, policy.getTailoringProfileId());
         return new ScapPolicyResponseJson(policy, xccdfTitle, tailoringTitle);
     }
     /**
@@ -1029,10 +1029,10 @@ public class ScapAuditController {
             scapContentList.forEach(content -> {
                 try {
                     // Delete DataStream file
-                    Path dsFilePath = Paths.get(SCAP_CONTENT_DIR, content.getDataStreamFileName());
+                    Path dsFilePath = Paths.get(scapContentDir, content.getDataStreamFileName());
                     Files.deleteIfExists(dsFilePath);
                     // Delete XCCDF file
-                    Path xccdfFilePath = Paths.get(SCAP_CONTENT_DIR, content.getXccdfFileName());
+                    Path xccdfFilePath = Paths.get(scapContentDir, content.getXccdfFileName());
                     Files.deleteIfExists(xccdfFilePath);
                 }
                 catch (IOException e) {
@@ -1107,10 +1107,10 @@ public class ScapAuditController {
             scapContent.setName(name.trim());
             description.ifPresent(scapContent::setDescription);
 
-            Files.createDirectories(Paths.get(SCAP_CONTENT_DIR));
+            Files.createDirectories(Paths.get(scapContentDir));
 
             if (scapItemOpt.isPresent()) {
-                Path targetPath = FileUtils.validateCanonicalPath(SCAP_CONTENT_DIR, dsName);
+                Path targetPath = FileUtils.validateCanonicalPath(scapContentDir, dsName);
                 Files.copy(scapItemOpt.get().getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
 
                 writtenDsFile = targetPath.toFile();
@@ -1118,7 +1118,7 @@ public class ScapAuditController {
             }
 
             if (xccdfItemOpt.isPresent()) {
-                Path targetPath = FileUtils.validateCanonicalPath(SCAP_CONTENT_DIR, xccdfName);
+                Path targetPath = FileUtils.validateCanonicalPath(scapContentDir, xccdfName);
                 Files.copy(xccdfItemOpt.get().getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
 
                 writtenXccdfFile = targetPath.toFile();
@@ -1341,7 +1341,7 @@ public class ScapAuditController {
                         .orElseThrow(() -> new IllegalArgumentException("SCAP content not found"));
 
                 fileName = content.getXccdfFileName();
-                baseDirectory = SCAP_CONTENT_DIR;
+                baseDirectory = scapContentDir;
 
             }
             else if ("tailoringFile".equalsIgnoreCase(type)) {
@@ -1350,7 +1350,7 @@ public class ScapAuditController {
                         .orElseThrow(() -> new IllegalArgumentException("Tailoring file not found"));
 
                 fileName = tailoring.getFileName();
-                baseDirectory = TAILORING_FILES_DIR;
+                baseDirectory = tailoringFilesDir;
 
             }
             else {

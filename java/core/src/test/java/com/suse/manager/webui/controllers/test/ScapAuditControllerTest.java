@@ -253,6 +253,14 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
         Request request = getRequestWithCsrf("/manager/api/audit/profiles/list/:type/:id",
           "dataStream", content.getId());
         String responseStr = controller.getProfileList(request, response, user);
+       assertTrue(responseStr != null && responseStr.trim().startsWith("["),
+            () -> String.format(
+                "Assertion Failed! Expected a JSON Array (starting with '['), but the actual response was: <%s>%n" +
+                "Check Environment Details:%n" +
+                " - XCCDF Source Path: %s%n" +
+                " - Profile XSLT Path: %s",
+                responseStr, testXccdfSource.getAbsolutePath(), profileXslt.getAbsolutePath()
+            ));
         var listType = new TypeToken<List<Map<String, String>>>() { } .getType();
         List<Map<String, String>> profiles = GSON.fromJson(responseStr, listType);
 
