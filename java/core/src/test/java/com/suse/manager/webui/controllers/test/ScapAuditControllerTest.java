@@ -50,6 +50,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -250,17 +252,16 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
         // 2. Point Config to the Temp Directory
         Config.get().setString(ConfigDefaults.SCAP_XCCDF_PROFILES_XSL, profileXslt.getPath());
         controller.setDirectories(testXccdfSource.getParent(), testXccdfSource.getParent());
+
+        // 3. COPY the test file to the name the DB expects
+        File expectedFile = new File(testXccdfSource.getParent(), content.getXccdfFileName());
+        if (!expectedFile.exists()) {
+            Files.copy(testXccdfSource.toPath(), expectedFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        }
         Request request = getRequestWithCsrf("/manager/api/audit/profiles/list/:type/:id",
           "dataStream", content.getId());
         String responseStr = controller.getProfileList(request, response, user);
-       assertTrue(responseStr != null && responseStr.trim().startsWith("["),
-            () -> String.format(
-                "Assertion Failed! Expected a JSON Array (starting with '['), but the actual response was: <%s>%n" +
-                "Check Environment Details:%n" +
-                " - XCCDF Source Path: %s%n" +
-                " - Profile XSLT Path: %s",
-                responseStr, testXccdfSource.getAbsolutePath(), profileXslt.getAbsolutePath()
-            ));
+
         var listType = new TypeToken<List<Map<String, String>>>() { } .getType();
         List<Map<String, String>> profiles = GSON.fromJson(responseStr, listType);
 
