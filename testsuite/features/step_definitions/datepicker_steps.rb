@@ -56,13 +56,6 @@ Given(/^I pick "([^"]*)" as time$/) do |desired_time|
   time.click
 end
 
-When(/^I pick "([^"]*)" as time from "([^"]*)"$/) do |desired_time, element_id|
-  find('input[data-testid="time-picker"]', id: element_id).click
-  timepicker = find('ul.react-datepicker__time-list', match: :first)
-  time = timepicker.find(:xpath, "//*[normalize-space(text())='#{desired_time}']")
-  time.click
-end
-
 When(/^I pick (\d+) minutes from now as schedule time$/) do |arg1|
   action_time = get_future_time(arg1)
   raise ScriptError unless find(:xpath, '//*[@id=\'date_timepicker_widget_input\']', wait: 2)

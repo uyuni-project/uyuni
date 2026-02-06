@@ -217,10 +217,6 @@ When(/^I click on preview$/) do
   end
 end
 
-When(/^I click on stop waiting$/) do
-  find('button#stop').click
-end
-
 When(/^I click on run$/) do
   find('button#run', wait: DEFAULT_TIMEOUT).click
 end
