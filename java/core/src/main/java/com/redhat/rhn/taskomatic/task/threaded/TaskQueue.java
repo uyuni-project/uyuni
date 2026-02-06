@@ -15,6 +15,7 @@
 package com.redhat.rhn.taskomatic.task.threaded;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 
 import java.util.concurrent.BlockingQueue;
@@ -159,8 +160,7 @@ public class TaskQueue {
             // everything done
             if (queueRun != null) {
                 queueDriver.getLogger().debug("Finishing Task Queue run {}", queueRun.getId());
-                queueRun.finished();
-                queueRun.saveStatus(TaskoRun.STATUS_FINISHED);
+                TaskoFactory.markFinished(queueRun);
             }
             else {
                 queueDriver.getLogger().debug("Finishing Task Queue");

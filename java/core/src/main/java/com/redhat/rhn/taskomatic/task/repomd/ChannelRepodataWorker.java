@@ -31,6 +31,7 @@ import com.redhat.rhn.domain.contentmgmt.ContentProjectFactory;
 import com.redhat.rhn.domain.contentmgmt.EnvironmentTarget.Status;
 import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
+import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.task.TaskConstants;
 import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
 import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
@@ -139,7 +140,7 @@ public class ChannelRepodataWorker implements QueueWorker {
         }
         catch (Exception e) {
             logger.error(e.getMessage(), e);
-            parentQueue.getQueueRun().failed();
+            TaskoFactory.markFailed(parentQueue.getQueueRun());
             // unmark channel to be worked on
             markInProgress(false);
             setEnvironmentTargetStatus(envTarget, FAILED);

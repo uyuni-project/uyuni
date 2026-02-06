@@ -16,7 +16,6 @@
 package com.redhat.rhn.taskomatic.domain;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
-import com.redhat.rhn.taskomatic.TaskoFactory;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -78,54 +77,10 @@ public class TaskoRun extends BaseDomainHelper implements Serializable {
      * @param scheduleIdIn schedule id
      */
     public TaskoRun(Integer orgIdIn, TaskoTemplate templateIn, Long scheduleIdIn) {
-        setOrgId(orgIdIn);
-        setTemplate(templateIn);
-        setScheduleId(scheduleIdIn);
-        saveStatus(STATUS_READY_TO_RUN);
-    }
-
-    /**
-     * run start method
-     * has to be called right before job execution
-     */
-    public void start() {
-        setStartTime(new Date());
-        saveStatus(STATUS_RUNNING);
-    }
-
-    /**
-     * run finish method
-     * has to be called right after job execution
-     */
-    public void finished() {
-        setEndTime(new Date());
-    }
-
-    /**
-     * if task execution will be skipped (used for queue tasks)
-     */
-    public void skipped() {
-        Date now = new Date();
-        setStartTime(now);
-        setEndTime(now);
-        saveStatus(STATUS_SKIPPED);
-    }
-
-    /**
-     * if task execution fails
-     */
-    public void failed() {
-        finished();
-        saveStatus(TaskoRun.STATUS_FAILED);
-    }
-
-    /**
-     * sets run status
-     * @param statusIn status to set
-     */
-    public void saveStatus(String statusIn) {
-        setStatus(statusIn);
-        TaskoFactory.save(this);
+        this.orgId = orgIdIn;
+        this.template = templateIn;
+        this.scheduleId = scheduleIdIn;
+        this.status = STATUS_READY_TO_RUN;
     }
 
     /**

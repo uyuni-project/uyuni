@@ -683,4 +683,56 @@ public class TaskoFactory extends HibernateFactory {
         HibernateFactory.commitTransaction();
         log.info("Schedule created for {}.", jobLabel);
     }
+
+    /**
+     * Mark the run as ready to run.
+     * @param run the {@link TaskoRun} instance
+     */
+    public static void markReady(TaskoRun run) {
+        run.setStatus(TaskoRun.STATUS_READY_TO_RUN);
+        save(run);
+    }
+
+    /**
+     * Mark the run as started. Has to be called right before job execution
+     * @param run the {@link TaskoRun} instance
+     */
+    public static void markStarted(TaskoRun run) {
+        run.setStartTime(new Date());
+        run.setStatus(TaskoRun.STATUS_RUNNING);
+        save(run);
+    }
+
+    /**
+     * Mark the run instance as finished. Has to be called right after job execution
+     * @param run the {@link TaskoRun} instance
+     */
+    public static void markFinished(TaskoRun run) {
+        run.setEndTime(new Date());
+        run.setStatus(TaskoRun.STATUS_FINISHED);
+        save(run);
+    }
+
+    /**
+     * Mark the run instance as skipped. Task executions will be skipped in queue tasks
+     * @param run the {@link TaskoRun} instance
+     * @see com.redhat.rhn.taskomatic.task.RhnQueueJob
+     */
+    public static void markSkipped(TaskoRun run) {
+        Date now = new Date();
+        run.setStartTime(now);
+        run.setEndTime(now);
+        run.setStatus(TaskoRun.STATUS_SKIPPED);
+        save(run);
+    }
+
+    /**
+     * Mark the run instance as failed. Has to be called right after failed job execution
+     * @param run the {@link TaskoRun} instance
+     */
+    public static void markFailed(TaskoRun run) {
+        run.setEndTime(new Date());
+        run.setStatus(TaskoRun.STATUS_FAILED);
+        save(run);
+    }
 }

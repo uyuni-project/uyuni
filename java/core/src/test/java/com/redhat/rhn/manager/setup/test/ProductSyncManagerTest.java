@@ -409,8 +409,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      *
      * @param status the tasko run status
      */
-    private void insertTaskoRun(List<String> channelIds,
-            String status) {
+    private void insertTaskoRun(List<String> channelIds, String status) {
         TaskoSchedule schedule = insertTaskoSchedule(channelIds);
         TaskoTemplate template = schedule.getBunch().getTemplates().get(0);
         assertNotNull(template);
