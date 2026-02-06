@@ -1,1 +1,1 @@
-- Ensure the directory /etc/sysconfig/rhn exists before writing into it
+- Ensure directory /etc/sysconfig/rhn exists before creating file
