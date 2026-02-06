@@ -87,6 +87,10 @@ public class UserInfo extends AbstractUserChild implements Serializable {
     @Column(name = "web_theme")
     private String webTheme;
 
+    @Column(name = "beta_features_enabled", nullable = false)
+    @Type(type = "yes_no")
+    private boolean betaFeaturesEnabled;
+
     /**
      * Create a new empty user
      */
@@ -277,5 +281,21 @@ public class UserInfo extends AbstractUserChild implements Serializable {
      */
     public void setWebTheme(String webThemeIn) {
         this.webTheme = webThemeIn;
+    }
+
+    /**
+     * Getter for betaFeaturesEnabled
+     * @return the betaFeaturesEnabled
+     */
+    public boolean getBetaFeaturesEnabled() {
+        return this.betaFeaturesEnabled;
+    }
+
+    /**
+     * Setter for betaFeaturesEnabled
+     * @param betaFeaturesEnabledIn the betaFeaturesEnabled to set
+     */
+    public void setBetaFeaturesEnabled(boolean betaFeaturesEnabledIn) {
+        this.betaFeaturesEnabled = betaFeaturesEnabledIn;
     }
 }

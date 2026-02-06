@@ -52,6 +52,9 @@ public class ScapActionDetails extends BaseDomainHelper {
     @Column
     private byte[] parameters;
 
+    @Column(name = "scap_policy_id")
+    private Integer scapPolicyId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "action_id", updatable = false, nullable = false, insertable = true)
     private Action parentAction;
@@ -168,5 +171,21 @@ public class ScapActionDetails extends BaseDomainHelper {
      */
     public void setParentAction(Action parentActionIn) {
         this.parentAction = parentActionIn;
+    }
+
+    /**
+     * Gets the SCAP policy ID associated with this action
+     * @return Returns the scapPolicyId.
+     */
+    public Integer getScapPolicyId() {
+        return scapPolicyId;
+    }
+
+    /**
+     * Sets the SCAP policy ID associated with this action
+     * @param scapPolicyIdIn The scapPolicyId to set.
+     */
+    public void setScapPolicyId(Integer scapPolicyIdIn) {
+        this.scapPolicyId = scapPolicyIdIn;
     }
 }
