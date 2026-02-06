@@ -87,7 +87,7 @@ with open(config_path + "httpd.yaml", encoding="utf-8") as httpdSource:
 
     # store the systemid content, but only if it does not exist already
     if not os.path.exists("/etc/sysconfig/rhn/systemid"):
-		Path("/etc/sysconfig/rhn").mkdir(parents=True, exist_ok=True)
+        Path("/etc/sysconfig/rhn").mkdir(parents=True, exist_ok=True)
         with open("/etc/sysconfig/rhn/systemid", "w", encoding="utf-8") as file:
             file.write(httpdConfig.get("system_id"))
 
