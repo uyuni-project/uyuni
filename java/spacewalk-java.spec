@@ -81,7 +81,7 @@ BuildRequires:  ant
 BuildRequires:  ant-apache-regexp
 BuildRequires:  ant-contrib
 BuildRequires:  ant-junit
-BuildRequires:  antlr4 >= 4.13.0
+BuildRequires:  antlr4-java >= 4.13.0
 BuildRequires:  apache-commons-cli
 BuildRequires:  apache-commons-codec
 BuildRequires:  apache-commons-collections
@@ -164,6 +164,7 @@ BuildRequires:  libxml2-tools
 BuildRequires:  libxml2-devel
 %endif
 
+Requires:       antlr4-java >= 4.13.0
 Requires:       %{apache_commons_compress}
 Requires:       %{apache_commons_digester}
 Requires:       %{apache_commons_discovery}

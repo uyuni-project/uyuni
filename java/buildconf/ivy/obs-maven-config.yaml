@@ -18,9 +18,6 @@ artifacts:
     package: objectweb-asm
     jar: asm-all
     repository: Uyuni_Jakarta
-  - artifact: antlr
-    package: antlr-java
-    repository: Leap
   - artifact: antlr4-runtime
     package: antlr4-java
     repository: Uyuni_Jakarta

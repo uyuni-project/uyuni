@@ -151,7 +151,7 @@
   <property name="test.build.jar.dependencies" value="junit ${log4j-jars} regexp ${jmock-jars} postgresql-jdbc" />
 
   <property name="test.jar.dependencies"
-      value="antlr checkstyle dom4j emma emma_ant jdom ${jta11-jars} junit
+      value="antlr4/antlr4-runtime checkstyle dom4j emma emma_ant jdom ${jta11-jars} junit
              ${log4j-jars}
              regexp ${jmock-jars}
              postgresql-jdbc" />
@@ -161,20 +161,15 @@
   </condition>
 
   <property name="build.jar.dependencies"
-      value="ant ant-junit ${ant-contrib.path} antlr  ${test.build.jar.dependencies}
+      value="ant ant-junit ${ant-contrib.path} antlr4/antlr4-runtime ${test.build.jar.dependencies}
       ${common.jar.dependencies} ${tomcat-jars} ${jasper-jars}
        xalan-j2" />
 
   <property name="run.jar.dependencies"
-      value="antlr objectweb-asm/asm ${cglib-jar} ${c3p0} commons-discovery dom4j ${jaf} ${jta11-jars} ojdbc14 sitemesh
-             taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec
+      value="antlr4/antlr4-runtime objectweb-asm/asm ${cglib-jar} ${c3p0} commons-discovery dom4j ${jaf} ${jta11-jars} ojdbc14 sitemesh
              xalan-j2 xalan-j2-serializer xerces-j2 ${common.jar.dependencies}" />
 
   <!-- =================== RPM build, use jpackage syntax ======================= -->
-  <!-- property name="install.test.jar.dependencies"
-      value="antlr checkstyle dom4j emma emma_ant jdom ${jta11-jars} junit
-             ${log4j-jars}
-             regexp ${jmock-jars} strutstest" / -->
 
   <!-- SUSE extra dependencies: build and runtime -->
   <property name="suse-common-jars" value="jade4j jose4j salt-netapi-client spark-core spark-template-jade httpasyncclient simpleclient simpleclient_common simpleclient_hibernate simpleclient_servlet simpleclient_httpserver pgjdbc-ng/pgjdbc-ng pgjdbc-ng/spy netty/netty-common netty/netty-buffer netty/netty-resolver netty/netty-transport netty/netty-codec netty/netty-handler netty/netty-transport-native-unix-common java-saml java-saml-core joda-time woodstox-core-asl xmlsec stax2-api stax-api ${commons-jexl} ical4j ${product-common-jars} ${jaxb}" />
@@ -184,12 +179,11 @@
     slf4j/api log4j/log4j-slf4j-impl ${product-runtime-jars} jctools/jctools-core" />
 
   <property name="install.build.jar.dependencies"
-      value="ant ant/ant-junit ${ant-contrib.path} antlr ${jasper-jars} ${test.build.jar.dependencies}
+      value="ant ant/ant-junit ${ant-contrib.path} antlr4/antlr4-runtime ${jasper-jars} ${test.build.jar.dependencies}
       ${install.common.jar.dependencies} xalan-j2" />
 
   <property name="install.run.jar.dependencies"
-      value="antlr objectweb-asm/asm ${cglib-jar} ${c3p0} commons-discovery dom4j ${jaf} ${jta11-jars} sitemesh
-             taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec
+      value="antlr4/antlr4-runtime objectweb-asm/asm ${cglib-jar} ${c3p0} commons-discovery dom4j ${jaf} ${jta11-jars} sitemesh
              xalan-j2 xalan-j2-serializer xerces-j2 ${install.common.jar.dependencies}" />
 
   <property name="install.common.jar.dependencies"
@@ -200,12 +194,11 @@
              ${commons-compress} ${tomcat-jars} ${javamail} jdom jsch
              ${log4j-jars} oro redstone-xmlrpc-client redstone-xmlrpc ${struts-jars}
              postgresql-jdbc ongres-scram/client ongres-scram/common
-             ${stringprep-jars} taglibs-standard-impl taglibs-standard-jstlel
-             taglibs-standard-spec quartz ${suse-common-jars} velocity-engine-core
+             ${stringprep-jars} quartz ${suse-common-jars} velocity-engine-core
              simple-core snakeyaml simpleframework/simplexml ${commons-jexl}" />
 
   <property name="dist.jar.dependencies"
-      value="antlr objectweb-asm/asm bcel ${c3p0} ${cglib-jar}
+      value="antlr4/antlr4-runtime objectweb-asm/asm bcel ${c3p0} ${cglib-jar}
              commons-collections commons-beanutils commons-cli commons-codec
              commons-digester commons-discovery commons-fileupload2-core commons-fileupload2-jakarta-servlet6 commons-io
              ${commons-lang} apache-commons-text/commons-text commons-logging ${commons-compress}
@@ -213,7 +206,6 @@
              ${jaf} ${jasper-jars} ${javamail} ${jaxb} jdom ${other-jars}
              ${tomcat-jars} ${log4j-jars} redstone-xmlrpc-client redstone-xmlrpc
              oro quartz sitemesh ${struts-jars}
-             taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec
              postgresql-jdbc ongres-scram/client ongres-scram/common ${stringprep-jars}
              snakeyaml simpleframework/simplexml ${suse-common-jars} ${suse-runtime-jars}
 	     xalan-j2 xalan-j2-serializer xerces-j2 simple-core ${jcache}" />
