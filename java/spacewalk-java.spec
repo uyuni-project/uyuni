@@ -113,6 +113,7 @@ BuildRequires:  jade4j
 BuildRequires:  java-%{java_version}-openjdk-devel
 BuildRequires:  java-saml
 BuildRequires:  jakarta-mail
+BuildRequires:  angus-mail-core
 BuildRequires:  javapackages-tools
 BuildRequires:  javassist
 BuildRequires:  jboss-logging >= 3.6.1
@@ -201,6 +202,7 @@ Requires:       jade4j
 Requires:       java-%{java_version}-openjdk
 Requires:       java-saml
 Requires:       jakarta-mail
+Requires:       angus-mail-core
 Requires:       javapackages-tools
 Requires:       javassist
 Requires:       jboss-logging >= 3.6.1

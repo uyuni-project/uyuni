@@ -65,9 +65,7 @@
 
   <available file="${java.lib.dir}/jakarta-transactions/jakarta.transaction-api.jar" type="file" property="jta11-jars" value="jakarta-transactions" />
 
-  <condition property="javamail" value="jakarta-mail" else="javamail">
-    <available file="${java.lib.dir}/jakarta-mail/jakarta.mail-api.jar" />
-  </condition>
+  <property name="javamail" value="jakarta-mail/jakarta.mail-api angus-mail/jakarta.mail" />
 
   <condition property="commons-jexl" value="apache-commons-jexl/commons-jexl" else="commons-jexl">
     <available file="${java.lib.dir}/apache-commons-jexl/commons-jexl.jar"/>
@@ -75,47 +73,35 @@
 
   <available file="${java.lib.dir}/jcache.jar" type="file" property="jcache" value="jcache" />
 
-  <condition property="jaf" value="glassfish-activation" else="jaf">
-    <available file="${java.lib.dir}/glassfish-activation.jar"/>
-  </condition>
-  <condition property="jaf" value="jakarta-activation">
-    <available file="${java.lib.dir}/jakarta-activation/jakarta.activation.jar"/>
-  </condition>
-  <condition property="jaf" value="jakarta-activation/jakarta-activation-api">
-    <available file="${java.lib.dir}/jakarta-activation/jakarta.activation-api.jar"/>
-  </condition>
+  <property name="jaf" value="jakarta-activation/jakarta.activation-api angus-activation/angus-activation" />
 
   <available file="${java.lib.dir}/jaxb-api/jakarta.xml.bind-api.jar" type="file"
           property="jaxb-api" value="jaxb-api/jakarta.xml.bind-api" />
-<condition property="jaxb-impl" value="jaxb-impl" else="">
-    <available file="${java.lib.dir}/jaxb-impl.jar" />
-</condition>
-<condition property="txw2" value="txw2" else="">
-    <available file="${java.lib.dir}/txw2.jar" />
-</condition>
-<condition property="istack-commons" value="istack-commons-runtime" else="">
-    <available file="${java.lib.dir}/istack-commons-runtime.jar" />
-</condition>
+
+  <condition property="jaxb-impl" value="jaxb-impl" else="">
+      <available file="${java.lib.dir}/jaxb-impl.jar" />
+  </condition>
+  <condition property="txw2" value="txw2" else="">
+      <available file="${java.lib.dir}/txw2.jar" />
+  </condition>
+  <condition property="istack-commons" value="istack-commons-runtime" else="">
+      <available file="${java.lib.dir}/istack-commons-runtime.jar" />
+  </condition>
 
   <available file="${java.lib.dir}/jakarta-jstl/jakarta.servlet.jsp.jstl.jar" type="file"
           property="jakarta-jstl" value="jakarta-jstl/jakarta.servlet.jsp.jstl" />
   <available file="${java.lib.dir}/jakarta-jstl/jakarta.servlet.jsp.jstl-api.jar" type="file"
           property="jakarta-jstl-api" value="jakarta-jstl/jakarta.servlet.jsp.jstl-api" />
 
-<property name="jaxb" value="${jaxb-api} ${jaxb-impl} ${jakarta-jstl} ${jakarta-jstl-api} ${txw2} ${istack-commons}"/>
+  <property name="jaxb" value="${jaxb-api} ${jaxb-impl} ${jakarta-jstl} ${jakarta-jstl-api} ${txw2} ${istack-commons}"/>
 
-  <available file="${java.lib.dir}/hibernate/hibernate-core.jar" type="file"
-	  property="hibernatefiles" value="hibernate-core"/>
+  <available file="${java.lib.dir}/hibernate/hibernate-core.jar" type="file" property="hibernatefiles" value="hibernate-core"/>
 
-  <available file="${java.lib.dir}/hibernate/hibernate-models.jar" type="file"
-	  property="hibernate-models" value="hibernate/hibernate-models"/>
-  <available file="${java.lib.dir}/hibernate-models/hibernate-models.jar" type="file"
-	  property="hibernate-models" value="hibernate-models/hibernate-models"/>
-  <available file="${java.lib.dir}/hibernate-models.jar" type="file"
-	  property="hibernate-models" value="hibernate-models" />
+  <available file="${java.lib.dir}/hibernate/hibernate-models.jar" type="file" property="hibernate-models" value="hibernate/hibernate-models"/>
+  <available file="${java.lib.dir}/hibernate-models/hibernate-models.jar" type="file" property="hibernate-models" value="hibernate-models/hibernate-models"/>
+  <available file="${java.lib.dir}/hibernate-models.jar" type="file" property="hibernate-models" value="hibernate-models" />
 
-  <available file="${java.lib.dir}/jakarta-persistence-api/jakarta.persistence-api.jar" type="file"
-	  property="jpa" value="jakarta-persistence-api/jakarta.persistence-api"/>
+  <available file="${java.lib.dir}/jakarta-persistence-api/jakarta.persistence-api.jar" type="file" property="jpa" value="jakarta-persistence-api/jakarta.persistence-api"/>
 
   <property name="hibernatedeps" value="${hibernatefiles} ${hibernate-models} slf4j/api ${jpa} ${byte-buddy} jboss-logging javassist log4j/log4j-slf4j-impl ${jcache} classmate/classmate statistics hypersistence-utils/hypersistence-utils-hibernate-71 jackson-databind jackson-core jackson-annotations"/>
 
