@@ -10,7 +10,8 @@ tests:
     set:
       global.fqdn: uyuni.example.com
       timezone: "Europe/Berlin"
-      saline: true
+      saline:
+        enable: true
     asserts:
       - equal:
           path: spec.template.spec.containers[0].env[0].value
@@ -37,7 +38,8 @@ tests:
   - it: should apply custom email to the configmap
     set:
       global.fqdn: uyuni.example.com
-      email: "support@example.com"
+      server:
+        email: "support@example.com"
     asserts:
       - equal:
           path: data.email
