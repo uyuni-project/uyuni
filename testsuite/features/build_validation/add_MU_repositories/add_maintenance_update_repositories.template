@@ -45,3 +45,7 @@ Feature: Add a Maintenance Update custom channel and the custom repositories for
   Scenario: Wait for running reposyncs to finish after adding custom channel for <client>
     When I wait until the channel "custom_channel_<client>" has been synced
     Then the "custom_channel_<client>" reposync logs should not report errors
+
+  Scenario: Verify that all synchronized channels have their dependencies solved
+    When I wait until all synchronized channels have solved their dependencies
+    Then all channels have been synced without errors

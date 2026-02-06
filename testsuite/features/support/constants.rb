@@ -1708,7 +1708,6 @@ TIMEOUT_BY_CHANNEL_NAME = {
 
 EMPTY_CHANNELS = %w[
   el9-pool-x86_64
-  rhel-x86_64-server-7
   suse-multi-linux-manager-proxy-sle-5.1-updates-x86_64-sp7
   suse-multi-linux-manager-proxy-sle-5.2-updates-x86_64-sp7
   suse-multi-linux-manager-retail-branch-server-sle-5.1-updates-x86_64-sp7
