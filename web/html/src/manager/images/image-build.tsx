@@ -112,7 +112,15 @@ class BuildImage extends Component<Props, State> {
         // Get build hosts for the build type
         this.getBuildHosts(typeMap[data.imageType].buildType);
       } else {
-        //TODO: Handle error
+        this.setState({
+          messages: (
+            <Messages
+              items={res.messages.map((msg) => {
+                return { severity: "error", text: messageMap[msg] };
+              })}
+            />
+          ),
+        });
       }
     });
   }
