@@ -226,26 +226,27 @@ const ScapPolicy = (): JSX.Element => {
             />
           </div>
         </FormGroup>
-
-        <FormGroup>
-          <Label name={t("OVAL Files")} className="col-md-3" />
-          <div className="col-md-6">
-            <Text
-              name="ovalFiles"
-              placeholder={t("e.g: file1.xml, file2.xml")}
-              title={t("Comma-separated list of OVAL files")}
-            />
-          </div>
-        </FormGroup>
-
         <FormGroup>
           <Label name={t("Advanced Arguments")} className="col-md-3" />
           <div className="col-md-6">
             <Text
               name="advancedArgs"
-              placeholder={t("e.g: --results --report")}
+              placeholder={t("e.g: --rule xccdf_org.ssgproject.content_rule_package_screen_installed --remediate")}
               title={t("Additional command-line arguments for oscap")}
             />
+          </div>
+        </FormGroup>
+        <FormGroup>
+          <Label name={t("OVAL Files")} className="col-md-3" />
+          <div className="col-md-6">
+            <Text
+              name="ovalFiles"
+              placeholder={t("e.g: /usr/share/xml/scap/suse-sles15-cve.xml")}
+              title={t("Comma-separated list of OVAL files")}
+            />
+            <span className="help-block">
+              {t("Note: Paths to local OVAL definitions on target system (comma separated)")}
+            </span>
           </div>
         </FormGroup>
 
