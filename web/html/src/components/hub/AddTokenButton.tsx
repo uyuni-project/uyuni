@@ -83,7 +83,6 @@ export class AddTokenButton extends Component<Props, State> {
           <DropdownButton
             text={t("Add token")}
             icon="fa-plus"
-            title={t("Add a new access token")}
             className="btn-primary"
             items={[
               <Button
