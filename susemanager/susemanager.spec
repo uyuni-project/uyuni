@@ -119,7 +119,6 @@ Requires:       less
 Requires:       rsync
 Requires:       spacewalk-schema
 Requires:       susemanager-tools
-# migration.sh need either sqlplus or psql
 Recommends:     susemanager-branding
 BuildRequires:  uyuni-base-server
 Requires(pre):  uyuni-base-server
@@ -129,10 +128,6 @@ Requires:       firewalld
 %endif
 Requires:       postfix
 Requires:       reprepro >= 5.4
-# mgr-setup want to call mksubvolume for btrfs filesystems
-Recommends:     snapper
-# mgr-setup calls dig
-Requires:       bind-utils
 %define python_sitelib %(%{pythonX} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")
 %global pythonsmroot %{python_sitelib}/spacewalk
 
@@ -211,8 +206,6 @@ sed -i '1s=^#!/usr/bin/python3=#!/usr/bin/%{use_python_shebang}=' src/mgr-salt-s
 mkdir -p %{buildroot}/%{_prefix}/lib/susemanager/bin/
 mkdir -p %{buildroot}/%{_prefix}/lib/susemanager/hooks/
 install -m 0755 bin/* %{buildroot}/%{_prefix}/lib/susemanager/bin/
-ln -s mgr-setup %{buildroot}/%{_prefix}/lib/susemanager/bin/migration.sh
-ln -s pg-migrate-94-to-96.sh %{buildroot}/%{_prefix}/lib/susemanager/bin/pg-migrate.sh
 
 mkdir -p %{buildroot}/%{_datadir}/rhn/config-defaults
 mkdir -p %{buildroot}/%{_sysconfdir}/logrotate.d
