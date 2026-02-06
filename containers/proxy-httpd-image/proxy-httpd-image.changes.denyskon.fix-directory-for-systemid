@@ -1,0 +1,1 @@
+- Ensure directory /etc/sysconfig/rhn exists before creating file
