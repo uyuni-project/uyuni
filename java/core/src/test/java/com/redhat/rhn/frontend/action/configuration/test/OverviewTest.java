@@ -36,7 +36,7 @@ public class OverviewTest extends RhnMockStrutsTestCase {
     @Test
     public void testExecute() throws Exception {
         UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
-        TestUtils.saveAndFlush(user);
+        user = TestUtils.saveAndFlush(user);
 
         //Make a file for the recentFiles list
         ConfigFile file = ConfigTestUtils.createConfigFile(user.getOrg());

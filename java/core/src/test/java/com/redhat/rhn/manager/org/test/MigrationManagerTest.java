@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.org.Org;
@@ -44,6 +43,7 @@ import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.ServerTestUtils;
+import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.webui.services.iface.SaltApi;
@@ -127,7 +127,7 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
 
         ServerFactory.save(server);
         ServerFactory.save(server2);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
     }
 
     @Test

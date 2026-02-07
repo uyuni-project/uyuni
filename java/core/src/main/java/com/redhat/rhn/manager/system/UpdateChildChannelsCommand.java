@@ -155,8 +155,7 @@ public class UpdateChildChannelsCommand extends BaseUpdateChannelCommand {
                 SystemManager.unsubscribeServerFromChannel(loggedInUser,
                         serverIn, channel);
                 log.debug("Sub to channel.");
-                SystemManager.subscribeServerToChannel(loggedInUser, serverIn, channel,
-                        false);
+                SystemManager.subscribeServerToChannel(loggedInUser, serverIn, channel);
             }
             catch (IncompatibleArchException iae) {
                 throw new InvalidChannelException(iae);

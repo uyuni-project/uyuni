@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LLC
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -143,7 +144,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
         kf.setKsdata(k);
 
         kf.setFileList(TestUtils.saveAndReload(kf.getFileList()));
-        TestUtils.saveAndFlush(kf);
+        kf = TestUtils.saveAndFlush(kf);
 
         KickstartDefaults d = createDefaults(k, user);
         assertNotNull(d);
@@ -152,10 +153,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
         KickstartDefaultRegToken t = new KickstartDefaultRegToken();
         t.setKsdata(k);
         t.setToken(TokenTest.createTestToken());
-        TestUtils.saveAndFlush(t);
-
-        TestUtils.saveAndFlush(k);
-
+        t = TestUtils.saveAndFlush(t);
     }
 
     @Test
@@ -178,7 +176,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
                 KickstartUrlHelper.COBBLER_MEDIA_VARIABLE, k);
 
         KickstartFactory.saveKickstartData(k);
-        k = reload(k);
+        k = TestUtils.reload(k);
         KickstartFactory.saveKickstartData(k);
 
         String contents = FileUtils.readStringFromFile(k.buildCobblerFileName());
@@ -212,7 +210,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
         KickstartData k = createKickstartWithOptions(user.getOrg());
         k.setOrgDefault(Boolean.TRUE);
         KickstartFactory.saveKickstartData(k);
-        flushAndEvict(k);
+        TestUtils.flushAndEvict(k);
         assertNotNull(KickstartFactory.lookupOrgDefault(user.getOrg()));
     }
 
@@ -255,7 +253,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
         KickstartDefaults d1 = createDefaults(k, user);
         k.setKickstartDefaults(d1);
 
-        TestUtils.saveAndFlush(k);
+        k = TestUtils.saveAndFlush(k);
 
         KickstartableTree t2 = d1.getKstree();
         assertNotNull(t2);
@@ -287,7 +285,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
         assertNotNull(ksd.getId());
         assertNotNull(ksd.getKsPackages());
         KickstartFactory.saveKickstartData(ksd);
-        flushAndEvict(ksd);
+        TestUtils.flushAndEvict(ksd);
 
         assertEquals(1, KickstartFactory.removeKickstartData(ksd));
         assertNull(KickstartFactory
@@ -312,8 +310,8 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
                 ksdata.getTree().getChannel());
         assertNotNull(child);
         ksdata.addChildChannel(child);
-        TestUtils.saveAndFlush(ksdata);
-        ksdata = reload(ksdata);
+        ksdata = TestUtils.saveAndFlush(ksdata);
+        ksdata = TestUtils.reload(ksdata);
         // Check to make sure its reloaded from DB properly
         assertNotNull(ksdata.getChildChannels());
         // Make sure we have 1 child channel
@@ -419,9 +417,9 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
         d.setKstree(t);
         d.setCfgManagementFlag(Boolean.FALSE);
         d.setRemoteCommandFlag(Boolean.FALSE);
-        TestUtils.saveAndFlush(d);
-        TestUtils.saveAndFlush(t);
-        return d;
+        KickstartDefaults kickstartDefaults = TestUtils.saveAndFlush(d);
+        t = TestUtils.saveAndFlush(t);
+        return kickstartDefaults;
     }
 
 
@@ -460,14 +458,11 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
 
         k.setKernelParams(KERNEL_PARAMS);
 
-        k = TestUtils.saveAndReload(k);
+        k = TestUtils.save(k);
 
         k.addKsPackage(new KickstartPackage(k, pn, 0L));
         k.addKsPackage(new KickstartPackage(k, pn2, 1L));
 
-
-
-        k = TestUtils.saveAndReload(k);
         return k;
     }
 
@@ -598,7 +593,7 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
 
         Long ksid = k.getId();
         KickstartFactory.saveKickstartData(k);
-        flushAndEvict(k);
+        TestUtils.flushAndEvict(k);
 
         KickstartData k2 = lookupById(user.getOrg(), ksid);
         assertNotNull(k2);
@@ -617,19 +612,19 @@ public class KickstartDataTest extends BaseTestCaseWithUser {
         k.addDefaultRegToken(key.getToken());
 
         KickstartFactory.saveKickstartData(k);
-        k = reload(k);
+        k = TestUtils.reload(k);
         k = CryptoTest.addKeyToKickstart(k);
         k = KickstartIpTest.addIpRangesToKickstart(k);
 
         // save it and reload it
         KickstartFactory.saveKickstartData(k);
-        k = reload(k);
+        k = TestUtils.reload(k);
 
         // Now we deep copy it, save and reload
         KickstartData cloned = k.deepCopy(user,
                 "someNewLabel" + TestUtils.randomString());
         KickstartFactory.saveKickstartData(cloned);
-        cloned = reload(cloned);
+        cloned = TestUtils.reload(cloned);
 
         // Test the basic fields
         assertEquals(k.getComments(), cloned.getComments());

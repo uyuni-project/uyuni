@@ -440,7 +440,7 @@ public class IssMigratorTest extends JMockBaseTestCaseWithUser {
             assertEquals(Set.of(), migrationResult.getMessages());
 
             // Flush and clear hibernate sessions to ensure we get fresh results
-            clearSession();
+            TestUtils.flushAndClearSession();
 
             // Ensure the slaves has been removed
             List<IssSlave> issSlaves = IssFactory.listAllIssSlaves();
@@ -568,7 +568,7 @@ public class IssMigratorTest extends JMockBaseTestCaseWithUser {
             assertEquals(Set.of(), migrationResult.getMessages());
 
             // Flush and clear hibernate sessions to ensure we get fresh results
-            clearSession();
+            TestUtils.flushAndClearSession();
 
             // Ensure the peripheral have been created
             assertEquals(2L, hubFactory.countPeripherals());

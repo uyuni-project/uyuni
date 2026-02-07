@@ -18,19 +18,20 @@ import com.redhat.rhn.domain.user.legacy.UserImpl;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.DiscriminatorType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 
 /**
  * Credentials - Java representation of the table SUSECREDENTIALS.
@@ -46,6 +47,7 @@ public abstract class BaseCredentials extends BaseDomainHelper implements Creden
 
     private Long id;
     private User user;
+    private String internalType;
 
     /**
      * Get the ID of this object.
@@ -74,7 +76,7 @@ public abstract class BaseCredentials extends BaseDomainHelper implements Creden
      * @return user
      */
     @Override
-    @ManyToOne(targetEntity = UserImpl.class)
+    @ManyToOne(targetEntity = UserImpl.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     public User getUser() {
         return this.user;
@@ -87,6 +89,15 @@ public abstract class BaseCredentials extends BaseDomainHelper implements Creden
     @Override
     public void setUser(User userIn) {
         this.user = userIn;
+    }
+
+    @Column(name = "type", updatable = false, insertable = false)
+    protected String getInternalType() {
+        return internalType;
+    }
+
+    protected void setInternalType(String internalTypeIn) {
+        this.internalType = internalTypeIn;
     }
 
     @Override

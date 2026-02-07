@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LCC
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -24,6 +25,7 @@ import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.rhnset.RhnSet;
@@ -39,6 +41,7 @@ import com.redhat.rhn.domain.server.test.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.server.test.VirtualInstanceManufacturer;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.errata.cache.ErrataCacheManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManager;
@@ -57,7 +60,6 @@ import java.util.Set;
 public class ServerTestUtils {
 
     private static final String REDHAT_RELEASE = "redhat-release";
-    private static final Long I386_PACKAGE_ARCH_ID = 101L;
 
     private ServerTestUtils() {
     }
@@ -86,9 +88,8 @@ public class ServerTestUtils {
         Server retval = ServerFactoryTest.createTestServer(creator, true, serverGroupType);
         Channel baseChannel = ChannelTestUtils.createBaseChannel(creator);
         retval.addChannel(baseChannel);
-        ServerFactory.save(retval);
-        retval = TestUtils.reload(retval);
-        return retval;
+        retval = ServerFactory.save(retval);
+        return TestUtils.reload(retval);
     }
 
     /**
@@ -106,9 +107,7 @@ public class ServerTestUtils {
                 release, addTo.getPackageType());
         testInstPack.setEvr(evr);
 
-        PackageArch parch = HibernateFactory.getSession().createNativeQuery("""
-                SELECT p.* from rhnPackageArch as p WHERE p.id = :id
-                """, PackageArch.class).setParameter("id", I386_PACKAGE_ARCH_ID).getSingleResult();
+        PackageArch parch = PackageFactory.lookupPackageArchByLabel("i386");
 
         testInstPack.setArch(parch);
 
@@ -116,7 +115,7 @@ public class ServerTestUtils {
         if (redhatRelease == null) {
             redhatRelease = new PackageName();
             redhatRelease.setName(REDHAT_RELEASE);
-            TestUtils.saveAndFlush(redhatRelease);
+            redhatRelease = TestUtils.saveAndFlush(redhatRelease);
         }
 
         testInstPack.setName(redhatRelease);
@@ -166,7 +165,6 @@ public class ServerTestUtils {
                                                   SystemEntitlementManager systemEntitlementManager)
         throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        TestUtils.saveAndFlush(user);
         Server host = null;
         if (salt) {
             host = MinionServerFactoryTest.createTestMinionServer(user);
@@ -187,6 +185,7 @@ public class ServerTestUtils {
             vi.setConfirmed((long) 0);
             host.addGuest(vi);
         }
+        UserFactory.getInstance().syncServerGroupPerms(user);
 
         return host;
     }
@@ -257,10 +256,10 @@ public class ServerTestUtils {
 
         Errata errata = ErrataFactoryTest.createTestErrata(org.getId());
         errata.setAdvisoryType(errataType);
-        TestUtils.saveAndFlush(errata);
+        errata = TestUtils.saveAndFlush(errata);
 
         Package installedPackage = PackageTest.createTestPackage(org);
-        TestUtils.saveAndFlush(installedPackage);
+        installedPackage = TestUtils.saveAndFlush(installedPackage);
 
         Session session = HibernateFactory.getSession();
         session.flush();
@@ -268,7 +267,7 @@ public class ServerTestUtils {
         Package upgradedPackage = PackageTest.createTestPackage(org);
         upgradedPackage.setPackageName(installedPackage.getPackageName());
         upgradedPackage.setPackageEvr(upgradedPackageEvr);
-        TestUtils.saveAndFlush(upgradedPackage);
+        upgradedPackage = TestUtils.saveAndFlush(upgradedPackage);
 
         ErrataCacheManager.insertNeededErrataCache(
                 server.getId(), errata.getId(), installedPackage.getId());

@@ -64,7 +64,7 @@ public class ConfigChannelSaltManagerLifecycleTest extends BaseTestCaseWithUser 
         super.setUp();
         user.getOrg().addRole(RoleFactory.CONFIG_ADMIN);
         user.addToGroup(AccessGroupFactory.CONFIG_ADMIN);
-        TestUtils.saveAndFlush(user);
+        user = TestUtils.saveAndFlush(user);
     }
 
     @Test

@@ -113,7 +113,7 @@ public class EditActionTest extends RhnBaseTestCase {
         //errata has now been edited... let's look it back up from the db and make sure
         //our changes were saved.
         Long id = errata.getId();
-        flushAndEvict(errata); //kick errata from session
+        TestUtils.flushAndEvict(errata); //kick errata from session
         Errata edited = ErrataManager.lookupErrata(id, user);
         //make sure adv name was changed
         assertEquals(edited.getAdvisoryName(), newAdvisoryName);

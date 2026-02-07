@@ -23,7 +23,6 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFamily;
@@ -54,8 +53,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.Session;
-import org.hibernate.type.StandardBasicTypes;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -66,21 +63,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Tuple;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 
 
 /**
@@ -115,10 +111,10 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
     private Set<UserGroupImpl> userGroups = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "org", orphanRemoval = true)
-    private Set<Channel> ownedChannels;
+    private Set<Channel> ownedChannels = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "org", orphanRemoval = true)
-    private Set<CustomDataKey> customDataKeys;
+    private Set<CustomDataKey> customDataKeys = new HashSet<>();
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
@@ -126,7 +122,7 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
             joinColumns = @JoinColumn(name = "org_id"),
             inverseJoinColumns = @JoinColumn(name = "org_trust_id")
     )
-    private Set<Org> trustedOrgs;
+    private Set<Org> trustedOrgs = new HashSet<>();
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
@@ -134,10 +130,10 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
             joinColumns = @JoinColumn(name = "org_id"),
             inverseJoinColumns = @JoinColumn(name = "slave_id")
     )
-    private Set<IssSlave> allowedToSlaves;
+    private Set<IssSlave> allowedToSlaves = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "org")
-    private Set<Pillar> pillars;
+    private Set<Pillar> pillars = new HashSet<>();
 
     @OneToOne(mappedBy = "org", cascade = CascadeType.ALL, optional = true, orphanRemoval = true)
     private RegTokenOrgDefault regTokenOrgDefault;
@@ -406,23 +402,7 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
      * @return Returns the number of active org admins in this org.
      */
     public int numActiveOrgAdmins() {
-        Session session = HibernateFactory.getSession();
-        return session.createNativeQuery("""
-                            SELECT ugm.user_id FROM rhnUserGroupMembers ugm
-                            JOIN rhnWebContactEnabled wce ON wce.id = ugm.user_id
-                            WHERE ugm.user_group_id =
-                                (SELECT id FROM rhnUserGroup
-                                    WHERE org_id = :org_id
-                                    AND group_type = (SELECT id FROM rhnUserGroupType WHERE label = 'org_admin'))
-                            AND wce.read_only = 'N'
-                            ORDER BY ugm.user_id
-                        """, Tuple.class)
-                .setParameter(ORG_ID_KEY, this.getId())
-                .addScalar(USER_ID_KEY, StandardBasicTypes.LONG)
-                .stream()
-                .map(t -> t.get(0, Long.class))
-                .toList()
-                .size();
+        return OrgFactory.countActiveOrgAdmins(id).intValue();
     }
 
     /**

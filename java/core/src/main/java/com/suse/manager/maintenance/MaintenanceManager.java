@@ -206,8 +206,7 @@ public class MaintenanceManager {
         ms.setName(name);
         ms.setScheduleType(type);
         calendar.ifPresent(ms::setCalendar);
-        scheduleFactory.save(ms);
-        return ms;
+        return scheduleFactory.save(ms);
     }
 
     /**

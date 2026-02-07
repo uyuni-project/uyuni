@@ -30,11 +30,11 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.persistence.Tuple;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Path;
-import javax.persistence.criteria.Root;
+import jakarta.persistence.Tuple;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Path;
+import jakarta.persistence.criteria.Root;
 
 public class HubFactory extends HibernateFactory {
 
@@ -47,18 +47,22 @@ public class HubFactory extends HibernateFactory {
 
     /**
      * Save a {@link IssHub} object
+     *
      * @param issServer object to save
+     * @return the managed {@link IssHub} instance
      */
-    public void save(IssServer issServer) {
-        saveObject(issServer);
+    public IssServer save(IssServer issServer) {
+        return saveObject(issServer);
     }
 
     /**
      * Save a {@link IssPeripheralChannels} object
+     *
      * @param issPeripheralChannelsIn object to save
+     * @return the managed {@link IssPeripheralChannels} instance
      */
-    public void save(IssPeripheralChannels issPeripheralChannelsIn) {
-        saveObject(issPeripheralChannelsIn);
+    public IssPeripheralChannels save(IssPeripheralChannels issPeripheralChannelsIn) {
+        return saveObject(issPeripheralChannelsIn);
     }
 
     /**
@@ -266,16 +270,16 @@ public class HubFactory extends HibernateFactory {
         }
 
         // Store the new token
-        getSession().saveOrUpdate(accessToken);
-        return accessToken;
+        return getSession().merge(accessToken);
     }
 
     /**
      * Updates an existing access token
      * @param accessToken the access token to update
+     * @return the updated {@link  IssAccessToken}
      */
-    public void updateToken(IssAccessToken accessToken) {
-        getSession().merge(accessToken);
+    public IssAccessToken updateToken(IssAccessToken accessToken) {
+        return getSession().merge(accessToken);
     }
 
     /**
@@ -349,7 +353,7 @@ public class HubFactory extends HibernateFactory {
      */
     public int removeAccessTokensFor(String serverFqdn) {
         return getSession()
-                .createNativeQuery("DELETE FROM suseISSAccessToken WHERE server_fqdn = :fqdn")
+                .createMutationQuery("DELETE FROM IssAccessToken t WHERE t.serverFqdn = :fqdn")
                 .setParameter("fqdn", serverFqdn)
                 .executeUpdate();
     }
@@ -361,7 +365,7 @@ public class HubFactory extends HibernateFactory {
      */
     public boolean removeAccessTokenById(long id) {
         int tokenRemoved = getSession()
-            .createNativeQuery("DELETE FROM suseISSAccessToken WHERE id = :id")
+            .createMutationQuery("DELETE FROM IssAccessToken t WHERE t.id = :id")
             .setParameter("id", id)
             .executeUpdate();
 
@@ -400,6 +404,9 @@ public class HubFactory extends HibernateFactory {
                           LEFT JOIN suseissperipheral p ON k.server_fqdn = p.fqdn
                 ORDER BY k.created DESC
                 """, Tuple.class)
+            .addSynchronizedEntityClass(IssAccessToken.class)
+            .addSynchronizedEntityClass(IssHub.class)
+            .addSynchronizedEntityClass(IssPeripheral.class)
             .addScalar("id", StandardBasicTypes.LONG)
             .addScalar("type", StandardBasicTypes.STRING)
             .addScalar("server_fqdn", StandardBasicTypes.STRING)

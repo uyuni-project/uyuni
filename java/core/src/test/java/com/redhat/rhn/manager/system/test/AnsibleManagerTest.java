@@ -18,7 +18,6 @@ package com.redhat.rhn.manager.system.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -88,8 +87,8 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
         path.setPath(Path.of("/tmp/test1"));
         path = ansibleManager.createAnsiblePath("inventory", minion.getId(), "/tmp/test", user);
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().evict(path);
+        TestUtils.flushSession();
+        TestUtils.evict(path);
         assertEquals(path, AnsibleManager.lookupAnsiblePathById(path.getId(), user).get());
     }
 
@@ -158,8 +157,8 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
         MinionServer minion = createAnsibleControlNode(user);
         AnsiblePath path = ansibleManager.createAnsiblePath("inventory", minion.getId(), "/tmp/test", user);
         path = ansibleManager.updateAnsiblePath(path.getId(), "/tmp/test-updated", user);
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().evict(path);
+        TestUtils.flushSession();
+        TestUtils.evict(path);
         AnsiblePath updated = AnsibleManager.lookupAnsiblePathById(path.getId(), user).get();
         assertEquals(path, updated);
     }
@@ -470,7 +469,7 @@ public class AnsibleManagerTest extends BaseTestCaseWithUser {
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
         ServerArch a = ServerFactory.lookupServerArchByName("x86_64");
         server.setServerArch(a);
-        TestUtils.saveAndFlush(server);
+        server = TestUtils.saveAndFlush(server);
         entitlementManager.addEntitlementToServer(server, EntitlementManager.ANSIBLE_CONTROL_NODE);
         return server;
     }

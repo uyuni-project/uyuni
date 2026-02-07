@@ -1,4 +1,4 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="jakarta.tags.functions" prefix="fn" %>
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 
 <rhn:toolbar base="h1" icon="header-channel"

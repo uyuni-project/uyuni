@@ -14,13 +14,13 @@ package com.suse.manager.metrics;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.common.RhnConfiguration;
 import com.redhat.rhn.domain.common.RhnConfigurationFactory;
+import com.redhat.rhn.domain.server.ServerInfo;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Tuple;
-
 import io.prometheus.client.Collector;
+import jakarta.persistence.Tuple;
 
 public class SystemsCollector extends Collector {
 
@@ -76,7 +76,7 @@ public class SystemsCollector extends Collector {
         return getCountFromNativeQuery(selectCountQuery);
     }
 
-    private long getNumberOfInactiveSystems() {
+    protected long getNumberOfInactiveSystems() {
         String selectCountQuery = "SELECT COUNT(DISTINCT(server_id)) " +
                 "FROM rhnServerInfo " +
                 "WHERE checkin < CURRENT_TIMESTAMP - NUMTODSINTERVAL(:checkin_threshold, 'second')";
@@ -85,6 +85,7 @@ public class SystemsCollector extends Collector {
         long secondsInDay = 60L * 60 * 24;
         return HibernateFactory.getSession()
                 .createNativeQuery(selectCountQuery, Tuple.class)
+                .addSynchronizedEntityClass(ServerInfo.class)
                 .setParameter("checkin_threshold", threshold * secondsInDay)
                 .getSingleResult()
                 .get("count", Number.class)

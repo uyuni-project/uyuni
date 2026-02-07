@@ -214,7 +214,7 @@ public class CobblerCommandTest extends CobblerCommandTestBase {
     public void testLogin() {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         UserFactory.save(user);
-        user = reload(user);
+        user = TestUtils.reload(user);
         CobblerLoginCommand cmd = new CobblerLoginCommand();
         String cobblertoken = cmd.login(user.getLogin(), "password");
         assertNotNull(cobblertoken);

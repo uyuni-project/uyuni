@@ -13,7 +13,6 @@ package com.redhat.rhn.domain.notification.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.test.MockMail;
 import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.notification.NotificationMessage;
@@ -199,7 +198,7 @@ public class NotificationFactoryTest extends BaseTestCaseWithUser {
         int result = UserNotificationFactory.delete(unread);
         assertEquals(1, result);
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         // Should be deleted
         assertEquals(0, UserNotificationFactory.listUnreadByUser(user).size());

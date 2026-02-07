@@ -16,6 +16,7 @@ package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.manager.satellite.SystemCommandThreadedExecutor;
+import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 
 import org.apache.logging.log4j.LogManager;
@@ -50,12 +51,11 @@ public abstract class RhnJavaJob implements RhnJob {
      */
     @Override
     public void execute(JobExecutionContext context, TaskoRun run) throws JobExecutionException {
-        run.start();
+        TaskoFactory.markStarted(run);
         HibernateFactory.commitTransaction();
         HibernateFactory.closeSession();
         execute(context);
-        run.saveStatus(TaskoRun.STATUS_FINISHED);
-        run.finished();
+        TaskoFactory.markFinished(run);
         HibernateFactory.commitTransaction();
         HibernateFactory.closeSession();
         finishJob();

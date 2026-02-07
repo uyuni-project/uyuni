@@ -47,7 +47,7 @@ public class DeviceTest extends RhnBaseTestCase {
 
         assertNotNull(hd);
 
-        TestUtils.saveAndFlush(hd);
+        hd = TestUtils.saveAndFlush(hd);
         verifyInDb(hd.getId(),  "Zeus Vendor");
         assertEquals(1, TestUtils.removeObject(hd));
     }
@@ -96,7 +96,7 @@ public class DeviceTest extends RhnBaseTestCase {
         hd.setProp4(PROP_FOUR);
 
         assertNull(hd.getId());
-        TestUtils.saveAndFlush(hd);
+        hd = TestUtils.saveAndFlush(hd);
         assertNotNull(hd.getId());
 
         return hd;

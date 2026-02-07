@@ -1,4 +1,4 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 
    <c:set var="alt" value="verifypkgs.jsp.verifiablepackages"/>
    <c:set var="pack_header" value="verifypkgs.jsp.verifiablepackages"/>

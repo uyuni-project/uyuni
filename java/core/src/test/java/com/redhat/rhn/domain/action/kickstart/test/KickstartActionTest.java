@@ -83,10 +83,10 @@ public class KickstartActionTest extends RhnBaseTestCase {
         f.setOrg(k.getOrg());
         f.setCreated(new Date());
         f.setModified(new Date());
-        TestUtils.saveAndFlush(f);
+        f = TestUtils.saveAndFlush(f);
 
         ksad.addFileList(f);
-        TestUtils.saveAndFlush(ksad);
+        ksad = TestUtils.saveAndFlush(ksad);
         assertNotNull(ksad.getFileLists());
         assertEquals(ksad.getFileLists().size(), 1);
         assertNotNull(k.getEarliestAction());
@@ -118,7 +118,7 @@ public class KickstartActionTest extends RhnBaseTestCase {
         f.setOrg(k.getOrg());
         f.setCreated(new Date());
         f.setModified(new Date());
-        TestUtils.saveAndFlush(f);
+        f = TestUtils.saveAndFlush(f);
 
         ksad.addFileList(f);
         assertNotNull(ksad.getFileLists());

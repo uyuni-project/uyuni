@@ -309,7 +309,7 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
         packageProvides.setCapability(capability);
         packageProvides.setPack(pack);
         packageProvides.setSense(0L);
-        TestUtils.saveAndFlush(packageProvides);
+        packageProvides = TestUtils.saveAndFlush(packageProvides);
 
         pack = TestUtils.saveAndReload(pack);
         String packageName = pack.getPackageName().getName();
@@ -672,7 +672,7 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
         packageProvides.setCapability(capability);
         packageProvides.setPack(pack);
         packageProvides.setSense(0L);
-        TestUtils.saveAndFlush(packageProvides);
+        packageProvides = TestUtils.saveAndFlush(packageProvides);
 
         pack = TestUtils.saveAndReload(pack);
 

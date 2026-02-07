@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.action.kickstart.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.frontend.action.kickstart.KickstartTroubleshootingEditAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.TestUtils;
@@ -44,8 +43,8 @@ public class KickstartTroubleshootingEditTest extends BaseKickstartEditTestCase 
                             Boolean.TRUE.toString());
         actionPerform();
 
-        TestUtils.saveAndFlush(this.ksdata);
-        this.ksdata = (KickstartData) TestUtils.reload(this.ksdata);
+        this.ksdata = TestUtils.saveAndFlush(this.ksdata);
+        this.ksdata = TestUtils.reload(this.ksdata);
 
         assertEquals("grub", this.ksdata.getBootloaderType());
     }
@@ -62,8 +61,8 @@ public class KickstartTroubleshootingEditTest extends BaseKickstartEditTestCase 
                             "hdc=ide-scsi");
         actionPerform();
 
-        TestUtils.saveAndFlush(this.ksdata);
-        this.ksdata = (KickstartData) TestUtils.reload(this.ksdata);
+        this.ksdata = TestUtils.saveAndFlush(this.ksdata);
+        this.ksdata = TestUtils.reload(this.ksdata);
 
         assertEquals("hdc=ide-scsi", this.ksdata.getKernelParams());
         assertEquals("lilo", this.ksdata.getBootloaderType());

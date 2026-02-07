@@ -64,8 +64,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 
 
 /**
@@ -258,7 +258,7 @@ public class ScriptRunAction extends ScriptAction {
      */
     @Override
     public void removeInvalidResults() {
-        HibernateFactory.getSession().createNativeQuery("""
+        HibernateFactory.getSession().createNativeMutationQuery("""
                   DELETE FROM rhnServerActionScriptResult sr WHERE sr.action_script_id = (
                   SELECT as.id FROM rhnActionScript as WHERE as.action_id = :action)
                   AND sr.server_id IN

@@ -10,11 +10,11 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.sync.content.test;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.frontend.xmlrpc.ContentSyncException;
 import com.redhat.rhn.frontend.xmlrpc.sync.content.ContentSyncHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
+import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.manager.model.hub.HubFactory;
 import com.suse.manager.model.hub.IssHub;
@@ -39,8 +39,7 @@ public class ContentSyncHandlerTest extends BaseHandlerTestCase {
         HubFactory hubFactory = new HubFactory();
         IssHub hub = new IssHub("hub.domain.top", null);
         hubFactory.save(hub);
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         Assertions.assertThrows(ContentSyncException.class, () -> handler.addChannel(admin, "dummy", null));
         Assertions.assertThrows(ContentSyncException.class, () -> handler.addChannels(admin, "dummy", null));

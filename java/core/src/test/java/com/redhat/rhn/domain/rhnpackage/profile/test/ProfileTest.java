@@ -84,7 +84,7 @@ public class ProfileTest extends RhnBaseTestCase {
         p.setProfileType(ProfileFactory.TYPE_NORMAL);
 
         assertNull(p.getId());
-        TestUtils.saveAndFlush(p);
+        p = TestUtils.saveAndFlush(p);
         assertNotNull(p.getId());
 
         return p;

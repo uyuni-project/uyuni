@@ -46,7 +46,6 @@
 %define java_version    1:%{java_version}
 %endif
 
-%define ehcache         ( mvn(net.sf.ehcache:ehcache-core) >= 2.10.1 or ehcache-core >= 2.10.1 or ehcache >= 2.10.1)
 %define apache_commons_digester    (apache-commons-digester or jakarta-commons-digester)
 %define apache_commons_discovery   (apache-commons-discovery or jakarta-commons-discovery)
 %define apache_commons_validator   (apache-commons-validator or jakarta-commons-validator)
@@ -75,36 +74,37 @@ ExcludeArch:    ia64
 BuildRequires:  %{apache_commons_compress}
 BuildRequires:  %{apache_commons_discovery}
 BuildRequires:  apache-commons-fileupload2-core
-BuildRequires:  apache-commons-fileupload2-javax
+BuildRequires:  apache-commons-fileupload2-jakarta-servlet6
 BuildRequires:  %{apache_commons_validator}
-BuildRequires:  %{ehcache}
+BuildRequires:  jcache
 BuildRequires:  ant
 BuildRequires:  ant-apache-regexp
 BuildRequires:  ant-contrib
 BuildRequires:  ant-junit
-BuildRequires:  antlr >= 2.7.6
+BuildRequires:  antlr4-java >= 4.13.0
 BuildRequires:  apache-commons-cli
 BuildRequires:  apache-commons-codec
 BuildRequires:  apache-commons-collections
-BuildRequires:  apache-commons-el
 BuildRequires:  apache-commons-io >= 2.11.0
 BuildRequires:  apache-commons-jexl
 BuildRequires:  apache-commons-lang3 >= 3.4
 BuildRequires:  apache-commons-text
 BuildRequires:  apache-commons-logging
 BuildRequires:  bcel
-BuildRequires:  mvn(net.bytebuddy:byte-buddy) >= 1.14
-BuildRequires:  mvn(net.bytebuddy:byte-buddy-dep) >= 1.14
+BuildRequires:  mvn(net.bytebuddy:byte-buddy) >= 1.18.1
 BuildRequires:  c3p0 >= 0.9.1
 BuildRequires:  cglib
 BuildRequires:  classmate
 BuildRequires:  dom4j
-BuildRequires:  glassfish-activation
-BuildRequires:  glassfish-jaxb-api
-BuildRequires:  glassfish-jaxb-runtime
-BuildRequires:  glassfish-jaxb-txw2
-BuildRequires:  hibernate-commons-annotations
-BuildRequires:  hibernate-types
+BuildRequires:  jaxb-api
+BuildRequires:  jakarta-activation
+BuildRequires:  angus-activation
+BuildRequires:  jakarta-websocket
+BuildRequires:  jakarta-transactions
+BuildRequires:  jakarta-jstl
+BuildRequires:  hibernate-models
+BuildRequires:  hypersistence-utils-hibernate-71
+BuildRequires:  jakarta-persistence-api
 BuildRequires:  httpcomponents-asyncclient
 BuildRequires:  httpcomponents-client
 BuildRequires:  ical4j
@@ -112,10 +112,11 @@ BuildRequires:  istack-commons-runtime
 BuildRequires:  jade4j
 BuildRequires:  java-%{java_version}-openjdk-devel
 BuildRequires:  java-saml
-BuildRequires:  javamail
+BuildRequires:  jakarta-mail
+BuildRequires:  angus-mail-core
 BuildRequires:  javapackages-tools
 BuildRequires:  javassist
-BuildRequires:  jboss-logging
+BuildRequires:  jboss-logging >= 3.6.1
 BuildRequires:  jdom
 BuildRequires:  joda-time
 BuildRequires:  jose4j
@@ -127,14 +128,14 @@ BuildRequires:  log4j
 BuildRequires:  log4j-jcl
 BuildRequires:  log4j-slf4j
 BuildRequires:  netty
-BuildRequires:  objectweb-asm >= 9.2
+BuildRequires:  objectweb-asm >= 9.9
 BuildRequires:  perl
 BuildRequires:  pgjdbc-ng
 BuildRequires:  postgresql-jdbc
 BuildRequires:  prometheus-client-java
 BuildRequires:  quartz
 BuildRequires:  redstone-xmlrpc
-BuildRequires:  salt-netapi-client >= 0.21
+BuildRequires:  salt-netapi-client >= 1
 BuildRequires:  simple-core
 BuildRequires:  simplexml
 BuildRequires:  sitemesh
@@ -143,8 +144,8 @@ BuildRequires:  spark-core
 BuildRequires:  spark-template-jade
 BuildRequires:  statistics
 BuildRequires:  struts >= 1.2.9
-BuildRequires:  tomcat >= 7
-BuildRequires:  tomcat-lib >= 7
+BuildRequires:  tomcat11
+BuildRequires:  tomcat11-lib
 BuildRequires:  tomcat-taglibs-standard
 BuildRequires:  uyuni-base-server
 BuildRequires:  woodstox
@@ -152,10 +153,10 @@ BuildRequires:  xalan-j2
 BuildRequires:  xmlsec
 BuildRequires:  (google-gson >= 2.2.4 with google-gson < 2.10.0)
 BuildRequires:  mvn(org.apache.velocity:velocity-engine-core) >= 2.2
-BuildRequires:  mvn(org.hibernate:hibernate-c3p0)
-BuildRequires:  mvn(org.hibernate:hibernate-core)
-BuildRequires:  mvn(org.hibernate:hibernate-ehcache)
-BuildRequires:  servletapi5
+BuildRequires:  mvn(org.hibernate.orm:hibernate-c3p0) >= 7
+BuildRequires:  mvn(org.hibernate.orm:hibernate-core) >= 7
+BuildRequires:  mvn(org.hibernate.orm:hibernate-jcache) >= 7
+BuildRequires:  tomcat11-servlet-6_1-api
 %if 0%{?suse_version}
 BuildRequires:  ant-nodeps
 BuildRequires:  libxml2-tools
@@ -164,49 +165,51 @@ BuildRequires:  libxml2-tools
 BuildRequires:  libxml2-devel
 %endif
 
+Requires:       antlr4-java >= 4.13.0
 Requires:       %{apache_commons_compress}
 Requires:       %{apache_commons_digester}
 Requires:       %{apache_commons_discovery}
 Requires:       apache-commons-fileupload2-core
-Requires:       apache-commons-fileupload2-javax
-Requires:       %{ehcache}
+Requires:       apache-commons-fileupload2-jakarta-servlet6
+Requires:       jcache
 Requires:       apache-commons-beanutils
 Requires:       apache-commons-cli
 Requires:       apache-commons-codec
 Requires:       apache-commons-collections
-Requires:       apache-commons-el
 Requires:       apache-commons-io
 Requires:       apache-commons-jexl
 Requires:       apache-commons-lang3
 Requires:       apache-commons-text
 Requires:       apache-commons-logging
 Requires:       bcel
-Requires:       mvn(net.bytebuddy:byte-buddy) >= 1.14
-Requires:       mvn(net.bytebuddy:byte-buddy-dep) >= 1.14
+Requires:       mvn(net.bytebuddy:byte-buddy) >= 1.18.1
 Requires:       c3p0 >= 0.9.1
 Requires:       cglib
 Requires:       classmate
 Requires:       cobbler
-Requires:       glassfish-activation
-Requires:       glassfish-jaxb-api
-Requires:       glassfish-jaxb-runtime
-Requires:       glassfish-jaxb-txw2
-Requires:       hibernate-commons-annotations
-Requires:       hibernate-types
+Requires:       jaxb-api
+Requires:       jakarta-activation
+Requires:       angus-activation
+Requires:       jakarta-websocket
+Requires:       jakarta-transactions
+Requires:       jakarta-jstl
+Requires:       hibernate-models
+Requires:       hypersistence-utils-hibernate-71
 Requires:       httpcomponents-client
 Requires:       ical4j
 Requires:       istack-commons-runtime
 Requires:       jade4j
 Requires:       java-%{java_version}-openjdk
 Requires:       java-saml
-Requires:       javamail
+Requires:       jakarta-mail
+Requires:       angus-mail-core
 Requires:       javapackages-tools
 Requires:       javassist
-Requires:       jboss-logging
+Requires:       jboss-logging >= 3.6.1
 Requires:       jdom
 Requires:       joda-time
 Requires:       jose4j
-Requires:       jpa-api
+Requires:       jakarta-persistence-api
 Requires:       jta
 Requires:       libsolv-tools
 Requires:       log4j
@@ -214,12 +217,12 @@ Requires:       log4j-jcl
 Requires:       log4j-slf4j
 Requires:       mgr-libmod
 Requires:       netty
-Requires:       objectweb-asm >= 9.2
+Requires:       objectweb-asm >= 9.9
 Requires:       pgjdbc-ng
 Requires:       prometheus-client-java
 Requires:       redstone-xmlrpc
 Requires:       salt-netapi-client >= 0.21
-BuildRequires:  servletapi5
+Requires:       tomcat11-servlet-6_1-api
 Requires:       simple-core
 Requires:       simplexml
 Requires:       sitemesh
@@ -235,7 +238,7 @@ Requires:       struts >= 1.2.9
 Requires:       sudo
 Requires:       susemanager-docs_en
 Requires:       system-lock-formula
-Requires:       tomcat-lib >= 7
+Requires:       tomcat11-lib
 Requires:       tomcat-taglibs-standard
 Requires:       woodstox
 Requires:       xalan-j2 >= 2.6.0
@@ -243,16 +246,16 @@ Requires:       xerces-j2
 Requires:       xmlsec
 Requires:       (/sbin/unix2_chkpwd or /usr/sbin/unix2_chkpwd)
 Requires:       (google-gson >= 2.2.4 with google-gson < 2.10.0)
-Requires:       mvn(org.apache.tomcat:tomcat-servlet-api) > 8
-Requires:       mvn(org.hibernate:hibernate-c3p0)
-Requires:       mvn(org.hibernate:hibernate-core)
-Requires:       mvn(org.hibernate:hibernate-ehcache)
+Requires:       mvn(org.apache.tomcat:tomcat-servlet-api) > 11
+Requires:       mvn(org.hibernate.orm:hibernate-c3p0) >= 7
+Requires:       mvn(org.hibernate.orm:hibernate-core) >= 7
+Requires:       mvn(org.hibernate.orm:hibernate-jcache) >= 7
 Requires:       openssl
 # libtcnative-1-0 is only recommended in tomcat.
 # We want it always to prevent warnings about openssl cannot be used
 Requires:       tomcat-native
 Requires(pre):  salt
-Requires(pre):  tomcat >= 7
+Requires(pre):  tomcat11
 Requires(pre):  uyuni-base-server
 Requires:       uyuni-cobbler-helper
 
@@ -276,7 +279,7 @@ Summary:        Configuration files for Spacewalk Java
 Group:          Applications/Internet
 Requires(post): %{apache2}
 Requires(post): salt-master
-Requires(post): tomcat
+Requires(post): tomcat11
 
 %description config
 This package contains the configuration files for the %{productprettyname} Java web
@@ -297,7 +300,7 @@ Summary:        PostgreSQL database backend support files for Spacewalk Java
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
 Requires:       postgresql-jdbc
-Requires:       tomcat >= 7
+Requires:       tomcat11
 Provides:       spacewalk-java-jdbc = %{version}-%{release}
 
 %description postgresql
@@ -356,25 +359,24 @@ BuildRequires:  systemd-rpm-macros
 %{?systemd_requires}
 %endif
 
-Requires:       %{ehcache}
+Requires:       jcache
 Requires:       apache-commons-cli
 Requires:       apache-commons-codec
 Requires:       apache-commons-lang3
 Requires:       apache-commons-text
 Requires:       apache-commons-logging
 Requires:       bcel
-Requires:       mvn(net.bytebuddy:byte-buddy) >= 1.14
-Requires:       mvn(net.bytebuddy:byte-buddy-dep) >= 1.14
+Requires:       mvn(net.bytebuddy:byte-buddy) >= 1.18.1
 Requires:       c3p0 >= 0.9.1
 Requires:       cglib
 Requires:       classmate
 Requires:       cobbler
-Requires:       hibernate-commons-annotations
+Requires:       hibernate-models
 Requires:       httpcomponents-client
 Requires:       httpcomponents-core
 Requires:       java-%{java_version}-openjdk
 Requires:       javassist
-Requires:       jboss-logging
+Requires:       jboss-logging >= 3.6.1
 Requires:       jpa-api
 Requires:       jsch
 Requires:       log4j
@@ -389,9 +391,9 @@ Requires:       tomcat-taglibs-standard
 Requires:       xalan-j2 >= 2.6.0
 Requires:       xerces-j2
 Requires:       (/sbin/unix2_chkpwd or /usr/sbin/unix2_chkpwd)
-Requires:       mvn(org.hibernate:hibernate-c3p0)
-Requires:       mvn(org.hibernate:hibernate-core)
-Requires:       mvn(org.hibernate:hibernate-ehcache)
+Requires:       mvn(org.hibernate.orm:hibernate-c3p0) >= 7
+Requires:       mvn(org.hibernate.orm:hibernate-core) >= 7
+Requires:       mvn(org.hibernate.orm:hibernate-jcache) >= 7
 
 Conflicts:      quartz < 2.0
 
@@ -505,15 +507,10 @@ export JAVA_HOME=/usr/lib/jvm/java-%{java_version}-openjdk/
 export NO_BRP_STALE_LINK_ERROR=yes
 
 mkdir -p %{buildroot}%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib
-%if 0%{?suse_version}
-ant -Dproduct.name="'$PRODUCT_NAME'" -Dprefix=%{buildroot} -Dtomcat="tomcat9" install-tomcat9-suse
+
+ant -Dproduct.name="'$PRODUCT_NAME'" -Dprefix=%{buildroot} install-tomcat
 install -d -m 755 %{buildroot}%{serverdir}/tomcat/webapps/rhn/META-INF/
 install -m 755 conf/rhn-tomcat9.xml %{buildroot}%{serverdir}/tomcat/webapps/rhn/META-INF/context.xml
-%else
-ant -Dproduct.name="'$PRODUCT_NAME'" -Dprefix=%{buildroot} install-tomcat
-install -d -m 755 %{buildroot}%{_sysconfdir}/tomcat/Catalina/localhost/
-install -m 644 conf/rhn-tomcat9.xml %{buildroot}%{_sysconfdir}/tomcat/Catalina/localhost/rhn.xml
-%endif
 
 # check spelling errors in all resources for English if aspell installed
 [ -x "$(which aspell)" ] && scripts/spelling/check_java.sh .. en_US
@@ -575,7 +572,7 @@ install -m 644 build/webapp/rhnjava/WEB-INF/lib/rhn-test.jar %{buildroot}%{_data
 cp -a build/classes/com/redhat/rhn/common/conf/test/conf %{buildroot}%{_datadir}/rhn/unit-tests/
 %endif
 install -m 644 conf/log4j2.xml.taskomatic %{buildroot}%{_datadir}/rhn/classes/log4j2.xml
-install -m 644 core/src/main/resources/ehcache.xml %{buildroot}%{_datadir}/rhn/classes/ehcache.xml
+#install -m 644 core/src/main/resources/jcache.xml %{buildroot}%{_datadir}/rhn/classes/jcache.xml
 
 install -d -m 755 %{buildroot}%{spacewalksnippetsdir}
 install -m 644 conf/cobbler/snippets/default_motd  %{buildroot}%{spacewalksnippetsdir}/default_motd
@@ -638,11 +635,6 @@ mkdir -p %{buildroot}%{_var}/log/rhn
 
 # Prettifying symlinks
 mv %{buildroot}%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/jboss-loggingjboss-logging.jar %{buildroot}%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/jboss-logging.jar
-
-# Removing unused symlinks.
-%if 0%{?rhel}
-rm -rf %{buildroot}%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/javamailmail.jar
-%endif
 
 # show all JAR symlinks
 echo "#### SYMLINKS START ####"
@@ -798,7 +790,7 @@ fi
 %dir %{_datadir}/rhn/lib
 %dir %{_datadir}/rhn/classes
 %{_datadir}/rhn/classes/log4j2.xml
-%{_datadir}/rhn/classes/ehcache.xml
+#%{_datadir}/rhn/classes/jcache.xml
 %{_datadir}/rhn/lib/rhn.jar
 
 %files postgresql -f .mfiles-postgresql

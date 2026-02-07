@@ -21,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
@@ -64,7 +63,7 @@ public class AttestationFactoryTest extends BaseTestCaseWithUser {
     public void testCreateAttestationConfigurationMilan() {
         ServerCoCoAttestationConfig cnf = attestationFactory.createConfigForServer(server,
                 CoCoEnvironmentType.KVM_AMD_EPYC_MILAN, true, false);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         assertEquals(server, cnf.getServer());
         assertEquals(CoCoEnvironmentType.KVM_AMD_EPYC_MILAN, cnf.getEnvironmentType());
         assertTrue(cnf.isEnabled(), "Config is not enabled");
@@ -75,7 +74,7 @@ public class AttestationFactoryTest extends BaseTestCaseWithUser {
     public void testCreateAttestationConfigurationGenoa() {
         ServerCoCoAttestationConfig cnf = attestationFactory.createConfigForServer(server,
                 CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, false, true);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         assertEquals(server, cnf.getServer());
         assertEquals(CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, cnf.getEnvironmentType());
         assertFalse(cnf.isEnabled(), "Config is not enabled");
@@ -86,7 +85,7 @@ public class AttestationFactoryTest extends BaseTestCaseWithUser {
     public void testCreateAttestationConfigurationBergamo() {
         ServerCoCoAttestationConfig cnf = attestationFactory.createConfigForServer(server,
                 CoCoEnvironmentType.KVM_AMD_EPYC_BERGAMO, true, true);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         assertEquals(server, cnf.getServer());
         assertEquals(CoCoEnvironmentType.KVM_AMD_EPYC_BERGAMO, cnf.getEnvironmentType());
         assertTrue(cnf.isEnabled(), "Config is not enabled");
@@ -98,7 +97,7 @@ public class AttestationFactoryTest extends BaseTestCaseWithUser {
     public void testCreateAttestationConfigurationSiena() {
         ServerCoCoAttestationConfig cnf = attestationFactory.createConfigForServer(server,
                 CoCoEnvironmentType.KVM_AMD_EPYC_SIENA, false, false);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         assertEquals(server, cnf.getServer());
         assertEquals(CoCoEnvironmentType.KVM_AMD_EPYC_SIENA, cnf.getEnvironmentType());
         assertFalse(cnf.isEnabled(), "Config is not enabled");
@@ -109,7 +108,7 @@ public class AttestationFactoryTest extends BaseTestCaseWithUser {
     public void testCreateAttestationConfigurationTurin() {
         ServerCoCoAttestationConfig cnf = attestationFactory.createConfigForServer(server,
                 CoCoEnvironmentType.KVM_AMD_EPYC_TURIN, true, false);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         assertEquals(server, cnf.getServer());
         assertEquals(CoCoEnvironmentType.KVM_AMD_EPYC_TURIN, cnf.getEnvironmentType());
         assertTrue(cnf.isEnabled(), "Config is not enabled");
@@ -120,7 +119,6 @@ public class AttestationFactoryTest extends BaseTestCaseWithUser {
     public void testAttestationConfigurationLookup() {
         ServerCoCoAttestationConfig cnf = attestationFactory.createConfigForServer(server,
                 CoCoEnvironmentType.KVM_AMD_EPYC_MILAN, true, true);
-        HibernateFactory.getSession().flush();
         Server srv = ServerFactory.lookupByIdAndOrg(server.getId(), user.getOrg());
         Optional<ServerCoCoAttestationConfig> cocoAttCnf = srv.getOptCocoAttestationConfig();
         assertNotNull(cocoAttCnf);
@@ -136,6 +134,7 @@ public class AttestationFactoryTest extends BaseTestCaseWithUser {
             fail("config not initialzed");
         }
 
+        TestUtils.flushAndClearSession();
         Optional<ServerCoCoAttestationConfig> optConfig = attestationFactory.lookupConfigByServerId(srv.getId());
         if (optConfig.isPresent()) {
             assertEquals(cnf, optConfig.get());
@@ -150,7 +149,7 @@ public class AttestationFactoryTest extends BaseTestCaseWithUser {
         ServerCoCoAttestationConfig cnf = attestationFactory.createConfigForServer(server,
                 CoCoEnvironmentType.KVM_AMD_EPYC_MILAN, true);
         ServerCoCoAttestationReport report = attestationFactory.createReportForServer(server);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         assertNotNull(report);
         assertEquals(CoCoAttestationStatus.PENDING, report.getStatus());
         assertEquals(cnf.getEnvironmentType(), report.getEnvironmentType());
@@ -161,8 +160,8 @@ public class AttestationFactoryTest extends BaseTestCaseWithUser {
         action.addCocoAttestationReport(report);
 
         Long actionId = action.getId();
-        TestUtils.flushAndEvict(action);
 
+        TestUtils.flushAndClearSession();
         Action a1 = ActionFactory.lookupByUserAndId(user, actionId);
         assertNotNull(a1);
         Set<ServerCoCoAttestationReport> reports = a1.getCocoAttestationReports();
@@ -177,8 +176,8 @@ public class AttestationFactoryTest extends BaseTestCaseWithUser {
         ServerCoCoAttestationReport report = attestationFactory.createReportForServer(server);
         Long reportId = report.getId();
         attestationFactory.initResultsForReport(report);
-        TestUtils.flushAndEvict(report);
 
+        TestUtils.flushAndClearSession();
         Optional<ServerCoCoAttestationReport> optReport = attestationFactory.lookupReportById(reportId);
         List<CoCoAttestationResult> results = optReport.orElseThrow().getResults();
         assertNotEmpty(results);
@@ -192,5 +191,28 @@ public class AttestationFactoryTest extends BaseTestCaseWithUser {
         assertTrue(results.stream()
                 .filter(r -> r.getResultType().equals(CoCoResultType.SEV_SNP))
                 .anyMatch(r -> r.getDescription().equals(CoCoResultType.SEV_SNP.getTypeDescription())));
+    }
+
+
+    @Test
+    public void generatedCoverageTestLookupReportByServerAndAction() {
+        // this test has been generated programmatically to test AttestationFactory.lookupReportByServerAndAction
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        AttestationFactory testObject = new AttestationFactory();
+        Server arg0 = ServerFactoryTest.createTestServer(user);
+        Action arg1 = new Action();
+        TestUtils.save(arg1);
+        testObject.lookupReportByServerAndAction(arg0, arg1);
+    }
+
+
+    @Test
+    public void generatedCoverageTestLookupResultById() {
+        // this test has been generated programmatically to test AttestationFactory.lookupResultById
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        AttestationFactory testObject = new AttestationFactory();
+        testObject.lookupResultById(0L);
     }
 }

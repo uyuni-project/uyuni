@@ -17,7 +17,6 @@ package com.redhat.rhn.manager.task.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.Package;
@@ -27,6 +26,7 @@ import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 import com.redhat.rhn.manager.task.TaskManager;
 import com.redhat.rhn.testing.ErrataTestUtils;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
 
@@ -53,8 +53,7 @@ public class TaskManagerTest extends JMockBaseTestCaseWithUser {
         pkg2.getExtraTags().add(PackageManagerTest.createExtraTag(tag3, "value3", pkg2));
         PackageFactory.save(pkg2);
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         pkg1 = PackageFactory.lookupByIdAndOrg(pkg1.getId(), user.getOrg());
         pkg2 = PackageFactory.lookupByIdAndOrg(pkg2.getId(), user.getOrg());

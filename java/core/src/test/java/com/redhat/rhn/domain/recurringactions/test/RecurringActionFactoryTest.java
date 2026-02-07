@@ -19,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.recurringactions.GroupRecurringAction;
 import com.redhat.rhn.domain.recurringactions.MinionRecurringAction;
@@ -41,7 +40,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.PersistenceException;
+import jakarta.persistence.PersistenceException;
 
 /**
  * Tests for {@link RecurringActionFactory}
@@ -150,7 +149,7 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
         groupAction.setActionType(RecurringActionType.ActionType.HIGHSTATE);
         RecurringActionFactory.save(groupAction);
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         var expectedActions = Set.of(
             new RecurringActionScheduleJson(minionAction),
@@ -246,7 +245,7 @@ public class RecurringActionFactoryTest extends BaseTestCaseWithUser {
 
             // we want to make sure multiple actions with the name can co-exist and can be persisted
             // as long they reference different target entity (e.g. 2 different minions)
-            HibernateFactory.getSession().flush();
+            TestUtils.flushSession();
         }
         catch (PersistenceException e) {
             fail("No persistence exception should have occured");

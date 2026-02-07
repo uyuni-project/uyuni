@@ -24,7 +24,7 @@ import org.apache.struts.action.ActionMapping;
 
 import java.lang.reflect.Method;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Represents a single step in a multi-step wizard

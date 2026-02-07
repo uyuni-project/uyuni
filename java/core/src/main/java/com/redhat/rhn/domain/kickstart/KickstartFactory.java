@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LLC
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -50,10 +51,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.persistence.Tuple;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 
 
 /**
@@ -94,7 +94,7 @@ public class KickstartFactory extends HibernateFactory {
     private static final String ORG_ID = "org_id";
     private static final String LABEL = "label";
 
-    private KickstartFactory() {
+    protected KickstartFactory() {
         super();
     }
 
@@ -184,7 +184,7 @@ public class KickstartFactory extends HibernateFactory {
      */
     public static KickstartData lookupKickstartDataByIdAndOrg(Org orgIn, Long ksid) {
         return HibernateFactory.getSession()
-                .createQuery("FROM KickstartData AS t WHERE t.id = :id AND t.org = :org_id", KickstartData.class)
+                .createQuery("FROM KickstartData AS t WHERE t.id = :id AND t.org.id = :org_id", KickstartData.class)
                 .setParameter("id", ksid, StandardBasicTypes.LONG)
                 .setParameter(ORG_ID, orgIn.getId(), StandardBasicTypes.LONG)
                 .uniqueResult();
@@ -197,7 +197,7 @@ public class KickstartFactory extends HibernateFactory {
      */
     public static KickstartData lookupKickstartDataByCobblerIdAndOrg(Org orgIn, String cobblerId) {
         return HibernateFactory.getSession()
-                .createQuery("FROM KickstartData AS t WHERE t.cobblerId = :id AND t.org = :org_id",
+                .createQuery("FROM KickstartData AS t WHERE t.cobblerId = :id AND t.org.id = :org_id",
                         KickstartData.class)
                 .setParameter("id", cobblerId)
                 .setParameter(ORG_ID, orgIn.getId(), StandardBasicTypes.LONG)
@@ -215,7 +215,7 @@ public class KickstartFactory extends HibernateFactory {
             throw new IllegalArgumentException("kickstartLabel cannot be null");
         }
         return HibernateFactory.getSession().
-                createQuery("FROM KickstartData AS t WHERE t.label = :label AND t.org = :org_id",
+                createQuery("FROM KickstartData AS t WHERE t.label = :label AND t.org.id = :org_id",
                         KickstartData.class)
                 .setParameter(LABEL, label)
                 .setParameter(ORG_ID, orgId, StandardBasicTypes.LONG)
@@ -234,7 +234,7 @@ public class KickstartFactory extends HibernateFactory {
             throw new IllegalArgumentException("kickstartLabel cannot be null");
         }
         return HibernateFactory.getSession().
-                createQuery("FROM KickstartData AS t WHERE LOWER(t.label) = LOWER(:label) AND t.org = :org_id",
+                createQuery("FROM KickstartData AS t WHERE LOWER(t.label) = LOWER(:label) AND t.org.id = :org_id",
                         KickstartData.class)
                 .setParameter(LABEL, label)
                 .setParameter(ORG_ID, orgId, StandardBasicTypes.LONG)
@@ -361,10 +361,12 @@ public class KickstartFactory extends HibernateFactory {
 
     /**
      * Insert or Update a CryptoKey.
+     *
      * @param cryptoKeyIn CryptoKey to be stored in database.
+     * @return the managed {@link CryptoKey} instance
      */
-    public static void saveCryptoKey(CryptoKey cryptoKeyIn) {
-        singleton.saveObject(cryptoKeyIn);
+    public static CryptoKey saveCryptoKey(CryptoKey cryptoKeyIn) {
+        return singleton.saveObject(cryptoKeyIn);
     }
 
     /**
@@ -377,10 +379,12 @@ public class KickstartFactory extends HibernateFactory {
 
     /**
      * Insert or Update a Command.
+     *
      * @param commandIn Command to be stored in database.
+     * @return the managed {@link KickstartCommand} instance
      */
-    public static void saveCommand(KickstartCommand commandIn) {
-        singleton.saveObject(commandIn);
+    public static KickstartCommand saveCommand(KickstartCommand commandIn) {
+        return singleton.saveObject(commandIn);
     }
 
 
@@ -394,21 +398,21 @@ public class KickstartFactory extends HibernateFactory {
      */
     public static void saveKickstartData(KickstartData ksdataIn, KickstartSession ksession) {
         log.debug("saveKickstartData: {}", ksdataIn.getLabel());
-        singleton.saveObject(ksdataIn);
+        KickstartData kickstartData = singleton.saveObject(ksdataIn);
         String fileData = null;
-        if (ksdataIn.isRawData()) {
+        if (kickstartData.isRawData()) {
             log.debug("saveKickstartData is raw, use file");
-            KickstartRawData rawData = (KickstartRawData) ksdataIn;
+            KickstartRawData rawData = (KickstartRawData) kickstartData;
             fileData = rawData.getData();
         }
         else {
             log.debug("saveKickstartData wizard.  use object");
             KickstartFormatter formatter = new KickstartFormatter(
-                    KickstartUrlHelper.COBBLER_SERVER_VARIABLE, ksdataIn, ksession);
+                    KickstartUrlHelper.COBBLER_SERVER_VARIABLE, kickstartData, ksession);
             fileData = formatter.getFileData();
         }
         Profile p = Profile.lookupById(CobblerXMLRPCHelper.getAutomatedConnection(),
-                ksdataIn.getCobblerId());
+                kickstartData.getCobblerId());
         if (p != null && p.getKsMeta().isPresent()) {
             Map<String, Object> ksmeta = p.getKsMeta().orElse(new HashMap<>());
             for (String name : ksmeta.keySet()) {
@@ -419,7 +423,7 @@ public class KickstartFactory extends HibernateFactory {
         else {
             log.debug("No ks meta for this profile.");
         }
-        String path = ksdataIn.buildCobblerFileName();
+        String path = kickstartData.buildCobblerFileName();
         log.debug("writing ks file to : {}", path);
         FileUtils.writeStringToFile(fileData, ConfigDefaults.get().getKickstartConfigDir(), path);
     }
@@ -495,7 +499,7 @@ public class KickstartFactory extends HibernateFactory {
     public static List<CryptoKey> lookupCryptoKeys(Org org) {
         //look for Kickstart data by id
         Session session = HibernateFactory.getSession();
-        return session.createQuery("FROM CryptoKey AS c WHERE c.org = :org_id", CryptoKey.class)
+        return session.createQuery("FROM CryptoKey AS c WHERE c.org.id = :org_id", CryptoKey.class)
                 .setParameter(ORG_ID, org.getId(), StandardBasicTypes.LONG)
                 .list();
     }
@@ -524,7 +528,7 @@ public class KickstartFactory extends HibernateFactory {
     public static CryptoKey lookupCryptoKeyById(Long keyId, Org org) {
         //look for Kickstart data by id
         Session session = HibernateFactory.getSession();
-        return session.createQuery("FROM CryptoKey AS c WHERE c.id = :key_id AND c.org = :org_id",
+        return session.createQuery("FROM CryptoKey AS c WHERE c.id = :key_id AND c.org.id = :org_id",
                         CryptoKey.class)
                 .setParameter("key_id", keyId, StandardBasicTypes.LONG)
                 .setParameter(ORG_ID, org.getId(), StandardBasicTypes.LONG)
@@ -570,18 +574,21 @@ public class KickstartFactory extends HibernateFactory {
      */
     public static KickstartableTree lookupKickstartTreeByLabel(String label, Org org) {
         Session session = HibernateFactory.getSession();
-        KickstartableTree retval = (KickstartableTree)
-                session.createQuery("FROM KickstartableTree AS k WHERE k.label = :label AND k.org = :org_id")
-                .setParameter(LABEL, label, StandardBasicTypes.STRING)
-                .setParameter(ORG_ID, org.getId(), StandardBasicTypes.LONG)
-                .uniqueResult();
+        KickstartableTree retval = session
+            .createQuery(
+                "FROM KickstartableTree AS k WHERE k.label = :label AND k.org.id = :org_id", KickstartableTree.class
+            )
+            .setParameter(LABEL, label, StandardBasicTypes.STRING)
+            .setParameter(ORG_ID, org.getId(), StandardBasicTypes.LONG)
+            .uniqueResult();
         // If we don't find by label + org then
         // we try by label and NULL org (RHN owned channel)
         if (retval == null) {
-            retval = (KickstartableTree)
-                    session.createQuery("FROM KickstartableTree AS k WHERE k.label = :label AND k.org IS NULL")
-                    .setParameter(LABEL, label)
-                    .uniqueResult();
+            retval = session.createQuery(
+                    "FROM KickstartableTree AS k WHERE k.label = :label AND k.org IS NULL", KickstartableTree.class
+                )
+                .setParameter(LABEL, label)
+                .uniqueResult();
         }
         return retval;
     }
@@ -711,10 +718,9 @@ public class KickstartFactory extends HibernateFactory {
     public static List<KickstartableTree> lookupKickstartTrees() {
         Session session = HibernateFactory.getSession();
         return session.createQuery("""
-                        SELECT k FROM KickstartableTree AS k,
-                        com.redhat.rhn.domain.channel.Channel AS c
-                        WHERE c.id = k.channel
-                        AND c.parentChannel IS NULL
+                        SELECT k
+                        FROM KickstartableTree AS k, Channel AS c
+                        WHERE c.id = k.channel.id AND c.parentChannel IS NULL
                         ORDER BY k.label""", KickstartableTree.class)
                 .list();
     }
@@ -794,12 +800,15 @@ public class KickstartFactory extends HibernateFactory {
 
     /**
      * Save a KickstartSession object
+     *
      * @param ksession to save.
+     * @return the managed {@link KickstartSession} instance
      */
-    public static void saveKickstartSession(KickstartSession ksession) {
-        singleton.saveObject(ksession);
-        SystemManager.updateSystemOverview(ksession.getOldServer());
-        SystemManager.updateSystemOverview(ksession.getNewServer());
+    public static KickstartSession saveKickstartSession(KickstartSession ksession) {
+        KickstartSession kickstartSession = singleton.saveObject(ksession);
+        SystemManager.updateSystemOverview(kickstartSession.getOldServer());
+        SystemManager.updateSystemOverview(kickstartSession.getNewServer());
+        return kickstartSession;
     }
 
     /**
@@ -898,10 +907,12 @@ public class KickstartFactory extends HibernateFactory {
 
     /**
      * Save the KickstartableTree to the DB.
+     *
      * @param tree to save
+     * @return the managed {@link KickstartableTree} instance
      */
-    public static void saveKickstartableTree(KickstartableTree tree) {
-        singleton.saveObject(tree);
+    public static KickstartableTree saveKickstartableTree(KickstartableTree tree) {
+        return singleton.saveObject(tree);
     }
 
     /**
@@ -921,16 +932,11 @@ public class KickstartFactory extends HibernateFactory {
      * @return List of KickstartData objects if found
      */
     public static List<KickstartData> lookupKickstartDatasByTree(KickstartableTree tree) {
-        return getSession().createNativeQuery("""
-                        SELECT k.* FROM rhnKickstartDefaults ksd, rhnksdata k
-                        WHERE k.id = ksd.kickstart_id
-                        AND ksd.kstree_id = :kstree_id
-                        """, Tuple.class)
-                .addEntity("k", KickstartData.class)
-                .setParameter("kstree_id", tree.getId())
-                .stream()
-                .map(t -> t.get(0, KickstartData.class))
-                .collect(Collectors.toList());
+        return getSession().createQuery("""
+                        SELECT kd.ksdata FROM KickstartDefaults kd WHERE kd.kstree.id = :treeId
+                        """, KickstartData.class)
+                .setParameter("treeId", tree.getId())
+                .list();
     }
 
     /**
@@ -939,9 +945,7 @@ public class KickstartFactory extends HibernateFactory {
      * @return List of KickstartData objects if found
      */
     public static List<KickstartData> listAllKickstartData() {
-        return HibernateFactory.getSession().createNativeQuery("""
-                                      SELECT DISTINCT * from rhnksdata
-                                      """, KickstartData.class).getResultList();
+        return getSession().createQuery("FROM KickstartData kd", KickstartData.class).getResultList();
     }
 
     /**
@@ -950,9 +954,7 @@ public class KickstartFactory extends HibernateFactory {
      * @return List of KickstartData objects if found
      */
     public static List<KickstartData> lookupKickstartDataByUpdateable() {
-        Session session = HibernateFactory.getSession();
-        return session.createQuery("FROM KickstartData AS t WHERE NOT t.updateType = 'none' ",
-                        KickstartData.class)
+        return getSession().createQuery("FROM KickstartData AS t WHERE NOT t.updateType = 'none'", KickstartData.class)
                 .list();
     }
 
@@ -1011,7 +1013,7 @@ public class KickstartFactory extends HibernateFactory {
                AND s.action IN (:actions_to_delete)
                AND NOT exists
                     (select 1 FROM KickstartSessionState ss
-                    WHERE ss.id = s.state AND ss.label IN ('failed', 'complete'))
+                    WHERE ss = s.state AND ss.label IN ('failed', 'complete'))
                """, KickstartSession.class);
         kickstartSessionQuery.setParameterList("actions_to_delete", actionsToDelete);
         int subStart = 0;
@@ -1037,7 +1039,7 @@ public class KickstartFactory extends HibernateFactory {
      * attempted to iterate all states with the given label, but these are unique and
      * this method will not attempt to do the same.
      */
-    private static void setKickstartSessionHistoryMessage(KickstartSession ksSession,
+    protected static void setKickstartSessionHistoryMessage(KickstartSession ksSession,
             KickstartSessionState state, String message) {
 
         Session session = HibernateFactory.getSession();
@@ -1084,20 +1086,21 @@ public class KickstartFactory extends HibernateFactory {
     public static List<KickstartableTree> listUnsyncedKickstartTrees() {
         Session session = HibernateFactory.getSession();
         return session.createQuery("""
-                        SELECT k FROM KickstartableTree AS k,
-                        com.redhat.rhn.domain.channel.Channel AS c
-                        WHERE c.id = k.channel
+                        SELECT k
+                        FROM KickstartableTree AS k, Channel AS c
+                        WHERE c.id = k.channel.id
                         AND k.cobblerId IS NULL
                         AND c.parentChannel IS NULL
-                        ORDEr by k.label""", KickstartableTree.class)
+                        ORDER by k.label""", KickstartableTree.class)
                 .list();
     }
 
     /**
      * @param p KickstartPackage to add to DB
+     * @return the managed {@link KickstartPackage} instance
      */
-    public static void savePackage(KickstartPackage p) {
-        singleton.saveObject(p);
+    public static KickstartPackage savePackage(KickstartPackage p) {
+        return singleton.saveObject(p);
     }
 
     /**

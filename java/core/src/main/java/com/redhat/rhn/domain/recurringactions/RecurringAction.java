@@ -19,28 +19,30 @@ import com.redhat.rhn.domain.user.legacy.UserImpl;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.hibernate.annotations.Type;
+import org.hibernate.type.YesNoConverter;
 
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.DiscriminatorColumn;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 /**
  * Recurring Action base class
@@ -56,7 +58,7 @@ public abstract class RecurringAction extends BaseDomainHelper {
     private String name;
     private String cronExpr;
     private boolean active;
-    private UserImpl creator;
+    private User creator;
     private RecurringActionType recurringActionType;
     private RecurringActionType.ActionType actionType;
 
@@ -203,7 +205,7 @@ public abstract class RecurringAction extends BaseDomainHelper {
      * @return active - if action is active
      */
     @Column
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     public boolean isActive() {
         return active;
     }
@@ -222,9 +224,9 @@ public abstract class RecurringAction extends BaseDomainHelper {
      *
      * @return creator
      */
-    @ManyToOne
+    @ManyToOne(targetEntity = UserImpl.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_id")
-    public UserImpl getCreator() {
+    public User getCreator() {
         return creator;
     }
 
@@ -233,7 +235,7 @@ public abstract class RecurringAction extends BaseDomainHelper {
      *
      * @param creatorIn the creator
      */
-    public void setCreator(UserImpl creatorIn) {
+    public void setCreator(User creatorIn) {
         creator = creatorIn;
     }
 

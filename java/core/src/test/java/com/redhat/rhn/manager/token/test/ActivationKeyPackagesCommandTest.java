@@ -43,16 +43,11 @@ public class ActivationKeyPackagesCommandTest extends BaseTestCaseWithUser {
         TokenPackage pkg1 = TokenPackageTest.createTestPackage(key);
         TokenPackage pkg2 = TokenPackageTest.createTestPackage(key);
         TokenPackage pkg3 = TokenPackageTest.createTestPackage(key);
-
-        TestUtils.flushAndEvict(pkg1);
-        TestUtils.flushAndEvict(pkg2);
-        TestUtils.flushAndEvict(pkg3);
-
         assertEquals(3, key.getPackages().size());
 
-        ActivationKeyPackagesCommand command = new ActivationKeyPackagesCommand(key);
-
         // execute
+        TestUtils.flushAndClearSession();
+        ActivationKeyPackagesCommand command = new ActivationKeyPackagesCommand(key);
         String populated = command.populatePackages();
 
         // verify
@@ -79,6 +74,7 @@ public class ActivationKeyPackagesCommandTest extends BaseTestCaseWithUser {
         int numPkgsBefore = key.getPackages().size();
 
         // execute
+        TestUtils.flushAndClearSession();
         ValidatorError result = command.parseAndUpdatePackages("pkg1.i386" + "\n" + "pkg2" + "\n");
         command.store();
 

@@ -34,6 +34,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.attestation.AttestationManager;
@@ -145,9 +146,9 @@ public class AttestationManagerTest extends JMockBaseTestCaseWithUser {
         createFakeAttestationReport(user, server);
         createFakeAttestationReport(user, server3);
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         HibernateFactory.commitTransaction();
-        HibernateFactory.getSession().clear();
+        TestUtils.clearSession();
         commitHappened();
 
         assertEquals(2, mgr.countCoCoAttestationReportsForUserAndServer(user, server));
@@ -164,9 +165,9 @@ public class AttestationManagerTest extends JMockBaseTestCaseWithUser {
         createFakeAttestationReport(user, server);
         createFakeAttestationReport(user, server);
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         HibernateFactory.commitTransaction();
-        HibernateFactory.getSession().clear();
+        TestUtils.clearSession();
         commitHappened();
 
         List<ServerCoCoAttestationReport> reports = mgr.listCoCoAttestationReportsForUserAndServer(user, server,
@@ -196,9 +197,9 @@ public class AttestationManagerTest extends JMockBaseTestCaseWithUser {
         createFakeAttestationReport(user2, server4);
         createFakeAttestationReport(user2, server4);
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         HibernateFactory.commitTransaction();
-        HibernateFactory.getSession().clear();
+        TestUtils.clearSession();
         commitHappened();
 
         assertEquals(3, mgr.countCoCoAttestationReportsForUser(user));
@@ -223,9 +224,9 @@ public class AttestationManagerTest extends JMockBaseTestCaseWithUser {
         createFakeAttestationReport(user2, server4);
         createFakeAttestationReport(user2, server4);
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         HibernateFactory.commitTransaction();
-        HibernateFactory.getSession().clear();
+        TestUtils.clearSession();
         commitHappened();
 
         List<ServerCoCoAttestationReport> reports = mgr.listCoCoAttestationReportsForUser(user, 0, Integer.MAX_VALUE);
@@ -244,12 +245,12 @@ public class AttestationManagerTest extends JMockBaseTestCaseWithUser {
         long epochStart = (new Date().getTime() / 1000);
         for (int i = 10; i > 0; i--) {
             createFakeAttestationReport(user, server);
-            HibernateFactory.getSession().flush();
+            TestUtils.flushSession();
             HibernateFactory.commitTransaction();
             commitHappened();
             TimeUnit.SECONDS.sleep(2);
         }
-        HibernateFactory.getSession().clear();
+        TestUtils.clearSession();
         List<ServerCoCoAttestationReport> reports = mgr.listCoCoAttestationReportsForUserAndServer(user, server,
             new Date(0), 0, Integer.MAX_VALUE);
         assertEquals(10, reports.size());

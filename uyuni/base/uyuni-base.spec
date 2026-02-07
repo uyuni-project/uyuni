@@ -66,7 +66,7 @@ Group:          System/Fhs
 Requires(pre):  %{_sbindir}/groupadd
 Requires(pre):  %{_sbindir}/usermod
 Requires(pre):  salt
-Requires(pre):  tomcat
+Requires(pre):  tomcat11
 Requires(pre):  uyuni-base-common
 Provides:       group(susemanager)
 %if 0%{?suse_version} >= 1500

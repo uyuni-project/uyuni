@@ -26,16 +26,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterRegistration;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.Servlet;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRegistration;
-import javax.servlet.SessionCookieConfig;
-import javax.servlet.SessionTrackingMode;
-import javax.servlet.descriptor.JspConfigDescriptor;
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterRegistration;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.Servlet;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRegistration;
+import jakarta.servlet.SessionCookieConfig;
+import jakarta.servlet.SessionTrackingMode;
+import jakarta.servlet.descriptor.JspConfigDescriptor;
 
 /**
  * Mock implementation of ServletContext for testing purposes.
@@ -166,16 +166,6 @@ public class MockServletContext implements ServletContext {
      */
     public Servlet getServlet(String string) {
         return null;
-    }
-
-    /**
-     * Logs an exception and an explanatory message to the servlet log file.
-     * @param exception the exception to log
-     * @param string the explanatory message
-     */
-    @Override
-    public void log(Exception exception, String string) {
-        // This method is intentionally empty for mock implementation
     }
 
     /**

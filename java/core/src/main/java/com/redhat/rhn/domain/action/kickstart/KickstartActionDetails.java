@@ -15,11 +15,12 @@
 package com.redhat.rhn.domain.action.kickstart;
 
 
-import org.hibernate.annotations.Type;
+import org.hibernate.type.YesNoConverter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 /**
  * KickstartActionDetails - java representation of the rhnActionKickstart table
@@ -32,7 +33,7 @@ public class KickstartActionDetails extends BaseKickstartActionDetails {
     private String staticDevice;
 
     @Column(nullable = false)
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private boolean upgrade = false;
 
 

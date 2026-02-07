@@ -23,6 +23,7 @@ import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerDistroCreateCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.cobbler.CobblerConnection;
 import org.junit.jupiter.api.BeforeEach;
@@ -73,7 +74,7 @@ public abstract class CobblerCommandTestBase extends BaseTestCaseWithUser {
         if (connectToCobbler) {
             Config.get().setString(CobblerXMLRPCHelper.class.getName(), CobblerXMLRPCHelper.class.getName());
             Config.get().setString(CobblerConnection.class.getName(), CobblerConnection.class.getName());
-            commitAndCloseSession();
+            TestUtils.commitAndCloseSession();
             commitHappened();
         }
 

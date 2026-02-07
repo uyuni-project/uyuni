@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.manager.kickstart.KickstartPartitionCommand;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
 
@@ -71,7 +72,7 @@ public class KickstartPartitionCommandTest extends BaseTestCaseWithUser {
 
         assertNull(cmd.setPartitionData(partitions));
         assertNull(cmd.store());
-        k = (KickstartData) reload(k);
+        k = TestUtils.reload(k);
         assertNotNull(k.getPartitionData());
         assertTrue(k.getPartitionData().contains("partition swap.02 --size=8888 --ondisk=sda"));
 

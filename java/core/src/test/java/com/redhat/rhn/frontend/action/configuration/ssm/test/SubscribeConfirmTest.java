@@ -111,16 +111,14 @@ public class SubscribeConfirmTest extends RhnMockStrutsTestCase {
         channelRanking.addElement(channel1.getId(), 3L);
         RhnSetFactory.save(channelRanking);
 
-        TestUtils.flushAndEvict(server1);
-        TestUtils.flushAndEvict(server2);
-        TestUtils.flushAndEvict(server3);
-
         // Send confirm request
         setRequestPathInfo("/systems/ssm/config/SubscribeConfirm");
         addDispatchCall("ssm.config.subscribeconfirm.jsp.confirm");
         addRequestParameter(SubscribeConfirm.POSITION, SubscribeConfirm.LOWEST);
         actionPerform();
         verifyForward("success");
+
+        TestUtils.flushAndClearSession();
 
         /*
          * Expected channels by server for LOWEST, in order:
@@ -202,16 +200,15 @@ public class SubscribeConfirmTest extends RhnMockStrutsTestCase {
         channelRanking.addElement(channel1.getId(), 3L);
         RhnSetFactory.save(channelRanking);
 
-        TestUtils.flushAndEvict(server1);
-        TestUtils.flushAndEvict(server2);
-        TestUtils.flushAndEvict(server3);
-
         // Send confirm request
         setRequestPathInfo("/systems/ssm/config/SubscribeConfirm");
         addDispatchCall("ssm.config.subscribeconfirm.jsp.confirm");
         addRequestParameter(SubscribeConfirm.POSITION, SubscribeConfirm.HIGHEST);
         actionPerform();
         verifyForward("success");
+
+        // Ensure we get a new session and execute the query to extract  the server
+        TestUtils.flushAndClearSession();
 
         /*
          * Expected channels by server for HIGHEST, in order:
@@ -292,16 +289,15 @@ public class SubscribeConfirmTest extends RhnMockStrutsTestCase {
         channelRanking.addElement(channel3.getId(), 2L);
         RhnSetFactory.save(channelRanking);
 
-        TestUtils.flushAndEvict(server1);
-        TestUtils.flushAndEvict(server2);
-        TestUtils.flushAndEvict(server3);
-
         // Send confirm request
         setRequestPathInfo("/systems/ssm/config/SubscribeConfirm");
         addDispatchCall("ssm.config.subscribeconfirm.jsp.confirm");
         addRequestParameter(SubscribeConfirm.POSITION, SubscribeConfirm.REPLACE);
         actionPerform();
         verifyForward("success");
+
+        // Ensure we get a new session and execute the query to extract  the server
+        TestUtils.flushAndClearSession();
 
         /*
          * Expected channels by server for REPLACE, in order:

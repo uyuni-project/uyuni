@@ -14,18 +14,18 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 
 import java.util.Objects;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "suseErrataAdvisoryMap")
 public class ErrataAdvisoryMap extends BaseDomainHelper {
 
-    private long id;
+    private Long id;
     private String patchId;
     private String announcementId;
     private String advisoryUri;
@@ -53,11 +53,11 @@ public class ErrataAdvisoryMap extends BaseDomainHelper {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long idIn) {
+    public void setId(Long idIn) {
         id = idIn;
     }
 

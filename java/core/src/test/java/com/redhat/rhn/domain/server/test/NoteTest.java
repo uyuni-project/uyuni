@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LCC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -26,8 +27,6 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import org.hibernate.Session;
-import org.hibernate.type.StandardBasicTypes;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
@@ -48,13 +47,17 @@ public class NoteTest extends RhnBaseTestCase {
         assertNotEquals(note1, note2);
         assertNotEquals(note1, new Date());
 
-        Session session = HibernateFactory.getSession();
-        note2 = (Note) session.createQuery("FROM Note AS n WHERE n.id = :id")
-                                  .setParameter("id", note1.getId(), StandardBasicTypes.LONG)
-                                  .uniqueResult();
+        note2 = lookupNoteById(note1.getId());
         assertEquals(note1, note2);
 
         TestUtils.removeObject(note1);
+    }
+
+    private Note lookupNoteById(Long noteId) {
+        return HibernateFactory.getSession()
+                .createQuery("FROM Note AS n WHERE n.id = :id", Note.class)
+                .setParameter("id", noteId)
+                .getSingleResultOrNull();
     }
 
     /**
@@ -71,9 +74,9 @@ public class NoteTest extends RhnBaseTestCase {
         note.setNote("I will write them always.");
 
         assertNull(note.getId());
-        TestUtils.saveAndFlush(note);
-        assertNotNull(note.getId());
+        Note managedNote = TestUtils.saveAndFlush(note);
+        assertNotNull(managedNote.getId());
 
-        return note;
+        return managedNote;
     }
 }

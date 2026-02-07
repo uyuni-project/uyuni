@@ -395,7 +395,7 @@ public class HubApiController {
         }
 
         issAccessToken.setValid(validityRequest.isValid());
-        hubManager.updateToken(user, issAccessToken);
+        issAccessToken = hubManager.updateToken(user, issAccessToken);
 
         return success(response, ResultJson.success(issAccessToken.getModified()));
     }

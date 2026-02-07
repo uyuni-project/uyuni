@@ -18,7 +18,6 @@ package com.redhat.rhn.taskomatic.task.repomd.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.Package;
@@ -31,6 +30,7 @@ import com.redhat.rhn.manager.rhnpackage.test.PackageManagerTest;
 import com.redhat.rhn.manager.task.TaskManager;
 import com.redhat.rhn.taskomatic.task.repomd.DebPackageWriter;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.AfterEach;
@@ -93,8 +93,7 @@ public class DebPackageWriterTest extends JMockBaseTestCaseWithUser {
         Package pkg4 = PackageManagerTest.addPackageToChannel("pkg_4", channel);
         pkg4.setPayloadSize(null);
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         DataResult<PackageDto> packageBatch = TaskManager.getChannelPackageDtos(channel, 0, 100);
         packageBatch.elaborate();

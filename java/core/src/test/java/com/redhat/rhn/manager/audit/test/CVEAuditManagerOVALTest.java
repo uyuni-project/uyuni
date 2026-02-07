@@ -28,7 +28,6 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.errata.Cve;
 import com.redhat.rhn.domain.errata.Errata;
@@ -359,7 +358,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         Map<Server, List<RankedChannel>> relevantChannels = new HashMap<>();
         relevantChannels.put(server, List.of(otherChannelRanked));
         CVEAuditManager.insertRelevantServerChannels(relevantChannels);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         List<CVEAuditManager.CVEPatchStatus> results = CVEAuditManager.listSystemsByPatchStatus(user, cve.getName())
                 .collect(Collectors.toList());
@@ -409,7 +408,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         Map<Server, List<RankedChannel>> relevantChannels = new HashMap<>();
         relevantChannels.put(server, List.of(otherChannelRanked));
         CVEAuditManager.insertRelevantServerChannels(relevantChannels);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         List<CVEAuditManager.CVEPatchStatus> results = CVEAuditManager.listSystemsByPatchStatus(user, cve.getName())
                 .collect(Collectors.toList());
@@ -560,7 +559,7 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         Map<Server, List<RankedChannel>> relevantChannels = new HashMap<>();
         relevantChannels.put(server, List.of(otherChannelRanked));
         CVEAuditManager.insertRelevantServerChannels(relevantChannels);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         List<CVEAuditServer> auditServers = CVEAuditManagerOVAL.listSystemsByPatchStatus(user, cve.getName(),
                 EnumSet.allOf(PatchStatus.class));
@@ -575,6 +574,6 @@ public class CVEAuditManagerOVALTest extends RhnBaseTestCase {
         OVALCleaner.cleanup(rootType, OsFamily.LEAP, "15.4");
         OVALCachingFactory.savePlatformsVulnerablePackages(rootType);
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
     }
 }

@@ -74,7 +74,7 @@ public class DeleteBugActionTest extends RhnBaseTestCase {
         ActionForward result = action.execute(mapping, form, request, response);
         assertEquals(result.getName(), RhnHelper.DEFAULT_FORWARD);
 
-        flushAndEvict(e); //get rid of e
+        TestUtils.flushAndEvict(e); //get rid of e
 
         Errata e2 = ErrataManager.lookupErrata(eid, user);
         assertTrue(e2.getBugs().isEmpty()); //make sure bug was removed

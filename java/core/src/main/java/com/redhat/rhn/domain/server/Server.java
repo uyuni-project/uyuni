@@ -15,7 +15,6 @@
  */
 package com.redhat.rhn.domain.server;
 
-import static org.hibernate.annotations.CascadeType.SAVE_UPDATE;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
@@ -62,10 +61,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cobbler.CobblerConnection;
 import org.cobbler.SystemRecord;
-import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.ListIndexBase;
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.WhereJoinTable;
+import org.hibernate.annotations.SQLJoinTableRestriction;
+import org.hibernate.type.YesNoConverter;
 
 import java.net.IDN;
 import java.sql.Timestamp;
@@ -86,25 +84,26 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.OrderColumn;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.OrderColumn;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 /**
  * Server - Class representation of the table rhnServer.
@@ -122,7 +121,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rhn_server_seq")
     @SequenceGenerator(name = "rhn_server_seq", sequenceName = "rhn_server_id_seq", allocationSize = 1,
-            initialValue = 1000010000)
+    initialValue = 1000010000)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -226,7 +225,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @OrderColumn(name = "position")
-    @WhereJoinTable(clause = "(position > 0)")
+    @SQLJoinTableRestriction(value = "(position > 0)")
     @JoinTable(
             name = "rhnServerConfigChannel",
             joinColumns = @JoinColumn(name = "server_id"),
@@ -236,7 +235,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     private List<ConfigChannel> configChannels = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @WhereJoinTable(clause = "(position is null)")
+    @SQLJoinTableRestriction(value = "(position is null)")
     @JoinTable(
             name = "rhnServerConfigChannel",
             joinColumns = @JoinColumn(name = "server_id"),
@@ -256,8 +255,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     @OneToMany(mappedBy = "hostSystem", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<VirtualInstance> virtualGuests = new HashSet<>();
 
-    @OneToOne(mappedBy = "guestSystem", fetch = FetchType.LAZY)
-    @Cascade(SAVE_UPDATE)
+    @OneToOne(mappedBy = "guestSystem", fetch = FetchType.LAZY, cascade = { CascadeType.MERGE, CascadeType.PERSIST })
     private VirtualInstance virtualInstance;
 
     @OneToOne(mappedBy = "server", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -301,7 +299,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
     private String hostname;
 
     @Column
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private boolean payg;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -667,7 +665,8 @@ public class Server extends BaseDomainHelper implements Identifiable {
      * Save configuration channels to the database. Only needed if the server has been created using the constructor
      */
     public void storeConfigChannels() {
-        HibernateFactory.getSession().createNativeQuery("DELETE FROM rhnServerConfigChannel WHERE server_id = :sid ;")
+        HibernateFactory.getSession()
+                .createNativeMutationQuery("DELETE FROM rhnServerConfigChannel WHERE server_id = :sid")
                 .setParameter("sid", getId())
                 .executeUpdate();
 
@@ -678,7 +677,8 @@ public class Server extends BaseDomainHelper implements Identifiable {
                     .collect(Collectors.joining(","));
 
 
-            HibernateFactory.getSession().createNativeQuery(
+            HibernateFactory.getSession()
+                    .createNativeMutationQuery(
                             "INSERT INTO rhnServerConfigChannel (server_id, config_channel_id, position) " +
                                     "VALUES " + values + ";")
                     .executeUpdate();
