@@ -155,6 +155,7 @@
   <filter-mapping>
     <filter-name>sitemesh</filter-name>
     <url-pattern>/manager/*</url-pattern>
+    <url-pattern>/apidoc/*</url-pattern>
     <dispatcher>REQUEST</dispatcher>
   </filter-mapping>
 
