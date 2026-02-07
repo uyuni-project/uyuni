@@ -94,5 +94,21 @@ public class WebSessionFactory extends HibernateFactory {
                 .setParameter("user_id", user.getId())
                 .executeUpdate();
     }
+
+    /**
+     * Check if the given session exists and it's valid.
+     * @param session the session instance
+     * @return {@code true} if the session exists, {@code false} otherwise
+     */
+    public static boolean exists(WebSession session) {
+        // If the instance is attached to the session it's ok
+        if (getSession().contains(session)) {
+            return true;
+        }
+
+        // Ensure session still exists and was not already removed
+        WebSession retrievedSession = lookupById(session.getId());
+        return retrievedSession != null;
+    }
 }
 
