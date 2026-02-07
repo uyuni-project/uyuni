@@ -470,6 +470,9 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
             handler.setChildChannels(admin, sid, ia32Children);
         }, "allowed invalid child channel to be set.");
+
+        // teardown
+        cleanupServers(server);
     }
 
     @Test
@@ -592,6 +595,9 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
             handler.setChildChannels(admin, sid, ia32Children);
         }, "allowed invalid child channel to be set.");
+
+        // teardown
+        cleanupServers(server);
     }
 
     @Test
@@ -681,6 +687,9 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         catch (InvalidChannelException e) {
             // success
         }
+
+        // teardown
+        cleanupServers(server);
     }
 
     @Test
@@ -763,6 +772,9 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
             handler.setBaseChannel(admin, sid, base1.getLabel());
         }, "allowed channel with incompatible arch to be set");
+
+        // teardown
+        cleanupServers(server);
     }
 
     @Test

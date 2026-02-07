@@ -1315,6 +1315,9 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(2, server.getChildChannels().size());
         assertTrue(server.getChildChannels().stream().anyMatch(cc -> cc.getId().equals(ch21.getId())));
         assertTrue(server.getChildChannels().stream().anyMatch(cc -> cc.getId().equals(ch22.getId())));
+
+        // teardown
+        cleanupServers(server);
     }
 
     @Test
@@ -1352,6 +1355,9 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(base2.getId(), server.getBaseChannel().getId());
         assertEquals(1, server.getChildChannels().size());
         assertEquals(ch21, server.getChildChannels().iterator().next());
+
+        // teardown
+        cleanupServers(server);
     }
 
     @Test
@@ -1382,6 +1388,9 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         assertNull(server.getBaseChannel());
         assertEquals(0, server.getChildChannels().size());
+
+        // teardown
+        cleanupServers(server);
     }
 
     /**

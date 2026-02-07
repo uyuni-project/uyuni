@@ -2037,6 +2037,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testSubscribeChannelsActionSuccess() throws Exception {
+        String minionId = "dev-minsles12sp2.test.local";
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ActionChainManager.setTaskomaticApi(taskomaticMock);
         context().checking(new Expectations() { {
@@ -2053,7 +2054,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         saltServerActionService.setSaltApi(saltService);
 
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
-        minion.setMinionId("dev-minsles12sp2.test.local");
+        minion.setMinionId(minionId);
 
         Channel base = ChannelFactoryTest.createBaseChannel(user);
         Channel ch1 = ChannelFactoryTest.createTestChannel(user.getOrg());
@@ -2102,10 +2103,14 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         assertTokenChannel(minion, base);
         assertTokenChannel(minion, ch1);
         assertTokenChannel(minion, ch2);
+
+        // teardown
+        cleanupServers(minion);
     }
 
     @Test
     public void testSubscribeChannelsActionNullTokens() throws Exception {
+        String minionId = "dev-minsles12sp2.test.local";
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ActionChainManager.setTaskomaticApi(taskomaticMock);
         context().checking(new Expectations() { {
@@ -2114,7 +2119,7 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         } });
 
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
-        minion.setMinionId("dev-minsles12sp2.test.local");
+        minion.setMinionId(minionId);
 
         Channel base = ChannelFactoryTest.createBaseChannel(user);
         Channel ch1 = ChannelFactoryTest.createTestChannel(user.getOrg());
@@ -2152,6 +2157,9 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
         MinionServer reloaded = HibernateFactory.reload(minion);
         // check that tokens are really gone
         assertEquals(0, reloaded.getAccessTokens().size());
+
+        // teardown
+        cleanupServers(minion);
     }
 
     private void assertTokenChannel(MinionServer minion, Channel channel) {

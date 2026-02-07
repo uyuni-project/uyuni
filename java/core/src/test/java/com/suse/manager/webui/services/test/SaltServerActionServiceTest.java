@@ -719,6 +719,9 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         assertTokenChannel(minion1, base);
         assertTokenChannel(minion1, ch1);
         assertTokenChannel(minion1, ch2);
+
+        // teardown
+        cleanupServers(minion, minion1);
     }
 
     private void assertTokenChannel(MinionServer minionIn, Channel channel) {

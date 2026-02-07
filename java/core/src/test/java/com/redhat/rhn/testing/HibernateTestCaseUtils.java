@@ -19,11 +19,16 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Utils for handling hibernate entities during the session. Implemented as interface default methods in order
@@ -87,6 +92,22 @@ public interface HibernateTestCaseUtils {
         T result = TestUtils.reload(obj);
         assertNotSame(obj, result);
         return result;
+    }
+
+    /**
+     * Deletes the given servers and commits the transaction.
+     * Use with care, as it will delete all servers if no argument is given.
+     * @param servers the servers to delete, or all if null or empty
+     */
+    default void cleanupServers(Server ...servers) {
+        List<Server> serversToDelete = servers.length == 0 ?
+                ServerFactory.lookupByIds(ServerFactory.listAllServerIds()) :
+                Arrays.stream(servers).filter(Objects::nonNull).toList();
+
+        if (!serversToDelete.isEmpty()) {
+            serversToDelete.forEach(ServerFactory::delete);
+            HibernateFactory.commitTransaction();
+        }
     }
 
 }

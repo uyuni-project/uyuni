@@ -14,6 +14,7 @@
  */
 package com.suse.manager.reactor.messaging;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.domain.action.salt.ApplyStatesAction;
@@ -77,6 +78,9 @@ public class ChannelsChangedEventMessageAction implements MessageAction {
 
                     // Regenerate the pillar data
                     MinionPillarManager.INSTANCE.generatePillar(minion);
+
+                    // Commit the current transaction
+                    HibernateFactory.commitTransaction();
 
                     // push the changed pillar data to the minion
                     saltApi.refreshPillar(new MinionList(minion.getMinionId()));

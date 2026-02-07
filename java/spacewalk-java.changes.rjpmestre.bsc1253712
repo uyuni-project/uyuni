@@ -1,0 +1,2 @@
+- Commit DB changes before refreshing pillar for SSH push minions
+  (bsc#1253712)
