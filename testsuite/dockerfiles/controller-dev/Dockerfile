@@ -50,10 +50,9 @@ RUN update-alternatives --set bundle /usr/bin/bundle.ruby.ruby3.3
 RUN update-alternatives --set rdoc /usr/bin/rdoc.ruby.ruby3.3
 RUN update-alternatives --set ri /usr/bin/ri.ruby.ruby3.3
 
-# debug
 RUN ruby -v
 RUN gem env
-
-# TODO: Adjust the URL/branch before merging!
 RUN curl https://raw.githubusercontent.com/uyuni-project/uyuni/master/testsuite/Gemfile -o Gemfile && bundle.ruby3.3 install --verbose && rm Gemfile
 RUN gem list
+RUN npm install cucumber-html-reporter@7.2.0 --save-dev
+RUN echo '.container { width: 100%; }' >> /root/node_modules/cucumber-html-reporter/templates/_common/bootstrap.hierarchy/style.css
