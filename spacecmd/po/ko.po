@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-09 10:26+0000\n"
-"PO-Revision-Date: 2026-01-21 03:04+0000\n"
+"PO-Revision-Date: 2026-02-08 18:04+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd/ko/>\n"
 "Language: ko\n"
@@ -5218,6 +5218,7 @@ msgid "Number of Packages: %i"
 msgstr "패키지 수: %i"
 
 #: ../src/spacecmd/softwarechannel.py:643
+#, fuzzy
 msgid "Summary"
 msgstr "요약"
 
