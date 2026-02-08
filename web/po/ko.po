@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-01-16 09:56+0100\n"
-"PO-Revision-Date: 2026-01-21 11:04+0000\n"
+"PO-Revision-Date: 2026-02-08 14:04+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/web/ko/>\n"
 "Language: ko\n"
@@ -316,6 +316,7 @@ msgstr "증명된 날짜"
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:118
 #: ../html/src/manager/images/image-view.tsx:795
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:53
+#, fuzzy
 msgid "Overview"
 msgstr "개요"
 
