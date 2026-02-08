@@ -24,6 +24,7 @@ import com.suse.manager.metrics.PrometheusExporter;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.HibernateException;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -94,12 +95,22 @@ public class MessageDispatcher implements Runnable {
                 }
             }
             catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
                 log.error("Error occurred in the MessageQueue", e);
             }
-            catch (Throwable t) {
+            catch (HibernateException e) {
+                log.error("Database error while executing message action", e);
+            }
+            catch (IllegalArgumentException e) {
+                log.error("Invalid input while executing message action", e);
+            }
+            catch (IllegalStateException e) {
+                log.error("Invalid state while executing message action", e);
+            }
+            catch (RuntimeException e) {
                 // better log this puppy to let folks know we have a problem
                 // but keep the queue running.
-                log.error("Error occurred with an event in the MessageQueue", t);
+                log.error("Error occurred with an event in the MessageQueue", e);
 
                 try {
                     // ok let's email the admins of what's going on.
@@ -107,13 +118,13 @@ public class MessageDispatcher implements Runnable {
                     TraceBackEvent evt = new TraceBackEvent();
                     evt.setUser(null);
                     evt.setRequest(null);
-                    evt.setException(t);
+                    evt.setException(e);
 
                     TraceBackAction tba = new TraceBackAction();
                     tba.execute(evt);
                 }
-                catch (Throwable t1) {
-                    log.error("Error sending traceback email, logging for posterity.", t1);
+                catch (RuntimeException e1) {
+                    log.error("Error sending traceback email, logging for posterity.", e1);
                 }
             }
             finally {

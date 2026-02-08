@@ -52,6 +52,7 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
+import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.utils.LocalDateTimeISOAdapter;
@@ -313,13 +314,28 @@ public class StatesAPI {
             );
             entity.setConfigChannels(channels, user);
             //if get() fails, the exception is caught
-            StateRevision revision = StateRevisionService.INSTANCE.getLatest(entity).orElseThrow();
+            Optional<StateRevision> optionalRevision = StateRevisionService.INSTANCE.getLatest(entity);
+            if (!optionalRevision.isPresent()) {
+                throw new LookupException("No state revision found for entity");
+            }
+            StateRevision revision = optionalRevision.get();
+
             return SparkApplicationHelper.json(response, ConfigChannelJson.listOrdered(revision.getConfigChannels()),
                     new TypeToken<>() { });
         }
-        catch (Throwable t) {
-            LOG.error(t.getMessage(), t);
-            response.status(500);
+        catch (PermissionException | LookupException e) {
+            LOG.error("Forbidden while saving config channels", e);
+            response.status(HttpStatus.SC_FORBIDDEN);
+            return "{}";
+        }
+        catch (IllegalArgumentException e) {
+            LOG.error("Invalid input while saving config channels", e);
+            response.status(HttpStatus.SC_BAD_REQUEST);
+            return "{}";
+        }
+        catch (RuntimeException e) {
+            LOG.error("Unexpected error while saving config channels", e);
+            response.status(HttpStatus.SC_INTERNAL_SERVER_ERROR);
             return "{}";
         }
     }
@@ -406,7 +422,8 @@ public class StatesAPI {
             generateServerPackageState(server);
             return GSON.toJson(convertToJSON(state.getPackageStates()));
         }
-        catch (Throwable t) {
+        catch (Exception e) {
+            LOG.error("Failed to save package states", e);
             response.status(HttpStatus.SC_INTERNAL_SERVER_ERROR);
             return "{}";
         }
@@ -451,8 +468,23 @@ public class StatesAPI {
             return GSON.toJson(actions.stream().findFirst().map(Action::getId)
                     .orElseThrow(() -> new RuntimeException("No action in schedule result")));
         }
-        catch (Exception e) {
+        catch (TaskomaticApiException e) {
             LOG.error("Could not apply highstate", e);
+            res.status(HttpStatus.SC_INTERNAL_SERVER_ERROR);
+            return "{}";
+        }
+        catch (PermissionException | LookupException e) {
+            LOG.error("Authorization error applying highstate", e);
+            res.status(HttpStatus.SC_FORBIDDEN);
+            return "{}";
+        }
+        catch (IllegalArgumentException e) {
+            LOG.error("Invalid request applying highstate", e);
+            res.status(HttpStatus.SC_BAD_REQUEST);
+            return "{}";
+        }
+        catch (RuntimeException e) {
+            LOG.error("Unexpected error applying highstate", e);
             res.status(HttpStatus.SC_INTERNAL_SERVER_ERROR);
             return "{}";
         }
@@ -526,7 +558,23 @@ public class StatesAPI {
 
             return GSON.toJson(scheduledAction.getId());
         }
-        catch (Exception e) {
+        catch (TaskomaticApiException e) {
+            LOG.error("Could not apply states", e);
+            response.status(HttpStatus.SC_INTERNAL_SERVER_ERROR);
+            return "{}";
+        }
+        catch (IllegalArgumentException e) {
+            LOG.error("Invalid request applying states", e);
+            response.status(HttpStatus.SC_BAD_REQUEST);
+            return "{}";
+        }
+        catch (IllegalStateException e) {
+            LOG.error("Invalid state applying states", e);
+            response.status(HttpStatus.SC_CONFLICT);
+            return "{}";
+        }
+        catch (RuntimeException e) {
+            LOG.error("Unexpected error applying states", e);
             response.status(HttpStatus.SC_INTERNAL_SERVER_ERROR);
             return "{}";
         }

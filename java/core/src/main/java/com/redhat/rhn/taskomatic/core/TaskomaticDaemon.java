@@ -14,16 +14,18 @@
  */
 package com.redhat.rhn.taskomatic.core;
 
+import com.redhat.rhn.common.conf.ConfigException;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -151,17 +153,40 @@ public class TaskomaticDaemon {
                 try {
                     kernel.startup();
                 }
-                catch (Throwable e) {
-                    LOG.fatal(e.getMessage());
-                    LOG.fatal(ExceptionUtils.getStackTrace(e));
+                catch (TaskomaticException e) {
+                    LOG.fatal("Taskomatic kernel startup failed", e);
+                    System.exit(-1);
+                }
+                catch (IllegalStateException e) {
+                    LOG.fatal("Taskomatic kernel startup failed due to invalid state/config", e);
+                    System.exit(-1);
+                }
+                catch (SecurityException e) {
+                    LOG.fatal("Taskomatic kernel startup denied by security manager", e);
+                    System.exit(-1);
+                }
+                catch (RuntimeException e) {
+                    LOG.fatal("Unexpected fatal error during Taskomatic kernel startup", e);
                     System.exit(-1);
                 }
             };
             Thread t = new Thread(r);
             t.start();
         }
-        catch (Throwable t) {
-            LOG.fatal("Fatal error starting Taskomatic", t);
+        catch (UnknownHostException e) {
+            LOG.fatal("Fatal: cannot resolve host for Taskomatic", e);
+            System.exit(-1);
+        }
+        catch (InstantiationException e) {
+            LOG.fatal("Fatal: failed to instantiate SchedulerKernel", e);
+            System.exit(-1);
+        }
+        catch (ConfigException e) {
+            LOG.fatal("Fatal: Invalid configuration detected", e);
+            System.exit(-1);
+        }
+        catch (RuntimeException e) {
+            LOG.fatal("Unexpected fatal error during Taskomatic kernel startup", e);
             System.exit(-1);
         }
         return retval;
