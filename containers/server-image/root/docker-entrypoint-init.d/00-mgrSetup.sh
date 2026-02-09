@@ -126,6 +126,9 @@ setup_spacewalk() {
     /usr/sbin/mgr-package-rpm-certificate-osimage
   fi
 
+  ln -sf /etc/pki/trust/anchors/ca.crt /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT
+  ln -sf /etc/pki/trust/anchors/ca.crt /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT
+
   echo "admin-email = ${MANAGER_ADMIN_EMAIL}
 ssl-config-sslvhost = Y
 db-backend=postgresql

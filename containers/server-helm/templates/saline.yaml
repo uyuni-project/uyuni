@@ -51,6 +51,9 @@ spec:
         image: {{ include "uyuni.image" (dict "name" "server-saline" "global" . "local" .Values.saline) }}
         imagePullPolicy: {{ .Values.pullPolicy }}
         name: server-waiter
+      securityContext:
+        seLinuxOptions:
+          level: "s0"
       volumes:
       - name: run-salt-master
         persistentVolumeClaim:

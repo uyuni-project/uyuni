@@ -96,7 +96,8 @@ RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf && \
 # The RemoveIPC was needed for postgresql, not sure if it is safe to remove now that it's in its own container
     mkdir -p /etc/systemd/logind.conf.d/ && \
     printf "[Login]\nRemoveIPC=no" >/etc/systemd/logind.conf.d/disable-removeipc.conf && \
-    rm -rf /var/log/{alternatives.log,lastlog,tallylog,suseconnect.log,zypper.log,zypp/history,YaST2}
+    rm -rf /var/log/{alternatives.log,lastlog,tallylog,suseconnect.log,zypper.log,zypp/history,YaST2} && \
+    ln -sf /etc/pki/trust/anchors/ca.crt /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
 
 ADD --chown=root:root root.tar.gz /
 

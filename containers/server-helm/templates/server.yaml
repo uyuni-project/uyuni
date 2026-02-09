@@ -235,6 +235,9 @@ spec:
         volumeMounts:
         - mountPath: /root
           name: root
+      securityContext:
+        seLinuxOptions:
+          level: "s0"
       volumes:
       - name: var-cobbler
         persistentVolumeClaim:

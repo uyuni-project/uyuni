@@ -163,22 +163,6 @@ spec:
               name: etc-sssd
             - mountPath: /etc/rhn
               name: etc-rhn
-            - mountPath: /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT
-              name: ca-cert
-              readOnly: true
-              subPath: ca.crt
-            - mountPath: /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
-              name: ca-cert
-              readOnly: true
-              subPath: ca.crt
-            - mountPath: /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT
-              name: ca-cert
-              readOnly: true
-              subPath: ca.crt
-            - mountPath: /etc/pki/trust/anchors/DB-RHN-ORG-TRUSTED-SSL-CERT
-              name: db-ca-cert
-              readOnly: true
-              subPath: ca.crt
             - mountPath: /etc/pki/
               name: tls
 {{- if .Values.registrySecret }}
@@ -342,6 +326,9 @@ spec:
           imagePullPolicy: {{ .Values.pullPolicy }}
           name: db-waiter
       restartPolicy: Never
+      securityContext:
+        seLinuxOptions:
+          level: "s0"
       volumes:
         - name: var-cobbler
           persistentVolumeClaim:
