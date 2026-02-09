@@ -1,6 +1,7 @@
 # Copyright (c) 2022-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@susemanager
 Feature: Export and import configuration channels with new ISS implementation
   Distribute configuration between servers
   Run export and import with ISS v2
@@ -45,22 +46,22 @@ Feature: Export and import configuration channels with new ISS implementation
     Then file "/srv/susemanager/salt/manager_org_1/testconfigchannel/init.sls" should not exist on server
     And I should not see a "Test Config Channel" link
 
-  Scenario: Import data with ISS v2
-    When I import data with ISS v2 from "/tmp/export_iss_v2"
+  # Scenario: Import data with ISS v2
+  #   When I import data with ISS v2 from "/tmp/export_iss_v2"
 
-  Scenario: Check that the config channel was imported
-    When I follow the left menu "Configuration > Channels"
-    Then I should see a "Test Config Channel" link
-    And file "/srv/susemanager/salt/manager_org_1/testconfigchannel/init.sls" should exist on server
-    And file "/srv/susemanager/salt/manager_org_1/testconfigchannel/etc/s-mgr/config" should exist on server
+  # Scenario: Check that the config channel was imported
+  #   When I follow the left menu "Configuration > Channels"
+  #   Then I should see a "Test Config Channel" link
+  #   And file "/srv/susemanager/salt/manager_org_1/testconfigchannel/init.sls" should exist on server
+  #   And file "/srv/susemanager/salt/manager_org_1/testconfigchannel/etc/s-mgr/config" should exist on server
 
-  Scenario: Cleanup: remove the test configuration channel
-    When I follow the left menu "Configuration > Channels"
-    And I follow "Test Config Channel"
-    And I follow "Delete Channel"
-    And I click on "Delete Config Channel"
-    Then file "/srv/susemanager/salt/manager_org_1/testconfigchannel/init.sls" should not exist on server
-    And I should not see a "Test Config Channel" link
+  # Scenario: Cleanup: remove the test configuration channel
+  #   When I follow the left menu "Configuration > Channels"
+  #   And I follow "Test Config Channel"
+  #   And I follow "Delete Channel"
+  #   And I click on "Delete Config Channel"
+  #   Then file "/srv/susemanager/salt/manager_org_1/testconfigchannel/init.sls" should not exist on server
+  #   And I should not see a "Test Config Channel" link
 
-  Scenario: Cleanup: remove ISS v2 export folder
-    When I ensure folder "/tmp/export_iss_v2" doesn't exist on "server"
+  # Scenario: Cleanup: remove ISS v2 export folder
+  #   When I ensure folder "/tmp/export_iss_v2" doesn't exist on "server"

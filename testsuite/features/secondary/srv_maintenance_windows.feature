@@ -9,6 +9,7 @@
 @scope_maintenance_windows
 @sle_minion
 @rhlike_minion
+@susemanager
 Feature: Maintenance windows
 
   Scenario: Log in as org admin user
