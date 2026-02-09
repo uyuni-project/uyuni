@@ -80,6 +80,7 @@ spec:
 {{- if eq .Values.services.type "NodePort" }}
       nodePort: {{ .Values.ssh.ports.ssh }}
 {{- end }}
+{{- if not .Values.tftp.hostNetwork }}
 ---
 apiVersion: v1
 kind: Service
@@ -97,11 +98,14 @@ spec:
   selector:
     app.kubernetes.io/component: proxy
     app.kubernetes.io/part-of: uyuni
-  type: {{ .Values.services.type }}
+  # ClusterIP or NodePort wouldn't work for TFTP if not using the host network
+  type: LoadBalancer
+  # Ensures all packets from a single client go to the same pod
+  sessionAffinity: ClientIP
+  # Preserves the client's source IP and avoids extra hops between nodes
+  externalTrafficPolicy: Local
   ports:
     - name: tftp
       port: 69
       protocol: UDP
-{{- if eq .Values.services.type "NodePort" }}
-      nodePort: {{ .Values.tftpd.ports.tftp }}
 {{- end }}

@@ -117,17 +117,18 @@ ssh:
   ports:
     ssh: 38022
 
-tftpd:
+tftp:
   ## image overrides the default image computed using the repository property
   ## Leave undefined to use the default
   image:
   ## tag overrides the default tag in the tag property
   ## Leave undefined to use the default
   tag:
-  
-  # Service ports to use if the type is NodePort
-  ports:
-    tftp: 30069
+
+  ## Use the host network to bypass the Kubernetes network layers.
+  ## This may be needed if not using a LoadBalancer for the TFTP server.
+  ## Note that this may be more complex to manage on multi-node clusters.
+  hostNetwork: false
 
 salt:
   ## image overrides the default image computed using the repository property

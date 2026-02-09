@@ -66,13 +66,6 @@ tests:
             name: ssh
             image: registry.opensuse.org/uyuni/proxy-ssh:latest
             imagePullPolicy: Always
-      - contains:
-          path: spec.template.spec.containers
-          any: true
-          content:
-            name: tftpd
-            image: registry.opensuse.org/uyuni/proxy-tftpd:latest
-            imagePullPolicy: Always
 
       # Verify registrySecret is not present by default
       - notExists:
@@ -134,13 +127,6 @@ tests:
             image: my.custom.registry/uyuni/proxy-ssh:5.2.3
             imagePullPolicy: IfNotPresent
           any: true
-      - contains:
-          path: spec.template.spec.containers
-          content:
-            name: tftpd
-            image: my.custom.registry/uyuni/proxy-tftpd:5.2.3
-            imagePullPolicy: IfNotPresent
-          any: true
 
   - it: should use component-specific overrides for all containers
     set:
@@ -156,7 +142,6 @@ tests:
       salt:  { image: "custom/salt", tag: "v2" }
       squid: { image: "custom/squid", tag: "v3" }
       ssh:   { image: "custom/ssh", tag: "v4" }
-      tftpd: { image: "custom/tftp", tag: "v5" }
     asserts:
       # Check that local image + local tag overrides work for all
       - contains:
@@ -182,10 +167,6 @@ tests:
       - contains:
           path: spec.template.spec.containers
           content: { name: ssh, image: "custom/ssh:v4" }
-          any: true
-      - contains:
-          path: spec.template.spec.containers
-          content: { name: tftpd, image: "custom/tftp:v5" }
           any: true
 
   - it: should include imagePullSecrets when registrySecret is provided

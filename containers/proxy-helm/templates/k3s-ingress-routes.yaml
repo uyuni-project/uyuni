@@ -55,23 +55,5 @@ spec:
       services:
       - name: salt
         port: 4506
----
-apiVersion: traefik.io/v1alpha1
-kind: IngressRouteUDP
-metadata:
-  name: tftp-router
-  namespace: "{{ .Release.Namespace }}"
-  labels:
-    app.kubernetes.io/component: proxy
-    app.kubernetes.io/part-of: uyuni
-  annotations:
-    kubernetes.io/ingress.class: traefik
-spec:
-  entryPoints:
-    - tftp
-  routes:
-    - services:
-      - name: tftp
-        port: 69
 {{- end }}
 

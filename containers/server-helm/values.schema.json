@@ -69,6 +69,25 @@
         }
       }
     },
+    "tftp": {
+      "type": ["object", "null"],
+      "description": "configuration of the tftp server component",
+      "allOf": [
+        { "$ref": "#/definitions/imageConfig" }
+      ],
+      "properties": {
+        "hostNetwork": {
+          "type": "boolean",
+          "description": "Use the host network instead of Kubernetes network infrastructure",
+          "default": false
+        },
+        "enable": {
+          "type": "boolean",
+          "description": "Deploy the TFTP server to PXE boot systems",
+          "default": true
+        }
+      }
+    },
     "volumes": {
       "type": "object",
       "description": "Defines the volume claims for the server components",

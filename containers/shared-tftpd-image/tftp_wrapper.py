@@ -340,7 +340,7 @@ class TFTPServer(BaseServer):
         replace_fqdns,
     ):
         self._root = root
-        if capath is None or http_host == "localhost":
+        if capath is None or http_host == "localhost" or http_host.endswith(".svc"):
             self._http_host = f"http://{http_host}"
             logging.info("SSL not used for inproxy communication")
         else:
@@ -434,6 +434,7 @@ def get_arguments():
         type=str,
         dest="replace_fqdns",
         help="Replace additional FQDNs with proxy hostname in cobbler menu files",
+        default=[],
     )
     return parser.parse_args()
 

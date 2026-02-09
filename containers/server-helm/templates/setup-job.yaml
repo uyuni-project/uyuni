@@ -4,6 +4,7 @@ metadata:
   annotations: {}
   creationTimestamp: null
   labels:
+    app.kubernetes.io/component: server-setup
     app.kubernetes.io/part-of: uyuni
   name: uyuni-setup-{{ now | date "20060102150405" }}
   namespace: "{{ .Release.Namespace }}"
@@ -68,8 +69,6 @@ spec:
             - name: EXTERNALDB_PROVIDER
             - name: ISS_PARENT
             - name: NO_SSL
-              value: "Y"
-            - name: MANAGER_ENABLE_TFTP
               value: "Y"
             - name: REPORT_DB_NAME
               value: reportdb

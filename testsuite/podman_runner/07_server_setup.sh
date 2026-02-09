@@ -156,7 +156,6 @@ $PODMAN_CMD run --cap-add AUDIT_CONTROL \
     -e UYUNI_FQDN="server"  \
     -e MANAGER_ADMIN_EMAIL="a@b.com"  \
     -e MANAGER_MAIL_FROM="a@b.com"  \
-    -e MANAGER_ENABLE_TFTP="n"  \
     -e MANAGER_DB_NAME="susemanager"  \
     -e MANAGER_DB_HOST="db"  \
     -e MANAGER_DB_PORT="5432"  \

@@ -106,17 +106,6 @@ spec:
             readOnly: true
           ports:
             - containerPort: 22
-
-        - name: tftpd
-          image: {{ include "uyuni.image" (dict "name" "proxy-tftpd" "global" . "local" .Values.tftpd) }}
-          imagePullPolicy: "{{ .Values.pullPolicy }}"
-          volumeMounts:
-          - name: tftpd-volume
-            mountPath: /etc/uyuni/
-            readOnly: true
-          ports:
-            - containerPort: 69
-              protocol: UDP
       volumes:
         - name: httpd-volume
           projected:

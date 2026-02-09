@@ -13,6 +13,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/component: db
+      app.kubernetes.io/part-of: uyuni
   strategy:
     type: Recreate
   template:

@@ -13,4 +13,3 @@ db-password=bar
 db-name=service_name.world
 db-host=hostname.of.your.db
 db-port=5432
-enable-tftp=N

@@ -90,12 +90,33 @@
     "httpd": { "$ref": "#/definitions/componentConfig" },
     "squid": { "$ref": "#/definitions/componentConfig" },
     "ssh": { "$ref": "#/definitions/componentConfig" },
-    "tftpd": { "$ref": "#/definitions/componentConfig" },
+    "tftp": {
+      "type": ["object", "null"],
+      "description": "configuration of the tftp server component",
+      "allOf": [
+        { "$ref": "#/definitions/imageConfig" }
+      ],
+      "properties": {
+        "hostNetwork": {
+          "type": "boolean",
+          "description": "Use the host network instead of Kubernetes network infrastructure",
+          "default": false
+        }
+      }
+    },
     "salt": { "$ref": "#/definitions/componentConfig" }
   },
   "definitions": {
+    "imageConfig": {
+      "type": ["object", "null"],
+      "properties": {
+        "image": { "type": ["string", "null"], "description": "Override default image name" },
+        "tag": { "type": ["string", "null"], "description": "Override default tag" }
+      }
+    },
     "componentConfig": {
       "type": ["object", "null"],
+      "allOf": [ { "$ref": "#/definitions/imageConfig"} ],
       "properties": {
         "image": { "type": ["string", "null"], "description": "Override default image name" },
         "tag": { "type": ["string", "null"], "description": "Override default tag" },

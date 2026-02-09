@@ -28,7 +28,7 @@ See the [requirements documentation](https://www.uyuni-project.org/uyuni-docs/en
 
 ### Exposing ports
 
-Uyuni proxy requires some TCP and UDP ports to be routed to its services.
+Uyuni proxy requires some TCP ports to be routed to its services.
 Here is a list of the ports to map:
 
 
@@ -37,8 +37,11 @@ Here is a list of the ports to map:
 | TCP      | 8022  | ssh          | 8022         |
 | TCP      | 4505  | salt         | 4505         |
 | TCP      | 4506  | salt         | 4506         |
-| UDP      | 69    | tftp         | 69           |
 
+
+Exposing the `tftp` service has to be done differently due to the way TFTP protocol is working.
+Either use the host network using the `tftp.hostnetwork` value or configure a load balancer for the `tftp` service.
+Note that not all load balancers will work: `serviceLB` implementation is not compatible with TFTP protocol, while MetalLB works.
 
 ## Usage
 

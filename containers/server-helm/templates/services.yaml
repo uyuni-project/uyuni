@@ -18,6 +18,7 @@ spec:
       targetPort: 25151
   selector:
     app.kubernetes.io/component: server
+    app.kubernetes.io/part-of: uyuni
   type: ClusterIP
 {{- if .Values.db.enable }}
 ---
@@ -47,6 +48,7 @@ spec:
       targetPort: 5432
   selector:
     app.kubernetes.io/component: db
+    app.kubernetes.io/part-of: uyuni
   type: ClusterIP
 ---
 apiVersion: v1
@@ -69,6 +71,7 @@ spec:
       targetPort: 5432
   selector:
     app.kubernetes.io/component: db
+    app.kubernetes.io/part-of: uyuni
   type: ClusterIP
 {{- end }}
 ---
@@ -96,6 +99,7 @@ spec:
       targetPort: 4506
   selector:
     app.kubernetes.io/component: server
+    app.kubernetes.io/part-of: uyuni
   type: ClusterIP
 ---
 {{- if .Values.exposeJavaDebug | default false }}
@@ -119,6 +123,7 @@ spec:
       targetPort: 8002
   selector:
     app.kubernetes.io/component: server
+    app.kubernetes.io/part-of: uyuni
   type: ClusterIP
 ---
 {{- end }}
@@ -155,14 +160,16 @@ spec:
 {{- end }}
   selector:
     app.kubernetes.io/component: server
+    app.kubernetes.io/part-of: uyuni
   type: ClusterIP
 ---
 {{- end }}
+{{- if and .Values.tftp.enable (not .Values.tftp.hostNetwork) }}
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app.kubernetes.io/component: server
+    app.kubernetes.io/component: tftp
     app.kubernetes.io/part-of: uyuni
   name: tftp
   namespace: "{{ .Release.Namespace }}"
@@ -177,9 +184,16 @@ spec:
       protocol: UDP
       targetPort: 69
   selector:
-    app.kubernetes.io/component: server
-  type: ClusterIP
+    app.kubernetes.io/component: tftp
+    app.kubernetes.io/part-of: uyuni
+  # ClusterIP or NodePort wouldn't work for TFTP if not using the host network
+  type: LoadBalancer
+  # Ensures all packets from a single client go to the same pod
+  sessionAffinity: ClientIP
+  # Preserves the client's source IP and avoids extra hops between nodes
+  externalTrafficPolicy: Local
 ---
+{{- end }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -212,6 +226,7 @@ spec:
 {{- end }}
   selector:
     app.kubernetes.io/component: server
+    app.kubernetes.io/part-of: uyuni
   type: ClusterIP
 ---
 apiVersion: v1
@@ -234,6 +249,7 @@ spec:
       targetPort: 80
   selector:
     app.kubernetes.io/component: server
+    app.kubernetes.io/part-of: uyuni
   type: ClusterIP
 {{- if default .Values.hubAPI.enable false }}
 ---
@@ -257,6 +273,7 @@ spec:
       targetPort: 2830
   selector:
     app.kubernetes.io/component: hub-xmlrpc
+    app.kubernetes.io/part-of: uyuni
   type: ClusterIP
 {{- end }}
 {{- if default .Values.saline.enable false }}
@@ -281,5 +298,6 @@ spec:
       targetPort: 8216
   selector:
     app.kubernetes.io/component: saline
+    app.kubernetes.io/part-of: uyuni
   type: ClusterIP
 {{- end }}

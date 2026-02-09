@@ -45,7 +45,7 @@ tests:
           value: uyuni-proxy-ssl
 
       - hasDocuments:
-          count: 4
+          count: 3
         template: k3s-ingress-routes.yaml
 
       # SSH router checks
@@ -112,25 +112,3 @@ tests:
         documentSelector:
           path: metadata.name
           value: salt-request-router
-
-      # TFTP router checks
-      - contains:
-          path: spec.routes[0].services
-          content:
-            name: tftp
-            port: 69
-          any: true
-        template: k3s-ingress-routes.yaml
-        documentSelector:
-          path: metadata.name
-          value: tftp-router
-
-      - containsDocument:
-          kind: IngressRouteUDP
-          apiVersion: traefik.io/v1alpha1
-          namespace: proxy1
-          name: tftp-router
-        template: k3s-ingress-routes.yaml
-        documentSelector:
-          path: metadata.name
-          value: tftp-router

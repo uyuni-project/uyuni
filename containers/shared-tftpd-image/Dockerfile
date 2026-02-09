@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: MIT
-#!BuildTag: uyuni/proxy-tftpd:latest
+#!BuildTag: uyuni/shared-tftpd:latest
 
 ARG BASE=registry.suse.com/bci/bci-base:15.7
 FROM $BASE AS base
@@ -24,16 +24,16 @@ ARG URL="https://www.uyuni-project.org/"
 ARG REFERENCE_PREFIX="registry.opensuse.org/uyuni"
 
 # Build Service required labels
-# labelprefix=org.opensuse.uyuni.proxy-tftpd
+# labelprefix=org.opensuse.uyuni.shared-tftpd
 LABEL org.opencontainers.image.title="${PRODUCT} proxy tftpd container"
-LABEL org.opencontainers.image.description="Image contains a ${PRODUCT} proxy component to serve tftp requests"
+LABEL org.opencontainers.image.description="Image contains a ${PRODUCT} component to serve tftp requests"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opencontainers.image.name=proxy-tftpd-image
+LABEL org.opencontainers.image.name=shared-tftpd-image
 LABEL org.opencontainers.image.version=5.2.4
 LABEL org.openbuildservice.disturl="%DISTURL%"
-LABEL org.opensuse.reference="${REFERENCE_PREFIX}/proxy-tftpd:${PRODUCT_VERSION}.%RELEASE%"
+LABEL org.opensuse.reference="${REFERENCE_PREFIX}/shared-tftpd:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix
 LABEL org.uyuni.version="${PRODUCT_VERSION}"
 

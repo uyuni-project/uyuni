@@ -2,7 +2,7 @@ suite: test global values parsing
 templates:
   - templates/services.yaml
 tests:
-  - it: should create services with ClusterIP by default
+  - it: should create services with ClusterIP by default except for tftp
     set:
       global.config: |
         max_cache_size_mb: 2048
@@ -155,7 +155,7 @@ tests:
 
       - equal:
           path: spec.type
-          value: ClusterIP
+          value: LoadBalancer
         documentSelector:
           path: metadata.name
           value: tftp
@@ -275,19 +275,7 @@ tests:
       # tftp service checks
       - equal:
           path: spec.type
-          value: NodePort
-        documentSelector:
-          path: metadata.name
-          value: tftp
-
-      - contains:
-          path: spec.ports
-          content:
-            name: tftp
-            port: 69
-            nodePort: 30069
-            protocol: UDP
-          any: true
+          value: LoadBalancer
         documentSelector:
           path: metadata.name
           value: tftp
@@ -398,26 +386,6 @@ tests:
           path: metadata.name
           value: ssh
 
-      # tftp service checks
-      - equal:
-          path: spec.type
-          value: NodePort
-        documentSelector:
-          path: metadata.name
-          value: tftp
-
-      - contains:
-          path: spec.ports
-          content:
-            name: tftp
-            port: 69
-            nodePort: 10069
-            protocol: UDP
-          any: true
-        documentSelector:
-          path: metadata.name
-          value: tftp
-
   - it: should create services with custom annotations
     set:
       global.config: |
@@ -472,3 +440,24 @@ tests:
         documentSelector:
           path: metadata.name
           value: tftp
+
+  - it: should not create TFTP service with hostNetwork
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+        log_level: 2
+      global.httpd: "httpd_content: test httpd"
+      global.ssh: "ssh_content: test ssh"
+      tftp:
+        hostNetwork: true
+    asserts:
+      # tftp service checks
+      - hasDocuments:
+          count: 0
+        documentSelector:
+          path: metadata.name
+          value: tftp
+          skipEmptyTemplates: true
