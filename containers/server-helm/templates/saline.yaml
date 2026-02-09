@@ -51,6 +51,9 @@ spec:
         image: {{- include "deployment.container.image" (dict "name" "server-saline" "global" .) | indent 1}}
         imagePullPolicy: {{ .Values.pullPolicy }}
         name: server-waiter
+      securityContext:
+        seLinuxOptions:
+          level: "s0"
       volumes:
       - name: run-salt-master
         persistentVolumeClaim:
