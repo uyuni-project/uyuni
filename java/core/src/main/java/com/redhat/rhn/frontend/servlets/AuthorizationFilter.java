@@ -91,9 +91,9 @@ public class AuthorizationFilter implements Filter {
             // TODO: Handle PermissionExceptions properly depending on the "Content-Type" and "Accept" headers
             // TODO: possibly pass it down another filter
             // TODO: Review PageFilter
-            LOG.debug("Access restricted for user '{}' to URI '{}' [{}]",
-                    new RequestContext(hreq).getCurrentUser(), hreq.getRequestURI(), hreq.getMethod());
-            hres.sendError(HttpServletResponse.SC_FORBIDDEN, e.getMessage());
+            LOG.debug("Access restricted for user '{}' to URI '{}' [{}]. Error:'{}'",
+                    new RequestContext(hreq).getCurrentUser(), hreq.getRequestURI(), hreq.getMethod(), e.getMessage());
+            hres.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
