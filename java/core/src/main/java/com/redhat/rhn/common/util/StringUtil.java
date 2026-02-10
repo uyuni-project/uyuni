@@ -22,7 +22,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.xml.utils.XMLChar;
 
 import java.io.File;
 import java.net.URLEncoder;
@@ -771,15 +770,29 @@ public class StringUtil {
     /**
      * Checks, whether string contains invalid xml chars
      * @param string to check
-     * @return true if there're xml invalid chars
+     * @return {@code true} if there are xml invalid chars
      */
-    public static Boolean containsInvalidXmlChars2(String string) {
-        for (int i = 0; i < string.length(); i++) {
-            if (!XMLChar.isValid(string.charAt(i))) {
-                return Boolean.TRUE;
+    public static boolean containsInvalidXmlChars(String string) {
+        for (int i = 0; i < string.length();) {
+            int codePoint = string.codePointAt(i);
+            if (!isValidXmlChar(codePoint)) {
+                return true;
             }
+
+            i += Character.charCount(codePoint);
         }
-        return Boolean.FALSE;
+        return false;
+    }
+
+    /**
+     * Checks if a character is a valid XML 1.0 character.
+     * Replaces org.apache.xml.utils.XMLChar.isValid().
+     */
+    private static boolean isValidXmlChar(int c) {
+        // https://www.w3.org/TR/REC-xml/#charsets
+        // [2] Char ::= #x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] | [#x10000-#x10FFFF]
+        return c == 0x9 || c == 0xA || c == 0xD ||
+               (c >= 0x20 && c <= 0xD7FF) || (c >= 0xE000 && c <= 0xFFFD) || (c >= 0x10000 && c <= 0x10FFFF);
     }
 
     /**
