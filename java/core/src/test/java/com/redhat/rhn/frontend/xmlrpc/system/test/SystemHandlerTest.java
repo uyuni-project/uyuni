@@ -53,7 +53,9 @@ import com.redhat.rhn.domain.action.supportdata.SupportDataActionDetails;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFamily;
+import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.channel.ChannelTestUtility;
+import com.redhat.rhn.domain.channel.PublicChannelFamily;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.errata.Errata;
@@ -65,7 +67,10 @@ import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.test.CustomDataKeyTest;
+import com.redhat.rhn.domain.product.ChannelTemplate;
 import com.redhat.rhn.domain.product.SUSEProduct;
+import com.redhat.rhn.domain.product.SUSEProductChannel;
+import com.redhat.rhn.domain.product.SUSEProductExtension;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
 import com.redhat.rhn.domain.rhnpackage.Package;
@@ -75,6 +80,9 @@ import com.redhat.rhn.domain.rhnpackage.profile.Profile;
 import com.redhat.rhn.domain.rhnpackage.profile.ProfileFactory;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.scc.SCCCachingFactory;
+import com.redhat.rhn.domain.scc.SCCRepository;
+import com.redhat.rhn.domain.scc.SCCRepositoryNoAuth;
 import com.redhat.rhn.domain.server.CPU;
 import com.redhat.rhn.domain.server.CustomDataValue;
 import com.redhat.rhn.domain.server.Device;
@@ -3770,5 +3778,130 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         }});
 
         return systemHandler;
+    }
+
+    @Test
+    public void testListMigrationTargetsWithChannels() throws Exception {
+        SUSEProductTestUtils.createSCCCredentials("dummy", admin);
+        // Setup source products
+        ChannelFamily family = createTestChannelFamily();
+        SUSEProduct sourceBaseProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
+        Channel sourceBaseChannel = SUSEProductTestUtils.createBaseChannelForBaseProduct(sourceBaseProduct, admin);
+        sourceBaseChannel.setChannelArch(ChannelFactory.findArchByLabel("channel-x86_64"));
+
+        SUSEProduct sourceAddonProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
+        sourceAddonProduct.setBase(false);
+        Channel sourceChildChannel = SUSEProductTestUtils.createChildChannelsForProduct(
+                sourceAddonProduct, sourceBaseChannel, admin);
+
+        SUSEProductTestUtils.populateRepository(sourceBaseProduct, sourceBaseChannel, sourceBaseProduct,
+                sourceBaseChannel, admin);
+
+        sourceBaseChannel = ChannelFactory.lookupById(sourceBaseChannel.getId());
+        sourceChildChannel = ChannelFactory.lookupById(sourceChildChannel.getId());
+
+        Set<Channel> channels = new HashSet<>();
+        channels.add(sourceBaseChannel);
+        channels.add(sourceChildChannel);
+        Server server = ServerFactoryTest.createTestServer(admin);
+        server.setChannels(channels);
+
+        Set<InstalledProduct> installedProductSet = new java.util.HashSet<>();
+        installedProductSet.add(SUSEProductTestUtils.getInstalledProduct(sourceBaseProduct));
+        installedProductSet.add(SUSEProductTestUtils.getInstalledProduct(sourceAddonProduct));
+        server.setInstalledProducts(installedProductSet);
+
+        TestUtils.saveAndFlush(server);
+
+        // Setup migration target product + upgrade path
+        SUSEProduct targetBaseProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
+        Channel targetBaseChannel = SUSEProductTestUtils.createBaseChannelForBaseProduct(targetBaseProduct, admin);
+        targetBaseChannel.setChannelArch(ChannelFactory.findArchByLabel("channel-x86_64"));
+        TestUtils.saveAndReload(targetBaseChannel);
+        sourceBaseProduct.setUpgrades(Collections.singleton(targetBaseProduct));
+
+        // Setup target addon product + upgrade path
+        SUSEProduct targetAddonProduct = SUSEProductTestUtils.createTestSUSEProduct(family);
+        targetAddonProduct.setBase(false);
+        TestUtils.saveAndFlush(targetAddonProduct);
+        sourceAddonProduct.setUpgrades(Collections.singleton(targetAddonProduct));
+        TestUtils.saveAndFlush(sourceAddonProduct);
+
+        Channel targetAddonChannel =
+                SUSEProductTestUtils.createChildChannelsForProduct(targetAddonProduct, targetBaseChannel, admin);
+        // 1. Update SUSEProductChannel to be mandatory (for SystemHandler)
+        targetAddonProduct = SUSEProductFactory.getProductById(targetAddonProduct.getId());
+        for (SUSEProductChannel spc : targetAddonProduct.getSuseProductChannels()) {
+            if (spc.getChannel().getId().equals(targetAddonChannel.getId())) {
+                spc.setMandatory(true);
+                SUSEProductFactory.save(spc);
+            }
+        }
+        TestUtils.saveAndFlush(targetAddonProduct);
+        // 2. Setup ChannelTemplate and SCCRepository (for DistUpgradeManager availability check)
+        ChannelFamily cf = targetAddonProduct.getChannelFamily();
+        if (cf.getPublicChannelFamily() == null) {
+             PublicChannelFamily pcf = new PublicChannelFamily();
+             pcf.setChannelFamily(cf);
+             ChannelFamilyFactory.save(pcf);
+             cf.setPublicChannelFamily(pcf);
+             ChannelFamilyFactory.save(cf);
+        }
+
+        SCCRepository repo = new SCCRepository();
+        repo.setUrl("http://example.com/repo");
+        repo.setName("test-repo");
+        repo.setSccId(12345L);
+        repo.setDescription("Test Repository");
+        repo.setDistroTarget("x86_64");
+        HibernateFactory.getSession().save(repo);
+
+        SCCRepositoryNoAuth auth = new SCCRepositoryNoAuth();
+        auth.setRepo(repo);
+        SCCCachingFactory.saveRepositoryAuth(auth);
+
+        repo.getRepositoryAuth().add(auth);
+
+        ChannelTemplate ct = new ChannelTemplate();
+        ct.setProduct(targetAddonProduct);
+        ct.setChannelLabel(targetAddonChannel.getLabel());
+        ct.setMandatory(true);
+        ct.setRootProduct(targetBaseProduct);
+        ct.setChannelName(targetAddonChannel.getName());
+        ct.setRepository(repo);
+        SUSEProductFactory.save(ct);
+
+        targetAddonProduct.getChannelTemplates().add(ct);
+        TestUtils.saveAndFlush(targetAddonProduct);
+
+        sourceAddonProduct.setUpgrades(Collections.singleton(targetAddonProduct));
+        SUSEProductExtension e2 = new SUSEProductExtension(
+                sourceBaseProduct, targetAddonProduct, sourceBaseProduct, false);
+        SUSEProductExtension e3 = new SUSEProductExtension(
+                targetBaseProduct, targetAddonProduct, targetBaseProduct, false);
+        TestUtils.saveAndReload(e2);
+        TestUtils.saveAndReload(e3);
+
+        SUSEProductTestUtils.populateRepository(targetBaseProduct, targetBaseChannel, targetBaseProduct,
+                targetBaseChannel, admin);
+
+        List<Map<String, Object>> result = handler.listMigrationTargetsWithChannels(admin, server.getId().intValue());
+        assertNotNull(result);
+        assertFalse(result.isEmpty());
+        boolean found = false;
+        for (Map<String, Object> target : result) {
+            List<Map<String, Object>> channelOptions = (List<Map<String, Object>>) target.get("channel_options");
+            for (Map<String, Object> option : channelOptions) {
+                List<Map<String, Object>> children = (List<Map<String, Object>>) option.get("child_channels");
+                for (Map<String, Object> child : children) {
+                    if (child.get("name").equals(targetAddonChannel.getName())) {
+                         if (Boolean.TRUE.equals(child.get("mandatory"))) {
+                             found = true;
+                         }
+                    }
+                }
+            }
+        }
+        assertTrue(found, "Expected mandatory channel not found in results");
     }
 }
