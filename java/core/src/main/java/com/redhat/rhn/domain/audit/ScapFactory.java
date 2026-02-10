@@ -336,6 +336,15 @@ public class ScapFactory extends HibernateFactory {
     }
 
     /**
+     * Deletes the SCAP content object from the database and flushes to enforce constraints immediately.
+     * @param scapContent ScapContent object
+     */
+    public static void deleteScapContentAndFlush(ScapContent scapContent) {
+        singleton.removeObject(scapContent);
+        getSession().flush();
+    }
+
+    /**
      * Save the SCAP content object to the database
      * @param scapContent object
      */

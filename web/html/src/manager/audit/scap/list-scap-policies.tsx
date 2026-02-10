@@ -58,10 +58,9 @@ const ScapPolicy = (): JSX.Element => {
         setSelectedItems((prev) => prev.filter((id) => !idList.includes(id)));
         setSelected(null);
       } else {
-        const errorMsgs = response.messages.map((m: string) => MessageUtils.error(msgMap[m] || m));
-        setMessages(errorMsgs);
+        setMessages(MessageUtils.error(response.messages || [t("Failed to delete SCAP policy")]));
       }
-    } catch (error: unknown) {
+    } catch (error: any) {
       const errorMessage = `${t("An unexpected error occurred while deleting")}: ${idList.join(", ")}`;
       setMessages(MessageUtils.error(errorMessage));
     }

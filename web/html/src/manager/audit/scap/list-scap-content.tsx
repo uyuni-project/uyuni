@@ -56,10 +56,10 @@ const ScapContent = (): JSX.Element => {
         setSelectedItems((prev) => prev.filter((id) => !idList.includes(id)));
         setSelected(null);
       } else {
-        const errorMsgs = response.messages.map((m: string) => MessageUtils.error(msgMap[m] || m));
-        setMessages(errorMsgs);
+        // Handle server-returned error messages
+        setMessages(MessageUtils.error(response.messages || [t("Failed to delete SCAP content")]));
       }
-    } catch (error: unknown) {
+    } catch (error: any) {
       const errorMessage = `${t("An unexpected error occurred while deleting")}: ${idList.join(", ")}`;
       setMessages(MessageUtils.error(errorMessage));
     }

@@ -85,6 +85,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -1026,22 +1027,33 @@ public class ScapAuditController {
                         ResultJson.error("One or more SCAP content items not found"), new TypeToken<>() { });
             }
 
-            scapContentList.forEach(content -> {
+            List<ScapContent> successfullyDeleted = new ArrayList<>();
+
+            for (ScapContent content : scapContentList) {
                 try {
-                    // Delete DataStream file
+                    // 1. Attempt Database Deletion First
+                    ScapFactory.deleteScapContentAndFlush(content);
+                    successfullyDeleted.add(content);
+
+                    // 2. Delete physical files
                     Path dsFilePath = Paths.get(scapContentDir, content.getDataStreamFileName());
                     Files.deleteIfExists(dsFilePath);
-                    // Delete XCCDF file
                     Path xccdfFilePath = Paths.get(scapContentDir, content.getXccdfFileName());
                     Files.deleteIfExists(xccdfFilePath);
                 }
-                catch (IOException e) {
-                    LOG.error("Error deleting SCAP content files for: {}", content.getName(), e);
+                catch (Exception e) {
+                    LOG.error("Failed to delete SCAP content: {}", content.getName(), e);
                 }
-                ScapFactory.deleteScapContent(content);
-            });
+            }
 
-            return result(res, ResultJson.success(scapContentList.size()));
+            if (successfullyDeleted.isEmpty() && !scapContentList.isEmpty()) {
+                return result(res,
+                        ResultJson.error("Could not delete content. Items might be in use by a policy."));
+            }
+
+            return result(res, ResultJson.success());
+
+
         }
         catch (JsonParseException e) {
             LOG.error("Invalid JSON in delete SCAP content request", e);
