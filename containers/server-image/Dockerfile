@@ -27,8 +27,7 @@ RUN useradd -r -s /usr/sbin/nologin -G susemanager,www -g tomcat -d /usr/share/t
   useradd -r -s /usr/sbin/nologin -g tftp -d /srv/tftpboot --uid 10555 tftp
 
 # Main packages
-RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf && \
-    zypper ref && zypper --non-interactive up && \
+RUN zypper ref && zypper --non-interactive up && \
     zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses --force-resolution \
         ${EXTRAPACKAGES} \
         ${PRODUCT_PATTERN_PREFIX}_server \
