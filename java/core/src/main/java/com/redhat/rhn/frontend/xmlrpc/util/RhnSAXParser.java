@@ -14,9 +14,12 @@
  */
 package com.redhat.rhn.frontend.xmlrpc.util;
 
-import org.apache.xerces.parsers.SAXParser;
-import org.xml.sax.SAXNotRecognizedException;
-import org.xml.sax.SAXNotSupportedException;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.XMLFilterImpl;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParserFactory;
 
 /**
  * Class to be used as XML parser.
@@ -29,19 +32,34 @@ import org.xml.sax.SAXNotSupportedException;
  *
  * It is used by Redstone XMLRPC library.
  */
-public class RhnSAXParser extends SAXParser {
-    // This is unnecessary functionality for XMLRPC XML parser.
-    private static final String DISALLOW_DOCTYPE_DECL
-        = "http://apache.org/xml/features/disallow-doctype-decl";
+public class RhnSAXParser extends XMLFilterImpl {
 
     /**
      * Constructor. In addition sets parameters default parameters.
      *
-     * @throws SAXNotRecognizedException as SAXParser does.
-     * @throws SAXNotSupportedException as SAXParser does.
+     * @throws SAXException when an error occurs creating a secure {@link XMLReader}.
      */
-    public RhnSAXParser() throws SAXNotRecognizedException, SAXNotSupportedException {
-        super();
-        this.setFeature(DISALLOW_DOCTYPE_DECL, true);
+    public RhnSAXParser() throws SAXException {
+        super(createSecureReader());
+    }
+
+    private static XMLReader createSecureReader() throws SAXException {
+        try {
+            SAXParserFactory factory = SAXParserFactory.newInstance();
+
+            factory.setNamespaceAware(false);
+            factory.setValidating(false);
+
+            factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+            factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+            factory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+            factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+
+            return factory.newSAXParser().getXMLReader();
+
+        }
+        catch (ParserConfigurationException e) {
+            throw new SAXException("Failed to create secure XMLReader", e);
+        }
     }
 }
