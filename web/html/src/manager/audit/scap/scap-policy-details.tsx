@@ -87,11 +87,13 @@ const ScapPolicyDetails = ({ policyId, policyData }: { policyId: number; policyD
 
   useEffect(() => {
     Network.get(`${ENDPOINTS.SCAN_HISTORY}/${policyId}/scan-history`)
-      .then((data) => {
-        setScanHistory(data);
-        setLoading(false);
+      .then((response) => {
+        setScanHistory(Array.isArray(response.data) ? response.data : []);
       })
       .catch(() => {
+        setScanHistory([]);
+      })
+      .finally(() => {
         setLoading(false);
       });
   }, [policyId]);
