@@ -22,7 +22,6 @@ import com.suse.manager.api.SerializationBuilder;
 import com.suse.manager.api.SerializedApiResponse;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang3.BooleanUtils;
 
 import java.nio.charset.StandardCharsets;
 
@@ -58,7 +57,7 @@ public class ScriptResultSerializer extends ApiResponseSerializer<ScriptResult> 
                 .add("returnCode", src.getReturnCode());
 
         String outputContents = src.getOutputContents();
-        if (BooleanUtils.isTrue(StringUtil.containsInvalidXmlChars2(outputContents))) {
+        if (StringUtil.containsInvalidXmlChars(outputContents)) {
             builder.add("output_enc64", Boolean.TRUE);
             builder.add("output", new String(Base64.encodeBase64(outputContents
                     .getBytes(StandardCharsets.UTF_8)), StandardCharsets.UTF_8));
