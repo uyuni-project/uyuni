@@ -63,7 +63,23 @@ When(/^I click the "([^"]*)" item (.*?) button$/) do |name, action|
   raise ScriptError, "xpath: #{name} item not found" unless td_element
 
   button_element = td_element.find(:xpath, "./ancestor::tr/td/button/#{button} | ./ancestor::tr/td/div/button/#{button}")
-  raise ScriptError, "xpath: #{action} button not found" unless button_element.click
+  raise ScriptError, "xpath: #{action} button not found" unless button_element
+
+  # Wait for tooltips to disappear before clicking, with retry on interception
+  max_retries = 3
+  retries = 0
+  begin
+    has_no_css?('.tooltip-inner', wait: 2) if has_css?('.tooltip-inner', wait: 0)
+    button_element.click
+  rescue Selenium::WebDriver::Error::ElementClickInterceptedError => e
+    retries += 1
+    if retries < max_retries
+      has_no_css?('.tooltip-inner', wait: 2)
+      retry
+    else
+      raise ScriptError, "Click on #{action} button failed after #{max_retries} retries: #{e.message}"
+    end
+  end
 end
 
 When(/^I click the "([^"]*)" item (.*?) button if exists$/) do |name, action|
@@ -80,7 +96,23 @@ When(/^I click the "([^"]*)" item (.*?) button if exists$/) do |name, action|
     raise ScriptError, "xpath: #{name} item not found" unless td_element
 
     button_element = td_element.find(:xpath, "./ancestor::tr/td/button/#{button} | ./ancestor::tr/td/div/button/#{button}")
-    raise ScriptError, "xpath: #{action} button not found" unless button_element.click
+    raise ScriptError, "xpath: #{action} button not found" unless button_element
+
+    # Wait for tooltips to disappear before clicking, with retry on interception
+    max_retries = 3
+    retries = 0
+    begin
+      has_no_css?('.tooltip-inner', wait: 2) if has_css?('.tooltip-inner', wait: 0)
+      button_element.click
+    rescue Selenium::WebDriver::Error::ElementClickInterceptedError => e
+      retries += 1
+      if retries < max_retries
+        has_no_css?('.tooltip-inner', wait: 2)
+        retry
+      else
+        raise ScriptError, "Click on #{action} button failed after #{max_retries} retries: #{e.message}"
+      end
+    end
   rescue Capybara::ElementNotFound
     # ignored - pending actions cannot be found
   end
