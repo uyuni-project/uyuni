@@ -14,12 +14,13 @@
  */
 package com.redhat.rhn.taskomatic.task.repomd;
 
-import org.apache.xml.serialize.OutputFormat;
-import org.apache.xml.serialize.XMLSerializer;
 import org.xml.sax.SAXException;
 
-import java.io.IOException;
 import java.io.Writer;
+
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.sax.TransformerHandler;
+import javax.xml.transform.stream.StreamResult;
 
 /**
  *
@@ -65,22 +66,16 @@ public class RepomdIndexWriter {
         this.products = productsIn;
         this.susedata = susedataDataIn;
 
-        OutputFormat of = new OutputFormat();
+         try {
+             TransformerHandler transformerHandler = SaxSerializerFactory.newTransformerHandler(false);
+             transformerHandler.setResult(new StreamResult(writerIn));
 
-        XMLSerializer serializer = new XMLSerializer(writerIn, of);
-
-        try {
-            handler = new SimpleContentHandler(serializer.asContentHandler());
-        }
-        catch (IOException e) {
-            // XXX fatal error
-        }
-        try {
-            handler.startDocument();
-        }
-        catch (SAXException e) {
-            // XXX fatal error
-        }
+             handler = new SimpleContentHandler(transformerHandler);
+             handler.startDocument();
+         }
+         catch (TransformerException | SAXException e) {
+             throw new RuntimeException("Failed to initialize XML serializer", e);
+         }
     }
 
     /**

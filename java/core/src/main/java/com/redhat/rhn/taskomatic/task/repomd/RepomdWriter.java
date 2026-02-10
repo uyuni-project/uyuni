@@ -21,13 +21,19 @@ import com.redhat.rhn.frontend.dto.PackageDto;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.xml.serialize.OutputFormat;
-import org.apache.xml.serialize.XMLSerializer;
 import org.xml.sax.SAXException;
 
-import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
+
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.sax.SAXTransformerFactory;
+import javax.xml.transform.sax.TransformerHandler;
+import javax.xml.transform.stream.StreamResult;
 
 /**
  *
@@ -55,42 +61,38 @@ public abstract class RepomdWriter {
      * @param shouldEscape says whether write output shall be escaped
      */
     protected RepomdWriter(Writer writer, boolean shouldEscape) {
-
-        OutputFormat of = new OutputFormat();
-        of.setPreserveSpace(true);
-        XMLSerializer serializer = null;
-
-        if (shouldEscape) {
-            // XMLSerializer used to escape chars like < >
-            serializer = new XMLSerializer(writer, of);
-        }
-        else {
-            // UnescapingXmlSerializer doesn't escape anything,
-            // input shall already be escaped
-            serializer = new UnescapingXmlSerializer(writer, of);
-        }
-
         try {
-            handler = new SimpleContentHandler(serializer.asContentHandler());
-        }
-        catch (IOException e) {
-            // XXX fatal error
-        }
-        try {
+            TransformerHandler ch = SaxSerializerFactory.newTransformerHandler(false);
+            ch.setResult(new StreamResult(writer));
+
+            if (shouldEscape) {
+                // XMLSerializer used to escape chars like < >
+                handler = new SimpleContentHandler(ch);
+            }
+            else {
+                // UnescapingContentHandler doesn't escape anything, input shall already be escaped
+                handler = new SimpleContentHandler(new UnescapingContentHandler(ch));
+            }
+
             handler.startDocument();
+
         }
-        catch (SAXException e) {
-            // XXX fatal error
+        catch (SAXException | TransformerException ex) {
+            throw new IllegalStateException("Unable to initialize RepomdWriter", ex);
         }
     }
 
 
     protected SimpleContentHandler getTemporaryHandler(OutputStream st) {
-        OutputFormat of = new OutputFormat();
-        of.setPreserveSpace(true);
-        of.setOmitXMLDeclaration(true);
-        XMLSerializer tmpSerial = new XMLSerializer(st, of);
-        return new SimpleContentHandler(tmpSerial);
+        try {
+            TransformerHandler transformerHandler = SaxSerializerFactory.newTransformerHandler(true);
+            transformerHandler.setResult(new StreamResult(st));
+            return new SimpleContentHandler(transformerHandler);
+        }
+        catch (TransformerException ex) {
+            throw new IllegalStateException("Unable to create temporary handler", ex);
+        }
+
     }
 
 
@@ -166,5 +168,4 @@ public abstract class RepomdWriter {
      * writer end call
      */
     public abstract void end();
-
 }
