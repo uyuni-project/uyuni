@@ -860,6 +860,83 @@ Scheduling reposync for following channels:
 
             stubbed_xmlrpm_call.assert_has_calls(expected_xmlrpc_calls)
 
+    def test_add_channel_metadata_only(self):
+        """Test adding a channel with --metadata-only option"""
+        channel_label = "rhel-i386-as-4"
+        channel_id = 101
+        org_id = 123
+
+        # pylint: disable-next=consider-using-f-string
+        options = get_options(f"add channel {channel_label} --metadata-only".split())
+
+        # Mock current channels to return a channel object with an ID
+        mock_channel = MagicMock()
+        mock_channel.id = channel_id
+        mock_channel.label = channel_label
+        mock_channel.status = Channel.Status.AVAILABLE
+
+        channels_map = {channel_label: mock_channel}
+
+        # pylint: disable-next=protected-access
+        self.mgr_sync._fetch_remote_channels = MagicMock(return_value=channels_map)
+
+        # Mock XMLRPC calls for _execute_xmlrpc_method
+        # 1. isISSPeripheral -> False
+        # 2. addChannels -> [channel_label]
+        # pylint: disable-next=protected-access
+        self.mgr_sync._execute_xmlrpc_method = MagicMock(
+            side_effect=[False, [channel_label]]
+        )
+
+        # Mock user details to return org_id. Note: this is a direct call on conn, not via _execute_xmlrpc_method
+        self.mgr_sync.conn.user.getDetails.return_value = {"org_id": org_id}
+
+        # Patch xmlrpc_client.Server to capture Taskomatic call
+        # We need to patch where it is imported in mgr_sync module
+        with patch(
+            "spacewalk.susemanager.mgr_sync.mgr_sync.xmlrpc_client.Server"
+        ) as mock_xmlrpc_server:
+            mock_tasko_client = mock_xmlrpc_server.return_value
+
+            with ConsoleRecorder() as recorder:
+                self.assertEqual(0, self.mgr_sync.run(options))
+
+            # Verify addChannels was called
+            # pylint: disable-next=protected-access
+            self.mgr_sync._execute_xmlrpc_method.assert_any_call(
+                self.mgr_sync.conn.sync.content,
+                "addChannels",
+                self.fake_auth_token,
+                channel_label,
+                "",
+            )
+
+            # Verify Taskomatic call
+            expected_params = {"channel_ids": [str(channel_id)], "no_packages": True}
+            mock_tasko_client.tasko.scheduleSingleBunchRun.assert_called_with(
+                org_id, "repo-sync-bunch", expected_params
+            )
+
+            # Verify standard syncRepo was NOT called via _execute_xmlrpc_method
+            # We iterate calls to ensure none match syncRepo
+            # pylint: disable-next=protected-access
+            for call_args in self.mgr_sync._execute_xmlrpc_method.call_args_list:
+                # call_args.args[1] is the method name string in _execute_xmlrpc_method(endpoint, method, ...)
+                if len(call_args.args) > 1:
+                    self.assertNotEqual(call_args.args[1], "syncRepo")
+
+            expected_output = [
+                # pylint: disable-next=consider-using-f-string
+                "Added '{0}' channel".format(channel_label),
+                "Scheduling reposync for following channels:",
+                # pylint: disable-next=consider-using-f-string
+                "- {0}".format(channel_label),
+            ]
+            self.assertEqual(expected_output, recorder.stdout)
+
+            # Verify the channel status was updated to INSTALLED in the local cache
+            self.assertEqual(mock_channel.status, Channel.Status.INSTALLED)
+
 
 # pylint: disable-next=unused-argument
 def xmlrpc_sideeffect(*args, **kwargs):

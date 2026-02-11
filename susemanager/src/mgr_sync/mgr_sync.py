@@ -173,6 +173,7 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
                     mirror=options.mirror,
                     no_optionals=options.no_optionals,
                     no_sync=options.no_sync,
+                    metadata_only=options.metadata_only,
                 )
             elif "credentials" in options.add_target:
                 self._add_credentials(options.primary, options.target)
@@ -310,7 +311,14 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
             self.log,
         )
 
-    def _add_channels(self, channels, mirror="", no_optionals=False, no_sync=False):
+    def _add_channels(
+        self,
+        channels,
+        mirror="",
+        no_optionals=False,
+        no_sync=False,
+        metadata_only=False,
+    ):
         """Add a list of channels.
 
         If the channel list is empty the interactive mode is started.
@@ -423,9 +431,15 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
                 channels_to_sync.append(channel)
 
         if not no_sync:
-            self._schedule_channel_reposync(channels_to_sync)
+            self._schedule_channel_reposync(
+                channels_to_sync,
+                current_channels=current_channels,
+                metadata_only=metadata_only,
+            )
 
-    def _schedule_channel_reposync(self, channels):
+    def _schedule_channel_reposync(
+        self, channels, current_channels=None, metadata_only=False
+    ):
         """Schedules a reposync for a set of channels.
 
         :param channels: the labels identifying the channels
@@ -441,9 +455,75 @@ class MgrSync(object):  # pylint: disable=too-few-public-methods
             )
             # pylint: disable-next=consider-using-f-string
             self.log.info("Scheduling reposync for '{0}'".format(channels))
-            self._execute_xmlrpc_method(
-                self.conn.channel.software, "syncRepo", self.auth.token(), channels
-            )
+
+            if metadata_only:
+                # The standard API does not support the 'no_packages' option.
+                # We use the internal Taskomatic API directly.
+                client = xmlrpc_client.Server(TASKOMATIC_XMLRPC_URL)
+                channel_ids = []
+
+                # Check if we have stale data. If the requested channels aren't in current_channels,
+                # we must refresh from the server to get the IDs of the newly added channels.
+                need_refresh = False
+                if current_channels is None:
+                    need_refresh = True
+                else:
+                    for label in channels:
+                        if label not in current_channels:
+                            need_refresh = True
+                            break
+
+                if need_refresh:
+                    self.log.info(
+                        "Refetching channel list to resolve IDs for newly added channels"
+                    )
+                    current_channels = self._fetch_remote_channels()
+
+                for label in channels:
+                    cid = None
+                    if current_channels and label in current_channels:
+                        c_obj = current_channels[label]
+                        if hasattr(c_obj, "id"):
+                            cid = str(c_obj.id)
+
+                    if not cid:
+                        self.log.info(
+                            "Resolving ID for channel '{0}' via API...".format(label)
+                        )
+                        try:
+                            details = self._execute_xmlrpc_method(
+                                self.conn.channel.software,
+                                "getDetails",
+                                self.auth.token(),
+                                label,
+                            )
+                            if details and "id" in details:
+                                cid = str(details["id"])
+                        except Exception as e:
+                            self.log.info(
+                                "Failed to resolve ID for channel '{0}' via API: {1}".format(
+                                    label, str(e)
+                                )
+                            )
+
+                    if cid:
+                        channel_ids.append(cid)
+                    else:
+                        self.log.error(
+                            "Could not resolve ID for channel '{0}'".format(label)
+                        )
+
+                if channel_ids:
+                    params = {"channel_ids": channel_ids, "metadata_only": True}
+                    client.tasko.scheduleSingleBunchRun(1, "repo-sync-bunch", params)
+                else:
+                    self.log.error(
+                        "No valid channel IDs could be resolved; skipping scheduling of reposync task."
+                    )
+            else:
+                self._execute_xmlrpc_method(
+                    self.conn.channel.software, "syncRepo", self.auth.token(), channels
+                )
         except xmlrpc_client.Fault as ex:
             if ex.faultCode == 2802:
                 self.log.error(
