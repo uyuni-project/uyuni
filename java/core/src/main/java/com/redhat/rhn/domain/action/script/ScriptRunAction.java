@@ -260,7 +260,7 @@ public class ScriptRunAction extends ScriptAction {
     public void removeInvalidResults() {
         HibernateFactory.getSession().createNativeQuery("""
                   DELETE FROM rhnServerActionScriptResult sr WHERE sr.action_script_id = (
-                  SELECT as.id FROM rhnActionScript as WHERE as.action_id = :action)
+                  SELECT s.id FROM rhnActionScript s WHERE s.action_id = :action)
                   AND sr.server_id IN
                   (SELECT sa.server_id FROM rhnServerAction sa WHERE sa.action_id = :action AND sa.status = :queued)
                   """)
