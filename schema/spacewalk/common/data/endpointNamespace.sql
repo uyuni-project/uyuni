@@ -5303,13 +5303,13 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id
     FROM access.namespace ns, access.endpoint ep
-    WHERE ns.namespace = 'systems.software.appstreams' AND ns.access_mode = 'W'
+    WHERE ns.namespace = 'api.system.appstreams.ssm_enable' AND ns.access_mode = 'W'
     AND ep.endpoint = '/rhn/manager/api/system/appstreams/ssmEnable' AND ep.http_method = 'POST'
     ON CONFLICT (endpoint_id, namespace_id) DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id
     FROM access.namespace ns, access.endpoint ep
-    WHERE ns.namespace = 'systems.software.appstreams' AND ns.access_mode = 'W'
+    WHERE ns.namespace = 'api.system.appstreams.ssm_disable' AND ns.access_mode = 'W'
     AND ep.endpoint = '/rhn/manager/api/system/appstreams/ssmDisable' AND ep.http_method = 'POST'
     ON CONFLICT (endpoint_id, namespace_id) DO NOTHING;
 
@@ -5749,8 +5749,6 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     WHERE ns.namespace = 'api.sync.hub.list_peripheral_channels_to_sync' AND ns.access_mode = 'R'
     AND ep.endpoint = '/manager/api/sync/hub/listPeripheralChannelsToSync' AND ep.http_method = 'GET'
     ON CONFLICT DO NOTHING;
-
-
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'api.sync.hub.migrate_from_iss_v1' AND ns.access_mode = 'W'
@@ -5781,7 +5779,11 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     WHERE ns.namespace = 'api.sync.hub.regenerate_scc_credentials' AND ns.access_mode = 'W'
     AND ep.endpoint = '/manager/api/sync/hub/regenerateSCCCredentials' AND ep.http_method = 'POST'
     ON CONFLICT DO NOTHING;
-
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.sync.hub.schedule_update_task' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/sync/hub/scheduleUpdateTask' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'api.access.create_role' AND ns.access_mode = 'W'
