@@ -20,6 +20,7 @@ $PODMAN_CMD run --cap-add AUDIT_CONTROL \
     -v /tmp/testing/ssl:/ssl:z \
     --name=ssl-generator \
     --network network \
+    --pull newer \
     ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-server-all-in-one-dev:$UYUNI_VERSION \
     bash -xc "/testsuite/podman_runner/generate_certificates.sh"
 
@@ -46,6 +47,7 @@ $PODMAN_CMD run \
     --hostname uyuni-db.mgr.internal \
     --network-alias db \
     --network-alias reportdb \
+    --pull newer \
     --secret uyuni-db-ca,type=mount,target=/etc/pki/trust/anchors/DB-RHN-ORG-TRUSTED-SSL-CERT \
     --secret uyuni-db-key,type=mount,uid=999,mode=0400,target=/etc/pki/tls/private/pg-spacewalk.key \
     --secret uyuni-db-cert,type=mount,target=/etc/pki/tls/certs/spacewalk.crt \

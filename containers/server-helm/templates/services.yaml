@@ -19,6 +19,7 @@ spec:
   selector:
     app.kubernetes.io/component: server
   type: ClusterIP
+{{- if .Values.db.enable }}
 ---
 apiVersion: v1
 kind: Service
@@ -69,6 +70,7 @@ spec:
   selector:
     app.kubernetes.io/component: db
   type: ClusterIP
+{{- end }}
 ---
 apiVersion: v1
 kind: Service
@@ -233,7 +235,7 @@ spec:
   selector:
     app.kubernetes.io/component: server
   type: ClusterIP
-{{- if default .Values.hubAPI false }}
+{{- if default .Values.hubAPI.enable false }}
 ---
 apiVersion: v1
 kind: Service
@@ -257,7 +259,7 @@ spec:
     app.kubernetes.io/component: hub-xmlrpc
   type: ClusterIP
 {{- end }}
-{{- if default .Values.saline false }}
+{{- if default .Values.saline.enable false }}
 ---
 apiVersion: v1
 kind: Service

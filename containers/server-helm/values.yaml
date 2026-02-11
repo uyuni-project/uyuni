@@ -1,12 +1,6 @@
 # The default repository and image version if not defined otherwise
 repository: registry.opensuse.org/uyuni
-version: latest
-
-## Allows to override the default URI for an image if defined
-## Requires a full URI in a form of <registry>/<image>:<version-tag>
-##
-images:
-    # server: <registry>/<image>/<version>
+tag: latest
 
 ## Ref: https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
 ##
@@ -20,9 +14,31 @@ registrySecret: ""
 ##
 timezone: "Etc/UTC"
 
-## Email will be the email used for the notifications sent by the server.
-##
-email: "admin@uyuni.lab.org"
+## Server component configuration
+server:
+  ## image overrides the default image computed using the repository property
+  ## Leave undefined to use the default
+  image:
+  ## tag overrides the default tag in the tag property
+  ## Leave undefined to use the default
+  tag:
+
+  ## Email will be the email used for the notifications sent by the server.
+  ##
+  email: "admin@uyuni.lab.org"
+
+  ## mirror defines a volume or host path to mount in the container as server.susemanager.fromdir value.
+  ## Use either claimName or hostPath to reference the volume source.
+  ##
+  ## When using claimName, both claims and PVs need to be defined before running the chart
+  ## Note that hostPath will not work on multi-node cluster
+  ##
+  ## If the value is set before the first run of the server, the rhn.conf file will be adjusted during the setup.
+  ##
+  #mirror:
+  #  claimName: mirror
+  #  hostPath: /srv/mirror
+
 
 global:
   ## fqdn is the fully qualified name the server will answer as.
@@ -30,18 +46,6 @@ global:
   ## This value is required.
   ##
   fqdn:
-
-## mirror defines a volume or host path to mount in the container as server.susemanager.fromdir value.
-## Use either claimName or hostPath to reference the volume source.
-##
-## When using claimName, both claims and PVs need to be defined before running the chart
-## Note that hostPath will not work on multi-node cluster
-##
-## If the value is set before the first run of the server, the rhn.conf file will be adjusted during the setup.
-##
-#mirror:
-#  claimName: mirror
-#  hostPath: /srv/mirror
 
 ##
 volumes:
@@ -747,14 +751,74 @@ ingress:
   #  sslRedirect:
   #  nossl:
 
-## hubAPI is a boolean to enable or disable the Hub XML-RPC API deployment.
+## hub API component configuration
 ##
-hubAPI: false
+hubAPI:
+  ## image overrides the default image computed using the repository property
+  ## Leave undefined to use the default
+  image:
+  ## tag overrides the default tag in the tag property
+  ## Leave undefined to use the default
+  tag:
+  ## enable or disable the Hub XML-RPC API deployment.
+  enable: false
 
-## cocoReplicas is the number of replicas for the confidential computing attestation deployment.
+## Confidential computing attestation component configuration
 ##
-cocoReplicas: 0
+coco:
+  ## image overrides the default image computed using the repository property
+  ## Leave undefined to use the default
+  image:
+  ## tag overrides the default tag in the tag property
+  ## Leave undefined to use the default
+  tag:
+  ## number of replicas for the confidential computing attestation deployment.
+  replicas: 0
 
-## saline needs to be set to true to be deployed for salt master monitoring
+## Saline component configuration
 ##
-saline: false
+saline:
+  ## image overrides the default image computed using the repository property
+  ## Leave undefined to use the default
+  image:
+  ## tag overrides the default tag in the tag property
+  ## Leave undefined to use the default
+  tag:
+
+  ## set to true to deploy saline and provide salt master metrics
+  enable: false
+
+## PostgreSQL database configuration
+##
+db:
+  ## image overrides the default image computed using the repository property
+  ## Leave undefined to use the default
+  image:
+  ## tag overrides the default tag in the tag property
+  ## Leave undefined to use the default
+  tag:
+  ## enable to deploy a PostgreSQL instance.
+  ## WARNING: using a third party database is not tested and supported for now.
+  enable: true
+
+  ## Configuration of the internal database connection
+  ## WARNING: Only taken into account if db is disabled
+  internal:
+    ## Host name to use for the internal database.
+    ## It should be added to the SANs of the database TLS certificate
+    host:
+    ## Port to use to connect to the internal database
+    port: 5432
+    ## Name of the postgresql database to connect to
+    name:
+
+  ## Configuration of the report database connection
+  ## WARNING: Only taken into account if db is disabled
+  report:
+    ## Host name to use for the report database.
+    ## It should be added to the SANs of the database TLS certificate
+    host:
+    ## Port to use to connect to the internal database
+    port: 5432
+    ## Name of the postgresql database to connect to
+    name:

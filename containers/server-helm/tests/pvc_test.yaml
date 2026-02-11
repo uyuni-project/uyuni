@@ -11,7 +11,7 @@ tests:
           value: 50Gi
         documentSelector:
           path: metadata.name
-          value: var-pgsql
+          value: var-pgsql18
       
       - equal:
           path: spec.resources.requests.storage
@@ -45,7 +45,7 @@ tests:
           value: "fast-ssd"
         documentSelector:
           path: metadata.name
-          value: var-pgsql
+          value: var-pgsql18
 
   - it: should render extraLabels and annotations when provided
     set:
@@ -63,19 +63,19 @@ tests:
           value: "database-storage"
         documentSelector:
           path: metadata.name
-          value: var-pgsql
+          value: var-pgsql18
       - equal:
           path: metadata.labels["team"]
           value: "devops"
         documentSelector:
           path: metadata.name
-          value: var-pgsql
+          value: var-pgsql18
       - equal:
           path: metadata.annotations["backup.velero.io/backup-volumes"]
           value: "true"
         documentSelector:
           path: metadata.name
-          value: var-pgsql
+          value: var-pgsql18
 
   - it: should render volumeName and selector when provided
     set:

@@ -1,4 +1,4 @@
-{{- if default .Values.hubAPI false }}
+{{- if default .Values.hubAPI.enable false }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -24,7 +24,7 @@ spec:
       - env:
         - name: HUB_API_URL
           value: http://web/rpc/api
-        image: {{- include "deployment.container.image" (dict "name" "server-hub-xmlrpc-api" "global" .) | indent 1}}
+        image: {{ include "uyuni.image" (dict "name" "server-hub-xmlrpc-api" "global" . "local" .Values.hubAPI) }}
         imagePullPolicy: {{ .Values.pullPolicy }}
         name: hub-xmlrpc
         ports:
@@ -41,7 +41,7 @@ spec:
           until curl -L http://web/rhn/manager/api/api/getVersion; do
             sleep 60
           done
-        image: {{- include "deployment.container.image" (dict "name" "server-hub-xmlrpc-api" "global" .) | indent 1}}
+        image: {{ include "uyuni.image" (dict "name" "server-hub-xmlrpc-api" "global" . "local" .Values.hubAPI) }}
         imagePullPolicy: {{ .Values.pullPolicy }}
         name: server-waiter
 {{- end }}
