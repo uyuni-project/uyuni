@@ -287,7 +287,7 @@ public class ReportDBHelper {
 
         var dbName = Config.get().getString(ConfigDefaults.REPORT_DB_NAME, "");
         // Change the password of the user to drop
-        var password = RandomStringUtils.randomAlphanumeric(12);
+        var password = RandomStringUtils.secure().nextAlphanumeric(12);
         changeDBPassword(session, username, password);
 
         //just to be sure that user doesn't have any permission, because in that case the drop role might fails
