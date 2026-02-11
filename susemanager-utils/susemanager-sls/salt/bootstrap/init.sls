@@ -197,7 +197,12 @@ salt-minion-package:
 {# increase transaction id by 1 since jinja is doing this before new transaction for package install is created #}
 {# this is working under assumption there will be only one transaction between jinja render and actual package installation #}
 {%- set pending_transaction_id = pending_transaction_id|int + 1 %}
+
+{%- if salt['file.directory_exists']('/var/lib/overlay/') %}
+{# SLM 6.1 and older requires writing to snapshot #}
 {%- set salt_config_dir = '/var/lib/overlay/' + pending_transaction_id|string + salt_config_dir %}
+{%- endif %}
+
 {%- endif %}
 
 salt-minion-package:
