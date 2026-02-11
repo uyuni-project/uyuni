@@ -1,40 +1,24 @@
 import type { ReactNode } from "react";
 
-import { Messages } from "components/messages/messages";
-
+import { MessagesContainer, showErrorToastr, showInfoToastr, showSuccessToastr } from "components/toastr/toastr";
 type SuccessType = boolean | undefined;
 
 export const ContainerConfigMessages = (success: SuccessType, messagesIn: ReactNode[], loading: boolean) => {
   if (success) {
-    return (
-      <Messages
-        items={[
-          {
-            severity: "success",
-            text: <p>{t("The container based proxy configuration has been generated correctly.")}</p>,
-          },
-        ]}
-      />
-    );
+    showSuccessToastr(t("The container based proxy configuration has been generated correctly."));
   } else if (messagesIn.length > 0) {
-    return (
-      <Messages
-        items={messagesIn.map(function (msg) {
-          return Messages.error(msg);
-        })}
-      />
+    showErrorToastr(
+      <>
+        {messagesIn.map((msg, index) => (
+          <div key={`error${index}`}>{msg}</div>
+        ))}
+      </>,
+      { autoHide: false }
     );
   } else if (loading) {
-    return (
-      <Messages
-        items={[
-          {
-            severity: "info",
-            text: <p>{t("Generation of the proxy configuration in progress: waiting for a response...")}</p>,
-          },
-        ]}
-      />
-    );
+    showInfoToastr(t("Generation of the proxy configuration in progress: waiting for a response..."), {
+      autoHide: false,
+    });
   }
-  return null;
+  return <MessagesContainer />;
 };
