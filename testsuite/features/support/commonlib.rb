@@ -684,7 +684,8 @@ end
 def channel_packages_are_downloaded?(channel_name)
   if channel_name.include?('custom_channel')
     client = channel_name.delete_prefix('custom_channel_')
-    return true if $custom_repositories[client].nil?
+    # Monitoring server doesn't have an entry in the custom repository JSON file.
+    return true if $custom_repositories[client].nil? && client != "monitoring_server"
   end
   log_tmp_file = '/tmp/reposync.log'
   get_target('server').extract('/var/log/rhn/reposync.log', log_tmp_file)
