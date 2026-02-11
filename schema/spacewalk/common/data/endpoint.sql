@@ -106,7 +106,7 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     VALUES('', '/manager/admin/access-control', 'GET', 'W', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
-    VALUES('', '/manager/admin/access-control/create', 'GET', 'W', True)
+    VALUES('', '/manager/admin/access-control/create-access-group', 'GET', 'W', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES('', '/manager/admin/access-control/show-access-group/:id', 'GET', 'W', True)
@@ -3564,7 +3564,7 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     VALUES ('com.suse.manager.webui.controllers.login.LoginController', '/manager/api/login', 'POST', 'A', False)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
-    VALUES ('com.suse.manager.webui.controllers.login.LoginController', '/manager/api/oidcLogin', 'GET', 'A', False)
+    VALUES ('com.suse.manager.webui.controllers.login.LoginController', '/manager/api/oidcLogin', 'POST', 'A', False)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.suse.manager.webui.controllers.login.LoginController', '/manager/api/logout', 'GET', 'A', False)
@@ -3652,21 +3652,21 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
-    VALUES ('', '/rhn/manager/systems/ssm/appstreams', 'GET', 'W', True)
+    VALUES ('', '/manager/systems/ssm/appstreams', 'GET', 'W', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
-    VALUES ('', '/rhn/manager/systems/ssm/appstreams/configure/:channelId', 'GET', 'W', True)
+    VALUES ('', '/manager/systems/ssm/appstreams/configure/:channelId', 'GET', 'W', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
-    VALUES ('', '/rhn/manager/api/ssm/appstreams/save', 'POST', 'W', True)
+    VALUES ('', '/manager/api/ssm/appstreams/save', 'POST', 'W', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.redhat.rhn.frontend.xmlrpc.system.appstreams.SystemAppStreamHandler.ssmEnable',
-        '/rhn/manager/api/system/appstreams/ssmEnable', 'POST', 'A', True)
+        '/manager/api/system/appstreams/ssmEnable', 'POST', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
-VALUES ('com.redhat.rhn.frontend.xmlrpc.system.appstreams.SystemAppStreamHandler.ssmDisable',
-    '/rhn/manager/api/system/appstreams/ssmDisable', 'POST', 'A', True)
+    VALUES ('com.redhat.rhn.frontend.xmlrpc.system.appstreams.SystemAppStreamHandler.ssmDisable',
+        '/manager/api/system/appstreams/ssmDisable', 'POST', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
@@ -4452,7 +4452,6 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.suse.manager.xmlrpc.iss.HubHandler.storeAccessToken', '/manager/api/sync/hub/storeAccessToken', 'POST', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
-
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.suse.manager.xmlrpc.iss.HubHandler.getAllPeripheralChannels', '/manager/api/sync/hub/getAllPeripheralChannels', 'GET', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
@@ -4486,8 +4485,9 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.suse.manager.xmlrpc.iss.HubHandler.listPeripheralChannelsToSync', '/manager/api/sync/hub/listPeripheralChannelsToSync', 'GET', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
-
-
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.suse.manager.xmlrpc.iss.HubHandler.scheduleUpdateTask', '/manager/api/sync/hub/scheduleUpdateTask', 'POST', 'A', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.redhat.rhn.frontend.xmlrpc.image.ImageInfoHandler.addImageFile', '/manager/api/image/addImageFile', 'POST', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
