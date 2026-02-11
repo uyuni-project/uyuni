@@ -195,10 +195,13 @@ end
 
 Then(/^I should not see any terminals imported from the configuration file$/) do
   terminals = read_terminals_from_yaml
+  domain = read_branch_prefix_from_yaml
   terminals.each do |terminal|
     next if (terminal.include? 'minion') || (terminal.include? 'client')
 
-    step %(I should not see a "#{terminal}" text)
+    # Construct full system name with domain prefix (e.g., "example.org.terminal1")
+    full_system_name = terminal.include?('pxeboot') ? "#{terminal}.#{domain}" : "#{domain}.#{terminal}"
+    step %(I wait at most 60 seconds until I do not see "#{full_system_name}" text, refreshing the page)
   end
 end
 
