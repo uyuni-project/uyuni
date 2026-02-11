@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LLC
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -71,6 +72,7 @@ import com.suse.utils.Opt;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -117,7 +119,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         ChannelTestUtility.testAddPackage(channel, chanPack);
         e.addPackage(errataPack);
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         List<Errata> errataList = new ArrayList<>();
         errataList.add(e);
@@ -223,7 +225,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testLastModified() throws Exception {
         Errata testErrata = createTestErrata(user.getOrg().getId());
-        testErrata = reload(testErrata);
+        testErrata = TestUtils.reload(testErrata);
         assertNotNull(testErrata.getLastModified());
     }
 
@@ -250,29 +252,28 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
      * Create an Errata for testing and commit it to the DB.
      * @param orgId the Org who owns this Errata
      * @param advisory if specified, the advisory name
-     * @return Errata created
+     * @return the managed {@link Errata} instance
      * @throws Exception something bad happened
      */
     public static Errata createTestErrata(Long orgId, Optional<String> advisory) throws Exception {
         Errata e = new Errata();
         fillOutErrata(e, orgId, advisory);
-        ErrataFactory.save(e);
-        return e;
+        return ErrataFactory.save(e);
+
     }
 
     /**
      * Creates and persists an errata that will be flagged as critical.
      *
      * @param orgId the org under which the errata exists
-     * @return created errata
+     * @return the managed {@link Errata} instance
      * @throws Exception if the errata cannot be created
      */
     public static Errata createCriticalTestErrata(Long orgId) throws Exception {
         Errata e = new Errata();
         fillOutErrata(e, orgId, empty());
         e.setAdvisoryType(ErrataFactory.ERRATA_TYPE_SECURITY);
-        ErrataFactory.save(e);
-        return e;
+        return ErrataFactory.save(e);
     }
 
     private static void fillOutErrata(Errata e, Long orgId, Optional<String> advisory) {
@@ -311,10 +312,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
                     "test errata file" + TestUtils.randomString(), errataFilePackages);
 
         e.addFile(ef);
-        Severity s = new Severity();
-        s.setLabel(Severity.IMPORTANT_LABEL);
-        s.setRank(1);
-        e.setSeverity(s);
+        e.setSeverity(Severity.getById(1));
     }
 
     public static void updateNeedsErrataCache(Long packageId, Long serverId,
@@ -484,7 +482,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
     // flush the needed updates cache for a server and re-generate it from scratch.
     private void regenerateNeededUpdatesCache(Server server) {
         HibernateFactory.getSession()
-                .createNativeQuery("DELETE FROM rhnServerNeededCache WHERE server_id = :sid")
+                .createNativeMutationQuery("DELETE FROM rhnServerNeededCache WHERE server_id = :sid")
                 .setParameter("sid", server.getId())
                 .executeUpdate();
         ServerFactory.updateServerNeededCache(server.getId());
@@ -499,15 +497,16 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testListErrataSubclassMapping() throws Exception {
         Cve cveOriginal = ErrataTestUtils.createTestCve("testcveorig-1");
-        Errata original = ErrataTestUtils.createTestErrata(user, Set.of(cveOriginal));
+        Errata original = ErrataTestUtils.createTestErrata(user, new HashSet<>(Collections.singletonList(cveOriginal)));
 
         Cve cveClone = ErrataTestUtils.createTestCve("testcveclone-1");
         Errata clone = ErrataTestUtils.createTestClonedErrata(
-                user, original, Set.of(cveClone), original.getPackages().iterator().next());
+                user, original, new HashSet<>(Collections.singletonList(cveClone)),
+                original.getPackages().iterator().next());
 
         // let's evict from the cache, otherwise hibernate does not refresh the class
-        HibernateFactory.getSession().evict(original);
-        HibernateFactory.getSession().evict(clone);
+        TestUtils.evict(original);
+        TestUtils.evict(clone);
 
         assertFalse(ErrataFactory.listErrata(
                 Set.of(original.getId()), user.getOrg().getId()).iterator().next().isCloned());

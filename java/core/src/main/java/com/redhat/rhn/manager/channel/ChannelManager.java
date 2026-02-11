@@ -138,13 +138,19 @@ public class ChannelManager extends BaseManager {
     private static TaskomaticApi taskomaticApi = new TaskomaticApi();
     private static Logger log = LogManager.getLogger(ChannelManager.class);
 
-    private static final Map<InstalledProduct, InstalledProduct> COMPATIBLE_PRODUCTS = new HashMap<>();
-    static {
-        COMPATIBLE_PRODUCTS.put(
-                new InstalledProduct("res", "7", PackageFactory.lookupPackageArchByLabel("x86_64"), null, true),
-                new InstalledProduct("res-ltss", "7", PackageFactory.lookupPackageArchByLabel("x86_64"), null, true)
-        );
+    private static Map<InstalledProduct, InstalledProduct> compatibleProducts = null;
+
+    private static Map<InstalledProduct, InstalledProduct> getCompatibleProducts() {
+        if (compatibleProducts == null) {
+            compatibleProducts = new HashMap<>();
+            compatibleProducts.put(
+                    new InstalledProduct("res", "7", PackageFactory.lookupPackageArchByLabel("x86_64"), null, true),
+                    new InstalledProduct("res-ltss", "7", PackageFactory.lookupPackageArchByLabel("x86_64"), null, true)
+            );
+        }
+        return compatibleProducts;
     }
+
     public static final String QRY_ROLE_MANAGE = "manage";
     public static final String QRY_ROLE_SUBSCRIBE = "subscribe";
     public static final String RHEL7_EUS_VERSION = "7Server";
@@ -1796,8 +1802,8 @@ public class ChannelManager extends BaseManager {
                     return Collections.emptySet();
                 },
                 bp -> {
-                    if (COMPATIBLE_PRODUCTS.containsKey(bp)) {
-                        SUSEProduct compatProduct = COMPATIBLE_PRODUCTS.get(bp).getSUSEProduct();
+                    if (getCompatibleProducts().containsKey(bp)) {
+                        SUSEProduct compatProduct = getCompatibleProducts().get(bp).getSUSEProduct();
                         if (compatProduct != null) {
                             return compatProduct.getSuseProductChannels()
                                     .stream()
@@ -1818,7 +1824,7 @@ public class ChannelManager extends BaseManager {
      */
     public static Set<EssentialChannelDto> listCompatibleBaseChannelsForChannel(Channel baseChannelIn) {
         Set<EssentialChannelDto> retval = new HashSet<>();
-        for (Map.Entry<InstalledProduct, InstalledProduct> compatProducts : COMPATIBLE_PRODUCTS.entrySet()) {
+        for (Map.Entry<InstalledProduct, InstalledProduct> compatProducts : getCompatibleProducts().entrySet()) {
             SUSEProduct sourceProduct = compatProducts.getKey().getSUSEProduct();
             if (sourceProduct != null && sourceProduct
                     .getSuseProductChannels()

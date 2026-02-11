@@ -24,21 +24,19 @@ import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.Objects;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "suseISSAccessToken")
 public class IssAccessToken extends BaseDomainHelper {
 
-    private long id;
+    private Long id;
 
     private String token;
 
@@ -96,11 +94,11 @@ public class IssAccessToken extends BaseDomainHelper {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long idIn) {
+    public void setId(Long idIn) {
         this.id = idIn;
     }
 
@@ -114,7 +112,7 @@ public class IssAccessToken extends BaseDomainHelper {
     }
 
     @Column(name = "type")
-    @Type(type = "com.suse.manager.model.hub.TokenTypeEnumType")
+    @Type(value = com.suse.manager.model.hub.TokenTypeEnumType.class)
     public TokenType getType() {
         return type;
     }
@@ -133,7 +131,6 @@ public class IssAccessToken extends BaseDomainHelper {
     }
 
     @Column(name = "expiration_date")
-    @Temporal(TemporalType.TIMESTAMP)
     public Date getExpirationDate() {
         return expirationDate;
     }

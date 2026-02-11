@@ -75,7 +75,7 @@ public class MinionCheckinTest extends JMockBaseTestCaseWithUser {
         ServerInfo serverInfo = minion1.getServerInfo();
         serverInfo.setCheckin(new Date());
         minion1.setServerInfo(serverInfo);
-        TestUtils.saveAndFlush(minion1);
+        minion1 = TestUtils.saveAndFlush(minion1);
 
         SaltService saltServiceMock = mock(SaltService.class);
 
@@ -108,7 +108,7 @@ public class MinionCheckinTest extends JMockBaseTestCaseWithUser {
         ServerInfo serverInfo = minion1.getServerInfo();
         serverInfo.setCheckin(DateUtils.addHours(new Date(), -this.thresholdMax));
         minion1.setServerInfo(serverInfo);
-        TestUtils.saveAndFlush(minion1);
+        minion1 = TestUtils.saveAndFlush(minion1);
 
         SaltService saltServiceMock = mock(SaltService.class);
 

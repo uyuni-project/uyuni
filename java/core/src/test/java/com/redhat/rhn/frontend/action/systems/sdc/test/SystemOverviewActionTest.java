@@ -103,7 +103,7 @@ public class SystemOverviewActionTest extends RhnMockStrutsTestCase {
     @Test
     public void testSystemInactive() {
         s.getServerInfo().setCheckin(new Date(1));
-        TestUtils.saveAndFlush(s);
+        s = TestUtils.saveAndFlush(s);
         actionPerform();
         assertEquals(request.getAttribute("systemInactive"), Boolean.TRUE);
     }
@@ -115,7 +115,7 @@ public class SystemOverviewActionTest extends RhnMockStrutsTestCase {
         pcal.roll(Calendar.MINUTE, -5);
 
         s.getServerInfo().setCheckin(pcal.getTime());
-        TestUtils.saveAndFlush(s);
+        s = TestUtils.saveAndFlush(s);
         actionPerform();
         assertEquals(request.getAttribute("systemInactive"), Boolean.FALSE);
     }
@@ -163,7 +163,7 @@ public class SystemOverviewActionTest extends RhnMockStrutsTestCase {
         String kernelLiveVersion = "kgraft_patch_2_1_1";
         MinionServer m = MinionServerFactoryTest.createTestMinionServer(user);
         m.setKernelLiveVersion(kernelLiveVersion);
-        TestUtils.saveAndFlush(m);
+        m = TestUtils.saveAndFlush(m);
 
         request.addParameter("sid", m.getId().toString());
         actionPerform();

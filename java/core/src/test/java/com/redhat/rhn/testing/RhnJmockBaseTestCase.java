@@ -19,8 +19,7 @@ import java.nio.file.Path;
  * RhnJmockBaseTestCase - This is the same thing as {@link RhnBaseTestCase}
  * but it extends from {@link MockObjectTestCase}.
  */
-public abstract class RhnJmockBaseTestCase extends MockObjectTestCase
-    implements HibernateTestCaseUtils, SaltTestCaseUtils {
+public abstract class RhnJmockBaseTestCase extends MockObjectTestCase implements SaltTestCaseUtils {
 
     protected Path tmpSaltRoot;
 

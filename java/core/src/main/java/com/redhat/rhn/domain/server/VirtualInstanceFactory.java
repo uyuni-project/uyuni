@@ -28,7 +28,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.persistence.Tuple;
+import jakarta.persistence.Tuple;
 
 /**
  * VirtualInstanceFactory provides data access operations for virtual instances.
@@ -152,6 +152,10 @@ public class VirtualInstanceFactory extends HibernateFactory {
                                   and sgm.server_id = host.id
                           ))
                         """, Tuple.class)
+                .addSynchronizedEntityClass(VirtualInstance.class)
+                .addSynchronizedEntityClass(Server.class)
+                .addSynchronizedEntityClass(ServerGroup.class)
+                .addSynchronizedEntityClass(ServerGroupType.class)
                 .setParameter("org_id", org.getId(), StandardBasicTypes.LONG)
                 .addScalar("guest_id", StandardBasicTypes.LONG)
                 .addScalar("guest_org_id", StandardBasicTypes.LONG)

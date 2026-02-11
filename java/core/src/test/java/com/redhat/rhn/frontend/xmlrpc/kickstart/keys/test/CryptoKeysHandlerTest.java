@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.CryptoKeyDto;
 import com.redhat.rhn.frontend.xmlrpc.kickstart.keys.CryptoKeysHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
+import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -48,7 +49,7 @@ public class CryptoKeysHandlerTest extends BaseHandlerTestCase {
                 .build();
         CryptoKey key = CryptoTest.createTestKey(otherOrg.getOrg());
         KickstartFactory.saveCryptoKey(key);
-        flushAndEvict(key);
+        TestUtils.flushAndEvict(key);
 
         // Test
         CryptoKeysHandler handler = new CryptoKeysHandler();
@@ -90,7 +91,7 @@ public class CryptoKeysHandlerTest extends BaseHandlerTestCase {
         CryptoKey key = CryptoTest.createTestKey(admin.getOrg());
         KickstartFactory.saveCryptoKey(key);
         assertNotNull(KickstartFactory.lookupCryptoKeyById(key.getId(), key.getOrg()));
-        flushAndEvict(key);
+        TestUtils.flushAndEvict(key);
 
         // Test
         CryptoKeysHandler handler = new CryptoKeysHandler();
@@ -108,7 +109,7 @@ public class CryptoKeysHandlerTest extends BaseHandlerTestCase {
         CryptoKey key = CryptoTest.createTestKey(admin.getOrg());
         KickstartFactory.saveCryptoKey(key);
         assertNotNull(KickstartFactory.lookupCryptoKeyById(key.getId(), key.getOrg()));
-        flushAndEvict(key);
+        TestUtils.flushAndEvict(key);
 
         // Test
         CryptoKeysHandler handler = new CryptoKeysHandler();

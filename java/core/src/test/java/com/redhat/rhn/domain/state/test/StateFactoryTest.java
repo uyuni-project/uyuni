@@ -123,7 +123,6 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
         serverState.getConfigChannels().add(channel2);
 
         StateFactory.save(serverState);
-        clearFlush();
 
         assertNotNull(serverState.getId());
         assertNotNull(channel1.getId());
@@ -159,7 +158,6 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
         serverState.getConfigChannels().add(channel2);
 
         StateFactory.save(serverState);
-        clearFlush();
 
         serverState = StateFactory.getSession().find(ServerStateRevision.class, serverState.getId());
         channel1 = StateFactory.getSession().find(ConfigChannel.class, channel1.getId());
@@ -169,7 +167,6 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
         assertEquals(1, serverState.getConfigChannels().size());
 
         StateFactory.save(serverState);
-        clearFlush();
 
         serverState = StateFactory.getSession().find(ServerStateRevision.class, serverState.getId());
         channel2 = StateFactory.getSession().find(ConfigChannel.class, channel2.getId());
@@ -193,7 +190,6 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
         groupRevision.getConfigChannels().add(channel2);
 
         StateFactory.save(groupRevision);
-        clearFlush();
 
         groupRevision = StateFactory.getSession().find(ServerGroupStateRevision.class, groupRevision.getId());
         assertEquals(2, groupRevision.getConfigChannels().size());
@@ -214,7 +210,6 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
         orgRevision.getConfigChannels().add(channel2);
 
         StateFactory.save(orgRevision);
-        clearFlush();
 
         orgRevision = StateFactory.getSession().find(OrgStateRevision.class, orgRevision.getId());
         assertEquals(2, orgRevision.getConfigChannels().size());
@@ -236,7 +231,6 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
         groupRevision.getConfigChannels().add(channel);
 
         StateFactory.save(groupRevision);
-        clearFlush();
 
         // create revision 2
         channel = ConfigTestUtils.createConfigChannel(user.getOrg(), "Second", "second");
@@ -247,7 +241,6 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
         groupRevision.getConfigChannels().add(channel);
 
         StateFactory.save(groupRevision);
-        clearFlush();
 
         // Verify: Latest config channels contain only "second"
         Optional<List<ConfigChannel>> states = StateFactory.latestConfigChannels(group);
@@ -270,7 +263,6 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
         orgRevision.getConfigChannels().add(channel);
 
         StateFactory.save(orgRevision);
-        clearFlush();
 
         channel = ConfigTestUtils.createConfigChannel(user.getOrg(), "Second", "second");
 
@@ -280,7 +272,6 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
         orgRevision.getConfigChannels().add(channel);
 
         StateFactory.save(orgRevision);
-        clearFlush();
 
         // Verify: Latest config channels contain only "second"
         Optional<List<ConfigChannel>> channels = StateFactory.latestConfigChannels(user.getOrg());
@@ -354,7 +345,6 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
 
         StateFactory.save(org1Revision);
         StateFactory.save(srvRevision);
-        clearFlush();
 
         StateFactory.StateRevisionsUsage usage =
                 StateFactory.latestStateRevisionsByConfigChannel(channel1);
@@ -371,7 +361,6 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
         org2Revision.getConfigChannels().add(channel1);
         org2Revision.getConfigChannels().add(channel2);
         StateFactory.save(org2Revision);
-        clearFlush();
 
         usage = StateFactory.latestStateRevisionsByConfigChannel(channel1);
         assertEquals(1, usage.getServerStateRevisions().size());
@@ -399,7 +388,6 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
 
         StateFactory.save(grp1Revision);
         StateFactory.save(grp2Revision);
-        clearFlush();
 
         usage = StateFactory
                 .latestStateRevisionsByConfigChannel(channel1);
@@ -414,11 +402,6 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
                 .anyMatch(r -> grp1Revision.getId() == r.getId()));
         assertTrue(usage.getServerGroupStateRevisions().stream()
                 .anyMatch(r -> grp2Revision.getId() == r.getId()));
-    }
-
-    private void clearFlush() {
-        StateFactory.getSession().flush();
-        StateFactory.getSession().clear();
     }
 
 }

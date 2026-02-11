@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009--2014 Red Hat, Inc.
+ * Copyright (c) 2026 SUSE LCC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,11 +7,8 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
+
 package com.redhat.rhn.common.hibernate;
 
 import com.redhat.rhn.common.db.DatabaseException;
@@ -28,6 +25,7 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.MappingException;
+import org.hibernate.NonUniqueResultException;
 import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
@@ -51,12 +49,12 @@ import java.util.function.BinaryOperator;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
-import javax.persistence.FlushModeType;
-import javax.persistence.LockModeType;
-import javax.persistence.Tuple;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaDelete;
-import javax.persistence.criteria.Root;
+import jakarta.persistence.FlushModeType;
+import jakarta.persistence.LockModeType;
+import jakarta.persistence.Tuple;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaDelete;
+import jakarta.persistence.criteria.Root;
 
 /**
  * HibernateFactory - Helper superclass that contains methods for fetching and
@@ -72,9 +70,6 @@ public abstract class HibernateFactory {
     public static final int LIST_BATCH_MAX_SIZE = 1000;
 
     public static final String ROLLBACK_MSG = "Error during transaction. Rolling back";
-
-    protected HibernateFactory() {
-    }
 
     /**
      * Set a new conntionManager instance
@@ -168,9 +163,14 @@ public abstract class HibernateFactory {
                     .setCacheable(cacheable)
                     .uniqueResult();
         }
-        catch (HibernateException he) {
+        catch (NonUniqueResultException e) {
+            throw new HibernateRuntimeException(
+                "lookupObjectByParam with param [%s]=[%s] on class [%s] expected only one result"
+                    .formatted(paramName, paramValue.toString(), objClass.getSimpleName()), e);
+        }
+        catch (HibernateException | IllegalArgumentException e) {
             throw new HibernateRuntimeException("lookupObjectByParam failed with param [%s]=[%s] on class [%s]"
-                    .formatted(paramName, paramValue.toString(), objClass.getSimpleName()), he);
+                    .formatted(paramName, paramValue.toString(), objClass.getSimpleName()), e);
         }
     }
 
@@ -318,30 +318,34 @@ public abstract class HibernateFactory {
         return query.list();
     }
 
-    /**
-     * Saves the given object to the database using Hibernate.
-     * @param toSave Object to be persisted.
-     * @param saveOrUpdate true if saveOrUpdate should be called, false if
-     * save() is to be called directly.
+     /**
+     * Saves the given object to the database using Hibernate
+     * @param entity Object to be persisted.
+     * @return A managed entity
+     * @param <T> type of the entity
      */
-    protected void saveObject(Object toSave, boolean saveOrUpdate) {
-        Session session = null;
-        session = HibernateFactory.getSession();
-        if (saveOrUpdate) {
-            session.saveOrUpdate(toSave);
-        }
-        else {
-            session.persist(toSave);
-        }
-    }
+     protected <T> T saveObject(T entity) {
+         var session = getSession();
 
-    /**
-     * Saves the given object to the database using Hibernate.
-     * @param toSave Object to be persisted.
-     */
-    protected void saveObject(Object toSave) {
-        saveObject(toSave, true);
-    }
+         // if the entity happens to be already managed, return it
+         if (session.contains(entity)) {
+             return entity;
+         }
+
+         Object id = session.getEntityManagerFactory().getPersistenceUnitUtil().getIdentifier(entity);
+         T managed = entity;
+
+         if (id == null) {
+             // new entity - use persist() to avoid cascading issues
+             session.persist(entity);
+         }
+         else {
+             // detached entity - use merge() and return managed instance
+             managed = session.merge(entity);
+         }
+
+         return managed;
+     }
 
     /**
      * Remove a Session from the DB
@@ -519,7 +523,8 @@ public abstract class HibernateFactory {
     }
 
     /**
-     * Util to reload an object using Hibernate
+     * Util to reload an object using Hibernate.
+     * Any changes to the object before calling this method will be lost.
      * @param obj to be reloaded
      * @return Object found if not, null
      * @throws HibernateException if something bad happens.
@@ -527,16 +532,13 @@ public abstract class HibernateFactory {
      */
     public static <T> T reload(T obj) throws HibernateException {
         Session session = getSession();
-        Serializable id = (Serializable) session.getEntityManagerFactory().getPersistenceUnitUtil().getIdentifier(obj);
         session.flush();
-        session.evict(obj);
-        /*
-         * In hibernate 3, the following doesn't work:
-         * session.getReference(obj.getClass(), id)
-         * load returns the proxy class instead of the persisted class, ie,
-         * Filter$$EnhancerByCGLIB$$9bcc734d_2 instead of Filter.
-         * session.get is set to not return the proxy class, so that is what we'll use.
-         */
+
+        if (session.contains(obj)) {
+            session.detach(obj);
+        }
+
+        Serializable id = (Serializable) session.getEntityManagerFactory().getPersistenceUnitUtil().getIdentifier(obj);
         return (T) session.find(obj.getClass(), id);
     }
 
@@ -614,8 +616,7 @@ public abstract class HibernateFactory {
         if (data.length == 0) {
             return null;
         }
-        return Hibernate.getLobCreator(getSession()).createBlob(data);
-
+        return Hibernate.getLobHelper().createBlob(data);
     }
 
     /**

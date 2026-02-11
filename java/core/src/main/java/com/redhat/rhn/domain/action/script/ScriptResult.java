@@ -22,15 +22,13 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 /**
  * ScriptResult
@@ -113,11 +111,9 @@ public class ScriptResult implements Serializable {
     private ScriptResultId id;
 
     @Column(name = "start_date")
-    @Temporal(TemporalType.TIMESTAMP)
     private Date startDate;
 
     @Column(name = "stop_date")
-    @Temporal(TemporalType.TIMESTAMP)
     private Date stopDate;
 
     @Column(name = "return_code")

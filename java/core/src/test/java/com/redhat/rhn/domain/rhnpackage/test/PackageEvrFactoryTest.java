@@ -75,4 +75,15 @@ public class PackageEvrFactoryTest extends RhnBaseTestCase {
 
         return createTestPackageEvr(epoch, version, release, packageType);
     }
+
+
+    @Test
+    public void generatedCoverageTestLookupPackageEvrByEvr() {
+        // this test has been generated programmatically to test PackageEvrFactory.lookupPackageEvrByEvr
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        PackageType arg3 = PackageType.RPM;
+        PackageEvrFactory.lookupPackageEvrByEvr("", "", "", arg3);
+    }
+
 }

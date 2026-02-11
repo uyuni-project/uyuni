@@ -18,15 +18,15 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 /**
  * Content Environment Diff
@@ -35,7 +35,7 @@ import javax.persistence.Table;
 @Table(name = "suseContentEnvironmentDiff")
 public class ContentEnvironmentDiff extends BaseDomainHelper {
 
-    private long id;
+    private Long id;
     private ContentProject project;
     private ContentEnvironment environment;
     private Channel channel;
@@ -77,11 +77,11 @@ public class ContentEnvironmentDiff extends BaseDomainHelper {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long idIn) {
+    public void setId(Long idIn) {
         id = idIn;
     }
 
@@ -116,7 +116,7 @@ public class ContentEnvironmentDiff extends BaseDomainHelper {
     }
 
     @Column(name = "diff_action")
-    @Type(type = "com.redhat.rhn.domain.contentmgmt.DiffActionEnumType")
+    @Type(value = com.redhat.rhn.domain.contentmgmt.DiffActionEnumType.class)
     public DiffAction getAction() {
         return action;
     }
@@ -135,7 +135,7 @@ public class ContentEnvironmentDiff extends BaseDomainHelper {
     }
 
     @Column(name = "entry_type")
-    @Type(type = "com.redhat.rhn.domain.contentmgmt.EntryTypeEnumType")
+    @Type(value = com.redhat.rhn.domain.contentmgmt.EntryTypeEnumType.class)
     public EntryType getEntryType() {
         return entryType;
     }

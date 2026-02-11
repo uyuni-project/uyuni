@@ -77,7 +77,7 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
         for (int i = 0; i < orgName.length; i++) {
             orgName[i] = "Test Org " + TestUtils.randomString();
         }
-        TestUtils.saveAndFlush(admin);
+        admin = TestUtils.saveAndFlush(admin);
 
         channelFamily = ChannelFamilyFactoryTest.createTestChannelFamily(admin, true);
     }

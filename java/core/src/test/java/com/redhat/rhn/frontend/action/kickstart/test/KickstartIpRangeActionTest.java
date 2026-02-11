@@ -49,7 +49,7 @@ public class KickstartIpRangeActionTest extends RhnPostMockStrutsTestCase {
         super.setUp();
         this.ksdata = KickstartDataTest.createKickstartWithChannel(user.getOrg());
         this.ksdata.setOrg(user.getOrg());
-        TestUtils.saveAndFlush(ksdata);
+        ksdata = TestUtils.saveAndFlush(ksdata);
 
         addRequestParameter(RequestContext.KICKSTART_ID, this.ksdata.getId().toString());
     }
@@ -76,7 +76,7 @@ public class KickstartIpRangeActionTest extends RhnPostMockStrutsTestCase {
 
         ksdata.addIpRange(ip1);
         ksdata.addIpRange(ip2);
-        TestUtils.saveAndFlush(ksdata);
+        ksdata = TestUtils.saveAndFlush(ksdata);
 
         actionPerform();
         assertNotNull(request.getAttribute(KickstartIpRangeAction.RANGES));
@@ -181,7 +181,7 @@ public class KickstartIpRangeActionTest extends RhnPostMockStrutsTestCase {
         ipr.setMax(ipa2.getNumber());
         ipr.setMin(ipa1.getNumber());
         this.ksdata.addIpRange(ipr);
-        TestUtils.saveAndFlush(ksdata);
+        ksdata = TestUtils.saveAndFlush(ksdata);
 
         setRequestPathInfo("/kickstart/KickstartIpRangeDelete");
         addRequestParameter(KickstartIpRangeDeleteAction.MAX, String.valueOf(ip2num));

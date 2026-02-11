@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LCC
  * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -74,7 +75,7 @@ public class TokenTest extends RhnBaseTestCase {
     public void testLookupByServer() throws Exception {
         Token t = createTestToken();
         Server s = t.getServer();
-        flushAndEvict(t);
+        TestUtils.flushAndEvict(t);
         assertNotNull(TokenFactory.listByServer(s));
     }
 
@@ -83,7 +84,7 @@ public class TokenTest extends RhnBaseTestCase {
         Token t = createTestToken();
         Long id = t.getId();
         TokenFactory.removeToken(t);
-        flushAndEvict(t);
+        TestUtils.flushAndEvict(t);
         assertNull(TokenFactory.lookupById(id));
     }
 
@@ -93,7 +94,7 @@ public class TokenTest extends RhnBaseTestCase {
         Channel c = ChannelFactoryTest.createTestChannel(t.getCreator());
         t.addChannel(c);
         TokenFactory.save(t);
-        t = reload(t);
+        t = TestUtils.reload(t);
         assertNotNull(t.getChannels());
         assertEquals(1, t.getChannels().size());
 
@@ -121,7 +122,7 @@ public class TokenTest extends RhnBaseTestCase {
         ls.add(global1);
         ls.add(global2);
 
-        t = reload(t);
+        t = TestUtils.reload(t);
         assertNotNull(t.getConfigChannelsFor(user));
         assertEquals(2, t.getConfigChannelsFor(user).size());
         assertEquals(ls, t.getConfigChannelsFor(user));
@@ -129,7 +130,7 @@ public class TokenTest extends RhnBaseTestCase {
 
     /**
      * Helper method to create a test Token
-     * @return Returns a Token
+     * @return a managed {@link Token} instance
      * @throws Exception something bad happened
      */
     public static Token createTestToken() throws Exception {
@@ -148,9 +149,9 @@ public class TokenTest extends RhnBaseTestCase {
         token.addEntitlement(ServerConstants.getServerGroupTypeEnterpriseEntitled());
 
         assertNull(token.getId());
-        TestUtils.saveAndFlush(token);
+        Token managed = TestUtils.saveAndFlush(token);
         assertNotNull(token.getId());
 
-        return token;
+        return managed;
     }
 }

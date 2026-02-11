@@ -49,7 +49,7 @@ public class KickstartPackageProfileActionTest extends RhnMockStrutsTestCase {
         ksdata.getKickstartDefaults().setProfile(null);
         addRequestParameter(RequestContext.KICKSTART_ID, ksdata.getId().toString());
         KickstartFactory.saveKickstartData(ksdata);
-        ksdata = (KickstartData) TestUtils.reload(ksdata);
+        ksdata = TestUtils.reload(ksdata);
         assertNull(ksdata.getKickstartDefaults().getProfile());
         TestUtils.flushAndEvict(ksdata);
     }
@@ -71,9 +71,9 @@ public class KickstartPackageProfileActionTest extends RhnMockStrutsTestCase {
         addDispatchCall(KickstartPackageProfileSetupAction.CLEAR_METHOD);
         setRequestPathInfo("/kickstart/KickstartPackageProfileEdit");
         actionPerform();
-        // Gotta make sure we can update the profile to the same entry twice
+        // Got to make sure we can update the profile to the same entry twice
         actionPerform();
-        ksdata = (KickstartData) TestUtils.reload(ksdata);
+        ksdata = TestUtils.reload(ksdata);
         assertNull(ksdata.getKickstartDefaults().getProfile());
         setRequestPathInfo("/kickstart/KickstartPackageProfileEdit");
         // Need to test that the SetupAction works after we

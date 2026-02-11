@@ -14,18 +14,19 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.action.Action;
 
-import org.hibernate.annotations.Type;
+import org.hibernate.type.YesNoConverter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 
 /**
  * PlaybookActionDetails - Class representation of the table rhnActionPlaybook.
@@ -37,7 +38,7 @@ public class PlaybookActionDetails extends BaseDomainHelper {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "act_playbook_seq")
     @SequenceGenerator(name = "act_playbook_seq", sequenceName = "rhn_act_playbook_id_seq", allocationSize = 1)
-    private long id;
+    private Long id;
 
     @Column(name = "playbook_path")
     private String playbookPath;
@@ -46,11 +47,11 @@ public class PlaybookActionDetails extends BaseDomainHelper {
     private String inventoryPath;
 
     @Column(name = "test_mode")
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private boolean testMode;
 
     @Column(name = "flush_cache")
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private boolean flushCache;
 
     @Column(name = "extra_vars")
@@ -63,14 +64,14 @@ public class PlaybookActionDetails extends BaseDomainHelper {
     /**
      * @return the id
      */
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
     /**
      * @param idIn the id to set
      */
-    protected void setId(long idIn) {
+    protected void setId(Long idIn) {
         this.id = idIn;
     }
 

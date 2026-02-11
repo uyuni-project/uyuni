@@ -18,31 +18,24 @@ package com.redhat.rhn.frontend.xmlrpc.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.XmlRpcServlet;
 import com.redhat.rhn.frontend.xmlrpc.serializer.SerializerFactory;
-import com.redhat.rhn.testing.MockObjectTestCase;
+import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.MockServletInputStream;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.jmock.Expectations;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Random;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-public class XmlRpcServletTest extends MockObjectTestCase {
-
-    @AfterEach
-    public void tearDown() {
-        HibernateFactory.closeSession();
-    }
+public class XmlRpcServletTest extends JMockBaseTestCaseWithUser {
 
     public void doTest(String request, String expectedResponse)
         throws Exception {

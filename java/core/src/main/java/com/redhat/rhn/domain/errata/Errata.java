@@ -29,6 +29,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.annotations.Type;
+import org.hibernate.type.YesNoConverter;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -36,24 +37,24 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.OrderColumn;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 
 /**
  * Errata - Class representation of the table rhnErrata.
@@ -75,7 +76,7 @@ public class Errata extends BaseDomainHelper {
                 name = "rhnErrataPackage",
                 joinColumns = @JoinColumn(name = "errata_id"),
                 inverseJoinColumns = @JoinColumn(name = "package_id"))
-    @OrderColumn(name = "package_id")
+    @OrderBy("id ASC")
     private Set<Package> packages;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -99,7 +100,7 @@ public class Errata extends BaseDomainHelper {
     private String advisoryType;
 
     @Column(name = "advisory_status")
-    @Type(type = "com.redhat.rhn.domain.errata.AdvisoryStatusEnumType")
+    @Type(value = com.redhat.rhn.domain.errata.AdvisoryStatusEnumType.class)
     private AdvisoryStatus advisoryStatus = AdvisoryStatus.FINAL;
 
     @Column
@@ -139,7 +140,7 @@ public class Errata extends BaseDomainHelper {
     private Long advisoryRel;
 
     @Column(name = "locally_modified")
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private Boolean locallyModified;
 
     @Column(name = "last_modified", updatable = false, insertable = false)

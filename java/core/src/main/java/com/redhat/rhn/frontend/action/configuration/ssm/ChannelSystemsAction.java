@@ -23,7 +23,7 @@ import com.redhat.rhn.frontend.struts.BaseListAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * ChannelSystems, list of systems for a config channel in ssm.

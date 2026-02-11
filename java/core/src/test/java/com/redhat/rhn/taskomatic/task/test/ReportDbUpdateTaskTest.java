@@ -50,7 +50,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import javax.persistence.Tuple;
+import jakarta.persistence.Tuple;
 
 public class ReportDbUpdateTaskTest extends JMockBaseTestCaseWithUser {
 
@@ -66,6 +66,10 @@ public class ReportDbUpdateTaskTest extends JMockBaseTestCaseWithUser {
     @AfterEach
     public void after() {
         if (reportDbConnectionManager != null) {
+//            if (reportDbConnectionManager.isTransactionPending()) {
+//                reportDbConnectionManager.rollbackTransaction();
+//            }
+
             reportDbConnectionManager.closeSession();
         }
     }
@@ -126,16 +130,8 @@ public class ReportDbUpdateTaskTest extends JMockBaseTestCaseWithUser {
         assertDoesNotThrow(() -> task.execute(contextMock));
 
         // Verify the results for each server
-        String query = "SELECT package_id, name, epoch, version, release, arch, type " +
-            "FROM SystemPackageUpdate " +
-            "WHERE mgm_id = 1 AND system_id = :id " +
-            "ORDER BY package_id";
-
         servers.forEach(testServer -> {
-            List<Tuple> resultList = getSession()
-                .createNativeQuery(query, Tuple.class)
-                .setParameter("id", testServer.getId())
-                .getResultList();
+            List<Tuple> resultList = getServerResults(testServer.getId());
             assertFalse(CollectionUtils.isEmpty(resultList),
                 "The updatable packages result list should not be empty");
 
@@ -168,6 +164,18 @@ public class ReportDbUpdateTaskTest extends JMockBaseTestCaseWithUser {
                 )
             );
         });
+    }
+
+    private List<Tuple> getServerResults(Long systemId) {
+        return getSession()
+                .createNativeQuery("""
+                                SELECT package_id, name, epoch, version, release, arch, type
+                                FROM SystemPackageUpdate
+                                WHERE mgm_id = 1 AND system_id = :id
+                                ORDER BY package_id
+                            """, Tuple.class)
+                .setParameter("id", systemId)
+                .getResultList();
     }
 
     private static synchronized Session getSession() {

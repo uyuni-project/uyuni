@@ -95,7 +95,7 @@ public class ConfigUploadMtimeActionTest extends RhnBaseTestCase {
         testAction.addServerAction(ServerActionTest.createServerAction(newS, testAction));
 
         ActionFactory.save(testAction);
-        flushAndEvict(testAction);
+        TestUtils.flushAndEvict(testAction);
         /*
          * Get action back out of db and make sure it committed correctly
          */

@@ -37,8 +37,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.persistence.NoResultException;
-import javax.persistence.Tuple;
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.Tuple;
 
 /**
  * MinionFactory - the singleton class used to fetch and store
@@ -173,17 +173,9 @@ public class MinionServerFactory extends HibernateFactory {
      * @return list of SSH minions
      */
     public static List<MinionServer> listSSHMinions() {
-        List<ContactMethod> contacts = getSession().createNativeQuery("""
-                                      SELECT * from suseServerContactMethod
-                                      WHERE label IN (:labels)
-                                      """, ContactMethod.class)
-                .setParameterList("labels", List.of("ssh-push", "ssh-push-tunnel"), StandardBasicTypes.STRING)
-                .getResultList();
-        return getSession().createQuery("""
-                FROM MinionServer
-                WHERE contactMethod IN (:contacts)
-                """, MinionServer.class)
-                .setParameterList("contacts", contacts)
+        return getSession()
+                .createQuery("FROM MinionServer m WHERE m.contactMethod.label IN (:labels)", MinionServer.class)
+                .setParameterList("labels", List.of("ssh-push", "ssh-push-tunnel"))
                 .getResultList();
     }
 
@@ -197,10 +189,8 @@ public class MinionServerFactory extends HibernateFactory {
        return HibernateFactory.getSession()
                .createQuery("""
                        SELECT sa
-                       FROM   ServerAction AS sa
-                       JOIN   sa.server AS s
-                       WHERE  type(s) != com.redhat.rhn.domain.server.MinionServer
-                       AND    action_id = :id
+                       FROM   ServerAction AS sa JOIN sa.server AS s
+                       WHERE  type(s) != MinionServer AND sa.parentAction.id = :id
                 """, ServerAction.class)
                .setParameter("id", actionId)
                .getResultList();
@@ -249,7 +239,7 @@ public class MinionServerFactory extends HibernateFactory {
                         JOIN   sa.server AS s
                         JOIN   s.contactMethod AS c
                         WHERE  type(s) = com.redhat.rhn.domain.server.MinionServer
-                        AND    action_id = :id
+                        AND    sa.parentAction.id = :id
                         AND    sa.status IN (:allowedStatues)
                         """, MinionSummary.class)
                        .setParameter("id", actionId)
@@ -287,13 +277,10 @@ public class MinionServerFactory extends HibernateFactory {
             return emptyList();
         }
 
-        return getSession().createNativeQuery("""
-                                      SELECT * from rhnServerNetInterface
-                                      WHERE hw_addr IN (:hwaddr)
-                                      """, NetworkInterface.class)
-                .setParameterList("hwaddr", hwAddrs, StandardBasicTypes.STRING)
-                .getResultList().stream()
-                .map(x -> x.getServer().getId()).collect(Collectors.toList());
+        return getSession()
+                .createQuery("SELECT n.server.id FROM NetworkInterface n WHERE n.hwaddr IN (:hwaddr)", Long.class)
+                .setParameterList("hwaddr", hwAddrs)
+                .getResultList();
     }
 
     /**
@@ -354,6 +341,7 @@ public class MinionServerFactory extends HibernateFactory {
                 FROM   suseMinionInfo m
                 WHERE  m.server_id IN (:serverIds)
                 """, Tuple.class)
+                .addSynchronizedEntityClass(MinionServer.class)
                 .setParameterList("serverIds", serverIds)
                 .addScalar("server_id", StandardBasicTypes.BIG_INTEGER)
                 .addScalar("minion_id", StandardBasicTypes.STRING)

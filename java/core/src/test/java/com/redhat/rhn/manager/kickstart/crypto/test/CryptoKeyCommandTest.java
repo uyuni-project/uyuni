@@ -27,6 +27,7 @@ import com.redhat.rhn.manager.kickstart.crypto.CreateCryptoKeyCommand;
 import com.redhat.rhn.manager.kickstart.crypto.DeleteCryptoKeyCommand;
 import com.redhat.rhn.manager.kickstart.crypto.EditCryptoKeyCommand;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
@@ -54,7 +55,7 @@ public class CryptoKeyCommandTest extends BaseTestCaseWithUser {
     public void testCreateCommand() throws Exception {
         setupKey(new CreateCryptoKeyCommand(user.getOrg()));
         CryptoKey key = cmd.getCryptoKey();
-        key = (CryptoKey) reload(key);
+        key = TestUtils.reload(key);
         assertNotNull(key.getId());
         assertNotNull(key.getKey());
     }
@@ -75,7 +76,7 @@ public class CryptoKeyCommandTest extends BaseTestCaseWithUser {
     public void testEdit() throws Exception {
         CryptoKey key = CryptoTest.createTestKey(user.getOrg());
         KickstartFactory.saveCryptoKey(key);
-        flushAndEvict(key);
+        TestUtils.flushAndEvict(key);
         setupKey(new EditCryptoKeyCommand(user, key.getId()));
         assertNotNull(cmd.getCryptoKey());
         assertNull(cmd.store());
@@ -87,7 +88,7 @@ public class CryptoKeyCommandTest extends BaseTestCaseWithUser {
         CryptoKey key = CryptoTest.createTestKey(user.getOrg());
         KickstartFactory.saveCryptoKey(key);
         assertNotNull(KickstartFactory.lookupCryptoKeyById(key.getId(), key.getOrg()));
-        flushAndEvict(key);
+        TestUtils.flushAndEvict(key);
         KickstartFactory.removeCryptoKey(key);
         assertNull(KickstartFactory.lookupCryptoKeyById(key.getId(), key.getOrg()));
 
@@ -95,7 +96,7 @@ public class CryptoKeyCommandTest extends BaseTestCaseWithUser {
         CryptoKey key2 = CryptoTest.createTestKey(user.getOrg());
         KickstartFactory.saveCryptoKey(key2);
         assertNotNull(KickstartFactory.lookupCryptoKeyById(key2.getId(), key2.getOrg()));
-        flushAndEvict(key2);
+        TestUtils.flushAndEvict(key2);
 
         //CryptoKey will be deleted by the cmd.store command in setupKey
         setupKey(new DeleteCryptoKeyCommand(user, key2.getId()));
@@ -107,7 +108,7 @@ public class CryptoKeyCommandTest extends BaseTestCaseWithUser {
         CryptoKey key = CryptoTest.createTestKey(user.getOrg());
         KickstartFactory.saveCryptoKey(key);
         assertNotNull(KickstartFactory.lookupCryptoKeyById(key.getId(), key.getOrg()));
-        flushAndEvict(key);
+        TestUtils.flushAndEvict(key);
 
         //CryptoKey will be deleted by the cmd.store command in setupKey
         setupKey(new DeleteCryptoKeyCommand(user, key.getId()));

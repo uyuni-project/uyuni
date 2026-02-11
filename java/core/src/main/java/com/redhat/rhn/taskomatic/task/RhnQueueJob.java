@@ -16,6 +16,7 @@ package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.domain.TaskoRun;
 import com.redhat.rhn.taskomatic.task.threaded.QueueDriver;
 import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
@@ -81,7 +82,7 @@ public abstract class RhnQueueJob<T extends QueueDriver> implements RhnJob {
             }
         }
         if (queue.changeRun(jobRun)) {
-            jobRun.start();
+            TaskoFactory.markStarted(jobRun);
             HibernateFactory.commitTransaction();
             HibernateFactory.closeSession();
             getLogger().debug("Starting run {}", jobRun.getId());
@@ -90,7 +91,7 @@ public abstract class RhnQueueJob<T extends QueueDriver> implements RhnJob {
             // close current run
             TaskoRun run = HibernateFactory.reload(jobRun);
             log.debug("Run with id {} handles the whole task queue.", queue.getQueueRun().getId());
-            run.skipped();
+            TaskoFactory.markSkipped(run);
             HibernateFactory.commitTransaction();
             HibernateFactory.closeSession();
         }

@@ -30,17 +30,26 @@ import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
 import com.redhat.rhn.common.util.RpmVersionComparator;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.action.Action;
+import com.redhat.rhn.domain.action.ActionStatus;
+import com.redhat.rhn.domain.action.ActionType;
+import com.redhat.rhn.domain.action.errata.ErrataAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.ReportDBCredentials;
 import com.redhat.rhn.domain.dto.SystemIDInfo;
 import com.redhat.rhn.domain.entitlement.Entitlement;
+import com.redhat.rhn.domain.errata.Errata;
+import com.redhat.rhn.domain.errata.Keyword;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.product.Tuple2;
+import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
+import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.legacy.UserImpl;
 import com.redhat.rhn.frontend.dto.HistoryEvent;
@@ -75,7 +84,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.persistence.Tuple;
+import jakarta.persistence.Tuple;
 
 /**
  * ServerFactory - the singleton class used to fetch and store
@@ -264,9 +273,9 @@ public class ServerFactory extends HibernateFactory {
      * */
     public static Set<OsReleasePair> listAllServersOsAndRelease() {
 
-        return getSession().createNativeQuery("""
-                SELECT DISTINCT s.os, s.release FROM rhnServer s
-                """, Tuple.class)
+        return getSession()
+                .createNativeQuery("SELECT DISTINCT s.os, s.release FROM rhnServer s", Tuple.class)
+                .addSynchronizedEntityClass(Server.class)
                 .addScalar("os", StandardBasicTypes.STRING)
                 .addScalar("release", StandardBasicTypes.STRING)
                 .stream()
@@ -291,6 +300,9 @@ public class ServerFactory extends HibernateFactory {
                                WHERE  USP.user_id = :user_id
                                AND    USP.server_id = s.id)
                 """, Tuple.class)
+                .addSynchronizedEntityClass(Server.class)
+                .addSynchronizedEntityClass(MinionServer.class)
+                .addSynchronizedEntityClass(UserImpl.class)
                 .setParameter("user_id", id)
                 .addScalar("minion_id", StandardBasicTypes.STRING)
                 .addScalar("server_id", StandardBasicTypes.LONG)
@@ -353,7 +365,6 @@ public class ServerFactory extends HibernateFactory {
                 return newPath;
             });
             path.setPosition(parentPath.getPosition() + 1);
-            ServerFactory.save(path);
             paths.add(path);
 
         }
@@ -366,7 +377,6 @@ public class ServerFactory extends HibernateFactory {
             return newPath;
         });
         path.setPosition(0L);
-        ServerFactory.save(path);
         paths.add(path);
         return paths;
     }
@@ -592,6 +602,13 @@ public class ServerFactory extends HibernateFactory {
                                    AND    AEU.errata_id = E.id )
                 ORDER BY E.id
                 """, Tuple.class)
+                .addSynchronizedEntityClass(Errata.class)
+                .addSynchronizedEntityClass(Server.class)
+                .addSynchronizedEntityClass(Package.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(ErrataAction.class)
+                .addSynchronizedEntityClass(ServerAction.class)
+                .addSynchronizedEntityClass(ActionStatus.class)
                 .setParameterList("serverIds", serverIds)
                 .setParameter("user_id", user.getId())
                 .addScalar("serverId", StandardBasicTypes.LONG)
@@ -617,7 +634,7 @@ public class ServerFactory extends HibernateFactory {
                         FROM   ServerAction sa
                         WHERE  sa.server.id IN (:systemIds)
                         AND    sa.parentAction.actionType.label = 'reboot.reboot'
-                        AND    status in ( 0, 1 )
+                        AND    sa.status.id in ( 0, 1 )
                         """, Long.class)
                 .setParameter("systemIds", sids)
                 .list();
@@ -634,7 +651,7 @@ public class ServerFactory extends HibernateFactory {
             return Collections.emptyList();
         }
         return getSession()
-                .createQuery("FROM Server AS s WHERE ORG_ID = :orgId AND s.id IN (:serverIds)", Server.class)
+                .createQuery("FROM Server AS s WHERE s.org.id = :orgId AND s.id IN (:serverIds)", Server.class)
                 .setParameter("orgId", org.getId())
                 .setParameterList("serverIds", serverIds)
                 .list();
@@ -717,7 +734,7 @@ public class ServerFactory extends HibernateFactory {
         if (id == null || orgIn == null) {
             return null;
         }
-        return getSession().createQuery("FROM Server AS s WHERE s.id = :sid AND ORG_ID = :orgId", Server.class)
+        return getSession().createQuery("FROM Server AS s WHERE s.id = :sid AND org.id = :orgId", Server.class)
                 .setParameter("sid", id)
                 .setParameter("orgId", orgIn.getId())
                 .uniqueResult();
@@ -764,6 +781,12 @@ public class ServerFactory extends HibernateFactory {
                        AND EXISTS(SELECT 1 FROM rhnServerFeaturesView SFV WHERE SFV.server_id = ST.element
                        AND SFV.label = 'ftr_config')
                     ORDER BY S.name, SCC.position""", Tuple.class)
+                .addSynchronizedEntityClass(Server.class)
+                .addSynchronizedEntityClass(MinionServer.class)
+                .addSynchronizedEntityClass(ConfigChannel.class)
+                .addSynchronizedEntityClass(Feature.class)
+                .addSynchronizedEntityClass(ServerGroupType.class)
+                .addSynchronizedEntityClass(ServerGroup.class)
                 .addScalar("id", StandardBasicTypes.LONG)
                 .addScalar("machine_id", StandardBasicTypes.STRING)
                 .addScalar("minion_id", StandardBasicTypes.STRING)
@@ -830,6 +853,13 @@ public class ServerFactory extends HibernateFactory {
                                    AND EXISTS(SELECT 1 FROM rhnServerFeaturesView SFV WHERE SFV.server_id = S.id
                                    AND SFV.label = 'ftr_config')
                                 ORDER BY S.name, SCC.position""", Tuple.class)
+                .addSynchronizedEntityClass(Server.class)
+                .addSynchronizedEntityClass(MinionServer.class)
+                .addSynchronizedEntityClass(ConfigChannel.class)
+                .addSynchronizedEntityClass(Feature.class)
+                .addSynchronizedEntityClass(ServerGroupType.class)
+                .addSynchronizedEntityClass(ServerGroup.class)
+                .addSynchronizedEntityClass(UserImpl.class)
                 .addScalar("id", StandardBasicTypes.LONG)
                 .addScalar("machine_id", StandardBasicTypes.STRING)
                 .addScalar("minion_id", StandardBasicTypes.STRING)
@@ -906,34 +936,43 @@ public class ServerFactory extends HibernateFactory {
     /**
      * Insert or Update a Server.
      * @param serverIn Server to be stored in database.
+     * @return the managed {@link Server} instance
+     * @param <T> the type of {@link Server}
      */
-    public static void save(Server serverIn) {
-        SINGLETON.saveObject(serverIn);
-        updateServerPerms(serverIn);
+    public static <T extends Server> T save(T serverIn) {
+        T managed = SINGLETON.saveObject(serverIn);
+        updateServerPerms(managed);
+        return managed;
     }
 
     /**
      * Insert or Update a ServerPath.
+     *
      * @param pathIn ServerPath to be stored in database.
+     * @return the managed {@link ServerPath} instance
      */
-    public static void save(ServerPath pathIn) {
-        SINGLETON.saveObject(pathIn);
+    public static ServerPath save(ServerPath pathIn) {
+        return SINGLETON.saveObject(pathIn);
     }
 
     /**
      * Insert or Update InstalledProduct
+     *
      * @param productIn product to store in database
+     * @return the managed {@link InstalledProduct} instance
      */
-    public static void save(InstalledProduct productIn) {
-        SINGLETON.saveObject(productIn);
+    public static InstalledProduct save(InstalledProduct productIn) {
+        return SINGLETON.saveObject(productIn);
     }
 
     /**
      * Save a custom data key
+     *
      * @param keyIn the key to save
+     * @return the managed {@link CustomDataKey} instance
      */
-    public static void saveCustomKey(CustomDataKey keyIn) {
-        SINGLETON.saveObject(keyIn);
+    public static CustomDataKey saveCustomKey(CustomDataKey keyIn) {
+        return SINGLETON.saveObject(keyIn);
     }
 
     /**
@@ -976,9 +1015,7 @@ public class ServerFactory extends HibernateFactory {
      * @param server The server to delete
      */
     public static void delete(Server server) {
-        HibernateFactory.getSession().evict(server);
-        CallableMode m = ModeFactory.getCallableMode(SYSTEM_QUERIES,
-                "delete_server");
+        CallableMode m = ModeFactory.getCallableMode(SYSTEM_QUERIES, "delete_server");
         Map<String, Object> in = new HashMap<>();
         in.put("server_id", server.getId());
         m.execute(in, new HashMap<>());
@@ -986,8 +1023,7 @@ public class ServerFactory extends HibernateFactory {
     }
 
     private static void updateServerPerms(Server server) {
-        CallableMode m = ModeFactory.getCallableMode(SYSTEM_QUERIES,
-                "update_perms_for_server");
+        CallableMode m = ModeFactory.getCallableMode(SYSTEM_QUERIES, "update_perms_for_server");
         Map<String, Object> inParams = new HashMap<>();
         inParams.put("sid", server.getId());
         m.execute(inParams, new HashMap<>());
@@ -1054,14 +1090,10 @@ public class ServerFactory extends HibernateFactory {
      * @return list of User objects that can administer the system
      */
     public static List<User> listAdministrators(Server server) {
-        return getSession().createNativeQuery("""
-                select     wc.*
-                from       WEB_CONTACT wc
-                inner join rhnUserServerPerms usp on wc.id = usp.user_id
-                inner join rhnServer S on S.id = usp.server_id
-                where      s.id = :sid
-                and        s.org_id = :org_id
-                """, UserImpl.class)
+        return getSession().createQuery("""
+                                FROM UserImpl u JOIN u.servers s
+                                WHERE s.id = :sid AND s.org.id = :org_id
+                                """, UserImpl.class)
                 .setParameter("sid", server.getId())
                 .setParameter("org_id", server.getOrg().getId())
                 .stream()
@@ -1075,15 +1107,11 @@ public class ServerFactory extends HibernateFactory {
      * @return channel arch
      */
     public static ChannelArch findCompatibleChannelArch(ServerArch serverArch) {
-        Session session = HibernateFactory.getSession();
-        return session.createNativeQuery(
-                        """
-                            SELECT ca.* FROM rhnServerChannelArchCompat sc
-                            JOIN rhnChannelArch ca ON sc.channel_arch_id = ca.id
-                            WHERE sc.server_arch_id = :server_arch_id
-                            """, ChannelArch.class)
-                .setParameter("server_arch_id", serverArch.getId())
-                //Retrieve from cache if there
+        return getSession().createQuery("""
+                                    FROM ChannelArch a JOIN a.compatibleServerArches ca
+                                    WHERE ca.id = :serverArchId
+                                    """, ChannelArch.class)
+                .setParameter("serverArchId", serverArch.getId())
                 .setCacheable(true)
                 .uniqueResult();
     }
@@ -1109,18 +1137,12 @@ public class ServerFactory extends HibernateFactory {
      * @return a list of Proxy Server objects
      */
     public static List<Server> lookupProxiesByOrg(User user) {
-
-        return getSession().createNativeQuery("""
-                select     S.*,
-                           mi.*,
-                           case when mi.server_id is not null then 1 else 0 end as clazz_
-                from       rhnServer S
-                inner join rhnUserServerPerms USP on USP.server_id = S.id
-                inner join rhnProxyInfo rpi on rpi.server_id = S.id
-                left join  suseMinionInfo mi on mi.server_id = S.id
-                where      S.org_id = :orgId
-                and        USP.user_id = :userId
-                """, Server.class)
+        return getSession().createQuery("""
+                                SELECT usp.server
+                                FROM UserServerPermission usp
+                                WHERE usp.user.id = :userId
+                                        AND usp.server.org.id = :orgId
+                                """, Server.class)
                 .setParameter("userId", user.getId())
                 .setParameter("orgId", user.getOrg().getId())
                 .list();
@@ -1153,17 +1175,30 @@ public class ServerFactory extends HibernateFactory {
     public static List<Server> listSystemsInSsm(User user) {
         return getSession().createNativeQuery("""
                 select           S.*,
+                                 mi.container_runtime,
+                                 mi.minion_id,
+                                 mi.kernel_live_version,
+                                 mi.ssh_push_port,
+                                 mi.reboot_required_after,
+                                 mi.uname,
+                                 mi.os_family,
                                  case when ss.server_id is not null then 2
                                       when proxy.server_id is not null then 3
-                                      when S.id is not null then 0 end as clazz_
+                                      when mi.server_id is not null then 1
+                                      else 0 end as clazz_
                 from             rhnServer S
                 left outer join  suseMgrServerInfo SS on S.id = SS.server_id
                 left outer join  rhnProxyInfo proxy on S.id = proxy.server_id
+                left join        suseMinionInfo mi on mi.server_id = S.id
                 inner join       rhnSet ST on S.id = st.element
                 where            ST.user_id = :userId
                 and              ST.label = :label
                 and              S.id not in (SELECT server_id FROM rhnProxyInfo)
                 """, Server.class)
+                .addSynchronizedEntityClass(Server.class)
+                .addSynchronizedEntityClass(MgrServerInfo.class)
+                .addSynchronizedEntityClass(ProxyInfo.class)
+                .addSynchronizedEntityClass(MinionServer.class)
                 .setParameter("userId", user.getId())
                 .setParameter("label", RhnSetDecl.SYSTEMS.getLabel())
                 .list();
@@ -1391,7 +1426,7 @@ public class ServerFactory extends HibernateFactory {
     public static void deleteSnapshots(Org org, Date startDate, Date endDate) {
 
         if ((startDate != null) && (endDate != null)) {
-            getSession().createQuery("""
+            getSession().createMutationQuery("""
                             DELETE FROM ServerSnapshot AS s
                             WHERE s.org = :org AND
                             s.created >= :start_date AND
@@ -1402,7 +1437,7 @@ public class ServerFactory extends HibernateFactory {
                     .executeUpdate();
         }
         else if (startDate != null) {
-            getSession().createQuery("""
+            getSession().createMutationQuery("""
                             DELETE FROM ServerSnapshot AS s
                             WHERE s.org = :org AND
                             s.created >= :start_date""")
@@ -1411,7 +1446,7 @@ public class ServerFactory extends HibernateFactory {
                     .executeUpdate();
         }
         else {
-            getSession().createQuery("""
+            getSession().createMutationQuery("""
                             DELETE FROM ServerSnapshot AS s
                             WHERE s.org = :org""")
                     .setParameter("org", org)
@@ -1439,7 +1474,7 @@ public class ServerFactory extends HibernateFactory {
             Date startDate, Date endDate) {
 
         if ((startDate != null) && (endDate != null)) {
-            getSession().createQuery("""
+            getSession().createMutationQuery("""
                             DELETE FROM ServerSnapshot AS s
                             WHERE s.server = :server AND
                             s.org = :org AND
@@ -1452,7 +1487,7 @@ public class ServerFactory extends HibernateFactory {
                     .executeUpdate();
         }
         else if (startDate != null) {
-            getSession().createQuery("""
+            getSession().createMutationQuery("""
                             DELETE FROM ServerSnapshot AS s
                             WHERE s.server = :server AND
                             s.org = :org AND
@@ -1463,7 +1498,7 @@ public class ServerFactory extends HibernateFactory {
                     .executeUpdate();
         }
         else {
-            getSession().createQuery("""
+            getSession().createMutationQuery("""
                             DELETE FROM ServerSnapshot AS s
                             WHERE s.server = :server AND
                             s.org = :org""")
@@ -1712,6 +1747,12 @@ public class ServerFactory extends HibernateFactory {
                 WHERE           e.id in (:errataIds)
                 AND             sc.server_id in (:serverIds)
                 """, Tuple.class)
+                .addSynchronizedEntityClass(Keyword.class)
+                .addSynchronizedEntityClass(Errata.class)
+                .addSynchronizedEntityClass(Package.class)
+                .addSynchronizedEntityClass(PackageName.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(Server.class)
                 .setParameterList("serverIds", serverIds)
                 .setParameterList("errataIds", errataIds)
                 .addScalar("errataId", StandardBasicTypes.LONG)
@@ -1793,6 +1834,14 @@ public class ServerFactory extends HibernateFactory {
                        END AS packageVersion
                 FROM NewPackageForServerErrata pse
                 """, Tuple.class)
+                .addSynchronizedEntityClass(Errata.class)
+                .addSynchronizedEntityClass(Package.class)
+                .addSynchronizedEntityClass(PackageName.class)
+                .addSynchronizedEntityClass(PackageEvr.class)
+                .addSynchronizedEntityClass(PackageArch.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(Server.class)
+                .addSynchronizedEntityClass(InstalledPackage.class)
                 .setParameterList("serverIds", serverIds)
                 .setParameterList("errataIds", errataIds)
                 .addScalar("serverId", StandardBasicTypes.LONG)
@@ -1813,10 +1862,12 @@ public class ServerFactory extends HibernateFactory {
 
     /**
      * Save NetworkInterface
+     *
      * @param networkInterfaceIn the interface to save
+     * @return the managed {@link NetworkInterface} instance
      */
-    public static void saveNetworkInterface(NetworkInterface networkInterfaceIn) {
-        SINGLETON.saveObject(networkInterfaceIn);
+    public static NetworkInterface saveNetworkInterface(NetworkInterface networkInterfaceIn) {
+        return SINGLETON.saveObject(networkInterfaceIn);
     }
 
 
@@ -1856,6 +1907,8 @@ public class ServerFactory extends HibernateFactory {
                 JOIN   rhnServerChannel sc ON s.id=sc.server_id AND sc.channel_id=:channel_id
                 JOIN   rhnSet rset ON rset.element = s.id AND rset.user_id = :user_id AND rset.label = 'system_list'
                 """, Tuple.class)
+                .addSynchronizedEntityClass(Server.class)
+                .addSynchronizedEntityClass(Channel.class)
                 .setParameter("user_id", user.getId())
                 .setParameter("channel_id", channelId)
                 .addScalar("serverId", StandardBasicTypes.LONG)
@@ -1896,7 +1949,7 @@ public class ServerFactory extends HibernateFactory {
      */
     public static List<Server> listOrgSystems(long orgId) {
         return getSession()
-                .createQuery("FROM com.redhat.rhn.domain.server.Server AS s WHERE ORG_ID = :orgId", Server.class)
+                .createQuery("FROM com.redhat.rhn.domain.server.Server AS s WHERE s.org.id = :orgId", Server.class)
                 .setParameter("orgId", orgId)
                 .list();
     }
@@ -1920,6 +1973,8 @@ public class ServerFactory extends HibernateFactory {
                     """, ServerAction.class
                 )
                 .addSynchronizedEntityClass(Action.class)
+                .addSynchronizedEntityClass(ServerAction.class)
+                .addSynchronizedEntityClass(ActionType.class)
                 .setParameterList("systemIds", systemIds, StandardBasicTypes.LONG)
                 .getResultList().stream().map(ServerAction::getServerId).collect(Collectors.toSet());
     }
@@ -1935,7 +1990,7 @@ public class ServerFactory extends HibernateFactory {
         if (systemIds.isEmpty()) {
             return 0;
         }
-        return getSession().createQuery("""
+        return getSession().createMutationQuery("""
                 UPDATE Server s
                 SET    s.maintenanceSchedule = :schedule
                 WHERE  s.id IN (:systemIds)

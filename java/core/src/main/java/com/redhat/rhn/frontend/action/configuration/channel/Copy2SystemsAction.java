@@ -25,7 +25,7 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Copy2SystemsAction

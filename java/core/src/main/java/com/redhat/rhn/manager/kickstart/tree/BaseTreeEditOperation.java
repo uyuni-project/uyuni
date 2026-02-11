@@ -74,7 +74,6 @@ public abstract class BaseTreeEditOperation extends BasePersistOperation {
     @Override
     public ValidatorError store() {
         if (!this.validateLabel()) {
-            HibernateFactory.getSession().evict(this.tree);
             return new ValidatorError("kickstart.tree.invalidlabel");
         }
 
@@ -85,7 +84,7 @@ public abstract class BaseTreeEditOperation extends BasePersistOperation {
             return ve.getResult().getErrors().get(0);
         }
 
-        KickstartFactory.saveKickstartableTree(this.tree);
+        this.tree = KickstartFactory.saveKickstartableTree(this.tree);
         // Sync to cobbler
         try {
             CobblerCommand command = getCobblerCommand();

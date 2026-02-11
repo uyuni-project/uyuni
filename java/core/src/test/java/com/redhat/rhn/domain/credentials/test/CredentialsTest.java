@@ -21,6 +21,7 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -41,7 +42,7 @@ public class CredentialsTest extends JMockBaseTestCaseWithUser {
     public void testSCCCredentials() throws Exception {
         SCCCredentials sccCreds = CredentialsFactory.createSCCCredentials("admin", "secret");
         CredentialsFactory.storeCredentials(sccCreds);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         Optional<SCCCredentials> loadedSccCreds = CredentialsFactory.lookupSCCCredentialsById(sccCreds.getId());
         SCCCredentials creds = loadedSccCreds.orElseThrow();
@@ -49,10 +50,13 @@ public class CredentialsTest extends JMockBaseTestCaseWithUser {
         assertEquals("admin", creds.getUsername());
         assertEquals("secret", creds.getPassword());
 
-        Optional r = HibernateFactory.getSession()
-                .createNativeQuery("select password from suseCredentials where username = 'admin';")
-                .uniqueResultOptional();
-        // this prove that we really store encoded content in DB
-        assertEquals("c2VjcmV0", r.orElseThrow().toString());
+        // this proves that we really store encoded content in DB
+        assertEquals("c2VjcmV0", getCryptedAdminPassword());
+    }
+
+    private String getCryptedAdminPassword() {
+        return HibernateFactory.getSession()
+                .createNativeQuery("select password from suseCredentials where username = 'admin'", String.class)
+                .uniqueResult();
     }
 }

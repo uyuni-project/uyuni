@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LCC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -59,10 +60,8 @@ public class KickstartIpTest extends BaseTestCaseWithUser {
 
         ksdata.addIpRange(ip1);
         ksdata.addIpRange(ip2);
-        TestUtils.saveAndFlush(ip1);
-        TestUtils.saveAndFlush(ip2);
         KickstartFactory.saveKickstartData(ksdata);
-        ksdata = (KickstartData) TestUtils.reload(ksdata);
+        ksdata = TestUtils.reload(ksdata);
         assertEquals(ip1.getKsdata(), ip2.getKsdata());
         return ksdata;
     }

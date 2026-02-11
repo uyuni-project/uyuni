@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.FaultException;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageSource;
 import com.redhat.rhn.domain.rhnpackage.test.PackageFactoryTest;
@@ -30,6 +29,7 @@ import com.redhat.rhn.domain.rpm.test.SourceRpmTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.packages.PackagesHandler;
 import com.redhat.rhn.frontend.xmlrpc.test.BaseHandlerTestCase;
+import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.Test;
@@ -169,7 +169,7 @@ public class PackagesHandlerTest extends BaseHandlerTestCase {
         User user = new UserTestUtils.UserBuilder().orgId(admin.getOrg().getId()).build();
         SourceRpm srpm = SourceRpmTest.createTestSourceRpm();
         PackageSource pkg = PackageTest.createTestPackageSource(srpm, user.getOrg());
-        HibernateFactory.getSession().persist(pkg);
+        TestUtils.persist(pkg);
         handler.removeSourcePackage(admin, pkg.getId().intValue());
     }
 
@@ -197,7 +197,7 @@ public class PackagesHandlerTest extends BaseHandlerTestCase {
         for (int i = 0; i < 3; i++) {
             SourceRpm srpm = SourceRpmTest.createTestSourceRpm();
             PackageSource pkg = PackageTest.createTestPackageSource(srpm, user.getOrg());
-            HibernateFactory.getSession().persist(pkg);
+            TestUtils.persist(pkg);
         }
         Object[] result2 = handler.listSourcePackages(user);
         assertEquals(3, result2.length - result1.length);

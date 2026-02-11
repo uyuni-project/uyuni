@@ -1748,12 +1748,6 @@ SELECT 1
     </query>
 </mode>
 
-<write-mode name="delete_note">
-  <query params="id,server_id">
-delete from rhnServerNotes where id = :id and server_id = :server_id
-  </query>
-</write-mode>
-
 <!-- Lifted from web/modules/rhn/RHN/DB/DataSource/xml/System_queries.xml with slight changes -->
 <mode name="users_systems_with_value_for_key">
   <query params="user_id, cikid">

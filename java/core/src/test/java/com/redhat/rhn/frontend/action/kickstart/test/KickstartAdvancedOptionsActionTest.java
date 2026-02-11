@@ -41,8 +41,8 @@ public class KickstartAdvancedOptionsActionTest extends RhnPostMockStrutsTestCas
         this.ksdata = KickstartDataTest.createKickstartWithChannel(user.getOrg());
         this.ksdataOptions = KickstartDataTest.createKickstartWithOptions(user.getOrg());
 
-        TestUtils.saveAndFlush(ksdata);
-        TestUtils.saveAndFlush(ksdataOptions);
+        ksdata = TestUtils.saveAndFlush(ksdata);
+        ksdataOptions = TestUtils.saveAndFlush(ksdataOptions);
 
         addRequestParameter(RequestContext.KICKSTART_ID, this.ksdata.getId().toString());
     }

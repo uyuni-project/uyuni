@@ -47,7 +47,6 @@ import com.redhat.rhn.domain.action.script.ScriptActionDetails;
 import com.redhat.rhn.domain.action.script.ScriptResult;
 import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
-import com.redhat.rhn.domain.action.server.test.ServerActionTest;
 import com.redhat.rhn.domain.action.supportdata.SupportDataAction;
 import com.redhat.rhn.domain.action.supportdata.SupportDataActionDetails;
 import com.redhat.rhn.domain.channel.Channel;
@@ -279,7 +278,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         NetworkInterface device = NetworkInterfaceTest.createTestNetworkInterface(server);
         server.addNetworkInterface(device);
         assertEquals(1, server.getNetworkInterfaces().size());
-        TestUtils.saveAndFlush(server);
+        server = TestUtils.saveAndFlush(server);
 
         List<NetworkInterface> results = handler.getNetworkDevices(admin, server.getId().intValue());
         assertEquals(1, results.size());
@@ -380,15 +379,17 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         //subscribe to base channel.
         SystemManager.subscribeServerToChannel(admin, server, base);
-        TestUtils.flushAndEvict(server);
-        server = reload(server);
         assertNotNull(server.getBaseChannel());
 
         List cids = new ArrayList<>();
         cids.add(child1.getId().intValue());
         cids.add(child2.getId().intValue());
 
+        TestUtils.flushAndClearSession();
+
         int result = handler.setChildChannels(admin, sid, cids);
+
+        server = TestUtils.reload(server);
         Optional<Action> first = ActionFactory.listActionsForServer(admin, server).stream()
                 .filter(a -> a.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS))
                 .findFirst();
@@ -399,10 +400,10 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         sa.execute(first.get(), false, false, Optional.empty());
         finishedActions.add(first.get().getId());
 
-        TestUtils.flushAndEvict(server);
-        server = TestUtils.reload(server);
         assertEquals(1, result);
         assertEquals(3, server.getChannels().size());
+
+        TestUtils.flushAndClearSession();
 
         //Try 'unsubscribing' from child1...
         cids = new ArrayList<>();
@@ -410,6 +411,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertEquals(1, cids.size());
 
         result = handler.setChildChannels(admin, sid, cids);
+        server = TestUtils.reload(server);
         first = ActionFactory.listActionsForServer(admin, server).stream()
                 .filter(a -> !finishedActions.contains(a.getId()))
                 .filter(a -> a.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS))
@@ -421,10 +423,10 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         sa.execute(first.get(), false, false, Optional.empty());
         finishedActions.add(first.get().getId());
 
-        TestUtils.flushAndEvict(server);
-        server = TestUtils.reload(server);
         assertEquals(1, result);
         assertEquals(2, server.getChannels().size());
+
+        TestUtils.flushAndClearSession();
 
         //Try putting an invalid channel in there
         cids = new ArrayList<>();
@@ -436,6 +438,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             handler.setChildChannels(admin, sid, finalCids);
         }, "SystemHandler.setChildChannels allowed invalid child channel to be set.");
         assertEquals(2, server.getChannels().size());
+
+        TestUtils.flushAndClearSession();
 
         Channel base2 = ChannelFactoryTest.createTestChannel(admin);
         base2.setParentChannel(null);
@@ -451,9 +455,9 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             //success
         }
 
-        TestUtils.flushAndEvict(server);
-        server = reload(server);
         assertEquals(2, server.getChannels().size());
+
+        TestUtils.flushAndClearSession();
 
         // try setting the base channel of an s390 server to
         // IA-32.
@@ -464,8 +468,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             ia32Children.add(child2.getId().intValue());
 
             // change the arch of the server
-            finalServer.setServerArch(
-                    ServerFactory.lookupServerArchByLabel("s390-redhat-linux"));
+            finalServer.setServerArch(ServerFactory.lookupServerArchByLabel("s390-redhat-linux"));
             ServerFactory.save(finalServer);
 
             handler.setChildChannels(admin, sid, ia32Children);
@@ -497,20 +500,18 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         child2.setParentChannel(base);
         String child2Label = child2.getLabel();
 
-        TestUtils.flushAndEvict(child1);
-        TestUtils.flushAndEvict(child2);
-
         //subscribe to base channel.
         SystemManager.subscribeServerToChannel(admin, server, base);
-        TestUtils.saveAndFlush(server);
-        server = reload(server);
+        server = ServerFactory.save(server);
         assertNotNull(server.getBaseChannel());
 
         List<String> channelLabels = new ArrayList<>();
         channelLabels.add(child1Label);
         channelLabels.add(child2Label);
 
+        TestUtils.flushAndClearSession();
         int result = handler.setChildChannels(admin, sid, channelLabels);
+        server = TestUtils.reload(server);
         Optional<Action> first = ActionFactory.listActionsForServer(admin, server).stream()
                 .filter(a -> a.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS))
                 .findFirst();
@@ -521,17 +522,18 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         sa.execute(first.get(), false, false, Optional.empty());
         finishedActions.add(first.get().getId());
 
-        TestUtils.flushAndEvict(server);
-        server = TestUtils.reload(server);
         assertEquals(1, result);
         assertEquals(3, server.getChannels().size());
 
         //Try 'unsubscribing' from child1...
+        TestUtils.flushAndClearSession();
+
         channelLabels = new ArrayList<>();
         channelLabels.add(child2Label);
         assertEquals(1, channelLabels.size());
 
         result = handler.setChildChannels(admin, sid, channelLabels);
+        server = TestUtils.reload(server);
         first = ActionFactory.listActionsForServer(admin, server).stream()
                 .filter(a -> !finishedActions.contains(a.getId()))
                 .filter(a -> a.getActionType().equals(ActionFactory.TYPE_SUBSCRIBE_CHANNELS))
@@ -543,12 +545,12 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         sa.execute(first.get(), false, false, Optional.empty());
         finishedActions.add(first.get().getId());
 
-        TestUtils.flushAndEvict(server);
-        server = TestUtils.reload(server);
         assertEquals(1, result);
         assertEquals(2, server.getChannels().size());
 
         //Try putting an invalid channel in there
+        TestUtils.flushAndClearSession();
+
         channelLabels = new ArrayList<>();
         channelLabels.add("invalid-unknown-channel-label");
         assertEquals(1, channelLabels.size());
@@ -559,8 +561,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         }, "SystemHandler.setChildChannels allowed invalid child channel to be set.");
         assertEquals(2, server.getChannels().size());
 
-        TestUtils.flushAndEvict(server);
-        server = TestUtils.reload(server);
+        TestUtils.flushAndClearSession();
 
         Channel base2 = ChannelFactoryTest.createTestChannel(admin);
         base2.setParentChannel(null);
@@ -576,12 +577,13 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             //success
         }
 
-        TestUtils.flushAndEvict(server);
-        server = reload(server);
+        server = TestUtils.reload(server);
         assertEquals(2, server.getChannels().size());
 
         // try setting the base channel of an s390 server to
         // IA-32.
+        TestUtils.flushAndClearSession();
+
         Server finalServer = server;
         assertThrows(InvalidChannelException.class, () -> {
             List ia32Children = new ArrayList<>();
@@ -632,10 +634,9 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         sa.execute(first.get(), false, false, Optional.empty());
         finishedActions.add(first.get().getId());
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
-        server = reload(server);
+        server = TestUtils.reload(server);
         assertEquals(1, result);
         assertNotNull(server.getBaseChannel());
         assertEquals(server.getBaseChannel().getLabel(), base1.getLabel());
@@ -652,8 +653,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         }
         sa.execute(first.get(), false, false, Optional.empty());
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         server = TestUtils.reload(server);
         assertEquals(1, result);
@@ -722,10 +722,9 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         sa.execute(first.get(), false, false, Optional.empty());
         finishedActions.add(first.get().getId());
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
-        server = reload(server);
+        server = TestUtils.reload(server);
         assertEquals(1, result);
         assertNotNull(server.getBaseChannel());
         assertEquals(server.getBaseChannel().getLabel(), base1.getLabel());
@@ -743,8 +742,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         sa.execute(first.get(), false, false, Optional.empty());
         finishedActions.add(first.get().getId());
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         server = TestUtils.reload(server);
         assertEquals(1, result);
@@ -893,7 +891,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         //server shouldn't have any channels yet
         assertEquals(0, result.length);
         SystemManager.subscribeServerToChannel(admin, server, parent);
-        server = reload(server);
+        server = TestUtils.reload(server);
         result = handler.listSubscribableChildChannels(admin,
                 server.getId().intValue());
 
@@ -935,7 +933,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         //server shouldn't have any channels yet
         assertEquals(0, result.length);
         SystemManager.subscribeServerToChannel(admin, server, parent);
-        server = reload(server);
+        server = TestUtils.reload(server);
 
         result = handler.listSubscribableChildChannels(admin, server.getId().intValue());
 
@@ -1118,8 +1116,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     public void testScheduleVirtProvision() throws Exception {
         Server server = ServerTestUtils.createTestSystem(admin);
         systemEntitlementManager.setBaseEntitlement(server, EntitlementManager.MANAGEMENT);
-        TestUtils.saveAndFlush(server);
-        server = reload(server);
+        server = TestUtils.saveAndFlush(server);
+        server = TestUtils.reload(server);
         KickstartDataTest.setupTestConfiguration(admin);
         KickstartData k = KickstartDataTest.createKickstartWithProfile(admin);
         KickstartDataTest.addCommand(admin, k, "url", "--url http://cascade.sfbay.redhat." +
@@ -1205,7 +1203,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         // Commit in this test is mandatory as creation date keeps updating while the object is not actually stored
         // in the database
-        commitAndCloseSession();
+        TestUtils.commitAndCloseSession();
         commitHappened();
 
         Thread.sleep(2_000);
@@ -1217,7 +1215,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         action = ActionManager.schedulePackageRefresh(admin, server, new Date());
         ActionFactory.save(action);
-        commitAndCloseSession();
+        TestUtils.commitAndCloseSession();
+        commitHappened();
 
         results = handler.listSystemEvents(admin, server.getId().intValue());
         assertEquals(3, results.size());
@@ -1317,7 +1316,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         int setResult = handler.setCustomValues(admin, server.getId().intValue(), valuesToSet);
 
-        server = reload(server);
+        server = TestUtils.reload(server);
 
         //make sure the val was updated
         val = server.getCustomDataValue(testKey);
@@ -1373,7 +1372,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         assertEquals(1, setResult);
 
-        server = reload(server);
+        server = TestUtils.reload(server);
 
         val = server.getCustomDataValue(testKey);
         assertNull(val);
@@ -1616,8 +1615,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         Set<ServerHistoryEvent> history = server.getHistory();
         server.setHistory(history);
-        TestUtils.saveAndFlush(event);
-        TestUtils.saveAndFlush(server);
+        event = TestUtils.saveAndFlush(event);
+        server = TestUtils.saveAndFlush(server);
 
         Object[] supposedHistory = handler.getEventHistory(admin,
                 server.getId().intValue());
@@ -1634,20 +1633,16 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         event.setServer(server);
         event.setDetails("details");
         event.setSummary("summary");
+        server.getHistory().add(event);
+        server = ServerFactory.save(server);
 
-        Set<ServerHistoryEvent> history = server.getHistory();
-        server.setHistory(history);
-        TestUtils.saveAndFlush(event);
-        TestUtils.saveAndFlush(server);
-
-        Action action = ActionManager.scheduleApplyStates(admin, Collections.singletonList(server.getId()),
-                Arrays.asList("channels", "packages"), new Date());
-
-        final ServerAction serverAction = ServerActionTest.createServerAction(server, action);
+        var action = ActionManager.scheduleApplyStates(admin, List.of(server.getId()), List.of("channels", "packages"),
+                new Date());
+        var serverAction = action.getServerAction(server.getId());
         serverAction.setStatusPickedUp();
 
-        ActionFactory.save(action);
-        clearSession();
+        action = ActionFactory.save(action);
+        TestUtils.flushAndClearSession();
 
         // Retrieve the action event detail
         final int sid = server.getId().intValue();
@@ -1687,19 +1682,17 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         Errata e = ErrataFactoryTest.createTestErrata(admin.getOrg().getId());
         e.setAdvisoryType(ErrataFactory.ERRATA_TYPE_BUG);
-        TestUtils.flushAndEvict(e);
+
         Server s = ServerFactoryTest.createTestServer(admin);
         ServerFactory.save(s);
-        TestUtils.flushAndEvict(s);
-
         UserFactory.save(admin);
-        TestUtils.flushAndEvict(admin);
-        Package p = e.getPackages().iterator().next();
-        ErrataCacheManager.insertNeededErrataCache(
-                s.getId(), e.getId(), p.getId());
 
-        List<ErrataOverview> list = handler.getRelevantErrata(admin,
-                s.getId().intValue());
+        Package p = e.getPackages().iterator().next();
+        ErrataCacheManager.insertNeededErrataCache(s.getId(), e.getId(), p.getId());
+
+        TestUtils.flushAndClearSession();
+
+        List<ErrataOverview> list = handler.getRelevantErrata(admin, s.getId().intValue());
         assertEquals(list.size(), 1);
         ErrataOverview errata = list.get(0);
         assertEquals(e.getId().intValue(), errata.getId().intValue());
@@ -1714,31 +1707,24 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Errata secondErrata = ErrataFactoryTest.createTestErrata(admin.getOrg().getId());
         secondErrata.setAdvisoryType(ErrataFactory.ERRATA_TYPE_BUG);
 
-        TestUtils.flushAndEvict(firstErrata);
-        TestUtils.flushAndEvict(secondErrata);
-
         Server firstServer = ServerFactoryTest.createTestServer(admin);
         Server secondServer = ServerFactoryTest.createTestServer(admin);
         ServerFactory.save(firstServer);
         ServerFactory.save(secondServer);
-        TestUtils.flushAndEvict(firstServer);
-        TestUtils.flushAndEvict(secondServer);
 
         UserFactory.save(admin);
-        TestUtils.flushAndEvict(admin);
 
         Package packageOne = firstErrata.getPackages().iterator().next();
         Package packageTwo = secondErrata.getPackages().iterator().next();
 
-        ErrataCacheManager.insertNeededErrataCache(
-                firstServer.getId(), firstErrata.getId(), packageOne.getId());
-        ErrataCacheManager.insertNeededErrataCache(
-                secondServer.getId(), secondErrata.getId(), packageTwo.getId());
+        ErrataCacheManager.insertNeededErrataCache(firstServer.getId(), firstErrata.getId(), packageOne.getId());
+        ErrataCacheManager.insertNeededErrataCache(secondServer.getId(), secondErrata.getId(), packageTwo.getId());
 
         List<Integer> sids = Arrays.asList(firstServer.getId().intValue(), secondServer.getId().intValue());
 
-        List<Map<String, Object>> list = handler.getRelevantErrata(admin, sids);
+        TestUtils.flushAndClearSession();
 
+        List<Map<String, Object>> list = handler.getRelevantErrata(admin, sids);
         assertEquals(list.size(), 2);
     }
 
@@ -1964,7 +1950,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         newAction.setScriptActionDetails(newActionDetails);
 
         ActionFactory.save(newAction);
-        flushAndEvict(newAction);
+        TestUtils.flushAndEvict(newAction);
 
         Object [] scriptResult = handler.getScriptResults(admin,
                 newAction.getId().intValue());
@@ -2164,8 +2150,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         details.put("contact_method", contactMethod);
 
         handler.setDetails(admin, server.getId().intValue(), details);
-        TestUtils.saveAndFlush(server);
-        server = reload(server);
+        server = TestUtils.saveAndFlush(server);
+        server = TestUtils.reload(server);
 
         assertEquals(profileName, server.getName());
         assertEquals(description, server.getDescription());
@@ -2230,16 +2216,16 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         handler.setLockStatus(admin, server.getId().intValue(),
                 true);
 
-        TestUtils.saveAndFlush(server);
-        server = reload(server);
+        server = TestUtils.saveAndFlush(server);
+        server = TestUtils.reload(server);
         assertNotNull(server.getLock());
 
         //unlock the server
         handler.setLockStatus(admin, server.getId().intValue(),
                 false);
 
-        TestUtils.saveAndFlush(server);
-        server = reload(server);
+        server = TestUtils.saveAndFlush(server);
+        server = TestUtils.reload(server);
         assertNull(server.getLock());
     }
 
@@ -2251,8 +2237,8 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         details.put("base_entitlement", "unentitle");
 
         handler.setDetails(admin, server.getId().intValue(), details);
-        TestUtils.saveAndFlush(server);
-        server = reload(server);
+        server = TestUtils.saveAndFlush(server);
+        server = TestUtils.reload(server);
 
         assertNull(server.getBaseEntitlement());
     }
@@ -2425,7 +2411,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         // This call has an embedded transaction in the stored procedure:
         // lookup_transaction_package(:operation, :n, :e, :v, :r, :a)
         // which can cause deadlocks.  We are forced to call commitAndCloseTransaction()
-        commitAndCloseSession();
+        TestUtils.commitAndCloseSession();
         commitHappened();
         handler.scheduleSyncPackagesWithSystem(admin, s1.getId().
                         intValue(), s2.getId().intValue(), packagesToSync,
@@ -2536,8 +2522,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Long sid = testServer.getId();
         Package pack = PackageTest.createTestPackage(admin.getOrg());
 
-        ErrataCacheManager.insertNeededErrataCache(sid, null,
-                pack.getId());
+        ErrataCacheManager.insertNeededErrataCache(sid, null, pack.getId());
         SystemsOverviewUpdateWorker.doUpdate(sid);
 
         Object [] array =  handler.listOutOfDateSystems(regular);
@@ -2642,7 +2627,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Set<InstalledPackage> set = srv1.getPackages();
         set.add(iPack);
 
-        HibernateFactory.getSession().persist(pack);
+        TestUtils.persist(pack);
 
         List<SystemOverview> list = handler.listSystemsWithPackage(admin, iPack.getName().getName(),
                 iPack.getEvr().getVersion(), iPack.getEvr().getRelease());
@@ -2665,7 +2650,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertEquals(0, keys.size());
 
         key.getToken().getActivatedServers().add(server);
-        TestUtils.saveAndFlush(key);
+        key = TestUtils.saveAndFlush(key);
 
         keys = handler.listActivationKeys(admin, server.getId().intValue());
         assertEquals(1, keys.size());
@@ -2748,8 +2733,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     @Test
     public void testListMigrationTargetBaseOnly() throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(admin, null, true);
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
         admin = TestUtils.reload(admin);
 
         SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1117));
@@ -2780,7 +2764,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         products.add(installedPrd);
 
         server.setInstalledProducts(products);
-        TestUtils.saveAndReload(server);
+        server = TestUtils.saveAndReload(server);
 
         assertNotNull(server.getInstalledProductSet().orElse(null));
 
@@ -2799,8 +2783,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     @Test
     public void testListMigrationTargetExtension() throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(admin, null, true);
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
         admin = TestUtils.reload(admin);
 
         SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1117));
@@ -2838,7 +2821,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         products.add(installedExt);
 
         server.setInstalledProducts(products);
-        TestUtils.saveAndReload(server);
+        server = TestUtils.saveAndReload(server);
 
         assertNotNull(server.getInstalledProductSet().orElse(null));
 
@@ -2859,8 +2842,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     @Test
     public void testListMigrationTargetExtensionNotSynced() throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(admin, null, true);
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
         admin = TestUtils.reload(admin);
 
         SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1117));
@@ -2905,7 +2887,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         products.add(installedExt2);
 
         server.setInstalledProducts(products);
-        TestUtils.saveAndReload(server);
+        server = TestUtils.saveAndReload(server);
 
         assertNotNull(server.getInstalledProductSet().orElse(null));
 
@@ -2921,8 +2903,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
     @Test
     public void testGetInstalledProducts() throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(admin, null, true);
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
         admin = TestUtils.reload(admin);
 
         Server server = ServerFactoryTest.createTestServer(admin, true);
@@ -2943,7 +2924,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         products.add(new InstalledProduct("unknown-product", "1", arch, null, false));
 
         server.setInstalledProducts(products);
-        TestUtils.saveAndReload(server);
+        server = TestUtils.saveAndReload(server);
 
         results = handler.getInstalledProducts(admin, server.getId().intValue());
 
@@ -3131,7 +3112,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertEquals("", result);
 
         server.setKernelLiveVersion(testVersion);
-        TestUtils.saveAndReload(server);
+        server = TestUtils.saveAndReload(server);
 
         result = handler.getKernelLivePatch(admin, server.getId().intValue());
         assertEquals(testVersion, result);
@@ -3371,7 +3352,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         Package pkg = PackageTest.createTestPackage(admin.getOrg());
         ChannelTestUtility.testAddPackage(server.getBaseChannel(), pkg);
-        TestUtils.saveAndFlush(pkg);
+        pkg = TestUtils.saveAndFlush(pkg);
 
         SystemHandler systemHandler = getMockedHandler();
 
@@ -3607,7 +3588,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Map<String, Object> pillarData = Collections.singletonMap("key", "value");
         systemHandler.setPillar(admin, minion.getId().intValue(), "stored_pillar", pillarData);
 
-        minion = reload(minion);
+        minion = TestUtils.reload(minion);
         assertEquals(2, minion.getPillars().size());
         assertTrue(minion.getPillarByCategory("stored_pillar").isPresent());
         assertEquals("value", minion.getPillarByCategory("stored_pillar").get().getPillar().get("key"));
@@ -3644,7 +3625,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         Map<String, Object> pillarData = Collections.singletonMap("key", "value");
         systemHandler.setPillar(admin, minion.getMinionId(), "stored_pillar", pillarData);
 
-        minion = reload(minion);
+        minion = TestUtils.reload(minion);
         assertEquals(2, minion.getPillars().size());
         assertTrue(minion.getPillarByCategory("stored_pillar").isPresent());
         assertEquals("value", minion.getPillarByCategory("stored_pillar").get().getPillar().get("key"));

@@ -19,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainEntry;
@@ -169,7 +168,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         Package p32 = ErrataTestUtils.createLaterTestPackage(user, null, channel, p64);
         p32.setPackageEvr(p64.getPackageEvr());
         p32.setPackageArch(PackageFactory.lookupPackageArchByLabel("i686"));
-        TestUtils.saveAndFlush(p32);
+        p32 = TestUtils.saveAndFlush(p32);
 
         List<Map<String, Long>> packageMaps = new ArrayList<>();
         Map<String, Long> pkg32map = new HashMap<>();
@@ -215,7 +214,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         Package p32 = ErrataTestUtils.createLaterTestPackage(user, null, channel, p64);
         p32.setPackageEvr(p64.getPackageEvr());
         p32.setPackageArch(PackageFactory.lookupPackageArchByLabel("i686"));
-        TestUtils.saveAndFlush(p32);
+        p32 = TestUtils.saveAndFlush(p32);
 
         List<Map<String, Long>> packageMaps = new ArrayList<>();
         Map<String, Long> pkg32map = new HashMap<>();
@@ -264,7 +263,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         Package p32 = ErrataTestUtils.createLaterTestPackage(user, retracted, channel, p64);
         p32.setPackageEvr(p64.getPackageEvr());
         p32.setPackageArch(PackageFactory.lookupPackageArchByLabel("i686"));
-        TestUtils.saveAndFlush(p32);
+        p32 = TestUtils.saveAndFlush(p32);
 
         List<Map<String, Long>> packageMaps = new ArrayList<>();
         Map<String, Long> pkg32map = new HashMap<>();
@@ -293,7 +292,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         assertEquals(1, result.values().size());
         List<MinionSummary> summaries = result.values().iterator().next();
         assertTrue(summaries.isEmpty());
-        ServerAction serverAction = HibernateFactory.reload(action.getServerActions().iterator().next());
+        ServerAction serverAction = TestUtils.reload(action.getServerActions().iterator().next());
         assertTrue(serverAction.isStatusFailed());
     }
 
@@ -495,7 +494,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         ActionFactory.addConfigRevisionToAction(revision1, minion3, configAction);
         ActionFactory.addConfigRevisionToAction(revision3, minion4, configAction);
 
-        TestUtils.saveAndReload(configAction);
+        configAction = TestUtils.saveAndReload(configAction);
 
         Map<LocalCall<?>, List<MinionSummary>> result =
                 saltServerActionService.callsForAction(configAction);
@@ -637,8 +636,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         testExecuteActionChain();
 
         //then inspire from JobReturnEventMessageActionTest.testActionChainPackageRefreshNeeded
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         Map<String, String> placeholders = new HashMap<>();
         placeholders.put("${minion-id}", minion.getMinionId());
@@ -673,10 +671,10 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         Channel base = ChannelFactoryTest.createBaseChannel(user);
         Channel ch1 = ChannelFactoryTest.createTestChannel(user.getOrg());
         ch1.setParentChannel(base);
-        TestUtils.saveAndFlush(ch1);
+        ch1 = TestUtils.saveAndFlush(ch1);
         Channel ch2 = ChannelFactoryTest.createTestChannel(user.getOrg());
         ch2.setParentChannel(base);
-        TestUtils.saveAndFlush(ch2);
+        ch2 = TestUtils.saveAndFlush(ch2);
 
         MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
 
@@ -687,17 +685,16 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
         SubscribeChannelsActionDetails details = new SubscribeChannelsActionDetails();
         details.setBaseChannel(base);
-        details.setChannels(Arrays.asList(ch1, ch2).stream().collect(Collectors.toSet()));
+        details.setChannels(Set.of(ch1, ch2));
         action.setDetails(details);
         details.setParentAction(action);
-        HibernateFactory.getSession().persist(details);
+        TestUtils.persist(details);
 
         ActionFactory.addServerToAction(minion1, action);
 
         Map<LocalCall<?>, List<MinionSummary>> calls = saltServerActionService.callsForAction(action);
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         assertEquals(1, calls.size());
 
@@ -712,8 +709,10 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         assertEquals(3, minion1.getChannels().size());
         assertEquals(base.getId(), minion1.getBaseChannel().getId());
         assertEquals(2, minion1.getChildChannels().size());
-        assertTrue(minion1.getChildChannels().stream().anyMatch(cc -> cc.getId().equals(ch1.getId())));
-        assertTrue(minion1.getChildChannels().stream().anyMatch(cc -> cc.getId().equals(ch2.getId())));
+        Long ch1Id = ch1.getId();
+        Long ch2Id = ch2.getId();
+        assertTrue(minion1.getChildChannels().stream().anyMatch(cc -> cc.getId().equals(ch1Id)));
+        assertTrue(minion1.getChildChannels().stream().anyMatch(cc -> cc.getId().equals(ch2Id)));
 
         assertEquals(3, minion1.getAccessTokens().size());
         assertTokenChannel(minion1, base);
@@ -1035,7 +1034,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
         createChildServerAction(action, ServerAction::setStatusQueued, sshMinion, 5L);
         createChildServerAction(action, ServerAction::setStatusQueued, testMinionServer, 5L);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         SaltService saltServiceMock = mock(SaltService.class);
         SaltServerActionService testService = createSaltServerActionService(saltServiceMock, saltServiceMock);
@@ -1070,7 +1069,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         createChildServerAction(action, ServerAction::setStatusCompleted, firstMinion, 5L);
         createChildServerAction(action, ServerAction::setStatusQueued, secondMinion, 5L);
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         SaltService saltServiceMock = mock(SaltService.class);
         SaltServerActionService testService = createSaltServerActionService(saltServiceMock, saltServiceMock);

@@ -15,7 +15,6 @@
 package com.suse.manager.reactor.hardware;
 
 import com.redhat.rhn.GlobalInstanceHolder;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.entitlement.VirtualizationEntitlement;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
@@ -858,7 +857,7 @@ public class HardwareMapper {
                 ifaceEntity = new NetworkInterface();
             }
             // else update the existing interface
-            final NetworkInterface iface = ifaceEntity;
+            NetworkInterface iface = ifaceEntity;
 
             iface.setHwaddr(saltIface.getHWAddr());
             iface.setModule(netModules.get(name).orElse(null));
@@ -868,11 +867,7 @@ public class HardwareMapper {
             server.addNetworkInterface(iface);
 
             // we have to do this because we need the id of the interface afterwards
-            ServerFactory.saveNetworkInterface(iface);
-            // flush & refresh iface because generated="insert"
-            // on interfaceId does not seem to work
-            HibernateFactory.getSession().flush();
-            HibernateFactory.getSession().refresh(iface);
+            iface = ServerFactory.saveNetworkInterface(iface);
 
             List<ServerNetAddress4> dbipv4 = ServerNetworkFactory.findServerNetAddress4(iface.getInterfaceId());
             List<Network.INet> saltipv4 = Optional.ofNullable(saltIface.getInet()).orElse(new LinkedList<>());
@@ -892,9 +887,7 @@ public class HardwareMapper {
                 }
                 if (!found) {
                     // insert
-                    ServerNetAddress4 ipv4 = new ServerNetAddress4();
-                    ipv4.setInterfaceId(iface.getInterfaceId());
-                    ipv4.setAddress(inet.getAddress().orElse(null));
+                    var ipv4 = new ServerNetAddress4(iface.getInterfaceId(), inet.getAddress().orElse(null));
                     ipv4.setNetmask(inet.getNetmask().orElse(null));
                     ipv4.setBroadcast(inet.getBroadcast().orElse(null));
 

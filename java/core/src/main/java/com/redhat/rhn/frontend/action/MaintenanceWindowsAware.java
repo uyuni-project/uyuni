@@ -18,7 +18,7 @@ package com.redhat.rhn.frontend.action;
 
 import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * This interface marks Struts actions that undergo maintenance windows.

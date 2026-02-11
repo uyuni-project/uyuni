@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.crypto.CryptoKey;
 import com.redhat.rhn.domain.kickstart.crypto.test.CryptoTest;
 import com.redhat.rhn.manager.kickstart.KickstartCryptoKeyCommand;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
 
@@ -39,16 +40,16 @@ public class KickstartCryptoCommandTest extends BaseKickstartCommandTestCase {
 
         CryptoKey key = CryptoTest.createTestKey(user.getOrg());
         KickstartFactory.saveCryptoKey(key);
-        key = (CryptoKey) reload(key);
+        key = TestUtils.reload(key);
         List ids = new LinkedList<>();
         ids.add(key.getId());
         cmd.addKeysByIds(ids);
         cmd.store();
-        flushAndEvict(cmd.getKickstartData());
+        TestUtils.flushAndEvict(cmd.getKickstartData());
         assertEquals(1, cmd.getKickstartData().getCryptoKeys().size());
         cmd.removeKeysById(ids);
         cmd.store();
-        flushAndEvict(cmd.getKickstartData());
+        TestUtils.flushAndEvict(cmd.getKickstartData());
         assertTrue(cmd.getKickstartData().getCryptoKeys().isEmpty());
     }
 }

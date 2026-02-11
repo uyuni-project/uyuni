@@ -25,9 +25,9 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * RhnMockHttpServletResponse is a mock implementation of the
@@ -167,16 +167,6 @@ public class RhnMockHttpServletResponse implements HttpServletResponse {
     }
 
     @Override
-    public String encodeUrl(String url) {
-        return url;
-    }
-
-    @Override
-    public String encodeRedirectUrl(String url) {
-        return url;
-    }
-
-    @Override
     public void sendError(int sc, String msg) throws IOException {
         this.status = sc;
         committed = true;
@@ -206,11 +196,6 @@ public class RhnMockHttpServletResponse implements HttpServletResponse {
     @Override
     public void addIntHeader(String name, int value) {
         headers.put(name, String.valueOf(value));
-    }
-
-    @Override
-    public void setStatus(int sc, String sm) {
-        this.status = sc;
     }
 
     @Override
@@ -306,6 +291,10 @@ public class RhnMockHttpServletResponse implements HttpServletResponse {
             contentType = null;
             encoding = "UTF-8";
         }
+    }
+
+    @Override
+    public void sendRedirect(String location, int statusIn, boolean encode) {
     }
 
 }

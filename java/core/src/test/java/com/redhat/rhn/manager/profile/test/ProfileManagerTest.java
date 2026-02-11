@@ -109,7 +109,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         // This call has an embedded transaction in the stored procedure:
         // lookup_transaction_package(:operation, :n, :e, :v, :r, :a)
         // which can cause deadlocks.  We are forced to call commitAndCloseTransaction()
-        commitAndCloseSession();
+        TestUtils.commitAndCloseSession();
         commitHappened();
 
         PackageAction action = ProfileManager.syncToSystem(
@@ -141,7 +141,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         Server server = ServerFactoryTest.createTestServer(user, true);
         Channel channel = ChannelFactoryTest.createTestChannel(user);
         server.addChannel(channel);
-        TestUtils.saveAndFlush(server);
+        server = TestUtils.saveAndFlush(server);
 
         Profile p = ProfileManager.createProfile(user, server,
                 "Profile test name" + TestUtils.randomString(),
@@ -155,7 +155,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         Server server = ServerFactoryTest.createTestServer(user, true);
         Channel channel = ChannelFactoryTest.createTestChannel(user);
         server.addChannel(channel);
-        TestUtils.saveAndFlush(server);
+        server = TestUtils.saveAndFlush(server);
 
         Profile p = ProfileManager.createProfile(user, server,
                 "Profile test name" + TestUtils.randomString(),
@@ -171,7 +171,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         Server server = ServerFactoryTest.createTestServer(user, true);
         Channel channel = ChannelFactoryTest.createTestChannel(user);
         server.addChannel(channel);
-        TestUtils.saveAndFlush(server);
+        server = TestUtils.saveAndFlush(server);
         Profile p = ProfileManager.createProfile(user, server,
                 "Profile test name" + TestUtils.randomString(),
                 "Profile test description");
@@ -210,7 +210,7 @@ public class ProfileManagerTest extends BaseTestCaseWithUser {
         Server server = ServerFactoryTest.createTestServer(userIn, true);
         Channel channel = ChannelFactoryTest.createTestChannel(userIn);
         server.addChannel(channel);
-        TestUtils.saveAndFlush(server);
+        server = TestUtils.saveAndFlush(server);
 
         return ProfileManager.createProfile(userIn, server,
                 "Profile test name" + TestUtils.randomString(),

@@ -204,7 +204,7 @@ public class MinionPillarManagerTest extends BaseTestCaseWithUser {
         minion.getServerPaths().addAll(proxyPaths);
 
         // flush session & refresh the minion object
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         HibernateFactory.getSession().refresh(minion);
 
         MinionPillarManager.INSTANCE.generatePillar(minion);

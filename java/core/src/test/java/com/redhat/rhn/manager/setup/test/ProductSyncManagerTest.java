@@ -346,6 +346,9 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
             }
         }
 
+        // Ensure channels are persisted before proceeding with the lookups
+        ChannelFactory.getSession().flush();
+
         return p;
     }
 
@@ -406,8 +409,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      *
      * @param status the tasko run status
      */
-    private void insertTaskoRun(List<String> channelIds,
-            String status) {
+    private void insertTaskoRun(List<String> channelIds, String status) {
         TaskoSchedule schedule = insertTaskoSchedule(channelIds);
         TaskoTemplate template = schedule.getBunch().getTemplates().get(0);
         assertNotNull(template);
@@ -543,7 +545,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
             family = new ChannelFamily();
             family.setLabel("7261");
             family.setName("SUSE Linux Enterprise Server");
-            TestUtils.saveAndFlush(family);
+            family = TestUtils.saveAndFlush(family);
         }
         return family;
     }
@@ -561,7 +563,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
         template.setParentChannelLabel(prefix + "-" + Objects.requireNonNullElse(rootChannelLabel, channelLabel));
         template.setChannelName(channelName);
         template.setMandatory(true);
-        TestUtils.saveAndReload(template);
+        template = TestUtils.saveAndReload(template);
     }
 
     private static void createProductExtension(SUSEProduct product, SUSEProduct parent, SUSEProduct root) {
@@ -570,7 +572,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
         productExtension.setBaseProduct(parent);
         productExtension.setRootProduct(root);
         productExtension.setRecommended(true);
-        TestUtils.saveAndReload(productExtension);
+        productExtension = TestUtils.saveAndReload(productExtension);
     }
 
     private static SUSEProduct createProduct(String prefix, String name, String version, String desc,
@@ -584,7 +586,6 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
         product.setChannelFamily(family);
         product.setBase(isBase);
         product.setReleaseStage(ReleaseStage.released);
-        TestUtils.saveAndReload(product);
-        return product;
+        return TestUtils.saveAndReload(product);
     }
 }

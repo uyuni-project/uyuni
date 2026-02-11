@@ -13,12 +13,12 @@ package com.redhat.rhn.domain.notification.types;
 
 import com.redhat.rhn.domain.CustomEnumType;
 
-public class NotificationTypeEnumType extends CustomEnumType<NotificationType, String> {
+public class NotificationTypeEnumType extends CustomEnumType<NotificationType> {
 
     /**
      * Default constructor
      */
     public NotificationTypeEnumType() {
-        super(NotificationType.class, String.class, NotificationType::getLabel, NotificationType::byLabel);
+        super(NotificationType.class, NotificationType::getLabel, NotificationType::byLabel);
     }
 }

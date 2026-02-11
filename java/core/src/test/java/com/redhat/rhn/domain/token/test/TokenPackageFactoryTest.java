@@ -18,8 +18,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.Token;
@@ -56,10 +56,6 @@ public class TokenPackageFactoryTest extends BaseTestCaseWithUser {
         assertNotNull(pkg3);
         pkg3.getPackageName().setName("aName");
 
-        TestUtils.flushAndEvict(pkg1);
-        TestUtils.flushAndEvict(pkg2);
-        TestUtils.flushAndEvict(pkg3);
-
         //make sure we got written to the db
         assertNotNull(pkg1.getId());
         assertNotNull(pkg2.getId());
@@ -92,19 +88,14 @@ public class TokenPackageFactoryTest extends BaseTestCaseWithUser {
         // a second package manually.
         TokenPackage pkg2 = new TokenPackage();
 
-        Long testid = 101L;
-        PackageArch parch = HibernateFactory.getSession().createNativeQuery("""
-                SELECT p.* from rhnPackageArch as p WHERE p.id = :id
-                """, PackageArch.class).setParameter("id", testid).getSingleResult();
-
+        PackageArch parch = PackageFactory.lookupPackageArchByLabel("i386");
 
         pkg2.setToken(key.getToken());
         pkg2.setPackageName(pkg1.getPackageName());
         pkg2.setPackageArch(parch);
         key.getPackages().add(pkg2);
 
-        TestUtils.flushAndEvict(pkg1);
-        TestUtils.flushAndEvict(pkg2);
+        key = TestUtils.reload(key);
 
         //make sure we got written to the db
         assertNotNull(pkg1.getId());
@@ -147,8 +138,6 @@ public class TokenPackageFactoryTest extends BaseTestCaseWithUser {
         ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
         TokenPackage pkg = TokenPackageTest.createTestPackage(key);
         assertNotNull(pkg);
-
-        TestUtils.flushAndEvict(pkg);
 
         //make sure we got written to the db
         assertNotNull(pkg.getId());

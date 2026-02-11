@@ -611,7 +611,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         Package unpatched = createTestPackage(user, baseChannel, "noarch");
         Errata errata = createTestErrata(user, cves);
         childChannel.addErrata(errata);
-        TestUtils.saveAndFlush(childChannel);
+        childChannel = TestUtils.saveAndFlush(childChannel);
         createLaterTestPackage(user, errata, childChannel, unpatched);
 
         // Create server with unpatched package
@@ -750,7 +750,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
         Errata baseErrata = createTestErrata(user, cves);
         baseChannel.addErrata(baseErrata);
-        TestUtils.saveAndFlush(baseChannel);
+        baseChannel = TestUtils.saveAndFlush(baseChannel);
 
         Package unpatched = createTestPackage(user, baseChannel, "noarch");
         Package patched = createLaterTestPackage(user, baseErrata, baseChannel, unpatched);
@@ -768,7 +768,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         createTestSUSEProductChannel(successorChannel, successorProduct, true);
         Errata successorErrata = createTestErrata(user, cves);
         successorChannel.addErrata(successorErrata);
-        TestUtils.saveAndFlush(successorChannel);
+        successorChannel = TestUtils.saveAndFlush(successorChannel);
         createLaterTestPackage(user, successorErrata, successorChannel, unpatched);
 
         // Subscribe server to channel and install unpatched package
@@ -1111,12 +1111,12 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
         Errata errataLTSS = createTestErrata(user, cves);
         ltssChannelSP2.addErrata(errataLTSS);
-        TestUtils.saveAndFlush(ltssChannelSP2);
+        ltssChannelSP2 = TestUtils.saveAndFlush(ltssChannelSP2);
         Package patchedLTSS = createLaterTestPackage(user, errataLTSS, ltssChannelSP2, unpatched);
 
         Errata errataSP3 = createTestErrata(user, cves);
         updateChannelSP3.addErrata(errataSP3);
-        TestUtils.saveAndFlush(updateChannelSP3);
+        updateChannelSP3 = TestUtils.saveAndFlush(updateChannelSP3);
         createLaterTestPackage(user, errataSP3, updateChannelSP3, patchedLTSS);
 
         // Setup SP2 channels
@@ -1187,11 +1187,11 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
 
         Errata errataLTSS = createTestErrata(user, cves);
         ltssChannelSP2.addErrata(errataLTSS);
-        TestUtils.saveAndFlush(ltssChannelSP2);
+        ltssChannelSP2 = TestUtils.saveAndFlush(ltssChannelSP2);
 
         Errata errataSP3 = createTestErrata(user, cves);
         updateChannelSP3.addErrata(errataSP3);
-        TestUtils.saveAndFlush(updateChannelSP3);
+        updateChannelSP3 = TestUtils.saveAndFlush(updateChannelSP3);
         Package patchedSP3 = createLaterTestPackage(user, errataSP3, updateChannelSP3, unpatched);
 
         // as this is a very hypothetical scenario, the LTSS package has higher version than the
@@ -1250,10 +1250,10 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         User user = createTestUser();
         Errata errataSP2 = createTestErrata(user, cves);
         updateChannelSP2.addErrata(errataSP2);
-        TestUtils.saveAndFlush(updateChannelSP2);
+        updateChannelSP2 = TestUtils.saveAndFlush(updateChannelSP2);
         Errata errataSP3 = createTestErrata(user, cves);
         updateChannelSP3.addErrata(errataSP3);
-        TestUtils.saveAndFlush(updateChannelSP3);
+        updateChannelSP3 = TestUtils.saveAndFlush(updateChannelSP3);
 
         Package unpatched = createTestPackage(user, null, baseChannelSP2, "noarch");
         createLaterTestPackage(user, errataSP2, updateChannelSP2, unpatched); //patchedSP2
@@ -1318,10 +1318,10 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         User user = createTestUser();
         Errata errataLTSS = createTestErrata(user, cves);
         ltssChannelSP2.addErrata(errataLTSS);
-        TestUtils.saveAndFlush(ltssChannelSP2);
+        ltssChannelSP2 = TestUtils.saveAndFlush(ltssChannelSP2);
         Errata errataSP3 = createTestErrata(user, cves);
         updateChannelSP3.addErrata(errataSP3);
-        TestUtils.saveAndFlush(updateChannelSP3);
+        updateChannelSP3 = TestUtils.saveAndFlush(updateChannelSP3);
 
         // This is a realistic scenario: the LTSS package has a lower version than the
         // installed "upnatched" package, system showed up as patched in bsc#954983.
@@ -1388,10 +1388,10 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         User user = createTestUser();
         Errata errataSP2 = createTestErrata(user, cves);
         updateChannelSP2.addErrata(errataSP2);
-        TestUtils.saveAndFlush(updateChannelSP2);
+        updateChannelSP2 = TestUtils.saveAndFlush(updateChannelSP2);
         Errata errataSP3 = createTestErrata(user, cves);
         updateChannelSP3.addErrata(errataSP3);
-        TestUtils.saveAndFlush(updateChannelSP3);
+        updateChannelSP3 = TestUtils.saveAndFlush(updateChannelSP3);
 
         // Create packages for SP2 and SP3, but SP3 has an update not available in SP2 patch
         Package basePackage1 = createTestPackage(user, null, baseChannelSP2, "noarch");
@@ -1459,10 +1459,10 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         User user = createTestUser();
         Errata errataSP2 = createTestErrata(user, cves);
         updateChannelSP2.addErrata(errataSP2);
-        TestUtils.saveAndFlush(updateChannelSP2);
+        updateChannelSP2 = TestUtils.saveAndFlush(updateChannelSP2);
         Errata errataSP3 = createTestErrata(user, cves);
         updateChannelSP3.addErrata(errataSP3);
-        TestUtils.saveAndFlush(updateChannelSP3);
+        updateChannelSP3 = TestUtils.saveAndFlush(updateChannelSP3);
 
         // Create packages for SP2 and SP3, but SP3 has an update not available in SP2 patch
         Package basePackage1 = createTestPackage(user, null, baseChannelSP2, "noarch");
@@ -1573,11 +1573,11 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         // Create two unpatched packages
         Package kernelDefault = createTestPackage(user, baseChannelSLES12, "i586");
         kernelDefault.setPackageName(PackageNameTest.createTestPackageName("kernel-default"));
-        TestUtils.saveAndFlush(kernelDefault);
+        kernelDefault = TestUtils.saveAndFlush(kernelDefault);
 
         Package kgraftDefault = createTestPackage(user, childChannelLP12, "i586");
         kgraftDefault.setPackageName(PackageNameTest.createTestPackageName("kgraft-patch-3_12_62-60_64_8-default"));
-        TestUtils.saveAndFlush(kgraftDefault);
+        kgraftDefault = TestUtils.saveAndFlush(kgraftDefault);
 
         createLaterTestPackage(user, kernelErratum, baseChannelSLES12, kernelDefault);
         Package kgraftDefaultNew = createLaterTestPackage(user, kgraftErratum, childChannelLP12, kgraftDefault);
@@ -1589,7 +1589,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         // Create clones of channel and errata
         Channel baseChannelClone = ChannelFactoryTest.createTestClonedChannel(baseChannelSLES12, user);
         ChannelTestUtility.testAddPackage(baseChannelClone, kernelDefault);
-        TestUtils.saveAndFlush(baseChannelClone);
+        baseChannelClone = TestUtils.saveAndFlush(baseChannelClone);
 
         Errata errataKgraftClone = createTestClonedErrata(user, kgraftErratum, cves, kgraftDefaultNew);
         Channel channelClone =
@@ -1644,11 +1644,11 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         // Create two unpatched packages
         Package kernelDefault = createTestPackage(user, baseChannelSLES12, "i586");
         kernelDefault.setPackageName(PackageNameTest.createTestPackageName("kernel-default"));
-        TestUtils.saveAndFlush(kernelDefault);
+        kernelDefault = TestUtils.saveAndFlush(kernelDefault);
 
         Package kgraftDefault = createTestPackage(user, childChannelLP12, "i586");
         kgraftDefault.setPackageName(PackageNameTest.createTestPackageName("kgraft-patch-3_12_62-60_64_8-default"));
-        TestUtils.saveAndFlush(kgraftDefault);
+        kgraftDefault = TestUtils.saveAndFlush(kgraftDefault);
 
         createLaterTestPackage(user, kernelErratum, baseChannelSLES12, kernelDefault);
         Package kgraftDefaultNew = createLaterTestPackage(user, kgraftErratum, childChannelLP12, kgraftDefault);
@@ -1660,7 +1660,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         // Create clones of channel and errata
         Channel baseChannelClone = ChannelFactoryTest.createTestClonedChannel(baseChannelSLES12, user);
         ChannelTestUtility.testAddPackage(baseChannelClone, kernelDefault);
-        TestUtils.saveAndFlush(baseChannelClone);
+        baseChannelClone = TestUtils.saveAndFlush(baseChannelClone);
 
         Errata errataKgraftClone = createTestClonedErrata(user, kgraftErratum, cves, kgraftDefaultNew);
         Channel channelClone = createTestClonedChannel(user, errataKgraftClone, childChannelLP12, packagesLP);
@@ -1717,12 +1717,12 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         // Create two unpatched packages
         Package kernelDefault = createTestPackage(user, baseChannelSLES15, "i586");
         kernelDefault.setPackageName(PackageNameTest.createTestPackageName("kernel-default"));
-        TestUtils.saveAndFlush(kernelDefault);
+        kernelDefault = TestUtils.saveAndFlush(kernelDefault);
 
         Package livepatchDefault = createTestPackage(user, childChannelLP15, "i586");
         livepatchDefault.setPackageName(PackageNameTest
                 .createTestPackageName("kernel-livepatch-3_12_62-60_64_8-default"));
-        TestUtils.saveAndFlush(livepatchDefault);
+        livepatchDefault = TestUtils.saveAndFlush(livepatchDefault);
 
         createLaterTestPackage(user, kernelErratum, baseChannelSLES15, kernelDefault);
         Package kgraftDefaultNew = createLaterTestPackage(user, livepatchErratum, childChannelLP15, livepatchDefault);
@@ -1734,7 +1734,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         // Create clones of channel and errata
         Channel baseChannelClone = ChannelFactoryTest.createTestClonedChannel(baseChannelSLES15, user);
         ChannelTestUtility.testAddPackage(baseChannelClone, kernelDefault);
-        TestUtils.saveAndFlush(baseChannelClone);
+        baseChannelClone = TestUtils.saveAndFlush(baseChannelClone);
 
         Errata errataKgraftClone = createTestClonedErrata(user, livepatchErratum, cves, kgraftDefaultNew);
         Channel channelClone = createTestClonedChannel(user, errataKgraftClone, childChannelLP15, packagesLP);
@@ -1788,11 +1788,11 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         // Create two unpatched packages
         Package kernelDefault = createTestPackage(user, baseChannelSLES12, "i586");
         kernelDefault.setPackageName(PackageNameTest.createTestPackageName("kernel-default"));
-        TestUtils.saveAndFlush(kernelDefault);
+        kernelDefault = TestUtils.saveAndFlush(kernelDefault);
 
         Package kgraftDefault = createTestPackage(user, childChannelLP12, "i586");
         kgraftDefault.setPackageName(PackageNameTest.createTestPackageName("kgraft-patch-3_12_62-60_64_8-default"));
-        TestUtils.saveAndFlush(kgraftDefault);
+        kgraftDefault = TestUtils.saveAndFlush(kgraftDefault);
 
         createLaterTestPackage(user, kernelErratum, baseChannelSLES12, kernelDefault);
         Package kgraftDefaultNew = createLaterTestPackage(user, kgraftErratum, childChannelLP12, kgraftDefault);
@@ -1804,11 +1804,11 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         // Create clones of channel and errata
         Channel baseChannelClone = ChannelFactoryTest.createTestClonedChannel(baseChannelSLES12, user);
         ChannelTestUtility.testAddPackage(baseChannelClone, kernelDefault);
-        TestUtils.saveAndFlush(baseChannelClone);
+        baseChannelClone = TestUtils.saveAndFlush(baseChannelClone);
 
         Channel channelClone = ChannelFactoryTest.createTestClonedChannel(childChannelLP12, user);
         ChannelTestUtility.testAddPackage(channelClone, kgraftDefault);
-        TestUtils.saveAndFlush(channelClone);
+        channelClone = TestUtils.saveAndFlush(channelClone);
 
         // server: old kernel but new kgraft-patch installed from cloned channels
         // -> PATCHED
@@ -1866,11 +1866,11 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         // Create two unpatched packages
         Package kernelDefault = createTestPackage(user, baseChannelSLES12, "i586");
         kernelDefault.setPackageName(PackageNameTest.createTestPackageName("kernel-default"));
-        TestUtils.saveAndFlush(kernelDefault);
+        kernelDefault = TestUtils.saveAndFlush(kernelDefault);
 
         Package kgraftDefault = createTestPackage(user, childChannelLP12, "i586");
         kgraftDefault.setPackageName(PackageNameTest.createTestPackageName("kgraft-patch-3_12_62-60_64_8-default"));
-        TestUtils.saveAndFlush(kgraftDefault);
+        kgraftDefault = TestUtils.saveAndFlush(kgraftDefault);
 
         Package kernelDefaultNew = createLaterTestPackage(user, kernelErratum, baseChannelSLES12, kernelDefault);
         Package kgraftDefaultNew = createLaterTestPackage(user, kgraftErratum, childChannelLP12, kgraftDefault);
@@ -2059,7 +2059,7 @@ public class CVEAuditManagerTest extends RhnBaseTestCase {
         Package unpatched = createTestPackage(user, baseChannel, "noarch");
         Errata errata = createTestErrata(user, cves);
         childChannel.addErrata(errata);
-        TestUtils.saveAndFlush(childChannel);
+        childChannel = TestUtils.saveAndFlush(childChannel);
         createLaterTestPackage(user, errata, childChannel, unpatched);
 
         // Create server with unpatched package

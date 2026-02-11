@@ -17,15 +17,16 @@ package com.redhat.rhn.domain.org.usergroup;
 import com.redhat.rhn.domain.user.legacy.UserImpl;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.hibernate.annotations.Type;
+import org.hibernate.type.YesNoConverter;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MappedSuperclass;
 
 @MappedSuperclass
 @Embeddable
@@ -40,7 +41,7 @@ public class UserGroupMembersId implements Serializable {
     private UserGroupImpl userGroup;
 
     @Column(name = "temporary", insertable = false, updatable = false)
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private boolean temporary;
 
     /**

@@ -21,9 +21,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionContext;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * RhnMockHttpSession is a mock implementation of the HttpSession interface
@@ -37,7 +36,7 @@ public class RhnMockHttpSession implements HttpSession {
     private int maxInactiveInterval = 1800; // 30 minutes default
     private boolean invalidated = false;
     private boolean isNew = true;
-    private MockServletContext servletContext;
+    private com.redhat.rhn.testing.MockServletContext servletContext;
 
     /**
      * Gets the attribute value associated with the specified name
@@ -116,18 +115,8 @@ public class RhnMockHttpSession implements HttpSession {
         return servletContext;
     }
 
-    public void setServletContext(MockServletContext servletContextIn) {
+    public void setServletContext(com.redhat.rhn.testing.MockServletContext servletContextIn) {
         servletContext = servletContextIn;
-    }
-
-    /**
-     * Gets the session context (deprecated method)
-     *
-     * @return null (not implemented in this mock)
-     *
-     */
-    public HttpSessionContext getSessionContext() {
-        return null;
     }
 
     /**

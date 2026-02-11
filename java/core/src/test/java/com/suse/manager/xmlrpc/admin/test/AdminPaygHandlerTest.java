@@ -415,7 +415,7 @@ public class AdminPaygHandlerTest extends BaseHandlerTestCase {
         paygData.setRmtHosts(cloudRmtHost);
         PaygSshDataFactory.savePaygSshData(paygData);
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         assertEquals(PaygSshDataFactory.lookupPaygSshData().size(), 2);
         assertEquals(CloudRmtHostFactory.lookupCloudRmtHosts().size(), 1);

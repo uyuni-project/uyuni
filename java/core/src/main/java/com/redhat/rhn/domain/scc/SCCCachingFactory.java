@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.product.ChannelTemplate;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerInfo;
 import com.redhat.rhn.frontend.xmlrpc.sync.content.ContentSyncSource;
 
 import com.suse.scc.model.SCCRepositoryJson;
@@ -38,6 +39,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.type.StandardBasicTypes;
 
+import java.time.Instant;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
@@ -45,13 +47,9 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import javax.persistence.Tuple;
 
 /**
  * Factory class for populating and reading from SCC caching tables.
@@ -73,45 +71,50 @@ import javax.persistence.Tuple;
 
     /**
      * Store {@link SCCRepository} to the database.
+     *
      * @param repo repository
+     * @return the managed {@link SCCRepository} instance
      */
-    public static void saveRepository(SCCRepository repo) {
-        singleton.saveObject(repo);
+    public static SCCRepository saveRepository(SCCRepository repo) {
+        return singleton.saveObject(repo);
     }
 
     /**
      * Store {@link SCCRepositoryAuth} to the database.
+     *
      * @param auth repo authentication
+     * @return the managed {@link SCCRepositoryAuth} instance
      */
-    public static void saveRepositoryAuth(SCCRepositoryAuth auth) {
-        singleton.saveObject(auth);
+    public static SCCRepositoryAuth saveRepositoryAuth(SCCRepositoryAuth auth) {
+        return singleton.saveObject(auth);
     }
 
     /**
      * Lookup all repositories.
      * @return list of repositories
      */
-    @SuppressWarnings("unchecked")
     public static List<SCCRepository> lookupRepositories() {
         log.debug("Retrieving repositories from cache");
-        return getSession().createQuery("FROM SCCRepository").list();
+        return getSession().createQuery("FROM SCCRepository", SCCRepository.class).list();
     }
 
     /**
      * Clear all repositories from the database.
      */
     public static void clearRepositories() {
-        getSession().createNativeQuery("DELETE FROM suseSCCRepositoryAuth").executeUpdate();
-        getSession().createNativeQuery("DELETE FROM suseSCCRepository").executeUpdate();
+        getSession().createMutationQuery("DELETE FROM SCCRepositoryAuth").executeUpdate();
+        getSession().createMutationQuery("DELETE FROM SCCRepository").executeUpdate();
     }
 
     /**
      * Store {@link SCCSubscriptionJson} to the database.
+     *
      * @param subscription the subscription
+     * @return the managed {@link SCCSubscription} instance
      */
-    public static void saveSubscription(SCCSubscription subscription) {
+    public static SCCSubscription saveSubscription(SCCSubscription subscription) {
         subscription.setModified(new Date());
-        singleton.saveObject(subscription);
+        return singleton.saveObject(subscription);
     }
 
     /**
@@ -154,19 +157,16 @@ import javax.persistence.Tuple;
         products.removeAll(toRemove);
         sub.setProducts(products);
         sub.setModified(new Date());
-        singleton.saveObject(sub);
-        return sub;
+        return singleton.saveObject(sub);
     }
 
     /**
      * Lookup all Subscriptions
      * @return list of subscriptions
      */
-    @SuppressWarnings("unchecked")
     public static List<SCCSubscription> lookupSubscriptions() {
         log.debug("Retrieving subscriptions from cache");
-        return getSession().createNativeQuery("SELECT * from suseSCCSubscription", SCCSubscription.class)
-                .getResultList();
+        return getSession().createQuery("FROM SCCSubscription", SCCSubscription.class).getResultList();
     }
 
     /**
@@ -178,9 +178,8 @@ import javax.persistence.Tuple;
         if (id == null) {
             return null;
         }
-        return getSession().createNativeQuery("SELECT * from suseSCCSubscription WHERE scc_id = :scc",
-                        SCCSubscription.class)
-                .setParameter("scc", id , StandardBasicTypes.LONG)
+        return getSession().createQuery("FROM SCCSubscription s WHERE s.sccId = :scc", SCCSubscription.class)
+                .setParameter("scc", id)
                 .uniqueResult();
     }
 
@@ -188,7 +187,7 @@ import javax.persistence.Tuple;
      * Clear all subscriptions from the database.
      */
     public static void clearSubscriptions() {
-        getSession().createNativeQuery("DELETE FROM suseSCCSubscription");
+        getSession().createMutationQuery("DELETE FROM SCCSubscription");
     }
 
     /**
@@ -197,8 +196,7 @@ import javax.persistence.Tuple;
      */
     public static List<SCCOrderItem> lookupOrderItems() {
         log.debug("Retrieving orderItems from cache");
-        return getSession().createNativeQuery("SELECT * from suseSCCOrderItem", SCCOrderItem.class)
-                .getResultList();
+        return getSession().createQuery("FROM SCCOrderItem", SCCOrderItem.class).getResultList();
     }
 
     /**
@@ -208,12 +206,11 @@ import javax.persistence.Tuple;
      */
     public static List<SCCOrderItem> listOrderItemsByCredentials(ContentSyncSource source) {
         return source.getCredentials()
-                .map(credentials -> getSession().createNativeQuery("""
-                                    SELECT * from suseSCCOrderItem
-                                    WHERE credentials_id = :credentials
-                                    """, SCCOrderItem.class)
-                            .setParameter("credentials", credentials.getId(), StandardBasicTypes.LONG)
-                            .getResultList())
+                .map(credentials -> getSession()
+                        .createQuery("FROM SCCOrderItem o WHERE o.credentials.id = :credentialsId", SCCOrderItem.class)
+                        .setParameter("credentialsId", credentials.getId())
+                        .getResultList()
+                )
                 .orElse(Collections.emptyList());
     }
 
@@ -223,9 +220,8 @@ import javax.persistence.Tuple;
      * @return the OrderItem
      */
     public static Optional<SCCOrderItem> lookupOrderItemBySccId(Long sccId) {
-        return  getSession().createNativeQuery("SELECT * from suseSCCOrderItem WHERE scc_id = :scc",
-                        SCCOrderItem.class)
-                .setParameter("scc", sccId, StandardBasicTypes.LONG)
+        return  getSession().createQuery("FROM SCCOrderItem o WHERE o.sccId = :scc", SCCOrderItem.class)
+                .setParameter("scc", sccId)
                 .uniqueResultOptional();
     }
 
@@ -239,20 +235,24 @@ import javax.persistence.Tuple;
 
     /**
      * Store {@link SCCOrderItem} to the database.
+     *
      * @param item order item
+     * @return the managed {@link SCCOrderItem} instance
      */
-    public static void saveOrderItem(SCCOrderItem item) {
+    public static SCCOrderItem saveOrderItem(SCCOrderItem item) {
         item.setModified(new Date());
-        singleton.saveObject(item);
+        return singleton.saveObject(item);
     }
 
     /**
      * Store {@link SCCRegCacheItem} to the database.
+     *
      * @param item regcache item
+     * @return the managed {@link SCCRegCacheItem} instance
      */
-    public static void saveRegCacheItem(SCCRegCacheItem item) {
+    public static SCCRegCacheItem saveRegCacheItem(SCCRegCacheItem item) {
         item.setModified(new Date());
-        singleton.saveObject(item);
+        return singleton.saveObject(item);
     }
 
     /**
@@ -296,7 +296,8 @@ import javax.persistence.Tuple;
      */
     public static boolean refreshNeeded(Optional<Date> lastRefreshDateIn) {
         return getSession()
-                .createQuery("SELECT MAX(modified) FROM BaseCredentials WHERE type IN ('scc', 'cloudrmt')",
+                .createQuery(
+                        "SELECT MAX(b.modified) FROM BaseCredentials b WHERE b.internalType IN ('scc', 'cloudrmt')",
                         Date.class)
                 .uniqueResultOptional()
                 .map(credsLastModified -> {
@@ -327,18 +328,15 @@ import javax.persistence.Tuple;
      */
     public static List<Long> listSubscriptionsIdsByCredentials(RemoteCredentials c) {
         if (c == null || c.getId() == null) {
-            return getSession().createNativeQuery("SELECT * from suseSCCSubscription WHERE credentials_id IS NULL",
-                            SCCSubscription.class)
-                    .getResultList().stream().map(SCCSubscription::getSccId).collect(Collectors.toList());
+            return getSession()
+                    .createQuery("SELECT s.sccId FROM SCCSubscription s WHERE s.credentials IS NULL", Long.class)
+                    .list();
         }
-        else {
-            return getSession().createNativeQuery("""
-                                      SELECT * from suseSCCSubscription
-                                      WHERE credentials_id = :credentials
-                                      """, SCCSubscription.class)
-                    .setParameter("credentials", c.getId(), StandardBasicTypes.LONG)
-                    .getResultList().stream().map(SCCSubscription::getSccId).collect(Collectors.toList());
-        }
+
+        return getSession()
+                .createQuery("SELECT s.sccId FROM SCCSubscription s WHERE s.credentials.id = :credentials", Long.class)
+                .setParameter("credentials", c.getId())
+                .list();
     }
 
     /**
@@ -358,15 +356,9 @@ import javax.persistence.Tuple;
      * @return a SCCRepository
      */
     public static Optional<SCCRepository> lookupRepositoryBySccId(Long sccId) {
-        try {
-            return getSession().createNativeQuery("SELECT * from suseSCCRepository WHERE scc_id = :scc",
-                            SCCRepository.class)
-                    .setParameter("scc", sccId, StandardBasicTypes.LONG)
-                    .uniqueResultOptional();
-        }
-        catch (NoSuchElementException e) {
-            return Optional.empty();
-        }
+        return getSession().createQuery("FROM SCCRepository r WHERE r.sccId = :scc", SCCRepository.class)
+                .setParameter("scc", sccId)
+                .uniqueResultOptional();
     }
 
     /**
@@ -375,16 +367,9 @@ import javax.persistence.Tuple;
      * @return the repository if found
      */
     public static Optional<SCCRepository> lookupRepositoryByName(String name) {
-        try {
-
-            return getSession().createNativeQuery("SELECT * from suseSCCRepository WHERE name = :name",
-                            SCCRepository.class)
-                .setParameter("name", name, StandardBasicTypes.STRING)
-                .uniqueResultOptional();
-        }
-        catch (NoSuchElementException e) {
-            return Optional.empty();
-        }
+        return getSession().createQuery("FROM SCCRepository r WHERE r.name = :name", SCCRepository.class)
+            .setParameter("name", name)
+            .uniqueResultOptional();
     }
 
     /**
@@ -404,35 +389,32 @@ import javax.persistence.Tuple;
      * @return a list of SCCRepositoriesAuth
      */
     public static List<SCCRepositoryAuth> lookupRepositoryAuthByCredential(Credentials c) {
-        if (c != null) {
-            return getSession().createNativeQuery("""
-                                      SELECT * from suseSCCRepositoryAuth
-                                      WHERE credentials_id = :credentials
-                                      """, SCCRepositoryAuth.class)
-                    .setParameter("credentials", c.getId(), StandardBasicTypes.LONG)
+        if (c == null) {
+            return getSession()
+                    .createQuery("FROM SCCRepositoryAuth r WHERE r.credentials IS NULL", SCCRepositoryAuth.class)
                     .getResultList();
         }
-        else {
-            return getSession().createNativeQuery("SELECT * from suseSCCRepositoryAuth WHERE credentials_id IS null",
-                            SCCRepositoryAuth.class)
-                    .getResultList();
-        }
+
+        return getSession()
+                .createQuery("FROM SCCRepositoryAuth r WHERE r.credentials.id = :credentials", SCCRepositoryAuth.class)
+                .setParameter("credentials", c.getId())
+                .getResultList();
     }
 
     /**
      * @return return a list of all {@link SCCRepositoryAuth} objects
      */
     public static List<SCCRepositoryAuth> lookupRepositoryAuth() {
-        return getSession().createNativeQuery("SELECT * from suseSCCRepositoryAuth", SCCRepositoryAuth.class)
-                .getResultList();
+        return getSession().createQuery("FROM SCCRepositoryAuth", SCCRepositoryAuth.class).getResultList();
     }
 
     /**
      * @return a list of repository auth objects which are linked to a {@link ContentSource}
      */
     public static List<SCCRepositoryAuth> lookupRepositoryAuthWithContentSource() {
-        return getSession().createNativeQuery("SELECT * from suseSCCRepositoryAuth WHERE source_id IS NOT null",
-                SCCRepositoryAuth.class).getResultList();
+        return getSession()
+                .createQuery("FROM SCCRepositoryAuth r WHERE r.contentSource IS NOT null", SCCRepositoryAuth.class)
+                .getResultList();
     }
 
     /**
@@ -440,11 +422,8 @@ import javax.persistence.Tuple;
      */
     public static List<Long> lookupRepositoryIdsWithAuth() {
         return getSession()
-                .createNativeQuery("SELECT DISTINCT ra.repo_id FROM suseSCCRepositoryAuth ra", Tuple.class)
-                .addScalar("repo_id", StandardBasicTypes.LONG)
-                .stream()
-                .map(t -> t.get(0, Long.class))
-                .toList();
+                .createQuery("SELECT DISTINCT ra.repo.id FROM SCCRepositoryAuth ra", Long.class)
+                .list();
     }
 
     /**
@@ -586,19 +565,17 @@ import javax.persistence.Tuple;
      *
      * @return list of {@link SCCRegCacheItem}
      */
-    @SuppressWarnings("unchecked")
     public static List<SCCRegCacheItem> listDeregisterItems() {
         int regErrorExpireTime = Config.get().getInt(ConfigDefaults.REG_ERROR_EXPIRE_TIME, 168);
         Calendar retryTime = Calendar.getInstance();
         retryTime.add(Calendar.HOUR, -1 * regErrorExpireTime);
 
         return getSession().createQuery("""
-                        SELECT rci FROM SCCRegCacheItem as rci
+                        FROM SCCRegCacheItem as rci
                         WHERE rci.server is NULL
-                        AND (rci.registrationErrorTime IS NULL
-                             OR rci.registrationErrorTime < :retryTime)
+                        AND (rci.registrationErrorTime IS NULL OR rci.registrationErrorTime < :retryTime)
                         ORDER BY rci.sccId ASC
-                        """)
+                        """, SCCRegCacheItem.class)
                 .setParameter("retryTime", new Date(retryTime.getTimeInMillis()))
                 .getResultList();
     }
@@ -626,18 +603,22 @@ import javax.persistence.Tuple;
      * @param cred SCC Org Credentials
      * @return a list {@link SCCUpdateSystemItem}
      */
-    @SuppressWarnings("unchecked")
     public static List<SCCUpdateSystemItem> listUpdateLastSeenItems(SCCCredentials cred) {
         List<Object[]> rows = getSession().createNativeQuery("""
-                        SELECT reg.scc_login, reg.scc_passwd, si.checkin FROM suseSCCRegCache reg
-                        JOIN rhnServer s ON reg.server_id = s.id JOIN rhnServerInfo si ON s.id = si.server_id
+                        SELECT reg.scc_login, reg.scc_passwd, si.checkin
+                        FROM suseSCCRegCache reg
+                                JOIN rhnServer s ON reg.server_id = s.id
+                                JOIN rhnServerInfo si ON s.id = si.server_id
                         WHERE reg.scc_regerror_timestamp IS NULL AND reg.creds_id = :cred AND reg.scc_id IS NOT NULL
-                        """)
+                        """, Object[].class)
+                .addSynchronizedEntityClass(Server.class)
+                .addSynchronizedEntityClass(ServerInfo.class)
+                .addSynchronizedEntityClass(SCCRegCacheItem.class)
                 .setParameter("cred", cred.getId(), StandardBasicTypes.LONG)
-                .list();
+                .getResultList();
 
         return rows.stream()
-                .map(r -> new SCCUpdateSystemItem(r[0].toString(), r[1].toString(), (Date) r[2]))
+                .map(r -> new SCCUpdateSystemItem(r[0].toString(), r[1].toString(), Date.from((Instant) r[2])))
                 .toList();
     }
 
@@ -647,9 +628,8 @@ import javax.persistence.Tuple;
      * @return optional SCCRegCacheItem
      */
     public static Optional<SCCRegCacheItem> lookupCacheItemByServer(Server srv) {
-        return  getSession().createNativeQuery("SELECT * from suseSCCRegCache WHERE server_id = :server",
-                        SCCRegCacheItem.class)
-                .setParameter("server", srv.getId(), StandardBasicTypes.LONG)
+        return  getSession().createQuery("FROM SCCRegCacheItem c WHERE c.server.id = :server", SCCRegCacheItem.class)
+                .setParameter("server", srv.getId())
                 .uniqueResultOptional();
     }
 

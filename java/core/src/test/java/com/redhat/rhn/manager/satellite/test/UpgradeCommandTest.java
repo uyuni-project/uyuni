@@ -27,6 +27,7 @@ import com.redhat.rhn.domain.task.TaskFactory;
 import com.redhat.rhn.frontend.action.kickstart.test.KickstartTestHelper;
 import com.redhat.rhn.manager.satellite.UpgradeCommand;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
 
@@ -47,7 +48,7 @@ public class UpgradeCommandTest extends BaseTestCaseWithUser {
         assertNull(ksession);
 
         // UpgradeCommand its its own transaction so we gotta commit.
-        commitAndCloseSession();
+        TestUtils.commitAndCloseSession();
         commitHappened();
 
         UpgradeCommand cmd = new UpgradeCommand();

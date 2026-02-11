@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017--2025 SUSE LLC
+ * Copyright (c) 2017--2026 SUSE LLC
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -22,7 +22,6 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
-import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
 import com.redhat.rhn.domain.action.ansible.InventoryAction;
@@ -71,11 +70,13 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageEvrFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerHistoryEvent;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.legacy.UserImpl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
@@ -89,6 +90,7 @@ import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
+import org.hibernate.query.QueryFlushMode;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -104,7 +106,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.persistence.Tuple;
+import jakarta.persistence.Tuple;
 
 /**
  * ActionFactory - the singleton class used to fetch and store
@@ -302,10 +304,10 @@ public class ActionFactory extends HibernateFactory {
                                                                                  String actionTypeLabel) {
         Session session = HibernateFactory.getSession();
         return session.createQuery("""
-                        FROM ServerAction AS sa WHERE
-                            sa.server.id = :serverId
-                            AND sa.parentAction.actionType.label = :label
-                            AND status in ( 0, 1 )""", ServerAction.class)
+                        FROM ServerAction WHERE
+                            server.id = :serverId
+                            AND parentAction.actionType.label = :label
+                            AND status.id in ( 0, 1 )""", ServerAction.class)
                 .setParameter("serverId", serverId)
                 .setParameter("label", actionTypeLabel)
                 .list().stream()
@@ -325,15 +327,22 @@ public class ActionFactory extends HibernateFactory {
     public static void scheduleForExecution(Action action, Set<Long> serverIds) {
         maintenanceManager.canActionBeScheduled(serverIds, action);
 
-        Map<String, Object> params = new HashMap<>();
-        params.put("status_id", ActionFactory.STATUS_QUEUED.getId());
-        params.put("tries", ActionFactory.REMAINING_TRIES);
-        params.put("parent_id", action.getId());
+        HibernateFactory.getSession()
+                .createMutationQuery("""
+                        INSERT INTO ServerAction (serverId, parentAction, status, remainingTries)
+                             SELECT s.id, :parentAction, :status, :tries
+                               FROM Server s
+                              WHERE s.id IN (:ids)
+                        """)
+                // Ensure the actions and the servers currently in session are flushed to the database
+                .setQueryFlushMode(QueryFlushMode.FLUSH)
+                .setParameterList("ids", serverIds)
+                .setParameter("parentAction", action)
+                .setParameter("status", ActionFactory.STATUS_QUEUED)
+                .setParameter("tries",  ActionFactory.REMAINING_TRIES)
+                .executeUpdate();
 
-        WriteMode m = ModeFactory.getWriteMode("Action_queries", "insert_server_actions");
-        List<Long> sidList = new ArrayList<>();
-        sidList.addAll(serverIds);
-        m.executeUpdate(params, sidList);
+        getSession().refresh(action);
     }
 
     /**
@@ -633,7 +642,7 @@ public class ActionFactory extends HibernateFactory {
      * @return the Action found
      */
     public static Action lookupByUserAndId(User user, Long id) {
-        return getSession().createQuery("FROM Action AS a where a.id = :aid AND org_id = :orgId", Action.class)
+        return getSession().createQuery("FROM Action AS a where a.id = :aid AND a.org.id = :orgId", Action.class)
                 .setParameter("aid", id)
                 .setParameter("orgId", user.getOrg().getId())
                 .uniqueResult();
@@ -646,16 +655,15 @@ public class ActionFactory extends HibernateFactory {
      * @return the count
      */
     public static Integer getServerActionCountByStatus(Action action, ActionStatus status) {
-        return getSession().createNativeQuery("""
-                SELECT COUNT(sa.server_id) AS count
-                FROM   rhnServerAction sa
-                WHERE  sa.action_id = :aid
-                AND    sa.status = :stid
-                """, Tuple.class)
+        return getSession()
+                .createQuery("""
+                        SELECT COUNT(sa.server.id)
+                        FROM ServerAction sa
+                        WHERE sa.parentAction.id = :aid AND sa.status.id = :stid""", Long.class)
                 .setParameter("aid", action.getId())
                 .setParameter("stid", status.getId())
                 .uniqueResult()
-                .get("count", Number.class).intValue();
+                .intValue();
     }
 
 
@@ -685,8 +693,11 @@ public class ActionFactory extends HibernateFactory {
                                AND        rA.action_type = :actionTypeId
                               )
                 """, Action.class)
+                .addSynchronizedEntityClass(Action.class)
                 .addSynchronizedEntityClass(Server.class)
                 .addSynchronizedEntityClass(ServerAction.class)
+                .addSynchronizedEntityClass(ActionStatus.class)
+                .addSynchronizedEntityClass(UserImpl.class)
                 .setParameter("userId", user.getId())
                 .setParameter("actionTypeId", type.getId())
                 .setParameter("serverId", server.getId())
@@ -763,9 +774,10 @@ public class ActionFactory extends HibernateFactory {
      * Insert or Update a Action.
      * @param actionIn Action to be stored in database.
      * @return action
+     * @param <T> The type of the action
      */
-    public static Action save(Action actionIn) {
-        /**
+    public static <T extends Action> T save(T actionIn) {
+        /*
          * If we are trying to commit a package action, make sure
          * the packageEvr stored proc is called first so that
          * the foreign key constraint holds.
@@ -784,13 +796,14 @@ public class ActionFactory extends HibernateFactory {
             }
         }
 
-        singleton.saveObject(actionIn);
-        if (actionIn.getServerActions() != null) {
-            actionIn.getServerActions().stream()
+
+        T action = singleton.saveObject(actionIn);
+        if (action.getServerActions() != null) {
+            action.getServerActions().stream()
                     .map(sa -> sa.getServerId())
                     .forEach(sid -> SystemManager.updateSystemOverview(sid));
         }
-        return actionIn;
+        return action;
     }
 
     /**
@@ -870,7 +883,8 @@ public class ActionFactory extends HibernateFactory {
      * @return return a list of server actions
      */
     public static List<ServerAction> listPendingServerActionsByTypes(List<ActionType> typesIn) {
-        return getSession().createNativeQuery("""
+        return getSession()
+                .createNativeQuery("""
             SELECT sa.*
               FROM rhnAction a
               JOIN rhnserveraction sa ON a.id = sa.action_id
@@ -880,6 +894,7 @@ public class ActionFactory extends HibernateFactory {
             """, ServerAction.class)
                 .setParameterList("types", typesIn.stream().map(ActionType::getId).toList())
                 .addSynchronizedEntityClass(Action.class)
+                .addSynchronizedEntityClass(ServerAction.class)
                 .list();
     }
 
@@ -997,7 +1012,7 @@ public class ActionFactory extends HibernateFactory {
      */
     public static void rescheduleFailedServerActions(Action action, Long tries) {
         updateActionEarliestDate(action);
-        HibernateFactory.getSession().createQuery("""
+        HibernateFactory.getSession().createMutationQuery("""
                         UPDATE ServerAction sa
                         SET    sa.status = :queued,
                                sa.remainingTries = :tries,
@@ -1026,7 +1041,7 @@ public class ActionFactory extends HibernateFactory {
      */
     public static void rescheduleAllServerActions(Action action, Long tries) {
         updateActionEarliestDate(action);
-        HibernateFactory.getSession().createQuery("""
+        HibernateFactory.getSession().createMutationQuery("""
                         UPDATE  ServerAction sa
                         SET     sa.status = :queued,
                                 sa.remainingTries = :tries,
@@ -1059,6 +1074,9 @@ public class ActionFactory extends HibernateFactory {
                               INNER JOIN suseMinionInfo mi on sa.server_id = mi.server_id
                               WHERE      sa.status in (0, 1))
                 """, Action.class)
+                .addSynchronizedEntityClass(Action.class)
+                .addSynchronizedEntityClass(ServerAction.class)
+                .addSynchronizedEntityClass(MinionServer.class)
                 .list();
     }
 
@@ -1071,7 +1089,7 @@ public class ActionFactory extends HibernateFactory {
     public static void rescheduleSingleServerAction(Action action, Long tries,
             Long server) {
         updateActionEarliestDate(action);
-        HibernateFactory.getSession().createQuery("""
+        HibernateFactory.getSession().createMutationQuery("""
                         UPDATE ServerAction sa
                         SET    sa.status = :queued,
                                sa.remainingTries = :tries,
@@ -1172,6 +1190,7 @@ public class ActionFactory extends HibernateFactory {
                         AND    status = 0
                         RETURNING server_id
                         """, Tuple.class)
+                .addSynchronizedEntityClass(ServerAction.class)
                 .setParameter("rejection_reason", rejectionReason)
                 .setParameter("completion_time", new Date());
 
@@ -1186,11 +1205,14 @@ public class ActionFactory extends HibernateFactory {
 
     /**
      * Save a {@link ServerAction} object.
+     *
      * @param serverActionIn the server action to save
+     * @return the managed {@link ServerAction} object
      */
-    public static void save(ServerAction serverActionIn) {
-        singleton.saveObject(serverActionIn);
-        SystemManager.updateSystemOverview(serverActionIn.getServerId());
+    public static ServerAction save(ServerAction serverActionIn) {
+        ServerAction managed = singleton.saveObject(serverActionIn);
+        SystemManager.updateSystemOverview(managed.getServerId());
+        return managed;
     }
 
     /**

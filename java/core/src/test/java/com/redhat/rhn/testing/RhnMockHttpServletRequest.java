@@ -28,20 +28,21 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.servlet.AsyncContext;
-import javax.servlet.DispatcherType;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletInputStream;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpUpgradeHandler;
-import javax.servlet.http.Part;
+import jakarta.servlet.AsyncContext;
+import jakarta.servlet.DispatcherType;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletConnection;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletInputStream;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpUpgradeHandler;
+import jakarta.servlet.http.Part;
 
 /**
  * RhnMockHttpServletRequest is a mock implementation of the
@@ -100,7 +101,7 @@ public class RhnMockHttpServletRequest implements HttpServletRequest {
         this.servletPath = "";
         this.pathInfo = null;
         this.queryString = null;
-        this.session = new RhnMockHttpSession();
+        this.session = new com.redhat.rhn.testing.RhnMockHttpSession();
         this.method = "POST";
         this.port = 80;
         this.remoteAddr = "127.0.0.1";
@@ -496,7 +497,7 @@ public class RhnMockHttpServletRequest implements HttpServletRequest {
     @Override
     public HttpSession getSession(boolean create) {
         if (session == null && create) {
-            session = new RhnMockHttpSession();
+            session = new com.redhat.rhn.testing.RhnMockHttpSession();
         }
         return session;
     }
@@ -516,10 +517,6 @@ public class RhnMockHttpServletRequest implements HttpServletRequest {
         throw new UnsupportedOperationException();
     }
 
-    @Override
-    public boolean isRequestedSessionIdFromUrl() {
-        throw new UnsupportedOperationException();
-    }
 
     @Override
     public boolean isRequestedSessionIdValid() {
@@ -708,11 +705,6 @@ public class RhnMockHttpServletRequest implements HttpServletRequest {
     }
 
     @Override
-    public String getRealPath(String path) {
-        return null;
-    }
-
-    @Override
     public int getRemotePort() {
         return remotePort;
     }
@@ -766,5 +758,20 @@ public class RhnMockHttpServletRequest implements HttpServletRequest {
     @Override
     public DispatcherType getDispatcherType() {
         return DispatcherType.REQUEST;
+    }
+
+    @Override
+    public ServletConnection getServletConnection() {
+        return null;
+    }
+
+    @Override
+    public String getProtocolRequestId() {
+        return "";
+    }
+
+    @Override
+    public String getRequestId() {
+        return "";
     }
 }

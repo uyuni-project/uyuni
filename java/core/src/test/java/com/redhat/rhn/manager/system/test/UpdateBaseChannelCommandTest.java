@@ -46,8 +46,8 @@ public class UpdateBaseChannelCommandTest extends BaseTestCaseWithUser {
         child.setParentChannel(parent);
         child.setProductName(pn);
 
-        TestUtils.saveAndFlush(child);
-        TestUtils.saveAndFlush(parent);
+        child = TestUtils.saveAndFlush(child);
+        parent = TestUtils.saveAndFlush(parent);
 
         Channel parent1 = ChannelFactoryTest.createBaseChannel(user);
         Channel child1 = ChannelFactoryTest.createTestChannel(user);
@@ -55,8 +55,8 @@ public class UpdateBaseChannelCommandTest extends BaseTestCaseWithUser {
         child1.setParentChannel(parent1);
         child1.setProductName(pn);
 
-        TestUtils.saveAndFlush(child1);
-        TestUtils.saveAndFlush(parent1);
+        child1 = TestUtils.saveAndFlush(child1);
+        parent1 = TestUtils.saveAndFlush(parent1);
 
         Server s = ServerFactoryTest.createTestServer(user, true,
                     ServerConstants.getServerGroupTypeEnterpriseEntitled());
@@ -70,7 +70,7 @@ public class UpdateBaseChannelCommandTest extends BaseTestCaseWithUser {
         TestUtils.flushAndEvict(parent);
         TestUtils.flushAndEvict(child);
 
-        s = (Server) TestUtils.reload(s);
+        s = TestUtils.reload(s);
 
         Set<Channel> channels = new HashSet<>();
         channels.add(parent);
@@ -85,7 +85,7 @@ public class UpdateBaseChannelCommandTest extends BaseTestCaseWithUser {
         channels.add(parent1);
         channels.add(child1);
         TestUtils.flushAndEvict(s);
-        s = (Server) TestUtils.reload(s);
+        s = TestUtils.reload(s);
         assertEquals(channels, s.getChannels());
     }
 }

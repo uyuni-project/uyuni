@@ -50,8 +50,8 @@ public class KickstartWizardCommandTest extends BaseTestCaseWithUser {
         assertNotNull(c.getOrg());
         KickstartableTree tree  = KickstartableTreeTest.createTestKickstartableTree(c);
         tree.setChannel(c);
-        TestUtils.saveAndFlush(tree);
-        TestUtils.saveAndFlush(c);
+        tree = TestUtils.saveAndFlush(tree);
+        c = TestUtils.saveAndFlush(c);
 
         KickstartWizardHelper cmd = new KickstartWizardHelper(user);
         List trees = cmd.getKickstartableTrees();

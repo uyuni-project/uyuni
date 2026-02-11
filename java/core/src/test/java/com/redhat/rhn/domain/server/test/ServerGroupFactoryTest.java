@@ -64,7 +64,7 @@ public class ServerGroupFactoryTest extends BaseTestCaseWithUser {
         name += "1";
         managedGroup = ServerGroupFactory.create(name, description,
                 user.getOrg());
-        managedGroup = (ManagedServerGroup) reload(managedGroup);
+        managedGroup = TestUtils.reload(managedGroup);
         assertNotNull(managedGroup);
         System.out.println("Name: " + managedGroup.getName());
         System.out.println("Desc: " + managedGroup.getDescription());
@@ -81,7 +81,7 @@ public class ServerGroupFactoryTest extends BaseTestCaseWithUser {
         EntitlementServerGroup sg = ServerGroupFactory.lookupEntitled(user.getOrg(),
                     ServerConstants.getServerGroupTypeEnterpriseEntitled());
         ServerGroupFactory.save(sg);
-        TestUtils.saveAndFlush(sg);
+        sg = TestUtils.saveAndFlush(sg);
     }
 
     @Test
@@ -118,4 +118,13 @@ public class ServerGroupFactoryTest extends BaseTestCaseWithUser {
         assertNull(sg1);
     }
 
+    @Test
+    public void generatedCoverageTestListMinionIdsForServerGroup() {
+        // this test has been generated programmatically to test ServerGroupFactory.listMinionIdsForServerGroup
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        ServerGroup arg0 = new ServerGroup();
+        arg0.setOrg(user.getOrg());
+        ServerGroupFactory.listMinionIdsForServerGroup(arg0);
+    }
 }

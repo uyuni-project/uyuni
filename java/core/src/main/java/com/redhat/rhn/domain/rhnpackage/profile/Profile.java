@@ -26,17 +26,17 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 
 /**
  * Profile
@@ -47,8 +47,9 @@ public class Profile extends BaseDomainHelper implements Identifiable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_SERVER_PROFILE_ID_SEQ")
-    @SequenceGenerator(name = "RHN_SERVER_PROFILE_ID_SEQ", sequenceName = "RHN_SERVER_PROFILE_ID_SEQ",
-            allocationSize = 1)
+    @SequenceGenerator(
+            name = "RHN_SERVER_PROFILE_ID_SEQ", sequenceName = "RHN_SERVER_PROFILE_ID_SEQ", allocationSize = 1
+    )
     private Long id;
 
     @Column

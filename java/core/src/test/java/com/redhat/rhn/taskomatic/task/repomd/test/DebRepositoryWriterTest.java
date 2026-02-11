@@ -19,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.Package;
@@ -67,8 +66,7 @@ public class DebRepositoryWriterTest extends JMockBaseTestCaseWithUser {
 
         PackageManager.createRepoEntrys(channel.getId());
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         DebRepositoryWriter writer = new DebRepositoryWriter("rhn/repodata", tmpDir.normalize().toString());
         writer.setCommitTransaction(false);

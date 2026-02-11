@@ -1873,28 +1873,7 @@ public class SystemManager extends BaseManager {
      *           Make sure the caller uses the
      *           returned server.
      */
-    public static Server subscribeServerToChannel(User user,
-                                                  Server server, Channel channel) {
-        return subscribeServerToChannel(user, server, channel, false);
-    }
-
-    /**
-     * Subscribes the given server to the given channel.
-     * @param user Current user
-     * @param server Server to be subscribed
-     * @param channel Channel to subscribe to.
-     * @param flush flushes the hibernate session.
-     * @return the modified server if there were
-     *           any changes modifications made
-     *           to the Server during the call.
-     *           Make sure the caller uses the
-     *           returned server.
-     */
-    public static Server subscribeServerToChannel(User user,
-            Server server,
-            Channel channel,
-            boolean flush) {
-
+    public static Server subscribeServerToChannel(User user, Server server, Channel channel) {
         if (user != null && !ChannelManager.verifyChannelSubscribe(user, channel.getId())) {
             //Throw an exception with a nice error message so the user
             //knows what went wrong.
@@ -1905,13 +1884,11 @@ public class SystemManager extends BaseManager {
         }
 
         if (!verifyArchCompatibility(server, channel)) {
-            throw new IncompatibleArchException(
-                    server.getServerArch(), channel.getChannelArch());
+            throw new IncompatibleArchException(server.getServerArch(), channel.getChannelArch());
         }
 
         log.debug("calling subscribe_server_to_channel");
-        CallableMode m = ModeFactory.getCallableMode("Channel_queries",
-                "subscribe_server_to_channel");
+        CallableMode m = ModeFactory.getCallableMode("Channel_queries", "subscribe_server_to_channel");
 
         Map<String, Object> in = new HashMap<>();
         in.put("server_id", server.getId());
@@ -1926,18 +1903,8 @@ public class SystemManager extends BaseManager {
         m.execute(in, new HashMap<>());
 
         SystemManager.updateSystemOverview(server.getId());
-
-        /*
-         * This is f-ing hokey, but we need to be sure to refresh the
-         * server object since
-         * we modified it outside of hibernate :-/
-         * This will update the server.channels set.
-         */
-        log.debug("returning with a flush? {}", flush);
-        if (flush) {
-            return HibernateFactory.reload(server);
-        }
         HibernateFactory.getSession().refresh(server);
+
         return server;
     }
 

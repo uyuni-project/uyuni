@@ -26,7 +26,7 @@ public class UserDeletionTest extends RhnBaseTestCase {
         /*Long userPK = UserTestUtils.createUser("gfedcba", "mlkjih");
         User user = UserFactory.lookupById(userPK);
         user.setEmail("ksmith@redhat.com");
-        TestUtils.saveAndFlush(user);
+        user = TestUtils.saveAndFlush(user);
         Long id = user.getId();
         StringBuffer insert = new StringBuffer();
         insert.append("INSERT INTO rhnUserDeletionQueue (user_id) values ");

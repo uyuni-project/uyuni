@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LLC
  * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -23,12 +24,12 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerNetAddress4;
+import com.redhat.rhn.domain.server.ServerNetworkFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import org.hibernate.Session;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -38,8 +39,14 @@ import java.util.Date;
  * NetworkInterfaceTest
  */
 public class NetworkInterfaceTest extends RhnBaseTestCase {
+    private static class MockNetworkInterface extends NetworkInterface {
+        protected void findServerNetAddress4(Long id) {
+            super.findServerNetAddress4(id);
+        }
+}
 
-    public static final String TEST_MAC = "AA:AA:BB:BB:CC:CC";
+
+        public static final String TEST_MAC = "AA:AA:BB:BB:CC:CC";
     /**
      * Test the equals method for NetworkInterface.
      * @throws Exception something bad happened
@@ -52,14 +59,17 @@ public class NetworkInterfaceTest extends RhnBaseTestCase {
         assertNotEquals(netint1, netint2);
         assertNotEquals(netint1, new Date());
 
-        Session session = HibernateFactory.getSession();
-        netint2 = session.createQuery("FROM NetworkInterface AS n WHERE n.server = :server AND n.name = :name",
-                        NetworkInterface.class)
-                .setParameter("server", netint1.getServer())
-                .setParameter("name", netint1.getName())
-                .uniqueResult();
-
+        netint2 = lookupNetworkInterfaceByServerAndName(netint1.getServer(),  netint1.getName());
         assertEquals(netint1, netint2);
+    }
+
+    private NetworkInterface lookupNetworkInterfaceByServerAndName(Server server, String name) {
+        return HibernateFactory.getSession()
+                .createQuery("FROM NetworkInterface AS n WHERE n.server = :server AND n.name = :name",
+                        NetworkInterface.class)
+                .setParameter("server", server)
+                .setParameter("name", name)
+                .uniqueResult();
     }
 
     /**
@@ -123,15 +133,27 @@ public class NetworkInterfaceTest extends RhnBaseTestCase {
         netint.setHwaddr(macAddress);
         netint.setModule("test");
         netint.setName(networkName);
-        ServerNetAddress4 netAddr = new ServerNetAddress4();
-        netAddr.setAddress(ipAddress);
+        netint.setServer(server);
+        netint = TestUtils.save(netint);
+
+        ServerNetAddress4 netAddr = new ServerNetAddress4(netint.getInterfaceId(), ipAddress);
+        ServerNetworkFactory.saveServerNetAddress4(netAddr);
+
         ArrayList<ServerNetAddress4> salist = new ArrayList<>();
         salist.add(netAddr);
         netint.setSa4(salist);
+
         server.addNetworkInterface(netint);
-        netint = (NetworkInterface) TestUtils.saveAndReload(netint);
-        netAddr.setInterfaceId(netint.getInterfaceId());
-        TestUtils.saveAndFlush(netAddr);
+
         return netint;
+    }
+
+    @Test
+    public void generatedCoverageTestFindServerNetAddress4() {
+        // this test has been generated programmatically to test NetworkInterface.findServerNetAddress4
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        MockNetworkInterface testObject = new MockNetworkInterface();
+        testObject.findServerNetAddress4(0L);
     }
 }

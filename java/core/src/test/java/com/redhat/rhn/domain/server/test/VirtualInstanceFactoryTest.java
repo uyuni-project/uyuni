@@ -20,6 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.server.GuestAndNonVirtHostView;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.VirtualInstance;
@@ -37,16 +39,12 @@ import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.test.TestSaltApi;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.hibernate.Session;
-import org.hibernate.type.StandardBasicTypes;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import javax.persistence.NoResultException;
 
 /**
  * VirtualInstanceFactoryTest
@@ -80,32 +78,14 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
         assertGuestDeleted(guest);
     }
 
-    private void flushAndEvictGuest(VirtualInstance guest) {
-        Session session = VirtualInstanceFactory.getSession();
-
-        flushAndEvict(guest);
-
-        if (guest.isRegisteredGuest()) {
-            session.evict(guest.getGuestSystem());
-        }
-
-        if (guest.getHostSystem() != null) {
-            session.evict(guest.getHostSystem());
-        }
-    }
-
     @Test
     public void testSaveUnregisteredGuestAndLoadById() throws Exception {
-        VirtualInstance guest = builder.createUnregisteredGuest()
-                .withVirtHost().build();
-
+        VirtualInstance guest = builder.createUnregisteredGuest().withVirtHost().build();
         virtualInstanceDAO.saveVirtualInstance(guest);
 
-        flushAndEvictGuest(guest);
+        TestUtils.flushAndClearSession();
 
-        VirtualInstance retrievedVirtualInstance = virtualInstanceDAO
-                .lookupById(guest.getId());
-
+        VirtualInstance retrievedVirtualInstance = virtualInstanceDAO.lookupById(guest.getId());
         assertEquals(guest, retrievedVirtualInstance);
     }
 
@@ -113,50 +93,43 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
     public void testSaveRegisteredGuestAndLoadById() throws Exception {
         VirtualInstance guest = builder.createGuest().withVirtHost().build();
         Server guestSystem = guest.getGuestSystem();
-
         virtualInstanceDAO.saveVirtualInstance(guest);
 
-        flushAndEvict(guest);
+        TestUtils.flushAndClearSession();
 
-        VirtualInstance retrievedGuest = virtualInstanceDAO.lookupById(guest
-                .getId());
-
+        VirtualInstance retrievedGuest = virtualInstanceDAO.lookupById(guest.getId());
         assertEquals(guest, retrievedGuest);
         assertEquals(guestSystem, retrievedGuest.getGuestSystem());
     }
 
     @Test
     public void testGetGuestsAndNotHost() throws Exception {
-
-        VirtualInstance vi = builder.createUnregisteredGuest()
-            .withVirtHost().build();
+        VirtualInstance vi = builder.createUnregisteredGuest().withVirtHost().build();
         virtualInstanceDAO.saveVirtualInstance(vi);
         Long sid = vi.getHostSystem().getId();
-        flushAndEvictGuest(vi);
+
+        TestUtils.flushAndClearSession();
 
         //step 2 - fetch the guest from the database so that it is attached to the session
-        VirtualInstance retrievedGuest = virtualInstanceDAO.lookupById(vi
-                .getId());
-
+        VirtualInstance retrievedGuest = virtualInstanceDAO.lookupById(vi.getId());
         assertNotNull(retrievedGuest.getHostSystem());
 
         Server s = ServerFactory.lookupById(sid);
         assertEquals(1, s.getGuests().size());
-
     }
 
     @Test
     public void testSaveAndRetrieveInfo() throws Exception {
         VirtualInstance guest = builder.createUnregisteredGuest()
                 .withVirtHost().withName("the_virtual_one").asParaVirtGuest()
-                .inStoppedState().build();
+                .inStoppedState()
+                .build();
 
         virtualInstanceDAO.saveVirtualInstance(guest);
-        flushAndEvict(guest);
 
-        VirtualInstance retrievedGuest = virtualInstanceDAO.lookupById(guest
-                .getId());
+        TestUtils.flushAndClearSession();
 
+        VirtualInstance retrievedGuest = virtualInstanceDAO.lookupById(guest.getId());
         assertEquals(guest.getName(), retrievedGuest.getName());
         assertEquals(guest.getType(), retrievedGuest.getType());
         assertEquals(guest.getState(), retrievedGuest.getState());
@@ -164,106 +137,63 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
         assertEquals(guest.getNumberOfCPUs(), retrievedGuest.getNumberOfCPUs());
     }
 
-    /*
-     * Commeting out test for satellite.
-    @Test
-    public void testFindGuestsWithNonVirtHostByOrg() throws Exception {
-        Set expectedViews = new HashSet<>();
-
-        expectedViews.add(builder.createGuest().withNonVirtHost()
-                .withPersistence().build().asGuestAndNonVirtHostView());
-        expectedViews.add(builder.createGuest().withNonVirtHost()
-                .withPersistence().build().asGuestAndNonVirtHostView());
-        expectedViews.add(builder.createGuest().withNonVirtHostInAnotherOrg()
-                .withPersistence().build().asGuestAndNonVirtHostView());
-        expectedViews.add(builder.createGuest().withVirtHostInAnotherOrg()
-                .withPersistence().build().asGuestAndNonVirtHostView());
-
-        builder.createGuest().withVirtHost().withPersistence().build();
-        builder.createGuest().withPersistence().build();
-
-        Set actualViews = virtualInstanceDAO
-                .findGuestsWithNonVirtHostByOrg(user.getOrg());
-
-        assertTrue(CollectionUtils
-                .isEqualCollection(expectedViews, actualViews));
-    }*/
-
-
     @Test
     public void testFindGuestsWithoutAHostByOrg() throws Exception {
-        Set expectedViews = new HashSet<>();
+        Set<GuestAndNonVirtHostView> expectedViews = new HashSet<>();
 
-        expectedViews.add(builder.createGuest().withPersistence().build()
-                .asGuestAndNonVirtHostView());
-        expectedViews.add(builder.createGuest().withPersistence().build()
-                .asGuestAndNonVirtHostView());
+        expectedViews.add(builder.createGuest().withPersistence().build().asGuestAndNonVirtHostView());
+        expectedViews.add(builder.createGuest().withPersistence().build().asGuestAndNonVirtHostView());
 
         builder.createGuest().withNonVirtHostInAnotherOrg().withPersistence().build();
         builder.createGuest().withNonVirtHost().withPersistence().build();
         builder.createGuest().withVirtHost().withPersistence().build();
 
-        Set actualViews = virtualInstanceDAO.findGuestsWithoutAHostByOrg(user
-                .getOrg());
+        TestUtils.flushAndClearSession();
 
-        assertTrue(CollectionUtils
-                .isEqualCollection(expectedViews, actualViews));
+        Set<GuestAndNonVirtHostView> actualViews = virtualInstanceDAO.findGuestsWithoutAHostByOrg(user.getOrg());
+        assertTrue(CollectionUtils.isEqualCollection(expectedViews, actualViews));
     }
 
     @Test
     public void testGetParaVirt() {
-        assertEquals("Para-Virtualized", VirtualInstanceFactory.getInstance().
-                getParaVirtType().getName());
-        assertEquals("para_virtualized", VirtualInstanceFactory.getInstance().
-                getParaVirtType().getLabel());
+        assertEquals("Para-Virtualized", VirtualInstanceFactory.getInstance().getParaVirtType().getName());
+        assertEquals("para_virtualized", VirtualInstanceFactory.getInstance().getParaVirtType().getLabel());
     }
 
     @Test
     public void testFullyVirt() {
-        assertEquals("Fully Virtualized", VirtualInstanceFactory.getInstance().
-                getFullyVirtType().getName());
-        assertEquals("fully_virtualized", VirtualInstanceFactory.getInstance().
-                getFullyVirtType().getLabel());
+        assertEquals("Fully Virtualized", VirtualInstanceFactory.getInstance().getFullyVirtType().getName());
+        assertEquals("fully_virtualized", VirtualInstanceFactory.getInstance().getFullyVirtType().getLabel());
     }
 
     @Test
     public void testGetRunning() {
-        assertEquals("running", VirtualInstanceFactory.getInstance()
-                .getRunningState().getLabel());
-        assertEquals("Running", VirtualInstanceFactory.getInstance()
-                .getRunningState().getName());
+        assertEquals("running", VirtualInstanceFactory.getInstance().getRunningState().getLabel());
+        assertEquals("Running", VirtualInstanceFactory.getInstance().getRunningState().getName());
     }
 
     @Test
     public void testGetStopped() {
-        assertEquals("stopped", VirtualInstanceFactory.getInstance()
-                .getStoppedState().getLabel());
-        assertEquals("Stopped", VirtualInstanceFactory.getInstance()
-                .getStoppedState().getName());
+        assertEquals("stopped", VirtualInstanceFactory.getInstance().getStoppedState().getLabel());
+        assertEquals("Stopped", VirtualInstanceFactory.getInstance().getStoppedState().getName());
     }
 
     @Test
     public void testGetCrashed() {
-        assertEquals("crashed", VirtualInstanceFactory.getInstance()
-                .getCrashedState().getLabel());
-        assertEquals("Crashed", VirtualInstanceFactory.getInstance()
-                .getCrashedState().getName());
+        assertEquals("crashed", VirtualInstanceFactory.getInstance().getCrashedState().getLabel());
+        assertEquals("Crashed", VirtualInstanceFactory.getInstance().getCrashedState().getName());
     }
 
     @Test
     public void testGetPaused() {
-        assertEquals("paused", VirtualInstanceFactory.getInstance()
-                .getPausedState().getLabel());
-        assertEquals("Paused", VirtualInstanceFactory.getInstance()
-                .getPausedState().getName());
+        assertEquals("paused", VirtualInstanceFactory.getInstance().getPausedState().getLabel());
+        assertEquals("Paused", VirtualInstanceFactory.getInstance().getPausedState().getName());
     }
 
     @Test
     public void testGetUnknown() {
-        assertEquals("unknown", VirtualInstanceFactory.getInstance()
-                .getUnknownState().getLabel());
-        assertEquals("Unknown", VirtualInstanceFactory.getInstance()
-                .getUnknownState().getName());
+        assertEquals("unknown", VirtualInstanceFactory.getInstance().getUnknownState().getLabel());
+        assertEquals("Unknown", VirtualInstanceFactory.getInstance().getUnknownState().getName());
     }
 
     @Test
@@ -271,7 +201,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
         Server host = ServerTestUtils.createVirtHostWithGuest(systemEntitlementManager);
         VirtualInstance vi = host.getGuests().iterator().next();
         vi.setState(VirtualInstanceFactory.getInstance().getRunningState());
-        TestUtils.saveAndFlush(vi);
+        vi = TestUtils.saveAndFlush(vi);
         assertNotNull(vi.getState());
     }
 
@@ -292,19 +222,7 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
     public void testLookupHostVirtualInstanceByHostId() throws Exception {
         Server host = ServerTestUtils.createVirtHostWithGuest(systemEntitlementManager);
 
-        VirtualInstance fromDb;
-        try {
-            fromDb = HibernateFactory.getSession().createNativeQuery("""
-                                      SELECT * from rhnVirtualInstance
-                                      WHERE host_system_id = :host
-                                      AND  virtual_system_id IS NULL
-                                      """, VirtualInstance.class)
-                .setParameter("host", host.getId(), StandardBasicTypes.LONG)
-                .getSingleResult();
-        }
-        catch (NoResultException e) {
-            fromDb = null;
-        }
+        VirtualInstance fromDb = getInstanceFromDb(host.getId());
         VirtualInstance hostVirtInstance = VirtualInstanceFactory.getInstance()
                 .lookupHostVirtInstanceByHostId(host.getId());
 
@@ -320,5 +238,27 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
                 .lookupVirtualInstanceByHostIdAndUuid(host.getId(), guest.getUuid());
 
         assertEquals(guest, fromDb);
+    }
+
+    private VirtualInstance getInstanceFromDb(Long hostSystemId) {
+        return HibernateFactory.getSession()
+                .createNativeQuery("""
+                        SELECT * from rhnVirtualInstance
+                        WHERE host_system_id = :host
+                        AND  virtual_system_id IS NULL
+                        """, VirtualInstance.class)
+                .setParameter("host", hostSystemId)
+                .uniqueResult();
+    }
+
+
+    @Test
+    public void generatedCoverageTestFindGuestsWithNonVirtHostByOrg() {
+        // this test has been generated programmatically to test VirtualInstanceFactory.findGuestsWithNonVirtHostByOrg
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        VirtualInstanceFactory testObject = new VirtualInstanceFactory();
+        Org arg0 = new Org();
+        testObject.findGuestsWithNonVirtHostByOrg(arg0);
     }
 }

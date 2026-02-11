@@ -24,7 +24,7 @@ import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 
 import org.apache.commons.lang3.StringUtils;
 
-import javax.servlet.jsp.JspException;
+import jakarta.servlet.jsp.JspException;
 
 /**
  * Handles selectable lists, such as lists backed by RhnSet

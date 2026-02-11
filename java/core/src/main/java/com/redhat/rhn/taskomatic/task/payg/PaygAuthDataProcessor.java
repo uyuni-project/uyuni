@@ -146,6 +146,7 @@ public class PaygAuthDataProcessor {
                 sslCs.setClientCert(cryptoKeyMap.get(repodata.get("sslclientcert")));
                 sslCs.setClientKey(cryptoKeyMap.get(repodata.get("sslclientkey")));
                 sslCs.setCaCert(cryptoKeyMap.get(repodata.get("sslcacert")));
+                sslCs.setContentSource(contentSource);
                 contentSource.setSslSets(Set.of(sslCs));
             }
             else if (repodata.containsKey("sslclientcert") ||

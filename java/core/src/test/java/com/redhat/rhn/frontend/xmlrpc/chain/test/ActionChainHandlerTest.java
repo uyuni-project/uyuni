@@ -115,12 +115,10 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
 
         // Add capabilities
         SystemManagerTest.giveCapability(this.server.getId(), "script.run", 1L);
-        SystemManagerTest.giveCapability(this.server.getId(),
-                                         SystemManager.CAP_CONFIGFILES_DEPLOY, 2L);
+        SystemManagerTest.giveCapability(this.server.getId(), SystemManager.CAP_CONFIGFILES_DEPLOY, 2L);
 
         SystemManagerTest.giveCapability(this.server2.getId(), "script.run", 1L);
-        SystemManagerTest.giveCapability(this.server2.getId(),
-                                         SystemManager.CAP_CONFIGFILES_DEPLOY, 2L);
+        SystemManagerTest.giveCapability(this.server2.getId(), SystemManager.CAP_CONFIGFILES_DEPLOY, 2L);
 
         // Channels
         this.pkg = PackageTest.createTestPackage(this.admin.getOrg());
@@ -156,14 +154,8 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
         ServerFactory.save(this.server);
         ServerFactory.save(this.server2);
 
-        ErrataCacheManager.insertNeededErrataCache(
-                this.server.getId(), this.errata.getId(), this.pkg.getId());
-
-        ErrataCacheManager.insertNeededErrataCache(
-                this.server2.getId(), this.errata2.getId(), this.pkg.getId());
-
-        this.server = reload(this.server);
-        this.server2 = reload(this.server2);
+        ErrataCacheManager.insertNeededErrataCache(this.server.getId(), this.errata.getId(), this.pkg.getId());
+        ErrataCacheManager.insertNeededErrataCache(this.server2.getId(), this.errata2.getId(), this.pkg.getId());
 
         ach = new ActionChainHandler();
         actionChain = ActionChainFactory.createActionChain(CHAIN_LABEL, admin);

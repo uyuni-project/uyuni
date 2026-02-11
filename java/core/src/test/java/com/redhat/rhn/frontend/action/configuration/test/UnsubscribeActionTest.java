@@ -16,7 +16,6 @@ package com.redhat.rhn.frontend.action.configuration.test;
 
 import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
-import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.RhnSetFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -45,7 +44,6 @@ public class UnsubscribeActionTest extends RhnMockStrutsTestCase {
 
         //create a global channel
         ConfigChannel channel = ConfigTestUtils.createConfigChannel(user.getOrg());
-        ConfigurationFactory.commit(channel);
 
         //create a server and add it to the two required server groups
         //provisioning for config management and enterprise for server grouping

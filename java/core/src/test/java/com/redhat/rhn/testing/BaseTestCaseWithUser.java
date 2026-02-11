@@ -50,7 +50,7 @@ public abstract class BaseTestCaseWithUser extends RhnBaseTestCase {
         // clean up our mess
         if (committed) {
            OrgFactory.deleteOrg(user.getOrg().getId(), user);
-           commitAndCloseSession();
+           TestUtils.commitAndCloseSession();
         }
         committed = false;
         user = null;

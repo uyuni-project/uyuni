@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LCC
  * Copyright (c) 2023--2025 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
@@ -12,6 +13,9 @@ package com.suse.scc.registration.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
+
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.client.SCCConfig;
 import com.suse.scc.client.SCCConfigBuilder;
@@ -22,7 +26,6 @@ import com.suse.scc.model.SCCSystemCredentialsJson;
 import com.suse.scc.registration.SCCSystemRegistrationContext;
 import com.suse.scc.registration.SCCSystemRegistrationCreateUpdateSystems;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.net.URI;
@@ -33,7 +36,6 @@ import java.util.stream.Collectors;
 /**
  * Tests {@link com.suse.scc.registration.SCCSystemRegistration}.
  */
-@Disabled
 public class SCCSystemRegistrationCreateUpdateSystemsTest extends AbstractSCCSystemRegistrationTest {
 
     /**
@@ -66,6 +68,9 @@ public class SCCSystemRegistrationCreateUpdateSystemsTest extends AbstractSCCSys
     public void testSuccessSCCSystemRegistrationCreateUpdateSystemsWhenAllSystemRegistrationAreSuccessful()
             throws URISyntaxException {
         final int systemSize = 101;
+        final int batchSize = 50;
+        Config.get().setString(ConfigDefaults.REG_BATCH_SIZE, String.valueOf(batchSize));
+
         // setup
         final TestSCCWebClient sccWebClient = getDefaultTestSCCWebClient();
         final SCCSystemRegistrationContext context =
@@ -90,6 +95,9 @@ public class SCCSystemRegistrationCreateUpdateSystemsTest extends AbstractSCCSys
     @Test
     public void testSuccessSCCSystemRegistrationCreateUpdateSystemsWhenRestCallFail() {
         final int systemSize = 101;
+        final int batchSize = 50;
+        Config.get().setString(ConfigDefaults.REG_BATCH_SIZE, String.valueOf(batchSize));
+
         // setup
         TestSCCWebClient sccWebClient = new TestSCCWebClient(null) {
             @Override
@@ -125,6 +133,9 @@ public class SCCSystemRegistrationCreateUpdateSystemsTest extends AbstractSCCSys
     @Test
     public void testSuccessSCCSystemRegistrationCreateUpdateSystemsWhenRTE() {
         final int systemSize = 101;
+        final int batchSize = 50;
+        Config.get().setString(ConfigDefaults.REG_BATCH_SIZE, String.valueOf(batchSize));
+
         // setup
         TestSCCWebClient sccWebClient = new TestSCCWebClient(null) {
             @Override

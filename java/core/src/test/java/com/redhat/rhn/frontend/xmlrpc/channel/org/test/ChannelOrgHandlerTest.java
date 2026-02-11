@@ -53,7 +53,6 @@ public class ChannelOrgHandlerTest extends BaseHandlerTestCase {
     public void setUp() throws Exception {
         super.setUp();
         admin.addPermanentRole(RoleFactory.SAT_ADMIN);
-        TestUtils.saveAndFlush(admin);
     }
 
     @Test
@@ -73,7 +72,6 @@ public class ChannelOrgHandlerTest extends BaseHandlerTestCase {
 
         OrgFactory.save(admin.getOrg());
         ChannelFactory.save(channel);
-        flushAndEvict(channel);
 
         // execute
         List<Map<String, Object>> result = handler.list(admin, channel.getLabel());
@@ -119,7 +117,6 @@ public class ChannelOrgHandlerTest extends BaseHandlerTestCase {
 
         OrgFactory.save(admin.getOrg());
         ChannelFactory.save(channel);
-        flushAndEvict(channel);
 
         assertFalse(channel.getTrustedOrgs().contains(org2));
         assertFalse(channel.getTrustedOrgs().contains(org3));
@@ -154,7 +151,6 @@ public class ChannelOrgHandlerTest extends BaseHandlerTestCase {
 
         OrgFactory.save(admin.getOrg());
         ChannelFactory.save(channel);
-        flushAndEvict(channel);
 
         // execute
         int result = handler.disableAccess(admin, channel.getLabel(),

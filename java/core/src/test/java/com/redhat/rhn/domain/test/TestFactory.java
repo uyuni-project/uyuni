@@ -26,51 +26,34 @@ import java.util.List;
 
 public class TestFactory extends HibernateFactory {
 
-    private static Logger log = LogManager.getLogger(TestFactory.class);
-    private static TestFactory singleton = new TestFactory();
+    private static final Logger LOG = LogManager.getLogger(TestFactory.class);
+    private static final TestFactory SINGLETON = new TestFactory();
+    public static final TestConnectionManager CONNECTION_MANAGER = new TestConnectionManager();
 
-    private TestFactory() {
-        super();
-    }
-
-    /**
-     * Return the Implementation class used by the derived
-     * class's Factory
-     * @return the implementation class
-     */
-    protected Class getImplementationClass() {
-        return TestImpl.class;
-    }
-
-    /** Get the Logger for the derived class so log messages
-    *   show up on the correct class
-    */
     @Override
     protected Logger getLogger() {
-        return log;
+        return LOG;
     }
 
     public static TestInterface createTest() {
-        return new TestImpl();
+        return new TestEntity();
     }
 
     public static TestInterface lookupByFoobar(String f) {
-        // Get PersonalInfo row
-        return singleton.lookupObjectByParam(TestImpl.class, "fooBar", f);
+        return SINGLETON.lookupObjectByParam(TestEntity.class, "foobar", f);
     }
 
     public static List<TestInterface> lookupAll() {
         Session session = HibernateFactory.getSession();
-        return session.createQuery("FROM TestImpl", TestInterface.class)
-                .list();
+        return session.createQuery("FROM TestEntity", TestInterface.class).list();
     }
 
-    public static void save(TestInterface t) {
-        singleton.saveObject(t);
+    public static TestInterface save(TestInterface t) {
+        return SINGLETON.saveObject(t);
     }
 
     public static Session getSession() {
-        setConnectionManager(new TestConnectionManager());
+        setConnectionManager(CONNECTION_MANAGER);
         return HibernateFactory.getSession();
     }
 }

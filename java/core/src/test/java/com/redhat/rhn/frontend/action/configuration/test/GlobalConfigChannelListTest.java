@@ -16,7 +16,6 @@ package com.redhat.rhn.frontend.action.configuration.test;
 
 import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
-import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.frontend.dto.ConfigChannelDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.ConfigTestUtils;
@@ -34,7 +33,6 @@ public class GlobalConfigChannelListTest extends RhnMockStrutsTestCase {
         //Make a config channel so that it will appear in the list.
         ConfigChannel channel = ConfigTestUtils.createConfigChannel(user.getOrg());
         ConfigTestUtils.giveUserChanAccess(user, channel);
-        ConfigurationFactory.commit(channel);
 
         setRequestPathInfo("/configuration/GlobalConfigChannelList");
         actionPerform();

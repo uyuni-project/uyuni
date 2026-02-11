@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LLC
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -20,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.channel.ChannelFactory;
@@ -37,6 +37,7 @@ import com.redhat.rhn.domain.kickstart.KickstartInstallType;
 import com.redhat.rhn.domain.kickstart.test.KickstartDataTest;
 import com.redhat.rhn.domain.kickstart.test.KickstartableTreeTest;
 import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.test.PackageTest;
 import com.redhat.rhn.domain.user.User;
@@ -74,7 +75,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         Long id = c3.getId();
         assertNotNull(c.getChannelArch());
         ChannelFactory.remove(c3);
-        flushAndEvict(c3);
+        TestUtils.flushAndEvict(c3);
         assertNull(ChannelFactory.lookupById(id));
     }
 
@@ -84,7 +85,8 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
             attempt = new ProductName();
             attempt.setLabel(label);
             attempt.setName(label);
-            HibernateFactory.getSession().persist(attempt);
+            TestUtils.persist(attempt);
+            TestUtils.flushSession();
         }
         return attempt;
     }
@@ -96,7 +98,6 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         ProductName pn = lookupOrCreateProductName(ChannelManager.RHEL_PRODUCT_NAME);
         c.setProductName(pn);
 
-        ChannelFactory.save(c);
         return c;
     }
 
@@ -107,7 +108,6 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         ProductName pn = lookupOrCreateProductName(ChannelManager.RHEL_PRODUCT_NAME);
         c.setProductName(pn);
 
-        ChannelFactory.save(c);
         return c;
     }
 
@@ -116,8 +116,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         Channel c = createTestChannel(null, fam);
         ProductName pn = lookupOrCreateProductName(ChannelManager.RHEL_PRODUCT_NAME);
         c.setProductName(pn);
-        ChannelFactory.save(c);
-        return TestUtils.saveAndReload(c);
+        return c;
     }
 
     public static Channel createTestChannel(User user) {
@@ -125,7 +124,6 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         // assume we want the user to have access to this channel once created
         UserManager.addChannelPerm(user, c.getId(), "subscribe");
         UserManager.addChannelPerm(user, c.getId(), "manage");
-        ChannelFactory.save(c);
         return c;
     }
 
@@ -147,7 +145,6 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
                 })
                 .forEach(c.getSources()::add);
 
-        ChannelFactory.save(c);
         return c;
     }
 
@@ -157,15 +154,12 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         // assume we want the user to have access to this channel once created
         UserManager.addChannelPerm(user, c.getId(), "subscribe");
         UserManager.addChannelPerm(user, c.getId(), "manage");
-        ChannelFactory.save(c);
         return c;
     }
 
     public static Channel createTestChannel(Org org) {
         ChannelFamily cfam = org.getPrivateChannelFamily();
-        Channel c = ChannelFactoryTest.createTestChannel(org, cfam);
-        ChannelFactory.save(c);
-        return c;
+        return ChannelFactoryTest.createTestChannel(org, cfam);
     }
 
     public static Channel createTestChannel(Org org, ChannelFamily cfam) {
@@ -186,7 +180,6 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         // assume we want the user to have access to this channel once created
         UserManager.addChannelPerm(user, c.getId(), "subscribe");
         UserManager.addChannelPerm(user, c.getId(), "manage");
-        ChannelFactory.save(c);
         return c;
     }
 
@@ -230,8 +223,9 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         c.setChannelArch(arch);
         c.setChannelFamily(cfam);
         c.setChecksumType(ct);
-        ChannelFactory.save(c);
-        return c;
+        Channel save = ChannelFactory.save(c);
+        TestUtils.flushSession();
+        return save;
     }
 
     /**
@@ -371,7 +365,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         ChannelFactory.save(original);
         TestUtils.flushAndEvict(original);
 
-        original = reload(original);
+        original = TestUtils.reload(original);
         assertEquals(1, ChannelFactory.getPackageCount(original));
     }
 
@@ -416,13 +410,13 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         clone.setOriginal(original);
         clone.setParentChannel(parent);
 
-        ChannelFactory.save(clone);
+        Channel managed = ChannelFactory.save(clone);
 
         // assume we want the user to have access to this channel once created
-        UserManager.addChannelPerm(user, clone.getId(), "subscribe");
-        UserManager.addChannelPerm(user, clone.getId(), "manage");
+        UserManager.addChannelPerm(user, managed.getId(), "subscribe");
+        UserManager.addChannelPerm(user, managed.getId(), "manage");
 
-        return clone;
+        return managed;
     }
 
     @Test
@@ -431,8 +425,8 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         Channel parent = ChannelFactoryTest.createBaseChannel(user);
         Channel child = ChannelFactoryTest.createTestChannel(user);
         child.setParentChannel(parent);
-        TestUtils.saveAndFlush(child);
-        TestUtils.saveAndFlush(parent);
+        child = TestUtils.saveAndFlush(child);
+        parent = TestUtils.saveAndFlush(parent);
         TestUtils.flushAndEvict(child);
         List<Channel> dr = parent.getAccessibleChildrenFor(user);
 
@@ -444,7 +438,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         ProductName pn = new ProductName();
         pn.setLabel("Label - " + TestUtils.randomString());
         pn.setName("Name - " + TestUtils.randomString());
-        TestUtils.saveAndFlush(pn);
+        pn = TestUtils.saveAndFlush(pn);
         return pn;
     }
 
@@ -478,13 +472,13 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
     public void testLookupPackageByFileName() throws Exception {
         User user = UserTestUtils.createUser(this);
         Channel channel = ChannelTestUtils.createTestChannel(user);
-        TestUtils.saveAndFlush(channel);
+        channel = TestUtils.saveAndFlush(channel);
         Package p = PackageManagerTest.addPackageToChannel("some-package", channel);
         String fileName = "some-package-2.13.1-6.fc9.x86_64.rpm";
         p.setPath("redhat/1/c7d/some-package/2.13.1-6.fc9/" +
                 "x86_64/c7dd5e9b6975bc7f80f2f4657260af53/" +
                 fileName);
-        TestUtils.saveAndFlush(p);
+        p = TestUtils.saveAndFlush(p);
 
         Package lookedUp = ChannelFactory.lookupPackageByFilename(channel,
                 fileName);
@@ -498,6 +492,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         cp.setPath("redhat/1/c7d/some-package-child/2.13.1-6.fc9/" +
                 "x86_64/c7dd5e9b6975bc7f80f2f4657260af53/" +
                 fileNameChild);
+        child = TestUtils.saveAndFlush(child);
 
         Package lookedUpChild = ChannelFactory.lookupPackageByFilename(channel,
                 fileNameChild);
@@ -569,10 +564,10 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         ChannelFamily pubcfam = ChannelFamilyFactoryTest.createTestChannelFamily(user4, true);
 
         c1.setChannelFamily(privcfam);
-        TestUtils.saveAndFlush(c1);
+        c1 = TestUtils.saveAndFlush(c1);
 
         c2.setChannelFamily(pubcfam);
-        TestUtils.saveAndFlush(c2);
+        c2 = TestUtils.saveAndFlush(c2);
 
         // c1 belongs to user3 org now
         assertFalse(ChannelFactory.isAccessibleBy(c1.getLabel(), org1.getId()));
@@ -618,8 +613,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         // trusted org added to org
         org1.getTrustedOrgs().add(org3);
         c1.setAccess(Channel.PUBLIC);
-        flushAndEvict(org1);
-        flushAndEvict(c1);
+        TestUtils.flushAndClearSession();
 
         assertTrue(ChannelFactory.isAccessibleBy(c1.getLabel(), org1.getId()));
         assertFalse(ChannelFactory.isAccessibleBy(c1.getLabel(), org2.getId()));
@@ -632,9 +626,11 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         assertFalse(ChannelFactory.isAccessibleBy(c2.getLabel(), org4.getId()));
 
         // trusted org added to channel
-        c2.getTrustedOrgs().add(org4);
-        c2.setAccess(Channel.PROTECTED);
-        flushAndEvict(c2);
+        Channel c2Reloaded = ChannelFactory.lookupById(c2.getId());
+        Org org4Reloaded = OrgFactory.lookupById(org4.getId());
+        c2Reloaded.getTrustedOrgs().add(org4Reloaded);
+        c2Reloaded.setAccess(Channel.PROTECTED);
+        TestUtils.flushAndClearSession();
 
         assertTrue(ChannelFactory.isAccessibleBy(c1.getLabel(), org1.getId()));
         assertFalse(ChannelFactory.isAccessibleBy(c1.getLabel(), org2.getId()));
@@ -727,7 +723,7 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         csf.setQuitOnError(true);
 
         ChannelFactory.save(csf);
-        flushAndEvict(csf);
+        TestUtils.flushAndEvict(csf);
 
         assertNotNull(csf);
         assertTrue(csf.isCreateTree());
@@ -735,5 +731,94 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         assertTrue(csf.isNoStrict());
         assertTrue(csf.isOnlyLatest());
         assertTrue(csf.isQuitOnError());
+    }
+
+    @Test
+    public void generatedCoverageTestLookupContentSources() {
+        // this test has been generated programmatically to test ChannelFactory.lookupContentSources
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        User user = UserTestUtils.createUser(this);
+        Org arg0 = user.getOrg();
+        Channel arg1 = ChannelFactoryTest.createTestChannel(user);
+        ChannelFactory.lookupContentSources(arg0, arg1);
+    }
+
+    @Test
+    public void generatedCoverageTestLookupVendorContentSourceByLabel() {
+        // this test has been generated programmatically to test ChannelFactory.lookupVendorContentSourceByLabel
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        ChannelFactory.lookupVendorContentSourceByLabel("");
+    }
+
+    @Test
+    public void generatedCoverageTestLookupContentSource() {
+        // this test has been generated programmatically to test ChannelFactory.lookupContentSource
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        Org arg1 = UserTestUtils.createOrg("test");
+        ChannelFactory.lookupContentSource(0L, arg1);
+    }
+
+    @Test
+    public void generatedCoverageTestLookupContentSourceFiltersById() {
+        // this test has been generated programmatically to test ChannelFactory.lookupContentSourceFiltersById
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        ChannelFactory.lookupContentSourceFiltersById(0L);
+    }
+
+    @Test
+    public void generatedCoverageTestListAllDistChannelMaps() {
+        // this test has been generated programmatically to test ChannelFactory.listAllDistChannelMaps
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        ChannelFactory.listAllDistChannelMaps();
+    }
+
+    @Test
+    public void generatedCoverageTestListDistChannelMaps() {
+        // this test has been generated programmatically to test ChannelFactory.
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        User user = UserTestUtils.createUser(this);
+        Channel arg1 = ChannelFactoryTest.createTestChannel(user);
+        ChannelFactory.listDistChannelMaps(arg1);
+    }
+
+    @Test
+    public void generatedCoverageTestListCustomChannels() {
+        // this test has been generated programmatically to test ChannelFactory.listCustomChannels
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        ChannelFactory.listCustomChannels();
+    }
+
+    @Test
+    public void generatedCoverageTestListCustomChannelsWithRepositories() {
+        // this test has been generated programmatically to test ChannelFactory.listCustomChannelsWithRepositories
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        ChannelFactory.listCustomChannelsWithRepositories();
+    }
+
+    @Test
+    public void generatedCoverageTestListAllDistChannelMapsByOrg() {
+        // this test has been generated programmatically to test ChannelFactory.listAllDistChannelMapsByOrg
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        Org arg0 = new Org();
+        ChannelFactory.listAllDistChannelMapsByOrg(arg0);
+    }
+
+    @Test
+    public void generatedCoverageTestLookupDistChannelMapByOrgReleaseArch() {
+        // this test has been generated programmatically to test ChannelFactory.lookupDistChannelMapByOrgReleaseArch
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        Org arg0 = new Org();
+        ChannelArch arg2 = new ChannelArch();
+        ChannelFactory.lookupDistChannelMapByOrgReleaseArch(arg0, "", arg2);
     }
 }

@@ -114,7 +114,7 @@ public class DmiTest extends RhnBaseTestCase {
         dmi.setBoard(BOARD);
 
         assertNull(dmi.getId());
-        TestUtils.saveAndFlush(dmi);
+        dmi = TestUtils.saveAndFlush(dmi);
         assertNotNull(dmi.getId());
 
         return dmi;
