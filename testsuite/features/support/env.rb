@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2025 SUSE LLC
+# Copyright (c) 2010-2026 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 require 'English'
@@ -105,7 +105,7 @@ def capybara_register_driver
     )
     chrome_options.args << '--headless=new' unless $debug_mode
     chrome_options.args << "--remote-debugging-port=#{$chromium_dev_port}" if $chromium_dev_tools
-    chrome_options.args << '--user-data-dir=/root' if $is_cloud_provider
+    chrome_options.add_argument("--user-data-dir=/tmp/chrome_profile_#{Process.pid}_#{Time.now.to_i}") if $is_cloud_provider
 
     chrome_options.add_preference('prompt_for_download', false)
     chrome_options.add_preference('download.default_directory', '/tmp/downloads')
