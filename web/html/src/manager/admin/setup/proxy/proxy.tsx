@@ -35,9 +35,8 @@ export default (props: Props) => {
       setSettings({ ...response });
       setSavedSettings({ ...response });
       setIsEditing(false);
-    } catch (error) {
-      // TODO: Show the error as a toast
-      Loggerhead.error(error);
+    } catch (error: any) {
+      Network.showResponseErrorToastr(error);
     }
   };
 
