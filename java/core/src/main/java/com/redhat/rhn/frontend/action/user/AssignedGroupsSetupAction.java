@@ -102,12 +102,12 @@ public class AssignedGroupsSetupAction extends RhnListAction {
         //If the default system groups were submitted
         if (submit != null &&
                 submit.equals(ls.getMessage("assignedgroups.jsp.submitdefaults"))) {
-            ensureRoleBasedAccess(user, "users.groups", Namespace.AccessMode.W);
+            ensureRoleBasedAccess(currentUser, "users.groups", Namespace.AccessMode.W);
             updateDefaults(mapping, formIn, request, response);
         }
         else if (submit != null &&  //else if the update permissions button was clicked
                     submit.equals(ls.getMessage("assignedgroups.jsp.submitpermissions"))) {
-            ensureRoleBasedAccess(user, "users.groups", Namespace.AccessMode.W);
+            ensureRoleBasedAccess(currentUser, "users.groups", Namespace.AccessMode.W);
             updatePerm(mapping, formIn, request, response);
             dr = UserManager.getSystemGroups(user, null);
             ListTagHelper.setSelectedAmount(LIST_NAME, set.size(), request);
