@@ -257,13 +257,13 @@ export class RegisterPeripheralForm extends Component<Props, State> {
           <div className="col-md-offset-3 offset-md-3 col-md-6">
             <SubmitButton
               id="submit-btn"
-              className="btn-primary"
+              className="btn-primary me-4"
               text={t("Register")}
               disabled={!this.state.validated || this.state.loading}
             />
             <AsyncButton
               id="clear-btn"
-              defaultType="btn-default pull-right"
+              defaultType="btn-default"
               icon="fa-eraser"
               text={t("Clear fields")}
               action={() => this.clearFields()}
