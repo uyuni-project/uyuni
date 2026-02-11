@@ -24,11 +24,13 @@ import org.hibernate.Session;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.XMLReaderFactory;
 
 import java.net.URL;
 import java.util.Collection;
 import java.util.Map;
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 /**
  * Class to drive parsing of the DataSource XML files, and return modes
@@ -37,12 +39,9 @@ import java.util.Map;
  */
 public class ModeFactory implements ManifestFactoryBuilder {
 
-    private static Logger logger = LogManager.getLogger(ModeFactory.class);
+    private static final Logger LOGGER = LogManager.getLogger(ModeFactory.class);
 
-    private static final String DEFAULT_PARSER_NAME =
-                                       "org.apache.xerces.parsers.SAXParser";
-
-    private static ManifestFactory factory = new ManifestFactory(new ModeFactory());
+    private static final ManifestFactory MANIFEST_FACTORY = new ManifestFactory(new ModeFactory());
 
     private static XMLReader parser = null;
 
@@ -58,7 +57,17 @@ public class ModeFactory implements ManifestFactoryBuilder {
         try {
             synchronized (this) {
                 if (parser == null) {
-                    parser = XMLReaderFactory.createXMLReader(DEFAULT_PARSER_NAME);
+                    SAXParserFactory parserFactory = SAXParserFactory.newInstance();
+                    parserFactory.setNamespaceAware(true);
+                    parserFactory.setValidating(false);
+
+                    parserFactory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+                    parserFactory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+                    parserFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+                    parserFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+
+                    SAXParser saxParser = parserFactory.newSAXParser();
+                    parser = saxParser.getXMLReader();
 
                     ContentHandler handler = new DataSourceParserHelper();
                     parser.setContentHandler(handler);
@@ -69,11 +78,13 @@ public class ModeFactory implements ManifestFactoryBuilder {
                 throw new NullPointerException("filename is null");
             }
 
-            logger.debug("Parsing mode file '{}'", filename);
-            URL u = this.getClass().getResource(filename);
-            DataSourceParserHelper handler =
-                          (DataSourceParserHelper)parser.getContentHandler();
-            parser.parse(new InputSource(u.openStream()));
+            LOGGER.debug("Parsing mode file '{}'", filename);
+            URL url = this.getClass().getResource(filename);
+            if (url == null) {
+                throw new IllegalStateException("Cannot identify a valid URL for resource " + filename);
+            }
+            DataSourceParserHelper handler = (DataSourceParserHelper) parser.getContentHandler();
+            parser.parse(new InputSource(url.openStream()));
             return handler.getModes();
         }
         catch (Exception e) {
@@ -88,7 +99,7 @@ public class ModeFactory implements ManifestFactoryBuilder {
     }
 
     private static Mode getModeInternal(Session session, String name, String mode) {
-        Map<String, ParsedMode> modes = (Map<String, ParsedMode>)factory.getObject(name);
+        Map<String, ParsedMode> modes = (Map<String, ParsedMode>) MANIFEST_FACTORY.getObject(name);
         ParsedMode pm = modes.get(mode);
         if (pm == null) {
             throw new ModeNotFoundException(
@@ -113,7 +124,7 @@ public class ModeFactory implements ManifestFactoryBuilder {
     }
 
     private static SelectMode getSelectMode(Session session, String name, String mode) {
-        Map<String, ParsedMode> modes = (Map<String, ParsedMode>) factory.getObject(name);
+        Map<String, ParsedMode> modes = (Map<String, ParsedMode>) MANIFEST_FACTORY.getObject(name);
         ParsedMode pm = modes.get(mode);
         if (pm == null) {
             throw new ModeNotFoundException(
@@ -240,7 +251,7 @@ public class ModeFactory implements ManifestFactoryBuilder {
      * unit tests.
      */
     public static Collection<String> getKeys() {
-        return factory.getKeys();
+        return MANIFEST_FACTORY.getKeys();
     }
 
     /**
@@ -251,7 +262,7 @@ public class ModeFactory implements ManifestFactoryBuilder {
      * unit tests.
      */
     public static Map<String, ParsedMode> getFileKeys(String name) {
-        return (Map<String, ParsedMode>)factory.getObject(name);
+        return (Map<String, ParsedMode>) MANIFEST_FACTORY.getObject(name);
     }
 }
 
