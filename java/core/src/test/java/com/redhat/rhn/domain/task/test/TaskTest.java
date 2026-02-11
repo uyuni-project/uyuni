@@ -46,7 +46,7 @@ public class TaskTest extends RhnBaseTestCase {
         Long testdata = 42L;
         Task t = TaskFactory.createTask(org, testname, testdata);
 
-        flushAndEvict(t);
+        TestUtils.flushAndEvict(t);
 
         //look the sucker back up
         Session session = HibernateFactory.getSession();
@@ -54,7 +54,7 @@ public class TaskTest extends RhnBaseTestCase {
         // need to flush and evict t2 here otherwise
         // the TaskFactory.lookup() down below will return the
         // SAME reference and cause the equals to fail.
-        flushAndEvict(t2);
+        TestUtils.flushAndEvict(t2);
 
         assertNotNull(t2);
         assertEquals(testname, t2.getName());

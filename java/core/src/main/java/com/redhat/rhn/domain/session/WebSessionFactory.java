@@ -65,10 +65,12 @@ public class WebSessionFactory extends HibernateFactory {
 
     /**
      * Insert or Update a Session.
+     *
      * @param webSession WebSession to be stored in database.
+     * @return the managed {@link WebSession} instance
      */
-    public static void save(WebSession webSession) {
-        singleton.saveObject(webSession);
+    public static WebSession save(WebSession webSession) {
+        return singleton.saveObject(webSession);
     }
 
     /**
@@ -86,12 +88,27 @@ public class WebSessionFactory extends HibernateFactory {
      * a deactivated user's sessions to be alive..
      * @param user the user whose sessions are to be purged.
      */
-    @SuppressWarnings("unchecked")
     public static void purgeUserSessions(User user) {
         Session session = HibernateFactory.getSession();
-        session.createQuery("DELETE FROM WebSessionImpl w WHERE w.webUserId = :user_id")
+        session.createMutationQuery("DELETE FROM WebSessionImpl w WHERE w.webUserId = :user_id")
                 .setParameter("user_id", user.getId())
                 .executeUpdate();
+    }
+
+    /**
+     * Check if the given session exists and it's valid.
+     * @param session the session instance
+     * @return {@code true} if the session exists, {@code false} otherwise
+     */
+    public static boolean exists(WebSession session) {
+        // If the instance is attached to the session it's ok
+        if (getSession().contains(session)) {
+            return true;
+        }
+
+        // Ensure session still exists and was not already removed
+        WebSession retrievedSession = lookupById(session.getId());
+        return retrievedSession != null;
     }
 }
 

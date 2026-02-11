@@ -21,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
@@ -60,14 +59,12 @@ public class OrgFactoryTest extends RhnBaseTestCase {
         Org trusted = createTestOrg();
         org.getTrustedOrgs().add(trusted);
         OrgFactory.save(org);
-        flushAndEvict(org);
         org = OrgFactory.lookupById(org.getId());
         trusted = OrgFactory.lookupById(trusted.getId());
         assertContains(org.getTrustedOrgs(), trusted);
         assertContains(trusted.getTrustedOrgs(), org);
         org.getTrustedOrgs().remove(trusted);
         OrgFactory.save(org);
-        flushAndEvict(org);
         org = OrgFactory.lookupById(org.getId());
         trusted = OrgFactory.lookupById(trusted.getId());
         assertFalse(org.getTrustedOrgs().contains(trusted));
@@ -99,7 +96,6 @@ public class OrgFactoryTest extends RhnBaseTestCase {
         org1.setName(changedName);
         org1 = OrgFactory.save(org1);
         Long id = org1.getId();
-        flushAndEvict(org1);
         Org org2 = OrgFactory.lookupById(id);
         assertEquals(changedName, org2.getName());
     }
@@ -112,7 +108,6 @@ public class OrgFactoryTest extends RhnBaseTestCase {
         org1.getOrgConfig().setStagingContentEnabled(!staging);
         OrgFactory.save(org1);
         assertEquals(!staging, org1.getOrgConfig().isStagingContentEnabled());
-        flushAndEvict(org1);
         Org org2 = OrgFactory.lookupById(id);
         assertEquals(!staging, org2.getOrgConfig().isStagingContentEnabled());
     }
@@ -132,7 +127,7 @@ public class OrgFactoryTest extends RhnBaseTestCase {
         pillars.add(new Pillar("category2", pillar2, org));
         org.setPillars(pillars);
 
-        TestUtils.saveAndFlush(org);
+        org = TestUtils.saveAndFlush(org);
         Org org2 = OrgFactory.lookupById(org.getId());
 
         Pillar actual = org2.getPillars().stream()
@@ -153,7 +148,6 @@ public class OrgFactoryTest extends RhnBaseTestCase {
         org1 = OrgFactory.save(org1);
         // build the channels set
         Channel channel1 = ChannelFactoryTest.createTestChannel(org1);
-        flushAndEvict(channel1);
         org1.addOwnedChannel(channel1);
         assertTrue(org1.getId() > 0);
         return org1;
@@ -174,7 +168,6 @@ public class OrgFactoryTest extends RhnBaseTestCase {
         orig.setName("org created by OrgFactory test: " + TestUtils.randomString());
         // build the channels set
         Channel channel1 = ChannelFactoryTest.createTestChannel(orig);
-        flushAndEvict(channel1);
         orig.addOwnedChannel(channel1);
         orig = OrgFactory.save(orig);
         assertTrue(orig.getId() > 0);
@@ -185,9 +178,8 @@ public class OrgFactoryTest extends RhnBaseTestCase {
         // manually:
         Token token = TokenFactory.lookupById(key.getId());
         orig.setToken(token);
-        orig = OrgFactory.save(orig);
+
         Long origId = orig.getId();
-        flushAndEvict(orig);
         Org lookup = OrgFactory.lookupById(origId);
         assertEquals(token.getId(), lookup.getToken().getId());
         lookup.setToken(null);
@@ -271,12 +263,19 @@ public class OrgFactoryTest extends RhnBaseTestCase {
         Org org = createTestOrg();
 
         org.getOrgConfig().setClmSyncPatches(false);
-        org = HibernateFactory.reload(org);
+        org = TestUtils.reload(org);
         assertFalse(org.getOrgConfig().isClmSyncPatches());
 
         org.getOrgConfig().setClmSyncPatches(true);
-        org = HibernateFactory.reload(org);
+        org = TestUtils.reload(org);
         assertTrue(org.getOrgConfig().isClmSyncPatches());
     }
 
+    @Test
+    public void generatedCoverageTestGetSharedSubscribedSys() {
+        // this test has been generated programmatically to test OrgFactory.getSharedSubscribedSys
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        OrgFactory.getSharedSubscribedSys(0L, 0L);
+    }
 }

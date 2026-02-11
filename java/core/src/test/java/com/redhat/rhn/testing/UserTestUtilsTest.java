@@ -26,7 +26,7 @@ import com.redhat.rhn.domain.user.User;
 import org.junit.jupiter.api.Test;
 
 
-public class UserTestUtilsTest {
+public class UserTestUtilsTest extends RhnBaseTestCase {
 
     @Test
     void testCreateUserWhenAllParametersAreProvidedAndNonExistingOrg() {

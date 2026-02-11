@@ -85,7 +85,7 @@ public class DownloadActionTest extends RhnMockStrutsTestCase {
         p.setPath("redhat/1/c7d/some-package/2.13.1-6.fc9/" +
                 "x86_64/c7dd5e9b6975bc7f80f2f4657260af53/" +
                 fileName);
-        TestUtils.saveAndFlush(p);
+        p = TestUtils.saveAndFlush(p);
 
         addRequestParameter("url", "/ks/dist/" + tree.getLabel() + "/Server/" + fileName);
         request.setQueryString("url=/ks/dist/" + tree.getLabel() + "/Server/" + fileName);
@@ -105,7 +105,7 @@ public class DownloadActionTest extends RhnMockStrutsTestCase {
         ksession.setKstree(tree);
         ksession.setKsdata(ksdata);
 
-        TestUtils.saveAndFlush(ksession);
+        ksession = TestUtils.saveAndFlush(ksession);
         String encodedSession = SessionSwap.encodeData(ksession.getId().toString());
 
         addRequestParameter("url", "/ks/dist/session/" + encodedSession + "/" +
@@ -130,7 +130,7 @@ public class DownloadActionTest extends RhnMockStrutsTestCase {
         p.setPath("redhat/1/c7d/some-package/2.13.1-6.fc9/" +
                 "x86_64/c7dd5e9b6975bc7f80f2f4657260af53/" +
                 fileName);
-        TestUtils.saveAndFlush(p);
+        p = TestUtils.saveAndFlush(p);
 
         FileUtils.touch(new File("/tmp/Server/" + fileName));
 
@@ -138,7 +138,7 @@ public class DownloadActionTest extends RhnMockStrutsTestCase {
             KickstartSessionTest.createKickstartSession(ksdata, user);
         ksession.setKstree(tree);
         ksession.setKsdata(ksdata);
-        TestUtils.saveAndFlush(ksession);
+        ksession = TestUtils.saveAndFlush(ksession);
         String encodedSession = SessionSwap.encodeData(ksession.getId().toString());
 
         addRequestParameter("url", "/ks/dist/session/" + encodedSession + "/" +
@@ -161,7 +161,7 @@ public class DownloadActionTest extends RhnMockStrutsTestCase {
         // /ks/dist/f9-x86_64-distro/images/boot.iso
         KickstartSession ksession =
             KickstartSessionTest.createKickstartSession(ksdata, user);
-        TestUtils.saveAndFlush(ksession);
+        ksession = TestUtils.saveAndFlush(ksession);
         addRequestParameter("url", "/ks/dist/" + tree.getLabel() + "/images/");
         request.setQueryString("url=/ks/dist/" + tree.getLabel() + "/images/");
         actionPerform();

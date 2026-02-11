@@ -460,7 +460,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
         // Create additional user
         User anotherAdmin = UserTestUtils.createUser("anotherAdmin", admin.getOrg().getId());
         anotherAdmin.addPermanentRole(RoleFactory.ORG_ADMIN);
-        TestUtils.saveAndFlush(anotherAdmin);
+        anotherAdmin = TestUtils.saveAndFlush(anotherAdmin);
 
         // Create custom data keys for the organization
         CustomDataKey orgKey1 = CustomDataKeyTest.createTestCustomDataKey(admin);
@@ -514,7 +514,9 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
         // Update values with another user
         values.clear();
         values.put(orgKey1.getLabel(), "newvalue3");
-        result = handler.setCustomValues(anotherAdmin, "myprofile", values);
+
+        User anotherAdminCopy = anotherAdmin;
+        result = handler.setCustomValues(anotherAdminCopy, "myprofile", values);
         assertEquals(1, result);
 
         ImageProfile updatedProfile = handler.getDetails(admin, "myprofile");
@@ -522,7 +524,7 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
         updatedProfile.getCustomDataValues().forEach(cdv -> {
             if (cdv.getKey().equals(orgKey1)) {
                 assertEquals("newvalue3", cdv.getValue());
-                assertEquals(cdv.getLastModifier(), anotherAdmin);
+                assertEquals(cdv.getLastModifier(), anotherAdminCopy);
             }
             else if (cdv.getKey().equals(orgKey2)) {
                 assertEquals("newvalue2", cdv.getValue());

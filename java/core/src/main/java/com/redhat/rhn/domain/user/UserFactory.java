@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LCC
  * Copyright (c) 2009--2016 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -24,8 +25,11 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.org.usergroup.UserGroupImpl;
+import com.redhat.rhn.domain.org.usergroup.UserGroupMembers;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.role.RoleImpl;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.legacy.UserImpl;
 import com.redhat.rhn.manager.session.SessionManager;
@@ -36,10 +40,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
-import org.hibernate.query.Query;
 import org.hibernate.type.StandardBasicTypes;
 
-import java.math.BigDecimal;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,7 +58,7 @@ import java.util.TimeZone;
  * com.redhat.rhn.domain.user.User objects from the
  * database.
  */
-public  class UserFactory extends HibernateFactory {
+public class UserFactory extends HibernateFactory {
 
     private static final String USER_ID = "user_id";
     private static final String LOGIN_UC = "loginUc";
@@ -97,9 +99,7 @@ public  class UserFactory extends HibernateFactory {
      * @return the responsible user (first org admin) of the org.
      */
     public static User findResponsibleUser(Long orgId, Role r) {
-        Session session = HibernateFactory.getSession();
-
-        Optional<Object> obj = session.createNativeQuery("""
+        return getSession().createNativeQuery("""
                         SELECT ugm.user_id AS user_id
                         FROM   rhnUserGroupMembers ugm
                         WHERE  ugm.user_group_id = (SELECT id
@@ -107,18 +107,15 @@ public  class UserFactory extends HibernateFactory {
                                                     WHERE  org_id = :org_id
                                                     AND    group_type = :type_id)
                         ORDER BY ugm.user_id
-                        """)
+                        """, Long.class)
+                .addSynchronizedEntityClass(UserGroupMembers.class)
+                .addSynchronizedEntityClass(UserGroupImpl.class)
                 .setParameter("org_id", orgId)
                 .setParameter("type_id", r.getId())
                 // only care about the first one
                 .getResultStream()
-                .findFirst();
-        return obj.flatMap(o -> {
-                    if (o instanceof BigDecimal bd) {
-                        return Optional.of(UserFactory.lookupById(bd.longValue()));
-                    }
-                    return Optional.empty();
-                })
+                .findFirst()
+                .map(UserFactory::lookupById)
                 .orElse(null);
     }
 
@@ -231,7 +228,7 @@ public  class UserFactory extends HibernateFactory {
         User returnedUser  = getSession().createQuery("""
                 FROM com.redhat.rhn.domain.user.legacy.UserImpl AS u
                 WHERE u.id = :uid
-                AND org_id = :orgId
+                AND u.org.id = :orgId
                 """, UserImpl.class)
                 .setParameter("uid", id)
                 .setParameter("orgId", user.getOrg().getId())
@@ -274,7 +271,7 @@ public  class UserFactory extends HibernateFactory {
         User returnedUser  = getSession().createQuery("""
                 FROM com.redhat.rhn.domain.user.legacy.UserImpl AS u
                 WHERE u.loginUc = :loginUc
-                AND org_id = :orgId
+                AND u.org.id = :orgId
                 """, UserImpl.class)
                 .setParameter("orgId", user.getOrg().getId())
                 .setParameter(LOGIN_UC, login.toUpperCase())
@@ -685,7 +682,7 @@ public  class UserFactory extends HibernateFactory {
     public List<User> findAllUsers(Optional<Org> inOrg) {
         return Opt.fold(inOrg,
             () -> getSession().createQuery("FROM UserImpl AS u", User.class).list(),
-            org -> getSession().createQuery("FROM UserImpl AS u WHERE org_id = :org_id", User.class)
+            org -> getSession().createQuery("FROM UserImpl AS u WHERE u.org.id = :org_id", User.class)
                     .setParameter("org_id", org.getId()).list()
         );
     }
@@ -711,11 +708,13 @@ public  class UserFactory extends HibernateFactory {
                 )
                 """;
 
-        Query<UserImpl> query = HibernateFactory.getSession().createNativeQuery(sql, UserImpl.class);
-        query.setParameter("org_id", inOrg.getId());
-
-        // Execute the query and return the result
-        return query.getResultList();
+        return getSession().createNativeQuery(sql, UserImpl.class)
+                .addSynchronizedEntityClass(UserImpl.class)
+                .addSynchronizedEntityClass(UserGroupMembers.class)
+                .addSynchronizedEntityClass(UserGroupImpl.class)
+                .addSynchronizedEntityClass(RoleImpl.class)
+                .setParameter("org_id", inOrg.getId())
+                .getResultList();
     }
 
     /**

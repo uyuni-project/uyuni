@@ -125,20 +125,18 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         Server server = ServerFactoryTest.createTestServer(user, true);
 
         // create 2 packages with same NEVRA in different channels
-        PackageArch parch = HibernateFactory.getSession().createNativeQuery("""
-                SELECT p.* from rhnPackageArch as p WHERE p.id = :id
-                """, PackageArch.class).setParameter("id", 100L).getSingleResult();
+        PackageArch parch = PackageFactory.lookupPackageArchByLabel("noarch");
 
         PackageName pname = PackageNameTest.createTestPackageName();
         PackageEvr pevr = PackageEvrFactoryTest.createTestPackageEvr(parch.getArchType().getPackageType());
 
         Package p1 = new Package();
         PackageTest.populateTestPackage(p1, user.getOrg(), pname, pevr, parch);
-        TestUtils.saveAndFlush(p1);
+        p1 = TestUtils.saveAndFlush(p1);
 
         Package p2 = new Package();
         PackageTest.populateTestPackage(p2, user.getOrg(), pname, pevr, parch);
-        TestUtils.saveAndFlush(p2);
+        p2 = TestUtils.saveAndFlush(p2);
 
         Channel c1 = ChannelFactoryTest.createTestChannel(user);
         Channel c2 = ChannelFactoryTest.createTestChannel(user);
@@ -344,7 +342,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         }
 
         retval.setPackageName(pn);
-        TestUtils.saveAndFlush(retval);
+        retval = TestUtils.saveAndFlush(retval);
         PackageTest.addPackageToChannelNewestPackage(retval, c);
 
         return retval;
@@ -418,7 +416,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
             PackageEvr pevr = PackageEvrFactory.lookupOrCreatePackageEvr("0",
                     version, "0", s.getPackageType());
             p.setPackageEvr(pevr);
-            TestUtils.saveAndFlush(p);
+            p = TestUtils.saveAndFlush(p);
         }
         else {
             PackageManagerTest.associateSystemToPackage(s, p);
@@ -553,8 +551,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
         //   Create upgraded package EVR so package will show up from the query
         PackageEvr upgradedPackageEvr =
             PackageEvrFactory.lookupOrCreatePackageEvr("1", "1.0.0", "2", server.getPackageType());
-        upgradedPackageEvr =
-            (PackageEvr)TestUtils.saveAndReload(upgradedPackageEvr);
+        upgradedPackageEvr = TestUtils.saveAndReload(upgradedPackageEvr);
 
         ServerTestUtils.populateServerErrataPackages(org, server,
             upgradedPackageEvr, ErrataFactory.ERRATA_TYPE_SECURITY);
@@ -663,7 +660,7 @@ public class PackageManagerTest extends BaseTestCaseWithUser {
     public static PackageExtraTagsKeys createExtraTagKey(String name) {
         PackageExtraTagsKeys tag1 = new PackageExtraTagsKeys();
         tag1.setName(name);
-        HibernateFactory.getSession().persist(tag1);
+        TestUtils.persist(tag1);
         return tag1;
     }
 }

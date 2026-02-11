@@ -21,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManager;
 import com.redhat.rhn.domain.server.virtualhostmanager.VirtualHostManagerConfig;
@@ -208,7 +207,7 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
         VirtualHostManager vhm = createVirtualHostManagerWithLabel(label, user.getOrg());
         Request request = getDeleteRequestWithCsrfAndBody("/manager/api/vhms/delete/:id", "", vhm.getId());
         VirtualHostManagerController.delete(request, response, user);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         assertNull(factory.lookupByLabel(label));
     }

@@ -18,8 +18,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.common.ManagerInfoFactory;
+import com.redhat.rhn.domain.credentials.Credentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
 import com.redhat.rhn.domain.product.test.SUSEProductTestUtils;
@@ -84,9 +84,9 @@ public class SCCCachingFactoryTest extends BaseTestCaseWithUser {
             TestUtils.randomString());
 
         creds.setModified(new Date(System.currentTimeMillis()));
-        HibernateFactory.getSession().persist(creds);
+        TestUtils.persist(creds);
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         TimeUnit.SECONDS.sleep(1);
         ManagerInfoFactory.setLastMgrSyncRefresh();
@@ -107,17 +107,16 @@ public class SCCCachingFactoryTest extends BaseTestCaseWithUser {
 
         // Newer credentials -> refresh
         creds.setModified(new Date(System.currentTimeMillis()));
-        HibernateFactory.getSession().persist(creds);
+        TestUtils.persist(creds);
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         assertTrue(SCCCachingFactory.refreshNeeded(lastRefreshDate));
     }
 
     @Test
     public void testListReposForRootProduct() throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, null, true);
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         Set<SCCRepository> repos = SCCCachingFactory.lookupRepositoriesByRootProductNameVersionArchForPayg(
                 "sles", "12", "x86_64").collect(Collectors.toSet());
@@ -150,5 +149,37 @@ public class SCCCachingFactoryTest extends BaseTestCaseWithUser {
     public void setUp() throws Exception {
         super.setUp();
         SCCCachingFactory.clearRepositories();
+    }
+
+
+    @Test
+    public void generatedCoverageTestClearOrderItemsWithCredentials() {
+        // this test has been generated programmatically to test SCCCachingFactory.clearOrderItems
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        Credentials arg0 = CredentialsFactory.createSCCCredentials("", "");
+        TestUtils.save(arg0);
+        SCCCachingFactory.clearOrderItems(arg0);
+
+        SCCCachingFactory.clearOrderItems(null);
+    }
+
+    @Test
+    public void generatedCoverageTestClearOrderItems() {
+        // this test has been generated programmatically to test SCCCachingFactory.clearOrderItems
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        SCCCachingFactory.clearOrderItems();
+    }
+
+    @Test
+    public void generatedCoverageTestLookupRepositoryAuthByCredential() {
+        // this test has been generated programmatically to test SCCCachingFactory.lookupRepositoryAuthByCredential
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        Credentials arg0 = CredentialsFactory.createSCCCredentials("", "");
+        SCCCachingFactory.lookupRepositoryAuthByCredential(arg0);
+
+        SCCCachingFactory.lookupRepositoryAuthByCredential((Credentials)null);
     }
 }

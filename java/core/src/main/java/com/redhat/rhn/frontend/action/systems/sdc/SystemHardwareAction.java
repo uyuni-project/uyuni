@@ -51,8 +51,8 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * SystemHardwareAction handles the interaction of the ChannelDetails page.

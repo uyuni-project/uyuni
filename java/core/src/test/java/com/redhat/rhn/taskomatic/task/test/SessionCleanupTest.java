@@ -47,13 +47,7 @@ public class SessionCleanupTest extends RhnBaseTestCase {
         WebSessionFactory.save(s);
         assertNotNull(s.getId());
         Config c = Config.get();
-        TestUtils.saveAndFlush(s);
-
-        /*
-            commit it to the database in order for the py/sql calls to work correctly
-            due to py/sql and Hibernate's JUnit test behavior not playing well together
-        */
-        commitAndCloseSession();
+        s = TestUtils.saveAndFlush(s);
 
         /*
             set delete batch size to 1 to make sure only one entry is deleted.
@@ -66,6 +60,8 @@ public class SessionCleanupTest extends RhnBaseTestCase {
 
         SessionCleanup sc = new SessionCleanup();
         sc.execute(null);
+
+        TestUtils.flushAndClearSession();
 
         assertNull(WebSessionFactory.lookupById(s.getId()));
     }

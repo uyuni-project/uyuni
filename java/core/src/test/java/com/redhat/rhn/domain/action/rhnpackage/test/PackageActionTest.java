@@ -29,6 +29,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.apache.logging.log4j.LogManager;
@@ -104,7 +105,7 @@ public class PackageActionTest extends RhnBaseTestCase {
                 ActionFactory.TYPE_PACKAGES_UPDATE);
         PackageActionDetailsTest.createTestDetailsWithNvre(usr, testAction);
         ActionFactory.save(testAction);
-        flushAndEvict(testAction);
+        TestUtils.flushAndEvict(testAction);
 
         /*
          * Get action back out of db and make sure it committed correctly
@@ -128,7 +129,7 @@ public class PackageActionTest extends RhnBaseTestCase {
                 ActionFactory.TYPE_PACKAGES_UPDATE);
         PackageActionDetailsTest.createTestDetailsWithName(usr, testAction);
         ActionFactory.save(testAction);
-        flushAndEvict(testAction);
+        TestUtils.flushAndEvict(testAction);
         /*
          * Get action back out of db and make sure it committed correctly
          */

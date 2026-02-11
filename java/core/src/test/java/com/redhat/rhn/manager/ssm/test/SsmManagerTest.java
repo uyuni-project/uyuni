@@ -24,7 +24,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsAction;
 import com.redhat.rhn.domain.action.channel.SubscribeChannelsActionDetails;
 import com.redhat.rhn.domain.channel.Channel;
@@ -50,6 +49,7 @@ import com.redhat.rhn.manager.ssm.SsmServerDto;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.webui.utils.gson.SsmBaseChannelChangesDto;
@@ -164,7 +164,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
 
         installSUSEProductOnServer(product, server1);
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         RhnSet set = RhnSetDecl.SYSTEMS.get(user);
         set.addElement(server1.getId() + "");
@@ -204,7 +204,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
 
         installSUSEProductOnServer(product, server1);
         installSUSEProductOnServer(product, server2);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         RhnSet set = RhnSetDecl.SYSTEMS.get(user);
         set.addElement(server1.getId() + "");
@@ -245,7 +245,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
 
         installSUSEProductOnServer(product, server1);
         installSUSEProductOnServer(product, server2);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         RhnSet set = RhnSetDecl.SYSTEMS.get(user);
         set.addElement(server1.getId() + "");
@@ -288,7 +288,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         installSUSEProductOnServer(product, server1);
         installSUSEProductOnServer(product, server2);
         installSUSEProductOnServer(product, server3);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         RhnSet set = RhnSetDecl.SYSTEMS.get(user);
         set.addElement(server1.getId() + "");
@@ -337,7 +337,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
 
         installSUSEProductOnServer(product, server1);
         installSUSEProductOnServer(product, server2);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         RhnSet set = RhnSetDecl.SYSTEMS.get(user);
         set.addElement(server1.getId() + "");
@@ -399,7 +399,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         server2.addChannel(child);
 
         installSUSEProductOnServer(product, server1);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         RhnSet set = RhnSetDecl.SYSTEMS.get(user);
         set.addElement(server1.getId() + "");
@@ -454,7 +454,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
 
         installSUSEProductOnServer(product, server1);
         installSUSEProductOnServer(product, server2);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         RhnSet set = RhnSetDecl.SYSTEMS.get(user);
         set.addElement(server1.getId() + "");
@@ -499,7 +499,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
 
         installSUSEProductOnServer(product, server1);
         installSUSEProductOnServer(product, server2);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         RhnSet set = RhnSetDecl.SYSTEMS.get(user);
         set.addElement(server1.getId() + "");
@@ -550,7 +550,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
 
         installSUSEProductOnServer(product, server1);
         installSUSEProductOnServer(product, server2);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         RhnSet set = RhnSetDecl.SYSTEMS.get(user);
         set.addElement(server1.getId() + "");
@@ -594,7 +594,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
 
         installSUSEProductOnServer(product, server1);
         installSUSEProductOnServer(product, server2);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         RhnSet set = RhnSetDecl.SYSTEMS.get(user);
         set.addElement(server1.getId() + "");
@@ -654,7 +654,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
 
         installSUSEProductOnServer(product, server1);
         installSUSEProductOnServer(product2, server2);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         RhnSet set = RhnSetDecl.SYSTEMS.get(user);
         set.addElement(server1.getId() + "");
@@ -684,8 +684,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         List<ScheduleChannelChangesResultDto> results = SsmManager.scheduleChannelChanges(
                 changes, earliest, null, user);
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         assertEquals(2, results.size());
         assertEquals(2,
@@ -760,7 +759,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         installSUSEProductOnServer(product, server1);
         installSUSEProductOnServer(product2, server2);
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         RhnSet set = RhnSetDecl.SYSTEMS.get(user);
         set.addElement(server1.getId() + "");
@@ -789,8 +788,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         List<ScheduleChannelChangesResultDto> results = SsmManager.scheduleChannelChanges(
                 changes, earliest, null, user);
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         assertEquals(2, results.size());
         assertTrue(results.stream().allMatch(r -> r.getErrorMessage().isPresent() &&
@@ -836,7 +834,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         installSUSEProductOnServer(product, server1);
         installSUSEProductOnServer(product2, server2);
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         RhnSet set = RhnSetDecl.SYSTEMS.get(user);
         set.addElement(server1.getId() + "");
@@ -865,8 +863,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         List<ScheduleChannelChangesResultDto> results = SsmManager.scheduleChannelChanges(
                 changes, earliest, null, user);
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         assertEquals(2, results.size());
         assertTrue(results.stream().allMatch(r -> !r.getErrorMessage().isPresent() &&
@@ -937,7 +934,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         installSUSEProductOnServer(product, server1);
         installSUSEProductOnServer(product2, server2);
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         RhnSet set = RhnSetDecl.SYSTEMS.get(user);
         set.addElement(server1.getId() + "");
@@ -966,8 +963,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         List<ScheduleChannelChangesResultDto> results = SsmManager.scheduleChannelChanges(
                 changes, earliest, null, user);
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         assertEquals(2, results.size());
         // no errs
@@ -1031,7 +1027,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
 
         installSUSEProductOnServer(product, server1);
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         RhnSet set = RhnSetDecl.SYSTEMS.get(user);
         set.addElement(server1.getId() + "");
@@ -1051,8 +1047,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         List<ScheduleChannelChangesResultDto> results = SsmManager
                 .scheduleChannelChanges(changes, earliest, null, user);
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         assertEquals(1, results.size());
         assertEquals("incompatible_base", results.stream().findFirst().get().getErrorMessage().get());
@@ -1076,7 +1071,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
 
         installSUSEProductOnServer(product, server1);
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         RhnSet set = RhnSetDecl.SYSTEMS.get(user);
         set.addElement(server1.getId() + "");
@@ -1096,8 +1091,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         List<ScheduleChannelChangesResultDto> results = SsmManager.scheduleChannelChanges(
                 changes, earliest, null, user);
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         assertEquals(1, results.size());
         assertEquals("incompatible_base", results.stream().findFirst().get().getErrorMessage().get());

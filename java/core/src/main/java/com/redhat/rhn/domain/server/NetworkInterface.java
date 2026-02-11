@@ -28,13 +28,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 /**
  * NetworkInterface
@@ -46,15 +49,17 @@ public class NetworkInterface extends BaseDomainHelper implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rhn_netint_seq")
+    @SequenceGenerator(name = "rhn_netint_seq", sequenceName = "rhn_srv_net_iface_id_seq", allocationSize = 1)
+    @Column(name = "id")
+    private Long interfaceId;
+
+    @Column
     private String name;
 
-    @Id
     @ManyToOne(targetEntity = Server.class)
     @JoinColumn(name = "server_id")
     private Server server;
-
-    @Column(name = "id")
-    private Long interfaceId;
 
     @Column(name = "hw_addr")
     private String hwaddr;
@@ -80,13 +85,6 @@ public class NetworkInterface extends BaseDomainHelper implements Serializable {
      */
     public Long getInterfaceId() {
         return interfaceId;
-    }
-
-    /**
-     * @param id The interfaceId to set.
-     */
-    public void setInterfaceId(Long id) {
-        this.interfaceId = id;
     }
 
     /**
@@ -185,7 +183,7 @@ public class NetworkInterface extends BaseDomainHelper implements Serializable {
      * findServerNetAddress4
      * @param id Id of the network interface to search on.
      */
-    private void findServerNetAddress4(Long id) {
+    protected void findServerNetAddress4(Long id) {
         if (sa4 != null) {
             return;
         }

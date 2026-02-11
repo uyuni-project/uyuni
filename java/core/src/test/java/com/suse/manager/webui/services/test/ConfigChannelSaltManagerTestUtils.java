@@ -15,7 +15,6 @@
 
 package com.suse.manager.webui.services.test;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigContent;
 import com.redhat.rhn.domain.config.ConfigFile;
@@ -25,6 +24,7 @@ import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.ConfigTestUtils;
+import com.redhat.rhn.testing.TestUtils;
 
 import com.mchange.v2.lang.StringUtils;
 
@@ -42,7 +42,7 @@ public class ConfigChannelSaltManagerTestUtils {
      */
     public static ConfigChannel createTestChannel(User user) {
         ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg());
-        return (ConfigChannel) HibernateFactory.reload(cc);
+        return TestUtils.reload(cc);
     }
 
     /**

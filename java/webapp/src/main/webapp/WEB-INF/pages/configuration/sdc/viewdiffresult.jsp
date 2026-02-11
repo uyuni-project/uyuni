@@ -1,10 +1,10 @@
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/config-managment" prefix="cfg" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="jakarta.tags.functions" prefix="fn" %>
 <head>
     <meta name="name" value="sdc.config.jsp.header" />
 </head>

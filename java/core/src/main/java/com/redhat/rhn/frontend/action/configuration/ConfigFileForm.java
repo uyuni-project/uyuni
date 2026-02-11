@@ -39,7 +39,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.text.DecimalFormat;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * ConfigFileForm

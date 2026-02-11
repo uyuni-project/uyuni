@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LLC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -54,10 +55,7 @@ public class CustomDataKeyTest extends RhnBaseTestCase {
         key.setLabel(label);
         key.setDescription("testkey description");
         key.setOrg(user.getOrg());
-
-        TestUtils.saveAndFlush(key);
-
-        return key;
+        return TestUtils.saveAndFlush(key);
     }
 
     public static CustomDataKey createTestCustomDataKey(User user, String label) {
@@ -66,8 +64,6 @@ public class CustomDataKeyTest extends RhnBaseTestCase {
         key.setLabel(label);
         key.setDescription("testkey description");
         key.setOrg(user.getOrg());
-        TestUtils.saveAndFlush(key);
-
-        return key;
+        return TestUtils.saveAndFlush(key);
     }
 }

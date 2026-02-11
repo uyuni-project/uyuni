@@ -17,8 +17,8 @@ package com.redhat.rhn.domain.token.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.rhnpackage.test.PackageNameTest;
 import com.redhat.rhn.domain.role.RoleFactory;
@@ -52,7 +52,6 @@ public class TokenPackageTest extends BaseTestCaseWithUser {
 
         //make sure we got written to the db
         assertNotNull(pkg.getId());
-        TestUtils.flushAndEvict(pkg);
 
         TokenPackage lookup = TokenPackageFactory.lookupPackage(pkg.getToken(),
                 pkg.getPackageName(), pkg.getPackageArch());
@@ -70,7 +69,7 @@ public class TokenPackageTest extends BaseTestCaseWithUser {
         TokenPackage p = new TokenPackage();
 
         p = populateTestPackage(key, p);
-        TestUtils.saveAndFlush(p);
+        p = TestUtils.saveAndFlush(p);
 
         return p;
     }
@@ -80,11 +79,7 @@ public class TokenPackageTest extends BaseTestCaseWithUser {
 
         PackageName pname = PackageNameTest.createTestPackageName();
 
-        Long testid = 100L;
-        PackageArch parch = HibernateFactory.getSession().createNativeQuery("""
-                SELECT p.* from rhnPackageArch as p WHERE p.id = :id
-                """, PackageArch.class).setParameter("id", testid).getSingleResult();
-
+        PackageArch parch = PackageFactory.lookupPackageArchByLabel("noarch");
         p.setToken(key.getToken());
         p.setPackageName(pname);
         p.setPackageArch(parch);

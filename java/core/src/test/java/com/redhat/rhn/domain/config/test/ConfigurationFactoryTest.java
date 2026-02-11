@@ -18,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.config.ConfigContent;
@@ -33,7 +32,6 @@ import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
-import org.hibernate.Session;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -67,15 +65,15 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testSaveNewConfigChannel() {
+    public void testCreateNewConfigChannel() {
         String label = "testlabel";
-        ConfigChannel channel = ConfigurationFactory.saveNewConfigChannel(user.getOrg(),
+        ConfigChannel channel = ConfigurationFactory.createNewConfigChannel(user.getOrg(),
                 ConfigChannelType.normal(), "testname",
                 label, "testdescription");
         assertNotNull(channel.getId());
 
         //evict it so we can look it back up
-        flushAndEvict(channel);
+        TestUtils.flushAndEvict(channel);
 
         ConfigChannel channel2 =
             ConfigurationFactory.lookupConfigChannelById(channel.getId());
@@ -84,7 +82,6 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
 
         //now change something and hopefully avoid a database problem.
         channel2.setName("newName");
-        ConfigurationFactory.commit(channel2);
         //now look up the new way
         ConfigChannel channel3 =
             ConfigurationFactory.lookupConfigChannelByLabel(label, user.getOrg(),
@@ -105,7 +102,7 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
         assertNotNull(file.getId());
 
         //evict it so we can look it back up
-        flushAndEvict(file);
+        TestUtils.flushAndEvict(file);
 
         ConfigFile file2 = ConfigurationFactory.lookupConfigFileById(file.getId());
         assertNotNull(file2);
@@ -133,7 +130,7 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
         assertNotNull(revision.getId());
 
         //evict it so we can look it back up
-        flushAndEvict(revision);
+        TestUtils.flushAndEvict(revision);
 
         ConfigRevision revision2 =
             ConfigurationFactory.lookupConfigRevisionById(revision.getId());
@@ -214,12 +211,11 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
 
         //We have to evict everything from the session so that hibernate
         //doesn't complain that we removed things out from under its feet.
-        Session session = HibernateFactory.getSession();
-        session.flush();
-        session.evict(channel);
-        session.evict(file);
-        session.evict(cr.getConfigFile());
-        session.evict(cr);
+        TestUtils.flushSession();
+        TestUtils.evict(channel);
+        TestUtils.evict(file);
+        TestUtils.evict(cr.getConfigFile());
+        TestUtils.evict(cr);
 
         //run the method we are testing
         ConfigurationFactory.removeConfigChannel(channel);
@@ -243,4 +239,25 @@ public class ConfigurationFactoryTest extends BaseTestCaseWithUser {
         assertEquals(user.getId(), cr2.getChangedById());
         assertEquals(user.getLogin(), cr2.getChangedBy().getLogin());
     }
+
+
+    @Test
+    public void generatedCoverageTestLookupConfigRevisionByRevId() {
+        // this test has been generated programmatically to test ConfigurationFactory.lookupConfigRevisionByRevId
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        ConfigFile arg0 = ConfigurationFactory.lookupConfigFileById(0L);
+        ConfigurationFactory.lookupConfigRevisionByRevId(arg0, 0L);
+    }
+
+
+    @Test
+    public void generatedCoverageTestLookupConfigRevisions() {
+        // this test has been generated programmatically to test ConfigurationFactory.lookupConfigRevisions
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        ConfigFile arg0 = ConfigurationFactory.lookupConfigFileById(0L);
+        ConfigurationFactory.lookupConfigRevisions(arg0);
+    }
+
 }

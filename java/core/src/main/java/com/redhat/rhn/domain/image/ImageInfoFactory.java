@@ -50,9 +50,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 
 /**
  * Factory class for ImageInfo entity
@@ -228,7 +228,7 @@ public class ImageInfoFactory extends HibernateFactory {
         }
 
         // Check if the image name:version is available
-        if (lookupByName(name, version, store.getId()).isPresent()) {
+        if (lookupByName(name, version, store).isPresent()) {
             throw new IllegalArgumentException("Image already exists.");
         }
 
@@ -312,18 +312,17 @@ public class ImageInfoFactory extends HibernateFactory {
      * @param saltApi the SaltApi used to delete the related file
      */
     public static void delete(ImageInfo imageInfo, SaltApi saltApi) {
-        imageInfo.getDeltaSourceFor().stream().forEach(delta -> deleteDeltaImage(delta, saltApi));
-        imageInfo.getDeltaTargetFor().stream().forEach(delta -> deleteDeltaImage(delta, saltApi));
+        imageInfo.getDeltaSourceFor().forEach(delta -> deleteDeltaImage(delta, saltApi));
+        imageInfo.getDeltaTargetFor().forEach(delta -> deleteDeltaImage(delta, saltApi));
 
         // delete saltboot image profile and distro
         SaltbootUtils.deleteSaltbootDistro(imageInfo);
 
         // delete files
-        imageInfo.getImageFiles().stream().forEach(f -> {
-            if (!f.isExternal()) {
-                removeImageFile(OSImageStoreUtils.getOSImageFilePath(f), saltApi);
-            }
-        });
+        imageInfo.getImageFiles().stream()
+                .filter(f -> !f.isExternal())
+                .forEach(f -> removeImageFile(OSImageStoreUtils.getOSImageFilePath(f), saltApi));
+
         instance.removeObject(imageInfo);
     }
 
@@ -476,21 +475,34 @@ public class ImageInfoFactory extends HibernateFactory {
      *
      * @param name             the name
      * @param version          the version/tag
-     * @param imageStoreId the image store id
+     * @param imageStore       the image store
      * @return the optional
      */
-    public static Optional<ImageInfo> lookupByName(String name, String version, long imageStoreId) {
-        CriteriaBuilder builder = getSession().getCriteriaBuilder();
-        CriteriaQuery<ImageInfo> query = builder.createQuery(ImageInfo.class);
-
-        Root<ImageInfo> root = query.from(ImageInfo.class);
-        query.where(builder.and(
-                builder.equal(root.get("name"), name),
-                StringUtils.isEmpty(version) ?
-                        builder.isNull(root.get("version")) : builder.equal(root.get("version"), version),
-                builder.equal(root.get("store"), imageStoreId)))
-                .orderBy(builder.desc(root.get("revisionNumber")));
-        return getSession().createQuery(query).setMaxResults(1).uniqueResultOptional();
+    public static Optional<ImageInfo> lookupByName(String name, String version, ImageStore imageStore) {
+        if (StringUtils.isEmpty(version)) {
+            return getSession()
+                    .createQuery("""
+                                    FROM ImageInfo WHERE name = :name
+                                    AND version IS NULL
+                                    AND store = :imageStore
+                                    ORDER BY revisionNumber""", ImageInfo.class)
+                    .setParameter("name", name)
+                    .setParameter("imageStore", imageStore)
+                    .setMaxResults(1)
+                    .uniqueResultOptional();
+        }
+        else {
+            return getSession()
+                    .createQuery("""
+                                    FROM ImageInfo WHERE name = :name
+                                    AND version = :version
+                                    AND store = :imageStore ORDER BY revisionNumber""", ImageInfo.class)
+                    .setParameter("name", name)
+                    .setParameter("version", version)
+                    .setParameter("imageStore", imageStore)
+                    .setMaxResults(1)
+                    .uniqueResultOptional();
+        }
     }
 
     /**
@@ -622,12 +634,12 @@ public class ImageInfoFactory extends HibernateFactory {
         query.where(builder.and(
                 builder.equal(root.get("name"), image.getName()),
                 builder.equal(root.get("version"), image.getVersion()),
-                builder.equal(root.get("store"),
+                builder.equal(root.get("store").get("id"),
                               Optional.ofNullable(image.getStore()).map(store -> store.getId()).orElse(null)),
                 builder.isFalse(root.get("obsolete")),
                 builder.lessThan(root.get("revisionNumber"), image.getRevisionNumber())
                 ));
-        getSession().createQuery(query).getResultList().stream().forEach(obsImage -> {
+        getSession().createQuery(query).stream().forEach(obsImage -> {
             obsImage.setObsolete(true);
         });
     }

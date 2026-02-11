@@ -17,10 +17,10 @@ package com.redhat.rhn.domain.matcher.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.matcher.MatcherRunData;
 import com.redhat.rhn.domain.matcher.MatcherRunDataFactory;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
 
@@ -57,9 +57,9 @@ public class MatcherRunDataFactoryTest extends RhnBaseTestCase {
     @Test
     public void testMultiUpdate() {
         MatcherRunDataFactory.updateData(new MatcherRunData());
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         MatcherRunDataFactory.updateData(new MatcherRunData());
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         // if multiple results, then exception would be thrown here:
         MatcherRunDataFactory.getSingle();

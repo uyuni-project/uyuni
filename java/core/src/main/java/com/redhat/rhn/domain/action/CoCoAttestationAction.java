@@ -39,8 +39,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 
 /**
  * CoCoAttestationAction - Class representing TYPE_COCO_ATTESTATION

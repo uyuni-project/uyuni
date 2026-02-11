@@ -100,7 +100,7 @@ public class RendererHelperTest extends RhnBaseTestCase {
             Errata errata = ErrataTestUtils.createTestErrata(user, cves);
             channel.addErrata(errata);
 
-            TestUtils.saveAndFlush(channel);
+            channel = TestUtils.saveAndFlush(channel);
 
             Package unpatched = ErrataTestUtils.createTestPackage(user, channel, "noarch");
             ErrataTestUtils.createLaterTestPackage(user, errata, channel, unpatched);

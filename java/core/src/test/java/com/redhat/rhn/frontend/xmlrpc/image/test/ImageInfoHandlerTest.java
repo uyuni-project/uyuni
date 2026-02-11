@@ -136,7 +136,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         assertTrue(ret > 0);
 
         Optional<ImageInfo> info = ImageInfoFactory
-                .lookupByName("my-external-image", "1.0", store.getId());
+                .lookupByName("my-external-image", "1.0", store);
         assertTrue(info.isPresent());
 
         dr = ActionManager.recentlyScheduledActions(admin, null, 30);
@@ -239,19 +239,16 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         Errata e = ErrataFactoryTest.createTestErrata(admin.getOrg().getId());
         e.setAdvisoryType(ErrataFactory.ERRATA_TYPE_BUG);
         e.setChannels(errataChannels);
-        TestUtils.flushAndEvict(e);
 
         ImageInfo inf1 = createImageInfo("myimage", "1.0.0", store, admin);
-        TestUtils.flushAndEvict(inf1);
-
         UserFactory.save(admin);
-        TestUtils.flushAndEvict(admin);
 
         Package p = e.getPackages().iterator().next();
-        ErrataCacheManager.insertImageNeededErrataCache(
-                inf1.getId(), e.getId(), p.getId());
-        List<ErrataOverview> array = handler.getRelevantErrata(admin,
-                inf1.getId().intValue());
+        ErrataCacheManager.insertImageNeededErrataCache(inf1.getId(), e.getId(), p.getId());
+
+        TestUtils.flushAndClearSession();
+
+        List<ErrataOverview> array = handler.getRelevantErrata(admin, inf1.getId().intValue());
         assertEquals(1, array.size());
         ErrataOverview errata = array.get(0);
         assertEquals(e.getId().intValue(), errata.getId().intValue());
@@ -265,8 +262,7 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
         createImagePackage(PackageTest.createTestPackage(admin.getOrg()), inf1);
         createImagePackage(PackageTest.createTestPackage(admin.getOrg()), inf1);
 
-        List<Map<String, Object>> result = handler.listPackages(admin,
-                inf1.getId().intValue());
+        List<Map<String, Object>> result = handler.listPackages(admin, inf1.getId().intValue());
         assertEquals(2, result.size());
     }
 

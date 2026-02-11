@@ -21,6 +21,8 @@ import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.common.Checksum;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.InstalledPackage;
 import com.redhat.rhn.domain.server.Server;
@@ -46,8 +48,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
 
 /**
  * PackageFactory
@@ -198,26 +200,32 @@ public class PackageFactory extends HibernateFactory {
 
     /**
      * Store the package provider.
+     *
      * @param prov The object we are commiting.
+     * @return the managed {@link PackageProvider} instance
      */
-    public static void save(PackageProvider prov) {
-        singleton.saveObject(prov);
+    public static PackageProvider save(PackageProvider prov) {
+        return singleton.saveObject(prov);
     }
 
     /**
      * Store the package delta.
+     *
      * @param delta The object we are commiting.
+     * @return the managed {@link PackageDelta} instance
      */
-    public static void save(PackageDelta delta) {
-        singleton.saveObject(delta);
+    public static PackageDelta save(PackageDelta delta) {
+        return singleton.saveObject(delta);
     }
 
     /**
      * Store the package.
+     *
      * @param pkg The object we are commiting.
+     * @return the managed {@link Package} instance
      */
-    public static void save(Package pkg) {
-        singleton.saveObject(pkg);
+    public static Package save(Package pkg) {
+        return singleton.saveObject(pkg);
     }
 
     /**
@@ -439,11 +447,18 @@ public class PackageFactory extends HibernateFactory {
                         and p.checksum_id = cs.id
                         and (:checksum is null or cs.checksum = :checksum)
                         """, Package.class)
-                .setParameter("channel", channel, StandardBasicTypes.STRING)
-                .setParameter("name", name, StandardBasicTypes.STRING)
-                .setParameter("version", version, StandardBasicTypes.STRING)
-                .setParameter("release", release, StandardBasicTypes.STRING)
-                .setParameter("arch", arch, StandardBasicTypes.STRING)
+                .addSynchronizedEntityClass(Package.class)
+                .addSynchronizedEntityClass(PackageName.class)
+                .addSynchronizedEntityClass(PackageEvr.class)
+                .addSynchronizedEntityClass(PackageArch.class)
+                .addSynchronizedEntityClass(Checksum.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .setParameter("channel", channel)
+                .setParameter("name", name)
+                .setParameter("version", version)
+                .setParameter("release", release)
+                .setParameter("arch", arch)
+                // The type declartion is needed because ":checksum" is used in the IS NULL check of the query
                 .setParameter("checksum", checksum.orElse(null), StandardBasicTypes.STRING)
                 .list();
 
@@ -769,6 +784,14 @@ public class PackageFactory extends HibernateFactory {
                                     AND rp.evr_id = X.evr_id
                                     AND rp.package_arch_id = X.arch_id
                 """, Package.class)
+                .addSynchronizedEntityClass(Package.class)
+                .addSynchronizedEntityClass(PackageEvr.class)
+                .addSynchronizedEntityClass(PackageArch.class)
+                .addSynchronizedEntityClass(PackageProvides.class)
+                .addSynchronizedEntityClass(PackageCapability.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(Server.class)
+                .addSynchronizedEntityClass(InstalledPackage.class)
                 .setParameter("sid", sid)
                 .list();
     }

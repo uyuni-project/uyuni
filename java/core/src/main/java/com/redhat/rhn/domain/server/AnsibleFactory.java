@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 SUSE LLC
+ * Copyright (c) 2021--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -43,7 +43,7 @@ public class AnsibleFactory extends HibernateFactory {
      */
     public static Optional<AnsiblePath> lookupAnsiblePathById(long id) {
         return HibernateFactory.getSession()
-                .createQuery("SELECT p FROM AnsiblePath p WHERE id = :id")
+                .createQuery("FROM AnsiblePath p WHERE p.id = :id", AnsiblePath.class)
                 .setParameter("id", id)
                 .uniqueResultOptional();
     }
@@ -56,9 +56,10 @@ public class AnsibleFactory extends HibernateFactory {
      * @return optional of {@link AnsiblePath}
      */
     public static Optional<AnsiblePath> lookupAnsiblePathByPathAndMinion(Path path, long minionServerId) {
-        return HibernateFactory.getSession().createQuery("SELECT p FROM AnsiblePath p " +
-                "WHERE p.path = :path " +
-                "AND p.minionServer.id = :minionServerId")
+        return HibernateFactory.getSession().createQuery("""
+                                                         FROM AnsiblePath p
+                                                         WHERE p.path = :path
+                                                         AND p.minionServer.id = :minionServerId""", AnsiblePath.class)
                 .setParameter("path", path)
                 .setParameter("minionServerId", minionServerId)
                 .uniqueResultOptional();
@@ -73,9 +74,10 @@ public class AnsibleFactory extends HibernateFactory {
      */
     public static Optional<InventoryPath> lookupAnsibleInventoryPath(long minionId, String inventoryPath) {
         return HibernateFactory.getSession()
-                .createQuery("SELECT p FROM InventoryPath p " +
-                        "WHERE p.minionServer.id = :mid " +
-                        "AND p.path = :inventoryPath")
+                .createQuery("""
+                             FROM InventoryPath p
+                             WHERE p.minionServer.id = :mid
+                             AND p.path = :inventoryPath""", InventoryPath.class)
                 .setParameter("mid", minionId)
                 .setParameter("inventoryPath", new PathConverter().convertToEntityAttribute(inventoryPath))
                 .uniqueResultOptional();
@@ -89,8 +91,7 @@ public class AnsibleFactory extends HibernateFactory {
      */
     public static List<AnsiblePath> listAnsiblePaths(long minionServerId) {
         return HibernateFactory.getSession()
-                .createQuery("SELECT p FROM AnsiblePath p " +
-                        "WHERE p.minionServer.id = :sid ")
+                .createQuery("FROM AnsiblePath p WHERE p.minionServer.id = :sid", AnsiblePath.class)
                 .setParameter("sid", minionServerId)
                 .list();
     }
@@ -103,8 +104,7 @@ public class AnsibleFactory extends HibernateFactory {
      */
     public static List<PlaybookPath> listAnsiblePlaybookPaths(long minionId) {
         return HibernateFactory.getSession()
-                .createQuery("SELECT p FROM PlaybookPath p " +
-                        "WHERE p.minionServer.id = :mid ")
+                .createQuery("SELECT p FROM PlaybookPath p WHERE p.minionServer.id = :mid ", PlaybookPath.class)
                 .setParameter("mid", minionId)
                 .list();
     }
@@ -117,8 +117,7 @@ public class AnsibleFactory extends HibernateFactory {
      */
     public static List<InventoryPath> listAnsibleInventoryPaths(long minionId) {
         return HibernateFactory.getSession()
-                .createQuery("SELECT p FROM InventoryPath p " +
-                        "WHERE p.minionServer.id = :mid ")
+                .createQuery("SELECT p FROM InventoryPath p WHERE p.minionServer.id = :mid", InventoryPath.class)
                 .setParameter("mid", minionId)
                 .list();
     }
@@ -135,6 +134,9 @@ public class AnsibleFactory extends HibernateFactory {
                  JOIN suseAnsibleInventoryServers ais ON ap.id = ais.inventory_id
                  JOIN rhnServer s ON ais.server_id = s.id
                  WHERE ap.server_id = :server_id""", Server.class)
+                .addSynchronizedEntityClass(AnsiblePath.class)
+                .addSynchronizedEntityClass(InventoryPath.class)
+                .addSynchronizedEntityClass(Server.class)
                 .setParameter("server_id", minionId)
                 .getResultList();
     }
@@ -146,11 +148,11 @@ public class AnsibleFactory extends HibernateFactory {
      * @return the list of inventory servers
      */
     public static List<Server> listAnsibleInventoryServersExcludingPath(InventoryPath path) {
-        return HibernateFactory.getSession().createNativeQuery("""
-                 SELECT DISTINCT s.*, 0 as clazz_ FROM suseAnsibleInventoryServers ais
-                 JOIN rhnServer s ON ais.server_id = s.id
-                 WHERE ais.inventory_id != :inventory_id""", Server.class)
-                .setParameter("inventory_id", path.getId())
+        return HibernateFactory.getSession().createQuery("""
+                 SELECT DISTINCT p.inventoryServers
+                 FROM InventoryPath p
+                 WHERE p.id != :inventoryId""", Server.class)
+                .setParameter("inventoryId", path.getId())
                 .getResultList();
     }
 
@@ -166,6 +168,9 @@ public class AnsibleFactory extends HibernateFactory {
                  JOIN suseAnsibleInventoryServers ais ON ap.id = ais.inventory_id
                  JOIN rhnServer s ON ais.server_id = s.id
                  WHERE ap.server_id != :server_id""", Server.class)
+                .addSynchronizedEntityClass(AnsiblePath.class)
+                .addSynchronizedEntityClass(InventoryPath.class)
+                .addSynchronizedEntityClass(Server.class)
                 .setParameter("server_id", minionId)
                 .getResultList();
     }
@@ -177,8 +182,7 @@ public class AnsibleFactory extends HibernateFactory {
      * @return the updated {@link AnsiblePath}
      */
     public static AnsiblePath saveAnsiblePath(AnsiblePath path) {
-        HibernateFactory.getSession().saveOrUpdate(path);
-        return path;
+        return HibernateFactory.getSession().merge(path);
     }
 
     /**

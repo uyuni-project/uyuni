@@ -17,17 +17,18 @@ package com.redhat.rhn.domain.kickstart;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.rhnpackage.profile.Profile;
 
-import org.hibernate.annotations.Type;
+import org.hibernate.type.YesNoConverter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 
 /**
  * KickstartDefaults - Class representation of the table rhnkickstartdefaults.
@@ -53,11 +54,11 @@ public class KickstartDefaults extends BaseDomainHelper {
     private Profile profile;
 
     @Column(name = "cfg_management_flag", nullable = false)
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private Boolean cfgManagementFlag;
 
     @Column(name = "remote_command_flag", nullable = false)
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private Boolean remoteCommandFlag;
 
     @ManyToOne(fetch = FetchType.LAZY)

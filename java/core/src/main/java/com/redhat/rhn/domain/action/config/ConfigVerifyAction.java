@@ -20,8 +20,8 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.html.HtmlTag;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 
 /**
  * ConfigVerifyAction - Class representing TYPE_CONFIGFILES_VERIFY

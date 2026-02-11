@@ -157,7 +157,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
                 TestUtils.randomString().getBytes());
 
         pkg.setPath(FilenameUtils.getName(packageFile.getAbsolutePath()));
-        TestUtils.saveAndFlush(pkg);
+        pkg = TestUtils.saveAndFlush(pkg);
 
         this.packageFile2 = File.createTempFile(nvra2, ".rpm");
         // Write a fake file for the package
@@ -165,7 +165,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
                 TestUtils.randomString().getBytes());
 
         pkg2.setPath(FilenameUtils.getName(packageFile2.getAbsolutePath()));
-        TestUtils.saveAndFlush(pkg2);
+        pkg2 = TestUtils.saveAndFlush(pkg2);
 
         // Change mount point to the parent of the temp file
         Config.get().setString(ConfigDefaults.MOUNT_POINT, packageFile.getParent());
@@ -196,7 +196,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         newToken.setStart(Date.from(token.getIssuingTime()));
         newToken.setToken(token.getSerializedForm());
         newToken.setExpiration(Date.from(token.getExpirationTime()));
-        TestUtils.saveAndFlush(newToken);
+        newToken = TestUtils.saveAndFlush(newToken);
         return newToken;
     }
 
@@ -237,7 +237,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         PackageEvr pevr = PackageEvrFactoryTest.createTestPackageEvr(epoch, version, release, PackageType.DEB);
         PackageArch parch = PackageFactory.lookupPackageArchByLabel(arch);
         PackageTest.populateTestPackage(dpkg, user.getOrg(), pname, pevr, parch);
-        TestUtils.saveAndFlush(dpkg);
+        dpkg = TestUtils.saveAndFlush(dpkg);
 
         List<Long> list = new ArrayList<>(1);
         list.add(dpkg.getId());
@@ -247,7 +247,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         m.executeUpdate(params, list);
         HibernateFactory.getSession().refresh(debChannel);
 
-        TestUtils.saveAndFlush(debChannel);
+        debChannel = TestUtils.saveAndFlush(debChannel);
 
         final String debNvra = String.format("%s_%s-%s.%s",
                 dpkg.getPackageName().getName(), dpkg.getPackageEvr().getVersion(),
@@ -256,7 +256,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         Files.write(dpkgFile.getAbsoluteFile().toPath(),
                 TestUtils.randomString().getBytes());
         dpkg.setPath(FilenameUtils.getName(dpkgFile.getAbsolutePath()));
-        TestUtils.saveAndFlush(dpkg);
+        dpkg = TestUtils.saveAndFlush(dpkg);
 
         String debUri = String.format("%s.deb", debNvra);
 
@@ -922,7 +922,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
 
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(user,
                 "/com/redhat/rhn/manager/content/test/smallBase", true);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         // Test case - Token passed minion has no products
         Token token = new DownloadTokenBuilder(user.getOrg().getId())
@@ -932,7 +932,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
 
         AccessToken accessToken = saveTokenToDataBase(token);
         accessToken.setMinion(minion);
-        TestUtils.saveAndFlush(accessToken);
+        accessToken = TestUtils.saveAndFlush(accessToken);
         try {
             downloadController.validateMinionInPayg(accessToken.getToken());
         }
@@ -943,7 +943,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         // Test case - Token fail as minion has a BYOS product
         SUSEProduct sles = SUSEProductFactory.lookupByProductId(1117);
         minion.setInstalledProducts(Set.of(new InstalledProduct(sles)));
-        TestUtils.saveAndFlush(accessToken);
+        accessToken = TestUtils.saveAndFlush(accessToken);
         try {
             downloadController.validateMinionInPayg(accessToken.getToken());
             fail("BYOS minions are forbidden");
@@ -957,7 +957,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         // Test case - Token passed minion has a free product
         SUSEProduct alma = SUSEProductFactory.lookupByProductId(-39);
         minion.setInstalledProducts(Set.of(new InstalledProduct(alma)));
-        TestUtils.saveAndFlush(accessToken);
+        accessToken = TestUtils.saveAndFlush(accessToken);
         try {
             downloadController.validateMinionInPayg(accessToken.getToken());
         }

@@ -55,8 +55,7 @@ public class KickstartManagerTest extends BaseTestCaseWithUser {
         nic.setName("eth0");
         nic.setHwaddr("aa:aa:aa");
         nic.setServer(serv);
-        ServerNetAddress4 netAddr = new ServerNetAddress4();
-        netAddr.setAddress("192.168.0.122");
+        ServerNetAddress4 netAddr = new ServerNetAddress4(nic.getInterfaceId(), "192.168.0.122");
         ArrayList<ServerNetAddress4> salist = new ArrayList<>();
         salist.add(netAddr);
         nic.setSa4(salist);
@@ -94,8 +93,7 @@ public class KickstartManagerTest extends BaseTestCaseWithUser {
         nic = new NetworkInterface();
         nic.setName("eth1");
         nic.setHwaddr("aa:aa:aa");
-        ServerNetAddress4 netAddr = new ServerNetAddress4();
-        netAddr.setAddress("192.168.0.123");
+        ServerNetAddress4 netAddr = new ServerNetAddress4(nic.getInterfaceId(), "192.168.0.123");
         ArrayList<ServerNetAddress4> salist = new ArrayList<>();
         salist.add(netAddr);
         nic.setSa4(salist);
@@ -134,8 +132,7 @@ public class KickstartManagerTest extends BaseTestCaseWithUser {
         nic.setName("eth0");
         nic.setHwaddr("aa:aa:aa");
         nic.setServer(serv);
-        ServerNetAddress4 netAddr = new ServerNetAddress4();
-        netAddr.setAddress("1.2.3.4");
+        ServerNetAddress4 netAddr = new ServerNetAddress4(nic.getInterfaceId(), "1.2.3.4");
         ArrayList<ServerNetAddress4> salist = new ArrayList<>();
         salist.add(netAddr);
         nic.setSa4(salist);
@@ -169,8 +166,7 @@ public class KickstartManagerTest extends BaseTestCaseWithUser {
         nic.setName("eth0");
         nic.setHwaddr("aa:aa:aa");
         nic.setServer(serv);
-        ServerNetAddress4 netAddr = new ServerNetAddress4();
-        netAddr.setAddress("1.2.3.4");
+        ServerNetAddress4 netAddr = new ServerNetAddress4(nic.getInterfaceId(), "1.2.3.4");
         ArrayList<ServerNetAddress4> salist = new ArrayList<>();
         salist.add(netAddr);
         nic.setSa4(salist);

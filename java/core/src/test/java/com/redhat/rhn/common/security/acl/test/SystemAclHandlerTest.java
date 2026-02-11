@@ -29,6 +29,7 @@ import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.test.SystemManagerTest;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -84,7 +85,7 @@ public class SystemAclHandlerTest extends BaseTestCaseWithUser {
         KickstartSession sess = KickstartSessionTest.createKickstartSession(k, user);
         ctx.put("sid", sess.getOldServer().getId());
         KickstartFactory.saveKickstartSession(sess);
-        flushAndEvict(sess);
+        TestUtils.flushAndEvict(sess);
         assertTrue(sah.aclSystemKickstartSessionExists(ctx, null));
     }
 

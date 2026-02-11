@@ -40,7 +40,7 @@ public class ProvisionStateTest extends RhnBaseTestCase {
         p.setModified(new Date());
 
         assertNull(p.getId());
-        TestUtils.saveAndFlush(p);
+        p = TestUtils.saveAndFlush(p);
         assertNotNull(p.getId());
 
     }

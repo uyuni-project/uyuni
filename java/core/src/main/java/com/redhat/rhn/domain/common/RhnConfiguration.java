@@ -18,14 +18,12 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 
 @Entity
@@ -64,11 +62,9 @@ public class RhnConfiguration extends BaseDomainHelper {
     private String defaultValue;
 
     @Column(name = "created", nullable = false, updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
     private Date created;
 
     @Column(name = "modified", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
     private Date modified;
 
     /**

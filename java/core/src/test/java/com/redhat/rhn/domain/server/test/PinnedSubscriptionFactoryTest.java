@@ -49,8 +49,7 @@ public class PinnedSubscriptionFactoryTest extends BaseTestCaseWithUser {
         subscription.setSystemId(100L);
         PinnedSubscriptionFactory.getInstance().save(subscription);
 
-        List<PinnedSubscription> subs = PinnedSubscriptionFactory.getInstance()
-                .listPinnedSubscriptions();
+        List<PinnedSubscription> subs = PinnedSubscriptionFactory.getInstance().listPinnedSubscriptions();
         assertEquals(1, subs.size());
         assertEquals(subscription, subs.get(0));
     }
@@ -64,8 +63,7 @@ public class PinnedSubscriptionFactoryTest extends BaseTestCaseWithUser {
         PinnedSubscriptionFactory.getInstance().save(subscription);
         PinnedSubscriptionFactory.getInstance().remove(subscription);
 
-        assertTrue(PinnedSubscriptionFactory.getInstance().listPinnedSubscriptions()
-                .isEmpty());
+        assertTrue(PinnedSubscriptionFactory.getInstance().listPinnedSubscriptions().isEmpty());
     }
 
     @Test
@@ -75,19 +73,18 @@ public class PinnedSubscriptionFactoryTest extends BaseTestCaseWithUser {
         subscription.setSystemId(100L);
         PinnedSubscriptionFactory.getInstance().save(subscription);
 
-        assertEquals(1, PinnedSubscriptionFactory.getInstance().listPinnedSubscriptions()
-                .size());
+        assertEquals(1, PinnedSubscriptionFactory.getInstance().listPinnedSubscriptions().size());
 
         PinnedSubscriptionFactory.getInstance().cleanStalePins();
 
-        assertEquals(0, PinnedSubscriptionFactory.getInstance().listPinnedSubscriptions()
-                .size());
+        assertEquals(0, PinnedSubscriptionFactory.getInstance().listPinnedSubscriptions().size());
     }
 
     @Test
     public void testDontCleanGoodPins() throws Exception {
         Map<Long, SCCSubscription> subscriptionsBySccId = SCCCachingFactory.lookupSubscriptions()
-                .stream().collect(Collectors.toMap(SCCSubscription::getSccId, s -> s));
+                .stream()
+                .collect(Collectors.toMap(SCCSubscription::getSccId, s -> s));
         Map<Long, SUSEProduct> productsBySccId = SUSEProductFactory.productsByProductIds();
 
         Server server = ServerFactoryTest.createTestServer(user);
@@ -114,12 +111,19 @@ public class PinnedSubscriptionFactoryTest extends BaseTestCaseWithUser {
         selfPin.setSystemId(MatcherJsonIO.SELF_SYSTEM_ID);
         PinnedSubscriptionFactory.getInstance().save(selfPin);
 
-        assertEquals(2, PinnedSubscriptionFactory.getInstance().listPinnedSubscriptions()
-                .size());
+        assertEquals(2, PinnedSubscriptionFactory.getInstance().listPinnedSubscriptions().size());
 
         PinnedSubscriptionFactory.getInstance().cleanStalePins();
 
-        assertEquals(2, PinnedSubscriptionFactory.getInstance().listPinnedSubscriptions()
-                .size());
+        assertEquals(2, PinnedSubscriptionFactory.getInstance().listPinnedSubscriptions().size());
+    }
+
+    @Test
+    public void generatedCoverageTestLookupById() {
+        // this test has been generated programmatically to test PinnedSubscriptionFactory.lookupById
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        PinnedSubscriptionFactory testObject = PinnedSubscriptionFactory.getInstance();
+        testObject.lookupById(0L);
     }
 }

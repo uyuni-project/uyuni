@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 
-import javax.servlet.jsp.JspException;
+import jakarta.servlet.jsp.JspException;
 
 public class FormatDateTagTest extends RhnBaseTestCase {
 

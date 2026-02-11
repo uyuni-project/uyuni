@@ -18,19 +18,19 @@ import org.hibernate.annotations.DiscriminatorFormula;
 import java.io.Serial;
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 /**
  * Recurring State Configuration base class
@@ -79,8 +79,9 @@ public abstract class RecurringStateConfig implements Serializable {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "recurring_state_config_seq")
-    @SequenceGenerator(name = "recurring_state_config_seq", sequenceName = "suse_recurring_state_config_id_seq",
-            allocationSize = 1)
+    @SequenceGenerator(
+            name = "recurring_state_config_seq", sequenceName = "suse_recurring_state_config_id_seq", allocationSize = 1
+    )
     public Long getId() {
         return id;
     }

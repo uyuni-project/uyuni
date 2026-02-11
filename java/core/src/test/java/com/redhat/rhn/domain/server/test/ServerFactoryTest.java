@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LCC
  * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -86,6 +87,7 @@ import com.redhat.rhn.domain.server.SnapshotTagName;
 import com.redhat.rhn.domain.server.UndefinedCustomDataKeyException;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
+import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.xmlrpc.ServerNotInGroupException;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
@@ -95,7 +97,6 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
-import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.ConfigTestUtils;
@@ -277,7 +278,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         ManagedServerGroup sg1 = SERVER_GROUP_MANAGER.create(user, "FooFooFOO", "Foo Description");
         SERVER_GROUP_MANAGER.addServers(sg1, servers, user);
 
-        server = reload(server);
+        server = TestUtils.reload(server);
         assertEquals(1, server.getEntitledGroupTypes().size());
         assertEquals(1, server.getManagedGroups().size());
 
@@ -290,7 +291,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         //Evict from session to make sure that we get a fresh server
         //from the db.
-        HibernateFactory.getSession().evict(server);
+        TestUtils.evict(server);
 
         Server server2 = ServerFactory.lookupByIdAndOrg(id, user.getOrg());
         assertEquals(1, server2.getManagedGroups().size());
@@ -415,7 +416,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         assertTrue(membersBefore.intValue() < membersAfter.intValue());
 
         ServerFactory.removeServerFromGroup(testServer, group);
-        group = reload(group);
+        group = TestUtils.reload(group);
 
         Long membersFinally = group.getCurrentMembers();
         assertEquals(membersBefore, membersFinally);
@@ -443,7 +444,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         ServerFactory.save(server);
         //Evict from session to make sure that we get a fresh server
         //from the db.
-        flushAndEvict(server);
+        TestUtils.flushAndEvict(server);
         Server server2 = ServerFactory.lookupByIdAndOrg(server.getId(),
                 user.getOrg());
         notes = server2.getNotes();
@@ -477,7 +478,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         //Evict from session to make sure that we get a fresh server
         //from the db.
-        flushAndEvict(server);
+        TestUtils.flushAndEvict(server);
 
         Server server2 = ServerFactory.lookupByIdAndOrg(server.getId(),
                 user.getOrg());
@@ -498,7 +499,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         ServerFactory.save(server);
         //Evict from session to make sure that we get a fresh server
         //from the db.
-        flushAndEvict(server);
+        TestUtils.flushAndEvict(server);
 
         Server server2 = ServerFactory.lookupByIdAndOrg(server.getId(),
                 user.getOrg());
@@ -522,14 +523,15 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         assertEquals(dmi, server.getDmi());
 
-        ServerFactory.save(server);
-        //Evict from session to make sure that we get a fresh server
-        //from the db.
-        flushAndEvict(server);
+        //Evict from session to make sure that we get a fresh server from the db.
+        TestUtils.flushAndEvict(server);
 
-        Server server2 = ServerFactory.lookupByIdAndOrg(server.getId(),
-                user.getOrg());
+        Server server2 = ServerFactory.lookupByIdAndOrg(server.getId(), user.getOrg());
         assertEquals(dmi, server2.getDmi());
+
+        // set server back to a managed instance
+        server = server2;
+        assertTrue(HibernateFactory.getSession().contains(server));
     }
 
     /**
@@ -622,7 +624,8 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         EntitlementServerGroup sg = ServerGroupTestUtils.createEntitled(owner.getOrg(), type);
 
         SYSTEM_ENTITLEMENT_MANAGER.addEntitlementToServer(newS, sg.getGroupType().getAssociatedEntitlement());
-        return TestUtils.saveAndReload(newS);
+        TestUtils.flushSession();
+        return newS;
     }
 
     /**
@@ -636,15 +639,13 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
      */
     public static Server createUnentitledTestServer(User owner, boolean ensureOwnerAccess,
                     int stype, Date dateCreated) {
-        Server newS = createServer(stype);
-        // We have to commit this change manually since
-        // ServerGroups aren't actually mapped from within
-        // the Server class.
-        TestUtils.saveAndFlush(owner);
+        Server unentitledTServerTransient = createServer(stype);
 
-        populateServer(newS, owner, stype);
-        createProvisionState(newS, "Test Description", "Test Label");
-        createServerInfo(newS, dateCreated, 0L);
+        populateServer(unentitledTServerTransient, owner, stype);
+        createProvisionState(unentitledTServerTransient, "Test Description", "Test Label");
+        createServerInfo(unentitledTServerTransient, dateCreated, 0L);
+
+        Server unentitledTServer = ServerFactory.save(unentitledTServerTransient);
 
         NetworkInterface netint = new NetworkInterface();
         netint.setHwaddr("AA:AA:BB:BB:CC:CC");
@@ -652,12 +653,8 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         netint.setName(TestUtils.randomString());
 
-        netint.setServer(newS);
-        newS.addNetworkInterface(netint);
-
-        ServerFactory.save(newS);
-        newS = TestUtils.saveAndReload(newS);
-
+        netint.setServer(unentitledTServer);
+        unentitledTServer.addNetworkInterface(netint);
 
         /* Since we added a server to the Org we need
          * to update the User's permissions as associated with
@@ -686,19 +683,17 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
          */
         if (ensureOwnerAccess) {
             ManagedServerGroup sg2 = ServerGroupTestUtils.createManaged(owner);
-            ServerFactory.addServerToGroup(newS, sg2);
-            TestUtils.saveAndFlush(sg2);
+            ServerFactory.addServerToGroup(unentitledTServer, sg2);
         }
 
-        Long id = newS.getId();
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().evict(newS);
-        newS = ServerFactory.lookupByIdAndOrg(id, owner.getOrg());
-        assertNotNull(newS.getEntitledGroupTypes());
-        assertNotNull(newS.getManagedGroups());
-        assertNotNull(newS.getServerInfo());
-        assertNotNull(newS.getServerInfo().getCheckinCounter());
-        return newS;
+        Long id = unentitledTServer.getId();
+
+        Server lookupServer = ServerFactory.lookupByIdAndOrg(id, owner.getOrg());
+        assertNotNull(lookupServer.getEntitledGroupTypes());
+        assertNotNull(lookupServer.getManagedGroups());
+        assertNotNull(lookupServer.getServerInfo());
+        assertNotNull(lookupServer.getServerInfo().getCheckinCounter());
+        return lookupServer;
     }
 
     private static void populateServer(Server s, User owner, int type) {
@@ -796,37 +791,29 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     // This may be busted , can comment out
     @Test
-    public void testCompatibleWithServer() throws Exception {
-        /*
-         * here we create a user as an org admin.
-         * then we create two (minimum) Servers owned by the user and
-         * which are enterprise_entitled.
-         * We add the test channel to each of the servers.  This allows
-         * us to test the compatibleWithServer method.
-         */
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        UserManager.storeUser(user);
+    public void testCompatibleWithServer()  {
+        Server serverA = createTestServer(user, true,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
+        Server serverB = createTestServer(user, true,
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
 
-        Server srvr = createTestServer(user, true,
-                ServerFactory.lookupServerGroupTypeByLabel("enterprise_entitled"));
-
-        Server srvr1 = createTestServer(user, true,
-                ServerFactory.lookupServerGroupTypeByLabel("enterprise_entitled"));
         Channel channel = ChannelFactoryTest.createTestChannel(user);
-        srvr.addChannel(channel);
-        srvr1.addChannel(channel);
-        ServerFactory.save(srvr);
-        ServerFactory.save(srvr1);
-        flushAndEvict(srvr1);
-        srvr = reload(srvr);
-        // Ok let's finally test what we came here for.
-        List<Row> list = ServerFactory.compatibleWithServer(user, srvr);
+        serverA.addChannel(channel);
+        serverB.addChannel(channel);
+        ServerFactory.save(serverA);
+        ServerFactory.save(serverB);
+
+        TestUtils.flushAndClearSession();
+
+        // retrieve servers and verify that they are compatible
+        Server serverLookup = ServerFactory.lookupByIdAndOrg(serverA.getId(), user.getOrg());
+        List<Row> list = ServerFactory.compatibleWithServer(user, serverLookup);
         assertNotNull(list, "List is null");
         assertFalse(list.isEmpty(), "List is empty");
         boolean found = false;
         for (Row s : list) {
             assertNotNull(s, "List contains something other than Profiles");
-            if (srvr1.getName().equals(s.get("name"))) {
+            if (serverB.getName().equals(s.get("name"))) {
                 found = true;
             }
         }
@@ -835,83 +822,71 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testListAdministrators() {
-
-        //The org admin user
+        // The org admin user
         User admin = UserTestUtils.createUser(this);
         admin.addPermanentRole(RoleFactory.ORG_ADMIN);
 
-        //the non-orgadmin user who is a member of the group
-        User regular =   UserTestUtils.createUser("testUser2", admin.getOrg().getId());
+        // Non-org admin user who is a member of the server group
+        User regular = UserTestUtils.createUser("testUser2", admin.getOrg().getId());
         regular.removePermanentRole(RoleFactory.ORG_ADMIN);
 
-        //a user who shouldn't be able to admin the system
+        // User who shouldn't be able to admin the system
         User nonGroupAdminUser = UserTestUtils.createUser("testUser3", admin.getOrg().getId());
         nonGroupAdminUser.removePermanentRole(RoleFactory.ORG_ADMIN);
 
         ManagedServerGroup group = ServerGroupTestUtils.createManaged(admin);
 
-        //create server set and add it to the group
-        Server serverToSearch = ServerFactoryTest.createTestServer(admin, true);
-        Set servers = new HashSet<>();
-        servers.add(serverToSearch);
-        SERVER_GROUP_MANAGER.addServers(group, servers, admin);
+        // Create server and add it to the group
+        Server serverToSearch = createTestServer(admin, true);
+        SERVER_GROUP_MANAGER.addServers(group, Set.of(serverToSearch), admin);
         assertFalse(group.getServers().isEmpty());
-        //create admins set and add it to the grup
-        Set admins = new HashSet<>();
-        admins.add(regular);
-        SERVER_GROUP_MANAGER.associateAdmins(group, admins, admin);
+
+        // Associate group admin with the server group
+        SERVER_GROUP_MANAGER.associateAdmins(group, Set.of(regular), admin);
         assertTrue(SERVER_GROUP_MANAGER.canAccess(regular, group));
+
+        // Save setup state
+        Long serverId = serverToSearch.getId();
+        String adminLogin = admin.getLogin();
+        String groupAdminLogin = regular.getLogin();
+        String nonGroupAdminLogin = nonGroupAdminUser.getLogin();
+
         ServerGroupFactory.save(group);
-        reload(group);
         UserFactory.save(admin);
-        admin = reload(admin);
         UserFactory.save(regular);
-        regular = reload(regular);
         UserFactory.save(nonGroupAdminUser);
-        nonGroupAdminUser = reload(nonGroupAdminUser);
+        TestUtils.flushAndClearSession();
 
-        List<User> users = ServerFactory.listAdministrators(serverToSearch);
-        System.out.println(users);
-        System.out.println("regular->" + regular);
-        System.out.println("Admins->" + admins);
-        boolean containsAdmin = false;
-        boolean containsRegular = false;
-        boolean containsNonGroupAdmin = false;  //we want this to be false to pass
+        //
+        Server reloadedServer = ServerFactory.lookupById(serverId);
+        List<String> administrators = ServerFactory.listAdministrators(reloadedServer).stream()
+                .map(User::getLogin)
+                .toList();
 
-        for (User user : users) {
-              if (user.getLogin().equals(admin.getLogin())) {
-                  containsAdmin = true;
-              }
-              if (user.getLogin().equals(regular.getLogin())) {
-                  containsRegular = true;
-              }
-              if (user.getLogin().equals(nonGroupAdminUser.getLogin())) {
-                  containsNonGroupAdmin = true;
-              }
-        }
-         assertTrue(containsAdmin);
-         assertTrue(containsRegular);
-         assertFalse(containsNonGroupAdmin);
-      }
+        assertTrue(administrators.contains(adminLogin), "Org admin should be in the admins list");
+        assertTrue(administrators.contains(groupAdminLogin), "Group admin should be in the admins list");
+        assertFalse(administrators.contains(nonGroupAdminLogin),
+                "Non-group admin user should NOT be in the admins list");
+    }
 
     @Test
     public void testGetServerHistory() throws Exception {
 
         Server serverTest = ServerFactoryTest.createTestServer(user);
-        ServerHistoryEvent event1 = new ServerHistoryEvent();
-        event1.setSummary("summary1");
-        event1.setDetails("details1");
-        event1.setServer(serverTest);
+        ServerHistoryEvent event = new ServerHistoryEvent();
+        event.setSummary("summary1");
+        event.setDetails("details1");
+        event.setServer(serverTest);
 
-        Set history = serverTest.getHistory();
-        history.add(event1);
+        Set<ServerHistoryEvent> history = serverTest.getHistory();
+        history.add(event);
 
         ServerFactory.save(serverTest);
-        TestUtils.saveAndFlush(event1);
-        Long eventId = event1.getId();
+        ServerHistoryEvent eventManaged = TestUtils.saveAndFlush(event);
+        Long eventId = eventManaged.getId();
         Long sid = serverTest.getId();
 
-        HibernateFactory.getSession().clear();
+        TestUtils.clearSession();
         serverTest = ServerFactory.lookupById(sid);
         boolean hasEvent = false;
         for (ServerHistoryEvent she : serverTest.getHistory()) {
@@ -958,13 +933,14 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         product.setProduct("proxy" + TestUtils.randomString());
         product.setVersion("1.1");
         product.setBeta(false);
-        proxyChan.setProduct(product);
+        ChannelProduct productManaged = TestUtils.saveAndReload(product);
+
+        proxyChan.setProduct(productManaged);
         proxyChan.setChannelFamilies(chanFamilies);
         proxyChan.setParentChannel(baseChan);
 
         ChannelFactory.save(baseChan);
         ChannelFactory.save(proxyChan);
-        TestUtils.saveAndReload(product);
 
         SystemManager.activateProxy(server, "1.1");
         SystemManager.storeServer(server);
@@ -1014,7 +990,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
          ServerConstants.getServerGroupTypeEnterpriseEntitled());
         snap.addGroup(grp);
 
-        TestUtils.saveAndFlush(snap);
+        snap = TestUtils.saveAndFlush(snap);
         List<ServerSnapshot> list = ServerFactory.listSnapshots(server2.getOrg(),
                 server2, null, null);
         assertContains(list, snap);
@@ -1024,8 +1000,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testLookupSnapshotById() {
         Server server2 = ServerFactoryTest.createTestServer(user, true);
-        ServerSnapshot snap = generateSnapshot(server2);
-        TestUtils.saveAndFlush(snap);
+        ServerSnapshot snap = TestUtils.saveAndFlush(generateSnapshot(server2));
 
         ServerSnapshot snap2 = ServerFactory.lookupSnapshotById(snap.getId().intValue());
         assertEquals(snap, snap2);
@@ -1035,11 +1010,11 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testDeleteSnapshot() {
         Server server2 = ServerFactoryTest.createTestServer(user, true);
-        ServerSnapshot snap = generateSnapshot(server2);
-        TestUtils.saveAndFlush(snap);
-        ServerFactory.deleteSnapshot(snap);
+        ServerSnapshot serverSnapshotNew = generateSnapshot(server2);
+        ServerSnapshot serverSnapshot = TestUtils.saveAndFlush(serverSnapshotNew);
+        ServerFactory.deleteSnapshot(serverSnapshot);
         ServerSnapshot snap2 = ServerFactory.lookupSnapshotById(
-            snap.getId().intValue());
+                serverSnapshot.getId().intValue());
         assertNull(snap2);
     }
 
@@ -1047,22 +1022,22 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testGetSnapshotTags() {
         Server server2 = ServerFactoryTest.createTestServer(user, true);
-        ServerSnapshot snap = generateSnapshot(server2);
+        ServerSnapshot snap = TestUtils.saveAndFlush(generateSnapshot(server2));
 
-        SnapshotTag tag = new SnapshotTag();
-        SnapshotTagName name = new SnapshotTagName();
-        name.setName("blah");
-        tag.setName(name);
-        tag.setOrg(server2.getOrg());
+        SnapshotTagName nameNew = new SnapshotTagName();
+        nameNew.setName("blah");
+        SnapshotTagName name = TestUtils.saveAndFlush(nameNew);
+
+        SnapshotTag tagNew = new SnapshotTag();
+        tagNew.setName(name);
+        tagNew.setOrg(server2.getOrg());
+        SnapshotTag tag = TestUtils.saveAndFlush(tagNew);
 
         ServerSnapshotTagLink link = new ServerSnapshotTagLink();
         link.setServer(server2);
         link.setSnapshot(snap);
         link.setTag(tag);
-
-        TestUtils.saveAndFlush(tag);
-        TestUtils.saveAndFlush(snap);
-        TestUtils.saveAndFlush(link);
+        link = TestUtils.saveAndFlush(link);
 
         List<SnapshotTag> tags = ServerFactory.getSnapshotTags(snap);
         assertContains(tags, tag);
@@ -1077,17 +1052,17 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         Package zypper = new Package();
         PackageTest.populateTestPackage(zypper, user.getOrg(),  PackageFactory.lookupOrCreatePackageByName("zypper"),
                 PackageEvrFactoryTest.createTestPackageEvr("1", "1.0.0", "1", PackageType.RPM), parch1);
-        TestUtils.saveAndFlush(zypper);
+        zypper = TestUtils.saveAndFlush(zypper);
 
         Package p1v1 = new Package();
         PackageTest.populateTestPackage(p1v1, user.getOrg(), p1Name,
                 PackageEvrFactoryTest.createTestPackageEvr("1", "1.0.0", "1", PackageType.RPM), parch1);
-        TestUtils.saveAndFlush(p1v1);
+        p1v1 = TestUtils.saveAndFlush(p1v1);
 
         Package p1v2 = new Package();
         PackageTest.populateTestPackage(p1v2, user.getOrg(), p1Name,
                 PackageEvrFactoryTest.createTestPackageEvr("1", "2.0.0", "1", PackageType.RPM), parch1);
-        TestUtils.saveAndFlush(p1v2);
+        p1v2 = TestUtils.saveAndFlush(p1v2);
 
         InstalledPackage p1v1InNZ = new InstalledPackage();
         p1v1InNZ.setEvr(p1v1.getPackageEvr());
@@ -1127,7 +1102,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         ChannelFactory.save(baseChan);
 
-        TestUtils.saveAndFlush(e1);
+        e1 = TestUtils.saveAndFlush(e1);
 
         List<MinionServer> minions = Arrays.asList(zypperSystem, nonZypperSystem);
         List<MinionSummary> minionSummaries = minions.stream().map(MinionSummary::new).collect(Collectors.toList());
@@ -1169,35 +1144,35 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         Package p1v1 = new Package();
         PackageTest.populateTestPackage(p1v1, user.getOrg(), p1Name,
                 PackageEvrFactoryTest.createTestPackageEvr("1", "1.0.0", "1", srv.getPackageType()), parch1);
-        TestUtils.saveAndFlush(p1v1);
+        p1v1 = TestUtils.saveAndFlush(p1v1);
 
         Package p1v2 = new Package();
         PackageTest.populateTestPackage(p1v2, user.getOrg(), p1Name,
                 PackageEvrFactoryTest.createTestPackageEvr("1", "2.0.0", "1", srv.getPackageType()), parch1);
-        TestUtils.saveAndFlush(p1v2);
+        p1v2 = TestUtils.saveAndFlush(p1v2);
 
         PackageEvr v3 = PackageEvrFactoryTest.createTestPackageEvr("1", "3.0.0", "1",
                 srv.getPackageType());
 
         Package p1v3 = new Package();
         PackageTest.populateTestPackage(p1v3, user.getOrg(), p1Name, v3, parch1);
-        TestUtils.saveAndFlush(p1v3);
+        p1v3 = TestUtils.saveAndFlush(p1v3);
 
         Package p1v4 = new Package();
         PackageTest.populateTestPackage(p1v4, user.getOrg(), p1Name,
                 PackageEvrFactoryTest.createTestPackageEvr("1", "3.0.0", "1",
                         srv.getPackageType()), parch1);
-        TestUtils.saveAndFlush(p1v4);
+        p1v4 = TestUtils.saveAndFlush(p1v4);
 
         Package p1v3arch2 = new Package();
         PackageTest.populateTestPackage(p1v3arch2, user.getOrg(), p1Name, v3, parch2);
-        TestUtils.saveAndFlush(p1v3arch2);
+        p1v3arch2 = TestUtils.saveAndFlush(p1v3arch2);
 
         Package p2v4 = new Package();
         PackageTest.populateTestPackage(p2v4, user.getOrg(), p2Name,
                 PackageEvrFactoryTest.createTestPackageEvr("1", "4.0.0", "1",
                         srv.getPackageType()), parch1);
-        TestUtils.saveAndFlush(p2v4);
+        p2v4 = TestUtils.saveAndFlush(p2v4);
 
 
         InstalledPackage p1v1In = new InstalledPackage();
@@ -1251,11 +1226,11 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         ChannelFactory.save(baseChan);
         ChannelFactory.save(childChan);
 
-        TestUtils.saveAndFlush(e1);
-        TestUtils.saveAndFlush(e2);
-        TestUtils.saveAndFlush(e3);
-        TestUtils.saveAndFlush(e4);
-        TestUtils.saveAndFlush(e5);
+        e1 = TestUtils.saveAndFlush(e1);
+        e2 = TestUtils.saveAndFlush(e2);
+        e3 = TestUtils.saveAndFlush(e3);
+        e4 = TestUtils.saveAndFlush(e4);
+        e5 = TestUtils.saveAndFlush(e5);
 
         Map<Long, Map<String, Tuple2<String, String>>> out =
                 ServerFactory.listNewestPkgsForServerErrata(serverIds, errataIds);
@@ -1287,7 +1262,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         ChannelFactory.save(baseChan);
 
-        TestUtils.saveAndFlush(e);
+        e = TestUtils.saveAndFlush(e);
 
         Map<Long, Map<Long, Set<ErrataInfo>>> out =
                 ServerFactory.listErrataNamesForServers(serverIds, errataIds);
@@ -1321,7 +1296,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         ChannelFactory.save(baseChan);
 
-        TestUtils.saveAndFlush(e);
+        e = TestUtils.saveAndFlush(e);
 
         Map<Long, Map<Long, Set<ErrataInfo>>> out =
                 ServerFactory.listErrataNamesForServers(serverIds, errataIds);
@@ -1345,19 +1320,17 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         Set<ServerPath> serverPaths = ServerFactory.createServerPaths(minion, proxy, proxyHostname);
         minion.getServerPaths().addAll(serverPaths);
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
-        minion = HibernateFactory.reload(minion);
-        HibernateFactory.reload(proxy);
+        minion = TestUtils.reload(minion);
+        proxy = TestUtils.reload(proxy);
 
         Server s = ServerFactory.lookupById(minion.getId());
         assertEquals(serverPaths.stream().findFirst().get(),
                 s.getServerPaths().stream().findFirst().get());
 
         s.getServerPaths().remove(s.getServerPaths().stream().findFirst().get());
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         s = ServerFactory.lookupById(minion.getId());
         assertTrue(s.getServerPaths().isEmpty());
@@ -1381,17 +1354,18 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         assertEquals(proxy, proxyPaths.iterator().next().getId().getProxyServer());
         assertEquals("proxy1", proxyPaths.iterator().next().getHostname());
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
-        HibernateFactory.getSession().refresh(proxiedProxy);
+        TestUtils.flushAndClearSession();
+        proxiedProxy = TestUtils.reload(proxiedProxy);
+        proxy = TestUtils.reload(proxy);
 
         Server minion = ServerTestUtils.createTestSystem();
         Set<ServerPath> serverPath1 = ServerFactory.createServerPaths(minion, proxiedProxy, "proxy2");
         minion.getServerPaths().addAll(serverPath1);
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
-        HibernateFactory.getSession().refresh(minion);
+        TestUtils.flushAndClearSession();
+        minion = TestUtils.reload(minion);
+        proxiedProxy = TestUtils.reload(proxiedProxy);
+        proxy = TestUtils.reload(proxy);
 
         proxyPaths = minion.getServerPaths();
         assertEquals(2, proxyPaths.size());
@@ -1421,8 +1395,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
                 TYPE_SERVER_PROXY);
         s.setHostname(HOSTNAME);
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         // FQDN: precise lookup
         assertEquals(s, ServerFactory.lookupProxyServer(HOSTNAME).orElseThrow());
@@ -1447,8 +1420,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         s.setHostname(hostCaseName);
         s.addFqdn(hostCaseName);
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         // FQDN: precise lookup
         assertEquals(ServerFactory.lookupProxyServer(hostCaseName).orElse(null), s);
@@ -1468,8 +1440,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         s.setHostname(hostCaseName);
         s.addFqdn(hostCaseName);
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         // FQDN: precise lookup
         assertEquals(ServerFactory.lookupProxyServer(hostCaseName.toLowerCase()).orElse(null), s);
@@ -1489,8 +1460,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         String simpleHostname = HOSTNAME.split("\\.")[0];
         s.setHostname(simpleHostname);
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         // FQDN: imprecise lookup
         assertEquals(ServerFactory.lookupProxyServer(fullyQualifiedDomainName).orElse(null), s);
@@ -1514,8 +1484,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         set.addElement(srv.getId() + "");
         RhnSetManager.store(set);
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         List<Long> servers = ServerFactory.findServersInSetByChannel(user, srv.getBaseChannel().getId());
         assertEquals(1, servers.size());
@@ -1558,8 +1527,8 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         ServerFactory.setMaintenanceScheduleToSystems(schedule, Set.of(sys1.getId(), sys2.getId()));
 
-        assertEquals(schedule, HibernateFactory.reload(sys1).getMaintenanceScheduleOpt().get());
-        assertEquals(schedule, HibernateFactory.reload(sys2).getMaintenanceScheduleOpt().get());
+        assertEquals(schedule, TestUtils.reload(sys1).getMaintenanceScheduleOpt().get());
+        assertEquals(schedule, TestUtils.reload(sys2).getMaintenanceScheduleOpt().get());
     }
 
     @Test
@@ -1574,8 +1543,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         s3.setName("third-system");
         s3.setOs("not-SLES");
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         List<Server> result = ServerFactory.querySlesSystems("", 20, user).toList();
 
@@ -1595,8 +1563,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         s3.setName("my-bar-system");
         s3.setOs("SLES");
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         List<Server> result = ServerFactory.querySlesSystems("foo", 20, user).toList();
 
@@ -1629,8 +1596,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         PackageTestUtils.installPackageOnServer(pkg2, srv);
         PackageTestUtils.installPackageOnServer(pkg3, srv);
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         List<PackageEvr> result = ServerFactory.getInstalledKernelVersions(srv).toList();
 
@@ -1669,6 +1635,64 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         assertTrue(ptfFullSupport.doesOsSupportPtf());
         assertTrue(ServerFactory.isPtfUninstallationSupported(ptfFullSupport));
+    }
+
+
+
+    @Test
+    public void generatedCoverageTestLookupStorageDevicesByServer() {
+        // this test has been generated programmatically to test ServerFactory.lookupStorageDevicesByServer
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        Server arg0 = ServerFactoryTest.createTestServer(user);
+        ServerFactory.lookupStorageDevicesByServer(arg0);
+    }
+
+
+    @Test
+    public void generatedCoverageTestFindSystemsPendingRebootActions() {
+        // this test has been generated programmatically to test ServerFactory.findSystemsPendingRebootActions
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        List<SystemOverview> arg0 = new ArrayList<>();
+        ServerFactory.findSystemsPendingRebootActions(arg0);
+    }
+
+
+    @Test
+    public void generatedCoverageTestLookupLatestForServer() {
+        // this test has been generated programmatically to test ServerFactory.lookupLatestForServer
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        Server arg0 = ServerFactoryTest.createTestServer(user);
+        ServerFactory.lookupLatestForServer(arg0);
+    }
+
+    @Test
+    public void generatedCoverageTestDeleteSnapshots() {
+        // this test has been generated programmatically to test ServerFactory.deleteSnapshots
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        Org arg0 = user.getOrg();
+        ServerFactory.deleteSnapshots(arg0, new Date(0), new Date(0));
+        ServerFactory.deleteSnapshots(arg0, new Date(0), null);
+        ServerFactory.deleteSnapshots(arg0, null, null);
+    }
+
+    @Test
+    public void generatedCoverageTestListOrgSystems() {
+        // this test has been generated programmatically to test ServerFactory.listOrgSystems
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        ServerFactory.listOrgSystems(0L);
+    }
+
+    @Test
+    public void generatedCoverageTestListAllServersOsAndRelease() {
+        // this test has been generated programmatically to test ServerFactory.listAllServersOsAndRelease
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        ServerFactory.listAllServersOsAndRelease();
     }
 
 }

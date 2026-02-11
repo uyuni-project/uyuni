@@ -39,7 +39,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.util.Set;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 public class AjaxHandlerServletTest extends AjaxHandlerServlet {
 

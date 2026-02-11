@@ -23,19 +23,19 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 
 /**
  * This is a subscription representation in the DB from SCC.
@@ -44,7 +44,7 @@ import javax.persistence.Table;
 @Table(name = "suseSCCSubscription")
 public class SCCSubscription extends BaseDomainHelper {
 
-    private long id;
+    private Long id;
     private long sccId;
     private Credentials credentials;
 
@@ -64,7 +64,7 @@ public class SCCSubscription extends BaseDomainHelper {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sccsub_seq")
     @SequenceGenerator(name = "sccsub_seq", sequenceName = "suse_sccsub_id_seq", allocationSize = 1)
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -72,7 +72,7 @@ public class SCCSubscription extends BaseDomainHelper {
      * @return the sccId
      */
     @Column(name = "scc_id")
-    public long getSccId() {
+    public Long getSccId() {
         return sccId;
     }
 

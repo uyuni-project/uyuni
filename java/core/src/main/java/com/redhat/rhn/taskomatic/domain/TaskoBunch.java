@@ -17,20 +17,19 @@ package com.redhat.rhn.taskomatic.domain;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
-
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderColumn;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 
 /**
  * TaskoBunch
@@ -55,7 +54,7 @@ public class TaskoBunch extends BaseDomainHelper {
     private String orgBunch;
 
     @OneToMany(mappedBy = "bunch", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    @OrderColumn(name = "ordering")
+    @OrderBy("ordering")
     private List<TaskoTemplate> templates;
 
     /**

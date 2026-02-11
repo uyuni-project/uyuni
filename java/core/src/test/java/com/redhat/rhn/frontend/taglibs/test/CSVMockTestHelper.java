@@ -21,7 +21,7 @@ import org.jmock.Expectations;
 
 import java.io.IOException;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Helper class for testing CSV export.

@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
 
 /**
  * CredentialsFactory
@@ -37,11 +37,13 @@ public class CredentialsFactory extends HibernateFactory {
 
     /**
      * Store {@link Credentials} to the database.
+     *
      * @param creds credentials
+     * @return the managed {@link Credentials} instance
      */
-    public static void storeCredentials(Credentials creds) {
+    public static Credentials storeCredentials(Credentials creds) {
         creds.setModified(new Date());
-        singleton.saveObject(creds);
+        return singleton.saveObject(creds);
     }
 
     /**

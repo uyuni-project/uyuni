@@ -29,7 +29,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
-import javax.persistence.Tuple;
+import jakarta.persistence.Tuple;
 
 /**
  * Factory class for RBAC's {@link Namespace} entities
@@ -64,9 +64,8 @@ public class NamespaceFactory extends HibernateFactory {
      */
     public static List<Namespace> list(String filterParam) {
         return getSession()
-                .createNativeQuery("""
-                SELECT * FROM search_namespace(:filter)
-                """, Namespace.class)
+                .createNativeQuery("SELECT * FROM search_namespace(:filter)", Namespace.class)
+                .addSynchronizedEntityClass(Namespace.class)
                 .setParameter("filter", filterParam)
                 .getResultList();
     }
@@ -120,6 +119,8 @@ public class NamespaceFactory extends HibernateFactory {
                    GROUP BY namespace
                  )
                  """, Tuple.class)
+                .addSynchronizedEntityClass(Namespace.class)
+                .addSynchronizedEntityClass(AccessGroup.class)
                 .setParameter("group_id", groupId)
                 .stream().map(NamespaceJson::new)
                 .toList();

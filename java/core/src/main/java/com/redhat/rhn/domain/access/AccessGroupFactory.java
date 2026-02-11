@@ -15,6 +15,8 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
+import com.redhat.rhn.domain.user.legacy.PersonalInfo;
+import com.redhat.rhn.domain.user.legacy.UserImpl;
 
 import com.suse.manager.webui.utils.gson.AccessGroupJson;
 import com.suse.manager.webui.utils.gson.AccessGroupUserJson;
@@ -27,7 +29,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import javax.persistence.Tuple;
+import jakarta.persistence.Tuple;
 
 /**
  * Factory class for RBAC's {@link AccessGroup} entities
@@ -58,11 +60,10 @@ public class AccessGroupFactory extends HibernateFactory {
     /**
      * Persists an {@code AccessGroup} entity to DB.
      * @param accessGroupIn the entity to save
-     * @return the saved entity
+     * @return the saved entity (managed instance)
      */
     public static AccessGroup save(AccessGroup accessGroupIn) {
-        INSTANCE.saveObject(accessGroupIn);
-        return accessGroupIn;
+        return (AccessGroup) INSTANCE.saveObject(accessGroupIn);
     }
 
     /**
@@ -126,6 +127,9 @@ public class AccessGroupFactory extends HibernateFactory {
         """;
         return getSession()
                 .createNativeQuery(sql, Tuple.class)
+                .addSynchronizedEntityClass(Org.class)
+                .addSynchronizedEntityClass(UserImpl.class)
+                .addSynchronizedEntityClass(AccessGroup.class)
                 .setParameter("org_id", org.getId())
                 .getResultList()
                 .stream()
@@ -150,6 +154,9 @@ public class AccessGroupFactory extends HibernateFactory {
                  JOIN web_customer wcu ON wc.org_id = wcu.id
                  WHERE wcu.id = :org_id
                  """, Tuple.class)
+                .addSynchronizedEntityClass(Org.class)
+                .addSynchronizedEntityClass(UserImpl.class)
+                .addSynchronizedEntityClass(PersonalInfo.class)
                 .setParameter("org_id", orgId)
                 .stream().map(AccessGroupUserJson::new)
                 .toList();
@@ -162,11 +169,11 @@ public class AccessGroupFactory extends HibernateFactory {
      */
     public static List<User> listAccessGroupUsers(Long groupId) {
         List<Long> ids = getSession().createNativeQuery(
-                "SELECT uag.user_id FROM access.useraccessgroup uag WHERE uag.group_id = :group_id", Tuple.class)
+                "SELECT uag.user_id FROM access.useraccessgroup uag WHERE uag.group_id = :group_id", Long.class)
+                .addSynchronizedEntityClass(UserImpl.class)
                 .setParameter("group_id", groupId)
                 .addScalar("user_id", StandardBasicTypes.LONG)
-                .stream().map(tuple -> tuple.get("user_Id", Long.class))
-                .toList();
+                .getResultList();
         return UserFactory.lookupByIds(ids);
     }
 

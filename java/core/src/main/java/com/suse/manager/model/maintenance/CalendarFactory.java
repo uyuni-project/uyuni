@@ -33,10 +33,12 @@ public class CalendarFactory extends HibernateFactory {
 
     /**
      * Save a MaintenanceCalendar
+     *
      * @param calendar the calendar
+     * @return the managed {@link MaintenanceCalendar} instance
      */
-    public void save(MaintenanceCalendar calendar) {
-        getSession().persist(calendar);
+    public MaintenanceCalendar save(MaintenanceCalendar calendar) {
+        return saveObject(calendar);
     }
 
     /**

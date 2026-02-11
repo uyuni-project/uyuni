@@ -164,19 +164,16 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
             cfnids[i] = file.getConfigFileName().getId();
             ConfigTestUtils.createConfigRevision(file);
         }
-        ConfigurationFactory.commit(global);
 
         // Create file two in system-local
         file = local.createConfigFile(
                 ConfigFileState.normal(), paths[1]);
         ConfigTestUtils.createConfigRevision(file);
-        ConfigurationFactory.commit(local);
 
         // Create file three in system-sandbox
         file = sandbox.createConfigFile(
                 ConfigFileState.normal(), paths[2]);
         ConfigTestUtils.createConfigRevision(file);
-        ConfigurationFactory.commit(sandbox);
 
         // Ask for listSystemsForFileCopy(f1, local) - expect 1 sys, 0 rev
         DataResult<ConfigSystemDto> dr = ConfigurationManager.getInstance().
@@ -248,7 +245,6 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         theFile = gcc1.createConfigFile(
                 ConfigFileState.normal(), "/etc/foo2");
         ConfigTestUtils.createConfigRevision(theFile);
-        ConfigurationFactory.commit(gcc1);
         DataResult<ConfigFileDto> dr = ConfigurationManager.getInstance().
             listCurrentFiles(user, gcc1, null);
         assertNotNull(dr);
@@ -282,8 +278,6 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         ConfigRevision configRevision1 = ConfigTestUtils.createConfigRevision(normalFile);
         configRevision1.setConfigFileType(ConfigFileType.sls());
 
-        ConfigurationFactory.commit(configChannel);
-
         // init.sls should not be listed
         DataResult<ConfigFileDto> dr = ConfigurationManager.getInstance().listCurrentFiles(user, configChannel, null);
         assertEquals(1, dr.getTotalSize());
@@ -307,7 +301,6 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         ConfigFile theFile = gcc1.createConfigFile(
                 ConfigFileState.normal(), "/etc/foo");
         ConfigTestUtils.createConfigRevision(theFile);
-        ConfigurationFactory.commit(gcc1);
 
         // Other global channel 1 - has rev-2 of aFile
         ConfigChannel gcc2 = ConfigTestUtils.createConfigChannel(user.getOrg(),
@@ -315,7 +308,6 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         ConfigFile aFile = gcc2.createConfigFile(
                 ConfigFileState.normal(), "/etc/foo");
         ConfigTestUtils.createConfigRevision(aFile);
-        ConfigurationFactory.commit(gcc2);
 
         // Other global channel 2 - has rev-3 of aFile
         ConfigChannel gcc3 = ConfigTestUtils.createConfigChannel(user.getOrg(),
@@ -323,7 +315,6 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         aFile = gcc3.createConfigFile(ConfigFileState.normal(),
             "/etc/foo");
         ConfigTestUtils.createConfigRevision(aFile);
-        ConfigurationFactory.commit(gcc3);
 
         // System-2 local channel - has rev-4 of aFile
         ConfigChannel local2 = ConfigTestUtils.createConfigChannel(user.getOrg(),
@@ -331,7 +322,6 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         aFile = local2.createConfigFile(ConfigFileState.normal(),
             "/etc/foo");
         ConfigTestUtils.createConfigRevision(aFile);
-        ConfigurationFactory.commit(local2);
 
         // System-4 local channel - has rev-5 of aFile
         ConfigChannel local4 = ConfigTestUtils.createConfigChannel(user.getOrg(),
@@ -339,7 +329,6 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         aFile = local4.createConfigFile(ConfigFileState.normal(),
                 "/etc/foo");
         ConfigTestUtils.createConfigRevision(aFile);
-        ConfigurationFactory.commit(local4);
 
         Long ver = 2L;
         // System 1 - no outranks, no overrides
@@ -685,9 +674,6 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         // Are we guaranteed to find local and sandbox?
         assertNotNull(srv1.getLocalOverride());
         assertNotNull(srv1.getSandboxOverride());
-
-        ConfigurationFactory.commit(srv1.getLocalOverride());
-        ConfigurationFactory.commit(srv1.getSandboxOverride());
 
         // Are local and sandbox guaranteed to NOT show up?
         List channels  = srv1.getConfigChannelList();
@@ -1096,22 +1082,17 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
                 ConfigFileState.normal(), "/etc/foo1");
         revisions.add(ConfigTestUtils.createConfigRevision(g1f1));
 
-        ConfigurationFactory.commit(gcc1);
-
         ConfigFile g1f2 = gcc1.createConfigFile(
                 ConfigFileState.normal(), "/etc/foo2");
         revisions.add(ConfigTestUtils.createConfigRevision(g1f2));
-        ConfigurationFactory.commit(gcc2);
 
         ConfigFile g2f2 = gcc2.createConfigFile(
                 ConfigFileState.normal(), "/etc/foo4");
         revisions.add(ConfigTestUtils.createConfigRevision(g2f2));
-        ConfigurationFactory.commit(gcc2);
 
         ConfigFile g2f3 = gcc2.createConfigFile(
                 ConfigFileState.normal(), "/etc/foo3");
         revisions.add(ConfigTestUtils.createConfigRevision(g2f3));
-        ConfigurationFactory.commit(gcc2);
 
         // System 1 - both g1f1 and g1f2 should deploy here
         Set<Server> systems  = new HashSet<>();
@@ -1174,22 +1155,18 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         ConfigFile g1f1 = gcc1.createConfigFile(
                 ConfigFileState.normal(), "/etc/foo1");
         ConfigTestUtils.createConfigRevision(g1f1);
-        ConfigurationFactory.commit(gcc1);
 
         ConfigFile g1f2 = gcc1.createConfigFile(
                 ConfigFileState.normal(), "/etc/foo2");
         ConfigTestUtils.createConfigRevision(g1f2);
-        ConfigurationFactory.commit(gcc2);
 
         ConfigFile g2f2 = gcc2.createConfigFile(
                 ConfigFileState.normal(), "/etc/foo2");
         ConfigTestUtils.createConfigRevision(g2f2);
-        ConfigurationFactory.commit(gcc2);
 
         ConfigFile g2f3 = gcc2.createConfigFile(
                 ConfigFileState.normal(), "/etc/foo3");
         ConfigTestUtils.createConfigRevision(g2f3);
-        ConfigurationFactory.commit(gcc2);
 
         // System 1 - both g1f1 and g1f2 should deploy here
         Set<Long> systems = new HashSet<>();
@@ -1235,7 +1212,6 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         ConfigFile g1f1 = gcc1.createConfigFile(
                 ConfigFileState.normal(), paths[0]);
         ConfigRevision rev1 = ConfigTestUtils.createConfigRevision(g1f1);
-        ConfigurationFactory.commit(gcc1);
 
         // create a new revision so that the revision number is bumped
 
@@ -1243,19 +1219,15 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
                                 ConfigTestUtils.createConfigContent(),
                                 ConfigTestUtils.createConfigInfo(),
                 rev1.getRevision() + 1);
-        ConfigurationFactory.commit(gcc1);
 
         //add a duuplicate file to gcc2
         ConfigFile g1f2 = gcc2.createConfigFile(
                 ConfigFileState.normal(), paths[0]);
         ConfigTestUtils.createConfigRevision(g1f2);
-        ConfigurationFactory.commit(gcc2);
-
 
         ConfigFile g1f3 = gcc2.createConfigFile(
                 ConfigFileState.normal(), paths[1]);
         ConfigRevision rev3 = ConfigTestUtils.createConfigRevision(g1f3);
-        ConfigurationFactory.commit(gcc2);
 
         ServerFactory.save(srv1);
         List<ConfigFileNameDto> localViewResults = cm.listManagedPathsFor(srv1,
@@ -1290,7 +1262,6 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         ConfigFile g1f4 = local.createConfigFile(
                 ConfigFileState.normal(), paths[1]);
         ConfigRevision rev4 = ConfigTestUtils.createConfigRevision(g1f4);
-        ConfigurationFactory.commit(local);
 
         ServerFactory.save(srv1);
 
@@ -1319,7 +1290,6 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         ConfigFile g1f5 = local.createConfigFile(
                 ConfigFileState.normal(), paths[2]);
         ConfigRevision rev5 = ConfigTestUtils.createConfigRevision(g1f5);
-        ConfigurationFactory.commit(local);
 
         ServerFactory.save(srv1);
 
@@ -1374,7 +1344,6 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
                             Integer.MAX_VALUE)
             );
             revisions.add(rev.getRevision());
-            ConfigurationFactory.commit(sandbox);
         }
         ServerFactory.save(srv1);
         List<ConfigFileNameDto> sandboxViewResults = cm.listManagedPathsFor(srv1, user, ConfigChannelType.sandbox());
@@ -1405,7 +1374,6 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         ConfigFile g1f1 = gcc1.createConfigFile(
                 ConfigFileState.normal(), "/etc/foo1");
         ConfigRevision cr = ConfigTestUtils.createConfigRevision(g1f1);
-        ConfigurationFactory.commit(gcc1);
 
         ConfigChannel gcc2 = ConfigTestUtils.createConfigChannel(user.getOrg(),
                                   ConfigChannelType.normal());

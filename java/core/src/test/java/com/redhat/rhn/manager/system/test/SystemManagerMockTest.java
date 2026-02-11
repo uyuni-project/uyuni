@@ -15,8 +15,10 @@
 package com.redhat.rhn.manager.system.test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.Channel;
@@ -64,41 +66,44 @@ public class SystemManagerMockTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testRemovingServerInvalidatesTokens() throws Exception {
-        Config.get().setString(
-            "server.secret_key",
-            DigestUtils.sha256Hex(TestUtils.randomString()));
+        Config.get().setString("server.secret_key", DigestUtils.sha256Hex(TestUtils.randomString()));
 
         User user = UserTestUtils.createUser(this);
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
 
-        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minionServer = MinionServerFactoryTest.createTestMinionServer(user);
 
         Channel base = ChannelFactoryTest.createBaseChannel(user);
         Channel child = ChannelFactoryTest.createTestChannel(user);
         child.setParentChannel(base);
-        testMinionServer.getChannels().add(base);
-        testMinionServer.getChannels().add(child);
+        minionServer.getChannels().add(base);
+        minionServer.getChannels().add(child);
 
-        AccessToken tokenBase = AccessTokenFactory.generate(
-            testMinionServer, Collections.singleton(base)).get();
-        AccessToken tokenChild = AccessTokenFactory.generate(
-            testMinionServer, Collections.singleton(child)).get();
+        AccessToken tokenBase = AccessTokenFactory.generate(minionServer, Collections.singleton(base)).get();
+        AccessToken tokenChild = AccessTokenFactory.generate(minionServer, Collections.singleton(child)).get();
 
-        MinionServer server = TestUtils.saveAndReload(testMinionServer);
+        TestUtils.flushSession();
+        HibernateFactory.getSession().refresh(minionServer);
 
         SaltService saltServiceMock = mock(SaltService.class);
 
         context().checking(new Expectations() {{
-            allowing(saltServiceMock).deleteKey(testMinionServer.getMinionId());
-            allowing(saltServiceMock).removeSaltSSHKnownHost(testMinionServer.getHostname());
+            allowing(saltServiceMock).deleteKey(minionServer.getMinionId());
+            allowing(saltServiceMock).removeSaltSSHKnownHost(minionServer.getHostname());
             will(returnValue(Optional.of(new MgrUtilRunner.RemoveKnowHostResult("removed", ""))));
         }});
 
-        SystemManager systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON,
-                saltServiceMock);
-        systemManager.deleteServer(server.getOrg().getActiveOrgAdmins().get(0), server.getId());
+        var systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltServiceMock);
+        systemManager.deleteServer(minionServer.getOrg().getActiveOrgAdmins().get(0), minionServer.getId());
 
+        TestUtils.flushAndClearSession();
+
+        tokenBase = AccessTokenFactory.lookupById(tokenBase.getId()).orElse(null);
+        tokenChild = AccessTokenFactory.lookupById(tokenChild.getId()).orElse(null);
+
+        assertNotNull(tokenBase);
         assertFalse(tokenBase.getValid());
+        assertNotNull(tokenChild);
         assertFalse(tokenChild.getValid());
     }
 }

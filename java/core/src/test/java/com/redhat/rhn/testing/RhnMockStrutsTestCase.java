@@ -43,8 +43,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import javax.servlet.http.Cookie;
-
+import jakarta.servlet.http.Cookie;
 import servletunit.HttpServletRequestSimulator;
 import servletunit.ServletContextSimulator;
 import servletunit.struts.MockStrutsTestCase;
@@ -53,8 +52,7 @@ import servletunit.struts.MockStrutsTestCase;
  * RhnMockStrutsTestCase - simple base class that adds a User to the test since all our
  * Struts Actions use a User.
  */
-public class RhnMockStrutsTestCase extends MockStrutsTestCase
-    implements HibernateTestCaseUtils, SaltTestCaseUtils {
+public class RhnMockStrutsTestCase extends MockStrutsTestCase implements SaltTestCaseUtils {
 
     protected Path tmpSaltRoot;
     protected User user;
@@ -108,7 +106,7 @@ public class RhnMockStrutsTestCase extends MockStrutsTestCase
         TestCaseHelper.tearDownHelper();
         if (committed) {
             OrgFactory.deleteOrg(user.getOrg().getId(), user);
-            commitAndCloseSession();
+            TestUtils.commitAndCloseSession();
         }
         committed = false;
         user = null;
@@ -128,15 +126,15 @@ public class RhnMockStrutsTestCase extends MockStrutsTestCase
      */
     protected void verifyFormValue(String name, Object expectedValue) {
         DynaActionForm form = (DynaActionForm) getActionForm();
-        Object formval = form.get(name);
-        if (expectedValue != null && formval != null) {
-            assertEquals(expectedValue, formval);
+        Object formVal = form.get(name);
+        if (expectedValue != null && formVal != null) {
+            assertEquals(expectedValue, formVal);
         }
     }
 
     /**
      * Util method to add an "ID" to be selected on a list page.
-     * Usefull for testing list selection code.
+     * Useful for testing list selection code.
      * @param id you want to add
      */
     protected void addSelectedItem(Long id) {
@@ -156,16 +154,15 @@ public class RhnMockStrutsTestCase extends MockStrutsTestCase
     }
 
     /**
-     * Verify that the attribute "pageList" is setup properly:
-     *
+     * Verify that the attribute "pageList" is set up properly:
      * 1) not null
      * 2) size greater than 0
      * 3) first item in list is instance of classIn
      * @param attribName name of list in Request attributes
      * @param classIn to check first item against.
      */
-    protected void verifyList(String attribName, Class classIn) {
-        List dr = (List) request.getAttribute(attribName);
+    protected void verifyList(String attribName, Class<?> classIn) {
+        List<?> dr = (List<?>) request.getAttribute(attribName);
         Assertions.assertNotNull(dr, "Your list: " + attribName + " is null");
         assertFalse(dr.isEmpty(), "Your list: " + attribName + " is empty");
         Assertions.assertEquals(classIn, dr.iterator().next().getClass(),
@@ -173,30 +170,28 @@ public class RhnMockStrutsTestCase extends MockStrutsTestCase
     }
 
     /**
-     * Verify that the attribute "pageList" is setup properly:
-     *
+     * Verify that the attribute "pageList" is set up properly:
      * 1) not null
      * 2) size greater than 0
      * 3) first item in list is instance of classIn
      * @param classIn to check first item against.
      */
-    protected void verifyPageList(Class classIn) {
+    protected void verifyPageList(Class<?> classIn) {
         verifyList(RequestContext.PAGE_LIST, classIn);
     }
 
 
     /**
-     * Verify that the attribute "pageList" is setup properly:
-     *
+     * Verify that the attribute "pageList" is set up properly:
      * 1) not null
      * 2) size greater than 0
      * 3) first item in list is instance of classIn
      * @param attribName name of list in Request attributes
      * @param classIn to check first item against.
      */
-    protected void verifyFormList(String attribName, Class classIn) {
+    protected void verifyFormList(String attribName, Class<?> classIn) {
         DynaActionForm form = (DynaActionForm) getActionForm();
-        List dr = (List) form.get(attribName);
+        List<?> dr = (List<?>) form.get(attribName);
         assertNotNull(dr);
         assertFalse(dr.isEmpty());
         assertEquals(classIn, dr.iterator().next().getClass());

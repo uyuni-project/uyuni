@@ -20,18 +20,22 @@ import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.domain.user.User;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Enumeration;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * An event representing an error generated from the web frontend
  *
  */
 public class TraceBackEvent extends BaseEvent implements EventMessage {
+
+    private static final Logger LOGGER = LogManager.getLogger(TraceBackEvent.class);
 
     private Throwable throwable;
     private static final String HASHES = "########";
@@ -51,46 +55,51 @@ public class TraceBackEvent extends BaseEvent implements EventMessage {
         User user = getUser();
 
         if (request != null) {
-            out.println(ls.getMessage("traceback message header"));
-            out.print(request.getMethod());
-            out.println(" " + request.getRequestURI());
-            out.println();
-            out.print(ls.getMessage("date", getUserLocale()));
-            out.print(":");
-            out.println(ls.getBasicDate());
-            out.print(ls.getMessage("headers", getUserLocale()));
-            out.println(":");
-            Enumeration<String> e = request.getHeaderNames();
-            while (e.hasMoreElements()) {
-                String headerName = e.nextElement();
-                out.print("  ");
-                out.print(headerName);
-                out.print(": ");
-                out.println(request.getHeader(headerName));
-            }
-            out.println();
-            out.print(ls.getMessage("request", getUserLocale()));
-            out.println(":");
-            out.println(request.toString());
-
-            if (request.getMethod() != null &&
-                    request.getMethod().equals("POST")) {
-                out.print(ls.getMessage("form variables", getUserLocale()));
+            try {
+                out.println(ls.getMessage("traceback message header"));
+                out.print(request.getMethod());
+                out.println(" " + request.getRequestURI());
+                out.println();
+                out.print(ls.getMessage("date", getUserLocale()));
+                out.print(":");
+                out.println(ls.getBasicDate());
+                out.print(ls.getMessage("headers", getUserLocale()));
                 out.println(":");
-                Enumeration<String> ne = request.getParameterNames();
-                while (ne.hasMoreElements()) {
-                    String paramName = ne.nextElement();
+                Enumeration<String> e = request.getHeaderNames();
+                while (e.hasMoreElements()) {
+                    String headerName = e.nextElement();
                     out.print("  ");
-                    out.print(paramName);
+                    out.print(headerName);
                     out.print(": ");
-                    if (paramName.equals("password")) {
-                        out.println(HASHES);
-                    }
-                    else {
-                        out.println(getParamDescription(request.getParameter(paramName)));
-                    }
+                    out.println(request.getHeader(headerName));
                 }
                 out.println();
+                out.print(ls.getMessage("request", getUserLocale()));
+                out.println(":");
+                out.println(request.toString());
+
+                if (request.getMethod() != null &&
+                        request.getMethod().equals("POST")) {
+                    out.print(ls.getMessage("form variables", getUserLocale()));
+                    out.println(":");
+                    Enumeration<String> ne = request.getParameterNames();
+                    while (ne.hasMoreElements()) {
+                        String paramName = ne.nextElement();
+                        out.print("  ");
+                        out.print(paramName);
+                        out.print(": ");
+                        if (paramName.equals("password")) {
+                            out.println(HASHES);
+                        }
+                        else {
+                            out.println(getParamDescription(request.getParameter(paramName)));
+                        }
+                    }
+                    out.println();
+                }
+            }
+            catch (RuntimeException ex) {
+                LOGGER.warn("Unable to print the details of the request");
             }
         }
         else {

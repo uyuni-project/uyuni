@@ -117,8 +117,8 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
         String label = "treewithnullorg: " + TestUtils.randomString();
         kwithnullorg.setLabel(label);
         kwithnullorg.setOrg(null);
-        TestUtils.saveAndFlush(kwithnullorg);
-        flushAndEvict(kwithnullorg);
+        kwithnullorg = TestUtils.saveAndFlush(kwithnullorg);
+        TestUtils.flushAndEvict(kwithnullorg);
         KickstartableTree lookedUp = KickstartFactory.lookupKickstartTreeByLabel(label, o);
         assertNotNull(lookedUp);
         assertNull(lookedUp.getOrgId());
@@ -148,7 +148,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
             createKickstartWithOptions(user.getOrg());
         ksdata.getKickstartDefaults().setKstree(k);
         KickstartFactory.saveKickstartData(ksdata);
-        flushAndEvict(ksdata);
+        TestUtils.flushAndEvict(ksdata);
 
         List<KickstartData> profiles = KickstartFactory.lookupKickstartDatasByTree(k);
         assertNotNull(profiles);
@@ -163,7 +163,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
      */
     private KickstartableTree lookupById(Long id) {
         Session session = HibernateFactory.getSession();
-        return (KickstartableTree) session.createQuery("FROM KickstartableTree AS k WHERE k.id = :id")
+        return session.createQuery("FROM KickstartableTree AS k WHERE k.id = :id", KickstartableTree.class)
                           .setParameter("id", id)
                           .uniqueResult();
     }
@@ -183,7 +183,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
     /**
      * Creates KickstartableTree for testing purposes.
      * @param treeChannel Channel this Tree uses.
-     * @return Returns a committed KickstartableTree
+     * @return the managed {@link KickstartableTree} instance
      */
     public static KickstartableTree createTestKickstartableTree(Channel treeChannel) {
         Date created = new Date();
@@ -231,17 +231,14 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
         k.setCobblerId(d.getUid());
         k.setCobblerXenId(xend.getUid());
 
-        TestUtils.saveAndFlush(k);
-
-
-        return k;
+        return TestUtils.saveAndFlush(k);
     }
 
     /**
      * Create a KickstartableTree for testing purposes using the given install type.
      * @param treeChannel channel to use for this tree.
      * @param installTypeLabel install type to use
-     * @return the kickstartable tree
+     * @return the managed {@link KickstartableTree} instance
      * @throws Exception something bad happened
      */
     public static KickstartableTree createTestKickstartableTree(
@@ -251,8 +248,7 @@ public class KickstartableTreeTest extends BaseTestCaseWithUser {
         KickstartInstallType installtype = KickstartFactory.lookupKickstartInstallTypeByLabel(installTypeLabel);
 
         tree.setInstallType(installtype);
-        TestUtils.saveAndFlush(tree);
-        return tree;
+        return TestUtils.saveAndFlush(tree);
     }
 
     private KickstartableTree createSUSEKsTreeByArch(Long archId, File ksRoot)

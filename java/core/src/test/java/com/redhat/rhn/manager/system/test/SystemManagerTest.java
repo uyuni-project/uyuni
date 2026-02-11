@@ -151,7 +151,7 @@ import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.io.FileUtils;
 import org.cobbler.test.MockConnection;
-import org.hibernate.Session;
+import org.hibernate.type.StandardBasicTypes;
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.AfterEach;
@@ -267,21 +267,21 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         Long id = server.getId();
 
         assertTrue(SystemManager.serverHasFeature(id, "ftr_snapshotting"));
-        assertEquals(Integer.valueOf(0), numberOfSnapshots(id));
+        assertEquals(0L, numberOfSnapshots(id));
         SystemManager.snapshotServer(server, "Testing snapshots");
-        assertEquals(Integer.valueOf(1), numberOfSnapshots(id));
+        assertEquals(1L, numberOfSnapshots(id));
     }
 
     /*
      * I know this is ugly, but since we haven't got the sever snapshotting feature fully
      * worked out in java yet, just do a sql query to make sure the stored proc worked.
      */
-    private Integer numberOfSnapshots(Long sid) {
-        Session session = HibernateFactory.getSession();
-        return session.createQuery("SELECT COUNT(s) FROM ServerSnapshot s WHERE s.server.id = :sid", Long.class)
+    private long numberOfSnapshots(Long sid) {
+        return HibernateFactory.getSession()
+                .createNativeQuery("SELECT count(*) AS cnt FROM rhnSnapshot WHERE server_id = :sid", Long.class)
+                .addScalar("cnt", StandardBasicTypes.LONG)
                 .setParameter("sid", sid)
-                .uniqueResult()
-                .intValue();
+                .uniqueResult();
     }
 
     @Test
@@ -637,8 +637,8 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         Channel channel = ChannelFactoryTest.createTestChannel(user);
         srvr.addChannel(channel);
         srvr1.addChannel(channel);
-        TestUtils.saveAndFlush(srvr);
-        TestUtils.saveAndFlush(srvr1);
+        srvr = TestUtils.saveAndFlush(srvr);
+        srvr1 = TestUtils.saveAndFlush(srvr1);
         UserManager.storeUser(user);
 
 
@@ -744,7 +744,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         assertTrue(server.isProxy());
         server = SystemManager.deactivateProxy(server);
         ServerFactory.save(server);
-        server = reload(server);
+        server = TestUtils.reload(server);
         assertFalse(server.isProxy());
     }
 
@@ -847,7 +847,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         key.setDescription("test desc");
         key.setOrg(admin.getOrg());
         key.setLastModifier(admin);
-        HibernateFactory.getSession().persist(key);
+        TestUtils.persist(key);
 
 
         List<CustomDataKeyOverview> list = SystemManager.listDataKeys(admin);
@@ -876,8 +876,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         // that comes with the errata.
         PackageEvr upgradedPackageEvr =
                 PackageEvrFactory.lookupOrCreatePackageEvr("1", "1.0.0", "2", server.getPackageType());
-        upgradedPackageEvr =
-                TestUtils.saveAndReload(upgradedPackageEvr);
+        upgradedPackageEvr = TestUtils.saveAndReload(upgradedPackageEvr);
 
         ServerTestUtils.populateServerErrataPackages(org, server,
                 upgradedPackageEvr, ErrataFactory.ERRATA_TYPE_SECURITY);
@@ -1062,7 +1061,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
                 pack.getPackageEvr().getId()));
 
         ChannelTestUtility.testAddPackage(server.getBaseChannel(), pack);
-        TestUtils.saveAndFlush(pack);
+        pack = TestUtils.saveAndFlush(pack);
         assertTrue(SystemManager.hasPackageAvailable(server,
                 pack.getPackageName().getId(), pack.getPackageArch().getId(),
                 pack.getPackageEvr().getId()));
@@ -1306,7 +1305,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         ch21.setParentChannel(base2);
         ch22.setParentChannel(base2);
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         systemManager.updateServerChannels(user, server, of(base2), Arrays.asList(ch21, ch22));
 
@@ -1345,7 +1344,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         ch21.setParentChannel(base2);
         ch22.setParentChannel(base2);
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         systemManager.updateServerChannels(user, server, of(base2), Collections.emptyList());
 
@@ -1374,7 +1373,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         ch21.setParentChannel(base2);
         ch22.setParentChannel(base2);
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         Assertions.assertThrows(ChannelSubscriptionException.class,
                 () -> systemManager.updateServerChannels(user, server, empty(), Arrays.asList(ch21, ch22)));
@@ -1399,7 +1398,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         // flush & refresh iface because generated="insert"
         // on interfaceId does not seem to work
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         HibernateFactory.getSession().refresh(minionFromDb);
 
         assertEquals("test system", minionFromDb.getName());
@@ -1432,7 +1431,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         // flush & refresh iface because generated="insert"
         // on interfaceId does not seem to work
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         HibernateFactory.getSession().refresh(minionFromDb);
 
         assertEquals("test system", minionFromDb.getName());
@@ -1462,7 +1461,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         // flush & refresh iface because generated="insert"
         // on interfaceId does not seem to work
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         HibernateFactory.getSession().refresh(minionFromDb);
 
         assertEquals("test system", minionFromDb.getName());
@@ -1511,8 +1510,8 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         String hwAddr = "be:b0:bc:a3:a7:ad";
         MinionServer emptyProfileMinion = systemManager.createSystemProfile(user, "test system",
                 singletonMap("hwAddress", hwAddr));
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().evict(emptyProfileMinion);
+        TestUtils.flushSession();
+        TestUtils.evict(emptyProfileMinion);
 
         ServerTestUtils.createTestSystem(user);
         MinionServerFactoryTest.createTestMinionServer(user);
@@ -1540,9 +1539,9 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         String hwAddr = "be:b0:bc:a3:a7:ad";
         MinionServer emptyProfileMinion = systemManager.createSystemProfile(user, "test system",
                 singletonMap("hwAddress", hwAddr));
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().createNativeQuery("DELETE FROM suseMinionInfo").executeUpdate();
-        HibernateFactory.getSession().evict(emptyProfileMinion);
+        TestUtils.flushSession();
+        deleteAllMinionServers();
+        TestUtils.evict(emptyProfileMinion);
 
         DataResult<EmptySystemProfileOverview> emptyProfiles = SystemManager.listEmptySystemProfiles(user, null);
         assertTrue(emptyProfiles.isEmpty());
@@ -2142,7 +2141,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         systemEntitlementManager.setBaseEntitlement(proxy, EntitlementManager.FOREIGN);
         ServerFactory.save(proxy);
-        TestUtils.saveAndFlush(proxy);
+        proxy = TestUtils.saveAndFlush(proxy);
     }
 
     private Map<String, String> readTarData(byte[] data) throws IOException {
@@ -2195,9 +2194,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         ServerFactory.getSession().flush();
         ServerFactory.getSession().refresh(iface);
 
-        ServerNetAddress4 ipv4 = new ServerNetAddress4();
-        ipv4.setInterfaceId(iface.getInterfaceId());
-        ipv4.setAddress(ip4address);
+        ServerNetAddress4 ipv4 = new ServerNetAddress4(iface.getInterfaceId(), ip4address);
         ServerNetworkFactory.saveServerNetAddress4(ipv4);
     }
 
@@ -2222,5 +2219,9 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         SystemsOverviewUpdateWorker.doUpdate(sid);
 
         assertEquals(1, SystemsCollector.getNumberOfOutdatedSystems());
+    }
+
+    private void deleteAllMinionServers() {
+        HibernateFactory.getSession().createNativeMutationQuery("DELETE FROM suseMinionInfo").executeUpdate();
     }
 }

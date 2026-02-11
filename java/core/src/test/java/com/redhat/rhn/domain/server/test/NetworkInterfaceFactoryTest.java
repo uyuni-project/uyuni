@@ -17,12 +17,12 @@ package com.redhat.rhn.domain.server.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.NetworkInterfaceFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.ServerTestUtils;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
 
@@ -44,7 +44,7 @@ public class NetworkInterfaceFactoryTest extends RhnBaseTestCase {
         netInterface.setName("eth0");
         netInterface.setHwaddr(hwAddress);
         netInterface.setServer(testSystem);
-        HibernateFactory.getSession().persist(netInterface);
+        TestUtils.persist(netInterface);
 
         Stream<NetworkInterface> interfaces = NetworkInterfaceFactory
                 .lookupNetworkInterfacesByHwAddress(hwAddressUppercase);

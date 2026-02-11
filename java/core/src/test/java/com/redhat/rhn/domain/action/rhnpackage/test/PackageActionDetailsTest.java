@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.rhnpackage.PackageAction;
 import com.redhat.rhn.domain.action.rhnpackage.PackageActionDetails;
@@ -28,6 +27,7 @@ import com.redhat.rhn.domain.action.rhnpackage.PackageActionResult;
 import com.redhat.rhn.domain.action.rhnpackage.PackageRefreshListAction;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageName;
 import com.redhat.rhn.domain.rhnpackage.test.PackageEvrFactoryTest;
 import com.redhat.rhn.domain.rhnpackage.test.PackageNameTest;
@@ -53,13 +53,6 @@ public class PackageActionDetailsTest extends RhnBaseTestCase {
         Date now = new Date();
         String foo = "foo";
 
-
-        Long testid = 100L;
-
-        PackageArch arch = HibernateFactory.getSession().createNativeQuery("""
-                SELECT p.* from rhnPackageArch as p WHERE p.id = :id
-                """, PackageArch.class).setParameter("id", testid).getSingleResult();
-
         PackageEvr evr = PackageEvrFactoryTest.createTestPackageEvr();
         PackageName pn = PackageNameTest.createTestPackageName();
         PackageAction action = new PackageRefreshListAction();
@@ -76,6 +69,7 @@ public class PackageActionDetailsTest extends RhnBaseTestCase {
         pad.setParameter(foo);
         assertEquals(foo, pad.getParameter());
 
+        PackageArch arch = getPackageArchNoarch();
         pad.setArch(arch);
         assertEquals(arch, pad.getArch());
 
@@ -165,11 +159,7 @@ public class PackageActionDetailsTest extends RhnBaseTestCase {
         PackageActionDetails pad = new PackageActionDetails();
 
         pad.setParameter("upgrade");
-        Long testid = 100L;
-
-        pad.setArch((HibernateFactory.getSession().createNativeQuery("""
-                SELECT p.* from rhnPackageArch as p WHERE p.id = :id
-                """, PackageArch.class).setParameter("id", testid).getSingleResult()));
+        pad.setArch(getPackageArchNoarch());
         pad.setPackageName(PackageNameTest.createTestPackageName());
 
         ((PackageAction) parent).addDetail(pad);
@@ -192,10 +182,7 @@ public class PackageActionDetailsTest extends RhnBaseTestCase {
         PackageActionDetails pad = new PackageActionDetails();
 
         pad.setParameter("upgrade");
-        Long testid = 100L;
-        pad.setArch(HibernateFactory.getSession().createNativeQuery("""
-                SELECT p.* from rhnPackageArch as p WHERE p.id = :id
-                """, PackageArch.class).setParameter("id", testid).getSingleResult());
+        pad.setArch(getPackageArchNoarch());
         pad.setPackageName(PackageNameTest.createTestPackageName());
         pad.setEvr(PackageEvrFactoryTest.createTestPackageEvr());
 
@@ -211,5 +198,9 @@ public class PackageActionDetailsTest extends RhnBaseTestCase {
 
         return pad;
 
+    }
+
+    private static PackageArch getPackageArchNoarch() {
+        return PackageFactory.lookupPackageArchByLabel("noarch");
     }
 }

@@ -72,6 +72,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
         //disable the normal user
         factory.disable(normalUser, orgAdmin);
 
+
         /*
          * We have to sleep here for a second since enabling/disabling a user within
          * the same second causes db problems.
@@ -97,7 +98,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
 
         //Evict the user and look back up. This make sure our changes got saved
         //to the db.
-        flushAndEvict(normalUser);
+        TestUtils.flushAndClearSession();
 
         User usr = UserFactory.lookupById(id);
         assertFalse(usr.isDisabled());
@@ -220,7 +221,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
         usr.setFirstNames("UserFactoryTest.testCommitUser.change " +
                     TestUtils.randomString());
         UserFactory.save(usr);
-        flushAndEvict(usr);
+        TestUtils.flushAndEvict(usr);
 
         // Now lets manually test to see if the user got updated
         HibernateFactory.getSession().doWork(connection -> {
@@ -318,7 +319,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
 
         UserServerPreference usp = new UserServerPreference(user, s, UserServerPreferenceId.RECEIVE_NOTIFICATIONS);
         usp.setValue("0");
-        TestUtils.saveAndFlush(usp);
+        usp = TestUtils.saveAndFlush(usp);
 
         usp = factory.lookupServerPreferenceByUserServerAndName(user, s,
                                       UserServerPreferenceId.RECEIVE_NOTIFICATIONS);
@@ -369,9 +370,8 @@ public class UserFactoryTest extends RhnBaseTestCase {
     public void testFindAllOrgAdmins() {
         User user = new UserTestUtils.UserBuilder().orgName("findAdminsOrg").orgAdmin(true).build();
 
-        Org o = user.getOrg();
-
-        List<UserImpl> orgAdmins = UserFactory.getInstance().findAllOrgAdmins(o);
+        TestUtils.flushSession();
+        List<UserImpl> orgAdmins = UserFactory.getInstance().findAllOrgAdmins(user.getOrg());
         assertEquals(1, orgAdmins.size());
         assertTrue(orgAdmins.contains(user));
     }

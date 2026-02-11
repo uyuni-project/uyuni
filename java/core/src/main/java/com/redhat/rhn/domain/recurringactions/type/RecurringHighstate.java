@@ -15,12 +15,13 @@
 
 package com.redhat.rhn.domain.recurringactions.type;
 
-import org.hibernate.annotations.Type;
+import org.hibernate.type.YesNoConverter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 /**
  * Recurring Action type for highstate implementation
@@ -60,7 +61,7 @@ public class RecurringHighstate extends RecurringActionType {
      * @return testMode - if action is testMode
      */
     @Column(name = "test_mode")
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     public boolean isTestMode() {
         return this.testMode;
     }

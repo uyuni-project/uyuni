@@ -29,7 +29,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ClonedChannel;
@@ -52,6 +51,7 @@ import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
+import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -98,7 +98,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         ContentProjectFactory.save(envint);
         ContentProjectFactory.insertEnvironment(envint, of(envdev));
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         ContentProject fromDb = ContentProjectFactory.lookupProjectByLabelAndOrg("project1", user.getOrg()).get();
         assertEquals("project1", fromDb.getLabel());
@@ -257,7 +257,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
 
         Org org2 = OrgFactory.createOrg();
         org2.setName("test org for content project");
-        HibernateFactory.getSession().persist(org2);
+        TestUtils.persist(org2);
         ContentProject cp2 = new ContentProject("cplabel2", "cpname2", "cpdesc2", org2);
         ContentProjectFactory.save(cp2);
 
@@ -319,8 +319,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         ContentProjectFactory.save(envint);
         ContentProjectFactory.insertEnvironment(envint, of(envdev));
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         ContentProject fromDb = ContentProjectFactory.lookupProjectByLabelAndOrg("project1", user.getOrg()).get();
         List<ContentEnvironment> envs = ContentProjectFactory.listProjectEnvironments(fromDb);
@@ -397,7 +396,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         fstEntry.setMessage("First Content Project build");
         fstEntry.setUser(user);
         ContentProjectFactory.addHistoryEntryToProject(cp, fstEntry);
-        HibernateFactory.getSession().flush(); // so that the CreationTimestamp gets updated
+        TestUtils.flushSession(); // so that the CreationTimestamp gets updated
 
         ContentProjectHistoryEntry sndEntry = new ContentProjectHistoryEntry();
         sndEntry.setMessage("Second Content Project build");
@@ -417,8 +416,8 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         assertFalse(sndEntryFromDb.getCreated().before(fstEntryFromDb.getCreated()));
 
         UserFactory.deleteUser(user.getId());
-        fstEntryFromDb = (ContentProjectHistoryEntry) HibernateFactory.reload(fstEntryFromDb);
-        sndEntryFromDb = (ContentProjectHistoryEntry) HibernateFactory.reload(sndEntryFromDb);
+        fstEntryFromDb = TestUtils.reload(fstEntryFromDb);
+        sndEntryFromDb = TestUtils.reload(sndEntryFromDb);
         assertNull(fstEntryFromDb.getUser());
         assertNull(sndEntryFromDb.getUser());
     }
@@ -659,7 +658,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         assertEquals(1, numOfUpgradedTgts);
 
         tgtsByStatus.forEach((oldStatus, tgt) -> {
-            tgt = (EnvironmentTarget) HibernateFactory.reload(tgt);
+            tgt = (EnvironmentTarget) TestUtils.reload(tgt);
             if (oldStatus.equals(EnvironmentTarget.Status.BUILDING)) {
                 // we expect the building targets to be set to FAILED
                 assertEquals(EnvironmentTarget.Status.FAILED, tgt.getStatus());
@@ -713,5 +712,13 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         assertEquals(devChannel, testTgt.getChannel().asCloned().map(ClonedChannel::getOriginal).get());
         assertTrue(ContentProjectFactory.lookupClonesInProject(
                 testTgt.getChannel(), testTgt.getContentEnvironment().getContentProject()).isEmpty());
+    }
+
+    @Test
+    public void generatedCoverageTestListSoftwareEnvironmentTarget() {
+        // this test has been generated programmatically to test ContentProjectFactory.listSoftwareEnvironmentTarget
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        ContentProjectFactory.listSoftwareEnvironmentTarget();
     }
 }

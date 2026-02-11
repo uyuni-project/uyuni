@@ -24,7 +24,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.config.ConfigChannel;
-import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
@@ -136,8 +135,6 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
 
         channel1.setLabel("cfg-channel-1-upd");
         channel2.setLabel("cfg-channel-2-upd");
-        ConfigurationFactory.commit(channel1);
-        ConfigurationFactory.commit(channel2);
 
         // Execute
         SaltStateGeneratorService.INSTANCE.regenerateConfigStates(channel2);

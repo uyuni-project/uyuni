@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
@@ -82,7 +81,7 @@ public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
         ChannelTestUtils.setupBaseChannelForVirtualization(user,
                 server.getBaseChannel());
         UserTestUtils.addVirtualization(user.getOrg());
-        TestUtils.saveAndFlush(user.getOrg());
+        user.setOrg(TestUtils.saveAndFlush(user.getOrg()));
 
         //Test Virtualization Host
         assertTrue(systemEntitlementManager.canEntitleServer(server, EntitlementManager.VIRTUALIZATION));
@@ -93,7 +92,7 @@ public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
 
         // Removal
         systemEntitlementManager.removeServerEntitlement(server, EntitlementManager.VIRTUALIZATION);
-        server = reload(server);
+        server = TestUtils.reload(server);
         assertFalse(server.hasEntitlement(EntitlementManager.VIRTUALIZATION));
 
         //Test Container Build Host
@@ -106,7 +105,7 @@ public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
 
         // Removal
         systemEntitlementManager.removeServerEntitlement(minion, EntitlementManager.CONTAINER_BUILD_HOST);
-        minion = reload(minion);
+        minion = TestUtils.reload(minion);
         assertFalse(minion.hasEntitlement(EntitlementManager.CONTAINER_BUILD_HOST));
 
         //Test OS Image Build Host
@@ -126,7 +125,7 @@ public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
 
         // Removal
         systemEntitlementManager.removeServerEntitlement(minion, EntitlementManager.OSIMAGE_BUILD_HOST);
-        minion = reload(minion);
+        minion = TestUtils.reload(minion);
         assertFalse(minion.hasEntitlement(EntitlementManager.OSIMAGE_BUILD_HOST));
     }
 
@@ -156,14 +155,14 @@ public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
 
         // Entitlements
         UserTestUtils.addVirtualization(user.getOrg());
-        TestUtils.saveAndFlush(user.getOrg());
+        user.setOrg(TestUtils.saveAndFlush(user.getOrg()));
 
         assertTrue(systemEntitlementManager.canEntitleServer(server, EntitlementManager.VIRTUALIZATION));
 
         ValidatorResult retval =
                 systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.VIRTUALIZATION);
 
-        server = reload(server);
+        server = TestUtils.reload(server);
 
         String key = null;
         if (!retval.getErrors().isEmpty()) {
@@ -182,7 +181,7 @@ public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
         // Test removal
         systemEntitlementManager.removeServerEntitlement(server, EntitlementManager.VIRTUALIZATION);
 
-        server = reload(server);
+        server = TestUtils.reload(server);
         assertFalse(server.hasEntitlement(EntitlementManager.VIRTUALIZATION));
 
     }
@@ -197,7 +196,7 @@ public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerTestUtils.createTestSystem(user, ServerConstants.getServerGroupTypeEnterpriseEntitled());
         server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
-        server = HibernateFactory.reload(server);
+        server = TestUtils.reload(server);
 
         assertFalse(systemEntitlementManager.canEntitleServer(server, EntitlementManager.ANSIBLE_CONTROL_NODE));
         systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.ANSIBLE_CONTROL_NODE);
@@ -215,7 +214,7 @@ public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = MinionServerFactoryTest.createTestMinionServer(user);
         server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
-        server = HibernateFactory.reload(server);
+        server = TestUtils.reload(server);
 
         assertTrue(systemEntitlementManager.canEntitleServer(server, EntitlementManager.ANSIBLE_CONTROL_NODE));
         systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.ANSIBLE_CONTROL_NODE);
@@ -230,7 +229,7 @@ public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
         User user = UserTestUtils.createUser(this);
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         Server server = ServerFactoryTest.createTestProxyServer(user, true);
-        server = HibernateFactory.reload(server);
+        server = TestUtils.reload(server);
 
         assertTrue(server.hasProxyEntitlement());
         assertNotNull(server.getProxyInfo());

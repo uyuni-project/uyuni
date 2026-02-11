@@ -22,7 +22,6 @@ import com.redhat.rhn.domain.kickstart.KickstartCommandName;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
-import org.hibernate.Session;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -35,17 +34,7 @@ public class KickstartCommandNameTest extends BaseTestCaseWithUser {
     @Test
     public void testCommandName() {
 
-        Session session = HibernateFactory.getSession();
-        List<KickstartCommandName> l1 = session.createQuery(
-                """
-                    FROM KickstartCommandName AS t
-                    WHERE t.name NOT IN
-                    ('partitions', 'raids', 'logvols', 'volgroups', 'include', 'repo', 'custom', 'custom_partition')
-                    ORDER BY t.order
-                    """, KickstartCommandName.class)
-                .setCacheable(true)
-                .list();
-
+        List<KickstartCommandName> l1 = getCommandNames();
         assertFalse(l1.isEmpty());
 
         KickstartCommandName c = l1.get(0);
@@ -55,4 +44,16 @@ public class KickstartCommandNameTest extends BaseTestCaseWithUser {
         assertEquals(l1.size(), l2.size() + 2);
     }
 
+    private List<KickstartCommandName> getCommandNames() {
+        return HibernateFactory.getSession()
+                .createQuery(
+                    """
+                       FROM KickstartCommandName AS t
+                       WHERE t.name NOT IN
+                       ('partitions', 'raids', 'logvols', 'volgroups', 'include', 'repo', 'custom', 'custom_partition')
+                       ORDER BY t.order
+                       """, KickstartCommandName.class)
+                .setCacheable(true)
+                .list();
+    }
 }

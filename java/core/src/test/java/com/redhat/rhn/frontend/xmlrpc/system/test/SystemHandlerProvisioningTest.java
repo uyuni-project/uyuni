@@ -75,7 +75,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 @ExtendWith(JUnit5Mockery.class)
 public class SystemHandlerProvisioningTest extends BaseHandlerTestCase {
@@ -134,8 +134,8 @@ public class SystemHandlerProvisioningTest extends BaseHandlerTestCase {
         public void testProvisionSystem() throws Exception {
                 Server server = ServerTestUtils.createTestSystem(admin);
                 systemEntitlementManager.setBaseEntitlement(server, EntitlementManager.SALT);
-                TestUtils.saveAndFlush(server);
-                server = reload(server);
+                server = TestUtils.saveAndFlush(server);
+                server = TestUtils.reload(server);
 
                 // salt-minion package has to be added to pass Kickstart validator
                 Package testPackage = PackageTest.createTestPackage(admin.getOrg(), "salt-minion");
@@ -186,8 +186,8 @@ public class SystemHandlerProvisioningTest extends BaseHandlerTestCase {
         public void testProvisionSystemFromProxy() throws Exception {
                 Server server = ServerTestUtils.createTestSystem(admin);
                 systemEntitlementManager.setBaseEntitlement(server, EntitlementManager.SALT);
-                TestUtils.saveAndFlush(server);
-                server = reload(server);
+                server = TestUtils.saveAndFlush(server);
+                server = TestUtils.reload(server);
 
                 // salt-minion package has to be added to pass Kickstart validator
                 Package testPackage = PackageTest.createTestPackage(admin.getOrg(), "salt-minion");
@@ -197,8 +197,8 @@ public class SystemHandlerProvisioningTest extends BaseHandlerTestCase {
                 systemEntitlementManager.setBaseEntitlement(server, EntitlementManager.SALT);
                 proxy.setHostname("proxy.example.com");
                 SystemManager.activateProxy(proxy, "4.3");
-                TestUtils.saveAndFlush(proxy);
-                proxy = reload(proxy);
+                proxy = TestUtils.saveAndFlush(proxy);
+                proxy = TestUtils.reload(proxy);
 
                 KickstartDataTest.setupTestConfiguration(admin);
                 KickstartData k = KickstartDataTest.createKickstartWithProfile(admin);
@@ -235,8 +235,8 @@ public class SystemHandlerProvisioningTest extends BaseHandlerTestCase {
         public void testProvisionSystemFromProxyAutoDetected() throws Exception {
                 Server server = ServerTestUtils.createTestSystem(admin);
                 systemEntitlementManager.setBaseEntitlement(server, EntitlementManager.SALT);
-                TestUtils.saveAndFlush(server);
-                server = reload(server);
+                server = TestUtils.saveAndFlush(server);
+                server = TestUtils.reload(server);
 
                 // salt-minion package has to be added to pass Kickstart validator
                 Package testPackage = PackageTest.createTestPackage(admin.getOrg(), "salt-minion");
@@ -246,8 +246,8 @@ public class SystemHandlerProvisioningTest extends BaseHandlerTestCase {
                 systemEntitlementManager.setBaseEntitlement(server, EntitlementManager.SALT);
                 proxy.setHostname("proxy.example.com");
                 SystemManager.activateProxy(proxy, "4.3");
-                TestUtils.saveAndFlush(proxy);
-                proxy = reload(proxy);
+                proxy = TestUtils.saveAndFlush(proxy);
+                proxy = TestUtils.reload(proxy);
 
                 KickstartDataTest.setupTestConfiguration(admin);
                 KickstartData k = KickstartDataTest.createKickstartWithProfile(admin);

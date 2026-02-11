@@ -22,10 +22,10 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.TreeMap;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 /**
  * @author Hibernate CodeGenerator
@@ -41,7 +41,7 @@ public class ConfigFileType implements Serializable {
 
     /** identifier field */
     @Id
-    private long           id;
+    private Long           id;
 
     /** persistent field */
     @Column(nullable = false)
@@ -157,7 +157,7 @@ public class ConfigFileType implements Serializable {
      * Get DB id
      * @return db id
      */
-    public long getId() {
+    public Long getId() {
         return this.id;
     }
 
@@ -165,7 +165,7 @@ public class ConfigFileType implements Serializable {
      * Set the id column
      * @param inId new DB id
      */
-    public void setId(long inId) {
+    public void setId(Long inId) {
         this.id = inId;
     }
 

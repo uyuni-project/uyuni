@@ -87,14 +87,6 @@ public class ConfigurationFactory extends HibernateFactory {
     }
 
     /**
-     * Create a new ConfigChannel object.
-     * @return new ConfigChannel object
-     */
-    public static ConfigChannel newConfigChannel() {
-        return new ConfigChannel();
-    }
-
-    /**
      * Create a new ConfigContent object.
      * @return new ConfigContent object
      */
@@ -113,42 +105,11 @@ public class ConfigurationFactory extends HibernateFactory {
      * @param description The description of this configuration channel.
      * @return The newly saved configuration channel.
      */
-    public static ConfigChannel saveNewConfigChannel(Org org, ConfigChannelType type,
-            String name, String label, String description) {
-        ConfigChannel out = new ConfigChannel();
-        out.setOrg(org);
-        out.setName(name);
-        out.setLabel(label);
-        out.setDescription(description);
-        out.setConfigChannelType(type);
-        saveNewConfigChannel(out);
-        return out;
-    }
-
-    /**
-     * Save a new configuration channel.
-     * Note, this method uses a stored procedure, so it must be used for all newly
-     * created configuration channels.
-     * @param channel The channel object to persist.
-     */
-    public static void saveNewConfigChannel(ConfigChannel channel) {
-        CallableMode m = ModeFactory.getCallableMode(CONFIG_QUERIES,
-            "create_new_config_channel");
-        Map<String, Object> inParams = new HashMap<>();
-        Map<String, Integer> outParams = new HashMap<>();
-
-        inParams.put("org_id_in", channel.getOrgId());
-        inParams.put("type_in", channel.getConfigChannelType().getLabel());
-        inParams.put("name_in", channel.getName());
-        inParams.put("label_in", channel.getLabel());
-        inParams.put("description_in", channel.getDescription());
-        //Outparam
-        outParams.put("channelId", Types.NUMERIC);
-
-        Map<String, Object> result = m.execute(inParams, outParams);
-
-        Long channelId = (Long) result.get("channelId");
-        channel.setId(channelId);
+    public static ConfigChannel createNewConfigChannel(Org org, ConfigChannelType type,
+                                                       String name, String label, String description) {
+        var configChannel = new ConfigChannel(org, type, name, label, description);
+        getSession().persist(configChannel);
+        return configChannel;
     }
 
     /**
@@ -174,7 +135,7 @@ public class ConfigurationFactory extends HibernateFactory {
 
         //Have to commit the configFileName before we commit the
         // ConfigFile so the stored proc will have an ID to work with
-        singleton.saveObject(file.getConfigFileName());
+        ConfigFileName configFileName = singleton.saveObject(file.getConfigFileName());
 
         CallableMode m = ModeFactory.getCallableMode(CONFIG_QUERIES,
             "create_new_config_file");
@@ -184,7 +145,7 @@ public class ConfigurationFactory extends HibernateFactory {
         //this will generate a foreign-key constraint violation if the config
         //channel is not already persisted.
         inParams.put("config_channel_id_in", file.getConfigChannel().getId());
-        inParams.put("name_in", file.getConfigFileName().getPath());
+        inParams.put("name_in", configFileName.getPath());
         // Outparam
         outParams.put("configFileId", Types.NUMERIC);
 
@@ -217,10 +178,11 @@ public class ConfigurationFactory extends HibernateFactory {
                             "create_new_config_revision");
 
 
+        ConfigContent configContent = revision.getConfigContent();
         if (revision.isFile() || revision.isSls()) {
             //We need to save the content first so that we have an id for
             // the stored procedure.
-            singleton.saveObject(revision.getConfigContent());
+            configContent = singleton.saveObject(revision.getConfigContent());
         }
         //We do not have to save the ConfigInfo, because the info should always already be
         // in the database.  If this is not the case, please read the documentation for
@@ -232,7 +194,7 @@ public class ConfigurationFactory extends HibernateFactory {
         inParams.put("revision_in", revision.getRevision());
         inParams.put("config_file_id_in", revision.getConfigFile().getId());
         if (revision.isFile() || revision.isSls()) {
-            inParams.put("config_content_id_in", revision.getConfigContent().getId());
+            inParams.put("config_content_id_in", configContent.getId());
         }
         else {
             inParams.put("config_content_id_in", null);
@@ -248,31 +210,15 @@ public class ConfigurationFactory extends HibernateFactory {
         return (Long) result.get("configRevisionId");
     }
 
-    private static void save(ConfigChannel channel) {
-        singleton.saveObject(channel);
-    }
-
-    private static void save(ConfigFile file) {
-        singleton.saveObject(file);
-    }
-
-    private static void save(ConfigRevision revision) {
-        singleton.saveObject(revision);
-    }
-
     /**
      * Save or update a config channel.  Since config channels
      * use a stored procedure for inserting, we have to decide whether to
      * insert or update here.  If the channel's id is null, we insert.
      * @param channel The channel to save or update
+     * @return the updated instance
      */
-    public static void commit(ConfigChannel channel) {
-        if (channel.getId() == null) {
-            saveNewConfigChannel(channel);
-        }
-        else {
-            save(channel);
-        }
+    public static ConfigChannel commit(ConfigChannel channel) {
+        return singleton.saveObject(channel);
     }
 
     /**
@@ -289,7 +235,7 @@ public class ConfigurationFactory extends HibernateFactory {
             file = getSession().find(ConfigFile.class, fileId);
         }
         else {
-            save(file);
+            singleton.saveObject(file);
         }
         return file;
     }
@@ -333,14 +279,11 @@ public class ConfigurationFactory extends HibernateFactory {
                     revision.getConfigInfo().getFilemode(),
                     revision.getConfigInfo().getSelinuxCtx(),
                     targetPath);
-            //if the object did not change, we now have two hibernate objects
-            //with the same identifier.  Evict one so that hibernate doesn't get mad.
-            getSession().evict(revision.getConfigInfo());
             revision.setConfigInfo(info);
         }
         // And now, because saveNewConfigRevision doesn't store -every-thing
         // about a revision, we have to commit it -again-.  Sigh.  See BZ212236
-        save(revision);
+        singleton.saveObject(revision);
         return revision;
     }
 
@@ -349,14 +292,13 @@ public class ConfigurationFactory extends HibernateFactory {
      * @return the list of global config channels
      */
     public static List<ConfigChannel> listGlobalChannels() {
-        return  getSession().createNativeQuery("""
-                                      SELECT * from rhnConfigChannel
-                                      WHERE
-                                      confchan_type_id = :confchan_type_id_normal
-                                      OR confchan_type_id = :confchan_type_id_state
+        return  getSession().createQuery("""
+                                      FROM ConfigChannel cc
+                                      WHERE cc.configChannelType.id = :idNormal
+                                      OR cc.configChannelType.id = :idState
                                       """, ConfigChannel.class)
-                .setParameter("confchan_type_id_normal", ConfigChannelType.normal().getId(), StandardBasicTypes.LONG)
-                .setParameter("confchan_type_id_state", ConfigChannelType.state().getId(), StandardBasicTypes.LONG)
+                .setParameter("idNormal", ConfigChannelType.normal().getId())
+                .setParameter("idState", ConfigChannelType.state().getId())
                 .getResultList();
     }
 
@@ -366,8 +308,7 @@ public class ConfigurationFactory extends HibernateFactory {
      * @return the ConfigChannel found or null if not found.
      */
     public static ConfigChannel lookupConfigChannelById(Long id) {
-        Session session = HibernateFactory.getSession();
-        return session.find(ConfigChannel.class, id);
+        return getSession().find(ConfigChannel.class, id);
     }
 
     /**
@@ -381,15 +322,15 @@ public class ConfigurationFactory extends HibernateFactory {
     public static ConfigChannel lookupConfigChannelByLabel(String label,
                                                             Org org,
                                                           ConfigChannelType cct) {
-        return  getSession().createNativeQuery("""
-                                      SELECT * from rhnConfigChannel
-                                      WHERE label = :label
-                                      AND org_id = :org_id
-                                      AND confchan_type_id = :confchan_type_id
+        return  getSession().createQuery("""
+                                      FROM ConfigChannel cc
+                                      WHERE cc.label = :label
+                                      AND cc.org.id = :orgId
+                                      AND cc.configChannelType.id = :typeId
                                       """, ConfigChannel.class)
-                .setParameter("label", label, StandardBasicTypes.STRING)
-                .setParameter("org_id", org.getId(), StandardBasicTypes.LONG)
-                .setParameter("confchan_type_id", cct.getId(), StandardBasicTypes.LONG)
+                .setParameter("label", label)
+                .setParameter("orgId", org.getId())
+                .setParameter("typeId", cct.getId())
                 .uniqueResult();
     }
 
@@ -402,18 +343,16 @@ public class ConfigurationFactory extends HibernateFactory {
      */
     public static Optional<ConfigChannel> lookupGlobalConfigChannelByLabel(String label, Org org) {
 
-        return  getSession().createNativeQuery("""
-                                      SELECT * from rhnConfigChannel
-                                      WHERE label = :label
-                                      AND org_id = :org_id
-                                      AND (
-                                      confchan_type_id = :confchan_type_id_normal
-                                      OR confchan_type_id = :confchan_type_id_state)
+        return  getSession().createQuery("""
+                                      FROM ConfigChannel cc
+                                      WHERE cc.label = :label
+                                      AND cc.org.id = :orgId
+                                      AND ( cc.configChannelType.id = :idNormal OR cc.configChannelType.id = :idState)
                                       """, ConfigChannel.class)
-                .setParameter("label", label, StandardBasicTypes.STRING)
-                .setParameter("org_id", org.getId(), StandardBasicTypes.LONG)
-                .setParameter("confchan_type_id_normal", ConfigChannelType.normal().getId(), StandardBasicTypes.LONG)
-                .setParameter("confchan_type_id_state", ConfigChannelType.state().getId(), StandardBasicTypes.LONG)
+                .setParameter("label", label)
+                .setParameter("orgId", org.getId())
+                .setParameter("idNormal", ConfigChannelType.normal().getId())
+                .setParameter("idState", ConfigChannelType.state().getId())
                 .uniqueResultOptional();
     }
 
@@ -519,8 +458,7 @@ public class ConfigurationFactory extends HibernateFactory {
      */
      static ConfigChannelType lookupConfigChannelTypeByLabel(String label) {
         Session session = HibernateFactory.getSession();
-        return (ConfigChannelType)
-            session.createQuery("FROM ConfigChannelType AS t WHERE t.label = :label")
+        return session.createQuery("FROM ConfigChannelType AS t WHERE t.label = :label", ConfigChannelType.class)
                                         .setParameter("label", label, StandardBasicTypes.STRING)
                                         //Retrieve from cache if there
                                         .setCacheable(true)
@@ -789,32 +727,17 @@ public class ConfigurationFactory extends HibernateFactory {
      * @param type The type of the config channel. Either sandbox or local override.
      * @return The new local config channel.
      */
-    public static ConfigChannel createNewLocalChannel(Server server,
-            ConfigChannelType type) {
-        ConfigChannel retval = newConfigChannel();
-        retval.setOrg(server.getOrg());
-        retval.setConfigChannelType(type);
-        retval.setCreated(new Date());
-        retval.setModified(new Date());
-
-        //The name of the channel should always be the server name for
-        //local config channels.  See bug #203406
-        retval.setName(server.getName());
-        retval.setLabel(server.getId().toString());
-
-        //This is an english string. However, users should never see a description of
-        //a local config channel. For all purposes, this is a useless field that only
-        //exists because we currently treat local config channels exactly the same as
-        //global config channels.
-        retval.setDescription("Auto-generated " + type.getLabel() + " config channel");
-
-        //TODO: put the following line back. It is not here now because Server.findLocal
-        //      does this task for us. It belongs here, but this would currently cause
-        //      an infinite loop based on how setSandboxOverride works.
-        //server.setSandboxOverride(retval)
-        commit(retval);
-
-        return retval;
+    public static ConfigChannel createNewLocalChannel(Server server, ConfigChannelType type) {
+        return createNewConfigChannel(
+                server.getOrg(),
+                type,
+                //The name of the channel should always be the server name for local config channels. See bug #203406
+                server.getName(),
+                server.getId().toString(),
+                //This is a useless field that only exists because we currently treat local config channels exactly
+                // the same as global config channels.
+                "Auto-generated " + type.getLabel() + " config channel"
+        );
     }
 
     /**

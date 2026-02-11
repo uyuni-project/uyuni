@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LLC
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -23,7 +24,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.SHA256Crypt;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.common.ChecksumFactory;
@@ -114,22 +114,17 @@ public class PackageTest extends BaseTestCaseWithUser {
     public static Package createTestPackage(Org org, PackageArch arch) {
         Package p = new Package();
         populateTestPackage(p, org, arch);
-
-        TestUtils.saveAndFlush(p);
-
-        return p;
+        return TestUtils.saveAndFlush(p);
     }
 
     public static Package createTestPackage(Org org) {
         Package p = populateTestPackage(new Package(), org);
-        TestUtils.saveAndFlush(p);
-        return p;
+        return TestUtils.saveAndFlush(p);
     }
 
     public static Package createTestPackage(Org org, String packageName) {
         Package p = populateTestPackage(new Package(), packageName, org);
-        TestUtils.saveAndFlush(p);
-        return p;
+        return TestUtils.saveAndFlush(p);
     }
 
     public static Package populateTestPackage(Package p, Org org, PackageName name, PackageEvr evr, PackageArch arch) {
@@ -165,7 +160,7 @@ public class PackageTest extends BaseTestCaseWithUser {
         p.getPackageFiles().add(createTestPackageFile(p));
         p.getPackageFiles().add(createTestPackageFile(p));
 
-        HibernateFactory.getSession().persist(createTestPackageSource(srpm, org));
+        TestUtils.persist(createTestPackageSource(srpm, org));
         return p;
     }
 

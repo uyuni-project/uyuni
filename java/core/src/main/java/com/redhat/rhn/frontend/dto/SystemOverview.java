@@ -27,6 +27,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
@@ -34,7 +35,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import javax.persistence.Tuple;
+import jakarta.persistence.Tuple;
 
 /**
  * Simple DTO for transfering data from the DB to the UI through datasource.
@@ -122,9 +123,9 @@ public class SystemOverview extends BaseTupleDto implements Serializable {
             serverName = getTupleValue(tuple, "server_name", String.class).orElse(null);
             name = serverName;
             channelId = getTupleValue(tuple, "channel_id", Number.class).map(Number::longValue).orElse(0L);
-            created = getTupleValue(tuple, "created", Date.class).orElse(null);
+            created = getTupleValue(tuple, "created", Instant.class).map(Date::from).orElse(null);
             creatorName = getTupleValue(tuple, "creator_name", String.class).orElse(null);
-            modified = getTupleValue(tuple, "modified", Date.class).orElse(null);
+            modified = getTupleValue(tuple, "modified", Instant.class).map(Date::from).orElse(null);
             groupCount = getTupleValue(tuple, "group_count", Number.class).map(Number::longValue).orElse(0L);
             securityErrata = getTupleValue(tuple, "security_errata", Number.class).map(Number::longValue).orElse(0L);
             bugErrata = getTupleValue(tuple, "bug_errata", Number.class).map(Number::longValue).orElse(0L);
@@ -135,7 +136,7 @@ public class SystemOverview extends BaseTupleDto implements Serializable {
             configFilesWithDifferences = getTupleValue(tuple, "config_files_with_differences", Number.class)
                     .map(Number::longValue).orElse(0L);
             channelLabels = getTupleValue(tuple, "channel_labels", String.class).orElse(null);
-            lastCheckin = getTupleValue(tuple, "last_checkin", Date.class).orElse(null);
+            lastCheckin = getTupleValue(tuple, "last_checkin", Instant.class).map(Date::from).orElse(null);
             mgrServer = getTupleValue(tuple, "mgr_server", Boolean.class).orElse(false);
             proxy = getTupleValue(tuple, "proxy", Boolean.class).orElse(Boolean.FALSE);
             setEntitlementLevel(getTupleValue(tuple, "entitlement_level", String.class).orElse(null));

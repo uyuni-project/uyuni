@@ -16,7 +16,7 @@ package com.redhat.rhn.common.hibernate;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.EmptyInterceptor;
+import org.hibernate.Interceptor;
 import org.hibernate.type.Type;
 
 import java.io.Serializable;
@@ -27,7 +27,7 @@ import java.io.Serializable;
  * convert empty varchar to null automatically. It depends on the setting of the
  * interceptor.
  */
-public class EmptyVarcharInterceptor extends EmptyInterceptor {
+public class EmptyVarcharInterceptor implements Interceptor, Serializable /*extends EmptyInterceptor*/ {
 
     private static final long serialVersionUID = 5351605245345217308L;
 
@@ -51,7 +51,7 @@ public class EmptyVarcharInterceptor extends EmptyInterceptor {
         this.autoConvert = autoConvertIn;
     }
 
-    protected static boolean emptyStringToNull(Object entity, Serializable id,
+    private static boolean emptyStringToNull(Object entity, Object id,
             Object[] state, String[] propertyNames, Type[] types,
             boolean autoConvert) {
 
@@ -76,19 +76,19 @@ public class EmptyVarcharInterceptor extends EmptyInterceptor {
      * {@inheritDoc}
      */
     @Override
-    public boolean onSave(Object entity, Serializable id, Object[] state,
-            String[] propertyNames, Type[] types) {
-        return emptyStringToNull(entity, id, state, propertyNames, types,
-                autoConvert);
+    //public boolean onSave(Object entity, Serializable id, Object[] state, String[] propertyNames, Type[] types) {
+    public boolean onPersist(Object entity, Object id, Object[] state, String[] propertyNames, Type[] types) {
+        return emptyStringToNull(entity, id, state, propertyNames, types, autoConvert);
     }
-
+//    default boolean onPersist(Object entity, Object id, Object[] state, String[] propertyNames, Type[] types) {
+//        return this.onSave(entity, id, state, propertyNames, types);
+//    }
     /**
      * {@inheritDoc}
      */
     @Override
-    public boolean onFlushDirty(Object entity, Serializable id,
-            Object[] currentState, Object[] previousState,
-            String[] propertyNames, Type[] types) {
+    public boolean onFlushDirty(Object entity, Object id, Object[] currentState, Object[] previousState,
+                                String[] propertyNames, Type[] types) {
         return emptyStringToNull(entity, id, currentState, propertyNames,
                 types, autoConvert);
     }

@@ -33,7 +33,7 @@ import com.redhat.rhn.domain.user.legacy.UserImpl;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.ListIndexBase;
-import org.hibernate.annotations.Type;
+import org.hibernate.type.YesNoConverter;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -41,20 +41,22 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderColumn;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderColumn;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 
 /**
  * Token
@@ -76,7 +78,7 @@ public class Token implements Identifiable {
     private Long disabled;
 
     @Column(name = "deploy_configs")
-    @Type(type = "yes_no")
+    @Convert(converter = YesNoConverter.class)
     private boolean deployConfigs;
 
     @Column(name = "usage_limit")
@@ -86,9 +88,9 @@ public class Token implements Identifiable {
     @JoinColumn(name = "org_id")
     private Org org;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = UserImpl.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private UserImpl creator;
+    private User creator;
 
     @ManyToOne
     @JoinColumn(name = "server_id")
@@ -145,7 +147,7 @@ public class Token implements Identifiable {
     @OrderColumn(name = "position") // Handles list indexing.
     @ListIndexBase(1)
     @org.hibernate.annotations.CollectionType(
-            type = "com.redhat.rhn.common.hibernate.ForceRecreationListType"
+            type = com.redhat.rhn.common.hibernate.ForceRecreationListType.class
     )
     private List<ConfigChannel> configChannels  = new ArrayList<>();
     /**

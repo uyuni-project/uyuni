@@ -20,7 +20,6 @@ import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.common.validator.ValidatorResult;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigChannelType;
-import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.configuration.file.ConfigFileData;
 import com.redhat.rhn.manager.configuration.file.SLSFileData;
@@ -49,9 +48,7 @@ public class ConfigChannelCreationHelper {
      * @param description the description of the config channel
      * @throws ValidatorException on bad data
      */
-    public void validate(String label,
-                                String name,
-                                String description) {
+    public void validate(String label, String name, String description) {
         validate(label, name, description, null);
     }
 
@@ -63,9 +60,7 @@ public class ConfigChannelCreationHelper {
      * @throws ValidatorException on bad data
      */
     public void validate(DynaActionForm form) {
-        validate(form.getString(LABEL),
-                                form.getString(NAME),
-                                form.getString(DESCRIPTION), form);
+        validate(form.getString(LABEL), form.getString(NAME), form.getString(DESCRIPTION), form);
     }
 
     /**
@@ -78,10 +73,7 @@ public class ConfigChannelCreationHelper {
      *              for validating through the UI
      * @throws ValidatorException on bad data
      */
-    private void validate(String label,
-                        String name,
-                        String description,
-                        DynaActionForm form) {
+    private void validate(String label, String name, String description, DynaActionForm form) {
         LocalizationService ls = LocalizationService.getInstance();
         ValidatorResult result = new ValidatorResult();
 
@@ -148,40 +140,14 @@ public class ConfigChannelCreationHelper {
     }
 
     /**
-     * Creates a new config channel
-     * @param user needed for authentication.
-     * @return the created channel
-     */
-    public ConfigChannel create(User user) {
-        ConfigChannelType t = ConfigChannelType.normal();
-        ConfigChannel cc = ConfigurationFactory.newConfigChannel();
-        cc.setOrg(user.getOrg());
-        cc.setConfigChannelType(t);
-        return cc;
-    }
-
-    /**
-     * Creates a new config channel of specific type
-     * @param user needed for authentication.
-     * @param type type of the channel.
-     * @return the created channel
-     */
-    public ConfigChannel create(User user, ConfigChannelType type) {
-        ConfigChannel cc = ConfigurationFactory.newConfigChannel();
-        cc.setOrg(user.getOrg());
-        cc.setConfigChannelType(type);
-        return cc;
-    }
-    /**
-     * populates the config channel readinng the fields from a
+     * populates the config channel reading the fields from a
      * dyna action form
      * @param cc the channel to populate
      * @param form the form to retrieve the data from.
      * @throws ValidatorException  on bad data
      */
     public void update(ConfigChannel cc, DynaActionForm form) {
-        update(cc, form.getString(NAME),
-                    form.getString(LABEL), form.getString(DESCRIPTION));
+        update(cc, form.getString(NAME), form.getString(LABEL), form.getString(DESCRIPTION));
     }
 
     /**
@@ -193,12 +159,10 @@ public class ConfigChannelCreationHelper {
      * @param description channel description
      * @throws ValidatorException  on bad data
      */
-    public void update(ConfigChannel cc, String name,
-                            String label, String description) {
+    public void update(ConfigChannel cc, String name, String label, String description) {
         if (!label.equals(cc.getLabel()) &&
                 ConfigurationManager.conflictingChannelExists(label, cc.getConfigChannelType(), cc.getOrg())) {
-            ValidatorException.raiseException("channelOverview.error.labelexists",
-                    label);
+            ValidatorException.raiseException("channelOverview.error.labelexists", label);
         }
         cc.setLabel(label);
         cc.setName(name);
@@ -216,6 +180,5 @@ public class ConfigChannelCreationHelper {
             ConfigFileData data = new SLSFileData(contents);
             ConfigFileBuilder.getInstance().create(data, user, channel);
         }
-
     }
 }
