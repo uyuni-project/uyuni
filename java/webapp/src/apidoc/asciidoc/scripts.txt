@@ -36,7 +36,7 @@ _The JSON output is pretty-printed for clarity._
 [source,bash]
 ----
 $ API=https://manager.example.com/rhn/manager/api
-$ curl -H "Content-Type: application/json" --cookie "pxt-session-cookie&lt;tokenhash&gt;;" \
+$ curl -H "Content-Type: application/json" --cookie "pxt-session-cookie=&lt;tokenhash&gt;;" \
 > $API/contentmanagement/lookupProject?projectLabel=myproject
 {
   "success": true,
@@ -64,7 +64,7 @@ _The JSON output is pretty-printed for clarity._
 [source,bash]
 ----
 $ API=https://manager.example.com/rhn/manager/api
-$ curl -H "Content-Type: application/json" --cookie "pxt-session-cookie&lt;tokenhash&gt;;" -X POST \
+$ curl -H "Content-Type: application/json" --cookie "pxt-session-cookie=&lt;tokenhash&gt;;" -X POST \
 > "$API/contentmanagement/createProject?projectLabel=myproject&name=My%20Project&description="
 {
   "success": true,
@@ -84,7 +84,7 @@ The request body must be a top-level JSON object that contains all the parameter
 [source,bash]
 ----
 $ API=https://manager.example.com/rhn/manager/api
-$ curl -H "Content-Type: application/json" --cookie "pxt-session-cookie&lt;tokenhash&gt;;" \
+$ curl -H "Content-Type: application/json" --cookie "pxt-session-cookie=&lt;tokenhash&gt;;" \
 > -d '{"projectLabel":"myproject","name":"My Project","description":""}' \
 > $API/contentmanagement/createProject
 {
