@@ -27,7 +27,6 @@ import com.suse.oval.OVALCachingFactory;
 import com.suse.oval.OVALCleaner;
 import com.suse.oval.OsFamily;
 import com.suse.oval.OvalParser;
-import com.suse.oval.ShallowSystemPackage;
 import com.suse.oval.config.OVALConfigLoader;
 import com.suse.oval.ovaldownloader.OVALDownloadResult;
 import com.suse.oval.ovaldownloader.OVALDownloader;
@@ -305,22 +304,6 @@ public class CVEAuditManagerOVAL {
         }
 
         return patchCandidates;
-    }
-
-    private static boolean isPackageInstalled(VulnerablePackage pkg, List<ShallowSystemPackage> allInstalledPackages) {
-        return allInstalledPackages.stream()
-                .anyMatch(installed -> Objects.equals(installed.getName(), pkg.getName()));
-    }
-
-    /**
-     * Returns the list of installed versions of {@code pkg}
-     * */
-    private static List<ShallowSystemPackage> getInstalledPackageVersions(
-            VulnerablePackage pkg,
-            List<ShallowSystemPackage> allInstalledPackages) {
-
-        return allInstalledPackages.stream().filter(installed -> Objects.equals(installed.getName(), pkg.getName()))
-                .collect(Collectors.toList());
     }
 
     /**
