@@ -163,7 +163,6 @@
               </c:if>/>
               <c:out value="${defaultLocale.localizedName}" />
               <br />
-              <br />
             </div>
           </div>
         <c:forEach var="item" items="${supportedLocales}">
@@ -175,7 +174,7 @@
               <c:if test="${item.key == currentLocale}">
                 checked="checked"
               </c:if>/>
-            <span class="text-info"><strong><c:out value="${item.value.localizedName}" /></strong></span>
+            <span><strong><c:out value="${item.value.localizedName}" /></strong></span>
           </div>
           <c:if test="${counter == 1}">
             </div>
@@ -210,7 +209,6 @@
                             <c:out value="${defaultDocsLocale.localizedName}" />
                         </div>
                         </br>
-                        </br>
                     </div>
                     <c:set var="counter" value="0"/>
                     <c:forEach var="item" items="${supportedDocsLocales}">
@@ -222,7 +220,7 @@
                                     <c:if test="${item.key == currentDocsLocale}">
                                         checked="checked"
                                     </c:if>/>
-                            <span class="text-info"><strong><c:out value="${item.value.localizedName}" /></strong></span>
+                            <span><strong><c:out value="${item.value.localizedName}" /></strong></span>
                         </div>
                         <c:if test="${counter == 1}">
                             </div>
