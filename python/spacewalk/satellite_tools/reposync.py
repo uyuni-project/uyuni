@@ -82,10 +82,6 @@ from spacewalk.satellite_tools.appstreams import ModuleMdImporter, ModuleMdIndex
 
 translation = gettext.translation("spacewalk-backend-server", fallback=True)
 _ = translation.gettext
-hostname = socket.gethostname()
-if "." not in hostname:
-    hostname = socket.getfqdn()
-
 
 default_log_location = "/var/log/rhn/"
 relative_comps_dir = "rhn/comps"
@@ -149,6 +145,33 @@ def send_mail(sync_type="Repo"):
             rhnMail.send(headers, body, sender=sndr)
     else:
         print((_("+++ email requested, but there is nothing to send +++")))
+
+
+def send_error_mail(channel_label, body):
+    # pylint: disable-next=invalid-name
+    with cfg_component("server.susemanager") as CFG:
+        to = CFG.TRACEBACK_MAIL
+    fr = to
+    if isinstance(to, type([])):
+        fr = to[0].strip()
+        to = ", ".join([s.strip() for s in to])
+
+    with cfg_component("java") as CFG:
+        hostname = CFG.hostname
+
+    sender = f"{hostname} <{fr}>"
+    # pylint: disable-next=invalid-name
+    with cfg_component("web") as CFG:
+        if CFG.default_mail_from:
+            sender = CFG.default_mail_from
+
+    headers = {
+        "To": to,
+        "From": sender,
+        "Subject": f"SUSE Multi-Linux Manager repository sync failed ({hostname})",
+    }
+    extra = f"Syncing Channel '{channel_label}' failed:\n\n"
+    rhnMail.send(headers, extra + body)
 
 
 class KSDirParser:
@@ -770,7 +793,7 @@ class RepoSync(object):
                                         log(0, f"    {failure}")
                                         mailbody += f"    {failure}\n"
 
-                                    self.sendErrorMail(mailbody)
+                                    send_error_mail(self.channel_label, mailbody)
                                     sync_error = -1
 
                         if sync_error == 0:
@@ -812,13 +835,13 @@ class RepoSync(object):
                     raise
                 except ChannelTimeoutException as e:
                     log(0, e)
-                    self.sendErrorMail(str(e))
+                    send_error_mail(self.channel_label, str(e))
                     sync_error = -1
                 except ChannelException as e:
                     # pylint: disable-next=consider-using-f-string
                     log(0, "ChannelException: %s" % e)
                     # pylint: disable-next=consider-using-f-string
-                    self.sendErrorMail("ChannelException: %s" % str(e))
+                    send_error_mail(self.channel_label, f"ChannelException: {str(e)}")
                     sync_error = -1
                 except yum_src.RepoMDError as e:
                     if "primary not available" in str(e):
@@ -833,7 +856,7 @@ class RepoSync(object):
                         # pylint: disable-next=consider-using-f-string
                         log(0, "RepoMDError: %s" % e)
                         # pylint: disable-next=consider-using-f-string
-                        self.sendErrorMail("RepoMDError: %s" % e)
+                        send_error_mail(self.channel_label, f"RepoMDError: {e}")
                         sync_error = -1
                 # pylint: disable-next=bare-except
                 except:
@@ -841,7 +864,7 @@ class RepoSync(object):
                     log(0, "Unexpected error: %s" % sys.exc_info()[0])
                     # pylint: disable-next=consider-using-f-string
                     log(0, "%s" % traceback.format_exc())
-                    self.sendErrorMail(fetchTraceback())
+                    send_error_mail(self.channel_label, fetchTraceback())
                     sync_error = -1
 
         # In strict mode unlink all packages from channel which are not synced from current repositories
@@ -927,7 +950,10 @@ class RepoSync(object):
                     )
         elapsed_time = datetime.now() - start_time
         if self.error_messages:
-            self.sendErrorMail("Repo Sync Errors: %s" % "\n".join(self.error_messages))
+            send_error_mail(
+                self.channel_label,
+                "Repo Sync Errors: %s" % "\n".join(self.error_messages),
+            )
             sync_error = -1
         if sync_error == 0 and failed_packages == 0:
             log(0, "Sync completed.")
@@ -3047,28 +3073,6 @@ class RepoSync(object):
 
         package["package_id"] = cs["id"]
         return package
-
-    # pylint: disable-next=invalid-name
-    def sendErrorMail(self, body):
-        # pylint: disable-next=invalid-name
-        with cfg_component("server.susemanager") as CFG:
-            to = CFG.TRACEBACK_MAIL
-        fr = to
-        if isinstance(to, type([])):
-            fr = to[0].strip()
-            to = ", ".join([s.strip() for s in to])
-
-        headers = {
-            # pylint: disable-next=consider-using-f-string
-            "Subject": "SUSE Multi-Linux Manager repository sync failed (%s)"
-            % hostname,
-            # pylint: disable-next=consider-using-f-string
-            "From": "%s <%s>" % (hostname, fr),
-            "To": to,
-        }
-        # pylint: disable-next=consider-using-f-string
-        extra = "Syncing Channel '%s' failed:\n\n" % self.channel_label
-        rhnMail.send(headers, extra + body)
 
     # pylint: disable-next=invalid-name
     def updateChannelChecksumType(self, repo_checksum_type):
