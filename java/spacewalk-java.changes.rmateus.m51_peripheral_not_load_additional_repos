@@ -1,0 +1,1 @@
+- Do not load additional repos in peripheral server(bsc#1257967)

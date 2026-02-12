@@ -626,7 +626,13 @@ public class ContentSyncManager {
                     );
 
                     LinkedList<SCCRepositoryJson> allReposList = new LinkedList<>(repos);
-                    allReposList.addAll(getAdditionalRepositories());
+                    if (IssFactory.getCurrentMaster() == null && !hubFactory.isISSPeripheral()) {
+                        // The next line load products that are not present in SCC, like free products of "fake" ones.
+                        // In a Hub Online Synchronization scenario we should not load them,
+                        // since all repos on a peripheral come from it HUB server.
+                        // Loading them also causes side effects on channel authentication against the HUB server.
+                        allReposList.addAll(getAdditionalRepositories());
+                    }
                     refreshRepositoriesAuthentication(allReposList, source, mirrorUrl);
                 });
         }
