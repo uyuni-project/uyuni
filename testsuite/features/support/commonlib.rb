@@ -1,4 +1,4 @@
-# Copyright (c) 2013-2025 SUSE LLC.
+# Copyright (c) 2013-2026 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'tempfile'
@@ -685,7 +685,7 @@ def channel_packages_are_downloaded?(channel_name)
   if channel_name.include?('custom_channel')
     client = channel_name.delete_prefix('custom_channel_')
     # Monitoring server doesn't have an entry in the custom repository JSON file.
-    return true if $custom_repositories[client].nil? && client != "monitoring_server"
+    return true if $custom_repositories[client].nil? && client != 'monitoring_server'
   end
   log_tmp_file = '/tmp/reposync.log'
   get_target('server').extract('/var/log/rhn/reposync.log', log_tmp_file)
