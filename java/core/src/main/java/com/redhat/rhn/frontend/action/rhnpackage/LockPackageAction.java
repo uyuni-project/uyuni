@@ -48,6 +48,7 @@ import org.apache.struts.action.DynaActionForm;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -128,12 +129,18 @@ public class LockPackageAction extends BaseSystemPackagesAction {
             if (!pkgsToSelect.isEmpty()) {
                 try {
                     if (context.wasDispatched("pkg.lock.requestlock")) {
-                        this.lockSelectedPackages(pkgsAlreadyLocked,
+                        boolean success = this.lockSelectedPackages(pkgsAlreadyLocked,
                                                   scheduleDate,
                                                   server,
                                                   request);
-                        this.getStrutsDelegate().addInfo("pkg.lock.message.locksuccess",
-                                                         infoMessages);
+                        if (success) {
+                            this.getStrutsDelegate().addInfo("pkg.lock.message.locksuccess",
+                                    infoMessages);
+                        }
+                        else {
+                            this.getStrutsDelegate().addError("pkg.lock.message.lockerror",
+                                    errorMessages);
+                        }
                     }
                     else if (context.wasDispatched("pkg.lock.requestunlock")) {
                         this.unlockSelectedPackages(pkgsAlreadyLocked,
@@ -226,8 +233,9 @@ public class LockPackageAction extends BaseSystemPackagesAction {
      * @param request
      * @throws TaskomaticApiException if there was a Taskomatic error
      * (typically: Taskomatic is down)
+     * @return whether the lock has been scheduled successfully
      */
-    private void lockSelectedPackages(Set<Package> pkgsAlreadyLocked, Date scheduleDate,
+    private boolean lockSelectedPackages(Set<Package> pkgsAlreadyLocked, Date scheduleDate,
             Server server, HttpServletRequest request) throws TaskomaticApiException {
         RequestContext context = new RequestContext(request);
         Long sid = context.getRequiredParam("sid");
@@ -237,11 +245,21 @@ public class LockPackageAction extends BaseSystemPackagesAction {
 
         // Lock all selected packages, if they are not already in the list
         if (selectedPkgs != null) {
+            Set<Long> alreadyLockedNameIds = pkgsAlreadyLocked.stream().map(p ->
+                    p.getPackageName().getId()).collect(Collectors.toSet());
+
             for (String label : selectedPkgs) {
                 Package pkg = this.findPackage(label, user);
 
                 if (pkg == null || pkgsAlreadyLocked.contains(pkg)) {
                     continue;
+                }
+                // Prevent multiple versions of the same package from being locked
+                else if (alreadyLockedNameIds.contains(pkg.getPackageName().getId()) ||
+                        pkgsToLock.stream().anyMatch(p ->
+                                Objects.equals(p.getPackageName().getId(), pkg.getPackageName().getId())
+                        )) {
+                    return false;
                 }
 
                 pkg.setLockPending(Boolean.TRUE);
@@ -260,6 +278,7 @@ public class LockPackageAction extends BaseSystemPackagesAction {
         else {
             LockPackageAction.LOG.info("No packages to lock");
         }
+        return true;
     }
 
     /**
