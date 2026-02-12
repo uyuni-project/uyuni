@@ -20,7 +20,6 @@ import configparser
 import os
 import re
 import shutil
-import socket
 import subprocess
 import sys
 import tempfile
@@ -148,30 +147,29 @@ def send_mail(sync_type="Repo"):
 
 
 def send_error_mail(channel_label, body):
-    # pylint: disable-next=invalid-name
-    with cfg_component("server.susemanager") as CFG:
-        to = CFG.TRACEBACK_MAIL
+    with cfg_component("server.susemanager") as cfg:
+        to = cfg.TRACEBACK_MAIL
     fr = to
     if isinstance(to, type([])):
         fr = to[0].strip()
         to = ", ".join([s.strip() for s in to])
 
-    with cfg_component("java") as CFG:
-        hostname = CFG.hostname
+    with cfg_component("java") as cfg:
+        hostname = cfg.hostname
 
     sender = f"{hostname} <{fr}>"
-    # pylint: disable-next=invalid-name
-    with cfg_component("web") as CFG:
-        if CFG.default_mail_from:
-            sender = CFG.default_mail_from
+    with cfg_component("web") as cfg:
+        if cfg.default_mail_from:
+            sender = cfg.default_mail_from
 
-    headers = {
-        "To": to,
-        "From": sender,
-        "Subject": f"SUSE Multi-Linux Manager repository sync failed ({hostname})",
-    }
-    extra = f"Syncing Channel '{channel_label}' failed:\n\n"
-    rhnMail.send(headers, extra + body)
+    rhnMail.send(
+        {
+            "To": to,
+            "From": sender,
+            "Subject": f"SUSE Multi-Linux Manager repository sync failed ({hostname})",
+        },
+        f"Syncing Channel '{channel_label}' failed:\n\n{body}",
+    )
 
 
 class KSDirParser:

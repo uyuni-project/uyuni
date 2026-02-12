@@ -355,8 +355,7 @@ class RepoSyncTest(unittest.TestCase):
         self.assertEqual(self.reposync.log.call_args[0][1], exception)
 
     @patch("spacewalk.common.rhnConfig.initCFG", Mock())
-    @patch("spacewalk.satellite_tools.reposync.send_error_mail")
-    def test_sync_raises_unexpected_error(self, send_error_mail):
+    def test_sync_raises_unexpected_error(self):
         rs = self._create_mocked_reposync()
         # pylint: disable-next=invalid-name
         CFG = Mock()
@@ -492,15 +491,14 @@ class RepoSyncTest(unittest.TestCase):
 
     @patch("spacewalk.common.rhnConfig.initCFG", Mock())
     def test_send_error_mail(self):
-        rs = self._create_mocked_reposync()
         self.reposync.rhnMail.send = Mock()
-        # pylint: disable-next=invalid-name
-        CFG = Mock()
-        CFG.TRACEBACK_MAIL = "recipient"
-        CFG.hostname = "testhost"
-        CFG.default_mail_from = "customhost <customhost@example.com"
 
-        with patch("spacewalk.common.rhnConfig.CFG", CFG):
+        cfg = Mock()
+        cfg.TRACEBACK_MAIL = "recipient"
+        cfg.hostname = "testhost"
+        cfg.default_mail_from = "customhost <customhost@example.com"
+
+        with patch("spacewalk.common.rhnConfig.CFG", cfg):
             self.reposync.send_error_mail("Label", "email body")
 
         self.assertEqual(
@@ -1232,9 +1230,7 @@ def test_channel_exceptions():
                 _, ret = rs.sync()
                 assert ret == -1
             # pylint: disable-next=consider-using-f-string
-            assert send_error_mail.call_args == call(
-                "Label", "%s: %s" % (exc_name, "error msg")
-            )
+            assert send_error_mail.call_args == call("Label", f"{exc_name}: error msg")
 
 
 def _init_reposync(reposync, label="Label", repo_type=RTYPE, **kwargs):
