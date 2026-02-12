@@ -44,6 +44,22 @@ public class MaintenanceCalendar extends BaseDomainHelper {
     private String ical;
 
     /**
+     * Default constructor
+     */
+    public MaintenanceCalendar() {
+    }
+
+    /**
+     * Builds an instance with the given label and calendar descriptor
+     * @param labelIn the label
+     * @param icalIn the calendar in ical format
+     */
+    public MaintenanceCalendar(String labelIn, String icalIn) {
+        this.label = labelIn;
+        this.ical = icalIn;
+    }
+
+    /**
      * @return the id
      */
     @Id

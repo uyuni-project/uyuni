@@ -15,10 +15,6 @@
 
 package com.suse.manager.maintenance;
 
-import static java.util.Collections.emptySet;
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
-import static java.util.Optional.ofNullable;
 import static java.util.stream.Collectors.toList;
 
 import com.redhat.rhn.common.localization.LocalizationService;
@@ -51,12 +47,13 @@ import java.util.stream.Stream;
 
 import net.fortuna.ical4j.data.CalendarBuilder;
 import net.fortuna.ical4j.data.ParserException;
-import net.fortuna.ical4j.filter.Filter;
-import net.fortuna.ical4j.filter.HasPropertyRule;
-import net.fortuna.ical4j.filter.PeriodRule;
+import net.fortuna.ical4j.filter.ComponentFilter;
+import net.fortuna.ical4j.filter.FilterExpression;
+import net.fortuna.ical4j.filter.PredicateFactory;
+import net.fortuna.ical4j.filter.predicate.PeriodRule;
+import net.fortuna.ical4j.filter.predicate.PropertyEqualToRule;
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.Component;
-import net.fortuna.ical4j.model.ComponentList;
 import net.fortuna.ical4j.model.DateTime;
 import net.fortuna.ical4j.model.Period;
 import net.fortuna.ical4j.model.PeriodList;
@@ -69,7 +66,7 @@ import net.fortuna.ical4j.model.property.Summary;
  */
 public class IcalUtils {
 
-    private static Logger log = LogManager.getLogger(IcalUtils.class);
+    private static final Logger LOGGER = LogManager.getLogger(IcalUtils.class);
 
     /**
      * Given MaintenanceSchedule calculate upcoming maintenance windows
@@ -87,17 +84,38 @@ public class IcalUtils {
      * @return the optional upcoming maintenance windows
      */
     public Optional<List<MaintenanceWindowData>> calculateUpcomingMaintenanceWindows(MaintenanceSchedule schedule) {
+        return calculateUpcomingMaintenanceWindows(schedule, Instant.now());
+    }
+
+    /**
+     * Given MaintenanceSchedule calculate upcoming maintenance windows
+     *
+     * The windows are returned as a list of triples consisting of:
+     * - window start date as a human-readable string
+     * - window end date as a human-readable string
+     * - start date as number of milliseconds since the epoch
+     *
+     * The formatting is done by {@link LocalizationService}.
+     *
+     * The upper limit of returned maintenance windows is currently hardcoded to 10.
+     *
+     * @param schedule the given MaintenanceSchedule
+     * @param startDate the starting instant to compute the windows
+     * @return the optional upcoming maintenance windows
+     */
+    public Optional<List<MaintenanceWindowData>> calculateUpcomingMaintenanceWindows(MaintenanceSchedule schedule,
+                                                                                     Instant startDate) {
         Optional<String> multiScheduleName = getScheduleNameForMulti(schedule);
 
         Stream<Pair<Instant, Instant>> periodStream = schedule.getCalendarOpt()
                 .flatMap(this::parseCalendar)
-                .map(c -> calculateUpcomingPeriods(c, multiScheduleName, Instant.now(), 10))
+                .map(c -> calculateUpcomingPeriods(c, multiScheduleName, startDate, 10))
                 .orElseGet(Stream::empty);
 
         List<MaintenanceWindowData> result = periodStream
                 .map(p -> new MaintenanceWindowData(p.getLeft(), p.getRight()))
                 .collect(toList());
-        return of(result);
+        return Optional.of(result);
     }
 
     /**
@@ -107,9 +125,9 @@ public class IcalUtils {
      */
     private static Optional<String> getScheduleNameForMulti(MaintenanceSchedule schedule) {
         if (schedule.getScheduleType() == MaintenanceSchedule.ScheduleType.MULTI) {
-            return of(schedule.getName());
+            return Optional.of(schedule.getName());
         }
-        return empty();
+        return Optional.empty();
     }
 
     /**
@@ -128,7 +146,7 @@ public class IcalUtils {
      */
     public Stream<Pair<Instant, Instant>> calculateUpcomingPeriods(Calendar calendar, Optional<String> eventName,
             Instant startDate, int limit) {
-        ComponentList<CalendarComponent> allEvents = calendar.getComponents(Component.VEVENT);
+        List<CalendarComponent> allEvents = calendar.getComponents(Component.VEVENT);
 
         Collection<CalendarComponent> filteredEvents = eventName
                 .map(summary -> filterEventsBySummary(allEvents, summary))
@@ -140,7 +158,7 @@ public class IcalUtils {
         List<PeriodList> periodLists = filteredEvents.stream()
                 .map(c -> c.calculateRecurrenceSet(period))
                 .filter(l -> !l.isEmpty())
-                .collect(toList());
+                .toList();
 
         return periodLists.stream()
                 .map(Collection::stream)
@@ -151,17 +169,10 @@ public class IcalUtils {
     }
 
     // given collection of events, filter out those with non-matching SUMMARY
-    private Collection<CalendarComponent> filterEventsBySummary(ComponentList<CalendarComponent> events, String name) {
-        Predicate<CalendarComponent> summaryPredicate = c -> {
-            Property summaryProp = c.getProperty("SUMMARY");
-            if (summaryProp instanceof Summary) {
-                return summaryProp.getValue().equals(name);
-            }
-            return false;
-        };
-        Predicate<CalendarComponent>[] ps = new Predicate[]{summaryPredicate};
-        Filter<CalendarComponent> filter = new Filter<>(ps, Filter.MATCH_ALL);
-        return filter.filter(events);
+    private Collection<CalendarComponent> filterEventsBySummary(List<CalendarComponent> events, String name) {
+        var filter = new ComponentFilter<>().predicate(FilterExpression.equalTo(Property.SUMMARY, name));
+        return events.stream()
+                .filter(filter).toList();
     }
 
     /**
@@ -176,26 +187,17 @@ public class IcalUtils {
     public Collection<CalendarComponent> getCalendarEventsAtDate(Date date, Optional<Calendar> calendar,
             Optional<String> summary) {
         if (calendar.isEmpty()) {
-            return emptySet();
+            return Set.of();
         }
 
-        Period p = new Period(new DateTime(date), java.time.Duration.ofSeconds(1));
-        ArrayList<Predicate<Component>> rules = new ArrayList<>();
-        rules.add(new PeriodRule<>(p));
+        List<Predicate<Component>> rules = new ArrayList<>();
 
-        summary.ifPresent(s -> {
-            Summary filterSummary = new Summary(s);
-            HasPropertyRule<Component> propertyRule = new HasPropertyRule<>(filterSummary);
-            rules.add(propertyRule);
-        });
+        rules.add(new PeriodRule<>(new Period(new DateTime(date), Duration.ofSeconds(1))));
+        summary.map(s -> new PropertyEqualToRule<Component>(new Summary(s))).ifPresent(rules::add);
 
-        @SuppressWarnings("unchecked")
-        Predicate<CalendarComponent>[] comArr = new Predicate[rules.size()];
-        comArr = rules.toArray(comArr);
-
-        Filter<CalendarComponent> filter = new Filter<>(comArr, Filter.MATCH_ALL);
-
-        return filter.filter(calendar.get().getComponents(Component.VEVENT));
+        return calendar.get().getComponents(Component.VEVENT).stream()
+                .filter(PredicateFactory.and(rules))
+                .toList();
     }
 
     /**
@@ -215,15 +217,14 @@ public class IcalUtils {
      * @return the parsed calendar or empty, if there was a problem parsing the calendar
      */
     public Optional<Calendar> parseCalendar(Reader calendarReader) {
-        CalendarBuilder builder = new CalendarBuilder();
-        Calendar calendar = null;
         try {
-            calendar = builder.build(calendarReader);
+            CalendarBuilder builder = new CalendarBuilder();
+            return Optional.ofNullable(builder.build(calendarReader));
         }
         catch (IOException | ParserException e) {
-            log.error("Unable to build the calendar from reader: {}", calendarReader, e);
+            LOGGER.error("Unable to build the calendar from reader: {}", calendarReader, e);
+            return Optional.empty();
         }
-        return ofNullable(calendar);
     }
 
     /**
@@ -239,11 +240,11 @@ public class IcalUtils {
                                                          Long start, Long end) {
         Optional<Calendar> calendar = parseCalendar(calendarIn);
         if (calendar.isEmpty()) {
-            log.error("Could not parse calendar: {}", calendarIn.getLabel());
+            LOGGER.error("Could not parse calendar: {}", calendarIn.getLabel());
            return new ArrayList<>();
         }
         Period period = new Period(new DateTime(start), new DateTime(end));
-        ComponentList<CalendarComponent> events = calendar.get().getComponents(Component.VEVENT);
+        List<CalendarComponent> events = calendar.get().getComponents(Component.VEVENT);
 
         Collection<CalendarComponent> filteredEvents = eventName
                 .map(summary -> filterEventsBySummary(events, summary))
@@ -255,9 +256,10 @@ public class IcalUtils {
                     return pl.stream()
                             .filter(l -> !l.isEmpty())
                             .map(event -> new MaintenanceWindowData(
-                                    eventSet.getProperty("SUMMARY").getValue(),
+                                    eventSet.getProperty(Property.SUMMARY).getValue(),
                                     event.getStart().toInstant(),
-                                    event.getRangeEnd().toInstant()));
+                                    event.getRangeEnd().toInstant()
+                                ));
                 })
                 .reduce(Stream.empty(), Stream::concat)
                 .sorted(Comparator.comparing(MaintenanceWindowData::getFromMilliseconds))
@@ -303,11 +305,13 @@ public class IcalUtils {
     public Set<String> getEventNames(MaintenanceCalendar calendarIn) {
         Optional<Calendar> calendar = parseCalendar(calendarIn);
         if (calendar.isEmpty()) {
-            log.error("Could not parse calendar: {}", calendarIn.getLabel());
+            LOGGER.error("Could not parse calendar: {}", calendarIn.getLabel());
             return new HashSet<>();
         }
-        ComponentList<CalendarComponent> events = calendar.get().getComponents(Component.VEVENT);
-        return events.stream().map(event ->
-                event.getProperty("SUMMARY").getValue()).collect(Collectors.toSet());
+
+        List<CalendarComponent> events = calendar.get().getComponents(Component.VEVENT);
+        return events.stream()
+            .map(event -> event.getProperty(Property.SUMMARY).getValue())
+            .collect(Collectors.toSet());
     }
 }
