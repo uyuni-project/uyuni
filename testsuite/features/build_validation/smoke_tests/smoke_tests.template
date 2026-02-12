@@ -64,9 +64,10 @@ Feature: Smoke tests for <client>
     And I should see a "Location" text
     And I should see a "UUID" text
 
+# Patches are available for Ubuntu and Debian, but they are delivered through package updates rather than standalone patch files.
 @skip_for_debian
-@skip_for_rocky9
-@skip_for_alma9
+@skip_for_amazon2023
+@skip_for_ubuntu
   Scenario: Install a patch on the <client>
     Given I am on the Systems overview page of this "<client>"
     When I follow "Software" in the content area

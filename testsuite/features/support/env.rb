@@ -598,12 +598,12 @@ Before('@skip_for_debian') do |scenario|
   skip_this_scenario if scenario.location.file.include? 'debian'
 end
 
-Before('@skip_for_rocky9') do |scenario|
-  skip_this_scenario if scenario.location.file.include? 'rocky9'
+Before('@skip_for_ubuntu') do |scenario|
+  skip_this_scenario if scenario.location.file.include? 'ubuntu'
 end
 
-Before('@skip_for_alma9') do |scenario|
-  skip_this_scenario if scenario.location.file.include? 'alma9'
+Before('@skip_for_amazon2023') do |scenario|
+  skip_this_scenario if scenario.location.file.include? 'amazon2023'
 end
 
 Before('@skip_for_minion') do |scenario|
