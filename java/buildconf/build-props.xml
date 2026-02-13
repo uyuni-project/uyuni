@@ -136,11 +136,8 @@
     <available file="${java.lib.dir}/ongres-stringprep/saslprep.jar"/>
   </condition>
 
-  <available file="${java.lib.dir}/cglib/cglib.jar" type="file" property="cglib-jar" value="cglib/cglib" />
-  <available file="${java.lib.dir}/cglib.jar" type="file" property="cglib-jar" value="cglib" />
-
   <property name="common.jar.dependencies"
-      value="bcel ${cglib-jar} commons-beanutils commons-cli commons-codec
+      value="bcel commons-beanutils commons-cli commons-codec
              commons-collections commons-digester commons-discovery
              commons-fileupload2-core commons-fileupload2-javax commons-io ${commons-lang} apache-commons-text/commons-text commons-logging ${commons-validator} ${hibernate5deps}
              ${commons-compress} ${javamail} smtp jdom ${jmock-jars}
@@ -169,7 +166,7 @@
        xalan-j2" />
 
   <property name="run.jar.dependencies"
-      value="antlr objectweb-asm/asm ${cglib-jar} ${c3p0} commons-discovery dom4j ${jaf} ${jta11-jars} ojdbc14 sitemesh
+      value="antlr objectweb-asm/asm ${c3p0} commons-discovery dom4j ${jaf} ${jta11-jars} ojdbc14 sitemesh
              taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec
              xalan-j2 xalan-j2-serializer xerces-j2 ${common.jar.dependencies}" />
 
@@ -191,12 +188,12 @@
       ${install.common.jar.dependencies} xalan-j2" />
 
   <property name="install.run.jar.dependencies"
-      value="antlr objectweb-asm/asm ${cglib-jar} ${c3p0} commons-discovery dom4j ${jaf} ${jta11-jars} sitemesh
+      value="antlr objectweb-asm/asm ${c3p0} commons-discovery dom4j ${jaf} ${jta11-jars} sitemesh
              taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec
              xalan-j2 xalan-j2-serializer xerces-j2 ${install.common.jar.dependencies}" />
 
   <property name="install.common.jar.dependencies"
-      value="bcel ${cglib-jar} commons-beanutils commons-cli commons-codec
+      value="bcel commons-beanutils commons-cli commons-codec
              commons-collections commons-digester commons-discovery
              commons-fileupload2-core commons-fileupload2-javax commons-io ${commons-lang} apache-commons-text/commons-text commons-logging ${commons-validator} 
              ${hibernate5deps}
@@ -208,7 +205,7 @@
              simple-core snakeyaml simpleframework/simplexml ${commons-jexl}" />
 
   <property name="dist.jar.dependencies"
-      value="antlr objectweb-asm/asm bcel ${c3p0} ${cglib-jar}
+      value="antlr objectweb-asm/asm bcel ${c3p0}
              commons-collections commons-beanutils commons-cli commons-codec
              commons-digester commons-discovery commons-fileupload2-core commons-fileupload2-javax commons-io
              ${commons-lang} apache-commons-text/commons-text commons-logging ${commons-compress}

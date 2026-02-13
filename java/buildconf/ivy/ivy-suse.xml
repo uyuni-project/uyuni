@@ -8,7 +8,6 @@
         <dependency org="suse" name="byte-buddy" rev="1.14.16" />
         <dependency org="suse" name="byte-buddy-dep" rev="1.14.16" />
         <dependency org="suse" name="c3p0" rev="0.9.5.5" />
-        <dependency org="suse" name="cglib" rev="3.3.0" />
         <dependency org="suse" name="classmate" rev="1.5.1" />
         <dependency org="suse" name="javax.mail" rev="1.6.2" />
         <dependency org="suse" name="client" rev="2.1" />

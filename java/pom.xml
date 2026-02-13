@@ -177,11 +177,6 @@
             </dependency>
             <!-- c3p0 inherited from uyuni-java-parent -->
             <dependency>
-                <groupId>cglib</groupId>
-                <artifactId>cglib</artifactId>
-                <version>3.3.0</version>
-            </dependency>
-            <dependency>
                 <groupId>com.fasterxml</groupId>
                 <artifactId>classmate</artifactId>
                 <version>1.5.1</version>
