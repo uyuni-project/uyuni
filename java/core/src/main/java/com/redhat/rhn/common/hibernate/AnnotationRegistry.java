@@ -777,7 +777,8 @@ public class AnnotationRegistry {
             XccdfRuleResultType.class,
             WebSessionImpl.class,
             XccdfTestResult.class,
-            WebEndpoint.class
+            WebEndpoint.class,
+            WebSessionImpl.class
     );
 
     /**
