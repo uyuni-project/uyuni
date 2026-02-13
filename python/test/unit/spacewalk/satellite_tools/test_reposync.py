@@ -335,7 +335,8 @@ class RepoSyncTest(unittest.TestCase):
         self.assertFalse(apply_async_mock.called)
 
     @patch("spacewalk.common.rhnConfig.initCFG", Mock())
-    def test_sync_raises_channel_timeout(self):
+    @patch("spacewalk.satellite_tools.reposync.send_error_mail")
+    def test_sync_raises_channel_timeout(self, send_error_mail):
         rs = self._create_mocked_reposync()
         # pylint: disable-next=invalid-name
         CFG = Mock()
@@ -345,13 +346,12 @@ class RepoSyncTest(unittest.TestCase):
 
         exception = self.reposync.ChannelTimeoutException("anony-error")
         rs.load_plugin = Mock(return_value=Mock(side_effect=exception))
-        rs.sendErrorMail = Mock()
 
         with patch("spacewalk.common.rhnConfig.CFG", CFG):
             # pylint: disable-next=unused-variable
             etime, ret = rs.sync()
             self.assertEqual(-1, ret)
-        self.assertEqual(rs.sendErrorMail.call_args, (("anony-error",), {}))
+        self.assertEqual(send_error_mail.call_args, call("Label", "anony-error"))
         self.assertEqual(self.reposync.log.call_args[0][1], exception)
 
     @patch("spacewalk.common.rhnConfig.initCFG", Mock())
@@ -364,7 +364,6 @@ class RepoSyncTest(unittest.TestCase):
         CFG.AUTO_GENERATE_BOOTSTRAP_REPO = 1
 
         rs.load_plugin = Mock(return_value=Mock(side_effect=TypeError))
-        rs.sendErrorMail = Mock()
         with patch("spacewalk.common.rhnConfig.CFG", CFG):
             # pylint: disable-next=unused-variable
             etime, ret = rs.sync()
@@ -492,28 +491,25 @@ class RepoSyncTest(unittest.TestCase):
 
     @patch("spacewalk.common.rhnConfig.initCFG", Mock())
     def test_send_error_mail(self):
-        rs = self._create_mocked_reposync()
         self.reposync.rhnMail.send = Mock()
-        self.reposync.hostname = "testhost"
-        # pylint: disable-next=invalid-name
-        CFG = Mock()
-        CFG.TRACEBACK_MAIL = "recipient"
 
-        with patch("spacewalk.common.rhnConfig.CFG", CFG):
-            rs.sendErrorMail("email body")
+        cfg = Mock()
+        cfg.TRACEBACK_MAIL = "recipient"
+        cfg.hostname = "testhost"
+        cfg.default_mail_from = "customhost <customhost@example.com"
+
+        with patch("spacewalk.common.rhnConfig.CFG", cfg):
+            self.reposync.send_error_mail("Label", "email body")
 
         self.assertEqual(
             self.reposync.rhnMail.send.call_args,
-            (
-                (
-                    {
-                        "To": "recipient",
-                        "From": "testhost <recipient>",
-                        "Subject": "SUSE Multi-Linux Manager repository sync failed (testhost)",
-                    },
-                    "Syncing Channel 'Label' failed:\n\nemail body",
-                ),
-                {},
+            call(
+                {
+                    "To": "recipient",
+                    "From": "customhost <customhost@example.com",
+                    "Subject": "SUSE Multi-Linux Manager repository sync failed (testhost)",
+                },
+                "Syncing Channel 'Label' failed:\n\nemail body",
             ),
         )
 
@@ -1221,20 +1217,20 @@ def test_channel_exceptions():
         ],
     )
     rs = _create_mocked_reposync(repoSync)
-    rs.sendErrorMail = Mock()
     # pylint: disable-next=protected-access
     repoSync.RepoSync._format_sources = Mock()
 
-    for exc_class, exc_name in [
-        (repoSync.ChannelException, "ChannelException"),
-        (yum_src.RepoMDError, "RepoMDError"),
-    ]:
-        rs.load_plugin = Mock(return_value=Mock(side_effect=exc_class("error msg")))
-        with patch("spacewalk.common.rhnConfig.CFG", CFG):
-            _, ret = rs.sync()
-            assert ret == -1
-        # pylint: disable-next=consider-using-f-string
-        assert rs.sendErrorMail.call_args == (("%s: %s" % (exc_name, "error msg"),), {})
+    with patch("spacewalk.satellite_tools.reposync.send_error_mail") as send_error_mail:
+        for exc_class, exc_name in [
+            (repoSync.ChannelException, "ChannelException"),
+            (yum_src.RepoMDError, "RepoMDError"),
+        ]:
+            rs.load_plugin = Mock(return_value=Mock(side_effect=exc_class("error msg")))
+            with patch("spacewalk.common.rhnConfig.CFG", CFG):
+                _, ret = rs.sync()
+                assert ret == -1
+            # pylint: disable-next=consider-using-f-string
+            assert send_error_mail.call_args == call("Label", f"{exc_name}: error msg")
 
 
 def _init_reposync(reposync, label="Label", repo_type=RTYPE, **kwargs):
