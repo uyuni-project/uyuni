@@ -149,7 +149,7 @@ public class RpmRepositoryWriterTest extends JMockBaseTestCaseWithUser {
         writer.writeRepomdFiles(channel);
 
         // CHECKSTYLE:OFF
-        String repomdExpected = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+        String repomdExpected = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
                 "<repomd xmlns=\"http://linux.duke.edu/metadata/repo\"><data type=\"primary\"><location href=\"repodata/xxx-primary.xml.gz\"/>" +
                 "<checksum type=\"sha256\">61d08b336c520bdfade052b808616e5a80e5eec29d82c2e7dbbd58bc7ee93864</checksum>" +
                 "<open-checksum type=\"sha256\">d515cc563a9cf6dfe2f0fbe999bbcec0d495f4c7e1cd09286d7df74c58300e1b</open-checksum><timestamp>1544711985</timestamp>" +
@@ -165,7 +165,7 @@ public class RpmRepositoryWriterTest extends JMockBaseTestCaseWithUser {
                 "<timestamp>1544711985</timestamp></data></repomd>";
         repomdExpected = cleanupRepomd(repomdExpected);
 
-        String primaryXmlExpected = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+        String primaryXmlExpected = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
                 "<metadata packages=\"1\" xmlns=\"http://linux.duke.edu/metadata/common\" xmlns:rpm=\"http://linux.duke.edu/metadata/rpm\"><package type=\"rpm\">" +
                 "<name>pkg1</name><arch>noarch</arch><version ver=\"1.0.0\" rel=\"1\" epoch=\"1\"/>" +
                 "<checksum type=\"md5\" pkgid=\"YES\">$1$jrBDaf62$URlwK4AAEVCdcWhcZdcSK1</checksum>" +

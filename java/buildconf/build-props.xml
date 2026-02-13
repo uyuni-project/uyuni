@@ -165,13 +165,11 @@
 
   <property name="build.jar.dependencies"
       value="ant ant-junit ${ant-contrib.path} antlr  ${test.build.jar.dependencies}
-      ${common.jar.dependencies} ${tomcat-jars} ${jasper-jars}
-       xalan-j2" />
+      ${common.jar.dependencies} ${tomcat-jars} ${jasper-jars}" />
 
   <property name="run.jar.dependencies"
       value="antlr objectweb-asm/asm ${cglib-jar} ${c3p0} commons-discovery dom4j ${jaf} ${jta11-jars} ojdbc14 sitemesh
-             taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec
-             xalan-j2 xalan-j2-serializer xerces-j2 ${common.jar.dependencies}" />
+             taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec ${common.jar.dependencies}" />
 
   <!-- =================== RPM build, use jpackage syntax ======================= -->
   <!-- property name="install.test.jar.dependencies"
@@ -188,12 +186,12 @@
 
   <property name="install.build.jar.dependencies"
       value="ant ant/ant-junit ${ant-contrib.path} antlr ${jasper-jars} ${test.build.jar.dependencies}
-      ${install.common.jar.dependencies} xalan-j2" />
+      ${install.common.jar.dependencies}" />
 
   <property name="install.run.jar.dependencies"
       value="antlr objectweb-asm/asm ${cglib-jar} ${c3p0} commons-discovery dom4j ${jaf} ${jta11-jars} sitemesh
              taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec
-             xalan-j2 xalan-j2-serializer xerces-j2 ${install.common.jar.dependencies}" />
+             ${install.common.jar.dependencies}" />
 
   <property name="install.common.jar.dependencies"
       value="bcel ${cglib-jar} commons-beanutils commons-cli commons-codec
@@ -219,7 +217,7 @@
              taglibs-standard-impl taglibs-standard-jstlel taglibs-standard-spec
              postgresql-jdbc ongres-scram/client ongres-scram/common ${stringprep-jars}
              snakeyaml simpleframework/simplexml ${suse-common-jars} ${suse-runtime-jars}
-	     xalan-j2 xalan-j2-serializer xerces-j2 simple-core ${ehcache}" />
+	         simple-core ${ehcache}" />
 
   <property name="taskomatic.jar.dependencies"
       value="${dist.jar.dependencies} jsch" />
