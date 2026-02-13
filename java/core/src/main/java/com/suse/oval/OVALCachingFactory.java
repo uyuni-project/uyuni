@@ -24,6 +24,7 @@ import com.redhat.rhn.common.db.datasource.Row;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.db.datasource.WriteMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 
 import com.suse.oval.manager.OVALLookupHelper;
 import com.suse.oval.ovaltypes.DefinitionType;
@@ -41,6 +42,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class OVALCachingFactory extends HibernateFactory {
@@ -82,12 +84,15 @@ public class OVALCachingFactory extends HibernateFactory {
         DataResult<Map<String, Object>> batch = new DataResult<>(new ArrayList<>(1000));
         for (ProductVulnerablePackages pvp : productVulnerablePackages) {
             for (String cve : pvp.getCves()) {
-                for (VulnerablePackage vulnerablePackage : pvp.getVulnerablePackages()) {
+                for (VulnerablePackage vp : pvp.getVulnerablePackages()) {
                     Map<String, Object> params = new HashMap<>();
                     params.put("product_name", pvp.getProductCpe());
                     params.put("cve_name", cve);
-                    params.put("package_name", vulnerablePackage.getName());
-                    params.put("fix_version", vulnerablePackage.getFixVersion().orElse(null));
+                    params.put("package_name", vp.getName());
+                    params.put("fix_epoch", vp.getFixVersion().map(PackageEvr::getEpoch).orElse(null));
+                    params.put("fix_version", vp.getFixVersion().map(PackageEvr::getVersion).orElse(null));
+                    params.put("fix_release", vp.getFixVersion().map(PackageEvr::getRelease).orElse(null));
+                    params.put("fix_type", vp.getFixVersion().map(PackageEvr::getType).orElse(null));
 
                     batch.add(params);
 
@@ -112,22 +117,32 @@ public class OVALCachingFactory extends HibernateFactory {
      * Lookup the list of vulnerable packages by the pair of cpe and cve
      *
      * @param cve the cve
-     * @param productCpe the product cpe
+     * @param serverId the id of the server
      * @return the list of vulnerable packages
      * */
-    public static List<VulnerablePackage> getVulnerablePackagesByProductAndCve(String productCpe, String cve) {
+    public static List<VulnerablePackage> getVulnerablePackagesByProductAndCve(Long serverId, String cve) {
         SelectMode mode = ModeFactory.getMode("oval_queries", "get_vulnerable_packages");
 
         Map<String, Object> params = new HashMap<>();
         params.put("cve_name", cve);
-        params.put("product_cpe", productCpe);
+        params.put("server_id", serverId);
 
         DataResult<Row> result = mode.execute(params);
 
         return result.stream().map(row -> {
             VulnerablePackage vulnerablePackage = new VulnerablePackage();
-            vulnerablePackage.setName((String) row.get("vulnerablepkgname"));
-            vulnerablePackage.setFixVersion((String) row.get("vulnerablepkgfixversion"));
+            vulnerablePackage.setName((String) row.get("package_name"));
+            vulnerablePackage.setFixVersion(
+                    Optional.ofNullable((String) row.get("fix_version"))
+                            .map(v -> new PackageEvr(
+                                    (String) row.get("fix_epoch"),
+                                    v,
+                                    (String) row.get("fix_release"),
+                                    (String) row.get("fix_type")
+                            ))
+                            .orElse(null)
+            );
+            vulnerablePackage.setAffected((Boolean) row.get("affected"));
             return vulnerablePackage;
         }).collect(Collectors.toList());
     }
