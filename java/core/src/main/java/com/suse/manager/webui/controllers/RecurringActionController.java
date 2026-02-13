@@ -34,6 +34,8 @@ import com.redhat.rhn.common.util.RecurringEventPicker;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.audit.ScapFactory;
+import com.redhat.rhn.domain.audit.ScapPolicy;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.recurringactions.RecurringAction;
 import com.redhat.rhn.domain.recurringactions.RecurringAction.TargetType;
@@ -42,6 +44,7 @@ import com.redhat.rhn.domain.recurringactions.state.RecurringStateConfig;
 import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
 import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
 import com.redhat.rhn.domain.recurringactions.type.RecurringPlaybook;
+import com.redhat.rhn.domain.recurringactions.type.RecurringScapPolicy;
 import com.redhat.rhn.domain.recurringactions.type.RecurringState;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.listview.PageControl;
@@ -59,11 +62,13 @@ import com.suse.manager.webui.utils.gson.PagedDataResultJson;
 import com.suse.manager.webui.utils.gson.RecurringActionDetailsDto;
 import com.suse.manager.webui.utils.gson.RecurringActionScheduleJson;
 import com.suse.manager.webui.utils.gson.ResultJson;
+import com.suse.manager.webui.utils.gson.ScapPolicyJson;
 import com.suse.manager.webui.utils.gson.SimpleMinionJson;
 import com.suse.manager.webui.utils.gson.StateConfigJson;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.StringUtils;
@@ -114,6 +119,7 @@ public class RecurringActionController {
         get("/manager/api/recurringactions/:id/details", asJson(withUser(RecurringActionController::getDetails)));
         get("/manager/api/recurringactions/:type/:id", asJson(withUser(RecurringActionController::listByEntity)));
         get("/manager/api/recurringactions/states", asJson(withUser(RecurringActionController::getStatesConfig)));
+        get("/manager/api/recurringactions/policies", asJson(withUser(RecurringActionController::listScapPolicies)));
         post("/manager/api/recurringactions/save", asJson(withUser(RecurringActionController::save)));
         post("/manager/api/recurringactions/custom/execute",
                 asJson(withUser(RecurringActionController::executeCustom)));
@@ -130,7 +136,9 @@ public class RecurringActionController {
      * @return the ModelAndView object to render the page
      */
     public static ModelAndView recurringActions(Request request, Response response, User user) {
-        return new ModelAndView(new HashMap<>(), "templates/schedule/recurring-actions.jade");
+        Map<String, Object> data = new HashMap<>();
+        data.put("betaEnabled", user.getBetaFeaturesEnabled());
+        return new ModelAndView(data, "templates/schedule/recurring-actions.jade");
     }
 
     /**
@@ -302,6 +310,23 @@ public class RecurringActionController {
             dto.setStates(StateConfigJson.listOrderedStates(
                     ((RecurringState) action.getRecurringActionType()).getStateConfig()));
         }
+        else if (RecurringActionType.ActionType.SCAPPOLICY.equals(action.getActionType())) {
+            dto.setTest(((RecurringScapPolicy) action.getRecurringActionType()).isTestMode());
+            ScapPolicy policy = ((RecurringScapPolicy) action.getRecurringActionType()).getScapPolicy();
+            if (policy != null) {
+                Set<ScapPolicyJson> policies = new HashSet<>();
+                ScapPolicyJson policyJson = new ScapPolicyJson();
+                policyJson.setId(policy.getId());
+                policyJson.setPolicyName(policy.getPolicyName());
+                policyJson.setScapContentId(policy.getScapContent().getId());
+                policyJson.setXccdfProfileId(policy.getXccdfProfileId());
+                if (policy.getDescription() != null) {
+                    policyJson.setDescription(policy.getDescription());
+                }
+                policies.add(policyJson);
+                dto.setPolicies(policies);
+            }
+        }
         else if (RecurringActionType.ActionType.PLAYBOOK.equals(action.getActionType())) {
             dto.setTest(((RecurringPlaybook) action.getRecurringActionType()).isTestMode());
             dto.setPlaybookPath(((RecurringPlaybook) action.getRecurringActionType()).getPlaybookPath());
@@ -312,7 +337,77 @@ public class RecurringActionController {
         }
         return dto;
     }
+    /**
+     * Processes a GET request to get a list of all the scap policies
+     *
+     * @param req  the request object
+     * @param res  the response object
+     * @param user the authorized user
+     * @return the result JSON object
+     */
+    public static String listScapPolicies(Request req, Response res, User user) {
+        String idParam = req.queryParams("id");
+        String filterParam = req.queryParams("filter");
+        List<ScapPolicy> scapPolicies = ScapFactory.listScapPolicies(user.getOrg());
 
+        // Get assigned policy if editing existing recurring action
+        Set<Integer> assignedPolicyIds = new HashSet<>();
+        if (idParam != null) {
+            Long id = Long.parseLong(idParam);
+            Optional<RecurringAction> action = RecurringActionManager.find(id);
+            if (action.isPresent() && action.get().getRecurringActionType() instanceof RecurringScapPolicy) {
+                ScapPolicy assignedPolicy = ((RecurringScapPolicy) action.get().getRecurringActionType()).
+                  getScapPolicy();
+                if (assignedPolicy != null) {
+                    assignedPolicyIds.add(assignedPolicy.getId());
+                }
+            }
+        }
+
+        // Filter policies if filter parameter is provided
+        if (filterParam != null && !filterParam.trim().isEmpty()) {
+            String filter = filterParam.toLowerCase();
+            scapPolicies = scapPolicies.stream()
+                    .filter(policy ->
+                        policy.getPolicyName().toLowerCase().contains(filter) ||
+                        (policy.getDescription() != null && policy.getDescription().toLowerCase().contains(filter)) ||
+                        policy.getDataStreamName().toLowerCase().contains(filter)
+                    )
+                    .collect(Collectors.toList());
+        }
+
+        List<JsonObject> scapPoliciesJson = scapPolicies.stream()
+                .map(policy -> {
+                    JsonObject json = new JsonObject();
+                    json.addProperty("id", policy.getId());
+                    json.addProperty("policyName", policy.getPolicyName());
+                    json.addProperty("dataStreamName", policy.getDataStreamName());
+                    json.addProperty("xccdfProfileId", policy.getXccdfProfileId());
+
+                    if (policy.getDescription() != null) {
+                        json.addProperty("description", policy.getDescription());
+                    }
+
+                    if (policy.getTailoringFile() != null) {
+                        json.addProperty("tailoringFileName", policy.getTailoringFile().getName());
+                    }
+
+                    if (policy.getTailoringProfileId() != null) {
+                        json.addProperty("tailoringFileProfileId", policy.getTailoringProfileId());
+                    }
+
+                    // Mark as assigned if this policy is used in the recurring action
+                    json.addProperty("assigned", assignedPolicyIds.contains(policy.getId()));
+                    if (assignedPolicyIds.contains(policy.getId())) {
+                        json.addProperty("position", 1);
+                    }
+
+                    return json;
+                })
+                .collect(Collectors.toList());
+
+        return json(res, scapPoliciesJson, new TypeToken<>() { });
+    }
 
     /**
      * Creates a new Recurring Action Schedule
@@ -478,6 +573,17 @@ public class RecurringActionController {
                     (json.getRecurringActionId() != null && details.getStates() != null)) {
                 Set<RecurringStateConfig> newConfig = getStateConfigFromJson(details.getStates(), action.getCreator());
                 ((RecurringState) action.getRecurringActionType()).saveStateConfig(newConfig);
+            }
+        }
+        else if (action.getRecurringActionType() instanceof RecurringScapPolicy recurringScapPolicy) {
+            recurringScapPolicy.setTestMode(details.isTest());
+            if (details.getPolicies() != null && !details.getPolicies().isEmpty()) {
+                details.getPolicies()
+                        .stream()
+                        .findFirst()
+                        .flatMap(policyJson -> ScapFactory.lookupScapPolicyByIdAndOrg(policyJson.getId(),
+                          action.getCreator().getOrg()))
+                        .ifPresent(recurringScapPolicy::setScapPolicy);
             }
         }
         else if (action.getRecurringActionType() instanceof RecurringPlaybook playbookType) {

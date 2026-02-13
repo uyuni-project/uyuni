@@ -62,7 +62,7 @@ public class XccdfTestResult implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "xccdf_test_result_seq")
-    @SequenceGenerator(name = "xccdf_test_result_seq", sequenceName = "rhn_xccdf_tresult_id_seq")
+    @SequenceGenerator(name = "xccdf_test_result_seq", sequenceName = "rhn_xccdf_tresult_id_seq", allocationSize = 1)
     @Column(name = "id", nullable = false)
     private Long id;
 

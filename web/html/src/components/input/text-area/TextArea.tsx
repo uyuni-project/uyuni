@@ -43,6 +43,7 @@ export const TextArea = (props: Props) => {
             rows={rows}
             cols={cols}
             title={props.title}
+            required={required}
           />
         );
       }}

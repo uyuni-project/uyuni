@@ -100,10 +100,15 @@ import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.action.supportdata.SupportDataAction;
 import com.redhat.rhn.domain.action.supportdata.SupportDataActionDetails;
+import com.redhat.rhn.domain.audit.ScapContent;
+import com.redhat.rhn.domain.audit.ScapPolicy;
+import com.redhat.rhn.domain.audit.TailoringFile;
 import com.redhat.rhn.domain.audit.XccdfBenchmark;
 import com.redhat.rhn.domain.audit.XccdfIdent;
 import com.redhat.rhn.domain.audit.XccdfIdentSystem;
 import com.redhat.rhn.domain.audit.XccdfProfile;
+import com.redhat.rhn.domain.audit.XccdfRuleFix;
+import com.redhat.rhn.domain.audit.XccdfRuleFixCustom;
 import com.redhat.rhn.domain.audit.XccdfRuleResult;
 import com.redhat.rhn.domain.audit.XccdfRuleResultType;
 import com.redhat.rhn.domain.audit.XccdfTestResult;
@@ -246,6 +251,7 @@ import com.redhat.rhn.domain.recurringactions.state.RecurringConfigChannel;
 import com.redhat.rhn.domain.recurringactions.state.RecurringInternalState;
 import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
 import com.redhat.rhn.domain.recurringactions.type.RecurringPlaybook;
+import com.redhat.rhn.domain.recurringactions.type.RecurringScapPolicy;
 import com.redhat.rhn.domain.recurringactions.type.RecurringState;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageArch;
@@ -669,6 +675,7 @@ public class AnnotationRegistry {
             RecurringInternalState.class,
             RecurringPlaybook.class,
             RecurringState.class,
+            RecurringScapPolicy.class,
             RegistryCredentials.class,
             RegTokenOrgDefault.class,
             ReportDBCredentials.class,
@@ -773,11 +780,16 @@ public class AnnotationRegistry {
             XccdfIdent.class,
             XccdfIdentSystem.class,
             XccdfProfile.class,
+            XccdfRuleFix.class,
+            XccdfRuleFixCustom.class,
             XccdfRuleResult.class,
             XccdfRuleResultType.class,
             WebSessionImpl.class,
             XccdfTestResult.class,
-            WebEndpoint.class
+            WebEndpoint.class,
+            ScapContent.class,
+            ScapPolicy.class,
+            TailoringFile.class
     );
 
     /**

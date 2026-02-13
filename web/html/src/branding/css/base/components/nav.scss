@@ -1,5 +1,7 @@
 $nav-tabs-offset: 30px;
 
+
+
 .nav-tabs {
   margin-bottom: 0.25rem;
   border-bottom: 1px solid $eos-bc-gray-100;
@@ -44,5 +46,13 @@ $nav-tabs-offset: 30px;
         }
       }
     }
-  }  
+  }
+  .beta-feature {
+    a {
+      &::after {
+        content: " BETA";
+        @extend %beta-badge-style;
+      }
+    }
+  }
 }

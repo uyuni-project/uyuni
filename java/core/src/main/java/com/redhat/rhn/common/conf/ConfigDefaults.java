@@ -245,6 +245,18 @@ public class ConfigDefaults {
     public static final String CVE_AUDIT_ENABLE_OVAL_METADATA = "java.cve_audit.enable_oval_metadata";
 
     /**
+     * SCAP XCCDF profiles XSL transformation file path
+     */
+    public static final String SCAP_XCCDF_PROFILES_XSL = "scap.xccdf.profiles.xsl";
+    private static final String DEFAULT_SCAP_XCCDF_PROFILES_XSL = "/usr/share/susemanager/scap/xccdf-profiles.xslt.in";
+
+    /**
+     * SCAP XCCDF resume XSL transformation file path
+     */
+    public static final String SCAP_XCCDF_RESUME_XSL = "scap.xccdf.resume.xsl";
+    private static final String DEFAULT_SCAP_XCCDF_RESUME_XSL = "/usr/share/susemanager/scap/xccdf-resume.xslt.in";
+
+    /**
      * Token lifetime in seconds
      */
     public static final String TEMP_TOKEN_LIFETIME = "server.susemanager.temp_token_lifetime";
@@ -464,6 +476,7 @@ public class ConfigDefaults {
     public String getOidcUsernameClaim() {
         return Config.get().getString(OIDC_JWT_USERNAME_CLAIM, "preferred_username");
     }
+
 
 
     private ConfigDefaults() {
@@ -1313,5 +1326,21 @@ public class ConfigDefaults {
     public String getErrataAdvisoryMapCsvDownloadUrl() {
         return Config.get().getString(ERRATA_ADVISORY_MAP_CSV_DOWNLOAD_URL,
                 "https://ftp.suse.com/pub/projects/security/advisory-map.csv");
+    }
+
+    /**
+     * Returns the path to the SCAP XCCDF profiles XSL transformation file.
+     * @return the path to the XSL file
+     */
+    public String getScapXccdfProfilesXsl() {
+        return Config.get().getString(SCAP_XCCDF_PROFILES_XSL, DEFAULT_SCAP_XCCDF_PROFILES_XSL);
+    }
+
+    /**
+     * Returns the path to the SCAP XCCDF resume XSL transformation file.
+     * @return the path to the XSL file
+     */
+    public String getScapXccdfResumeXsl() {
+        return Config.get().getString(SCAP_XCCDF_RESUME_XSL, DEFAULT_SCAP_XCCDF_RESUME_XSL);
     }
 }

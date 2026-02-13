@@ -424,13 +424,19 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/audit/ListScap.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="nav.system.audit.schedule">
+      </trans-unit>
+      <trans-unit id="nav.system.audit.schedule">
           <source>Schedule</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/audit/ListScap.do</context>
         </context-group>
-        </trans-unit>
+      </trans-unit>
+      <trans-unit id="nav.system.audit.schedule.beta">
+          <source>Schedule</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/manager/systems/details/schedule-scap-scan</context>
+        </context-group>
+      </trans-unit>
       <!-- CoCo Attestation -->
       <trans-unit id="nav.system.coco">
         <source>Confidential Computing</source>

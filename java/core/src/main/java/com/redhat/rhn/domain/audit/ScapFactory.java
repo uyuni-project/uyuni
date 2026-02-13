@@ -17,13 +17,24 @@ package com.redhat.rhn.domain.audit;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.domain.org.Org;
+import com.redhat.rhn.domain.user.User;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.type.StandardBasicTypes;
 
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 /**
  * ScapFactory - the singleton class used to fetch and store
@@ -87,6 +98,7 @@ public class ScapFactory extends HibernateFactory {
         results.forEach(ScapFactory::delete);
     }
 
+
     /**
      * Find a {@link XccdfBenchmark} by id.
      * @param benchmarkId benchmark id
@@ -143,6 +155,362 @@ public class ScapFactory extends HibernateFactory {
      */
     public static void save(XccdfRuleResult ruleResult) {
         getSession().persist(ruleResult);
+    }
+
+    /**
+     * List all tailoring files objects in the database for an organization
+     * @param org the organization
+     * @return Returns a list of  tailoring files
+     */
+    public static List<TailoringFile> listTailoringFiles(Org org) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<TailoringFile> criteria = builder.createQuery(TailoringFile.class);
+        Root<TailoringFile> root = criteria.from(TailoringFile.class);
+        criteria.where(builder.equal(root.get("org"), org));
+        return getSession().createQuery(criteria).getResultList();
+    }
+
+    /**
+     * Lookup for a tailoring file object based on the id and organization
+     * @param id tailoring file ID
+     * @param org the organization
+     * @return optional of tailoring file object
+     */
+    public static Optional<TailoringFile> lookupTailoringFileByIdAndOrg(Integer id, Org org) {
+        if (Objects.isNull(id)) {
+            return Optional.empty();
+        }
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<TailoringFile> select = builder.createQuery(TailoringFile.class);
+        Root<TailoringFile> root = select.from(TailoringFile.class);
+        select.where(builder.and(
+                builder.equal(root.get("id"), id),
+                builder.equal(root.get("org"), org)));
+
+        return getSession().createQuery(select).uniqueResultOptional();
+    }
+
+    /**
+     * Lookup for Tailoring files by an id list and organization
+     * @param ids tailoring file id list
+     * @param org the organization
+     * @return Returns a list of tailoring files with the given ids if it exists
+     * inside the organization
+     */
+    public static List<TailoringFile>  lookupTailoringFilesByIds(List<Long> ids, Org org) {
+        if (ids == null || ids.isEmpty()) {
+            return Collections.emptyList();
+        }
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<TailoringFile> criteria = builder.createQuery(TailoringFile.class);
+        Root<TailoringFile> root = criteria.from(TailoringFile.class);
+        criteria.where(builder.and(
+                root.get("id").in(ids),
+                builder.equal(root.get("org"), org)));
+        return getSession().createQuery(criteria).getResultList();
+    }
+
+    /**
+     * Deletes the Tailoring file object from the database
+     * @param tailoringFile TailoringFile object
+     */
+    public static void deleteTailoringFile(TailoringFile tailoringFile) {
+        singleton.removeObject(tailoringFile);
+    }
+    /**
+     * Save the tailoringFile object to the database
+     * @param tailoringFile object
+     */
+    public static void saveTailoringFile(TailoringFile tailoringFile) {
+        tailoringFile.setModified(new Date());
+        singleton.saveObject(tailoringFile);
+    }
+
+    /**
+     * List all SCAP polices objects in the database
+     * @param org the organization
+     * @return Returns a list of  ScapPolicies
+     */
+    public static List<ScapPolicy> listScapPolicies(Org org) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<ScapPolicy> criteria = builder.createQuery(ScapPolicy.class);
+        Root<ScapPolicy> root = criteria.from(ScapPolicy.class);
+        criteria.where(builder.equal(root.get("org"), org));
+        return getSession().createQuery(criteria).getResultList();
+    }
+
+    /**
+     * Lookup for Scap policies by an id list and organization
+     * @param ids ScapPolicy id list
+     * @param org the organization
+     * @return Returns a list of  ScapPolicies inside the organization
+     */
+    public static List<ScapPolicy>  lookupScapPoliciesByIds(List<Integer> ids, Org org) {
+        if (ids == null || ids.isEmpty()) {
+            return Collections.emptyList();
+        }
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<ScapPolicy> criteria = builder.createQuery(ScapPolicy.class);
+        Root<ScapPolicy> root = criteria.from(ScapPolicy.class);
+        criteria.where(builder.and(
+                root.get("id").in(ids),
+                builder.equal(root.get("org"), org)));
+        return getSession().createQuery(criteria).getResultList();
+    }
+    /**
+     * Lookup for a ScapPolicy object based on the id and organization
+     * @param id ScapPolicy ID
+     * @param org the organization
+     * @return optional of ScapPolicy object
+     */
+    public static Optional<ScapPolicy> lookupScapPolicyByIdAndOrg(Integer id, Org org) {
+        if (Objects.isNull(id)) {
+            return Optional.empty();
+        }
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<ScapPolicy> select = builder.createQuery(ScapPolicy.class);
+        Root<ScapPolicy> root = select.from(ScapPolicy.class);
+        select.where(builder.and(
+                builder.equal(root.get("id"), id),
+                builder.equal(root.get("org"), org)));
+        return getSession().createQuery(select).uniqueResultOptional();
+    }
+    /**
+     * Deletes the Scap Policy object from the database
+     * @param scapPolicy ScapPolicy object
+     */
+    public static void deleteScapPolicy(ScapPolicy scapPolicy) {
+        singleton.removeObject(scapPolicy);
+    }
+    /**
+     * Save the scapPolicy object to the database
+     * @param scapPolicy object
+     */
+    public static void saveScapPolicy(ScapPolicy scapPolicy) {
+        scapPolicy.setModified(new Date());
+        singleton.saveObject(scapPolicy);
+    }
+
+    /**
+     * List all SCAP content objects in the database
+     * @return Returns a list of SCAP content
+     */
+    public static List<ScapContent> listScapContent() {
+        return getSession().createQuery("FROM ScapContent", ScapContent.class).getResultList();
+    }
+
+    /**
+     * Lookup for a SCAP content object based on the id
+     * @param id SCAP content ID
+     * @return optional of SCAP content object
+     */
+    public static Optional<ScapContent> lookupScapContentById(Long id) {
+        if (Objects.isNull(id)) {
+            return Optional.empty();
+        }
+        return Optional.ofNullable(singleton.lookupObjectByParam(ScapContent.class, "id", id));
+    }
+
+    /**
+     * Lookup for SCAP content by an id list
+     * @param ids SCAP content id list
+     * @return Returns a list of SCAP content with the given ids
+     */
+    public static List<ScapContent> lookupScapContentByIds(List<Long> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return Collections.emptyList();
+        }
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<ScapContent> criteria = builder.createQuery(ScapContent.class);
+        Root<ScapContent> root = criteria.from(ScapContent.class);
+        criteria.where(root.get("id").in(ids));
+        return getSession().createQuery(criteria).getResultList();
+    }
+
+    /**
+     * Deletes the SCAP content object from the database
+     * @param scapContent ScapContent object
+     */
+    public static void deleteScapContent(ScapContent scapContent) {
+        singleton.removeObject(scapContent);
+    }
+
+    /**
+     * Deletes the SCAP content object from the database and flushes to enforce constraints immediately.
+     * @param scapContent ScapContent object
+     */
+    public static void deleteScapContentAndFlush(ScapContent scapContent) {
+        singleton.removeObject(scapContent);
+        getSession().flush();
+    }
+
+    /**
+     * Save the SCAP content object to the database
+     * @param scapContent object
+     */
+    public static void saveScapContent(ScapContent scapContent) {
+        scapContent.setModified(new Date());
+        singleton.saveObject(scapContent);
+    }
+
+    /**
+     * Save the XccdfRuleFix object
+     * @param xccdfRuleFix the XccdfRuleFix to save
+     */
+    public static void saveXccfRuleFix(XccdfRuleFix xccdfRuleFix) {
+        singleton.saveObject(xccdfRuleFix, true);
+    }
+
+    /**
+     * Find a {@link XccdfRuleFix} by identifier and benchmark id.
+     * @param benchmarkId benchmark id
+     * @param identifier identifier
+     * @return the {@link XccdfRuleFix} if any
+     */
+    public static Optional<XccdfRuleFix> lookupRuleRemediation(String benchmarkId, String identifier) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<XccdfRuleFix> criteria = builder.createQuery(XccdfRuleFix.class);
+        Root<XccdfRuleFix> root = criteria.from(XccdfRuleFix.class);
+        criteria.where(
+            builder.and(
+                builder.equal(root.get("benchmarkIdentifier"), benchmarkId),
+                builder.equal(root.get("identifier"), identifier)
+            )
+        );
+        return getSession().createQuery(criteria).getResultStream().findFirst();
+    }
+
+    /**
+     * Find all {@link XccdfRuleFix} for a given benchmark id (bulk lookup).
+     * @param benchmarkId benchmark id
+     * @return map of identifier to XccdfRuleFix
+     */
+    public static Map<String, XccdfRuleFix> lookupRuleRemediationsByBenchmark(String benchmarkId) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<XccdfRuleFix> criteria = builder.createQuery(XccdfRuleFix.class);
+        Root<XccdfRuleFix> root = criteria.from(XccdfRuleFix.class);
+        criteria.where(builder.equal(root.get("benchmarkIdentifier"), benchmarkId));
+
+        return getSession().createQuery(criteria)
+            .getResultStream()
+            .collect(Collectors.toMap(
+                XccdfRuleFix::getIdentifier,
+                fix -> fix,
+                (existing, replacement) -> existing
+            ));
+    }
+
+    /**
+     * Lookup custom remediation for a rule and organization.
+     * @param ruleFixId the XccdfRuleFix ID
+     * @param org the organization
+     * @return optional custom remediation
+     */
+    public static Optional<XccdfRuleFixCustom> lookupCustomRemediation(Long ruleFixId, Org org) {
+        CriteriaBuilder builder = getSession().getCriteriaBuilder();
+        CriteriaQuery<XccdfRuleFixCustom> criteria = builder.createQuery(XccdfRuleFixCustom.class);
+        Root<XccdfRuleFixCustom> root = criteria.from(XccdfRuleFixCustom.class);
+        criteria.where(
+            builder.and(
+                builder.equal(root.get("ruleFix").get("id"), ruleFixId),
+                builder.equal(root.get("org"), org)
+            )
+        );
+        return getSession().createQuery(criteria).uniqueResultOptional();
+    }
+
+    /**
+     * Lookup custom remediation by identifier, benchmark, and organization.
+     * @param identifier the rule identifier
+     * @param benchmarkId the benchmark ID
+     * @param org the organization
+     * @return optional custom remediation
+     */
+    public static Optional<XccdfRuleFixCustom> lookupCustomRemediationByIdentifier(
+            String identifier, String benchmarkId, Org org) {
+        Optional<XccdfRuleFix> ruleFix = lookupRuleRemediation(benchmarkId, identifier);
+        if (ruleFix.isEmpty()) {
+            return Optional.empty();
+        }
+        return lookupCustomRemediation(ruleFix.get().getId(), org);
+    }
+
+    /**
+     * Save or update custom remediation.
+     * @param identifier the rule identifier
+     * @param benchmarkId the benchmark ID
+     * @param scriptType the script type (BASH or SALT)
+     * @param remediationContent the script content
+     * @param org the organization
+     * @param user the user making the change
+     */
+    public static void saveCustomRemediation(String identifier, String benchmarkId,
+                                            ScriptType scriptType, String remediationContent,
+                                            Org org, User user) {
+        XccdfRuleFix ruleFix = lookupRuleRemediation(benchmarkId, identifier)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "No SCAP rule fix found for identifier: " + identifier));
+        XccdfRuleFixCustom custom = lookupCustomRemediation(ruleFix.getId(), org)
+                .orElseGet(() -> {
+                    XccdfRuleFixCustom newCustom = new XccdfRuleFixCustom();
+                    newCustom.setRuleFix(ruleFix);
+                    newCustom.setOrg(org);
+                    newCustom.setCreated(new Date());
+                    newCustom.setCreatedBy(user);
+                    return newCustom;
+                });
+
+        if (scriptType == ScriptType.BASH) {
+            custom.setCustomRemediationBash(remediationContent);
+        }
+        else if (scriptType == ScriptType.SALT) {
+            custom.setCustomRemediationSalt(remediationContent);
+        }
+        else {
+            throw new IllegalArgumentException("Script type must be 'bash' or 'salt'");
+        }
+        custom.setModified(new Date());
+        custom.setModifiedBy(user);
+        singleton.saveObject(custom);
+    }
+
+    /**
+     * Delete custom remediation for a specific script type.
+     * @param identifier the rule identifier
+     * @param benchmarkId the benchmark ID
+     * @param scriptType the script type (BASH or SALT)
+     * @param org the organization
+     * @return true if deleted, false if not found
+     */
+    public static boolean deleteCustomRemediation(String identifier, String benchmarkId,
+                                                 ScriptType scriptType, Org org) {
+        Optional<XccdfRuleFixCustom> customOpt = lookupCustomRemediationByIdentifier(identifier, benchmarkId, org);
+        if (customOpt.isEmpty()) {
+            return false;
+        }
+        XccdfRuleFixCustom custom = customOpt.get();
+        if (scriptType == ScriptType.BASH) {
+            custom.setCustomRemediationBash(null);
+        }
+        else if (scriptType == ScriptType.SALT) {
+            custom.setCustomRemediationSalt(null);
+        }
+        else {
+            return false;
+        }
+
+        custom.setModified(new Date());
+
+        // If both are null, delete the entire custom record
+        if (custom.getCustomRemediationBash() == null &&
+            custom.getCustomRemediationSalt() == null) {
+            singleton.removeObject(custom);
+        }
+        else {
+            singleton.saveObject(custom);
+        }
+
+        return true;
     }
 
     /**

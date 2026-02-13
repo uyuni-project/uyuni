@@ -1505,6 +1505,18 @@ public class UserImpl extends BaseDomainHelper implements User {
         this.userInfo.setWebTheme(webThemeIn);
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public boolean getBetaFeaturesEnabled() {
+        return this.userInfo.getBetaFeaturesEnabled();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void setBetaFeaturesEnabled(boolean betaFeaturesEnabledIn) {
+        this.userInfo.setBetaFeaturesEnabled(betaFeaturesEnabledIn);
+    }
+
     @Override
     public Set<Namespace> getNamespaces() {
         return this.namespaces;

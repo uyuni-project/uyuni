@@ -58,6 +58,7 @@ public class XccdfSearchAction extends BaseSearchAction {
                                       DynaActionForm form)
             throws MalformedURLException, XmlRpcException, XmlRpcFault {
         RequestContext context = new RequestContext(request);
+        request.setAttribute("user", context.getCurrentUser());
         String searchString = form.getString(SEARCH_STR);
         String whereToSearch = form.getString(WHERE_TO_SEARCH);
 

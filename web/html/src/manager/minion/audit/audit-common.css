@@ -1,0 +1,80 @@
+/* Schedule SCAP Scan Form Styles */
+
+.schedule-scap-scan-form .fetch-remote-checkbox {
+  margin-right: 8px;
+}
+
+.schedule-scap-scan-form .fetch-remote-help {
+  color: #425074;
+  font-size: 13px;
+}
+
+/* Rule Result Detail Styles */
+
+:global(.rule-result-detail .remediation-panel) {
+  margin-top: 30px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+:global(.rule-result-detail .remediation-panel-header) {
+  padding: 15px 20px;
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #ddd;
+  border-radius: 4px 4px 0 0;
+}
+
+:global(.rule-result-detail .remediation-panel-header h4) {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+:global(.rule-result-detail .remediation-panel-body) {
+  padding: 20px;
+}
+
+:global(.rule-result-detail .tab-content) {
+  display: none;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+}
+
+:global(.rule-result-detail .tab-content.active) {
+  display: block;
+}
+
+:global(.rule-result-detail .tab-description) {
+  margin-bottom: 10px;
+  font-size: 13px;
+  color: #666;
+  font-style: italic;
+}
+
+:global(.rule-result-detail .editor-container) {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+:global(.rule-result-detail .script-type-label) {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #333;
+}
+
+:global(.rule-result-detail .script-type-container) {
+  margin-bottom: 15px;
+}
+
+:global(.rule-result-detail .editor-help-text) {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #666;
+}

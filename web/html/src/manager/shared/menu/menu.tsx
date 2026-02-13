@@ -19,12 +19,14 @@ type LinkProps = {
   title?: string;
   responsiveLabel?: ReactNode;
   label?: ReactNode;
+  betaBadge?: ReactNode;
 };
 
 const Link = (props: LinkProps) => (
   <a href={props.url} className={flatten([props.className, "js-spa"])} target={props.target} title={props.title}>
     {props.responsiveLabel}
     {props.label}
+    {props.betaBadge}
   </a>
 );
 
@@ -37,6 +39,7 @@ type NodeProps = {
   label: string;
   isSearchActive?: boolean;
   isOpen?: boolean;
+  isBeta?: boolean;
 };
 
 class Node extends Component<NodeProps> {
@@ -48,6 +51,8 @@ class Node extends Component<NodeProps> {
   };
 
   render() {
+    const betaBadge = this.props.isBeta ? <span className="menu-beta-badge">BETA</span> : null;
+
     return (
       <div
         className={this.props.isLeaf ? "leafLink" : "nodeLink"}
@@ -55,7 +60,12 @@ class Node extends Component<NodeProps> {
         role="button"
       >
         {this.props.icon ? <i className={"fa " + this.props.icon}></i> : null}
-        <Link url={this.props.url} target={this.props.target} label={stringToReact(this.props.label)} />
+        <Link
+          url={this.props.url}
+          target={this.props.target}
+          label={stringToReact(this.props.label)}
+          betaBadge={betaBadge}
+        />
         {this.props.isLeaf ? null : !this.props.isSearchActive ? (
           <i className={"submenuIcon " + (this.props.isOpen ? "fa fa-angle-up" : "fa fa-angle-down")}></i>
         ) : null}
@@ -146,6 +156,7 @@ class Element extends Component<ElementProps, ElementState> {
           isOpen={this.state.open}
           isSearchActive={this.props.searchString}
           icon={element.icon}
+          isBeta={element.isBeta}
         />
         {this.isLeaf(element) ? null : (
           <MenuLevel
