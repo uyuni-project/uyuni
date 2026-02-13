@@ -149,12 +149,12 @@ public class RbacRouteValidator {
                     .toList();
 
             logIssues(missingRoutes, noNamespaceEndpts, noAccessNamespaces);
-            LOG.warn("Please note an invalid configuration will terminate execution in later releases.");
         }
     }
 
     private static void logIssues(List<RouteInfo> missingRoutes, List<WebEndpoint> noNamespaceEndpts,
             List<Namespace> noAccessNamespaces) {
+        boolean fatal = false;
         if (!missingRoutes.isEmpty()) {
             StringBuilder sb = new StringBuilder("Found " + missingRoutes.size() +
                     " endpoints missing RBAC mappings:");
@@ -163,6 +163,7 @@ public class RbacRouteValidator {
                         .append(" [").append(route.getHttpMethod()).append("]");
             }
             LOG.error(sb::toString);
+            fatal = true;
         }
 
         if (!noNamespaceEndpts.isEmpty()) {
@@ -173,6 +174,7 @@ public class RbacRouteValidator {
                         .append(" [").append(endpoint.getHttpMethod()).append("]");
             }
             LOG.error(sb::toString);
+            fatal = true;
         }
 
         if (!noAccessNamespaces.isEmpty()) {
@@ -183,6 +185,10 @@ public class RbacRouteValidator {
                         .append(" [").append(ns.getAccessMode().getLabel()).append("]");
             }
             LOG.warn(sb::toString);
+        }
+
+        if (fatal) {
+            throw new RbacRouteValidationException();
         }
     }
 }
