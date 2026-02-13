@@ -87,6 +87,7 @@ with open(config_path + "httpd.yaml", encoding="utf-8") as httpdSource:
 
     # store the systemid content, but only if it does not exist already
     if not os.path.exists("/etc/sysconfig/rhn/systemid"):
+        Path("/etc/sysconfig/rhn").mkdir(parents=True, exist_ok=True)
         with open("/etc/sysconfig/rhn/systemid", "w", encoding="utf-8") as file:
             file.write(httpdConfig.get("system_id"))
 
@@ -125,8 +126,7 @@ with open(config_path + "httpd.yaml", encoding="utf-8") as httpdSource:
 
     # Create conf file
     with open("/etc/rhn/rhn.conf", "w", encoding="utf-8") as file:
-        file.write(
-            f"""# Automatically generated Uyuni Proxy Server configuration file.
+        file.write(f"""# Automatically generated Uyuni Proxy Server configuration file.
         # -------------------------------------------------------------------------
         
         # Debug log level
@@ -157,8 +157,7 @@ with open(config_path + "httpd.yaml", encoding="utf-8") as httpdSource:
         
         # Destination of all tracebacks, etc.
         traceback_mail = {config['email']}
-        """
-        )
+        """)
 
         if "timeout" in config:
             file.write(f"proxy.timeout = {config['timeout']}")
@@ -173,8 +172,7 @@ with open(config_path + "httpd.yaml", encoding="utf-8") as httpdSource:
         smlm_conf.truncate()
 
     with open("/etc/apache2/vhosts.d/ssl.conf", "w", encoding="utf-8") as file:
-        file.write(
-            f"""
+        file.write(f"""
 <IfDefine SSL>
 <IfDefine !NOSSL>
 <VirtualHost _default_:443>
@@ -199,8 +197,7 @@ with open(config_path + "httpd.yaml", encoding="utf-8") as httpdSource:
 </VirtualHost>
 </IfDefine>
 </IfDefine>
-"""
-        )
+""")
 
 
 # Make sure permissions are set as desired
