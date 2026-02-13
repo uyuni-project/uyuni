@@ -142,6 +142,45 @@ PKGLISTDEBIAN12 = [
     "venv-salt-minion",
 ]
 
+PKGLISTDEBIAN13 = [
+    # gnupg dependencies
+    "dirmngr",
+    "gnupg",
+    "gnupg-l10n",
+    "gnupg-utils",
+    "gpg",
+    "gpg-agent",
+    "gpg-wks-client",
+    "gpgconf",
+    "gpgsm",
+    "gpgv",
+    "libassuan9",
+    "libffi8",
+    "libgcrypt20",
+    "libgnutls30t64",
+    "libgpg-error-l10n",
+    "libgpg-error0",
+    "libgpm2",
+    "libidn2-0",
+    "libksba8",
+    "libldap-common",
+    "libldap2",
+    "libncursesw6",
+    "libnpth0t64",
+    "libp11-kit0",
+    "libreadline8t64",
+    "libsasl2-2",
+    "libsasl2-modules",
+    "libsasl2-modules-db",
+    "libtasn1-6",
+    "libunistring5",
+    "pinentry-curses",
+    "readline-common",
+    # end of gnupg dependencies
+    "logrotate",
+    "venv-salt-minion",
+]
+
 PKGLISTRASPBERRYPIOS12 = [
     # gnupg dependencies
     "dirmngr",
@@ -1478,6 +1517,32 @@ DATA = {
         "BASECHANNEL": "raspberrypios-12-pool-armhf-uyuni",
         "PKGLIST": PKGLISTRASPBERRYPIOS12,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/raspbian/12/bootstrap/",
+        "TYPE": "deb",
+    },
+    "debian13-amd64": {
+        # TODO: Use the right PDIDs
+        #"PDID": [-43, 3028],
+        #"BETAPDID": [3030],
+        "PKGLIST": PKGLISTDEBIAN13,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/debian/13/bootstrap/",
+        "TYPE": "deb",
+    },
+    "debian13-amd64-uyuni": {
+        "BASECHANNEL": "debian-13-pool-amd64-uyuni",
+        "PKGLIST": PKGLISTDEBIAN13,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/debian/13/bootstrap/",
+        "TYPE": "deb",
+    },
+    "raspberrypios-13-arm64-uyuni": {
+        "BASECHANNEL": "raspberrypios-13-pool-arm64-uyuni",
+        "PKGLIST": PKGLISTDEBIAN13,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/debian/13/bootstrap/",
+        "TYPE": "deb",
+    },
+    "raspberrypios-13-armhf-uyuni": {
+        "BASECHANNEL": "raspberrypios-13-pool-armhf-uyuni",
+        "PKGLIST": PKGLISTDEBIAN13,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/raspbian/13/bootstrap/",
         "TYPE": "deb",
     },
     "openeuler22.03-x86_64-uyuni": {

@@ -2592,7 +2592,7 @@ public class Server extends BaseDomainHelper implements Identifiable {
                 isUbuntu1804() || isUbuntu2004() || isUbuntu2204() || isUbuntu2404() ||
                 isRedHat6() || isRedHat7() || isRedHat8() || isRedHat9() || // isRedHat catch also Rocky and Alma
                 isAlibaba2() || isAmazon2() || isAmazon2023() ||
-                isDebian10() || isDebian11() || isDebian12();
+                isDebian10() || isDebian11() || isDebian12() || isDebian13();
     }
 
     /**
@@ -2724,16 +2724,20 @@ public class Server extends BaseDomainHelper implements Identifiable {
         return ServerConstants.DEBIAN.equalsIgnoreCase(getOs());
     }
 
-    boolean isDebian12() {
-        return ServerConstants.DEBIAN.equals(getOs()) && getRelease().equals("12");
+    boolean isDebian10() {
+        return ServerConstants.DEBIAN.equals(getOs()) && getRelease().equals("10");
     }
 
     boolean isDebian11() {
         return ServerConstants.DEBIAN.equals(getOs()) && getRelease().equals("11");
     }
 
-    boolean isDebian10() {
-        return ServerConstants.DEBIAN.equals(getOs()) && getRelease().equals("10");
+    boolean isDebian12() {
+        return ServerConstants.DEBIAN.equals(getOs()) && getRelease().equals("12");
+    }
+
+    boolean isDebian13() {
+        return ServerConstants.DEBIAN.equals(getOs()) && getRelease().equals("13");
     }
 
     boolean isRHEL() {
