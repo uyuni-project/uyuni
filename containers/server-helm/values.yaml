@@ -751,6 +751,24 @@ ingress:
   #  sslRedirect:
   #  nossl:
 
+## TFTP server configuration
+##
+tftp:
+  ## image overrides the default image computed using the repository property
+  ## Leave undefined to use the default
+  image:
+  ## tag overrides the default tag in the tag property
+  ## Leave undefined to use the default
+
+  tag:
+  ## enable or disable the TFTP server.
+  enable: true
+
+  ## Use the host network to bypass the Kubernetes network layers.
+  ## This may be needed if not using a LoadBalancer for the TFTP server.
+  ## Note that this may be more complex to manage on multi-node clusters.
+  hostNetwork: false
+
 ## hub API component configuration
 ##
 hubAPI:

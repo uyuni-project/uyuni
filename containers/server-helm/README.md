@@ -81,8 +81,11 @@ Here is a list of the ports to map:
 | TCP      | 8001  | taskomatic   | 8001         | Only if installed with `exposeJavaDebug = true`  |
 | TCP      | 8002  | search       | 8002         | Only if installed with `exposeJavaDebug = true`  |
 | TCP      | 8003  | tomcat       | 8003         | Only if installed with `exposeJavaDebug = true`  |
-| UDP      | 69    | tftp         | 69           |                                                  |
 
+
+Exposing the `tftp` service has to be done differently due to the way TFTP protocol is working.
+Either use the host network using the `tftp.hostnetwork` value or configure a load balancer for the `tftp` service.
+Note that not all load balancers will work: `serviceLB` implementation is not compatible with TFTP protocol, while MetalLB works.
 
 ## Usage
 

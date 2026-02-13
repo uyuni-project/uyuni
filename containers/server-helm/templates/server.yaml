@@ -11,6 +11,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/component: server
+      app.kubernetes.io/part-of: uyuni
   strategy:
     type: Recreate
   template:
@@ -57,8 +58,6 @@ spec:
         - containerPort: 8002
         - containerPort: 8003
 {{- end }}
-        - containerPort: 69
-          protocol: UDP
         - containerPort: 9100
 {{- if ne .Values.enableMonitoring false }}
         - containerPort: 5556

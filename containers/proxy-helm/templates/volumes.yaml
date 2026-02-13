@@ -1,57 +1,36 @@
+{{- $config := .Values.global.config | fromYaml }}
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: package-cache-pv-claim
+  name: squid-cache
   namespace: "{{ .Release.Namespace }}"
-spec:
-{{- if .Values.persistentVolume.storageClass }}
-{{- if (eq "-" .Values.persistentVolume.storageClass) }}
-  storageClassName: ""
-{{- else }}
-  storageClassName: "{{ .Values.persistentVolume.storageClass }}"
+  labels:
+    app.kubernetes.io/component: proxy
+    app.kubernetes.io/part-of: uyuni
+{{- if .Values.volumes.squid.extraLabels }}
+{{ toYaml .Values.volumes.squid.extraLabels | nindent 4 }}
 {{- end }}
+{{- if .Values.volumes.squid.annotations }}
+  annotations:
+{{ toYaml .Values.volumes.squid.annotations | nindent 4 }}
+{{- end }}
+spec:
+{{- if .Values.volumes.squid.storageClass }}
+  {{- if eq "-" .Values.volumes.squid.storageClass }}
+  storageClassName: ""
+  {{- else }}
+  storageClassName: {{ .Values.volumes.squid.storageClass | quote }}
+  {{- end }}
 {{- end }}
   accessModes:
-{{ toYaml .Values.persistentVolume.accessModes | indent 4 }}
+    - ReadWriteOnce
   resources:
     requests:
-      storage: "{{ .Values.persistentVolume.package_cache_size }}"
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: squid-cache-pv-claim
-  namespace: "{{ .Release.Namespace }}"
-spec:
-{{- if .Values.persistentVolume.storageClass }}
-{{- if (eq "-" .Values.persistentVolume.storageClass) }}
-  storageClassName: ""
-{{- else }}
-  storageClassName: "{{ .Values.persistentVolume.storageClass }}"
+      storage: "{{ $config.max_cache_size_mb }}Mi"
+{{- if .Values.volumes.squid.volumeName }}
+  volumeName: {{ .Values.volumes.squid.volumeName | quote }}
 {{- end }}
+{{- if .Values.volumes.squid.selector }}
+  selector:
+{{ toYaml .Values.volumes.squid.selector | nindent 4 }}
 {{- end }}
-  accessModes:
-{{ toYaml .Values.persistentVolume.accessModes | indent 4 }}
-  resources:
-    requests:
-      storage: "{{ .Values.max_cache_size_mb }}Mi"
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: tftp-boot-pv-claim
-  namespace: "{{ .Release.Namespace }}"
-spec:
-{{- if .Values.persistentVolume.storageClass }}
-{{- if (eq "-" .Values.persistentVolume.storageClass) }}
-  storageClassName: ""
-{{- else }}
-  storageClassName: "{{ .Values.persistentVolume.storageClass }}"
-{{- end }}
-{{- end }}
-  accessModes:
-{{ toYaml .Values.persistentVolume.accessModes | indent 4 }}
-  resources:
-    requests:
-      storage: "{{ .Values.persistentVolume.tftp_boot_size }}"
----

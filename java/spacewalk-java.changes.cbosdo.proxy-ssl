@@ -1,0 +1,2 @@
+- Do not add SSL certificates to the proxy config from a server on
+  Kubernetes

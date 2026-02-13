@@ -1,0 +1,110 @@
+suite: test TFTP deployment
+templates:
+  - templates/tftp.yaml
+tests:
+  - it: should create the tftp deployment with default image
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+        log_level: 2
+      global.httpd: "httpd_content: test httpd"
+      global.ssh: "ssh_content: test ssh"
+    release:
+      namespace: proxy1
+    asserts:
+      - containsDocument:
+          kind: Deployment
+          apiVersion: apps/v1
+          name: uyuni-proxy-tftp
+          namespace: proxy1
+
+      - contains:
+          path: spec.template.spec.containers
+          any: true
+          content:
+            name: tftpd
+            image: registry.opensuse.org/uyuni/shared-tftpd:latest
+            imagePullPolicy: Always
+            command:
+            - /usr/bin/tftp_wrapper.py
+            - --httpHost
+            - web.proxy1.svc
+
+  - it: should use top-level repository, tag and pullPolicy
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+        log_level: 2
+      global.httpd: "httpd_content: test httpd"
+      global.ssh: "ssh_content: test ssh"
+      repository: my.custom.registry/uyuni
+      tag: 5.2.3
+      pullPolicy: IfNotPresent
+    asserts:
+      - contains:
+          path: spec.template.spec.containers
+          content:
+            name: tftpd
+            image: my.custom.registry/uyuni/shared-tftpd:5.2.3
+            imagePullPolicy: IfNotPresent
+          any: true
+
+  - it: should use component-specific overrides
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+        log_level: 2
+      global.httpd: "httpd_content: test httpd"
+      global.ssh: "ssh_content: test ssh"
+      tftp: { image: "custom/tftp", tag: "v5" }
+    asserts:
+      - contains:
+          path: spec.template.spec.containers
+          content: { name: tftpd, image: "custom/tftp:v5" }
+          any: true
+
+  - it: should include imagePullSecrets when registrySecret is provided
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+        log_level: 2
+      global.httpd: "httpd_content: test httpd"
+      global.ssh: "ssh_content: test ssh"
+      registrySecret: "my-registry-key"
+    asserts:
+      - equal:
+          path: spec.template.spec.imagePullSecrets[0].name
+          value: "my-registry-key"
+
+  - it: should set hostNetwork when requested
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+        log_level: 2
+      global.httpd: "httpd_content: test httpd"
+      global.ssh: "ssh_content: test ssh"
+      tftp:
+        hostNetwork: true
+    asserts:
+      - equal:
+          path: spec.template.spec.hostNetwork
+          value: true
+
+      - equal:
+          path: spec.template.spec.dnsPolicy
+          value: ClusterFirstWithHostNet

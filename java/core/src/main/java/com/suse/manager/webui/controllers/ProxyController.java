@@ -24,6 +24,7 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 
 import com.redhat.rhn.common.RhnRuntimeException;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.SystemsExistException;
@@ -97,6 +98,7 @@ public class ProxyController {
      */
     public ModelAndView containerConfig(Request requestIn, Response responseIn, User userIn) {
         Map<String, Object> data = new HashMap<>();
+        data.put("noSSL", !ConfigDefaults.get().isSsl());
         return new ModelAndView(data, "templates/proxy/container-config.jade");
     }
 

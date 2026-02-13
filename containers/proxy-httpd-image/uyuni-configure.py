@@ -9,6 +9,8 @@ import re
 import yaml
 import socket
 import sys
+import urllib.request
+import json
 
 from pathlib import Path
 from typing import Tuple
@@ -55,6 +57,22 @@ def get_ips(fqdn: str) -> Tuple[str, str]:
     return (ipv4, ipv6)
 
 
+def get_server_version(fqdn):
+    """
+    Queries the server version from the API.
+    """
+    url = f"https://{fqdn}/rhn/manager/api/api/systemVersion"
+
+    with urllib.request.urlopen(url, timeout=10) as response:
+        body = response.read().decode("utf-8")
+        data = json.loads(body)
+
+        if "result" in data:
+            return data["result"]
+        else:
+            raise KeyError(f"JSON missing 'result' field. Keys: {list(data.keys())}")
+
+
 # read from files
 with open(config_path + "config.yaml", encoding="utf-8") as source:
     config = yaml.safe_load(source)
@@ -66,7 +84,45 @@ with open(config_path + "config.yaml", encoding="utf-8") as source:
 with open(config_path + "httpd.yaml", encoding="utf-8") as httpdSource:
     httpdConfig = yaml.safe_load(httpdSource).get("httpd")
 
-    server_version = config.get("server_version")
+    # store the systemid content, but only if it does not exist already
+    if not os.path.exists("/etc/sysconfig/rhn/systemid"):
+        os.makedirs("/etc/sysconfig/rhn", exist_ok=True)
+        with open("/etc/sysconfig/rhn/systemid", "w", encoding="utf-8") as file:
+            file.write(httpdConfig.get("system_id"))
+
+    # store SSL CA certificate, if it does not exist already
+    if "ca_crt" in config and not os.path.exists(
+        "/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT"
+    ):
+        with open(
+            "/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT", "w", encoding="utf-8"
+        ) as file:
+            file.write(config.get("ca_crt"))
+    # however always prepare link
+    os.symlink(
+        "/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT",
+        "/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT",
+    )
+    os.system("/usr/sbin/update-ca-certificates")
+
+    # store server certificate files, if cert does not exist already
+    hasCert = all([key in httpdConfig for key in ["server_crt", "server_key"]])
+    if hasCert and not os.path.exists("/etc/apache2/ssl.crt/server.crt"):
+        with open("/etc/apache2/ssl.crt/server.crt", "w", encoding="utf-8") as file:
+            file.write(httpdConfig.get("server_crt"))
+        with open("/etc/apache2/ssl.key/server.key", "w", encoding="utf-8") as file:
+            file.write(httpdConfig.get("server_key"))
+
+    with open("/etc/apache2/httpd.conf", "r+", encoding="utf-8") as file:
+        file_content = file.read()
+        # make sure to send logs to stdout/stderr instead to file
+        file_content = re.sub(r"ErrorLog .*", "ErrorLog /proc/self/fd/2", file_content)
+        # writing back the content
+        file.seek(0, 0)
+        file.write(file_content)
+        file.truncate()
+
+    server_version = get_server_version(config["server"])
     # Only check version for SUSE Multi-Linux Manager, not Uyuni
     matcher = re.fullmatch(r"([0-9]+\.)[0-9]+\.[0-9]+", server_version)
     if matcher:
@@ -85,48 +141,13 @@ with open(config_path + "httpd.yaml", encoding="utf-8") as httpdSource:
             )
             sys.exit(1)
 
-    # store the systemid content, but only if it does not exist already
-    if not os.path.exists("/etc/sysconfig/rhn/systemid"):
-        with open("/etc/sysconfig/rhn/systemid", "w", encoding="utf-8") as file:
-            file.write(httpdConfig.get("system_id"))
-
-    # store SSL CA certificate, if it does not exist already
-    if not os.path.exists("/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT"):
-        with open(
-            "/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT", "w", encoding="utf-8"
-        ) as file:
-            file.write(config.get("ca_crt"))
-    # however always prepare link
-    os.symlink(
-        "/etc/pki/trust/anchors/RHN-ORG-TRUSTED-SSL-CERT",
-        "/usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT",
-    )
-    os.system("/usr/sbin/update-ca-certificates")
-
-    # store server certificate files, if cert does not exist already
-    if not os.path.exists("/etc/apache2/ssl.crt/server.crt"):
-        with open("/etc/apache2/ssl.crt/server.crt", "w", encoding="utf-8") as file:
-            file.write(httpdConfig.get("server_crt"))
-        with open("/etc/apache2/ssl.key/server.key", "w", encoding="utf-8") as file:
-            file.write(httpdConfig.get("server_key"))
-
-    with open("/etc/apache2/httpd.conf", "r+", encoding="utf-8") as file:
-        file_content = file.read()
-        # make sure to send logs to stdout/stderr instead to file
-        file_content = re.sub(r"ErrorLog .*", "ErrorLog /proc/self/fd/2", file_content)
-        # writing back the content
-        file.seek(0, 0)
-        file.write(file_content)
-        file.truncate()
-
     # resolve needed IP addresses
     server_ipv4, server_ipv6 = get_ips(config["server"])
     proxy_ipv4, proxy_ipv6 = get_ips(config["proxy_fqdn"])
 
     # Create conf file
     with open("/etc/rhn/rhn.conf", "w", encoding="utf-8") as file:
-        file.write(
-            f"""# Automatically generated Uyuni Proxy Server configuration file.
+        file.write(f"""# Automatically generated Uyuni Proxy Server configuration file.
         # -------------------------------------------------------------------------
         
         # Debug log level
@@ -157,8 +178,7 @@ with open(config_path + "httpd.yaml", encoding="utf-8") as httpdSource:
         
         # Destination of all tracebacks, etc.
         traceback_mail = {config['email']}
-        """
-        )
+        """)
 
         if "timeout" in config:
             file.write(f"proxy.timeout = {config['timeout']}")
@@ -173,14 +193,13 @@ with open(config_path + "httpd.yaml", encoding="utf-8") as httpdSource:
         smlm_conf.truncate()
 
     with open("/etc/apache2/vhosts.d/ssl.conf", "w", encoding="utf-8") as file:
-        file.write(
-            f"""
+        file.write(f"""
 <IfDefine SSL>
 <IfDefine !NOSSL>
 <VirtualHost _default_:443>
 
 	DocumentRoot "/srv/www/htdocs"
-	ServerName {config['proxy_fqdn']}
+	ServerName {config["proxy_fqdn"]}
 
 	ErrorLog /proc/self/fd/2
 	TransferLog /proc/self/fd/1
@@ -199,8 +218,7 @@ with open(config_path + "httpd.yaml", encoding="utf-8") as httpdSource:
 </VirtualHost>
 </IfDefine>
 </IfDefine>
-"""
-        )
+""")
 
 
 # Make sure permissions are set as desired

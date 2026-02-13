@@ -15,6 +15,7 @@ metadata:
   {{- end }}
   labels:
     app.kubernetes.io/part-of: uyuni
+    app.kubernetes.io/component: server
 spec:
   {{- if ((.Values.ingress).class) }}
   ingressClassName: {{ .Values.ingress.class }}
@@ -59,6 +60,7 @@ metadata:
   {{- end }}
   labels:
     app.kubernetes.io/part-of: uyuni
+    app.kubernetes.io/component: server
 spec:
   {{- if ((.Values.ingress).class) }}
   ingressClassName: {{ .Values.ingress.class }}
@@ -103,6 +105,7 @@ metadata:
   {{- end }}
   labels:
     app.kubernetes.io/part-of: uyuni
+    app.kubernetes.io/component: server
 spec:
   {{- if ((.Values.ingress).class) }}
   ingressClassName: {{ .Values.ingress.class }}

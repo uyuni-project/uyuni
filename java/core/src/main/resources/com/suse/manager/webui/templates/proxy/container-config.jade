@@ -7,6 +7,7 @@ script(type='text/javascript').
     spaImportReactPage('proxy/container-config')
         .then(function(module) {
             module.renderer(
-                'container-config'
+                'container-config',
+                #{noSSL}
             )
         });

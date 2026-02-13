@@ -1,0 +1,463 @@
+suite: test global values parsing
+templates:
+  - templates/services.yaml
+tests:
+  - it: should create services with ClusterIP by default except for tftp
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+        log_level: 2
+      global.httpd: "httpd_content: test httpd"
+      global.ssh: "ssh_content: test ssh"
+    release:
+      namespace: proxy1
+    asserts:
+      # web service checks
+      - containsDocument:
+          kind: Service
+          apiVersion: v1
+          name: web
+          namespace: proxy1
+        documentSelector:
+          path: metadata.name
+          value: web
+
+      - equal:
+          path: spec.type
+          value: ClusterIP
+        documentSelector:
+          path: metadata.name
+          value: web
+
+      - equal:
+          path: spec.selector
+          value:
+            app.kubernetes.io/component: proxy
+            app.kubernetes.io/part-of: uyuni
+        documentSelector:
+          path: metadata.name
+          value: web
+
+      - contains:
+          path: spec.ports
+          content:
+            name: http
+            port: 80
+          any: true
+        documentSelector:
+          path: metadata.name
+          value: web
+
+      - contains:
+          path: spec.ports
+          content:
+            name: https
+            port: 443
+          any: true
+        documentSelector:
+          path: metadata.name
+          value: web
+
+      # salt service checks
+      - containsDocument:
+          kind: Service
+          apiVersion: v1
+          name: salt
+          namespace: proxy1
+        documentSelector:
+          path: metadata.name
+          value: salt
+
+      - equal:
+          path: spec.type
+          value: ClusterIP
+        documentSelector:
+          path: metadata.name
+          value: salt
+
+      - equal:
+          path: spec.selector
+          value:
+            app.kubernetes.io/component: proxy
+            app.kubernetes.io/part-of: uyuni
+        documentSelector:
+          path: metadata.name
+          value: salt
+
+      - contains:
+          path: spec.ports
+          content:
+            name: salt-publish
+            port: 4505
+          any: true
+        documentSelector:
+          path: metadata.name
+          value: salt
+
+      - contains:
+          path: spec.ports
+          content:
+            name: salt-request
+            port: 4506
+          any: true
+        documentSelector:
+          path: metadata.name
+          value: salt
+
+      # ssh service checks
+      - containsDocument:
+          kind: Service
+          apiVersion: v1
+          name: ssh
+          namespace: proxy1
+        documentSelector:
+          path: metadata.name
+          value: ssh
+
+      - equal:
+          path: spec.type
+          value: ClusterIP
+        documentSelector:
+          path: metadata.name
+          value: ssh
+
+      - equal:
+          path: spec.selector
+          value:
+            app.kubernetes.io/component: proxy
+            app.kubernetes.io/part-of: uyuni
+        documentSelector:
+          path: metadata.name
+          value: ssh
+
+      - contains:
+          path: spec.ports
+          content:
+            name: ssh
+            port: 8022
+          any: true
+        documentSelector:
+          path: metadata.name
+          value: ssh
+
+      # tftp service checks
+      - containsDocument:
+          kind: Service
+          apiVersion: v1
+          name: tftp
+          namespace: proxy1
+        documentSelector:
+          path: metadata.name
+          value: tftp
+
+      - equal:
+          path: spec.type
+          value: LoadBalancer
+        documentSelector:
+          path: metadata.name
+          value: tftp
+
+      - equal:
+          path: spec.selector
+          value:
+            app.kubernetes.io/component: proxy
+            app.kubernetes.io/part-of: uyuni
+        documentSelector:
+          path: metadata.name
+          value: tftp
+
+      - contains:
+          path: spec.ports
+          content:
+            name: tftp
+            port: 69
+            protocol: UDP
+          any: true
+        documentSelector:
+          path: metadata.name
+          value: tftp
+
+  - it: should create services with default nodeports
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+        log_level: 2
+      global.httpd: "httpd_content: test httpd"
+      global.ssh: "ssh_content: test ssh"
+      services:
+        type: NodePort
+    asserts:
+      # web service checks
+      - equal:
+          path: spec.type
+          value: NodePort
+        documentSelector:
+          path: metadata.name
+          value: web
+
+      - contains:
+          path: spec.ports
+          content:
+            name: http
+            port: 80
+            nodePort: 30080
+          any: true
+        documentSelector:
+          path: metadata.name
+          value: web
+
+      - contains:
+          path: spec.ports
+          content:
+            name: https
+            port: 443
+            nodePort: 30443
+          any: true
+        documentSelector:
+          path: metadata.name
+          value: web
+
+      # salt service checks
+      - equal:
+          path: spec.type
+          value: NodePort
+        documentSelector:
+          path: metadata.name
+          value: salt
+
+      - contains:
+          path: spec.ports
+          content:
+            name: salt-publish
+            port: 4505
+            nodePort: 34505
+          any: true
+        documentSelector:
+          path: metadata.name
+          value: salt
+
+      - contains:
+          path: spec.ports
+          content:
+            name: salt-request
+            port: 4506
+            nodePort: 34506
+          any: true
+        documentSelector:
+          path: metadata.name
+          value: salt
+
+      # ssh service checks
+      - equal:
+          path: spec.type
+          value: NodePort
+        documentSelector:
+          path: metadata.name
+          value: ssh
+
+      - contains:
+          path: spec.ports
+          content:
+            name: ssh
+            port: 8022
+            nodePort: 38022
+          any: true
+        documentSelector:
+          path: metadata.name
+          value: ssh
+
+      # tftp service checks
+      - equal:
+          path: spec.type
+          value: LoadBalancer
+        documentSelector:
+          path: metadata.name
+          value: tftp
+
+  - it: should create services with custom nodeports
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+        log_level: 2
+      global.httpd: "httpd_content: test httpd"
+      global.ssh: "ssh_content: test ssh"
+      services:
+        type: NodePort
+      httpd:
+        ports:
+          http: 10080
+          https: 10443
+      ssh:
+        ports:
+          ssh: 18022
+      salt:
+        ports:
+          publish: 14505
+          request: 14506
+      tftpd:
+        ports:
+          tftp: 10069
+    asserts:
+      # web service checks
+      - equal:
+          path: spec.type
+          value: NodePort
+        documentSelector:
+          path: metadata.name
+          value: web
+
+      - contains:
+          path: spec.ports
+          content:
+            name: http
+            port: 80
+            nodePort: 10080
+          any: true
+        documentSelector:
+          path: metadata.name
+          value: web
+
+      - contains:
+          path: spec.ports
+          content:
+            name: https
+            port: 443
+            nodePort: 10443
+          any: true
+        documentSelector:
+          path: metadata.name
+          value: web
+
+      # salt service checks
+      - equal:
+          path: spec.type
+          value: NodePort
+        documentSelector:
+          path: metadata.name
+          value: salt
+
+      - contains:
+          path: spec.ports
+          content:
+            name: salt-publish
+            port: 4505
+            nodePort: 14505
+          any: true
+        documentSelector:
+          path: metadata.name
+          value: salt
+
+      - contains:
+          path: spec.ports
+          content:
+            name: salt-request
+            port: 4506
+            nodePort: 14506
+          any: true
+        documentSelector:
+          path: metadata.name
+          value: salt
+
+      # ssh service checks
+      - equal:
+          path: spec.type
+          value: NodePort
+        documentSelector:
+          path: metadata.name
+          value: ssh
+
+      - contains:
+          path: spec.ports
+          content:
+            name: ssh
+            port: 8022
+            nodePort: 18022
+          any: true
+        documentSelector:
+          path: metadata.name
+          value: ssh
+
+  - it: should create services with custom annotations
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+        log_level: 2
+      global.httpd: "httpd_content: test httpd"
+      global.ssh: "ssh_content: test ssh"
+      services:
+        annotations:
+          testAnnotation1: value1
+          testAnnotation2: value2
+    asserts:
+      # web service checks
+      - equal:
+          path: metadata.annotations
+          value:
+            testAnnotation1: value1
+            testAnnotation2: value2
+        documentSelector:
+          path: metadata.name
+          value: web
+
+      # salt service checks
+      - equal:
+          path: metadata.annotations
+          value:
+            testAnnotation1: value1
+            testAnnotation2: value2
+        documentSelector:
+          path: metadata.name
+          value: salt
+
+      # ssh service checks
+      - equal:
+          path: metadata.annotations
+          value:
+            testAnnotation1: value1
+            testAnnotation2: value2
+        documentSelector:
+          path: metadata.name
+          value: ssh
+
+      # tftp service checks
+      - equal:
+          path: metadata.annotations
+          value:
+            testAnnotation1: value1
+            testAnnotation2: value2
+        documentSelector:
+          path: metadata.name
+          value: tftp
+
+  - it: should not create TFTP service with hostNetwork
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+        log_level: 2
+      global.httpd: "httpd_content: test httpd"
+      global.ssh: "ssh_content: test ssh"
+      tftp:
+        hostNetwork: true
+    asserts:
+      # tftp service checks
+      - hasDocuments:
+          count: 0
+        documentSelector:
+          path: metadata.name
+          value: tftp
+          skipEmptyTemplates: true

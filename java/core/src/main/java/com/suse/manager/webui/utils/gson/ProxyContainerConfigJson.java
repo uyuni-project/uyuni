@@ -30,6 +30,7 @@ public class ProxyContainerConfigJson {
 
     private static final String CREATE_SSL = "create-ssl";
     private static final String USE_SSL = "use-ssl";
+    private static final String NO_SSL = "no-ssl";
 
     private static final Pattern FQDN_PATTERN = Pattern.compile("^[A-Za-z0-9-]++(?:\\.[A-Za-z0-9-]++)*+$");
 
@@ -71,6 +72,9 @@ public class ProxyContainerConfigJson {
         }
         else if (CREATE_SSL.equals(sslMode)) {
             valid = caCert != null && caKey != null && caPassword != null;
+        }
+        else if (NO_SSL.equals(sslMode)) {
+            valid = true;
         }
         return valid && isValidFqdn(proxyFqdn) && isValidFqdn(serverFqdn) && maxCache != null && email != null;
     }
