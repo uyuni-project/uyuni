@@ -1,0 +1,2 @@
+- Fix permission check when assigning system groups to a user
+  (bsc#1257674)
