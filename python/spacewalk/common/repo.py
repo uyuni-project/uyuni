@@ -3,6 +3,7 @@ Repository tools
 """
 
 # coding: utf-8
+import pathlib
 import typing
 import http
 import os
@@ -10,19 +11,20 @@ import zlib
 import lzma
 import logging
 import tempfile
-import subprocess
 from urllib import parse
 import hashlib
 from collections import namedtuple
 
 import requests
 
+
+from spacewalk.common import gpgverify
 from spacewalk.common import suseLib
 
 # pylint:disable=W0612,W0212,C0301
 
 SPACEWALK_LIB = "/var/lib/spacewalk"
-SPACEWALK_GPG_HOMEDIR = os.path.join(SPACEWALK_LIB, "gpgdir")
+SPACEWALK_GPG_KEYRING = pathlib.Path(SPACEWALK_LIB, "gpgdir", "pubring.gpg")
 
 logger = logging.getLogger(__name__)
 
@@ -259,109 +261,67 @@ class DpkgRepo:
 
         return self._release
 
-    def _has_valid_gpg_signature(self, uri: str, response=None) -> bool:
-        """
-        Validate GPG signature of Release file.
+    def _write_to_tempfile(self, content: bytes) -> str:
+        "Write content to a NamedTemporaryFile, rewind, and return the file name."
+        file = tempfile.NamedTemporaryFile()
+        file.write(content)
+        file.seek(0)
+        return file.name
 
-        :return: bool
+    def _has_valid_gpg_signature(
+        self, uri: str, response: requests.Response = None
+    ) -> bool:
+        """Validate the GPG signature of the Release file.
+
+        :param uri: URI to index (Release file).
+        :param response: HTTP response of the Release file download. If None, an
+            already downloaded file is assumed. Defaults to None.
+        :returns: bool
         """
-        process = None
         uri = uri.replace("file://", "")
-        if not response:
-            # There is no response, so this is a local path.
-            if os.access(os.path.join(uri, "InRelease"), os.R_OK):
-                release_file = os.path.join(uri, "InRelease")
-                process = subprocess.Popen(
-                    [
-                        "gpg",
-                        "--verify",
-                        "--homedir",
-                        SPACEWALK_GPG_HOMEDIR,
-                        release_file,
-                    ],
-                    stdout=subprocess.DEVNULL,
-                    stderr=subprocess.DEVNULL,
-                )
-                out = process.wait(timeout=90)
-            elif os.access(os.path.join(uri, "Release"), os.R_OK):
-                release_file = os.path.join(uri, "Release")
-                release_signature_file = os.path.join(uri, "Release.gpg")
-                if os.access(release_signature_file, os.R_OK):
-                    process = subprocess.Popen(
-                        [
-                            "gpg",
-                            "--verify",
-                            "--homedir",
-                            SPACEWALK_GPG_HOMEDIR,
-                            release_signature_file,
-                            release_file,
-                        ],
-                        stdout=subprocess.DEVNULL,
-                        stderr=subprocess.DEVNULL,
-                    )
-                    out = process.wait(timeout=90)
-                else:
-                    logger.error(
-                        "Could not access sinature file '%s' for GPG check.",
-                        release_signature_file,
-                    )
-                    raise GeneralRepoException(
-                        # pylint: disable-next=consider-using-f-string
-                        "Signature file for GPG check could not be accessed: {}".format(
-                            release_signature_file
-                        )
-                    )
+        keyring = SPACEWALK_GPG_KEYRING
+        detached_signature_file = None
+
+        # HTTP response -> write to tempfile
+        if response:
+            parts = parse.urlparse(uri)
+            if parts.path.endswith("InRelease"):
+                release_file = self._write_to_tempfile(response.content)
             else:
-                logger.error("No release file found: '%s'.", uri)
-                # pylint: disable-next=consider-using-f-string
-                raise GeneralRepoException("No release file found: {}".format(uri))
-        else:
-            # There is a response, so we are dealing with a URL.
-            if parse.urlparse(response.url).path.endswith("InRelease"):
-                process = subprocess.Popen(
-                    ["/usr/bin/gpg", "--verify", "--homedir", SPACEWALK_GPG_HOMEDIR],
-                    stdin=subprocess.PIPE,
-                    stdout=subprocess.DEVNULL,
-                    stderr=subprocess.DEVNULL,
-                )
-                out = process.communicate(response.content, timeout=90)
-            else:
+                signature_uri = self._get_parent_url(response.url, 1, "Release.gpg")
                 signature_response = requests.get(
-                    self._get_parent_url(response.url, 1, "Release.gpg"),
+                    signature_uri,
                     proxies=self.proxies,
-                    timeout=self.timeout,
                 )
                 if signature_response.status_code != http.HTTPStatus.OK:
-                    return False
-                else:
-                    temp_release_file = tempfile.NamedTemporaryFile()
-                    temp_release_file.write(response.content)
-                    temp_release_file.seek(0)
-                    temp_signature_file = tempfile.NamedTemporaryFile()
-                    temp_signature_file.write(signature_response.content)
-                    temp_signature_file.seek(0)
-                    process = subprocess.Popen(
-                        [
-                            "/usr/bin/gpg",
-                            "--verify",
-                            "--homedir",
-                            SPACEWALK_GPG_HOMEDIR,
-                            temp_signature_file.name,
-                            temp_release_file.name,
-                        ],
-                        stdout=subprocess.DEVNULL,
-                        stderr=subprocess.DEVNULL,
+                    logging.error("Can't retrieve Release.gpg from %s", signature_uri)
+                    raise GeneralRepoException(
+                        f"Can't retrieve Release.gpg from {signature_uri}"
                     )
-                    out = process.wait(timeout=90)
+                release_file = self._write_to_tempfile(response.content)
+                detached_signature_file = self._write_to_tempfile(
+                    signature_response.content
+                )
 
-        if process.returncode == 0:
-            logger.debug("GPG signature is valid")
-            return True
+        # InRelease exists in local filesystem
         else:
-            logger.debug(
-                "GPG signature is invalid. gpg return code: %s", process.returncode
+            release_file = pathlib.Path(uri, "InRelease")
+            if not release_file.exists():
+                release_file = pathlib.Path(uri, "Release")
+                detached_signature_file = pathlib.Path(uri, "Release.gpg")
+
+        valid, signatures = gpgverify.verify_file(
+            signed_file=release_file,
+            detached_signature_file=detached_signature_file,
+            keyring=keyring,
+        )
+        if not valid:
+            logger.error(
+                "Index '%s' has no valid GPG signature. Signatures: '%s'",
+                uri,
+                signatures,
             )
-            return False
+        return valid
 
     def get_release_index(self) -> typing.Dict[str, "DpkgRepo.ReleaseEntry"]:
         """

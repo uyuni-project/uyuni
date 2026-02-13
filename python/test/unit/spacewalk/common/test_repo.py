@@ -2,8 +2,10 @@
 """
 Py-test based unit tests for common/repo
 """
-from mock import MagicMock, patch
-from spacewalk.common.repo import DpkgRepo, GeneralRepoException
+
+from unittest.mock import MagicMock, patch
+from spacewalk.common.repo import DpkgRepo, GeneralRepoException, SPACEWALK_GPG_KEYRING
+from spacewalk.common import gpgverify
 import http
 import pytest
 import lzma
@@ -293,8 +295,47 @@ class TestCommonRepo:
             assert repo.get_release_index()
         assert str(exc.value) == "HTTP error 204 occurred while connecting to the URL"
 
+    @pytest.mark.parametrize(
+        "verify_file_return,expected",
+        [
+            (
+                (
+                    True,
+                    [
+                        gpgverify.Signature(
+                            keyid="0E98404D386FA1D9",
+                            fingerprint="A7236886F3CCCAAD148A27F80E98404D386FA1D9",
+                            status="ERROR",
+                            username="",
+                        ),
+                        gpgverify.Signature(
+                            keyid="6ED0E7B82643E131",
+                            fingerprint="B8B80B5B623EAB6AD8775C45B7C5D7D6350947F8",
+                            status="GOOD",
+                            username="Debian Archive Automatic Signing Key (12/bookworm) <ftpmaster@debian.org>",
+                        ),
+                    ],
+                ),
+                True,
+            ),
+            (
+                (
+                    False,
+                    [
+                        gpgverify.Signature(
+                            keyid="0E98404D386FA1D9",
+                            fingerprint="A7236886F3CCCAAD148A27F80E98404D386FA1D9",
+                            status="ERROR",
+                            username="",
+                        )
+                    ],
+                ),
+                False,
+            ),
+        ],
+    )
     # pylint: disable-next=invalid-name
-    def test_has_valid_gpg_signature_call_InRelease(self):
+    def test_has_valid_gpg_signature_call_InRelease(self, verify_file_return, expected):
         """
         Test _has_valid_gpg_signature call with an embedded GPG signature (InRelease).
 
@@ -305,17 +346,24 @@ class TestCommonRepo:
             content=b"dummy content",
             url="http://dummy/url/InRelease",
         )
-
-        mock_popen = MagicMock()
-        mock_communicate = MagicMock()
-        mock_popen().communicate = mock_communicate
-        mock_popen().returncode = 0
-
-        with patch("spacewalk.common.repo.subprocess.Popen", mock_popen):
+        verify_file_mock = MagicMock(return_value=verify_file_return)
+        with patch("spacewalk.common.gpgverify.verify_file", verify_file_mock):
             # pylint: disable-next=protected-access
-            assert repo._has_valid_gpg_signature(response.url, response)
-            mock_communicate.assert_called_once_with(b"dummy content", timeout=90)
+            assert repo._has_valid_gpg_signature(response.url, response) == expected
+            # In newer Python versions, one can use call_args.kwargs but not in 3.6
+            _, kwargs = verify_file_mock.call_args
+            assert kwargs["signed_file"]
+            assert not kwargs.get("detached_signature_file")
+            assert kwargs["keyring"] == SPACEWALK_GPG_KEYRING
 
+    @patch(
+        "spacewalk.common.repo.requests.get",
+        MagicMock(
+            return_value=FakeRequests().conf(
+                status_code=http.HTTPStatus.OK, content=b"", url=""
+            )
+        ),
+    )
     @patch("spacewalk.common.repo.tempfile.NamedTemporaryFile", MagicMock())
     @patch(
         "spacewalk.common.repo.requests.get",
@@ -325,12 +373,51 @@ class TestCommonRepo:
             )
         ),
     )
+    @pytest.mark.parametrize(
+        "verify_file_return,expected",
+        [
+            (
+                (
+                    True,
+                    [
+                        gpgverify.Signature(
+                            keyid="0E98404D386FA1D9",
+                            fingerprint="A7236886F3CCCAAD148A27F80E98404D386FA1D9",
+                            status="ERROR",
+                            username="",
+                        ),
+                        gpgverify.Signature(
+                            keyid="6ED0E7B82643E131",
+                            fingerprint="B8B80B5B623EAB6AD8775C45B7C5D7D6350947F8",
+                            status="GOOD",
+                            username="Debian Archive Automatic Signing Key (12/bookworm) <ftpmaster@debian.org>",
+                        ),
+                    ],
+                ),
+                True,
+            ),
+            (
+                (
+                    False,
+                    [
+                        gpgverify.Signature(
+                            keyid="0E98404D386FA1D9",
+                            fingerprint="A7236886F3CCCAAD148A27F80E98404D386FA1D9",
+                            status="ERROR",
+                            username="",
+                        )
+                    ],
+                ),
+                False,
+            ),
+        ],
+    )
     # pylint: disable-next=invalid-name
-    def test_has_valid_gpg_signature_call_Release(self):
+    def test_has_valid_gpg_signature_call_Release(self, verify_file_return, expected):
         """
         Test _has_valid_gpg_signature call with a detached GPG signature (Release + Release.gpg).
 
-        :return:
+            :return:
         """
 
         repo = DpkgRepo("http://dummy/url/Release")
@@ -338,39 +425,15 @@ class TestCommonRepo:
             content=b"dummy content",
             url="http://dummy/url/Release",
         )
-        mock_popen = MagicMock()
-        mock_popen().returncode = 0
-
-        with patch("spacewalk.common.repo.subprocess.Popen", mock_popen):
+        verify_file_mock = MagicMock(return_value=verify_file_return)
+        with patch("spacewalk.common.gpgverify.verify_file", verify_file_mock):
             # pylint: disable-next=protected-access
-            assert repo._has_valid_gpg_signature(response.url, response)
-            # pylint: disable-next=pointless-statement
-            mock_popen.assert_called_once
-            gpg_args = mock_popen.call_args[0][0]
-            assert gpg_args[0] == "/usr/bin/gpg"
-            assert gpg_args[1] == "--verify"
-            assert gpg_args[2] == "--homedir"
-            assert gpg_args[3] == "/var/lib/spacewalk/gpgdir"
-            assert gpg_args[4].beginswith("/tmp/")
-            assert gpg_args[5].beginswith("/tmp/")
-
-    def test_has_valid_gpg_signature_returns_false_if_gpg_verify_fails(self):
-        """
-        Test _has_valid_gpg_signature returns False if gpg --verify returns non-zero.
-
-        :return:
-        """
-        repo = DpkgRepo("http://dummy/url/InRelease")
-        response = FakeRequests().conf(
-            content=b"dummy content",
-            url="http://dummy/url/InRelease",
-        )
-        mock_popen = MagicMock()
-        mock_popen().returncode = 1
-
-        with patch("spacewalk.common.repo.subprocess.Popen", mock_popen):
-            # pylint: disable-next=protected-access
-            assert not repo._has_valid_gpg_signature(response.url, response)
+            assert repo._has_valid_gpg_signature(response.url, response) == expected
+            # In newer Python versions, one can use call_args.kwargs but not in 3.6
+            _, kwargs = verify_file_mock.call_args
+            assert kwargs["signed_file"]
+            assert kwargs["detached_signature_file"]
+            assert kwargs["keyring"] == SPACEWALK_GPG_KEYRING
 
     def test_parse_release_index(self):
         """
