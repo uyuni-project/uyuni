@@ -1,0 +1,2 @@
+- Remove script from setup-job and use the one provided by
+  the image.
