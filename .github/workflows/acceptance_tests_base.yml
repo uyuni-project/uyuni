@@ -297,7 +297,7 @@ jobs:
       - name: Commit and Push Container Snapshots
         if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' && github.event_name == 'schedule' }}
         run: |
-          # Lista de todos los contenedores que queremos capturar
+          # List of all containers we want to capture
           CONTAINERS=("server" "uyuni-db" "controller" "buildhost" "opensusessh" "sle_minion" "rhlike_minion" "deblike_minion")
 
           for CONTAINER in "${CONTAINERS[@]}"; do
