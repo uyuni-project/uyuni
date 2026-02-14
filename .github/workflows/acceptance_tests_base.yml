@@ -302,7 +302,7 @@ jobs:
 
           for CONTAINER in "${CONTAINERS[@]}"; do
             if sudo podman ps -a -q -f name=^${CONTAINER}$ | grep -q .; then
-              echo "Snapshoting $CONTAINER..."
+              echo "Snapshotting $CONTAINER..."
               TAG="ghcr.io/${{ github.repository }}/$CONTAINER-snapshot:latest"
               sudo podman commit $CONTAINER $TAG
               sudo podman push $TAG
