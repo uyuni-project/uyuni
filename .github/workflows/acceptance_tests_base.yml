@@ -301,7 +301,7 @@ jobs:
           CONTAINERS=("server" "uyuni-db" "controller" "buildhost" "opensusessh" "sle_minion" "rhlike_minion" "deblike_minion" "authregistry.lab" "noauthregistry.lab")
 
           for CONTAINER in "${CONTAINERS[@]}"; do
-            if sudo podman ps -a -q -f name=$CONTAINER | grep -q .; then
+            if sudo podman ps -a -q -f name=^${CONTAINER}$ | grep -q .; then
               echo "Snapshoting $CONTAINER..."
               TAG="ghcr.io/${{ github.repository }}/$CONTAINER-snapshot:latest"
               sudo podman commit $CONTAINER $TAG
