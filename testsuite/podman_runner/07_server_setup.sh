@@ -44,7 +44,6 @@ $PODMAN_CMD run \
     -d \
     --shm-size=0 \
     --name uyuni-db \
-    -h uyuni-db \
     --hostname uyuni-db.mgr.internal \
     --network-alias db \
     --network-alias reportdb \
