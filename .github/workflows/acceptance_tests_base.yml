@@ -285,3 +285,34 @@ jobs:
         with:
           name: client_logs_${{ inputs.server_id }}
           path: ./testsuite/logs
+
+      - name: Generate Data Backups
+        if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' && github.event_name == 'schedule' }}
+        run: ./testsuite/podman_runner/99_backup_environment.sh
+
+      - name: Log in to GHCR
+        if: ${{  !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' && github.event_name == 'schedule' }}
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | sudo podman login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Commit and Push Container Snapshots
+        if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' && github.event_name == 'schedule' }}
+        run: |
+          # List of all containers we want to capture
+          CONTAINERS=("server" "uyuni-db" "controller" "buildhost" "opensusessh" "sle_minion" "rhlike_minion" "deblike_minion" "authregistry.lab" "noauthregistry.lab")
+
+          for CONTAINER in "${CONTAINERS[@]}"; do
+            if sudo podman ps -a -q -f name=^${CONTAINER}$ | grep -q .; then
+              echo "Snapshotting $CONTAINER..."
+              TAG="ghcr.io/${{ github.repository }}/$CONTAINER-snapshot:latest"
+              sudo podman commit $CONTAINER $TAG
+              sudo podman push $TAG
+            fi
+          done
+
+      - name: Upload Data Snapshot Artifacts
+        if: ${{  !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' && github.event_name == 'schedule' }}
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 #v5.0.0
+        with:
+          name: uyuni-data-snapshot
+          path: /tmp/testing/snapshots/
+          retention-days: 2
