@@ -295,7 +295,7 @@ jobs:
         run: echo "${{ secrets.GITHUB_TOKEN }}" | sudo podman login ghcr.io -u ${{ github.actor }} --password-stdin
 
       - name: Commit and Push Container Snapshots
-        if: ${{ always() && !inputs.skip_tests && github.event_name == 'schedule' }}
+        if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' && github.event_name == 'schedule' }}
         run: |
           # Lista de todos los contenedores que queremos capturar
           CONTAINERS=("server" "uyuni-db" "controller" "buildhost" "opensusessh" "sle_minion" "rhlike_minion" "deblike_minion")
