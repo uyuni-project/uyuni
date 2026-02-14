@@ -298,7 +298,7 @@ jobs:
         if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' && github.event_name == 'schedule' }}
         run: |
           # List of all containers we want to capture
-          CONTAINERS=("server" "uyuni-db" "controller" "buildhost" "opensusessh" "sle_minion" "rhlike_minion" "deblike_minion")
+          CONTAINERS=("server" "uyuni-db" "controller" "buildhost" "opensusessh" "sle_minion" "rhlike_minion" "deblike_minion" "authregistry.lab" "noauthregistry.lab")
 
           for CONTAINER in "${CONTAINERS[@]}"; do
             if sudo podman ps -a -q -f name=$CONTAINER | grep -q .; then
