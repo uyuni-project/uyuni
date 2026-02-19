@@ -35,8 +35,8 @@ Feature: Monitor MLM environment with Prometheus on a Debian-like Salt minion
     And I click on "Save"
     Then I should see a "Formula saved" text
 
-  Scenario: Enable tools_update_repo tools_pool_repo so the exporters packages are available
-    When I enable the repositories "tools_update_repo tools_pool_repo" on this "deblike_minion" without error control
+  Scenario: Enable tools_update_repo so the exporters packages are available
+    When I enable the repositories "tools_update_repo" on this "deblike_minion"
 
 @skip_if_github_validation
   Scenario: Apply highstate for Prometheus exporters on the Debian-like minion
@@ -69,5 +69,5 @@ Feature: Monitor MLM environment with Prometheus on a Debian-like Salt minion
     Then I should see a "Applying the highstate has been scheduled." text
     And I wait until event "Apply highstate scheduled" is completed
 
-  Scenario: Cleanup: Disable tools_update_repo tools_pool_repo because they are no longer needed
-    When I disable the repositories "tools_update_repo tools_pool_repo" on this "deblike_minion" without error control
+  Scenario: Cleanup: Disable tools_update_repo because they are no longer needed
+    When I disable the repositories "tools_update_repo" on this "deblike_minion"
