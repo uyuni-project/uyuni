@@ -1,0 +1,2 @@
+- Remove usage of module_run compatibility function from mgrcompat
+  in the default salt states as not needed anymore.
