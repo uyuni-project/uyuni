@@ -1,0 +1,2 @@
+- Fix inconsistent YAML HTML rendering and
+  add ID to generated textarea (bsc#1258168)
