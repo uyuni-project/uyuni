@@ -247,7 +247,7 @@ const AnsibleVarYamlEditor = forwardRef((props: Props, ref) => {
                     const currentValues = formRef.current?.values || varsData;
                     const yamlString = yaml.dump(currentValues, {
                       quotingType: '"',
-                      forceQuotes: true
+                      forceQuotes: true,
                     });
                     setVarsData(yamlString);
                     setYamlEditor(true);

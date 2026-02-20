@@ -39,7 +39,7 @@ const AceEditor = ({ minLines = 20, maxLines = 40, readOnly = false, content = "
       }
       if (!editorRef.current) {
         const editor = window.ace.edit(node);
-        
+
         const textarea = node.querySelector(".ace_text-input") as HTMLTextAreaElement;
         if (textarea) {
           textarea.id = `${props.id ?? fallbackId}-ace-editor`;
