@@ -15,7 +15,7 @@ mgr_install_dmidecode:
 {%- endif %}
 
 grains:
-  mgrcompat.module_run:
+  module.run:
     - name: grains.items
     - require:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
@@ -24,7 +24,7 @@ grains:
       - mgrcompat: sync_states
 {%- endif %}
 cpuinfo:
-  mgrcompat.module_run:
+  module.run:
     - name: status.cpuinfo
     - require:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
@@ -33,7 +33,7 @@ cpuinfo:
       - mgrcompat: sync_states
 {%- endif %}
 udev:
-  mgrcompat.module_run:
+  module.run:
     - name: udev.exportdb
     - require:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
@@ -42,7 +42,7 @@ udev:
       - mgrcompat: sync_states
 {%- endif %}
 network-interfaces:
-  mgrcompat.module_run:
+  module.run:
     - name: network.interfaces
     - require:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
@@ -51,7 +51,7 @@ network-interfaces:
       - mgrcompat: sync_states
 {%- endif %}
 network-ips:
-  mgrcompat.module_run:
+  module.run:
     - name: sumautil.primary_ips
     - require:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
@@ -62,7 +62,7 @@ network-ips:
       - mgrcompat: sync_modules
 {%- endif %}
 network-modules:
-  mgrcompat.module_run:
+  module.run:
     - name: sumautil.get_net_modules
     - require:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
@@ -74,7 +74,7 @@ network-modules:
 {%- endif %}
 
 instance-flavor:
-  mgrcompat.module_run:
+  module.run:
     - name: sumautil.instance_flavor
     - require:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
@@ -87,7 +87,7 @@ instance-flavor:
 
 {% if grains['cpuarch'] in ['i386', 'i486', 'i586', 'i686', 'x86_64'] %}
 smbios-records-bios:
-  mgrcompat.module_run:
+  module.run:
     - name: smbios.records
     - rec_type: 0
     - clean: False
@@ -98,7 +98,7 @@ smbios-records-bios:
       - mgrcompat: sync_states
 {%- endif %}
 smbios-records-system:
-  mgrcompat.module_run:
+  module.run:
     - name: smbios.records
     - rec_type: 1
     - clean: False
@@ -109,7 +109,7 @@ smbios-records-system:
       - mgrcompat: sync_states
 {%- endif %}
 smbios-records-baseboard:
-  mgrcompat.module_run:
+  module.run:
     - name: smbios.records
     - rec_type: 2
     - clean: False
@@ -120,7 +120,7 @@ smbios-records-baseboard:
       - mgrcompat: sync_states
 {%- endif %}
 smbios-records-chassis:
-  mgrcompat.module_run:
+  module.run:
     - name: smbios.records
     - rec_type: 3
     - clean: False
@@ -132,7 +132,7 @@ smbios-records-chassis:
 {%- endif %}
 {% elif grains['cpuarch'] in ['s390', 's390x'] %}
 mainframe-sysinfo:
-  mgrcompat.module_run:
+  module.run:
     - name: mainframesysinfo.read_values
     - require:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
@@ -145,7 +145,7 @@ mainframe-sysinfo:
 {%- if grains['saltversioninfo'][0] >= 2018 %}
 {% if 'mgrnet.dns_fqdns' in salt %}
 dns_fqdns:
-  mgrcompat.module_run:
+  module.run:
     - name: mgrnet.dns_fqdns
     - require:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
@@ -158,7 +158,7 @@ dns_fqdns:
 {% endif%}
 {% if 'network.fqdns' in salt %}
 fqdns:
-  mgrcompat.module_run:
+  module.run:
     - name: network.fqdns
     - require:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
@@ -171,7 +171,7 @@ fqdns:
 
 {% if grains['os_family'] == 'Suse' %}
 sap_workloads:
-  mgrcompat.module_run:
+  module.run:
     - name: sap.get_workloads
     - require:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
@@ -186,7 +186,7 @@ uname:
     - name: /usr/bin/uname -r -v
 
 container_runtime:
-  mgrcompat.module_run:
+  module.run:
     - name: container_runtime.get_container_runtime
     - require:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
@@ -196,7 +196,7 @@ container_runtime:
 {%- endif %}
 
 proxy_info:
-  mgrcompat.module_run:
+  module.run:
     - name: proxy.info
     - require:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}

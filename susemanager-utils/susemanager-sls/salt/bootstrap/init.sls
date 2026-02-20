@@ -206,7 +206,7 @@ salt-minion-package:
 {%- endif %}
 
 salt-minion-package:
-  mgrcompat.module_run:
+  module.run:
     - name: transactional_update.pkg_install
     - pkg: {{ salt_minion_name }}
     - args: "--no-recommends"
@@ -319,7 +319,7 @@ salt-minion-master-pub-wipe:
   {%- endif %}
 {%- else %}
 {{ salt_minion_name }}:
-  mgrcompat.module_run:
+  module.run:
     - name: transactional_update.run
     - command: /usr/bin/systemctl enable {{ salt_minion_name }}
     - snapshot: continue

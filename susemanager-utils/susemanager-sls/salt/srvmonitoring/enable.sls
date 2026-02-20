@@ -50,7 +50,7 @@ postgres_exporter_service:
     - require:
       - cmd: postgres_exporter
       - file: postgres_exporter_configuration
-  mgrcompat.module_run:
+  module.run:
     - name: service.systemctl_reload
   service.running:
     - name: prometheus-postgres_exporter
@@ -94,7 +94,7 @@ jmx_tomcat_config:
       - salt://srvmonitoring/tomcat/systemd/jmx.conf
     - require:
       - cmd: jmx_exporter
-  mgrcompat.module_run:
+  module.run:
     - name: service.systemctl_reload
 
 jmx_exporter_tomcat_service_cleanup:
@@ -131,7 +131,7 @@ jmx_taskomatic_config:
       - salt://srvmonitoring/taskomatic/systemd/jmx.conf
     - require:
       - cmd: jmx_exporter
-  mgrcompat.module_run:
+  module.run:
     - name: service.systemctl_reload
 
 jmx_exporter_taskomatic_service_cleanup:
