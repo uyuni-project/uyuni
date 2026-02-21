@@ -6881,64 +6881,6 @@ public class SystemHandler extends BaseHandler {
     }
 
     /**
-     * Register foreign peripheral server
-     *
-     * @param loggedInUser The current user
-     * @param fqdn         FQDN of the server
-     * @return 1 on success
-     *
-     * @apidoc.doc Register foreign peripheral server.
-     * This is used for registering containerized peripheral servers.
-     * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("string", "fqdn", "FQDN of the server")
-     * @apidoc.returntype #return_int_success()
-     */
-    public int registerPeripheralServer(User loggedInUser, String fqdn) {
-        ensureOrgAdmin(loggedInUser);
-        try {
-            return systemManager.registerPeripheralServer(loggedInUser, fqdn).getId().intValue();
-        }
-        catch (SystemsExistException e) {
-            throw new SystemsExistFaultException(e.getSystemIds());
-        }
-    }
-
-    /**
-     * Update foreign peripheral server info
-     *
-     * @param loggedInUser The current user
-     * @param sid Server ID
-     * @param reportDbName ReportDB name
-     * @param reportDbHost ReportDB host
-     * @param reportDbPort ReportDB port
-     * @param reportDbUser ReportDB user
-     * @param reportDbPassword ReportDB password
-     * @return 1 on success
-     *
-     * @apidoc.doc Update foreign peripheral server info.
-     * @apidoc.param #session_key()
-     * @apidoc.param #param_desc("string", "reportDbName", "ReportDB name")
-     * @apidoc.param #param_desc("string", "reportDbHost", "ReportDB host")
-     * @apidoc.param #param_desc("int", "reportDbPort", "ReportDB port")
-     * @apidoc.param #param_desc("string", "reportDbUser", "ReportDB user")
-     * @apidoc.param #param_desc("string", "reportDbPassword", "ReportDB password")
-     * @apidoc.returntype #return_int_success()
-     */
-    public int updatePeripheralServerInfo(User loggedInUser, Integer sid, String reportDbName, String reportDbHost,
-                       Integer reportDbPort, String reportDbUser, String reportDbPassword) {
-        ensureOrgAdmin(loggedInUser);
-        Server server = null;
-        try {
-            server = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser);
-        }
-        catch (LookupException e) {
-            throw new NoSuchSystemException();
-        }
-        return SystemManager.updatePeripheralServerInfo(server, reportDbName, reportDbHost,
-                                               reportDbPort, reportDbUser, reportDbPassword);
-    }
-
-    /**
      * Returns a list of kickstart variables set for the specified server
      *
      * @param loggedInUser The current user

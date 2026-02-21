@@ -1,0 +1,2 @@
+- Use more clear condition in bootstrap state
+  to avoid confusing log messages in salt-ssh trace

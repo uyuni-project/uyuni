@@ -57,7 +57,7 @@ URL:            https://github.com/uyuni-project/uyuni
 Source0:        %{name}-%{version}.tar.gz
 BuildRequires:  fdupes
 BuildRequires:  make
-%if 0%{?debian} || 0%{?ubuntu}
+%if 0%{?debian} || 0%{?ubuntu} || (0%{?suse_version} >= 1600 && 0%{?suse_version} < 1699)
 ExclusiveArch:  do_not_build
 %endif
 

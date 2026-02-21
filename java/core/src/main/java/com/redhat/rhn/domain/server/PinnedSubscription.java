@@ -11,6 +11,8 @@
 
 package com.redhat.rhn.domain.server;
 
+import com.google.gson.annotations.SerializedName;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -33,9 +35,13 @@ public class PinnedSubscription {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "suse_pinsub_seq")
     @SequenceGenerator(name = "suse_pinsub_seq", sequenceName = "suse_pinsub_id_seq", allocationSize = 1)
     private Long id;
+
     @Column(name = "system_id")
+    @SerializedName("system_id")
     private Long systemId;
+
     @Column(name = "subscription_id")
+    @SerializedName("subscription_id")
     private Long subscriptionId;
 
     /**

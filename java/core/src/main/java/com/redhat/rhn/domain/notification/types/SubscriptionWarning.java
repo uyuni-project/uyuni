@@ -26,11 +26,32 @@ public class SubscriptionWarning implements NotificationData {
      * @return boolean
      **/
     public boolean expiresSoon() {
+        // The following query aims to find if there are subscriptions that will expire in 90 days
+        // or have expired within 30 days.
+        // Initially, the query was looking directly in the suseSCCSubscription table, but that approach was
+        // sometimes warning the user about subscriptions that were then not present in the subscription matcher page.
+        // To fill this discrepancy, now the query checks subscriptions "joined on" the orders, as they appear
+        // in the input for the subscription matcher (see MatcherJsonIO.getJsonSubscriptions).
+        // In this way, the user is warned only with subscriptions actually appearing in the subscription matcher page,
+        // while they don't get pointlessly warned about unmatched subscriptions or test/promotional subscriptions
+        // (hence not present in the subscription matcher page).
+        // Also, although the starts_at/expires_at subscription dates and the start_date/end_date order dates should be
+        // consistent, we take the suseSCCOrderItem.end_date as reference to check the subscription validity in time
+
         Optional<Boolean> result = getSession().createNativeQuery(
-        "select exists (select name,  expires_at, status, subtype " +
-                "from susesccsubscription where subtype != 'internal' " +
-                " and ((status = 'ACTIVE' and expires_at < now() + interval '90 day') " +
-                "or (status = 'EXPIRED' and expires_at > now() - interval '30 day')))").uniqueResultOptional();
+                """
+                        SELECT EXISTS
+                         (
+                            SELECT ord.sku, ord.quantity, subs.scc_id, subs.name, subs.status, subs.subtype
+                            FROM suseSCCOrderItem AS ord
+                            JOIN suseSCCSubscription AS subs
+                            ON ord.subscription_id = subs.scc_id
+                            WHERE
+                            subs.subtype != 'internal' AND subs.subtype != 'test' AND
+                            ((subs.status = 'ACTIVE' AND ord.end_date < now() + interval '90 DAY')
+                                  OR (subs.status = 'EXPIRED' AND ord.end_date > now() - interval '30 day'))
+                        )
+                    """).uniqueResultOptional();
 
         return result.orElse(false);
     }

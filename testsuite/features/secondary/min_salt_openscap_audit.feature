@@ -14,6 +14,10 @@ Feature: OpenSCAP audit of Salt minion
 
 @Uyuni
   Scenario: Enable required repositories
+    When I enable repository "repo-oss" on this "sle_minion" without error control
+
+@susemanager
+  Scenario: Enable required repositories
     When I enable repository "os_pool_repo" on this "sle_minion" without error control
 
   Scenario: Install the OpenSCAP packages on the SLE minion
@@ -134,5 +138,9 @@ Feature: OpenSCAP audit of Salt minion
     When I remove OpenSCAP dependencies from "sle_minion"
 
 @Uyuni
+  Scenario: Cleanup: Disable required repositories
+    When I disable repository "repo-oss" on this "sle_minion" without error control
+
+@susemanager
   Scenario: Cleanup: Disable required repositories
     When I disable repository "os_pool_repo" on this "sle_minion" without error control

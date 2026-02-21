@@ -19,6 +19,7 @@ UYUNI_DIR="$(realpath "$SCRIPT_DIR/../../..")"
 DEPLOY_TARGET="backend"
 DEPLOY_HOST="server.tf.local"
 DEPLOY_MODE="remote-container"
+DEPLOY_NAMESPACE="default"
 CONTAINER_BACKEND="podman"
 RESTART_TOMCAT=false
 RESTART_TASKOMATIC=false
@@ -51,9 +52,10 @@ usage() {
     print "  <type>                 The type of deployment to perform: backend, frontend, salt or all."
     print ""
     print "Optional Arguments:"
-    print "  -m,--mode <mode>        Deployment mode: local, remote, container, remote-container (default: $DEPLOY_MODE)"
+    print "  -m,--mode <mode>        Deployment mode: local, remote, container, remote-container, kubectl (default: $DEPLOY_MODE)"
     print "  -h,--host <hostname>    The target host for the deployment."
     print "  -b,--backend <backend>  Container backend: podman, podman-remote, kubectl (default: $CONTAINER_BACKEND)"
+    print "  -n,--namespace <ns>     Kubernetes namespace where to look for the pod (default: $DEPLOY_NAMESPACE)"
     print "  -r,--restart            Restart tomcat and taskomatic at the end of the deployment"
     print "  --restart-tomcat        Restart only tomcat at the end of the deployment"
     print "  --restart-taskomatic    Restart only taskomatic at the end of the deployment"
@@ -80,6 +82,10 @@ while [[ $# -gt 0 ]]; do
             ;;
         -b|--backend)
             CONTAINER_BACKEND="$2"
+            shift 2
+            ;;
+        -n|--namespace)
+            DEPLOY_NAMESPACE="$2"
             shift 2
             ;;
         -r|--restart)
@@ -134,9 +140,8 @@ BRANDING_VERSION=""
 
 # Executes a command on the target system using the configured executor.
 deploy_execute() {
-    local cmd_to_run="$1"
     # Execute the command with parameters as a proper array
-    "$EXECUTOR_COMMAND" "${EXECUTOR_PARAMETERS[@]}" "$cmd_to_run"
+    "$EXECUTOR_COMMAND" "${EXECUTOR_PARAMETERS[@]}" $@
 }
 
 # Deploys a local directory to the target
@@ -149,17 +154,16 @@ deploy_directory() {
 
     # Create a remote temporary directory
     local temp_dir
-    temp_dir=$(deploy_execute "mktemp -d")
+    temp_dir=$(deploy_execute mktemp -d | tr -d "[:space:]")
 
     print_detailed "  Streaming local $source_dir to remote $temp_dir..."
-    local remote_tar_cmd="tar xf - -C ${temp_dir}/ --no-same-owner --no-same-permissions"
-    tar c -C "$source_dir" -f - . | deploy_execute "$remote_tar_cmd"
+    tar c -C "$source_dir" -f - . | deploy_execute tar xf - -C ${temp_dir}/ --no-same-owner --no-same-permissions
 
     print_detailed "  Syncing from remote $temp_dir to $dest_dir..."
-    deploy_execute "rsync -a ${rsync_params} ${temp_dir}/ ${dest_dir}"
+    deploy_execute rsync -a ${rsync_params} ${temp_dir}/ ${dest_dir}
 
     print_detailed "  Cleaning up remote temp dir..."
-    deploy_execute "rm -rf $temp_dir"
+    deploy_execute rm -rf $temp_dir
 
     print_detailed "  Deploy directory finished."
 }
@@ -176,8 +180,12 @@ show_configuration() {
         print_detailed "  Port:        $SSH_PORT"
     fi
 
-    if [ "$DEPLOY_MODE" = "container " ] || [ "$DEPLOY_MODE" = "remote-container" ]; then
+    if [ "$DEPLOY_MODE" = "container" ] || [ "$DEPLOY_MODE" = "remote-container" ]; then
         print_detailed "  Backend:     $CONTAINER_BACKEND"
+    fi
+    
+    if [ "$DEPLOY_MODE" = "kubectl" ]; then
+        print_detailed "  Namespace:   $DEPLOY_NAMESPACE"
     fi
 
     print_detailed
@@ -269,10 +277,28 @@ check_prerequisites() {
             # Parameters are SSH args *plus* the remote mgrctl command
             EXECUTOR_PARAMETERS=("${ssh_args[@]}" "mgrctl" "exec" "${mgrctl_params[@]}" "-i" "--")
             ;;
+        kubectl)
+            print_detailed "  Mode: kubectl"
+            # Check for local kubectl
+            if ! command -v kubectl &> /dev/null; then
+                print_error "Error: kubectl is not in the PATH. Please install kubectl first."
+                exit 1
+            fi
+            print_detailed "  Local kubectl found."
+
+            EXECUTOR_COMMAND="kubectl"
+
+            EXECUTOR_POD=`kubectl get pod -n ${DEPLOY_NAMESPACE} -l 'app.kubernetes.io/part-of=uyuni,app.kubernetes.io/component=server' -o name`
+            if test $? -ne 0; then
+                print_error "Error: failed to find pod to work with."
+            fi
+            EXECUTOR_PARAMETERS=("exec" "-n" ${DEPLOY_NAMESPACE} "-ti" ${EXECUTOR_POD} "-c" "uyuni" "--")
+            ;;
+
 
         *)
             print_error "Error: The deploy mode '$DEPLOY_MODE' is invalid."
-            print_error "Valid modes are: local, remote, container, remote-container"
+            print_error "Valid modes are: local, remote, container, remote-container, kubectl"
             exit 1
             ;;
     esac
@@ -298,15 +324,15 @@ deploy_backend() {
     deploy_directory "$SOURCE_WEBAPP_DIR" "$TARGET_DIR" "--delete --exclude=log4j2.xml"
 
     print "Linking branding jar..."
-    deploy_execute "mv ${TARGET_DIR}/WEB-INF/lib/branding-${BRANDING_VERSION}.jar /usr/share/rhn/lib/java-branding.jar"
-    deploy_execute "ln -sf /usr/share/rhn/lib/java-branding.jar ${TARGET_DIR}/WEB-INF/lib/java-branding.jar"
+    deploy_execute mv "${TARGET_DIR}/WEB-INF/lib/branding-${BRANDING_VERSION}.jar" /usr/share/rhn/lib/java-branding.jar
+    deploy_execute ln -sf /usr/share/rhn/lib/java-branding.jar ${TARGET_DIR}/WEB-INF/lib/java-branding.jar
 
     print "Linking rhn jar..."
-    deploy_execute "mv ${TARGET_DIR}/WEB-INF/lib/core-${SPACEWALK_JAVA_VERSION}.jar /usr/share/rhn/lib/rhn.jar"
-    deploy_execute "ln -sf /usr/share/rhn/lib/rhn.jar ${TARGET_DIR}/WEB-INF/lib/rhn.jar"
+    deploy_execute mv ${TARGET_DIR}/WEB-INF/lib/core-${SPACEWALK_JAVA_VERSION}.jar /usr/share/rhn/lib/rhn.jar
+    deploy_execute ln -sf /usr/share/rhn/lib/rhn.jar "${TARGET_DIR}/WEB-INF/lib/rhn.jar"
 
     print "Linking jars for Taskomatic..."
-    deploy_execute "ln -sf ${TARGET_DIR}/WEB-INF/lib/*.jar /usr/share/spacewalk/taskomatic"
+    deploy_execute ln -sf "${TARGET_DIR}/WEB-INF/lib/*.jar" /usr/share/spacewalk/taskomatic
 }
 
 deploy_frontend() {
@@ -343,12 +369,12 @@ deploy_salt() {
 restart_services() {
     if [ "$RESTART_TOMCAT" = true ]; then
         print "Launching Tomcat restart..."
-        deploy_execute "nohup rctomcat restart"
+        deploy_execute nohup rctomcat restart
     fi
 
     if [ "$RESTART_TASKOMATIC" = true ]; then
         print "Launching Taskomatic restart..."
-        deploy_execute "nohup rctaskomatic restart"
+        deploy_execute nohup rctaskomatic restart
     fi
 }
 

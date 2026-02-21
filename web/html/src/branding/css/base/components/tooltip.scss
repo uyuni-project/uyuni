@@ -4,6 +4,7 @@
   font-size: 11px;
   font-weight: 600;
   border-radius: 3px;
+  pointer-events: none;
 
   .tooltip-arrow::before {
     --bs-tooltip-bg: #{$eos-bc-gray-1000};
@@ -14,4 +15,5 @@
   max-width: 400px;
   text-align: left;
   white-space: pre-line;
+  pointer-events: none;
 }

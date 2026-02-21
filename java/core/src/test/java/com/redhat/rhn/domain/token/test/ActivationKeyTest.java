@@ -25,6 +25,8 @@ import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.test.ChannelFactoryTest;
+import com.redhat.rhn.domain.config.ConfigChannel;
+import com.redhat.rhn.domain.config.ConfigChannelListProcessor;
 import com.redhat.rhn.domain.entitlement.Entitlement;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
@@ -43,6 +45,7 @@ import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
@@ -305,5 +308,46 @@ public class ActivationKeyTest extends BaseTestCaseWithUser {
         }
     }
 
+    @Test
+    public void testChangeConfigChannelsRankingOrder() {
+        //create activation key and subscribe configuration channels in order 1,2,3
+        ActivationKey key = ActivationKeyManager.getInstance().createNewActivationKey
+                (user, "anyKeyName", null, null, null, false);
+        ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(user.getOrg(), "Ch 1", "cfg-channel-1");
+        ConfigChannel channel2 = ConfigTestUtils.createConfigChannel(user.getOrg(), "Ch 2", "cfg-channel-2");
+        ConfigChannel channel3 = ConfigTestUtils.createConfigChannel(user.getOrg(), "Ch 3", "cfg-channel-3");
+
+        ConfigChannelListProcessor proc = new ConfigChannelListProcessor();
+        proc.add(key.getConfigChannelsFor(user), channel1);
+        proc.add(key.getConfigChannelsFor(user), channel2);
+        proc.add(key.getConfigChannelsFor(user), channel3);
+
+        //save and reload key, check configuration channels order
+        TestUtils.saveAndFlush(key);
+        ActivationKey key1 = ActivationKeyFactory.lookupByKey(key.getKey());
+        assertNotNull(key1);
+        List<ConfigChannel> configChannels1 = key1.getConfigChannelsFor(user);
+        assertEquals(3, configChannels1.size());
+        assertEquals("cfg-channel-1", configChannels1.get(0).getLabel());
+        assertEquals("cfg-channel-2", configChannels1.get(1).getLabel());
+        assertEquals("cfg-channel-3", configChannels1.get(2).getLabel());
+
+
+        //change configuration channels ranking order to 3,1,2
+        ConfigChannelListProcessor proc1 = new ConfigChannelListProcessor();
+        proc1.add(key1.getConfigChannelsFor(user), channel2);
+        proc1.add(key1.getConfigChannelsFor(user), channel3);
+        proc1.add(key1.getConfigChannelsFor(user), channel1);
+
+        //save and reload key, check configuration channels order
+        TestUtils.saveAndFlush(key1);
+        ActivationKey key2 = ActivationKeyFactory.lookupByKey(key.getKey());
+        assertNotNull(key2);
+        List<ConfigChannel> configChannels2 = key2.getConfigChannelsFor(user);
+        assertEquals(3, configChannels2.size());
+        assertEquals("cfg-channel-2", configChannels2.get(0).getLabel());
+        assertEquals("cfg-channel-3", configChannels2.get(1).getLabel());
+        assertEquals("cfg-channel-1", configChannels2.get(2).getLabel());
+    }
 
 }

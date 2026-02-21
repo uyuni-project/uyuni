@@ -1,0 +1,49 @@
+name: Proxy Helm Chart CI
+
+on:
+  pull_request:
+    branches: [ master ]
+    paths:
+      - 'containers/proxy-helm/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Helm unit tests
+        uses: d3adb5/helm-unittest-action@v2
+        with:
+          install-mode: if-not-present
+          charts: containers/proxy-helm
+
+      - name: Helm Lint
+        # Validates Chart.yaml and values.yaml against your schema
+        run: |
+          helm lint --set global.config='max_cache_size_mb: 2048
+          server: parent.example.org
+          proxy_fqdn: proxy.example.org
+          email: foo@example.org' \
+              --set global.ssh=ssh --set global.httpd=httpd containers/proxy-helm
+
+      - name: Run Unit Tests
+        run: |
+          # Executes tests defined in containers/proxy-helm/tests/
+          helm unittest containers/proxy-helm
+
+      - name: Set up Kubeconform
+        uses: bmuschko/setup-kubeconform@v1
+
+      - name: Validate Kubernetes Manifests
+        run: |
+          # Render templates and validate against K8s and Traefik schemas
+          helm template containers/proxy-helm --set global.config='max_cache_size_mb: 2048
+          server: parent.example.org
+          proxy_fqdn: proxy.example.org
+          email: foo@example.org' \
+              --set global.ssh=ssh --set global.httpd=httpd | \
+                   kubeconform -summary -strict \
+                     -schema-location default \
+                     -schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json'

@@ -37,7 +37,7 @@ Set-Cookie: pxt-session-cookie=&lt;tokenhash&gt;; ...
     <programlisting>
 <![CDATA[
 $ API=https://manager.example.com/rhn/manager/api
-$ curl -H "Content-Type: application/json" --cookie "pxt-session-cookie&lt;tokenhash&gt;;" \
+$ curl -H "Content-Type: application/json" --cookie "pxt-session-cookie=&lt;tokenhash&gt;;" \
 > $API/contentmanagement/lookupProject?projectLabel=myproject
 {
   "success": true,
@@ -64,7 +64,7 @@ $ curl -H "Content-Type: application/json" --cookie "pxt-session-cookie&lt;token
     <programlisting>
 <![CDATA[
 $ API=https://manager.example.com/rhn/manager/api
-$ curl -H "Content-Type: application/json" --cookie "pxt-session-cookie&lt;tokenhash&gt;;" -X POST \
+$ curl -H "Content-Type: application/json" --cookie "pxt-session-cookie=&lt;tokenhash&gt;;" -X POST \
 > "$API/contentmanagement/createProject?projectLabel=myproject&name=My%20Project&description="
 {
   "success": true,
@@ -81,7 +81,7 @@ $ curl -H "Content-Type: application/json" --cookie "pxt-session-cookie&lt;token
     <programlisting>
 <![CDATA[
 $ API=https://manager.example.com/rhn/manager/api
-$ curl -H "Content-Type: application/json" --cookie "pxt-session-cookie&lt;tokenhash&gt;;" \
+$ curl -H "Content-Type: application/json" --cookie "pxt-session-cookie=&lt;tokenhash&gt;;" \
 > -d '{"projectLabel":"myproject","name":"My Project","description":""}' \
 > $API/contentmanagement/createProject
 {

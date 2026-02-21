@@ -27,6 +27,7 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.product.ChannelTemplate;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.scc.SCCRepository;
+import com.redhat.rhn.frontend.xmlrpc.sync.content.SCCContentSyncSource;
 
 import com.suse.manager.hub.RouteWithSCCAuth;
 import com.suse.manager.reactor.utils.OptionalTypeAdapterFactory;
@@ -35,7 +36,6 @@ import com.suse.manager.webui.utils.token.TokenBuildingException;
 import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCClientException;
 import com.suse.scc.client.SCCConfig;
-import com.suse.scc.client.SCCConfigBuilder;
 import com.suse.scc.client.SCCFileClient;
 import com.suse.scc.client.SCCWebClient;
 import com.suse.scc.model.SCCOrganizationSystemsUpdateResponse;
@@ -56,7 +56,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.util.Base64;
@@ -307,24 +306,14 @@ public class SCCEndpoints {
                         .filter(SCCCredentials::isPrimary)
                         .findFirst()
                         .map(cred -> {
-                            String username = cred.getUsername();
-                            Path path = Paths.get(SCCConfig.DEFAULT_LOGGING_DIR).resolve(username);
+                            SCCContentSyncSource contentSync = new SCCContentSyncSource(cred);
+                            SCCWebClient sccWebClient = contentSync.getClient(uuid,
+                                    Paths.get(SCCConfig.DEFAULT_LOGGING_DIR), false);
                             try {
-                                return fn.apply(new SCCFileClient(path));
+                                return fn.apply(new SCCFileClient(sccWebClient.getCacheDir()));
                             }
                             catch (SCCClientException e) {
-                                String password = cred.getPassword();
-
-                                SCCConfig config = new SCCConfigBuilder()
-                                        .setUrl(sccUrl)
-                                        .setUsername(username)
-                                        .setPassword(password)
-                                        .setUuid(uuid)
-                                        .setLoggingDir(SCCConfig.DEFAULT_LOGGING_DIR)
-                                        .setSkipOwner(false)
-                                        .createSCCConfig();
-
-                                return fn.apply(new SCCWebClient(config));
+                                return fn.apply(sccWebClient);
                             }
                         })
                 ).map(gson::toJson).orElse("[]");

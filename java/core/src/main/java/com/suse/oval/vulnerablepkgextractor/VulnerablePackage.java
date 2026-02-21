@@ -15,13 +15,14 @@
 
 package com.suse.oval.vulnerablepkgextractor;
 
-import org.apache.commons.lang3.StringUtils;
+import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 
 import java.util.Optional;
 
 public class VulnerablePackage {
     private String name;
-    private String fixVersion;
+    private PackageEvr fixVersion;
+    private Boolean affected;
 
     public String getName() {
         return name;
@@ -36,19 +37,27 @@ public class VulnerablePackage {
      *
      * @return the fix version or {@code Optional.empty} if package is unpatched.
      * */
-    public Optional<String> getFixVersion() {
-        if (StringUtils.isEmpty(fixVersion)) {
+    public Optional<PackageEvr> getFixVersion() {
+        if (fixVersion == null) {
             return Optional.empty();
         }
-        return Optional.ofNullable(fixVersion);
+        return Optional.of(fixVersion);
     }
 
-    public void setFixVersion(String fixedVersionIn) {
+    public void setFixVersion(PackageEvr fixedVersionIn) {
         this.fixVersion = fixedVersionIn;
+    }
+
+    public Boolean getAffected() {
+        return affected;
+    }
+
+    public void setAffected(Boolean affectedIn) {
+        affected = affectedIn;
     }
 
     @Override
     public String toString() {
-        return name + "-" + fixVersion;
+        return name + "-" + fixVersion.toString();
     }
 }

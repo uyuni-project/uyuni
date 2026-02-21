@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 SUSE LLC
+# Copyright (c) 2023-2026 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @monitoring_server
@@ -43,5 +43,9 @@ Feature: Add a Maintenance Update custom channel and the custom repositories for
     Then I should see a "Repository sync scheduled" text or "No repositories are currently associated with this channel" text
 
   Scenario: Wait for running reposyncs to finish after adding custom channel for monitoring_server
-    When I wait until the channel "sle15sp7_minion" has been synced
-    Then the "sle15sp7_minion" reposync logs should not report errors
+    When I wait until the channel "custom_channel_monitoring_server" has been synced
+    Then the "custom_channel_monitoring_server" reposync logs should not report errors
+
+  Scenario: Verify that all synchronized channels have their dependencies solved
+    When I wait until all synchronized channels have solved their dependencies
+    Then all channels have been synced without errors

@@ -1,0 +1,1 @@
+- Removed the expensive diff column (bsc#1256044)

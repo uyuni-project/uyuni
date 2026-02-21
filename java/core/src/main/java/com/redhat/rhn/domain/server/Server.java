@@ -63,6 +63,7 @@ import org.apache.logging.log4j.Logger;
 import org.cobbler.CobblerConnection;
 import org.cobbler.SystemRecord;
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CollectionType;
 import org.hibernate.annotations.ListIndexBase;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.WhereJoinTable;
@@ -233,6 +234,9 @@ public class Server extends BaseDomainHelper implements Identifiable {
             inverseJoinColumns = @JoinColumn(name = "config_channel_id")
     )
     @ListIndexBase(1)
+    @CollectionType(
+            type = "com.redhat.rhn.common.hibernate.ForceRecreationListType"
+    )
     private List<ConfigChannel> configChannels = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

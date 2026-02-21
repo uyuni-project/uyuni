@@ -1,4 +1,4 @@
-{{- if default .Values.saline false }}
+{{- if default .Values.saline.enable false }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -12,6 +12,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/component: saline
+      app.kubernetes.io/part-of: uyuni
   strategy:
     type: Recreate
   template:
@@ -26,7 +27,7 @@ spec:
           value: "YES"
         - name: TZ
           value: {{ .Values.timezone | default "Etc/UTC" }}
-        image: {{- include "deployment.container.image" (dict "name" "server-saline" "global" .) | indent 1}}
+        image: {{ include "uyuni.image" (dict "name" "server-saline" "global" . "local" .Values.saline) }}
         imagePullPolicy: {{ .Values.pullPolicy }}
         name: saline
         ports:
@@ -48,9 +49,12 @@ spec:
           until curl -L http://web/rhn/manager/api/api/getVersion; do
             sleep 60
           done
-        image: {{- include "deployment.container.image" (dict "name" "server-saline" "global" .) | indent 1}}
+        image: {{ include "uyuni.image" (dict "name" "server-saline" "global" . "local" .Values.saline) }}
         imagePullPolicy: {{ .Values.pullPolicy }}
         name: server-waiter
+      securityContext:
+        seLinuxOptions:
+          level: "s0"
       volumes:
       - name: run-salt-master
         persistentVolumeClaim:

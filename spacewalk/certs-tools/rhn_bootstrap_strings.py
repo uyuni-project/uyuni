@@ -20,7 +20,6 @@
 from spacewalk.common.rhnConfig import isUyuni, cfg_component
 import os.path
 
-
 _header = """\
 #!/bin/bash
 
@@ -945,7 +944,10 @@ fi
 
 SNAPSHOT_PREFIX=""
 if [ -n "$SNAPSHOT_ID" ]; then
-    SNAPSHOT_PREFIX="/var/lib/overlay/$SNAPSHOT_ID"
+    if [ -d "/var/lib/overlay" ]; then
+        # SLM 6.1 and older requires writing to snapshot
+        SNAPSHOT_PREFIX="/var/lib/overlay/$SNAPSHOT_ID"
+    fi
 fi
 
 MINION_ID_FILE="${{SNAPSHOT_PREFIX}}/etc/salt/minion_id"
@@ -960,6 +962,11 @@ if [ $VENV_ENABLED -eq 1 ]; then
     MINION_CONFIG_DIR="${{SNAPSHOT_PREFIX}}/etc/venv-salt-minion/minion.d"
     SUSEMANAGER_MASTER_FILE="${{MINION_CONFIG_DIR}}/susemanager.conf"
     MINION_SERVICE="venv-salt-minion"
+fi
+
+if [ -z "$SNAPSHOT_PREFIX" ] && [ -n "$SNAPSHOT_ID" ]; then
+    # TU minion writing to /etc, create /etc directories
+    mkdir -p $MINION_CONFIG_DIR
 fi
 
 if [ $REGISTER_THIS_BOX -eq 1 ]; then
@@ -1071,9 +1078,7 @@ else
     /sbin/chkconfig --add $MINION_SERVICE
 fi
 echo "-bootstrap complete-"
-""".format(
-        productName=productName
-    )
+""".format(productName=productName)
 
 
 # pylint: disable-next=invalid-name

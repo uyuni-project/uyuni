@@ -159,13 +159,9 @@ public class SubscriptionMatchingController {
      * @return the new pin table data as json
      */
     public static String createPin(Request request, Response response, User user) {
-        PinnedSubscription pin = new PinnedSubscription();
-        Long subscriptionId = Long.parseLong(request.queryParams("subscription_id"));
-        Long systemId = Long.parseLong(request.queryParams("system_id"));
-        pin.setSubscriptionId(subscriptionId);
-        pin.setSystemId(systemId);
+        PinnedSubscription pin = GSON.fromJson(request.body(), PinnedSubscription.class);
         if (PinnedSubscriptionFactory.getInstance()
-                .lookupBySystemIdAndSubscriptionId(systemId, subscriptionId) == null) {
+                .lookupBySystemIdAndSubscriptionId(pin.getSystemId(), pin.getSubscriptionId()) == null) {
             PinnedSubscriptionFactory.getInstance().save(pin);
         }
 

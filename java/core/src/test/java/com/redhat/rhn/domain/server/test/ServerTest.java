@@ -98,6 +98,39 @@ public class ServerTest extends BaseTestCaseWithUser {
     }
 
     @Test
+    public void testChangeConfigChannelsRankingOrder() throws Exception {
+        //create server and subscribe configuration channels in order 1,2,3
+        Server s = ServerTestUtils.createTestSystem(user);
+        ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(user.getOrg(), "Ch 1", "cfg-channel-1");
+        ConfigChannel channel2 = ConfigTestUtils.createConfigChannel(user.getOrg(), "Ch 2", "cfg-channel-2");
+        ConfigChannel channel3 = ConfigTestUtils.createConfigChannel(user.getOrg(), "Ch 3", "cfg-channel-3");
+        s.subscribeConfigChannels(List.of(channel1, channel2, channel3), user);
+
+        //save and reload server, check configuration channels order
+        TestUtils.saveAndFlush(s);
+        Server s1 = ServerFactory.lookupByIdAndOrg(s.getId(), user.getOrg());
+        assertNotNull(s1);
+        List<ConfigChannel> result1ConfigChannelList = s1.getConfigChannelList();
+        assertEquals(3, result1ConfigChannelList.size());
+        assertEquals("cfg-channel-1", result1ConfigChannelList.get(0).getLabel());
+        assertEquals("cfg-channel-2", result1ConfigChannelList.get(1).getLabel());
+        assertEquals("cfg-channel-3", result1ConfigChannelList.get(2).getLabel());
+
+        //change configuration channels ranking order to 3,1,2
+        s1.subscribeConfigChannels(List.of(channel3, channel1, channel2), user);
+
+        //save and reload server, check configuration channels order
+        TestUtils.saveAndFlush(s1);
+        Server s2 = ServerFactory.lookupByIdAndOrg(s.getId(), user.getOrg());
+        assertNotNull(s2);
+        List<ConfigChannel> result2ConfigChannelList = s2.getConfigChannelList();
+        assertEquals(3, result2ConfigChannelList.size());
+        assertEquals("cfg-channel-3", result2ConfigChannelList.get(0).getLabel());
+        assertEquals("cfg-channel-1", result2ConfigChannelList.get(1).getLabel());
+        assertEquals("cfg-channel-2", result2ConfigChannelList.get(2).getLabel());
+    }
+
+    @Test
     public void testIsInactive() {
         Server s = ServerFactory.createServer();
         s.setServerInfo(new ServerInfo());

@@ -1,0 +1,114 @@
+suite: test global values parsing
+templates:
+  - templates/ingress.yaml
+  - templates/k3s-ingress-routes.yaml
+tests:
+  - it: should create traefik resources
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+        log_level: 2
+      global.httpd: "httpd_content: test httpd"
+      global.ssh: "ssh_content: test ssh"
+      ingress:
+        type: "traefik"
+        class: "testClass"
+        annotations:
+          ssl:
+            testAnnotation1: value1
+            testAnnotation2: value2
+    release:
+      namespace: proxy1
+    asserts:
+      - isSubset:
+          path: metadata.annotations
+          content:
+            traefik.ingress.kubernetes.io/router.tls: "true"
+            traefik.ingress.kubernetes.io/router.entrypoints: "websecure,web"
+            traefik.ingress.kubernetes.io/router.tls.domains.n.main: "proxy.example.org"
+            testAnnotation1: value1
+            testAnnotation2: value2
+        template: ingress.yaml
+        documentSelector:
+          path: metadata.name
+          value: uyuni-proxy-ssl
+      
+      - equal:
+          path: spec.ingressClassName
+          value: testClass
+        template: ingress.yaml
+        documentSelector:
+          path: metadata.name
+          value: uyuni-proxy-ssl
+
+      - hasDocuments:
+          count: 3
+        template: k3s-ingress-routes.yaml
+
+      # SSH router checks
+      - contains:
+          path: spec.routes[0].services
+          content:
+            name: ssh
+            port: 8022
+        template: k3s-ingress-routes.yaml
+        documentSelector:
+          path: metadata.name
+          value: ssh-router
+
+      - containsDocument:
+          kind: IngressRouteTCP
+          apiVersion: traefik.io/v1alpha1
+          namespace: proxy1
+          name: ssh-router
+        template: k3s-ingress-routes.yaml
+        documentSelector:
+          path: metadata.name
+          value: ssh-router
+
+      # Salt publish router checks
+      - contains:
+          path: spec.routes[0].services
+          content:
+            name: salt
+            port: 4505
+          any: true
+        template: k3s-ingress-routes.yaml
+        documentSelector:
+          path: metadata.name
+          value: salt-publish-router
+
+      - containsDocument:
+          kind: IngressRouteTCP
+          apiVersion: traefik.io/v1alpha1
+          namespace: proxy1
+          name: salt-publish-router
+        template: k3s-ingress-routes.yaml
+        documentSelector:
+          path: metadata.name
+          value: salt-publish-router
+
+      # Salt request router checks
+      - contains:
+          path: spec.routes[0].services
+          content:
+            name: salt
+            port: 4506
+          any: true
+        template: k3s-ingress-routes.yaml
+        documentSelector:
+          path: metadata.name
+          value: salt-request-router
+
+      - containsDocument:
+          kind: IngressRouteTCP
+          apiVersion: traefik.io/v1alpha1
+          namespace: proxy1
+          name: salt-request-router
+        template: k3s-ingress-routes.yaml
+        documentSelector:
+          path: metadata.name
+          value: salt-request-router

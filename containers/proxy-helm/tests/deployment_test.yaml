@@ -1,0 +1,186 @@
+suite: test global values parsing
+templates:
+  - templates/deployment.yaml
+tests:
+  - it: should create the deployment with default images
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+        log_level: 2
+      global.httpd: "httpd_content: test httpd"
+      global.ssh: "ssh_content: test ssh"
+    release:
+      namespace: proxy1
+    asserts:
+      - containsDocument:
+          kind: Deployment
+          apiVersion: apps/v1
+          name: uyuni-proxy
+          namespace: proxy1
+
+      # Verify All Init Containers (Images and PullPolicy)
+      - contains:
+          path: spec.template.spec.initContainers
+          any: true
+          content:
+            name: init-httpd
+            image: registry.opensuse.org/uyuni/proxy-httpd:latest
+            imagePullPolicy: Always
+      - contains:
+          path: spec.template.spec.initContainers
+          any: true
+          content:
+            name: init-sshd
+            image: registry.opensuse.org/uyuni/proxy-ssh:latest
+            imagePullPolicy: Always
+
+      # Verify All Main Containers (Images and PullPolicy)
+      - contains:
+          path: spec.template.spec.containers
+          any: true
+          content:
+            name: httpd
+            image: registry.opensuse.org/uyuni/proxy-httpd:latest
+            imagePullPolicy: Always
+      - contains:
+          path: spec.template.spec.containers
+          any: true
+          content:
+            name: salt-broker
+            image: registry.opensuse.org/uyuni/proxy-salt-broker:latest
+            imagePullPolicy: Always
+      - contains:
+          path: spec.template.spec.containers
+          any: true
+          content:
+            name: squid
+            image: registry.opensuse.org/uyuni/proxy-squid:latest
+            imagePullPolicy: Always
+      - contains:
+          path: spec.template.spec.containers
+          any: true
+          content:
+            name: ssh
+            image: registry.opensuse.org/uyuni/proxy-ssh:latest
+            imagePullPolicy: Always
+
+      # Verify registrySecret is not present by default
+      - notExists:
+          path: spec.template.spec.imagePullSecrets
+
+  - it: should use top-level repository, tag and pullPolicy for all containers
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+        log_level: 2
+      global.httpd: "httpd_content: test httpd"
+      global.ssh: "ssh_content: test ssh"
+      repository: my.custom.registry/uyuni
+      tag: 5.2.3
+      pullPolicy: IfNotPresent
+    asserts:
+      - contains:
+          path: spec.template.spec.initContainers
+          content:
+            name: init-httpd
+            image: my.custom.registry/uyuni/proxy-httpd:5.2.3
+            imagePullPolicy: IfNotPresent
+          any: true
+      - contains:
+          path: spec.template.spec.initContainers
+          content:
+            name: init-sshd
+            image: my.custom.registry/uyuni/proxy-ssh:5.2.3
+            imagePullPolicy: IfNotPresent
+          any: true
+      - contains:
+          path: spec.template.spec.containers
+          content:
+            name: httpd
+            image: my.custom.registry/uyuni/proxy-httpd:5.2.3
+            imagePullPolicy: IfNotPresent
+          any: true
+      - contains:
+          path: spec.template.spec.containers
+          content:
+            name: salt-broker
+            image: my.custom.registry/uyuni/proxy-salt-broker:5.2.3
+            imagePullPolicy: IfNotPresent
+          any: true
+      - contains:
+          path: spec.template.spec.containers
+          content:
+            name: squid
+            image: my.custom.registry/uyuni/proxy-squid:5.2.3
+            imagePullPolicy: IfNotPresent
+          any: true
+      - contains:
+          path: spec.template.spec.containers
+          content:
+            name: ssh
+            image: my.custom.registry/uyuni/proxy-ssh:5.2.3
+            imagePullPolicy: IfNotPresent
+          any: true
+
+  - it: should use component-specific overrides for all containers
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+        log_level: 2
+      global.httpd: "httpd_content: test httpd"
+      global.ssh: "ssh_content: test ssh"
+      httpd: { image: "custom/httpd", tag: "v1" }
+      salt:  { image: "custom/salt", tag: "v2" }
+      squid: { image: "custom/squid", tag: "v3" }
+      ssh:   { image: "custom/ssh", tag: "v4" }
+    asserts:
+      # Check that local image + local tag overrides work for all
+      - contains:
+          path: spec.template.spec.initContainers
+          content: { name: init-httpd, image: "custom/httpd:v1" }
+          any: true
+      - contains:
+          path: spec.template.spec.initContainers
+          content: { name: init-sshd, image: "custom/ssh:v4" }
+          any: true
+      - contains:
+          path: spec.template.spec.containers
+          content: { name: httpd, image: "custom/httpd:v1" }
+          any: true
+      - contains:
+          path: spec.template.spec.containers
+          content: { name: salt-broker, image: "custom/salt:v2" }
+          any: true
+      - contains:
+          path: spec.template.spec.containers
+          content: { name: squid, image: "custom/squid:v3" }
+          any: true
+      - contains:
+          path: spec.template.spec.containers
+          content: { name: ssh, image: "custom/ssh:v4" }
+          any: true
+
+  - it: should include imagePullSecrets when registrySecret is provided
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+        log_level: 2
+      global.httpd: "httpd_content: test httpd"
+      global.ssh: "ssh_content: test ssh"
+      registrySecret: "my-registry-key"
+    asserts:
+      - equal:
+          path: spec.template.spec.imagePullSecrets[0].name
+          value: "my-registry-key"

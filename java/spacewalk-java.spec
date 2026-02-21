@@ -96,7 +96,6 @@ BuildRequires:  bcel
 BuildRequires:  mvn(net.bytebuddy:byte-buddy) >= 1.14
 BuildRequires:  mvn(net.bytebuddy:byte-buddy-dep) >= 1.14
 BuildRequires:  c3p0 >= 0.9.1
-BuildRequires:  cglib
 BuildRequires:  classmate
 BuildRequires:  dom4j
 BuildRequires:  glassfish-activation
@@ -184,7 +183,6 @@ Requires:       bcel
 Requires:       mvn(net.bytebuddy:byte-buddy) >= 1.14
 Requires:       mvn(net.bytebuddy:byte-buddy-dep) >= 1.14
 Requires:       c3p0 >= 0.9.1
-Requires:       cglib
 Requires:       classmate
 Requires:       cobbler
 Requires:       glassfish-activation
@@ -366,7 +364,6 @@ Requires:       bcel
 Requires:       mvn(net.bytebuddy:byte-buddy) >= 1.14
 Requires:       mvn(net.bytebuddy:byte-buddy-dep) >= 1.14
 Requires:       c3p0 >= 0.9.1
-Requires:       cglib
 Requires:       classmate
 Requires:       cobbler
 Requires:       hibernate-commons-annotations

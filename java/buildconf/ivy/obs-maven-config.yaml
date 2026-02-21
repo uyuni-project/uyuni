@@ -30,9 +30,6 @@ artifacts:
     jar: byte-buddy-dep\.jar
   - artifact: c3p0
     repository: Leap
-  - artifact: cglib
-    jar: cglib\.jar
-    repository: Leap
   - artifact: classmate
     repository: Leap
   - artifact: javax.mail

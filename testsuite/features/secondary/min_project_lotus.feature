@@ -27,8 +27,7 @@ Feature: Project Lotus
     When I follow the left menu "Software > Manage > Repositories"
     And I follow "Create Repository"
     And I enter "sles15sp7_ptf_repo" as "label"
-    # TODO: Update the ptf to be compatible with sles15sp7
-    And I enter "http://updates.suse.de/download/PTF/Release/A127499/SLES/15.4/x86_64/ptf/" as "url"
+    And I enter "http://updates.suse.de/PTF/Release/A127499/SLES/15.7/x86_64/ptf/" as "url"
     And I uncheck "metadataSigned"
     And I click on "Create Repository"
     Then I should see a "Repository created successfully" text
@@ -73,7 +72,7 @@ Feature: Project Lotus
     When I follow "Software" in the content area
     And I follow "PTFs" in the content area
     And I follow "Install" in the content area
-    And I check "ptf-24894-3-0" in the list
+    And I check "ptf-30961-3-0" in the list
     And I click on "Install PTFs"
     And I click on "Confirm"
     Then I should see a "The action has been scheduled" text
@@ -84,7 +83,7 @@ Feature: Project Lotus
     When I follow "Software" in the content area
     And I follow "PTFs" in the content area
     And I follow "List / Remove" in the content area
-    And I check "ptf-24894-3-0" in the list
+    And I check "ptf-30961-3-0" in the list
     And I click on "Remove PTFs"
     And I click on "Confirm"
     Then I should see a "The action has been scheduled" text
@@ -95,9 +94,9 @@ Feature: Project Lotus
     When I follow "Software" in the content area
     And I follow "Packages" in the content area
     And I follow "Install" in the content area
-    And I enter "ptf-24894-3-0" as the filtered package name
+    And I enter "ptf-30961-3-0" as the filtered package name
     And I click on the filter button
-    And I check "ptf-24894-3-0" in the list
+    And I check "ptf-30961-3-0" in the list
     And I click on "Install Packages"
     And I click on "Confirm"
     Then I should see a "1 package install has been scheduled for" text
@@ -108,9 +107,9 @@ Feature: Project Lotus
     When I follow "Software" in the content area
     And I follow "Packages" in the content area
     And I follow "List / Remove" in the content area
-    And I enter "ptf-24894-3-0" as the filtered package name
+    And I enter "ptf-30961-3-0" as the filtered package name
     And I click on the filter button
-    And I check "ptf-24894-3-0" in the list
+    And I check "ptf-30961-3-0" in the list
     And I click on "Remove Packages"
     And I click on "Confirm"
     Then I should see a "1 package removal has been scheduled for" text

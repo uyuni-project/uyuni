@@ -13,30 +13,6 @@
 <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
 
 <div class="spacewalk-toolbar">
-  <c:choose>
-    <c:when test="${not empty testResult.comparableId}">
-      <a href="/rhn/audit/scap/DiffSubmit.do?first=${testResult.comparableId}&second=${testResult.id}&view=changed">
-        <c:choose>
-          <c:when test="${testResult.diffIcon == 'checked'}" >
-            <rhn:icon type="scap-nochange" title="scapdiff.jsp.i.checked" />
-          </c:when>
-          <c:when test="${testResult.diffIcon == 'alert'}" >
-            <rhn:icon type="system-warn" title="scapdiff.jsp.i.alert" />
-          </c:when>
-          <c:when test="${testResult.diffIcon == 'error'}" >
-            <rhn:icon type="system-crit" title="scapdiff.jsp.i.error" />
-          </c:when>
-          <c:otherwise>
-            <rhn:icon type="system-unknown" title="system.audit.xccdfdetails.jsp.nodiff" />
-          </c:otherwise>
-        </c:choose>
-        <bean:message key="system.audit.xccdfdetails.jsp.diff"/>
-      </a>
-    </c:when>
-    <c:otherwise>
-      <bean:message key="system.audit.xccdfdetails.jsp.nodiff"/>
-    </c:otherwise>
-  </c:choose>
 
   <c:if test="${testResult.deletable}">
     <a href="/rhn/systems/details/audit/XccdfDeleteConfirm.do?sid=${param.sid}&xid=${testResult.id}">

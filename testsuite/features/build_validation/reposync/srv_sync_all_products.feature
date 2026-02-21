@@ -756,15 +756,27 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Server 15 SP7" as the filtered product description
-    And I select "SUSE Linux Enterprise Server 15 SP7 x86_64" as a product
-    Then I should see the "SUSE Linux Enterprise Server 15 SP7 x86_64" selected
-    When I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP7 x86_64"
+    And I wait until I see "SUSE Linux Enterprise Server 15 SP7 x86_64" text
+    And I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP7 x86_64"
     And I open the sub-list of the product "Basesystem Module 15 SP7 x86_64"
-    And I select "Desktop Applications Module 15 SP7 x86_64" as a product
-    Then I should see the "Desktop Applications Module 15 SP7 x86_64" selected
-    When I open the sub-list of the product "Desktop Applications Module 15 SP7 x86_64"
+    And I open the sub-list of the product "Desktop Applications Module 15 SP7 x86_64"
+    And I open the sub-list of the product "SUSE Multi-Linux Manager Client Tools for SLE 15 x86_64" if present
+    Then I should see that the "Basesystem Module 15 SP7 x86_64" product is "recommended"
+    And I should see that the "Server Applications Module 15 SP7 x86_64" product is "recommended"
+    And I should see that the "SUSE Multi-Linux Manager Client Tools for SLE 15 x86_64" product is "recommended"
+    When I select "SUSE Linux Enterprise Server 15 SP7 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Server 15 SP7 x86_64" selected
+    And I should see the "Basesystem Module 15 SP7 x86_64" selected
+    And I should see the "Server Applications Module 15 SP7 x86_64" selected
+    And I should see the "SUSE Multi-Linux Manager Client Tools for SLE 15 x86_64" selected
+    When I select "Desktop Applications Module 15 SP7 x86_64" as a product
     And I select "Development Tools Module 15 SP7 x86_64" as a product
-    Then I should see the "Development Tools Module 15 SP7 x86_64" selected
+    Then I should see the "Desktop Applications Module 15 SP7 x86_64" selected
+    And I should see the "Development Tools Module 15 SP7 x86_64" selected
+    When I select "Python 3 Module 15 SP7 x86_64" as a product
+    Then I should see the "Python 3 Module 15 SP7 x86_64" selected
+    When I select "Containers Module 15 SP7 x86_64" as a product
+    Then I should see the "Containers Module 15 SP7 x86_64" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Enterprise Server 15 SP7 x86_64" product has been added
@@ -852,6 +864,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 # There are no channels for Retail under Uyuni
 
+  Scenario: Verify all channels are solved
+    When I wait until all synchronized channels have solved their dependencies
+    Then all channels have been synced without errors
 
   Scenario: Detect product loading issues from the UI in Build Validation
     Given I am authorized for the "Admin" section

@@ -11,6 +11,7 @@ import { getFormMessages, getGlobalMessages } from "../messages";
 import useLoginApi from "../use-login-api";
 import logo from "./footer-logo.svg";
 import styles from "./login.module.scss";
+import uyuniLogo from "./uyuni-logo.svg";
 
 const UyuniThemeLogin = (props: ThemeProps) => {
   const loginInput = useInputValue("");
@@ -35,7 +36,13 @@ const UyuniThemeLogin = (props: ThemeProps) => {
           />
           <div className={styles.content}>
             <div className={`${styles.half} ${styles.left}`}>
-              <h1 className={styles.h1}>{product.bodyTitle}</h1>
+              <h1 className={styles.h1}>
+                {productName === "Uyuni" ? (
+                  <img src={uyuniLogo} alt={product.productName} className={styles.uyuniLogo} />
+                ) : (
+                  product.bodyTitle
+                )}
+              </h1>
               <p>{t("Discover a new way of managing your servers, packages, patches and more via one interface.")}</p>
               <p>
                 {t("Learn more about {productName}:", {

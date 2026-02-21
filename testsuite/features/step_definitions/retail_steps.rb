@@ -120,6 +120,30 @@ When(/^I reboot the (Retail|Cobbler) terminal "([^"]*)"$/) do |context, host|
   execute_expect_command_proxy(host, 'reboot-pxeboot.exp', context)
 end
 
+When(/^I reboot the (Retail|Cobbler) terminal "([^"]*)" through the interface "([^"]*)"$/) do |context, host, interface|
+  # we might have no or any IPv4 address on that machine
+  # convert MAC address to IPv6 link-local address
+  case host
+  when 'pxeboot_minion'
+    mac = $pxeboot_mac
+  when 'sle15sp6_terminal'
+    mac = $sle15sp6_terminal_mac
+  when 'sle15sp7_terminal'
+    mac = $sle15sp7_terminal_mac
+  end
+  mac = mac.tr(':', '')
+  hex = (("#{mac[0..5]}fffe#{mac[6..11]}").to_i(16) ^ 0x0200000000000000).to_s(16)
+  ipv6 = "fe80::#{hex[0..3]}:#{hex[4..7]}:#{hex[8..11]}:#{hex[12..15]}%#{interface}"
+  log "Rebooting #{ipv6}..."
+  file = 'reboot-pxeboot.exp'
+  source = "#{File.dirname(__FILE__)}/../upload_files/#{file}"
+  dest = "/tmp/#{file}"
+  success = file_inject(get_target('proxy'), source, dest)
+  raise ScriptError, 'File injection failed' unless success
+
+  get_target('proxy').run("expect -f /tmp/#{file} #{ipv6} #{context}")
+end
+
 When(/^I create the bootstrap script for "([^"]+)" hostname and "([^"]*)" activation key on "([^"]*)"$/) do |hostname, key, host|
   node = get_target(host)
   # WORKAROUND: Revert once pxeboot autoinstallation contains venv-salt-minion
@@ -195,10 +219,13 @@ end
 
 Then(/^I should not see any terminals imported from the configuration file$/) do
   terminals = read_terminals_from_yaml
+  domain = read_branch_prefix_from_yaml
   terminals.each do |terminal|
     next if (terminal.include? 'minion') || (terminal.include? 'client')
 
-    step %(I should not see a "#{terminal}" text)
+    # Construct full system name with domain prefix (e.g., "example.org.terminal1")
+    full_system_name = terminal.include?('pxeboot') ? "#{terminal}.#{domain}" : "#{domain}.#{terminal}"
+    step %(I wait at most 60 seconds until I do not see "#{full_system_name}" text, refreshing the page)
   end
 end
 

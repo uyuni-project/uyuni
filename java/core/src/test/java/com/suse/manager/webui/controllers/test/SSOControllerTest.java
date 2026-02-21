@@ -14,7 +14,6 @@
  */
 package com.suse.manager.webui.controllers.test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -26,7 +25,7 @@ import com.suse.manager.webui.controllers.SSOController;
 import com.onelogin.saml2.settings.Saml2Settings;
 import com.onelogin.saml2.settings.SettingsBuilder;
 
-import org.apache.commons.lang3.StringUtils;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -78,15 +77,17 @@ public class SSOControllerTest extends BaseControllerTestCase {
     public void testMetadataWithSSO() throws IOException {
         Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, "true");
         Request requestWithCsrf = getRequestWithCsrf("/manager/sso/metadata");
-        SSOController.getMetadata(requestWithCsrf, response);
-        assertTrue(response.raw().getOutputStream().toString().contains("entityID=\"https://localhost/metadata.jsp\""));
+        String metadata = (String) SSOController.getMetadata(requestWithCsrf, response);
+        assertTrue(response.type().contains("text/xml"));
+        Assertions.assertNotNull(metadata);
+        assertTrue(metadata.contains("md:EntityDescriptor"));
     }
 
     @Test
     public void testMetadataWithoutSSO() throws IOException {
         Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, "false");
         Request requestWithCsrf = getRequestWithCsrf("/manager/sso/metadata");
-        SSOController.getMetadata(requestWithCsrf, response);
-        assertEquals(StringUtils.EMPTY, response.raw().getOutputStream().toString());
+        String metadata = (String) SSOController.getMetadata(requestWithCsrf, response);
+        Assertions.assertNull(metadata);
     }
 }

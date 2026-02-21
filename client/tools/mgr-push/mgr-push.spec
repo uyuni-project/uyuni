@@ -54,7 +54,7 @@ Obsoletes:      %{oldname} < %{oldversion}
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210
 BuildArch:      noarch
 %endif
-%if 0%{?debian} || 0%{?ubuntu} || 0%{?rhel} >= 8
+%if 0%{?debian} || 0%{?ubuntu} || 0%{?rhel} >= 8 || (0%{?suse_version} >= 1600 && 0%{?suse_version} < 1699)
 ExclusiveArch:  do_not_build
 %endif
 

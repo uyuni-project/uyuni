@@ -21,7 +21,6 @@ import com.redhat.rhn.domain.credentials.RemoteCredentials;
 import com.redhat.rhn.domain.credentials.SCCCredentials;
 
 import com.suse.manager.model.hub.IssHub;
-import com.suse.scc.client.SCCClient;
 import com.suse.scc.client.SCCConfigBuilder;
 import com.suse.scc.client.SCCWebClient;
 import com.suse.utils.CertificateUtils;
@@ -57,7 +56,7 @@ public class SCCContentSyncSource implements ContentSyncSource {
     }
 
     @Override
-    public SCCClient getClient(String uuid, Path loggingDir, boolean skipOwner) throws ContentSyncSourceException {
+    public SCCWebClient getClient(String uuid, Path loggingDir, boolean skipOwner) throws ContentSyncSourceException {
         try {
             URI url = new URI(Config.get().getString(ConfigDefaults.SCC_URL));
 

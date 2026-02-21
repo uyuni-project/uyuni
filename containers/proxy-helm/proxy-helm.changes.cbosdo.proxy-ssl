@@ -1,0 +1,4 @@
+- Expect configuration files as global values
+- Remove subPath to run on selinux-enabled cluster nodes
+- Expect TLS certificates secret and configmap
+- Move TFTP server to its own pod

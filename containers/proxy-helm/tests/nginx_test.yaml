@@ -1,0 +1,30 @@
+suite: test global values parsing
+templates:
+  - templates/ingress.yaml
+  - templates/k3s-ingress-routes.yaml
+tests:
+  - it: should configure the ingress for nginx
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+        log_level: 2
+      global.httpd: "httpd_content: test httpd"
+      global.ssh: "ssh_content: test ssh"
+      ingress:
+        type: "nginx"
+    asserts:
+      - isSubset:
+          path: metadata.annotations
+          content:
+            nginx.ingress.kubernetes.io/ssl-redirect: "false"
+        template: ingress.yaml
+        documentSelector:
+          path: metadata.name
+          value: uyuni-proxy-ssl
+
+      - hasDocuments:
+          count: 0
+        template: k3s-ingress-routes.yaml

@@ -11,7 +11,7 @@ src_dir=$(cd $(dirname "$0")/../.. && pwd -P)
 
 echo rhminionproductuuid > /tmp/testing/rh_product_uuid
 
-$PODMAN_CMD run --privileged -d --network network -p 9092:9090 -v /tmp/testing/rh_product_uuid:/sys/class/dmi/id/product_uuid -v /tmp/testing:/tmp -v ${src_dir}/testsuite/podman_runner/salt-minion-entry-point.sh:/salt-minion-entry-point.sh --name rhlike_minion -h rhlike_minion ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-rocky-minion:$UYUNI_VERSION bash -c "/salt-minion-entry-point.sh server 1-RH-LIKE-KEY"
+$PODMAN_CMD run --pull newer --privileged -d --network network -p 9092:9090 -v /tmp/testing/rh_product_uuid:/sys/class/dmi/id/product_uuid -v /tmp/testing:/tmp -v ${src_dir}/testsuite/podman_runner/salt-minion-entry-point.sh:/salt-minion-entry-point.sh --name rhlike_minion -h rhlike_minion ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-rocky-minion:$UYUNI_VERSION bash -c "/salt-minion-entry-point.sh server 1-RH-LIKE-KEY"
 
 # sleep 10
 $PODMAN_CMD exec rhlike_minion bash -c "ssh-keygen -A && /usr/sbin/sshd -e"

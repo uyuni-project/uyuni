@@ -1,0 +1,1 @@
+- Fix openscap audit results with negative ids (bsc#1258141)

@@ -1,0 +1,2 @@
+- Use configured email sender instead of auto detected
+  hostname (bsc#1256583)
