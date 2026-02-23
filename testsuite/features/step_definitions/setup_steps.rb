@@ -532,20 +532,21 @@ end
 
 When(/^I prepare the development repositories of "([^"]*)" as part of "([^"]*)" channel$/) do |host, channel_label|
   target = get_target(host)
-  repo_urls =
-    if deb_host?(host)
-      repo_list_output, _code = target.run('grep -rh ^deb /etc/apt/sources.list.d/')
-      repo_list_output.split("\n").map { |line| line.split[-2].strip }
-    elsif rh_host?(host)
-      repo_list_output, _code = target.run('grep -rh ^baseurl /etc/yum.repos.d/')
-      repo_list_output.split("\n").map { |line| line.split('=').last.strip }
-    elsif suse_host?(host)
-      repo_list_output, _code = target.run('grep -rh ^baseurl /etc/zypp/repos.d/')
-      repo_list_output.split("\n").map { |line| line.split('=').last.strip }
-    else
-      raise ArgumentError, "OS family not supported: #{target.os_family}"
-    end
+  repo_urls = if deb_host?(host)
+                out, = target.run('grep -rh "^deb" /etc/apt/sources.list.d/')
+                out.split("\n").map { |line| line.split[1] }
+              elsif rh_host?(host)
+                out, = target.run('grep -rh "^\s*baseurl" /etc/yum.repos.d/')
+                out.split("\n").map { |line| line.split('=', 2).last.strip }
+              elsif suse_host?(host)
+                out, = target.run('grep -rh "^\s*baseurl" /etc/zypp/repos.d/')
+                out.split("\n").map { |line| line.split('=', 2).last.strip }
+              else
+                raise ArgumentError, "OS family not supported: #{target.os_family}"
+              end.compact.uniq
+
   repo_urls.each do |repo_url|
+    next if repo_url.nil? || repo_url.empty?
     next unless devel_repo?(repo_url)
 
     unique_repo_name = generate_repository_name(repo_url)
