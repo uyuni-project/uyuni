@@ -33,25 +33,12 @@
 %global use_python_shebang python3
 %endif
 
-%if 0%{?rhel}
-%global apache_user root
-%global apache_group root
-%global tftp_group root
-%global salt_user root
-%global salt_group root
-%global serverdir %{_sharedstatedir}
-%global wwwroot %{_localstatedir}/www
-%endif
-
-%if 0%{?suse_version}
 %global apache_user wwwrun
 %global apache_group www
-%global tftp_group tftp
 %global salt_user salt
 %global salt_group salt
 %global serverdir /srv
 %global wwwroot %{serverdir}/www
-%endif
 
 %global sharedwwwroot %{_datadir}/susemanager/www
 %global reporoot %{sharedwwwroot}/pub
@@ -100,9 +87,6 @@ BuildRequires:  spacewalk-backend-sql-postgresql
 %if 0%{?suse_version}
 BuildRequires:  %fillup_prereq
 BuildRequires:  %insserv_prereq
-BuildRequires:  tftp
-Requires(pre):  %fillup_prereq %insserv_prereq tftp
-Requires(preun):%fillup_prereq %insserv_prereq tftp
 Requires(post): user(%{apache_user})
 %endif
 Requires(pre):  salt
