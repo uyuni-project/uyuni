@@ -1,0 +1,21 @@
+include /templates/minion/minion-header.jade
+
+#rule-result-detail
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+    window.profileId = "#{profileId}";
+    window.identifier = "#{identifier}";
+    window.result = "!{result}";
+    window.parentScanUrl = "!{parentScanUrl}";
+    window.parentScanProfile = "!{parentScanProfile}";
+    window.remediation =  "#{remediation}";
+    window.benchmarkId = "#{benchmarkId}";
+    window.minions = [{id: #{server.id}}];
+
+script(src='/javascript/ace-editor/src-min-noconflict/ace.js?cb=#{webBuildtimestamp}')
+script(src='/javascript/ace-editor/src-min-noconflict/ext-modelist.js?cb=#{webBuildtimestamp}')
+
+script(type='text/javascript').
+    spaImportReactPage('minion/audit/rule-result-detail')
+        .then(function(module) { module.renderer('audit/rule-result-detail') });

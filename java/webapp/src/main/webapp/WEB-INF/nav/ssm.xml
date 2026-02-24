@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<rhn-navi-tree label="ssm" invisible="1" title-depth="1">
+<rhn-navi-tree label="ssm" invisible="1" title-depth="1" acl_mixins="com.redhat.rhn.common.security.acl.SystemAclHandler">
     <rhn-tab name="Overview" url="/rhn/ssm/index.do" />
     <rhn-tab name="Systems">
         <rhn-tab-url>/rhn/systems/ssm/ListSystems.do</rhn-tab-url>
@@ -92,8 +92,11 @@
                 acl="all_systems_in_set_have_feature(ftr_power_management)"/>
     </rhn-tab>
 
-    <rhn-tab name="Audit" acl="all_systems_in_set_have_feature(ftr_system_audit)" url="/rhn/systems/ssm/audit/ScheduleXccdf.do">
-        <rhn-tab name="OpenSCAP" url="/rhn/systems/ssm/audit/ScheduleXccdf.do">
+    <rhn-tab name="Audit" acl="all_systems_in_set_have_feature(ftr_system_audit)" url="/rhn/manager/systems/ssm/coco/settings">
+        <rhn-tab acl="user_has_beta_features_enabled()" name="nav.system.audit.schedule.beta">
+             <rhn-tab-url>/rhn/manager/systems/ssm/audit/schedule-scap-scan</rhn-tab-url>
+        </rhn-tab>
+        <rhn-tab acl="not user_has_beta_features_enabled()" name="OpenSCAP" url="/rhn/systems/ssm/audit/ScheduleXccdf.do">
             <rhn-tab-url>/rhn/systems/ssm/audit/ScheduleXccdf.do</rhn-tab-url>
             <rhn-tab-url>/rhn/systems/ssm/audit/ScheduleXccdfSubmit.do</rhn-tab-url>
         </rhn-tab>

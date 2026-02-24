@@ -24,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.scap.ScapAction;
+import com.redhat.rhn.domain.audit.ScapFactory;
 import com.redhat.rhn.domain.audit.XccdfIdent;
 import com.redhat.rhn.domain.audit.XccdfTestResult;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -381,6 +382,33 @@ public class ScapManagerTest extends JMockBaseTestCaseWithUser {
         }
     }
 
+    @Test
+    public void testRemediationExtraction() throws Exception {
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        SystemManager.giveCapability(minion.getId(), SystemManager.CAP_SCAP, 1L);
+
+        TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
+        ActionManager.setTaskomaticApi(taskomaticMock);
+        context().checking(new Expectations() { {
+            allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
+        } });
+        ScapAction action = ActionManager.scheduleXccdfEval(user,
+                minion, "/usr/share/openscap/scap-yast2sec-xccdf.xml", "--profile Default", new Date());
+        File resumeXsl = new File(TestUtils.findTestData(
+            "/com/redhat/rhn/manager/audit/test/openscap/suma-ref42-min-sles15/xccdf-resume.xslt.in")
+          .getPath());
+        InputStream resultsIn = TestUtils.findTestData(
+            "/com/redhat/rhn/manager/audit/test/openscap/suma-ref42-min-sles15/results.xml")
+          .openStream();
+        XccdfTestResult result = ScapManager.xccdfEval(minion, action, 2, "", resultsIn, resumeXsl);
+        assertNotNull(result);
+        assertNotNull(ScapFactory.lookupRuleRemediationsByBenchmark("xccdf_org.ssgproject.content_benchmark_SLE-15"));
+        var fix1 = ScapFactory
+          .lookupRuleRemediation("xccdf_org.ssgproject.content_benchmark_SLE-15",
+            "xccdf_org.ssgproject.content_rule_sshd_set_max_sessions");
+        assertTrue(fix1.isPresent());
+        //assertTrue(result.);
+    }
 }
 
 

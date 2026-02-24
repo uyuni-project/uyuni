@@ -9,6 +9,7 @@ import { DEPRECATED_Select, Form } from "components/input";
 import { Utils as MessagesUtils } from "components/messages/messages";
 import { InnerPanel } from "components/panels/InnerPanel";
 import { RecurringEventPicker } from "components/picker/recurring-event-picker";
+import { PoliciesPicker } from "components/policies-picker";
 import { StatesPicker } from "components/states-picker";
 import { Toggler } from "components/toggler";
 
@@ -94,8 +95,15 @@ class RecurringActionsEdit extends Component<Props, State> {
       .catch(this.props.onError);
   };
 
-  matchUrl = (target?: string) => {
+  matchUrl = (target?: string, filter?: string) => {
     const id = this.state.recurringActionId;
+    if (target === "policy") {
+      const url = "/rhn/manager/api/recurringactions/policies?";
+      const params: string[] = [];
+      if (id) params.push("id=" + id);
+      if (filter) params.push("filter=" + encodeURIComponent(filter));
+      return url + params.join("&");
+    }
     return "/rhn/manager/api/recurringactions/states?" + (id ? "id=" + id : "") + (target ? "&target=" + target : "");
   };
 
@@ -131,6 +139,9 @@ class RecurringActionsEdit extends Component<Props, State> {
 
   getTypes = () => {
     let types = ["Highstate", "Custom state"];
+    if (window.betaEnabled) {
+      types.push("Scap Policy");
+    }
     if (window.isControlNode) {
       types = types.concat("Ansible Playbook");
     }
@@ -206,6 +217,13 @@ class RecurringActionsEdit extends Component<Props, State> {
         extraVars: playbook?.extraVars,
       },
     }));
+  };
+
+  onSavePolicies = (policies) => {
+    const { details } = this.state;
+    details.policies = policies;
+    this.setState({ details });
+    return Promise.resolve(policies);
   };
 
   toggleTestState = () => {
@@ -288,6 +306,15 @@ class RecurringActionsEdit extends Component<Props, State> {
               saveRequest={this.onSaveStates}
               applyRequest={this.onClickExecute}
             />
+          </span>
+        )}
+        {this.state.actionTypeDescription === "Scap Policy" && (
+          <span>
+            <h3>
+              {t("SCAP Policies")}
+              &nbsp;
+            </h3>
+            <PoliciesPicker matchUrl={(filter) => this.matchUrl("policy", filter)} saveRequest={this.onSavePolicies} />
           </span>
         )}
         {this.state.actionTypeDescription === "Ansible Playbook" && (

@@ -15,7 +15,10 @@
 package com.redhat.rhn.frontend.xmlrpc.system.scap;
 
 import com.redhat.rhn.domain.action.scap.ScapAction;
+import com.redhat.rhn.domain.audit.ScapContent;
 import com.redhat.rhn.domain.audit.ScapFactory;
+import com.redhat.rhn.domain.audit.ScapPolicy;
+import com.redhat.rhn.domain.audit.TailoringFile;
 import com.redhat.rhn.domain.audit.XccdfTestResult;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.XccdfRuleResultDto;
@@ -30,11 +33,15 @@ import com.redhat.rhn.manager.audit.ScapManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
 import com.suse.manager.api.ReadOnly;
+import com.suse.manager.webui.utils.ScapUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * SystemScapHandler
@@ -258,4 +265,247 @@ public class SystemScapHandler extends BaseHandler {
         serverIds.add(sid);
         return scheduleXccdfScan(loggedInUser, serverIds, xccdfPath, oscapParams, null, date);
     }
+
+    /**
+     * List all available SCAP content.
+     * @param loggedInUser The current user
+     * @return a list of SCAP content
+     *
+     * @apidoc.doc List all available SCAP content.
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
+     * #return_array_begin()
+     *   $ScapContentSerializer
+     * #array_end()
+     */
+    @ReadOnly
+    public List<ScapContent> listScapContent(User loggedInUser) {
+        // Validate beta feature is enabled
+        validateBetaFeatureEnabled(loggedInUser);
+        return ScapFactory.listScapContent();
+    }
+
+    /**
+     * List tailoring files for the user's organization.
+     * @param loggedInUser The current user
+     * @return a list of tailoring files
+     *
+     * @apidoc.doc List tailoring files available for the user's organization.
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
+     * #return_array_begin()
+     *   $TailoringFileSerializer
+     * #array_end()
+     */
+    @ReadOnly
+    public List<TailoringFile> listTailoringFiles(User loggedInUser) {
+        // Validate beta feature is enabled
+        validateBetaFeatureEnabled(loggedInUser);
+        return ScapFactory.listTailoringFiles(loggedInUser.getOrg());
+    }
+
+    /**
+     * List SCAP policies for the user's organization.
+     * @param loggedInUser The current user
+     * @return a list of SCAP policies
+     *
+     * @apidoc.doc List SCAP policies available for the user's organization.
+     * @apidoc.param #session_key()
+     * @apidoc.returntype
+     * #return_array_begin()
+     *   $ScapPolicySerializer
+     * #array_end()
+     */
+    @ReadOnly
+    public List<ScapPolicy> listPolicies(User loggedInUser) {
+        // Validate beta feature is enabled
+        validateBetaFeatureEnabled(loggedInUser);
+        return ScapFactory.listScapPolicies(loggedInUser.getOrg());
+    }
+
+    /**
+     * Schedule SCAP scan using an existing SCAP policy.
+     * @param loggedInUser The current user
+     * @param sids List of server IDs
+     * @param policyId SCAP policy ID
+     * @param date The date to schedule the action
+     * @return ID of the SCAP action created
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     *
+     * @apidoc.doc Schedule SCAP scan based on an existing SCAP policy.
+     * @apidoc.param #session_key()
+     * @apidoc.param #array_single("int", "sids")
+     * @apidoc.param #param_desc("int", "policyId", "SCAP policy ID")
+     * @apidoc.param #param_desc("$date", "date", "The date to schedule the action")
+     * @apidoc.returntype #param_desc("int", "id", "ID of SCAP action created")
+     */
+    public Long scheduleBetaXccdfScanWithPolicy(User loggedInUser, List<Integer> sids,
+                                                Integer policyId, Date date)
+            throws TaskomaticApiException {
+        // Validate beta feature is enabled
+        validateBetaFeatureEnabled(loggedInUser);
+
+        if (sids == null || sids.isEmpty()) {
+            throw new IllegalArgumentException("Server IDs list cannot be empty");
+        }
+
+        // Lookup the policy
+        ScapPolicy policy = ScapFactory.lookupScapPolicyByIdAndOrg(policyId, loggedInUser.getOrg())
+                .orElseThrow(() -> new IllegalArgumentException("SCAP policy not found: " + policyId));
+
+        // Get SCAP content filename
+        if (policy.getScapContent() == null) {
+            throw new IllegalArgumentException("Policy does not have SCAP content associated");
+        }
+        String dataStreamFileName = policy.getScapContent().getDataStreamFileName();
+
+        // Get tailoring file name if present
+        String tailoringFileName = null;
+        if (policy.getTailoringFile() != null) {
+            tailoringFileName = policy.getTailoringFile().getFileName();
+        }
+
+        // Build SCAP parameters
+        String parameters = ScapUtils.buildOscapParameters(
+                policy.getXccdfProfileId(),
+                tailoringFileName,
+                policy.getTailoringProfileId(),
+                policy.getAdvancedArgs(),
+                policy.isFetchRemoteResources()
+        );
+
+        // Convert server IDs to Set<Long>
+        Set<Long> serverIds = sids.stream()
+                .map(Integer::longValue)
+                .collect(Collectors.toSet());
+
+        // Schedule the action
+        try {
+            ScapAction action = ActionManager.scheduleXccdfEval(
+                    loggedInUser,
+                    serverIds,
+                    dataStreamFileName,
+                    parameters,
+                    policy.getOvalFiles(),
+                    date,
+                    policyId
+            );
+            return action.getId();
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
+    }
+
+    /**
+     * Schedule SCAP scan with custom parameters.
+     * @param loggedInUser The current user
+     * @param sids List of server IDs
+     * @param params Map of SCAP parameters
+     * @param date The date to schedule the action
+     * @return ID of the SCAP action created
+     * @throws TaskomaticApiException if there was a Taskomatic error
+     *
+     * @apidoc.doc Schedule SCAP scan with custom parameters.
+     * @apidoc.param #session_key()
+     * @apidoc.param #array_single("int", "sids")
+     * @apidoc.param
+     *   #struct_begin("params")
+     *     #prop_desc("int", "scapContentId", "SCAP content ID (required)")
+     *     #prop_desc("string", "xccdfProfileId", "XCCDF profile ID (required)")
+     *     #prop_desc("int", "tailoringFileId", "Tailoring file ID (optional)")
+     *     #prop_desc("string", "tailoringProfileId", "Tailoring profile ID (optional)")
+     *     #prop_desc("string", "ovalFiles", "OVAL files (optional)")
+     *     #prop_desc("string", "advancedArgs", "Advanced arguments (optional)")
+     *     #prop_desc("boolean", "fetchRemoteResources", "Fetch remote resources (optional, default false)")
+     *   #struct_end()
+     * @apidoc.param #param_desc("$date", "date", "The date to schedule the action")
+     * @apidoc.returntype #param_desc("int", "id", "ID of SCAP action created")
+     */
+    public Long scheduleBetaXccdfScanCustom(User loggedInUser, List<Integer> sids,
+                                            Map<String, Object> params, Date date)
+            throws TaskomaticApiException {
+        // Validate beta feature is enabled
+        validateBetaFeatureEnabled(loggedInUser);
+
+        if (sids == null || sids.isEmpty()) {
+            throw new IllegalArgumentException("Server IDs list cannot be empty");
+        }
+
+        // Validate required parameters
+        if (!params.containsKey("scapContentId")) {
+            throw new IllegalArgumentException("scapContentId is required");
+        }
+        if (!params.containsKey("xccdfProfileId")) {
+            throw new IllegalArgumentException("xccdfProfileId is required");
+        }
+
+        // Resolve SCAP content
+        Long scapContentId = ((Number) params.get("scapContentId")).longValue();
+        ScapContent content = ScapFactory.lookupScapContentById(scapContentId)
+                .orElseThrow(() -> new IllegalArgumentException("SCAP content not found: " + scapContentId));
+
+        String dataStreamFileName = content.getDataStreamFileName();
+
+        // Resolve tailoring file if provided
+        String tailoringFileName = null;
+        if (params.containsKey("tailoringFileId") && params.get("tailoringFileId") != null) {
+            Integer tailoringFileId = ((Number) params.get("tailoringFileId")).intValue();
+            TailoringFile tailoringFile = ScapFactory.lookupTailoringFileByIdAndOrg(
+                    tailoringFileId, loggedInUser.getOrg())
+                    .orElseThrow(() -> new IllegalArgumentException(
+                            "Tailoring file not found: " + tailoringFileId));
+            tailoringFileName = tailoringFile.getFileName();
+        }
+
+        // Extract parameters
+        String xccdfProfileId = (String) params.get("xccdfProfileId");
+        String tailoringProfileId = (String) params.getOrDefault("tailoringProfileId", null);
+        String advancedArgs = (String) params.getOrDefault("advancedArgs", null);
+        String ovalFiles = (String) params.getOrDefault("ovalFiles", null);
+        boolean fetchRemoteResources = params.containsKey("fetchRemoteResources");
+
+        // Build SCAP parameters
+        String parameters = ScapUtils.buildOscapParameters(
+                xccdfProfileId,
+                tailoringFileName,
+                tailoringProfileId,
+                advancedArgs,
+                fetchRemoteResources
+        );
+
+        Set<Long> serverIds = sids.stream()
+                .map(Integer::longValue)
+                .collect(Collectors.toSet());
+
+        // Schedule the action (policyId is null for custom scans)
+        try {
+            ScapAction action = ActionManager.scheduleXccdfEval(
+                    loggedInUser,
+                    serverIds,
+                    dataStreamFileName,
+                    parameters,
+                    ovalFiles,
+                    date,
+                    null
+            );
+            return action.getId();
+        }
+        catch (com.redhat.rhn.taskomatic.TaskomaticApiException e) {
+            throw new TaskomaticApiException(e.getMessage());
+        }
+    }
+
+    /**
+     * Validates that beta features are enabled for the user.
+     * @param user The logged-in user
+     * @throws TaskomaticApiException if beta features are not enabled
+     */
+    private void validateBetaFeatureEnabled(User user) throws TaskomaticApiException {
+        if (!user.getBetaFeaturesEnabled()) {
+            throw new TaskomaticApiException("The redesigned SCAP integration is currently a beta feature. " +
+                "Please enable beta features in your user preferences to use this endpoint.");
+        }
+    }
+
 }

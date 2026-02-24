@@ -1,0 +1,10 @@
+include ./minion-header.jade
+#schedule-scap-scan
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+    window.scheduleData = !{scheduleDataJson};
+
+script(type='text/javascript').
+    spaImportReactPage('minion/audit/schedule-scap-scan')
+        .then(function(module) { module.renderer('audit/schedule-scap-scan') });

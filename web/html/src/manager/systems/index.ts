@@ -17,4 +17,5 @@ export default {
   "systems/migration-from-dry-run": () => import("./product-migration/migration-from-dry-run.renderer"),
   "systems/ssm/appstreams-channel-selection": () => import("./appstreams/ssm-appstreams-channel-selection.renderer"),
   "systems/ssm/appstreams-configure": () => import("./appstreams/ssm-appstreams-configure.renderer"),
+  "systems/ssm/audit/schedule-scap-scan-ssm": () => import("./ssm/audit/schedule-scap-scan-ssm"),
 };

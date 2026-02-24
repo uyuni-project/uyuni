@@ -53,6 +53,7 @@ export const Text = (props: Props) => {
             maxLength={maxLength}
             title={props.title}
             autoComplete={props.autoComplete}
+            required={required}
           />
         );
       }}
