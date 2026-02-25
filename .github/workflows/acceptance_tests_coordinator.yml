@@ -12,7 +12,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  UYUNI_PROJECT: uyuni-project
+  UYUNI_PROJECT: szachovy
   UYUNI_VERSION: master
 
 jobs:
