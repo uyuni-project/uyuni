@@ -46,7 +46,7 @@ jobs:
           platforms: ${{ env.PLATFORMS }}
           build-args: |
             BASE=registry.opensuse.org/uyuni/server
-            VERSION=2025.10
+            VERSION=2026.01
   build-and-push-ubuntu-minion-image:
     runs-on: ubuntu-latest
     permissions:
