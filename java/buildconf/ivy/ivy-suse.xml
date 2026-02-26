@@ -91,9 +91,6 @@
         <dependency org="suse" name="stax2-api" rev="3.1.4" />
         <dependency org="suse" name="struts" rev="1.2.9" />
         <dependency org="suse" name="woodstox-core-asl" rev="4.4.2" />
-        <dependency org="suse" name="xalan" rev="2.7.3" />
-        <dependency org="suse" name="serializer" rev="2.7.3" />
-        <dependency org="suse" name="xercesImpl" rev="2.12.2" />
         <dependency org="suse" name="xmlsec" rev="2.0.7" />
         <dependency org="suse" name="jakarta.xml.bind-api" rev="4.0.0" />
         <dependency org="suse" name="jakarta.activation-api" rev="2.1.3" />
