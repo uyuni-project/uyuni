@@ -31,6 +31,8 @@ hibernate.cache.region.factory_class = org.hibernate.cache.jcache.internal.JCach
 hibernate.jakarta.cache.uri = ehcache.xml
 hibernate.jakarta.cache.provider = org.ehcache.jsr107.EhcacheCachingProvider
 hibernate.jakarta.cache.missing_cache_strategy = create
+# Hibernate keeps backward-compatibility aliases for old property names. This will silence warnings
+hibernate.javax.cache.missing_cache_strategy = create
 
 # Hibernate configuration
 reporting.hibernate.connection.driver_class = org.postgresql.Driver
