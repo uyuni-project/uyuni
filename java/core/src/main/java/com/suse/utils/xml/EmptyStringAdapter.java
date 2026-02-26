@@ -1,0 +1,35 @@
+/*
+ * Copyright (c) 2023--2026 SUSE LLC
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ */
+
+package com.suse.utils.xml;
+
+import jakarta.xml.bind.annotation.adapters.XmlAdapter;
+
+/**
+ * A JAXB Adapter that returns null for empty string values
+ */
+public class EmptyStringAdapter extends XmlAdapter<String, String> {
+
+    @Override
+    public String unmarshal(String v) {
+        if ("".equals(v)) {
+            return null;
+        }
+
+        return v;
+    }
+
+    @Override
+    public String marshal(String v) {
+        return v;
+    }
+
+}

@@ -14,18 +14,30 @@
  */
 package com.redhat.rhn.manager.audit.scap.xml;
 
-import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.Text;
+import com.suse.utils.xml.EmptyStringAdapter;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlValue;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
  * Bean used to unmarshall an intermediary SCAP report.
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class TestResultRuleResultIdent {
 
-    @Attribute
+    @XmlAttribute(required = true)
     private String system;
 
-    @Text(required = false)
+    @XmlValue
+    @XmlJavaTypeAdapter(EmptyStringAdapter.class)
     private String text;
 
     /**
@@ -54,6 +66,38 @@ public class TestResultRuleResultIdent {
      */
     public void setText(String textIn) {
         this.text = textIn;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof TestResultRuleResultIdent that)) {
+            return false;
+        }
+
+        return new EqualsBuilder()
+            .append(system, that.system)
+            .append(text, that.text)
+            .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+            .append(system)
+            .append(text)
+            .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+            .append("system", system)
+            .append("text", text)
+            .toString();
     }
 }
 
