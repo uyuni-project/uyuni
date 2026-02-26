@@ -21,10 +21,7 @@ on:
 env:
   UYUNI_PROJECT: szachovy
   UYUNI_VERSION: update-uyuni-base-image-2026.01
-  PUBLISH_CUCUMBER_REPORT: true
-  AUTH_REGISTRY_CREDENTIALS: "cucutest|cucusecret"
-  AUTH_REGISTRY: "registry.mgr.suse.de:5000/cucutest"
-  NO_AUTH_REGISTRY: "registry.mgr.suse.de"
+  PUBLISH_CUCUMBER_REPORT: "false"
 
 jobs:
   filters:
