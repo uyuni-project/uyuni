@@ -31,6 +31,9 @@ spec:
             - -c
             - |2
               cp -r /etc/apache2/* /tmp/apache2/
+              rm -f /tmp/apache2/ssl.crt/server.crt
+              rm -f /tmp/apache2/ssl.key/server.key
+              rm -f /tmp/apache2/conf.d/apache_tuning.conf
               ln -s /etc/uyuni/server.crt /tmp/apache2/ssl.crt/server.crt
               ln -s /etc/uyuni/server.key /tmp/apache2/ssl.key/server.key
               ln -s /etc/uyuni/apache_tuning.conf /tmp/apache2/conf.d/apache_tuning.conf
@@ -46,6 +49,7 @@ spec:
             - -c
             - |2
               cp -r /etc/ssh/sshd_config.d/* /tmp/sshd/
+              rm -f /tmp/sshd/99-tuning.conf
               ln -s /etc/uyuni/ssh_tuning.conf /tmp/sshd/99-tuning.conf
           volumeMounts:
           - name: etc-sshd

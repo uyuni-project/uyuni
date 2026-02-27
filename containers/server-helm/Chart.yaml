@@ -2,7 +2,7 @@
 #!BuildTag: uyuni/server-helm:latest
 apiVersion: v2
 name: server-helm
-description: Uyuni server containers.
+description: Uyuni server
 type: application
 home: https://www.uyuni-project.org/
 icon: https://www.uyuni-project.org/img/uyuni-logo.svg

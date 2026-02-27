@@ -55,6 +55,16 @@
           "description": "Email address for notifications sent by the server",
           "default": "admin@uyuni.lab.org"
         },
+        "superPrivileged": {
+          "type": "boolean",
+          "description": "Run the server container with super privileges, bypassing a lot of selinux checks. This is dangerous!",
+          "default": false
+        },
+        "systemdLogLevel": {
+          "type": "string",
+          "enum": ["debug", "info", "notice", "warning", "err", "crit", "alert", "emerg", ""],
+          "description": "Value passed to systemd's --log-level parameter, can be useful for debugging"
+        },
         "mirror": {
           "type": "object",
           "description": "Defines a volume or host path to mount as server.susemanager.fromdir",
