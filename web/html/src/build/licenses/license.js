@@ -9,7 +9,12 @@ const readLicenseText = async (packageDirectory) => {
   if (!licenseFilename) {
     return undefined;
   }
-  return await fs.readFile(path.join(packageDirectory, licenseFilename), "utf8");
+  const licensePath = path.join(packageDirectory, licenseFilename);
+  const stat = await fs.stat(licensePath);
+  if (!stat.isFile()) {
+    return undefined;
+  }
+  return await fs.readFile(licensePath, "utf8");
 };
 
 export const getLicense = async (dependency, packageDirectory) => {
