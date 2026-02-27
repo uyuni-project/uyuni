@@ -1,0 +1,12 @@
+include ../common.jade
+
+#swagger-ui
+
+script(type='text/javascript').
+    spaImportReactPage('swagger')
+        .then(function(module) {
+             module.renderer(
+              'swagger-ui',
+              {}
+            )
+        });

@@ -109,6 +109,21 @@
         <dependency org="suse" name="istack-commons-runtime" rev="3.0.7" />
         <dependency org="suse" name="stax-ex" rev="1.8" />
 
+        <!-- Open API -->
+        <dependency org="io.swagger.core.v3" name="swagger-core" rev="2.2.41" />
+        <dependency org="io.swagger.core.v3" name="swagger-jaxrs2" rev="2.2.41" />
+        <dependency org="io.swagger.core.v3" name="swagger-annotations" rev="2.2.41" />
+
+        <dependency org="io.swagger.parser.v3" name="swagger-parser" rev="2.1.18" />
+        <dependency org="com.github.erosb" name="everit-json-schema" rev="1.14.3" >
+            <exclude org="org.objenesis" module="objenesis-test"/>
+        </dependency>
+
+        <dependency org="org.json" name="json" rev="20231013" >
+            <exclude org="org.objenesis" module="objenesis-test"/>
+        </dependency>
+        
+
         <!-- Tomcat jars -->
         <dependency org="suse" name="tomcat-el-api" rev="[9.0.75,10.0.0[" />
         <dependency org="suse" name="tomcat-jsp-api" rev="[9.0.75,10.0.0[" />
@@ -130,6 +145,7 @@
         <dependency org="org.jmock" name="jmock" rev="2.12.0" transitive="false"/>
         <dependency org="org.jmock" name="jmock-junit5" rev="2.12.0" transitive="false"/>
         <dependency org="org.jmock" name="jmock-imposters" rev="2.12.0" transitive="false"/>
+        <dependency org="org.jmock" name="jmock-legacy" rev="2.12.0" transitive="false"/>
         <dependency org="org.objenesis" name="objenesis" rev="1.0" transitive="false"/>
         <dependency org="org.jacoco" name="org.jacoco.ant" rev="0.8.7" transitive="false">
            <artifact name="nodeps" type="jar" url="https://repo1.maven.org/maven2/org/jacoco/org.jacoco.ant/0.8.7/org.jacoco.ant-0.8.7-nodeps.jar"/>

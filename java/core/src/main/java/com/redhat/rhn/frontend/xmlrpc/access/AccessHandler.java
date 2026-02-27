@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
  * @apidoc.namespace access
  * @apidoc.doc Provides methods to manage Role-Based Access Control
  */
-public class AccessHandler extends BaseHandler {
+public class AccessHandler extends BaseHandler implements AccessHandlerApi {
 
     private final AccessGroupManager manager;
 

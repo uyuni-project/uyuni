@@ -33,6 +33,7 @@ import ScheduleOptions from "./schedule-options";
 import Shared from "./shared";
 import Highstate from "./state";
 import Storybook from "./storybook";
+import Swagger from "./swagger";
 import Systems from "./systems";
 import ActivationKeys from "./systems/activation-key";
 
@@ -58,6 +59,7 @@ const pages = {
   ...Salt,
   ...ScheduleOptions,
   ...Shared,
+  ...Swagger,
   ...Systems,
   ...Storybook,
 };

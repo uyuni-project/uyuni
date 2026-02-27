@@ -58,6 +58,7 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 
 import spark.Request;
+import spark.Response;
 import spark.Route;
 import spark.Spark;
 
@@ -182,7 +183,7 @@ public class RouteFactory {
                 throw Spark.halt(HttpStatus.SC_BAD_REQUEST, e.getMessage());
             }
 
-            String sessionKey = new RequestContext(req.raw()).getWebSession().getKey();
+            String sessionKey = getSessionKeyFromRequest(req);
             try {
                 // Find an overload matching the parameter names and types
                 MethodCall call = findMethod(methods, requestParams, sessionKey, req);
@@ -216,7 +217,7 @@ public class RouteFactory {
                 // Hibernate has still a transaction pending, so it will erroneously be committed, unless we do a
                 // rollback here.
                 // The equivalent for XMLRPC is implemented in BaseHandler.invoke
-                HibernateFactory.rollbackTransaction();
+                rollbackTransactionSafe();
                 if (!(exceptionInMethod instanceof FaultException)) {
                     if (LOG.isInfoEnabled()) {
                         LOG.warn("{}: is not a fault exception.", exceptionInMethod.getClass().getName(),
@@ -226,11 +227,10 @@ public class RouteFactory {
                         LOG.warn("{}: is not a fault exception. {}", exceptionInMethod.getClass().getName(), methods);
                     }
                 }
-                return json(gson, res,
-                        HttpApiResponse.error(exceptionInMethod.getMessage()), new TypeToken<>() { });
+                return renderErrorJson(res, exceptionInMethod);
             }
         };
-        return asJson(route);
+        return wrapRouteAsJson(route);
     }
 
     /**
@@ -248,7 +248,7 @@ public class RouteFactory {
     private MethodCall findMethod(List<Method> methods, Map<String, JsonElement> jsonArgs,
                                   String sessionKey, Request request)
             throws NoSuchMethodException {
-        User user = SessionManager.loadSession(sessionKey).getUser();
+        User user = getUserFromSessionKey(sessionKey);
         // Filter methods with parameter names that match the request parameters, excluding the User parameter
         return methods.stream()
                 .filter(m -> jsonArgs.keySet().equals(
@@ -300,12 +300,32 @@ public class RouteFactory {
                 .orElseThrow(() -> new NoSuchMethodException("No method exists with the matching parameters"));
     }
 
+    protected String getSessionKeyFromRequest(Request req) {
+        return new RequestContext(req.raw()).getWebSession().getKey();
+    }
+
+    protected User getUserFromSessionKey(String sessionKey) {
+        return SessionManager.loadSession(sessionKey).getUser();
+    }
+
+    protected Route wrapRouteAsJson(Route route) {
+        return asJson(route);
+    }
+
+    protected Object renderErrorJson(Response res, Throwable exception) {
+        return json(gson, res, HttpApiResponse.error(exception.getMessage()), new TypeToken<>() { });
+    }
+
+    protected void rollbackTransactionSafe() {
+        HibernateFactory.rollbackTransaction();
+    }
+
     /**
      * Initializes a {@link Gson} instance, registering the custom serializers that the specified
      * {@link SerializerFactory} provides
      * @return the {@link Gson} instance
      */
-    private Gson initGsonWithSerializers() {
+    protected Gson initGsonWithSerializers() {
         GsonBuilder builder = new GsonBuilder()
                 .registerTypeAdapter(Date.class, new DateSerializer())
                 .registerTypeAdapter(Map.class, new MapDeserializer())

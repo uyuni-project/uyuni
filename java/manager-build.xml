@@ -567,11 +567,14 @@
     </target>
 
     <target name="apidoc-asciidoc" description="Generate asciidoc from the API">
-        <property name="doclet.class" value="AsciidocDoclet"/>
         <property name="template.dir" value="asciidoc"/>
-        <property name="apidoc.output" value="${report.dir}/apidocs/${template.dir}/"/>
-        <antcall target="apidoc"/>
-        <delete dir="${report.dir}/apidocs/${template.dir}/handlers/"/>
+        <java classname="com.suse.manager.api.docs.OpenApiToAsciidocParser" fork="true" failonerror="true">
+            <classpath>
+                <pathelement location="build/classes"/>
+                <path refid="libjars"/>
+            </classpath>
+            <sysproperty key="apidoc.output" value="${report.dir}/apidocs/${template.dir}/"/>
+        </java>
     </target>
 
     <target name="apidoc-validate" description="Validate the API documentation" depends="apidoc-docbook">
@@ -608,6 +611,18 @@
         </javadoc>
 
         <move file="${build.dir}/classes/log4j2.xml.bak" tofile="${build.dir}/classes/log4j2.xml"/>
+    </target>
+
+    <target name="apidoc-openapi" description="Generate OpenAPI spec" depends="compile">
+        <mkdir dir="${report.dir}/apidocs"/>
+        <mkdir dir="${report.dir}/apidocs/openapi"/>
+        <java classname="com.suse.manager.api.OpenApiConfig" fork="true" failonerror="true">
+            <classpath>
+                <pathelement location="build/classes"/>
+                <path refid="libjars"/>
+            </classpath>
+            <sysproperty key="apidoc.output" value="${report.dir}/apidocs/openapi/"/>
+        </java>
     </target>
 
     <target name="make-eclipse-project" description="Configures this checkout as an eclipse project.">

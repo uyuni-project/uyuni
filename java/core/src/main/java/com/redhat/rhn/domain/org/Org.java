@@ -201,7 +201,7 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
      * Sets the value of id to new value
      * @param idIn New value for id
      */
-    protected void setId(Long idIn) {
+    public void setId(Long idIn) {
         this.id = idIn;
     }
 

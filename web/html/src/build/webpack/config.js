@@ -20,9 +20,10 @@ const dist = path.resolve(webHtmlSrc, "./dist");
 
 import webpackAlias from "./alias.js";
 import GenerateStoriesPlugin from "./plugins/generate-stories-plugin.js";
+const webpack = require("webpack");
 
 export default (env, opts) => {
-  let pluginsInUse = [];
+  let pluginsInUse = [new webpack.ProvidePlugin({ Buffer: ["buffer", "Buffer"] })];
   const isProductionMode = opts.mode === "production";
   const moduleName = isProductionMode ? "[id].[chunkhash]" : "[id]";
 
