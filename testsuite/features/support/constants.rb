@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2025 SUSE LLC
+# Copyright (c) 2019-2026 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 ENV_VAR_BY_HOST = {
