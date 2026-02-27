@@ -1,0 +1,22 @@
+.swaggerWrapper .swagger-ui .information-container,
+.swaggerWrapper .swagger-ui .scheme-container {
+  display: none !important;
+}
+.swaggerWrapper {
+  .namespaceSelector {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 15px;
+
+    label {
+      margin-bottom: 0;
+      white-space: nowrap;
+    }
+
+    select {
+      width: auto;
+      min-width: 220px;
+    }
+  }
+}

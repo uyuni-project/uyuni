@@ -69,6 +69,7 @@ import com.suse.manager.webui.controllers.SsmController;
 import com.suse.manager.webui.controllers.StatesAPI;
 import com.suse.manager.webui.controllers.StorybookController;
 import com.suse.manager.webui.controllers.SubscriptionMatchingController;
+import com.suse.manager.webui.controllers.SwaggerController;
 import com.suse.manager.webui.controllers.SystemsController;
 import com.suse.manager.webui.controllers.TaskoTop;
 import com.suse.manager.webui.controllers.VirtualHostManagerController;
@@ -283,6 +284,9 @@ public class Router implements SparkApplication {
 
         // Storybook
         StorybookController.initRoutes(jade);
+
+        // Swagger UI
+        SwaggerController.initRoutes(jade);
 
         // ISSv3 Sync
         initISSv3Routes(taskomaticApi);
