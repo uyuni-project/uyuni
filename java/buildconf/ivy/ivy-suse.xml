@@ -104,6 +104,21 @@
         <dependency org="suse" name="txw2" rev="4.0.5" />
         <dependency org="suse" name="istack-commons-runtime" rev="4.2.0" />
         <dependency org="suse" name="ehcache" rev="3.11.1" />
+
+        <!-- Open API -->
+        <dependency org="io.swagger.core.v3" name="swagger-core" rev="2.2.41" />
+        <dependency org="io.swagger.core.v3" name="swagger-jaxrs2" rev="2.2.41" />
+        <dependency org="io.swagger.core.v3" name="swagger-annotations" rev="2.2.41" />
+
+        <dependency org="io.swagger.parser.v3" name="swagger-parser" rev="2.1.18" />
+        <dependency org="com.github.erosb" name="everit-json-schema" rev="1.14.3" >
+            <exclude org="org.objenesis" module="objenesis-test"/>
+        </dependency>
+
+        <dependency org="org.json" name="json" rev="20231013" >
+            <exclude org="org.objenesis" module="objenesis-test"/>
+        </dependency>
+
         <!-- Tomcat jars -->
         <dependency org="suse" name="tomcat-el-api" rev="[11.0.0,12.0.0[" />
         <dependency org="suse" name="tomcat-jsp-api" rev="[11.0.0,12.0.0[" />

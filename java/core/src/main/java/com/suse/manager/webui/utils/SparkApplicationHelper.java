@@ -61,6 +61,8 @@ import spark.Route;
 import spark.Spark;
 import spark.TemplateViewRoute;
 import spark.template.jade.JadeTemplateEngine;
+import java.util.function.Function;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Utility methods to integrate Spark with SUSE Manager's infrastructure.
@@ -68,7 +70,7 @@ import spark.template.jade.JadeTemplateEngine;
 public class SparkApplicationHelper {
 
     private static final String TEMPLATE_ROOT = "com/suse/manager/webui";
-    private static final Gson GSON = new GsonBuilder()
+    public static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeISOAdapter())
             .registerTypeAdapterFactory(new OptionalTypeAdapterFactory())
             .create();
@@ -81,6 +83,9 @@ public class SparkApplicationHelper {
     private SparkApplicationHelper() {
     }
 
+    public static Function<HttpServletRequest, User> userSupplier =
+            (req) -> new RequestContext(req).getCurrentUser();
+
     /**
      * Use in routes to automatically get the current user in your controller.
      * Example: <code>Spark.get("/url", withUser(Controller::method), jade);</code>
@@ -89,7 +94,7 @@ public class SparkApplicationHelper {
      */
     public static TemplateViewRoute withUser(TemplateViewRouteWithUser route) {
         return (request, response) -> {
-            User user = new RequestContext(request.raw()).getCurrentUser();
+            User user = userSupplier.apply(request.raw());
             return route.handle(request, response, user);
         };
     }
@@ -102,7 +107,7 @@ public class SparkApplicationHelper {
      */
     public static Route withUser(RouteWithUser route) {
         return (request, response) -> {
-            User user = new RequestContext(request.raw()).getCurrentUser();
+            User user = userSupplier.apply(request.raw());
             return route.handle(request, response, user);
         };
     }
@@ -134,7 +139,7 @@ public class SparkApplicationHelper {
      */
     public static TemplateViewRoute withUserAndServer(TemplateViewRouteWithUserAndServer route, String sidName) {
         return (request, response) -> {
-            User user = new RequestContext(request.raw()).getCurrentUser();
+            User user = userSupplier.apply(request.raw());
             try {
                 long serverId = Long.parseLong(request.queryParamOrDefault(sidName, request.params(sidName)));
                 Server server = SystemManager.lookupByIdAndUser(serverId, user);
@@ -182,7 +187,7 @@ public class SparkApplicationHelper {
      */
     public static Route withUserAndServer(RouteWithUserAndServer route, String sidName) {
         return (request, response) -> {
-            User user = new RequestContext(request.raw()).getCurrentUser();
+            User user = userSupplier.apply(request.raw());
             try {
                 long serverId = Long.parseLong(request.params(sidName));
                 Server server = SystemManager.lookupByIdAndUser(serverId, user);
@@ -212,7 +217,7 @@ public class SparkApplicationHelper {
             ModelAndView modelAndView = route.handle(request, response);
             Object model = modelAndView.getModel();
             if (model instanceof Map mod) {
-                User user = new RequestContext(request.raw()).getCurrentUser();
+                User user = userSupplier.apply(request.raw());
                 String docsLocale = Objects.requireNonNullElse(
                         user.getPreferredDocsLocale(), ConfigDefaults.get().getDefaultDocsLocale());
                 mod.put("docsLocale", docsLocale);
@@ -232,7 +237,7 @@ public class SparkApplicationHelper {
      */
     public static TemplateViewRoute withRolesTemplate(TemplateViewRouteWithUser route) {
         return (request, response) -> {
-            User user = new RequestContext(request.raw()).getCurrentUser();
+            User user = userSupplier.apply(request.raw());
             ModelAndView modelAndView = route.handle(request, response, user);
             List<String> roles = user.getRoles().stream()
                     .map(Role::getLabel)
@@ -329,7 +334,7 @@ public class SparkApplicationHelper {
      */
     public static TemplateViewRoute withUserPreferences(TemplateViewRoute route) {
         return (request, response) -> {
-            User user = new RequestContext(request.raw()).getCurrentUser();
+            User user = userSupplier.apply(request.raw());
             ModelAndView modelAndView = route.handle(request, response);
             Object model = modelAndView.getModel();
             if (model instanceof Map mod) {
@@ -352,7 +357,7 @@ public class SparkApplicationHelper {
      */
     private static TemplateViewRoute withRole(TemplateViewRouteWithUser route, Role role) {
         return (request, response) -> {
-            User user = new RequestContext(request.raw()).getCurrentUser();
+            User user = userSupplier.apply(request.raw());
             if (user == null || !user.hasRole(role)) {
                 throw new PermissionException("no perms");
             }
@@ -370,7 +375,7 @@ public class SparkApplicationHelper {
      */
     private static Route withRole(RouteWithUser route, Role role) {
         return (request, response) -> {
-            User user = new RequestContext(request.raw()).getCurrentUser();
+            User user = userSupplier.apply(request.raw());
             if (user == null || !user.hasRole(role)) {
                 throw new PermissionException("no perms");
             }
