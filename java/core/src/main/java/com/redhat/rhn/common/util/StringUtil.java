@@ -19,6 +19,7 @@ import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.validator.ValidatorException;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -104,7 +105,7 @@ public class StringUtil {
     /**
      * Logger for this class
      */
-    private static Logger logger = LogManager.getLogger(StringUtil.class);
+    private static final Logger LOGGER = LogManager.getLogger(StringUtil.class);
 
     /**
      * Private constructore
@@ -204,7 +205,7 @@ public class StringUtil {
     public static String replaceTags(String source, Map<String, String> params) {
         String ret = source;
         for (Map.Entry<String, String> me : params.entrySet()) {
-            ret = StringUtils.replace(ret, "<" + me.getKey() + " />", me.getValue());
+            ret = Strings.CS.replace(ret, "<" + me.getKey() + " />", me.getValue());
         }
 
         return ret;
@@ -223,7 +224,6 @@ public class StringUtil {
      *
      * @param convertIn convert this string to a list
      * @return List version of specified string
-     * @todo This should be removed and replaced with a call like:
      * Arrays.toList(str.split(","), String[]);
      */
     public static List<String> stringToList(String convertIn) {
@@ -270,9 +270,10 @@ public class StringUtil {
 
     /**
      * Returns a String for html parsing escapes html converts \n to a break tag
-     * (&lt;BR/&lt;) converts urls beginning with http:// and https:// to links
-     * Example: given http://foo.bar/example return <a
-     * href="http://foo.bar/example">http://foo.bar/example</a>
+     * (&lt;BR/&lt;) converts urls beginning with http:// and https:// to links.
+     * <p>
+     * For example, given {@code http://foo.bar/example} return {@code a
+     * href="http://foo.bar/example">http://foo.bar/example</a>}
      * @param convertIn the String we want to convert
      * @return html version of the String
      * @see org.apache.commons.text.StringEscapeUtils
@@ -281,8 +282,8 @@ public class StringUtil {
         if (convertIn == null) {
             return null;
         }
-        if (logger.isDebugEnabled()) {
-            logger.debug("htmlifyText() - {}", convertIn);
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("htmlifyText() - {}", convertIn);
         }
         String retval = StringEscapeUtils.escapeHtml4(convertIn);
         retval = retval.replace("\\r\\n", "<br/>");
@@ -291,6 +292,44 @@ public class StringUtil {
         retval = retval.replace("\n", "<br/>");
 
         Pattern startUrl = Pattern.compile("https?://"); // http:// or https://
+        Iterator<String> itr = getUrlIterator(startUrl, retval);
+        StringBuilder result = new StringBuilder();
+        while (itr.hasNext()) {
+            String current = itr.next();
+            Matcher match = startUrl.matcher(current);
+            if (match.find()) { // if this is a url
+                int end = findEndOfUrl(current);
+                current = getUrlAsHtml(end, current);
+            }
+            result.append(current);
+        }
+
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("htmlifyText() - returning: {}", result);
+        }
+
+        return result.toString();
+    }
+
+    private static String getUrlAsHtml(int end, String current) {
+        StringBuilder modify = new StringBuilder("<a href=\"");
+        if (end != -1) { // if the end of the url is not the end of the token
+            modify.append(current.substring(0, end).replace("&amp;", "&"));
+            modify.append("\">");
+            modify.append(current, 0, end);
+            modify.append("</a>");
+            modify.append(current.substring(end));
+        }
+        else { // if the end of the url is the end of the token
+            modify.append(current.replace("&amp;", "&"));
+            modify.append("\">");
+            modify.append(current);
+            modify.append("</a>");
+        }
+        return modify.toString();
+    }
+
+    private static Iterator<String> getUrlIterator(Pattern startUrl, String retval) {
         Matcher next = startUrl.matcher(retval);
         boolean done = false;
         int previous = 0; // the starting index of the previously found url
@@ -317,38 +356,7 @@ public class StringUtil {
          * starts with http:// or https:// This part finds the end of each url
          * and executes modifications
          */
-        Iterator<String> itr = pieces.iterator();
-        StringBuilder result = new StringBuilder();
-        while (itr.hasNext()) {
-            String current = itr.next();
-            Matcher match = startUrl.matcher(current);
-            if (match.find()) { // if this is a url
-                int end = findEndOfUrl(current);
-                StringBuilder modify = new StringBuilder("<a href=\"");
-                if (end != -1) { // if the end of the url is not the end of the
-                                 // token
-                    modify.append(current.substring(0, end).replace("&amp;", "&"));
-                    modify.append("\">");
-                    modify.append(current.substring(0, end));
-                    modify.append("</a>");
-                    modify.append(current.substring(end));
-                }
-                else { // if the end of the url is the end of the token
-                    modify.append(current.replace("&amp;", "&"));
-                    modify.append("\">");
-                    modify.append(current);
-                    modify.append("</a>");
-                }
-                current = modify.toString();
-            }
-            result.append(current);
-        }
-
-        if (logger.isDebugEnabled()) {
-            logger.debug("htmlifyText() - returning: {}", result);
-        }
-
-        return result.toString();
+        return pieces.iterator();
     }
 
     /**
@@ -401,13 +409,13 @@ public class StringUtil {
         int space = entireToken.indexOf(' ');
         int line = entireToken.indexOf("<br/>");
         int tag = entireToken.indexOf("&lt;");
-        int end = -1;
 
         // end characters
         Set<Character> endChars = new HashSet<>();
         endChars.add('.');
         endChars.add(',');
 
+        int end;
         if (space == -1 || (space > line && line != -1)) {
             end = line;
         }
@@ -457,18 +465,19 @@ public class StringUtil {
      */
     public static String displayFileSize(long bytes, boolean wholeNum) {
         LocalizationService ls = LocalizationService.getInstance();
-        String number = null;
-        String type = null;
+
+        String number;
+        String type;
         if (bytes >= (1024 * 1024)) { // show in megabytes (with two decimals)
-            number = ls.formatNumber(bytes / (1024.0 * 1024),
-                    (wholeNum ? 0 : 2));
+            number = ls.formatNumber(bytes / (1024.0 * 1024), (wholeNum ? 0 : 2));
             type = "mb";
         }
         else if (bytes >= 1024) { // show in kilobytes (with one decimal)
             number = ls.formatNumber(bytes / 1024.0, (wholeNum ? 0 : 1));
             type = "kb";
         }
-        else { // show in bytes (with no decimals)
+        else {
+            // show in bytes (with no decimals)
             number = ls.formatNumber(bytes, 0);
             type = "b";
         }
@@ -519,19 +528,17 @@ public class StringUtil {
         // and UNITS_PER_NEXT arrays are in synch wit hthe _UNIT specifiers.
         long[] unitValues = new long[MILLIS_PER_UNIT.length];
         for (int currUnit = maxUnit; currUnit >= minUnit; currUnit--) {
-            if (currUnit == maxUnit) {
-                unitValues[currUnit] = elapsedTime / MILLIS_PER_UNIT[currUnit];
-            }
-            else {
+            if (currUnit != maxUnit) {
                 elapsedTime -= (unitValues[currUnit + 1] * MILLIS_PER_UNIT[currUnit + 1]);
-                unitValues[currUnit] = elapsedTime / MILLIS_PER_UNIT[currUnit];
             }
+
+            unitValues[currUnit] = elapsedTime / MILLIS_PER_UNIT[currUnit];
         }
 
         // Now, localize the unit-strings for each unit requested
         StringBuilder buff = new StringBuilder();
         for (int currUnit = maxUnit; currUnit >= minUnit; currUnit--) {
-            buff = buff.append(localizeUnit(unitValues[currUnit], currUnit)).append(" ");
+            buff.append(localizeUnit(unitValues[currUnit], currUnit)).append(" ");
         }
 
         // Now, localize the whole message and return it
@@ -603,46 +610,51 @@ public class StringUtil {
     // Handles 1-vs-many
     private static String getUnitString(int unit, long val) {
         LocalizationService ls = LocalizationService.getInstance();
-        switch (unit) {
-        case SECONDS_UNITS:
-            if (val == 1) {
-                return ls.getMessage("timetag.second");
+        return switch (unit) {
+            case SECONDS_UNITS -> {
+                if (val == 1) {
+                    yield ls.getMessage("timetag.second");
+                }
+                yield ls.getMessage("timetag.seconds");
             }
-            return ls.getMessage("timetag.seconds");
-        case MINUTES_UNITS:
-            if (val == 1) {
-                return ls.getMessage("timetag.minute");
+            case MINUTES_UNITS -> {
+                if (val == 1) {
+                    yield ls.getMessage("timetag.minute");
+                }
+                yield ls.getMessage("timetag.minutes");
             }
-            return ls.getMessage("timetag.minutes");
-        case HOURS_UNITS:
-            if (val == 1) {
-                return ls.getMessage("timetag.hour");
+            case HOURS_UNITS -> {
+                if (val == 1) {
+                    yield ls.getMessage("timetag.hour");
+                }
+                yield ls.getMessage("timetag.hours");
             }
-            return ls.getMessage("timetag.hours");
-        case DAYS_UNITS:
-            if (val == 1) {
-                return ls.getMessage("timetag.day");
+            case DAYS_UNITS -> {
+                if (val == 1) {
+                    yield ls.getMessage("timetag.day");
+                }
+                yield ls.getMessage("timetag.days");
             }
-            return ls.getMessage("timetag.days");
-        case WEEKS_UNITS:
-            if (val == 1) {
-                return ls.getMessage("timetag.week");
+            case WEEKS_UNITS -> {
+                if (val == 1) {
+                    yield ls.getMessage("timetag.week");
+                }
+                yield ls.getMessage("timetag.weeks");
             }
-            return ls.getMessage("timetag.weeks");
-        case MONTHS_UNITS:
-            if (val == 1) {
-                return ls.getMessage("timetag.month");
+            case MONTHS_UNITS -> {
+                if (val == 1) {
+                    yield ls.getMessage("timetag.month");
+                }
+                yield ls.getMessage("timetag.months");
             }
-            return ls.getMessage("timetag.months");
-        case YEARS_UNITS:
-            if (val == 1) {
-                return ls.getMessage("timetag.year");
+            case YEARS_UNITS -> {
+                if (val == 1) {
+                    yield ls.getMessage("timetag.year");
+                }
+                yield ls.getMessage("timetag.years");
             }
-            return ls.getMessage("timetag.years");
-
-        default:
-            return ls.getMessage("timetag.unknown");
-        }
+            default -> ls.getMessage("timetag.unknown");
+        };
     }
 
     // Is Target in the past or the future?
@@ -773,7 +785,9 @@ public class StringUtil {
      * @return {@code true} if there are xml invalid chars
      */
     public static boolean containsInvalidXmlChars(String string) {
-        for (int i = 0; i < string.length();) {
+        int i = 0;
+
+        while (i < string.length()) {
             int codePoint = string.codePointAt(i);
             if (!isValidXmlChar(codePoint)) {
                 return true;
@@ -781,6 +795,7 @@ public class StringUtil {
 
             i += Character.charCount(codePoint);
         }
+
         return false;
     }
 
@@ -847,7 +862,7 @@ public class StringUtil {
         boolean hasShellDeclaration = false;
         int codeLines = 0;
 
-        String[] lines = script.split(System.getProperty("line.separator"));
+        String[] lines = script.split(System.lineSeparator());
         for (String lineIn : lines) {
             String line = StringUtil.nullOrValue(lineIn);
             if (line != null) {
