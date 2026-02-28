@@ -151,10 +151,6 @@
         </dependency>
         <dependency>
             <groupId>suse</groupId>
-            <artifactId>java-saml</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>suse</groupId>
             <artifactId>java-saml-core</artifactId>
         </dependency>
         <dependency>
