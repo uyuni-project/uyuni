@@ -36,6 +36,29 @@ Then(/^the current path is "([^"]*)"$/) do |arg1|
   raise ScriptError, "Path #{current_path} different than #{arg1}" unless current_path == arg1
 end
 
+When(/^I click on the link that contains href "([^"]+)"$/) do |href|
+  begin
+    link_elem = all(:xpath, "//a[contains(@href, '#{href}')]").last
+    raise ElementNotFound, "The link with href '#{href}' not found." if link_elem.nil?
+
+    link_elem.click
+  rescue ElementNotFound, NoMethodError, ScriptError => e
+    log "Searching for the href \"#{href}\"; Exception: #{e}"
+  end
+end
+
+When(/^I click on the link that contains regex href "([^"]+)"$/) do |regexhref|
+  begin
+    links = page.all(:xpath, '//a[@href]').select { |link| link['href'].match(regexhref) }
+    link_elem = links.last
+    raise ElementNotFound, "The link with regex href \"#{regexhref}\" not found." if link_elem.nil?
+
+    link_elem.click
+  rescue ElementNotFound, NoMethodError, ScriptError => e
+    log "Searching for the regex href \"#{href}\"; Exception: #{e}"
+  end
+end
+
 When(/^I wait until I see "([^"]*)" text$/) do |text|
   raise ScriptError, "Text '#{text}' not found" unless check_text_and_catch_request_timeout_popup?(text, timeout: DEFAULT_TIMEOUT)
 end
@@ -50,6 +73,14 @@ end
 
 When(/^I wait until I see "([^"]*)" text or "([^"]*)" text$/) do |text1, text2|
   raise ScriptError, "Text '#{text1}' or '#{text2}' not found" unless check_text_and_catch_request_timeout_popup?(text1, text2: text2, timeout: DEFAULT_TIMEOUT)
+end
+
+When(/^I wait until I see "([^"]*)" text or "([^"]*)" text, refreshing the page$/) do |text1, text2|
+  repeat_until_timeout(message: "Couldn't find text '#{text1}' or text '#{text2}'") do
+    break if has_content?(text1) or has_content?(text2)
+    sleep(3)
+    refresh_page
+  end
 end
 
 When(/^I wait until I see "([^"]*)" (text|regex), refreshing the page$/) do |text, type|

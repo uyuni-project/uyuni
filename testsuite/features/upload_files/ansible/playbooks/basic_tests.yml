@@ -1,0 +1,32 @@
+---
+- name: Basic tests
+  gather_facts: no
+  hosts: localhost
+  vars:
+    p1: "Don't worry about a thing"
+    p2: "'Cause every little thing gonna be alright"
+    p3: "Singing, \\\"Don't worry about a thing\\\""
+    p4: "'Cause every little thing gonna be alright"
+    p5: "2 * 50505"
+    p1_empty: ""
+    p2_empty: ''
+    p_null:
+
+  tasks:
+  - name: Setup - create tests files
+    copy:
+      src: '/srv/playbooks/host_files/ansible_param_tester.sh'
+      dest: '/tmp/ansible_param_tester.sh'
+      force: true
+      mode: '0755'
+
+  - name: Run parameter tests with pre-defined parameters
+    register: out
+    ansible.builtin.command: '/tmp/ansible_param_tester.sh'
+  - debug: var=out.stdout_lines
+
+  - name: Run parameter tests with given parameters
+    register: out
+    ansible.builtin.command: '/tmp/ansible_param_tester.sh "{{ p1 }}" "{{ p2 }}" "{{ p3 }}" "{{ p4 }}" "{{ p5 }}" "{{ p1_empty }}" "{{ p2_empty }}" "{{ p_null }}"'
+  - debug: var=out.stdout_lines
+...

@@ -1,4 +1,4 @@
-# Copyright (c) 2024 SUSE LLC.
+# Copyright (c) 2024-2026 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 ### This file contains all steps concerning content lifecycle and hostname management
@@ -144,6 +144,18 @@ When(/^I deploy testing playbooks and inventory files to "([^"]*)"$/) do |host|
   source = "#{File.dirname(__FILE__)}/../upload_files/ansible/playbooks/playbook_ping.yml"
   success = file_inject(target, source, "#{dest}playbook_ping.yml")
   raise ScriptError, 'File injection failed' unless success
+
+  # basic tests - playbook
+  dest = '/srv/playbooks/'
+  source = "#{File.dirname(__FILE__)}/../upload_files/ansible/playbooks/basic_tests.yml"
+  success = file_inject(target, source, "#{dest}basic_tests.yml")
+  raise ScriptError, 'File "#{source}" injection failed' unless success
+  # basic tests - parameter tester shell script
+  dest = '/srv/playbooks/host_files/'
+  target.run("mkdir -p #{dest}")
+  source = "#{File.dirname(__FILE__)}/../upload_files/ansible/playbooks/host_files/ansible_param_tester.sh"
+  success = file_inject(target, source, "#{dest}ansible_param_tester.sh")
+  raise ScriptError, 'File "#{source}" injection failed' unless success
 end
 
 When(/^I enter the reactivation key of "([^"]*)"$/) do |host|
