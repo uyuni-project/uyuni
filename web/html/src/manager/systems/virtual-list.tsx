@@ -4,6 +4,7 @@ import { IconTag } from "components/icontag";
 import * as Systems from "components/systems";
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
+import { LinkButton } from "components/buttons";
 
 import { Utils } from "utils/functions";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
@@ -57,16 +58,14 @@ export function VirtualSystems(props: Props) {
         initialSearch={props.query}
         emptyText={t("No Virtual Systems.")}
         titleButtons={[
-          <a
+          <LinkButton
             key="download-csv"
             href="/rhn/manager/systems/csv/virtualSystems"
-            title="Download CSV"
+            text={t("Download CSV")}
+            icon="spacewalk-icon-download-csv"
             className="btn btn-default"
             data-senna-off="true"
-          >
-            <IconTag type="item-download-csv" />
-            {t("Download CSV")}
-          </a>,
+          />
         ]}
       >
         <Column
