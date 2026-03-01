@@ -1517,7 +1517,6 @@ INSERT INTO access.namespace (namespace, access_mode, description)
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.sync.hub.store_access_token', 'W', 'Generate a new access token for ISS for accessing this system')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
-
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.sync.hub.get_all_peripheral_channels', 'R', 'List all peripheral channels')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
@@ -1551,7 +1550,9 @@ INSERT INTO access.namespace (namespace, access_mode, description)
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.sync.hub.list_peripheral_channels_to_sync', 'R', 'List channels which are configured to be synchronized with a peripheral server')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
-
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.sync.hub.schedule_update_task', 'W', 'Schedules mgr-sync refresh with reposync on peripheral server')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.image.add_image_file', 'W', 'Delete image file')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
@@ -2382,6 +2383,12 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.system.appstreams.enable', 'W', 'Schedule enabling of module streams. Invalid modules will be filtered out. If all provided')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.system.appstreams.ssm_disable', 'W', 'Schedule disabling of module streams from a given modular channel for SSM')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.system.appstreams.ssm_enable', 'W', 'Schedule enabling of module streams from a given modular channel for SSM')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.system.appstreams.list_module_streams', 'R', 'List available module streams for a given system.')
