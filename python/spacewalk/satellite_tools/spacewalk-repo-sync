@@ -211,6 +211,14 @@ def main():
     )
     parser.add_option(
         "",
+        "--metadata-only",
+        action="store_true",
+        dest="metadata_only",
+        default=False,
+        help="Do not download packages, only sync metadata",
+    )
+    parser.add_option(
+        "",
         "--sync-kickstart",
         action="store_true",
         dest="sync_kickstart",
@@ -277,7 +285,7 @@ def main():
     # pylint: disable-next=consider-using-f-string
     log2disk(0, "Command: %s" % str(sys.argv))
 
-    l_params = ["no_errata", "sync_kickstart", "fail", "no-strict"]
+    l_params = ["no_errata", "sync_kickstart", "fail", "no-strict", "metadata_only"]
     d_chan_repo = reposync.getChannelRepo()
     l_ch_custom = reposync.getCustomChannels()
     d_parent_child = reposync.getParentsChilds()
@@ -407,7 +415,7 @@ def main():
             # pylint: disable-next=consider-using-f-string
             "Please check 'reposync/%s.log' for sync log of this channel." % ch,
             notimeYN=True,
-        )
+            )
         sync = reposync.RepoSync(
             channel_label=ch,
             repo_type=options.repo_type,
@@ -424,6 +432,7 @@ def main():
             log_level=log_level,
             force_all_errata=options.force_all_errata,
             show_packages_only=options.show_packages,
+            metadata_only=options.metadata_only,
         )
         if options.batch_size:
             sync.set_import_batch_size(options.batch_size)
