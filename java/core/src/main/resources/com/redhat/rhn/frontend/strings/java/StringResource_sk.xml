@@ -12118,10 +12118,10 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
         </context-group>
         <target state="translated">Riadenie prístupu</target>
       </trans-unit>
-    <trans-unit id="pxeeventfailed" xml:space="preserve">
+      <trans-unit id="pxeeventfailed" xml:space="preserve">
         <source>PXE Event Failed</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="translated">Udalosť PXE zlyhala</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
