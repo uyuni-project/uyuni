@@ -18,15 +18,15 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-03 11:04+0200\n"
-"PO-Revision-Date: 2018-03-16 10:59+0000\n"
-"Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
-"Language-Team: Danish (http://www.transifex.com/projects/p/spacewalk/language/da/)\n"
+"PO-Revision-Date: 2026-02-04 14:04+0000\n"
+"Last-Translator: Peter Andreasen <noesgaard@gmail.com>\n"
+"Language-Team: Danish <https://l10n.opensuse.org/projects/uyuni/spacewalk-client-tools/da/>\n"
 "Language: da\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Zanata 4.6.2\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 5.15.2\n"
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/up2date_client/config.py:166
@@ -36,19 +36,18 @@ msgstr "%s blev ikke fundet"
 
 #: ../src/up2date_client/rpcServer.py:70
 msgid "Error: Server Unavailable. Please try later."
-msgstr ""
+msgstr "Fejl: Server utilgængelig. Prøv igen senere."
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/up2date_client/rpcServer.py:221
-#, fuzzy
 msgid "ERROR: can not find server CA file"
-msgstr "FEJL: kan ikke finde RHNS CA-fil:"
+msgstr "FEJL: kan ikke finde server CA-fil"
 
 #: ../src/up2date_client/up2dateErrors.py:62
 #: ../src/up2date_client/up2dateErrors.py:101
 #, python-format
 msgid "class %s has no attribute '%s'"
-msgstr ""
+msgstr "klassen %s har ikke attributten '%s'"
 
 #: ../src/up2date_client/up2dateErrors.py:135
 msgid "RPM error.  The message was:\n"
@@ -84,6 +83,9 @@ msgid ""
 "Red Hat Network Classic is not supported.\n"
 "    "
 msgstr ""
+"\n"
+"Red Hat Network Classic er ikke understøttet.\n"
+"    "
 
 #: ../src/up2date_client/up2dateErrors.py:255
 msgid "The installation number is invalid"
@@ -95,7 +97,7 @@ msgstr "Fejl ved tolkning af oemInfo-filen ved felt:\n"
 
 #: ../src/up2date_client/up2dateErrors.py:294
 msgid "Network error: "
-msgstr ""
+msgstr "Netværksfejl: "
 
 #: ../src/up2date_client/up2dateErrors.py:385
 msgid ""
@@ -111,6 +113,17 @@ msgid ""
 "    on the account as a universal default, you can disable this key and retry to avoid\n"
 "    requiring a Management entitlement."
 msgstr ""
+"\n"
+"    Din organisation har ikke nok Management-rettigheder til at registrere dette system.\n"
+"    Underret venligst din organisationsadministrator om denne fejl.\n"
+"    Du bør kunne registrere dette system, efter din organisation frigør eksisterende\n"
+"    eller køber yderligere rettigheder. Yderligere rettigheder kan købes af din\n"
+"    organisationsadministrator i SUSE Customer Center.\n"
+"\n"
+"    En almindelig årsag til denne fejlkode skyldes, at der fejlagtigt er opsat en\n"
+"    aktiveringsnøgle (Activation Key), som er angivet som universel standard. Hvis en\n"
+"    aktiveringsnøgle er angivet på kontoen som universel standard, kan du deaktivere\n"
+"    denne nøgle og prøve igen for at undgå kravet om en Management-rettighed."
 
 #, python-format
 #~ msgid "This client requires the server to support %s, which the current server does not support"

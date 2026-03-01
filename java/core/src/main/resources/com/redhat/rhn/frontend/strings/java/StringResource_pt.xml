@@ -11993,6 +11993,10 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         </context-group>
       <target state="new"/>
   </trans-unit>
+      <trans-unit id="pxeeventfailed" xml:space="preserve">
+        <source>PXE Event Failed</source>
+      <target state="new"/>
+  </trans-unit>
       </body>
   </file>
 </xliff>

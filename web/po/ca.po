@@ -3,12 +3,16 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#: ../html/src/components/input/range/Range.tsx:52
+#: ../html/src/components/input/range/Range.tsx:53
+#: ../html/src/components/input/range/Range.tsx:65
+#: ../html/src/components/input/range/Range.tsx:66
 #: ../html/src/core/intl/index.test.tsx:11
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-16 09:56+0100\n"
+"POT-Creation-Date: 2026-03-01 10:55+0100\n"
 "PO-Revision-Date: 2026-01-17 12:04+0000\n"
 "Last-Translator: David Medina <medipas@gmail.com>\n"
 "Language-Team: Catalan <https://l10n.opensuse.org/projects/uyuni/web/ca/>\n"
@@ -26,16 +30,6 @@ msgstr "restant"
 #: ../html/javascript/spacewalk-essentials.js:429
 msgid "The browser Internet Explorer is not supported. Try using Firefox, Chrome or Edge"
 msgstr "El navegador Internet Explorer no està suportat. Proveu d'utilitzar el Firefox, Chrome o Edge"
-
-#: ../html/src/components/CoCoScansList.tsx:68
-#: ../html/src/components/package/PackageListActionScheduler.tsx:84
-#: ../html/src/components/product-migration/utils.tsx:95
-#: ../html/src/manager/appstreams/appstreams.tsx:61
-#: ../html/src/manager/state/highstate.tsx:63
-#: ../html/src/manager/systems/appstreams/ssm-appstreams-configure.tsx:60
-#: ../html/src/manager/systems/coco/ssm-schedule.tsx:67
-msgid "Action has been successfully added to the action chain <link>\"{name}\"</link>."
-msgstr "L'acció s'ha afegit correctament a la cadena d'accions <link>\"{name}\"</link>."
 
 #: ../html/src/components/CoCoScansList.tsx:75
 #: ../html/src/components/package/PackageListActionScheduler.tsx:91
@@ -89,10 +83,6 @@ msgstr "Detalls de l'informe d'autenticació"
 #: ../html/src/components/FormulaForm.tsx:24
 msgid "Formula saved. Applying the highstate is not needed for this formula."
 msgstr "Fórmula desada. No es necessita aplicar l'estat alt per a aquesta fórmula."
-
-#: ../html/src/components/FormulaForm.tsx:134
-msgid "Multiple Group formulas detected. Only one formula for \"{name}\" can be used on each system!"
-msgstr "S'han detectat diverses fórmules de grup. Només es pot usar una fórmula per a {name} a cada sistema!"
 
 #: ../html/src/components/FormulaForm.tsx:165
 msgid "Please input required fields: {fields}"
@@ -192,10 +182,6 @@ msgstr "Nom"
 msgid "Attestations"
 msgstr "Acreditacions"
 
-#: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:41
-msgid "No attestation report available. Schedule an execution to create one."
-msgstr "No hi ha cap informe d'atestat disponible. Programeu una execució per crear-ne un."
-
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:48
 msgid "Attestation"
 msgstr "Acreditació"
@@ -273,7 +259,7 @@ msgstr "Accions"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:116
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:54
-#: ../html/src/manager/admin/access-control/access-group.tsx:183
+#: ../html/src/manager/admin/access-control/access-group.tsx:185
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:199
 #: ../html/src/manager/images/image-view-patches.tsx:87
 #: ../html/src/manager/images/image-view.tsx:695
@@ -356,7 +342,7 @@ msgid "Select a schedule"
 msgstr "Seleccioneu una planificació"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:153
-#: ../html/src/components/formula-selection.tsx:296
+#: ../html/src/components/formula-selection.tsx:302
 #: ../html/src/components/hub/ModalEditButton.tsx:98
 #: ../html/src/components/large-text-attachment.tsx:195
 #: ../html/src/components/panels/CreatorPanel.tsx:122
@@ -525,7 +511,7 @@ msgstr "Casella de selecció"
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:74
 #: ../html/src/manager/images/image-store-edit.tsx:180
 #: ../html/src/manager/login/susemanager/login.tsx:98
-#: ../html/src/manager/login/uyuni/login.tsx:89
+#: ../html/src/manager/login/uyuni/login.tsx:96
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:427
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:550
 msgid "Password"
@@ -622,15 +608,15 @@ msgstr "Elimina l'element"
 msgid "Add item"
 msgstr "Afegeix-hi un element"
 
-#: ../html/src/components/formula-selection.tsx:135
+#: ../html/src/components/formula-selection.tsx:136
 msgid " No group"
 msgstr " Cap grup"
 
-#: ../html/src/components/formula-selection.tsx:270
+#: ../html/src/components/formula-selection.tsx:276
 msgid "On this page you can select Salt Formulas for this group/system, which can then be configured on group and system level. This allows you to automatically install and configure software."
 msgstr "En aquesta pàgina podeu seleccionar Fórmules de sal per a aquest grup/sistema, que es poden configurar a nivell de grup i de sistema. Això permet instal·lar i configurar automàticament el programari."
 
-#: ../html/src/components/formula-selection.tsx:303
+#: ../html/src/components/formula-selection.tsx:309
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:63
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:27
 msgid "Formulas"
@@ -686,8 +672,8 @@ msgstr "p. ex. server.domain.com"
 #: ../html/src/components/hub/AddTokenButton.tsx:138
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:73
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:164
-#: ../html/src/manager/proxy/container-config.tsx:205
-#: ../html/src/manager/proxy/container-config.tsx:216
+#: ../html/src/manager/proxy/container-config.tsx:203
+#: ../html/src/manager/proxy/container-config.tsx:214
 msgid "Has to be a valid FQDN address"
 msgstr "Ha de ser una adreça FQDN vàlida"
 
@@ -1099,7 +1085,7 @@ msgstr "Registra"
 #: ../html/src/manager/images/image-profile-edit.tsx:485
 #: ../html/src/manager/images/image-store-edit.tsx:201
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:442
-#: ../html/src/manager/proxy/container-config.tsx:385
+#: ../html/src/manager/proxy/container-config.tsx:384
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:418
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:178
 msgid "Clear fields"
@@ -1293,7 +1279,7 @@ msgstr "Esteu a punt de fer els canvis següents:"
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:198
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:14
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1134
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:685
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:688
 msgid "Confirm"
 msgstr "Confirmació"
 
@@ -1461,12 +1447,12 @@ msgstr "Elimina"
 #: ../html/src/components/input/form-multi-input/single-field.example.tsx:24
 #: ../html/src/components/input/form-multi-input/table-fields.example.tsx:32
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:122
-#: ../html/src/manager/admin/access-control/access-group.tsx:206
+#: ../html/src/manager/admin/access-control/access-group.tsx:208
 msgid "Users"
 msgstr "Usuaris"
 
 #: ../html/src/components/input/form-multi-input/single-field.example.tsx:47
-#: ../html/src/manager/login/uyuni/login.tsx:77
+#: ../html/src/manager/login/uyuni/login.tsx:84
 msgid "Login"
 msgstr "Inici de sessió"
 
@@ -1537,8 +1523,8 @@ msgstr "Sense opcions"
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:76
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:56
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:104
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:642
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:643
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:645
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:646
 msgid "Loading..."
 msgstr "Carregant..."
 
@@ -1616,18 +1602,6 @@ msgstr "Nom del paquet"
 msgid "Items {from} - {to} of {total}"
 msgstr "Elements {from} - {to} de {total}"
 
-#: ../html/src/components/pagination.tsx:139
-msgid ""
-"{total, plural,\n"
-"            one {<dropdown></dropdown> of # page}\n"
-"            other {<dropdown></dropdown> of # pages}\n"
-"        }"
-msgstr ""
-"{total, plural,\n"
-"            one {<dropdown></dropdown> d'# pàgina}\n"
-"            other {<dropdown></dropdown> de # pàgines}\n"
-"        }"
-
 #: ../html/src/components/picker/recurring-event-picker.tsx:56
 msgid "Sunday"
 msgstr "diumenge"
@@ -1691,10 +1665,6 @@ msgstr "Els dies estan limitats a 28 per tenir disponible una programació recur
 #: ../html/src/components/picker/recurring-event-picker.tsx:479
 msgid "Custom Quartz format:"
 msgstr "Format de quars personalitzat:"
-
-#: ../html/src/components/picker/recurring-event-picker.tsx:489
-msgid "e.g. \"0 15 2 ? * 7\""
-msgstr "p. ex. \"0 15 2 ? * 7\""
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:508
 msgid "Select a Schedule"
@@ -2134,18 +2104,6 @@ msgstr "Requereix aquest canal"
 msgid "Please see <link>Format.JS docs</link> for the message syntax."
 msgstr "Si voleu saber la sintaxi del missatge, consulteu la <link>documentació de Format.JS</link>."
 
-#: ../html/src/core/intl/index.example.tsx:23
-msgid ""
-"Always use plural forms for numbers: {fooCount, plural,\n"
-"            one {only one item}\n"
-"            other {{fooCount} items}\n"
-"          }."
-msgstr ""
-"Feu servir sempre formes plurals per als nombres: {fooCount, plural,\n"
-"un {només un element}\n"
-"altres {{fooCount} elements}\n"
-"}."
-
 #: ../html/src/core/intl/index.test.tsx:9
 msgid "foo"
 msgstr "foo"
@@ -2171,7 +2129,7 @@ msgstr "S'ha produït un error inesperat en obtenir els grups d'accés."
 #. Value options for filtering by Target Type in recurring actions list
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:131
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:118
-#: ../html/src/manager/proxy/container-config.tsx:323
+#: ../html/src/manager/proxy/container-config.tsx:322
 #: ../html/src/manager/recurring/recurring-actions-utils.tsx:8
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:4
 #: ../html/src/manager/state/highstate-summary.tsx:163
@@ -2285,7 +2243,7 @@ msgstr "No s'ha seleccionat cap usuari."
 
 #: ../html/src/manager/admin/access-control/access-group-review.tsx:163
 #: ../html/src/manager/admin/access-control/access-group-user.tsx:137
-#: ../html/src/manager/proxy/container-config.tsx:325
+#: ../html/src/manager/proxy/container-config.tsx:324
 msgid "Email"
 msgstr "Correu electrònic"
 
@@ -2310,23 +2268,23 @@ msgstr "S'ha produït un error inesperat en obtenir els usuaris."
 msgid "Search & Add Users"
 msgstr "Cerca i afegeix usuaris"
 
-#: ../html/src/manager/admin/access-control/access-group.tsx:173
+#: ../html/src/manager/admin/access-control/access-group.tsx:175
 msgid "Access Group successfully created."
 msgstr "Grup d'accés creat correctament."
 
-#: ../html/src/manager/admin/access-control/access-group.tsx:195
+#: ../html/src/manager/admin/access-control/access-group.tsx:197
 msgid "Namespaces & Permissions"
 msgstr "Espais de noms i permisos"
 
-#: ../html/src/manager/admin/access-control/access-group.tsx:211
+#: ../html/src/manager/admin/access-control/access-group.tsx:213
 msgid "Review"
 msgstr "Revisió"
 
-#: ../html/src/manager/admin/access-control/access-group.tsx:219
+#: ../html/src/manager/admin/access-control/access-group.tsx:221
 msgid "Access Group Details"
 msgstr "Accediu als detalls del grup"
 
-#: ../html/src/manager/admin/access-control/access-group.tsx:224
+#: ../html/src/manager/admin/access-control/access-group.tsx:226
 msgid "Create: Access Group"
 msgstr "Creació: grup d'accés"
 
@@ -2536,11 +2494,13 @@ msgid "Hub Details"
 msgstr "Detalls del Hub"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:80
-msgid "No hub is currently configured for this server. Refresh this page after configuring this server as a peripheral, to see the hub details"
-msgstr "Actualment no hi ha cap concentrador configurat per a aquest servidor. Actualitzeu aquesta pàgina després de configurar aquest servidor com a perifèric per veure els detalls del concentrador."
+msgid "No hub is currently configured for this server. "
+msgstr "Actualment no hi ha cap hub configurat per a aquest servidor. "
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:89
-msgid "This server is currently registered as peripheral of hub {fqdn}. This page shows the details of the hub server."
+#, fuzzy
+#| msgid "This server is currently registered as peripheral of hub {fqdn}. This page shows the details of the hub server."
+msgid "This server is currently registered as peripheral of hub {fqdn}. "
 msgstr "Aquest servidor està actualment registrat com a perifèric del concentrador {fqdn}. Aquesta pàgina mostra els detalls del servidor concentrador."
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:108
@@ -2564,7 +2524,9 @@ msgid "{fqdn} - Peripheral Details"
 msgstr "{fqdn} - Detalls del perifèric"
 
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:51
-msgid "The server {fqdn} is currently registered as peripheral of this hub. This page shows the details of the peripheral server."
+#, fuzzy
+#| msgid "The server {fqdn} is currently registered as peripheral of this hub. This page shows the details of the peripheral server."
+msgid "The server {fqdn} is currently registered as peripheral of this hub. "
 msgstr "El servidor {fqdn} està actualment registrat com a perifèric d'aquest concentrador. Aquesta pàgina mostra els detalls del servidor perifèric."
 
 #: ../html/src/manager/admin/hub/peripherals.tsx:24
@@ -2706,6 +2668,12 @@ msgstr "S'estan editant les propietats."
 msgid "Last Status Update"
 msgstr "Última actualització d'estat"
 
+#: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:50
+#, fuzzy
+#| msgid "Edit"
+msgid "Edit "
+msgstr "Edita"
+
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:65
 msgid "Editing ssh connection data.."
 msgstr "S'estan editant les dades de connexió ssh."
@@ -2796,10 +2764,6 @@ msgstr "Han fallat les següents instal·lacions de productes. Si us plau, compr
 msgid "Selected channels were scheduled successfully for syncing."
 msgstr "Els canals seleccionats s'han programat correctament per sincronitzar."
 
-#: ../html/src/manager/admin/setup/products/products.tsx:269
-msgid "The following channel installations for \"{product}\" failed. Please check log files."
-msgstr "Les instal·lacions de canals següents per a \"{product}\" han fallat. Si us plau, reviseu els fitxers de registre."
-
 #: ../html/src/manager/admin/setup/products/products.tsx:296
 msgid "A refresh of the product data is currently running in the background. Please try again later."
 msgstr "Una actualització de les dades del producte s'està executant actualment en segon pla. Torneu-ho a provar més tard."
@@ -2854,6 +2818,18 @@ msgstr "Canals"
 msgid "Recommended"
 msgstr "Recomanat"
 
+#: ../html/src/manager/admin/setup/products/products.tsx:800
+msgid " channels sync failed"
+msgstr " ha fallat la sincronització dels canals"
+
+#: ../html/src/manager/admin/setup/products/products.tsx:808
+msgid " channels sync in progress"
+msgstr " sincronització de canals en curs"
+
+#: ../html/src/manager/admin/setup/products/products.tsx:816
+msgid " channels synced"
+msgstr " canals sincronitzats"
+
 #: ../html/src/manager/admin/setup/products/products.tsx:841
 msgid "To enable this product, the parent product should be selected first"
 msgstr "Per a habilitar aquest producte, primer s'ha de seleccionar el producte pare"
@@ -2870,7 +2846,7 @@ msgstr "Aquest producte està reflectit."
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:78
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:144
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:494
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:555
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:558
 msgid "recommended"
 msgstr "recomanat"
 
@@ -3134,16 +3110,14 @@ msgid "Affected, patches available in channels which are not assigned"
 msgstr "Afectats, hi ha pedaços disponibles en canals que no estan assignats"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:45
-msgid "The client is affected by a vulnerability and we have a patch for it, but the channel(s) offering the patch are not assigned to the client."
-msgstr "El client està afectat per una vulnerabilitat i tenim un pedaç per a això, però el(s) canal(s) que ofereixen el pedaç no estan assignats al client."
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:53
+#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:89
+msgid "The client is affected by a vulnerability and we have a patch for it,"
+msgstr "El client està afectat per una vulnerabilitat i tenim un pedaç per a això,"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:51
 msgid "Affected, patches available in a Product Migration target"
 msgstr "Afectats, hi ha pedaços disponibles en un objectiu de migració de productes"
-
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:53
-msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch requires migrating the product to a newer version."
-msgstr "El client està afectat per una vulnerabilitat i tenim un pedaç per a això, però aplicar-lo requereix migrar el producte a una versió més recent."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:59
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:60
@@ -3179,16 +3153,12 @@ msgid "Affected, patch is unavailable in relevant channels"
 msgstr "Afectat, el pedaç no està disponible als canals pertinents"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:81
-msgid "The client is affected by a vulnerability for which a patch has been released, but the patch can't be found in the relevant channels."
-msgstr "El client està afectat per una vulnerabilitat per a la qual s'ha publicat un pedaç, però no es pot trobar als canals pertinents."
+msgid "The client is affected by a vulnerability for which a patch has been released,"
+msgstr "El client es veu afectat per una vulnerabilitat per la qual s'ha alliberat un pegat,"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:87
 msgid "Affected, partial patch available in assigned channel"
 msgstr "Afectat, hi ha un pedaç parcial disponible al canal assignat"
-
-#: ../html/src/manager/audit/cveaudit/cveaudit.tsx:89
-msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch will only update some of the vulnerable packages."
-msgstr "El client està afectat per una vulnerabilitat i tenim un pedaç per a això, però aplicar-lo només actualitzarà alguns dels paquets vulnerables."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:95
 msgid "Unknown, CVE metadata not available"
@@ -4261,7 +4231,7 @@ msgstr "Trieu el canal que s'ha d'escollir com a nou canal base"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:198
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:543
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:613
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:616
 msgid "Child Channels"
 msgstr "Canals fills"
 
@@ -4287,7 +4257,7 @@ msgstr "Aquest canal és obligatori"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:83
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:149
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:560
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:563
 msgid "mandatory"
 msgstr "obligatori"
 
@@ -4299,7 +4269,7 @@ msgstr "no hi ha canals fills"
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/recommended-toggle.tsx:26
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:173
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:434
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:602
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:605
 msgid "include recommended"
 msgstr "inclou les recomanades"
 
@@ -4339,19 +4309,25 @@ msgid "The page you requested, {currentUrl}, was not found."
 msgstr "No s'ha trobat la pàgina que heu sol·licitat, {currentUrl}."
 
 #: ../html/src/manager/errors/not-found.tsx:10
-msgid "If you typed this address into your browser, double-check the spelling and capitalization. The address you are copying may also be outdated."
+#, fuzzy
+#| msgid "If you typed this address into your browser, double-check the spelling and capitalization. The address you are copying may also be outdated."
+msgid "If you typed this address into your browser, double-check the spelling and capitalization."
 msgstr "Si heu escrit aquesta adreça al navegador, reviseu l'ortografia i les majúscules. L'adreça que copieu també pot estar desactualitzada."
 
 #: ../html/src/manager/errors/not-found.tsx:16
-msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your browser to try a different link, or use the top (or left) navigation bars to find the page you are looking for."
+#, fuzzy
+#| msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your browser to try a different link, or use the top (or left) navigation bars to find the page you are looking for."
+msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
 msgstr "Si heu seguit un enllaç, és possible que sigui incorrecte o que estigui desactualitzat. Feu clic al botó Enrere del navegador per provar un enllaç diferent o useu les barres de navegació superiors (o esquerra) per trobar la pàgina que cerqueu."
 
 #: ../html/src/manager/errors/not-found.tsx:23
-msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top (or left) navigation bars to find the page you are looking for, and if you find the document be sure to update your bookmark."
-msgstr "Si heu fet servir un marcador, és possible que la pàgina s'hagi mogut a una ubicació diferent des que es va crear. Feu servir les barres de navegació superiors (o esquerra) per trobar la pàgina que busqueu i, si trobeu el document, assegureu-vos d'actualitzar el marcador."
+msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was "
+msgstr "Si heu utilitzat un punt, la pàgina pot haver-se mogut a una ubicació diferent des que el punt de llibre era "
 
 #: ../html/src/manager/errors/not-found.tsx:30
-msgid "If you feel you've reached this page in error, please contact us with details of how you received this message."
+#, fuzzy
+#| msgid "If you feel you've reached this page in error, please contact us with details of how you received this message."
+msgid "If you feel you've reached this page in error, please contact us with details of how you received "
 msgstr "Si creieu que heu arribat a aquesta pàgina per error, poseu-vos en contacte amb nosaltres i expliqueu com heu rebut aquest missatge."
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.tsx:27
@@ -4555,6 +4531,10 @@ msgid "Update"
 msgstr "Actualitza"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:517
+msgid "Edit Image Profile: '"
+msgstr "Edita el perfil de la imatge: '"
+
+#: ../html/src/manager/images/image-profile-edit.tsx:517
 #: ../html/src/manager/images/image-profiles.tsx:147
 #: ../html/src/manager/images/image-profiles.tsx:148
 msgid "Create Image Profile"
@@ -4620,6 +4600,10 @@ msgstr "Esteu segur que voleu suprimir els perfils seleccionats? ({count} perfil
 #: ../html/src/manager/images/image-store-edit.tsx:165
 msgid "Use credentials"
 msgstr "Utilitza credencials"
+
+#: ../html/src/manager/images/image-store-edit.tsx:234
+msgid "Edit Image Store: '"
+msgstr "Edita la botiga d'imatges: '"
 
 #: ../html/src/manager/images/image-store-edit.tsx:234
 msgid "Create Image Store"
@@ -4703,13 +4687,29 @@ msgstr "En cua"
 msgid "Go to event"
 msgstr "Ves a l'esdeveniment"
 
+#: ../html/src/manager/images/image-view-overview.tsx:56
+msgid " is queued"
+msgstr " està en cua"
+
 #: ../html/src/manager/images/image-view-overview.tsx:63
 msgid "In progress"
 msgstr "En curs"
 
+#: ../html/src/manager/images/image-view-overview.tsx:68
+msgid " in progress"
+msgstr " en curs"
+
 #: ../html/src/manager/images/image-view-overview.tsx:75
 msgid "Successful"
 msgstr "Èxit"
+
+#: ../html/src/manager/images/image-view-overview.tsx:80
+msgid " is successful"
+msgstr " és exitós"
+
+#: ../html/src/manager/images/image-view-overview.tsx:92
+msgid " has failed"
+msgstr " ha fallat"
 
 #: ../html/src/manager/images/image-view-overview.tsx:99
 #: ../html/src/manager/images/image-view-overview.tsx:100
@@ -4729,6 +4729,10 @@ msgstr "No hi ha informació"
 #: ../html/src/manager/images/image-view.tsx:506
 msgid "Built externally"
 msgstr "Construït externament"
+
+#: ../html/src/manager/images/image-view-overview.tsx:134
+msgid " Status"
+msgstr " Estat"
 
 #: ../html/src/manager/images/image-view-overview.tsx:139
 msgid "Picked Up"
@@ -4776,11 +4780,6 @@ msgstr "Edita el perfil"
 #: ../html/src/manager/images/image-view-overview.tsx:354
 msgid "Edit store"
 msgstr "Edita la botiga"
-
-#: ../html/src/manager/images/image-view-overview.tsx:469
-#: ../html/src/manager/images/image-view.tsx:756
-msgid "Instance Details for \"{name}\""
-msgstr "Detalls de la instància per a {name}"
 
 #: ../html/src/manager/images/image-view-overview.tsx:524
 #: ../html/src/manager/images/image-view-overview.tsx:525
@@ -5042,7 +5041,7 @@ msgid "Signing in ..."
 msgstr "S'està iniciant la sessió..."
 
 #: ../html/src/manager/login/susemanager/login.tsx:40
-#: ../html/src/manager/login/uyuni/login.tsx:39
+#: ../html/src/manager/login/uyuni/login.tsx:46
 msgid "Discover a new way of managing your servers, packages, patches and more via one interface."
 msgstr "Descobreix una nova manera de gestionar els teus servidors, paquets, pedaços i més a través d'una interfície."
 
@@ -5052,13 +5051,13 @@ msgstr "<link>Més informació</link> sobre {productName}."
 
 #: ../html/src/manager/login/susemanager/login.tsx:86
 #: ../html/src/manager/login/susemanager/login.tsx:112
-#: ../html/src/manager/login/uyuni/login.tsx:51
-#: ../html/src/manager/login/uyuni/login.tsx:97
+#: ../html/src/manager/login/uyuni/login.tsx:58
+#: ../html/src/manager/login/uyuni/login.tsx:104
 msgid "Sign In"
 msgstr "Inicia la sessió"
 
 #: ../html/src/manager/login/susemanager/login.tsx:119
-#: ../html/src/manager/login/uyuni/login.tsx:113
+#: ../html/src/manager/login/uyuni/login.tsx:120
 msgid "{productName} release {versionNumber}"
 msgstr "{productName} publica {versionNumber}"
 
@@ -5078,11 +5077,11 @@ msgstr "Aquest usuari només té accés a l'API de lectura. S'ha denegat l'accé
 msgid "Are you sure you want to close this page while login is in progress?"
 msgstr "Esteu segur que voleu tancar aquesta pàgina mentre l'inici de sessió està en curs?"
 
-#: ../html/src/manager/login/uyuni/login.tsx:41
+#: ../html/src/manager/login/uyuni/login.tsx:48
 msgid "Learn more about {productName}:"
 msgstr "Més informació sobre {productName}:"
 
-#: ../html/src/manager/login/uyuni/login.tsx:45
+#: ../html/src/manager/login/uyuni/login.tsx:52
 msgid "View website"
 msgstr "Mostra el lloc web"
 
@@ -5215,10 +5214,6 @@ msgstr "Sistemes de cerca"
 msgid "Current Schedule"
 msgstr "Planificació actual"
 
-#: ../html/src/manager/maintenance/edit/calendar-edit.tsx:117
-msgid "Url \"{url}\" is invalid"
-msgstr "L'URL {url} no és vàlid"
-
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:142
 msgid "Calendar data"
 msgstr "Dades del calendari"
@@ -5306,6 +5301,10 @@ msgstr "A continuació es mostra una llista de Planes de manteniment disponibles
 msgid "Below is a list of Maintenance Calendars available to the current user."
 msgstr "A continuació es mostra una llista de calendaris de manteniment disponibles per a l'usuari actual."
 
+#: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:48
+msgid "schedule"
+msgstr "planificació"
+
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:29
 msgid "No schedules created. Use Create to add a schedule."
 msgstr "No s'ha creat cap planificació. Utilitzeu Crea per a afegir una planificació."
@@ -5313,6 +5312,14 @@ msgstr "No s'ha creat cap planificació. Utilitzeu Crea per a afegir una planifi
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:88
 msgid "This will remove the schedule from all the systems assigned to it."
 msgstr "Això eliminarà la planificació de tots els sistemes assignats a ella."
+
+#: ../html/src/manager/maintenance/maintenance-windows.tsx:116
+msgid "successfully"
+msgstr "amb èxit"
+
+#: ../html/src/manager/maintenance/maintenance-windows.tsx:141
+msgid "Error when deleting the "
+msgstr "Error en cancel·lar el "
 
 #: ../html/src/manager/maintenance/maintenance-windows.tsx:150
 msgid "Calendar successfully refreshed"
@@ -5490,10 +5497,6 @@ msgstr "Trieu un altre llibre de jugades"
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:173
 msgid "Save the current Playbook"
 msgstr "Desa el llibre de jugades actual"
-
-#: ../html/src/manager/minion/ansible/schedule-playbook.tsx:183
-msgid "Playbook \"{name}\""
-msgstr "Llibret {name}"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:192
 msgid "Schedule Playbook Execution"
@@ -5688,7 +5691,7 @@ msgid "Package States"
 msgstr "Estats del paquet"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:343
-#: ../html/src/manager/proxy/container-config.tsx:321
+#: ../html/src/manager/proxy/container-config.tsx:320
 #: ../html/src/manager/salt/keys/key-management.tsx:188
 msgid "State"
 msgstr "Estat"
@@ -5701,16 +5704,16 @@ msgstr "S'han desat els estats del paquet."
 msgid "Applying the packages states has been "
 msgstr "S'han aplicat els estats dels paquets "
 
-#: ../html/src/manager/minion/proxy/proxy-config-messages.tsx:13
+#: ../html/src/manager/minion/proxy/proxy-config-messages.tsx:18
 msgid "Proxy configuration action has been scheduled."
 msgstr "S'ha programat l'acció de configuració del servidor intermediari."
 
-#: ../html/src/manager/minion/proxy/proxy-config-messages.tsx:25
+#: ../html/src/manager/minion/proxy/proxy-config-messages.tsx:22
 msgid "Scheduling proxy configuration action..."
 msgstr "Es programa l'acció de configuració del servidor intermediari..."
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:88
-#: ../html/src/manager/proxy/container-config.tsx:141
+#: ../html/src/manager/proxy/container-config.tsx:139
 msgid "Request interrupted or invalid response received from the server."
 msgstr "Sol·licitud de resposta interrompuda o no vàlida rebuda del servidor."
 
@@ -5727,33 +5730,33 @@ msgid "Convert Minion to Proxy"
 msgstr "Converteix Minion a Proxy"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:155
-#: ../html/src/manager/proxy/container-config.tsx:209
+#: ../html/src/manager/proxy/container-config.tsx:207
 msgid "Parent FQDN"
 msgstr "FQDN pare"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:156
-#: ../html/src/manager/proxy/container-config.tsx:212
+#: ../html/src/manager/proxy/container-config.tsx:210
 msgid "The FQDN of the parent (server or proxy) to connect to."
 msgstr "El FQDN del pare (servidor o servidor intermediari) al qual connectar-se."
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:158
-#: ../html/src/manager/proxy/container-config.tsx:211
+#: ../html/src/manager/proxy/container-config.tsx:209
 msgid "e.g., server.domain.com"
 msgstr "p. ex., server.domain.com"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:166
-#: ../html/src/manager/proxy/container-config.tsx:220
+#: ../html/src/manager/proxy/container-config.tsx:218
 msgid "Proxy SSH port"
 msgstr "Port SSH del proxy"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:167
-#: ../html/src/manager/proxy/container-config.tsx:221
+#: ../html/src/manager/proxy/container-config.tsx:219
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:510
 msgid "Port range: 1 - 65535"
 msgstr "Gamma de ports: 1 - 65535"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:176
-#: ../html/src/manager/proxy/container-config.tsx:230
+#: ../html/src/manager/proxy/container-config.tsx:228
 msgid "Max Squid cache size"
 msgstr "Mida màxima de la memòria cau del calamar"
 
@@ -5766,17 +5769,17 @@ msgid "e.g., 100"
 msgstr "p. ex., 100"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:187
-#: ../html/src/manager/proxy/container-config.tsx:241
+#: ../html/src/manager/proxy/container-config.tsx:239
 msgid "Proxy admin email"
 msgstr "Correu electrònic de l'administrador del servidor intermediari"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:188
-#: ../html/src/manager/proxy/container-config.tsx:242
+#: ../html/src/manager/proxy/container-config.tsx:240
 msgid "The container-based proxy administrator email address"
 msgstr "L'adreça electrònica de l'administrador del servidor intermediari basat en contenidors"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:189
-#: ../html/src/manager/proxy/container-config.tsx:243
+#: ../html/src/manager/proxy/container-config.tsx:241
 msgid "e.g., proxy.admin@mycompany.com"
 msgstr "p. ex., proxy.admin.mycompany.com"
 
@@ -5806,7 +5809,7 @@ msgid "Certificate authority that issued the proxy certificate (PEM format)"
 msgstr "Autoritat de certificació que va emetre el certificat d'intermediari (format PEM)"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:240
-#: ../html/src/manager/proxy/container-config.tsx:343
+#: ../html/src/manager/proxy/container-config.tsx:342
 msgid "Intermediate CAs"
 msgstr "CA intermedi"
 
@@ -5815,7 +5818,7 @@ msgid "An intermediate CA certificate (PEM format)"
 msgstr "Un certificat CA intermedi (format PEM)"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:262
-#: ../html/src/manager/proxy/container-config.tsx:364
+#: ../html/src/manager/proxy/container-config.tsx:363
 msgid "Proxy certificate"
 msgstr "Certificat intermediari"
 
@@ -5824,7 +5827,7 @@ msgid "SSL certificate issued for the proxy system (PEM format)"
 msgstr "Certificat SSL emès per al sistema intermediari (format PEM)"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:271
-#: ../html/src/manager/proxy/container-config.tsx:373
+#: ../html/src/manager/proxy/container-config.tsx:372
 msgid "Proxy SSL private key"
 msgstr "Clau privada SSL del proxy"
 
@@ -5865,6 +5868,10 @@ msgstr "Avançat"
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:330
 msgid "Registry URL"
 msgstr "URL de registre"
+
+#: ../html/src/manager/minion/proxy/proxy-config.tsx:331
+msgid "e.g., "
+msgstr "p. ex., "
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:338
 msgid "Containers Tag"
@@ -5953,8 +5960,8 @@ msgid "Install Program Temporary Fixes (PTFs)"
 msgstr "Instal·la les correccions temporals del programa (PTFs)"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:27
-msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. These packages are only meant to address a specific open issue. Please follow the instructions from customer support before proceeding with the installation."
-msgstr "Les següents correccions temporals de programa (PTF) estan disponibles per a la instal·lació en aquest sistema. Aquests paquets només estan pensats per solucionar un problema obert específic. Seguiu les instruccions del servei d'atenció al client abans de continuar la instal·lació."
+msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. "
+msgstr "Les següents Correccions Temporals del Programa (PTFs) estan disponibles per a la instal·lació en aquest sistema. "
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:31
 msgid "No Program Temporary Fixes (PTFs) available."
@@ -5973,8 +5980,8 @@ msgid "Remove Program Temporary Fixes (PTFs)"
 msgstr "Elimina les correccions temporals del programa (PTF)"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:27
-msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. These PTFs may be scheduled for removal by selecting them and clicking \"Remove PTF\" below. Please note that removing any non-obsolete PTF will result in the installation of the most recent versions of the packages that are part of the PTF."
-msgstr "Les següents correccions temporals de programa (PTF) estan actualment instal·lades en aquest sistema. Es pot programar l'eliminació d'aquests PTF seleccionant-los i fent clic a Elimina PTF a continuació. Tingueu en compte que l'eliminació de qualsevol PTF no obsolet comportarà la instal·lació de les versions més recents dels paquets que formen part del PTF."
+msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. "
+msgstr "Les següents Correccions Temporals del Programa (PTFs) estan instal·lades actualment en aquest sistema. "
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:32
 msgid "No Program Temporary Fixes (PTFs) installed."
@@ -6125,113 +6132,119 @@ msgstr "Sense paquets."
 msgid "Content Provider"
 msgstr "Proveïdor de continguts"
 
-#: ../html/src/manager/proxy/container-config-messages.tsx:14
+#: ../html/src/manager/proxy/container-config-messages.tsx:8
 msgid "The container based proxy configuration has been generated correctly."
 msgstr "La configuració del servidor intermediari basat en contenidors s'ha generat correctament."
 
-#: ../html/src/manager/proxy/container-config-messages.tsx:33
+#: ../html/src/manager/proxy/container-config-messages.tsx:19
 msgid "Generation of the proxy configuration in progress: waiting for a response..."
 msgstr "Generació de la configuració del servidor intermediari en curs: esperant una resposta..."
 
-#: ../html/src/manager/proxy/container-config.tsx:178
-#: ../html/src/manager/proxy/container-config.tsx:194
+#: ../html/src/manager/proxy/container-config.tsx:176
+#: ../html/src/manager/proxy/container-config.tsx:192
 msgid "Container Based Proxy Configuration"
 msgstr "Configuració del servidor intermediari basat en el contenidor"
 
-#: ../html/src/manager/proxy/container-config.tsx:184
+#: ../html/src/manager/proxy/container-config.tsx:182
 msgid "You can generate a set of configuration files and certificates in order to register and run a container-based proxy. Once the following form is filled out and submitted you will get a .tar.gz archive to download."
 msgstr "Podeu generar un conjunt de fitxers de configuració i certificats per tal de registrar i executar un servidor intermediari basat en contenidors. Un cop omplert i enviat el següent formulari, obtindreu un arxiu .tar.gz per descarregar."
 
-#: ../html/src/manager/proxy/container-config.tsx:198
+#: ../html/src/manager/proxy/container-config.tsx:196
 msgid "Proxy FQDN"
 msgstr "Servidor intermediari FQDN"
 
-#: ../html/src/manager/proxy/container-config.tsx:199
+#: ../html/src/manager/proxy/container-config.tsx:197
 msgid "The unique, DNS-resolvable FQDN of this proxy."
 msgstr "L'únic FQDN solucionable amb DNS d'aquest servidor intermediari."
 
-#: ../html/src/manager/proxy/container-config.tsx:201
+#: ../html/src/manager/proxy/container-config.tsx:199
 msgid "e.g., proxy.domain.com"
 msgstr "p. ex., proxy.domain.com"
 
-#: ../html/src/manager/proxy/container-config.tsx:231
+#: ../html/src/manager/proxy/container-config.tsx:229
 msgid "The maximum value of the Squid cache in Megabytes"
 msgstr "El valor màxim de la memòria cau de calamars a Megabytes"
 
-#: ../html/src/manager/proxy/container-config.tsx:234
+#: ../html/src/manager/proxy/container-config.tsx:232
 msgid "e.g., 2048"
 msgstr "p. ex., 2048"
 
-#: ../html/src/manager/proxy/container-config.tsx:250
-#: ../html/src/manager/proxy/container-config.tsx:251
+#: ../html/src/manager/proxy/container-config.tsx:248
+#: ../html/src/manager/proxy/container-config.tsx:249
 msgid "SSL certificate"
 msgstr "Certificat SSL"
 
-#: ../html/src/manager/proxy/container-config.tsx:259
-#: ../html/src/manager/proxy/container-config.tsx:384
+#: ../html/src/manager/proxy/container-config.tsx:257
+#, fuzzy
+#| msgid "Configuration"
+msgid "Skip SSL configuration"
+msgstr "Configuració"
+
+#: ../html/src/manager/proxy/container-config.tsx:258
+#: ../html/src/manager/proxy/container-config.tsx:383
 msgid "Generate"
 msgstr "Genera"
 
-#: ../html/src/manager/proxy/container-config.tsx:260
+#: ../html/src/manager/proxy/container-config.tsx:259
 msgid "Use existing"
 msgstr "Utilitza l'existent"
 
-#: ../html/src/manager/proxy/container-config.tsx:267
+#: ../html/src/manager/proxy/container-config.tsx:266
 msgid "CA certificate"
 msgstr "certificat CA"
 
-#: ../html/src/manager/proxy/container-config.tsx:268
-#: ../html/src/manager/proxy/container-config.tsx:277
-#: ../html/src/manager/proxy/container-config.tsx:334
+#: ../html/src/manager/proxy/container-config.tsx:267
+#: ../html/src/manager/proxy/container-config.tsx:276
+#: ../html/src/manager/proxy/container-config.tsx:333
 msgid "To sign the SSL certificate in PEM format"
 msgstr "Per a signar el certificat SSL en format PEM"
 
-#: ../html/src/manager/proxy/container-config.tsx:276
+#: ../html/src/manager/proxy/container-config.tsx:275
 msgid "CA private key"
 msgstr "Clau privada CA"
 
-#: ../html/src/manager/proxy/container-config.tsx:285
+#: ../html/src/manager/proxy/container-config.tsx:284
 msgid "CA password"
 msgstr "Contrasenya de CA"
 
-#: ../html/src/manager/proxy/container-config.tsx:286
+#: ../html/src/manager/proxy/container-config.tsx:285
 msgid "The CA private key password"
 msgstr "La contrasenya de la clau privada CA"
 
-#: ../html/src/manager/proxy/container-config.tsx:294
+#: ../html/src/manager/proxy/container-config.tsx:293
 msgid "SSL Certificate data"
 msgstr "Dades del certificat SSL"
 
-#: ../html/src/manager/proxy/container-config.tsx:301
+#: ../html/src/manager/proxy/container-config.tsx:300
 msgid "Alternate CNAMEs"
 msgstr "Alterna els CNAME"
 
-#: ../html/src/manager/proxy/container-config.tsx:309
+#: ../html/src/manager/proxy/container-config.tsx:308
 msgid "CNAME"
 msgstr "CNAME"
 
-#: ../html/src/manager/proxy/container-config.tsx:315
+#: ../html/src/manager/proxy/container-config.tsx:314
 msgid "2-letter country code"
 msgstr "Codi de país de 2 lletres"
 
-#: ../html/src/manager/proxy/container-config.tsx:322
+#: ../html/src/manager/proxy/container-config.tsx:321
 msgid "City"
 msgstr "Ciutat"
 
-#: ../html/src/manager/proxy/container-config.tsx:324
+#: ../html/src/manager/proxy/container-config.tsx:323
 msgid "Organization Unit"
 msgstr "Unitat d'organització"
 
-#: ../html/src/manager/proxy/container-config.tsx:333
+#: ../html/src/manager/proxy/container-config.tsx:332
 msgid "The root CA"
 msgstr "La CA d'arrel"
 
-#: ../html/src/manager/proxy/container-config.tsx:353
+#: ../html/src/manager/proxy/container-config.tsx:352
 msgid "CA file in PEM format"
 msgstr "Fitxer CA en format PEM"
 
-#: ../html/src/manager/proxy/container-config.tsx:365
-#: ../html/src/manager/proxy/container-config.tsx:374
+#: ../html/src/manager/proxy/container-config.tsx:364
+#: ../html/src/manager/proxy/container-config.tsx:373
 msgid "In PEM format"
 msgstr "En format PEM"
 
@@ -6669,6 +6682,14 @@ msgstr "S'estan carregant els canals fills.."
 msgid "Base Channel:"
 msgstr "Canal base:"
 
+#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:133
+msgid "${defaultChannelName}"
+msgstr "${defaultChannelName}"
+
+#: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:143
+msgid "${this.getDefaultBase().name}"
+msgstr "${this.getDefaultBase().name}"
+
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:153
 msgid "Child Channels:"
 msgstr "Canals fills:"
@@ -6714,7 +6735,7 @@ msgstr "Últim registre d'entrada"
 #: ../html/src/manager/systems/all-list.tsx:169
 #: ../html/src/manager/systems/list-filter.tsx:50
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:145
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:587
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:590
 msgid "Base Channel"
 msgstr "Canal base"
 
@@ -6754,6 +6775,12 @@ msgstr "({count} AppStreams)"
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:123
 msgid "Don't change"
 msgstr "Sense canvi"
+
+#: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:126
+#, fuzzy
+#| msgid " (system default)"
+msgid " (No system to disable)"
+msgstr " (predeterminat del sistema)"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:135
 msgid "Enable "
@@ -7280,13 +7307,13 @@ msgstr "S'han programat canvis de canal."
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1081
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1107
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:575
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:578
 msgid "Next"
 msgstr "Següent"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1100
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1131
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:678
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:681
 msgid "Prev"
 msgstr "Prev"
 
@@ -7299,22 +7326,22 @@ msgstr "(cap, inhabilita el servei)"
 msgid "Changing the channels has been "
 msgstr "Canviar els canals ha estat "
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:592
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:595
 msgid "You can change the base software channel your system is subscribed to. The system will be unsubscribed from all software channels, and subscribed to the new base software channel."
 msgstr "Podeu canviar el canal de programari base al qual està subscrit el vostre sistema. El sistema es donarà de baixa de tots els canals de programari, i se subscriurà al nou canal de programari base."
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:618
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:621
 msgid "This system is subscribed to the checked channels beneath, if any. Disabled checkboxes indicate channels that can't be manually subscribed or unsubscribed from."
 msgstr "Aquest sistema està subscrit als canals comprovats de sota, si n'hi ha. Les caselles de selecció desactivades indiquen canals que no es poden subscriure o cancel·lar manualment."
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:637
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:638
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:716
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:717
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:640
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:641
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:719
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:720
 msgid "No child channels available."
 msgstr "No hi ha canals infantils disponibles."
 
-#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:670
+#: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:673
 msgid "Confirm Software Channel Change"
 msgstr "Confirmeu el canvi del canal de programari"
 
@@ -7449,74 +7476,79 @@ msgstr "Error d'autorització. Torneu a carregar la pàgina o torneu a intentar 
 msgid "Resource not found."
 msgstr "No s'ha trobat el recurs."
 
-#~ msgid "No hub is currently configured for this server. "
-#~ msgstr "Actualment no hi ha cap hub configurat per a aquest servidor. "
+#: ../html/src/utils/network.ts:106
+msgid "HTTP Error code "
+msgstr "Codi d'error HTTP "
 
-#~ msgid " channels sync failed"
-#~ msgstr " ha fallat la sincronització dels canals"
+#~ msgid "Action has been successfully added to the action chain <link>\"{name}\"</link>."
+#~ msgstr "L'acció s'ha afegit correctament a la cadena d'accions <link>\"{name}\"</link>."
 
-#~ msgid " channels sync in progress"
-#~ msgstr " sincronització de canals en curs"
+#~ msgid "Multiple Group formulas detected. Only one formula for \"{name}\" can be used on each system!"
+#~ msgstr "S'han detectat diverses fórmules de grup. Només es pot usar una fórmula per a {name} a cada sistema!"
 
-#~ msgid " channels synced"
-#~ msgstr " canals sincronitzats"
+#~ msgid "No attestation report available. Schedule an execution to create one."
+#~ msgstr "No hi ha cap informe d'atestat disponible. Programeu una execució per crear-ne un."
 
-#~ msgid "The client is affected by a vulnerability and we have a patch for it,"
-#~ msgstr "El client està afectat per una vulnerabilitat i tenim un pedaç per a això,"
+#~ msgid ""
+#~ "{total, plural,\n"
+#~ "            one {<dropdown></dropdown> of # page}\n"
+#~ "            other {<dropdown></dropdown> of # pages}\n"
+#~ "        }"
+#~ msgstr ""
+#~ "{total, plural,\n"
+#~ "            one {<dropdown></dropdown> d'# pàgina}\n"
+#~ "            other {<dropdown></dropdown> de # pàgines}\n"
+#~ "        }"
 
-#~ msgid "The client is affected by a vulnerability for which a patch has been released,"
-#~ msgstr "El client es veu afectat per una vulnerabilitat per la qual s'ha alliberat un pegat,"
+#~ msgid "e.g. \"0 15 2 ? * 7\""
+#~ msgstr "p. ex. \"0 15 2 ? * 7\""
 
-#~ msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was "
-#~ msgstr "Si heu utilitzat un punt, la pàgina pot haver-se mogut a una ubicació diferent des que el punt de llibre era "
+#~ msgid ""
+#~ "Always use plural forms for numbers: {fooCount, plural,\n"
+#~ "            one {only one item}\n"
+#~ "            other {{fooCount} items}\n"
+#~ "          }."
+#~ msgstr ""
+#~ "Feu servir sempre formes plurals per als nombres: {fooCount, plural,\n"
+#~ "un {només un element}\n"
+#~ "altres {{fooCount} elements}\n"
+#~ "}."
 
-#~ msgid "Edit Image Profile: '"
-#~ msgstr "Edita el perfil de la imatge: '"
+#~ msgid "No hub is currently configured for this server. Refresh this page after configuring this server as a peripheral, to see the hub details"
+#~ msgstr "Actualment no hi ha cap concentrador configurat per a aquest servidor. Actualitzeu aquesta pàgina després de configurar aquest servidor com a perifèric per veure els detalls del concentrador."
 
-#~ msgid "Edit Image Store: '"
-#~ msgstr "Edita la botiga d'imatges: '"
+#~ msgid "The following channel installations for \"{product}\" failed. Please check log files."
+#~ msgstr "Les instal·lacions de canals següents per a \"{product}\" han fallat. Si us plau, reviseu els fitxers de registre."
 
-#~ msgid " is queued"
-#~ msgstr " està en cua"
+#~ msgid "The client is affected by a vulnerability and we have a patch for it, but the channel(s) offering the patch are not assigned to the client."
+#~ msgstr "El client està afectat per una vulnerabilitat i tenim un pedaç per a això, però el(s) canal(s) que ofereixen el pedaç no estan assignats al client."
 
-#~ msgid " in progress"
-#~ msgstr " en curs"
+#~ msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch requires migrating the product to a newer version."
+#~ msgstr "El client està afectat per una vulnerabilitat i tenim un pedaç per a això, però aplicar-lo requereix migrar el producte a una versió més recent."
 
-#~ msgid " is successful"
-#~ msgstr " és exitós"
+#~ msgid "The client is affected by a vulnerability for which a patch has been released, but the patch can't be found in the relevant channels."
+#~ msgstr "El client està afectat per una vulnerabilitat per a la qual s'ha publicat un pedaç, però no es pot trobar als canals pertinents."
 
-#~ msgid " has failed"
-#~ msgstr " ha fallat"
+#~ msgid "The client is affected by a vulnerability and we have a patch for it, but applying the patch will only update some of the vulnerable packages."
+#~ msgstr "El client està afectat per una vulnerabilitat i tenim un pedaç per a això, però aplicar-lo només actualitzarà alguns dels paquets vulnerables."
 
-#~ msgid " Status"
-#~ msgstr " Estat"
+#~ msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was created. Use the top (or left) navigation bars to find the page you are looking for, and if you find the document be sure to update your bookmark."
+#~ msgstr "Si heu fet servir un marcador, és possible que la pàgina s'hagi mogut a una ubicació diferent des que es va crear. Feu servir les barres de navegació superiors (o esquerra) per trobar la pàgina que busqueu i, si trobeu el document, assegureu-vos d'actualitzar el marcador."
 
-#~ msgid "schedule"
-#~ msgstr "planificació"
+#~ msgid "Instance Details for \"{name}\""
+#~ msgstr "Detalls de la instància per a {name}"
 
-#~ msgid "successfully"
-#~ msgstr "amb èxit"
+#~ msgid "Url \"{url}\" is invalid"
+#~ msgstr "L'URL {url} no és vàlid"
 
-#~ msgid "Error when deleting the "
-#~ msgstr "Error en cancel·lar el "
+#~ msgid "Playbook \"{name}\""
+#~ msgstr "Llibret {name}"
 
-#~ msgid "e.g., "
-#~ msgstr "p. ex., "
+#~ msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. These packages are only meant to address a specific open issue. Please follow the instructions from customer support before proceeding with the installation."
+#~ msgstr "Les següents correccions temporals de programa (PTF) estan disponibles per a la instal·lació en aquest sistema. Aquests paquets només estan pensats per solucionar un problema obert específic. Seguiu les instruccions del servei d'atenció al client abans de continuar la instal·lació."
 
-#~ msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. "
-#~ msgstr "Les següents Correccions Temporals del Programa (PTFs) estan disponibles per a la instal·lació en aquest sistema. "
-
-#~ msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. "
-#~ msgstr "Les següents Correccions Temporals del Programa (PTFs) estan instal·lades actualment en aquest sistema. "
-
-#~ msgid "${defaultChannelName}"
-#~ msgstr "${defaultChannelName}"
-
-#~ msgid "${this.getDefaultBase().name}"
-#~ msgstr "${this.getDefaultBase().name}"
-
-#~ msgid "HTTP Error code "
-#~ msgstr "Codi d'error HTTP "
+#~ msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. These PTFs may be scheduled for removal by selecting them and clicking \"Remove PTF\" below. Please note that removing any non-obsolete PTF will result in the installation of the most recent versions of the packages that are part of the PTF."
+#~ msgstr "Les següents correccions temporals de programa (PTF) estan actualment instal·lades en aquest sistema. Es pot programar l'eliminació d'aquests PTF seleccionant-los i fent clic a Elimina PTF a continuació. Tingueu en compte que l'eliminació de qualsevol PTF no obsolet comportarà la instal·lació de les versions més recents dels paquets que formen part del PTF."
 
 #~ msgid "Edit the ranking of the states by dragging them."
 #~ msgstr "Editeu el rànquing dels estats arrossegant-los."
