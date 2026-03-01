@@ -10068,7 +10068,7 @@ Please note that some manual configuration of these scripts may still be require
         <source>Channels using {0} repository</source>
         <target state="translated">使用 {0} 储存库的通道</target>
       </trans-unit>
-      <trans-unit id="repos.jsp.channelSummary" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="repos.jsp.channelSummary" xml:space="preserve">
         <source>Below are channels with {0} repository attached to them.</source>
         <target state="final">以下是与 {0} 储存库关联的通道。</target>
       </trans-unit>
@@ -13870,7 +13870,7 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
           <context context-type="sourcefile">/rhn/activationkeys/configuration/* pages</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="activation-keys.config.rank.jsp.para1" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="activation-keys.config.rank.jsp.para1" xml:space="preserve">
         <source>This activation key is subscribed to the configuration channels listed below in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it. In other words, the channel listed last will be applied first.</source>
         <target state="final">此激活密钥订阅了下列配置通道，通道按排名以从高到低的顺序列出。某一通道中的文件将覆盖其下方通道中文件路径和文件名相同的文件。即列在最后的通道将最先应用。</target>
         <context-group name="ctx">
@@ -15057,7 +15057,7 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="system.event.details.syntaxerror" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="system.event.details.syntaxerror" xml:space="preserve">
         <source>Could not parse state file. Please check YAML syntax.</source>
         <target state="final">无法解析状态文件。请检查 YAML 语法。</target>
         <context-group name="ctx">
@@ -23416,7 +23416,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           <context context-type="sourcefile">/rhn/systems/details/configuration/RankChannels.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="sdc.config.rank.jsp.para1" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="sdc.config.rank.jsp.para1" xml:space="preserve">
         <source>This system is subscribed to the configuration channels listed below in order from highest to lowest rank. Files from a particular channel will override files with the same filepath and name from channels below it. In other words, the channel listed last will be applied first.</source>
         <target state="final">此系统订阅了下列配置通道，通道按排名以从高到低的顺序列出。某一通道中的文件将覆盖其下方通道中文件路径和文件名相同的文件。即列在最后的通道将最先应用。</target>
         <context-group name="ctx">
@@ -29667,15 +29667,15 @@ given channel.</source>
         <source> New Created </source>
         <target state="final"> 已新建 </target>
       </trans-unit>
-      <trans-unit id="ssm.overview.appstreams" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ssm.overview.appstreams" xml:space="preserve">
         <source>AppStreams</source>
         <target state="final">AppStream</target>
       </trans-unit>
-      <trans-unit id="ssm.overview.appstreams.manage" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="ssm.overview.appstreams.manage" xml:space="preserve">
         <source>&lt;a href="/rhn/manager/systems/ssm/appstreams"&gt;Enable and disable&lt;/a&gt; AppStreams on the selected systems</source>
         <target state="final">在所选系统上&lt;a href="/rhn/manager/systems/ssm/appstreams"&gt;启用和禁用&lt;/a&gt; AppStream</target>
       </trans-unit>
-      <trans-unit id="task.status.root-ca-cert-update" xml:space="preserve" approved="yes">
+      <trans-unit approved="yes" id="task.status.root-ca-cert-update" xml:space="preserve">
         <source>CA Certificates Update</source>
         <target state="final">CA 证书更新</target>
       </trans-unit>
@@ -29686,6 +29686,13 @@ given channel.</source>
         </context-group>
         <target state="new"/>
   </trans-unit>
-        </body>
+        <trans-unit id="pkg.lock.message.lockerror" xml:space="preserve">
+        <source>Failed to lock selected packages. Can't lock multiple versions of the same package.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
