@@ -36,7 +36,10 @@ const EditAnsibleVarsModal = (props: Props) => {
     if (open) {
       try {
         const data = yaml.load(props.renderContent);
-        setEditorData(data?.[0]?.vars || {});
+        const vars = data?.[0]?.vars || {};
+
+        const sanitizedVars = Object.fromEntries(Object.entries(vars).map(([k, v]) => [k, v === null ? "" : v]));
+        setEditorData(sanitizedVars);
       } catch (e) {
         showErrorToastr("Invalid playbook YAML");
       }
