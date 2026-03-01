@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-09 10:26+0000\n"
+"POT-Creation-Date: 2026-03-01 10:55+0100\n"
 "PO-Revision-Date: 2026-02-09 11:04+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/spacecmd/ko/>\n"
@@ -426,7 +426,6 @@ msgid "File %s exists, confirm overwrite file? (y/n)"
 msgstr "%s 파일이 있습니다. 파일을 덮어쓰시겠습니까? (y/n)"
 
 #: ../src/spacecmd/activationkey.py:1448
-#, python-brace-format
 msgid "Failed to save exported keys to file: {}"
 msgstr "엑스포트한 키를 파일에 저장하지 못함: {}"
 
@@ -1263,7 +1262,6 @@ msgid "Exporting cc %s to %s"
 msgstr "cc %s을(를) %s(으)로 엑스포트하는 중"
 
 #: ../src/spacecmd/configchannel.py:1366
-#, python-brace-format
 msgid "File '{}' exists, confirm overwrite file? (y/n)"
 msgstr "'{}' 파일이 있습니다. 덮어쓰시겠습니까? (y/n)"
 
@@ -1584,7 +1582,6 @@ msgid "usage: custominfo_details KEY ..."
 msgstr "사용법: custominfo_details KEY ..."
 
 #: ../src/spacecmd/custominfo.py:167
-#, python-brace-format
 msgid "No keys matched argument '{}'."
 msgstr "'{}' 인수와 일치하는 키가 없습니다."
 
@@ -3646,7 +3643,6 @@ msgstr "이름이 %s인 조직을 찾지 못함"
 #: ../src/spacecmd/org.py:229 ../src/spacecmd/org.py:264
 #: ../src/spacecmd/org.py:300 ../src/spacecmd/org.py:338
 #: ../src/spacecmd/org.py:460 ../src/spacecmd/org.py:497
-#, python-brace-format
 msgid "Organisation '{}' was not found"
 msgstr "'{}' 조직을 찾지 못함"
 
@@ -3676,7 +3672,6 @@ msgid "No trust organisation found for the name %s"
 msgstr "이름이 %s인 트러스트 조직을 찾지 못함"
 
 #: ../src/spacecmd/org.py:304 ../src/spacecmd/org.py:342
-#, python-brace-format
 msgid "Organisation '{}' to trust for, was not found"
 msgstr "트러스트 대상인 '{}' 조직을 찾지 못함"
 
@@ -3710,7 +3705,6 @@ msgid "No trusted organisation found for the name %s"
 msgstr "이름이 %s인 트러스트된 조직을 찾지 못함"
 
 #: ../src/spacecmd/org.py:388
-#, python-brace-format
 msgid "Trusted organisation '{}' was not found"
 msgstr "트러스트된 조직 '{}'을(를) 찾지 못함"
 
@@ -4008,6 +4002,27 @@ msgid "proxy_container_config: create a proxy system and return its configuratio
 msgstr "proxy_container_config: 프록시 시스템을 생성하고 구성 파일을 반환합니다."
 
 #: ../src/spacecmd/proxy.py:46
+#, fuzzy, python-format
+#| msgid ""
+#| "usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL ROOT_CA CRT KEY\n"
+#| "\n"
+#| "parameters:\n"
+#| "  PROXY_FQDN  the unique, DNS-resolvable FQDN of this proxy.\n"
+#| "  SERVER_FQDN the fully qualified domain name of the server to connect to proxy to.\n"
+#| "  MAX_CACHE   the maximum cache size in MB. 60% of the storage is a good value.\n"
+#| "  EMAIL       the email of the proxy administrator\n"
+#| "  CA          path to the root CA used to sign the proxy certificate in PEM format\n"
+#| "  CRT         path to the proxy certificate in PEM format\n"
+#| "  KEY         path to the proxy certificate private key in PEM format\n"
+#| "\n"
+#| "options:\n"
+#| "  -o, --output Path where to create the generated configuration. Default: 'config.tar.gz'\n"
+#| "  -p, --ssh-port SSH port the proxy listens one. Default: 8022\n"
+#| "  -i, --intermediate-ca  Path to an intermediate CA used to sign the proxy\n"
+#| "            certicate in PEM format. May be provided multiple times.\n"
+#| "\n"
+#| "examples:\n"
+#| "  proxy_container_config -o config.zip proxy.lab server.lab 1024 proxy@acme.org root_ca.crt proxy.crt proxy.key\n"
 msgid ""
 "usage: proxy_container_config [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL ROOT_CA CRT KEY\n"
 "\n"
@@ -4054,6 +4069,34 @@ msgid "proxy_container_config_generate_cert: create a proxy system and return it
 msgstr "proxy_container_config_generate_cert: 프록시 시스템을 생성하고 구성 파일을 반환합니다."
 
 #: ../src/spacecmd/proxy.py:119
+#, fuzzy, python-format
+#| msgid ""
+#| "usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
+#| "\n"
+#| "parameters:\n"
+#| "  PROXY_FQDN  the unique, DNS-resolvable FQDN of this proxy.\n"
+#| "  SERVER_FQDN the fully qualified domain name of the server to connect to proxy to.\n"
+#| "  MAX_CACHE   the maximum cache size in MB. 60% of the storage is a good value.\n"
+#| "  EMAIL       the email of the proxy administrator\n"
+#| "\n"
+#| "options:\n"
+#| "  -o, --output Path where to create the generated configuration. Default: 'config.tar.gz'\n"
+#| "  -p, --ssh-port SSH port the proxy listens one. Default: 8022\n"
+#| "  --ca-cert path to the certificate of the CA to use to generate a new proxy certificate.\n"
+#| "           Using /root/ssl-build/RHN-ORG-TRUSTED-SSL-CERT by default.\n"
+#| "  --ca-key path to the private key of the CA to use to generate a new proxy certificate.\n"
+#| "           Using /root/ssl-build/RHN-ORG-PRIVATE-SSL-KEY by default.\n"
+#| "  --ca-pass path to a file containing the password of the CA private key, will be prompted if not passed.\n"
+#| "  --ssl-cname alternate name of the proxy to set in the certificate. Can be provided multiple times\n"
+#| "  --ssl-country country code to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
+#| "  --ssl-state state name to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
+#| "  --ssl-city the city name to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
+#| "  --ssl-org the organization name to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
+#| "  --ssl-org-unit the organization unit name to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
+#| "  --ssl-email the email to set in the certificate. If omitted, default values from mgr-ssl-tool will be used.\n"
+#| "\n"
+#| "examples:\n"
+#| "  proxy_container_config proxy.lab server.lab 1024 proxy@acme.org --ca-pass password-file\n"
 msgid ""
 "usage: proxy_container_config_generate_cert PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL\n"
 "\n"
@@ -4156,7 +4199,6 @@ msgid "Repository SSL Client Key:         %s"
 msgstr "저장소 SSL 클라이언트 키:         %s"
 
 #: ../src/spacecmd/repo.py:116
-#, python-brace-format
 msgid "No repositories found for '{}' query"
 msgstr "'{}' 쿼리에 대한 저장소를 찾지 못함"
 
@@ -4377,7 +4419,6 @@ msgid "%s  # Systems"
 msgstr "%s  # 시스템"
 
 #: ../src/spacecmd/report.py:197
-#, python-brace-format
 msgid "No errata found for '{}'"
 msgstr "'{}'에 대한 오류를 찾지 못함"
 
@@ -4802,7 +4843,6 @@ msgid "If no date is provided it will delete all archived actions"
 msgstr "날짜가 제공되지 않으면 보관된 모든 작업이 삭제됩니다."
 
 #: ../src/spacecmd/schedule.py:537
-#, python-brace-format
 msgid "Do you want to delete ({}) archived actions? [y/N]"
 msgstr "보관된 작업({})을 삭제하시겠습니까? [예/아니요]"
 
@@ -4823,7 +4863,6 @@ msgid "If no date is provided it will archive all completed actions"
 msgstr "날짜가 제공되지 않으면 완료된 모든 작업을 보관합니다."
 
 #: ../src/spacecmd/schedule.py:619
-#, python-brace-format
 msgid "Do you want to archive ({}) completed actions? [y/N]"
 msgstr "완료된 작업({})을 보관하시겠습니까? [예/아니요]"
 
@@ -6088,12 +6127,10 @@ msgid "merging errata from softwarechannel "
 msgstr "소프트웨어 채널의 오류 병합 "
 
 #: ../src/spacecmd/softwarechannel.py:2931
-#, python-brace-format
 msgid "{} contains no errata which is not already present in {}"
 msgstr "{}에는 {}에 없는 오류가 포함되지 않음"
 
 #: ../src/spacecmd/softwarechannel.py:2939
-#, python-brace-format
 msgid "errata to add to channel {}: "
 msgstr "{} 채널에 추가할 오류: "
 
@@ -6107,7 +6144,6 @@ msgid " errata to  "
 msgstr " 오류 대상  "
 
 #: ../src/spacecmd/softwarechannel.py:2955
-#, python-brace-format
 msgid "Perform these changes to channel {} [y/N]:"
 msgstr "{} 채널에 이 변경 수행 [y/N]:"
 
@@ -7986,7 +8022,6 @@ msgstr "부트스트랩 시점에 서버는 재활성화 키를 지원하지 않
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:5018
-#, python-brace-format
 msgid "Bootstrapping '{}'. This may take a while."
 msgstr "'{}'을(를) 부트스트랩하는 중입니다. 잠시 시간이 걸릴 수 있습니다."
 
@@ -8000,13 +8035,11 @@ msgstr "system_needrebootafterupdate: 사용 가능한 패치가 적용된 경�
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:5108
-#, python-brace-format
 msgid "System '{}' needs to be rebooted after update"
 msgstr "시스템 '{}'은(는) 업데이트 후 재부팅해야 합니다."
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/spacecmd/system.py:5117
-#, python-brace-format
 msgid "No reboot needed for system '{}' after applying available updates"
 msgstr "사용 가능한 업데이트를 적용한 후 시스템 '{}'을(를) 재부팅할 필요 없습니다."
 
@@ -8358,7 +8391,6 @@ msgid "Skipping usage of common strings: number of substrings differ"
 msgstr "공통 문자열 사용 건너뛰기: 하위 문자열의 수가 다름"
 
 #: ../src/spacecmd/utils.py:993
-#, python-brace-format
 msgid "Parameter {} not a string type, but {}."
 msgstr "{} 파라미터가 문자열 유형이 아니라 {}입니다."
 
