@@ -61,6 +61,7 @@ import com.redhat.rhn.domain.contentmgmt.FilterCriteria.Matcher;
 import com.redhat.rhn.domain.contentmgmt.PackageFilter;
 import com.redhat.rhn.domain.contentmgmt.ProjectSource;
 import com.redhat.rhn.domain.contentmgmt.SoftwareEnvironmentTarget;
+import com.redhat.rhn.domain.contentmgmt.SoftwareProjectSource;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.test.ErrataFactoryTest;
 import com.redhat.rhn.domain.org.Org;
@@ -172,8 +173,13 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testRemoveContentProject() {
         ContentProject cp = contentManager.createProject("cplabel", "cpname", "description", user);
+        contentManager.createEnvironment("cplabel", Optional.empty(), "one", "one", "one", false, user);
+        contentManager.createEnvironment("cplabel", Optional.of("one"), "two", "two", "two", false, user);
+        contentManager.createEnvironment("cplabel", Optional.of("two"), "three", "three", "three", false, user);
         int entitiesAffected = contentManager.removeProject(cp.getLabel(), user);
         assertEquals(1, entitiesAffected);
+        TestUtils.flushAndClearSession();
+
         Optional<ContentProject> fromDb = ContentManager.lookupProject("cplabel", user);
         assertFalse(fromDb.isPresent());
     }
@@ -280,9 +286,14 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         env.addTarget(tgt);
 
         contentManager.removeEnvironment("fst", "cplabel", user);
+        TestUtils.flushAndClearSession();
+
         // the target is removed
         assertFalse(HibernateFactory.getSession()
-                .createQuery("select t from SoftwareEnvironmentTarget t where t.channel = :channel")
+                .createQuery("""
+                             from SoftwareEnvironmentTarget t
+                             where t.channel = :channel
+                             """, SoftwareEnvironmentTarget.class)
                 .setParameter("channel", channel)
                 .uniqueResultOptional()
                 .isPresent());
@@ -611,7 +622,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         contentManager.removeProject("cplabel", user);
         // we can't use ContentManager.lookupSource because the project does not exist
         assertTrue(HibernateFactory.getSession()
-                .createQuery("SELECT 1 FROM SoftwareProjectSource s where s.contentProject = :cp")
+                .createQuery("FROM SoftwareProjectSource s where s.contentProject = :cp", SoftwareProjectSource.class)
                 .setParameter("cp", cp)
                 .list()
                 .isEmpty());
@@ -839,7 +850,8 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
 
         // 3. remove a source and rebuild
         contentManager.detachSource("cplabel", SW_CHANNEL, channel.getLabel(), user);
-        cp = (ContentProject) HibernateFactory.reload(cp);
+        assertEquals(1, cp.getActiveSources().size());
+
         contentManager.buildProject("cplabel", empty(), false, user);
         assertEquals(Long.valueOf(3), env.getVersion());
 
@@ -1105,10 +1117,9 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(Long.valueOf(2), devEnv.getVersion());
 
         // We need to clear and reload as buildProject uses mode queries inside a doWithoutAutoFlush area
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
-        cp = HibernateFactory.reload(cp);
-        devEnv = HibernateFactory.reload(devEnv);
+        TestUtils.flushAndClearSession();
+        cp = TestUtils.reload(cp);
+        devEnv = TestUtils.reload(devEnv);
 
         contentManager.diffProject(cp);
         diffDev = ContentManager.listEnvironmentDifference(user, "cplabel", "dev");
@@ -1141,10 +1152,9 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         contentManager.promoteProject("cplabel", "dev", false, user);
 
         // We need to clear and reload as promoteProject uses mode queries inside a doWithoutAutoFlush area
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
-        cp = HibernateFactory.reload(cp);
-        testEnv = HibernateFactory.reload(testEnv);
+        TestUtils.flushAndClearSession();
+        cp = TestUtils.reload(cp);
+        testEnv = TestUtils.reload(testEnv);
 
         assertEquals(devEnv.getVersion(), testEnv.getVersion());
         testTgts = testEnv.getTargets();
@@ -1183,10 +1193,9 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         contentManager.promoteProject("cplabel", "test", false, user);
 
         // We need to clear and reload as promoteProject uses mode queries inside a doWithoutAutoFlush area
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
-        prodEnv = HibernateFactory.reload(prodEnv);
-        cp = HibernateFactory.reload(cp);
+        TestUtils.flushAndClearSession();
+        prodEnv = TestUtils.reload(prodEnv);
+        cp = TestUtils.reload(cp);
 
         assertEquals(devEnv.getVersion(), prodEnv.getVersion());
         prodTgts = prodEnv.getTargets();
@@ -1541,7 +1550,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
 
         contentManager.buildProject("cplabel", empty(), false, user);
         env.getTargets().iterator().next().setStatus(Status.BUILDING);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         try {
             contentManager.buildProject("cplabel", empty(), false, user);
@@ -1573,16 +1582,14 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         contentManager.attachSource("cplabel", SW_CHANNEL, channel1.getLabel(), empty(), user);
         contentManager.attachSource("cplabel", SW_CHANNEL, channel2.getLabel(), empty(), user);
         contentManager.buildProject("cplabel", empty(), false, user);
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         // check that built channels have the originals set correctly
         assertEquals(Set.of(channel1, channel2), getOriginalChannels(getEnvChannels(devEnv)));
 
         // promote project
         contentManager.promoteProject("cplabel", "dev", false, user);
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         // check the originals of the test environment correspond to channels in the dev environment
         devEnv = ContentManager.lookupEnvironment(devEnv.getLabel(), "cplabel", user).get();
@@ -1592,8 +1599,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         // delete a source && build the project
         contentManager.detachSource("cplabel", SW_CHANNEL, channel1.getLabel(), user);
         contentManager.buildProject("cplabel", empty(), false, user);
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         // check the originals of the "test" channels: one should point to a channel in the "dev" environment,
         // the other should point to the "source" channel1
@@ -1604,8 +1610,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         // add the channel again && build
         contentManager.attachSource("cplabel", SW_CHANNEL, channel1.getLabel(), empty(), user);
         contentManager.buildProject("cplabel", empty(), false, user);
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         // check the originals of the test environment correspond to channels in the dev environment again
         devEnv = ContentManager.lookupEnvironment(devEnv.getLabel(), "cplabel", user).get();
@@ -1633,13 +1638,11 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         var channel1 = createPopulatedChannel();
         contentManager.attachSource("cplabel", SW_CHANNEL, channel1.getLabel(), empty(), user);
         contentManager.buildProject("cplabel", empty(), false, user);
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         // promote project
         contentManager.promoteProject("cplabel", "dev", false, user);
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         // check the originals of the test environment correspond to channels in the dev environment
         devEnv = ContentManager.lookupEnvironment(devEnv.getLabel(), "cplabel", user).get();
@@ -1649,8 +1652,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         // create a new environment "in the middle"
         var middleEnv = contentManager.createEnvironment(
                 project.getLabel(), of("dev"), "mid", "mid env", "desc", false, user);
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
         devEnv = ContentManager.lookupEnvironment(devEnv.getLabel(), "cplabel", user).get();
         testEnv = ContentManager.lookupEnvironment(testEnv.getLabel(), "cplabel", user).get();
 
@@ -1661,8 +1663,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
 
         // check that after removing the middle env, the originals of the test point to dev channels again
         contentManager.removeEnvironment("mid", "cplabel", user);
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
         devEnv = ContentManager.lookupEnvironment(devEnv.getLabel(), "cplabel", user).get();
         testEnv = ContentManager.lookupEnvironment(testEnv.getLabel(), "cplabel", user).get();
         // check the originals of the mid environment correspond to channels in the dev environment
@@ -1745,8 +1746,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
         // let's build the project and check that the procedure fixed the channel in the dev environment
         contentManager.buildProject("cplabel", empty(), false, user);
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         devChan = ChannelFactory.lookupById(devChan.getId());
         testChan = ChannelFactory.lookupById(testChan.getId());
@@ -1755,8 +1755,7 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
 
         // let's promote the project and check that the procedure fixed the channel in the test environment as well
         contentManager.promoteProject("cplabel", "dev", false, user);
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         devChan = ChannelFactory.lookupById(devChan.getId());
         testChan = ChannelFactory.lookupById(testChan.getId());

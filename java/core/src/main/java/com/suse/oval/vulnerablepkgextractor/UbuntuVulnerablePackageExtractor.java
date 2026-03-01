@@ -12,6 +12,8 @@
 
 package com.suse.oval.vulnerablepkgextractor;
 
+import com.redhat.rhn.domain.rhnpackage.PackageEvr;
+
 import com.suse.oval.OsFamily;
 import com.suse.oval.cpe.Cpe;
 import com.suse.oval.cpe.CpeBuilder;
@@ -112,7 +114,7 @@ public class UbuntuVulnerablePackageExtractor extends CriteriaTreeBasedExtractor
 
         VulnerablePackage vulnerablePackage = new VulnerablePackage();
         vulnerablePackage.setName(packageName);
-        vulnerablePackage.setFixVersion(evr);
+        vulnerablePackage.setFixVersion(PackageEvr.parseDebian(evr));
 
         return vulnerablePackage;
     }

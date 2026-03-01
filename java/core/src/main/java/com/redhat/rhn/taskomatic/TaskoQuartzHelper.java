@@ -290,23 +290,25 @@ public class TaskoQuartzHelper {
      * prevent Taskomatic from failing to start, performing a cleanup of invalid triggers before starting the scheduler
      */
     public static void cleanInvalidTriggers() {
+        String cleanInvalidTriggers =
+            "DELETE FROM " + QRTZ_TRIGGERS + " T " +
+            "WHERE T.SCHED_NAME || T.TRIGGER_NAME || T.TRIGGER_GROUP NOT IN (" +
+                 "SELECT SCHED_NAME || TRIGGER_NAME || TRIGGER_GROUP FROM " + QRTZ_CRON_TRIGGERS +
+                    " UNION " +
+                 "SELECT SCHED_NAME || TRIGGER_NAME || TRIGGER_GROUP FROM " + QRTZ_SIMPLE_TRIGGERS +
+                    " UNION " +
+                 "SELECT SCHED_NAME || TRIGGER_NAME || TRIGGER_GROUP FROM " + QRTZ_BLOB_TRIGGERS +
+                    " UNION " +
+                 "SELECT SCHED_NAME || TRIGGER_NAME || TRIGGER_GROUP FROM " + QRTZ_SIMPROP_TRIGGERS +
+             ")";
+
         log.info("Checking quartz database consistency...");
         TransactionHelper.handlingTransaction(
             () -> {
-                int del = HibernateFactory.getSession().createNativeQuery(cleanInvalidTriggersQuery()).executeUpdate();
+                int del = HibernateFactory.getSession().createNativeMutationQuery(cleanInvalidTriggers).executeUpdate();
                 log.info("Removed {} invalid triggers", del);
             },
             e -> log.warn("Error removing invalid triggers.", e)
         );
     }
-
-    private static String cleanInvalidTriggersQuery() {
-        return "DELETE FROM " + QRTZ_TRIGGERS + " T " +
-            "WHERE T.SCHED_NAME || T.TRIGGER_NAME || T.TRIGGER_GROUP NOT IN (" +
-                "SELECT c.SCHED_NAME || c.TRIGGER_NAME || c.TRIGGER_GROUP FROM " + QRTZ_CRON_TRIGGERS + " c UNION " +
-                "SELECT s.SCHED_NAME || s.TRIGGER_NAME || s.TRIGGER_GROUP FROM " + QRTZ_SIMPLE_TRIGGERS + " s UNION " +
-                "SELECT b.SCHED_NAME || b.TRIGGER_NAME || b.TRIGGER_GROUP FROM " + QRTZ_BLOB_TRIGGERS + " b UNION " +
-                "SELECT sp.SCHED_NAME || sp.TRIGGER_NAME || sp.TRIGGER_GROUP FROM " + QRTZ_SIMPROP_TRIGGERS + " sp" +
-            ")";
-   }
 }

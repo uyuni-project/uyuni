@@ -18,7 +18,7 @@
 # The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
 %{!?productprettyname: %global productprettyname Uyuni}
 Name:           supportutils-plugin-susemanager-client
-Version:        5.2.1
+Version:        5.2.2
 Release:        0
 Summary:        Supportconfig Plugin for %{productprettyname} Client
 License:        GPL-2.0-only

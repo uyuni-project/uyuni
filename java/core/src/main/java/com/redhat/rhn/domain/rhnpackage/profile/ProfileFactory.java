@@ -15,6 +15,7 @@
 package com.redhat.rhn.domain.rhnpackage.profile;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.server.Server;
 
@@ -71,7 +72,7 @@ public class ProfileFactory extends HibernateFactory {
      */
     public static Profile lookupByIdAndOrg(Long id, Org org) {
         Session session = HibernateFactory.getSession();
-        return session.createQuery("FROM Profile AS p WHERE p.id = :id AND org_id=:org_id", Profile.class)
+        return session.createQuery("FROM Profile AS p WHERE p.id = :id AND p.org.id = :org_id", Profile.class)
                 .setParameter("id", id)
                 .setParameter("org_id", org.getId())
                 //Retrieve from cache if there
@@ -93,7 +94,8 @@ public class ProfileFactory extends HibernateFactory {
                         WHERE P.org_id = S.org_id
                         AND S.id = :sid
                         AND P.profile_type_id = (SELECT id FROM rhnServerProfileType WHERE label = 'normal')
-                        AND (EXISTS (SELECT 1 FROM rhnServerChannel SC
+                        AND (EXISTS (SELECT 1
+                                     FROM rhnServerChannel SC
                                      WHERE SC.server_id = S.id
                                      AND SC.channel_id = P.base_channel)
                             OR EXISTS (SELECT 1 FROM rhnChannel C
@@ -101,6 +103,10 @@ public class ProfileFactory extends HibernateFactory {
                                      AND C.org_id = :org_id
                                      AND C.parent_channel IS NULL) )
                         ORDER BY P.name""", Profile.class)
+                .addSynchronizedEntityClass(Server.class)
+                .addSynchronizedEntityClass(Profile.class)
+                .addSynchronizedEntityClass(ProfileType.class)
+                .addSynchronizedEntityClass(Channel.class)
                 .setParameter("sid", server.getId())
                 .setParameter("org_id", org.getId())
                 .list();
@@ -108,10 +114,12 @@ public class ProfileFactory extends HibernateFactory {
 
      /**
       * Store the profile.
+      *
       * @param profile The object we are commiting.
+      * @return the managed {@link Profile} instance
       */
-    public static void save(Profile profile) {
-        singleton.saveObject(profile);
+    public static Profile save(Profile profile) {
+        return singleton.saveObject(profile);
     }
 
     /**
@@ -140,10 +148,7 @@ public class ProfileFactory extends HibernateFactory {
      * given org, or null if none found.
      */
     public static Profile findByNameAndOrgId(String name, Long orgid) {
-        Session session = HibernateFactory.getSession();
-        return session.createNativeQuery(
-                "SELECT P.* FROM rhnServerProfile P WHERE P.name = :name AND P.org_id = :org_id",
-                        Profile.class)
+        return getSession().createQuery("FROM Profile p WHERE p.name = :name AND p.org.id = :org_id", Profile.class)
                 .setParameter("name", name)
                 .setParameter("org_id", orgid)
                 //Retrieve from cache if there

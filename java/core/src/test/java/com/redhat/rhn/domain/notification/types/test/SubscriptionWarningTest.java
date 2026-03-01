@@ -42,4 +42,13 @@ class SubscriptionWarningTest extends RhnBaseTestCase {
         assertNotNull(sw.getSummary());
         assertNotNull(sw.getDetails());
     }
+
+    @Test
+    public void generatedCoverageTestExpiresSoon() {
+        // this test has been generated programmatically to test SubscriptionWarning.expiresSoon
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        SubscriptionWarning testObject = new SubscriptionWarning();
+        testObject.expiresSoon();
+    }
 }

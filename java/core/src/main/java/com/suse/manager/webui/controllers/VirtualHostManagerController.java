@@ -49,7 +49,7 @@ import org.apache.commons.fileupload2.core.DiskFileItem;
 import org.apache.commons.fileupload2.core.DiskFileItemFactory;
 import org.apache.commons.fileupload2.core.FileItem;
 import org.apache.commons.fileupload2.core.FileUploadException;
-import org.apache.commons.fileupload2.javax.JavaxServletFileUpload;
+import org.apache.commons.fileupload2.jakarta.servlet6.JakartaServletFileUpload;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 import org.apache.logging.log4j.LogManager;
@@ -69,8 +69,8 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import javax.persistence.NoResultException;
-
+import jakarta.persistence.NoResultException;
+import jakarta.servlet.ServletContext;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
@@ -531,10 +531,10 @@ public class VirtualHostManagerController {
     private static List<DiskFileItem> parseMultipartRequest(Request request)
             throws FileUploadException {
         DiskFileItemFactory fileItemFactory = DiskFileItemFactory.builder()
-                .setPath("javax.servlet.context.tempdir")
+                .setPath(ServletContext.TEMPDIR)
                 .get();
 
-        return new JavaxServletFileUpload<>(fileItemFactory).parseRequest(request.raw());
+        return new JakartaServletFileUpload<>(fileItemFactory).parseRequest(request.raw());
     }
 
     private static void validateKubeconfig(String context,

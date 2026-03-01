@@ -38,10 +38,10 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 
 /**
  *  HibernateFactory for the {@link com.redhat.rhn.domain.contentmgmt.ContentProject} class and related classes.
@@ -60,26 +60,30 @@ public class ContentProjectFactory extends HibernateFactory {
      * Save the ContentFilter
      *
      * @param contentFilter the content filter
+     * @return the managed {@link ContentFilter} instance
      */
-    public static void save(ContentFilter contentFilter) {
-        INSTANCE.saveObject(contentFilter);
+    public static ContentFilter save(ContentFilter contentFilter) {
+        return INSTANCE.saveObject(contentFilter);
     }
 
     /**
      * Save the ContentProject
      *
      * @param contentProject the ContentProject
+     * @return the managed {@link ContentProject} instance
      */
-    public static void save(ContentProject contentProject) {
-        INSTANCE.saveObject(contentProject);
+    public static ContentProject save(ContentProject contentProject) {
+        return INSTANCE.saveObject(contentProject);
     }
 
     /**
      * Save the Content Environment Difference
+     *
      * @param envDiff the diff
+     * @return the managed {@link ContentEnvironmentDiff} instance
      */
-    public static void save(ContentEnvironmentDiff envDiff) {
-        INSTANCE.saveObject(envDiff);
+    public static ContentEnvironmentDiff save(ContentEnvironmentDiff envDiff) {
+        return INSTANCE.saveObject(envDiff);
     }
 
     /**
@@ -190,10 +194,12 @@ public class ContentProjectFactory extends HibernateFactory {
 
     /**
      * Save a Content Environment in DB
+     *
      * @param contentEnvironment the content environment
+     * @return the managed {@link ContentEnvironment} instance
      */
-    public static void save(ContentEnvironment contentEnvironment) {
-        INSTANCE.saveObject(contentEnvironment);
+    public static ContentEnvironment save(ContentEnvironment contentEnvironment) {
+        return INSTANCE.saveObject(contentEnvironment);
     }
 
     /**
@@ -355,10 +361,12 @@ public class ContentProjectFactory extends HibernateFactory {
 
     /**
      * Save an Environment Target
+     *
      * @param target the Environment Target
+     * @return the managed {@link EnvironmentTarget} instance
      */
-    public static void save(EnvironmentTarget target) {
-        INSTANCE.saveObject(target);
+    public static EnvironmentTarget save(EnvironmentTarget target) {
+        return INSTANCE.saveObject(target);
     }
 
     /**
@@ -393,10 +401,7 @@ public class ContentProjectFactory extends HibernateFactory {
         // then remove the target and its channel
         target.getContentEnvironment().removeTarget(target);
         INSTANCE.removeObject(target);
-        target.asSoftwareTarget().map(SoftwareEnvironmentTarget::getChannel).ifPresent(channel -> {
-            HibernateFactory.getSession().evict(channel);
-            ChannelFactory.remove(channel);
-        });
+        target.asSoftwareTarget().map(SoftwareEnvironmentTarget::getChannel).ifPresent(ChannelFactory::remove);
     }
 
     /**
@@ -459,18 +464,20 @@ public class ContentProjectFactory extends HibernateFactory {
      * Save a Project source
      *
      * @param source the project source
+     * @return the managed {@link ProjectSource} instance
      */
-    public static void save(ProjectSource source) {
-        INSTANCE.saveObject(source);
+    public static ProjectSource save(ProjectSource source) {
+        return INSTANCE.saveObject(source);
     }
 
     /**
      * Save the Content Project history entry
      *
      * @param entry the Content Project history entry
+     * @return the managed {@link ContentProjectHistoryEntry} instance
      */
-    private static void save(ContentProjectHistoryEntry entry) {
-        INSTANCE.saveObject(entry);
+    private static ContentProjectHistoryEntry save(ContentProjectHistoryEntry entry) {
+        return INSTANCE.saveObject(entry);
     }
 
     /**
@@ -556,7 +563,7 @@ public class ContentProjectFactory extends HibernateFactory {
         Stream<Channel> clones = HibernateFactory.getSession()
                 .createQuery("SELECT tgt.channel FROM SoftwareEnvironmentTarget tgt " +
                         "WHERE tgt.contentEnvironment.contentProject = :project " +
-                        "AND tgt.channel.original = :channel")
+                        "AND tgt.channel.original = :channel", Channel.class)
                 .setParameter("project", project)
                 .setParameter("channel", channel)
                 .stream();
@@ -684,9 +691,12 @@ public class ContentProjectFactory extends HibernateFactory {
      */
     public static List<ContentProject> listFilterProjects(ContentFilter filter) {
         return HibernateFactory.getSession()
-                .createQuery("SELECT cp FROM ContentProject cp " +
-                        "WHERE cp.id IN (SELECT cpf.project.id FROM ContentProjectFilter cpf " +
-                        "WHERE cpf.filter.id = :fid)")
+                .createQuery("""
+                             FROM ContentProject cp
+                             WHERE cp.id IN (
+                                     SELECT cpf.project.id FROM ContentProjectFilter cpf WHERE cpf.filter.id = :fid
+                                  )
+                             """, ContentProject.class)
                 .setParameter("fid", filter.getId())
                 .list();
     }
@@ -699,8 +709,7 @@ public class ContentProjectFactory extends HibernateFactory {
      */
     public static List<ContentProjectFilter> listFilterProjectsRelation(ContentFilter filter) {
         return HibernateFactory.getSession()
-                .createQuery("SELECT cpf FROM ContentProjectFilter cpf " +
-                        "WHERE cpf.filter.id = :fid")
+                .createQuery("FROM ContentProjectFilter cpf WHERE cpf.filter.id = :fid", ContentProjectFilter.class)
                 .setParameter("fid", filter.getId())
                 .list();
     }
@@ -720,9 +729,10 @@ public class ContentProjectFactory extends HibernateFactory {
      */
     public static int failStaleTargets() {
         return HibernateFactory.getSession()
-                .createQuery("UPDATE EnvironmentTarget tgt " +
-                        "SET tgt.status = :statusFailed " +
-                        "WHERE tgt.status = :statusBuilding")
+                .createMutationQuery("""
+                                     UPDATE EnvironmentTarget tgt
+                                     SET tgt.status = :statusFailed
+                                     WHERE tgt.status = :statusBuilding""")
                 .setParameter("statusFailed", EnvironmentTarget.Status.FAILED)
                 .setParameter("statusBuilding", EnvironmentTarget.Status.BUILDING)
                 .executeUpdate();

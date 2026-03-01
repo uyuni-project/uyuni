@@ -575,4 +575,23 @@ public class HubFactoryTest extends BaseTestCaseWithUser {
 
         return query.uniqueResult();
     }
+
+    @Test
+    public void generatedCoverageTestLookupAccessTokenById() {
+        // this test has been generated programmatically to test HubFactory.lookupAccessTokenById
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        HubFactory testObject = new HubFactory();
+        testObject.lookupAccessTokenById(0L);
+    }
+
+
+    @Test
+    public void generatedCoverageTestRemoveAccessTokenById() {
+        // this test has been generated programmatically to test HubFactory.removeAccessTokenById
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        HubFactory testObject = new HubFactory();
+        testObject.removeAccessTokenById(0L);
+    }
 }

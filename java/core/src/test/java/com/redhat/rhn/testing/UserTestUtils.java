@@ -222,7 +222,7 @@ public class UserTestUtils {
         EntitlementServerGroup sg =
                 ServerGroupTestUtils.createEntitled(orgIn,
                         ServerConstants.getServerGroupTypeVirtualizationEntitled());
-        TestUtils.saveAndFlush(sg);
+        sg = TestUtils.saveAndFlush(sg);
     }
 
     /**
@@ -236,7 +236,7 @@ public class UserTestUtils {
         if (retval == null) {
             retval = new UserTestUtils.UserBuilder().orgId(orgIn.getId()).build();
             UserTestUtils.addUserRole(retval, RoleFactory.ORG_ADMIN);
-            TestUtils.saveAndFlush(orgIn);
+            orgIn = TestUtils.saveAndFlush(orgIn);
         }
         return retval;
     }
@@ -322,10 +322,10 @@ public class UserTestUtils {
             Long resolvedOrgId = Optional.ofNullable(orgId)
                     .orElse(new OrgBuilder().orgName(orgName).orgObjectSuffix(orgObjectSuffix).build().getId());
 
-            User user = createUserInternal(userName);
-            Address address = createTestAddress(user);
+            User userInternal = createUserInternal(userName);
+            Address address = createTestAddress(userInternal);
 
-            user = UserFactory.saveNewUser(user, address, resolvedOrgId);
+            User user = UserFactory.saveNewUser(userInternal, address, resolvedOrgId);
             UserFactory.IMPLIEDROLES.forEach(user::addPermanentRole);
             assertTrue(user.getId() > 0);
 
@@ -338,7 +338,6 @@ public class UserTestUtils {
                         AccessGroupFactory.CONFIG_ADMIN)
                 );
                 user.addPermanentRole(RoleFactory.ORG_ADMIN);
-                UserFactory.save(user);
             }
             return user;
         }

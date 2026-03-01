@@ -44,4 +44,6 @@ disable_repo_{{ alias }}:
 refresh_db_after_disable:
   mgrcompat.module_run:
     - name: pkg.refresh_db
+    - kwargs:
+        check_update: False
 {% endif %}

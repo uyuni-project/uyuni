@@ -1,0 +1,5 @@
+## Add non MU repositories for ubuntu2404 BEGIN ###
+
+- features/build_validation/add_non_MU_repositories/ubuntu2404_minion_add_noble_universe_and_main.feature
+
+## Add non MU repositories END ###

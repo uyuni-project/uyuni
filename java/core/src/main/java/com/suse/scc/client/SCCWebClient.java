@@ -137,8 +137,7 @@ public class SCCWebClient implements SCCClient {
     }
 
     private <T> T writeCache(T value, String name) {
-        Path credentialCache = Paths.get(config.getLoggingDir(),
-                config.getUsername().replaceAll("[^a-zA-Z0-9\\._]+", "_"));
+        Path credentialCache = getCacheDir();
         try {
 
             UserPrincipal tomcatUser = null;
@@ -168,6 +167,11 @@ public class SCCWebClient implements SCCClient {
             throw new SCCClientException(e);
         }
         return value;
+    }
+
+    public Path getCacheDir() {
+        return Paths.get(config.getLoggingDir(),
+            config.getUsername().replaceAll("[^a-zA-Z0-9\\._]+", "_"));
     }
 
     /**

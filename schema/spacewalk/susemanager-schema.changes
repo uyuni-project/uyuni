@@ -1,4 +1,20 @@
 -------------------------------------------------------------------
+Tue Jan 27 09:30:02 WET 2026 - psuarezhernandez@suse.com
+
+- version 5.2.3-0
+  * Added schema for RBAC management UI
+  * Add RBAC mappings for AppStreams in SSM
+  * Fix channel end of life date incorrectly set to 0 instead of null
+  * Add OpenID Connect login endpoint for MCP security integration
+  * Increase size of column 'context' on tables
+    'suseappstream' and 'suseserverappstream' (bsc#1255653)
+  * Add RBAC mappings for affected systems link in SSM patches page
+    (bsc#1256590)
+  * Set supported postgresql versions between 16 to 18
+  * Move the SSM product migration endpoints to the correct
+    namespace (bsc#1254263)
+
+-------------------------------------------------------------------
 Thu Nov 27 10:44:25 CET 2025 - michael.calmer@suse.com
 
 - version 5.2.2-0

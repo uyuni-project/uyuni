@@ -1,2 +1,0 @@
-- Ignore commented lines in /etc/hosts when updating it
-  (bsc#1253736)

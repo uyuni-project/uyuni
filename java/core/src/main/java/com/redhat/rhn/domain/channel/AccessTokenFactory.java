@@ -98,11 +98,10 @@ public class AccessTokenFactory extends HibernateFactory {
     /**
      * Saves the AccessToken to the database.
      * @param accessToken the AccessToken to save
-     * @return the saved AccessToken
+     * @return the managed {@link AccessToken}
      */
     public static AccessToken save(AccessToken accessToken) {
-        singleton.saveObject(accessToken);
-        return accessToken;
+        return singleton.saveObject(accessToken);
     }
 
     /**
@@ -259,8 +258,7 @@ public class AccessTokenFactory extends HibernateFactory {
      * @param channels set of channels
      * @return AccessToken if it could be generated
      */
-    public static Optional<AccessToken> generate(MinionServer minion,
-            Set<Channel> channels) {
+    public static Optional<AccessToken> generate(MinionServer minion, Set<Channel> channels) {
         try {
             Token token = new DownloadTokenBuilder(minion.getOrg().getId())
                 .usingServerSecret()
@@ -273,7 +271,7 @@ public class AccessTokenFactory extends HibernateFactory {
             newToken.setMinion(minion);
             newToken.setExpiration(Date.from(token.getExpirationTime()));
             newToken.setChannels(channels);
-            save(newToken);
+            newToken = save(newToken);
             return Optional.of(newToken);
         }
         catch (TokenException e) {

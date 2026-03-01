@@ -1,4 +1,18 @@
 -------------------------------------------------------------------
+Tue Jan 27 10:33:52 WET 2026 - psuarezhernandez@suse.com
+
+- version 5.2.4-0
+  * Add bootstrap repo data for SLES/SAP/LEAP 16
+
+-------------------------------------------------------------------
+Tue Jan 27 09:29:59 WET 2026 - psuarezhernandez@suse.com
+
+- version 5.2.3-0
+  * Remove openslp-server dependency and configuration
+  * Fixed the package name to correct one (bsc#1255089)
+  * Fix the product ids of client tools channels
+
+-------------------------------------------------------------------
 Thu Nov 27 11:10:40 CET 2025 - michael.calmer@suse.com
 
 - version 5.2.2-0

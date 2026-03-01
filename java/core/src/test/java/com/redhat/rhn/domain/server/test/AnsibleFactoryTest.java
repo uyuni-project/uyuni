@@ -19,13 +19,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.server.AnsibleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.ansible.AnsiblePath;
 import com.redhat.rhn.domain.server.ansible.InventoryPath;
 import com.redhat.rhn.domain.server.ansible.PlaybookPath;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
 
@@ -55,10 +55,10 @@ public class AnsibleFactoryTest extends BaseTestCaseWithUser {
         assertNotNull(inventoryPath.getId());
         assertNotNull(playbookPath.getId());
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         // let's get those entities out of the session
-        HibernateFactory.getSession().evict(inventoryPath);
-        HibernateFactory.getSession().evict(playbookPath);
+        TestUtils.evict(inventoryPath);
+        TestUtils.evict(playbookPath);
 
         assertEquals(inventoryPath, AnsibleFactory.lookupAnsiblePathById(inventoryPath.getId()).get());
         assertEquals(inventoryPath, AnsibleFactory.lookupAnsiblePathByPathAndMinion(Path.of("/tmp/test1"),
@@ -80,5 +80,21 @@ public class AnsibleFactoryTest extends BaseTestCaseWithUser {
 
         AnsibleFactory.removeAnsiblePath(inventoryPath);
         assertTrue(AnsibleFactory.lookupAnsiblePathById(inventoryPath.getId()).isEmpty());
+    }
+
+    @Test
+    public void generatedCoverageTestLookupAnsibleInventoryPath() {
+        // this test has been generated programmatically to test AnsibleFactory.lookupAnsibleInventoryPath
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        AnsibleFactory.lookupAnsibleInventoryPath(0L, "");
+    }
+
+    @Test
+    public void generatedCoverageTestListAnsiblePlaybookPaths() {
+        // this test has been generated programmatically to test AnsibleFactory.listAnsiblePlaybookPaths
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        AnsibleFactory.listAnsiblePlaybookPaths(0L);
     }
 }

@@ -44,7 +44,6 @@ public class ChannelAccessHandlerTest extends BaseHandlerTestCase {
         admin.getOrg().addOwnedChannel(channel);
         OrgFactory.save(admin.getOrg());
         ChannelFactory.save(channel);
-        flushAndEvict(channel);
 
         // restrictions are disabled by default
         assertTrue(channel.isGloballySubscribable(admin.getOrg()));
@@ -68,7 +67,6 @@ public class ChannelAccessHandlerTest extends BaseHandlerTestCase {
         OrgFactory.save(admin.getOrg());
         channel.setGloballySubscribable(false, channel.getOrg());
         ChannelFactory.save(channel);
-        flushAndEvict(channel);
 
         assertFalse(channel.isGloballySubscribable(admin.getOrg()));
 
@@ -91,7 +89,6 @@ public class ChannelAccessHandlerTest extends BaseHandlerTestCase {
         OrgFactory.save(admin.getOrg());
         channel.setAccess(Channel.PUBLIC);
         ChannelFactory.save(channel);
-        flushAndEvict(channel);
 
         assertEquals(Channel.PUBLIC, channel.getAccess());
 
@@ -110,7 +107,6 @@ public class ChannelAccessHandlerTest extends BaseHandlerTestCase {
         admin.getOrg().addOwnedChannel(channel);
         OrgFactory.save(admin.getOrg());
         ChannelFactory.save(channel);
-        flushAndEvict(channel);
 
         assertEquals(Channel.PRIVATE, channel.getAccess());
 
@@ -132,11 +128,10 @@ public class ChannelAccessHandlerTest extends BaseHandlerTestCase {
         admin.getOrg().addOwnedChannel(channel);
         OrgFactory.save(admin.getOrg());
         ChannelFactory.save(channel);
-        flushAndEvict(channel);
 
         try {
             handler.setOrgSharing(admin, channel.getLabel(), "invalid");
-            fail("should have gottent an invalid access value exception.");
+            fail("should have got an invalid access value exception.");
         }
         catch (InvalidAccessValueException e) {
             //success

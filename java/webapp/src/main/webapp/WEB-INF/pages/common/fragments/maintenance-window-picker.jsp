@@ -1,5 +1,5 @@
 <%@ page pageEncoding="iso-8859-1" contentType="text/html;charset=utf-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 
 <%-- This widget assumes the "maintenanceWindows" is populated --%>

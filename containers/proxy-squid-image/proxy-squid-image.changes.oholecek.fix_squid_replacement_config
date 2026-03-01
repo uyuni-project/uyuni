@@ -1,2 +1,0 @@
-- Configure squid replacement policy properly before cache dir
-  (bsc#1253773)

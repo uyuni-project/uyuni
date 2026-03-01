@@ -15,6 +15,7 @@ metadata:
   {{- end }}
   labels:
     app.kubernetes.io/part-of: uyuni
+    app.kubernetes.io/component: server
 spec:
   {{- if ((.Values.ingress).class) }}
   ingressClassName: {{ .Values.ingress.class }}
@@ -34,7 +35,7 @@ spec:
               number: 80
         path: /
         pathType: Prefix
-  {{- if default .Values.hubAPI false }}
+  {{- if default .Values.hubAPI.enable false }}
       - backend:
           service:
             name: hub-xmlrpc
@@ -59,6 +60,7 @@ metadata:
   {{- end }}
   labels:
     app.kubernetes.io/part-of: uyuni
+    app.kubernetes.io/component: server
 spec:
   {{- if ((.Values.ingress).class) }}
   ingressClassName: {{ .Values.ingress.class }}
@@ -74,7 +76,7 @@ spec:
               number: 80
         path: /
         pathType: Prefix
-    {{- if default .Values.hubAPI false }}
+    {{- if default .Values.hubAPI.enable false }}
       - backend:
           service:
             name: hub-xmlrpc
@@ -103,6 +105,7 @@ metadata:
   {{- end }}
   labels:
     app.kubernetes.io/part-of: uyuni
+    app.kubernetes.io/component: server
 spec:
   {{- if ((.Values.ingress).class) }}
   ingressClassName: {{ .Values.ingress.class }}

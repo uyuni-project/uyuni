@@ -26,6 +26,8 @@ import com.redhat.rhn.frontend.security.AuthenticationServiceFactory;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegateFactory;
 import com.redhat.rhn.manager.user.UserManager;
 
+import com.suse.manager.webui.utils.SparkApplicationHelper;
+
 import com.onelogin.saml2.Auth;
 import com.onelogin.saml2.exception.Error;
 import com.onelogin.saml2.exception.SettingsException;
@@ -45,8 +47,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import javax.servlet.ServletException;
-
+import jakarta.servlet.ServletException;
 import spark.Request;
 import spark.Response;
 
@@ -187,14 +188,14 @@ public final class SSOController {
                 final String metadata = settings.getSPMetadata();
                 final List<String> errors = Saml2Settings.validateMetadata(metadata);
                 if (errors.isEmpty()) {
-                    response.raw().getOutputStream().println(metadata);
+                    response.type("text/xml; charset=UTF-8");
+                    return metadata;
                 }
                 else {
-                    response.raw().setContentType("text/html; charset=UTF-8");
-
                     for (final String error : errors) {
                         LOG.error(error);
                     }
+                    return SparkApplicationHelper.internalServerError(response, errors.toArray(new String[0]));
                 }
             }
             catch (IOException | SettingsException | Error | CertificateEncodingException e) {

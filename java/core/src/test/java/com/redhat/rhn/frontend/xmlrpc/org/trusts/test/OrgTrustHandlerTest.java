@@ -64,7 +64,7 @@ public class OrgTrustHandlerTest extends BaseHandlerTestCase {
     public void setUp() throws Exception {
         super.setUp();
         admin.addPermanentRole(RoleFactory.SAT_ADMIN);
-        TestUtils.saveAndFlush(admin);
+        admin = TestUtils.saveAndFlush(admin);
     }
 
     @Test
@@ -100,7 +100,7 @@ public class OrgTrustHandlerTest extends BaseHandlerTestCase {
 
         OrgFactory.save(admin.getOrg());
         ChannelFactory.save(channel);
-        flushAndEvict(channel);
+        TestUtils.flushAndClearSession();
 
         // execute
         Object[] result = handler.listOrgs(admin);
@@ -138,9 +138,7 @@ public class OrgTrustHandlerTest extends BaseHandlerTestCase {
 
         OrgFactory.save(admin.getOrg());
         ChannelFactory.save(channel);
-        flushAndEvict(channel);
-
-
+        TestUtils.flushAndClearSession();
 
         // execute
         Object[] result = handler.listChannelsProvided(admin, org2.getId().intValue());
@@ -172,7 +170,7 @@ public class OrgTrustHandlerTest extends BaseHandlerTestCase {
 
         OrgFactory.save(admin.getOrg());
         ChannelFactory.save(channel);
-        flushAndEvict(channel);
+        TestUtils.flushAndClearSession();
 
         // execute
         Object[] result = handler.listChannelsConsumed(admin, org2.getId().intValue());
@@ -203,7 +201,7 @@ public class OrgTrustHandlerTest extends BaseHandlerTestCase {
 
         OrgFactory.save(admin.getOrg());
         ChannelFactory.save(channel);
-        flushAndEvict(channel);
+        TestUtils.flushAndClearSession();
 
         // execute
         Map<String, Object> result = handler.getDetails(admin, org2.getId().intValue());
@@ -266,8 +264,7 @@ public class OrgTrustHandlerTest extends BaseHandlerTestCase {
                 orgB.getId().intValue());
         Server s = ServerFactoryTest.createTestServer(userB);
         SystemManager.subscribeServerToChannel(userB, s, c);
-        flushAndEvict(c);
-        flushAndEvict(s);
+        TestUtils.flushAndClearSession();
         addAccessGroup(admin, AccessGroupFactory.CHANNEL_ADMIN);
         Package pkg = PackageTest.createTestPackage(orgA);
         List<Long> packages = new ArrayList<>();

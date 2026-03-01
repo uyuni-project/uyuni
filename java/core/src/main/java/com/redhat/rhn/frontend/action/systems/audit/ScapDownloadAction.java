@@ -29,8 +29,8 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.actions.DownloadAction;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * ScapDownloadAction
@@ -48,13 +48,15 @@ public class ScapDownloadAction extends DownloadAction {
         XccdfTestResult testResult = ScapFactory.lookupTestResultByIdAndSid(xid,
                 server.getId());
         String filename = context.getRequiredParamAsString("name");
-        ScapResultFile file = new ScapResultFile(testResult, filename);
+        String sanitizedFilename = (filename != null ? filename.replaceAll("[\n\r\t]", "_") : null);
+
+        ScapResultFile file = new ScapResultFile(testResult, sanitizedFilename);
 
         if (log.isDebugEnabled()) {
             log.debug("Serving {}", StringUtil.sanitizeLogInput(file.toString()));
         }
         if (!file.getHTML()) {
-            response.setHeader("Content-Disposition", "attachment; filename=" + filename);
+            response.setHeader("Content-Disposition", "attachment; filename=" + sanitizedFilename);
         }
         return file;
     }

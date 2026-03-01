@@ -33,9 +33,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.NoResultException;
-import javax.persistence.TypedQuery;
-
 /**
  * ChannelFamilyFactory
  */
@@ -80,24 +77,20 @@ public class ChannelFamilyFactory extends HibernateFactory {
      * @return the ChannelFamily found
      */
     public static ChannelFamily lookupByLabel(String label, Org org) {
-        String sql = "SELECT * FROM rhnChannelFamily WHERE label = :label AND (org_id = :org OR org_id IS NULL)";
-        Query<ChannelFamily> query = getSession().createNativeQuery(sql, ChannelFamily.class);
-        query.setParameter("label", label);
+        Query<ChannelFamily> query = getSession()
+                .createQuery("FROM ChannelFamily cf WHERE cf.label = :label AND (cf.org IS NULL OR cf.org.id = :orgId)",
+                        ChannelFamily.class)
+                .setParameter("label", label);
 
         // Handle org being null
         if (org != null) {
-            query.setParameter("org", org.getId());
+            query.setParameter("orgId", org.getId());
         }
         else {
-            query.setParameter("org", -1);
+            query.setParameter("orgId", -1);
         }
 
-        try {
-            return query.getSingleResult();
-        }
-        catch (NoResultException e) {
-            return null;
-        }
+        return query.getSingleResultOrNull();
     }
 
     /**
@@ -141,7 +134,7 @@ public class ChannelFamilyFactory extends HibernateFactory {
             cfam.setLabel(label);
             cfam.setName(name);
 
-            ChannelFamilyFactory.save(cfam);
+            cfam = ChannelFamilyFactory.save(cfam);
 
             //If we're creating a new channel fam, make sure the org has
             updateFamilyPermissions(orgIn);
@@ -188,9 +181,10 @@ public class ChannelFamilyFactory extends HibernateFactory {
     /**
      * Insert or Update a ChannelFamily.
      * @param cfam ChannelFamily to be stored in database.
+     * @return the managed {@link ChannelFamily} instance
      */
-    public static void save(ChannelFamily cfam) {
-        singleton.saveObject(cfam);
+    public static ChannelFamily save(ChannelFamily cfam) {
+        return singleton.saveObject(cfam);
     }
 
     /**
@@ -211,17 +205,19 @@ public class ChannelFamilyFactory extends HibernateFactory {
     /**
      * Insert or Update a PrivateChannelFamily.
      * @param pcfam PrivateChannelFamily to be stored in database.
+     * @return the managed {@link PrivateChannelFamily} instance
      */
-    public static void save(PrivateChannelFamily pcfam) {
-        singleton.saveObject(pcfam);
+    public static PrivateChannelFamily save(PrivateChannelFamily pcfam) {
+        return singleton.saveObject(pcfam);
     }
 
     /**
      * Insert or Update a PublicChannelFamily.
      * @param pcf PublicChannelFamily to be stored in database.
+     * @return the managed {@link PublicChannelFamily} instance
      */
-    public static void save(PublicChannelFamily pcf) {
-        singleton.saveObject(pcf);
+    public static PublicChannelFamily save(PublicChannelFamily pcf) {
+        return singleton.saveObject(pcf);
     }
 
     /**
@@ -231,19 +227,20 @@ public class ChannelFamilyFactory extends HibernateFactory {
      * @param org owning the Channel.  Pass in NULL if you want a NULL org channel
      * @return List of Channel objects
      */
-    @SuppressWarnings("unchecked")
     public static List<ChannelFamily> lookupByLabelLike(String label, Org org) {
-        String sql = "SELECT * FROM rhnChannelFamily WHERE label LIKE :label AND (org_id = :org OR org_id IS NULL)";
-        Query<ChannelFamily> query = getSession().createNativeQuery(sql, ChannelFamily.class);
-        query.setParameter("label", label);
+        Query<ChannelFamily> query = getSession().createQuery("""
+                    FROM ChannelFamily cf
+                    WHERE cf.label LIKE :label AND (cf.org IS NULL OR cf.org.id = :orgId)""", ChannelFamily.class)
+                .setParameter("label", label);
 
         // Handle org being null
         if (org != null) {
-            query.setParameter("org", org.getId());
+            query.setParameter("orgId", org.getId());
         }
         else {
-            query.setParameter("org", -1);
+            query.setParameter("orgId", -1);
         }
+
         return query.getResultList();
     }
 
@@ -251,11 +248,7 @@ public class ChannelFamilyFactory extends HibernateFactory {
      * Return all channel families from the database.
      * @return list of all channel families
      */
-    @SuppressWarnings("unchecked")
     public static List<ChannelFamily> getAllChannelFamilies() {
-        String sql = "SELECT * FROM rhnChannelFamily";
-        TypedQuery<ChannelFamily> query =
-                getSession().createNativeQuery(sql, ChannelFamily.class);
-        return query.getResultList();
+        return getSession().createQuery("FROM ChannelFamily cf", ChannelFamily.class).getResultList();
     }
 }

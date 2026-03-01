@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jan 27 09:29:16 WET 2026 - psuarezhernandez@suse.com
+
+- version 5.2.4
+  * Image rebuilt to the newest version with updated dependencies
+
+-------------------------------------------------------------------
 Tue Dec 09 13:50:18 CET 2025 - michael.calmer@suse.com
 
 - version 5.2.3

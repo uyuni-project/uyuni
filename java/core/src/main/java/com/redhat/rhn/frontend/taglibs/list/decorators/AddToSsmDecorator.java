@@ -19,7 +19,7 @@ import com.redhat.rhn.frontend.html.HtmlTag;
 import com.redhat.rhn.frontend.taglibs.ListDisplayTag;
 import com.redhat.rhn.frontend.taglibs.list.ListTagUtil;
 
-import javax.servlet.jsp.JspException;
+import jakarta.servlet.jsp.JspException;
 
 /**
  * Decorator to tie into ListTag 3.0 to provide an easy means to add te selected servers

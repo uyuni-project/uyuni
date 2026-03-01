@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LLC
  * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -14,132 +15,178 @@
  */
 package com.redhat.rhn.common.hibernate.test;
 
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.common.hibernate.HibernateHelper;
+import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
+import com.redhat.rhn.domain.test.TestEntity;
 import com.redhat.rhn.domain.test.TestFactory;
 import com.redhat.rhn.domain.test.TestInterface;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.TestUtils;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
-public class TestFactoryWrapperTest extends RhnBaseTestCase {
-    private static Logger log = LogManager.getLogger(TestFactoryWrapperTest.class);
+public class TestFactoryWrapperTest extends HibernateBaseTest {
 
-    @Override
-    @BeforeEach
-    public void setUp() {
-        TestFactory.createSessionFactory();
-    }
-
+    /**
+     * Null handling in lookups
+     * - Lookups return null when entity not found
+     * - Don't throw exceptions for missing data
+     */
     @Test
     public void testLookupReturnNull() {
         TestInterface obj = TestFactory.lookupByFoobar("NOTFOUND");
-        assertNull(obj);
+        assertNull(obj, "Should return null for non-existent entity");
     }
 
-    // This is a trivial test, but it proves that we can create a simple
-    // SQL query automatically from the table definition.
+    /**
+     * Handle NonUniqueResultException in lookups
+     * - Throw HibernateRuntimeException wrapping the original exception
+     */
+    @Test
+    public void testHandleNonUniqueResultException() {
+        assertThrows(HibernateRuntimeException.class, () -> {
+            TestFactory.lookupByFoobar("duplicate");
+        });
+    }
+
+    /**
+     * Test that lookupByFoobar returns the correct record
+     */
     @Test
     public void testLookup() {
         TestInterface obj = TestFactory.lookupByFoobar("Blarg");
         assertEquals("Blarg", obj.getFoobar());
-        // 1 is a magic number, this is basically checking that the id is set
-        // correctly.  We know this will be 1, because we create the sequence
-        // to start at 0, and Blarg is the first value inserted.
+        assertNull(obj.getPin());
         assertEquals(1, (long) obj.getId());
     }
 
-    @Test
-     public void testNullIntoPrimitive() {
-         TestInterface obj = TestFactory.lookupByFoobar("Blarg");
-         assertEquals("Blarg", obj.getFoobar());
-         assertNull(obj.getPin());
-         // 1 is a magic number, this is basically checking that the id is set
-         // correctly.  We know this will be 1, because we create the sequence
-         // to start at 0, and Blarg is the first value inserted.
-        assertEquals(1, (long) obj.getId());
-     }
-
-    @Test
-    public void testNewInsert() {
-        TestInterface obj = TestFactory.createTest();
-        obj.setFoobar("testNewInsert");
-        TestFactory.save(obj);
-        assertTrue(obj.getId() != 0L);
-        TestFactory.lookupByFoobar("testNewInsert");
-        assertEquals("testNewInsert", obj.getFoobar());
-        assertTrue(obj.getId() != 0);
-    }
-
-
-    @Test
-    public void testUpdate() {
-
-        TestInterface obj = TestFactory.createTest();
-        obj.setFoobar("update_Multi_test");
-        obj.setPin(12345);
-        TestFactory.save(obj);
-        TestInterface result = TestFactory.lookupByFoobar("update_Multi_test");
-        assertEquals("update_Multi_test", result.getFoobar());
-
-        result.setFoobar("After_multi_change");
-        result.setPin(54321);
-        TestFactory.save(result);
-        TestInterface updated = TestFactory.lookupByFoobar("After_multi_change");
-        assertEquals("After_multi_change", updated.getFoobar());
-        assertEquals(54321, updated.getPin().intValue());
-    }
-
-    @Test
-    public void testUpdateAfterCommit() {
-        TestInterface obj = TestFactory.createTest();
-        obj.setFoobar("update_test");
-        TestFactory.save(obj);
-        // Make sure we make it here without exception
-        assertTrue(true);
-    }
-
+    /**
+     * Test that lookupAll returns multiple records
+     */
     @Test
     public void testLookupMultipleObjects() {
         List<TestInterface> allTests = TestFactory.lookupAll();
         assertFalse(allTests.isEmpty());
     }
 
+    /**
+     * Test inserting a new entity
+     * - Use factory method to instantiate
+     * - Save via factory
+     */
     @Test
-    public void testUpdateToNullValue() {
-        TestInterface obj = TestFactory.createTest();
-        obj.setFoobar("update_test3");
-        obj.setTestColumn("AAA");
-        TestFactory.save(obj);
-        TestInterface result = TestFactory.lookupByFoobar("update_test3");
-        assertEquals("update_test3", result.getFoobar());
+    public void testInsert() {
+        final String testInsert = "testInsert";
+        assertNull(TestFactory.lookupByFoobar(testInsert));
 
-        result.setFoobar("After_change3");
-        // This is the critical part where we set a value
-        // that once had a value to a NULL value
-        result.setTestColumn(null);
-        TestFactory.save(result);
-        result = TestFactory.lookupByFoobar("After_change3");
-        assertNull(result.getTestColumn());
+        // insert
+        TestInterface record = TestFactory.createTest();
+        record.setFoobar(testInsert);
+        TestFactory.save(record);
+
+        // verify
+        assertTrue(record.getId() != 0L);
+        assertTrue(HibernateFactory.getSession().contains(record));
     }
+
+    /**
+     * Test reloading an object
+     */
+    @Test
+    public void testReload() {
+        final String testReload = "testReload";
+        assertNull(TestFactory.lookupByFoobar(testReload));
+
+        // insert the record
+        TestInterface record = TestFactory.createTest();
+        record.setFoobar(testReload);
+        TestFactory.save(record);
+        Long id = record.getId();
+
+        // evict and confirm record is detached
+        TestUtils.flushAndEvict(record);
+        assertFalse(HibernateFactory.getSession().contains(record));
+        assertNotNull(id);
+
+        // verify reload retrieves the same record but on a different instance
+        TestInterface recordReloaded = TestUtils.reload(record);
+        assertTrue(HibernateFactory.getSession().contains(recordReloaded));
+        assertEquals(id, recordReloaded.getId());
+        assertTrue(record != recordReloaded);
+    }
+
+    /**
+     * Test updating a managed object
+     */
+    @Test
+    public void testUpdateManaged() {
+        String key = "updateTestDetached";
+
+        //
+        TestInterface obj = TestFactory.createTest();
+        obj.setFoobar(key);
+        obj.setPin(123);
+        obj.setTestColumn("orig");
+        TestFactory.save(obj);
+
+        // verify lookup returns the same instance
+        TestInterface result = TestFactory.lookupByFoobar(key);
+        assertEquals(obj, result);
+
+        // update fields on the managed instance - should persist
+        result.setPin(null);
+        result.setTestColumn("upd");
+
+        // verify changes were persisted
+        TestInterface updated = TestFactory.lookupByFoobar(key);
+        assertNull(updated.getPin());
+        assertEquals("upd", updated.getTestColumn());
+    }
+
+    @Test
+    public void testUpdateDetached() {
+        String key = "updateTestManaged";
+
+        //
+        TestInterface obj = TestFactory.createTest();
+        obj.setFoobar(key);
+        obj.setPin(123);
+        obj.setTestColumn("orig");
+        TestFactory.save(obj);
+
+        // verify lookup returns the same instance
+        TestUtils.flushAndEvict(obj);
+        assertFalse(HibernateFactory.getSession().contains(obj));
+
+        // re-attach the instance
+        TestInterface managed = TestFactory.save(obj);
+        assertTrue(HibernateFactory.getSession().contains(managed));
+
+        // update fields on the managed instance - should persist
+        managed.setPin(null);
+        managed.setTestColumn("upd");
+
+        // verify changes were persisted
+        TestInterface updated = TestFactory.lookupByFoobar(key);
+        assertNull(updated.getPin());
+        assertEquals("upd", updated.getTestColumn());
+    }
+
 
     @Test
     public void testLotsOfTransactions() {
@@ -150,77 +197,176 @@ public class TestFactoryWrapperTest extends RhnBaseTestCase {
             HibernateFactory.commitTransaction();
             HibernateFactory.closeSession();
         }
-
     }
 
-    @BeforeAll
-    public static void oneTimeSetup() {
-        TestFactory.getSession().doWork(connection -> {
-            Statement statement = null;
-            try {
-                statement = connection.createStatement();
-                statement.executeQuery("select 1 from persist_test");
-            }
-            catch (SQLException e) {
-                // let's clean up anything that MAY have been left
-                // over
-                forceQuery(connection, "drop table persist_test");
-                forceQuery(connection, "drop sequence persist_sequence");
+    /**
+     * Batch delete using HibernateFactory.delete()
+     * - More efficient than individual deletes
+     * - Uses criteria API internally
+     */
+    @Test
+    public void testBatchDelete() {
+        // Create test entities
+        List<TestEntity> toDelete = new ArrayList<>();
+        for (int i = 1; i <= 5; i++) {
+            TestEntity entity = (TestEntity) TestFactory.createTest();
+            entity.setFoobar("delete_batch_" + i);
+            TestEntity managed = (TestEntity) TestFactory.save(entity);
+            toDelete.add(managed);
+        }
 
-                // Couldn't select 1, so the table didn't exist, create it
-                connection.rollback();
-                statement.execute("create sequence persist_sequence");
-                statement.execute("create table persist_test " +
-                        "( " +
-                        "  foobar VarChar(32)," +
-                        "  test_column VarChar(5)," +
-                        "  pin    numeric, " +
-                        "  hidden VarChar(32), " +
-                        "  id     numeric" +
-                        "         constraint persist_test_pk primary key," +
-                        "  created timestamp with time zone" +
-                        ")"
-                        );
-                statement.execute("insert into persist_test (foobar, id) " +
-                        "values ('Blarg', nextval('persist_sequence'))");
-                statement.execute("insert into persist_test (foobar, id) " +
-                        "values ('duplicate', nextval('persist_sequence'))");
-                statement.execute("insert into persist_test (foobar, id) " +
-                        "values ('duplicate', nextval('persist_sequence'))");
-                statement.execute("insert into persist_test (foobar, hidden, id) " +
-                        "values ('duplicate', 'xxxxx', nextval('persist_sequence'))");
+        //
+        assertEquals(5, HibernateFactory.delete(toDelete, TestEntity.class));
 
-                connection.commit();
-            }
-            finally {
-                HibernateHelper.cleanupDB(statement);
-            }
+        // Verify deletions
+        for (int i = 1; i <= 5; i++) {
+            assertNull(TestFactory.lookupByFoobar("delete_batch_" + i));
+        }
+    }
+
+    /**
+     * Deleting with empty collection
+     * - HibernateFactory.delete() handles empty collections gracefully
+     */
+    @Test
+    public void testDeleteEmptyCollection() {
+        Collection<TestEntity> emptyList = new ArrayList<>();
+        int deletedCount = HibernateFactory.delete(emptyList, TestEntity.class);
+        assertEquals(0, deletedCount);
+    }
+
+    /**
+     * Multiple operations in single session
+     * - Group related operations in one session/transaction
+     * - More efficient than opening multiple sessions
+     */
+    @Test
+    public void testMultipleOperationsInSession() {
+        // All operations in one session
+        TestInterface entity1 = TestFactory.createTest();
+        entity1.setFoobar("multi1");
+        TestFactory.save(entity1);
+
+        TestInterface entity2 = TestFactory.createTest();
+        entity2.setFoobar("multi2");
+        TestFactory.save(entity2);
+
+        // Query in same session
+        List<TestInterface> all = TestFactory.lookupAll();
+        assertNotNull(all);
+
+        // Commit once
+        HibernateFactory.commitTransaction();
+        HibernateFactory.closeSession();
+
+        // Verify persistence
+        assertNotNull(TestFactory.lookupByFoobar("multi1"));
+        assertNotNull(TestFactory.lookupByFoobar("multi2"));
+    }
+
+    /**
+     * Test creating a parent-child relationship
+     * - Cascade persist from parent to child
+     * - Verify bidirectional relationship
+     *
+     * Rule of thumb for these 1-N relationships:
+     * - update both sides of the relationship in memory
+     * - only persist the owner side _IF_ cascade is set
+     * (owner side is the many-to-one side / has the @JoinColumn)
+     */
+    @Test
+    public void testSuccessCreateRelationship() {
+        String parentKey = "parent";
+        String childKey = "child";
+
+        TestInterface parent = TestFactory.createTest();
+        parent.setFoobar(parentKey);
+
+        TestInterface child = TestFactory.createTest();
+        child.setFoobar(childKey);
+
+        child.setParent((TestEntity) parent);
+        parent.getChildren().add((TestEntity) child);
+
+        // persisting the parent is enough to cascade to child
+        //
+        TestFactory.save(parent);
+
+        // Verify relationship is bidirectional
+        TestInterface fetchedChild = TestFactory.lookupByFoobar(childKey);
+        assertEquals(parent.getId(), fetchedChild.getParent().getId());
+
+        TestInterface fetchedParent = TestFactory.lookupByFoobar(parentKey);
+        assertEquals(1, fetchedParent.getChildren().size());
+        assertEquals(child.getId(), fetchedParent.getChildren().get(0).getId());
+    }
+
+    /**
+     * Test creating a parent-child relationship without cascading
+     */
+    @Test
+    public void testFailCreateRelationshipWhenNotCascading() {
+        String parentKey = "parentFail";
+        String childKey = "childFail";
+
+        TestInterface parent = TestFactory.createTest();
+        parent.setFoobar(parentKey);
+
+        TestInterface child = TestFactory.createTest();
+        child.setFoobar(childKey);
+
+        child.setParent((TestEntity) parent);
+        parent.getChildren().add((TestEntity) child);
+
+        // persisting the parent is enough to cascade to child
+        TestFactory.save(child);
+
+        // Assert the issues with the relationship
+        assertThrows(IllegalStateException.class, () -> {
+            TestFactory.lookupByFoobar(childKey);
+        });
+        assertNull(parent.getId());
+        assertThrows(IllegalStateException.class, () -> {
+            TestFactory.lookupByFoobar(parentKey);
         });
     }
 
-    @AfterAll
-    public static void oneTimeTeardown() {
-        TestFactory.getSession().doWork(connection -> {
-            Statement statement = null;
-            try {
-                statement = connection.createStatement();
-                // Couldn't select 1, so the table didn't exist, create it
-                forceQuery(connection, "drop sequence persist_sequence");
-                forceQuery(connection, "drop table persist_test");
-            }
-            finally {
-                HibernateHelper.cleanupDB(statement);
-            }
-        });
-    }
+    /**
+     * Test updating parent-child relationships
+     * - Remove one child and add a new child
+     * - Verify changes persisted correctly
+     */
+    @Test
+    public void testUpdateRelationship() {
+        TestInterface vito = TestFactory.lookupByFoobar("vito");
+        TestInterface sonny = TestFactory.lookupByFoobar("sonny");
+        assertEquals(3, vito.getChildren().size());
+        Set<TestInterface> vitoChildren = Set.copyOf(vito.getChildren());
+        assertTrue(vitoChildren.contains(sonny));
 
-    private static void forceQuery(Connection c, String query) {
-        try {
-            Statement stmt = c.createStatement();
-            stmt.execute(query);
-        }
-        catch (SQLException se) {
-            log.warn("Failed to execute query {}: {}", query, se.toString());
-        }
+
+        // remove sunny from vito's children
+        vito.getChildren().remove(sonny);
+        sonny.setParent(null);
+
+        // create a new child and add to vito
+        TestEntity connie = new TestEntity();
+        connie.setFoobar("connie");
+        connie.setParent((TestEntity) vito);
+        vito.getChildren().add(connie);
+
+        //
+        TestUtils.flushSession();
+        TestFactory.closeSession();
+        assertFalse(HibernateFactory.getSession().contains(vito));
+        assertFalse(HibernateFactory.getSession().contains(connie));
+
+        // verify changes persisted
+        TestInterface vitoReloaded = TestFactory.lookupByFoobar("vito");
+        assertEquals(3, vitoReloaded.getChildren().size());
+        TestInterface connieReloaded = TestFactory.lookupByFoobar("connie");
+        Set<TestInterface> vitoChildrenReloaded = Set.copyOf(vitoReloaded.getChildren());
+        assertFalse(vitoChildrenReloaded.contains(sonny));
+        assertTrue(vitoChildrenReloaded.contains(connieReloaded));
     }
 }

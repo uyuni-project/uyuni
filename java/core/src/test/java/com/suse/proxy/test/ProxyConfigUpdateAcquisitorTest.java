@@ -213,7 +213,7 @@ public class ProxyConfigUpdateAcquisitorTest extends BaseTestCaseWithUser {
         pillar.add(ProxyConfigUtils.PROXY_FQDN_FIELD, DUMMY_PROXY_FQDN);
         pillar.add(ProxyConfigUtils.PARENT_FQDN_FIELD, DUMMY_PARENT_FQDN);
         minion.addPillar(pillar);
-        TestUtils.saveAndFlush(minion);
+        minion = TestUtils.saveAndFlush(minion);
 
         ProxyConfigUpdateJson request = new ProxyConfigUpdateJsonBuilder().serverId(minion.getId()).build();
         ProxyConfigUpdateContext proxyConfigUpdateContext = new ProxyConfigUpdateContext(request, null, null);
@@ -251,7 +251,7 @@ public class ProxyConfigUpdateAcquisitorTest extends BaseTestCaseWithUser {
         pillar.add(ProxyConfigUtils.PROXY_CERT_FIELD, DUMMY_PROXY_CERT);
         pillar.add(ProxyConfigUtils.PROXY_KEY_FIELD, DUMMY_PROXY_KEY);
         minion.addPillar(pillar);
-        TestUtils.saveAndFlush(minion);
+        minion = TestUtils.saveAndFlush(minion);
 
         ProxyConfigUpdateJson request = new ProxyConfigUpdateJsonBuilder()
                 .serverId(minion.getId())
@@ -290,7 +290,7 @@ public class ProxyConfigUpdateAcquisitorTest extends BaseTestCaseWithUser {
         // minion setup
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
         systemEntitlementManager.addEntitlementToServer(minion, EntitlementManager.PROXY);
-        TestUtils.saveAndFlush(minion);
+        minion = TestUtils.saveAndFlush(minion);
 
         ProxyConfigUpdateJson request = new ProxyConfigUpdateJsonBuilder()
                 .serverId(minion.getId())
@@ -332,7 +332,7 @@ public class ProxyConfigUpdateAcquisitorTest extends BaseTestCaseWithUser {
         pillar.add(ProxyConfigUtils.PROXY_CERT_FIELD, DUMMY_PROXY_CERT);
         pillar.add(ProxyConfigUtils.PROXY_KEY_FIELD, DUMMY_PROXY_KEY);
         minion.addPillar(pillar);
-        TestUtils.saveAndFlush(minion);
+        minion = TestUtils.saveAndFlush(minion);
 
         ProxyConfigUpdateJson request = new ProxyConfigUpdateJsonBuilder()
                 .serverId(minion.getId())

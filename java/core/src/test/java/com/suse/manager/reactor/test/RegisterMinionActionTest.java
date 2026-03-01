@@ -134,6 +134,8 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import jakarta.persistence.Tuple;
+
 /**
  * Tests for {@link RegisterMinionEventMessageAction}.
  */
@@ -652,7 +654,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
         assertEquals(MINION_ID, minion.getName());
         // assigned channels are preserved
-        Set<Channel> originalChannels = HibernateFactory.reload(server).getChannels();
+        Set<Channel> originalChannels = TestUtils.reload(server).getChannels();
         assertEquals(originalChannels, minion.getChannels());
 
         // Invalid Activation Key should be reported because
@@ -753,7 +755,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         ChannelFamily channelFamily = createTestChannelFamily();
         SUSEProduct product = SUSEProductTestUtils.createTestSUSEProduct(channelFamily);
         Channel baseChannelX8664 = setupBaseAndRequiredChannels(channelFamily, product);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         executeTest(
                 (key) -> new Expectations() {{
                     allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
@@ -894,7 +896,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         Channel baseChannelX8664 = setupBaseAndRequiredChannels(channelFamily, product);
         ConfigChannel cfgChannel = ConfigTestUtils.createConfigChannel(user.getOrg(),
                 "Config channel 1", "config-channel-1");
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         executeTest(
                 (key) -> new Expectations() {{
                     MinionStartupGrains.SuseManagerGrain suseManagerGrain =
@@ -1041,7 +1043,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                         .toList() : null;
         Channel baseChannel = channels != null ? channels.get(0) : null;
         MinionPendingRegistrationService.addMinion(user, MINION_ID, ContactMethodUtil.DEFAULT);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         try {
             executeTest(
                     (key) -> new Expectations() {{
@@ -1082,9 +1084,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
                             SUSEProductFactory.getSession().flush();
                             // select from view should succeed
-                            SUSEProductFactory.getSession()
-                                    .createNativeQuery("select * from rhnServerOverview")
-                                    .list();
+                            assertFalse(queryDataFromViewServerOverview().isEmpty());
                         } : () -> {
                             assertNull(minion.getBaseChannel());
                             assertEquals(0, minion.getChannels().size());
@@ -1095,6 +1095,12 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         finally {
             MinionPendingRegistrationService.removeMinion(MINION_ID);
         }
+    }
+
+    private List<Tuple> queryDataFromViewServerOverview() {
+        return HibernateFactory.getSession()
+                .createNativeQuery("select * from rhnServerOverview", Tuple.class)
+                .list();
     }
 
     /**
@@ -1563,7 +1569,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         Channel akBaseChannel = ChannelFactoryTest.createBaseChannel(user, "channel-x86_64");
         Channel akChildChannel = ChannelFactoryTest.createTestChannel(user, "channel-x86_64");
         akChildChannel.setParentChannel(akBaseChannel);
-        TestUtils.saveAndFlush(akChildChannel);
+        akChildChannel = TestUtils.saveAndFlush(akChildChannel);
 
         Channel assignedChannel = ChannelTestUtils.createBaseChannel(user);
         ServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
@@ -1571,6 +1577,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         server.setMachineId(MACHINE_ID);
         server.addChannel(assignedChannel);
         ServerFactory.save(server);
+
+        Channel akChildChannelCopy = akChildChannel;
         executeTest((key) -> new Expectations() {
             {
                 allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
@@ -1579,7 +1587,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         }, (contactMethod) -> {
             ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
             key.setBaseChannel(akBaseChannel);
-            key.addChannel(akChildChannel);
+            key.addChannel(akChildChannelCopy);
             key.setOrg(user.getOrg());
             ActivationKeyFactory.save(key);
             return key.getKey();
@@ -1593,7 +1601,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
             HashSet<Channel> channels = new HashSet<>();
             channels.add(akBaseChannel);
-            channels.add(akChildChannel);
+            channels.add(akChildChannelCopy);
             assertEquals(channels, minion.getChannels());
             assertTrue(minion.getFqdns().isEmpty());
         }, DEFAULT_CONTACT_METHOD);
@@ -1611,10 +1619,10 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         Channel akBaseChannel = ChannelFactoryTest.createBaseChannel(user, "channel-x86_64");
         Channel akChildChannel = ChannelFactoryTest.createTestChannel(user, "channel-x86_64");
         akChildChannel.setParentChannel(akBaseChannel);
-        TestUtils.saveAndFlush(akChildChannel);
+        akChildChannel = TestUtils.saveAndFlush(akChildChannel);
         Channel assignedChildChannel = ChannelFactoryTest.createTestChannel(user, "channel-x86_64");
         assignedChildChannel.setParentChannel(akBaseChannel);
-        TestUtils.saveAndFlush(assignedChildChannel);
+        assignedChildChannel = TestUtils.saveAndFlush(assignedChildChannel);
 
         ServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
         Server server = ServerTestUtils.createTestSystem(user, ServerConstants.getServerGroupTypeEnterpriseEntitled());
@@ -1622,6 +1630,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         server.addChannel(akBaseChannel);
         server.addChannel(assignedChildChannel);
         ServerFactory.save(server);
+        Channel akChildChannelCopy = akChildChannel;
         executeTest((key) -> new Expectations() {
             {
                 allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
@@ -1630,7 +1639,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         }, (contactMethod) -> {
             ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
             key.setBaseChannel(akBaseChannel);
-            key.addChannel(akChildChannel);
+            key.addChannel(akChildChannelCopy);
             key.setOrg(user.getOrg());
             ActivationKeyFactory.save(key);
             return key.getKey();
@@ -1644,7 +1653,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
             HashSet<Channel> channels = new HashSet<>();
             channels.add(akBaseChannel);
-            channels.add(akChildChannel);
+            channels.add(akChildChannelCopy);
             assertEquals(channels, minion.getChannels());
             assertTrue(minion.getFqdns().isEmpty());
         }, DEFAULT_CONTACT_METHOD);
@@ -1660,7 +1669,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         Channel assignedChannel = ChannelFactoryTest.createBaseChannel(user, "channel-x86_64");
         Channel assignedChildChannel = ChannelFactoryTest.createTestChannel(user, "channel-x86_64");
         assignedChildChannel.setParentChannel(assignedChannel);
-        TestUtils.saveAndFlush(assignedChildChannel);
+        assignedChildChannel = TestUtils.saveAndFlush(assignedChildChannel);
 
         ServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
         Server server = ServerTestUtils.createTestSystem(user, ServerConstants.getServerGroupTypeEnterpriseEntitled());
@@ -1669,6 +1678,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         server.addChannel(assignedChannel);
         server.addChannel(assignedChildChannel);
         ServerFactory.save(server);
+
+        Channel assignedChildChannelCopy = assignedChildChannel;
         executeTest((key) -> new Expectations() {
             {
                 allowing(saltServiceMock).getSystemInfoFull(MINION_ID);
@@ -1685,7 +1696,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
             HashSet<Channel> channels = new HashSet<>();
             channels.add(assignedChannel);
-            channels.add(assignedChildChannel);
+            channels.add(assignedChildChannelCopy);
             assertEquals(channels, minion.getChannels());
             assertTrue(minion.getFqdns().isEmpty());
         }, DEFAULT_CONTACT_METHOD);
@@ -1696,7 +1707,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         Channel assignedChannel = ChannelFactoryTest.createBaseChannel(user, "channel-x86_64");
         Channel assignedChildChannel = ChannelFactoryTest.createTestChannel(user, "channel-x86_64");
         assignedChildChannel.setParentChannel(assignedChannel);
-        TestUtils.saveAndFlush(assignedChildChannel);
+        assignedChildChannel = TestUtils.saveAndFlush(assignedChildChannel);
 
         MinionServer oldMinion = MinionServerFactoryTest.createTestMinionServer(user);
         oldMinion.addChannel(assignedChannel);
@@ -1704,7 +1715,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         ServerFactory.save(oldMinion);
 
         createTestChannelFamily();
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         executeTest(
                 (key) -> new Expectations() {{
                     MinionStartupGrains.SuseManagerGrain suseManagerGrain =

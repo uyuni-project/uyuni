@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Jan 27 09:31:33 WET 2026 - psuarezhernandez@suse.com
+
+- version 5.2.3-0
+  * Fix failing bootstrap with bootstrap script on SLES 16
+    and SL Micro 6.2 (bsc#1256991)
+
+-------------------------------------------------------------------
 Thu Nov 27 11:14:17 CET 2025 - michael.calmer@suse.com
 
 - version 5.2.2-0

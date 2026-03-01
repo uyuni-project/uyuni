@@ -34,10 +34,11 @@ public class VmInfoSlsResult {
      */
     public Map<String, Map<String, Object>> getVmInfos() {
         return Optional.ofNullable(vminfo)
+                .filter(StateApplyResult::isResult)
                 .map(StateApplyResult::getChanges)
                 .map(Ret::getRet)
                 .orElseGet(() -> {
-                    LOG.info("No virtual machines found");
+                    LOG.info("No virtual machines found (or libvirtd not available)");
                     return Map.of();
                 });
     }

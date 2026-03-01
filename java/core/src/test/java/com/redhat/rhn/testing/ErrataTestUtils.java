@@ -111,7 +111,7 @@ public class ErrataTestUtils {
         parameters.put("cid", channel.getId());
 
         m.executeUpdate(parameters);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
     }
 
     /**
@@ -123,8 +123,7 @@ public class ErrataTestUtils {
         product.setProduct("ChannelProduct" + TestUtils.randomString());
         product.setVersion("11.3");
         product.setBeta(false);
-        TestUtils.saveAndFlush(product);
-        return product;
+        return TestUtils.saveAndFlush(product);
     }
 
     /**
@@ -135,12 +134,12 @@ public class ErrataTestUtils {
      * @throws Exception if anything goes wrong
      */
     public static Channel createTestChannel(User user, Channel parent) throws Exception {
-        Channel result = createTestChannel(user);
-        result.setParentChannel(parent);
-        TestUtils.saveAndFlush(result);
-        TestUtils.saveAndFlush(parent);
+        Channel channel = createTestChannel(user);
+        channel.setParentChannel(parent);
+        Channel managed = TestUtils.saveAndFlush(channel);
+        parent = TestUtils.saveAndFlush(parent);
 
-        return result;
+        return managed;
     }
 
     /**
@@ -160,11 +159,11 @@ public class ErrataTestUtils {
 
         PublicChannelFamily pcf = new PublicChannelFamily();
         pcf.setChannelFamily(channelFamily);
-        HibernateFactory.getSession().persist(pcf);
+        TestUtils.persist(pcf);
 
         channelFamily.setPublicChannelFamily(pcf);
 
-        channelFamily = (ChannelFamily) TestUtils.reload(channelFamily);
+        channelFamily = TestUtils.reload(channelFamily);
         return channelFamily;
     }
 
@@ -184,9 +183,7 @@ public class ErrataTestUtils {
         for (Channel channel : channels) {
             server.addChannel(channel);
         }
-        TestUtils.saveAndFlush(server);
-
-        return server;
+        return TestUtils.saveAndFlush(server);
     }
 
     /**
@@ -202,8 +199,7 @@ public class ErrataTestUtils {
         Channel channel = ChannelFactoryTest.
                 createTestChannel(null, channelFamily);
         channel.setProduct(channelProduct);
-        TestUtils.saveAndFlush(channel);
-        return channel;
+        return TestUtils.saveAndFlush(channel);
     }
 
     /**
@@ -220,8 +216,7 @@ public class ErrataTestUtils {
                 createTestChannel(null, parent.getChannelFamily());
         channel.setParentChannel(parent);
         channel.setProduct(channelProduct);
-        TestUtils.saveAndFlush(channel);
-        return channel;
+        return TestUtils.saveAndFlush(channel);
     }
 
     /**
@@ -232,9 +227,7 @@ public class ErrataTestUtils {
     public static Cve createTestCve(String name) {
         Cve result = new Cve();
         result.setName(name);
-        TestUtils.saveAndFlush(result);
-
-        return result;
+        return TestUtils.saveAndFlush(result);
     }
 
     /**
@@ -248,9 +241,7 @@ public class ErrataTestUtils {
             throws Exception {
         Errata result = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         result.setCves(cves);
-        TestUtils.saveAndFlush(result);
-
-        return result;
+        return TestUtils.saveAndFlush(result);
     }
 
     /**
@@ -270,8 +261,7 @@ public class ErrataTestUtils {
         clone.setOrg(user.getOrg());
         clone.setCves(cves);
         clone.addPackage(aPackage);
-        TestUtils.saveAndFlush(clone);
-        return clone;
+        return TestUtils.saveAndFlush(clone);
     }
 
     /**
@@ -285,9 +275,7 @@ public class ErrataTestUtils {
         Channel result = ChannelFactoryTest.createTestChannel(user);
 
         result.addErrata(errata);
-        TestUtils.saveAndFlush(result);
-
-        return result;
+        return TestUtils.saveAndFlush(result);
     }
 
     /**
@@ -306,11 +294,10 @@ public class ErrataTestUtils {
 
         for (Package package1 : packages) {
             ChannelTestUtility.testAddPackage(clonedChannel, package1);
-            TestUtils.saveAndFlush(clonedChannel);
+            clonedChannel = TestUtils.saveAndFlush(clonedChannel);
         }
 
-        TestUtils.saveAndFlush(clonedChannel);
-        return clonedChannel;
+        return TestUtils.saveAndFlush(clonedChannel);
     }
 
     /**
@@ -346,11 +333,11 @@ public class ErrataTestUtils {
         m.executeUpdate(params, list);
         HibernateFactory.getSession().refresh(channel);
 
-        TestUtils.saveAndFlush(channel);
+        channel = TestUtils.saveAndFlush(channel);
 
         if (errata != null) {
             errata.addPackage(result);
-            HibernateFactory.getSession().flush();
+            TestUtils.flushSession();
             HibernateFactory.getSession().refresh(errata);
             HibernateFactory.getSession().refresh(result);
         }
@@ -395,9 +382,7 @@ public class ErrataTestUtils {
         result.setPackageEvr(pevr);
         result.setPackageGroup(result.getPackageGroup());
 
-        TestUtils.saveAndFlush(result);
-
-        return result;
+        return TestUtils.saveAndFlush(result);
     }
 
     /**
@@ -484,9 +469,7 @@ public class ErrataTestUtils {
         result.setPackageEvr(pevr);
         result.setPackageGroup(previous.getPackageGroup());
 
-        TestUtils.saveAndFlush(result);
-
-        return result;
+        return TestUtils.saveAndFlush(result);
     }
 
     /**
@@ -524,9 +507,7 @@ public class ErrataTestUtils {
         Server result = createTestServer(user, channels);
         result.setServerArch(ServerFactory.lookupServerArchByLabel(serverArchLabel));
 
-        TestUtils.saveAndFlush(result);
-
-        return result;
+        return TestUtils.saveAndFlush(result);
     }
 
     /**
@@ -543,9 +524,7 @@ public class ErrataTestUtils {
         Server result = createTestServer(user, channels);
         result.setName(serverName);
 
-        TestUtils.saveAndFlush(result);
-
-        return result;
+        return TestUtils.saveAndFlush(result);
     }
 
     /**

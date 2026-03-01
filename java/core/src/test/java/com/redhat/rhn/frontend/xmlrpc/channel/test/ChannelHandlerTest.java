@@ -54,7 +54,6 @@ public class ChannelHandlerTest extends BaseHandlerTestCase {
         admin.getOrg().addOwnedChannel(channel);
         OrgFactory.save(admin.getOrg());
         ChannelFactory.save(channel);
-        flushAndEvict(channel);
 
         List<Map<String, Object>> result = handler.listSoftwareChannels(admin);
         assertNotNull(result);
@@ -76,7 +75,6 @@ public class ChannelHandlerTest extends BaseHandlerTestCase {
         admin.getOrg().addOwnedChannel(channel);
         OrgFactory.save(admin.getOrg());
         ChannelFactory.save(channel);
-        flushAndEvict(channel);
 
         // execute
         Object[] result = handler.listAllChannels(admin);
@@ -104,7 +102,6 @@ public class ChannelHandlerTest extends BaseHandlerTestCase {
         admin.getOrg().addOwnedChannel(channel);
         OrgFactory.save(admin.getOrg());
         ChannelFactory.save(channel);
-        flushAndEvict(channel);
 
         Object[] result = handler.listManageableChannels(regular);
 
@@ -175,7 +172,6 @@ public class ChannelHandlerTest extends BaseHandlerTestCase {
         admin.getOrg().addOwnedChannel(channel);
         OrgFactory.save(admin.getOrg());
         ChannelFactory.save(channel);
-        flushAndEvict(channel);
 
         // execute
         Object[] result = handler.listMyChannels(admin);
@@ -213,7 +209,6 @@ public class ChannelHandlerTest extends BaseHandlerTestCase {
 
         OrgFactory.save(admin.getOrg());
         ChannelFactory.save(channel);
-        flushAndEvict(channel);
 
         // execute
         Object[] result = handler.listSharedChannels(admin);
@@ -244,7 +239,6 @@ public class ChannelHandlerTest extends BaseHandlerTestCase {
         admin.getOrg().addOwnedChannel(channel);
         OrgFactory.save(admin.getOrg());
         ChannelFactory.save(channel);
-        flushAndEvict(channel);
 
         // execute
         Object[] result = handler.listRetiredChannels(admin);

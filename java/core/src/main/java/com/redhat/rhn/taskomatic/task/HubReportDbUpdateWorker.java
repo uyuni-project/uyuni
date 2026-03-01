@@ -30,6 +30,7 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MgrServerInfo;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.taskomatic.TaskoFactory;
 import com.redhat.rhn.taskomatic.task.threaded.QueueWorker;
 import com.redhat.rhn.taskomatic.task.threaded.TaskQueue;
 
@@ -154,7 +155,7 @@ public class HubReportDbUpdateWorker implements QueueWorker {
             extractDataFromRemoteDatabase(localDB, remoteDB);
         }
         catch (Exception e) {
-            parentQueue.getQueueRun().failed();
+            TaskoFactory.markFailed(parentQueue.getQueueRun());
             parentQueue.changeRun(null);
 
             NotificationData messageData = new ReportDatabaseUpdateFailed(e, mgrServerInfo.getServer().getName());

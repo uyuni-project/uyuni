@@ -17,12 +17,12 @@
     <parent>
         <groupId>org.uyuni-project</groupId>
         <artifactId>uyuni-java-parent</artifactId>
-        <version>5.2.2</version>
+        <version>5.2.3</version>
         <relativePath>../microservices/uyuni-java-parent</relativePath>
     </parent>
 
     <artifactId>branding</artifactId>
-    <version>5.2.2</version>
+    <version>5.2.3</version>
     <packaging>jar</packaging>
 
     <build>

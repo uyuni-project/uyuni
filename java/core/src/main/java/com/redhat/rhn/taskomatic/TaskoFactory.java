@@ -106,10 +106,12 @@ public class TaskoFactory extends HibernateFactory {
 
     /**
      * hibernate save run
+     *
      * @param taskoRun run to save
+     * @return the managed {@link TaskoRun}
      */
-    public static void save(TaskoRun taskoRun) {
-        singleton.saveObject(taskoRun);
+    public static TaskoRun save(TaskoRun taskoRun) {
+        return singleton.saveObject(taskoRun);
     }
 
     /**
@@ -130,18 +132,22 @@ public class TaskoFactory extends HibernateFactory {
 
     /**
      * hibernate save schedule
+     *
      * @param taskoSchedule schedule to save
+     * @return the managed {@link TaskoSchedule} instance
      */
-    public static void save(TaskoSchedule taskoSchedule) {
-        singleton.saveObject(taskoSchedule);
+    public static TaskoSchedule save(TaskoSchedule taskoSchedule) {
+        return singleton.saveObject(taskoSchedule);
     }
 
     /**
      * hibernate save template
+     *
      * @param taskoTemplate run to save
+     * @return the managed {@link TaskoTemplate} instance
      */
-    public static void save(TaskoTemplate taskoTemplate) {
-        singleton.saveObject(taskoTemplate);
+    public static TaskoTemplate save(TaskoTemplate taskoTemplate) {
+        return singleton.saveObject(taskoTemplate);
     }
 
     /**
@@ -154,10 +160,12 @@ public class TaskoFactory extends HibernateFactory {
 
     /**
      * hibernate save bunch
+     *
      * @param taskoBunch run to save
+     * @return the managed {@link TaskoBunch} instance
      */
-    public static void save(TaskoBunch taskoBunch) {
-        singleton.saveObject(taskoBunch);
+    public static TaskoBunch save(TaskoBunch taskoBunch) {
+        return singleton.saveObject(taskoBunch);
     }
 
     /**
@@ -170,10 +178,12 @@ public class TaskoFactory extends HibernateFactory {
 
     /**
      * hibernate save task
+     *
      * @param taskoTask run to save
+     * @return the managed {@link TaskoTask} instance
      */
-    public static void save(TaskoTask taskoTask) {
-        singleton.saveObject(taskoTask);
+    public static TaskoTask save(TaskoTask taskoTask) {
+        return singleton.saveObject(taskoTask);
     }
 
     /**
@@ -309,23 +319,23 @@ public class TaskoFactory extends HibernateFactory {
         if (orgId == null) {
             return getSession()
                     .createQuery("""
-                            FROM com.redhat.rhn.taskomatic.domain.TaskoSchedule
-                            WHERE orgId IS NULL
-                            AND bunch_id = :bunch_id
-                            AND activeFrom < :timestamp
-                            AND (activeTill IS NULL OR :timestamp < activeTill)""", TaskoSchedule.class)
+                            FROM TaskoSchedule ts
+                            WHERE ts.orgId IS NULL
+                            AND ts.bunch.id = :bunch_id
+                            AND ts.activeFrom < :timestamp
+                            AND (ts.activeTill IS NULL OR :timestamp < ts.activeTill)""", TaskoSchedule.class)
                     .setParameter("timestamp", new Date())   // use server time, not DB time
                     .setParameter("bunch_id", bunch.getId())
                     .list();
         }
         return getSession()
                 .createQuery("""
-                        FROM com.redhat.rhn.taskomatic.domain.TaskoSchedule
-                        WHERE orgId = :org_id
-                        AND bunch_id = :bunch_id
-                        AND (activeFrom < :timestamp
-                             AND (activeTill IS NULL
-                              OR :timestamp < activeTill))""", TaskoSchedule.class)
+                        FROM TaskoSchedule ts
+                        WHERE ts.orgId = :org_id
+                        AND ts.bunch.id = :bunch_id
+                        AND (ts.activeFrom < :timestamp
+                             AND (ts.activeTill IS NULL
+                              OR :timestamp < ts.activeTill))""", TaskoSchedule.class)
                 .setParameter("timestamp", new Date())   // use server time, not DB time
                 .setParameter("bunch_id", bunch.getId())
                 .setParameter("org_id", orgId)
@@ -533,6 +543,9 @@ public class TaskoFactory extends HibernateFactory {
 
         // Create the native query
         return getSession().createNativeQuery(sql, TaskoRun.class)
+                .addSynchronizedEntityClass(TaskoRun.class)
+                .addSynchronizedEntityClass(TaskoTemplate.class)
+                .addSynchronizedEntityClass(TaskoBunch.class)
                 // Set the parameters for bunchName and status
                 .setParameter("bunchName", bunchName)
                 .setParameter("status1", TaskoRun.STATUS_RUNNING)
@@ -669,5 +682,57 @@ public class TaskoFactory extends HibernateFactory {
         TaskoFactory.save(schedule);
         HibernateFactory.commitTransaction();
         log.info("Schedule created for {}.", jobLabel);
+    }
+
+    /**
+     * Mark the run as ready to run.
+     * @param run the {@link TaskoRun} instance
+     */
+    public static void markReady(TaskoRun run) {
+        run.setStatus(TaskoRun.STATUS_READY_TO_RUN);
+        save(run);
+    }
+
+    /**
+     * Mark the run as started. Has to be called right before job execution
+     * @param run the {@link TaskoRun} instance
+     */
+    public static void markStarted(TaskoRun run) {
+        run.setStartTime(new Date());
+        run.setStatus(TaskoRun.STATUS_RUNNING);
+        save(run);
+    }
+
+    /**
+     * Mark the run instance as finished. Has to be called right after job execution
+     * @param run the {@link TaskoRun} instance
+     */
+    public static void markFinished(TaskoRun run) {
+        run.setEndTime(new Date());
+        run.setStatus(TaskoRun.STATUS_FINISHED);
+        save(run);
+    }
+
+    /**
+     * Mark the run instance as skipped. Task executions will be skipped in queue tasks
+     * @param run the {@link TaskoRun} instance
+     * @see com.redhat.rhn.taskomatic.task.RhnQueueJob
+     */
+    public static void markSkipped(TaskoRun run) {
+        Date now = new Date();
+        run.setStartTime(now);
+        run.setEndTime(now);
+        run.setStatus(TaskoRun.STATUS_SKIPPED);
+        save(run);
+    }
+
+    /**
+     * Mark the run instance as failed. Has to be called right after failed job execution
+     * @param run the {@link TaskoRun} instance
+     */
+    public static void markFailed(TaskoRun run) {
+        run.setEndTime(new Date());
+        run.setStatus(TaskoRun.STATUS_FAILED);
+        save(run);
     }
 }

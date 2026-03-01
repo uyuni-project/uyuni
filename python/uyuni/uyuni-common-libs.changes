@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jan 27 09:31:28 WET 2026 - psuarezhernandez@suse.com
+
+- version 5.2.2-0
+  * Disable build as debian package
+
+-------------------------------------------------------------------
 Mon Oct 27 15:07:23 CET 2025 - rosuna@suse.com
 
 - version 5.2.1-0

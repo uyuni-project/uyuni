@@ -1,0 +1,3 @@
+- Include tar and smdba-pgarchive command to the database image
+  (bsc#1250367)
+- Trust local user access

@@ -20,13 +20,13 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 
 /**
  * CryptoKeyType - Class representation of the table rhnCryptoKeyType.
@@ -37,8 +37,9 @@ public class CryptoKeyType extends BaseDomainHelper {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "RHN_CRYPTOKEY_TYPE_ID_SEQ")
-    @SequenceGenerator(name = "RHN_CRYPTOKEY_TYPE_ID_SEQ", sequenceName = "RHN_CRYPTOKEY_TYPE_ID_SEQ",
-            allocationSize = 1)
+    @SequenceGenerator(
+            name = "RHN_CRYPTOKEY_TYPE_ID_SEQ", sequenceName = "RHN_CRYPTOKEY_TYPE_ID_SEQ", allocationSize = 1
+    )
     private Long id;
 
     @Column(nullable = false)

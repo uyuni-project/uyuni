@@ -19,20 +19,22 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.annotations.Type;
 
 import java.util.Map;
 import java.util.TreeMap;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import io.hypersistence.utils.hibernate.type.json.JsonType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 
 /**
  * CPU
@@ -88,11 +90,13 @@ public class CPU extends BaseDomainHelper {
     private CPUArch arch;
 
     /**
-     * This field stores CPU architecture-specific information. Although the corresponding database field is of type
-     * JSONB, it is mapped here as a String due to limitations in XML mapping for JSON types.
+     * This field stores CPU architecture-specific information. Although the
+     * corresponding database field is of type
+     * JSONB, it is mapped here as a String due to limitations in XML mapping for
+     * JSON types.
      */
-    @org.hibernate.annotations.Type(type = "json")
-    @Column(columnDefinition = "jsonb", name = "arch_specs")
+    @Type(JsonType.class)
+    @Column(name = "arch_specs", columnDefinition = "jsonb")
     private Map<String, Object> archSpecs = new TreeMap<>();
 
     /**
@@ -318,6 +322,7 @@ public class CPU extends BaseDomainHelper {
     public void setNrThread(Long nrThreadIn) {
         nrThread = nrThreadIn;
     }
+
     /**
      * @return Returns the server.
      */
@@ -376,7 +381,8 @@ public class CPU extends BaseDomainHelper {
 
     /**
      * provides the cpuarch name, which is really the only usefull info for the
-     *  cpu arch object
+     * cpu arch object
+     *
      * @return the arch that the cpu is.
      */
     public String  getArchName() {

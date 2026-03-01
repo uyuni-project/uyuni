@@ -16,7 +16,6 @@ package com.redhat.rhn.domain.channel.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
@@ -100,7 +99,7 @@ public class ChannelFamilyTest extends BaseTestCaseWithUser {
             privateChannelFamily.setChannelFamily(channelFamily);
             channelFamily.addPrivateChannelFamily(privateChannelFamily);
 
-            HibernateFactory.getSession().persist(privateChannelFamily);
+            TestUtils.persist(privateChannelFamily);
         }
     }
 }

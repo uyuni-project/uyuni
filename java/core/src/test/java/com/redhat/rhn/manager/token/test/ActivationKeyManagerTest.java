@@ -213,7 +213,7 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
                                                 baseChannel, true, null);
 
 
-        temp = (ActivationKey)reload(key2);
+        temp = TestUtils.reload(key2);
         assertTrue(temp.getKey().endsWith(keyName));
         assertEquals(note, temp.getNote());
         assertEquals(usageLimit, temp.getUsageLimit());
@@ -296,5 +296,16 @@ public class ActivationKeyManagerTest extends BaseTestCaseWithUser {
         List<ActivationKey> activationKeys =
                 ActivationKeyManager.getInstance().findAll(user);
         assertEquals(1, activationKeys.size());
+    }
+
+
+    @Test
+    public void generatedCoverageTestFindAllActive() {
+        // this test has been generated programmatically to test ActivationKeyManager.findAllActive
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        ActivationKeyManager testObject = ActivationKeyManager.getInstance();
+        User arg0 = UserTestUtils.createUser();
+        testObject.findAllActive(arg0);
     }
 }

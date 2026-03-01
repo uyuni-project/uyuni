@@ -36,6 +36,8 @@ RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf && \
         ${USEPYTHON}-pygit2 \
         ${USEPYTHON}-ldap \
         billing-data-service \
+        #required by mgrSetup.sh
+        bind-utils \
         drbd-formula \
         ed \
         golang-github-QubitProducts-exporter_exporter \
@@ -125,7 +127,7 @@ LABEL org.opencontainers.image.description="All-in-one ${PRODUCT} server image"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opencontainers.image.version=5.2.4
+LABEL org.opencontainers.image.version=5.2.5
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix

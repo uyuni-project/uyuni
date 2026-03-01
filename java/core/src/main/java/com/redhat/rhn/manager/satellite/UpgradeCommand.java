@@ -24,6 +24,7 @@ import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.config.ConfigChannel;
 import com.redhat.rhn.domain.config.ConfigContent;
 import com.redhat.rhn.domain.config.ConfigFile;
+import com.redhat.rhn.domain.config.ConfigFileName;
 import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.domain.kickstart.KickstartData;
@@ -39,7 +40,8 @@ import com.redhat.rhn.domain.task.TaskFactory;
 import com.redhat.rhn.manager.BaseTransactionCommand;
 import com.redhat.rhn.manager.kickstart.KickstartSessionCreateCommand;
 
-import com.suse.manager.saltboot.SaltbootUtils;
+import com.suse.manager.saltboot.SaltbootMigrationException;
+import com.suse.manager.saltboot.SaltbootMigrationUtils;
 import com.suse.manager.webui.services.ConfigChannelSaltManager;
 import com.suse.manager.webui.services.SaltConstants;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
@@ -49,6 +51,7 @@ import com.suse.salt.netapi.datatypes.target.MinionList;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.type.StandardBasicTypes;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -61,6 +64,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import jakarta.persistence.Tuple;
 
 /**
  * Class responsible for executing one-time upgrade logic
@@ -252,27 +257,38 @@ public class UpgradeCommand extends BaseTransactionCommand {
      * @throws java.lang.RuntimeException if some IO error happens during the process
      */
     private void importLegacyStatesToDb() {
-        List<Object[]> candidates = HibernateFactory.getSession()
-                .createQuery("""
-                        SELECT DISTINCT channel.org.id, channel.label, revision
-                        FROM ConfigRevision AS revision
-                        INNER JOIN revision.configContent AS content
-                        INNER JOIN revision.configFile AS file
-                        INNER JOIN file.configFileName AS fileName
-                        INNER JOIN file.configChannel AS channel
-                        WHERE channel.configChannelType.label = 'state'
-                        AND fileName.path = '/init.sls'
-                        AND revision.revision = 1
-                        AND length(content.contents) = 0
-                        """, Object[].class)
+        // Using a native query since in version 7.1.6 of hibernate, the length() function of HQL queries doesn't work
+        // for a byte[] field mapped as BYTEA. This should be checked again when upgrading hibernate
+        List<Tuple> candidates = HibernateFactory.getSession()
+                .createNativeQuery("""
+                               SELECT channel.org_id, channel.label, rev.*
+                                 FROM rhnconfigrevision rev
+                                          INNER JOIN rhnconfigfile file ON rev.config_file_id = file.id
+                                          INNER JOIN rhnconfigfilename name ON file.config_file_name_id = name.id
+                                          INNER JOIN rhnconfigchannel channel ON file.config_channel_id = channel.id
+                                          INNER JOIN rhnconfigchanneltype type ON channel.confchan_type_id = type.id
+                                          INNER JOIN rhnconfigcontent content ON rev.config_content_id = content.id
+                                WHERE rev.revision = 1
+                                          AND name.path = '/init.sls'
+                                          AND type.label = 'state'
+                                          AND LENGTH(content.contents) = 0
+                               """, Tuple.class)
+                .addSynchronizedEntityClass(ConfigRevision.class)
+                .addSynchronizedEntityClass(ConfigFile.class)
+                .addSynchronizedEntityClass(ConfigFileName.class)
+                .addSynchronizedEntityClass(ConfigChannel.class)
+                .addSynchronizedEntityClass(ConfigContent.class)
+                .addScalar("org_id", StandardBasicTypes.LONG)
+                .addScalar("label", StandardBasicTypes.STRING)
+                .addEntity("rev", ConfigRevision.class)
                 .list();
 
         // Use WARN here because we want this operation logged.
         log.warn("Migrating content of {} custom states from disk to database.", candidates.size());
         candidates.forEach(row -> {
-            Long orgId = (Long) row[0];
-            String channelLabel = (String) row[1];
-            ConfigRevision revision = (ConfigRevision) row[2];
+            Long orgId = row.get("org_id", Long.class);
+            String channelLabel = row.get("label", String.class);
+            ConfigRevision revision = row.get("rev", ConfigRevision.class);
 
             Path statePath = saltRootPath
                     .resolve(ORG_STATES_DIRECTORY_PREFIX + orgId)
@@ -436,7 +452,7 @@ public class UpgradeCommand extends BaseTransactionCommand {
                 log.info("Cobbler migration: waiting");
                 Thread.sleep(60000);
                 log.info("Cobbler migration: started");
-                SaltbootUtils.migrateSaltboot();
+                SaltbootMigrationUtils.migrateSaltboot();
                 TaskFactory.remove(t);
                 HibernateFactory.commitTransaction();
                 log.info("Cobbler migration: finished");
@@ -444,7 +460,7 @@ public class UpgradeCommand extends BaseTransactionCommand {
             catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
-            catch (Exception e) {
+            catch (SaltbootMigrationException e) {
                 log.error("Cobbler migration failed", e);
             }
             finally {

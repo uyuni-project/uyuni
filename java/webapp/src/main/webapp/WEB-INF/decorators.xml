@@ -8,6 +8,7 @@
         <pattern>/errors/500.jsp</pattern>
         <pattern>/manager/download/saltssh/pubkey</pattern>
         <pattern>/manager/login</pattern>
+        <pattern>/manager/sso/metadata</pattern>
         <pattern>/ajax</pattern>
     </excludes>
     <decorator name="layout_bare" page="layout_bare.jsp">

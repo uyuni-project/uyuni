@@ -33,15 +33,14 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.Set;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.FilterConfig;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import spark.route.HttpMethod;
 import spark.route.ServletRoutes;
 import spark.routematch.RouteMatch;
@@ -91,9 +90,9 @@ public class AuthorizationFilter implements Filter {
             // TODO: Handle PermissionExceptions properly depending on the "Content-Type" and "Accept" headers
             // TODO: possibly pass it down another filter
             // TODO: Review PageFilter
-            LOG.debug("Access restricted for user '{}' to URI '{}' [{}]",
-                    new RequestContext(hreq).getCurrentUser(), hreq.getRequestURI(), hreq.getMethod());
-            hres.sendError(HttpServletResponse.SC_FORBIDDEN, e.getMessage());
+            LOG.debug("Access restricted for user '{}' to URI '{}' [{}]. Error:'{}'",
+                    new RequestContext(hreq).getCurrentUser(), hreq.getRequestURI(), hreq.getMethod(), e.getMessage());
+            hres.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 

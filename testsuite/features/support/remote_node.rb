@@ -176,22 +176,6 @@ class RemoteNode
     end
   end
 
-  # Runs a local command until it succeeds or times out.
-  #
-  # @param cmd [String] The command to run.
-  # @param timeout [Integer] The timeout to be used, in seconds.
-  # @param runs_in_container [Boolean] Whether the command should be run in the container or on the host.
-  # @return [Array<String, Integer>] The result and exit code.
-  def run_local_until_ok(cmd, timeout: DEFAULT_TIMEOUT, runs_in_container: true)
-    repeat_until_timeout(timeout: timeout, report_result: true) do
-      result, code = run_local(cmd, check_errors: false, runs_in_container: runs_in_container)
-      return [result, code] if code.zero?
-
-      sleep 2
-      result
-    end
-  end
-
   # Runs a command until it succeeds or times out.
   #
   # @param cmd [String] The command to run.

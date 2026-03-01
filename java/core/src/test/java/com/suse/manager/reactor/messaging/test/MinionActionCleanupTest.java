@@ -16,7 +16,6 @@ package com.suse.manager.reactor.messaging.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
@@ -192,7 +191,7 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
                 user, Arrays.asList(minion1.getId(), minion2.getId()), "Run script test", sad, earliest, actionChain);
         assertEquals(2, scriptRun.size());
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         context().checking(new Expectations() {
             {

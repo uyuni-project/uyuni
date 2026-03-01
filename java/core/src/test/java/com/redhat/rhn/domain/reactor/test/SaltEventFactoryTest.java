@@ -37,9 +37,6 @@ import java.util.stream.IntStream;
  */
 public class SaltEventFactoryTest extends RhnBaseTestCase {
 
-    private static final String INSERT_INTO_SUSE_SALT_EVENT_QUERY =
-            "INSERT INTO suseSaltEvent (id, minion_id, data, queue) VALUES (:id, :minionId, :data, :queue)";
-
     @Test
     public void testCountSaltEvents() {
         // verify there are no salt events
@@ -222,7 +219,8 @@ public class SaltEventFactoryTest extends RhnBaseTestCase {
 
 
     private void insertIntoSuseSaltEvent(SaltEvent saltEvent) {
-        HibernateFactory.getSession().createNativeQuery(INSERT_INTO_SUSE_SALT_EVENT_QUERY)
+        HibernateFactory.getSession().createNativeMutationQuery(
+                "INSERT INTO suseSaltEvent (id, minion_id, data, queue) VALUES (:id, :minionId, :data, :queue)")
                 .setParameter("id", saltEvent.getId())
                 .setParameter("minionId", saltEvent.getMinionId())
                 .setParameter("data", saltEvent.getData())

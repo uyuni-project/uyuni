@@ -1,0 +1,111 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/component: proxy
+    app.kubernetes.io/part-of: uyuni
+{{- if .Values.services.annotations }}
+  annotations:
+{{ toYaml .Values.services.annotations | indent 4 }}
+{{- end }}
+spec:
+  selector:
+    app.kubernetes.io/component: proxy
+    app.kubernetes.io/part-of: uyuni
+  type: {{ .Values.services.type }}
+  ports:
+    - name: http
+      port: 80
+{{- if eq .Values.services.type "NodePort" }}
+      nodePort: {{ .Values.httpd.ports.http }}
+{{- end }}
+    - name: https
+      port: 443
+{{- if eq .Values.services.type "NodePort" }}
+      nodePort: {{ .Values.httpd.ports.https }}
+{{- end }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: salt
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/component: proxy
+    app.kubernetes.io/part-of: uyuni
+{{- if .Values.services.annotations }}
+  annotations:
+{{ toYaml .Values.services.annotations | indent 4 }}
+{{- end }}
+spec:
+  selector:
+    app.kubernetes.io/component: proxy
+    app.kubernetes.io/part-of: uyuni
+  type: {{ .Values.services.type }}
+  ports:
+    - name: salt-publish
+      port: 4505
+{{- if eq .Values.services.type "NodePort" }}
+      nodePort: {{ .Values.salt.ports.publish }}
+{{- end }}
+    - name: salt-request
+      port: 4506
+{{- if eq .Values.services.type "NodePort" }}
+      nodePort: {{ .Values.salt.ports.request }}
+{{- end }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ssh
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/component: proxy
+    app.kubernetes.io/part-of: uyuni
+{{- if .Values.services.annotations }}
+  annotations:
+{{ toYaml .Values.services.annotations | indent 4 }}
+{{- end }}
+spec:
+  selector:
+    app.kubernetes.io/component: proxy
+    app.kubernetes.io/part-of: uyuni
+  type: {{ .Values.services.type }}
+  ports:
+    - name: ssh
+      port: 8022
+      targetPort: 22
+{{- if eq .Values.services.type "NodePort" }}
+      nodePort: {{ .Values.ssh.ports.ssh }}
+{{- end }}
+{{- if not .Values.tftp.hostNetwork }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tftp
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/component: proxy
+    app.kubernetes.io/part-of: uyuni
+{{- if .Values.services.annotations }}
+  annotations:
+{{ toYaml .Values.services.annotations | indent 4 }}
+{{- end }}
+spec:
+  selector:
+    app.kubernetes.io/component: proxy
+    app.kubernetes.io/part-of: uyuni
+  # ClusterIP or NodePort wouldn't work for TFTP if not using the host network
+  type: LoadBalancer
+  # Ensures all packets from a single client go to the same pod
+  sessionAffinity: ClientIP
+  # Preserves the client's source IP and avoids extra hops between nodes
+  externalTrafficPolicy: Local
+  ports:
+    - name: tftp
+      port: 69
+      protocol: UDP
+{{- end }}

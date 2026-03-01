@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LLC
  * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -20,12 +21,19 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFamily;
+import com.redhat.rhn.domain.config.ConfigChannelType;
 import com.redhat.rhn.domain.iss.IssFactory;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
+import com.redhat.rhn.domain.org.usergroup.UserGroupImpl;
+import com.redhat.rhn.domain.org.usergroup.UserGroupMembers;
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.role.RoleImpl;
+import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.legacy.UserImpl;
 import com.redhat.rhn.frontend.dto.ActivationKeyDto;
 import com.redhat.rhn.frontend.dto.kickstart.KickstartDto;
 import com.redhat.rhn.manager.kickstart.KickstartDeleteCommand;
@@ -45,7 +53,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.Tuple;
+import jakarta.persistence.Tuple;
 
 /**
  * A small wrapper around hibernate files to remove some of the complexities
@@ -193,9 +201,7 @@ public class OrgFactory extends HibernateFactory {
         retval.addRole(RoleFactory.IMAGE_ADMIN);
 
         // Save the object since we may have in memory items to write\
-        singleton.saveInternal(retval);
-        retval = HibernateFactory.reload(retval);
-        return retval;
+        return getSession().merge(retval);
     }
 
     /**
@@ -215,8 +221,7 @@ public class OrgFactory extends HibernateFactory {
             // New org, gotta use the stored procedure.
             return saveNewOrg(org);
         }
-        saveObject(org);
-        return org;
+        return saveObject(org);
     }
 
     /**
@@ -235,17 +240,10 @@ public class OrgFactory extends HibernateFactory {
      * @return number of active Users
      */
     public static Long getActiveUsers(Org orgIn) {
-        Session session = HibernateFactory.getSession();
-        return session.createNativeQuery("""
-                            SELECT count(u.id) AS users
-                            FROM   web_contact u
-                            WHERE  1=1
-                            AND    u.org_id = :org_id
-                        """, Tuple.class)
+        return getSession()
+                .createQuery("SELECT COUNT(u.id) FROM UserImpl u WHERE u.org.id = :org_id", Long.class)
                 .setParameter(ORG_ID, orgIn.getId())
-                .addScalar("users", StandardBasicTypes.LONG)
-                .uniqueResult()
-                .get(0, Long.class);
+                .uniqueResult();
     }
 
     /**
@@ -254,17 +252,9 @@ public class OrgFactory extends HibernateFactory {
      * @return number of active systems
      */
     public static Long getActiveSystems(Org orgIn) {
-        Session session = HibernateFactory.getSession();
-        return session.createNativeQuery("""
-                                SELECT count(s.id) AS systems
-                                FROM   rhnServer s
-                                WHERE  1=1
-                                AND    s.org_id = :org_id
-                        """, Tuple.class)
+        return getSession().createQuery("SELECT COUNT(s.id) FROM Server s WHERE s.org.id = :org_id", Long.class)
                 .setParameter(ORG_ID, orgIn.getId())
-                .addScalar("systems", StandardBasicTypes.LONG)
-                .uniqueResult()
-                .get(0, Long.class);
+                .uniqueResult();
     }
 
     /**
@@ -273,18 +263,13 @@ public class OrgFactory extends HibernateFactory {
      * @return number of Server Groups for Org
      */
     public static Long getServerGroups(Org orgIn) {
-        Session session = HibernateFactory.getSession();
-        return session.createNativeQuery("""
-                                SELECT count(g.id) AS groups
-                                FROM   rhnServerGroup g
-                                WHERE  1=1
-                                AND    g.org_id = :org_id
-                                AND group_type is null
-                        """, Tuple.class)
+        return getSession().createQuery("""
+                    SELECT COUNT(g.id)
+                    FROM ServerGroup g
+                    WHERE g.org.id = :org_id AND g.groupType IS NULL
+                    """, Long.class)
                 .setParameter(ORG_ID, orgIn.getId())
-                .addScalar("groups", StandardBasicTypes.LONG)
-                .uniqueResult()
-                .get(0, Long.class);
+                .uniqueResult();
     }
 
     /**
@@ -293,19 +278,16 @@ public class OrgFactory extends HibernateFactory {
      * @return number of config channels for Org
      */
     public static Long getConfigChannels(Org orgIn) {
-        Session session = HibernateFactory.getSession();
-        return session.createNativeQuery("""
-                        SELECT  count(CC.id) AS channels
-                        FROM  rhnConfigChannel CC, rhnConfigChannelType CCT
-                        WHERE 1=1
-                        AND  CC.org_id = :org_id
-                        AND  CC.confchan_type_id = CCT.id
-                        AND  CCT.label IN ('normal', 'state')
-                        """, Tuple.class)
+        return getSession().createQuery("""
+                    SELECT COUNT(cc.id)
+                    FROM ConfigChannel cc
+                    WHERE cc.org.id = :org_id
+                            AND (cc.configChannelType.id = :idNormal OR cc.configChannelType.id = :idState)
+                    """, Long.class)
                 .setParameter(ORG_ID, orgIn.getId())
-                .addScalar("channels", StandardBasicTypes.LONG)
-                .uniqueResult()
-                .get(0, Long.class);
+                .setParameter("idNormal", ConfigChannelType.normal().getId())
+                .setParameter("idState", ConfigChannelType.state().getId())
+                .uniqueResult();
     }
 
     /**
@@ -365,16 +347,20 @@ public class OrgFactory extends HibernateFactory {
      * @return return an ordered list of {@link Org} which have a sat_admin
      */
     public static List<Org> findOrgsWithSatAdmin() {
-        return getSession().createNativeQuery("""
-            SELECT distinct org.*, null as reg_token_id
-              FROM web_contact wc
-              JOIN web_customer org ON wc.org_id = org.id
-              JOIN rhnUserGroupMembers ugm ON wc.id = ugm.user_id
-             WHERE ugm.user_group_id in (SELECT id
-                                           FROM rhnUserGroup
-                                          WHERE group_type = 1)
-          ORDER BY org.id;
-          """, Org.class).getResultList();
+        return getSession()
+                .createNativeQuery("""
+                    SELECT distinct org.*, null as reg_token_id
+                      FROM web_contact wc
+                              JOIN web_customer org ON wc.org_id = org.id
+                              JOIN rhnUserGroupMembers ugm ON wc.id = ugm.user_id
+                     WHERE ugm.user_group_id in (SELECT id FROM rhnUserGroup WHERE group_type = 1)
+                  ORDER BY org.id;
+                  """, Org.class)
+                .addSynchronizedEntityClass(UserImpl.class)
+                .addSynchronizedEntityClass(Org.class)
+                .addSynchronizedEntityClass(UserGroupMembers.class)
+                .addSynchronizedEntityClass(UserGroupImpl.class)
+                .getResultList();
     }
 
     /**
@@ -384,14 +370,27 @@ public class OrgFactory extends HibernateFactory {
      * @return List of orgs.
      */
     public static List<Org> lookupOrgsUsingChannelFamily(ChannelFamily channelFamily) {
-        return HibernateFactory.getSession().createNativeQuery("""
-                            SELECT DISTINCT o.* FROM WEB_CUSTOMER o WHERE EXISTS (
-                            SELECT 1 FROM rhnServer s WHERE s.org_id = o.id AND EXISTS (
-                            SELECT 1 FROM rhnChannel c JOIN rhnChannelFamilyMembers cfm ON c.id = cfm.channel_id
-                            WHERE c.id IN (SELECT channel_id FROM rhnServerChannel WHERE server_id = s.id)
-                            AND cfm.channel_family_id = :cf
-                            ))
-                """, Org.class).setParameter("cf", channelFamily.getId(), StandardBasicTypes.LONG).getResultList();
+        return getSession()
+                .createNativeQuery("""
+                    SELECT DISTINCT o.*
+                      FROM WEB_CUSTOMER o
+                     WHERE EXISTS (
+                              SELECT 1
+                                FROM rhnServer s
+                               WHERE s.org_id = o.id AND EXISTS (
+                                        SELECT 1
+                                          FROM rhnChannel c
+                                                    JOIN rhnChannelFamilyMembers cfm ON c.id = cfm.channel_id
+                                          WHERE c.id IN (SELECT channel_id FROM rhnServerChannel WHERE server_id = s.id)
+                                                    AND cfm.channel_family_id = :cf
+                                     )
+                           )
+                """, Org.class)
+                .addSynchronizedEntityClass(Org.class)
+                .addSynchronizedEntityClass(Server.class)
+                .addSynchronizedEntityClass(Channel.class)
+                .addSynchronizedEntityClass(ChannelFamily.class)
+                .setParameter("cf", channelFamily.getId(), StandardBasicTypes.LONG).getResultList();
     }
 
     /**
@@ -399,12 +398,8 @@ public class OrgFactory extends HibernateFactory {
      * @return Total number of orgs.
      */
     public static Long getTotalOrgCount() {
-        Session session = HibernateFactory.getSession();
-        return session.createNativeQuery("SELECT count(wc.id) AS org_count FROM  WEB_CUSTOMER wc",
-                        Tuple.class)
-                .addScalar("org_count", StandardBasicTypes.LONG)
-                .uniqueResult()
-                .get(0, Long.class);
+        return getSession().createQuery("SELECT count(o.id) FROM Org o", Long.class)
+                .uniqueResult();
     }
 
     /**
@@ -413,14 +408,14 @@ public class OrgFactory extends HibernateFactory {
      *  @return date created for Trusted Org
      */
     public static Date getTrustedSince(Long org, Long trustedOrg) {
-        Session session = HibernateFactory.getSession();
-        return session.createNativeQuery("""
+        return getSession().createNativeQuery("""
                             SELECT created
                             FROM   rhnTrustedOrgs rto
                             WHERE  1=1
                             AND    rto.org_id = :org_id
                             AND    rto.org_trust_id = :trusted_org_id
                         """, Tuple.class)
+                .addSynchronizedEntityClass(Org.class)
                 .setParameter(ORG_ID, org)
                 .setParameter("trusted_org_id", trustedOrg)
                 .addScalar("created", StandardBasicTypes.DATE)
@@ -434,19 +429,14 @@ public class OrgFactory extends HibernateFactory {
      * @return number of systems migrated to orgIn
      */
     public static Long getMigratedSystems(Long orgTo, Long orgFrom) {
-        Session session = HibernateFactory.getSession();
-        return session.createNativeQuery("""
-                            SELECT count(s.server_id) AS systems
-                            FROM   rhnSystemMigrations s
-                            WHERE  1=1
-                            AND    s.org_id_from = :org_from_id
-                            AND    s.org_id_to = :org_to_id
-                        """, Tuple.class)
+        return getSession().createQuery("""
+                        SELECT COUNT(sm.server.id)
+                        FROM SystemMigration sm
+                        WHERE sm.fromOrg.id = :org_from_id AND sm.toOrg.id = :org_to_id
+                        """, Long.class)
                 .setParameter("org_to_id", orgTo)
                 .setParameter("org_from_id", orgFrom)
-                .addScalar("systems", StandardBasicTypes.LONG)
-                .uniqueResult()
-                .get(0, Long.class);
+                .uniqueResult();
     }
 
     /**
@@ -463,6 +453,8 @@ public class OrgFactory extends HibernateFactory {
                             AND    s.org_id = :org_id
                             AND    s.org_trust_id = :org_trust_id
                         """, Tuple.class)
+                .addSynchronizedEntityClass(Org.class)
+                .addSynchronizedEntityClass(Channel.class)
                 .setParameter(ORG_ID, orgId)
                 .setParameter("org_trust_id", trustId)
                 .addScalar("id", StandardBasicTypes.LONG)
@@ -485,6 +477,8 @@ public class OrgFactory extends HibernateFactory {
                             AND    c.org_id = :org_id
                             AND    s.org_id = :org_trust_id
                         """, Tuple.class)
+                .addSynchronizedEntityClass(Server.class)
+                .addSynchronizedEntityClass(Channel.class)
                 .setParameter(ORG_ID, orgId)
                 .setParameter("org_trust_id", trustId)
                 .addScalar("channels", StandardBasicTypes.LONG)
@@ -502,5 +496,27 @@ public class OrgFactory extends HibernateFactory {
                 .list();
     }
 
+    /**
+     * Gets the number of active org admins in this org.
+     * @param orgId the organization id
+     * @return Returns the number of active org admins in this org.
+     */
+    public static Long countActiveOrgAdmins(long orgId) {
+        return getSession().createNativeQuery("""
+                            SELECT COUNT(ugm.user_id) AS count
+                            FROM rhnUserGroupMembers ugm JOIN rhnWebContactEnabled wce ON wce.id = ugm.user_id
+                            WHERE ugm.user_group_id =
+                                (SELECT id FROM rhnUserGroup
+                                    WHERE org_id = :org_id
+                                    AND group_type = (SELECT id FROM rhnUserGroupType WHERE label = 'org_admin'))
+                            AND wce.read_only = 'N'
+                        """, Long.class)
+                .addSynchronizedEntityClass(UserGroupMembers.class)
+                .addSynchronizedEntityClass(UserGroupImpl.class)
+                .addSynchronizedEntityClass(RoleImpl.class)
+                .setParameter(ORG_ID, orgId)
+                .addScalar("count", StandardBasicTypes.LONG)
+                .uniqueResult();
+    }
 }
 

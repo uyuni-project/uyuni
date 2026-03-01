@@ -1,9 +1,9 @@
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
 <%@ taglib uri="http://rhn.redhat.com/tags/list" prefix="rl" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
 
 
 <html>
@@ -13,30 +13,6 @@
 <%@ include file="/WEB-INF/pages/common/fragments/systems/system-header.jspf" %>
 
 <div class="spacewalk-toolbar">
-  <c:choose>
-    <c:when test="${not empty testResult.comparableId}">
-      <a href="/rhn/audit/scap/DiffSubmit.do?first=${testResult.comparableId}&second=${testResult.id}&view=changed">
-        <c:choose>
-          <c:when test="${testResult.diffIcon == 'checked'}" >
-            <rhn:icon type="scap-nochange" title="scapdiff.jsp.i.checked" />
-          </c:when>
-          <c:when test="${testResult.diffIcon == 'alert'}" >
-            <rhn:icon type="system-warn" title="scapdiff.jsp.i.alert" />
-          </c:when>
-          <c:when test="${testResult.diffIcon == 'error'}" >
-            <rhn:icon type="system-crit" title="scapdiff.jsp.i.error" />
-          </c:when>
-          <c:otherwise>
-            <rhn:icon type="system-unknown" title="system.audit.xccdfdetails.jsp.nodiff" />
-          </c:otherwise>
-        </c:choose>
-        <bean:message key="system.audit.xccdfdetails.jsp.diff"/>
-      </a>
-    </c:when>
-    <c:otherwise>
-      <bean:message key="system.audit.xccdfdetails.jsp.nodiff"/>
-    </c:otherwise>
-  </c:choose>
 
   <c:if test="${testResult.deletable}">
     <a href="/rhn/systems/details/audit/XccdfDeleteConfirm.do?sid=${param.sid}&xid=${testResult.id}">

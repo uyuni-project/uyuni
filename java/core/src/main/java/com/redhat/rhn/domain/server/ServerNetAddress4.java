@@ -22,11 +22,11 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
+import jakarta.persistence.Table;
 
 /**
  * ServerNetAddress4
@@ -51,6 +51,23 @@ public class ServerNetAddress4 extends BaseDomainHelper implements Serializable 
     private String broadcast;
 
     /**
+     * Hibernate constructor
+     */
+    protected ServerNetAddress4() {
+        // Nothing to do
+    }
+
+    /**
+     * Create a new instance
+     * @param interfaceIdIn the id of the {@link NetworkInterface}
+     * @param addressIn the IPv4 address
+     */
+    public ServerNetAddress4(Long interfaceIdIn, String addressIn) {
+        this.interfaceId = interfaceIdIn;
+        this.address = addressIn;
+    }
+
+    /**
      * @return Returns the interfaceId.
      */
     public Long getInterfaceId() {
@@ -60,7 +77,7 @@ public class ServerNetAddress4 extends BaseDomainHelper implements Serializable 
     /**
      * @param id Set the interfaceId.
      */
-    public void setInterfaceId(Long id) {
+    protected void setInterfaceId(Long id) {
         this.interfaceId = id;
     }
 

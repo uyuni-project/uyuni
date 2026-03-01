@@ -40,7 +40,9 @@ jobs:
         with:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.event.pull_request.head.ref }}
-      - uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 #v3.0.2
+      - uses: dorny/paths-filter@668c092af3649c4b664c54e4b704aa46782f6f7c # master
+        # using master and not a specific version because we need https://github.com/dorny/paths-filter/pull/279 and
+        # there is no new release since 03/2024
         id: filter
         with:
           predicate-quantifier: 'some'
@@ -51,7 +53,9 @@ jobs:
               - 'web/html/src/**'
             testsuite:
               - 'testsuite/**'
-      - uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 #v3.0.2
+      - uses: dorny/paths-filter@668c092af3649c4b664c54e4b704aa46782f6f7c # master
+        # using master and not a specific version because we need https://github.com/dorny/paths-filter/pull/279 and
+        # there is no new release since 03/2024
         id: bv_filter
         with:
           predicate-quantifier: 'every'

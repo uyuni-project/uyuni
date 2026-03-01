@@ -33,6 +33,7 @@ import com.redhat.rhn.taskomatic.domain.TaskoTemplate;
 import com.redhat.rhn.taskomatic.task.ChannelRepodata;
 import com.redhat.rhn.taskomatic.task.RhnJob;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.commons.io.FileUtils;
 import org.hibernate.type.StandardBasicTypes;
@@ -46,8 +47,6 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.function.BooleanSupplier;
 import java.util.stream.Collectors;
-
-import javax.persistence.Tuple;
 
 public class ChannelRepodataTest extends JMockBaseTestCaseWithUser {
 
@@ -103,7 +102,7 @@ public class ChannelRepodataTest extends JMockBaseTestCaseWithUser {
         assertConditionWithRetries("Channel has been processed", () -> isChannelProcessed(testChannel), 500, 10);
 
         // Still the run we created should be in status RUNNING, as the driver is not blocking the task queue
-        firstRun = HibernateFactory.reload(firstRun);
+        firstRun = TestUtils.reload(firstRun);
         assertEquals(TaskoRun.STATUS_RUNNING, firstRun.getStatus());
         assertNull(firstRun.getEndTime());
 
@@ -111,8 +110,8 @@ public class ChannelRepodataTest extends JMockBaseTestCaseWithUser {
         TaskoRun secondRun = createTaskomaticTaskRun("channel-repodata-default", ChannelRepodata.class);
         channelRepodata.execute(jobContext, secondRun);
 
-        firstRun = HibernateFactory.reload(firstRun);
-        secondRun = HibernateFactory.reload(secondRun);
+        firstRun = TestUtils.reload(firstRun);
+        secondRun = TestUtils.reload(secondRun);
 
         assertEquals(TaskoRun.STATUS_SKIPPED, secondRun.getStatus());
         assertEquals(TaskoRun.STATUS_FINISHED, firstRun.getStatus());
@@ -120,15 +119,14 @@ public class ChannelRepodataTest extends JMockBaseTestCaseWithUser {
     }
 
     private static boolean isChannelProcessed(Channel channel) {
-        Integer items = HibernateFactory.getSession()
+        long numItems = HibernateFactory.getSession()
             .createNativeQuery("SELECT COUNT(*) AS count FROM rhnRepoRegenQueue WHERE channel_label = :label",
-                    Tuple.class)
-            .addScalar("count", StandardBasicTypes.INTEGER)
+                    Long.class)
+            .addScalar("count", StandardBasicTypes.LONG)
             .setParameter("label", channel.getLabel())
-            .getSingleResult()
-                .get(0, Integer.class);
+            .uniqueResult();
 
-        return items == 0;
+        return numItems == 0;
     }
 
     private static TaskoRun createTaskomaticTaskRun(String scheduleLabel, Class<? extends RhnJob> taskClass) {

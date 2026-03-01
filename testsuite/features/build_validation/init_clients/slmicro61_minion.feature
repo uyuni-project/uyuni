@@ -9,6 +9,7 @@ Feature: Bootstrap a SL Micro 6.1 Salt minion
 
   Scenario: Clean up sumaform leftovers on a SL Micro 6.1 minion
     When I perform a full salt minion cleanup on "slmicro61_minion"
+    And I reboot the "slmicro61_minion" host through SSH, waiting until it comes back
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section

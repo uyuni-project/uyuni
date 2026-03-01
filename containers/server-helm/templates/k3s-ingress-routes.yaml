@@ -191,19 +191,4 @@ spec:
       - name: taskomatic
         port: 8001
 {{- end }}
----
-apiVersion: traefik.io/v1alpha1
-kind: IngressRouteUDP
-metadata:
-  name: tftp-route
-  namespace: "{{ .Release.Namespace }}"
-  labels:
-    app.kubernetes.io/part-of: uyuni
-spec:
-  entryPoints:
-    - tftp
-  routes:
-    - services:
-      - name: tftp
-        port: 69
 {{- end }}

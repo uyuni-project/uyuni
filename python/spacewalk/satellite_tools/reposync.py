@@ -20,7 +20,6 @@ import configparser
 import os
 import re
 import shutil
-import socket
 import subprocess
 import sys
 import tempfile
@@ -82,10 +81,6 @@ from spacewalk.satellite_tools.appstreams import ModuleMdImporter, ModuleMdIndex
 
 translation = gettext.translation("spacewalk-backend-server", fallback=True)
 _ = translation.gettext
-hostname = socket.gethostname()
-if "." not in hostname:
-    hostname = socket.getfqdn()
-
 
 default_log_location = "/var/log/rhn/"
 relative_comps_dir = "rhn/comps"
@@ -149,6 +144,32 @@ def send_mail(sync_type="Repo"):
             rhnMail.send(headers, body, sender=sndr)
     else:
         print((_("+++ email requested, but there is nothing to send +++")))
+
+
+def send_error_mail(channel_label, body):
+    with cfg_component("server.susemanager") as cfg:
+        to = cfg.TRACEBACK_MAIL
+    fr = to
+    if isinstance(to, type([])):
+        fr = to[0].strip()
+        to = ", ".join([s.strip() for s in to])
+
+    with cfg_component("java") as cfg:
+        hostname = cfg.hostname
+
+    sender = f"{hostname} <{fr}>"
+    with cfg_component("web") as cfg:
+        if cfg.default_mail_from:
+            sender = cfg.default_mail_from
+
+    rhnMail.send(
+        {
+            "To": to,
+            "From": sender,
+            "Subject": f"SUSE Multi-Linux Manager repository sync failed ({hostname})",
+        },
+        f"Syncing Channel '{channel_label}' failed:\n\n{body}",
+    )
 
 
 class KSDirParser:
@@ -399,7 +420,7 @@ def write_ssl_set_cache(ca_cert, client_cert, client_key):
 
     filenames = {}
     for cert in (ca_cert, client_cert, client_key):
-        (name, pem, org) = cert
+        name, pem, org = cert
         filenames[cert] = None
         if name is not None and pem is not None:
             if not org:
@@ -541,16 +562,14 @@ class RepoSync(object):
 
         if not url:
             # TODO:need to look at user security across orgs
-            h = rhnSQL.prepare(
-                """
+            h = rhnSQL.prepare("""
                 select s.id, s.source_url, s.metadata_signed, s.label as repo_label, cst.label as repo_type_label
                 from rhnContentSource s,
                      rhnChannelContentSource cs,
                      rhnContentSourceType cst
                 where s.id = cs.source_id
                   and cst.id = s.type_id
-                  and cs.channel_id = :channel_id"""
-            )
+                  and cs.channel_id = :channel_id""")
             h.execute(channel_id=int(self.channel["id"]))
             sources = h.fetchall_dict()
             self.urls = []
@@ -770,7 +789,7 @@ class RepoSync(object):
                                         log(0, f"    {failure}")
                                         mailbody += f"    {failure}\n"
 
-                                    self.sendErrorMail(mailbody)
+                                    send_error_mail(self.channel_label, mailbody)
                                     sync_error = -1
 
                         if sync_error == 0:
@@ -812,13 +831,13 @@ class RepoSync(object):
                     raise
                 except ChannelTimeoutException as e:
                     log(0, e)
-                    self.sendErrorMail(str(e))
+                    send_error_mail(self.channel_label, str(e))
                     sync_error = -1
                 except ChannelException as e:
                     # pylint: disable-next=consider-using-f-string
                     log(0, "ChannelException: %s" % e)
                     # pylint: disable-next=consider-using-f-string
-                    self.sendErrorMail("ChannelException: %s" % str(e))
+                    send_error_mail(self.channel_label, f"ChannelException: {str(e)}")
                     sync_error = -1
                 except yum_src.RepoMDError as e:
                     if "primary not available" in str(e):
@@ -833,7 +852,7 @@ class RepoSync(object):
                         # pylint: disable-next=consider-using-f-string
                         log(0, "RepoMDError: %s" % e)
                         # pylint: disable-next=consider-using-f-string
-                        self.sendErrorMail("RepoMDError: %s" % e)
+                        send_error_mail(self.channel_label, f"RepoMDError: {e}")
                         sync_error = -1
                 # pylint: disable-next=bare-except
                 except:
@@ -841,7 +860,7 @@ class RepoSync(object):
                     log(0, "Unexpected error: %s" % sys.exc_info()[0])
                     # pylint: disable-next=consider-using-f-string
                     log(0, "%s" % traceback.format_exc())
-                    self.sendErrorMail(fetchTraceback())
+                    send_error_mail(self.channel_label, fetchTraceback())
                     sync_error = -1
 
         # In strict mode unlink all packages from channel which are not synced from current repositories
@@ -927,7 +946,10 @@ class RepoSync(object):
                     )
         elapsed_time = datetime.now() - start_time
         if self.error_messages:
-            self.sendErrorMail("Repo Sync Errors: %s" % "\n".join(self.error_messages))
+            send_error_mail(
+                self.channel_label,
+                "Repo Sync Errors: %s" % "\n".join(self.error_messages),
+            )
             sync_error = -1
         if sync_error == 0 and failed_packages == 0:
             log(0, "Sync completed.")
@@ -965,10 +987,8 @@ class RepoSync(object):
 
     def update_date(self):
         """Updates the last sync time"""
-        h = rhnSQL.prepare(
-            """update rhnChannel set LAST_SYNCED = current_timestamp
-                             where label = :channel"""
-        )
+        h = rhnSQL.prepare("""update rhnChannel set LAST_SYNCED = current_timestamp
+                             where label = :channel""")
         h.execute(channel=self.channel["label"])
 
     def load_plugin(self, repo_type):
@@ -1001,7 +1021,7 @@ class RepoSync(object):
         return getattr(submod, "ContentSource")
 
     def import_updates(self, plug):
-        (notices_type, notices) = plug.get_updates()
+        notices_type, notices = plug.get_updates()
         log(0, "")
         # pylint: disable-next=consider-using-f-string
         log(0, "  Patches in repo: %s." % len(notices))
@@ -1083,7 +1103,7 @@ class RepoSync(object):
                                  and comps_type_id = (select id from rhnCompsType where label = :ctype)"""
         )
         if h.execute(cid=self.channel["id"], ctype=comps_type):
-            (db_filename, db_timestamp) = h.fetchone()
+            db_filename, db_timestamp = h.fetchone()
             comps_path = os.path.join(mount_point, db_filename)
             if os.path.isfile(comps_path):
                 old_checksum = getFileChecksum("sha256", comps_path)
@@ -1324,13 +1344,11 @@ class RepoSync(object):
     def import_packages(self, plug, source_id, url, is_non_local_repo):
         failed_packages = 0
         if (not self.filters) and source_id:
-            h = rhnSQL.prepare(
-                """
+            h = rhnSQL.prepare("""
                     select flag, filter
                       from rhnContentSourceFilter
                      where source_id = :source_id
-                     order by sort_order """
-            )
+                     order by sort_order """)
             h.execute(source_id=source_id)
             filter_data = h.fetchall_dict() or []
             filters = [
@@ -1825,13 +1843,11 @@ class RepoSync(object):
 
     def show_packages(self, plug, source_id):
         if (not self.filters) and source_id:
-            h = rhnSQL.prepare(
-                """
+            h = rhnSQL.prepare("""
                     select flag, filter
                       from rhnContentSourceFilter
                      where source_id = :source_id
-                     order by sort_order """
-            )
+                     order by sort_order """)
             h.execute(source_id=source_id)
             filter_data = h.fetchall_dict() or []
             filters = [
@@ -1958,8 +1974,7 @@ class RepoSync(object):
             # pylint: disable-next=consider-using-f-string
             "Disassociating package with checksum: %s (%s)" % (checksum, checksum_type),
         )
-        h = rhnSQL.prepare(
-            """
+        h = rhnSQL.prepare("""
             delete from rhnChannelPackage cp
              where cp.channel_id = :channel_id
                and cp.package_id in (select p.id
@@ -1969,8 +1984,7 @@ class RepoSync(object):
                                       where c.checksum = :checksum
                                         and c.checksum_type = :checksum_type
                                     )
-        """
-        )
+        """)
         h.execute(
             channel_id=int(self.channel["id"]),
             checksum_type=checksum_type,
@@ -1980,16 +1994,14 @@ class RepoSync(object):
     def disassociate_erratum(self, advisory_name):
         # pylint: disable-next=consider-using-f-string
         log(3, "Disassociating erratum: %s" % advisory_name)
-        h = rhnSQL.prepare(
-            """
+        h = rhnSQL.prepare("""
                     delete from rhnChannelErrata ce
                      where ce.channel_id = :channel_id
                        and ce.errata_id in (select e.id
                                               from rhnErrata e
                                             where e.advisory_name = :advisory_name
                                            )
-                        """
-        )
+                        """)
         h.execute(channel_id=self.channel["id"], advisory_name=advisory_name)
 
     def load_channel(self):
@@ -2039,35 +2051,30 @@ class RepoSync(object):
 
         :update_id - the advisory (name)
         """
-        h = rhnSQL.prepare(
-            """
+        h = rhnSQL.prepare("""
             select e.id, e.advisory,
                    e.advisory_name, e.advisory_rel, e.advisory_status,
                    TO_CHAR(e.update_date, 'YYYY-MM-DD HH24:MI:SS') as update_date
               from rhnerrata e
              where e.advisory = :name
               and (e.org_id = :org_id or (e.org_id is null and :org_id is null))
-        """
-        )
+        """)
         h.execute(name=update_id, org_id=self.org_id)
         ret = h.fetchone_dict()
         if not ret:
             return None
 
-        h = rhnSQL.prepare(
-            """
+        h = rhnSQL.prepare("""
             select distinct c.label
               from rhnchannelerrata ce
               join rhnchannel c on c.id = ce.channel_id
              where ce.errata_id = :eid
-        """
-        )
+        """)
         h.execute(eid=ret["id"])
         ret["channels"] = h.fetchall_dict() or []
         ret["packages"] = []
 
-        h = rhnSQL.prepare(
-            """
+        h = rhnSQL.prepare("""
             select p.id as package_id,
                    pn.name,
                    pevr.epoch,
@@ -2084,8 +2091,7 @@ class RepoSync(object):
               join rhnpackagearch pa on pa.id = p.package_arch_id
               join rhnchecksumview cv on cv.id = p.checksum_id
              where ep.errata_id = :eid
-        """
-        )
+        """)
         h.execute(eid=ret["id"])
         packages = h.fetchall_dict() or []
         for pkg in packages:
@@ -2099,13 +2105,11 @@ class RepoSync(object):
 
     def list_errata(self):
         """List advisory names present in channel"""
-        h = rhnSQL.prepare(
-            """select e.advisory_name
+        h = rhnSQL.prepare("""select e.advisory_name
             from rhnChannelErrata ce
             inner join rhnErrata e on e.id = ce.errata_id
             where ce.channel_id = :cid
-        """
-        )
+        """)
         h.execute(cid=self.channel["id"])
         advisories = [row["advisory_name"] for row in h.fetchall_dict() or []]
         return advisories
@@ -2195,11 +2199,9 @@ class RepoSync(object):
             )
             ks_id = row["id"]
         else:
-            row = rhnSQL.fetchone_dict(
-                """
+            row = rhnSQL.fetchone_dict("""
                 select sequence_nextval('rhn_kstree_id_seq') as id from dual
-                """
-            )
+                """)
             ks_id = row["id"]
 
             rhnSQL.execute(
@@ -2226,19 +2228,15 @@ class RepoSync(object):
                 % ks_tree_label,
             )
 
-        insert_h = rhnSQL.prepare(
-            """
+        insert_h = rhnSQL.prepare("""
                 insert into rhnKSTreeFile (kstree_id, relative_filename, checksum_id, file_size, last_modified, created,
                  modified) values (:id, :path, lookup_checksum('sha256', :checksum), :st_size,
                  epoch_seconds_to_timestamp_tz(:st_time), current_timestamp, current_timestamp)
-        """
-        )
+        """)
 
-        delete_h = rhnSQL.prepare(
-            """
+        delete_h = rhnSQL.prepare("""
                 delete from rhnKSTreeFile where kstree_id = :id and relative_filename = :path
-        """
-        )
+        """)
 
         # Downloading/Updating content of KS Tree
         dirs_queue = [""]
@@ -2405,13 +2403,11 @@ class RepoSync(object):
                 )
                 sys.exit(1)
             # SCC - read credentials from DB
-            h = rhnSQL.prepare(
-                """
+            h = rhnSQL.prepare("""
                 SELECT c.username, c.password, c.extra_auth, c.type
                   FROM suseCredentials c
                   WHERE c.id = :id
-            """
-            )
+            """)
             h.execute(id=creds_no)
             credentials = h.fetchone_dict() or None
             if not credentials:
@@ -2495,14 +2491,12 @@ class RepoSync(object):
             log(0, "Add Patch %s" % e["advisory"])
 
             # product name
-            query = rhnSQL.prepare(
-                """
+            query = rhnSQL.prepare("""
                 SELECT p.friendly_name
                   FROM suseproducts p
                   JOIN suseproductchannel pc on p.id = pc.product_id
                  WHERE pc.channel_id = :channel_id
-                """
-            )
+                """)
             query.execute(channel_id=int(self.channel["id"]))
             try:
                 e["product"] = query.fetchone()[0]
@@ -2744,8 +2738,7 @@ class RepoSync(object):
     def import_products(self, repo):
         products = repo.get_products()
         for product in products:
-            query = rhnSQL.prepare(
-                """
+            query = rhnSQL.prepare("""
                 select spf.id
                   from suseProductFile spf
                   join rhnpackageevr pe on pe.id = spf.evr_id
@@ -2756,8 +2749,7 @@ class RepoSync(object):
                    and spf.vendor = :vendor
                    and spf.summary = :summary
                    and spf.description = :description
-            """
-            )
+            """)
             query.execute(**product)
             row = query.fetchone_dict()
             if not row or "id" not in row:
@@ -2770,14 +2762,12 @@ class RepoSync(object):
                     print("no id for sequence suse_prod_file_id_seq")
                     continue
 
-                h = rhnSQL.prepare(
-                    """
+                h = rhnSQL.prepare("""
                     insert into suseProductFile
                         (id, name, evr_id, package_arch_id, vendor, summary, description)
                     VALUES (:id, :name, LOOKUP_EVR(:epoch, :version, :release, 'rpm'),
                             LOOKUP_PACKAGE_ARCH(:arch), :vendor, :summary, :description)
-                """
-                )
+                """)
                 h.execute(id=row["id"], **product)
 
             params = {
@@ -2834,8 +2824,7 @@ class RepoSync(object):
         susedata = repo.get_susedata()
         for package in susedata:
             # susedata exists only for package type == rpm
-            query = rhnSQL.prepare(
-                """
+            query = rhnSQL.prepare("""
                 SELECT p.id
                   FROM rhnPackage p
                   JOIN rhnPackagename pn ON p.name_id = pn.id
@@ -2846,8 +2835,7 @@ class RepoSync(object):
                    AND p.package_arch_id = LOOKUP_PACKAGE_ARCH(:arch)
                    AND cp.channel_id = :channel_id
                    AND c.checksum = :pkgid
-                """
-            )
+                """)
             query.execute(
                 name=package["name"],
                 epoch=package["epoch"],
@@ -2869,15 +2857,13 @@ class RepoSync(object):
                 % (pkgid, int(self.channel["id"])),
             )
 
-            h = rhnSQL.prepare(
-                """
+            h = rhnSQL.prepare("""
                 SELECT smk.id, smk.label
                   FROM suseMdData smd
                   JOIN suseMdKeyword smk ON smk.id = smd.keyword_id
                  WHERE smd.package_id = :package_id
                    AND smd.channel_id = :channel_id
-            """
-            )
+            """)
             h.execute(package_id=pkgid, channel_id=int(self.channel["id"]))
             ret = h.fetchall_dict() or {}
             pkgkws = {}
@@ -3049,28 +3035,6 @@ class RepoSync(object):
         return package
 
     # pylint: disable-next=invalid-name
-    def sendErrorMail(self, body):
-        # pylint: disable-next=invalid-name
-        with cfg_component("server.susemanager") as CFG:
-            to = CFG.TRACEBACK_MAIL
-        fr = to
-        if isinstance(to, type([])):
-            fr = to[0].strip()
-            to = ", ".join([s.strip() for s in to])
-
-        headers = {
-            # pylint: disable-next=consider-using-f-string
-            "Subject": "SUSE Multi-Linux Manager repository sync failed (%s)"
-            % hostname,
-            # pylint: disable-next=consider-using-f-string
-            "From": "%s <%s>" % (hostname, fr),
-            "To": to,
-        }
-        # pylint: disable-next=consider-using-f-string
-        extra = "Syncing Channel '%s' failed:\n\n" % self.channel_label
-        rhnMail.send(headers, extra + body)
-
-    # pylint: disable-next=invalid-name
     def updateChannelChecksumType(self, repo_checksum_type):
         """
         check, if the checksum_type of the channel matches the one of the repo
@@ -3084,12 +3048,10 @@ class RepoSync(object):
             # Do not autochange this
             return
 
-        h = rhnSQL.prepare(
-            """SELECT ct.label
+        h = rhnSQL.prepare("""SELECT ct.label
                                 FROM rhnChannel c
                                 JOIN rhnChecksumType ct ON c.checksum_type_id = ct.id
-                               WHERE c.id = :cid"""
-        )
+                               WHERE c.id = :cid""")
         h.execute(cid=self.channel["id"])
         d = h.fetchone_dict() or None
         if d and d["label"] == repo_checksum_type:
@@ -3103,25 +3065,21 @@ class RepoSync(object):
             # better not change the channel
             return
         # update the checksum_type
-        h = rhnSQL.prepare(
-            """UPDATE rhnChannel
+        h = rhnSQL.prepare("""UPDATE rhnChannel
                                  SET checksum_type_id = :ctid
-                               WHERE id = :cid"""
-        )
+                               WHERE id = :cid""")
         h.execute(ctid=d["id"], cid=self.channel["id"])
 
     @staticmethod
     def get_compatible_arches(channel_id):
         """Return a list of compatible package arch labels for this channel"""
-        h = rhnSQL.prepare(
-            """select pa.label
+        h = rhnSQL.prepare("""select pa.label
                               from rhnChannelPackageArchCompat cpac,
                               rhnChannel c,
                               rhnpackagearch pa
                               where c.id = :channel_id
                               and c.channel_arch_id = cpac.channel_arch_id
-                              and cpac.package_arch_id = pa.id"""
-        )
+                              and cpac.package_arch_id = pa.id""")
         h.execute(channel_id=channel_id)
         # pylint: disable-next=invalid-name
         with cfg_component("server.susemanager") as CFG:
@@ -3135,13 +3093,11 @@ class RepoSync(object):
     @staticmethod
     def get_channel_arch(channel_id):
         """Return the basearch value for the channel"""
-        h = rhnSQL.prepare(
-            """select ca.label
+        h = rhnSQL.prepare("""select ca.label
                               from rhnChannel c,
                               rhnChannelArch ca
                               where c.id = :channel_id
-                              and c.channel_arch_id = ca.id"""
-        )
+                              and c.channel_arch_id = ca.id""")
         h.execute(channel_id=channel_id)
         row = h.fetchone_dict()
 
@@ -3297,52 +3253,42 @@ class RepoSync(object):
         This should only be alled in case of a disaster
         """
         # first get a list of all channels where this errata exists
-        h = rhnSQL.prepare(
-            """
+        h = rhnSQL.prepare("""
             SELECT channel_id
               FROM rhnChannelErrata
              WHERE errata_id = :errata_id
-        """
-        )
+        """)
         h.execute(errata_id=errata_id)
         channels = [x["channel_id"] for x in h.fetchall_dict() or []]
 
         # delete channel from errata
-        h = rhnSQL.prepare(
-            """
+        h = rhnSQL.prepare("""
             DELETE FROM rhnChannelErrata
              WHERE errata_id = :errata_id
-        """
-        )
+        """)
         h.execute(errata_id=errata_id)
 
         # delete all packages from errata
-        h = rhnSQL.prepare(
-            """
+        h = rhnSQL.prepare("""
             DELETE FROM rhnErrataPackage ep
              WHERE ep.errata_id = :errata_id
-        """
-        )
+        """)
         h.execute(errata_id=errata_id)
 
         # delete files from errata
-        h = rhnSQL.prepare(
-            """
+        h = rhnSQL.prepare("""
             DELETE FROM rhnErrataFile
              WHERE errata_id = :errata_id
-        """
-        )
+        """)
         h.execute(errata_id=errata_id)
 
         # delete errata
         # removes also references from rhnErrataCloned
         # and rhnServerNeededCache
-        h = rhnSQL.prepare(
-            """
+        h = rhnSQL.prepare("""
             DELETE FROM rhnErrata
              WHERE id = :errata_id
-        """
-        )
+        """)
         h.execute(errata_id=errata_id)
         rhnSQL.commit()
         update_needed_cache = rhnSQL.Procedure("rhn_channel.update_needed_cache")

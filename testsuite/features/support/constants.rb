@@ -662,6 +662,8 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-module-basesystem15-sp7-updates-x86_64
         managertools-sle15-pool-x86_64-sp7
         managertools-sle15-updates-x86_64-sp7
+        managertools-beta-sle15-pool-x86_64-sp7
+        managertools-beta-sle15-updates-x86_64-sp7
         sle-module-python3-15-sp7-pool-x86_64
         sle-module-python3-15-sp7-updates-x86_64
         sle-module-server-applications15-sp7-pool-x86_64
@@ -842,6 +844,8 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-module-basesystem15-sp7-updates-x86_64
         managertools-sle15-pool-x86_64-sp7
         managertools-sle15-updates-x86_64-sp7
+        managertools-beta-sle15-pool-x86_64-sp7
+        managertools-beta-sle15-updates-x86_64-sp7
         sle-module-python3-15-sp7-pool-x86_64
         sle-module-python3-15-sp7-updates-x86_64
         sle-module-server-applications15-sp7-pool-x86_64
@@ -850,6 +854,8 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         sle-module-desktop-applications15-sp7-updates-x86_64
         sle-module-devtools15-sp7-updates-x86_64
         sle-module-devtools15-sp7-pool-x86_64
+        sle-module-containers15-sp7-pool-x86_64
+        sle-module-containers15-sp7-updates-x86_64
         sle-module-systems-management-15-sp7-pool-x86_64
         sle-module-systems-management-15-sp7-updates-x86_64
       ],
@@ -1333,7 +1339,6 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
     'tumbleweed' =>
       %w[
         opensuse_tumbleweed-x86_64
-        opensuse_tumbleweed-updates-x86_64
         opensuse_tumbleweed-uyuni-client-x86_64
         opensuse_tumbleweed-uyuni-client-devel-x86_64
       ],
@@ -1482,6 +1487,8 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'managertools-sle15-updates-x86_64-sp5' => 60,
   'managertools-sle15-updates-x86_64-sp6' => 60,
   'managertools-sle15-updates-x86_64-sp7' => 60,
+  'managertools-beta-sle15-pool-x86_64-sp7' => 60,
+  'managertools-beta-sle15-updates-x86_64-sp7' => 60,
   'managertools-ubuntu2204-updates-amd64' => 60,
   'managertools-ubuntu2404-updates-amd64' => 60,
   'opensuse-backports-15.6-updates-aarch64' => 300,
@@ -1551,7 +1558,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-module-basesystem15-sp5-pool-s390x' => 240,
   'sle-module-basesystem15-sp5-pool-x86_64' => 180,
   'sle-module-basesystem15-sp5-updates-s390x' => 1320,
-  'sle-module-basesystem15-sp5-updates-x86_64' => 1080,
+  'sle-module-basesystem15-sp5-updates-x86_64' => 1200,
   'sle-module-basesystem15-sp6-pool-x86_64' => 120,
   'sle-module-basesystem15-sp6-updates-x86_64' => 420,
   'sle-module-basesystem15-sp7-pool-x86_64' => 180,
@@ -1579,11 +1586,11 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-module-devtools15-sp4-pool-x86_64' => 60,
   'sle-module-devtools15-sp4-updates-x86_64' => 420,
   'sle-module-devtools15-sp5-pool-x86_64' => 180,
-  'sle-module-devtools15-sp5-updates-x86_64' => 960,
+  'sle-module-devtools15-sp5-updates-x86_64' => 1200,
   'sle-module-devtools15-sp6-pool-x86_64' => 60,
   'sle-module-devtools15-sp6-updates-x86_64' => 360,
   'sle-module-devtools15-sp7-pool-x86_64' => 120,
-  'sle-module-devtools15-sp7-updates-x86_64' => 240,
+  'sle-module-devtools15-sp7-updates-x86_64' => 360,
   'sle-module-public-cloud15-sp4-pool-x86_64' => 840,
   'sle-module-public-cloud15-sp4-updates-x86_64' => 600,
   'sle-module-public-cloud15-sp5-pool-x86_64' => 600,
@@ -1628,6 +1635,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'sle-product-sles15-sp5-pool-x86_64' => 60,
   'sle-product-sles15-sp5-updates-s390x' => 60,
   'sle-product-sles15-sp5-updates-x86_64' => 60,
+  'sle-product-sles15-sp5-ltss-updates-x86_64' => 2160,
   'sle-product-sles15-sp6-pool-x86_64' => 60,
   'sle-product-sles15-sp6-updates-x86_64' => 60,
   'sle-product-sles15-sp6-ltss-updates-x86_64' => 60,
@@ -1708,12 +1716,10 @@ TIMEOUT_BY_CHANNEL_NAME = {
 
 EMPTY_CHANNELS = %w[
   el9-pool-x86_64
-  rhel-x86_64-server-7
   suse-multi-linux-manager-proxy-sle-5.1-updates-x86_64-sp7
   suse-multi-linux-manager-proxy-sle-5.2-updates-x86_64-sp7
   suse-multi-linux-manager-retail-branch-server-sle-5.1-updates-x86_64-sp7
   suse-multi-linux-manager-retail-branch-server-sle-5.2-updates-x86_64-sp7
-  managertools-sle15-updates-x86_64-sp7
   sle-product-sles15-sp6-ltss-updates-x86_64
   suse-manager-proxy-5.0-updates-x86_64
   suse-manager-retail-branch-server-5.0-updates-x86_64

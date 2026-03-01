@@ -184,7 +184,7 @@ public class TaskoJob implements Job {
             try {
                 LOG.debug("{}: task {} started", schedule.getJobLabel(), task.getName());
                 TaskoRun taskRun = new TaskoRun(schedule.getOrgId(), template, scheduleId);
-                TaskoFactory.save(taskRun);
+                TaskoFactory.markReady(taskRun);
                 HibernateFactory.commitTransaction();
                 HibernateFactory.closeSession();
                 LOG.debug("Tasko run for {} created. Running job...", schedule.getJobLabel());
@@ -244,7 +244,7 @@ public class TaskoJob implements Job {
                 HibernateFactory.closeSession();
             }
             job.appendExceptionToLogError(e);
-            taskRun.failed();
+            TaskoFactory.markFailed(taskRun);
             HibernateFactory.commitTransaction();
             HibernateFactory.closeSession();
         }

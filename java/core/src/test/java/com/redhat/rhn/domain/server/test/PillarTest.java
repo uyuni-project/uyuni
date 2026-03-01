@@ -121,4 +121,13 @@ public class PillarTest extends RhnBaseTestCase {
         pillar.setPillarValue("testPillar:newNest:secondNest:thirdNest:Value", "deepNested");
         assertEquals("deepNested", pillar.getPillarValue("testPillar:newNest:secondNest:thirdNest:Value"));
     }
+
+
+    @Test
+    public void generatedCoverageTestGetGroupsForCategory() {
+        // this test has been generated programmatically to test Pillar.getGroupsForCategory
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        Pillar.getGroupsForCategory("");
+    }
 }

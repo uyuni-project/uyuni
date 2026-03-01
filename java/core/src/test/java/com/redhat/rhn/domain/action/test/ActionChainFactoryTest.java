@@ -22,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainEntry;
@@ -153,8 +152,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
         ActionChainFactory.schedule(actionChain2, new Date());
         ActionChainFactory.schedule(actionChain3, new Date());
 
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
+        TestUtils.flushAndClearSession();
 
         List<ActionChain> list1 = ActionChainFactory.getActionChainsByServer(server1);
         assertEquals(2, list1.size());
@@ -197,29 +195,28 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
 
         assertEquals(0, actionChain.getEntries().size());
 
-        ActionChainEntry entry = ActionChainFactory.queueActionChainEntry(action,
-            actionChain, server);
+        ActionChainEntry entry = ActionChainFactory.queueActionChainEntry(action, actionChain, server);
         assertNotNull(entry);
         assertEquals(0, entry.getSortOrder().intValue());
 
         // test that entries are correct after reload()
-        HibernateFactory.reload(actionChain);
+        actionChain = TestUtils.reload(actionChain);
         assertEquals(1, actionChain.getEntries().size());
 
-        ActionChainEntry secondEntry = ActionChainFactory.queueActionChainEntry(action,
-            actionChain, server);
+        Action secondAction = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
+        secondAction.setOrg(user.getOrg());
+        ActionChainEntry secondEntry = ActionChainFactory.queueActionChainEntry(secondAction, actionChain, server);
         assertNotNull(secondEntry);
         assertEquals(1, secondEntry.getSortOrder().intValue());
-
-        // test that entries are correct after flush()
-        HibernateFactory.getSession().flush();
-        HibernateFactory.getSession().clear();
         assertEquals(2, actionChain.getEntries().size());
 
-        ActionChain secondActionChain = ActionChainFactory.createActionChain(
-            TestUtils.randomString(), user);
-        ActionChainEntry thirdEntry = ActionChainFactory.queueActionChainEntry(action,
-            secondActionChain, server);
+        // test that entries are correct after flush()
+        TestUtils.flushAndClearSession();
+        actionChain = TestUtils.reload(actionChain);
+        assertEquals(2, actionChain.getEntries().size());
+
+        ActionChain secondActionChain = ActionChainFactory.createActionChain(TestUtils.randomString(), user);
+        ActionChainEntry thirdEntry = ActionChainFactory.queueActionChainEntry(action, secondActionChain, server);
         assertNotNull(thirdEntry);
         assertEquals(0, thirdEntry.getSortOrder().intValue());
     }
@@ -237,7 +234,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
         ActionChainEntry entry = ActionChainFactory.queueActionChainEntry(action,
             actionChain, ServerFactoryTest.createTestServer(user), 0);
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         ActionChainEntry retrievedEntry = ActionChainFactory.getActionChainEntry(user,
             entry.getId());
@@ -294,29 +291,24 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testRemoveActionChainEntrySortGaps() throws Exception {
-
-        ActionChain actionChain =
-                ActionChainFactory.createActionChain(TestUtils.randomString(), user);
+        ActionChain actionChain = ActionChainFactory.createActionChain(TestUtils.randomString(), user);
         Action action;
         for (int i = 0; i < 2; i++) {
             action = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
             action.setOrg(user.getOrg());
-            ActionChainFactory.queueActionChainEntry(action, actionChain,
-                ServerFactoryTest.createTestServer(user), 0);
-            TestUtils.saveAndFlush(action);
+            ActionChainFactory.queueActionChainEntry(action, actionChain, ServerFactoryTest.createTestServer(user), 0);
         }
 
         for (int i = 0; i < 2; i++) {
             action = ActionFactory.createAction(ActionFactory.TYPE_PACKAGES_UPDATE);
             action.setOrg(user.getOrg());
-            ActionChainFactory.queueActionChainEntry(action, actionChain,
-                ServerFactoryTest.createTestServer(user), 2);
-            TestUtils.saveAndFlush(action);
+            ActionChainFactory.queueActionChainEntry(action, actionChain, ServerFactoryTest.createTestServer(user), 2);
         }
 
-        TestUtils.saveAndFlush(actionChain);
         ActionChainFactory.removeActionChainEntrySortGaps(actionChain, 1);
-        TestUtils.saveAndReload(actionChain);
+
+        TestUtils.flushAndClearSession();
+        actionChain = TestUtils.reload(actionChain);
 
         List<Integer> result = new ArrayList<>();
         result.add(0);
@@ -335,14 +327,14 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
         for (int i = 0; i < 2; i++) {
             action = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
              action.setOrg(user.getOrg());
-            TestUtils.saveAndFlush(action);
+            action = TestUtils.saveAndFlush(action);
             ActionChainFactory.queueActionChainEntry(action, actionChain,
                 ServerFactoryTest.createTestServer(user), 0);
         }
 
         action = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
         action.setOrg(user.getOrg());
-        TestUtils.saveAndFlush(action);
+        action = TestUtils.saveAndFlush(action);
         ActionChainEntry toRemove =
                 ActionChainFactory.queueActionChainEntry(action, actionChain,
                         ServerFactoryTest.createTestServer(user), 1);
@@ -350,7 +342,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
         for (int i = 0; i < 2; i++) {
             action = ActionFactory.createAction(ActionFactory.TYPE_PACKAGES_UPDATE);
             action.setOrg(user.getOrg());
-            TestUtils.saveAndFlush(action);
+            action = TestUtils.saveAndFlush(action);
             ActionChainFactory.queueActionChainEntry(action, actionChain,
                 ServerFactoryTest.createTestServer(user), 2);
         }
@@ -414,13 +406,13 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
             Action action = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
             action.setOrg(user.getOrg());
             ActionChainFactory.queueActionChainEntry(action, actionChain, server1, i);
-            TestUtils.saveAndFlush(action);
+            action = TestUtils.saveAndFlush(action);
             sortOrders.put(action.getId(), i);
             if (i % 2 == 0) {
                 action = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
                 action.setOrg(user.getOrg());
                 ActionChainFactory.queueActionChainEntry(action, actionChain, server2, i);
-                TestUtils.saveAndFlush(action);
+                action = TestUtils.saveAndFlush(action);
                 sortOrders.put(action.getId(), i);
             }
         }
@@ -505,7 +497,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
             Action action = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
             action.setOrg(user.getOrg());
             ActionChainFactory.queueActionChainEntry(action, actionChain, server1, i);
-            TestUtils.saveAndFlush(action);
+            action = TestUtils.saveAndFlush(action);
             sortOrders.put(action.getId(), i);
             if (i == 0) {
                 firstActionIdServer1 = action.getId();
@@ -514,7 +506,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
             action = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
             action.setOrg(user.getOrg());
             ActionChainFactory.queueActionChainEntry(action, actionChain, server2, i);
-            TestUtils.saveAndFlush(action);
+            action = TestUtils.saveAndFlush(action);
             sortOrders.put(action.getId(), i);
             if (i == 0) {
                 firstActionIdServer2 = action.getId();
@@ -541,7 +533,7 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
         String jobLabel = TaskomaticApi.MINION_ACTIONCHAIN_JOB_PREFIX + actionChain.getId();
         List<TaskoSchedule> schedules = TaskoFactory.listScheduleByLabel(jobLabel);
         assertEquals(1, schedules.size());
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         Action actionServer1 = ActionFactory.lookupById(firstActionIdServer1);
         tapi.deleteScheduledActions(Map.of(actionServer1, Set.of(server1)));
@@ -552,11 +544,11 @@ public class ActionChainFactoryTest extends BaseTestCaseWithUser {
                 ActionFactory.delete(sa);
             }
         });
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         schedules = TaskoFactory.listScheduleByLabel(jobLabel);
         assertEquals(1, schedules.size());
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         Action actionServer2 = ActionFactory.lookupById(firstActionIdServer2);
         tapi.deleteScheduledActions(Collections.singletonMap(actionServer2, Set.of(server2)));

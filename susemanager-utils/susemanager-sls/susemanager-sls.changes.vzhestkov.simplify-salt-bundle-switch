@@ -1,2 +1,0 @@
-- Avoid possible issues in salt state switching to the salt bundle.
-  Improve the speed of applying the state.

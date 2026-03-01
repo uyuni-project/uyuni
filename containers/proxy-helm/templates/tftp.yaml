@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uyuni-proxy-tftp
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/component: proxy-tftp
+    app.kubernetes.io/part-of: uyuni
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: proxy-tftp
+      app.kubernetes.io/part-of: uyuni
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/component: proxy-tftp
+        app.kubernetes.io/part-of: uyuni
+    spec:
+{{- if .Values.registrySecret }}
+      imagePullSecrets:
+        - name: {{ .Values.registrySecret }}
+{{- end }}
+{{- if .Values.tftp.hostNetwork }}
+      dnsPolicy: ClusterFirstWithHostNet
+      hostNetwork: true
+{{- end }}
+      containers:
+        - name: tftpd
+          image: {{ include "uyuni.image" (dict "name" "proxy-tftpd" "global" . "local" .Values.tftp) }}
+          imagePullPolicy: "{{ .Values.pullPolicy }}"
+          command:
+            - /usr/bin/tftp_wrapper.py
+            - --httpHost
+            - web.{{ .Release.Namespace }}.svc
+          volumeMounts:
+          - name: tftpd-volume
+            mountPath: /etc/uyuni/
+            readOnly: true
+          - mountPath: /etc/pki/trust/anchors/
+            name: ca-cert
+            readOnly: true
+          ports:
+            - containerPort: 69
+              protocol: UDP
+      volumes:
+        - name: tftpd-volume
+          configMap:
+            name: proxy-configmap
+            items:
+              - key: config.yaml
+                path: config.yaml
+        - name: ca-cert
+          configMap:
+            defaultMode: 420
+            name: uyuni-ca
+            items:
+              - key: ca.crt
+                path: RHN-ORG-TRUSTED-SSL-CERT

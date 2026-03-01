@@ -28,6 +28,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.Test;
@@ -83,7 +84,7 @@ public class ScriptRunActionTest extends RhnBaseTestCase {
         action.setScriptActionDetails(sad);
 
         ActionFactory.save(action);
-        flushAndEvict(action);
+        TestUtils.flushAndEvict(action);
         /**
          * Get action back out of db and make sure
          * getResults().size() is 2
@@ -134,7 +135,7 @@ public class ScriptRunActionTest extends RhnBaseTestCase {
         action.setScriptActionDetails(sad);
 
         ActionFactory.save(action);
-        flushAndEvict(action);
+        TestUtils.flushAndEvict(action);
 
         Action a = ActionFactory.lookupById(id);
         ScriptRunAction scriptaction = (ScriptRunAction) a;

@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.channel.Channel;
-import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartableTree;
 import com.redhat.rhn.frontend.action.kickstart.KickstartSoftwareEditAction;
 import com.redhat.rhn.manager.kickstart.KickstartWizardHelper;
@@ -100,7 +99,7 @@ public class KickstartSoftwareEditActionTest extends BaseKickstartEditTestCase {
         actionPerform();
         String[] keys = {"kickstart.software.success"};
         verifyActionMessages(keys);
-        ksdata = (KickstartData) TestUtils.reload(ksdata);
+        ksdata = TestUtils.reload(ksdata);
         assertFalse(ksdata.getChildChannels().isEmpty());
 
     }

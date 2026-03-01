@@ -21,8 +21,6 @@ import com.redhat.rhn.manager.satellite.SatelliteConfigurator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import net.sf.cglib.core.ReflectUtils;
-
 /**
  * BaseConfigAction - contains common methods for Struts Actions needing to
  * config a sat.
@@ -52,26 +50,22 @@ public abstract class BaseConfigAction extends RhnAction {
             logger.debug("getCommand(User currentUser={}) - start", currentUser);
         }
 
-        String className = getCommandClassName();
-
         try {
-            Class c = Class.forName(className);
-            Class[] paramTypes = new Class[1];
-            paramTypes[0] = User.class;
-            Object[] args = new Object[1];
-            args[0] = currentUser;
+            String className = getCommandClassName();
 
-            SatelliteConfigurator sc = (SatelliteConfigurator)
-                ReflectUtils.newInstance(c, paramTypes, args);
+            @SuppressWarnings("unchecked")
+            var clazz = (Class<? extends SatelliteConfigurator>) Class.forName(className);
+            var constructor = clazz.getDeclaredConstructor(User.class);
+            // Setting accessible for backwards compatibility (CGLib does this automatically)
+            constructor.setAccessible(true);
 
-            if (logger.isDebugEnabled()) {
-                logger.debug("getCommand(User) - end - return value={}", sc);
-            }
+            SatelliteConfigurator sc = constructor.newInstance(currentUser);
+            logger.debug("getCommand(User) - end - return value={}", sc);
+
             return sc;
         }
-        catch (ClassNotFoundException e) {
+        catch (ReflectiveOperationException e) {
             logger.error("getCommand(User)", e);
-
             throw new RuntimeException(e);
         }
     }
@@ -83,6 +77,5 @@ public abstract class BaseConfigAction extends RhnAction {
      * @return String classname
      */
     protected abstract String getCommandClassName();
-
 
 }

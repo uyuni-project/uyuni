@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014--2021 SUSE LLC
+ * Copyright (c) 2014--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -541,7 +541,7 @@ public class ContentSyncManager {
 
                         return new MgrSyncProductDto(
                                 ext.getFriendlyName(), ext.getProductId(), ext.getId(), ext.getVersion(), isRecommended,
-                                baseChannel, extChildChannels, Collections.emptySet()
+                                baseChannel, extChildChannels, new HashSet<>()
                         );
                     }).collect(Collectors.toSet());
 
@@ -626,7 +626,13 @@ public class ContentSyncManager {
                     );
 
                     LinkedList<SCCRepositoryJson> allReposList = new LinkedList<>(repos);
-                    allReposList.addAll(getAdditionalRepositories());
+                    if (IssFactory.getCurrentMaster() == null && !hubFactory.isISSPeripheral()) {
+                        // The next line load products that are not present in SCC, like free products of "fake" ones.
+                        // In a Hub Online Synchronization scenario we should not load them,
+                        // since all repos on a peripheral come from it HUB server.
+                        // Loading them also causes side effects on channel authentication against the HUB server.
+                        allReposList.addAll(getAdditionalRepositories());
+                    }
                     refreshRepositoriesAuthentication(allReposList, source, mirrorUrl);
                 });
         }

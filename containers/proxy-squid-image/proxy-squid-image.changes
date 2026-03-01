@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Jan 27 09:29:53 WET 2026 - psuarezhernandez@suse.com
+
+- version 5.2.4
+  * Configure squid replacement policy properly before cache dir
+    (bsc#1253773)
+
+-------------------------------------------------------------------
 Tue Dec 09 13:52:34 CET 2025 - michael.calmer@suse.com
 
 - version 5.2.3

@@ -45,9 +45,9 @@ public class FileListTest extends RhnBaseTestCase {
         f.addFileName("/tmp/dir/history/file.history");
         f.addFileName("/tmp/dir/history/file2.history");
         f.addFileName("/tmp/dir/history/file3.history");
-        flushAndEvict(f);
+        TestUtils.flushAndEvict(f);
         assertEquals(CommonFactory.removeFileList(f), 1);
-        flushAndEvict(f);
+        TestUtils.flushAndEvict(f);
         assertNull(CommonFactory.lookupFileList(f.getId(), o));
 
     }
@@ -59,7 +59,7 @@ public class FileListTest extends RhnBaseTestCase {
 
         CommonFactory.saveFileList(f);
         f.addFileName("/tmp/foo.txt");
-        flushAndEvict(f);
+        TestUtils.flushAndEvict(f);
         FileList f2 = CommonFactory.lookupFileList(f.getId(), o);
         assertNotNull(f2.getId());
         ConfigFileName cfn = f2.getFileNames().iterator().next();

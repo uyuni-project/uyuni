@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2009--2012 Red Hat, Inc.
+ * Copyright (c) 2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -54,9 +55,10 @@ public class CommonFactory extends HibernateFactory {
      * Save a FileList to the DB.
      *
      * @param fIn FileList to save
+     * @return the managed {@link FileList} instance
      */
-    public static void saveFileList(FileList fIn) {
-        singleton.saveObject(fIn);
+    public static FileList saveFileList(FileList fIn) {
+        return singleton.saveObject(fIn);
     }
 
     /**
@@ -85,16 +87,11 @@ public class CommonFactory extends HibernateFactory {
      * @return FileList if found.
      */
     public static FileList lookupFileList(Long idIn, Org org) {
-        Session session = null;
-        //look for Kickstart data by id
-        session = HibernateFactory.getSession();
-        return session.createNativeQuery("""
-                                      SELECT * from rhnFileList
-                                      WHERE id = :id
-                                      and org_id = :org_id """, FileList.class)
-                                      .setParameter("id", idIn, StandardBasicTypes.LONG)
-                                      .setParameter("org_id", org.getId(), StandardBasicTypes.LONG)
-                                      .uniqueResult();
+        return HibernateFactory.getSession()
+                .createQuery("FROM FileList f WHERE f.id = :id AND f.org.id = :orgId", FileList.class)
+                .setParameter("id", idIn)
+                .setParameter("orgId", org.getId())
+                .uniqueResult();
     }
 
     /**
@@ -104,11 +101,8 @@ public class CommonFactory extends HibernateFactory {
      * @return FileList if found.
      */
     public static FileList lookupFileList(String labelIn, Org org) {
-        //look for Kickstart data by label
-        return getSession().createQuery("""
-                 FROM  com.redhat.rhn.domain.common.FileList AS f
-                 WHERE f.label = :label
-                 AND   f.org = :org""", FileList.class)
+        return getSession()
+                .createQuery("FROM FileList f WHERE f.label = :label AND f.org = :org", FileList.class)
                 .setParameter("label", labelIn)
                 .setParameter("org", org)
                 .uniqueResult();
@@ -121,11 +115,11 @@ public class CommonFactory extends HibernateFactory {
      * @return TinyUrl instance
      */
     public static TinyUrl createTinyUrl(String urlIn, Date expires) {
-        String token = RandomStringUtils.randomAlphanumeric(8);
+        String token = RandomStringUtils.secure().nextAlphanumeric(8);
         TinyUrl existing = lookupTinyUrl(token);
         while (existing != null) {
             log.warn("Had collision with: {}", token);
-            token = RandomStringUtils.randomAlphanumeric(8);
+            token = RandomStringUtils.secure().nextAlphanumeric(8);
             existing = lookupTinyUrl(token);
         }
 
@@ -143,10 +137,12 @@ public class CommonFactory extends HibernateFactory {
 
     /**
      * Save a TinyUrl to the DB
+     *
      * @param urlIn to save.
+     * @return the managed {@link TinyUrl} instance
      */
-    public static void saveTinyUrl(TinyUrl urlIn) {
-        singleton.saveObject(urlIn);
+    public static TinyUrl saveTinyUrl(TinyUrl urlIn) {
+        return singleton.saveObject(urlIn);
     }
 
     /**

@@ -1,4 +1,4 @@
-# Copyright (c) 2014-2025 SUSE LLC.
+# Copyright (c) 2014-2026 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 ### This file contains the definitions for all steps concerning the execution of commands on a system.
@@ -181,6 +181,11 @@ When(/^I use spacewalk-repo-sync to sync channel "([^"]*)"$/) do |channel|
   $command_output, _code = get_target('server').run("spacewalk-repo-sync -c #{channel}", check_errors: false, verbose: true)
 end
 
+When(/^I use spacewalk-repo-sync to sync channel "([^"]*)" including "([^"]*)" packages?$/) do |channel, packages|
+  append_includes = packages.split.map { |pkg| "--include #{pkg}" }.join(' ')
+  $command_output, _code = get_target('server').run("spacewalk-repo-sync -c #{channel} #{append_includes}", check_errors: false, verbose: true)
+end
+
 When(/^I use spacewalk-repo-sync to sync channel "([^"]*)" including only client tools dependencies$/) do |channel|
   packages = CLIENT_TOOLS_DEPENDENCIES_BY_BASE_CHANNEL[channel]
   append_includes = packages.map { |pkg| "--include #{pkg}" }.join(' ')
@@ -290,7 +295,7 @@ end
 When(/^I wait until "([^"]*)" container is active$/) do |service|
   node = get_target('server')
   cmd = "systemctl is-active #{service}"
-  node.run_local_until_ok(cmd)
+  node.run_until_ok(cmd, runs_in_container: false)
 end
 
 When(/^I wait until "([^"]*)" service is active on "([^"]*)"$/) do |service, host|
@@ -424,70 +429,50 @@ Then(/^solver file for "([^"]*)" should reference "([^"]*)"$/) do |channel, pkg|
 end
 
 When(/^I wait until the channel "([^"]*)" has been synced$/) do |channel|
-  time_spent = 0
-  checking_rate = 10
-  timeout = channel_timeout(channel)
-
-  begin
-    repeat_until_timeout(timeout: timeout, message: 'Channel not fully synced') do
-      break if channel_sync_completed?(channel)
-
-      log "#{time_spent / 60} minutes out of #{timeout / 60} waiting for '#{channel}' channel to be synchronized" if ((time_spent += checking_rate) % 60).zero?
-      sleep checking_rate
-    end
-  rescue Timeout::Error
-    warn "Hit timeout during channel #{channel} reposync."
-  rescue StandardError => e
-    log e.message
-    unless $build_validation
-      # It might be that the MU repository is wrong, but we want to continue in any case
-      raise ScriptError, "This channel was not fully synced: #{channel}"
-    end
-  end
+  margin = channel.include?('custom_channel') || channel.include?('ptf') ? 0 : 900
+  wait_for_channels([channel], "channel '#{channel}'", margin: margin)
 end
 
 When(/^I wait until all synchronized channels for "([^"]*)" have finished$/) do |os_product_version|
-  channels_to_reposync = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, os_product_version).clone
-  channels_to_reposync = filter_channels(channels_to_reposync, ['beta']) unless $beta_enabled
-  raise ScriptError, "Synchronization error, channels for #{os_product_version} in #{product} not found" if channels_to_reposync.nil?
+  channels_to_sync = CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION.dig(product, os_product_version)&.clone
+  raise ScriptError, "Sync error: #{os_product_version} not found" if channels_to_sync.nil?
 
-  time_spent = 0
+  channels_to_sync = filter_channels(channels_to_sync, ['beta']) unless $beta_enabled
+  wait_for_channels(channels_to_sync, "product '#{os_product_version}'")
+end
+
+When(/^I wait until all synchronized channels have solved their dependencies$/) do
+  # Initialize the failure tracker here since this is the only step that uses it
+  add_context('channels_failed_without_solv_file', [])
+  channels_to_wait_solv_file = get_context('channels_to_wait_solv_file')
   checking_rate = 10
-  # Let's start with a timeout margin aside from the sum of the timeouts for each channel
-  timeout =
-    channels_to_reposync.reduce(900) do |sum, channel|
-      sum + channel_timeout(channel)
-    end
-
   begin
-    repeat_until_timeout(timeout: timeout, message: 'Product not fully synced') do
-      channels_to_reposync.delete_if do |channel|
-        if channel_sync_completed?(channel)
-          log "Channel #{channel} finished reposync"
-          true
-        else
-          false
-        end
+    repeat_until_timeout(timeout: get_context('channels_timeout'), message: 'Product not fully initialized') do
+      channels_to_wait_solv_file.reject! do |channel|
+        channel_is_synced?(channel)
       end
-
-      break if channels_to_reposync.empty?
-
-      if ((time_spent += checking_rate) % 60).zero?
-        log "#{(time_spent / 60).to_i} minutes out of #{(timeout / 60).to_i} waiting for '#{os_product_version}' channels to finish reposync"
-      end
+      break if channels_to_wait_solv_file.empty?
 
       sleep checking_rate
     end
-  rescue Timeout::Error
-    raise ScriptError, "Hit timeout during reposync. These channels did not complete:\n #{channels_to_reposync}"
   rescue StandardError => e
+    log "These channels were not initialized:\n #{channels_to_wait_solv_file}. \n#{e.message}"
+    add_context('channels_failed_without_solv_file', get_context('channels_failed_without_solv_file') + channels_to_wait_solv_file)
     # It might be that the MU repository is wrong, but on BV we want to continue in any case
-    unless $build_validation
-      raise ScriptError, "Error during reposync:\n#{e.message}\nReposync for these channels did not complete:\n #{channels_to_reposync}"
-    end
+    raise unless $build_validation
   end
+end
 
-  log "All channels for #{os_product_version} have been fully synced"
+Then(/^all channels have been synced without errors$/) do
+  channels_failed_downloading = get_context('channels_failed_downloading') || []
+  channels_failed_without_solv_file = get_context('channels_failed_without_solv_file') || []
+  next if channels_failed_downloading.empty? && channels_failed_without_solv_file.empty?
+
+  error_details = []
+  error_details << "Download failed for: #{channels_failed_downloading.join(', ')}" if channels_failed_downloading.any?
+  error_details << "Metadata generation failed for: #{channels_failed_without_solv_file.join(', ')}" if channels_failed_without_solv_file.any?
+
+  raise ScriptError, "Synchronization encountered errors:\n* #{error_details.join("\n* ")}"
 end
 
 When(/^I execute mgr-bootstrap "([^"]*)"$/) do |arg1|
@@ -1015,6 +1000,9 @@ end
 
 When(/^I remove packages? "([^"]*)" from this "([^"]*)"((?: without error control)?)$/) do |package, host, error_control|
   node = get_target(host)
+  # Split the input string into an array to handle multiple packages
+  package_list = package.split
+
   if rh_host?(host)
     cmd = "yum -y remove #{package}"
     successcodes = [0]
@@ -1022,10 +1010,22 @@ When(/^I remove packages? "([^"]*)" from this "([^"]*)"((?: without error contro
     cmd = "dpkg --remove #{package}"
     successcodes = [0]
   elsif transactional_system?(host)
-    cmd = "transactional-update pkg rm -y #{package}"
+    # Pre-filter: transactional-update fails and rolls back the whole snapshot if a package isn't found (exit code 104).
+    # By only passing installed packages, we ensure a 0 exit code and prevent automatic rollback of the transaction.
+    check_cmd = "rpm -q --qf '%{NAME}\\n' #{package_list.join(' ')} 2>/dev/null"
+    raw_output, = node.run(check_cmd, check_errors: false)
+    # To avoid using | grep -v 'not installed' in command, use select to verify lane match the packages to remove
+    packages_to_remove = raw_output.split("\n").select { |line| package_list.include?(line.strip) }
+    if packages_to_remove.empty?
+      puts "None of the packages (#{package}) are installed on #{host}. Skipping."
+      next
+    end
+    # Use --continue to ensure we build upon the existing pending snapshot if one exists
+    cmd = "transactional-update --continue pkg rm -y #{packages_to_remove.join(' ')}"
     successcodes = [0, 100, 101, 102, 103, 106]
   else
     cmd = "zypper --non-interactive remove -y #{package}"
+    # Zypper is fine with 104 (package not found), but transactional-update is not
     successcodes = [0, 100, 101, 102, 103, 104, 106]
   end
   node.run(cmd, check_errors: error_control.empty?, successcodes: successcodes)

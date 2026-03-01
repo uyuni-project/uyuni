@@ -17,12 +17,12 @@
     <parent>
         <groupId>org.uyuni-project</groupId>
         <artifactId>uyuni-java-parent</artifactId>
-        <version>5.2.2</version>
+        <version>5.2.3</version>
         <relativePath>../uyuni-java-parent</relativePath>
     </parent>
 
     <artifactId>coco-attestation</artifactId>
-    <version>5.2.2</version>
+    <version>5.2.3</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -37,7 +37,7 @@
             <dependency>
                 <groupId>org.uyuni-project</groupId>
                 <artifactId>uyuni-java-common</artifactId>
-                <version>5.2.2</version>
+                <version>5.2.3</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

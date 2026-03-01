@@ -4,6 +4,7 @@ metadata:
   annotations: {}
   creationTimestamp: null
   labels:
+    app.kubernetes.io/component: server-setup
     app.kubernetes.io/part-of: uyuni
   name: uyuni-setup-{{ now | date "20060102150405" }}
   namespace: "{{ .Release.Namespace }}"
@@ -12,60 +13,12 @@ spec:
   template:
     metadata:
       labels:
-        app.kubernetes.io/component: server
+        app.kubernetes.io/component: server-setup
         app.kubernetes.io/part-of: uyuni
     spec:
       containers:
         - command:
-          - sh
-          - -c
-          - |2
-            if test -e /root/.MANAGER_SETUP_COMPLETE; then
-              echo "Server appears to be already configured. Installation options may be ignored."
-              exit 0
-            fi
-            echo 'JAVA_OPTS=" $JAVA_OPTS -Xdebug -Xrunjdwp:transport=dt_socket,address=*:8003,server=y,suspend=n" ' >> /etc/tomcat/conf.d/remote_debug.conf
-            echo 'JAVA_OPTS=" $JAVA_OPTS -Xdebug -Xrunjdwp:transport=dt_socket,address=*:8001,server=y,suspend=n" ' >> /etc/rhn/taskomatic.conf
-            echo 'JAVA_OPTS=" $JAVA_OPTS -Xdebug -Xrunjdwp:transport=dt_socket,address=*:8002,server=y,suspend=n" ' >> /usr/share/rhn/config-defaults/rhn_search_daemon.conf
-
-            /usr/lib/susemanager/bin/mgr-setup
-            RESULT=$?
-
-            if test -n "$ADMIN_PASS"; then
-                echo "starting tomcat..."
-              (su -s /usr/bin/sh -g tomcat -G www -G susemanager tomcat /usr/lib/tomcat/server start)&
-
-              echo "starting apache2..."
-              /usr/sbin/start_apache2 -k start
-
-              echo "Creating first user..."
-              CURL_SCHEME="http"
-              curl -o /tmp/curl-retry -s --retry 7 $CURL_SCHEME://localhost/rhn/newlogin/CreateFirstUser.do
-
-              HTTP_CODE=$(curl -o /dev/null -s -w %{http_code} $CURL_SCHEME://localhost/rhn/newlogin/CreateFirstUser.do)
-              if test "$HTTP_CODE" == "200"; then
-                echo "Creating administration user"
-                curl -s -o /tmp/curl_out \
-                  -d "orgName=SUSE Test" \
-                  -d "adminLogin=$ADMIN_USER" \
-                  -d "adminPassword=$ADMIN_PASS" \
-                  -d "firstName=Admin" \
-                  -d "lastName=Admin" \
-                  -d "email=galaxy-noise@suse.de" \
-                  $CURL_SCHEME://localhost/rhn/manager/api/org/createFirst
-                if ! grep -q '^{"success":true' /tmp/curl_out ; then
-                  echo "Failed to create the administration user"
-                  cat /tmp/curl_out
-                fi
-                rm -f /tmp/curl_out
-              elif test "$HTTP_CODE" == "403"; then
-                echo "Administration user already exists, reusing"
-              else
-                RESULT=1
-              fi
-            fi
-
-            exit $RESULT
+          - /docker-entrypoint-init.d/00-mgrSetup.sh
           env:
             - name: ADMIN_USER
               valueFrom:
@@ -117,8 +70,6 @@ spec:
             - name: ISS_PARENT
             - name: NO_SSL
               value: "Y"
-            - name: MANAGER_ENABLE_TFTP
-              value: "Y"
             - name: REPORT_DB_NAME
               value: reportdb
             - name: REPORT_DB_HOST
@@ -155,7 +106,7 @@ spec:
                   name: {{ .Values.registrySecret }}
                   optional: false
 {{- end }}
-          image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+          image: {{ include "uyuni.image" (dict "name" "server" "global" . "local" .Values.server) }}
           imagePullPolicy: {{ .Values.pullPolicy }}
           name: setup
           volumeMounts:
@@ -211,22 +162,6 @@ spec:
               name: etc-sssd
             - mountPath: /etc/rhn
               name: etc-rhn
-            - mountPath: /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT
-              name: ca-cert
-              readOnly: true
-              subPath: ca.crt
-            - mountPath: /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
-              name: ca-cert
-              readOnly: true
-              subPath: ca.crt
-            - mountPath: /srv/www/htdocs/pub/RHN-ORG-TRUSTED-SSL-CERT
-              name: ca-cert
-              readOnly: true
-              subPath: ca.crt
-            - mountPath: /etc/pki/trust/anchors/DB-RHN-ORG-TRUSTED-SSL-CERT
-              name: db-ca-cert
-              readOnly: true
-              subPath: ca.crt
             - mountPath: /etc/pki/
               name: tls
 {{- if .Values.registrySecret }}
@@ -270,7 +205,7 @@ spec:
                     cp -a $vol/. /mnt$vol;
                 fi
               done
-          image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+          image: {{ include "uyuni.image" (dict "name" "server" "global" . "local" .Values.server) }}
           imagePullPolicy: {{ .Values.pullPolicy }}
           name: init-volumes
           volumeMounts:
@@ -339,11 +274,23 @@ spec:
               done
           env:
             - name: MANAGER_DB_HOST
-              value: db
+              valueFrom:
+                configMapKeyRef:
+                  key: "db_host"
+                  name: uyuni-config
+                  optional: false
             - name: MANAGER_DB_PORT
-              value: "5432"
+              valueFrom:
+                configMapKeyRef:
+                  key: "db_port"
+                  name: uyuni-config
+                  optional: false
             - name: MANAGER_DB_NAME
-              value: susemanager
+              valueFrom:
+                configMapKeyRef:
+                  key: "db_name"
+                  name: uyuni-config
+                  optional: false
             - name: MANAGER_USER
               valueFrom:
                 secretKeyRef:
@@ -351,21 +298,36 @@ spec:
                   name: db-credentials
                   optional: false
             - name: REPORT_DB_HOST
-              value: reportdb
+              valueFrom:
+                configMapKeyRef:
+                  key: "reportdb_host"
+                  name: uyuni-config
+                  optional: false
             - name: REPORT_DB_PORT
-              value: "5432"
+              valueFrom:
+                configMapKeyRef:
+                  key: "reportdb_port"
+                  name: uyuni-config
+                  optional: false
             - name: REPORT_DB_NAME
-              value: reportdb
+              valueFrom:
+                configMapKeyRef:
+                  key: "reportdb_name"
+                  name: uyuni-config
+                  optional: false
             - name: REPORT_DB_USER
               valueFrom:
                 secretKeyRef:
                   key: username
                   name: reportdb-credentials
                   optional: false
-          image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+          image: {{ include "uyuni.image" (dict "name" "server" "global" . "local" .Values.server) }}
           imagePullPolicy: {{ .Values.pullPolicy }}
           name: db-waiter
       restartPolicy: Never
+      securityContext:
+        seLinuxOptions:
+          level: "s0"
       volumes:
         - name: var-cobbler
           persistentVolumeClaim:

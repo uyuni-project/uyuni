@@ -36,7 +36,6 @@ import com.redhat.rhn.testing.ServerGroupTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import org.hibernate.Session;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -58,15 +57,17 @@ public class ServerGroupTest extends RhnBaseTestCase {
         assertNotEquals(sg1, sg2);
         assertNotEquals("foo", sg1);
 
-        Session session = HibernateFactory.getSession();
-        sg2 = session.createQuery(
-                        "FROM ServerGroup AS s WHERE s.id = :id AND s.org = :org AND (s.groupType IS NULL)",
-                        ServerGroup.class)
-                .setParameter("id", sg1.getId())
-                .setParameter("org", user.getOrg())
-                .uniqueResult();
-
+        sg2 = lookupServerGroupByIdAndOrg(sg1.getId(), user.getOrg());
         assertEquals(sg1, sg2);
+    }
+
+    private ServerGroup lookupServerGroupByIdAndOrg(Long serverGroupId, Org org) {
+        return HibernateFactory.getSession()
+                .createQuery("FROM ServerGroup AS s WHERE s.id = :id AND s.org = :org AND (s.groupType IS NULL)",
+                        ServerGroup.class)
+                .setParameter("id", serverGroupId)
+                .setParameter("org", org)
+                .uniqueResult();
     }
 
     /**
@@ -129,8 +130,8 @@ public class ServerGroupTest extends RhnBaseTestCase {
         pillars.add(new Pillar("category2", pillar2, group));
 
         group.setPillars(pillars);
-        TestUtils.saveAndFlush(group);
-        group = reload(group);
+        group = TestUtils.saveAndFlush(group);
+        group = TestUtils.reload(group);
 
         Pillar actual = group.getPillars().stream()
                 .filter(item -> "category1".equals(item.getCategory()))

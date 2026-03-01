@@ -101,12 +101,14 @@ if [ -f $SSL_KEY ] ; then
     postgres_reconfig "ssl_key_file" "'$SSL_KEY'"
 fi
 
+mkdir -p /var/lib/pgsql/data/postgresql.conf.d
+postgres_reconfig "include_dir" "'postgresql.conf.d'"
+
 echo "postgresql.conf updated"
 
-rm /var/lib/pgsql/data/pg_hba.conf
-
-chmod +x /usr/local/bin/docker-entrypoint.sh
-source /usr/local/bin/docker-entrypoint.sh
-pg_setup_hba_conf "$@"
+cat "$HBA_FILE" <<EOT
+local replication,postgres all trust
+host all all all scram-sha-256
+EOT
 
 echo "pg_hba.conf updated"

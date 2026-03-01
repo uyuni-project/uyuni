@@ -30,6 +30,7 @@ import com.redhat.rhn.domain.session.WebSessionFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.session.SessionManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.apache.commons.lang3.StringUtils;
@@ -207,6 +208,29 @@ public class WebSessionFactoryTest extends RhnBaseTestCase {
         assertNotNull(s2);
         assertNotNull(s2.getWebUserId());
         assertEquals(expTime, s2.getExpires());
+    }
+
+    @Test
+    public void testExists() {
+        WebSession s = WebSessionFactory.createSession();
+        verifySession(s);
+        assertNotNull(s);
+
+        s = WebSessionFactory.save(s);
+        TestUtils.flushSession();
+
+        // Check if the session is reported as existing
+        assertTrue(WebSessionFactory.exists(s));
+
+        // Detach the instance. it should still report as existing
+        TestUtils.evict(s);
+        assertTrue(WebSessionFactory.exists(s));
+
+        // Merge the object and delete the session. It should not exist anymore
+        s = TestUtils.reload(s);
+        WebSessionFactory.remove(s);
+
+        assertFalse(WebSessionFactory.exists(s));
     }
 
 }

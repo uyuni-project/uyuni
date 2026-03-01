@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jan 27 09:31:14 WET 2026 - psuarezhernandez@suse.com
+
+- version 5.2.3
+  * Adjust helm chart to work without mgradm
+
+-------------------------------------------------------------------
 Thu Nov 27 11:19:05 CET 2025 - michael.calmer@suse.com
 
 - version 5.2.2

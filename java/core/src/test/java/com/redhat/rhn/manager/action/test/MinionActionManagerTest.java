@@ -20,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.channel.Channel;
@@ -53,6 +52,7 @@ import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
+import com.redhat.rhn.testing.TestUtils;
 
 import com.suse.cloud.CloudPaygManager;
 import com.suse.cloud.test.TestCloudPaygManagerBuilder;
@@ -474,7 +474,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
                     .scheduleMinionActionExecutions(with(any(List.class)), with(any(Boolean.class)));
             exactly(1).of(taskomaticMock).scheduleStagingJobs(with(actionsMatcher));
         } });
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         ErrataManager.applyErrata(user, errataIds,
                 Date.from(scheduledActionTime.toInstant()), serverIds);
     }
@@ -533,7 +533,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
                     .scheduleMinionActionExecutions(with(any(List.class)), with(any(Boolean.class)));
             exactly(1).of(taskomaticMock).scheduleStagingJobs(with(actionsMatcher));
         } });
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         ErrataManager.applyErrata(user, errataIds,
                 Date.from(scheduledActionTime.toInstant()), serverIds);
     }
@@ -596,7 +596,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
                     .scheduleMinionActionExecutions(with(any(List.class)), with(any(Boolean.class)));
             exactly(1).of(taskomaticMock).scheduleStagingJobs(with(actionsMatcher));
         } });
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         ErrataManager.applyErrata(user, errataIds,
                 Date.from(scheduledActionTime.toInstant()), serverIds);
     }
@@ -664,7 +664,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
                     .scheduleMinionActionExecutions(with(any(List.class)), with(any(Boolean.class)));
             never(taskomaticMock).scheduleStagingJobs(with(actionsMatcher));
         } });
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         ErrataManager.applyErrata(user, errataIds,
                 Date.from(scheduledActionTime.toInstant()), serverIds);
     }
@@ -720,7 +720,7 @@ public class MinionActionManagerTest extends JMockBaseTestCaseWithUser {
                     with(server1.getId()),
                     with(any(Date.class)));
         } });
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         ErrataManager.applyErrata(user, errataIds,
                 Date.from(scheduledActionTime.toInstant()), serverIds);
     }

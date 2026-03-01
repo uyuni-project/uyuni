@@ -15,6 +15,7 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.security.acl.Access;
 import com.redhat.rhn.common.security.acl.Acl;
 import com.redhat.rhn.common.security.acl.AclFactory;
+import com.redhat.rhn.common.util.ServletUtils;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 
@@ -28,9 +29,8 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.jsp.PageContext;
-
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.jsp.PageContext;
 import spark.Request;
 import spark.Response;
 import spark.RouteImpl;
@@ -63,7 +63,7 @@ public class MenuTree {
         String docsLocale = GlobalInstanceHolder.USER_PREFERENCE_UTILS.getDocsLocale(pageContext);
         HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
         User user = new RequestContext(request).getCurrentUser();
-        String url = request.getRequestURI();
+        String url = ServletUtils.getRequestPath(request);
 
         Map<String, Boolean> adminRoles = new HashMap<>();
         adminRoles.put("org", checkAcl(user, "user_role(org_admin)"));

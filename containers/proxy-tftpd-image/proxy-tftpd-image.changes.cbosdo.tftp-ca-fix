@@ -1,0 +1,1 @@
+- Move the expected CA to /etc/pki/anchors (bsc#1258709)

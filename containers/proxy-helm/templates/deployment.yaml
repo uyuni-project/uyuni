@@ -4,135 +4,202 @@ metadata:
   name: uyuni-proxy
   namespace: "{{ .Release.Namespace }}"
   labels:
-    app: uyuni-proxy
+    app.kubernetes.io/component: proxy
+    app.kubernetes.io/part-of: uyuni
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: uyuni-proxy
+      app.kubernetes.io/component: proxy
+      app.kubernetes.io/part-of: uyuni
   template:
     metadata:
       labels:
-        app: uyuni-proxy
+        app.kubernetes.io/component: proxy
+        app.kubernetes.io/part-of: uyuni
     spec:
 {{- if .Values.registrySecret }}
       imagePullSecrets:
         - name: {{ .Values.registrySecret }}
 {{- end }}
+      initContainers:
+        - name: init-httpd
+          image: {{ include "uyuni.image" (dict "name" "proxy-httpd" "global" . "local" .Values.httpd) }}
+          imagePullPolicy: "{{ .Values.pullPolicy }}"
+          command:
+            - sh
+            - -c
+            - |2
+              cp -r /etc/apache2/* /tmp/apache2/
+              ln -s /etc/uyuni/server.crt /tmp/apache2/ssl.crt/server.crt
+              ln -s /etc/uyuni/server.key /tmp/apache2/ssl.key/server.key
+              ln -s /etc/uyuni/apache_tuning.conf /tmp/apache2/conf.d/apache_tuning.conf
+          volumeMounts:
+          - name: etc-apache2
+            mountPath: /tmp/apache2
+
+        - name: init-sshd
+          image: {{ include "uyuni.image" (dict "name" "proxy-ssh" "global" . "local" .Values.ssh) }}
+          imagePullPolicy: "{{ .Values.pullPolicy }}"
+          command:
+            - sh
+            - -c
+            - |2
+              cp -r /etc/ssh/sshd_config.d/* /tmp/sshd/
+              ln -s /etc/uyuni/ssh_tuning.conf /tmp/sshd/99-tuning.conf
+          volumeMounts:
+          - name: etc-sshd
+            mountPath: /tmp/sshd
+
       containers:
         - name: httpd
-          image: {{- include "deployment.container.image" (dict "name" "proxy-httpd" "global" .) | indent 1}}
+          image: {{ include "uyuni.image" (dict "name" "proxy-httpd" "global" . "local" .Values.httpd) }}
           imagePullPolicy: "{{ .Values.pullPolicy }}"
           volumeMounts:
-          - name: config-volume
-            mountPath: /etc/uyuni/config.yaml
-            subPath: config.yaml
+          - name: httpd-volume
+            mountPath: /etc/uyuni/
             readOnly: true
-          - name: httpd-secret-volume
-            mountPath: /etc/uyuni/httpd.yaml
-            subPath: httpd.yaml
-            readOnly: true
-          - name: package-cache
-            mountPath: /var/cache/rhn
-          - name: tftp-boot
-            mountPath: /srv/tftpboot
-          - name: config-volume
-            mountPath: /etc/apache2/conf.d/apache_tuning.conf
-            subPath:  apache_tuning
+          - name: etc-apache2
+            mountPath: /etc/apache2
+          - mountPath: /etc/pki/trust/anchors/
+            name: ca-cert
             readOnly: true
           ports:
             - containerPort: 80
             - containerPort: 443
+
         - name: salt-broker
-          image: {{- include "deployment.container.image" (dict "name" "proxy-salt-broker" "global" .) | indent 1}}
+          image: {{ include "uyuni.image" (dict "name" "proxy-salt-broker" "global" . "local" .Values.salt) }}
           imagePullPolicy: "{{ .Values.pullPolicy }}"
           volumeMounts:
           - name: config-volume
-            mountPath: /etc/uyuni/config.yaml
-            subPath: config.yaml
+            mountPath: /etc/uyuni
             readOnly: true
           ports:
             - containerPort: 4505
             - containerPort: 4506
+
         - name: squid
-          image: {{- include "deployment.container.image" (dict "name" "proxy-squid" "global" .) | indent 1}}
+          image: {{ include "uyuni.image" (dict "name" "proxy-squid" "global" . "local" .Values.squid) }}
           imagePullPolicy: "{{ .Values.pullPolicy }}"
           volumeMounts:
           - name: config-volume
-            mountPath: /etc/uyuni/config.yaml
-            subPath: config.yaml
+            mountPath: /etc/uyuni/
             readOnly: true
           - name: squid-cache
             mountPath: /var/cache/squid
-          - name: config-volume
-            mountPath: /etc/squid/conf.d/squid_tuning.conf
-            subPath:  squid_tuning
+          - name: squid-volume
+            mountPath: /etc/squid/conf.d/
             readOnly: true
           ports:
             - containerPort: 8088
+
         - name: ssh
-          image: {{- include "deployment.container.image" (dict "name" "proxy-ssh" "global" .) | indent 1}}
+          image: {{ include "uyuni.image" (dict "name" "proxy-ssh" "global" . "local" .Values.ssh) }}
           imagePullPolicy: "{{ .Values.pullPolicy }}"
           volumeMounts:
-          - name: config-volume
-            mountPath: /etc/uyuni/config.yaml
-            subPath: config.yaml
+          - name: ssh-volume
+            mountPath: /etc/uyuni/
             readOnly: true
-          - name: ssh-secret-volume
-            mountPath: /etc/uyuni/ssh.yaml
-            subPath: ssh.yaml
-            readOnly: true
-          - name: config-volume
-            mountPath: /etc/ssh/sshd_config.d/99-tuning.conf
-            subPath:  ssh_tuning
+          - name: etc-sshd
+            mountPath: /etc/ssh/sshd_config.d/
             readOnly: true
           ports:
             - containerPort: 22
-        - name: tftpd
-          image: {{- include "deployment.container.image" (dict "name" "proxy-tftpd" "global" .) | indent 1}}
-          imagePullPolicy: "{{ .Values.pullPolicy }}"
-          volumeMounts:
-          - name: config-volume
-            mountPath: /etc/uyuni/config.yaml
-            subPath: config.yaml
-            readOnly: true
-          - name: tftp-boot
-            mountPath: /srv/tftpboot
-            readOnly: true
-          ports:
-            - containerPort: 69
-              protocol: UDP
       volumes:
+        - name: httpd-volume
+          projected:
+            sources:
+              - configMap:
+                  name: proxy-configmap
+                  items:
+                    - key: config.yaml
+                      path: config.yaml
+              - secret:
+                  name: httpd
+              - configMap:
+                  name: proxy-configmap
+                  items:
+                    - key: apache_tuning
+                      path: apache_tuning.conf
+              - configMap:
+                  name: uyuni-ca
+                  items:
+                    - key: ca.crt
+                      path: ca.crt
+                      mode: 420
+              - secret:
+                  name: proxy-cert
+                  items:
+                    - key: tls.crt
+                      path: server.crt
+                      mode: 420
+                    - key: tls.key
+                      mode: 256
+                      path: server.key
+        
+        - name: ssh-volume
+          projected:
+            sources:
+              - configMap:
+                  name: proxy-configmap
+                  items:
+                    - key: config.yaml
+                      path: config.yaml
+              - secret:
+                  name: ssh
+                  items:
+                    - key: ssh.yaml
+                      path: ssh.yaml
+              - configMap:
+                  name: proxy-configmap
+                  items:
+                    - key: ssh_tuning
+                      path: ssh_tuning.conf
+
+        - name: tftpd-volume
+          projected:
+            sources:
+              - configMap:
+                  name: proxy-configmap
+                  items:
+                    - key: config.yaml
+                      path: config.yaml
+              - configMap:
+                  name: uyuni-ca
+                  items:
+                    - key: ca.crt
+                      path: ca.crt
+                      mode: 420
+
         - name: config-volume
           configMap:
             name: proxy-configmap
             items:
               - key: config.yaml
                 path: config.yaml
+
+        - name: squid-volume
+          configMap:
+            name: proxy-configmap
+            items:
               - key: squid_tuning
-                path: squid_tuning
-              - key: apache_tuning
-                path: apache_tuning
-              - key: ssh_tuning
-                path: ssh_tuning
-        - name: httpd-secret-volume
-          secret:
-            secretName: proxy-secret
-            items:
-              - key: httpd.yaml
-                path: httpd.yaml
-        - name: ssh-secret-volume
-          secret:
-            secretName: proxy-secret
-            items:
-              - key: ssh.yaml
-                path: ssh.yaml
-        - name: package-cache
-          persistentVolumeClaim:
-            claimName: package-cache-pv-claim
-        - name: tftp-boot
-          persistentVolumeClaim:
-            claimName: tftp-boot-pv-claim
+                path: squid_tuning.conf
+
         - name: squid-cache
           persistentVolumeClaim:
-            claimName: squid-cache-pv-claim
+            claimName: squid-cache
+
+        - name: ca-cert
+          configMap:
+            defaultMode: 420
+            name: uyuni-ca
+            items:
+              - key: ca.crt
+                path: RHN-ORG-TRUSTED-SSL-CERT
+
+        - name: etc-apache2
+          emptyDir: {}
+
+        - name: etc-sshd
+          emptyDir: {}

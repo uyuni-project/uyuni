@@ -16,7 +16,7 @@
     <parent>
         <groupId>org.uyuni-project</groupId>
         <artifactId>spacewalk-java</artifactId>
-        <version>5.2.6</version>
+        <version>5.2.8</version>
     </parent>
 
     <groupId>org.uyuni-project.spacewalk-java</groupId>
@@ -40,18 +40,6 @@
         <dependency>
             <groupId>suse</groupId>
             <artifactId>sitemesh</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.taglibs</groupId>
-            <artifactId>taglibs-standard-impl</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.taglibs</groupId>
-            <artifactId>taglibs-standard-jstlel</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.taglibs</groupId>
-            <artifactId>taglibs-standard-spec</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>

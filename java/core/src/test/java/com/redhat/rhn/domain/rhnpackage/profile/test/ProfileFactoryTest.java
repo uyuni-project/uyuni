@@ -85,7 +85,7 @@ public class ProfileFactoryTest  extends RhnBaseTestCase {
         Profile p = ProfileTest.createTestProfile(user, channel);
         assertNotNull(p);
         assertEquals(ProfileFactory.TYPE_NORMAL, p.getProfileType());
-        TestUtils.saveAndFlush(p);
+        p = TestUtils.saveAndFlush(p);
         Profile p1 = ProfileFactory.lookupByIdAndOrg(p.getId(), user.getOrg());
         assertEquals(p, p1);
     }
@@ -99,7 +99,7 @@ public class ProfileFactoryTest  extends RhnBaseTestCase {
         Long orgid = p.getOrg().getId();
         assertNotNull(p);
         assertEquals(ProfileFactory.TYPE_NORMAL, p.getProfileType());
-        TestUtils.saveAndFlush(p);
+        p = TestUtils.saveAndFlush(p);
         Profile p1 = ProfileFactory.findByNameAndOrgId(name, orgid);
         assertEquals(p, p1);
     }

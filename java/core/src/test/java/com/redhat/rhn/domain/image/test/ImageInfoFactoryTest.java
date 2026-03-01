@@ -26,7 +26,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.salt.inspect.ImageInspectActionDetails;
 import com.redhat.rhn.domain.channel.Channel;
@@ -79,6 +78,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -187,18 +189,16 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         ImageInfo img1 = createImageInfo("myimage1", "1.0.0", user);
         ImageInfo img2 = createImageInfo("myimage1", "2.0.0", user);
         ImageInfo img3 = createImageInfo("myimage2", "1.0.0", user);
+        ImageInfo img4 = createImageInfo("myimage1", "1.1.0", user);
 
         List<ImageInfo> result = ImageInfoFactory.list();
 
-        assertEquals(3, result.size());
-        ImageInfo img = result.stream().filter(i -> i.equals(img1)).findFirst().get();
-        assertEquals(img, img1);
-
-        img = result.stream().filter(i -> i.equals(img2)).findFirst().get();
-        assertEquals(img, img2);
-
-        img = result.stream().filter(i -> i.equals(img3)).findFirst().get();
-        assertEquals(img, img3);
+        // Validate all images are listed and are listed from the oldest to the newest
+        assertEquals(4, result.size());
+        assertEquals(result.get(0), img1);
+        assertEquals(result.get(1), img2);
+        assertEquals(result.get(2), img3);
+        assertEquals(result.get(3), img4);
     }
 
     @Test
@@ -288,20 +288,20 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         ImageInfo image2 = createImageInfo("myimage2", null, store, user);
 
         ImageInfo result =
-                ImageInfoFactory.lookupByName("myimage", "1.0.0", store.getId()).get();
+                ImageInfoFactory.lookupByName("myimage", "1.0.0", store).get();
 
         assertEquals(image, result);
 
-        result = ImageInfoFactory.lookupByName("myimage2", null, store.getId()).get();
+        result = ImageInfoFactory.lookupByName("myimage2", null, store).get();
 
         assertEquals(image2, result);
 
         assertFalse(ImageInfoFactory
-                .lookupByName("non-existent-name", "1.0.0", store.getId()).isPresent());
+                .lookupByName("non-existent-name", "1.0.0", store).isPresent());
         assertFalse(ImageInfoFactory
-                .lookupByName("myimage", "2.0.0", store.getId()).isPresent());
+                .lookupByName("myimage", "2.0.0", store).isPresent());
         assertFalse(ImageInfoFactory
-                .lookupByName("myimage", "1.0.0", anotherStore.getId()).isPresent());
+                .lookupByName("myimage", "1.0.0", anotherStore).isPresent());
     }
 
     @Test
@@ -332,7 +332,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
                 user);
         assertEquals(1, ImageInfoFactory.listImageInfos(user.getOrg()).size());
         ImageInfo info =
-                ImageInfoFactory.lookupByName("suma-3.1-base", "v1.0", store.getId()).get();
+                ImageInfoFactory.lookupByName("suma-3.1-base", "v1.0", store).get();
 
         // Assertions
         assertEquals("suma-3.1-base", info.getName());
@@ -362,10 +362,10 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         prd.setVersion("12.1");
         prd.setArch(p.getPackageArch());
         prd.setBaseproduct(true);
-        TestUtils.saveAndReload(prd);
+        prd = TestUtils.saveAndReload(prd);
         info.setInstalledProducts(Collections.singleton(prd));
         ImageInfoFactory.save(info);
-        TestUtils.saveAndFlush(info);
+        info = TestUtils.saveAndFlush(info);
 
         // Update values
         CustomDataKey cdk = CustomDataKeyTest.createTestCustomDataKey(user);
@@ -374,7 +374,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         Set<ProfileCustomDataValue> cdvSet = new HashSet<>();
         cdvSet.add(val);
         profile.setCustomDataValues(cdvSet);
-        TestUtils.saveAndFlush(profile);
+        profile = TestUtils.saveAndFlush(profile);
 
         // Reschedule
         ImageInfoFactory.scheduleBuild(buildHost.getId(), "v1.0", profile, new Date(),
@@ -382,14 +382,14 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
         // Image info should be added
         assertEquals(2, ImageInfoFactory.listImageInfos(user.getOrg()).size());
-        ImageInfo info2 = ImageInfoFactory.lookupByName("suma-3.1-base", "v1.0", store.getId()).get();
+        ImageInfo info2 = ImageInfoFactory.lookupByName("suma-3.1-base", "v1.0", store).get();
 
         // ImageInfo instance is preserved on new builds if it exists already with the same name/version and store
         assertEquals(info.getId(), info2.getId());
 
         // Test without a token
         profile.setToken(null);
-        TestUtils.saveAndFlush(profile);
+        profile = TestUtils.saveAndFlush(profile);
 
         // Schedule
         ImageInfoFactory.scheduleBuild(buildHost.getId(), "v2.0", profile, new Date(),
@@ -401,7 +401,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         assertEquals(3, infoList.size());
         infoList.forEach(i -> assertEquals("suma-3.1-base", i.getName()));
 
-        info = ImageInfoFactory.lookupByName("suma-3.1-base", "v2.0", store.getId()).get();
+        info = ImageInfoFactory.lookupByName("suma-3.1-base", "v2.0", store).get();
 
         // Assertions
         assertEquals(0, info.getChannels().size());
@@ -451,7 +451,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         assertTrue(channels.isPresent());
 
         assertFalse(
-                ImageInfoFactory.lookupByName("myimage", "1.0", store.getId()).isPresent());
+                ImageInfoFactory.lookupByName("myimage", "1.0", store).isPresent());
 
         try {
             ImageInfoFactory.scheduleImport(buildHost.getId(), "myimage", "1.0", store,
@@ -462,7 +462,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         }
 
         assertFalse(
-                ImageInfoFactory.lookupByName("myimage", "1.0", store.getId()).isPresent());
+                ImageInfoFactory.lookupByName("myimage", "1.0", store).isPresent());
 
         systemEntitlementManager.addEntitlementToServer(buildHost, EntitlementManager.CONTAINER_BUILD_HOST);
 
@@ -470,7 +470,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         assertNotNull(ImageInfoFactory.scheduleImport(buildHost.getId(), "myimage", "1.0",
                 store, channels, new Date(), user));
         ImageInfo info =
-                ImageInfoFactory.lookupByName("myimage", "1.0", store.getId()).get();
+                ImageInfoFactory.lookupByName("myimage", "1.0", store).get();
 
         assertTrue(info.isExternalImage());
         assertEquals(buildHost, info.getBuildServer());
@@ -554,7 +554,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         ImageInfo image = createImageInfo("test", "1.0.0", store, user);
         String category = "Image" + image.getId();
         Pillar pillarEntry = new Pillar(category, new TreeMap<String, Object>(), image.getOrg());
-        HibernateFactory.getSession().persist(pillarEntry);
+        TestUtils.persist(pillarEntry);
         image.setPillar(pillarEntry);
 
         ImageFile bundleFile = new ImageFile();
@@ -565,11 +565,11 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
 
         ImageInfoFactory.save(image);
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         ImageInfoFactory.delete(image, saltApiMock);
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         assertFalse(user.getOrg().getPillars().stream()
               .filter(item -> (category.equals(item.getCategory())))
@@ -597,24 +597,24 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         ImageInfo img2 = createImageInfo("test", "1.0.1", store, user);
         ImageInfo img3 = createImageInfo("test", "1.0.2", store, user);
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
 
         DeltaImageInfo delta1 = ImageInfoFactory.createDeltaImageInfo(img1, img2,
                                                  "delta1.tgz", new TreeMap<String, Object>());
         ImageInfoFactory.createDeltaImageInfo(img2, img3,
                                                  "delta2.tgz", new TreeMap<String, Object>());
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         assertEquals(3, ImageInfoFactory.listImageInfos(org).size());
         assertEquals(2, ImageInfoFactory.listDeltaImageInfos(org).size());
         assertEquals(2, org.getPillars().size()); //each delta has a pillar
-        HibernateFactory.getSession().clear();
+        TestUtils.clearSession();
 
         img3 = TestUtils.reload(img3);
         // deleting a target image should delete also the delta
         ImageInfoFactory.delete(img3, saltApiMock);
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         org = TestUtils.reload(org);
 
         assertEquals(2, ImageInfoFactory.listImageInfos(org).size());
@@ -625,7 +625,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         // deleting a delta should not delete the images
         ImageInfoFactory.deleteDeltaImage(delta1, saltApiMock);
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         org = TestUtils.reload(org);
 
         assertEquals(2, ImageInfoFactory.listImageInfos(org).size());
@@ -636,7 +636,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         // deleting a source image should delete also the delta
         ImageInfoFactory.delete(img1, saltApiMock);
 
-        HibernateFactory.getSession().flush();
+        TestUtils.flushSession();
         org = TestUtils.reload(org);
 
         assertEquals(1, ImageInfoFactory.listImageInfos(org).size());
@@ -657,4 +657,51 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
         return taskomaticApi;
     }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"test-store"})
+    @NullSource
+    public void canDeleteImageWithObsoletes(String storeLabel) {
+        ImageStore store = storeLabel != null ? createImageStore(storeLabel, user) : null;
+
+        // Main image
+        ImageInfo mainImage = createImageInfo("fedora-web-server", "39", store, user);
+        mainImage.setBuilt(true);
+        mainImage.setObsolete(false);
+        ImageInfoFactory.save(mainImage);
+
+        // Obsolete version
+        ImageInfo obsoleteImage = createImageInfo("fedora-web-server", "39", store, user);
+        obsoleteImage.setBuilt(true);
+        obsoleteImage.setObsolete(true); // This makes it eligible for deletion
+        ImageInfoFactory.save(obsoleteImage);
+
+        // Unrelated obsolete image
+        ImageInfo otherImage = createImageInfo("ubuntu-db-server", "22.04", store, user);
+        otherImage.setBuilt(true);
+        otherImage.setObsolete(true);
+        ImageInfoFactory.save(otherImage);
+
+        TestUtils.flushSession();
+
+        ImageInfoFactory.deleteWithObsoletes(mainImage, saltApiMock);
+        TestUtils.flushAndClearSession();
+
+        // Both the main and obsolete should be gone
+        assertTrue(ImageInfoFactory.lookupById(mainImage.getId()).isEmpty(), "Main image should be deleted");
+        assertTrue(ImageInfoFactory.lookupById(obsoleteImage.getId()).isEmpty(), "Obsolete image should be deleted");
+
+        // Unrelated image should still exist
+        assertTrue(ImageInfoFactory.lookupById(otherImage.getId()).isPresent(),
+                "Unrelated image should NOT be deleted");
+    }
+
+    @Test
+    public void generatedCoverageTestLookupDeltaImageInfo() {
+        // this test has been generated programmatically to test ImageInfoFactory.lookupDeltaImageInfo
+        // containing a hibernate query that is not covered by any test so far
+        // feel free to modify and/or complete it
+        ImageInfoFactory.lookupDeltaImageInfo(0L, 0L);
+    }
+
 }

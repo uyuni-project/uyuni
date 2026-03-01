@@ -17,7 +17,6 @@ package com.suse.manager.webui.controllers.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.image.ImageStore;
 import com.redhat.rhn.domain.server.Pillar;
@@ -64,7 +63,7 @@ public class SaltbootControllerTest extends BaseControllerTestCase {
 
         String category = "Image" + image.getId();
         Pillar pillarEntry = new Pillar(category, pillarData, image.getOrg());
-        HibernateFactory.getSession().persist(pillarEntry);
+        TestUtils.persist(pillarEntry);
         image.setPillar(pillarEntry);
 
 

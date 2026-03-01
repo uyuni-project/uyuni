@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Jan 27 09:31:16 WET 2026 - psuarezhernandez@suse.com
+
+- version 5.2.3
+  * Switch to use postgresql18 image
+  * Add postgresql16-contrib to support pg_trgm
+
+-------------------------------------------------------------------
 Thu Nov 27 11:21:35 CET 2025 - michael.calmer@suse.com
 
 - version 5.2.2

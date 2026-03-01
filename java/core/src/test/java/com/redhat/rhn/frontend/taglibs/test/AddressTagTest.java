@@ -29,7 +29,7 @@ import com.redhat.rhn.testing.TagTestUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import javax.servlet.jsp.tagext.Tag;
+import jakarta.servlet.jsp.tagext.Tag;
 
 /**
  * AddressMenuTagTest

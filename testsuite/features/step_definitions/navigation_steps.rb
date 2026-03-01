@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2025 SUSE LLC.
+# Copyright (c) 2010-2026 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 ### This file contains the definitions for all steps concerning navigation through the Web UI
@@ -291,13 +291,6 @@ end
 #
 When(/^I click on "([^"]*)"$/) do |text|
   click_button_and_wait(text, match: :first)
-end
-
-#
-# Click on a button by nav item
-#
-When(/^I click on a button within the item containing "([^"]*)"$/) do |text_in_item|
-  find(:xpath, "//li[.//span[text()='#{text_in_item}']]//button").click
 end
 
 #
@@ -885,6 +878,10 @@ When(/^I check the first patch in the list, that does not require a reboot$/) do
   end
 end
 
+When(/^I click on the Legal button$/) do
+  find_and_wait_click(:xpath, '//li[.//span[text()=\'Legal\']]//button').click
+end
+
 When(/^I click on the red confirmation button$/) do
   find_and_wait_click('button.btn-danger').click
 end
@@ -1154,7 +1151,7 @@ When(/^I visit "([^"]*)" endpoint of this "([^"]*)"$/) do |service, host|
   port, protocol, path, text =
     case service
     when 'Proxy' then [443, 'https', '/pub/', 'Index of /pub']
-    when 'Prometheus' then [9090, 'http', '', 'graph']
+    when 'Prometheus' then [9090, 'http', '/query', 'Prometheus Time Series Collection']
     when 'Prometheus node exporter' then [9100, 'http', '', 'Node Exporter']
     when 'Prometheus apache exporter' then [9117, 'http', '', 'Apache Exporter']
     when 'Prometheus postgres exporter' then [9187, 'http', '', 'Postgres Exporter']

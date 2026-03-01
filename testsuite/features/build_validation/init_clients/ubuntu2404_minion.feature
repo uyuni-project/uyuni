@@ -1,4 +1,4 @@
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2024-2026 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 #  1) bootstrap a new Ubuntu minion
@@ -44,7 +44,3 @@ Feature: Bootstrap a Ubuntu 24.04 Salt minion
   Scenario: Check events history for failures on Ubuntu 24.04 minion
     Given I am on the Systems overview page of this "ubuntu2404_minion"
     Then I check for failed events on history event page
-
-  Scenario: Enable Universe repository on Ubuntu 24.04 minion
-    When I enable Debian-like "universe" repository on "ubuntu2404_minion"
-    And I refresh the metadata for "ubuntu2404_minion"

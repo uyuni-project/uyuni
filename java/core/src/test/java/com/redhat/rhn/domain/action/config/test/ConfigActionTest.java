@@ -27,6 +27,7 @@ import com.redhat.rhn.domain.action.config.ConfigVerifyAction;
 import com.redhat.rhn.domain.action.test.ActionFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.Test;
@@ -44,7 +45,7 @@ public class ConfigActionTest extends RhnBaseTestCase {
                 ActionFactory.TYPE_CONFIGFILES_DEPLOY);
         ConfigRevisionActionTest.createTestRevision(usr, testAction);
         ActionFactory.save(testAction);
-        flushAndEvict(testAction);
+        TestUtils.flushAndEvict(testAction);
         /*
          * Get action back out of db and make sure it committed correctly
          */

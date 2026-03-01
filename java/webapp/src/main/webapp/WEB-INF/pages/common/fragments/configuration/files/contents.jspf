@@ -1,4 +1,4 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="jakarta.tags.functions" prefix="fn" %>
 <c:choose>
     <c:when test="${revision.sls}">
         <%@ include file="/WEB-INF/pages/common/fragments/editareaYaml.jspf" %>

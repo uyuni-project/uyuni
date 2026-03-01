@@ -72,14 +72,14 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
     public void setUp() throws Exception {
         super.setUp();
         setRequestPathInfo("/systems/details/Edit");
-        TestUtils.saveAndFlush(user.getOrg());
+        user.setOrg(TestUtils.saveAndFlush(user.getOrg()));
 
         // mocking JSP is hard, so let's test with traditional
         s = ServerTestUtils.createTestSystem(user, ServerConstants.getServerGroupTypeEnterpriseEntitled());
         ChannelTestUtils.setupBaseChannelForVirtualization(user, s.getBaseChannel());
 
         UserTestUtils.addVirtualization(user.getOrg());
-        TestUtils.saveAndFlush(user.getOrg());
+        user.setOrg(TestUtils.saveAndFlush(user.getOrg()));
 
         request.addParameter("sid", s.getId().toString());
     }
@@ -97,7 +97,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
         request.addParameter(SystemDetailsEditAction.RACK, "Imperial PC Rack");
         request.addParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
         actionPerform();
-        TestUtils.reload(s);
+        s = TestUtils.reload(s);
         verifyActionMessage("sdc.details.edit.propertieschanged");
         verifyForwardPath("/systems/details/Overview.do?sid=" + s.getId());
         assertEquals("Augustus", s.getName());
@@ -156,7 +156,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
     @Test
     public void testBaseEntitlementListForUnetitledSystem() {
         systemEntitlementManager.removeAllServerEntitlements(s);
-        TestUtils.saveAndFlush(s);
+        s = TestUtils.saveAndFlush(s);
         actionPerform();
         verifyForward(RhnHelper.DEFAULT_FORWARD);
         List options = (List) request
@@ -241,7 +241,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
                              Boolean.TRUE.toString());
         request.addParameter(SystemDetailsEditAction.NAME, s.getName());
         request.addParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
-        TestUtils.saveAndFlush(s);
+        s = TestUtils.saveAndFlush(s);
         actionPerform();
         verifyForwardPath("/systems/details/Overview.do?sid=" + s.getId());
         /* here we look the server back up since entitling a server involves
@@ -279,7 +279,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
                               Boolean.FALSE.toString());
         request.addParameter(SystemDetailsEditAction.NAME, s.getName());
         request.addParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
-        TestUtils.saveAndFlush(s);
+        s = TestUtils.saveAndFlush(s);
         actionPerform();
         verifyForwardPath("/systems/details/Overview.do?sid=" + s.getId());
         TestUtils.flushAndEvict(s);

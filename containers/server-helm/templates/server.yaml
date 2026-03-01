@@ -11,6 +11,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/component: server
+      app.kubernetes.io/part-of: uyuni
   strategy:
     type: Recreate
   template:
@@ -23,11 +24,11 @@ spec:
       - env:
         - name: TZ
           value: {{ .Values.timezone | default "Etc/UTC" }}
-{{- if and .Values.mirror (or .Values.mirror.claimName .Values.mirror.hostPath) }}
+{{- if and .Values.server.mirror (or .Values.server.mirror.claimName .Values.server.mirror.hostPath) }}
           - name: MIRROR_PATH
             value: /mirror
 {{- end }}
-        image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+        image: {{ include "uyuni.image" (dict "name" "server" "global" . "local" .Values.server) }}
         imagePullPolicy: {{ .Values.pullPolicy }}
         lifecycle:
           preStop:
@@ -42,8 +43,8 @@ spec:
             path: /rhn/manager/api/api/getVersion
             port: 80
             scheme: HTTP
-          initialDelaySeconds: 60
-          periodSeconds: 60
+          initialDelaySeconds: 180
+          periodSeconds: 30
           successThreshold: 1
           timeoutSeconds: 20
         name: uyuni
@@ -57,8 +58,6 @@ spec:
         - containerPort: 8002
         - containerPort: 8003
 {{- end }}
-        - containerPort: 69
-          protocol: UDP
         - containerPort: 9100
 {{- if ne .Values.enableMonitoring false }}
         - containerPort: 5556
@@ -67,14 +66,14 @@ spec:
         - containerPort: 9800
 {{- end }}
         readinessProbe:
-          failureThreshold: 5
+          failureThreshold: 10
           httpGet:
             path: /rhn/manager/api/api/getVersion
             port: 80
             scheme: HTTP
           periodSeconds: 30
           successThreshold: 1
-          timeoutSeconds: 20
+          initialDelaySeconds: 120
         volumeMounts:
         - mountPath: /var/lib/cobbler
           name: var-cobbler
@@ -150,7 +149,7 @@ spec:
           name: run
         - mountPath: /sys/fs/cgroup
           name: sys-fs-cgroup
-{{- if and .Values.mirror (or .Values.mirror.claimName .Values.mirror.hostPath) }}
+{{- if and .Values.server.mirror (or .Values.server.mirror.claimName .Values.server.mirror.hostPath) }}
         - name: mirror
           mountPath: /mirror
 {{- end }}
@@ -172,11 +171,23 @@ spec:
           done
         env:
           - name: MANAGER_DB_HOST
-            value: db
+            valueFrom:
+              configMapKeyRef:
+                key: "db_host"
+                name: uyuni-config
+                optional: false
           - name: MANAGER_DB_PORT
-            value: "5432"
+            valueFrom:
+              configMapKeyRef:
+                key: "db_port"
+                name: uyuni-config
+                optional: false
           - name: MANAGER_DB_NAME
-            value: susemanager
+            valueFrom:
+              configMapKeyRef:
+                key: "db_name"
+                name: uyuni-config
+                optional: false
           - name: MANAGER_USER
             valueFrom:
               secretKeyRef:
@@ -184,18 +195,30 @@ spec:
                 name: db-credentials
                 optional: false
           - name: REPORT_DB_HOST
-            value: reportdb
+            valueFrom:
+              configMapKeyRef:
+                key: "reportdb_host"
+                name: uyuni-config
+                optional: false
           - name: REPORT_DB_PORT
-            value: "5432"
+            valueFrom:
+              configMapKeyRef:
+                key: "reportdb_port"
+                name: uyuni-config
+                optional: false
           - name: REPORT_DB_NAME
-            value: reportdb
+            valueFrom:
+              configMapKeyRef:
+                key: "reportdb_name"
+                name: uyuni-config
+                optional: false
           - name: REPORT_DB_USER
             valueFrom:
               secretKeyRef:
                 key: username
                 name: reportdb-credentials
                 optional: false
-        image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+        image: {{ include "uyuni.image" (dict "name" "server" "global" . "local" .Values.server) }}
         imagePullPolicy: {{ .Values.pullPolicy }}
         name: db-waiter
       - command:
@@ -205,12 +228,15 @@ spec:
           until test -e /root/.MANAGER_SETUP_COMPLETE; do
             sleep 60
           done
-        image: {{- include "deployment.container.image" (dict "name" "server" "global" .) | indent 1}}
+        image: {{ include "uyuni.image" (dict "name" "server" "global" . "local" .Values.server) }}
         imagePullPolicy: {{ .Values.pullPolicy }}
         name: setup-waiter
         volumeMounts:
         - mountPath: /root
           name: root
+      securityContext:
+        seLinuxOptions:
+          level: "s0"
       volumes:
       - name: var-cobbler
         persistentVolumeClaim:
@@ -316,14 +342,14 @@ spec:
           path: /sys/fs/cgroup
           type: Directory
         name: sys-fs-cgroup
-{{- if .Values.mirror }}
-  {{- if .Values.mirror.claimName }}
+{{- if .Values.server.mirror }}
+  {{- if .Values.server.mirror.claimName }}
       - name: mirror
         persistentVolumeClaim:
-          claimName: {{ .Values.mirror.claimName }}
-  {{- else if .Values.mirror.hostPath }}
+          claimName: {{ .Values.server.mirror.claimName }}
+  {{- else if .Values.server.mirror.hostPath }}
       - name: mirror
         hostPath:
-          path: {{ .Values.mirror.hostPath }}
+          path: {{ .Values.server.mirror.hostPath }}
   {{- end }}
 {{- end }}

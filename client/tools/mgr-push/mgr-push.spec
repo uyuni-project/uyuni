@@ -35,7 +35,7 @@
 
 %define pythonX %{?default_py3: python3}%{!?default_py3: python2}
 Name:           mgr-push
-Version:        5.2.1
+Version:        5.2.2
 Release:        0
 Summary:        Package uploader for %{productprettyname}
 License:        GPL-2.0-only
@@ -54,7 +54,7 @@ Obsoletes:      %{oldname} < %{oldversion}
 %if 0%{?fedora} || 0%{?rhel} || 0%{?suse_version} >= 1210
 BuildArch:      noarch
 %endif
-%if 0%{?debian} || 0%{?ubuntu} || 0%{?rhel} >= 8
+%if 0%{?debian} || 0%{?ubuntu} || 0%{?rhel} >= 8 || (0%{?suse_version} >= 1600 && 0%{?suse_version} < 1699)
 ExclusiveArch:  do_not_build
 %endif
 

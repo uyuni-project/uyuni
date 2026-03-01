@@ -19,11 +19,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerNetAddress4;
 import com.redhat.rhn.domain.server.ServerNetAddress6;
 import com.redhat.rhn.domain.server.ServerNetworkFactory;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
-import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -42,7 +42,7 @@ public class ServerNetworkFactoryTest extends BaseTestCaseWithUser {
         netint.setModule("test");
         netint.setName("test");
         s.addNetworkInterface(netint);
-        netint = TestUtils.saveAndReload(netint);
+        netint = ServerFactory.saveNetworkInterface(netint);
 
         ServerNetAddress6 a6 = new ServerNetAddress6();
         a6.setNetmask("64");
@@ -50,7 +50,7 @@ public class ServerNetworkFactoryTest extends BaseTestCaseWithUser {
         a6.setScope("global");
         a6.setInterfaceId(netint.getInterfaceId());
         ServerNetworkFactory.saveServerNetAddress6(a6);
-        a6 = TestUtils.saveAndReload(a6);
+        //a6 = TestUtils.saveAndReload(a6);
 
         List<ServerNetAddress6> iPv6Addresses = netint.getIPv6Addresses();
         assertNotEmpty(iPv6Addresses);
@@ -72,15 +72,12 @@ public class ServerNetworkFactoryTest extends BaseTestCaseWithUser {
         netint.setModule("test");
         netint.setName("test");
         s.addNetworkInterface(netint);
-        netint = TestUtils.saveAndReload(netint);
+        netint = ServerFactory.saveNetworkInterface(netint);
 
-        ServerNetAddress4 a4 = new ServerNetAddress4();
+        ServerNetAddress4 a4 = new ServerNetAddress4(netint.getInterfaceId(), "1.2.3.4");
         a4.setNetmask("255.255.0.0");
-        a4.setAddress("1.2.3.4");
         a4.setBroadcast("1.2.255.255");
-        a4.setInterfaceId(netint.getInterfaceId());
         ServerNetworkFactory.saveServerNetAddress4(a4);
-        a4 = TestUtils.saveAndReload(a4);
 
         List<ServerNetAddress4> iPv4Addresses = netint.getIPv4Addresses();
         assertNotEmpty(iPv4Addresses);

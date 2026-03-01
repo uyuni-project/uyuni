@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Tue Jan 27 09:31:41 WET 2026 - psuarezhernandez@suse.com
+
+- version 5.2.5-0
+  * Enhanced Ansible UI to support editing playbook variables.
+  * Update web UI dependencies
+  * Ensure SSM product migration works when the installed base
+    product is not detected
+  * Implemented a new StepsProgressBar component for managing RBAC.
+  * Improved selection of channels to syncronize to a peripheral
+  * Add AppStreams to SSM
+
+-------------------------------------------------------------------
 Tue Dec 09 13:45:42 CET 2025 - michael.calmer@suse.com
 
 - version 5.2.4-0

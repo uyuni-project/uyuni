@@ -19,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.frontend.action.kickstart.KickstartLocaleEditAction;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.testing.TestUtils;
@@ -50,8 +49,8 @@ public class KickstartLocaleEditTest extends BaseKickstartEditTestCase {
                             Boolean.FALSE.toString());
         actionPerform();
 
-        TestUtils.saveAndFlush(this.ksdata);
-        this.ksdata = (KickstartData) TestUtils.reload(this.ksdata);
+        this.ksdata = TestUtils.saveAndFlush(this.ksdata);
+        this.ksdata = TestUtils.reload(this.ksdata);
 
         assertEquals("America/New_York", this.ksdata.getTimezone());
         assertFalse(this.ksdata.isUsingUtc());
@@ -69,8 +68,8 @@ public class KickstartLocaleEditTest extends BaseKickstartEditTestCase {
                             Boolean.TRUE.toString());
         actionPerform();
 
-        TestUtils.saveAndFlush(this.ksdata);
-        this.ksdata = (KickstartData) TestUtils.reload(this.ksdata);
+        this.ksdata = TestUtils.saveAndFlush(this.ksdata);
+        this.ksdata = TestUtils.reload(this.ksdata);
 
         assertEquals("Asia/Qatar", this.ksdata.getTimezone());
         assertTrue(this.ksdata.isUsingUtc());

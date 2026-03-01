@@ -26,7 +26,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.ObjectCreateWrapperException;
 import com.redhat.rhn.common.db.datasource.DataResult;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.security.user.StateChangeException;
@@ -143,7 +142,7 @@ public class UserManagerTest extends RhnBaseTestCase {
 
         UserManager.grantServerGroupPermission(foundUser, group.getId());
 
-        HibernateFactory.getSession().clear();
+        TestUtils.clearSession();
 
         foundUser = UserFactory.lookupById(foundUser.getId());
         userGroups = foundUser.getAssociatedServerGroups();
@@ -165,7 +164,7 @@ public class UserManagerTest extends RhnBaseTestCase {
 
         UserManager.grantServerGroupPermission(foundUser2, group.getId());
 
-        HibernateFactory.getSession().clear();
+        TestUtils.clearSession();
 
         foundUser2 = UserFactory.lookupById(user2.getId());
         userGroups2 = foundUser2.getAssociatedServerGroups();
@@ -200,7 +199,7 @@ public class UserManagerTest extends RhnBaseTestCase {
 
         UserManager.grantServerGroupPermission(foundUser2.getId(), Arrays.asList(group.getId(), group2.getId()));
 
-        HibernateFactory.getSession().clear();
+        TestUtils.clearSession();
 
         foundUser2 = UserFactory.lookupById(user2.getId());
         userGroups2 = foundUser2.getAssociatedServerGroups();
@@ -242,7 +241,7 @@ public class UserManagerTest extends RhnBaseTestCase {
 
         UserManager.grantServerGroupPermission(foundUser, group.getId());
 
-        HibernateFactory.getSession().clear();
+        TestUtils.clearSession();
 
         foundUser = UserFactory.lookupById(foundUser.getId());
         userGroups = foundUser.getAssociatedServerGroups();
@@ -252,7 +251,7 @@ public class UserManagerTest extends RhnBaseTestCase {
 
         UserManager.revokeServerGroupPermission(foundUser, group.getId());
 
-        HibernateFactory.getSession().clear();
+        TestUtils.clearSession();
 
         foundUser = UserFactory.lookupById(foundUser.getId());
         userGroups = foundUser.getAssociatedServerGroups();
@@ -614,7 +613,7 @@ public class UserManagerTest extends RhnBaseTestCase {
        UserServerPreference usp = new UserServerPreference(user, s, UserServerPreferenceId.RECEIVE_NOTIFICATIONS);
        usp.setValue("0");
 
-       TestUtils.saveAndFlush(usp);
+       usp = TestUtils.saveAndFlush(usp);
 
        assertFalse(UserManager.lookupUserServerPreferenceValue(user,
                                                                s,
