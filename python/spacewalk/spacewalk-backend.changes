@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Mar 02 13:11:08 CET 2026 - michael.calmer@suse.com
+
+- version 5.2.5-0
+  * Use configured email sender instead of auto detected
+    hostname (bsc#1256583)
+  * Use pycurl redirects
+
+-------------------------------------------------------------------
 Tue Jan 27 09:31:18 WET 2026 - psuarezhernandez@suse.com
 
 - version 5.2.4-0
