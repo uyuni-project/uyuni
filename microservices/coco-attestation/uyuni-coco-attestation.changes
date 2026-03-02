@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Mar 02 13:26:34 CET 2026 - michael.calmer@suse.com
+
+- version 5.2.4-0
+  * Allow to use database host/port/name in configuration
+
+-------------------------------------------------------------------
 Tue Jan 27 09:45:27 WET 2026 - psuarezhernandez@suse.com
 
 - version 5.2.3-0
