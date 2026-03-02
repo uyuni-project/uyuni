@@ -29663,7 +29663,7 @@ lt;/pgt;
       </trans-unit>
       <trans-unit id="channel.jsp.sync.status.created" xml:space="preserve">
         <source> New Created </source>
-        <target state="translated"> De creació nova </target>
+        <target state="translated"> Creat nou </target>
       </trans-unit>
       <trans-unit id="ssm.overview.appstreams" xml:space="preserve">
         <source>AppStreams</source>
@@ -29684,13 +29684,13 @@ lt;/pgt;
         </context-group>
         <target state="translated">ID de l'acció</target>
       </trans-unit>
-    <trans-unit id="pkg.lock.message.lockerror" xml:space="preserve">
+      <trans-unit id="pkg.lock.message.lockerror" xml:space="preserve">
         <source>Failed to lock selected packages. Can't lock multiple versions of the same package.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="translated">No s'han pogut blocar els paquets seleccionats. No es poden blocar diverses versions del mateix paquet.</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
