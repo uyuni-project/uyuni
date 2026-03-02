@@ -19,13 +19,13 @@ CREATE TABLE rhnErrata
     id                NUMERIC NOT NULL
                           CONSTRAINT rhn_errata_id_pk PRIMARY KEY
                           ,
-    advisory          VARCHAR(100) NOT NULL,
+    advisory          VARCHAR(256) NOT NULL,
     advisory_type     VARCHAR(32) NOT NULL
                           CONSTRAINT rhn_errata_adv_type_ck
                               CHECK (advisory_type in ('Bug Fix Advisory',
                                                        'Product Enhancement Advisory',
                                                        'Security Advisory')),
-    advisory_name     VARCHAR(100) NOT NULL,
+    advisory_name     VARCHAR(256) NOT NULL,
     advisory_rel      NUMERIC NOT NULL,
     advisory_status   VARCHAR(32) NOT NULL DEFAULT('final')
                           CONSTRAINT rhn_errata_adv_status_ck

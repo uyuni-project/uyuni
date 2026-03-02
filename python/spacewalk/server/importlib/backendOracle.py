@@ -273,10 +273,10 @@ class OracleBackend(Backend):
             "rhnErrata",
             fields={
                 "id": DBint(),
-                "advisory": DBstring(100),
+                "advisory": DBstring(256),
                 "advisory_type": DBstring(32),
                 "advisory_status": DBstring(32),
-                "advisory_name": DBstring(100),
+                "advisory_name": DBstring(256),
                 "advisory_rel": DBint(),
                 "product": DBstring(64),
                 "description": DBstring(4000),
