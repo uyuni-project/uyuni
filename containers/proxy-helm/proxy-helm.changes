@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Mon Mar 02 13:42:41 CET 2026 - michael.calmer@suse.com
+
+- version 5.2.4
+  * Expect configuration files as global values
+  * Remove subPath to run on selinux-enabled cluster nodes
+  * Expect TLS certificates secret and configmap
+  * Move TFTP server to its own pod
+  * Move the expected CA to /etc/pki/anchors on tftp pod
+    (bsc#1258709)
+
+-------------------------------------------------------------------
 Tue Jan 27 09:26:21 WET 2026 - psuarezhernandez@suse.com
 
 - version 5.2.3

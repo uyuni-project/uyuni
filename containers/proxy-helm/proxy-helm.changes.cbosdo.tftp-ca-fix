@@ -1,2 +1,0 @@
-- Move the expected CA to /etc/pki/anchors on tftp pod
-  (bsc#1258709)
