@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Mar 02 13:19:42 CET 2026 - michael.calmer@suse.com
+
+- version 5.2.4-0
+  * Refactor oval related tables (bsc#1252638)
+
+-------------------------------------------------------------------
 Tue Jan 27 09:30:02 WET 2026 - psuarezhernandez@suse.com
 
 - version 5.2.3-0
