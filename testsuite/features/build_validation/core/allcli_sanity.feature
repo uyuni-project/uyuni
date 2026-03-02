@@ -1,4 +1,4 @@
-# Copyright (c) 2019-2025 SUSE LLC
+# Copyright (c) 2019-2026 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Sanity checks
@@ -116,20 +116,6 @@ Feature: Sanity checks
     And reverse resolution should work for "sle15sp7_ssh_minion"
     And "sle15sp7_ssh_minion" should communicate with the server using public interface
     And the clock from "sle15sp7_ssh_minion" should be exact
-
-@slemicro51_minion
-  Scenario: The SLE Micro 5.1 minion is healthy
-    Then "slemicro51_minion" should have a FQDN
-    And reverse resolution should work for "slemicro51_minion"
-    And "slemicro51_minion" should communicate with the server using public interface
-    And the clock from "slemicro51_minion" should be exact
-
-@slemicro51_ssh_minion
-  Scenario: The SLE Micro 5.1 SSH minion is healthy
-    Then "slemicro51_ssh_minion" should have a FQDN
-    And reverse resolution should work for "slemicro51_ssh_minion"
-    And "slemicro51_ssh_minion" should communicate with the server using public interface
-    And the clock from "slemicro51_ssh_minion" should be exact
 
 @slemicro52_minion
   Scenario: The SLE Micro 5.2 minion is healthy
