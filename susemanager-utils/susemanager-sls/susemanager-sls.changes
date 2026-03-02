@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Mon Mar 02 13:07:10 CET 2026 - michael.calmer@suse.com
+
+- version 5.2.6-0
+  * Fix bootstrap for SLM 6.2 and newer (bsc#1257992)
+  * Make mgr_events salt engine non-blocking on reading events
+  * Avoid losing the events on DB connection issues (bsc#1252098)
+  * Use more clear condition in bootstrap state
+    to avoid confusing log messages in salt-ssh trace
+
+-------------------------------------------------------------------
 Wed Feb 04 14:12:32 CET 2026 - michael.calmer@suse.com
 
 - version 5.2.5-0
