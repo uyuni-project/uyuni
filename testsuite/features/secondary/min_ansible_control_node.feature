@@ -94,11 +94,12 @@ Feature: Operate an Ansible control node in a normal minion
     And I wait until I see "Playbook Content" text
     And I click on "Schedule"
     And I wait until I see "Playbook execution has been scheduled" text
-    And I wait for "3" seconds
-    And I click on the link that contains href "/rhn/schedule/ActionDetails.do"
+    And I wait for "2" seconds
+    And I follow "scheduled" in the content area
     Then I wait until I see "1 system successfully completed this action" text or "1 system failed to complete this action" text, refreshing the page
-    When I click on the link that contains regex href "/rhn/schedule/.*Systems.do"
-    And I click on the link that contains href "/rhn/systems/details/history/Event.do"
+    When I follow "1 system"
+    And I wait until I see the system name "sle_minion" text
+    And I follow this "sle_minion" link
     Then I should see a "42" text
     And I should see a "101010" text
     And I should see a "(code 0)" text
@@ -113,19 +114,21 @@ Feature: Operate an Ansible control node in a normal minion
     And I click on "basic_tests.yml"
     And I wait until I see "Playbook Content" text
     And I click on "Edit variables"
-    And I enter "(21 + 21) * 100" as "p1"
-    And I enter "" as "p2"
-    And I enter "" as "p3"
-    And I enter "" as "p4"
-    And I enter "" as "p5"
+    And I enter data from table with value as field name
+      | (21 + 21) * 100 | p1 |
+      |                 | p2 |
+      |                 | p3 |
+      |                 | p4 |
+      |                 | p5 |
     And I click on "Save"
     And I click on "Schedule"
     And I wait until I see "Playbook execution has been scheduled" text
-    And I wait for "3" seconds
-    And I click on the link that contains href "/rhn/schedule/ActionDetails.do"
+    And I wait for "2" seconds
+    And I follow "scheduled" in the content area
     Then I wait until I see "1 system successfully completed this action" text or "1 system failed to complete this action" text, refreshing the page
-    When I click on the link that contains regex href "/rhn/schedule/.*Systems.do"
-    And I click on the link that contains href "/rhn/systems/details/history/Event.do"
+    When I follow "1 system"
+    And I wait until I see the system name "sle_minion" text
+    And I follow this "sle_minion" link
     Then I should see a "4200" text
     And I should see a "(code 0)" text
 
@@ -139,21 +142,23 @@ Feature: Operate an Ansible control node in a normal minion
     And I click on "basic_tests.yml"
     And I wait until I see "Playbook Content" text
     And I click on "Edit variables"
-    And I enter "1" as "p1"
-    And I enter "2" as "p2"
-    And I enter "3" as "p3"
-    And I enter "4" as "p4"
-    And I enter "5" as "p5"
-    And I enter "(21 + 21) * 1000" as "p1_empty"
-    And I enter "(21 + 21) * 100 + (21 + 21)" as "p2_empty"
+    And I enter data from table with value as field name
+      |                           1 |       p1 |
+      |                           2 |       p2 |
+      |                           3 |       p3 |
+      |                           4 |       p4 |
+      |                           5 |       p5 |
+      |            (21 + 21) * 1000 | p1_empty |
+      | (21 + 21) * 100 + (21 + 21) | p2_empty |
     And I click on "Save"
     And I click on "Schedule"
     And I wait until I see "Playbook execution has been scheduled" text
-    And I wait for "3" seconds
-    And I click on the link that contains href "/rhn/schedule/ActionDetails.do"
+    And I wait for "2" seconds
+    And I follow "scheduled" in the content area
     Then I wait until I see "1 system successfully completed this action" text or "1 system failed to complete this action" text, refreshing the page
-    When I click on the link that contains regex href "/rhn/schedule/.*Systems.do"
-    And I click on the link that contains href "/rhn/systems/details/history/Event.do"
+    When I follow "1 system"
+    And I wait until I see the system name "sle_minion" text
+    And I follow this "sle_minion" link
     Then I should see a "42000" text
     And I should see a "4242" text
     And I should see a "(code 0)" text
@@ -168,22 +173,24 @@ Feature: Operate an Ansible control node in a normal minion
     And I click on "basic_tests.yml"
     And I wait until I see "Playbook Content" text
     And I click on "Edit variables"
-    And I enter "1" as "p1"
-    And I enter "2" as "p2"
-    And I enter "3" as "p3"
-    And I enter "4" as "p4"
-    And I enter "5" as "p5"
-    And I enter "1e" as "p1_empty"
-    And I enter "2e" as "p2_empty"
-    And I enter "256 * 256" as "p_null"
+    And I enter data from table with value as field name
+      |         1 |       p1 |
+      |         2 |       p2 |
+      |         3 |       p3 |
+      |         4 |       p4 |
+      |         5 |       p5 |
+      |        1e | p1_empty |
+      |        2e | p2_empty |
+      | 256 * 256 |   p_null |
     And I click on "Save"
     And I click on "Schedule"
     And I wait until I see "Playbook execution has been scheduled" text
-    And I wait for "3" seconds
-    And I click on the link that contains href "/rhn/schedule/ActionDetails.do"
+    And I wait for "2" seconds
+    And I follow "scheduled" in the content area
     Then I wait until I see "1 system successfully completed this action" text or "1 system failed to complete this action" text, refreshing the page
-    When I click on the link that contains regex href "/rhn/schedule/.*Systems.do"
-    And I click on the link that contains href "/rhn/systems/details/history/Event.do"
+    When I follow "1 system"
+    And I wait until I see the system name "sle_minion" text
+    And I follow this "sle_minion" link
     Then I should see a "65536" text
     And I should see a "(code 0)" text
 
@@ -201,11 +208,12 @@ Feature: Operate an Ansible control node in a normal minion
     And I click on "Save"
     And I click on "Schedule"
     And I wait until I see "Playbook execution has been scheduled" text
-    And I wait for "3" seconds
-    And I click on the link that contains href "/rhn/schedule/ActionDetails.do"
+    And I wait for "2" seconds
+    And I follow "scheduled" in the content area
     Then I wait until I see "1 system successfully completed this action" text or "1 system failed to complete this action" text, refreshing the page
-    When I click on the link that contains regex href "/rhn/schedule/.*Systems.do"
-    And I click on the link that contains href "/rhn/systems/details/history/Event.do"
+    When I follow "1 system"
+    And I wait until I see the system name "sle_minion" text
+    And I follow this "sle_minion" link
     Then I should see a "42" text
     And I should see a "101010" text
     And I should see a "(code 0)" text
@@ -220,20 +228,22 @@ Feature: Operate an Ansible control node in a normal minion
     And I click on "basic_tests.yml"
     And I wait until I see "Playbook Content" text
     And I click on "Edit variables"
-    And I enter "abc" as "p1"
-    And I enter "def" as "p2"
-    And I enter "ghi" as "p3"
-    And I enter "jkl" as "p4"
-    And I enter "16 * 16 * 16" as "p5"
+    And I enter data from table with value as field name
+      |          abc | p1 |
+      |          def | p2 |
+      |          ghi | p3 |
+      |          jkl | p4 |
+      | 16 * 16 * 16 | p5 |
     And I click on "Edit YAML"
     And I click on "Save"
     And I click on "Schedule"
     And I wait until I see "Playbook execution has been scheduled" text
-    And I wait for "3" seconds
-    And I click on the link that contains href "/rhn/schedule/ActionDetails.do"
+    And I wait for "2" seconds
+    And I follow "scheduled" in the content area
     Then I wait until I see "1 system successfully completed this action" text or "1 system failed to complete this action" text, refreshing the page
-    When I click on the link that contains regex href "/rhn/schedule/.*Systems.do"
-    And I click on the link that contains href "/rhn/systems/details/history/Event.do"
+    When I follow "1 system"
+    And I wait until I see the system name "sle_minion" text
+    And I follow this "sle_minion" link
     Then I should see a "abc" text
     And I should see a "def" text
     And I should see a "ghi" text

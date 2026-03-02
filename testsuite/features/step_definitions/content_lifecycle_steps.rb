@@ -149,13 +149,14 @@ When(/^I deploy testing playbooks and inventory files to "([^"]*)"$/) do |host|
   dest = '/srv/playbooks/'
   source = "#{File.dirname(__FILE__)}/../upload_files/ansible/playbooks/basic_tests.yml"
   success = file_inject(target, source, "#{dest}basic_tests.yml")
-  raise ScriptError, 'File "#{source}" injection failed' unless success
+  raise ScriptError, "File \"#{source}\" injection failed" unless success
+
   # basic tests - parameter tester shell script
   dest = '/srv/playbooks/host_files/'
   target.run("mkdir -p #{dest}")
   source = "#{File.dirname(__FILE__)}/../upload_files/ansible/playbooks/host_files/ansible_param_tester.sh"
   success = file_inject(target, source, "#{dest}ansible_param_tester.sh")
-  raise ScriptError, 'File "#{source}" injection failed' unless success
+  raise ScriptError, "File \"#{source}\" injection failed" unless success
 end
 
 When(/^I enter the reactivation key of "([^"]*)"$/) do |host|
