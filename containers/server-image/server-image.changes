@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Mar 02 13:11:54 CET 2026 - michael.calmer@suse.com
+
+- version 5.2.6
+  * Move setup scripts from mgradm to the server image
+  * Do not create CA symlink to the salt base
+
+-------------------------------------------------------------------
 Tue Jan 27 09:31:12 WET 2026 - psuarezhernandez@suse.com
 
 - version 5.2.5
