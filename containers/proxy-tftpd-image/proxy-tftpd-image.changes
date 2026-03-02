@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Mar 02 13:41:51 CET 2026 - michael.calmer@suse.com
+
+- version 5.2.5
+  * Do not load the CA if it has already been mounted
+  * Use global proxy_fqdn value in configuration
+  * Move the expected CA to /etc/pki/anchors (bsc#1258709)
+
+-------------------------------------------------------------------
 Tue Jan 27 09:26:26 WET 2026 - psuarezhernandez@suse.com
 
 - version 5.2.4
