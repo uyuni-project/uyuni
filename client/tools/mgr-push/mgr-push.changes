@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Mar 02 13:43:19 CET 2026 - michael.calmer@suse.com
+
+- version 5.2.3-0
+  * Disable build for SLES 16
+
+-------------------------------------------------------------------
 Tue Jan 27 09:31:20 WET 2026 - psuarezhernandez@suse.com
 
 - version 5.2.2-0
