@@ -12118,10 +12118,10 @@ Per a esmenar aquesta situació, afegiu credencials SCC lt;a href""/rhn/admin/se
         </context-group>
         <target state="translated">Control d'accés</target>
       </trans-unit>
-    <trans-unit id="pxeeventfailed" xml:space="preserve">
+      <trans-unit id="pxeeventfailed" xml:space="preserve">
         <source>PXE Event Failed</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="translated">L'esdeveniment de PXE ha fallat</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
