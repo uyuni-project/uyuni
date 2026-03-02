@@ -1,4 +1,37 @@
 -------------------------------------------------------------------
+Mon Mar 02 13:27:35 CET 2026 - michael.calmer@suse.com
+
+- version 5.2.9-0
+  * Fix SCC cache lookup when username have special chars
+  * Use Hub URL for SCC lookup when server is a HUB
+    and Peripheral at same time
+  * Removed the expensive diff column (bsc#1256044)
+  * Fix sso metadata response in xml format
+  * Fix permission check when assigning system groups to a user
+    (bsc#1257674)
+  * Add support for Debian 13
+  * Remove deprecated scripts.
+  * Refactoring and fixes of saltboot cobbler migrations
+  * Use PackageEvr instead of string for fix_version (bsc#1252638)
+  * Do not load additional repos in peripheral server(bsc#1257967)
+  * Fix openscap audit results with negative ids (bsc#1258141)
+  * Fix SQL grammar for rescheduling actions (bsc#1257022)
+  * Do not add SSL certificates to the proxy config from a server on
+    Kubernetes
+  * Migrate to Hibernate 7
+  * Migrate to jakarta namespaces
+  * Migrate to Tomcat 11
+  * Remove hub register API method
+  * Block multiple versions of the same package
+    from being locked (bsc#1246315)
+  * Commit DB changes before refreshing pillar for SSH push minions
+    (bsc#1253712)
+  * Do not check PAYG compliance when running uyuni
+  * Fix return type for sync content listProducts
+    (bsc#1256422)
+  * Removed cglib dependency
+
+-------------------------------------------------------------------
 Wed Feb 04 14:07:21 CET 2026 - michael.calmer@suse.com
 
 - version 5.2.8-0

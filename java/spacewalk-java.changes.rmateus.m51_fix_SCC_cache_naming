@@ -1,3 +1,0 @@
-- Fix SCC cache lookup when username have special chars
-- Use Hub URL for SCC lookup when server is a HUB
-  and Peripheral at same time

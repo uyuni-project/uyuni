@@ -58,7 +58,7 @@
 %endif
 
 Name:           spacewalk-java
-Version:        5.2.8
+Version:        5.2.9
 Release:        0
 Summary:        Java web application files for %{productprettyname}
 License:        GPL-2.0-only
@@ -132,7 +132,7 @@ BuildRequires:  postgresql-jdbc
 BuildRequires:  prometheus-client-java
 BuildRequires:  quartz
 BuildRequires:  redstone-xmlrpc
-BuildRequires:  salt-netapi-client >= 1
+BuildRequires:  salt-netapi-client >= 1.0.0
 BuildRequires:  simple-core
 BuildRequires:  simplexml
 BuildRequires:  sitemesh
@@ -214,7 +214,7 @@ Requires:       netty
 Requires:       pgjdbc-ng
 Requires:       prometheus-client-java
 Requires:       redstone-xmlrpc
-Requires:       salt-netapi-client >= 0.21
+Requires:       salt-netapi-client >= 1.0.0
 Requires:       tomcat11-servlet-6_1-api
 Requires:       simple-core
 Requires:       simplexml

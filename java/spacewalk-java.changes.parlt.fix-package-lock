@@ -1,2 +1,0 @@
-- Block multiple versions of the same package
-  from being locked (bsc#1246315)
