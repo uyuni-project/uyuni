@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Mar 02 13:21:38 CET 2026 - michael.calmer@suse.com
+
+- version 5.2.2
+  * Move migration script from mgradm to the image
+
+-------------------------------------------------------------------
 Tue Jan 27 09:26:08 WET 2026 - psuarezhernandez@suse.com
 
 - version 5.2.1
