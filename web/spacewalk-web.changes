@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Mar 02 13:20:31 CET 2026 - michael.calmer@suse.com
+
+- version 5.2.6-0
+  * Improved form alerts auto-scroll to top on submit.
+  * Do not add SSL certificates to the proxy config from a server on
+    Kubernetes
+
+-------------------------------------------------------------------
 Tue Jan 27 09:31:41 WET 2026 - psuarezhernandez@suse.com
 
 - version 5.2.5-0
