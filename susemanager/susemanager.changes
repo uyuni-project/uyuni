@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Mon Mar 02 13:22:36 CET 2026 - michael.calmer@suse.com
+
+- version 5.2.5-0
+  * Add bootstrap repositories for Debian 13 and
+    Raspberry Pi OS 13
+  * Remove mgr-setup: unify script setup in container image
+
+-------------------------------------------------------------------
 Tue Jan 27 10:33:52 WET 2026 - psuarezhernandez@suse.com
 
 - version 5.2.4-0
