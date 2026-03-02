@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Mon Mar 02 13:19:13 CET 2026 - michael.calmer@suse.com
+
+- version 5.2.4
+  * Provides tar binary.
+  * Use folder for pgsql customization.
+  * Include tar and smdba-pgarchive command to the database image
+    (bsc#1250367)
+  * Trust local user access
+
+-------------------------------------------------------------------
 Tue Jan 27 09:31:16 WET 2026 - psuarezhernandez@suse.com
 
 - version 5.2.3
