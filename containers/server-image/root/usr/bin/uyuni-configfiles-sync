@@ -46,6 +46,7 @@ Available Commands:
   init	Add persistent volume to track package and config files.
   list	List initializated persistent volumes environments.
   sync	Synchronize files to persistent volumes and run RPM scripts.
+
 "
 }
 
@@ -214,6 +215,25 @@ sync() {
     PACKAGES_ALL=$(echo "$PACKAGES_ALL" | sort -u)
     run_scripts "$PACKAGES_ALL"
     echo "  * Completed"
+
+    # Remind the user to resolve any .rpmnew / .rpmsave files with rpmconf
+    RPMNEW_COUNT=0
+    for pv_dir in $(ls $DEFAULTS_STORAGE | grep -v "^\.buildhash$"); do
+        PV_PATH=$(cat "$DEFAULTS_STORAGE/$pv_dir/.pv" 2>/dev/null)
+        if [ -n "$PV_PATH" ]; then
+            COUNT=$(find "$PV_PATH" -maxdepth 5 \( -name "*.rpmnew" -o -name "*.rpmsave" \) 2>/dev/null | wc -l)
+            RPMNEW_COUNT=$((RPMNEW_COUNT + COUNT))
+        fi
+    done
+    if [ "$RPMNEW_COUNT" -gt 0 ]; then
+        echo ""
+        echo "---------------------------------------------------------------------"
+        echo "WARNING: $RPMNEW_COUNT .rpmnew/.rpmsave file(s) need review."
+        echo "Run 'rpmconf -a' inside the container to interactively merge them,"
+        echo "or inspect them manually."
+        echo "---------------------------------------------------------------------"
+        echo ""
+    fi
 
     # We lock the sync so it cannot run until next upgrade of the container image
     cp $DEFAULTS_STORAGE/.buildhash $SYSCONFIG_FILE

@@ -58,6 +58,7 @@ RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf && \
         prometheus-jmx_exporter-tomcat \
         prometheus-postgres_exporter \
         registry-formula \
+        rpmconf \
         saline-formula \
         salt-shaptools \
         saphanabootstrap-formula \
