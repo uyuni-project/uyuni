@@ -98,7 +98,7 @@ Feature: Operate an Ansible control node in a normal minion
     And I follow "scheduled" in the content area
     Then I wait until I see "1 system successfully completed this action" text or "1 system failed to complete this action" text, refreshing the page
     When I follow "1 system"
-    And I wait until I see the system name "sle_minion" text
+    And I wait until I see the system name of "sle_minion"
     And I follow this "sle_minion" link
     Then I should see a "42" text
     And I should see a "101010" text
@@ -127,7 +127,7 @@ Feature: Operate an Ansible control node in a normal minion
     And I follow "scheduled" in the content area
     Then I wait until I see "1 system successfully completed this action" text or "1 system failed to complete this action" text, refreshing the page
     When I follow "1 system"
-    And I wait until I see the system name "sle_minion" text
+    And I wait until I see the system name of "sle_minion"
     And I follow this "sle_minion" link
     Then I should see a "4200" text
     And I should see a "(code 0)" text
@@ -157,7 +157,7 @@ Feature: Operate an Ansible control node in a normal minion
     And I follow "scheduled" in the content area
     Then I wait until I see "1 system successfully completed this action" text or "1 system failed to complete this action" text, refreshing the page
     When I follow "1 system"
-    And I wait until I see the system name "sle_minion" text
+    And I wait until I see the system name of "sle_minion"
     And I follow this "sle_minion" link
     Then I should see a "42000" text
     And I should see a "4242" text
@@ -189,7 +189,7 @@ Feature: Operate an Ansible control node in a normal minion
     And I follow "scheduled" in the content area
     Then I wait until I see "1 system successfully completed this action" text or "1 system failed to complete this action" text, refreshing the page
     When I follow "1 system"
-    And I wait until I see the system name "sle_minion" text
+    And I wait until I see the system name of "sle_minion"
     And I follow this "sle_minion" link
     Then I should see a "65536" text
     And I should see a "(code 0)" text
@@ -212,7 +212,7 @@ Feature: Operate an Ansible control node in a normal minion
     And I follow "scheduled" in the content area
     Then I wait until I see "1 system successfully completed this action" text or "1 system failed to complete this action" text, refreshing the page
     When I follow "1 system"
-    And I wait until I see the system name "sle_minion" text
+    And I wait until I see the system name of "sle_minion"
     And I follow this "sle_minion" link
     Then I should see a "42" text
     And I should see a "101010" text
@@ -242,7 +242,7 @@ Feature: Operate an Ansible control node in a normal minion
     And I follow "scheduled" in the content area
     Then I wait until I see "1 system successfully completed this action" text or "1 system failed to complete this action" text, refreshing the page
     When I follow "1 system"
-    And I wait until I see the system name "sle_minion" text
+    And I wait until I see the system name of "sle_minion"
     And I follow this "sle_minion" link
     Then I should see a "abc" text
     And I should see a "def" text

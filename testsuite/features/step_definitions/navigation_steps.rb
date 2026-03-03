@@ -117,7 +117,7 @@ When(/^I wait at most (\d+) seconds until the event is completed, refreshing the
   end
 end
 
-When(/^I wait until I see the system name "([^"]*)" text$/) do |host|
+When(/^I wait until I see the system name of "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
   step %(I wait until I see "#{system_name}" text)
 end
