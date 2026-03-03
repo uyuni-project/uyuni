@@ -1,11 +1,4 @@
 -------------------------------------------------------------------
-Tue Mar 03 00:00:00 UTC 2026 - uyuni-project
-
-- Add rpmconf to the server container image (issue #11539)
-- uyuni-configfiles-sync: after sync, warn users to run 'rpmconf -a'
-  when .rpmnew/.rpmsave files exist in persistent volumes
-
--------------------------------------------------------------------
 Mon Mar 02 13:11:54 CET 2026 - michael.calmer@suse.com
 
 - version 5.2.6
