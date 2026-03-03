@@ -25,6 +25,7 @@ RUN if [ "${TARGETARCH}" = "amd64" ]; then \
     zypper -n install --allow-downgrade --allow-vendor-change \
       git \
       hostname \
+      maven \
       apache-ivy \
       ant \
       ant-junit && \
