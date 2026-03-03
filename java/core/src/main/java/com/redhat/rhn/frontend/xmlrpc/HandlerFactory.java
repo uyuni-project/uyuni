@@ -178,7 +178,7 @@ public class HandlerFactory {
         MirrorCredentialsManager mirrorCredentialsManager = new MirrorCredentialsManager();
         IssMigratorFactory migratorFactory = new IssMigratorFactory();
         HubManager hubManager = new HubManager(hubFactory, hubClientFactory, mirrorCredentialsManager, taskomaticApi,
-                systemEntitlementManager);
+                systemEntitlementManager, systemManager);
 
         factory.addHandler("access", new AccessHandler(accessGroupManager));
         factory.addHandler("actionchain", new ActionChainHandler());

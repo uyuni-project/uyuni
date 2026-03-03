@@ -1255,6 +1255,25 @@ public class ServerFactory extends HibernateFactory {
     }
 
     /**
+     * Finds all servers that match any of the given FQDNs.
+     * @param fqdns set of FQDNs to search for
+     * @return a list of matching servers
+     */
+    public static List<Server> listByAnyFqdn(Set<String> fqdns) {
+        if (fqdns == null || fqdns.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return getSession().createQuery("""
+                select distinct s
+                from   com.redhat.rhn.domain.server.Server as s
+                join   s.fqdns as fqdn
+                where  LOWER(fqdn.name) IN (:names)
+                """, Server.class)
+                .setParameterList("names", fqdns.stream().map(String::toLowerCase).toList())
+                .list();
+    }
+
+    /**
      * Lookup a Server by their FQDN
      * @param name of the FQDN to search for
      * @return the Server found

@@ -368,7 +368,8 @@ public class HubHandlerTest extends BaseHandlerTestCase {
         DefaultHubInternalClient mockDefaultHubInternalClient = context.mock(DefaultHubInternalClient.class);
         HubFactory hubFactory = new HubFactory();
         HubManager newHubManager = new HubManager(hubFactory, mockHubClientFactory,
-                new MirrorCredentialsManager(), mockTaskomaticApi, GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER);
+                new MirrorCredentialsManager(), mockTaskomaticApi, GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER,
+                GlobalInstanceHolder.SYSTEM_MANAGER);
         HubHandler newHubHandler = new HubHandler(newHubManager);
 
         String sshFailureErrorString = "unable to find valid certification path to target";
