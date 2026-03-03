@@ -1,6 +1,10 @@
 #!/bin/bash
 set -xe
 
+set -u
+: "${TEST_IMAGE?TEST_IMAGE not set}"
+set +u
+
 if [[ "$(uname)" == "Darwin" ]]; then
   PODMAN_CMD="podman"
 else
@@ -21,7 +25,7 @@ $PODMAN_CMD run --cap-add AUDIT_CONTROL \
     --name=ssl-generator \
     --network network \
     --pull newer \
-    ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-server-all-in-one-dev:$UYUNI_VERSION \
+    ${TEST_IMAGE}:$UYUNI_VERSION \
     bash -xc "/testsuite/podman_runner/generate_certificates.sh"
 
 # Generate the Secret for the SSL certificates and the DB credentials
@@ -88,8 +92,8 @@ fi
 
 
 # Run the setup container
-setup_pm_path=`$PODMAN_CMD run -ti ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-server-all-in-one-dev:$UYUNI_VERSION sh -c 'rpm -ql spacewalk-setup | grep Setup.pm' | tr -d '\r'`
-certs_py_path=`$PODMAN_CMD run -ti ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-server-all-in-one-dev:$UYUNI_VERSION sh -c 'rpm -ql python3-spacewalk-certs-tools | grep mgr_ssl_cert_setup.py' | tr -d '\r'`
+setup_pm_path=`$PODMAN_CMD run -ti ${TEST_IMAGE}:$UYUNI_VERSION sh -c 'rpm -ql spacewalk-setup | grep Setup.pm' | tr -d '\r'`
+certs_py_path=`$PODMAN_CMD run -ti ${TEST_IMAGE}:$UYUNI_VERSION sh -c 'rpm -ql python3-spacewalk-certs-tools | grep mgr_ssl_cert_setup.py' | tr -d '\r'`
 python_path=${certs_py_path%%certs*}
 
 $PODMAN_CMD run --cap-add AUDIT_CONTROL \
@@ -176,7 +180,7 @@ $PODMAN_CMD run --cap-add AUDIT_CONTROL \
     -h server \
     --name=server-setup \
     --network network \
-    ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-server-all-in-one-dev:$UYUNI_VERSION \
+    ${TEST_IMAGE}:$UYUNI_VERSION \
     bash -xc "/testsuite/podman_runner/provide-db-schema.sh && \
              cp /manager/spacewalk/config/var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf /var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf && \
              /testsuite/podman_runner/internal_deploy_server_code.sh && \
@@ -186,7 +190,7 @@ $PODMAN_CMD run --cap-add AUDIT_CONTROL \
              /testsuite/podman_runner/run_db_migrations.sh uyuni-reportdb-schema && \
              /testsuite/podman_runner/setup_missing_folders.sh"
 
-$PODMAN_CMD commit server-setup uyuni-server-built:$UYUNI_VERSION
+$PODMAN_CMD commit --change CMD=/usr/lib/systemd/systemd server-setup uyuni-server-built:$UYUNI_VERSION
 $PODMAN_CMD rm server-setup
 
 ${src_dir}/testsuite/podman_runner/setup-nginx-proxy-for-docker-registries.sh
