@@ -41,41 +41,44 @@ else
   done
 
   echo "Remove volumes"
-  $PODMAN_CMD volume rm var-cobbler
-  $PODMAN_CMD volume rm var-search
-  $PODMAN_CMD volume rm var-salt
-  $PODMAN_CMD volume rm var-cache
-  $PODMAN_CMD volume rm var-spacewalk
-  $PODMAN_CMD volume rm var-log
-  $PODMAN_CMD volume rm srv-salt
-  $PODMAN_CMD volume rm srv-www
-  $PODMAN_CMD volume rm srv-tftpboot
-  $PODMAN_CMD volume rm srv-formulametadata
-  $PODMAN_CMD volume rm srv-pillar
-  $PODMAN_CMD volume rm srv-susemanager
-  $PODMAN_CMD volume rm srv-spacewalk
-  $PODMAN_CMD volume rm root
-  $PODMAN_CMD volume rm ca-cert
-  $PODMAN_CMD volume rm run-salt-master
-  $PODMAN_CMD volume rm etc-tls
-  $PODMAN_CMD volume rm var-pgsql
-  $PODMAN_CMD volume rm etc-rhn
-  $PODMAN_CMD volume rm tls-key
-  $PODMAN_CMD volume rm etc-apache2
-  $PODMAN_CMD volume rm etc-systemd-multi
-  $PODMAN_CMD volume rm etc-systemd-sockets
-  $PODMAN_CMD volume rm etc-salt
-  $PODMAN_CMD volume rm etc-tomcat
-  $PODMAN_CMD volume rm etc-cobbler
-  $PODMAN_CMD volume rm etc-sysconfig
-  $PODMAN_CMD volume rm etc-postfix
-  $PODMAN_CMD volume rm etc-sssd
+  $PODMAN_CMD volume rm -f var-cobbler
+  $PODMAN_CMD volume rm -f var-search
+  $PODMAN_CMD volume rm -f var-salt
+  $PODMAN_CMD volume rm -f var-cache
+  $PODMAN_CMD volume rm -f var-spacewalk
+  $PODMAN_CMD volume rm -f var-log
+  $PODMAN_CMD volume rm -f srv-salt
+  $PODMAN_CMD volume rm -f srv-www
+  $PODMAN_CMD volume rm -f srv-tftpboot
+  $PODMAN_CMD volume rm -f srv-formulametadata
+  $PODMAN_CMD volume rm -f srv-pillar
+  $PODMAN_CMD volume rm -f srv-susemanager
+  $PODMAN_CMD volume rm -f srv-spacewalk
+  $PODMAN_CMD volume rm -f root
+  $PODMAN_CMD volume rm -f ca-cert
+  $PODMAN_CMD volume rm -f run-salt-master
+  $PODMAN_CMD volume rm -f etc-tls
+  $PODMAN_CMD volume rm -f var-pgsql
+  $PODMAN_CMD volume rm -f etc-rhn
+  $PODMAN_CMD volume rm -f tls-key
+  $PODMAN_CMD volume rm -f etc-apache2
+  $PODMAN_CMD volume rm -f etc-systemd-multi
+  $PODMAN_CMD volume rm -f etc-systemd-sockets
+  $PODMAN_CMD volume rm -f etc-salt
+  $PODMAN_CMD volume rm -f etc-tomcat
+  $PODMAN_CMD volume rm -f etc-cobbler
+  $PODMAN_CMD volume rm -f etc-sysconfig
+  $PODMAN_CMD volume rm -f etc-postfix
+  $PODMAN_CMD volume rm -f etc-sssd
 
   echo "Remove network"
-  $PODMAN_CMD network rm network
+  $PODMAN_CMD network rm -f network
 
   echo "Remove secrets"
   for secret in $($PODMAN_CMD secret ls --format '{{.Name}}' | grep '^uyuni-'); do
       $PODMAN_CMD secret rm $secret
   done
+
+  echo "Remove custom images"
+  $PODMAN_CMD rmi -f "uyuni-server-built:${UYUNI_VERSION}" uyuni-server-built
 fi
