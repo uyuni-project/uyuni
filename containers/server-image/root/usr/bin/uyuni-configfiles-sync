@@ -33,8 +33,9 @@
 #
 set -e
 
-DEFAULTS_STORAGE="/etc/uyuni-configfiles-sync/"
-SYSCONFIG_FILE="/etc/sysconfig/uyuni-configfiles-sync"
+# Allow environment overrides for testing
+DEFAULTS_STORAGE="${DEFAULTS_STORAGE:-/etc/uyuni-configfiles-sync/}"
+SYSCONFIG_FILE="${SYSCONFIG_FILE:-/etc/sysconfig/uyuni-configfiles-sync}"
 
 help() {
     printf "Uyuni config files defaults synchronization tool
