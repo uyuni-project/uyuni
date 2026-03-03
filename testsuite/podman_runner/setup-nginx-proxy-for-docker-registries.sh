@@ -14,24 +14,72 @@ set -xe
 # number when doing a docker build. This is why we have an nginx, to act as a proxy
 # and redirect the requests to the port, depending on the hostname.
 
-echo "127.0.0.1 authregistry.lab" | sudo tee -a /etc/hosts
-echo "127.0.0.1 noauthregistry.lab" | sudo tee -a /etc/hosts
-
-if ! command -v nginx &>/dev/null; then
-  if [[ "$(uname)" == "Darwin" ]]; then
-    brew install nginx
-  else
-    sudo apt -y install nginx
-  fi
-fi
-
+# OS detection
+OS="unknown"
 if [[ "$(uname)" == "Darwin" ]]; then
-  NGINX_SITES=/opt/homebrew/etc/nginx/servers
-else
-  NGINX_SITES=/etc/nginx/sites-enabled
+    OS="darwin"
+elif [[ -f /etc/os-release ]]; then
+    . /etc/os-release
+    if [[ "$ID" == "ubuntu" ]]; then
+        OS="ubuntu"
+    elif [[ "$ID" == "opensuse-leap" || "$ID" == "opensuse-tumbleweed" || "$ID_LIKE" == *"suse"* ]]; then
+        OS="opensuse"
+    fi
 fi
 
-sudo tee $NGINX_SITES/registry <<EOF
+function install_nginx() {
+    if ! command -v nginx &>/dev/null; then
+        case "$OS" in
+            darwin)
+                brew install nginx
+                ;;
+            ubuntu)
+                sudo apt -y install nginx
+                ;;
+            opensuse)
+                sudo zypper -n install nginx
+                ;;
+            *)
+                echo "Unsupported OS for nginx installation"
+                exit 1
+                ;;
+        esac
+    fi
+}
+
+function configure_nginx() {
+    if ! grep -q "authregistry.lab" /etc/hosts; then
+        echo "127.0.0.1 authregistry.lab" | sudo tee -a /etc/hosts
+    fi
+    if ! grep -q "noauthregistry.lab" /etc/hosts; then
+        echo "127.0.0.1 noauthregistry.lab" | sudo tee -a /etc/hosts
+    fi
+
+    SUFFIX=""
+    case "$OS" in
+        darwin)
+            NGINX_SITES=/opt/homebrew/etc/nginx/servers
+            ;;
+        ubuntu)
+            NGINX_SITES=/etc/nginx/sites-enabled
+            ;;
+        opensuse)
+            NGINX_SITES="/etc/nginx/vhosts.d"
+            SUFFIX=".conf"
+            ;;
+        *)
+            # Fallback logic if OS detection failed but we are on Linux
+            NGINX_SITES=/etc/nginx/sites-enabled
+            if [[ ! -d "$NGINX_SITES" ]]; then
+                NGINX_SITES="/etc/nginx/vhosts.d"
+                SUFFIX=".conf"
+            fi
+            ;;
+    esac
+
+    sudo mkdir -p "$NGINX_SITES"
+
+    sudo tee "$NGINX_SITES/registry$SUFFIX" <<EOF
 server {
         listen 80;
         server_name authregistry.lab;
@@ -101,11 +149,39 @@ server {
         proxy_read_timeout 300;
         proxy_connect_timeout 300;
 }
-
 EOF
+}
 
-if [[ "$(uname)" == "Darwin" ]]; then
-  brew services restart nginx
-else
-  sudo systemctl restart nginx || systemctl status nginx.service && journalctl -xeu nginx.service
-fi
+function setup_systemd_override() {
+    if [[ "$OS" == "opensuse" || "$OS" == "ubuntu" ]]; then
+        # On OpenSUSE, we need to ensure nginx can access certs in /tmp/testing
+        # PrivateTmp=false is needed.
+        sudo mkdir -p /etc/systemd/system/nginx.service.d
+        sudo tee /etc/systemd/system/nginx.service.d/override.conf <<EOF
+[Service]
+PrivateTmp=false
+EOF
+        sudo systemctl daemon-reload
+    fi
+}
+
+function start_nginx() {
+    case "$OS" in
+        darwin)
+            brew services restart nginx
+            ;;
+        *)
+            sudo systemctl restart nginx || {
+                sudo systemctl status nginx.service
+                sudo journalctl -xeu nginx.service
+                exit 1
+            }
+            ;;
+    esac
+}
+
+# Main
+install_nginx
+configure_nginx
+setup_systemd_override
+start_nginx
