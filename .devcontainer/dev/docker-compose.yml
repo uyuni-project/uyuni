@@ -1,7 +1,7 @@
 services:
   uyuni-dev:
     hostname: uyuni.dev.local
-    image: ghcr.io/mbussolotto/uyuni/devcontainer:latest
+    image: ghcr.io/uyuni-project/uyuni/devcontainer:latest
     entrypoint: []
     command: /usr/sbin/init
     stop_signal: SIGRTMIN+3
