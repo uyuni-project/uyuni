@@ -39,7 +39,8 @@ fi
 ./06_collect_and_tag_flaky_tests_in_controller.sh
 ./07_server_setup.sh
 ./08_start_server.sh
-./09_build_server_code.sh
+# 09 step is now only for manual local hot reload after the initial deployment
+# ./09_build_server_code.sh
 ./10_run_sshminion.sh
 ./11_setup_sshd.sh
 ./12_run_salt_sle_minion.sh
