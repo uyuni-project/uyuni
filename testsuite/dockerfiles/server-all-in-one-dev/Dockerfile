@@ -26,6 +26,7 @@ RUN if [ "${TARGETARCH}" = "amd64" ]; then \
       git \
       hostname \
       createrepo_c \
+      maven \
       apache-ivy \
       ant \
       ant-junit && \
