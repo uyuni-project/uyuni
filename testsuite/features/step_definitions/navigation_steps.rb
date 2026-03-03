@@ -48,8 +48,19 @@ When(/^I wait at most (\d+) seconds until I see "([^"]*)" text$/) do |seconds, t
   raise ScriptError, "Text '#{text}' not found" unless check_text_and_catch_request_timeout_popup?(text, timeout: seconds.to_i)
 end
 
-When(/^I wait until I see "([^"]*)" text or "([^"]*)" text$/) do |text1, text2|
-  raise ScriptError, "Text '#{text1}' or '#{text2}' not found" unless check_text_and_catch_request_timeout_popup?(text1, text2: text2, timeout: DEFAULT_TIMEOUT)
+When(/^I wait until I see "([^"]*)" text or "([^"]*)" text(?:, (refreshing the page))?$/) do |text1, text2, refresh_option|
+  if refresh_option
+    # refreshing the page
+    repeat_until_timeout(message: "Couldn't find text '#{text1}' or text '#{text2}'") do
+      break if has_content?(text1) || has_content?(text2)
+
+      sleep(3)
+      refresh_page
+    end
+  else
+    raise ScriptError, "Text '#{text}' not found" unless check_text_and_catch_request_timeout_popup?(text, timeout: DEFAULT_TIMEOUT)
+
+  end
 end
 
 When(/^I wait until I see "([^"]*)" (text|regex), refreshing the page$/) do |text, type|
@@ -104,6 +115,11 @@ When(/^I wait at most (\d+) seconds until the event is completed, refreshing the
 
     refresh_page
   end
+end
+
+When(/^I wait until I see the system name of "([^"]*)"$/) do |host|
+  system_name = get_system_name(host)
+  step %(I wait until I see "#{system_name}" text)
 end
 
 When(/^I wait until I see the name of "([^"]*)", refreshing the page$/) do |host|
@@ -251,6 +267,12 @@ end
 #
 When(/^I enter "([^"]*)" as "([^"]*)"$/) do |text, field|
   fill_in(field, with: text, fill_options: { clear: :backspace })
+end
+
+When(/^I enter data from table with value as field name$/) do |table|
+  table.raw.each do |row|
+    step %(I enter "#{row.first}" as "#{row.last}")
+  end
 end
 
 When(/^I enter "([^"]*)" in the placeholder "([^"]*)"$/) do |text, placeholder|
