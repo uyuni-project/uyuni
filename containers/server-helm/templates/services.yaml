@@ -36,12 +36,6 @@ metadata:
 {{- end }}
 spec:
   ports:
-{{- if ne .Values.enableMonitoring false }}
-    - name: exporter
-      port: 9187
-      protocol: TCP
-      targetPort: 9187
-{{- end }}
     - name: pgsql
       port: 5432
       protocol: TCP
@@ -217,6 +211,10 @@ spec:
       port: 5557
       protocol: TCP
       targetPort: 5557
+    - name: pgsql-exporter
+      port: 9187
+      protocol: TCP
+      targetPort: 9187
 {{- end }}
 {{- if .Values.exposeJavaDebug | default false }}
     - name: debug

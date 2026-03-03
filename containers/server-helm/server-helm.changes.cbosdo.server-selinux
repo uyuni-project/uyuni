@@ -1,0 +1,2 @@
+- Route the exporters over HTTP using ingress rules
+- Separate the cgroup mount from the host one

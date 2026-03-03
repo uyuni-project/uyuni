@@ -67,6 +67,35 @@
         }
       }
     },
+    "gateway": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the gateway to use. An empty string value means that a gateway will be deployed and named uyuni-gateway.",
+          "default": ""
+        },
+        "class": {
+          "type": "string",
+          "description": "Name of the gateway class to use. For rke2 with traefik, it is likely to be 'traefik'.",
+          "default": ""
+        },
+        "listeners": {
+            "type": "object",
+            "description": "Gateway listeners configuration",
+            "properties": {
+                "http": {
+                    "$ref": "#/definitions/listener",
+                    "description": "Configuration of the HTTP listener. Defaults are adjusted to traefik on rke2"
+                },
+                "https": {
+                    "$ref": "#/definitions/listener",
+                    "description": "Configuration of the HTTPS listener. Defaults are adjusted to traefik on rke2"
+                }
+            }
+        }
+      }
+    },
     "volumes": {
       "type": ["object", "null"],
       "properties": {
@@ -152,6 +181,19 @@
           "description": "selector to set on the volume claim"
         }
       }
+    },
+    "listener": {
+        "type": "object",
+        "properties": {
+            "name": {
+                "type": "string",
+                "description": "the name of the listener"
+            },
+            "port": {
+                "type": "integer",
+                "description": "the port of the listener"
+            }
+        }
     }
   }
 }

@@ -1,0 +1,51 @@
+{{- if .Values.gateway.enable }}
+{{- $gatewayName := .Values.gateway.name | default "uyuni-gateway" -}}
+apiVersion: gateway.networking.k8s.io/v1alpha2
+kind: TCPRoute
+metadata:
+  name: salt-publish
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/part-of: uyuni
+spec:
+  parentRefs:
+  - name: {{ $gatewayName }}
+    sectionName: salt-publish
+  rules:
+    - backendRefs:
+      - name: salt
+        port: 4505
+---
+apiVersion: gateway.networking.k8s.io/v1alpha2
+kind: TCPRoute
+metadata:
+  name: salt-request
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/part-of: uyuni
+spec:
+  parentRefs:
+  - name: {{ $gatewayName }}
+    sectionName: salt-request
+  rules:
+    - backendRefs:
+      - name: salt
+        port: 4506
+---
+apiVersion: gateway.networking.k8s.io/v1alpha2
+kind: TCPRoute
+metadata:
+  name: ssh
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/part-of: uyuni
+spec:
+  parentRefs:
+  - name: {{ $gatewayName }}
+    sectionName: ssh
+  rules:
+    - backendRefs:
+      - name: ssh
+        port: 8022
+{{- end }}
+

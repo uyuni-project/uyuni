@@ -36,6 +36,9 @@ ingress:
   type: "traefik"
   
   ## Specify the ingress class name to use. Empty, means that the default one will be used.
+  ## If using the traefik end points and TCP routers, this value needs to match Traefik's
+  ## --providers.kubernetescrd.ingressclass parameter's value.
+  ## On rke2 this is likely to be "traefik". On K3S it is likely to be ""
   ##
   class: ""
   
@@ -43,6 +46,30 @@ ingress:
   ## This can be used to configure another ingress than the ones already wired with the ingress.type.
   annotations:
     ssl:
+
+# Gateway configures the Gateway API.
+gateway:
+  ## If enabled, Gateway API 1.4 resources will be deployed instead of the ingress ones.
+  ## Note that TCPRoute is used and is still in alpha2 stage.
+  enable: false
+
+  ## Name of the gateway class to use. For rke2 with traefik, it is likely to be "traefik".
+  class: ""
+
+  ## Name of the gateway to use. An empty string value means that a gateway will be deployed and named uyuni-gateway.
+  name: ""
+
+  listeners:
+    http:
+      ## Name to set for the gateway http listener. The default is adjusted for traefik on rke2
+      name: "web"
+      ## Port to set for the gateway http listener. The default is adjusted for traefik on rke2
+      port: 8000
+    https:
+      ## Name to set for the gateway https listener. The default is adjusted for traefik on rke2
+      name: "websecure"
+      ## Port to set for the gateway https listener. The default is adjusted for traefik on rke2
+      port: 8443
 
 volumes:
   # squid is the volume for the proxy's cache.

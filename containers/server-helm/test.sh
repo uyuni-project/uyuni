@@ -11,3 +11,9 @@ helm template . --set global.fqdn=test.local --set hubAPI.enable=true --set coco
          kubeconform -summary -strict \
            -schema-location default \
            -schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json'
+
+# Check the API Gateway resources
+helm template . --set global.fqdn=test.local --set hubAPI.enable=true --set coco.replicas=3 --set saline.enable=true --set gateway.enable=true --set gateway.class=gw | \
+         kubeconform -summary -strict \
+           -schema-location default \
+           -schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json'

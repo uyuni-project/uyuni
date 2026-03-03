@@ -1,0 +1,162 @@
+suite: test ingress providers
+templates:
+  - ingress.yaml
+  - traefik-routes.yaml
+  - gateway.yaml
+  - routes.yaml
+  - tcp-routes.yaml
+tests:
+
+  - it: should not enable gateway resources by default
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+        log_level: 2
+      global.httpd: "httpd_content: test httpd"
+      global.ssh: "ssh_content: test ssh"
+    asserts:
+      - hasDocuments:
+          count: 0
+        template: gateway.yaml
+
+      - hasDocuments:
+          count: 0
+        template: routes.yaml
+
+      - hasDocuments:
+          count: 0
+        template: tcp-routes.yaml
+
+  - it: should switch to gateway resources when enabled
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+        log_level: 2
+      global.httpd: "httpd_content: test httpd"
+      global.ssh: "ssh_content: test ssh"
+      gateway:
+        enable: true
+    asserts:
+      - hasDocuments:
+          count: 1
+        template: gateway.yaml
+
+      - hasDocuments:
+          count: 1
+        template: routes.yaml
+
+      - hasDocuments:
+          count: 3
+        template: tcp-routes.yaml
+
+      - hasDocuments:
+          count: 0
+        template: ingress.yaml
+        documentSelector:
+          path: kind
+          value: Ingress
+          skipEmptyTemplates: true
+
+      - hasDocuments:
+          count: 0
+        template: traefik-routes.yaml
+        documentSelector:
+          path: apiVersion
+          value: traefik.io/v1alpha1
+          skipEmptyTemplates: true
+
+  - it: should use the given Gateway if a name is set
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+        log_level: 2
+      global.httpd: "httpd_content: test httpd"
+      global.ssh: "ssh_content: test ssh"
+      gateway:
+        enable: true
+        name: "test-gw"
+      exposeJavaDebug: true
+    asserts:
+      - hasDocuments:
+          count: 0
+        template: gateway.yaml
+
+      - hasDocuments:
+          count: 1
+        template: routes.yaml
+        documentSelector:
+          path: spec.parentRefs[?(@.name=="test-gw")].name
+          value: test-gw
+          matchMany: true
+
+      - hasDocuments:
+          count: 3
+        template: tcp-routes.yaml
+        documentSelector:
+          path: spec.parentRefs[?(@.name=="test-gw")].name
+          value: test-gw
+          matchMany: true
+
+  - it: should create all HTTPRoutes and TCPRoutes
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+        log_level: 2
+      global.httpd: "httpd_content: test httpd"
+      global.ssh: "ssh_content: test ssh"
+      gateway:
+        enable: true
+      exposeJavaDebug: true
+    release:
+      namespace: myns
+    asserts:
+      - containsDocument:
+          kind: Gateway
+          apiVersion: gateway.networking.k8s.io/v1
+          name: uyuni-gateway
+          namespace: myns
+        template: gateway.yaml
+
+      - containsDocument:
+          kind: HTTPRoute
+          apiVersion: gateway.networking.k8s.io/v1
+          name: proxy-routes
+          namespace: myns
+          any: true
+        template: routes.yaml
+
+      - containsDocument:
+          kind: TCPRoute
+          apiVersion: gateway.networking.k8s.io/v1alpha2
+          name: salt-publish
+          namespace: myns
+          any: true
+        template: tcp-routes.yaml
+
+      - containsDocument:
+          kind: TCPRoute
+          apiVersion: gateway.networking.k8s.io/v1alpha2
+          name: salt-request
+          namespace: myns
+          any: true
+        template: tcp-routes.yaml
+
+      - containsDocument:
+          kind: TCPRoute
+          apiVersion: gateway.networking.k8s.io/v1alpha2
+          name: ssh
+          namespace: myns
+          any: true
+        template: tcp-routes.yaml

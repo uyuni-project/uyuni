@@ -1,3 +1,4 @@
+{{- if not .Values.gateway.enable }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -8,7 +9,9 @@ metadata:
   {{- if eq ((.Values.ingress).type) "traefik" }}
     traefik.ingress.kubernetes.io/router.tls: "true"
     traefik.ingress.kubernetes.io/router.tls.domains.n.main: "{{ required "global.fqdn is needed!" .Values.global.fqdn }}"
-    traefik.ingress.kubernetes.io/router.entrypoints: "websecure,web"
+    traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+    traefik.ingress.kubernetes.io/router.priority: "1"
+    traefik.ingress.kubernetes.io/router.middlewares: "{{ .Release.Namespace }}-uyuni-strip-prefixes@kubernetescrd"
   {{- end }}
   {{- if (((.Values.ingress).annotations).ssl) }}
 {{ toYaml .Values.ingress.annotations.ssl | indent 4 }}
@@ -28,20 +31,95 @@ spec:
   - host: {{ required "global.fqdn is needed!" .Values.global.fqdn }}
     http:
       paths:
-      - backend:
+      - path: /
+        backend:
           service:
             name: web 
             port:
               number: 80
-        path: /
         pathType: Prefix
-  {{- if default .Values.hubAPI.enable false }}
+  {{- if .Values.saline.enable }}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  creationTimestamp: null
+  name: saline-ingress-ssl
+  namespace: "{{ .Release.Namespace }}"
+  annotations:
+  {{- if eq ((.Values.ingress).type) "traefik" }}
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.tls.domains.n.main: "{{ required "global.fqdn is needed!" .Values.global.fqdn }}"
+    traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+    traefik.ingress.kubernetes.io/router.priority: "100"
+    traefik.ingress.kubernetes.io/router.middlewares: "{{ .Release.Namespace }}-uyuni-strip-prefixes@kubernetescrd"
+  {{- end }}
+  {{- if (((.Values.ingress).annotations).saline) }}
+{{ toYaml .Values.ingress.annotations.saline | indent 4 }}
+  {{- end }}
+  labels:
+    app.kubernetes.io/part-of: uyuni
+    app.kubernetes.io/component: saline
+spec:
+  {{- if ((.Values.ingress).class) }}
+  ingressClassName: {{ .Values.ingress.class }}
+  {{- end }}
+  tls:
+    - hosts:
+      - {{ required "global.fqdn is needed!" .Values.global.fqdn }}
+      secretName: uyuni-cert
+  rules:
+  - host: {{ required "global.fqdn is needed!" .Values.global.fqdn }}
+    http:
+      paths:
       - backend:
+          service:
+            name: saline
+            port:
+              number: 8216
+        path: /saline
+        pathType: Prefix
+  {{- end }}
+  {{- if default .Values.hubAPI.enable false }}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  creationTimestamp: null
+  name: hubapi-ingress-ssl
+  namespace: "{{ .Release.Namespace }}"
+  annotations:
+  {{- if eq ((.Values.ingress).type) "traefik" }}
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.tls.domains.n.main: "{{ required "global.fqdn is needed!" .Values.global.fqdn }}"
+    traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+    traefik.ingress.kubernetes.io/router.priority: "100"
+    traefik.ingress.kubernetes.io/router.middlewares: "{{ .Release.Namespace }}-uyuni-strip-prefixes@kubernetescrd"
+  {{- end }}
+  {{- if (((.Values.ingress).annotations).hub) }}
+{{ toYaml .Values.ingress.annotations.hub | indent 4 }}
+  {{- end }}
+  labels:
+    app.kubernetes.io/part-of: uyuni
+    app.kubernetes.io/component: hub-xmlrpc
+spec:
+  {{- if ((.Values.ingress).class) }}
+  ingressClassName: {{ .Values.ingress.class }}
+  {{- end }}
+  tls:
+    - hosts:
+      - {{ required "global.fqdn is needed!" .Values.global.fqdn }}
+      secretName: uyuni-cert
+  rules:
+  - host: {{ required "global.fqdn is needed!" .Values.global.fqdn }}
+    http:
+      paths:
+      - path: /hub/rpc/api
+        backend:
           service:
             name: hub-xmlrpc
             port:
               number: 2830
-        path: /hub/rpc/api
         pathType: Prefix
   {{- end }}
   {{- if eq ((.Values.ingress).type) "traefik" }}
@@ -53,8 +131,9 @@ metadata:
   name: uyuni-ingress-ssl-redirect
   namespace: "{{ .Release.Namespace }}"
   annotations:
-    traefik.ingress.kubernetes.io/router.middlewares: "default-uyuni-https-redirect@kubernetescrd"
+    traefik.ingress.kubernetes.io/router.middlewares: "{{ .Release.Namespace }}-uyuni-https-redirect@kubernetescrd"
     traefik.ingress.kubernetes.io/router.entrypoints: "web"
+    traefik.ingress.kubernetes.io/router.priority: "1"
   {{- if (((.Values.ingress).annotations).sslRedirect) }}
 {{ toYaml .Values.ingress.annotations.sslRedirect | indent 4 }}
   {{- end }}
@@ -71,7 +150,7 @@ spec:
       paths:
       - backend:
           service:
-            name: web 
+            name: web
             port:
               number: 80
         path: /
@@ -94,11 +173,11 @@ metadata:
   name: uyuni-ingress-nossl
   namespace: "{{ .Release.Namespace }}"
   annotations:
-  {{- if eq ((.Values.ingress).type) "nginx" }}
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
-  {{- else if eq ((.Values.ingress).type) "traefik" }}
+  {{- if eq ((.Values.ingress).type) "traefik" }}
     traefik.ingress.kubernetes.io/router.tls: "false"
     traefik.ingress.kubernetes.io/router.entrypoints: "web"
+    traefik.ingress.kubernetes.io/router.priority: "100"
+    traefik.ingress.kubernetes.io/router.middlewares: "{{ .Release.Namespace }}-uyuni-strip-prefixes@kubernetescrd"
   {{- end }}
   {{- if (((.Values.ingress).annotations).nossl) }}
 {{ toYaml .Values.ingress.annotations.nossl | indent 4 }}
@@ -233,3 +312,50 @@ spec:
               number: 80
         path: /docs
         pathType: Prefix
+  {{- if ne .Values.enableMonitoring false }}
+      - path: /postgresql-exporter
+        backend:
+          service:
+            name: tomcat
+            port:
+              number: 9187
+        pathType: Prefix
+      - path: /node-exporter
+        backend:
+          service:
+            name: tomcat
+            port:
+              number: 9100
+        pathType: Prefix
+      - path: /tasko-exporter
+        backend:
+          service:
+            name: taskomatic
+            port:
+              number: 9800
+        pathType: Prefix
+      - path: /tasko-jmx
+        backend:
+          service:
+            name: taskomatic
+            port:
+              number: 5556
+        pathType: Prefix
+      - path: /tomcat-jmx
+        backend:
+          service:
+            name: tomcat
+            port:
+              number: 5557
+        pathType: Prefix
+  {{- end }}
+  {{- if .Values.saline.enable }}
+      - backend:
+          service:
+            name: saline
+            port:
+              number: 8216
+        path: /saline
+        pathType: Prefix
+  {{- end }}
+  {{- end }}

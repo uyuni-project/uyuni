@@ -92,6 +92,10 @@ spec:
                   key: fqdn
                   name: uyuni-config
                   optional: false
+{{- if .Values.exposeJavaDebug }}
+            - name: DEBUG_JAVA
+              value: "true"
+{{- end }}
 {{- if .Values.registrySecret }}
             - name: SCC_USER
               valueFrom:
