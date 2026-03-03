@@ -1,3 +1,4 @@
-- Add rpmconf to the server container image (issue #11539)
-- uyuni-configfiles-sync: warn users to run 'rpmconf -a' when
-  .rpmnew/.rpmsave files exist in persistent volumes after sync
+- Add rpmconf to the server container image
+  (gh#uyuni-project/uyuni#11539)
+- Warn users to run 'rpmconf -a' when .rpmnew/.rpmsave files
+  exist in persistent volumes after sync
