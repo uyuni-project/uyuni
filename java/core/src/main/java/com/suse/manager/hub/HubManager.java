@@ -1189,6 +1189,28 @@ public class HubManager {
     }
 
     /**
+     * List all peripheral servers with their system IDs and root CA
+     * @param user the user
+     * @return a list of maps containing fqdn, id and root_ca
+     */
+    public List<Map<String, Object>> listPeripheralServers(User user) {
+        ensureSatAdmin(user);
+        List<IssPeripheral> peripherals = hubFactory.listPeripherals();
+        List<Map<String, Object>> result = new ArrayList<>();
+        for (IssPeripheral peripheral : peripherals) {
+            Optional<Server> server = ServerFactory.findByFqdn(peripheral.getFqdn());
+            server.ifPresent(s -> {
+                Map<String, Object> details = new HashMap<>();
+                details.put("fqdn", peripheral.getFqdn());
+                details.put("id", s.getId());
+                details.put("root_ca", peripheral.getRootCa());
+                result.add(details);
+            });
+        }
+        return result;
+    }
+
+    /**
      * Remotely collect data about peripheral organizations
      *
      * @param user The current user

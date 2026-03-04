@@ -540,6 +540,27 @@ public class HubHandler extends BaseHandler {
     }
 
     /**
+     * Lists all peripheral servers
+     *
+     * @param loggedInUser The current user
+     * @return a list of maps containing fqdn, systemID and rootCA
+     * @apidoc.doc Lists all peripheral servers.
+     * @apidoc.param #session_key()
+     * @apidoc.returntype #return_array_begin()
+     *   #struct_begin("peripheral_server")
+     *     #prop_desc("string", "fqdn", "The FQDN of the peripheral server")
+     *     #prop_desc("int", "id", "The system ID of the peripheral server")
+     *     #prop_desc("string", "root_ca", "The root CA certificate of the peripheral server")
+     *   #struct_end()
+     * #array_end()
+     */
+    @ReadOnly
+    public List<Map<String, Object>> listPeripheralServers(User loggedInUser) {
+        ensureSatAdmin(loggedInUser);
+        return hubManager.listPeripheralServers(loggedInUser);
+    }
+
+    /**
      * Add peripheral channels to synchronize on a peripheral server
      *
      * @param loggedInUser  The current user

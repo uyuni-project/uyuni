@@ -585,7 +585,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         long foreignId = foreignServer.getId();
 
         // Ensure they are in the DB
-        HibernateFactory.getSession().flush();
+        TestUtils.flushAndClearSession();
 
         // 3. Mock expectations
         context().checking(new Expectations() {{
@@ -1050,6 +1050,46 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         IllegalStateException exception = assertThrows(IllegalStateException.class,
             () -> hubManager.deleteIssV1Master(getValidToken(REMOTE_SERVER_FQDN)));
         assertEquals(REMOTE_SERVER_FQDN + " is not registered as an ISS v3 hub", exception.getMessage());
+    }
+
+    @Test
+    public void testListPeripheralServers() throws Exception {
+        String fqdn1 = "peripheral1.example.com";
+        String fqdn2 = "peripheral2.example.com";
+        String rootCa1 = "root-ca-1";
+        String rootCa2 = "root-ca-2";
+
+        // Create peripheral servers in HubFactory
+        hubFactory.save(new IssPeripheral(fqdn1, rootCa1));
+        hubFactory.save(new IssPeripheral(fqdn2, rootCa2));
+
+        // Create corresponding Server entries
+        Server server1 = ServerTestUtils.createTestSystem(satAdmin);
+        server1.getFqdns().add(new ServerFQDN(server1, fqdn1));
+        ServerFactory.save(server1);
+
+        Server server2 = ServerTestUtils.createTestSystem(satAdmin);
+        server2.getFqdns().add(new ServerFQDN(server2, fqdn2));
+        ServerFactory.save(server2);
+
+        TestUtils.flushAndClearSession();
+
+        List<Map<String, Object>> result = hubManager.listPeripheralServers(satAdmin);
+
+        assertNotNull(result);
+        assertEquals(2, result.size());
+
+        Map<String, Object> details1 = result.stream()
+                .filter(m -> m.get("fqdn").equals(fqdn1))
+                .findFirst().orElseThrow();
+        assertEquals(server1.getId(), details1.get("id"));
+        assertEquals(rootCa1, details1.get("root_ca"));
+
+        Map<String, Object> details2 = result.stream()
+                .filter(m -> m.get("fqdn").equals(fqdn2))
+                .findFirst().orElseThrow();
+        assertEquals(server2.getId(), details2.get("id"));
+        assertEquals(rootCa2, details2.get("root_ca"));
     }
 
     private static IssAccessToken getValidToken(String fdqn) {
