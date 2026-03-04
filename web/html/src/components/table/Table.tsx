@@ -20,6 +20,9 @@ import { TableDataHandler } from "./TableDataHandler";
 import { useExpanded } from "./useExpanded";
 
 type ArrayElement<A> = A extends readonly (infer T)[] ? T : never;
+function hasChildRows(item: any): item is { children: any[] } {
+ return "children" in item && Array.isArray(item.children) && item.children.length > 0;
+}
 
 export type TableLoadInfo = {
   totalItems: number;
@@ -261,6 +264,7 @@ export const Table = forwardRef<TableRef, TableProps>((props, ref) => {
           }
 
           const rowClass = props.cssClassFunction ? props.cssClassFunction(item, index) : "";
+          const combinedRowClass = `${rowClass} ${hasChildRows(item) ? "parent-row" : ""}`.trim();
           let key = props.identifier(item);
           if (typeof key === "undefined") {
             Loggerhead.error(`Could not identify table row with identifier: ${props.identifier}`);
@@ -268,7 +272,7 @@ export const Table = forwardRef<TableRef, TableProps>((props, ref) => {
           }
           return (
             <Fragment key={key}>
-              <tr className={rowClass}>{cells}</tr>
+              <tr className={combinedRowClass}>{cells}</tr>
               {props.expandable &&
                 "children" in item &&
                 expanded.has(props.identifier(item)) &&
