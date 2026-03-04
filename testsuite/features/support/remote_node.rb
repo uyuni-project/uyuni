@@ -402,8 +402,34 @@ class RemoteNode
     end
 
     os_version.delete! '"'
-    # on SLES, we need to replace the dot with '-SP'
-    os_version.gsub!('.', '-SP') if os_family.match(/^sles/)
+
+    if os_family.match(/^sles/)
+      if os_version.match(/^16/)
+        os_variant_raw, code = run('grep "^VARIANT=" /etc/os-release', runs_in_container: runs_in_container, check_errors: false)
+        return nil, nil unless code.zero?
+
+        os_variant = os_variant_raw.strip
+        os_variant = os_variant.split('=')[1]
+
+        os_variant.delete! '"'
+
+        if os_variant == 'Micro'
+          os_family = 'sle-micro'
+
+          os_version_raw, code = run('grep "^SUSE_SUPPORT_PRODUCT_VERSION=" /etc/os-release', runs_in_container: runs_in_container, check_errors: false)
+          return nil, nil unless code.zero?
+
+          os_version = os_version_raw.strip.split('=')[1]
+          return nil, nil if os_version.nil?
+
+          os_version.delete! '"'
+        end
+      else
+        # on older SLES, we need to replace the dot with '-SP'
+        os_version.gsub!('.', '-SP')
+      end
+    end
+
     $stdout.puts "Node: #{@hostname}, OS Version: #{os_version}, Family: #{os_family}"
     [os_version, os_family]
   end
