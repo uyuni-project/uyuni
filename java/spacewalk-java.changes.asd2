@@ -1,0 +1,5 @@
+- My bugfix (bsc#1231231) with a multi-line
+  changelog entry
+- Valid bug tracker (bsc#1216509)
+- Valid bug trackers (bsc#1215813, bsc#1214463)
+- Another valid bug tracker, according to IBS/OBS trackers (bnc#1216509)
