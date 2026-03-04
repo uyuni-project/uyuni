@@ -19,8 +19,7 @@ def issues_to_str(issues, num_expected):
 @pytest.fixture
 def tracker_filename(tmp_path):
     p = tmp_path / "trackers.xml"
-    p.write_text(
-        r"""
+    p.write_text(r"""
 <issue-trackers>
    <issue-tracker>
        <name>tckr</name>
@@ -31,8 +30,7 @@ def tracker_filename(tmp_path):
        <regex>(?:bsc|bnc)#(\d+)</regex>
    </issue-tracker>
 </issue-trackers>
-        """
-    )
+        """)
     return str(p)
 
 
@@ -203,15 +201,13 @@ def test_get_pkg_index(validator, file_list):
 
 # pylint: disable-next=redefined-outer-name
 def test_extract_trackers(validator_with_trackers):
-    trackers = validator_with_trackers.extract_trackers(
-        """
+    trackers = validator_with_trackers.extract_trackers("""
         This is a tckr#23 tracker.
         Repeat tckr#23.
         And another tckr#24.
         Not a valid tracker tckr#1,
         Also not a valid tracker tkr#333.
-        """
-    )
+        """)
     assert "tckr" in trackers
     assert len(trackers["tckr"]) == 2
     assert ("tckr#23", "23") in trackers["tckr"]
@@ -335,18 +331,9 @@ def test_validate_chlog_file_multiple_issues_and_entries(validator, chlog_file):
 @pytest.mark.parametrize(
     "entry_text, issue_msg",
     [
-        (
-            "- This entry has\n  trailing whitespaces \n",
-            IssueType.TRAIL_WHITESPACE
-        ),
-        (
-            "- This entry has an  extra whitespace\n",
-            IssueType.MULTI_WHITESPACE
-        ),
-        (
-            " - This is an invalid changelog entry\n",
-            IssueType.WRONG_INDENT
-        ),
+        ("- This entry has\n  trailing whitespaces \n", IssueType.TRAIL_WHITESPACE),
+        ("- This entry has an  extra whitespace\n", IssueType.MULTI_WHITESPACE),
+        (" - This is an invalid changelog entry\n", IssueType.WRONG_INDENT),
         (
             "- This is an invalid changelog entry\n This line has only 1 leading whitespace instead of 2\n",
             IssueType.WRONG_INDENT,
@@ -530,12 +517,18 @@ def test_validate_chlog_for_wrong_pkg(validator, chlog_file):
     )
 
 
+# pylint: disable-next=redefined-outer-name
 def test_validate_chlog_invalid_filename(validator, base_path):
+    # pylint: disable-next=redefined-outer-name
     chlog_file = base_path / "pkg/path/invalid.changes.my.feature"
     chlog_file.write_text("- This is a changelog entry.\n")
-    issues = validator.validate(["pkg/path/invalid.changes.my.feature", "pkg/path/myfile.txt"])
+    issues = validator.validate(
+        ["pkg/path/invalid.changes.my.feature", "pkg/path/myfile.txt"]
+    )
     assert len(issues) == 1, issues_to_str(issues, 1)
-    assert IssueType.INVALID_CHLOG_FILENAME.format("mypkg") in str(issues[0]) and "mypkg" in str(issues[0])
+
+    expected_msg = IssueType.INVALID_CHLOG_FILENAME.format("mypkg")
+    assert expected_msg in str(issues[0]) and "mypkg" in str(issues[0])
 
 
 # pylint: disable-next=redefined-outer-name
