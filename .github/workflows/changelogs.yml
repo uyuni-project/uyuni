@@ -5,6 +5,8 @@ on:
     types: [opened, edited, synchronize, reopened, closed]
     # Only execute on the main branches (feature branches are excluded)
     branches:
+      - tmp-changelog-test
+      - changelog-action
       - master-staging # Temporary branch for staging until 5.1 GM
       - master
       # Uyuni patches
