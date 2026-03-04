@@ -51,9 +51,12 @@ jobs:
       contents: read
       pull-requests: read
     steps:
-    - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 #v5.0.0
+    - name: Checkout the workflow scripts
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 #v5.0.0
       with:
         fetch-depth: 1
+        ref: ${{ github.event.pull_request.base.sha }}
+        sparse-checkout: '.github/workflows'
     - id: master
       name: Get modified master changelog files
       uses: Ana06/get-changed-files@25f79e676e7ea1868813e21465014798211fad8c #v2.3.0
@@ -74,8 +77,17 @@ jobs:
         echo
         echo "See https://github.com/uyuni-project/uyuni/wiki/Contributing for a guide to writing changelogs."
         exit 1
-    - name: Test changelog entries
+    - name: Checkout the PR HEAD branch
+      id: checkout
       if: "!contains(github.event.pull_request.body, '[x] No changelog needed')"
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 #v5.0.0
+      with:
+        fetch-depth: 1
+        repository: ${{ github.event.pull_request.head.repo.full_name }}
+        ref: ${{ github.event.pull_request.head.sha }}
+        path: .head
+    - name: Test changelog entries
+      if: steps.checkout.outcome == 'success'
       env:
         GH_TOKEN: ${{ github.token }}
         BZ_TOKEN: ${{ secrets.BUGZILLA_TOKEN }}
@@ -89,7 +101,7 @@ jobs:
 
         mapfile -t CHANGED_FILES < <(gh api --paginate repos/$GIT_REPO/pulls/$PR_NUM/files | jq -r '.[].filename')
         python .github/workflows/changelogs/changelogs.py ${RUNNER_DEBUG:+--verbose} \
-          --tracker-file "$TRACKER_FILE" --git-repo "$GIT_REPO" --uyuni-dir . --pr-number "$PR_NUM" "${CHANGED_FILES[@]}"
+          --tracker-file "$TRACKER_FILE" --git-repo "$GIT_REPO" --uyuni-dir .head --pr-number "$PR_NUM" "${CHANGED_FILES[@]}"
 
   # Warns the user if they merged the PR, but the changelog test failed
   warn_user_if_merged:
