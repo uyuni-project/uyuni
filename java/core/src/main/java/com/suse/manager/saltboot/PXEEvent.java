@@ -21,6 +21,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -58,8 +59,24 @@ public class PXEEvent {
         return (String)data.get("action");
     }
 
-    public String getSaltbootGroup() {
-        return String.valueOf(data.get("minion_id_prefix"));
+    /**
+     * Return the expected saltboot group name
+     * @return the saltboot group name
+     * @throws SaltbootException SaltbootException if data validation failed
+     */
+    public String getSaltbootGroup() throws SaltbootException {
+        Object val = data.get("minion_id_prefix");
+        if (val == null) {
+            throw new SaltbootException("Missing branch prefix in the incoming data");
+        }
+
+        if (val instanceof Number num) {
+            return new BigDecimal(num.toString())
+                    .stripTrailingZeros()
+                    .toPlainString();
+        }
+
+        return String.valueOf(val);
     }
 
     public String getRoot() {

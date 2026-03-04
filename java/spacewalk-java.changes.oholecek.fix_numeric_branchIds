@@ -1,0 +1,2 @@
+- Numeric branch names should not be stored in double format
+  (bsc#1258382)
