@@ -19,8 +19,8 @@ on:
         type: string
 
 env:
-  UYUNI_PROJECT: uyuni-project
-  UYUNI_VERSION: master
+  UYUNI_PROJECT: szachovy
+  UYUNI_VERSION: update-uyuni-base-image-2026.01
   NO_AUTH_REGISTRY: "noauthregistry.lab"
   PUBLISH_CUCUMBER_REPORT: true
   AUTH_REGISTRY: "authregistry.lab"
