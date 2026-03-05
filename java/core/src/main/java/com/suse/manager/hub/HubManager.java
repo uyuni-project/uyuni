@@ -1126,6 +1126,10 @@ public class HubManager {
                 mgrServerInfo.setServer(server);
                 server.setMgrServerInfo(mgrServerInfo);
             }
+
+            // PERIPHERAL_SERVER entitlement is no longer used
+            systemEntitlementManagerIn.removeServerEntitlement(server, EntitlementManager.PERIPHERAL_SERVER);
+
             SystemManager.updateSystemOverview(server.getId());
             return server;
         }
