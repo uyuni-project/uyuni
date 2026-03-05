@@ -45,8 +45,8 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           platforms: ${{ env.PLATFORMS }}
           build-args: |
-            BASE=registry.opensuse.org/uyuni/server
-            VERSION=2025.10
+            BASE=registry.opensuse.org/systemsmanagement/uyuni/master/containerfile/uyuni/server
+            VERSION=latest
   build-and-push-ubuntu-minion-image:
     runs-on: ubuntu-latest
     permissions:

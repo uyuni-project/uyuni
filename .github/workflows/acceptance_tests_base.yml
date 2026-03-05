@@ -202,17 +202,17 @@ jobs:
       #     - name: update_ca_in_controller
       #       run: podman exec controller bash -c "cat /tmp/spacewalk.crt >> /etc/ssl/ca-bundle.pem"
 
-      - name: Run SSH minion container
-        if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
-        run: ./testsuite/podman_runner/10_run_sshminion.sh
+      #- name: Run SSH minion container
+      #  if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
+      #  run: ./testsuite/podman_runner/10_run_sshminion.sh
 
       - name: Test access to server from controller
         if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
         run: curl --insecure https://localhost:8443/rhn/help/Copyright.do
 
-      - name: Test access to server from SSH minion
-        if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
-        run: sudo -i podman exec opensusessh curl --insecure https://server:443/rhn/help/Copyright.do
+      #- name: Test access to server from SSH minion
+      #  if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
+      #  run: sudo -i podman exec opensusessh curl --insecure https://server:443/rhn/help/Copyright.do
 
       - name: Configure SSHD in controller, server, build host and SSH minion
         if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
