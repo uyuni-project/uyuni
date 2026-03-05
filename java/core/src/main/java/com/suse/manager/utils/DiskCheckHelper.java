@@ -40,7 +40,7 @@ public class DiskCheckHelper {
      */
     public DiskCheckSeverity executeDiskCheck() {
         try {
-            final int result = invokeExternalScript();
+            final int result = performCheck();
             return DiskCheckSeverity.valueOf(result);
         }
         catch (IOException | InterruptedException ex) {
@@ -60,7 +60,7 @@ public class DiskCheckHelper {
      * @throws IOException          when an I/O error occurs during the execution of the script.
      * @throws InterruptedException when the process is interrupted while waiting for a result from the script.
      */
-    protected int invokeExternalScript() throws IOException, InterruptedException {
+    protected int performCheck() throws IOException, InterruptedException {
         final Process process = Runtime.getRuntime().exec(new String[]{DISKCHECK_SCRIPT, "-c"});
         return process.waitFor();
     }

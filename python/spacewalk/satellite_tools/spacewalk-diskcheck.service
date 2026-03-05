@@ -1,7 +1,0 @@
-[Unit]
-Description=Check available disk space on vital filesystems
-
-[Service]
-Type=oneshot
-KillMode=process
-ExecStart=/usr/bin/spacewalk-diskcheck
