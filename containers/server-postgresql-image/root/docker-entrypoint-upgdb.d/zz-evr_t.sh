@@ -1,30 +1,22 @@
 #!/bin/bash
+# SPDX-FileCopyrightText: 2025 SUSE LLC
 #
-# Copyright (c) 2008--2013 Red Hat, Inc.
-#
-# This software is licensed to you under the GNU General Public License,
-# version 2 (GPLv2). There is NO WARRANTY for this software, express or
-# implied, including the implied warranties of MERCHANTABILITY or FITNESS
-# FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
-# along with this software; if not, see
-# http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
-#
-# Red Hat trademarks are not licensed under GPLv2. No permission is
-# granted to use or replicate Red Hat trademarks that are incorporated
-# in this software or its documentation.
-#
+# SPDX-License-Identifier: Apache-2.0
 
 run_sql() {
     PGHOST= PGHOSTADDR= psql -v ON_ERROR_STOP=1 -U "$POSTGRES_USER" --no-password --no-psqlrc -d susemanager "$@"
 }
 
 cat << EOF | run_sql
+do \$\$ begin
 create type evr_t as (
         epoch           varchar(16),
         version         varchar(512),
         release         varchar(512),
         type            varchar(10)
 );
+exception when duplicate_object then null;
+end \$\$;
 
 create or replace function evr_t(e varchar, v varchar, r varchar, t varchar)
 returns evr_t as \$\$
@@ -95,6 +87,8 @@ begin
 end;
 \$\$ language plpgsql immutable strict;
 
+-- operators: idempotent via do blocks
+do \$\$ begin
 create operator < (
   leftarg = evr_t,
   rightarg = evr_t,
@@ -104,7 +98,10 @@ create operator < (
   restrict = scalarltsel,
   join = scalarltjoinsel
 );
+exception when duplicate_object then null;
+end \$\$;
 
+do \$\$ begin
 create operator <= (
   leftarg = evr_t,
   rightarg = evr_t,
@@ -114,7 +111,10 @@ create operator <= (
   restrict = scalarltsel,
   join = scalarltjoinsel
 );
+exception when duplicate_object then null;
+end \$\$;
 
+do \$\$ begin
 create operator = (
   leftarg = evr_t,
   rightarg = evr_t,
@@ -124,7 +124,10 @@ create operator = (
   restrict = eqsel,
   join = eqjoinsel
 );
+exception when duplicate_object then null;
+end \$\$;
 
+do \$\$ begin
 create operator >= (
   leftarg = evr_t,
   rightarg = evr_t,
@@ -134,7 +137,10 @@ create operator >= (
   restrict = scalargtsel,
   join = scalargtjoinsel
 );
+exception when duplicate_object then null;
+end \$\$;
 
+do \$\$ begin
 create operator > (
   leftarg = evr_t,
   rightarg = evr_t,
@@ -144,7 +150,10 @@ create operator > (
   restrict = scalargtsel,
   join = scalargtjoinsel
 );
+exception when duplicate_object then null;
+end \$\$;
 
+do \$\$ begin
 create operator <> (
   leftarg = evr_t,
   rightarg = evr_t,
@@ -154,8 +163,10 @@ create operator <> (
   restrict = eqsel,
   join = eqjoinsel
 );
+exception when duplicate_object then null;
+end \$\$;
 
-
+do \$\$ begin
 create operator class evr_t_ops
 default for type evr_t using btree as
   operator 1 <,
@@ -165,6 +176,8 @@ default for type evr_t using btree as
   operator 5 >,
   function 1 evr_t_compare( evr_t, evr_t )
 ;
+exception when duplicate_object then null;
+end \$\$;
 
 create or replace function evr_t_as_vre( a evr_t ) returns varchar as \$\$
 begin
@@ -198,9 +211,12 @@ begin
 end;
 \$\$ language plpgsql immutable strict;
 
+do \$\$ begin
 create aggregate max (
   sfunc=evr_t_larger,
   basetype=evr_t,
   stype=evr_t
 );
+exception when duplicate_object then null;
+end \$\$;
 EOF

@@ -24,30 +24,30 @@ function parseArguments {
 
 function parseConfiguration {
     if [ -f $1 ]; then
-        SPACECHECKDIRS=`grep ^[[:blank:]]*spacecheck_dirs $1 | sed -e "s/.*=[[:blank:]]*//"`
-        SPACECHECKALERT=`grep ^[[:blank:]]*spacecheck_free_alert $1 | sed -e "s/.*=[[:blank:]]*//"`
-        SPACECHECKCRIT=`grep ^[[:blank:]]*spacecheck_free_critical $1 | sed -e "s/.*=[[:blank:]]*//"`
-        SPACECHECKSHUTDOWN=`grep ^[[:blank:]]*spacecheck_shutdown $1 | sed -e "s/.*=[[:blank:]]*//"`
+        DISKCHECKDIRS=`grep ^[[:blank:]]*spacecheck_dirs $1 | sed -e "s/.*=[[:blank:]]*//"`
+        DISKCHECKALERT=`grep ^[[:blank:]]*spacecheck_free_alert $1 | sed -e "s/.*=[[:blank:]]*//"`
+        DISKTHRESHOLD=`grep ^[[:blank:]]*spacecheck_free_critical $1 | sed -e "s/.*=[[:blank:]]*//"`
+        DISKCHECKSHUTDOWN=`grep ^[[:blank:]]*spacecheck_shutdown $1 | sed -e "s/.*=[[:blank:]]*//"`
     fi
 
-    if [ "$SPACECHECKDIRS" = "" ]; then
-        SPACECHECKDIRS="/var/spacewalk /var/cache /srv"
+    if [ "$DISKCHECKDIRS" = "" ]; then
+        DISKCHECKDIRS="/var/spacewalk /var/cache /srv"
     fi
-    if [ "$SPACECHECKALERT" = "" ] || [ "$SPACECHECKALERT" -gt 90 ]; then
-        SPACECHECKALERT=10
+    if [ "$DISKCHECKALERT" = "" ] || [ "$DISKCHECKALERT" -gt 90 ]; then
+        DISKCHECKALERT=10
     fi
-    if [ "$SPACECHECKCRIT" = "" ] || [ "$SPACECHECKCRIT" -ge "$SPACECHECKALERT" ]; then
-        SPACECHECKCRIT=$(($SPACECHECKALERT / 2))
+    if [ "$DISKTHRESHOLD" = "" ] || [ "$DISKTHRESHOLD" -ge "$DISKCHECKALERT" ]; then
+        DISKTHRESHOLD=$(($DISKCHECKALERT / 2))
     fi
-    if [ "$SPACECHECKSHUTDOWN" = "" ]; then
-        SPACECHECKSHUTDOWN=true
+    if [ "$DISKCHECKSHUTDOWN" = "" ]; then
+        DISKCHECKSHUTDOWN=true
     fi
 }
 
 function ensureSpacewalkRunning {
     systemctl status spacewalk.target > /dev/null 2>&1
     if [ $? != 0 ]; then
-        echo  "SPACECHECK: spacewalk services are not running - skipping disk check."
+        echo  "DISKCHECK: spacewalk services are not running - skipping disk check."
         exit 0
     fi
 }
@@ -69,7 +69,7 @@ ensureSpacewalkRunning
 parseArguments "$@"
 parseConfiguration /etc/rhn/rhn.conf
 
-for DIR in $SPACECHECKDIRS
+for DIR in $DISKCHECKDIRS
 do
     if [ ! -d $DIR ]; then
         updateSeverity 1
@@ -78,8 +78,8 @@ do
 
     USEDSPACE=`df -PH $DIR | tail -1 | awk '{print $5}' | sed -e"s/\%//"`
     FREESPACE=$((100 - $USEDSPACE))
-    if [ $FREESPACE -lt $SPACECHECKCRIT ] && [ "$STOPCHECK" = "0" ]; then
-        if [ "$SPACECHECKSHUTDOWN" = true ]; then
+    if [ $FREESPACE -lt $DISKTHRESHOLD ] && [ "$STOPCHECK" = "0" ]; then
+        if [ "$DISKCHECKSHUTDOWN" = true ]; then
             updateSeverity 3
         else
             updateSeverity 3
@@ -87,14 +87,14 @@ do
 
         STOPCHECK=1
         break
-    elif [ $FREESPACE -lt $SPACECHECKALERT ] && [ "$STOPCHECK" = "0" ]; then
+    elif [ $FREESPACE -lt $DISKCHECKALERT ] && [ "$STOPCHECK" = "0" ]; then
         updateSeverity 2
     fi
 done
 
-if [ "$CHECKONLY" = false ] && [ "$STOPCHECK" = "1" ] && [ "$SPACECHECKSHUTDOWN" = true ]; then
+if [ "$CHECKONLY" = false ] && [ "$STOPCHECK" = "1" ] && [ "$DISKCHECKSHUTDOWN" = true ]; then
     spacewalk-service stop
-    echo "SPACECHECK CRITICAL: spacewalk shut down"
+    echo "DISKCHECK CRITICAL: spacewalk shut down"
 fi
 
 exit $CHECKSEVERITY

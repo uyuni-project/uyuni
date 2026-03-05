@@ -41,5 +41,9 @@ LABEL org.uyuni.version="${PRODUCT_VERSION}"
 RUN /usr/sbin/groupmod -g 999 postgres && \
     /usr/sbin/usermod -u 999 -g 999 postgres
 
-ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+RUN echo "${PRODUCT_VERSION}.%RELEASE%" > /etc/uyuni-image-ref
+
+ENTRYPOINT ["/uyuni-entrypoint.sh"]
+
 CMD ["postgres"]
+HEALTHCHECK --interval=10s --start-period=10s --timeout=5s --retries=1 CMD ["/usr/bin/healthcheck.sh"]
