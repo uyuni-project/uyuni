@@ -49,6 +49,7 @@ type Props = {
   loginLength: string;
   passwordLength: string;
   diskspaceSeverity: string;
+  dbDiskspaceSeverity: string;
   sccForwardWarning: boolean;
 };
 

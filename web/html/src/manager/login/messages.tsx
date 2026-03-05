@@ -1,6 +1,12 @@
 import { Messages, MessageType } from "components/messages/messages";
 
-export const getGlobalMessages = (validationErrors, schemaUpgradeRequired, diskspaceSeverity, sccForwardWarning) => {
+export const getGlobalMessages = (
+  validationErrors,
+  schemaUpgradeRequired,
+  diskspaceSeverity,
+  dbDiskspaceSeverity,
+  sccForwardWarning
+) => {
   let messages: MessageType[] = [];
 
   if (validationErrors && validationErrors.length > 0) {
@@ -18,7 +24,7 @@ export const getGlobalMessages = (validationErrors, schemaUpgradeRequired, disks
     const severity_messages = {
       undefined: Messages.info(
         t(
-          "Unable to validate the disk space availability. Please contact your system admistrator if this problem persists."
+          "Unable to validate the disk space availability on Server. Please contact your system admistrator if this problem persists."
         )
       ),
       misconfiguration: Messages.warning(
@@ -28,12 +34,12 @@ export const getGlobalMessages = (validationErrors, schemaUpgradeRequired, disks
       ),
       alert: Messages.warning(
         t(
-          "The available disk space on the server is running low. Please contact your system administrator to add more disk space."
+          "The available disk space for the server is low. To prevent an automatic shutdown via health check, please contact your system administrator immediately to allocate additional space."
         )
       ),
       critical: Messages.error(
         t(
-          "The available disk space on the server is critically low. Please contact your system administrator to add more disk space."
+          "The available disk space for the server is critically low. To prevent an automatic shutdown via health check, please contact your system administrator immediately to allocate additional space."
         )
       ),
     };
@@ -42,6 +48,38 @@ export const getGlobalMessages = (validationErrors, schemaUpgradeRequired, disks
       messages = messages.concat(severity_messages[diskspaceSeverity]);
     } else {
       Loggerhead.warn("Unknown disk space severity level: " + diskspaceSeverity);
+      messages = messages.concat(severity_messages["undefined"]);
+    }
+  }
+
+  if (dbDiskspaceSeverity !== "ok") {
+    const severity_messages = {
+      undefined: Messages.info(
+        t(
+          "Unable to validate the disk space availability on Database. Please contact your system admistrator if this problem persists."
+        )
+      ),
+      misconfiguration: Messages.warning(
+        t(
+          "Some important directories are missing on database. Please contact your system administrator to review the configuration."
+        )
+      ),
+      alert: Messages.warning(
+        t(
+          "The available disk space for the database is low. To prevent an automatic shutdown via health check, please contact your system administrator immediately to allocate additional space."
+        )
+      ),
+      critical: Messages.error(
+        t(
+          "The available disk space for the database is critically low. To prevent an automatic shutdown via health check, please contact your system administrator immediately to allocate additional space."
+        )
+      ),
+    };
+
+    if (dbDiskspaceSeverity in severity_messages) {
+      messages = messages.concat(severity_messages[dbDiskspaceSeverity]);
+    } else {
+      Loggerhead.warn("Unknown disk space severity level: " + dbDiskspaceSeverity);
       messages = messages.concat(severity_messages["undefined"]);
     }
   }
