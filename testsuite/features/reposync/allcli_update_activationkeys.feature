@@ -48,6 +48,7 @@ Feature: Update activation keys
 
 @scc_credentials
 @susemanager
+@ssh_minion
   Scenario: Update SLE SSH key with synced base product
     When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE SSH Test Key x86_64" in the content area
@@ -65,6 +66,7 @@ Feature: Update activation keys
     Then I should see a "Activation key SUSE SSH Test Key x86_64 has been modified" text
 
 @uyuni
+@ssh_minion
   Scenario: Update openSUSE Tumbleweed SSH key with synced base product
     When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE SSH Test Key x86_64" in the content area
@@ -79,6 +81,7 @@ Feature: Update activation keys
 
 @scc_credentials
 @susemanager
+@ssh_minion
   Scenario: Update SLE SSH tunnel key with synced base product
     When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE SSH Tunnel Test Key x86_64" in the content area
@@ -96,6 +99,7 @@ Feature: Update activation keys
     Then I should see a "Activation key SUSE SSH Tunnel Test Key x86_64 has been modified" text
 
 @uyuni
+@ssh_minion
   Scenario: Update openSUSE Tumbleweed SSH tunnel key with synced base product
     When I follow the left menu "Systems > Activation Keys"
     And I follow "SUSE SSH Tunnel Test Key x86_64" in the content area

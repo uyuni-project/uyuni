@@ -25,7 +25,7 @@ if [[ "$(uname)" == "Darwin" ]]; then
   podman machine rm --force ||:
 else
   echo "Killing old containers"
-  containers="authregistry.lab noauthregistry.lab buildhost deblike_minion rhlike_minion sle_minion opensusessh server controller uyuni-db"
+  containers="authregistry.lab noauthregistry.lab buildhost deblike_minion rhlike_minion sle_minion server controller uyuni-db"  # opensusessh --- IGNORE ---
   for i in ${containers};do
       $PODMAN_CMD kill ${i}
   done
