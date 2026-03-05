@@ -4,6 +4,8 @@ import { isOrgAdmin } from "core/auth/auth.utils";
 import useRoles from "core/auth/use-roles";
 
 import { Button } from "components/buttons";
+import { DeleteDialog } from "components/dialog/DeleteDialog";
+import { ModalButton } from "components/dialog/ModalButton";
 import withPageWrapper from "components/general/with-page-wrapper";
 import { TopPanel } from "components/panels/TopPanel";
 import { Column } from "components/table/Column";
@@ -32,6 +34,7 @@ const ListFilters = (props: Props) => {
   const [selectedIdentifiers, setSelectedIdentifiers] = useState<string[]>([]);
   const roles = useRoles();
   const hasEditingPermissions = isOrgAdmin(roles);
+  const [filterToDelete, setFilterToDelete] = useState<FilterFormType | undefined>();
 
   useEffect(() => {
     if (props.flashMessage) {
@@ -71,9 +74,17 @@ const ListFilters = (props: Props) => {
       setDisplayedFilters(mapResponseToFilterForm(remainingFilters));
       const remainingSelection = selectedIdentifiers.filter((item) => item !== identifier(row));
       setSelectedIdentifiers(remainingSelection);
+      showSuccessToastr(t("Filter has been deleted."));
     } catch (error: any) {
       showErrorToastr(error?.messages ?? error);
     }
+  };
+
+  const confirmDelete = async () => {
+    if (!filterToDelete) return;
+
+    await deleteRow(filterToDelete);
+    setFilterToDelete(undefined);
   };
 
   const deleteSelectedRows = async () => {
@@ -88,6 +99,7 @@ const ListFilters = (props: Props) => {
 
       const remainingFilters = await onAction(undefined, "get");
       setDisplayedFilters(mapResponseToFilterForm(remainingFilters));
+      showSuccessToastr(t("Filter have been deleted."));
     } catch (error: any) {
       showErrorToastr(error?.messages ?? error);
     }
@@ -135,10 +147,10 @@ const ListFilters = (props: Props) => {
   const actionButtons = [
     <div key="filter-action-buttons" className="btn-group">
       <Button className="btn-default" handler={onSelectUnused} text={t("Select unused")}></Button>
-      <Button
-        className="btn btn-danger"
+      <ModalButton
+        className="btn-danger"
         disabled={!selectedIdentifiers.length}
-        handler={deleteSelectedRows}
+        target="delete-selected-filters"
         text={t("Delete")}
       />
     </div>,
@@ -159,8 +171,6 @@ const ListFilters = (props: Props) => {
         selectable={true}
         onSelect={onSelect}
         selectedItems={selectedIdentifiers}
-        deletable={isDeletable}
-        onDelete={deleteRow}
         titleButtons={actionButtons}
       >
         <Column
@@ -197,23 +207,62 @@ const ListFilters = (props: Props) => {
           columnKey="action-buttons"
           header={t("Actions")}
           width="30px"
-          cell={(row) =>
-            hasEditingPermissions && (
-              <FilterEdit
-                id={`edit-filter-button-${row.id}`}
-                initialFilterForm={row}
-                icon="fa-pencil"
-                buttonTitle={t("Edit Filter")}
-                className="btn-default btn-sm"
-                onChange={(responseFilters) => setDisplayedFilters(mapResponseToFilterForm(responseFilters))}
-                openFilterId={openFilterId}
-                projectLabel={projectLabel}
-                editing
-              />
-            )
-          }
+          cell={(row) => (
+            <div className="btn-group">
+              {hasEditingPermissions && (
+                <FilterEdit
+                  id={`edit-filter-button-${row.id}`}
+                  initialFilterForm={row}
+                  icon="fa-pencil"
+                  buttonTitle={t("Edit Filter")}
+                  className="btn-default btn-sm"
+                  onChange={(responseFilters) => setDisplayedFilters(mapResponseToFilterForm(responseFilters))}
+                  openFilterId={openFilterId}
+                  projectLabel={projectLabel}
+                  editing
+                />
+              )}
+
+              {hasEditingPermissions && isDeletable(row) && (
+                <ModalButton
+                  className="btn-default btn-sm"
+                  title={t("Delete")}
+                  icon="fa-trash"
+                  target="delete-filter-modal"
+                  item={row}
+                  onClick={setFilterToDelete}
+                />
+              )}
+            </div>
+          )}
         />
       </Table>
+      <DeleteDialog
+        id="delete-filter-modal"
+        title={t("Delete Filter")}
+        content={
+          <span>
+            {t("Are you sure you want to delete filter")} <strong>{filterToDelete?.filter_name}</strong>?
+          </span>
+        }
+        item={filterToDelete}
+        onConfirm={confirmDelete}
+        onClosePopUp={() => setFilterToDelete(undefined)}
+      />
+      <DeleteDialog
+        id="delete-selected-filters"
+        title={t("Delete Selected Filter(s)")}
+        content={
+          <span>
+            {selectedIdentifiers.length < 1
+              ? t("Are you sure you want to delete the selected filter?")
+              : t("Are you sure you want to delete selected filters? ({count} filters selected)", {
+                  count: selectedIdentifiers.length,
+                })}
+          </span>
+        }
+        onConfirm={deleteSelectedRows}
+      />
     </TopPanel>
   );
 };
