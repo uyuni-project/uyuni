@@ -36,7 +36,7 @@ Feature: Monitor MLM environment with Prometheus on a Red Hat-like Salt minion
     Then I should see a "Formula saved" text
 
   Scenario: Enable tools_update_repo tools_pool_repo so the exporters packages are available
-    When I enable the repositories "tools_update_repo tools_pool_repo" on this "rhlike_minion" without error control
+    When I enable the repositories "tools_update_repo tools_pool_repo" on this "rhlike_minion"
 
 @skip_if_github_validation
   Scenario: Apply highstate for Prometheus exporters on the Red Hat-like minion
@@ -70,4 +70,4 @@ Feature: Monitor MLM environment with Prometheus on a Red Hat-like Salt minion
     And I wait until event "Apply highstate scheduled" is completed
 
   Scenario: Cleanup: Disable tools_update_repo tools_pool_repo because they are no longer needed
-    When I disable the repositories "tools_update_repo tools_pool_repo" on this "rhlike_minion" without error control
+    When I disable the repositories "tools_update_repo tools_pool_repo" on this "rhlike_minion"
