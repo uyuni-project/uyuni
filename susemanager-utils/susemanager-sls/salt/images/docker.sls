@@ -2,12 +2,12 @@
 {% if grains['saltversioninfo'][0] >= 2018 %}
 
 mgr_registries_login:
-  mgrcompat.module_run:
+  module.run:
     - name: docker.login
     - registries: {{ pillar.get('docker-registries', {}).keys() | list }}
 
 mgr_buildimage:
-  mgrcompat.module_run:
+  module.run:
     - name: docker.build
 {%- if pillar.get('imagerepopath') is defined %}
     - repository: "{{ pillar.get('imagerepopath') }}"
@@ -32,7 +32,7 @@ mgr_buildimage:
       - mgrcompat: mgr_registries_login
 
 mgr_pushimage:
-  mgrcompat.module_run:
+  module.run:
     - name: docker.push
     - image: "{{ pillar.get('imagename') }}"
     - require:
@@ -42,7 +42,7 @@ mgr_pushimage:
 {% if 'docker.logout' in salt %}
 
 mgr_registries_logout:
-  mgrcompat.module_run:
+  module.run:
     - name: docker.logout
     - registries: {{ pillar.get('docker-registries', {}).keys() | list }}
     - require:
@@ -54,12 +54,12 @@ mgr_registries_logout:
 {% else %}
 
 mgr_registries_login:
-  mgrcompat.module_run:
+  module.run:
     - name: dockerng.login
     - registries: {{ pillar.get('docker-registries', {}).keys() }}
 
 mgr_buildimage:
-  mgrcompat.module_run:
+  module.run:
     - name: dockerng.build
     - image: "{{ pillar.get('imagename') }}"
     - path: "{{ pillar.get('builddir') }}"
@@ -75,7 +75,7 @@ mgr_buildimage:
       - mgrcompat: mgr_registries_login
 
 mgr_pushimage:
-  mgrcompat.module_run:
+  module.run:
     - name: dockerng.push
     - image: "{{ pillar.get('imagename') }}"
     - require:
@@ -88,7 +88,7 @@ mgr_pushimage:
 mgr_buildimage_docker_collect_logs:
   file.touch:
     - name: {{ logfile }}
-  mgrcompat.module_run:
+  module.run:
     - name: cp.push
     - path: {{ logfile }}
     - upload_path: /image-{{ pillar.get('build_id') }}.log

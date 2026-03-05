@@ -18,7 +18,7 @@
     - content: "master: {{ pillar['mgr_server'] }}"
 
 restart:
-  mgrcompat.module_run:
+  module.run:
     - name: cmd.run_bg
     - cmd: "/usr/bin/sleep 2; /usr/sbin/service {{ salt_service }} restart"
     - python_shell: true

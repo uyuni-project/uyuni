@@ -14,7 +14,7 @@ mgr_deploy_customer_gpg_key:
     - mode: 644
 
 mgr_trust_customer_gpg_key:
-  mgrcompat.module_run:
+  module.run:
     - name: pkg.add_repo_key
     - path: /etc/pki/rpm-gpg/mgr-gpg-pub.key
     - onchanges:
@@ -127,7 +127,7 @@ mgr_deploy_{{ keyname }}:
 
 {% for url in gpg_urls %}
 {{ url | replace(':', '_') }}:
-  mgrcompat.module_run:
+  module.run:
     - name: pkg.add_repo_key
     - path: {{ url }}
 {%- endfor %}

@@ -10,7 +10,7 @@ include:
 
 {% else %}
 spmigration:
-  mgrcompat.module_run:
+  module.run:
     - name: pkg.upgrade
     - dist_upgrade: True
     - dryrun: {{ salt['pillar.get']('susemanager:distupgrade:dryrun', False) }}

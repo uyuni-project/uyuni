@@ -24,7 +24,7 @@ enable_appstreams:
 {%- endif %}
 
 enabled_appstreams:
-  mgrcompat.module_run:
+  module.run:
     - name: appstreams.get_enabled_modules
     {% if pillar.get('param_appstreams_enable') %}
     - require:

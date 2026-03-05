@@ -10,7 +10,7 @@
 # saltboot image pillar
 
 mgr_inspect_kiwi_image:
-  mgrcompat.module_run:
+  module.run:
     - name: kiwi_info.inspect_image
     - dest: {{ dest_dir }}
     - build_id: {{ build_id }}

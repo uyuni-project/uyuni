@@ -32,7 +32,7 @@ mgr_buildimage_prepare_source:
   file.directory:
     - name: {{ root_dir }}
     - clean: True
-  mgrcompat.module_run:
+  module.run:
     - name: kiwi_source.prepare_source
     - source: {{ source }}
     - root: {{ root_dir }}
@@ -168,7 +168,7 @@ mgr_buildimage_kiwi_bundle:
 
 {%- if pillar.get('use_salt_transport') %}
 mgr_buildimage_kiwi_collect_image:
-  mgrcompat.module_run:
+  module.run:
     - name: cp.push_dir
     {%- if use_bundle_build %}
     - path: {{ bundle_dir }}
@@ -182,7 +182,7 @@ mgr_buildimage_kiwi_collect_image:
 {%- endif %} {# use_salt_transport #}
 
 mgr_buildimage_info:
-  mgrcompat.module_run:
+  module.run:
     - name: kiwi_info.build_info
     - dest: {{ dest_dir }}
     - build_id: {{ build_id }}
@@ -201,7 +201,7 @@ mgr_buildimage_info:
 {%- endif %} {# use_salt_transport #}
 
 mgr_buildimage_kiwi_collect_logs:
-  mgrcompat.module_run:
+  module.run:
     - name: cp.push
     - path: {{ root_dir }}/build.log
     - upload_path: /image-{{ build_id }}.log

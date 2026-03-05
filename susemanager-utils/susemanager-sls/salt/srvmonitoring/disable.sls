@@ -19,13 +19,13 @@ remove_tomcat_previous:
 jmx_tomcat_config:
   file.absent:
     - name: /etc/sysconfig/tomcat/systemd/jmx.conf
-  mgrcompat.module_run:
+  module.run:
     - name: service.systemctl_reload
 
 jmx_taskomatic_config:
   file.absent:
     - name: /etc/sysconfig/taskomatic/systemd/jmx.conf
-  mgrcompat.module_run:
+  module.run:
     - name: service.systemctl_reload
 
 mgr_enable_prometheus_self_monitoring:
