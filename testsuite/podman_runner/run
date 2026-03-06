@@ -6,6 +6,7 @@ export NO_AUTH_REGISTRY=noauthregistry.lab
 export AUTH_REGISTRY_CREDENTIALS="cucutest|cucutest"
 export AUTH_REGISTRY=authregistry.lab
 export PUBLISH_CUCUMBER_REPORT=false
+export TEST_IMAGE=ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-server-all-in-one-dev
 
 set -x
 set -e
@@ -39,7 +40,8 @@ fi
 ./06_collect_and_tag_flaky_tests_in_controller.sh
 ./07_server_setup.sh
 ./08_start_server.sh
-./09_build_server_code.sh
+# 09 step is now only for manual local hot reload after the initial deployment
+# ./09_build_server_code.sh
 ./10_run_sshminion.sh
 ./11_setup_sshd.sh
 ./12_run_salt_sle_minion.sh

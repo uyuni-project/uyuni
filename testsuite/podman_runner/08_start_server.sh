@@ -1,6 +1,10 @@
 #!/bin/bash
 set -xe
 
+set -u
+: "${TEST_IMAGE?TEST_IMAGE not set}"
+set +u
+
 if [[ "$(uname)" == "Darwin" ]]; then
   PODMAN_CMD="podman"
 else
@@ -32,8 +36,6 @@ wait_for_server_ready() {
 }
 
 src_dir=$(cd $(dirname "$0")/../.. && pwd -P)
-
-setup_pm_path=`$PODMAN_CMD run -ti ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-server-all-in-one-dev:$UYUNI_VERSION sh -c 'rpm -ql spacewalk-setup | grep Setup.pm' | tr -d '\r'`
 
 $PODMAN_CMD run --cap-add AUDIT_CONTROL \
     --tmpfs /run \
@@ -100,7 +102,7 @@ $PODMAN_CMD run --cap-add AUDIT_CONTROL \
     -p 4506:4506 \
     -d --name=server \
     --network network \
-    ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-server-all-in-one-dev:$UYUNI_VERSION
+    uyuni-server-built:$UYUNI_VERSION
 wait_for_server_ready || exit 1
 $PODMAN_CMD exec -d server prometheus
 
