@@ -359,9 +359,9 @@
         </context-group>
         <target state="translated">所有</target>
       </trans-unit>
-      <trans-unit id="url" xml:space="preserve">
+      <trans-unit id="url" xml:space="preserve" approved="yes">
         <source>url</source>
-        <target state="translated">URL</target>
+        <target state="final">URL</target>
       </trans-unit>
       <trans-unit id="alphabet" xml:space="preserve">
         <source>A B C D E F G H I J K L M N O P Q R S T U V W X Y Z</source>
@@ -1774,16 +1774,16 @@
         </context-group>
         <target state="translated">XCCDF 文档的路径</target>
       </trans-unit>
-      <trans-unit id="first" xml:space="preserve">
+      <trans-unit id="first" xml:space="preserve" approved="yes">
         <source>First Scan Id</source>
-        <target state="translated">第一个扫描 ID</target>
+        <target state="final">第一个扫描 ID</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/audit/scap/Diff.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="second" xml:space="preserve">
+      <trans-unit id="second" xml:space="preserve" approved="yes">
         <source>Second Scan Id</source>
-        <target state="translated">第二个扫描 ID</target>
+        <target state="final">第二个扫描 ID</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/audit/scap/Diff.do</context>
         </context-group>
@@ -2489,12 +2489,12 @@ and try again.
         </context-group>
         <target state="final">删除代码段</target>
       </trans-unit>
-      <trans-unit id="kickstart.iprange.url" xml:space="preserve">
+      <trans-unit id="kickstart.iprange.url" xml:space="preserve" approved="yes">
         <source>New systems can be autoinstalled based upon their ip address by appending &lt;code&gt;{0}&lt;/code&gt; to the kernel parameters for an autoinstallation.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
-        <target state="translated">可以根据新系统的 IP 地址来进行自动安装。要自动安装，需要在内核参数后面加上 &lt;code&gt;{0}&lt;/code&gt;。</target>
+        <target state="final">可以根据新系统的 IP 地址来进行自动安装。要自动安装，需要在内核参数后面加上 &lt;code&gt;{0}&lt;/code&gt;。</target>
       </trans-unit>
       <trans-unit id="kickstart.partition.success" xml:space="preserve">
         <source>Kickstart profile options updated successfully.</source>
@@ -6255,12 +6255,12 @@ Follow this url to see the full list of inactive systems:
 请使用此 URL 查看完整的非活动系统列表：
 {1}</target>
       </trans-unit>
-      <trans-unit id="taskomatic.daily.sid" xml:space="preserve">
+      <trans-unit id="taskomatic.daily.sid" xml:space="preserve" approved="yes">
         <source>System Id</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Daily Summary Email</context>
         </context-group>
-        <target state="translated">系统 ID</target>
+        <target state="final">系统 ID</target>
       </trans-unit>
       <trans-unit id="taskomatic.daily.systemname" xml:space="preserve">
         <source>System Name</source>
@@ -7065,19 +7065,19 @@ Follow this url to see the full list of inactive systems:
         <target state="translated">配置通道说明</target>
       </trans-unit>
       <!-- config-file form-bean I18N -->
-      <trans-unit id="cffUid" xml:space="preserve">
+      <trans-unit id="cffUid" xml:space="preserve" approved="yes">
         <source>User name or id</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
-        <target state="translated">用户名或 ID</target>
+        <target state="final">用户名或 ID</target>
       </trans-unit>
-      <trans-unit id="cffGid" xml:space="preserve">
+      <trans-unit id="cffGid" xml:space="preserve" approved="yes">
         <source>Group name or id</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
-        <target state="translated">组名称或 ID</target>
+        <target state="final">组名称或 ID</target>
       </trans-unit>
       <trans-unit id="cffPermissions" xml:space="preserve">
         <source>File permissions setting</source>
@@ -8621,9 +8621,9 @@ Follow this url to see the full list of inactive systems:
         <source>The server is not configured to support PAM authentication. Refer to the reference guide for instructions on how to set up PAM.</source>
         <target state="translated">此服务器未配置为支持 PAM 身份验证。请参见参考指南获得有关如何设置 PAM 的说明。</target>
       </trans-unit>
-      <trans-unit id="api.org.migrationtosameorg" xml:space="preserve">
+      <trans-unit id="api.org.migrationtosameorg" xml:space="preserve" approved="yes">
         <source>User cannot migrate a system where the origination and destination organizations are the same.  Org Id: {0}, System Id: {1}.</source>
-        <target state="translated">用户无法迁移原始组织和目标组织相同的系统。组织 ID：{0}，系统 ID：{1}。</target>
+        <target state="final">用户无法迁移原始组织和目标组织相同的系统。组织 ID：{0}，系统 ID：{1}。</target>
       </trans-unit>
       <trans-unit id="api.org.nosuchorg" xml:space="preserve">
         <source>No such organization: {0}</source>
@@ -8733,9 +8733,9 @@ Follow this url to see the full list of inactive systems:
         <source>Multiple base channels selected for subscription.  The channels {0} and {1} were both selected for subscription, but a system can only be subscribed to a single base channel.</source>
         <target state="translated">选择订阅了多个基础通道。通道 {0} 和 {1} 均已选择订阅，但一个系统只能订阅一个基础通道。</target>
       </trans-unit>
-      <trans-unit id="api.channel.invalidchannellist" xml:space="preserve">
+      <trans-unit id="api.channel.invalidchannellist" xml:space="preserve" approved="yes">
         <source>The channel list provided is invalid.  It must contain a list of channel labels or ids, but not a mixture of both.</source>
-        <target state="translated">提供的通道列表无效。必须包含通道标签或 ID 列表，但不能是二者的混合。</target>
+        <target state="final">提供的通道列表无效。必须包含通道标签或 ID 列表，但不能是二者的混合。</target>
       </trans-unit>
       <trans-unit id="channel.invalidchannelarch" xml:space="preserve">
         <source>The channel arch specified ({0}) is invalid.</source>
@@ -9013,23 +9013,23 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/Search</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="systemIdForCsv" xml:space="preserve">
+      <trans-unit id="systemIdForCsv" xml:space="preserve" approved="yes">
         <source>System Id</source>
-        <target>系统 ID</target>
+        <target state="final">系统 ID</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualList</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="hostSystemIdForCsv" xml:space="preserve">
+      <trans-unit id="hostSystemIdForCsv" xml:space="preserve" approved="yes">
         <source>Host System Id</source>
-        <target>主机系统 ID</target>
+        <target state="final">主机系统 ID</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/VirtualList</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="xid" xml:space="preserve">
+      <trans-unit id="xid" xml:space="preserve" approved="yes">
         <source>Xid</source>
-        <target state="translated">XID</target>
+        <target state="final">XID</target>
       </trans-unit>
       <trans-unit id="testResult" xml:space="preserve">
         <source>Idref of TestResult</source>
@@ -9309,17 +9309,17 @@ Follow this url to see the full list of inactive systems:
             未包含在此系统所订阅的软件通道中。如果您选择继续去除，
             您将无法将此系统回滚到此快照或以前的任何一个快照。</target>
       </trans-unit>
-      <trans-unit id="list.filter.iprange" xml:space="preserve">
+      <trans-unit id="list.filter.iprange" xml:space="preserve" approved="yes">
         <source>Single Ip Address</source>
-        <target state="translated">单个 IP 地址</target>
+        <target state="final">单个 IP 地址</target>
       </trans-unit>
-      <trans-unit id="api.kickstart.iprange.duplicate" xml:space="preserve">
+      <trans-unit id="api.kickstart.iprange.duplicate" xml:space="preserve" approved="yes">
         <source>The Ip Range specified, {0}, conflicts with an existing Ip Range.</source>
-        <target state="translated">指定的 IP 范围 {0} 与现有 IP 范围冲突。</target>
+        <target state="final">指定的 IP 范围 {0} 与现有 IP 范围冲突。</target>
       </trans-unit>
-      <trans-unit id="api.kickstart.ip.invalid" xml:space="preserve">
+      <trans-unit id="api.kickstart.ip.invalid" xml:space="preserve" approved="yes">
         <source>The Ip Address specified, {0}, is not valid..</source>
-        <target state="translated">指定的 IP 地址 {0} 无效。</target>
+        <target state="final">指定的 IP 地址 {0} 无效。</target>
       </trans-unit>
       <trans-unit id="api.kickstart.filelist.exists" xml:space="preserve">
         <source>A file list with label {0} already exists.</source>
@@ -9666,17 +9666,17 @@ Follow this url to see the full list of inactive systems:
         <source>The repository label '{0}' is already in use, please choose a different label</source>
         <target state="translated">储存库标签 "{0}" 已被使用，请选择其他标签</target>
       </trans-unit>
-      <trans-unit id="edit.channel.repo.invalidrepotype" xml:space="preserve">
+      <trans-unit id="edit.channel.repo.invalidrepotype" xml:space="preserve" approved="yes">
         <source>The repository type '{0}' is invalid or already in use with given url, please choose a different type</source>
-        <target>储存库类型 "{0}" 无效或已在给定的 URL 中使用，请选择其他类型</target>
+        <target state="final">储存库类型 "{0}" 无效或已在给定的 URL 中使用，请选择其他类型</target>
       </trans-unit>
-      <trans-unit id="edit.channel.repo.repourlinuse" xml:space="preserve">
+      <trans-unit id="edit.channel.repo.repourlinuse" xml:space="preserve" approved="yes">
         <source>There's already a defined repository with given url, please reuse it.</source>
-        <target state="translated">已有定义的储存库使用给定 URL，请重复使用该储存库。</target>
+        <target state="final">已有定义的储存库使用给定 URL，请重复使用该储存库。</target>
       </trans-unit>
-      <trans-unit id="edit.channel.repo.repourlinvalid" xml:space="preserve">
+      <trans-unit id="edit.channel.repo.repourlinvalid" xml:space="preserve" approved="yes">
         <source>The given url is invalid. Please enter an url with valid syntax (e.g. specify the protocol).</source>
-        <target>给定的 URL 无效。请使用有效语法输入 URL（例如，指定协议）。</target>
+        <target state="final">给定的 URL 无效。请使用有效语法输入 URL（例如，指定协议）。</target>
       </trans-unit>
       <trans-unit id="edit.channel.repo.clientcertmissing" xml:space="preserve">
         <source>Please set SSL Client Certificate, if you've set SSL Client Key.</source>
@@ -10470,9 +10470,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Channel &lt;a href="/rhn/channels/ChannelDetail.do?cid={0}"&gt;{1}&lt;/a&gt; sync completed</source>
         <target>已完成通道 &lt;a href="/rhn/channels/ChannelDetail.do?cid={0}"&gt;{1}&lt;/a&gt; 的同步</target>
       </trans-unit>
-      <trans-unit id="notification.onboardingfailed" xml:space="preserve">
+      <trans-unit id="notification.onboardingfailed" xml:space="preserve" approved="yes">
         <source>Error registering minion id: {0}</source>
-        <target>注册受控端 ID 时出错：{0}</target>
+        <target state="final">注册受控端 ID 时出错：{0}</target>
       </trans-unit>
       <trans-unit id="notification.bootstraprepofailed" xml:space="preserve">
         <source>Error generating bootstrap repo for: {0}</source>
@@ -10625,13 +10625,13 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <source>Calendar '{0}' does not exist</source>
         <target state="translated">日历 "{0}" 不存在</target>
       </trans-unit>
-      <trans-unit id="maintenance.schedule.id.not.exists" xml:space="preserve">
+      <trans-unit id="maintenance.schedule.id.not.exists" xml:space="preserve" approved="yes">
         <source>Schedule with id '{0}' does not exist</source>
-        <target state="translated">ID 为 "{0}" 的日程安排不存在</target>
+        <target state="final">ID 为 "{0}" 的日程安排不存在</target>
       </trans-unit>
-      <trans-unit id="maintenance.calendar.id.not.exists" xml:space="preserve">
+      <trans-unit id="maintenance.calendar.id.not.exists" xml:space="preserve" approved="yes">
         <source>Calendar with id '{0}' does not exist</source>
-        <target state="translated">ID 为 "{0}" 的日历不存在</target>
+        <target state="final">ID 为 "{0}" 的日历不存在</target>
       </trans-unit>
       <trans-unit id="maintenance.action.reschedule.error.cancel" xml:space="preserve">
         <source>An error occured trying to cancel affected actions for schedule '{0}'</source>
@@ -10656,9 +10656,9 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         </context-group>
         <target state="final">Redfish</target>
       </trans-unit>
-      <trans-unit id="task.status.ssh-minion-action-executor" xml:space="preserve">
+      <trans-unit id="task.status.ssh-minion-action-executor" xml:space="preserve" approved="yes">
         <source>Execute actions on ssh minions</source>
-        <target state="translated">在 SSH 受控端上执行操作</target>
+        <target state="final">在 SSH 受控端上执行操作</target>
       </trans-unit>
       <trans-unit id="task.status.minion-action-chain-executor" xml:space="preserve">
         <source>Execute action chains on minions</source>
@@ -12118,10 +12118,10 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         </context-group>
         <target state="final">访问控制</target>
       </trans-unit>
-    <trans-unit id="pxeeventfailed" xml:space="preserve">
+      <trans-unit id="pxeeventfailed" xml:space="preserve">
         <source>PXE Event Failed</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
