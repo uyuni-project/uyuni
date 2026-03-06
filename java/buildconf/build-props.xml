@@ -111,11 +111,11 @@
 
   <property name="build.jar.dependencies"
             value="ant ant-junit ${ant-contrib.path} antlr4/antlr4-runtime ${test.build.jar.dependencies}
-              ${common.jar.dependencies} ${tomcat-jars} ${jasper-jars} xalan-j2" />
+              ${common.jar.dependencies} ${tomcat-jars} ${jasper-jars}" />
 
   <property name="run.jar.dependencies"
             value="antlr4/antlr4-runtime ${c3p0} commons-discovery ${jaf} ${jta} sitemesh
-              xalan-j2 xalan-j2-serializer xerces-j2 ${common.jar.dependencies}" />
+              ${common.jar.dependencies}" />
 
   <!-- =================== RPM build, use jpackage syntax ======================= -->
 
@@ -127,11 +127,10 @@
 
   <property name="install.build.jar.dependencies"
             value="ant ant/ant-junit ${ant-contrib.path} antlr4/antlr4-runtime ${jasper-jars} ${test.build.jar.dependencies}
-              ${install.common.jar.dependencies} xalan-j2" />
+              ${install.common.jar.dependencies}" />
 
   <property name="install.run.jar.dependencies"
-            value="antlr4/antlr4-runtime ${c3p0} commons-discovery ${jaf} ${jta} sitemesh
-              xalan-j2 xalan-j2-serializer xerces-j2 ${install.common.jar.dependencies}" />
+            value="antlr4/antlr4-runtime ${c3p0} commons-discovery ${jaf} ${jta} sitemesh ${install.common.jar.dependencies}" />
 
   <property name="install.common.jar.dependencies"
             value="commons-beanutils commons-cli commons-codec commons-collections commons-digester commons-discovery
@@ -148,7 +147,7 @@
               ${commons-validator} ${hibernatedeps} ${jta} ${jaf} ${jasper-jars} ${javamail} ${jaxb} ${jstl} jdom
               ${tomcat-jars} ${log4j-jars} redstone-xmlrpc-client redstone-xmlrpc oro quartz sitemesh ${struts-jars}
               ${postgresql-jdbc} snakeyaml simpleframework/simplexml ${suse-common-jars} ${suse-runtime-jars}
-              xalan-j2 xalan-j2-serializer xerces-j2 simple-core ${jcache} ${other-jars}" />
+              simple-core ${jcache} ${other-jars}" />
 
   <property name="taskomatic.jar.dependencies" value="${dist.jar.dependencies} jsch" />
 

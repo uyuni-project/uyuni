@@ -83,7 +83,7 @@ public class ScapManager extends BaseManager {
 
     private static final String SCAP_QUERIES = "scap_queries";
 
-    private static Logger log = LogManager.getLogger(ScapManager.class);
+    private static final Logger LOGGER = LogManager.getLogger(ScapManager.class);
 
     private static final List<String> SEARCH_TERM_PRECEDENCE = Arrays.asList(
             "slabel", "start", "end", "result");
@@ -465,13 +465,6 @@ public class ScapManager extends BaseManager {
         try (OutputStream resumeOut = new FileOutputStream(output)) {
             StreamResult out = new StreamResult(resumeOut);
 
-            // Prevent XXE Attack: Ensure using the correct factory class to create TrasformerFactory instance
-            // This will instruct Java to use to version which supports using ACCESS_EXTERNAL_DTD argument,
-            // using com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl
-            // instead of org.apache.xalan.processor.TransformerFactoryImpl
-            System.setProperty("javax.xml.transform.TransformerFactory",
-                    "com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl");
-
             TransformerFactory factory = TransformerFactory.newInstance();
 
             //disable access to external entities in xml parsing
@@ -517,7 +510,7 @@ public class ScapManager extends BaseManager {
                             ""));
             TestResult testResults = resume.getTestResult();
             if (testResults == null) {
-                log.error("Scap report misses profile or testresult element");
+                LOGGER.error("Scap report misses profile or testresult element");
                 throw new RhnRuntimeException(
                         "Scap report misses profile or testresult element");
             }
@@ -562,7 +555,7 @@ public class ScapManager extends BaseManager {
             return new ScapFactory().save(result);
         }
         catch (Exception e) {
-            log.error("Scap xccdf eval failed", e);
+            LOGGER.error("Scap xccdf eval failed", e);
             throw new RhnRuntimeException("Scap xccdf eval failed", e);
         }
     }

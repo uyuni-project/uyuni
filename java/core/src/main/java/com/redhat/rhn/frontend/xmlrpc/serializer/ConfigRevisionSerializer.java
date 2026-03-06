@@ -24,7 +24,6 @@ import com.suse.manager.api.SerializationBuilder;
 import com.suse.manager.api.SerializedApiResponse;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang3.BooleanUtils;
 
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
@@ -130,7 +129,7 @@ public class ConfigRevisionSerializer extends ApiResponseSerializer<ConfigRevisi
     protected void addFileContent(ConfigRevision rev, SerializationBuilder builder) {
         if (!rev.getConfigContent().isBinary()) {
             String content = rev.getConfigContent().getContentsString();
-            if (BooleanUtils.isFalse(StringUtil.containsInvalidXmlChars2(content))) {
+            if (!StringUtil.containsInvalidXmlChars(content)) {
                 builder.add(CONTENTS, content);
                 builder.add(CONTENTS_ENC64, Boolean.FALSE);
             }
