@@ -17,6 +17,12 @@ on:
         description: "List of recommended tests. Optional."
         required: false
         type: string
+    secrets:
+      GH_TOKEN_GALAXY_CI:
+        required: false
+
+permissions:
+  contents: read
 
 env:
   UYUNI_PROJECT: uyuni-project
@@ -159,7 +165,9 @@ jobs:
 
       - name: Parse recommended tests coming from the input as XML
         if: ${{ !inputs.skip_tests && inputs.recommended_tests != '' && needs.filters.outputs.require_acceptance_tests == 'true' }}
-        run: python .github/scripts/get_tests.py '${{ inputs.recommended_tests }}' > testsuite/run_sets/filter.yml
+        env:
+          RECOMMENDED_TESTS: ${{ inputs.recommended_tests }}
+        run: python .github/scripts/get_tests.py "${RECOMMENDED_TESTS}" > testsuite/run_sets/filter.yml
 
       - name: Generate recommended tests as YAML
         if: ${{ !inputs.skip_tests && inputs.recommended_tests != '' && needs.filters.outputs.require_acceptance_tests == 'true' }}
@@ -171,7 +179,7 @@ jobs:
 
       - name: Collect and tag flaky tests in controller
         # For security reasons, it only runs on uyuni-project/uyuni repository, as it collects data from a private GH board
-        if: ${{ !inputs.skip_tests && github.repository == 'uyuni-project/uyuni'  && needs.filters.outputs.require_acceptance_tests == 'true' }}
+        if: ${{ !inputs.skip_tests && github.repository == 'uyuni-project/uyuni' && github.event.pull_request.head.repo.full_name == github.repository && needs.filters.outputs.require_acceptance_tests == 'true' }}
         run: ./testsuite/podman_runner/06_collect_and_tag_flaky_tests_in_controller.sh
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN_GALAXY_CI }}

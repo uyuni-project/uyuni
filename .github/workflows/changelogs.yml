@@ -43,6 +43,10 @@ on:
       - 'uyuni/**'
       - 'web/**'
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   changelog_test:
     name: Changelog tests
@@ -71,8 +75,8 @@ jobs:
         echo "Please revert your changes on the following master changelog file(s):"
         while IFS= read -r file
         do
-          [ -z "$file" ] && continue
-          echo "  - $file"
+          [ -z "${file}" ] && continue
+          echo "  - ${file}"
         done <<< "$MASTER_CHANGED_FILES"
         echo
         echo "See https://github.com/uyuni-project/uyuni/wiki/Contributing for a guide to writing changelogs."

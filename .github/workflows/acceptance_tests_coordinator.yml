@@ -7,8 +7,12 @@ on:
       - reopened
       - synchronize
 
+permissions:
+  contents: read
+  pull-requests: read
+
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.head.ref }}
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
   cancel-in-progress: true
 
 env:
@@ -41,15 +45,19 @@ jobs:
 
       - id: tests_covering_pr
         name: Tests covering the Pull Request
+        env:
+          CHANGED_FILES: ${{ steps.changed_files.outputs.all }}
         run: |
-          recommended_tests=$(node .github/scripts/test_covering_pr.js ${{ steps.changed_files.outputs.all }})
+          recommended_tests=$(node .github/scripts/test_covering_pr.js ${CHANGED_FILES})
           echo "recommended_tests=$recommended_tests" >> $GITHUB_OUTPUT
           echo "Recommended Tests: $recommended_tests"
 
       - name: Determine if we should run the full test suite
         id: determine_running_full_testsuite
+        env:
+          RECOMMENDED_TESTS: ${{ steps.tests_covering_pr.outputs.recommended_tests }}
         run: |
-          recommended_count=$(echo "${{ steps.tests_covering_pr.outputs.recommended_tests }}" | awk -F, '{print NF}' RS=)
+          recommended_count=$(echo "${RECOMMENDED_TESTS}" | awk -F, '{print NF}' RS=)
           if [[ "$recommended_count" -gt 30 || "$recommended_count" -eq 0 ]]; then
             echo "run_full_testsuite=true" >> $GITHUB_OUTPUT
           else
@@ -69,7 +77,8 @@ jobs:
       server_id: "recommended"
       recommended_tests: ${{ needs.determine_tests.outputs.recommended_tests }}
       skip_tests: ${{ needs.determine_tests.outputs.run_full_testsuite == 'true' }}
-    secrets: inherit
+    secrets:
+      GH_TOKEN_GALAXY_CI: ${{ secrets.GH_TOKEN_GALAXY_CI }}
 
   acceptance-tests:
     needs: determine_tests
@@ -79,7 +88,8 @@ jobs:
       tests: "18_run_secondary_tests.sh"
       server_id: "acceptance"
       skip_tests: ${{ needs.determine_tests.outputs.run_full_testsuite == 'false' }}
-    secrets: inherit
+    secrets:
+      GH_TOKEN_GALAXY_CI: ${{ secrets.GH_TOKEN_GALAXY_CI }}
 
   additional-tests:
     needs: determine_tests
@@ -93,4 +103,5 @@ jobs:
       tests: "22_run_secondary_parallelizable_tests_subset.sh ${{ matrix.set }}"
       server_id: "additional_${{ matrix.set }}"
       skip_tests: ${{ needs.determine_tests.outputs.run_full_testsuite == 'false' }}
-    secrets: inherit
+    secrets:
+      GH_TOKEN_GALAXY_CI: ${{ secrets.GH_TOKEN_GALAXY_CI }}

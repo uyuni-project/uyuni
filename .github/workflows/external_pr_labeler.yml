@@ -23,10 +23,11 @@ jobs:
         name: Check if author is an org member
         env:
           GH_TOKEN: ${{ steps.generate-token.outputs.token }}
+          PR_ACTOR: ${{ github.actor }}
         run: |
           # The following API call returns 404 if user is not a member of the uyuni-project org
           # See: https://docs.github.com/rest/orgs/members#check-organization-membership-for-a-user--status-codes
-          RESULT=`gh api orgs/uyuni-project/members/${{ github.actor }} -i | head -1 | awk '{ print $2 }'`
+          RESULT=$(gh api "orgs/uyuni-project/members/${PR_ACTOR}" -i | head -1 | awk '{ print $2 }')
           echo "result=$RESULT" >> "$GITHUB_OUTPUT"
 
           # Fail the job if the API call didn't return 204 (member) or 404 (not member)
