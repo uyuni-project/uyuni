@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-03-01 10:55+0100\n"
-"PO-Revision-Date: 2026-01-19 10:04+0000\n"
+"PO-Revision-Date: 2026-03-06 06:04+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/zh_CN/>\n"
 "Language: zh_CN\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.15.2\n"
+"X-Generator: Weblate 5.16.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:409
 msgid "remaining"
@@ -4309,26 +4309,20 @@ msgid "The page you requested, {currentUrl}, was not found."
 msgstr "未找到您请求的页面 {currentUrl}。"
 
 #: ../html/src/manager/errors/not-found.tsx:10
-#, fuzzy
-#| msgid "If you typed this address into your browser, double-check the spelling and capitalization. The address you are copying may also be outdated."
 msgid "If you typed this address into your browser, double-check the spelling and capitalization."
-msgstr "如果您是手动在浏览器中输入此地址，请仔细检查拼写和大小写。您复制的地址也可能已过期。"
+msgstr "如果您是手动在浏览器中输入的地址，请核对拼写和大小写。"
 
 #: ../html/src/manager/errors/not-found.tsx:16
-#, fuzzy
-#| msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your browser to try a different link, or use the top (or left) navigation bars to find the page you are looking for."
 msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
-msgstr "如果您是通过链接跳转至此页面，该链接可能有误或已过期。请单击浏览器的 \"后退\" 按钮尝试其他链接，或通过顶部（或左侧）导航栏查找目标页面。"
+msgstr "如果您是通过链接跳转至此，则表明链接可能不正确或已过期。请单击浏览器的后退按钮 "
 
 #: ../html/src/manager/errors/not-found.tsx:23
 msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was "
 msgstr "如果您使用的是书签，该页面可能自创建书签以来已移到其他位置 "
 
 #: ../html/src/manager/errors/not-found.tsx:30
-#, fuzzy
-#| msgid "If you feel you've reached this page in error, please contact us with details of how you received this message."
 msgid "If you feel you've reached this page in error, please contact us with details of how you received "
-msgstr "如果您认为误进入此页面，请联系我们并告知您收到此消息的相关详细信息。"
+msgstr "如果您认为误进入此页面，请联系我们并详细说明访问路径 "
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.tsx:27
 msgid "Applying the config channels has been scheduled for each minion server in this group"
