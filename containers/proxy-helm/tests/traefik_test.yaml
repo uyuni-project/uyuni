@@ -1,7 +1,7 @@
 suite: test global values parsing
 templates:
   - templates/ingress.yaml
-  - templates/k3s-ingress-routes.yaml
+  - templates/traefik-routes.yaml
 tests:
   - it: should create traefik resources
     set:
@@ -46,7 +46,7 @@ tests:
 
       - hasDocuments:
           count: 3
-        template: k3s-ingress-routes.yaml
+        template: traefik-routes.yaml
 
       # SSH router checks
       - contains:
@@ -54,7 +54,7 @@ tests:
           content:
             name: ssh
             port: 8022
-        template: k3s-ingress-routes.yaml
+        template: traefik-routes.yaml
         documentSelector:
           path: metadata.name
           value: ssh-router
@@ -64,7 +64,7 @@ tests:
           apiVersion: traefik.io/v1alpha1
           namespace: proxy1
           name: ssh-router
-        template: k3s-ingress-routes.yaml
+        template: traefik-routes.yaml
         documentSelector:
           path: metadata.name
           value: ssh-router
@@ -76,7 +76,7 @@ tests:
             name: salt
             port: 4505
           any: true
-        template: k3s-ingress-routes.yaml
+        template: traefik-routes.yaml
         documentSelector:
           path: metadata.name
           value: salt-publish-router
@@ -86,7 +86,7 @@ tests:
           apiVersion: traefik.io/v1alpha1
           namespace: proxy1
           name: salt-publish-router
-        template: k3s-ingress-routes.yaml
+        template: traefik-routes.yaml
         documentSelector:
           path: metadata.name
           value: salt-publish-router
@@ -98,7 +98,7 @@ tests:
             name: salt
             port: 4506
           any: true
-        template: k3s-ingress-routes.yaml
+        template: traefik-routes.yaml
         documentSelector:
           path: metadata.name
           value: salt-request-router
@@ -108,7 +108,7 @@ tests:
           apiVersion: traefik.io/v1alpha1
           namespace: proxy1
           name: salt-request-router
-        template: k3s-ingress-routes.yaml
+        template: traefik-routes.yaml
         documentSelector:
           path: metadata.name
           value: salt-request-router

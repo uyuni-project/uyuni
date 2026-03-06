@@ -74,10 +74,7 @@ Here is a list of the ports to map:
 | TCP      | 4506  | salt         | 4506         |                                                  |
 | TCP      | 25151 | cobbler      | 25151        |                                                  |
 | TCP      | 9100  | tomcat       | 9100         |                                                  |
-| TCP      | 5556  | taskomatic   | 5556         | Not if installed with `enableMonitoring = false` |
-| TCP      | 5557  | tomcat       | 5557         | Not if installed with `enableMonitoring = false` |
 | TCP      | 9187  | db           | 9187         | Not if installed with `enableMonitoring = false` |
-| TCP      | 9800  | taskomatic   | 9800         | Not if installed with `enableMonitoring = false` |
 | TCP      | 8001  | taskomatic   | 8001         | Only if installed with `exposeJavaDebug = true`  |
 | TCP      | 8002  | search       | 8002         | Only if installed with `exposeJavaDebug = true`  |
 | TCP      | 8003  | tomcat       | 8003         | Only if installed with `exposeJavaDebug = true`  |
@@ -86,6 +83,18 @@ Here is a list of the ports to map:
 Exposing the `tftp` service has to be done differently due to the way TFTP protocol is working.
 Either use the host network using the `tftp.hostnetwork` value or configure a load balancer for the `tftp` service.
 Note that not all load balancers will work: `serviceLB` implementation is not compatible with TFTP protocol, while MetalLB works.
+
+### Ingress vs Gateway API
+
+The helm chart deploys ingress rules by default.
+Switching to [Gateway API](https://gateway-api.sigs.k8s.io/) instead is possible though requires more effort.
+The Gateway API implementation used in this helm chart is aligned with the one handled by the traefik shipped with the latest RKE2.
+
+Using the Gateway API routes is still experimental as some of the needed resources, namely `TCPRoute` are not stable yet.
+To enable it, set the `gateway.enable` value.
+The other values in the `gateway` structure may need to be set depending on the cluster setup.
+
+**Note that on RKE2 1.35 on top of enabling Traefik with Gateway API, the `TLSRoute` and `TCPRoute` CRDs need to be manually added and the Traefik helm chart has to be deployed with the `providers.kubernetesGateway.experimentalChannel`.**
 
 ## Usage
 

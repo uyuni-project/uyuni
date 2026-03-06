@@ -1,4 +1,4 @@
-{{- if eq ((.Values.ingress).type) "traefik" }}
+{{- if and (not .Values.gateway.enable) (eq ((.Values.ingress).type) "traefik") }}
 apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
@@ -12,12 +12,31 @@ spec:
     permanent: true
 ---
 apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: uyuni-strip-prefixes
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/part-of: uyuni
+spec:
+  stripPrefix:
+    prefixes:
+      - /postgresql-exporter
+      - /node-exporter
+      - /tasko-exporter
+      - /tasko-jmx
+      - /tomcat-jmx
+      - /saline
+---
+apiVersion: traefik.io/v1alpha1
 kind: IngressRouteTCP
 metadata:
   name: reportdb-pgsql-route
   namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/part-of: uyuni
+  annotations:
+    kubernetes.io/ingress.class: {{ .Values.ingress.class }}
 spec:
   entryPoints:
     - reportdb-pgsql
@@ -34,6 +53,8 @@ metadata:
   namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/part-of: uyuni
+  annotations:
+    kubernetes.io/ingress.class: {{ .Values.ingress.class }}
 spec:
   entryPoints:
     - salt-publish
@@ -50,6 +71,8 @@ metadata:
   namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/part-of: uyuni
+  annotations:
+    kubernetes.io/ingress.class: {{ .Values.ingress.class }}
 spec:
   entryPoints:
     - salt-request
@@ -66,6 +89,8 @@ metadata:
   namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/part-of: uyuni
+  annotations:
+    kubernetes.io/ingress.class: {{ .Values.ingress.class }}
 spec:
   entryPoints:
     - cobbler
@@ -78,19 +103,20 @@ spec:
 apiVersion: traefik.io/v1alpha1
 kind: IngressRouteTCP
 metadata:
-  annotations: {}
+  name: node-xport-route
+  namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/part-of: uyuni
-  name: web-http-route
-  namespace: "{{ .Release.Namespace }}"
+  annotations:
+    kubernetes.io/ingress.class: {{ .Values.ingress.class }}
 spec:
   entryPoints:
-    - web-http
+    - node-xport
   routes:
     - match: HostSNI(`*`)
       services:
-        - name: web
-          port: 80
+      - name: tomcat
+        port: 9100
 {{- if ne .Values.enableMonitoring false }}
 ---
 apiVersion: traefik.io/v1alpha1
@@ -100,6 +126,8 @@ metadata:
   namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/part-of: uyuni
+  annotations:
+    kubernetes.io/ingress.class: {{ .Values.ingress.class }}
 spec:
   entryPoints:
     - db-xport
@@ -116,6 +144,8 @@ metadata:
   namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/part-of: uyuni
+  annotations:
+    kubernetes.io/ingress.class: {{ .Values.ingress.class }}
 spec:
   entryPoints:
     - tasko-jmx
@@ -132,6 +162,8 @@ metadata:
   namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/part-of: uyuni
+  annotations:
+    kubernetes.io/ingress.class: {{ .Values.ingress.class }}
 spec:
   entryPoints:
     - tomcat-jmx
@@ -150,6 +182,8 @@ metadata:
   namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/part-of: uyuni
+  annotations:
+    kubernetes.io/ingress.class: {{ .Values.ingress.class }}
 spec:
   entryPoints:
     - tomcat-debug
@@ -166,6 +200,8 @@ metadata:
   namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/part-of: uyuni
+  annotations:
+    kubernetes.io/ingress.class: {{ .Values.ingress.class }}
 spec:
   entryPoints:
     - search-debug
@@ -182,6 +218,8 @@ metadata:
   namespace: "{{ .Release.Namespace }}"
   labels:
     app.kubernetes.io/part-of: uyuni
+  annotations:
+    kubernetes.io/ingress.class: {{ .Values.ingress.class }}
 spec:
   entryPoints:
     - tasko-debug

@@ -1,6 +1,6 @@
 suite: test ingress providers
 templates:
-  - k3s-ingress-routes.yaml
+  - traefik-routes.yaml
 tests:
   - it: should route database exporters port with traefik ingress and monitoring enabled
     set:

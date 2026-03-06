@@ -2,61 +2,13 @@ suite: test ingress providers
 templates:
   - ingress.yaml
 tests:
-  - it: should use traefik annotations on the SSL ingress
-    set:
-      global.fqdn: uyuni.example.com
-      ingress:
-        type: "traefik"
-    documentSelector:
-      path: metadata.name
-      value: uyuni-ingress-ssl
-    asserts:
-      - equal:
-          path: metadata.annotations["traefik.ingress.kubernetes.io/router.tls"]
-          value: "true"
-
-  - it: should verify TLS is disabled on the No-SSL ingress
-    set:
-      global.fqdn: uyuni.example.com
-      ingress:
-        type: "traefik"
-    documentSelector:
-      path: metadata.name
-      value: uyuni-ingress-nossl
-    asserts:
-      - equal:
-          path: metadata.annotations["traefik.ingress.kubernetes.io/router.tls"]
-          value: "false"
-
-  - it: should verify redirect middleware on the redirect ingress
-    set:
-      global.fqdn: uyuni.example.com
-      ingress:
-        type: "traefik"
-    documentSelector:
-      path: metadata.name
-      value: uyuni-ingress-ssl-redirect
-    asserts:
-      - equal:
-          path: metadata.annotations["traefik.ingress.kubernetes.io/router.middlewares"]
-          value: "default-uyuni-https-redirect@kubernetescrd"
-
-  - it: should switch to nginx annotations
-    set:
-      global.fqdn: uyuni.example.com
-      ingress:
-        type: "nginx"
-    asserts:
-      - equal:
-          path: metadata.annotations["nginx.ingress.kubernetes.io/ssl-redirect"]
-          value: "false"
-    documentSelector:
-      path: metadata.name
-      value: uyuni-ingress-nossl
-
   - it: should render custom annotations for all ingress types
     set:
       global.fqdn: uyuni.example.com
+      saline:
+        enable: true
+      hubAPI:
+        enable: true
       ingress:
         type: "traefik"
         annotations:
@@ -64,9 +16,13 @@ tests:
             cert-manager.io/cluster-issuer: "uyuni-issuer"
             external-dns.alpha.kubernetes.io/ttl: "60"
           sslRedirect:
-            traefik.ingress.kubernetes.io/router.priority: "100"
+            example.com/foo: "100"
           nossl:
             custom.annotation/test: "nossl-only"
+          saline:
+            custom.annotation/test: "saline-only"
+          hub:
+            custom.annotation/test: "hub-only"
     asserts:
       # Test SSL Ingress custom annotations
       - equal:
@@ -84,7 +40,7 @@ tests:
 
       # Test SSL Redirect Ingress custom annotations
       - equal:
-          path: metadata.annotations["traefik.ingress.kubernetes.io/router.priority"]
+          path: metadata.annotations["example.com/foo"]
           value: "100"
         documentSelector:
           path: metadata.name
@@ -98,9 +54,29 @@ tests:
           path: metadata.name
           value: uyuni-ingress-nossl
 
+      # Test Saline ingress custom annotations
+      - equal:
+          path: metadata.annotations["custom.annotation/test"]
+          value: "saline-only"
+        documentSelector:
+          path: metadata.name
+          value: saline-ingress-ssl
+
+      # Test Hub ingress custom annotations
+      - equal:
+          path: metadata.annotations["custom.annotation/test"]
+          value: "hub-only"
+        documentSelector:
+          path: metadata.name
+          value: hubapi-ingress-ssl
+
   - it: should render the ingress class name when provided
     set:
       global.fqdn: uyuni.example.com
+      saline:
+        enable: true
+      hubAPI:
+        enable: true
       ingress:
         class: "nginx-internal"
     asserts:
@@ -115,4 +91,316 @@ tests:
           value: "nginx-internal"
         documentSelector:
           path: metadata.name
+          value: saline-ingress-ssl
+      - equal:
+          path: spec.ingressClassName
+          value: "nginx-internal"
+        documentSelector:
+          path: metadata.name
+          value: hubapi-ingress-ssl
+      - equal:
+          path: spec.ingressClassName
+          value: "nginx-internal"
+        documentSelector:
+          path: metadata.name
+          value: uyuni-ingress-ssl-redirect
+      - equal:
+          path: spec.ingressClassName
+          value: "nginx-internal"
+        documentSelector:
+          path: metadata.name
           value: uyuni-ingress-nossl
+
+  - it: should render traefik annotations
+    release:
+      namespace: myns
+    set:
+      global.fqdn: uyuni.example.com
+      saline:
+        enable: true
+      hubAPI:
+        enable: true
+      ingress:
+        type: "traefik"
+    asserts:
+      - isSubset:
+          path: metadata.annotations
+          content:
+            traefik.ingress.kubernetes.io/router.tls: "true"
+            traefik.ingress.kubernetes.io/router.tls.domains.n.main: "uyuni.example.com"
+            traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+            traefik.ingress.kubernetes.io/router.priority: "1"
+            traefik.ingress.kubernetes.io/router.middlewares: "myns-uyuni-strip-prefixes@kubernetescrd"
+        documentSelector:
+          path: metadata.name
+          value: "uyuni-ingress-ssl"
+
+      - isSubset:
+          path: metadata.annotations
+          content:
+            traefik.ingress.kubernetes.io/router.tls: "true"
+            traefik.ingress.kubernetes.io/router.tls.domains.n.main: "uyuni.example.com"
+            traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+            traefik.ingress.kubernetes.io/router.priority: "100"
+            traefik.ingress.kubernetes.io/router.middlewares: "myns-uyuni-strip-prefixes@kubernetescrd"
+        documentSelector:
+          path: metadata.name
+          value: "saline-ingress-ssl"
+
+      - isSubset:
+          path: metadata.annotations
+          content:
+            traefik.ingress.kubernetes.io/router.tls: "true"
+            traefik.ingress.kubernetes.io/router.tls.domains.n.main: "uyuni.example.com"
+            traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+            traefik.ingress.kubernetes.io/router.priority: "100"
+            traefik.ingress.kubernetes.io/router.middlewares: "myns-uyuni-strip-prefixes@kubernetescrd"
+        documentSelector:
+          path: metadata.name
+          value: "hubapi-ingress-ssl"
+      
+      - isSubset:
+          path: metadata.annotations
+          content:
+            traefik.ingress.kubernetes.io/router.entrypoints: "web"
+            traefik.ingress.kubernetes.io/router.priority: "1"
+            traefik.ingress.kubernetes.io/router.middlewares: "myns-uyuni-https-redirect@kubernetescrd"
+        documentSelector:
+          path: metadata.name
+          value: "uyuni-ingress-ssl-redirect"
+
+      - isSubset:
+          path: metadata.annotations
+          content:
+            traefik.ingress.kubernetes.io/router.tls: "false"
+            traefik.ingress.kubernetes.io/router.entrypoints: "web"
+            traefik.ingress.kubernetes.io/router.priority: "100"
+            traefik.ingress.kubernetes.io/router.middlewares: "myns-uyuni-strip-prefixes@kubernetescrd"
+        documentSelector:
+          path: metadata.name
+          value: "uyuni-ingress-nossl"
+
+  - it: should contain the monitoring paths by default
+    release:
+      namespace: myns
+    set:
+      global.fqdn: uyuni.example.com
+    asserts:
+      - isSubset:
+          path: spec.rules[?(@.host=="uyuni.example.com")].http.paths[?(@.path=="/postgresql-exporter")]
+          any: true
+          content:
+            pathType: Prefix
+            backend:
+              service:
+                name: tomcat
+                port:
+                  number: 9187
+        documentSelector:
+          path: metadata.name
+          value: "uyuni-ingress-nossl"
+
+      - isSubset:
+          path: spec.rules[?(@.host=="uyuni.example.com")].http.paths[?(@.path=="/node-exporter")]
+          any: true
+          content:
+            pathType: Prefix
+            backend:
+              service:
+                name: tomcat
+                port:
+                  number: 9100
+        documentSelector:
+          path: metadata.name
+          value: "uyuni-ingress-nossl"
+
+      - isSubset:
+          path: spec.rules[?(@.host=="uyuni.example.com")].http.paths[?(@.path=="/tasko-exporter")]
+          content:
+            pathType: Prefix
+            backend:
+              service:
+                name: taskomatic
+                port:
+                  number: 9800
+        documentSelector:
+          path: metadata.name
+          value: "uyuni-ingress-nossl"
+
+      - isSubset:
+          path: spec.rules[?(@.host=="uyuni.example.com")].http.paths[?(@.path=="/tasko-jmx")]
+          content:
+            pathType: Prefix
+            backend:
+              service:
+                name: taskomatic
+                port:
+                  number: 5556
+        documentSelector:
+          path: metadata.name
+          value: "uyuni-ingress-nossl"
+
+      - isSubset:
+          path: spec.rules[?(@.host=="uyuni.example.com")].http.paths[?(@.path=="/tomcat-jmx")]
+          content:
+            pathType: Prefix
+            backend:
+              service:
+                name: tomcat
+                port:
+                  number: 5557
+        documentSelector:
+          path: metadata.name
+          value: "uyuni-ingress-nossl"
+
+  - it: should not contain the monitoring paths when disabled
+    release:
+      namespace: myns
+    set:
+      global.fqdn: uyuni.example.com
+      enableMonitoring: false
+
+    asserts:
+      - notExists:
+          path: spec.rules[?(@.host=="uyuni.example.com")].http.paths[?(@.path=="/postgresql-exporter")]
+        documentSelector:
+          path: metadata.name
+          value: "uyuni-ingress-nossl"
+
+      - notExists:
+          path: spec.rules[?(@.host=="uyuni.example.com")].http.paths[?(@.path=="/node-exporter")]
+        documentSelector:
+          path: metadata.name
+          value: "uyuni-ingress-nossl"
+
+      - notExists:
+          path: spec.rules[?(@.host=="uyuni.example.com")].http.paths[?(@.path=="/tasko-exporter")]
+        documentSelector:
+          path: metadata.name
+          value: "uyuni-ingress-nossl"
+
+      - notExists:
+          path: spec.rules[?(@.host=="uyuni.example.com")].http.paths[?(@.path=="/tasko-jmx")]
+        documentSelector:
+          path: metadata.name
+          value: "uyuni-ingress-nossl"
+
+      - notExists:
+          path: spec.rules[?(@.host=="uyuni.example.com")].http.paths[?(@.path=="/tomcat-jmx")]
+        documentSelector:
+          path: metadata.name
+          value: "uyuni-ingress-nossl"
+
+  - it: should contain the saline paths when enabled
+    release:
+      namespace: myns
+    set:
+      global.fqdn: uyuni.example.com
+      saline:
+        enable: true
+    asserts:
+      - isSubset:
+          path: spec.rules[?(@.host=="uyuni.example.com")].http.paths[?(@.path=="/saline")]
+          any: true
+          content:
+            pathType: Prefix
+            backend:
+              service:
+                name: saline
+                port:
+                  number: 8216
+        documentSelector:
+          path: metadata.name
+          value: "uyuni-ingress-nossl"
+
+      - isSubset:
+          path: spec.rules[?(@.host=="uyuni.example.com")].http.paths[?(@.path=="/saline")]
+          any: true
+          content:
+            pathType: Prefix
+            backend:
+              service:
+                name: saline
+                port:
+                  number: 8216
+        documentSelector:
+          path: metadata.name
+          value: "saline-ingress-ssl"
+
+  - it: should not contain the saline paths by default
+    release:
+      namespace: myns
+    set:
+      global.fqdn: uyuni.example.com
+
+    asserts:
+      - notExists:
+          path: spec.rules[?(@.host=="uyuni.example.com")].http.paths[?(@.path=="/saline")]
+        documentSelector:
+          path: metadata.name
+          value: "uyuni-ingress-nossl"
+
+      - hasDocuments:
+          count: 0
+        template: ingress.yaml
+        documentSelector:
+          path: metadata.name
+          value: "saline-ingress-ssl"
+          skipEmptyTemplates: true
+
+  - it: should contain the hub paths when enabled
+    release:
+      namespace: myns
+    set:
+      global.fqdn: uyuni.example.com
+      hubAPI:
+        enable: true
+    asserts:
+      - isSubset:
+          path: spec.rules[?(@.host=="uyuni.example.com")].http.paths[?(@.path=="/hub/rpc/api")]
+          any: true
+          content:
+            pathType: Prefix
+            backend:
+              service:
+                name: hub-xmlrpc
+                port:
+                  number: 2830
+        documentSelector:
+          path: metadata.name
+          value: "uyuni-ingress-ssl-redirect"
+
+      - isSubset:
+          path: spec.rules[?(@.host=="uyuni.example.com")].http.paths[?(@.path=="/hub/rpc/api")]
+          any: true
+          content:
+            pathType: Prefix
+            backend:
+              service:
+                name: hub-xmlrpc
+                port:
+                  number: 2830
+        documentSelector:
+          path: metadata.name
+          value: "hubapi-ingress-ssl"
+
+  - it: should not contain the hub paths by default
+    release:
+      namespace: myns
+    set:
+      global.fqdn: uyuni.example.com
+
+    asserts:
+      - notExists:
+          path: spec.rules[?(@.host=="uyuni.example.com")].http.paths[?(@.path=="/hub/rpc/api")]
+        documentSelector:
+          path: metadata.name
+          value: "uyuni-ingress-ssl-redirect"
+
+      - hasDocuments:
+          count: 0
+        template: ingress.yaml
+        documentSelector:
+          path: metadata.name
+          value: "hubapi-ingress-ssl"
+          skipEmptyTemplates: true

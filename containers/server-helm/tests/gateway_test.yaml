@@ -1,0 +1,292 @@
+suite: test ingress providers
+templates:
+  - ingress.yaml
+  - traefik-routes.yaml
+  - gateway.yaml
+  - routes.yaml
+  - tcp-routes.yaml
+tests:
+
+  - it: should not enable gateway resources by default
+    set:
+      global.fqdn: uyuni.example.com
+    asserts:
+      - hasDocuments:
+          count: 0
+        template: gateway.yaml
+
+      - hasDocuments:
+          count: 0
+        template: routes.yaml
+
+      - hasDocuments:
+          count: 0
+        template: tcp-routes.yaml
+
+  - it: should switch to gateway resources when enabled
+    set:
+      global.fqdn: uyuni.example.com
+      gateway:
+        enable: true
+    asserts:
+      - hasDocuments:
+          count: 1
+        template: gateway.yaml
+
+      - hasDocuments:
+          count: 3
+        template: routes.yaml
+
+      - hasDocuments:
+          count: 3
+        template: tcp-routes.yaml
+
+      - hasDocuments:
+          count: 0
+        template: ingress.yaml
+        documentSelector:
+          path: kind
+          value: Ingress
+          skipEmptyTemplates: true
+
+      - hasDocuments:
+          count: 0
+        template: traefik-routes.yaml
+        documentSelector:
+          path: apiVersion
+          value: traefik.io/v1alpha1
+          skipEmptyTemplates: true
+
+  - it: should use the given Gateway if a name is set
+    set:
+      global.fqdn: uyuni.example.com
+      gateway:
+        enable: true
+        name: "test-gw"
+      exposeJavaDebug: true
+    asserts:
+      - hasDocuments:
+          count: 0
+        template: gateway.yaml
+
+      - hasDocuments:
+          count: 3
+        template: routes.yaml
+        documentSelector:
+          path: spec.parentRefs[?(@.name=="test-gw")].name
+          value: test-gw
+          matchMany: true
+
+      - hasDocuments:
+          count: 6
+        template: tcp-routes.yaml
+        documentSelector:
+          path: spec.parentRefs[?(@.name=="test-gw")].name
+          value: test-gw
+          matchMany: true
+
+  - it: should create all HTTPRoutes and TCPRoutes
+    set:
+      global.fqdn: uyuni.example.com
+      gateway:
+        enable: true
+      exposeJavaDebug: true
+    release:
+      namespace: myns
+    asserts:
+      - containsDocument:
+          kind: Gateway
+          apiVersion: gateway.networking.k8s.io/v1
+          name: uyuni-gateway
+          namespace: myns
+        template: gateway.yaml
+
+      - containsDocument:
+          kind: HTTPRoute
+          apiVersion: gateway.networking.k8s.io/v1
+          name: uyuni-ssl-redirect
+          namespace: myns
+          any: true
+        template: routes.yaml
+
+      - containsDocument:
+          kind: HTTPRoute
+          apiVersion: gateway.networking.k8s.io/v1
+          name: uyuni-https-routes
+          namespace: myns
+          any: true
+        template: routes.yaml
+
+      - containsDocument:
+          kind: HTTPRoute
+          apiVersion: gateway.networking.k8s.io/v1
+          name: uyuni-nossl-routes
+          namespace: myns
+          any: true
+        template: routes.yaml
+
+      - containsDocument:
+          kind: TCPRoute
+          apiVersion: gateway.networking.k8s.io/v1alpha2
+          name: salt-publish
+          namespace: myns
+          any: true
+        template: tcp-routes.yaml
+
+      - containsDocument:
+          kind: TCPRoute
+          apiVersion: gateway.networking.k8s.io/v1alpha2
+          name: salt-request
+          namespace: myns
+          any: true
+        template: tcp-routes.yaml
+
+      - containsDocument:
+          kind: TCPRoute
+          apiVersion: gateway.networking.k8s.io/v1alpha2
+          name: reportdb-pgsql
+          namespace: myns
+          any: true
+        template: tcp-routes.yaml
+
+      - containsDocument:
+          kind: TCPRoute
+          apiVersion: gateway.networking.k8s.io/v1alpha2
+          name: tasko-debug
+          namespace: myns
+          any: true
+        template: tcp-routes.yaml
+
+      - containsDocument:
+          kind: TCPRoute
+          apiVersion: gateway.networking.k8s.io/v1alpha2
+          name: search-debug
+          namespace: myns
+          any: true
+        template: tcp-routes.yaml
+
+      - containsDocument:
+          kind: TCPRoute
+          apiVersion: gateway.networking.k8s.io/v1alpha2
+          name: tomcat-debug
+          namespace: myns
+          any: true
+        template: tcp-routes.yaml
+
+  - it: should create the paths for the monitoring by default
+    set:
+      global.fqdn: uyuni.example.com
+      gateway:
+        enable: true
+    release:
+      namespace: myns
+    asserts:
+      - contains:
+          path: spec.rules
+          content:
+            matches:
+              - path:
+                  type: PathPrefix
+                  value: /postgresql-exporter
+            filters:
+              - type: URLRewrite
+                urlRewrite:
+                  path:
+                    type: ReplacePrefixMatch
+                    replacePrefixMatch: /
+            backendRefs:
+              - name: tomcat
+                port: 9187
+          any: true
+        template: routes.yaml
+        documentSelector:
+          path: metadata.name
+          value: uyuni-nossl-routes
+
+      - contains:
+          path: spec.rules
+          content:
+            matches:
+              - path:
+                  type: PathPrefix
+                  value: /node-exporter
+            filters:
+              - type: URLRewrite
+                urlRewrite:
+                  path:
+                    type: ReplacePrefixMatch
+                    replacePrefixMatch: /
+            backendRefs:
+              - name: tomcat
+                port: 9100
+          any: true
+        template: routes.yaml
+        documentSelector:
+          path: metadata.name
+          value: uyuni-nossl-routes
+
+      - contains:
+          path: spec.rules
+          content:
+            matches:
+              - path:
+                  type: PathPrefix
+                  value: /tasko-exporter
+            filters:
+              - type: URLRewrite
+                urlRewrite:
+                  path:
+                    type: ReplacePrefixMatch
+                    replacePrefixMatch: /
+            backendRefs:
+              - name: taskomatic
+                port: 9800
+          any: true
+        template: routes.yaml
+        documentSelector:
+          path: metadata.name
+          value: uyuni-nossl-routes
+
+      - contains:
+          path: spec.rules
+          content:
+            matches:
+              - path:
+                  type: PathPrefix
+                  value: /tomcat-jmx
+            filters:
+              - type: URLRewrite
+                urlRewrite:
+                  path:
+                    type: ReplacePrefixMatch
+                    replacePrefixMatch: /
+            backendRefs:
+              - name: tomcat
+                port: 5557
+          any: true
+        template: routes.yaml
+        documentSelector:
+          path: metadata.name
+          value: uyuni-nossl-routes
+
+      - contains:
+          path: spec.rules
+          content:
+            matches:
+              - path:
+                  type: PathPrefix
+                  value: /tasko-jmx
+            filters:
+              - type: URLRewrite
+                urlRewrite:
+                  path:
+                    type: ReplacePrefixMatch
+                    replacePrefixMatch: /
+            backendRefs:
+              - name: taskomatic
+                port: 5556
+          any: true
+        template: routes.yaml
+        documentSelector:
+          path: metadata.name
+          value: uyuni-nossl-routes

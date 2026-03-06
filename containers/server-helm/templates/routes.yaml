@@ -1,0 +1,170 @@
+{{- if .Values.gateway.enable }}
+{{- $fqdn := required "global.fqdn is needed!" .Values.global.fqdn -}}
+{{- $gatewayName := .Values.gateway.name | default "uyuni-gateway" -}}
+
+# SSL Redirection (Port 80 to 443)
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: uyuni-ssl-redirect
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/part-of: uyuni
+spec:
+  parentRefs:
+    - name: {{ $gatewayName }}
+      sectionName: {{ .Values.gateway.listeners.http.name }}
+  hostnames:
+    - {{ $fqdn | quote }}
+  rules:
+    - filters:
+        - type: RequestRedirect
+          requestRedirect:
+            scheme: https
+            statusCode: 301
+---
+# HTTPS Routes
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: uyuni-https-routes
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/part-of: uyuni
+spec:
+  parentRefs:
+    - name: {{ $gatewayName }}
+      sectionName: {{ .Values.gateway.listeners.https.name }}
+  hostnames:
+    - {{ $fqdn | quote }}
+  rules:
+    {{- if .Values.saline.enable }}
+    - matches:
+        - path: { type: PathPrefix, value: /saline }
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path: { type: ReplacePrefixMatch, replacePrefixMatch: / }
+      backendRefs:
+        - name: saline
+          port: 8216
+    {{- end }}
+    {{- if default .Values.hubAPI.enable false }}
+    - matches:
+        - path: { type: PathPrefix, value: /hub/rpc/api }
+      backendRefs:
+        - name: hub-xmlrpc
+          port: 2830
+    {{- end }}
+    - matches:
+        - path: { type: PathPrefix, value: / }
+      backendRefs:
+        - name: web
+          port: 80
+---
+# Non-SSL Paths
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: uyuni-nossl-routes
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/part-of: uyuni
+spec:
+  parentRefs:
+    - name: {{ $gatewayName }}
+      sectionName: {{ .Values.gateway.listeners.http.name }}
+  hostnames:
+    - {{ $fqdn | quote }}
+  rules:
+    # Standard Non-SSL Paths
+    - matches:
+        - path: { type: PathPrefix, value: /pub }
+        - path: { type: PathPrefix, value: /rhn/kickstart/DownloadFile }
+        - path: { type: PathPrefix, value: /rhn/common/DownloadFile }
+        - path: { type: PathPrefix, value: /rhn/rpc/api }
+        - path: { type: PathPrefix, value: /rpc/api }
+        - path: { type: PathPrefix, value: /rhn/errors }
+        - path: { type: PathPrefix, value: /rhn/ty/TinyUrl }
+        - path: { type: PathPrefix, value: /rhn/websocket }
+        - path: { type: PathPrefix, value: /rhn/metrics }
+        - path: { type: PathPrefix, value: /cobbler_api }
+        - path: { type: PathPrefix, value: /cobbler }
+        - path: { type: PathPrefix, value: /cblr }
+        - path: { type: PathPrefix, value: /httpboot }
+        - path: { type: PathPrefix, value: /images }
+        - path: { type: PathPrefix, value: /os-images }
+        - path: { type: PathPrefix, value: /tftp }
+        - path: { type: PathPrefix, value: /docs }
+      backendRefs:
+        - name: web
+          port: 80
+
+    {{- if ne .Values.enableMonitoring false }}
+    # postgresql exporter
+    - matches:
+        - path: { type: PathPrefix, value: /postgresql-exporter }
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path: { type: ReplacePrefixMatch, replacePrefixMatch: / }
+      backendRefs:
+        - name: tomcat
+          port: 9187
+
+    # Node exporter
+    - matches:
+        - path: { type: PathPrefix, value: /node-exporter }
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path: { type: ReplacePrefixMatch, replacePrefixMatch: / }
+      backendRefs:
+        - name: tomcat
+          port: 9100
+
+    # Tomcat Monitoring JMX
+    - matches:
+        - path: { type: PathPrefix, value: /tomcat-jmx }
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path: { type: ReplacePrefixMatch, replacePrefixMatch: / }
+      backendRefs:
+        - name: tomcat
+          port: 5557
+    
+    # Taskomatic Monitoring Exporter
+    - matches:
+        - path: { type: PathPrefix, value: /tasko-exporter }
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path: { type: ReplacePrefixMatch, replacePrefixMatch: / }
+      backendRefs:
+        - name: taskomatic
+          port: 9800
+    
+    # Taskomatic Monitoring JMX
+    - matches:
+        - path: { type: PathPrefix, value: /tasko-jmx }
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path: { type: ReplacePrefixMatch, replacePrefixMatch: / }
+      backendRefs:
+        - name: taskomatic
+          port: 5556
+    {{- end }}
+    {{- if .Values.saline.enable }}
+    - matches:
+        - path: { type: PathPrefix, value: /saline }
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path: { type: ReplacePrefixMatch, replacePrefixMatch: / }
+      backendRefs:
+        - name: saline
+          port: 8216
+    {{- end }}
+    {{- end }}
