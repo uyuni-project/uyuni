@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-03-01 10:55+0100\n"
-"PO-Revision-Date: 2026-01-20 00:04+0000\n"
+"PO-Revision-Date: 2026-03-06 15:04+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.15.2\n"
+"X-Generator: Weblate 5.16.2\n"
 
 #: ../html/javascript/spacewalk-essentials.js:409
 msgid "remaining"
@@ -3113,7 +3113,7 @@ msgstr "影響を受ける、割り当てられていないチャンネルで利
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:53
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:89
 msgid "The client is affected by a vulnerability and we have a patch for it,"
-msgstr "クライアントは脆弱性の影響を受けており、そのパッチは用意されています。"
+msgstr "クライアントは脆弱性の影響を受けており、そのパッチを用意しています。"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:51
 msgid "Affected, patches available in a Product Migration target"
@@ -4309,10 +4309,8 @@ msgid "The page you requested, {currentUrl}, was not found."
 msgstr "リクエストされたページ{currentUrl}が見つかりませんでした。"
 
 #: ../html/src/manager/errors/not-found.tsx:10
-#, fuzzy
-#| msgid "If you typed this address into your browser, double-check the spelling and capitalization. The address you are copying may also be outdated."
 msgid "If you typed this address into your browser, double-check the spelling and capitalization."
-msgstr "このアドレスをご使用のブラウザに入力したら、スペリングや大文字の使い方に誤りがないかを再度確認してください。コピーしているアドレスが古くなっている可能性もあります。"
+msgstr "このアドレスをご使用のブラウザに入力したら、スペリングや大文字の使い方に誤りがないかを再度確認してください。"
 
 #: ../html/src/manager/errors/not-found.tsx:16
 #, fuzzy
