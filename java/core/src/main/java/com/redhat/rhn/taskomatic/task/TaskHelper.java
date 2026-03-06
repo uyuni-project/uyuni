@@ -87,6 +87,24 @@ public class TaskHelper {
     }
 
     /**
+     * Send a custom email
+     * @param orgId organization id
+     * @param subject the subject line of the email
+     * @param messageBody to send.
+     */
+    public static void sendCustomEmail(Integer orgId, String subject, String messageBody) {
+        LocalizationService ls = LocalizationService.getInstance();
+        String[] recipients = MailHelper.getAdminRecipientsFromConfig();
+        if (orgId != null) {
+            List<String> emails = getActiveOrgAdminEmails(orgId);
+            recipients = !emails.isEmpty() ?
+                    emails.toArray(new String[0]) :
+                    MailHelper.getAdminRecipientsFromConfig();
+        }
+        MailHelper.withSmtp().sendEmail(recipients, subject, messageBody);
+    }
+
+    /**
      * Gets the list of active org admins in given org.
      * @return Returns the set of active org admins in given org.
      */

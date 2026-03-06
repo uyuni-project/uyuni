@@ -161,4 +161,7 @@ VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'errata-advisory-map-sync', '
 INSERT INTO rhnTaskoTask (id, name, class)
 VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'clm-channel-diff', 'com.redhat.rhn.taskomatic.task.ClmChannelDiff');
 
+INSERT INTO rhnTaskoTask (id, name, class)
+VALUES (sequence_nextval('rhn_tasko_task_id_seq'), 'diskcheck-task', 'com.redhat.rhn.taskomatic.task.DiskCheckTask');
+
 commit;

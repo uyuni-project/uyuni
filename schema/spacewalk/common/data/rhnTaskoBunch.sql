@@ -153,4 +153,7 @@ VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'errata-advisory-map-sync-bu
 INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
 VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'compare-task-bunch', 'Schedules a comparison tasks for the whole system', null);
 
+INSERT INTO rhnTaskoBunch (id, name, description, org_bunch)
+VALUES (sequence_nextval('rhn_tasko_bunch_id_seq'), 'diskcheck-task-bunch', 'Schedules a disk check on server and DB', null);
+
 commit;

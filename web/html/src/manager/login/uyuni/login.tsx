@@ -31,6 +31,7 @@ const UyuniThemeLogin = (props: ThemeProps) => {
               props.validationErrors,
               props.schemaUpgradeRequired,
               props.diskspaceSeverity,
+              props.dbDiskspaceSeverity,
               props.sccForwardWarning
             )}
           />

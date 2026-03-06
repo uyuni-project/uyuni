@@ -2,11 +2,55 @@
 <%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean" %>
+<%@ page import="com.suse.manager.webui.utils.LoginHelper" %>
 <!-- header.jsp -->
 
 <c:set var="custom_header" scope="page" value="${rhn:getConfig('java.custom_header')}" />
 
 <div id="messages-container"></div>
+
+<rhn:require acl="user_authenticated()">
+  <c:set var="diskspaceSeverity" value="<%= LoginHelper.validateDiskSpaceAvailability() %>" />
+  <c:set var="dbDiskspaceSeverity" value="<%= LoginHelper.validateDBDiskSpaceAvailability() %>" />
+
+  <c:if test="${diskspaceSeverity != 'ok'}">
+    <div class="alert ${diskspaceSeverity == 'critical' ? 'alert-danger' : diskspaceSeverity == 'alert' || diskspaceSeverity == 'misconfiguration' ? 'alert-warning' : 'alert-info'}" role="alert">
+      <c:choose>
+        <c:when test="${diskspaceSeverity == 'critical'}">
+          The available disk space for the server is critically low. To prevent an automatic shutdown via health check, please contact your system administrator immediately to allocate additional space.
+        </c:when>
+        <c:when test="${diskspaceSeverity == 'alert'}">
+          The available disk space for the server is low. To prevent an automatic shutdown via health check, please contact your system administrator immediately to allocate additional space.
+        </c:when>
+        <c:when test="${diskspaceSeverity == 'misconfiguration'}">
+          Some important directories are missing. Please contact your system administrator to review the configuration.
+        </c:when>
+        <c:otherwise>
+          Unable to validate the disk space availability on Server. Please contact your system admistrator if this problem persists.
+        </c:otherwise>
+      </c:choose>
+    </div>
+  </c:if>
+
+  <c:if test="${dbDiskspaceSeverity != 'ok'}">
+    <div class="alert ${dbDiskspaceSeverity == 'critical' ? 'alert-danger' : dbDiskspaceSeverity == 'alert' || dbDiskspaceSeverity == 'misconfiguration' ? 'alert-warning' : 'alert-info'}" role="alert">
+      <c:choose>
+        <c:when test="${dbDiskspaceSeverity == 'critical'}">
+          The available disk space for the database is critically low. To prevent an automatic shutdown via health check, please contact your system administrator immediately to allocate additional space.
+        </c:when>
+        <c:when test="${dbDiskspaceSeverity == 'alert'}">
+          The available disk space for the database is low. To prevent an automatic shutdown via health check, please contact your system administrator immediately to allocate additional space.
+        </c:when>
+        <c:when test="${dbDiskspaceSeverity == 'misconfiguration'}">
+          Some important directories are missing on database. Please contact your system administrator to review the configuration.
+        </c:when>
+        <c:otherwise>
+          Unable to validate the disk space availability on Database. Please contact your system admistrator if this problem persists.
+        </c:otherwise>
+      </c:choose>
+    </div>
+  </c:if>
+</rhn:require>
 
 <div class="header-content container-fluid">
   <div class="navbar-header d-flex flex-row">

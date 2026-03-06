@@ -29,6 +29,7 @@ public enum NotificationType implements Labeled {
     CHANNEL_SYNC_FAILED(ChannelSyncFailed.class, ERROR, "channelsyncfailed"),
     CHANNEL_SYNC_FINISHED(ChannelSyncFinished.class, INFO, "channelsyncfinished"),
     CREATE_BOOTSTRAP_REPO_FAILED(CreateBootstrapRepoFailed.class, ERROR, "createbootstraprepofailed"),
+    DISK_CHECK(DiskCheck.class, WARNING, "diskcheckwarning"),
     END_OF_LIFE_PERIOD(EndOfLifePeriod.class, WARNING, "endoflifeperiod"),
     HUB_REGISTRATION_CHANGED(HubRegistrationChanged.class, INFO, "hubregistrationchanged"),
     ONBOARDING_FAILED(OnboardingFailed.class, ERROR, "onboardingfailed"),
