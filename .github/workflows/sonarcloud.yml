@@ -5,19 +5,22 @@ on:
     workflows: [Java checkstyle]
     types: [completed]
 
+permissions:
+  contents: read
+  actions: read
+
 jobs:
 
   sonarcloud-scan:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'pull_request' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.head_repository.full_name == github.repository }}
 
     steps:
 
       - name: Checkout repository
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 #v5.0.0
         with:
-          repository: ${{ github.event.workflow_run.head_repository.full_name }}
-          ref: ${{ github.event.workflow_run.head_branch }}
+          ref: ${{ github.event.workflow_run.head_sha }}
           fetch-depth: 0
 
       - name: Download Java built artifact
@@ -56,11 +59,12 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONARQUBE_AUTH_UYUNI }}
+          PR_BRANCH: ${{ github.event.workflow_run.head_branch }}
         with:
           args: >
             -Dsonar.junit.reportPaths=""
             -Dsonar.coverage.jacoco.xmlReportPaths=""
             -Dsonar.scm.revision=${{ github.event.workflow_run.head_sha }}
             -Dsonar.pullrequest.key=${{ env.PR_NUMBER }}
-            -Dsonar.pullrequest.branch=${{ github.event.workflow_run.head_branch }}
+            -Dsonar.pullrequest.branch=${{ env.PR_BRANCH }}
             -Dsonar.pullrequest.base=${{ env.PR_BASE }}

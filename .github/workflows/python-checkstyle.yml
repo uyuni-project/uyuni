@@ -14,6 +14,10 @@ on:
     paths:
       - '**.py'
 
+permissions:
+  contents: read
+  pull-requests: read
+
 jobs:
   checkstyle:
     runs-on: ubuntu-latest
@@ -33,9 +37,13 @@ jobs:
     
     - name: Run black on files
       if: ${{ steps.files.outputs.added_modified_renamed }}
-      run: black --check --diff -t py36 ${{ steps.files.outputs.added_modified_renamed }}
+      env:
+        CHANGED_FILES: ${{ steps.files.outputs.added_modified_renamed }}
+      run: black --check --diff -t py36 ${CHANGED_FILES}
 
     - name: Run pylint on files
       if: ${{ steps.files.outputs.added_modified_renamed }}
-      run: pylint --rcfile=/root/.pylintrc ${{ steps.files.outputs.added_modified_renamed }}
+      env:
+        CHANGED_FILES: ${{ steps.files.outputs.added_modified_renamed }}
+      run: pylint --rcfile=/root/.pylintrc ${CHANGED_FILES}
 
