@@ -3823,12 +3823,12 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
         <target state="translated">Bug 摘要不能超过 4000 个字符。</target>
       </trans-unit>
-      <trans-unit id="errata.edit.error.idLength" xml:space="preserve">
+      <trans-unit id="errata.edit.error.idLength" xml:space="preserve" approved="yes">
         <source>Bug Id cannot be greater than 18 characters.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
-        <target state="translated">Bug ID 不能超过 18 个字符。</target>
+        <target state="final">Bug ID 不能超过 18 个字符。</target>
       </trans-unit>
       <trans-unit id="errata.channels.updatechannels" xml:space="preserve">
         <source>Update Channels</source>
@@ -9320,13 +9320,13 @@ organization management tools if you choose to remove this role from your login.
           <context context-type="sourcefile">/rhn/monitoring/config/notification/MethodCreate.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="id" xml:space="preserve">
+      <trans-unit id="id" xml:space="preserve" approved="yes">
         <source>Id</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page that uses the Download to CSV function.  Shows
               up as a Column header in the CSV export.</context>
         </context-group>
-        <target state="translated">ID</target>
+        <target state="final">ID</target>
       </trans-unit>
       <trans-unit id="stateString" xml:space="preserve">
         <source>Probe State</source>
@@ -9344,13 +9344,13 @@ organization management tools if you choose to remove this role from your login.
         </context-group>
         <target state="translated">状态字符串</target>
       </trans-unit>
-      <trans-unit id="oid" xml:space="preserve">
+      <trans-unit id="oid" xml:space="preserve" approved="yes">
         <source>Id</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Any page that uses the Download to CSV function.  Shows
               up as a Column header in the CSV export.</context>
         </context-group>
-        <target state="translated">ID</target>
+        <target state="final">ID</target>
       </trans-unit>
       <trans-unit id="data" xml:space="preserve">
         <source>Data</source>
@@ -10269,9 +10269,9 @@ Please note that some manual configuration of these scripts may still be require
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="ssm.kickstartable-systems.jsp.ip-tooltip" xml:space="preserve">
+      <trans-unit id="ssm.kickstartable-systems.jsp.ip-tooltip" xml:space="preserve" approved="yes">
         <source>If there is no organization default profile specified for this organization, an autoinstallation will not get scheduled for systems that do not fall under an ip range.</source>
-        <target state="translated">如果没有为此组织指定默认配置文件，将无法安排自动安装不在 IP 范围中的系统。</target>
+        <target state="final">如果没有为此组织指定默认配置文件，将无法安排自动安装不在 IP 范围中的系统。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/ssm/kickstart/KickstartableSystems.do</context>
         </context-group>
@@ -11443,9 +11443,9 @@ Please note that some manual configuration of these scripts may still be require
           <context context-type="sourcefile">/rhn/kickstart/KickstartSystemDetailsEdit</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="kickstart.postnetconn.bondoptionstip.jsp.label" xml:space="preserve">
+      <trans-unit id="kickstart.postnetconn.bondoptionstip.jsp.label" xml:space="preserve" approved="yes">
         <source>You can input a space-separated list of any valid "bonding" kernel module options. Common options include mode=[0,1,2] (0 is round-robin, 1 is active-backup, 2 is balance-xor) and miimon=100</source>
-        <target>可以输入任何有效 "绑定" 内核模块选项的空格分隔列表。常用选项包括 mode=[0,1,2]（0 表示循环模式，1 表示主动备份模式，2 表示 XOR 策略平衡模式）和 miimon=100</target>
+        <target state="final">可以输入任何有效 "绑定" 内核模块选项的空格分隔列表。常用选项包括 mode=[0,1,2]（0 表示循环模式，1 表示主动备份模式，2 表示 XOR 策略平衡模式）和 miimon=100</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartSystemDetailsEdit</context>
         </context-group>
@@ -16417,9 +16417,9 @@ kickstart 前脚本的更多细节，请参见《&lt;strong&gt;@@ENTERPRISE_LINU
         </context-group>
         <target state="translated">{0} 个文件，{1} 个目录，{2} 个符号链接</target>
       </trans-unit>
-      <trans-unit id="channelOverview.jsp.state.channel.numfiles" xml:space="preserve">
+      <trans-unit id="channelOverview.jsp.state.channel.numfiles" xml:space="preserve" approved="yes">
         <source>{0} sls, {1} files</source>
-        <target>{0} 个 SLS，{1} 个文件</target>
+        <target state="final">{0} 个 SLS，{1} 个文件</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/ChannelOverview.do</context>
           <context context-type="paramnotes">"36 files, 2 directories, 0 symlinks"</context>
@@ -17655,19 +17655,19 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
         <target state="translated">&lt;strong&gt;提示：&lt;/strong&gt;输入 SELinux 上下文，如：user_u:role_r:type_t:s0-s15:c0.c1024（注意：不需要输入所有部分）</target>
       </trans-unit>
       <!-- form error messages -->
-      <trans-unit id="config-file-form.error.user-invalid" xml:space="preserve">
+      <trans-unit id="config-file-form.error.user-invalid" xml:space="preserve" approved="yes">
         <source>User must be a valid Linux user name or user id, of 32 characters or less.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
-        <target state="translated">"用户" 必须是有效的 Linux 用户名或用户 ID，且不能超过 32 个字符。</target>
+        <target state="final">"用户" 必须是有效的 Linux 用户名或用户 ID，且不能超过 32 个字符。</target>
       </trans-unit>
-      <trans-unit id="config-file-form.error.group-invalid" xml:space="preserve">
+      <trans-unit id="config-file-form.error.group-invalid" xml:space="preserve" approved="yes">
         <source>Group must be a valid Linux group name or group id, of 32 characters or less.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
-        <target state="translated">"组" 必须是有效的 Linux 组名称或组 ID，且不能超过 32 个字符。</target>
+        <target state="final">"组" 必须是有效的 Linux 组名称或组 ID，且不能超过 32 个字符。</target>
       </trans-unit>
       <trans-unit id="config-file-form.error.mode-invalid" xml:space="preserve">
         <source>Permissions must be a valid Linux permissions set (4 octal digits)</source>
@@ -21942,12 +21942,12 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         </context-group>
         <target state="translated">磁盘大小</target>
       </trans-unit>
-      <trans-unit id="kickstart.channel.macAddress.jsp" xml:space="preserve">
+      <trans-unit id="kickstart.channel.macAddress.jsp" xml:space="preserve" approved="yes">
         <source>Mac Address</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
         </context-group>
-        <target state="translated">MAC 地址</target>
+        <target state="final">MAC 地址</target>
       </trans-unit>
       <trans-unit id="kickstart.distro.cobbler-only.tooltip" xml:space="preserve">
         <source> Profiles that are not @@PRODUCT_NAME@@-managed are not guaranteed to register systems to @@PRODUCT_NAME@@ after autoinstallation. You may wish to review these autoinstallations (click on the profile name to do so) to confirm whether or not your system will reappear in the @@PRODUCT_NAME@@ system list after autoinstallation.</source>
@@ -22851,12 +22851,12 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
         <target state="translated">虚拟系统硬件覆盖</target>
       </trans-unit>
-      <trans-unit id="virtualization.provision.override.jsp.goto.advanced.options" xml:space="preserve">
+      <trans-unit id="virtualization.provision.override.jsp.goto.advanced.options" xml:space="preserve" approved="yes">
         <source>By default virtual guest settings like memory, cpu and storage allocations will be inherited from your autoinstallation profile. If you want to override these settings click on &lt;strong&gt;{0}&lt;/strong&gt; button below.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
         </context-group>
-        <target state="translated">默认情况下，虚拟 Guest 的设置（例如内存、CPU 以及储存分配）将从您的自动安装配置文件继承。如果您要覆盖这些设置，请单击下面的 &lt;strong&gt;{0}&lt;/strong&gt; 按钮。</target>
+        <target state="final">默认情况下，虚拟 Guest 的设置（例如内存、CPU 以及储存分配）将从您的自动安装配置文件继承。如果您要覆盖这些设置，请单击下面的 &lt;strong&gt;{0}&lt;/strong&gt; 按钮。</target>
       </trans-unit>
       <trans-unit id="virtualization.provision.first.jsp.guest_name.header" xml:space="preserve">
         <source>Guest Name:</source>
@@ -22893,9 +22893,9 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="virtualization.provision.first.jsp.memory_allocation.message" xml:space="preserve">
+      <trans-unit id="virtualization.provision.first.jsp.memory_allocation.message" xml:space="preserve" approved="yes">
         <source>Size in megabytes out of {0} total megabytes available on {1}</source>
-        <target>从 {1} 上的总共 {0} MB 中分配的大小 (MB)</target>
+        <target state="final">从 {1} 上的总共 {0} MB 中分配的大小 (MB)</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
         </context-group>
@@ -22928,9 +22928,9 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
         <target state="translated">以下字段可留空（此时将使用在选择的自动安装配置文件中定义的默认值）。可分别设置每个字段以覆盖配置文件的默认值。</target>
       </trans-unit>
-      <trans-unit id="virtualization.provision.first.jsp.storage.local.message" xml:space="preserve">
+      <trans-unit id="virtualization.provision.first.jsp.storage.local.message" xml:space="preserve" approved="yes">
         <source>Size in gigabytes from the virtual host's disk space.</source>
-        <target>从虚拟主机的磁盘空间中分配的大小 (GB)。</target>
+        <target state="final">从虚拟主机的磁盘空间中分配的大小 (GB)。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
         </context-group>
@@ -23466,9 +23466,9 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
         <target state="translated">系统信息</target>
       </trans-unit>
-      <trans-unit id="sdc.details.overview.minionId" xml:space="preserve">
+      <trans-unit id="sdc.details.overview.minionId" xml:space="preserve" approved="yes">
         <source>Minion Id:</source>
-        <target>受控端 ID：</target>
+        <target state="final">受控端 ID：</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
@@ -24211,9 +24211,9 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           <context context-type="sourcefile">/systems/details/Activation.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="sdc.details.activation.summary" xml:space="preserve">
+      <trans-unit id="sdc.details.activation.summary" xml:space="preserve" approved="yes">
         <source>With a system profile specific activation key, this system can be re-registered with the same id, history, groups, and channels (unless the system's base channel changes).</source>
-        <target state="translated">使用系统配置文件特定的激活密钥可以重新注册系统，并且系统将具有相同的 ID、历史记录、组和通道（除非系统的基础通道发生更改）。</target>
+        <target state="final">使用系统配置文件特定的激活密钥可以重新注册系统，并且系统将具有相同的 ID、历史记录、组和通道（除非系统的基础通道发生更改）。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Activation.do</context>
         </context-group>
@@ -24267,12 +24267,12 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         </context-group>
         <target state="translated">系统：</target>
       </trans-unit>
-      <trans-unit id="sdc.details.hardware.dmi_bios" xml:space="preserve">
+      <trans-unit id="sdc.details.hardware.dmi_bios" xml:space="preserve" approved="yes">
         <source>Bios:</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
         </context-group>
-        <target state="translated">BIOS：</target>
+        <target state="final">BIOS：</target>
       </trans-unit>
       <trans-unit id="sdc.details.hardware.dmi_asset_tag" xml:space="preserve">
         <source>Asset Tag:</source>
@@ -24386,9 +24386,9 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="sdc.details.hardware.machine_id_empty_warning" xml:space="preserve">
+      <trans-unit id="sdc.details.hardware.machine_id_empty_warning" xml:space="preserve" approved="yes">
         <source>This system does not have a machine id. This is needed in the event of re-registering it as a Salt minion. Make sure the system has the latest version of the client tools installed and use the Schedule Hardware Refresh button bellow to fill the machine id.</source>
-        <target>此系统没有计算机 ID。将系统重新注册为 Salt 受控端时需要此 ID。请确保系统上已安装最新版本的客户端工具，并使用下面的 "安排硬件刷新" 按钮来填写计算机 ID。</target>
+        <target state="final">此系统没有计算机 ID。将系统重新注册为 Salt 受控端时需要此 ID。请确保系统上已安装最新版本的客户端工具，并使用下面的 "安排硬件刷新" 按钮来填写计算机 ID。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
         </context-group>
@@ -25587,9 +25587,9 @@ given channel.</source>
         <source>Basic setup and configuration with @@PRODUCT_NAME@@</source>
         <target state="translated">@@PRODUCT_NAME@@ 的基本设置及配置</target>
       </trans-unit>
-      <trans-unit id="iprange.emptylist" xml:space="preserve">
+      <trans-unit id="iprange.emptylist" xml:space="preserve" approved="yes">
         <source>No Ip Ranges Found</source>
-        <target state="translated">未找到 IP 范围</target>
+        <target state="final">未找到 IP 范围</target>
       </trans-unit>
       <trans-unit id="package.jsp.emptylist" xml:space="preserve">
         <source>This channel contains no packages.</source>
@@ -26027,21 +26027,21 @@ given channel.</source>
         <source>The file you requested could not be downloaded, likely due to one of the following reasons:</source>
         <target state="translated">您请求的文件无法下载，原因可能如下：</target>
       </trans-unit>
-      <trans-unit id="baddownload.jsp.reason1" xml:space="preserve">
+      <trans-unit id="baddownload.jsp.reason1" xml:space="preserve" approved="yes">
         <source>The url has expired.</source>
-        <target state="translated">URL 已失效。</target>
+        <target state="final">URL 已失效。</target>
       </trans-unit>
-      <trans-unit id="baddownload.jsp.reason2" xml:space="preserve">
+      <trans-unit id="baddownload.jsp.reason2" xml:space="preserve" approved="yes">
         <source>The url has been modified.</source>
-        <target state="translated">URL 已修改。</target>
+        <target state="final">URL 已修改。</target>
       </trans-unit>
       <trans-unit id="baddownload.jsp.reason3" xml:space="preserve">
         <source>The @@PRODUCT_NAME@@ server does not have read permissions on the specified file.</source>
         <target state="translated">@@PRODUCT_NAME@@ 服务器没有指定文件的读取权限。</target>
       </trans-unit>
-      <trans-unit id="baddownload.jsp.retry" xml:space="preserve">
+      <trans-unit id="baddownload.jsp.retry" xml:space="preserve" approved="yes">
         <source>Please revisit the page you received this url from to receive a new one.</source>
-        <target state="translated">请重新访问您收到此 URL 的页面以便接收新 URL。</target>
+        <target state="final">请重新访问您收到此 URL 的页面以便接收新 URL。</target>
       </trans-unit>
       <trans-unit id="package.jsp.alt" xml:space="preserve">
         <source>package</source>
@@ -26107,9 +26107,9 @@ given channel.</source>
         <source>Package Group</source>
         <target state="translated">软件包组</target>
       </trans-unit>
-      <trans-unit id="package.jsp.rpmversion" xml:space="preserve">
+      <trans-unit id="package.jsp.rpmversion" xml:space="preserve" approved="yes">
         <source>Rpm Version</source>
-        <target state="translated">RPM 版本</target>
+        <target state="final">RPM 版本</target>
       </trans-unit>
       <trans-unit id="package.jsp.path" xml:space="preserve">
         <source>File System Path</source>
@@ -29679,20 +29679,20 @@ given channel.</source>
         <source>CA Certificates Update</source>
         <target state="final">CA 证书更新</target>
       </trans-unit>
-    <trans-unit id="system.event.actionId" xml:space="preserve">
-          <source>Action ID</source>
+      <trans-unit id="system.event.actionId" xml:space="preserve">
+        <source>Action ID</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="pkg.lock.message.lockerror" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="pkg.lock.message.lockerror" xml:space="preserve" approved="yes">
         <source>Failed to lock selected packages. Can't lock multiple versions of the same package.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">未能锁定所选软件包。无法锁定同一软件包的多个版本。</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
