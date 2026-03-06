@@ -1,15 +1,15 @@
 # SPDX-FileCopyrightText: 2025 SUSE LLC
 #
 # SPDX-License-Identifier: Apache-2.0
-FROM registry.opensuse.org/opensuse/tumbleweed:latest
+FROM registry.opensuse.org/opensuse/leap:16.0
 
 ENV ZYPPER_CMD="zypper --non-interactive"
 
 # Installing all packages
 RUN $ZYPPER_CMD addrepo --refresh --no-gpgcheck \
-    "https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Utils/openSUSE_Tumbleweed/" uyuni-utils && \
+    "https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Utils/openSUSE_Leap_16.0/" uyuni-utils && \
     $ZYPPER_CMD addrepo --refresh --no-gpgcheck \
-    "https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Master:/ContainerUtils/openSUSE_Tumbleweed/" uyuni-tools && \
+    "https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Master:/ContainerUtils/openSUSE_Leap_16.0/" uyuni-tools && \
     $ZYPPER_CMD refresh && \
     $ZYPPER_CMD install --no-recommends \
     # Core System & Network
@@ -22,7 +22,6 @@ RUN $ZYPPER_CMD addrepo --refresh --no-gpgcheck \
     bash-completion intltool \
     # Java Stack
     java-17-openjdk-devel \
-    java-25-openjdk-devel \
     ant ant-junit ant-junit5 \
     apache-ivy maven servletapi5 \
     obs-to-maven \

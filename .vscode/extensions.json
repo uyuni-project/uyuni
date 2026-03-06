@@ -1,0 +1,20 @@
+{
+  "recommendations": [
+    "vscjava.vscode-java-pack",
+    "shengchen.vscode-checkstyle",
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+    "rebornix.Ruby",
+    "Shopify.ruby-lsp",
+    "peterevans.perl",
+    "ms-vscode.shellcheck",
+    "ms-ossdata.vscode-postgresql",
+    "redhat.vscode-yaml",
+    "redhat.vscode-xml",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "ms-azuretools.vscode-docker",
+    "ms-kubernetes-tools.vscode-kubernetes-tools",
+    "sonarsource.sonarlint-vscode"
+  ]
+}
