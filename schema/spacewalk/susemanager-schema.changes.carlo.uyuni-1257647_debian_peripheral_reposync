@@ -1,0 +1,2 @@
+- Add hubsync endpoints to repo-sync debian repos in peripheral
+  (bsc#1257647)

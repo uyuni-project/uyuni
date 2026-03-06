@@ -87,22 +87,35 @@ public class DownloadController {
      * Invoked from Router. Initialize routes for Systems Views.
      */
     public void initRoutes() {
+        // endpoints commented with [deb] are used to sync debian repos to the peripheral. See (bsc#1257647)
+
+        // endpoints used by peripherals
         get("/manager/download/hubsync/:sccrepoid/getPackage/:file", this::downloadPackageHub);
+        get("/manager/download/hubsync/:sccrepoid/:channel/getPackage/:file", this::downloadPackageHub); //[deb]
         get("/manager/download/hubsync/:sccrepoid/getPackage/:org/:checksum/:file", this::downloadPackageHub);
+        get("/manager/download/hubsync/:sccrepoid/:channel/getPackage/:org/:checksum/:file",
+                this::downloadPackageHub); //[deb]
         get("/manager/download/hubsync/:sccrepoid/repodata/:file", this::downloadMetadataHub);
         get("/manager/download/hubsync/:sccrepoid/media.1/:file", this::downloadMediaFilesHub);
+        //
+        head("/manager/download/hubsync/:sccrepoid/getPackage/:file", this::downloadPackageHub);
+        head("/manager/download/hubsync/:sccrepoid/:channel/getPackage/:file", this::downloadPackageHub); //[deb]
+        head("/manager/download/hubsync/:sccrepoid/getPackage/:org/:checksum/:file", this::downloadPackageHub);
+        head("/manager/download/hubsync/:sccrepoid/:channel/getPackage/:org/:checksum/:file",
+                this::downloadPackageHub); //[deb]
+        head("/manager/download/hubsync/:sccrepoid/repodata/:file", this::downloadMetadataHub);
+        head("/manager/download/hubsync/:sccrepoid/media.1/:file", this::downloadMediaFilesHub);
+
+        // endpoints used by minions
         get("/manager/download/:channel/getPackage/:file", this::downloadPackage);
         get("/manager/download/:channel/getPackage/:org/:checksum/:file", this::downloadPackage);
         get("/manager/download/:channel/repodata/:file", this::downloadMetadata);
         get("/manager/download/:channel/media.1/:file", this::downloadMediaFiles);
+        //
         head("/manager/download/:channel/getPackage/:file", this::downloadPackage);
         head("/manager/download/:channel/getPackage/:org/:checksum/:file", this::downloadPackage);
         head("/manager/download/:channel/repodata/:file", this::downloadMetadata);
         head("/manager/download/:channel/media.1/:file", this::downloadMediaFiles);
-        head("/manager/download/hubsync/:sccrepoid/getPackage/:file", this::downloadPackageHub);
-        head("/manager/download/hubsync/:sccrepoid/getPackage/:org/:checksum/:file", this::downloadPackageHub);
-        head("/manager/download/hubsync/:sccrepoid/repodata/:file", this::downloadMetadataHub);
-        head("/manager/download/hubsync/:sccrepoid/media.1/:file", this::downloadMediaFilesHub);
     }
 
     /**
