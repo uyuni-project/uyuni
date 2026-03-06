@@ -1308,12 +1308,13 @@ class RepoSync(object):
         for notice in notices:
             notice = self.fix_notice(notice)
 
-            # Save advisory names from all repositories
-            self.all_errata.add(notice["update_id"])
-
             # pylint: disable=W0703
             try:
                 erratum = self._populate_erratum(notice)
+
+                # Save advisory names from all repositories
+                self.all_errata.add(erratum["advisory"])
+
                 if not erratum:
                     continue
                 batch.append(erratum)
