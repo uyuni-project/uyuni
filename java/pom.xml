@@ -730,27 +730,6 @@
                 <artifactId>slf4j-api</artifactId>
                 <version>1.7.36</version>
             </dependency>
-            <dependency>
-                <groupId>org.simpleframework</groupId>
-                <artifactId>simple-xml</artifactId>
-                <version>2.7.1</version>
-                <exclusions>
-                    <!-- StAX is no longer needed since it's included in Java 6+ -->
-                    <exclusion>
-                        <groupId>stax</groupId>
-                        <artifactId>stax-api</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>stax</groupId>
-                        <artifactId>stax</artifactId>
-                    </exclusion>
-                    <!-- XML Pull feature is not used -->
-                    <exclusion>
-                        <artifactId>xpp3</artifactId>
-                        <groupId>xpp3</groupId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
 
             <!-- These are not available on maven central -->
             <dependency>

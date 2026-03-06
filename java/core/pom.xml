@@ -272,10 +272,6 @@
             <groupId>suse</groupId>
             <artifactId>simple-core</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.simpleframework</groupId>
-            <artifactId>simple-xml</artifactId>
-        </dependency>
 
         <!-- Runtime Dependencies -->
         <dependency>
