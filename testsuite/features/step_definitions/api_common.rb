@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2025 SUSE LLC
+# Copyright (c) 2015-2026 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 ### This file contains the definitions for all steps concerning the API.
@@ -359,7 +359,7 @@ When(/^I create an activation key including custom channels for "([^"]*)" via AP
   # Get the list of child channels for this base channel
   child_channels = $api_test.channel.software.list_child_channels(base_channel_label)
 
-  # filter out wrong child channels for SLE Micro 5.5 as normal Minion
+  # filter out wrong child channels for SLE Micro 5.5 as normal minion
   if client.include? 'slemicro55'
     child_channels.reject! { |channel| channel.include? 'suse-manager-proxy-5.0-pool-x86_64' }
     child_channels.reject! { |channel| channel.include? 'suse-manager-proxy-5.0-updates-x86_64' }
@@ -367,7 +367,7 @@ When(/^I create an activation key including custom channels for "([^"]*)" via AP
     child_channels.reject! { |channel| channel.include? 'suse-manager-retail-branch-server-5.0-updates-x86_64' }
   end
 
-  # filter out wrong child channels for SLES15sp6 as normal Minion
+  # filter out wrong child channels for SLES 15 SP6 as normal minion
   if client.include? 'sle15sp6'
     child_channels.reject! { |channel| channel.include? 'suse-manager-proxy-5.0-pool-x86_64-sp6' }
     child_channels.reject! { |channel| channel.include? 'suse-manager-proxy-5.0-updates-x86_64-sp6' }
@@ -375,14 +375,21 @@ When(/^I create an activation key including custom channels for "([^"]*)" via AP
     child_channels.reject! { |channel| channel.include? 'suse-manager-retail-branch-server-5.0-updates-x86_64-sp6' }
   end
 
-  # filter out wrong child channels for SL Micro 6.1 as normal Minion
+  # filter out wrong child channels for SL Micro 6.1 as normal minion
   if client.include? 'slmicro61'
     child_channels.reject! { |channel| channel.include? 'suse-multi-linux-manager-proxy-5.1-x86_64' }
     child_channels.reject! { |channel| channel.include? 'suse-multi-linux-manager-retail-branch-server-5.1-x86_64' }
     child_channels.reject! { |channel| channel.include? 'suse-multi-linux-manager-server-5.1-x86_64' }
   end
 
-  # filter out wrong child channels for SLES15SP7 as normal Minion
+  # filter out wrong child channels for SL Micro 6.2 as normal Minion
+  if client.include? 'slmicro62'
+    child_channels.reject! { |channel| channel.include? 'suse-multi-linux-manager-proxy-5.2-x86_64' }
+    child_channels.reject! { |channel| channel.include? 'suse-multi-linux-manager-retail-branch-server-5.2-x86_64' }
+    child_channels.reject! { |channel| channel.include? 'suse-multi-linux-manager-server-5.2-x86_64' }
+  end
+
+  # filter out wrong child channels for SLES 15 SP7 as normal minion
   if client.include? 'sle15sp7'
     child_channels.reject! { |channel| channel.include? 'suse-multi-linux-manager-proxy-sle-5.1-pool-x86_64-sp7' }
     child_channels.reject! { |channel| channel.include? 'suse-multi-linux-manager-proxy-sle-5.1-updates-x86_64-sp7' }
