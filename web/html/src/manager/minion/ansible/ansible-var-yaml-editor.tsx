@@ -245,8 +245,11 @@ const AnsibleVarYamlEditor = forwardRef((props: Props, ref) => {
                   className="btn-default btn-sm me-3"
                   handler={() => {
                     const currentValues = formRef.current?.values || varsData;
-                    const yamlString = yaml.dump(currentValues);
-                    setVarsData(currentValues);
+                    const yamlString = yaml.dump(currentValues, {
+                      quotingType: '"',
+                      forceQuotes: true,
+                    });
+                    setVarsData(yamlString);
                     setYamlEditor(true);
                     setYamlEditorContent(yamlString);
                   }}
@@ -351,7 +354,7 @@ const AnsibleVarYamlEditor = forwardRef((props: Props, ref) => {
             <MessagesContainer containerId="yamlEditorError" />
             <AceEditor
               className="form-control"
-              id="playbook-content"
+              id="playbook-content-modal"
               minLines={20}
               maxLines={40}
               readOnly={false}
