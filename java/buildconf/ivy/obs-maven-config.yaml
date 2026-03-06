@@ -257,8 +257,6 @@ artifacts:
   - artifact: spy
     package: pgjdbc-ng
     repository: Uyuni_Other
-  - artifact: statistics
-    repository: Uyuni_Other
   - artifact: stax2-api
     package: woodstox
     repository: Uyuni_Other
