@@ -40,11 +40,13 @@ jobs:
         with:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
       - uses: dorny/paths-filter@668c092af3649c4b664c54e4b704aa46782f6f7c # master
         # using master and not a specific version because we need https://github.com/dorny/paths-filter/pull/279 and
         # there is no new release since 03/2024
         id: filter
         with:
+          base: ${{ github.event.pull_request.base.ref }}
           predicate-quantifier: 'some'
           filters: |
             java:
@@ -58,6 +60,7 @@ jobs:
         # there is no new release since 03/2024
         id: bv_filter
         with:
+          base: ${{ github.event.pull_request.base.ref }}
           predicate-quantifier: 'every'
           filters: |
             not_build_validation:
