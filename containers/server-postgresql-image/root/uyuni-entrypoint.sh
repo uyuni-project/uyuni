@@ -77,12 +77,39 @@ run_upgrade_scripts() {
         return
     fi
 
+    local pg_user pg_port
+    pg_user="${POSTGRES_USER:-postgres}"
+    pg_port="${PGPORT:-5432}"
+
     echo "Starting temporary postgres server for upgrade scripts..."
     PGUSER="${PGUSER:-${POSTGRES_USER:-postgres}}" \
-        pg_ctl -D "$PGDATA" -o "-c listen_addresses='' -p ${PGPORT:-5432}" -w start
+        pg_ctl -D "$PGDATA" -o "-c listen_addresses='localhost' -p ${pg_port}" -w start
+
+    local attempts=30
+    local attempt=1
+    while [ "$attempt" -le "$attempts" ]; do
+        if pg_isready --host localhost --port "$pg_port" --username "$pg_user" > /dev/null 2>&1; then
+            break
+        fi
+
+        sleep 1
+        attempt=$((attempt + 1))
+    done
+
+    if [ "$attempt" -gt "$attempts" ]; then
+        echo "Temporary postgres did not become ready for upgrades."
+        pg_ctl -D "$PGDATA" status || true
+        return 1
+    fi
 
     local f
     for f in "${files[@]}"; do
+        if ! pg_isready --host localhost --port "$pg_port" --username "$pg_user" > /dev/null 2>&1; then
+            echo "Temporary postgres is not ready before running: $f"
+            pg_ctl -D "$PGDATA" status || true
+            return 1
+        fi
+
         case "$f" in
             *.sh)
                 if [ -x "$f" ]; then
@@ -96,7 +123,9 @@ run_upgrade_scripts() {
             *.sql)
                 echo "Running SQL upgrade script: $f"
                 psql -v ON_ERROR_STOP=1 \
-                     --username "${POSTGRES_USER:-postgres}" \
+                     --host localhost \
+                     --port "${pg_port}" \
+                     --username "${pg_user}" \
                      --no-password --no-psqlrc \
                      ${POSTGRES_DB:+--dbname "$POSTGRES_DB"} \
                      -f "$f"

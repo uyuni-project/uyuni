@@ -8,7 +8,11 @@ DB_CRIT=${DISKTHRESHOLD:-95}
 DB_WARN=${DISKCHECKALERT:-90}
 
 run_sql() {
-    PGHOST= PGHOSTADDR= psql -v ON_ERROR_STOP=1 -U "$POSTGRES_USER" --no-password --no-psqlrc -d susemanager "$@"
+    psql -v ON_ERROR_STOP=1 \
+        -h localhost \
+        -p "${PGPORT:-5432}" \
+        -U "$POSTGRES_USER" \
+        --no-password --no-psqlrc -d susemanager "$@"
 }
 
 cat << EOF | run_sql

@@ -4,7 +4,11 @@
 # SPDX-License-Identifier: Apache-2.0
 
 run_sql() {
-    PGHOST= PGHOSTADDR= psql -v ON_ERROR_STOP=1 -U "$POSTGRES_USER" --no-password --no-psqlrc -d susemanager "$@"
+  psql -v ON_ERROR_STOP=1 \
+    -h localhost \
+    -p "${PGPORT:-5432}" \
+    -U "$POSTGRES_USER" \
+    --no-password --no-psqlrc -d susemanager "$@"
 }
 
 cat << EOF | run_sql
@@ -98,7 +102,7 @@ create operator < (
   restrict = scalarltsel,
   join = scalarltjoinsel
 );
-exception when duplicate_object then null;
+exception when duplicate_object or duplicate_function then null;
 end \$\$;
 
 do \$\$ begin
@@ -111,7 +115,7 @@ create operator <= (
   restrict = scalarltsel,
   join = scalarltjoinsel
 );
-exception when duplicate_object then null;
+exception when duplicate_object or duplicate_function then null;
 end \$\$;
 
 do \$\$ begin
@@ -124,7 +128,7 @@ create operator = (
   restrict = eqsel,
   join = eqjoinsel
 );
-exception when duplicate_object then null;
+exception when duplicate_object or duplicate_function then null;
 end \$\$;
 
 do \$\$ begin
@@ -137,7 +141,7 @@ create operator >= (
   restrict = scalargtsel,
   join = scalargtjoinsel
 );
-exception when duplicate_object then null;
+exception when duplicate_object or duplicate_function then null;
 end \$\$;
 
 do \$\$ begin
@@ -150,7 +154,7 @@ create operator > (
   restrict = scalargtsel,
   join = scalargtjoinsel
 );
-exception when duplicate_object then null;
+exception when duplicate_object or duplicate_function then null;
 end \$\$;
 
 do \$\$ begin
@@ -163,7 +167,7 @@ create operator <> (
   restrict = eqsel,
   join = eqjoinsel
 );
-exception when duplicate_object then null;
+exception when duplicate_object or duplicate_function then null;
 end \$\$;
 
 do \$\$ begin
@@ -176,7 +180,7 @@ default for type evr_t using btree as
   operator 5 >,
   function 1 evr_t_compare( evr_t, evr_t )
 ;
-exception when duplicate_object then null;
+exception when duplicate_object or duplicate_function then null;
 end \$\$;
 
 create or replace function evr_t_as_vre( a evr_t ) returns varchar as \$\$
@@ -217,6 +221,6 @@ create aggregate max (
   basetype=evr_t,
   stype=evr_t
 );
-exception when duplicate_object then null;
+exception when duplicate_object or duplicate_function then null;
 end \$\$;
 EOF
