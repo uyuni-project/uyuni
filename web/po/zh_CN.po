@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-03-01 10:55+0100\n"
-"PO-Revision-Date: 2026-03-06 06:04+0000\n"
+"PO-Revision-Date: 2026-03-06 09:04+0000\n"
 "Last-Translator: Grace Yu <grace.yu@excel-gits.com>\n"
 "Language-Team: Chinese (China) <https://l10n.opensuse.org/projects/uyuni/web/zh_CN/>\n"
 "Language: zh_CN\n"
@@ -2290,7 +2290,7 @@ msgstr "创建：访问组"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:20
 msgid "Restart is needed for the configuration changes to take effect."
-msgstr "需要重启动才能使配置更改生效。"
+msgstr "需要重启才能使配置更改生效。"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:23
 msgid "An internal error has occurred. See the server logs for details."
@@ -2419,7 +2419,7 @@ msgstr "组织"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:348
 msgid "Restart"
-msgstr "重启动"
+msgstr "重启"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:353
 msgid "Cobbler"
@@ -2437,7 +2437,7 @@ msgstr "口令策略"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:389
 msgid "Restarting"
-msgstr "重启动"
+msgstr "重启"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:390
 msgid " Tomcat and Taskomatic is needed for the configuration changes to take effect."
@@ -3717,7 +3717,7 @@ msgstr "需要重引导"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:239
 msgid "Package Manager Restart Required"
-msgstr "需要重启动软件包管理器"
+msgstr "需要重启软件包管理器"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:242
 msgid "Advisory Keywords"
