@@ -14,21 +14,21 @@ tests:
         enable: true
     asserts:
       - equal:
-          path: spec.template.spec.containers[0].env[0].value
+          path: spec.template.spec.containers[?(@.name=="uyuni")].env[?(@.name=="TZ")].value
           value: "Europe/Berlin"
         template: server.yaml
         documentSelector:
           path: metadata.name
           value: uyuni
       - equal:
-          path: spec.template.spec.containers[0].env[0].value
+          path: spec.template.spec.containers[?(@.name=="db")].env[?(@.name=="TZ")].value
           value: "Europe/Berlin"
         template: db.yaml
         documentSelector:
           path: metadata.name
           value: db
       - equal:
-          path: spec.template.spec.containers[0].env[1].value
+          path: spec.template.spec.containers[?(@.name=="saline")].env[?(@.name=="TZ")].value
           value: "Europe/Berlin"
         template: saline.yaml
         documentSelector:
@@ -52,21 +52,28 @@ tests:
       pullPolicy: "Always"
     asserts:
       - equal:
-          path: spec.template.spec.containers[0].imagePullPolicy
+          path: spec.template.spec.containers[?(@.name=="uyuni")].imagePullPolicy
           value: "Always"
         template: server.yaml
         documentSelector:
           path: metadata.name
           value: uyuni
       - equal:
-          path: spec.template.spec.initContainers[0].imagePullPolicy
+          path: spec.template.spec.initContainers[?(@.name=="db-waiter")].imagePullPolicy
           value: "Always"
         template: server.yaml
         documentSelector:
           path: metadata.name
           value: uyuni
       - equal:
-          path: spec.template.spec.containers[0].imagePullPolicy
+          path: spec.template.spec.initContainers[?(@.name=="setup-waiter")].imagePullPolicy
+          value: "Always"
+        template: server.yaml
+        documentSelector:
+          path: metadata.name
+          value: uyuni
+      - equal:
+          path: spec.template.spec.containers[?(@.name=="db")].imagePullPolicy
           value: "Always"
         template: db.yaml
         documentSelector:

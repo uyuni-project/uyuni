@@ -22,13 +22,24 @@ spec:
     spec:
       containers:
       - env:
+        - name: container
+          value: oci
         - name: TZ
           value: {{ .Values.timezone | default "Etc/UTC" }}
 {{- if and .Values.server.mirror (or .Values.server.mirror.claimName .Values.server.mirror.hostPath) }}
           - name: MIRROR_PATH
             value: /mirror
 {{- end }}
+{{- if .Values.server.systemdLogLevel }}
+        - name: SYSTEMD_LOG_TARGET
+          value: console
+        - name: SYSTEMD_LOG_LEVEL
+          value: {{ .Values.server.systemdLogLevel }}
+        tty: true
+{{- end }}
         image: {{ include "uyuni.image" (dict "name" "server" "global" . "local" .Values.server) }}
+        command:
+        - /docker-entrypoint-init.d/00-kubernetes-systemd
         imagePullPolicy: {{ .Values.pullPolicy }}
         lifecycle:
           preStop:
@@ -36,7 +47,7 @@ spec:
               command:
               - /bin/sh
               - -c
-              - spacewalk-service stop && systemctl stop postgresql
+              - spacewalk-service stop
         livenessProbe:
           failureThreshold: 5
           httpGet:
@@ -48,6 +59,14 @@ spec:
           successThreshold: 1
           timeoutSeconds: 20
         name: uyuni
+        securityContext:
+          capabilities:
+            add:
+            - SYS_ADMIN
+  {{- if .Values.server.superPrivileged }}
+          seLinuxOptions:
+            type: "spc_t"
+  {{- end }}
         ports:
         - containerPort: 80
         - containerPort: 4505
@@ -338,10 +357,8 @@ spec:
           medium: Memory
           sizeLimit: 256Mi
         name: run
-      - hostPath:
-          path: /sys/fs/cgroup
-          type: Directory
-        name: sys-fs-cgroup
+      - name: sys-fs-cgroup
+        emptyDir:
 {{- if .Values.server.mirror }}
   {{- if .Values.server.mirror.claimName }}
       - name: mirror

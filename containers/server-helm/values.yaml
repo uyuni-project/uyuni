@@ -39,6 +39,16 @@ server:
   #  claimName: mirror
   #  hostPath: /srv/mirror
 
+  ## superPrivileged may need to be set to true to run on a cluster with selinux enforced.
+  ## This is only for the server pod, since it runs systemd.
+  ## Setting this to true opens a big security can of worms.
+  superPrivileged: false
+
+  ## systemdLogLevel will be passed to systemd's --log-level parameter.
+  ## Note, that this will add a tty to the container.
+  ## The possible values are debug, info, notice, warning, err, crit, alert, emerg or "" to keep the default.
+  systemdLogLevel: ""
+
 
 global:
   ## fqdn is the fully qualified name the server will answer as.

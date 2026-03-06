@@ -1,0 +1,6 @@
+Thank you for installing the {{ .Chart.Description }}!
+Connect to the web UI using the credentials from the admin-credentials secret:
+
+  https://{{ .Values.global.fqdn }}
+
+Documentation can be found at {{ .Chart.Home }}

@@ -93,9 +93,15 @@ RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf && \
     ln -s "/etc/rhn/krb5.conf.d" "/etc/krb5.conf.d" && \
     mkdir -p /etc/systemd/system.conf.d/ && \
     printf "[Manager]\nLogColor=no" >/etc/systemd/system.conf.d/01-nocolor.conf && \
-# The RemoveIPC was needed for postgresql, not sure if it is safe to remove now that it's in its own container
-    mkdir -p /etc/systemd/logind.conf.d/ && \
-    printf "[Login]\nRemoveIPC=no" >/etc/systemd/logind.conf.d/disable-removeipc.conf && \
+# Credentials fail on Kubernetes, removing them to setup tmpfiles
+    sed -i "/^ImportCredential=.*/d" /usr/lib/systemd/system/systemd-tmpfiles-setup.service && \
+# Silence services that generate errors are not really needed in a container
+    ln -sf /dev/null /etc/systemd/system/dev-hugepages.mount && \
+    ln -sf /dev/null /etc/systemd/system/systemd-logind.service && \
+    ln -sf /dev/null /etc/systemd/system/systemd-sysusers.service && \
+    ln -sf /dev/null /etc/systemd/system/systemd-timedated.service && \
+    ln -sf /dev/null /etc/systemd/system/systemd-tmpfiles-clean.service && \
+    ln -sf /dev/null /etc/systemd/system/console-getty.service && \
     rm -rf /var/log/{alternatives.log,lastlog,tallylog,suseconnect.log,zypper.log,zypp/history,YaST2}
 
 ADD --chown=root:root root.tar.gz /
