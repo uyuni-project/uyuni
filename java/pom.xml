@@ -603,21 +603,14 @@
                 <version>0.8.7</version>
             </dependency>
             <dependency>
-                <groupId>org.codehaus.woodstox</groupId>
-                <artifactId>woodstox-core-asl</artifactId>
-                <version>4.4.1</version>
-                <exclusions>
-                    <!-- StAX is no longer needed since it's included in Java 6+ -->
-                    <exclusion>
-                        <groupId>javax.xml.stream</groupId>
-                        <artifactId>stax-api</artifactId>
-                    </exclusion>
-                </exclusions>
+                <groupId>com.fasterxml.woodstox</groupId>
+                <artifactId>woodstox-core</artifactId>
+                <version>7.1.1</version>
             </dependency>
             <dependency>
                 <groupId>org.codehaus.woodstox</groupId>
                 <artifactId>stax2-api</artifactId>
-                <version>3.1.4</version>
+                <version>4.2.2</version>
             </dependency>
             <dependency>
                 <groupId>suse</groupId>
@@ -663,7 +656,7 @@
             <dependency>
                 <groupId>org.apache.santuario</groupId>
                 <artifactId>xmlsec</artifactId>
-                <version>2.0.7</version>
+                <version>4.0.4</version>
             </dependency>
             <dependency>
                 <groupId>org.glassfish.jaxb</groupId>

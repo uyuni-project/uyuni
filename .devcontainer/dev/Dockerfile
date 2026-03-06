@@ -10,6 +10,8 @@ RUN $ZYPPER_CMD addrepo --refresh --no-gpgcheck \
     "https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Utils/openSUSE_Tumbleweed/" uyuni-utils && \
     $ZYPPER_CMD addrepo --refresh --no-gpgcheck \
     "https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Master:/ContainerUtils/openSUSE_Tumbleweed/" uyuni-tools && \
+    $ZYPPER_CMD addrepo --refresh --no-gpgcheck \
+    "https://download.opensuse.org/repositories/devel:/languages:/nodejs/openSUSE_Tumbleweed/" nodejs && \
     $ZYPPER_CMD refresh && \
     $ZYPPER_CMD install --no-recommends \
     # Core System & Network

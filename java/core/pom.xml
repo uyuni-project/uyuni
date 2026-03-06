@@ -151,10 +151,6 @@
         </dependency>
         <dependency>
             <groupId>suse</groupId>
-            <artifactId>java-saml</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>suse</groupId>
             <artifactId>java-saml-core</artifactId>
         </dependency>
         <dependency>
@@ -478,8 +474,8 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>org.codehaus.woodstox</groupId>
-            <artifactId>woodstox-core-asl</artifactId>
+            <groupId>com.fasterxml.woodstox</groupId>
+            <artifactId>woodstox-core</artifactId>
             <scope>runtime</scope>
         </dependency>
         <dependency>

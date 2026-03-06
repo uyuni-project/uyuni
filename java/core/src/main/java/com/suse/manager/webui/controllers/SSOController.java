@@ -20,6 +20,7 @@ import static spark.Spark.post;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.conf.sso.SSOConfig;
 import com.redhat.rhn.common.hibernate.LookupException;
+import com.redhat.rhn.common.util.ServletUtils;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.security.AuthenticationServiceFactory;
@@ -27,15 +28,14 @@ import com.redhat.rhn.frontend.servlets.PxtSessionDelegateFactory;
 import com.redhat.rhn.manager.user.UserManager;
 
 import com.suse.manager.webui.utils.SparkApplicationHelper;
+import com.suse.utils.sso.SingleSignOnException;
+import com.suse.utils.sso.SingleSignOnProcessor;
 
-import com.onelogin.saml2.Auth;
+import com.onelogin.saml2.authn.SamlResponse;
 import com.onelogin.saml2.exception.Error;
 import com.onelogin.saml2.exception.SettingsException;
-import com.onelogin.saml2.exception.XMLEntityException;
-import com.onelogin.saml2.servlet.ServletUtils;
 import com.onelogin.saml2.settings.Saml2Settings;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -92,7 +92,7 @@ public final class SSOController {
      * @return the response object
      */
     public static Object getACS(Request request, Response response) {
-        if (!ssoConfig.isPresent()) {
+        if (ssoConfig.isEmpty()) {
             return null;
         }
         if (!ConfigDefaults.get().isSingleSignOnEnabled()) {
@@ -100,14 +100,12 @@ public final class SSOController {
         }
 
         try {
-            final Auth auth = new Auth(ssoConfig.get(), request.raw(), response.raw());
-            auth.processResponse();
+            var ssoProcessor = new SingleSignOnProcessor(ssoConfig.get());
 
-            final List<String> errors = auth.getErrors();
-
-            if (errors.isEmpty()) {
-                final Map<String, List<String>> attributes = auth.getAttributes();
-                final String nameId = auth.getNameId();
+            SamlResponse samlResponse = ssoProcessor.processAuthResponse(request.raw());
+            if (samlResponse.isValid()) {
+                final Map<String, List<String>> attributes = samlResponse.getAttributes();
+                final String nameId = samlResponse.getNameId();
 
                 request.raw().getSession().setAttribute("attributes", attributes);
                 request.raw().getSession().setAttribute("nameId", nameId);
@@ -117,17 +115,17 @@ public final class SSOController {
                 final Collection<String> keys = attributes.keySet();
 
                 if (keys.contains("uid") && !attributes.get("uid").isEmpty()) {
-                    final Optional uidOpt = Optional.ofNullable(attributes.get("uid").get(0));
+                    final Optional<String> uidOpt = Optional.ofNullable(attributes.get("uid").get(0));
                     if (uidOpt.isPresent()) {
-                        final User user = UserFactory.lookupByLogin(String.valueOf(uidOpt.get()));
+                        final User user = UserFactory.lookupByLogin(uidOpt.get());
                         user.setLastLoggedIn(new Date());
                         UserManager.storeUser(user);
                         PxtSessionDelegateFactory.getInstance().newPxtSessionDelegate().updateWebUserId(
                                 request.raw(), response.raw(), user.getId());
                         if (relayState != null && !relayState.isEmpty() &&
-                                !relayState.equals(ServletUtils.getSelfRoutedURLNoQuery(request.raw()))) {
+                                !relayState.equals(ServletUtils.getAbsoluteRequestUrl(request.raw()))) {
                             // If the execution is at this point of the code, it means that the request successfully
-                            // passed Auth.processResponse(), meaning that it containes a "SAMLResponse" parameter
+                            // passed Auth.processResponse(), meaning that it contains a "SAMLResponse" parameter
                             // as an encoded64 XML file. This XML file has been in turn validated (signature)
                             // and it has a correct timestamp, so has not been forged by an attacker.
                             // The other parameter sent with the http request is named "RelayState", which usually
@@ -147,11 +145,9 @@ public final class SSOController {
                 }
             }
             else {
-                String allErrors = StringUtils.join(errors, ", ");
-                LOG.error(allErrors);
-                final String errorReason = auth.getLastErrorReason();
+                final String errorReason = samlResponse.getError();
                 if (errorReason != null && !errorReason.isEmpty()) {
-                    LOG.error(auth.getLastErrorReason());
+                    LOG.error(errorReason);
                 }
             }
             response.redirect("/");
@@ -182,8 +178,7 @@ public final class SSOController {
     public static Object getMetadata(Request request, Response response) {
         if (ssoConfig.isPresent() && ConfigDefaults.get().isSingleSignOnEnabled()) {
             try {
-                final Auth auth = new Auth(ssoConfig.get(), request.raw(), response.raw());
-                final Saml2Settings settings = auth.getSettings();
+                final Saml2Settings settings = ssoConfig.get();
                 settings.setSPValidationOnly(true);
                 final String metadata = settings.getSPMetadata();
                 final List<String> errors = Saml2Settings.validateMetadata(metadata);
@@ -222,11 +217,13 @@ public final class SSOController {
                 AuthenticationServiceFactory.getInstance()
                         .getAuthenticationService()
                         .invalidate(request.raw(), response.raw());
-                final Auth auth = new Auth(ssoConfig.get(), request.raw(), response.raw());
-                auth.logout();
+
+                var ssoProcessor = new SingleSignOnProcessor(ssoConfig.get());
+                ssoProcessor.logout(request.raw(), response.raw());
+
                 return response;
             }
-            catch (SettingsException | IOException | XMLEntityException e) {
+            catch (SingleSignOnException e) {
                 LOG.error("Unable to parse settings for SSO and/or XML parsing: {}", e.getMessage(), e);
             }
         }
@@ -246,8 +243,10 @@ public final class SSOController {
                 AuthenticationServiceFactory.getInstance()
                         .getAuthenticationService()
                         .invalidate(request.raw(), response.raw());
-                final Auth auth = new Auth(ssoConfig.get(), request.raw(), response.raw());
-                auth.processSLO();
+
+                var ssoProcessor = new SingleSignOnProcessor(ssoConfig.get());
+                ssoProcessor.processSLO(request.raw(), response.raw());
+
                 return "You have been logged out";
             }
             catch (ServletException | SettingsException e) {
