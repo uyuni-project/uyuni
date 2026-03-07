@@ -30,6 +30,10 @@ Feature: Add a Maintenance Update custom channel and the custom repositories for
     And I click on "Save Repositories"
     Then I should see a "repository information was successfully updated" text
 
+@head
+  Scenario: Create development custom repositories to the custom channel for <client>
+    When I prepare the development repositories of "<client>" as part of "custom_channel_<client>" channel
+
   Scenario: Synchronize the repositories in the custom channel for <client>
     When I follow the left menu "Software > Manage > Channels"
     And I enter "<client>" as the filtered channel name
