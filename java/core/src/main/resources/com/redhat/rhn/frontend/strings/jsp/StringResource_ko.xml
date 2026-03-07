@@ -3828,7 +3828,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/Edit.do</context>
         </context-group>
-        <target>버그 ID는 18자 이하이어야 합니다.</target>
+        <target state="needs-translation">버그 ID는 18자 이하여야 합니다.</target>
       </trans-unit>
       <trans-unit id="errata.channels.updatechannels" xml:space="preserve">
         <source>Update Channels</source>
@@ -6740,7 +6740,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="System Identity Properties" xml:space="preserve">
         <source>System Identity Properties</source>
-        <target>시스템 ID 속성</target>
+        <target state="needs-translation">시스템 ID 속성</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateSystemsCompare.do</context>
         </context-group>
@@ -6754,7 +6754,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit id="Extended System Identity Properties" xml:space="preserve">
         <source>Extended System Identity Properties</source>
-        <target>확장된 시스템 ID 속성</target>
+        <target state="needs-translation">확장 시스템 ID 속성</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/DuplicateSystemsCompare.do</context>
         </context-group>
@@ -14443,7 +14443,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
       </trans-unit>
       <trans-unit id="system.audit.xccdfdetails.jsp.profileid" xml:space="preserve">
         <source>Profile Identifier</source>
-        <target>프로파일 ID</target>
+        <target state="needs-translation">프로파일 식별자</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Detailed view of SCAP XCCDF scan</context>
         </context-group>
@@ -14793,7 +14793,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
       </trans-unit>
       <trans-unit id="scapdiff.jsp.instructions" xml:space="preserve">
         <source>Specify Id of scans (the xid).</source>
-        <target>검사 ID를 지정하십시오(xid).</target>
+        <target state="needs-translation">검사 ID(xid)를 지정하십시오.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Diff of OpenSCAP XCCDF scans</context>
         </context-group>
@@ -17655,14 +17655,14 @@ centrally-managed configuration channel, {2}; below is a list of systems you may
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
-        <target>사용자는 32자 이하의 유효한 Linux 사용자 이름 또는 사용자 ID여야 합니다.</target>
+        <target state="needs-translation">사용자는 32자 이하의 유효한 Linux 사용자 이름 또는 사용자 ID여야 합니다.</target>
       </trans-unit>
       <trans-unit id="config-file-form.error.group-invalid" xml:space="preserve">
         <source>Group must be a valid Linux group name or group id, of 32 characters or less.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
-        <target>그룹은 32자 이하의 유효한 Linux 그룹 이름 또는 그룹 ID여야 합니다.</target>
+        <target state="needs-translation">그룹은 32자 이하의 유효한 Linux 그룹 이름 또는 그룹 ID여야 합니다.</target>
       </trans-unit>
       <trans-unit approved="yes" id="config-file-form.error.mode-invalid" xml:space="preserve">
         <source>Permissions must be a valid Linux permissions set (4 octal digits)</source>
@@ -21912,7 +21912,7 @@ the &lt;a href="/rhn/kickstart/ActivationKeysList.do?ksid={0}"&gt;Activation Key
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/ProvisionVirtualizationWizard.do</context>
         </context-group>
-        <target>CPU</target>
+        <target state="needs-translation">CPU</target>
       </trans-unit>
       <trans-unit id="kickstart.channel.virtMemory.jsp" xml:space="preserve">
         <source>Memory</source>
@@ -23461,7 +23461,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
       </trans-unit>
       <trans-unit id="sdc.details.overview.minionId" xml:space="preserve">
         <source>Minion Id:</source>
-        <target>Minion ID:</target>
+        <target state="needs-translation">Minion ID:</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
@@ -24209,7 +24209,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Activation.do</context>
         </context-group>
-        <target state="translated">시스템 프로파일별 활성화 키를 사용하여 이 시스템을 동일한 ID, 기록, 그룹 및 채널로 다시 등록할 수 있습니다(시스템의 기본 채널이 변경된 경우 제외).</target>
+        <target state="needs-translation">시스템 프로파일별 활성화 키를 사용하여 이 시스템을 동일한 ID, 기록, 그룹 및 채널로 다시 등록할 수 있습니다(시스템의 기본 채널이 변경된 경우 제외).</target>
       </trans-unit>
       <trans-unit id="sdc.details.activation.key" xml:space="preserve">
         <source>Key:</source>
@@ -24265,7 +24265,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
         </context-group>
-        <target>BIOS:</target>
+        <target state="needs-translation">BIOS:</target>
       </trans-unit>
       <trans-unit id="sdc.details.hardware.dmi_asset_tag" xml:space="preserve">
         <source>Asset Tag:</source>
@@ -24381,7 +24381,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
       </trans-unit>
       <trans-unit id="sdc.details.hardware.machine_id_empty_warning" xml:space="preserve">
         <source>This system does not have a machine id. This is needed in the event of re-registering it as a Salt minion. Make sure the system has the latest version of the client tools installed and use the Schedule Hardware Refresh button bellow to fill the machine id.</source>
-        <target>이 시스템에는 시스템 ID가 없습니다. Salt minion으로 다시 등록하는 경우 시스템 ID가 필요합니다. 시스템에 최신 버전의 클라이언트 도구가 설치되었는지 확인하고 아래 하드웨어 새로 고침 예약 버튼을 사용하여 시스템 ID를 입력하십시오.</target>
+        <target state="needs-translation">이 시스템에는 시스템 ID가 없습니다. Salt minion으로 다시 등록하는 경우 시스템 ID가 필요합니다. 시스템에 최신 버전의 클라이언트 도구가 설치되었는지 확인하고 아래 하드웨어 새로 고침 예약 버튼을 사용하여 시스템 ID를 입력하십시오.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/SystemHardware.do</context>
         </context-group>
@@ -26030,7 +26030,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="baddownload.jsp.retry" xml:space="preserve">
         <source>Please revisit the page you received this url from to receive a new one.</source>
-        <target>이 URL을 받은 페이지를 다시 방문하여 새로운 URL을 받으시기 바랍니다.</target>
+        <target state="needs-translation">이 URL을 받은 페이지를 다시 방문하여 새로운 URL을 받으시기 바랍니다.</target>
       </trans-unit>
       <trans-unit id="package.jsp.alt" xml:space="preserve">
         <source>package</source>
@@ -27758,7 +27758,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="iss.slave.name" xml:space="preserve">
         <source>Slave Fully-Qualified Domain Name</source>
-        <target>슬레이브의 FQDN(Fully-Qualified Domain Name)</target>
+        <target state="needs-translation">슬레이브의 FQDN(Fully-Qualified Domain Name)</target>
       </trans-unit>
       <trans-unit id="iss.slave.isEnabled" xml:space="preserve">
         <source>Allow Slave to Sync?</source>
@@ -27846,7 +27846,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="iss.master.label" xml:space="preserve">
         <source>Master Fully-Qualified Domain Name</source>
-        <target>마스터의 FQDN(Fully-Qualified Domain Name)</target>
+        <target state="needs-translation">마스터의 FQDN(Fully-Qualified Domain Name)</target>
       </trans-unit>
       <trans-unit id="iss.master.notDefault" xml:space="preserve">
         <source>Not Default Master</source>
@@ -29662,20 +29662,20 @@ given channel.</source>
         <source>CA Certificates Update</source>
         <target state="final">CA 인증서 업데이트</target>
       </trans-unit>
-    <trans-unit id="system.event.actionId" xml:space="preserve">
-          <source>Action ID</source>
+      <trans-unit id="system.event.actionId" xml:space="preserve">
+        <source>Action ID</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="pkg.lock.message.lockerror" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="pkg.lock.message.lockerror" xml:space="preserve">
         <source>Failed to lock selected packages. Can't lock multiple versions of the same package.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/packages/LockPackages.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="needs-translation">선택한 패키지를 잠글 수 없습니다. 동일한 패키지의 여러 버전을 잠글 수 없습니다.</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
