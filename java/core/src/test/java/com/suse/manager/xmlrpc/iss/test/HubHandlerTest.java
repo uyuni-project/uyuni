@@ -61,6 +61,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.IOException;
 import java.security.cert.CertificateException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -315,6 +316,45 @@ public class HubHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
+    public void testListPeripheralServers() {
+        List<Map<String, Object>> mapping = new ArrayList<>();
+        Map<String, Object> details1 = new HashMap<>();
+        details1.put("fqdn", "peripheral1.example.com");
+        details1.put("id", 1000L);
+        details1.put("root_ca", "root-ca-1");
+        mapping.add(details1);
+
+        Map<String, Object> details2 = new HashMap<>();
+        details2.put("fqdn", "peripheral2.example.com");
+        details2.put("id", 2000L);
+        details2.put("root_ca", "root-ca-2");
+        mapping.add(details2);
+
+        context.checking(new Expectations() {{
+            oneOf(hubManagerMock).listPeripheralServers(satAdmin);
+            will(returnValue(mapping));
+        }});
+
+        assertThrows(PermissionCheckFailureException.class,
+                () -> hubHandler.listPeripheralServers(regular));
+
+        List<Map<String, Object>> result = hubHandler.listPeripheralServers(satAdmin);
+        assertEquals(2, result.size());
+
+        Map<String, Object> entry1 = result.stream()
+                .filter(m -> m.get("fqdn").equals("peripheral1.example.com"))
+                .findFirst().orElseThrow();
+        assertEquals(1000L, entry1.get("id"));
+        assertEquals("root-ca-1", entry1.get("root_ca"));
+
+        Map<String, Object> entry2 = result.stream()
+                .filter(m -> m.get("fqdn").equals("peripheral2.example.com"))
+                .findFirst().orElseThrow();
+        assertEquals(2000L, entry2.get("id"));
+        assertEquals("root-ca-2", entry2.get("root_ca"));
+    }
+
+    @Test
     public void throwsCorrectExceptionWhenReplaceTokensFailsCausedByIllegalStateException() {
         HubHandler newHubHandler = new HubHandler();
         assertThrows(FaultException.class,
@@ -368,7 +408,8 @@ public class HubHandlerTest extends BaseHandlerTestCase {
         DefaultHubInternalClient mockDefaultHubInternalClient = context.mock(DefaultHubInternalClient.class);
         HubFactory hubFactory = new HubFactory();
         HubManager newHubManager = new HubManager(hubFactory, mockHubClientFactory,
-                new MirrorCredentialsManager(), mockTaskomaticApi, GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER);
+                new MirrorCredentialsManager(), mockTaskomaticApi, GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER,
+                GlobalInstanceHolder.SYSTEM_MANAGER);
         HubHandler newHubHandler = new HubHandler(newHubManager);
 
         String sshFailureErrorString = "unable to find valid certification path to target";

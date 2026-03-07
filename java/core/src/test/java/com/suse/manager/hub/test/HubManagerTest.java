@@ -33,17 +33,21 @@ import com.redhat.rhn.domain.iss.IssSlave;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MgrServerInfo;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerConstants;
+import com.redhat.rhn.domain.server.ServerFQDN;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
+import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestStatics;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
@@ -203,6 +207,10 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
 
     private MockTaskomaticApi mockTaskomaticApi;
 
+    private SystemManager systemManagerMock;
+
+    private SystemEntitlementManager systemEntitlementManager;
+
     @BeforeEach
     @Override
     public void setUp() throws Exception {
@@ -232,12 +240,13 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
 
         mockTaskomaticApi = new MockTaskomaticApi();
         SaltApi saltApi = new TestSaltApi();
-        SystemEntitlementManager sysEntMgr = new SystemEntitlementManager(
+        systemEntitlementManager = new SystemEntitlementManager(
                 new SystemUnentitler(saltApi), new SystemEntitler(saltApi)
         );
+        systemManagerMock = mock(SystemManager.class);
 
         hubManager = new HubManager(hubFactory, clientFactoryMock, new MirrorCredentialsManager(), mockTaskomaticApi,
-                sysEntMgr);
+                systemEntitlementManager, systemManagerMock);
     }
 
     @AfterEach
@@ -553,6 +562,45 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
                 "peripheral_dummy3.periph.fqdn_root_ca.pem", "", "");
         hubManager.saveNewServer(getValidToken("dummy3.periph.fqdn"), IssRole.PERIPHERAL, null, null);
         mockTaskomaticApi.verifyTaskoCall();
+    }
+
+    @Test
+    public void saveNewServerDeletesForeignSystemWhenSaltSystemExists() throws Exception {
+        String fqdn = "duplicate.example.com";
+
+        // 1. Create a SALT server
+        Server saltServer = ServerTestUtils.createTestSystem(satAdmin,
+                ServerConstants.getServerGroupTypeSaltEntitled());
+        saltServer.setName("Salt Server");
+        saltServer.getFqdns().add(new ServerFQDN(saltServer, fqdn));
+        ServerFactory.save(saltServer);
+
+        // 2. Create a FOREIGN server
+        Server foreignServer = ServerTestUtils.createTestSystem(satAdmin,
+                ServerConstants.getServerGroupTypeForeignEntitled());
+        foreignServer.setName("Foreign Server");
+        foreignServer.getFqdns().add(new ServerFQDN(foreignServer, fqdn));
+        ServerFactory.save(foreignServer);
+
+        long foreignId = foreignServer.getId();
+
+        // Ensure they are in the DB
+        TestUtils.flushAndClearSession();
+
+        // 3. Mock expectations
+        context().checking(new Expectations() {{
+            oneOf(systemManagerMock).deleteServer(with(aNull(User.class)), with(equal(foreignId)));
+        }});
+
+        // 4. Call saveNewServer for PERIPHERAL
+        IssAccessToken token = getValidToken(fqdn);
+        hubManager.saveNewServer(token, IssRole.PERIPHERAL, null, null);
+
+        // Verify saltServer is still there and has fqdn
+        Server updatedSaltServer = ServerFactory.lookupById(saltServer.getId());
+        assertNotNull(updatedSaltServer);
+        assertTrue(updatedSaltServer.getFqdns().stream()
+                .map(ServerFQDN::getName).anyMatch(n -> n.equals(fqdn)));
     }
 
     @Test
@@ -1002,6 +1050,46 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
         IllegalStateException exception = assertThrows(IllegalStateException.class,
             () -> hubManager.deleteIssV1Master(getValidToken(REMOTE_SERVER_FQDN)));
         assertEquals(REMOTE_SERVER_FQDN + " is not registered as an ISS v3 hub", exception.getMessage());
+    }
+
+    @Test
+    public void testListPeripheralServers() throws Exception {
+        String fqdn1 = "peripheral1.example.com";
+        String fqdn2 = "peripheral2.example.com";
+        String rootCa1 = "root-ca-1";
+        String rootCa2 = "root-ca-2";
+
+        // Create peripheral servers in HubFactory
+        hubFactory.save(new IssPeripheral(fqdn1, rootCa1));
+        hubFactory.save(new IssPeripheral(fqdn2, rootCa2));
+
+        // Create corresponding Server entries
+        Server server1 = ServerTestUtils.createTestSystem(satAdmin);
+        server1.getFqdns().add(new ServerFQDN(server1, fqdn1));
+        ServerFactory.save(server1);
+
+        Server server2 = ServerTestUtils.createTestSystem(satAdmin);
+        server2.getFqdns().add(new ServerFQDN(server2, fqdn2));
+        ServerFactory.save(server2);
+
+        TestUtils.flushAndClearSession();
+
+        List<Map<String, Object>> result = hubManager.listPeripheralServers(satAdmin);
+
+        assertNotNull(result);
+        assertEquals(2, result.size());
+
+        Map<String, Object> details1 = result.stream()
+                .filter(m -> m.get("fqdn").equals(fqdn1))
+                .findFirst().orElseThrow();
+        assertEquals(server1.getId(), details1.get("id"));
+        assertEquals(rootCa1, details1.get("root_ca"));
+
+        Map<String, Object> details2 = result.stream()
+                .filter(m -> m.get("fqdn").equals(fqdn2))
+                .findFirst().orElseThrow();
+        assertEquals(server2.getId(), details2.get("id"));
+        assertEquals(rootCa2, details2.get("root_ca"));
     }
 
     private static IssAccessToken getValidToken(String fdqn) {

@@ -32,10 +32,12 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
+import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
@@ -133,7 +135,10 @@ public class IssMigratorTest extends JMockBaseTestCaseWithUser {
             new SystemEntitler(saltApi)
         );
 
-        var hubManager = new HubManager(hubFactory, hubClientFactory, credentialsManager, taskomaticApi, sysEntMgr);
+        var sysMgr = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
+
+        var hubManager = new HubManager(hubFactory, hubClientFactory, credentialsManager, taskomaticApi, sysEntMgr,
+                sysMgr);
 
         migrator = new IssMigrator(hubManager, satAdmin);
     }

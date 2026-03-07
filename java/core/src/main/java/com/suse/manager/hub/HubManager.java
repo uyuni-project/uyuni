@@ -109,6 +109,8 @@ public class HubManager {
 
     private final SystemEntitlementManager systemEntitlementManager;
 
+    private final SystemManager systemManager;
+
     private final TaskomaticApi taskomaticApi;
 
     private static final Logger LOG = LogManager.getLogger(HubManager.class);
@@ -124,7 +126,7 @@ public class HubManager {
      */
     public HubManager() {
         this(new HubFactory(), new HubClientFactory(), new MirrorCredentialsManager(), new TaskomaticApi(),
-                GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER);
+                GlobalInstanceHolder.SYSTEM_ENTITLEMENT_MANAGER, GlobalInstanceHolder.SYSTEM_MANAGER);
     }
 
     /**
@@ -134,15 +136,18 @@ public class HubManager {
      * @param mirrorCredentialsManagerIn the mirror credentials manager
      * @param taskomaticApiIn the TaskomaticApi object
      * @param systemEntitlementManagerIn the system entitlement manager
+     * @param systemManagerIn the system manager
      */
     public HubManager(HubFactory hubFactoryIn, HubClientFactory clientFactoryIn,
                       MirrorCredentialsManager mirrorCredentialsManagerIn, TaskomaticApi taskomaticApiIn,
-                      SystemEntitlementManager systemEntitlementManagerIn) {
+                      SystemEntitlementManager systemEntitlementManagerIn,
+                      SystemManager systemManagerIn) {
         this.hubFactory = hubFactoryIn;
         this.clientFactory = clientFactoryIn;
         this.mirrorCredentialsManager = mirrorCredentialsManagerIn;
         this.taskomaticApi = taskomaticApiIn;
         this.systemEntitlementManager = systemEntitlementManagerIn;
+        this.systemManager = systemManagerIn;
     }
 
     /**
@@ -1084,19 +1089,47 @@ public class HubManager {
             SystemEntitlementManager systemEntitlementManagerIn,
             User creator, String serverName, Set<String> fqdns
     ) {
-        Optional<Server> existing = ServerFactory.findByAnyFqdn(fqdns);
-        if (existing.isPresent()) {
-            Server server = existing.get();
-            if (!(server.hasEntitlement(EntitlementManager.SALT) ||
-                    server.hasEntitlement(EntitlementManager.FOREIGN))) {
-                throw new SystemsExistException(List.of(server.getId()));
+        List<Server> existing = ServerFactory.listByAnyFqdn(fqdns);
+        if (!existing.isEmpty()) {
+            Optional<Server> saltServer = existing.stream()
+                    .filter(s -> s.hasEntitlement(EntitlementManager.SALT))
+                    .findFirst();
+            Optional<Server> foreignServer = existing.stream()
+                    .filter(s -> s.hasEntitlement(EntitlementManager.FOREIGN))
+                    .findFirst();
+
+            Server server;
+            if (saltServer.isPresent()) {
+                server = saltServer.get();
+                if (foreignServer.isPresent()) {
+                    LOG.info("Found both SALT and FOREIGN system for {}. Deleting FOREIGN system {}.",
+                            serverName, foreignServer.get().getId());
+                    systemManager.deleteServer(creator, foreignServer.get().getId());
+                }
             }
+            else if (foreignServer.isPresent()) {
+                server = foreignServer.get();
+            }
+            else {
+                throw new SystemsExistException(existing.stream().map(Server::getId).toList());
+            }
+
             // Add the FQDNs as some may not be already known
             server.getFqdns().addAll(fqdns.stream()
                     .filter(fqdn -> !fqdn.contains("*"))
                     .map(fqdn -> new ServerFQDN(server, fqdn)).toList());
 
             server.updateServerInfo();
+            MgrServerInfo mgrServerInfo = server.getMgrServerInfo();
+            if (mgrServerInfo == null) {
+                mgrServerInfo = new MgrServerInfo();
+                mgrServerInfo.setServer(server);
+                server.setMgrServerInfo(mgrServerInfo);
+            }
+
+            // PERIPHERAL_SERVER entitlement is no longer used
+            systemEntitlementManagerIn.removeServerEntitlement(server, EntitlementManager.PERIPHERAL_SERVER);
+
             SystemManager.updateSystemOverview(server.getId());
             return server;
         }
@@ -1157,6 +1190,28 @@ public class HubManager {
     public List<IssPeripheral> listRegisteredPeripherals(User user, PageControl pc) {
         ensureSatAdmin(user);
         return hubFactory.listPaginatedPeripherals(pc);
+    }
+
+    /**
+     * List all peripheral servers with their system IDs and root CA
+     * @param user the user
+     * @return a list of maps containing fqdn, id and root_ca
+     */
+    public List<Map<String, Object>> listPeripheralServers(User user) {
+        ensureSatAdmin(user);
+        List<IssPeripheral> peripherals = hubFactory.listPeripherals();
+        List<Map<String, Object>> result = new ArrayList<>();
+        for (IssPeripheral peripheral : peripherals) {
+            Optional<Server> server = ServerFactory.findByFqdn(peripheral.getFqdn());
+            server.ifPresent(s -> {
+                Map<String, Object> details = new HashMap<>();
+                details.put("fqdn", peripheral.getFqdn());
+                details.put("id", s.getId());
+                details.put("root_ca", peripheral.getRootCa());
+                result.add(details);
+            });
+        }
+        return result;
     }
 
     /**
