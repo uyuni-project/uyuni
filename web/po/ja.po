@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-03-01 10:55+0100\n"
-"PO-Revision-Date: 2026-03-06 15:04+0000\n"
+"PO-Revision-Date: 2026-03-07 08:04+0000\n"
 "Last-Translator: Carina Hagl <vistatec_pm@sunflare.co.jp>\n"
 "Language-Team: Japanese <https://l10n.opensuse.org/projects/uyuni/web/ja/>\n"
 "Language: ja\n"
@@ -4313,20 +4313,16 @@ msgid "If you typed this address into your browser, double-check the spelling an
 msgstr "このアドレスをご使用のブラウザに入力したら、スペリングや大文字の使い方に誤りがないかを再度確認してください。"
 
 #: ../html/src/manager/errors/not-found.tsx:16
-#, fuzzy
-#| msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your browser to try a different link, or use the top (or left) navigation bars to find the page you are looking for."
 msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
-msgstr "リンクをたどっている場合、リンクが正しくないか、古くなっている可能性があります。ブラウザの戻るボタンをクリックして別のリンクを試すか、上部(または左側)のナビゲーションバーを使用してお探しのページを見つけてください。"
+msgstr "リンクをたどっている場合、リンクが正しくないか、古くなっている可能性があります。ブラウザの戻るボタンをクリックしてください。 "
 
 #: ../html/src/manager/errors/not-found.tsx:23
 msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was "
 msgstr "ブックマークを使用している場合は、ブックマークの作成後に異なる場所に移動している場合もあります。 "
 
 #: ../html/src/manager/errors/not-found.tsx:30
-#, fuzzy
-#| msgid "If you feel you've reached this page in error, please contact us with details of how you received this message."
 msgid "If you feel you've reached this page in error, please contact us with details of how you received "
-msgstr "このページが間違って表示されたと判断する場合は、このメッセージを受け取った状況の詳細を弊社にご報告ください。"
+msgstr "このページが間違って表示されたと判断する場合は、このメッセージを受け取った状況の詳細を弊社にご報告ください。 "
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.tsx:27
 msgid "Applying the config channels has been scheduled for each minion server in this group"
