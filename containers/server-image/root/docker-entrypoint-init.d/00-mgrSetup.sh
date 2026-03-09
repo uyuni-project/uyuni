@@ -1,8 +1,6 @@
 #!/bin/bash
 
-: "${UYUNI_FQDN:=}"
-: "${NO_SSL:=N}"
-: "${DEBUG_JAVA:=false}"
+: "${UYUNI_HOSTNAME:=}"
 
 : "${MANAGER_DB_HOST:=db}"
 : "${MANAGER_DB_PORT:=5432}"
@@ -114,7 +112,7 @@ EOF
 
 setup_spacewalk() {
   # Deploy the SSL certificates
-  if [ "${NO_SSL}" = "Y" ]; then
+  if [ "${container}" = "oci" ]; then
     /usr/bin/spacewalk-setup-httpd --no-ssl
   else
     /usr/bin/spacewalk-setup-httpd
@@ -148,7 +146,7 @@ report-db-user=${REPORT_DB_USER}
 report-db-password=${REPORT_DB_PASS}
 enable-tftp=${MANAGER_ENABLE_TFTP}
 product_name=${PRODUCT_NAME}
-hostname=${UYUNI_FQDN}
+hostname=${UYUNI_HOSTNAME}
 " > /root/spacewalk-answers
 
   if [ -n "${SCC_USER}" ]; then
@@ -158,7 +156,7 @@ scc-pass = ${SCC_PASS}
     PARAM_CC="--scc"
   fi
 
-  if [ "${NO_SSL}" = "Y" ]; then
+  if [ "${container}" = "oci" ]; then
     echo "no-ssl = Y
 " >>/root/spacewalk-answers
     sed '/ssl/Id' -i /etc/apache2/conf.d/zz-spacewalk-www.conf
@@ -169,7 +167,7 @@ scc-pass = ${SCC_PASS}
   /usr/bin/spacewalk-setup --clear-db ${PARAM_CC} --answer-file=/root/spacewalk-answers
   SWRET="${?}"
   if [ "x" = "x${MANAGER_MAIL_FROM}" ]; then
-    MANAGER_MAIL_FROM="${PRODUCT_NAME} (${UYUNI_FQDN}) <root@${UYUNI_FQDN}>"
+    MANAGER_MAIL_FROM="${PRODUCT_NAME} (${UYUNI_HOSTNAME}) <root@${UYUNI_HOSTNAME}>"
   fi
   if ! grep "^web.default_mail_from" /etc/rhn/rhn.conf > /dev/null; then
     echo "web.default_mail_from = ${MANAGER_MAIL_FROM}" >> /etc/rhn/rhn.conf
@@ -185,13 +183,6 @@ scc-pass = ${SCC_PASS}
   fi
 }
 
-setup_mirror() {
-  # In the container case, we have the MIRROR_PATH environment variable at setup
-  if [ -n "${MIRROR_PATH}" ]; then
-    echo "server.susemanager.fromdir = ${MIRROR_PATH}" >> /etc/rhn/rhn.conf
-  fi
-}
-
 setup_admin_user() {
   if [ -n "${ADMIN_PASS}" ]; then
     echo "starting tomcat..."
@@ -203,7 +194,7 @@ setup_admin_user() {
 
     echo "Creating first user..."
 
-    if [ "${NO_SSL}" = "Y" ]; then
+    if [ "${container}" = "oci" ]; then
       CURL_SCHEME="http"
     else
       CURL_SCHEME="-L -k https"
@@ -242,28 +233,6 @@ setup_admin_user() {
   fi
 }
 
-setup_debug() {
-  if [ "${DEBUG_JAVA}" = "true" ]; then
-    # Note: $JAVA_OPTS inside single quotes is NOT expanded here. 
-    # It assumes the target file is a shell script that will source this line later.
-    echo 'JAVA_OPTS=" $JAVA_OPTS -Xdebug -Xrunjdwp:transport=dt_socket,address=*:8003,server=y,suspend=n" ' >> /etc/tomcat/conf.d/remote_debug.conf
-    echo 'JAVA_OPTS=" $JAVA_OPTS -Xdebug -Xrunjdwp:transport=dt_socket,address=*:8001,server=y,suspend=n" ' >> /etc/rhn/taskomatic.conf
-    echo 'JAVA_OPTS=" $JAVA_OPTS -Xdebug -Xrunjdwp:transport=dt_socket,address=*:8002,server=y,suspend=n" ' >> /usr/share/rhn/config-defaults/rhn_search_daemon.conf
-  fi
-}
-
-setup_mail() {
-  # setup mail
-  postconf -e "myhostname=${UYUNI_FQDN}"
-}
-
-setup_timezone() {
-  if [ -n "${TZ}" ]; then
-    rm -f /etc/localtime
-    ln -s "/usr/share/zoneinfo/${TZ}" /etc/localtime
-  fi
-}
-
 setup_product_name() {
   if [ -f "${DEFAULT_RHN_CONF}" ]; then
     while IFS=" = " read -r name value
@@ -279,13 +248,6 @@ setup_product_name() {
   fi
 }
 
-check_running_user_permission() {
-  if [ ! "$(id -u)" -eq 0 ]; then
-    echo "You need to be superuser (root) to run this script!"
-    exit 1
-  fi
-}
-
 check_current_installation() {
   if [ -e "${MANAGER_COMPLETE}" ]; then
     echo "Server appears to be already configured. Installation options may be ignored."
@@ -295,14 +257,9 @@ check_current_installation() {
 
 check_current_installation
 setup_product_name
-check_running_user_permission
-setup_timezone
-setup_mail
-setup_debug
 setup_db_postgres
 setup_reportdb
 setup_spacewalk
-setup_mirror
 setup_admin_user
 
 touch ${MANAGER_COMPLETE}

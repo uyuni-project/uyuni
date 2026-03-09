@@ -30,6 +30,92 @@ spec:
           - name: MIRROR_PATH
             value: /mirror
 {{- end }}
+        - name: ADMIN_USER
+          valueFrom:
+            secretKeyRef:
+              key: username
+              name: admin-credentials
+              optional: false
+        - name: ADMIN_PASS
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: admin-credentials
+              optional: false
+        - name: MANAGER_USER
+          valueFrom:
+            secretKeyRef:
+              key: username
+              name: db-credentials
+              optional: false
+        - name: MANAGER_PASS
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: db-credentials
+              optional: false
+        - name: REPORT_DB_USER
+          valueFrom:
+            secretKeyRef:
+              key: username
+              name: reportdb-credentials
+              optional: false
+        - name: REPORT_DB_PASS
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: reportdb-credentials
+              optional: false
+        - name: MANAGER_DB_NAME
+          value: susemanager
+        - name: MANAGER_DB_HOST
+          value: db
+        - name: MANAGER_DB_PORT
+          value: "5432"
+        - name: REPORT_DB_PORT
+          value: "5432"
+        - name: EXTERNALDB_PROVIDER
+        - name: ISS_PARENT
+        - name: REPORT_DB_NAME
+          value: reportdb
+        - name: REPORT_DB_HOST
+          value: reportdb
+        - name: MANAGER_ADMIN_EMAIL
+          valueFrom:
+            configMapKeyRef:
+              key: email
+              name: uyuni-config
+              optional: false
+        - name: MANAGER_MAIL_FROM
+          valueFrom:
+            configMapKeyRef:
+              key: email
+              name: uyuni-config
+              optional: false
+        - name: UYUNI_HOSTNAME
+          valueFrom:
+            configMapKeyRef:
+              key: fqdn
+              name: uyuni-config
+              optional: false
+{{- if .Values.exposeJavaDebug }}
+        - name: DEBUG_JAVA
+          value: "true"
+{{- end }}
+{{- if .Values.registrySecret }}
+        - name: SCC_USER
+          valueFrom:
+            secretKeyRef:
+              key: username
+              name: {{ .Values.registrySecret }}
+              optional: false
+        - name: SCC_PASS
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: {{ .Values.registrySecret }}
+              optional: false
+{{- end }}
 {{- if .Values.server.systemdLogLevel }}
         - name: SYSTEMD_LOG_TARGET
           value: console
@@ -38,8 +124,6 @@ spec:
         tty: true
 {{- end }}
         image: {{ include "uyuni.image" (dict "name" "server" "global" . "local" .Values.server) }}
-        command:
-        - /docker-entrypoint-init.d/00-kubernetes-systemd
         imagePullPolicy: {{ .Values.pullPolicy }}
         lifecycle:
           preStop:
@@ -185,6 +269,98 @@ spec:
       initContainers:
       - command:
         - sh
+        - -x
+        - -c
+        - |2
+          # Fill he empty volumes
+          for vol in /var/lib/cobbler \
+                 /var/lib/salt \
+                 /var/lib/pgsql \
+                 /var/cache \
+                 /var/log \
+                 /srv/salt \
+                 /srv/www \
+                 /srv/tftpboot \
+                 /srv/formula_metadata \
+                 /srv/pillar \
+                 /srv/susemanager \
+                 /srv/spacewalk \
+                 /root \
+                 /etc/apache2 \
+                 /etc/rhn \
+                 /etc/systemd/system/multi-user.target.wants \
+                 /etc/systemd/system/sockets.target.wants \
+                 /etc/salt \
+                 /etc/tomcat \
+                 /etc/cobbler \
+                 /etc/sysconfig \
+                 /etc/postfix \
+                 /etc/sssd
+          do
+            chown --reference=$vol /mnt$vol;
+            chmod --reference=$vol /mnt$vol;
+            if [ -z "$(ls -A /mnt$vol)" ]; then
+                cp -a $vol/. /mnt$vol;
+            fi
+          done
+        image: {{ include "uyuni.image" (dict "name" "server" "global" . "local" .Values.server) }}
+        imagePullPolicy: {{ .Values.pullPolicy }}
+        name: init-volumes
+        volumeMounts:
+          - mountPath: /mnt/var/lib/cobbler
+            name: var-cobbler
+          - mountPath: /mnt/var/lib/rhn/search
+            name: var-search
+          - mountPath: /mnt/var/lib/salt
+            name: var-salt
+          - mountPath: /mnt/var/cache
+            name: var-cache
+          - mountPath: /mnt/var/spacewalk
+            name: var-spacewalk
+          - mountPath: /mnt/var/log
+            name: var-log
+          - mountPath: /mnt/srv/salt
+            name: srv-salt
+          - mountPath: /mnt/srv/www/
+            name: srv-www
+          - mountPath: /mnt/srv/tftpboot
+            name: srv-tftpboot
+          - mountPath: /mnt/srv/formula_metadata
+            name: srv-formulametadata
+          - mountPath: /mnt/srv/pillar
+            name: srv-pillar
+          - mountPath: /mnt/srv/susemanager
+            name: srv-susemanager
+          - mountPath: /mnt/srv/spacewalk
+            name: srv-spacewalk
+          - mountPath: /mnt/root
+            name: root
+          - mountPath: /mnt/etc/pki/trust/anchors/
+            name: ca-certs
+          - mountPath: /mnt/run/salt/master
+            name: run-salt-master
+          - mountPath: /mnt/etc/apache2
+            name: etc-apache2
+          - mountPath: /mnt/etc/systemd/system/multi-user.target.wants
+            name: etc-systemd-multi
+          - mountPath: /mnt/etc/systemd/system/sockets.target.wants
+            name: etc-systemd-sockets
+          - mountPath: /mnt/etc/salt
+            name: etc-salt
+          - mountPath: /mnt/etc/tomcat
+            name: etc-tomcat
+          - mountPath: /mnt/etc/cobbler
+            name: etc-cobbler
+          - mountPath: /mnt/etc/sysconfig
+            name: etc-sysconfig
+          - mountPath: /mnt/etc/postfix
+            name: etc-postfix
+          - mountPath: /mnt/etc/sssd
+            name: etc-sssd
+          - mountPath: /mnt/etc/rhn
+            name: etc-rhn
+      - command:
+        - sh
         - -c
         - |2
           until pg_isready -U $MANAGER_USER -h $MANAGER_DB_HOST -p $MANAGER_DB_PORT -d $MANAGER_DB_NAME; do
@@ -246,22 +422,6 @@ spec:
         image: {{ include "uyuni.image" (dict "name" "server" "global" . "local" .Values.server) }}
         imagePullPolicy: {{ .Values.pullPolicy }}
         name: db-waiter
-      - command:
-        - sh
-        - -c
-        - |2
-          until test -e /root/.MANAGER_SETUP_COMPLETE; do
-            sleep 60
-          done
-        image: {{ include "uyuni.image" (dict "name" "server" "global" . "local" .Values.server) }}
-        imagePullPolicy: {{ .Values.pullPolicy }}
-        name: setup-waiter
-        volumeMounts:
-        - mountPath: /root
-          name: root
-      securityContext:
-        seLinuxOptions:
-          level: "s0"
       volumes:
       - name: var-cobbler
         persistentVolumeClaim:

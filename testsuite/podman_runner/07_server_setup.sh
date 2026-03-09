@@ -153,7 +153,7 @@ $PODMAN_CMD run --cap-add AUDIT_CONTROL \
     --secret uyuni-cert,type=mount,target=/etc/pki/tls/certs/spacewalk.crt \
     --secret uyuni-key,type=mount,target=/etc/pki/tls/private/spacewalk.key \
     --secret uyuni-db-ca,type=mount,target=/etc/pki/trust/anchors/DB-RHN-ORG-TRUSTED-SSL-CERT \
-    -e UYUNI_FQDN="server"  \
+    -e UYUNI_HOSTNAME="server"  \
     -e MANAGER_ADMIN_EMAIL="a@b.com"  \
     -e MANAGER_MAIL_FROM="a@b.com"  \
     -e MANAGER_ENABLE_TFTP="n"  \
