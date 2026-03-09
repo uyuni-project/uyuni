@@ -128,7 +128,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     Then I should see the "SUSE Linux Micro 6.2 x86_64" selected
     When I open the sub-list of the product "SUSE Linux Micro 6.2 x86_64"
     And I select "SUSE Multi-Linux Manager Client Tools for SLE 16 x86_64" as a product
-    And I should see "SUSE Multi-Linux Manager Client Tools for SLE 16 x86_64" selected
+    And I should see the "SUSE Multi-Linux Manager Client Tools for SLE 16 x86_64" selected
     And I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Micro 6.2 x86_64" product has been added
