@@ -158,20 +158,16 @@ def do_errata_apply(self, args, errata_list=None, only_systems=None):
                     if system.get("name") not in to_apply_by_name[erratum]:
                         to_apply_by_name[erratum].append(system.get("name"))
         except xmlrpclib.Fault:
-            # pylint: disable-next=consider-using-f-string
-            logging.debug("%s does not affect any systems" % erratum)
+            logging.debug(f"{erratum} does not affect any systems")
             continue
 
         # make a summary list to show the user
         if erratum in to_apply_by_name:
             summary.append(
-                # pylint: disable-next=consider-using-f-string
-                "%s        %s"
-                % (erratum.ljust(15), str(len(to_apply_by_name[erratum])).rjust(3))
+                f"{erratum.ljust(15)}        {str(len(to_apply_by_name[erratum])).rjust(3)}"
             )
         else:
-            # pylint: disable-next=consider-using-f-string
-            logging.debug("%s does not affect any systems" % erratum)
+            logging.debug(f"{erratum} does not affect any systems")
 
     # get a unique list of all systems we need to touch
     for systemlist in to_apply_by_name.values():
@@ -296,8 +292,7 @@ def do_errata_listaffectedsystems(self, args):
                 print(self.SEPARATOR)
             add_separator = True
 
-            # pylint: disable-next=consider-using-f-string
-            print("%s:" % erratum)
+            print(f"{erratum}:")
             print("\n".join(sorted([s.get("name") for s in systems])))
 
     return 0
@@ -340,8 +335,7 @@ def do_errata_listcves(self, args):
                         print(self.SEPARATOR)
                     add_separator = True
 
-                    # pylint: disable-next=consider-using-f-string
-                    print("%s:" % erratum)
+                    print(f"{erratum}:")
 
                 print("\n".join(sorted(cves)))
         return 0
@@ -369,8 +363,7 @@ def do_errata_findbycve(self, args):
         self.help_errata_findbycve()
         return 1
 
-    # pylint: disable-next=consider-using-f-string
-    logging.debug("Got CVE list %s" % cve_list)
+    logging.debug(f"Got CVE list {cve_list}")
     add_separator = False
 
     # Then iterate over the requested CVEs and dump the errata which match
@@ -379,13 +372,11 @@ def do_errata_findbycve(self, args):
             print(self.SEPARATOR)
         add_separator = True
 
-        # pylint: disable-next=consider-using-f-string
-        print("%s:" % c)
+        print(f"{c}:")
         errata = self.client.errata.findByCve(self.session, c)
         if errata:
             for e in errata:
-                # pylint: disable-next=consider-using-f-string
-                print("%s" % e.get("advisory_name"))
+                print(f"{e.get('advisory_name')}")
 
     return 0
 
@@ -523,8 +514,7 @@ def do_errata_delete(self, args):
     # tell the user how many channels each erratum affects
     for erratum in sorted(errata):
         channels = self.client.errata.applicableToChannels(self.session, erratum)
-        # pylint: disable-next=consider-using-f-string
-        print("%s    %s" % (erratum.ljust(20), str(len(channels)).rjust(3)))
+        print(f"{erratum.ljust(20)}    {str(len(channels)).rjust(3)}")
 
     if not self.options.yes and not self.user_confirm(_("Delete these patches [y/N]:")):
         return 1

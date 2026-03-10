@@ -395,30 +395,20 @@ def do_configchannel_backup(self, args):
         dumpfile = outputpath_base + details.get("path")
         dumpdir = dumpfile
         print(_("Output Path:   %s") % dumpfile)
-        # pylint: disable-next=consider-using-f-string
-        fh.write("[%s]\n" % details.get("path"))
-        # pylint: disable-next=consider-using-f-string
-        fh.write("type = %s\n" % details.get("type"))
-        # pylint: disable-next=consider-using-f-string
-        fh.write("revision = %s\n" % details.get("revision"))
-        # pylint: disable-next=consider-using-f-string
-        fh.write("creation = %s\n" % details.get("creation"))
-        # pylint: disable-next=consider-using-f-string
-        fh.write("modified = %s\n" % details.get("modified"))
+        fh.write(f"[{details.get('path')}]\n")
+        fh.write(f"type = {details.get('type')}\n")
+        fh.write(f"revision = {details.get('revision')}\n")
+        fh.write(f"creation = {details.get('creation')}\n")
+        fh.write(f"modified = {details.get('modified')}\n")
 
         if details.get("type") == "symlink":
-            # pylint: disable-next=consider-using-f-string
-            fh.write("target_path = %s\n" % details.get("target_path"))
+            fh.write(f"target_path = {details.get('target_path')}\n")
         else:
-            # pylint: disable-next=consider-using-f-string
-            fh.write("owner = %s\n" % details.get("owner"))
-            # pylint: disable-next=consider-using-f-string
-            fh.write("group = %s\n" % details.get("group"))
-            # pylint: disable-next=consider-using-f-string
-            fh.write("permissions_mode = %s\n" % details.get("permissions_mode"))
+            fh.write(f"owner = {details.get('owner')}\n")
+            fh.write(f"group = {details.get('group')}\n")
+            fh.write(f"permissions_mode = {details.get('permissions_mode')}\n")
 
-        # pylint: disable-next=consider-using-f-string
-        fh.write("selinux_ctx = %s\n" % details.get("selinux_ctx"))
+        fh.write(f"selinux_ctx = {details.get('selinux_ctx')}\n")
 
         if details.get("type") in ("file", "sls"):
             dumpdir = os.path.dirname(dumpfile)
@@ -427,10 +417,8 @@ def do_configchannel_backup(self, args):
             os.makedirs(dumpdir)
 
         if details.get("type") in ("file", "sls"):
-            # pylint: disable-next=consider-using-f-string
-            fh.write("sha256 = %s\n" % details.get("sha256"))
-            # pylint: disable-next=consider-using-f-string
-            fh.write("binary = %s\n" % details.get("binary"))
+            fh.write(f"sha256 = {details.get('sha256')}\n")
+            fh.write(f"binary = {details.get('binary')}\n")
             # pylint: disable-next=unspecified-encoding
             of = open(dumpfile, "w")
             of.write(details.get("contents") or "")
@@ -580,9 +568,7 @@ def do_configchannel_delete(self, args):
     # allow globbing of configchannel names
     channels = filter_results(self.do_configchannel_list("", True), args)
     logging.debug(
-        # pylint: disable-next=consider-using-f-string
-        "configchannel_delete called with args %s, channels=%s"
-        % (args, channels)
+        f"configchannel_delete called with args {args}, channels={channels}"
     )
 
     if not channels:
@@ -899,8 +885,7 @@ def do_configchannel_addfile(self, args, update_path=""):
                 self.session, options.channel, [options.path]
             )
         except xmlrpclib.Fault:
-            # pylint: disable-next=consider-using-f-string
-            logging.debug("No existing file information found for %s" % options.path)
+            logging.debug(f"No existing file information found for {options.path}")
             file_info = None
 
     file_info = self.configfile_getinfo(args, options, file_info, interactive)
@@ -1220,8 +1205,7 @@ def export_configchannel_getdetails(self, channel):
     # we can iterate over each file, then we just error on individual files
     # instead of failing to export anything at all...
     for p in paths:
-        # pylint: disable-next=consider-using-f-string
-        logging.debug("Found file %s for %s" % (p, channel))
+        logging.debug(f"Found file {p} for {channel}")
         try:
             pinfo = self.client.configchannel.lookupFileInfo(self.session, channel, [p])
             if pinfo:
@@ -1347,8 +1331,7 @@ def do_configchannel_export(self, args):
             # If we are exporting exactly one cc, we default to ccname.json
             # otherwise, generic ccs.json name
             if len(ccs) == 1:
-                # pylint: disable-next=consider-using-f-string
-                filename = "%s.json" % ccs[0]
+                filename = f"{ccs[0]}.json"
             else:
                 filename = "ccs.json"
 
@@ -1443,8 +1426,7 @@ def import_configchannel_fromdetails(self, ccdetails):
             ret = None
             if filedetails["type"] == "symlink":
                 del filedetails["type"]
-                # pylint: disable-next=consider-using-f-string
-                logging.debug("Adding symlink %s" % filedetails)
+                logging.debug(f"Adding symlink {filedetails}")
                 ret = self.client.configchannel.createOrUpdateSymlink(
                     self.session, ccdetails["label"], path, filedetails
                 )
@@ -1489,8 +1471,7 @@ def import_configchannel_fromdetails(self, ccdetails):
                         filedetails["contents"] = filedetails["contents"].decode("utf8")
                         filedetails["contents_enc64"] = True
 
-                # pylint: disable-next=consider-using-f-string
-                logging.debug("Creating %s %s" % (filedetails["type"], filedetails))
+                logging.debug(f"Creating {filedetails['type']} {filedetails}")
                 if "type" in filedetails:
                     del filedetails["type"]
 
@@ -1498,8 +1479,7 @@ def import_configchannel_fromdetails(self, ccdetails):
                     self.session, ccdetails["label"], path, isdir, filedetails
                 )
             if ret is not None:
-                # pylint: disable-next=consider-using-f-string
-                logging.debug("Added file %s to %s" % (ret["path"], ccdetails["name"]))
+                logging.debug(f"Added file {ret['path']} to {ccdetails['name']}")
             else:
                 logging.error(
                     _N("Error adding file %s to %s")
@@ -1583,8 +1563,7 @@ def do_configchannel_clone(self, args):
         logging.error(_N("No suitable channels to clone has been found."))
 
     for cc in ccs:
-        # pylint: disable-next=consider-using-f-string
-        logging.debug("Cloning %s" % cc)
+        logging.debug(f"Cloning {cc}")
         ccdetails = self.export_configchannel_getdetails(cc)
 
         # If the -x/--regex option is passed, do a sed-style replacement over

@@ -572,8 +572,7 @@ def do_activationkey_listpackages(self, args):
         details.get("packages"), key=lambda x: (x["name"]), reverse=True
     ):
         if "arch" in package:
-            # pylint: disable-next=consider-using-f-string
-            print("%s.%s" % (package["name"], package["arch"]))
+            print(f"{package['name']}.{package['arch']}")
         else:
             print(package["name"])
 
@@ -772,8 +771,7 @@ def do_activationkey_setconfigchannelorder(self, args):
     print("")
     print(_("New Configuration Channels:"))
     for i, new_channel in enumerate(new_channels, 1):
-        # pylint: disable-next=consider-using-f-string
-        print("[%i] %s" % (i, new_channel))
+        print(f"[{i}] {new_channel}")
 
     self.client.activationkey.setConfigChannels(self.session, [key], new_channels)
 
@@ -889,8 +887,7 @@ def do_activationkey_delete(self, args):
 
     # allow globbing of activationkey names
     keys = filter_results(self.do_activationkey_list("", True), args)
-    # pylint: disable-next=consider-using-f-string
-    logging.debug("activationkey_delete called with args %s, keys=%s" % (args, keys))
+    logging.debug(f"activationkey_delete called with args {args}, keys={keys}")
 
     if not keys:
         logging.error(_N("No keys matched argument %s") % args)
@@ -903,8 +900,7 @@ def do_activationkey_delete(self, args):
         return 1
 
     for key in keys:
-        # pylint: disable-next=consider-using-f-string
-        logging.debug("Deleting key %s" % key)
+        logging.debug(f"Deleting key {key}")
         self.client.activationkey.delete(self.session, key)
 
     return 0
@@ -1043,8 +1039,7 @@ def do_activationkey_details(self, args):
         result.append(details.get("base_channel_label"))
 
         for channel in sorted(details.get("child_channel_labels")):
-            # pylint: disable-next=consider-using-f-string
-            result.append(" |-- %s" % channel)
+            result.append(f" |-- {channel}")
 
         result.append("")
         result.append(_("Configuration Channels"))
@@ -1071,8 +1066,7 @@ def do_activationkey_details(self, args):
             name = package.get("name")
 
             if package.get("arch"):
-                # pylint: disable-next=consider-using-f-string
-                name += ".%s" % package.get("arch")
+                name += f".{package.get('arch')}"
 
             result.append(name)
     for entry in result:
@@ -1106,8 +1100,7 @@ def do_activationkey_enableconfigdeployment(self, args):
         return 1
 
     for key in args:
-        # pylint: disable-next=consider-using-f-string
-        logging.debug("Enabling config file deployment for %s" % key)
+        logging.debug(f"Enabling config file deployment for {key}")
         self.client.activationkey.enableConfigDeployment(self.session, key)
 
     return 0
@@ -1141,8 +1134,7 @@ def do_activationkey_disableconfigdeployment(self, args):
         return 1
 
     for key in args:
-        # pylint: disable-next=consider-using-f-string
-        logging.debug("Disabling config file deployment for %s" % key)
+        logging.debug(f"Disabling config file deployment for {key}")
         self.client.activationkey.disableConfigDeployment(self.session, key)
 
     return 0
@@ -1243,19 +1235,18 @@ def do_activationkey_setusagelimit(self, args):
     key = args.pop(0)
     usage_limit = -1
     if args[0] == "unlimited":
-        # pylint: disable-next=consider-using-f-string
-        logging.debug("Setting usage for key %s unlimited" % key)
+        logging.debug(f"Setting usage for key {key} unlimited")
     else:
         try:
             usage_limit = int(args[0])
-            # pylint: disable-next=consider-using-f-string
-            logging.debug("Setting usage for key %s to %d" % (key, usage_limit))
+            logging.debug(f"Setting usage for key {key} to {usage_limit}")
         except ValueError:
             logging.error(_N("Couldn't convert argument %s to an integer") % args[0])
             self.help_activationkey_setusagelimit()
             return 1
 
     current_details = self.client.activationkey.getDetails(self.session, key)
+
     details = {
         "description": current_details.get("description"),
         "base_channel_label": current_details.get("base_channel_label"),
@@ -1342,13 +1333,11 @@ def complete_activationkey_export(self, text, line, beg, end):
 
 def export_activationkey_getdetails(self, key):
     # Get the key details
-    # pylint: disable-next=consider-using-f-string
     logging.info(_N("Getting activation key details for %s" % key))
     details = self.client.activationkey.getDetails(self.session, key)
 
     # Get the key config-channel data, add it to the existing details
-    # pylint: disable-next=consider-using-f-string
-    logging.debug("activationkey.listConfigChannels %s" % key)
+    logging.debug(f"activationkey.listConfigChannels {key}")
     ccdlist = []
     try:
         ccdlist = self.client.activationkey.listConfigChannels(self.session, key)
@@ -1358,12 +1347,10 @@ def export_activationkey_getdetails(self, key):
         )
 
     cclist = [c["label"] for c in ccdlist]
-    # pylint: disable-next=consider-using-f-string
-    logging.debug("Got config channel label list of %s" % cclist)
+    logging.debug(f"Got config channel label list of {cclist}")
     details["config_channels"] = cclist
 
-    # pylint: disable-next=consider-using-f-string
-    logging.debug("activationkey.checkConfigDeployment %s" % key)
+    logging.debug(f"activationkey.checkConfigDeployment {key}")
     details["config_deploy"] = self.client.activationkey.checkConfigDeployment(
         self.session, key
     )
@@ -1393,8 +1380,7 @@ def do_activationkey_export(self, args):
 
     filename = ""
     if options.file is not None:
-        # pylint: disable-next=consider-using-f-string
-        logging.debug("Passed filename do_activationkey_export %s" % options.file)
+        logging.debug(f"Passed filename do_activationkey_export {options.file}")
         filename = options.file
 
     # Get the list of keys to export and sort out the filename if required
@@ -1408,9 +1394,7 @@ def do_activationkey_export(self, args):
         # allow globbing of activationkey names
         keys = filter_results(self.do_activationkey_list("", True), args)
         logging.debug(
-            # pylint: disable-next=consider-using-f-string
-            "activationkey_export called with args %s, keys=%s"
-            % (args, keys)
+            f"activationkey_export called with args {args}, keys={keys}"
         )
 
         if not keys:
@@ -1422,8 +1406,7 @@ def do_activationkey_export(self, args):
             # If we are exporting exactly one key, we default to keyname.json
             # otherwise, generic akeys.json name
             if len(keys) == 1:
-                # pylint: disable-next=consider-using-f-string
-                filename = "%s.json" % keys[0]
+                filename = f"{keys[0]}.json"
             else:
                 filename = "akeys.json"
 
@@ -1433,8 +1416,7 @@ def do_activationkey_export(self, args):
         logging.info(_N("Exporting key %s to %s") % (k, filename))
         keydetails_list.append(self.export_activationkey_getdetails(k))
 
-    # pylint: disable-next=consider-using-f-string
-    logging.debug("About to dump %d keys to %s" % (len(keydetails_list), filename))
+    logging.debug(f"About to dump {len(keydetails_list)} keys to {filename}")
 
     # Check if filepath exists, if it is an existing file
     # we prompt the user for confirmation
@@ -1471,8 +1453,7 @@ def do_activationkey_import(self, args):
         return 1
 
     for filename in args:
-        # pylint: disable-next=consider-using-f-string
-        logging.debug("Passed filename do_activationkey_import %s" % filename)
+        logging.debug(f"Passed filename do_activationkey_import {filename}")
         keydetails_list = json_read_from_file(filename)
 
         if not keydetails_list:
@@ -1500,8 +1481,7 @@ def import_activationkey_fromdetails(self, keydetails):
     else:
         # create the key, we need to drop the org prefix from the key name
         keyname = re.sub("^[0-9]-", "", keydetails["key"])
-        # pylint: disable-next=consider-using-f-string
-        logging.debug("Found key %s, importing as %s" % (keydetails["key"], keyname))
+        logging.debug(f"Found key {keydetails['key']}, importing as {keyname}")
 
         # Channel label must be an empty-string for "Red Hat Satellite Default"
         # The export to json maps this to a unicode string "none"
@@ -1558,8 +1538,7 @@ def import_activationkey_fromdetails(self, keydetails):
             gids.append(grpdetails.get("id"))
 
         if gids:
-            # pylint: disable-next=consider-using-f-string
-            logging.debug("Adding groups %s to key %s" % (gids, newkey))
+            logging.debug(f"Adding groups {gids} to key {newkey}")
             self.client.activationkey.addServerGroups(self.session, newkey, gids)
 
         # Finally add the package list
@@ -1636,17 +1615,13 @@ def do_activationkey_clone(self, args):
         self.help_activationkey_clone()
         return 1
 
-    # pylint: disable-next=consider-using-f-string
-    logging.debug("Got args=%s %d" % (args, len(args)))
+    logging.debug(f"Got args={args} {len(args)}")
     # allow globbing of configchannel channel names
     akeys = filter_results(allkeys, args)
-    # pylint: disable-next=consider-using-f-string
-    logging.debug("Filtered akeys %s" % akeys)
-    # pylint: disable-next=consider-using-f-string
-    logging.debug("all akeys %s" % allkeys)
+    logging.debug(f"Filtered akeys {akeys}")
+    logging.debug(f"all akeys {allkeys}")
     for ak in akeys:
-        # pylint: disable-next=consider-using-f-string
-        logging.debug("Cloning %s" % ak)
+        logging.debug(f"Cloning {ak}")
         # Replace the key-name with the clonename specified by the user
         keydetails = self.export_activationkey_getdetails(ak)
 
@@ -1658,9 +1633,7 @@ def do_activationkey_clone(self, args):
             findstr = options.regex.split("/")[1]
             replacestr = options.regex.split("/")[2]
             logging.debug(
-                # pylint: disable-next=consider-using-f-string
-                "Regex option with %s, replacing %s with %s"
-                % (options.regex, findstr, replacestr)
+                f"Regex option with {options.regex}, replacing {findstr} with {replacestr}"
             )
 
             # First we do the key name
@@ -1688,11 +1661,8 @@ def do_activationkey_clone(self, args):
                     newc = re.sub(findstr, replacestr, c)
                     if newc in all_childch:
                         logging.debug(
-                            # pylint: disable-next=consider-using-f-string
-                            "Found child channel %s for key %s, "
-                            % (c, keydetails["key"])
-                            # pylint: disable-next=consider-using-f-string
-                            + "replacing with %s" % newc
+                            f"Found child channel {c} for key {keydetails['key']}, "
+                            f"replacing with {newc}"
                         )
 
                         new_child_channel_labels.append(newc)
@@ -1704,9 +1674,7 @@ def do_activationkey_clone(self, args):
                         )
 
                 logging.debug(
-                    "Processed all child channels, "
-                    # pylint: disable-next=consider-using-f-string
-                    + "new_child_channel_labels=%s" % new_child_channel_labels
+                    f"Processed all child channels, new_child_channel_labels={new_child_channel_labels}"
                 )
 
                 keydetails["child_channel_labels"] = new_child_channel_labels
@@ -1727,10 +1695,8 @@ def do_activationkey_clone(self, args):
 
                 if newcc in allccs:
                     logging.debug(
-                        # pylint: disable-next=consider-using-f-string
-                        "Found config channel %s for key %s, " % (cc, keydetails["key"])
-                        # pylint: disable-next=consider-using-f-string
-                        + "replacing with %s" % newcc
+                        f"Found config channel {cc} for key {keydetails['key']}, "
+                        f"replacing with {newcc}"
                     )
 
                     new_config_channels.append(newcc)
@@ -1742,9 +1708,7 @@ def do_activationkey_clone(self, args):
                     )
 
             logging.debug(
-                "Processed all config channels, "
-                # pylint: disable-next=consider-using-f-string
-                + "new_config_channels = %s" % new_config_channels
+                f"Processed all config channels, new_config_channels = {new_config_channels}"
             )
 
             keydetails["config_channels"] = new_config_channels

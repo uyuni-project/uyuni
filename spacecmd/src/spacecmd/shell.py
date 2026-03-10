@@ -89,8 +89,7 @@ class SpacewalkShell(Cmd):
 
     # a SyntaxError is thrown if we don't wrap this in an 'exec'
     for module in __module_list:
-        # pylint: disable-next=consider-using-f-string
-        exec("from spacecmd.%s import *" % module)
+        exec(f"from spacecmd.{module} import *")
 
     # maximum length of history file
     HISTORY_LENGTH = 1024
@@ -196,8 +195,7 @@ class SpacewalkShell(Cmd):
 
         # print(the help message for a command if the user passed --help)
         if "--help" in parts or "-h" in parts:
-            # pylint: disable-next=consider-using-f-string
-            return "help %s" % command
+            return f"help {command}"
 
         # should we look for an item in the history?
         if command[0] != "!" or len(command) < 2:
@@ -250,8 +248,7 @@ class SpacewalkShell(Cmd):
         if history_match:
             if parts[1:]:
                 for arg in parts[1:]:
-                    # pylint: disable-next=consider-using-f-string
-                    line += " '%s'" % arg
+                    line += f" '{arg}'"
 
             readline.add_history(line)
             print(line)

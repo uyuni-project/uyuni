@@ -55,10 +55,9 @@ class TestSCUtilsCacheIntegration:
         spacecmd.utils.save_cache(
             cachefile=self.cachefile, data=self.data, expire=self.expiration
         )
-        # pylint: disable-next=consider-using-f-string
-        assert os.path.exists("{}.json".format(self.cachefile))
-        # pylint: disable-next=unspecified-encoding,consider-using-f-string
-        with open("{}.json".format(self.cachefile), "r") as f:
+        assert os.path.exists(f"{self.cachefile}.json")
+        # pylint: disable-next=unspecified-encoding
+        with open(f"{self.cachefile}.json", "r") as f:
             out = json.loads(f.read())
 
         assert "expire" in out
@@ -89,8 +88,7 @@ class TestSCUtilsCacheIntegration:
                 (
                     (
                         "Couldn't write to %s",
-                        # pylint: disable-next=consider-using-f-string
-                        "{}.json".format(self.cachefile),
+                        f"{self.cachefile}.json",
                     ),
                     {},
                 )
@@ -107,8 +105,7 @@ class TestSCUtilsCacheIntegration:
             cachefile=self.cachefile, data=self.data, expire=self.expiration
         )
 
-        # pylint: disable-next=consider-using-f-string
-        assert os.path.exists("{}.json".format(self.cachefile))
+        assert os.path.exists(f"{self.cachefile}.json")
 
         out, expiration = spacecmd.utils.load_cache(self.cachefile)
 
@@ -131,8 +128,7 @@ class TestSCUtilsCacheIntegration:
         assert out == {}
         # pylint: disable-next=bad-chained-comparison
         assert expiration != self.expiration is not None
-        # pylint: disable-next=consider-using-f-string
-        assert not os.path.exists("{}.json".format(self.cachefile))
+        assert not os.path.exists(f"{self.cachefile}.json")
 
 
 class TestSCUtils:

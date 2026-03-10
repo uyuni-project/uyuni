@@ -96,37 +96,22 @@ def do_package_details(self, args):
                 self.session, package_id
             )
 
-            # pylint: disable-next=consider-using-f-string
-            print(_("Name:      %s" % details.get("name")))
-            # pylint: disable-next=consider-using-f-string
-            print(_("Version:   %s" % details.get("version")))
-            # pylint: disable-next=consider-using-f-string
-            print(_("Release:   %s" % details.get("release")))
-            # pylint: disable-next=consider-using-f-string
-            print(_("Epoch:     %s" % details.get("epoch")))
-            # pylint: disable-next=consider-using-f-string
-            print(_("Arch:      %s" % details.get("arch_label")))
+            print(_(f"Name:      {details.get('name')}"))
+            print(_(f"Version:   {details.get('version')}"))
+            print(_(f"Release:   {details.get('release')}"))
+            print(_(f"Epoch:     {details.get('epoch')}"))
+            print(_(f"Arch:      {details.get('arch_label')}"))
             print("")
-            # pylint: disable-next=consider-using-f-string
-            print(_("File:      %s" % details.get("file")))
-            # pylint: disable-next=consider-using-f-string
-            print(_("Path:      %s" % details.get("path")))
-            # pylint: disable-next=consider-using-f-string
-            print(_("Size:      %s" % details.get("size")))
+            print(_(f"File:      {details.get('file')}"))
+            print(_(f"Path:      {details.get('path')}"))
+            print(_(f"Size:      {details.get('size')}"))
             print(
                 _(
-                    # pylint: disable-next=consider-using-f-string
-                    "Retracted: %s"
-                    % (_("Yes") if details.get("part_of_retracted_patch") else _("No"))
+                    f"Retracted: {_('Yes') if details.get('part_of_retracted_patch') else _('No')}"
                 )
             )
             print(
-                # pylint: disable-next=consider-using-f-string
-                "%s%s"
-                % (
-                    (details.get("checksum_type").upper() + ":").ljust(11),
-                    details.get("checksum"),
-                )
+                f"{(details.get('checksum_type').upper() + ':').ljust(11)}{details.get('checksum')}"
             )
             print("")
             print(_("Installed Systems: %i") % len(installed_systems))
@@ -151,13 +136,10 @@ def help_package_search(
     command="package_search",
     description="Find packages that meet the given criteria",
 ):
-    # pylint: disable-next=consider-using-f-string
-    print("%s: %s" % (command, description))
-    # pylint: disable-next=consider-using-f-string
-    print(_("usage: %s NAME|QUERY" % command))
+    print(f"{command}: {description}")
+    print(_(f"usage: {command} NAME|QUERY"))
     print("")
-    # pylint: disable-next=consider-using-f-string
-    print(_("Example: %s kernel" % command))
+    print(_(f"Example: {command} kernel"))
     print("")
     print(_("Advanced Search:"))
     print(
@@ -370,8 +352,7 @@ def do_package_listinstalledsystems(self, args):
         if systems:
             print(
                 "\n".join(
-                    # pylint: disable-next=consider-using-f-string
-                    sorted(["%s : %s" % (s.get("name"), s.get("id")) for s in systems])
+                    sorted([f"{s.get('name')} : {s.get('id')}" for s in systems])
                 )
             )
 

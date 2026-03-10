@@ -96,23 +96,19 @@ def do_softwarechannel_list(self, args, doreturn=False):
         if options.verbose:
             for l in labels:
                 details = self.client.channel.software.getDetails(self.session, l)
-                # pylint: disable-next=consider-using-f-string
-                print("%s : %s" % (l, details["summary"]))
+                print(f"{l} : {details['summary']}")
                 if options.tree:
                     for c in self.list_child_channels(parent=l):
                         cdetails = self.client.channel.software.getDetails(
                             self.session, c
                         )
-                        # pylint: disable-next=consider-using-f-string
-                        print(" |-%s : %s" % (c, cdetails["summary"]))
+                        print(f" |-{c} : {cdetails['summary']}")
         else:
             for l in labels:
-                # pylint: disable-next=consider-using-f-string
-                print("%s" % l)
+                print(f"{l}")
                 if options.tree:
                     for c in self.list_child_channels(parent=l):
-                        # pylint: disable-next=consider-using-f-string
-                        print(" |-%s" % c)
+                        print(f" |-{c}")
 
     return None
 
@@ -157,12 +153,10 @@ def do_softwarechannel_listmanageablechannels(self, args, doreturn=False):
         if options.verbose:
             for l in labels:
                 details = self.client.channel.software.getDetails(self.session, l)
-                # pylint: disable-next=consider-using-f-string
-                print("%s : %s" % (l, details["summary"]))
+                print(f"{l} : {details['summary']}")
         else:
             for l in labels:
-                # pylint: disable-next=consider-using-f-string
-                print("%s" % l)
+                print(f"{l}")
 
     return None
 
@@ -193,8 +187,7 @@ def do_softwarechannel_listbasechannels(self, args):
         if options.verbose:
             for c in sorted(channels):
                 details = self.client.channel.software.getDetails(self.session, c)
-                # pylint: disable-next=consider-using-f-string
-                print("%s : %s" % (c, details["summary"]))
+                print(f"{c} : {details['summary']}")
         else:
             print("\n".join(sorted(channels)))
 
@@ -233,8 +226,7 @@ def do_softwarechannel_listchildchannels(self, args):
         if options.verbose:
             for c in channels:
                 details = self.client.channel.software.getDetails(self.session, c)
-                # pylint: disable-next=consider-using-f-string
-                print("%s : %s" % (c, details["summary"]))
+                print(f"{c} : {details['summary']}")
         else:
             print("\n".join(channels))
 
@@ -432,13 +424,13 @@ def help_softwarechannel_setdetails(self):
     print(_("softwarechannel_setdetails: Modify details of a software channel"))
     print(
         _(
-            """usage: softwarechannel_setdetails [options] <CHANNEL ...>)
+            f"""usage: softwarechannel_setdetails [options] <CHANNEL ...>)
 
 options, at least one of which must be given:
   -n NAME
   -d DESCRIPTION
   -s SUMMARY
-  -c CHECKSUM %s
+  -c CHECKSUM {CHECKSUM}
   -m MAINTAINER_NAME
   -e MAINTAINER_EMAIL
   -p MAINTAINER_PHONE
@@ -446,7 +438,6 @@ options, at least one of which must be given:
   -i GPG_ID
   -f GPG_FINGERPRINT"""
         )
-        % CHECKSUM
     )
 
 
@@ -519,8 +510,7 @@ def do_softwarechannel_setdetails(self, args):
                 _N("Setting same name for more than " + "one channel will fail")
             )
             return 1
-        # pylint: disable-next=consider-using-f-string
-        logging.debug('checking other channels for name "%s"' % new_details.get("name"))
+        logging.debug(f'checking other channels for name "{new_details.get("name")}"')
         for c in self.list_base_channels() + self.list_child_channels():
             cd = self.client.channel.software.getDetails(self.session, c)
             if cd.get("name") == new_details.get("name"):
@@ -564,8 +554,7 @@ def do_softwarechannel_setdetails(self, args):
     logging.debug(new_details)
     num_changed = 0
     for channel in channels:
-        # pylint: disable-next=consider-using-f-string
-        logging.debug("getting ID for channel %s" % channel)
+        logging.debug(f"getting ID for channel {channel}")
         try:
             details = self.client.channel.software.getDetails(self.session, channel)
         except xmlrpclib.Fault as e:
@@ -573,8 +562,7 @@ def do_softwarechannel_setdetails(self, args):
             logging.error(e)
             return 1
         channel_id = details.get("id")
-        # pylint: disable-next=consider-using-f-string
-        logging.debug("setting details for channel %s (%d)" % (channel, channel_id))
+        logging.debug(f"setting details for channel {channel} ({channel_id})")
         try:
             self.client.channel.software.setDetails(
                 self.session, channel_id, new_details
@@ -764,11 +752,9 @@ def do_softwarechannel_listarches(self, args):
 
     for arch in sorted(arches):
         if options.verbose:
-            # pylint: disable-next=consider-using-f-string
-            print("%s (%s)" % (arch["label"], arch["name"]))
+            print(f"{arch['label']} ({arch['name']})")
         else:
-            # pylint: disable-next=consider-using-f-string
-            print("%s" % arch["label"])
+            print(f"{arch['label']}")
 
     return 0
 
@@ -836,18 +822,17 @@ def help_softwarechannel_update(self):
     print(_("softwarechannel_update: Update a software channel"))
     print(
         _(
-            """usage: softwarechannel_update LABEL(To identify the channel) [options]
+            f"""usage: softwarechannel_update LABEL(To identify the channel) [options]
 options:
   -l LABEL(Required)
   -n NAME
   -s SUMMARY
   -d DESCRIPTION
-  -c CHECKSUM %s
+  -c CHECKSUM {CHECKSUM}
   -u GPG-URL
   -i GPG-ID
   -f GPG-FINGERPRINT
   -g DISABLE-GPG-CHECK"""
-            % CHECKSUM
         )
     )
 
@@ -971,7 +956,7 @@ def help_softwarechannel_create(self):
     print(_("softwarechannel_create: Create a software channel"))
     print(
         _(
-            """usage: softwarechannel_create [options])
+            f"""usage: softwarechannel_create [options])
 
 options:
   -n NAME
@@ -979,12 +964,11 @@ options:
   -s SUMMARY
   -p PARENT_CHANNEL
   -a ARCHITECTURE
-  -c CHECKSUM %s
+  -c CHECKSUM {CHECKSUM}
   -u GPG_URL
   -i GPG_ID
   -f GPG_FINGERPRINT
   -g DISABLE_GPG_CHECK"""
-            % CHECKSUM
         )
     )
 
@@ -1068,8 +1052,7 @@ def do_softwarechannel_create(self, args):
             options.label,
             options.name,
             options.summary,
-            # pylint: disable-next=consider-using-f-string
-            "channel-%s" % options.arch,
+            f"channel-{options.arch}",
             options.parent_channel,
             options.checksum,
             gpgData,
@@ -1344,22 +1327,17 @@ def do_softwarechannel_clonetree(
         self.help_softwarechannel_clonetree()
         return 1
     logging.debug(
-        # pylint: disable-next=consider-using-f-string
-        "--child mode specified, finding children of %s\n"
-        % options.source_channel
+        f"--child mode specified, finding children of {options.source_channel}\n"
     )
     children = self.list_child_channels(parent=options.source_channel)
-    # pylint: disable-next=consider-using-f-string
-    logging.debug("Found children %s\n" % children)
+    logging.debug(f"Found children {children}\n")
     for c in children:
         channels.append(c)
 
-    # pylint: disable-next=consider-using-f-string
-    logging.debug("channels=%s" % channels)
+    logging.debug(f"channels={channels}")
     parent_channel = None
     for ch in channels:
-        # pylint: disable-next=consider-using-f-string
-        logging.debug("Cloning %s" % ch)
+        logging.debug(f"Cloning {ch}")
         label = None
         name = None
         if options.regex:
@@ -1439,20 +1417,16 @@ def clone_channel(self, channel, options, details):
 def copy_gpg_values_from_source(details, srcdetails):
     if srcdetails["gpg_key_url"]:
         details["gpg_key_url"] = srcdetails["gpg_key_url"]
-        # pylint: disable-next=consider-using-f-string
-        logging.debug("copying gpg_key_url=%s" % srcdetails["gpg_key_url"])
+        logging.debug(f"copying gpg_key_url={srcdetails['gpg_key_url']}")
     if srcdetails["gpg_key_id"]:
         details["gpg_key_id"] = srcdetails["gpg_key_id"]
-        # pylint: disable-next=consider-using-f-string
-        logging.debug("copying gpg_key_id=%s" % srcdetails["gpg_key_id"])
+        logging.debug(f"copying gpg_key_id={srcdetails['gpg_key_id']}")
     if srcdetails["gpg_key_fp"]:
         details["gpg_key_fp"] = srcdetails["gpg_key_fp"]
-        # pylint: disable-next=consider-using-f-string
-        logging.debug("copying gpg_key_fp=%s" % srcdetails["gpg_key_fp"])
+        logging.debug(f"copying gpg_key_fp={srcdetails['gpg_key_fp']}")
     if srcdetails["gpg_check"]:
         details["gpg_check"] = str(srcdetails["gpg_check"])
-        # pylint: disable-next=consider-using-f-string
-        logging.debug("copying gpg_check=%s" % srcdetails["gpg_check"])
+        logging.debug(f"copying gpg_check={srcdetails['gpg_check']}")
 
 
 ####################
@@ -1468,18 +1442,14 @@ def do_regx_replacement(self, channel, options):
     findstr = options.regex.split("/")[1]
     replacestr = options.regex.split("/")[2]
     logging.debug(
-        # pylint: disable-next=consider-using-f-string
-        "--regex selected with %s, replacing %s with %s"
-        % (options.regex, findstr, replacestr)
+        f"--regex selected with {options.regex}, replacing {findstr} with {replacestr}"
     )
     srcdetails = self.client.channel.software.getDetails(self.session, channel)
 
     newvalues["name"] = re.sub(findstr, replacestr, srcdetails["name"])
     newvalues["label"] = re.sub(findstr, replacestr, channel)
     logging.debug(
-        # pylint: disable-next=consider-using-f-string
-        "regex mode : %s %s %s"
-        % (options.source_channel, newvalues["name"], newvalues["label"])
+        f"regex mode : {options.source_channel} {newvalues['name']} {newvalues['label']}"
     )
 
     return newvalues
@@ -1628,8 +1598,7 @@ def do_softwarechannel_removeerrata(self, args):
     # to the channel afterwards
     package_ids = []
     for erratum in errata:
-        # pylint: disable-next=consider-using-f-string
-        logging.debug("Retrieving packages for patch %s" % erratum)
+        logging.debug(f"Retrieving packages for patch {erratum}")
 
         # get the packages affected by this errata
         packages = self.client.errata.listPackages(self.session, erratum)
@@ -1832,13 +1801,8 @@ def do_softwarechannel_adderratabydate(self, args):
         # call adderrata with the list of errata from the date range
         # this clones the errata and adds it to the channel
         return self.do_softwarechannel_adderrata(
-            # pylint: disable-next=consider-using-f-string
-            "%s %s %s"
-            % (
-                source_channel,
-                dest_channel,
-                " ".join([e.get("advisory_name") for e in errata]),
-            )
+            f"{source_channel} {dest_channel} "
+            f"{' '.join([e.get('advisory_name') for e in errata])}"
         )
 
     return 0
@@ -1892,8 +1856,7 @@ def do_softwarechannel_listerratabydate(self, args):
         return 1
 
     # get the errata that are in the given date range
-    # pylint: disable-next=consider-using-f-string
-    logging.debug("Retrieving list of errata from channel %s" % channel)
+    logging.debug(f"Retrieving list of errata from channel {channel}")
     errata = self.client.channel.software.listErrata(
         self.session, channel, parse_time_input(begin_date), parse_time_input(end_date)
     )
@@ -1967,29 +1930,23 @@ def do_softwarechannel_adderrata(self, args):
     errata = filter_results(
         [e.get("advisory_name") for e in source_errata], errata_wanted
     )
-    # pylint: disable-next=consider-using-f-string
-    logging.debug("errata = %s" % errata)
+    logging.debug(f"errata = {errata}")
     if options.skip:
         # We just match the NNNN:MMMM of the XXXX-NNNN:MMMM as the
         # source errata will be RH[BES]A and the DEST errata will be CLA
         dest_errata_suffix = [x.get("advisory_name").split("-")[1] for x in dest_errata]
-        # pylint: disable-next=consider-using-f-string
-        logging.debug("dest_errata_suffix = %s" % dest_errata_suffix)
+        logging.debug(f"dest_errata_suffix = {dest_errata_suffix}")
         toremove = []
         for e in errata:
             if e.split("-")[1] in dest_errata_suffix:
                 logging.debug(
-                    # pylint: disable-next=consider-using-f-string
-                    "Skipping errata %s as it seems to be in %s"
-                    % (e, dest_channel)
+                    f"Skipping errata {e} as it seems to be in {dest_channel}"
                 )
                 toremove.append(e)
         for e in toremove:
-            # pylint: disable-next=consider-using-f-string
-            logging.debug("Removing %s from errata to be added" % e)
+            logging.debug(f"Removing {e} from errata to be added")
             errata.remove(e)
-        # pylint: disable-next=consider-using-f-string
-        logging.debug("skip-mode : reduced errata = %s" % errata)
+        logging.debug(f"skip-mode : reduced errata = {errata}")
 
     # keep the details for our matching errata so we can use them later
     errata_details = []
@@ -2002,8 +1959,7 @@ def do_softwarechannel_adderrata(self, args):
         # to the channel afterwards
         package_ids = []
         for erratum in errata:
-            # pylint: disable-next=consider-using-f-string
-            logging.debug("Retrieving packages for patch %s" % erratum)
+            logging.debug(f"Retrieving packages for patch {erratum}")
 
             # get the packages affected by this errata
             packages = self.client.errata.listPackages(self.session, erratum)
@@ -2038,8 +1994,7 @@ def do_softwarechannel_adderrata(self, args):
     # clone each erratum individually because the process is slow and it can
     # lead to timeouts on the server
     for erratum in errata:
-        # pylint: disable-next=consider-using-f-string
-        logging.debug("Cloning %s" % erratum)
+        logging.debug(f"Cloning {erratum}")
         if self.check_api_version("10.11"):
             # This call is poorly documented, but it stops errata.clone
             # pushing EL6 packages into EL5 channels when the errata
@@ -2093,17 +2048,14 @@ def do_softwarechannel_getorgaccess(self, args):
         )
 
     for channel in channels:
-        # pylint: disable-next=consider-using-f-string
-        logging.debug("Getting org-access for channel %s" % channel)
+        logging.debug(f"Getting org-access for channel {channel}")
         sharing = self.client.channel.access.getOrgSharing(self.session, channel)
-        # pylint: disable-next=consider-using-f-string
-        print("%s : %s" % (channel, sharing))
+        print(f"{channel} : {sharing}")
         if sharing == "protected":
             # for protected channels list each organization's access status
             channel_orgs = self.client.channel.org.list(self.session, channel)
             for org in channel_orgs:
-                # pylint: disable-next=consider-using-f-string
-                print("\t%s : %s" % (org["org_name"], org["access_enabled"]))
+                print(f"\t{org['org_name']} : {org['access_enabled']}")
 
     return 0
 
@@ -2341,8 +2293,7 @@ def do_softwarechannel_regenerateyumcache(self, args):
     channels = filter_results(self.do_softwarechannel_list("", True), args)
 
     for channel in channels:
-        # pylint: disable-next=consider-using-f-string
-        logging.debug("Regenerating YUM cache for %s" % channel)
+        logging.debug(f"Regenerating YUM cache for {channel}")
         self.client.channel.software.regenerateYumCache(
             self.session, channel, _options.force
         )
@@ -2440,12 +2391,8 @@ def dump_softwarechannel_errata(self, name):
     result = []
     for erratum in errata:
         result.append(
-            # pylint: disable-next=consider-using-f-string
-            "%s %s"
-            % (
-                erratum.get("advisory_name").ljust(14),
-                wrap(erratum.get("advisory_synopsis"), 50)[0],
-            )
+            f"{erratum.get('advisory_name').ljust(14)} "
+            f"{wrap(erratum.get('advisory_synopsis'), 50)[0]}"
         )
     result.sort()
     return result
@@ -3006,8 +2953,7 @@ def do_softwarechannel_syncrepos(self, args):
     channels = filter_results(self.do_softwarechannel_list("", True), args)
 
     for channel in channels:
-        # pylint: disable-next=consider-using-f-string
-        logging.debug("Syncing repos for %s" % channel)
+        logging.debug(f"Syncing repos for {channel}")
         self.client.channel.software.syncRepo(self.session, channel, params)
 
     return 0

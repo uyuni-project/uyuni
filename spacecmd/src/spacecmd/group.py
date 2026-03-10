@@ -354,16 +354,14 @@ def do_group_restore(self, args):
         return 1
 
     inputdir = os.path.abspath(inputdir)
-    # pylint: disable-next=consider-using-f-string
-    logging.debug("Input Directory: %s" % (inputdir))
+    logging.debug(f"Input Directory: {inputdir}")
 
     # make a list of file items in the input dir
     if os.path.isdir(inputdir):
         d_content = os.listdir(inputdir)
         for d_item in d_content:
             if os.path.isfile(inputdir + "/" + d_item):
-                # pylint: disable-next=consider-using-f-string
-                logging.debug("Found file %s" % inputdir + "/" + d_item)
+                logging.debug(f"Found file {inputdir}/{d_item}")
                 files[d_item] = inputdir + "/" + d_item
     else:
         logging.error(
@@ -417,17 +415,12 @@ def do_group_restore(self, args):
             if current[groupname] == backup:
                 logging.error(_N("Group %s already restored") % groupname)
             else:
-                # pylint: disable-next=consider-using-f-string
-                logging.debug("Already have %s but the data have changed" % groupname)
+                logging.debug(f"Already have {groupname} but the data have changed")
 
                 if is_interactive(options):
                     if current[groupname]["description"] != backup["description"]:
                         print(_("Changing description from:"))
-                        print(
-                            # pylint: disable-next=consider-using-f-string
-                            '\n"%s"\nto\n"%s"\n'
-                            % (current[groupname]["description"], backup["description"])
-                        )
+                        print(f'\n"{current[groupname]["description"]}"\nto\n"{backup["description"]}"\n')
                         userinput = prompt_user(_("Continue [y/N]:"))
 
                         if userinput.lower() == "y":

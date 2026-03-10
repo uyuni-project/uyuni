@@ -165,19 +165,17 @@ def help_org_create(self):
     print(_("org_create: Create an organization"))
     print(
         _(
-            # pylint: disable-next=consider-using-f-string
-            """usage: org_create [options])
+            f"""usage: org_create [options])
 
 options:
   -n ORG_NAME
   -u USERNAME
-  -P PREFIX (%s)
+  -P PREFIX ({", ".join(_PREFIXES)})
   -f FIRST_NAME
   -l LAST_NAME
   -e EMAIL
   -p PASSWORD
   --pam enable PAM authentication"""
-            % ", ".join(_PREFIXES)
         )
     )
 

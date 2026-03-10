@@ -246,8 +246,7 @@ def do_kickstart_delete(self, args):
     # allow globbing of kickstart labels
     all_labels = self.do_kickstart_list("", True)
     labels = filter_results(all_labels, args)
-    # pylint: disable-next=consider-using-f-string
-    logging.debug("Got labels to delete of %s" % labels)
+    logging.debug(f"Got labels to delete of {labels}")
 
     if not labels:
         logging.error(_N("No valid kickstart labels passed as arguments!"))
@@ -484,8 +483,7 @@ def do_kickstart_details(self, args):
     result.append(base_channel.get("label"))
 
     for channel in sorted(child_channels):
-        # pylint: disable-next=consider-using-f-string
-        result.append("  |-- %s" % channel)
+        result.append(f"  |-- {channel}")
 
     if advanced_options:
         result.append("")
@@ -493,8 +491,7 @@ def do_kickstart_details(self, args):
         result.append("----------------")
         for o in sorted(advanced_options, key=itemgetter("name")):
             if o.get("arguments"):
-                # pylint: disable-next=consider-using-f-string
-                result.append("%s %s" % (o.get("name"), o.get("arguments")))
+                result.append(f"{o.get('name')} {o.get('arguments')}")
 
     if custom_options:
         result.append("")
@@ -535,16 +532,14 @@ def do_kickstart_details(self, args):
         for fp in sorted(file_preservations, key=itemgetter("name")):
             result.append(fp.get("name"))
             for profile_name in sorted(fp.get("file_names")):
-                # pylint: disable-next=consider-using-f-string
-                result.append("    |-- %s" % profile_name)
+                result.append(f"    |-- {profile_name}")
 
     if variables:
         result.append("")
         result.append(_("Variables"))
         result.append("---------")
         for k in sorted(variables.keys()):
-            # pylint: disable-next=consider-using-f-string
-            result.append("%s = %s" % (k, str(variables[k])))
+            result.append(f"{k} = {str(variables[k])}")
 
     if scripts:
         result.append("")
@@ -1449,8 +1444,7 @@ def do_kickstart_listvariables(self, args):
     variables = self.client.kickstart.profile.getVariables(self.session, profile)
 
     for v in variables:
-        # pylint: disable-next=consider-using-f-string
-        print("%s = %s" % (v, variables[v]))
+        print(f"{v} = {variables[v]}")
 
     return 0
 
@@ -1601,8 +1595,7 @@ def do_kickstart_listoptions(self, args):
 
     for o in sorted(options, key=itemgetter("name")):
         if o.get("arguments"):
-            # pylint: disable-next=consider-using-f-string
-            print("%s %s" % (o.get("name"), o.get("arguments")))
+            print(f"{o.get('name')} {o.get('arguments')}")
 
     return 0
 
@@ -2392,15 +2385,13 @@ def export_kickstart_getdetails(self, profile, kickstarts):
 
     # Get the initial ks details struct from the kickstarts list-of-struct,
     # which is returned from kickstart.listKickstarts()
-    # pylint: disable-next=consider-using-f-string
-    logging.debug("Getting kickstart profile details for %s" % profile)
+    logging.debug(f"Getting kickstart profile details for {profile}")
     details = None
     for k in kickstarts:
         if k.get("label") == profile:
             details = k
             break
-    # pylint: disable-next=consider-using-f-string
-    logging.debug("Got basic details for %s : %s" % (profile, details))
+    logging.debug(f"Got basic details for {profile} : {details}")
 
     # Now use the various other API functions to build up a more complete
     # details struct for export.  Note there are a some ommisions from the API
@@ -2423,15 +2414,12 @@ def export_kickstart_getdetails(self, profile, kickstarts):
     details["ip_ranges"] = self.client.kickstart.profile.listIpRanges(
         self.session, profile
     )
-    # pylint: disable-next=consider-using-f-string
-    logging.debug("About to get variable_list for %s" % profile)
+    logging.debug(f"About to get variable_list for {profile}")
     details["variable_list"] = self.client.kickstart.profile.getVariables(
         self.session, profile
     )
     logging.debug(
-        # pylint: disable-next=consider-using-f-string
-        "done variable_list for %s = %s"
-        % (profile, details["variable_list"])
+        f"done variable_list for {profile} = {details['variable_list']}"
     )
     # just export the key names, then look for one with the same name on import
     details["activation_keys"] = [
@@ -2494,8 +2482,7 @@ def export_kickstart_getdetails(self, profile, kickstarts):
         post_kopts = kscontents.split("`/sbin/grubby --default-kernel` --args=")[
             1
         ].split('"')[1]
-        # pylint: disable-next=consider-using-f-string
-        logging.debug("Post kernel options %s detected" % post_kopts)
+        logging.debug(f"Post kernel options {post_kopts} detected")
         details["post_kopts"] = post_kopts
 
     # and now sort all the lists
@@ -2520,8 +2507,7 @@ def do_kickstart_export(self, args):
 
     filename = ""
     if options.file is not None:
-        # pylint: disable-next=consider-using-f-string
-        logging.debug("Passed filename do_kickstart_export %s" % options.file)
+        logging.debug(f"Passed filename do_kickstart_export {options.file}")
         filename = options.file
 
     # Get the list of profiles to export and sort out the filename if required
@@ -2535,9 +2521,7 @@ def do_kickstart_export(self, args):
         # allow globbing of kickstart kickstart names
         profiles = filter_results(self.do_kickstart_list("", True), args)
         logging.debug(
-            # pylint: disable-next=consider-using-f-string
-            "kickstart_export called with args %s, profiles=%s"
-            % (args, profiles)
+            f"kickstart_export called with args {args}, profiles={profiles}"
         )
         if not profiles:
             logging.error(
@@ -2552,8 +2536,7 @@ def do_kickstart_export(self, args):
             # If we are exporting exactly one ks, we default to ksname.json
             # otherwise, generic ks_profiles.json name
             if len(profiles) == 1:
-                # pylint: disable-next=consider-using-f-string
-                filename = "%s.json" % profiles[0]
+                filename = f"{profiles[0]}.json"
             else:
                 filename = "ks_profiles.json"
 
@@ -2569,9 +2552,7 @@ def do_kickstart_export(self, args):
         ksdetails_list.append(self.export_kickstart_getdetails(p, kickstarts))
 
     logging.debug(
-        # pylint: disable-next=consider-using-f-string
-        "About to dump %d ks profiles to %s"
-        % (len(ksdetails_list), filename)
+        f"About to dump {len(ksdetails_list)} ks profiles to {filename}"
     )
     # Check if filepath exists, if an existing file we prompt for confirmation
     if os.path.isfile(filename):
@@ -2606,8 +2587,7 @@ def do_kickstart_importjson(self, args):
         return 1
 
     for filename in args:
-        # pylint: disable-next=consider-using-f-string
-        logging.debug("Passed filename do_kickstart_import %s" % filename)
+        logging.debug(f"Passed filename do_kickstart_import {filename}")
         ksdetails_list = json_read_from_file(filename)
         if not ksdetails_list:
             logging.error(_N("Error, could not read json data from %s") % filename)
@@ -2715,8 +2695,7 @@ def import_kickstart_fromdetails(self, ksdetails):
                 script["chroot"],
             )
         if ret:
-            # pylint: disable-next=consider-using-f-string
-            logging.debug("Added %s script to profile" % script["script_type"])
+            logging.debug(f"Added {script['script_type']} script to profile")
         else:
             logging.error(_N("Error adding %s script") % script["script_type"])
     # Specify ip ranges
@@ -2724,8 +2703,7 @@ def import_kickstart_fromdetails(self, ksdetails):
         if self.client.kickstart.profile.addIpRange(
             self.session, ksdetails["label"], iprange["min"], iprange["max"]
         ):
-            # pylint: disable-next=consider-using-f-string
-            logging.debug("added ip range %s-%s" % iprange["min"], iprange["max"])
+            logging.debug(f"added ip range {iprange['min']}-{iprange['max']}")
         else:
             logging.warning(
                 _N("failed to add ip range %s-%s, continuing") % iprange["min"],
@@ -2745,8 +2723,7 @@ def import_kickstart_fromdetails(self, ksdetails):
                 if self.client.kickstart.profile.system.addFilePreservations(
                     self.session, ksdetails["label"], [fp]
                 ):
-                    # pylint: disable-next=consider-using-f-string
-                    logging.debug("added file preservation '%s'" % fp)
+                    logging.debug(f"added file preservation '{fp}'")
                 else:
                     logging.warning(
                         _N("failed to add file preservation %s, skipping") % fp
@@ -2762,8 +2739,7 @@ def import_kickstart_fromdetails(self, ksdetails):
     ]
     for akey in ksdetails["activation_keys"]:
         if akey in existing_act_keys:
-            # pylint: disable-next=consider-using-f-string
-            logging.debug("Adding activation key %s to profile" % akey)
+            logging.debug(f"Adding activation key {akey} to profile")
             self.client.kickstart.profile.keys.addActivationKey(
                 self.session, ksdetails["label"], akey
             )
@@ -2779,8 +2755,7 @@ def import_kickstart_fromdetails(self, ksdetails):
     ]
     for key in ksdetails["gpg_ssl_keys"]:
         if key in existing_gpg_ssl_keys:
-            # pylint: disable-next=consider-using-f-string
-            logging.debug("Adding GPG/SSL key %s to profile" % key)
+            logging.debug(f"Adding GPG/SSL key {key} to profile")
             self.client.kickstart.profile.system.addKeys(
                 self.session, ksdetails["label"], [key]
             )
@@ -2939,8 +2914,7 @@ def do_kickstart_getupdatetype(self, args):
     # allow globbing of kickstart labels
     all_labels = self.do_kickstart_list("", True)
     labels = filter_results(all_labels, args)
-    # pylint: disable-next=consider-using-f-string
-    logging.debug("Got labels to list the update type %s" % labels)
+    logging.debug(f"Got labels to list the update type {labels}")
 
     if not labels:
         logging.error(_N("No valid kickstart labels passed as arguments!"))
@@ -3001,8 +2975,7 @@ def do_kickstart_setupdatetype(self, args):
     # allow globbing of kickstart labels
     all_labels = self.do_kickstart_list("", True)
     labels = filter_results(all_labels, args)
-    # pylint: disable-next=consider-using-f-string
-    logging.debug("Got labels to set the update type %s" % labels)
+    logging.debug(f"Got labels to set the update type {labels}")
 
     if not labels:
         logging.error(_N("No valid kickstart labels passed as arguments!"))
@@ -3050,8 +3023,7 @@ def do_kickstart_getsoftwaredetails(self, args):
     # allow globbing of kickstart labels
     all_labels = self.do_kickstart_list("", True)
     labels = filter_results(all_labels, args)
-    # pylint: disable-next=consider-using-f-string
-    logging.debug("Got labels to set the update type %s" % labels)
+    logging.debug(f"Got labels to set the update type {labels}")
 
     if not labels:
         logging.error(_N("No valid kickstart labels passed as arguments!"))

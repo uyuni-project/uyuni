@@ -97,12 +97,10 @@ def do_ssm_add(self, args):
             logging.warning(_N("%s is already in the list") % system)
             continue
         self.ssm[system] = self.get_system_id(system)
-        # pylint: disable-next=consider-using-f-string
-        logging.debug("Added %s" % system)
+        logging.debug(f"Added {system}")
 
     if self.ssm:
-        # pylint: disable-next=consider-using-f-string
-        logging.debug("Systems Selected: %i" % len(self.ssm))
+        logging.debug(f"Systems Selected: {len(self.ssm)}")
 
     # save the SSM for use between sessions
     save_cache(self.ssm_cache_file, self.ssm)
@@ -149,8 +147,7 @@ def do_ssm_intersect(self, args):
     tmp_ssm = {}
     for system in systems:
         if system in self.ssm:
-            # pylint: disable-next=consider-using-f-string
-            logging.debug("%s is in both groups: leaving in SSM" % system)
+            logging.debug(f"{system} is in both groups: leaving in SSM")
             tmp_ssm[system] = self.ssm[system]
 
     # set self.ssm to tmp_ssm, which now holds the intersection
@@ -160,8 +157,7 @@ def do_ssm_intersect(self, args):
     save_cache(self.ssm_cache_file, self.ssm)
 
     if self.ssm:
-        # pylint: disable-next=consider-using-f-string
-        logging.debug("Systems Selected: %i" % len(self.ssm))
+        logging.debug(f"Systems Selected: {len(self.ssm)}")
 
     return 0
 
@@ -201,12 +197,10 @@ def do_ssm_remove(self, args):
     for system in systems:
         # double-check for existance in case of duplicate names
         if system in self.ssm:
-            # pylint: disable-next=consider-using-f-string
-            logging.debug("Removed %s" % system)
+            logging.debug(f"Removed {system}")
             del self.ssm[system]
 
-    # pylint: disable-next=consider-using-f-string
-    logging.debug("Systems Selected: %i" % len(self.ssm))
+    logging.debug(f"Systems Selected: {len(self.ssm)}")
 
     # save the SSM for use between sessions
     save_cache(self.ssm_cache_file, self.ssm)
@@ -229,8 +223,7 @@ def do_ssm_list(self, args):
 
     if systems:
         print("\n".join(systems))
-        # pylint: disable-next=consider-using-f-string
-        logging.debug("Systems Selected: %i" % len(systems))
+        logging.debug(f"Systems Selected: {len(systems)}")
         return 0
     else:
         return 1

@@ -384,12 +384,7 @@ def do_user_details(self, args):
             )
         except xmlrpclib.Fault as exc:
             logging.warning(_N("%s is not a valid user") % user)
-            logging.debug(
-                # pylint: disable-next=consider-using-f-string
-                "Error '{}' while getting data about user '{}': {}".format(
-                    exc.faultCode, user, exc.faultString
-                )
-            )
+            logging.debug(f"Error '{exc.faultCode}' while getting data about user '{user}': {exc.faultString}")
             continue
 
         org_name = self.client.org.getDetails(self.session, details.get("org_id")).get(

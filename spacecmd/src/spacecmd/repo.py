@@ -144,8 +144,7 @@ def do_repo_listfilters(self, args):
     filters = self.client.channel.software.listRepoFilters(self.session, args[0])
     if filters:
         for flt in filters:
-            # pylint: disable-next=consider-using-f-string
-            print("%s%s" % (flt.get("flag"), flt.get("filter")))
+            print(f"{flt.get('flag')}{flt.get('filter')}")
     else:
         print(_("No filters found"))
         return 1

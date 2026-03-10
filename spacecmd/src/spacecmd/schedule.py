@@ -53,15 +53,13 @@ def print_schedule_summary(self, action_type, args):
 
     if args:
         begin_date = parse_time_input(args[0])
-        # pylint: disable-next=consider-using-f-string
-        logging.debug("Begin Date: %s" % begin_date)
+        logging.debug(f"Begin Date: {begin_date}")
     else:
         begin_date = None
 
     if len(args) > 1:
         end_date = parse_time_input(args[1])
-        # pylint: disable-next=consider-using-f-string
-        logging.debug("End Date:   %s" % end_date)
+        logging.debug(f"End Date:   {end_date}")
     else:
         end_date = None
 
@@ -105,16 +103,11 @@ def print_schedule_summary(self, action_type, args):
 
         if self.check_api_version("10.11"):
             print(
-                # pylint: disable-next=consider-using-f-string
-                "%s  %s   %s  %s  %s    %s"
-                % (
-                    str(action.get("id")).ljust(6),
-                    action.get("earliest"),
-                    str(action.get("completedSystems")).rjust(3),
-                    str(action.get("failedSystems")).rjust(3),
-                    str(action.get("inProgressSystems")).rjust(3),
-                    action.get("name"),
-                )
+                f"{str(action.get('id')).ljust(6)}  {action.get('earliest')}   "
+                f"{str(action.get('completedSystems')).rjust(3)}  "
+                f"{str(action.get('failedSystems')).rjust(3)}  "
+                f"{str(action.get('inProgressSystems')).rjust(3)}    "
+                f"{action.get('name')}"
             )
         else:
             # Satellite 5.3 compatibility
@@ -131,16 +124,11 @@ def print_schedule_summary(self, action_type, args):
             )
 
             print(
-                # pylint: disable-next=consider-using-f-string
-                "%s  %s   %s  %s  %s    %s"
-                % (
-                    str(action.get("id")).ljust(6),
-                    action.get("earliest"),
-                    str(len(completed)).rjust(3),
-                    str(len(failed)).rjust(3),
-                    str(len(in_progress)).rjust(3),
-                    action.get("name"),
-                )
+                f"{str(action.get('id')).ljust(6)}  {action.get('earliest')}   "
+                f"{str(len(completed)).rjust(3)}  "
+                f"{str(len(failed)).rjust(3)}  "
+                f"{str(len(in_progress)).rjust(3)}    "
+                f"{action.get('name')}"
             )
 
 
@@ -518,8 +506,7 @@ def do_schedule_deletearchived(self, args):
 
     if args:
         date_limit = parse_time_input(args[0])
-        # pylint: disable-next=consider-using-f-string
-        logging.debug("Date limit: %s" % date_limit)
+        logging.debug(f"Date limit: {date_limit}")
     else:
         date_limit = None
 
@@ -529,8 +516,7 @@ def do_schedule_deletearchived(self, args):
     if date_limit:
         actions = [action for action in actions if action.get("earliest") < date_limit]
 
-    # pylint: disable-next=consider-using-f-string
-    logging.debug("actions: {}".format(actions))
+    logging.debug(f"actions: {actions}")
     if actions:
         if not _options.yes:
             user_answer = prompt_user(
@@ -561,8 +547,7 @@ def do_schedule_deletearchived(self, args):
                     if i + BATCH_SIZE <= len(action_ids)
                     else len(action_ids)
                 )
-                # pylint: disable-next=consider-using-f-string
-                print("Deleted {} actions of {}".format(processed, len(action_ids)))
+                print(f"Deleted {processed} actions of {len(action_ids)}")
     else:
         print(_("No archived actions found."))
 
@@ -600,8 +585,7 @@ def do_schedule_archivecompleted(self, args):
 
     if args:
         date_limit = parse_time_input(args[0])
-        # pylint: disable-next=consider-using-f-string
-        logging.debug("Date limit: %s" % date_limit)
+        logging.debug(f"Date limit: {date_limit}")
     else:
         date_limit = None
 
@@ -611,8 +595,7 @@ def do_schedule_archivecompleted(self, args):
     if date_limit:
         actions = [action for action in actions if action.get("earliest") < date_limit]
 
-    # pylint: disable-next=consider-using-f-string
-    logging.debug("actions: {}".format(actions))
+    logging.debug(f"actions: {actions}")
     if actions:
         if not _options.yes:
             user_answer = prompt_user(
@@ -643,7 +626,6 @@ def do_schedule_archivecompleted(self, args):
                     if i + BATCH_SIZE <= len(action_ids)
                     else len(action_ids)
                 )
-                # pylint: disable-next=consider-using-f-string
-                print("Archived {} actions of {}".format(processed, len(action_ids)))
+                print(f"Archived {processed} actions of {len(action_ids)}")
     else:
         print(_("No completed actions found."))

@@ -208,10 +208,8 @@ class TestSCKickStart:
             # pylint: disable-next=unused-variable,unused-variable
         ) as lgr, patch("spacecmd.kickstart.prompt_user", prompter) as pmt:
             spacecmd.kickstart.do_kickstart_clone(
-                # pylint: disable-next=consider-using-f-string
                 shell,
-                # pylint: disable-next=consider-using-f-string
-                "-n {} -c {}".format(name, clone),
+                f"-n {name} -c {clone}",
             )
 
         assert not prompter.called

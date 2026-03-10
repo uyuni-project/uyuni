@@ -616,10 +616,8 @@ class TestSCPackage:
                 # pylint: disable-next=unused-variable
             ) as lgr:
                 out = spacecmd.package.do_package_search(
-                    # pylint: disable-next=consider-using-f-string
                     shell,
-                    # pylint: disable-next=consider-using-f-string
-                    "{}emacs*".format(field),
+                    f"{field}emacs*",
                     doreturn=True,
                 )
 
@@ -627,7 +625,7 @@ class TestSCPackage:
             assert logger.debug.called
             assert shell.client.packages.search.advanced.called
             assert out is not None
-
+            
     # pylint: disable-next=redefined-outer-name
     def test_package_remove_noarg(self, shell):
         """

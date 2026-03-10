@@ -183,8 +183,7 @@ def do_cryptokey_delete(self, args):
 
     # allow globbing of cryptokey names
     keys = filter_results(self.do_cryptokey_list("", True), args)
-    # pylint: disable-next=consider-using-f-string
-    logging.debug("cryptokey_delete called with args %s, keys=%s" % (args, keys))
+    logging.debug(f"cryptokey_delete called with args {args}, keys={keys}")
 
     if not keys:
         logging.error(_N("No keys matched argument %s") % args)
@@ -245,8 +244,7 @@ def do_cryptokey_details(self, args):
 
     # allow globbing of cryptokey names
     keys = filter_results(self.do_cryptokey_list("", True), args)
-    # pylint: disable-next=consider-using-f-string
-    logging.debug("cryptokey_details called with args %s, keys=%s" % (args, keys))
+    logging.debug(f"cryptokey_details called with args {args}, keys={keys}")
 
     if not keys:
         logging.error(_N("No keys matched argument %s") % args)

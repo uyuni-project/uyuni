@@ -231,8 +231,7 @@ def help_history(self):
 
 def do_history(self, args):
     for i in range(1, readline.get_current_history_length()):
-        # pylint: disable-next=consider-using-f-string
-        print("%s  %s" % (str(i).rjust(4), readline.get_history_item(i)))
+        print(f"{str(i).rjust(4)}  {readline.get_history_item(i)}")
     return 0
 
 
@@ -304,8 +303,7 @@ def do_login(self, args):
     else:
         proto = "https"
 
-    # pylint: disable-next=consider-using-f-string
-    server_url = "%s://%s/rpc/api" % (proto, server)
+    server_url = f"{proto}://{server}/rpc/api"
 
     # this will enable spewing out all client/server traffic
     verbose_xmlrpc = False
@@ -420,8 +418,7 @@ def do_login(self, args):
                 os.mkdir(conf_dir, int("0700", 8))
 
             # add the new cache to the file
-            # pylint: disable-next=consider-using-f-string
-            line = "%s:%s\n" % (username, self.session)
+            line = f"{username}:{self.session}\n"
 
             # write the new cache file out
             # pylint: disable-next=unspecified-encoding
@@ -526,20 +523,17 @@ def tab_complete_errata(self, text):
 def tab_complete_systems(self, text):
     if re.match("group:", text):
         # prepend 'group' to each item for tab completion
-        # pylint: disable-next=consider-using-f-string
-        groups = ["group:%s" % g for g in self.do_group_list("", True)]
+        groups = [f"group:{g}" for g in self.do_group_list("", True)]
 
         return tab_completer(groups, text)
     if re.match("channel:", text):
         # prepend 'channel' to each item for tab completion
-        # pylint: disable-next=consider-using-f-string
-        channels = ["channel:%s" % s for s in self.do_softwarechannel_list("", True)]
+        channels = [f"channel:{s}" for s in self.do_softwarechannel_list("", True)]
 
         return tab_completer(channels, text)
     if re.match("search:", text):
         # prepend 'search' to each item for tab completion
-        # pylint: disable-next=consider-using-f-string
-        fields = ["search:%s:" % f for f in self.SYSTEM_SEARCH_FIELDS]
+        fields = [f"search:{f}:" for f in self.SYSTEM_SEARCH_FIELDS]
         return tab_completer(fields, text)
 
     options = self.get_system_names()
@@ -669,9 +663,8 @@ def generate_package_cache(self, force=False):
             # Alert in case of non-unique ID is detected.
             if i in self.all_packages_by_id:
                 logging.debug(  # pylint: disable=logging-not-lazy
-                    # pylint: disable-next=consider-using-f-string
-                    'Non-unique package id "%s" is detected. Taking "%s" '
-                    'instead of "%s"' % (i, k, self.all_packages_by_id[i])
+                    f'Non-unique package id "{i}" is detected. Taking "{k}" '
+                    f'instead of "{self.all_packages_by_id[i]}"'
                 )
 
             self.all_packages_by_id[i] = k
@@ -845,8 +838,7 @@ def get_system_names_ids(self):
 
 # check for duplicate system names and return the system ID
 def get_system_id(self, name):
-    # pylint: disable-next=consider-using-f-string
-    name = "%s" % name
+    name = f"{name}"
     self.generate_system_cache()
     systems = []
 
@@ -876,12 +868,10 @@ def get_system_id(self, name):
         logging.warning(_N("Please reference systems by ID or resolve the"))
         logging.warning(_N("underlying issue with 'system_delete' or 'system_rename'"))
 
-        # pylint: disable-next=consider-using-f-string
-        id_list = "%s = " % name
+        id_list = f"{name} = "
 
         for system_id in sorted(systems):
-            # pylint: disable-next=consider-using-f-string
-            id_list = id_list + "%i, " % system_id
+            id_list = id_list + f"{system_id}, "
 
         logging.warning("")
         logging.warning(id_list[:-2])
@@ -939,8 +929,7 @@ def expand_systems(self, args):
             systems.extend(self.ssm)
         elif re.match("group:", item):
             item = re.sub("group:", "", item)
-            # pylint: disable-next=consider-using-f-string
-            members = self.do_group_listsystems("'%s'" % item, True)
+            members = self.do_group_listsystems(f"'{item}'", True)
 
             if members:
                 systems.extend([re.escape(m) for m in members])
@@ -971,8 +960,7 @@ def expand_systems(self, args):
 
     matches = filter_results(self.get_system_names(), systems)
 
-    # pylint: disable-next=consider-using-f-string
-    return ["%s" % x for x in list(set(matches + system_ids))]
+    return [f"{x}" for x in list(set(matches + system_ids))]
 
 
 def list_base_channels(self):
@@ -1027,11 +1015,9 @@ def user_confirm(
         return True
 
     if nospacer:
-        # pylint: disable-next=consider-using-f-string
-        answer = prompt_user("%s" % prompt)
+        answer = prompt_user(f"{prompt}")
     else:
-        # pylint: disable-next=consider-using-f-string
-        answer = prompt_user("\n%s" % prompt)
+        answer = prompt_user(f"\n{prompt}")
 
     if re.match("y", answer, re.I):
         if integer:
@@ -1077,19 +1063,16 @@ def replace_line_buffer(self, msg=None):
 
     # don't print(a prompt if there wasn't one to begin with)
     if readline.get_line_buffer():
-        # pylint: disable-next=consider-using-f-string
-        new_line = "%s%s" % (self.prompt, msg)
+        new_line = f"{self.prompt}{msg}"
     else:
-        # pylint: disable-next=consider-using-f-string
-        new_line = "%s" % msg
+        new_line = f"{msg}"
 
     # clear the current line
     self.stdout.write("\r".ljust(len(self.current_line) + 1))
     self.stdout.flush()
 
     # write the new line
-    # pylint: disable-next=consider-using-f-string
-    self.stdout.write("\r%s" % new_line)
+    self.stdout.write(f"\r{new_line}")
     self.stdout.flush()
 
     # keep track of what is displayed so we can clear it later

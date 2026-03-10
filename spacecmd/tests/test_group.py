@@ -355,9 +355,7 @@ class TestSCGroup:
         prompter = MagicMock(return_value=msg)
 
         with patch("spacecmd.group.prompt_user", prompter):
-            # pylint: disable-next=consider-using-f-string
-            spacecmd.group.do_group_create(shell, "Jeff {}".format(msg))
-
+            spacecmd.group.do_group_create(shell, f"Jeff {msg}")
         assert not prompter.called
         assert shell.client.systemgroup.create.called
 

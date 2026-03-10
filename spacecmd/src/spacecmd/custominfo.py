@@ -93,8 +93,7 @@ def do_custominfo_deletekey(self, args):
 
     # allow globbing of custominfo key names
     keys = filter_results(self.do_custominfo_listkeys("", True), args)
-    # pylint: disable-next=consider-using-f-string
-    logging.debug("customkey_deletekey called with args %s, keys=%s" % (args, keys))
+    logging.debug(f"customkey_deletekey called with args {args}, keys={keys}")
 
     if not keys:
         logging.error(_N("No keys matched argument %s") % args)
@@ -156,12 +155,10 @@ def do_custominfo_details(self, args):
 
     # allow globbing of custominfo key names
     keys = filter_results(self.do_custominfo_listkeys("", True), args)
-    logging.debug(
-        # pylint: disable-next=consider-using-f-string
-        "customkey_details called with args: '{}', keys: '{}'.".format(
-            ", ".join(args), ", ".join(keys)
-        )
-    )
+    args_str = ", ".join(args)
+    keys_str = ", ".join(keys)
+    logging.debug(f"customkey_details called with args: '{args_str}', keys: '{keys_str}'.")
+
 
     if not keys:
         logging.error(_N("No keys matched argument '{}'.").format(", ".join(args)))

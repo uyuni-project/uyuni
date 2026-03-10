@@ -130,8 +130,7 @@ def is_interactive(options):
 
 def load_cache(cachefile):
     data = {}
-    # pylint: disable-next=consider-using-f-string
-    cachefile = "{}.json".format(cachefile)
+    cachefile = f"{cachefile}.json"
     expire = datetime.now()
 
     logging.debug("Loading cache from %s", cachefile)
@@ -175,16 +174,12 @@ def save_cache(cachefile, data, expire=None):
         except ValueError:
             # pylint: disable-next=raise-missing-from
             raise ValueError(
-                # pylint: disable-next=consider-using-f-string
-                "Provided expire parameter must conform to {}".format(
-                    _CACHE_DATE_FORMAT
-                )
+                f"Provided expire parameter must conform to {_CACHE_DATE_FORMAT}"
             )
 
     if expire:
         data["expire"] = expire
-    # pylint: disable-next=consider-using-f-string
-    cachefile = "{}.json".format(cachefile)
+    cachefile = f"{cachefile}.json"
 
     try:
         with open(cachefile, "w", encoding="utf-8") as f:
@@ -295,13 +290,11 @@ def prompt_user(prompt, noblank=False, multiline=False):
                     # python 2 must call raw_input() because input()
                     # also evaluates the user input and that causes
                     # problems.
-                    # pylint: disable-next=consider-using-f-string
-                    userinput = raw_input("%s " % prompt)
+                    userinput = raw_input(f"{prompt} ")
                 except NameError:
                     # python 3 replaced raw_input() with input()...
                     # it no longer evaulates the user input.
-                    # pylint: disable-next=consider-using-f-string
-                    userinput = input("%s " % prompt)
+                    userinput = input(f"{prompt} ")
             if noblank:
                 if userinput != "":
                     break
@@ -337,8 +330,7 @@ def parse_time_input(userinput=""):
             # YYYYMMDD
             if not match.group(4) and not match.group(5):
                 timestamp = time.strptime(
-                    # pylint: disable-next=consider-using-f-string
-                    "%s%s%s" % (match.group(1), match.group(2), match.group(3)),
+                    f"{match.group(1)}{match.group(2)}{match.group(3)}",
                     date_format,
                 )
             # YYYYMMDDHH
@@ -346,9 +338,7 @@ def parse_time_input(userinput=""):
                 date_format += "%H"
 
                 timestamp = time.strptime(
-                    # pylint: disable-next=consider-using-f-string
-                    "%s%s%s%s"
-                    % (match.group(1), match.group(2), match.group(3), match.group(4)),
+                    f"{match.group(1)}{match.group(2)}{match.group(3)}{match.group(4)}",
                     date_format,
                 )
             # YYYYMMDDHHMM
@@ -356,15 +346,7 @@ def parse_time_input(userinput=""):
                 date_format += "%H%M"
 
                 timestamp = time.strptime(
-                    # pylint: disable-next=consider-using-f-string
-                    "%s%s%s%s%s"
-                    % (
-                        match.group(1),
-                        match.group(2),
-                        match.group(3),
-                        match.group(4),
-                        match.group(5),
-                    ),
+                    f"{match.group(1)}{match.group(2)}{match.group(3)}{match.group(4)}{match.group(5)}",
                     date_format,
                 )
             # YYYYMMDDHHMMSS
@@ -372,16 +354,7 @@ def parse_time_input(userinput=""):
                 date_format += "%H%M%S"
 
                 timestamp = time.strptime(
-                    # pylint: disable-next=consider-using-f-string
-                    "%s%s%s%s%s%s"
-                    % (
-                        match.group(1),
-                        match.group(2),
-                        match.group(3),
-                        match.group(4),
-                        match.group(5),
-                        match.group(6),
-                    ),
+                    f"{match.group(1)}{match.group(2)}{match.group(3)}{match.group(4)}{match.group(5)}{match.group(6)}",
                     date_format,
                 )
             if timestamp:
@@ -458,30 +431,22 @@ def build_package_name(package):
     Args:
       packages: A single package object.
     """
-    # pylint: disable-next=consider-using-f-string
-    name = "{name}-{version}-{release}".format(
-        name=package.get("name"),
-        version=package.get("version"),
-        release=package.get("release"),
-    )
+    name = f"{package.get('name')}-{package.get('version')}-{package.get('release')}"
     epoch = package.get("epoch", "").strip()
     # NOTE: normally it's "name-epoch:version-release.arch", but in spacecmd
     # "name-version-release:epoch.arch" is used. Such strings can be supplied
     # by users, therefore we need to stick to it.
     if epoch:
-        # pylint: disable-next=consider-using-f-string
-        name += ":{epoch}".format(epoch=epoch)
+        name += f":{epoch}"
 
     arch = package.get("arch", "").strip()
     arch_label = package.get("arch_label", "").strip()
     if arch:
         # system.listPackages uses AMD64 instead of x86_64
         arch = re.sub("amd64", "x86_64", arch.lower())
-        # pylint: disable-next=consider-using-f-string
-        name += ".{arch}".format(arch=arch)
+        name += f".{arch}"
     elif arch_label:
-        # pylint: disable-next=consider-using-f-string
-        name += ".{arch}".format(arch=arch_label)
+        name += f".{arch_label}"
 
     return name
 
@@ -524,14 +489,10 @@ def print_errata_summary(erratum):
         erratum["date"] = date_parts[0]
 
     print(
-        # pylint: disable-next=consider-using-f-string
-        "%s  %s  %s  %s"
-        % (
-            erratum.get("advisory_name").ljust(14),
-            wrap(erratum.get("advisory_synopsis"), 49)[0].ljust(49),
-            (erratum.get("advisory_status") or "").ljust(9),
-            erratum.get("date").rjust(8),
-        )
+        f"{erratum.get('advisory_name').ljust(14)}  "
+        f"{wrap(erratum.get('advisory_synopsis'), 49)[0].ljust(49)}  "
+        f"{(erratum.get('advisory_status') or '').ljust(9)}  "
+        f"{erratum.get('date').rjust(8)}"
     )
 
 
@@ -588,8 +549,7 @@ def config_channel_order(all_channels=None, new_channels=None):
         print(_("Current Selections"))
         print("------------------")
         for i, new_channel in enumerate(new_channels, 1):
-            # pylint: disable-next=consider-using-f-string
-            print("%i. %s" % (i, new_channel))
+            print(f"{i}. {new_channel}")
 
         print("")
         action = prompt_user("a[dd], r[emove], c[lear], d[one]:")

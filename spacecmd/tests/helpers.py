@@ -77,10 +77,7 @@ def assert_expect(calls, *expectations):
     expectations = list(expectations)
     for call in calls:
         expectation = next(iter(expectations))
-        # pylint: disable-next=consider-using-f-string
-        assert call[0][0] == expectation, "Expected '{}', got '{}'".format(
-            expectation, call[0][0]
-        )
+        assert call[0][0] == expectation, f"Expected '{expectation}', got '{call[0][0]}'"
         expectations.pop(0)
     assert not expectations
 
@@ -116,10 +113,8 @@ def assert_args_expect(calls, expectations):
         args, kw = call
         # pylint: disable-next=invalid-name,invalid-name
         _args, _kw = next(iter(expectations))
-        # pylint: disable-next=consider-using-f-string
-        assert args == _args, "{} is not as expected {}".format(str(args), str(_args))
-        # pylint: disable-next=consider-using-f-string
-        assert kw == _kw, "{} is not as expected {}".format(str(kw), str(_kw))
+        assert args == _args, f"{args} is not as expected {_args}"
+        assert kw == _kw, f"{kw} is not as expected {_kw}"
         expectations.pop(0)
     assert not expectations
 

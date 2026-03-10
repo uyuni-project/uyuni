@@ -217,8 +217,7 @@ def do_distribution_delete(self, args):
 
     # allow globbing of distribution names
     dists = filter_results(self.do_distribution_list("", True), args)
-    # pylint: disable-next=consider-using-f-string
-    logging.debug("distribution_delete called with args %s, dists=%s" % (args, dists))
+    logging.debug(f"distribution_delete called with args {args}, dists={dists}")
 
     if not dists:
         logging.error(_N("No distributions matched argument %s") % args)
@@ -258,8 +257,7 @@ def do_distribution_details(self, args):
 
     # allow globbing of distribution names
     dists = filter_results(self.do_distribution_list("", True), args)
-    # pylint: disable-next=consider-using-f-string
-    logging.debug("distribution_details called with args %s, dists=%s" % (args, dists))
+    logging.debug(f"distribution_details called with args {args}, dists={dists}")
 
     if not dists:
         logging.error(_N("No distributions matched argument %s") % args)

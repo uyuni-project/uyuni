@@ -34,8 +34,7 @@ class TestSCShell:
         Test shell delimieters are set without hyphens
         or colons during the tab completion.
         """
-        # pylint: disable-next=consider-using-f-string
-        cfg_dir = "/tmp/shell/{}/conf".format(int(time.time()))
+        cfg_dir = f"/tmp/shell/{int(time.time())}/conf"
         m_logger = MagicMock()
 
         cpl_setter = MagicMock()
@@ -47,8 +46,7 @@ class TestSCShell:
             options.nohistory = True
             shell = SpacewalkShell(options, cfg_dir, None)
 
-            # pylint: disable-next=consider-using-f-string
-            assert shell.history_file == "{}/history".format(cfg_dir)
+            assert shell.history_file == f"{cfg_dir}/history"
             assert not m_logger.error.called
             assert cpl_setter.call_args[0][0] != readline.get_completer_delims()
             assert cpl_setter.call_args[0][0] == " \t\n`~!@#$%^&*()=+[{]}\\|;'\",<>?"
@@ -67,8 +65,7 @@ class TestSCShell:
         """
         Test shell no history file should capture IOError and log it.
         """
-        # pylint: disable-next=consider-using-f-string
-        cfg_dir = "/tmp/shell/{}/conf".format(int(time.time()))
+        cfg_dir = f"/tmp/shell/{int(time.time())}/conf"
         m_logger = MagicMock()
         # pylint: disable-next=unused-variable
         cpl_setter = MagicMock()
@@ -77,8 +74,7 @@ class TestSCShell:
             options.nohistory = False
             shell = SpacewalkShell(options, cfg_dir, None)
 
-            # pylint: disable-next=consider-using-f-string
-            assert shell.history_file == "{}/history".format(cfg_dir)
+            assert shell.history_file == f"{cfg_dir}/history"
             assert not os.path.exists(shell.history_file)
             assert m_logger.error.call_args[0][0] == "Could not read history file"
 

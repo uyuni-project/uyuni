@@ -1280,8 +1280,7 @@ class TestSCErrata:
         shell.get_system_id = (
             lambda data: zlib.adler32(data.encode("utf-8")) & 0xFFFFFFFF
         )
-        # pylint: disable-next=unnecessary-lambda,consider-using-f-string
-        shell.get_erratum_name = lambda data: "CVE-{}-name".format(data)
+        shell.get_erratum_name = lambda data: f"CVE-{data}-name"
         shell.expand_errata = MagicMock(return_value=["CVE-1", "CVE-2"])
         shell.client.errata.listAffectedSystems = MagicMock(
             side_effect=[
@@ -1376,8 +1375,7 @@ class TestSCErrata:
         shell.get_system_id = (
             lambda data: zlib.adler32(data.encode("utf-8")) & 0xFFFFFFFF
         )
-        # pylint: disable-next=unnecessary-lambda,consider-using-f-string
-        shell.get_erratum_name = lambda data: "CVE-{}-name".format(data)
+        shell.get_erratum_name = lambda data: f"CVE-{data}-name"
         shell.expand_errata = MagicMock(return_value=["CVE-1", "CVE-2"])
         shell.client.errata.listAffectedSystems = MagicMock(
             side_effect=[
