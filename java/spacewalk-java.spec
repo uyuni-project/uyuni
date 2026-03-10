@@ -129,7 +129,7 @@ BuildRequires:  netty
 BuildRequires:  perl
 BuildRequires:  pgjdbc-ng
 BuildRequires:  postgresql-jdbc
-BuildRequires:  prometheus-client-java
+BuildRequires:  prometheus-client-java >= 0.16.0
 BuildRequires:  quartz
 BuildRequires:  redstone-xmlrpc
 BuildRequires:  salt-netapi-client >= 1.0.0

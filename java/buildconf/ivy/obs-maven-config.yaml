@@ -5,6 +5,8 @@ repositories:
   Uyuni_Other:
     project: systemsmanagement:Uyuni:Master:Other
     repository: openSUSE_Leap_15.6
+  RMestre_Uyuni_Other:
+    url: https://download.opensuse.org/repositories/home:/RMestre:/branches:/systemsmanagement:/Uyuni:/Master:/Other/openSUSE_Leap_15.6/
   Uyuni:
     project: systemsmanagement:Uyuni:Master
     repository: openSUSE_Leap_15.6
@@ -218,22 +220,25 @@ artifacts:
     repository: Uyuni_Other
   - artifact: salt-netapi-client
     repository: Uyuni
+
   - artifact: simpleclient
     package: prometheus-simpleclient-java
-    jar: simpleclient-[0-9.]+
-    repository: Uyuni_Other
+    jar: simpleclient.jar
+    repository: RMestre_Uyuni_Other
   - artifact: simpleclient_common
-    package: prometheus-simpleclient-java
-    repository: Uyuni_Other
+    package: prometheus-simpleclient-java-common
+    repository: RMestre_Uyuni_Other
   - artifact: simpleclient_hibernate
-    package: prometheus-simpleclient-java
-    repository: Uyuni_Other
+    package: prometheus-simpleclient-java-hibernate
+    repository: RMestre_Uyuni_Other
   - artifact: simpleclient_httpserver
-    package: prometheus-simpleclient-java
-    repository: Uyuni_Other
+    package: prometheus-simpleclient-java-httpserver
+    repository: RMestre_Uyuni_Other
   - artifact: simpleclient_servlet
-    package: prometheus-simpleclient-java
-    repository: Uyuni_Other
+    package: prometheus-simpleclient-java-servlet
+    jar: simpleclient_servlet.jar
+    repository: RMestre_Uyuni_Other
+
   - artifact: simple-core
     # How comes that package is not noarch?
     arch: x86_64
