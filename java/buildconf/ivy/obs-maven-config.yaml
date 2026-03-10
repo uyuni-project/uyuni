@@ -5,6 +5,8 @@ repositories:
   Uyuni_Other:
     project: systemsmanagement:Uyuni:Master:Other
     repository: openSUSE_Leap_15.6
+  Rime_Uyuni_Other:
+    url: https://download.opensuse.org/repositories/home:/RMestre:/branches:/systemsmanagement:/Uyuni:/Master:/Other/openSUSE_Leap_15.6/
   Uyuni:
     project: systemsmanagement:Uyuni:Master
     repository: openSUSE_Leap_15.6
@@ -220,20 +222,24 @@ artifacts:
     repository: Uyuni
   - artifact: simpleclient
     package: prometheus-simpleclient-java
-    jar: simpleclient-[0-9.]+
-    repository: Uyuni_Other
+    jar: simpleclient.jar
+    repository: Rime_Uyuni_Other
   - artifact: simpleclient_common
     package: prometheus-simpleclient-java
-    repository: Uyuni_Other
+    jar: simpleclient_common.jar
+    repository: Rime_Uyuni_Other
   - artifact: simpleclient_hibernate
     package: prometheus-simpleclient-java
-    repository: Uyuni_Other
+    jar: simpleclient_hibernate.jar
+    repository: Rime_Uyuni_Other
   - artifact: simpleclient_httpserver
     package: prometheus-simpleclient-java
-    repository: Uyuni_Other
+    jar: simpleclient_httpserver.jar
+    repository: Rime_Uyuni_Other
   - artifact: simpleclient_servlet
     package: prometheus-simpleclient-java
-    repository: Uyuni_Other
+    jar: simpleclient_servlet.jar
+    repository: Rime_Uyuni_Other
   - artifact: simple-core
     # How comes that package is not noarch?
     arch: x86_64
@@ -256,8 +262,6 @@ artifacts:
     repository: Uyuni_Other
   - artifact: spy
     package: pgjdbc-ng
-    repository: Uyuni_Other
-  - artifact: statistics
     repository: Uyuni_Other
   - artifact: stax2-api
     package: woodstox
