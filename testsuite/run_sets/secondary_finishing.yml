@@ -7,6 +7,7 @@
 ## Finishing Secondary features  BEGIN ##
 
 # these features are disruptive for other features, so they are better at the end
+- features/secondary/srv_mgradm_backup.feature
 - features/secondary/srv_rename_hostname.feature
 
 ## Finishing Secondary features END ##

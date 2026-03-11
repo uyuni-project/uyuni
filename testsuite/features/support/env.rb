@@ -270,6 +270,20 @@ After('@scope_cobbler') do |scenario|
   end
 end
 
+Before('@mgradm_backup_restore') do
+  add_context('backup_dir', '/var/lib/containers/storage/volumes/test_backup')
+end
+
+After('@mgradm_backup_restore') do |scenario|
+  if scenario.failed?
+    get_target('server').run("rm -rf #{get_context('backup_dir')}", runs_in_container: false)
+    # if server is stopped due to a previous restore failure, start it again
+    # to ensure the system is in a clean state for subsequent tests
+    output, _code = get_target('server').run('systemctl is-active uyuni-server', runs_in_container: false)
+    get_target('server').run('mgradm start', runs_in_container: false) unless output.strip == 'active'
+  end
+end
+
 AfterStep do
   next unless capybara_session_created?
 
