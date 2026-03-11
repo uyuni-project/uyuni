@@ -1,5 +1,5 @@
 #!/bin/bash
-set -xe
+set -x
 
 if [[ "$(uname)" == "Darwin" ]]; then
   PODMAN_CMD="podman"
@@ -14,12 +14,15 @@ then
 	exit 1
 fi
 
-src_dir=$(cd $(dirname "$0")/../.. && pwd -P)
 server_id=${1}
-rm -rfv /tmp/testing/server-logs/${server_id}
-mkdir -p /tmp/testing/server-logs/${server_id}
-sudo -i journalctl > /tmp/testing/server-logs/${server_id}/journalctl.log && chmod 644 /tmp/testing/server-logs/${server_id}/journalctl.log
+HOST_LOG_DIR="testing/server-logs/${server_id}"
+SUT_LOG_DIR="server-logs/${server_id}"
+
+rm -rfv "/tmp/${HOST_LOG_DIR}"
+mkdir -p "/tmp/${HOST_LOG_DIR}" && chmod -R 755 "/tmp/${HOST_LOG_DIR}"
+# shellcheck disable=SC2024
+sudo -i journalctl > "/tmp/${HOST_LOG_DIR}/journalctl.log" && chmod 644 "/tmp/${HOST_LOG_DIR}/journalctl.log"
 # prevent supportconfig exit code 1 on missing logger bsc#1245667
 $PODMAN_CMD exec server bash -c "ln -s /usr/bin/echo /usr/bin/logger"
-$PODMAN_CMD exec server bash -c "supportconfig -R /tmp/server-logs/${server_id} && chmod 644 /tmp/server-logs/${server_id}/*.txz*"
+$PODMAN_CMD exec server bash -c "supportconfig -R /tmp/${SUT_LOG_DIR}; chmod 644 /tmp/${SUT_LOG_DIR}/*.txz*"
 
