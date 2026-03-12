@@ -51,6 +51,7 @@ insert into rhnKSInstallType (id, label, name)
         values (sequence_nextval('rhn_ksinstalltype_id_seq'),
                 'sles12generic','SUSE Linux Enterprise 12'
         );
+
 insert into rhnKSInstallType (id, label, name)
         values (sequence_nextval('rhn_ksinstalltype_id_seq'),
                 'sles15generic','SUSE Linux Enterprise 15'
@@ -69,6 +70,11 @@ insert into rhnKSInstallType (id, label, name)
 insert into rhnKSInstallType (id, label, name)
         values (sequence_nextval('rhn_ksinstalltype_id_seq'),
                 'rhel_10','Red Hat Enterprise Linux 10'
+        );
+
+insert into rhnKSInstallType (id, label, name)
+        values (sequence_nextval('rhn_ksinstalltype_id_seq'),
+                'opensuse16.1','SUSE Linux Enterprise 16'
         );
 
 commit;

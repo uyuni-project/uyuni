@@ -15,7 +15,9 @@
 package com.redhat.rhn.domain.kickstart;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
@@ -37,6 +39,25 @@ public class KickstartInstallTypeTest extends BaseTestCase {
 
         KickstartInstallType kit2 = TestUtils.lookupFromCacheById(testid, KickstartInstallType.class);
         assertEquals(kit1.getLabel(), kit2.getLabel());
+    }
+
+    @Test
+    public void testIsSLES16() {
+        KickstartInstallType sles16 = new KickstartInstallType();
+        sles16.setLabel("opensuse16.1");
+        assertTrue(sles16.isSLES16());
+        assertTrue(sles16.isSLES16OrGreater());
+        assertFalse(sles16.isSLES15());
+
+        KickstartInstallType sles15 = new KickstartInstallType();
+        sles15.setLabel("sles15generic");
+        assertFalse(sles15.isSLES16());
+        assertFalse(sles15.isSLES16OrGreater());
+
+        KickstartInstallType suse = new KickstartInstallType();
+        suse.setLabel("suse");
+        assertFalse(suse.isSLES16());
+        assertFalse(suse.isSLES16OrGreater());
     }
 
 }

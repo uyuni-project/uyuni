@@ -136,7 +136,12 @@ public class KickstartInitiateAction extends KickstartAction {
             }
         }
         else if (breed.equals("suse")) {
-            kernelOptions += "autoyast=" + autoinst;
+            if (sys.getProfile().getDistro().getOsVersion().startsWith("opensuse16")) {
+                kernelOptions += "inst.auto=" + autoinst;
+            }
+            else {
+                kernelOptions += "autoyast=" + autoinst;
+            }
         }
         else if (breed.equals("debian") || breed.equals("ubuntu")) {
             kernelOptions += "auto-install/enable=true priority=critical netcfg/choose_interface=auto url=" + autoinst;

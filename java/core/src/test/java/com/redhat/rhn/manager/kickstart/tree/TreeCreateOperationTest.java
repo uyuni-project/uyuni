@@ -15,6 +15,7 @@
 
 package com.redhat.rhn.manager.kickstart.tree;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -64,6 +65,19 @@ public class TreeCreateOperationTest extends TreeOperationTestBase {
     @Test
     public void testPopulateKernelOptsForSlesPrefix() throws Exception {
         testPopulateKernelOptsForSuse("sles12generic");
+    }
+
+    @Test
+    public void testPopulateKernelOptsForSles16() throws Exception {
+        TreeCreateOperation cmd = new TreeCreateOperation(user);
+        setTestTreeParams(cmd);
+        cmd.setInstallType(KickstartFactory.
+                lookupKickstartInstallTypeByLabel("opensuse16.1"));
+        cmd.setKernelOptions("");
+        cmd.store();
+        assertContains(cmd.getKernelOptions(), "root=live:");
+        assertContains(cmd.getKernelOptions(), "inst.self_update=0");
+        assertFalse(cmd.getKernelOptions().contains("install="));
     }
 
     @Test
