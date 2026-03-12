@@ -179,7 +179,7 @@ public class UbuntuErrataManager {
         return errataInfo.entrySet().stream().flatMap(entry -> {
             UbuntuErrataInfo ubuntuErrataInfo = entry.getValue();
 
-            // fallback to key if id is not present, but log it for visibility (should not happen)
+            // fallback to key if id is not present
             String errataId = ubuntuErrataInfo.getId() != null ? ubuntuErrataInfo.getId() : entry.getKey();
 
             String description = ubuntuErrataInfo.getDescription().length() > 4000 ?
@@ -219,7 +219,7 @@ public class UbuntuErrataManager {
 
             if (packageData.isEmpty()) {
                 // Skip Errata when we have no matching packages
-                LOG.debug("Skipping errata without matching packages: {}", ubuntuErrataInfo.getId());
+                LOG.debug("Skipping errata without matching packages: {}", errataId);
                 return Stream.empty();
             }
             return Stream.of(new Entry(
