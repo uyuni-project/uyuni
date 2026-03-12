@@ -51,7 +51,7 @@ public class ServerCoCoAttestationConfig implements Serializable  {
     public ServerCoCoAttestationConfig(boolean enabledIn, Server serverIn) {
         enabled = enabledIn;
         server = serverIn;
-        environmentType = CoCoEnvironmentType.NONE;
+        environmentType = CoCoEnvironmentType.getDefault();
         attestOnBoot = false;
     }
 
