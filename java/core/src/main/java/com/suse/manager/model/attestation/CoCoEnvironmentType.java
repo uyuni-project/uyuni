@@ -53,6 +53,10 @@ public enum CoCoEnvironmentType {
         return LocalizationService.getInstance().getMessage(descriptionKey);
     }
 
+    public static CoCoEnvironmentType getDefault() {
+        return KVM_AMD_EPYC_MILAN;
+    }
+
     /**
      * @return returns the list of supported {@link CoCoResultType} for this environment
      */

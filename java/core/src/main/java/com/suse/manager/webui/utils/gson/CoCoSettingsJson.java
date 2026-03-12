@@ -44,7 +44,7 @@ public class CoCoSettingsJson {
      * @param supportedIn if confidential computing is supported
      */
     public CoCoSettingsJson(boolean supportedIn) {
-        this(supportedIn, false, CoCoEnvironmentType.NONE, false);
+        this(supportedIn, false, CoCoEnvironmentType.getDefault(), false);
     }
 
     /**
