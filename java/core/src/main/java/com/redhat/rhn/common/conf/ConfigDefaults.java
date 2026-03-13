@@ -343,6 +343,19 @@ public class ConfigDefaults {
     public static final String SALT_EVENTS_PER_COMMIT = "java.salt_events_per_commit";
 
     /**
+     * Polling interval in milliseconds for checking PostgreSQL LISTEN/NOTIFY notifications.
+     */
+    public static final String SALT_EVENT_NOTIFICATION_POLL_INTERVAL_MS =
+            "java.salt_event_notification_poll_interval_ms";
+
+    /**
+     * Connection watchdog interval in seconds for checking database connection health and
+     * recovering orphaned events.
+     */
+    public static final String SALT_EVENT_CONNECTION_WATCHDOG_INTERVAL_SECONDS =
+            "java.salt_event_connection_watchdog_interval_seconds";
+
+    /**
      * Single Sign-On associated config option name in rhn.conf
      */
     public static final String SINGLE_SIGN_ON_ENABLED = "java.sso";
@@ -1176,6 +1189,23 @@ public class ConfigDefaults {
      */
     public int getSaltEventsPerCommit() {
         return Config.get().getInt(SALT_EVENTS_PER_COMMIT, 1);
+    }
+
+    /**
+     * Returns the polling interval in milliseconds for checking PostgreSQL LISTEN/NOTIFY notifications.
+     * @return the polling interval in milliseconds
+     */
+    public int getSaltEventNotificationPollIntervalMs() {
+        return Config.get().getInt(SALT_EVENT_NOTIFICATION_POLL_INTERVAL_MS, 100);
+    }
+
+    /**
+     * Returns the connection watchdog interval in seconds for checking database connection health
+     * and recovering orphaned events.
+     * @return the watchdog interval in seconds
+     */
+    public int getSaltEventConnectionWatchdogIntervalSeconds() {
+        return Config.get().getInt(SALT_EVENT_CONNECTION_WATCHDOG_INTERVAL_SECONDS, 5);
     }
 
 

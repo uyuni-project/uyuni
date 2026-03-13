@@ -163,32 +163,6 @@ artifacts:
   - artifact: mchange-commons-java
     package: mchange-commons
     repository: Leap
-  - artifact: netty-buffer
-    package: netty
-    repository: Leap_sle
-  - artifact: netty-codec
-    package: netty
-    jar: netty-codec\.jar
-    repository: Leap_sle
-  - artifact: netty-common
-    package: netty
-    repository: Leap_sle
-  - artifact: netty-handler
-    package: netty
-    jar: netty-handler\.jar
-    repository: Leap_sle
-  - artifact: netty-resolver
-    package: netty
-    jar: netty-resolver\.jar
-    repository: Leap_sle
-  - artifact: netty-transport
-    package: netty
-    jar: netty-transport\.jar
-    repository: Leap_sle
-  - artifact: netty-transport-native-unix-common
-    package: netty
-    jar: netty-transport-native-unix-common\.jar
-    repository: Leap_sle
   - artifact: client
     package: ongres-scram-client
     repository: Leap
@@ -203,8 +177,6 @@ artifacts:
     repository: Leap
   - artifact: oro
     repository: Leap
-  - artifact: pgjdbc-ng
-    repository: Uyuni_Other
   - artifact: postgresql
     package: postgresql-jdbc
     repository: Leap
@@ -258,9 +230,6 @@ artifacts:
     package: spark-core
     repository: Uyuni_Other
   - artifact: spark-template-jade
-    repository: Uyuni_Other
-  - artifact: spy
-    package: pgjdbc-ng
     repository: Uyuni_Other
   - artifact: stax2-api
     package: woodstox
