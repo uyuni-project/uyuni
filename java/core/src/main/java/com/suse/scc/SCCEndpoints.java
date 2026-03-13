@@ -60,6 +60,7 @@ import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.util.Base64;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -207,22 +208,21 @@ public class SCCEndpoints {
 
     /**
      * Build and return a short living token for a Hub repository sync
-     * @param channel the channel to the create the token for
+     * @param channelLabels the channel Labels to the create the token for
+     * @param orgId the orgId of the channels. 0 if is a vendor channel
      * @return the token
      */
-    public static Optional<String> buildHubRepositoryToken(Channel channel) {
-        String channelLabel = channel.getLabel();
+    public static Optional<String> buildHubRepositoryToken(Set<String> channelLabels, Long orgId) {
         try {
-            Long oid = Optional.ofNullable(channel.getOrg()).map(Org::getId).orElse(0L);
-            DownloadTokenBuilder builder = new DownloadTokenBuilder(oid)
+            DownloadTokenBuilder builder = new DownloadTokenBuilder(orgId)
                     .usingServerSecret()
                     // Short lived 2 day + 4 hours tokens refreshed on ever sync
                     .expiringAfterMinutes(2L * (24 + 2) * 60)
-                    .allowingOnlyChannels(Set.of(channelLabel));
+                    .allowingOnlyChannels(channelLabels);
             return Optional.of(builder.build().getSerializedForm());
         }
         catch (TokenBuildingException e) {
-            LOG.error("Error creating token for channel: {}", channelLabel, e);
+            LOG.error("Error creating token for channel: {}", channelLabels, e);
             return Optional.empty();
         }
     }
@@ -266,10 +266,19 @@ public class SCCEndpoints {
         var jsonRepos = channels.stream().map(c -> {
             Channel channel = c.getChannel();
             String label = channel.getLabel();
-            String tokenString = buildHubRepositoryToken(channel).orElse("");
+
             return SUSEProductFactory.lookupByChannelLabelFirst(label)
-                    .map(channelTemplate -> buildVendorRepoJson(channelTemplate, hostname, tokenString))
-                    .orElseGet(() -> buildCustomRepoJson(label, hostname, tokenString));
+                    .map(channelTemplate -> {
+                        Set<String> channelLabels = new HashSet<>(channelTemplate.getRepository().getChannelTemplates()
+                                .stream().map(ChannelTemplate::getChannelLabel).toList());
+                        String tokenString = buildHubRepositoryToken(channelLabels, 0L).orElse("");
+                        return buildVendorRepoJson(channelTemplate, hostname, tokenString);
+                    })
+                    .orElseGet(() -> {
+                        Long oid = Optional.ofNullable(channel.getOrg()).map(Org::getId).orElse(0L);
+                        String tokenString = buildHubRepositoryToken(Set.of(channel.getLabel()), oid).orElse("");
+                        return buildCustomRepoJson(label, hostname, tokenString);
+                    });
         }).toList();
         return gson.toJson(jsonRepos);
     }
