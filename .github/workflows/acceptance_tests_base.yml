@@ -194,20 +194,12 @@ jobs:
       - name: Setup server container
         if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
         run: ./testsuite/podman_runner/07_server_setup.sh
+        env:
+          USE_IVY_CACHE: ${{ steps.cache-ivy.outputs.cache-hit }}
 
       - name: Start server container
         if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}
         run: ./testsuite/podman_runner/08_start_server.sh
-
-      - name: Inject cached Ivy JARs into server container
-        if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' && steps.cache-ivy.outputs.cache-hit == 'true' }}
-        run: |
-          sudo podman exec server mkdir -p /root/.ivy2/cache/
-          sudo podman cp java/buildconf/ivy/repository/. server:/root/.ivy2/cache/
-
-      - name: Inject cached node_modules into server container
-        if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' && steps.cache-node-modules.outputs.cache-hit == 'true' }}
-        run: sudo podman cp web/node_modules server:/web/node_modules
 
       #- name: Run SSH minion container
       #  if: ${{ !inputs.skip_tests && needs.filters.outputs.require_acceptance_tests == 'true' }}

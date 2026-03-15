@@ -42,6 +42,14 @@ echo -n "dbpass" | $PODMAN_CMD secret create uyuni-db-admin-pass -
 echo -n "pythia_susemanager" | $PODMAN_CMD secret create uyuni-reportdb-user -
 echo -n "pythia_susemanager" | $PODMAN_CMD secret create uyuni-reportdb-pass -
 
+if [ "${USE_IVY_CACHE}" = "true" ]; then
+    $PODMAN_CMD volume create --ignore root
+    mnt_dir=$($PODMAN_CMD volume mount root)
+    sudo mkdir -p "${mnt_dir}/.ivy2/cache/"
+    sudo cp -r "${src_dir}/java/buildconf/ivy/repository/." "${mnt_dir}/.ivy2/cache/"
+    $PODMAN_CMD volume unmount root
+fi
+
 # Start the Database container
 $PODMAN_CMD run \
     --cgroups=no-conmon \
@@ -111,7 +119,7 @@ $PODMAN_CMD run --cap-add AUDIT_CONTROL \
     -v srv-pillar:/srv/pillar \
     -v srv-susemanager:/srv/susemanager \
     -v srv-spacewalk:/srv/spacewalk \
-    -v root:/root \
+    -v root:/root:z \
     -v ca-certs:/etc/pki/trust/anchors/ \
     -v run-salt-master:/run/salt/master \
     -v etc-rhn:/etc/rhn \
