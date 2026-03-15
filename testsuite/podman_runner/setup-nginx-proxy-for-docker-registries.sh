@@ -156,6 +156,8 @@ function setup_systemd_override() {
     if [[ "$OS" == "opensuse" || "$OS" == "ubuntu" ]]; then
         # On OpenSUSE, we need to ensure nginx can access certs in /tmp/testing
         # PrivateTmp=false is needed.
+        # See https://en.opensuse.org/openSUSE:Security_Features#Systemd_hardening_effort
+        # Does not hurt to add it to Ubuntu too.
         sudo mkdir -p /etc/systemd/system/nginx.service.d
         sudo tee /etc/systemd/system/nginx.service.d/override.conf <<EOF
 [Service]
