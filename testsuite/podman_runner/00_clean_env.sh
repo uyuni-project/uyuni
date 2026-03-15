@@ -55,7 +55,7 @@ else
   $PODMAN_CMD volume rm -f srv-susemanager
   $PODMAN_CMD volume rm -f srv-spacewalk
   $PODMAN_CMD volume rm -f root
-  $PODMAN_CMD volume rm -f ca-cert
+  $PODMAN_CMD volume rm -f ca-certs
   $PODMAN_CMD volume rm -f run-salt-master
   $PODMAN_CMD volume rm -f etc-tls
   $PODMAN_CMD volume rm -f var-pgsql
