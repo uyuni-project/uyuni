@@ -112,7 +112,7 @@ $PODMAN_CMD run --cap-add AUDIT_CONTROL \
     -v srv-susemanager:/srv/susemanager \
     -v srv-spacewalk:/srv/spacewalk \
     -v root:/root \
-    -v ca-cert:/etc/pki/trust/anchors/ \
+    -v ca-certs:/etc/pki/trust/anchors/ \
     -v run-salt-master:/run/salt/master \
     -v etc-rhn:/etc/rhn \
     -v etc-apache2:/etc/apache2 \
