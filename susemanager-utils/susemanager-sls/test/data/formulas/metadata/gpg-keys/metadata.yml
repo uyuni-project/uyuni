@@ -1,0 +1,5 @@
+description:
+  Manage custom GPG keys deployed to clients
+group: software_management
+after:
+  - channels

@@ -1,0 +1,7 @@
+gpg_keys:
+  $type: group
+
+  custom_gpgkeys:
+    $type: array
+    $name: Custom GPG Keys
+    $help: List of GPG key filenames located in salt://gpg/
