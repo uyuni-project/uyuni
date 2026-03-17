@@ -1,6 +1,7 @@
 # Copyright (c) 2021-2026 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+@skip_if_github_validation
 @scope_ansible
 @sle_minion
 Feature: Operate an Ansible control node in a normal minion
