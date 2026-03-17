@@ -1,0 +1,3 @@
+- Add formula metadata for managing custom GPG keys
+  * Expose custom_gpgkeys pillar in formula UI
+  * Improve usability for managing GPG keys via Uyuni
