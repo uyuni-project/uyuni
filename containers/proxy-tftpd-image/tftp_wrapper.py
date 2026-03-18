@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-# SPDX-FileCopyrightText: 2024 SUSE LLC
+# SPDX-FileCopyrightText: 2026 SUSE LLC
 #
 # SPDX-License-Identifier: MIT
 """Wrapper script for Uyuni proxy tftp container."""
 
 import argparse
+import hashlib
 import logging
 import os
 import errno
@@ -176,7 +177,6 @@ class HttpResponseDataFilteredGrub(HttpResponseDataFiltered):
         cobbler_content = ""
         have_entry = False
         entry = ""
-        entry_name = ""
         in_entry = False
         for line in self._content.decode("utf-8").splitlines():
             if in_entry:
@@ -189,10 +189,19 @@ class HttpResponseDataFilteredGrub(HttpResponseDataFiltered):
                         and "MINION_ID_PREFIX" in entry
                     ):
                         have_entry = True
+                        # When entry starts with a number, grub assumes we are pointing to a menuentry position.
+                        # This is incorrect, and so we need to provide custom --id option for the menuentry which will
+                        # always start with a character so grub is doing menuentry name match.
+                        entry_id = "id-" + hashlib.md5(entry.encode()).hexdigest()[:8]
+                        entry_lines = entry.splitlines()
+                        entry_lines[0] = entry_lines[0].replace(
+                            "{", f"--id {entry_id} {{", 1
+                        )
+                        entry = "\n".join(entry_lines) + "\n"
                         saltboot_content += entry
                         saltboot_content += (
                             'if [ -z "${default}" -o "${default}" == "local" ]; then\n  set default='
-                            + entry_name
+                            + entry_id
                             + "\nfi\n"
                         )
                     else:
@@ -211,7 +220,6 @@ class HttpResponseDataFilteredGrub(HttpResponseDataFiltered):
                     entry = ""
             else:
                 if line.startswith("menuentry"):
-                    entry_name = line.split(" ", 3)[1]
                     entry = line + "\n"
                     in_entry = True
                 else:
