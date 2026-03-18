@@ -765,6 +765,16 @@ class RepoSync(object):
                     if self.show_packages_only:
                         self.show_packages(plugin, repo_id)
                     elif plugin is not None:
+                        try:
+                            if hasattr(plugin, "verify_packages_index"):
+                                log(0, "Verifying Packages.gz checksum...")
+                                if not plugin.verify_packages_index():
+                                    raise repo.GeneralRepoException("Checksum mismatch for Packages.gz")
+                        except Exception as e:
+                            log(0, f"Checksum verification failed: {e}")
+                            sync_error = -1
+                            continue
+                        
                         if update_repodata:
                             plugin.clear_cache()
 

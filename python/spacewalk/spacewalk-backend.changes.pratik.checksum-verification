@@ -1,0 +1,1 @@
+- Add checksum verification for Packages.gz during repository sync to prevent processing of corrupted metadata
