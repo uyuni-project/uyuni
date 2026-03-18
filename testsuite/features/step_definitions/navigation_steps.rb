@@ -1392,3 +1392,81 @@ Then(/^the following restrictions should be (enabled|disabled):$/) do |expected_
     end
   end
 end
+
+When(/^I bootstrap "([^"]*)" via the UI$/) do |host|
+  system_name = get_system_name(host)
+  errors = ['Unable to bootstrap', 'Server error, please check log files', 'Internal Server Error', 'Service Unavailable']
+
+  step 'I follow the left menu "Systems > Bootstrapping"'
+  raise ScriptError, 'Bootstrap page did not load' unless has_text?('Bootstrap Minions', wait: 30)
+
+  step 'I check "manageWithSSH"'
+  step "I enter the hostname of \"#{host}\" as \"hostname\""
+  step 'I enter "linux" as "password"'
+  step 'I click on "Bootstrap"'
+
+  result = :timeout
+  start_time = Time.now
+  while Time.now - start_time <= 900
+    if has_text?('Bootstrap process initiated.', wait: 5) || has_text?('seems to already exist', wait: 0)
+      result = :success
+      break
+    end
+    error = errors.find { |e| has_text?(e, wait: 0) }
+    if error
+      log "Bootstrap error: '#{error}' after #{(Time.now - start_time).to_i}s"
+      break
+    end
+  end
+
+  unless result == :success
+    poll_start = Time.now
+    registered = false
+    while (Time.now - poll_start) < 900
+      sleep 60
+      step 'I follow the left menu "Systems > System List > All"'
+      if has_text?(system_name, wait: 10)
+        log "#{system_name} appeared after #{(Time.now - poll_start).to_i}s polling"
+        registered = true
+        break
+      end
+    end
+    raise ScriptError, "Bootstrap failed for #{host} — system not registered" unless registered
+  end
+end
+
+When(/^I try to bootstrap "([^"]*)" via the UI$/) do |host|
+  errors = ['Unable to bootstrap', 'Server error, please check log files', 'Internal Server Error', 'Service Unavailable']
+
+  step 'I follow the left menu "Systems > Bootstrapping"'
+  next unless has_text?('Bootstrap Minions', wait: 30)
+
+  step 'I check "manageWithSSH"'
+  step "I enter the hostname of \"#{host}\" as \"hostname\""
+  step 'I enter "linux" as "password"'
+  step 'I click on "Bootstrap"'
+
+  start_time = Time.now
+  while Time.now - start_time <= 900
+    if has_text?('Bootstrap process initiated.', wait: 5) || has_text?('seems to already exist', wait: 0)
+      log "Bootstrap succeeded after #{(Time.now - start_time).to_i}s"
+      break
+    end
+    error = errors.find { |e| has_text?(e, wait: 0) }
+    if error
+      log "Bootstrap error: '#{error}' after #{(Time.now - start_time).to_i}s"
+      break
+    end
+  end
+end
+
+When(/^I ensure "([^"]*)" is bootstrapped$/) do |host|
+  system_name = get_system_name(host)
+  step 'I follow the left menu "Systems > System List > All"'
+  if has_text?(system_name, wait: 30)
+    log "#{system_name} already registered"
+    next
+  end
+  log "#{system_name} not registered — retrying bootstrap"
+  step "I bootstrap \"#{host}\" via the UI"
+end

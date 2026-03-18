@@ -104,6 +104,10 @@ $PODMAN_CMD run --cap-add AUDIT_CONTROL \
 wait_for_server_ready || exit 1
 $PODMAN_CMD exec -d server prometheus
 
+$PODMAN_CMD exec server bash -c "echo 'java.salt_ssh_connect_timeout = 30' >> /etc/rhn/rhn.conf"
+$PODMAN_CMD exec server bash -c "echo 'ProxyTimeout 900' >> /etc/apache2/conf.d/zz-spacewalk-www.conf"
+$PODMAN_CMD exec server bash -c "systemctl reload apache2"
+
 echo "Setting SCC mirror to /mirror"
 $PODMAN_CMD exec server bash -c "echo \"server.susemanager.fromdir = /mirror\" >> /etc/rhn/rhn.conf"
 $PODMAN_CMD exec server bash -c "systemctl restart tomcat"

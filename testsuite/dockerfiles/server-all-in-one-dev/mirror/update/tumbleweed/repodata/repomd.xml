@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<repomd xmlns="http://linux.duke.edu/metadata/repo" xmlns:rpm="http://linux.duke.edu/metadata/rpm">
+  <revision>1771246349</revision>
+  <tags>
+    <repo>obsrepository://build.opensuse.org/openSUSE:Factory:Update/standard</repo>
+    <repo>obsbuildid:1533222898</repo>
+  </tags>
+  <data type="primary">
+    <checksum type="sha512">226a6e03d164a889725979cc0906b6178d83b7044d8413093a315bd52d8018eb905e80f08ad596216c3173af2a78d0c6f6fa0d261c6859989079e09e981c111d</checksum>
+    <open-checksum type="sha512">59b2790889080c91892743fe22b14b79df40a96af42970c9e941e72c665199e39ec82c8b6493144e0a65f9551c64fd96a51418058cc6c15c78b2dde10acd05f6</open-checksum>
+    <location href="repodata/226a6e03d164a889725979cc0906b6178d83b7044d8413093a315bd52d8018eb905e80f08ad596216c3173af2a78d0c6f6fa0d261c6859989079e09e981c111d-primary.xml.gz"/>
+    <timestamp>1771246349</timestamp>
+    <size>6637</size>
+    <open-size>60072</open-size>
+  </data>
+  <data type="filelists">
+    <checksum type="sha512">1f29e8c84c1b9e09b8cc59e74f01a42c932839328eade5a17a1b20f87b1e1734d538af28e1353b8de9d09f85f3a622d87f064cdb7ceee64278aab37f3b0770e2</checksum>
+    <open-checksum type="sha512">18f917418d84a0ab3d631f623137d92b4703073960e376b0d3566028de1be92c2da6dcec12d3fe81780df66f0f096df40973b4f3c7dca1c8cf2d8b622ac6a9aa</open-checksum>
+    <location href="repodata/1f29e8c84c1b9e09b8cc59e74f01a42c932839328eade5a17a1b20f87b1e1734d538af28e1353b8de9d09f85f3a622d87f064cdb7ceee64278aab37f3b0770e2-filelists.xml.gz"/>
+    <timestamp>1771246349</timestamp>
+    <size>4298</size>
+    <open-size>20625</open-size>
+  </data>
+  <data type="other">
+    <checksum type="sha512">e8464a2dc437eb77721c49bc66702f6f17aadda32551c287d4c07a6f7a89a8ec980ffbbd1dc6ea2498f9d09a04b741425c597430162158c1b6022039be1190ac</checksum>
+    <open-checksum type="sha512">6a5b915002f84a07cf8e63a8746ab7b22f6cbbc115d3cc152c29e127ec97eda2fc8904e897367ca04e10dfbd82ac2002c71a3b970737b1ba41c68fe7b66d4e46</open-checksum>
+    <location href="repodata/e8464a2dc437eb77721c49bc66702f6f17aadda32551c287d4c07a6f7a89a8ec980ffbbd1dc6ea2498f9d09a04b741425c597430162158c1b6022039be1190ac-other.xml.gz"/>
+    <timestamp>1771246349</timestamp>
+    <size>5065</size>
+    <open-size>60478</open-size>
+  </data>
+  <data type="filelists-ext">
+    <checksum type="sha512">024df907ff14f178a0effa9858a2eb5b2a94cab8014441b01e0d69c6a4593571912c4a081c2814bbf08033a28991be500e3cd147dd875587238b8f90a2bd2ae4</checksum>
+    <open-checksum type="sha512">25dcdb4cae505227c29af635d5e30f74fa5074d447294c66167e1a01d61d0beac076b2d4e810e28c44b53cc96e8af5669eeea6d79e6e579805284245f920a6ae</open-checksum>
+    <location href="repodata/024df907ff14f178a0effa9858a2eb5b2a94cab8014441b01e0d69c6a4593571912c4a081c2814bbf08033a28991be500e3cd147dd875587238b8f90a2bd2ae4-filelists-ext.xml.gz"/>
+    <timestamp>1771246349</timestamp>
+    <size>4314</size>
+    <open-size>21785</open-size>
+  </data>
+  <data type="updateinfo">
+    <checksum type="sha512">1c5cd8e33993bd592a2df5af7fc09e11c6a73270afd243b7e780927952a7b0a4d09732f2b97fb5f88cf4045be0d448eed78a91bfa6d6979aa267245d7869f8c8</checksum>
+    <open-checksum type="sha512">4858b1f63cd403ab77f2d96b1fc1ba058aa3a45d4d5d5f67537294e1e9b1d171ac6bd18d1f08e9182720516bb51344c1b4e2d655c77d7d237eb3830c871c2914</open-checksum>
+    <location href="repodata/1c5cd8e33993bd592a2df5af7fc09e11c6a73270afd243b7e780927952a7b0a4d09732f2b97fb5f88cf4045be0d448eed78a91bfa6d6979aa267245d7869f8c8-updateinfo.xml.gz"/>
+    <timestamp>1771246349</timestamp>
+    <size>992</size>
+    <open-size>9959</open-size>
+  </data>
+</repomd>
