@@ -3,7 +3,6 @@
 #
 # SPDX-License-Identifier: MIT
 
-import re
 import sys
 from unittest.mock import MagicMock
 
@@ -60,9 +59,11 @@ class TestTftpWrapper(unittest.TestCase):
         self.replace_fqdns = ["other.example.com"]
 
         # Load examples
-        with open("test/pxe-example.cfg", "r") as f:
+        with open(os.path.join(os.path.dirname(__file__), "pxe-example.cfg"), "r") as f:
             self.pxe_example = f.read()
-        with open("test/grub-example.cfg", "r") as f:
+        with open(
+            os.path.join(os.path.dirname(__file__), "grub-example.cfg"), "r"
+        ) as f:
             self.grub_example = f.read()
 
     def test_pxe_filter_saltboot_match(self):
@@ -137,9 +138,12 @@ class TestTftpWrapper(unittest.TestCase):
             # Should contain matched saltboot entry with ID
             self.assertIn(f"menuentry {entry_name}", filtered_content)
             self.assertIn("--id ", filtered_content)
-            entry_match = re.search(r"--id (.*) {", filtered_content)
-            self.assertIsNotNone(entry_match)
-            self.assertIn(f"set default={entry_match.group(1)}", filtered_content)
+            self.assertIn(
+                f"--id {tftp_wrapper.DEFAULT_ENTRY_IDENTIFIER}", filtered_content
+            )
+            self.assertIn(
+                f"set default={tftp_wrapper.DEFAULT_ENTRY_IDENTIFIER}", filtered_content
+            )
             # Should NOT contain other saltboot entries
             self.assertNotIn("menuentry '1234:S:1:Organization'", filtered_content)
             # Should NOT contain cobbler entries

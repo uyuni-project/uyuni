@@ -5,7 +5,6 @@
 """Wrapper script for Uyuni proxy tftp container."""
 
 import argparse
-import hashlib
 import logging
 import os
 import errno
@@ -17,6 +16,8 @@ from fbtftp.base_handler import BaseHandler
 from fbtftp.base_handler import ResponseData
 from fbtftp.base_server import BaseServer
 from fbtftp import constants
+
+DEFAULT_ENTRY_IDENTIFIER: str = "id-saltboot-default"
 
 
 def stats(s):
@@ -192,18 +193,22 @@ class HttpResponseDataFilteredGrub(HttpResponseDataFiltered):
                         # When entry starts with a number, grub assumes we are pointing to a menuentry position.
                         # This is incorrect, and so we need to provide custom --id option for the menuentry which will
                         # always start with a character so grub is doing menuentry name match.
-                        entry_id = "id-" + hashlib.md5(entry.encode()).hexdigest()[:8]
                         entry_lines = entry.splitlines()
-                        entry_lines[0] = entry_lines[0].replace(
-                            "{", f"--id {entry_id} {{", 1
+                        entry_lines[0] = re.sub(
+                            r"\{\s*$",
+                            f"--id {DEFAULT_ENTRY_IDENTIFIER} {{",
+                            entry_lines[0],
                         )
                         entry = "\n".join(entry_lines) + "\n"
                         saltboot_content += entry
                         saltboot_content += (
                             'if [ -z "${default}" -o "${default}" == "local" ]; then\n  set default='
-                            + entry_id
+                            + DEFAULT_ENTRY_IDENTIFIER
                             + "\nfi\n"
                         )
+                        # There can be only one matching saltboot entry
+                        # MINION_ID_PREFIX should be unique across deployment
+                        break
                     else:
                         filtered_entry = re.sub(
                             r"\b" + re.escape(self._server_fqdn) + r"\b",
