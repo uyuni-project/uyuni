@@ -57,7 +57,7 @@
     "copy-webpack-plugin": "5.1.2",
     "core-js": "^3.8.1",
     "css-loader": "6.10.0",
-    "dompurify": "3.2.5",
+    "dompurify": "3.3.3",
     "font-awesome": "4.4.0",
     "formik": "^2.4.6",
     "gettext-parser": "4.2.0",
