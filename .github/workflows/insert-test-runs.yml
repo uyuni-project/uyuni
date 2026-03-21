@@ -1,4 +1,4 @@
-name: Insert Test Runs into DB (Scheduled)
+name: Insert Test Runs (cron)
 
 on:
   schedule:
@@ -13,13 +13,35 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.10"
+      - name: Get PR workflow runs
+        run: |
+          curl -s \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/runs?event=pull_request&per_page=20" \
+            > runs.json
 
-      - name: Install dependencies
-        run: pip install requests
+      - name: Extract run IDs
+        run: |
+          jq -r '.workflow_runs[] 
+            | select(.pull_requests | length > 0) 
+            | "\(.id) \(.pull_requests[0].number)"' runs.json > parsed.txt
 
-      - name: Debug step
-        run: echo "Workflow is running successfully"
+          sort -u parsed.txt -o parsed.txt
+
+          echo "==== FINAL PARSED RUNS ===="
+          cat parsed.txt
+          echo "==========================="
+
+      - name: Insert into DB
+        run: |
+          while read line; do
+            RUN_ID=$(echo $line | awk '{print $1}')
+            PR_NUMBER=$(echo $line | awk '{print $2}')
+
+            echo "Processing PR $PR_NUMBER with run $RUN_ID"
+
+            python insert_test_run_into_db.py \
+              --run-id $RUN_ID \
+              --pr-number $PR_NUMBER
+
+          done < parsed.txt
