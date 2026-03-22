@@ -1,0 +1,4 @@
+- Fix inconsistent "Add to SSM" / "Remove from SSM"
+  button behavior across system detail tabs
+- Remove duplicated SSM button logic from
+  minion-header.jade to ensure consistent UI behavior
