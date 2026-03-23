@@ -1,10 +1,5 @@
-.spacewalk-toolbar-h1
-  .spacewalk-toolbar
-    a.btn.btn-danger(href="/rhn/systems/details/DeleteConfirm.do?sid=#{server.id}")
-        i.fa.fa-trash-o(title='Delete System')
-        | #{l.t("Delete System")}
-
-        
+include ../system-common.jade
+     
   h1
     if server.bootstrap
         i.fa.spacewalk-icon-bare-metal
