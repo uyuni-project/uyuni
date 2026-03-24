@@ -42,6 +42,7 @@
 - features/secondary/srv_errata_api.feature
 - features/secondary/srv_health_check_supportconfig.feature
 - features/secondary/srv_password_restriction.feature
+- features/secondary/srv_hibernate.feature
 
 - features/secondary/buildhost_docker_build_image.feature
 - features/secondary/buildhost_docker_auth_registry.feature
