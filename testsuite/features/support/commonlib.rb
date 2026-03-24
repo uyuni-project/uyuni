@@ -113,6 +113,7 @@ end
 # @param timeout [Integer] The maximum time to wait for the text to become visible (default: Capybara.default_max_wait_time).
 # @return [Boolean] Returns true if the text is visible or the request timeout popup is caught, false otherwise.
 def check_text_and_catch_request_timeout_popup?(text1, text2: nil, timeout: Capybara.default_max_wait_time)
+  raise ScriptError, 'BUG DETECTED! Internal Server Error' if has_text?('Internal Server Error', wait: 0)
   return has_text?(text1, wait: timeout) || (!text2.nil? && has_text?(text2, wait: timeout)) unless $catch_timeout_message
 
   start_time = Time.now
