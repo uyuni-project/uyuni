@@ -1,0 +1,2 @@
+- Use either ansible-core or ansible packages
+  for Ansible Control node, prefer ansible-core (bsc#1259087)
