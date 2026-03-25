@@ -2,6 +2,9 @@
 # Licensed under the terms of the MIT license.
 
 Feature: Hibernate
+  Hibernate is a bridge between WebUI and database,
+  so the CRUD operations should be triggered
+  in order to test hibernate function.
 
   Scenario: Log in as org admin user
     Given I am authorized
