@@ -20,16 +20,10 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Class Address that reflects the DB representation of WEB_USER_SITE_INFO
- * and ancillary tables.
+ * Class Address that reflects the DB representation of WEB_USER_SITE_INFO.
  * DB table: WEB_USER_SITE_INFO
  */
 public interface Address extends Serializable {
-
-    /**
-    * Public string representing the marketing type of address
-    */
-    String TYPE_MARKETING = "M";
 
     /**
      * Getter for id
@@ -134,25 +128,6 @@ public interface Address extends Serializable {
     void setFax(String faxIn);
 
     /**
-     * Getter for isPoBox
-     * @return isPoBox
-     */
-    String getIsPoBox();
-
-    /**
-     * Setter for isPoBox
-     * @param isPoBoxIn New value for isPoBox
-     */
-    void setIsPoBox(String isPoBoxIn);
-
-    /**
-     * Getter for type
-     * @return Type
-     */
-    String getType();
-
-
-    /**
      * Getter for created
      * @return created
      */
@@ -184,8 +159,9 @@ public interface Address extends Serializable {
 
     /**
      * Sets the user associated with this address
+     * @param <T> Type of User
      * @param user New value for user
      */
-    void setUser(User user);
+    <T extends User> void setUser(T user);
 
 }

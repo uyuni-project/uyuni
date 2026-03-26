@@ -3,10 +3,7 @@
 create or replace function web_user_si_timestamp_fun() returns trigger as
 $$
 begin
-	
-	new.email_uc := upper(new.email);
 	new.modified := current_timestamp;
-
  	return new;
 end;
 $$ language plpgsql;

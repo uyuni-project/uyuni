@@ -60,6 +60,7 @@
     </label>
     <div class="col-sm-6">
         <html:select property="country" styleClass="form-control">
+            <html:option value=""><bean:message key="edit_address.jsp.country.select"/></html:option>
             <html:options collection="availableCountries"
                           property="value"
                           labelProperty="label" />

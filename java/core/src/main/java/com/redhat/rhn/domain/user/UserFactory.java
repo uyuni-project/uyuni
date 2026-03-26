@@ -148,9 +148,7 @@ public class UserFactory extends HibernateFactory {
      * @return Address the address created
      */
     public static Address createAddress() {
-        AddressImpl addr = new AddressImpl();
-        addr.setPrivType(Address.TYPE_MARKETING);
-        return addr;
+        return new AddressImpl();
     }
 
     /**
@@ -323,18 +321,9 @@ public class UserFactory extends HibernateFactory {
      */
     protected User addNewUser(User usr, Address addr, Long orgId) {
         LOG.debug("Starting addNewUser");
-        if (addr != null) {
-            addr.setUser(usr);
-            usr.setAddress1(addr.getAddress1());
-            usr.setAddress2(addr.getAddress2());
-            usr.setCity(addr.getCity());
-            usr.setCountry(addr.getCountry());
-            usr.setFax(addr.getFax());
-            usr.setIsPoBox(addr.getIsPoBox());
-            usr.setPhone(addr.getPhone());
-            usr.setState(addr.getState());
-            usr.setZip(addr.getZip());
-        }
+
+        usr.setAddress(addr);
+
         // save the user
         CallableMode m = ModeFactory.getCallableMode("User_queries", "create_new_user");
         Map<String, Object> inParams = new HashMap<>();
@@ -360,13 +349,13 @@ public class UserFactory extends HibernateFactory {
         inParams.put("pin", 0);
         inParams.put("fnameOl", " ");
         inParams.put("lnameOl", " ");
-        inParams.put("addr1", StringUtils.defaultIfEmpty(usr.getAddress1(), null));
-        inParams.put("addr2", StringUtils.defaultIfEmpty(usr.getAddress2(), null));
+        inParams.put("addr1", addr != null ? addr.getAddress1() : null);
+        inParams.put("addr2", addr != null ? addr.getAddress2() : null);
         inParams.put("addr3", " ");
-        inParams.put("city", StringUtils.defaultIfEmpty(usr.getCity(), null));
-        inParams.put("state", StringUtils.defaultIfEmpty(usr.getState(), null));
-        inParams.put("zip", StringUtils.defaultIfEmpty(usr.getZip(), null));
-        inParams.put("country", StringUtils.defaultIfEmpty(usr.getCountry(), null));
+        inParams.put("city", addr != null ? addr.getCity() : null);
+        inParams.put("state", addr != null ? addr.getState() : null);
+        inParams.put("zip", addr != null ? addr.getZip() : null);
+        inParams.put("country", addr != null ? addr.getCountry() : null);
         inParams.put("altFnames", null);
         inParams.put("altLnames", null);
         inParams.put("contCall", "N");

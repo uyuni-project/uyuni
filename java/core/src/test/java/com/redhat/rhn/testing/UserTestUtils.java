@@ -136,20 +136,19 @@ public class UserTestUtils {
 
     /**
      * Create a dummy address to test against
-     *
-     * @param user the User we want to be the parent of this Address.
-     * @return A dummy address to test against.
+     * @return The address
      */
-    public static Address createTestAddress(User user) {
-        user.setAddress1("444 Castro");
-        user.setAddress2("#1");
-        user.setCity("Mountain View");
-        user.setState("CA");
-        user.setZip("94043");
-        user.setCountry("US");
-        user.setPhone("650-555-1212");
-        user.setFax("650-555-1212");
-        return user.getEnterpriseUser().getAddress();
+    public static Address createTestAddress() {
+        Address address = UserFactory.createAddress();
+        address.setAddress1("444 Castro");
+        address.setAddress2("#1");
+        address.setCity("Mountain View");
+        address.setState("CA");
+        address.setZip("94043");
+        address.setCountry("US");
+        address.setPhone("650-555-1212");
+        address.setFax("650-555-1212");
+        return address;
     }
 
     /**
@@ -323,7 +322,7 @@ public class UserTestUtils {
                     .orElse(new OrgBuilder().orgName(orgName).orgObjectSuffix(orgObjectSuffix).build().getId());
 
             User userInternal = createUserInternal(userName);
-            Address address = createTestAddress(userInternal);
+            Address address = createTestAddress();
 
             User user = UserFactory.saveNewUser(userInternal, address, resolvedOrgId);
             UserFactory.IMPLIEDROLES.forEach(user::addPermanentRole);

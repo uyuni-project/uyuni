@@ -286,7 +286,7 @@ suseOrgStateRevision               :: web_customer suseStateRevision
 web_contact                        :: web_customer
 web_contact_all                    :: web_contact
 web_user_contact_permission        :: web_contact
-web_user_site_info                 :: web_contact web_user_site_type
+web_user_site_info                 :: web_contact
 web_user_personal_info             :: web_contact web_user_prefix
 suseScapContent                    ::
 suseScapTailoringFile              :: web_customer

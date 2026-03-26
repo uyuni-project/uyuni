@@ -17,7 +17,9 @@ package com.redhat.rhn.frontend.action.user;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.ServletUtils;
+import com.redhat.rhn.domain.user.Address;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
@@ -74,26 +76,29 @@ public class EditAddressAction extends RhnAction {
                     ls.getMessage("lookup.jsp.reason1.user"),
                     ls.getMessage("lookup.jsp.reason2.user"));
         }
-        String addrType = (String) form.get("type");
-        if (addrType == null) {
-            throw new IllegalArgumentException("Invalid type");
+
+        // Create address if user doesn't have one yet
+        Address address = targetUser.getEnterpriseUser().getAddress();
+        if (address == null) {
+            address = UserFactory.createAddress();
+            targetUser.setAddress(address);
         }
 
-        targetUser.setPhone((String) form.get("phone"));
-        targetUser.setFax((String) form.get("fax"));
-        targetUser.setAddress1((String) form.get("address1"));
-        targetUser.setAddress2((String) form.get("address2"));
-        targetUser.setCity((String) form.get("city"));
-        targetUser.setState((String) form.get("state"));
-        targetUser.setZip((String) form.get("zip"));
-        targetUser.setCountry((String) form.get("country"));
+        // Update address fields
+        address.setPhone((String) form.get("phone"));
+        address.setFax((String) form.get("fax"));
+        address.setAddress1((String) form.get("address1"));
+        address.setAddress2((String) form.get("address2"));
+        address.setCity((String) form.get("city"));
+        address.setState((String) form.get("state"));
+        address.setZip((String) form.get("zip"));
+        address.setCountry((String) form.get("country"));
 
         UserManager.storeUser(targetUser);
 
         ActionForward base = mapping.findForward("success");
         Map<String, Object> params = new HashMap<>();
         params.put("uid", String.valueOf(targetUser.getId()));
-        params.put("type", addrType);
 
         String newPath = ServletUtils.pathWithParams(base.getPath(), params);
 

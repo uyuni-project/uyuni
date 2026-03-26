@@ -390,6 +390,12 @@ public interface User extends Serializable {
     String getAddress1();
 
     /**
+     * Setter for address
+     * @param addressIn New Address
+     */
+    void setAddress(Address addressIn);
+
+    /**
      * Setter for address1
      * @param address1In New value for address1
      */
@@ -478,18 +484,6 @@ public interface User extends Serializable {
      * @param faxIn New value for fax
      */
     void setFax(String faxIn);
-
-    /**
-     * Getter for isPoBox
-     * @return isPoBox
-     */
-    String getIsPoBox();
-
-    /**
-     * Setter for isPoBox
-     * @param isPoBoxIn New value for isPoBox
-     */
-    void setIsPoBox(String isPoBoxIn);
 
     /**
      * Get the EnterpriseUser
