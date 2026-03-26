@@ -7,11 +7,8 @@ Feature: Bootstrap a Salt host managed via salt-ssh
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
 
-  Scenario: Bootstrap this SSH minion first attempt
-    When I try to bootstrap "ssh_minion" via the UI
-
-  Scenario: Ensure the SSH minion is registered
-    When I ensure "ssh_minion" is bootstrapped
+  Scenario: Register this SSH minion for service pack migration
+    When I bootstrap "ssh_minion" via the UI
     And I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "ssh_minion", refreshing the page
 

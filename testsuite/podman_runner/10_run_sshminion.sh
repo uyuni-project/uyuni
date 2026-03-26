@@ -17,7 +17,7 @@ $PODMAN_CMD exec opensusessh bash -c "if [ ! -d /root/.ssh ];then mkdir /root/.s
 $PODMAN_CMD exec opensusessh bash -c "rm -f /var/run/dbus/system_bus_socket"
 $PODMAN_CMD exec opensusessh bash -c "zypper rs container-suseconnect-zypp 2>/dev/null; rm -f /usr/lib/zypp/plugins/services/container-suseconnect-zypp 2>/dev/null"
 
-SERVER_IP=$($PODMAN_CMD inspect -f '{{.NetworkSettings.Networks.network.IPAddress}}' server)
-OPENSUSESSH_IP=$($PODMAN_CMD inspect -f '{{.NetworkSettings.Networks.network.IPAddress}}' opensusessh)
-$PODMAN_CMD exec server bash -c "echo '$OPENSUSESSH_IP opensusessh' >> /etc/hosts"
-$PODMAN_CMD exec opensusessh bash -c "echo '$SERVER_IP server' >> /etc/hosts"
+# SERVER_IP=$($PODMAN_CMD inspect -f '{{.NetworkSettings.Networks.network.IPAddress}}' server)
+# OPENSUSESSH_IP=$($PODMAN_CMD inspect -f '{{.NetworkSettings.Networks.network.IPAddress}}' opensusessh)
+# $PODMAN_CMD exec server bash -c "echo '$OPENSUSESSH_IP opensusessh' >> /etc/hosts"
+# $PODMAN_CMD exec opensusessh bash -c "echo '$SERVER_IP server' >> /etc/hosts"
