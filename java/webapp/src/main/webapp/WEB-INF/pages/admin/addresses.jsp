@@ -13,6 +13,6 @@
             <bean:message key="Addresses" />
         </rhn:toolbar>
         <p><bean:message key="addresses.summary" /></p>
-        <rhn:address type="M" action="my" user="${requestScope.targetuser}" address="${requestScope.addressMarketing}"/>
+        <rhn:address action="my" user="${requestScope.targetuser}" address="${requestScope.address}"/>
     </body>
 </html>
