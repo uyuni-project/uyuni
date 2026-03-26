@@ -61,3 +61,32 @@ $PODMAN_CMD exec server bash -c "cp /client/tools/mgr-push/rhnpushrc /etc/syscon
 $PODMAN_CMD exec server bash -c "cd /susemanager-utils/susemanager-sls/; cp -R modules/* /usr/share/susemanager/modules; cp -R salt/* /usr/share/susemanager/salt; cp -R src/modules/* /usr/share/susemanager/salt/_modules; cp -R src/grains/* /usr/share/susemanager/salt/_grains; cp -R src/states/* /usr/share/susemanager/salt/_states; cp -R src/beacons/* /usr/share/susemanager/salt/_beacons; cp -R salt-ssh/* /usr/share/susemanager/salt-ssh"
 $PODMAN_CMD exec server bash -c "cd /susemanager/; cp src/mgr-salt-ssh /usr/bin/; chmod a+x /usr/bin/mgr-salt-ssh"
 $PODMAN_CMD exec server bash -c "cd /susemanager/src; cp mgr_sync/*.py /usr/lib/python3.6/site-packages/spacewalk/susemanager/mgr_sync/; cp *.py /usr/lib/python3.6/site-packages/spacewalk/susemanager/; mv /usr/lib/python3.6/site-packages/spacewalk/susemanager/mgr_bootstrap_data.py /usr/share/susemanager/"
+
+if ! $PODMAN_CMD exec server bash -c '
+for i in 1 2 3; do
+  echo "spacewalk-service status check attempt $i/3..."
+  if spacewalk-service status; then
+    echo "spacewalk-service status OK on attempt $i"
+    exit 0
+  fi
+  echo "spacewalk-service status failed on attempt $i, waiting 30s..."
+  sleep 30
+done
+exit 1
+'; then
+  echo "spacewalk-service not healthy after 3 checks, restarting container..."
+  $PODMAN_CMD restart server
+  $PODMAN_CMD exec server bash -c '
+for i in 1 2 3; do
+  echo "spacewalk-service status check after restart attempt $i/3..."
+  if spacewalk-service status; then
+    echo "spacewalk-service status OK after restart on attempt $i"
+    exit 0
+  fi
+  echo "spacewalk-service status failed after restart on attempt $i, waiting 30s..."
+  sleep 30
+done
+echo "ERROR: spacewalk-service not healthy after container restart and 3 retries"
+exit 1
+'
+fi
