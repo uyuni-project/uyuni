@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LCC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,7 +16,6 @@
 package com.redhat.rhn.frontend.action.user;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.frontend.action.common.BadParameterException;
@@ -40,9 +40,7 @@ public class AddressesActionTest extends RhnBaseTestCase {
         sah.executeAction();
 
         // verify the dyna form got the right values we expected.
-        assertNotNull(sah.getRequest().getAttribute(RhnHelper.TARGET_ADDRESS_MARKETING));
-        assertNull(sah.getRequest().getAttribute(RhnHelper.TARGET_ADDRESS_BILLING));
-        assertNull(sah.getRequest().getAttribute(RhnHelper.TARGET_ADDRESS_SHIPPING));
+        assertNotNull(sah.getRequest().getAttribute(RhnHelper.TARGET_ADDRESS));
         assertNotNull(sah.getRequest().getAttribute(RhnHelper.TARGET_USER));
     }
 
