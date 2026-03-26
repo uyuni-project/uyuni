@@ -36,14 +36,8 @@ public class RhnHelper {
     /** The key used on RHN Requests to store the User */
     public static final String TARGET_USER = "targetuser";
 
-    /** The key used on RHN Requests to store the Marketing Address */
-    public static final String TARGET_ADDRESS_MARKETING = "addressMarketing";
-
-    /** The key used on RHN Requests to store the Billing Address */
-    public static final String TARGET_ADDRESS_BILLING = "addressBilling";
-
-    /** The key used on RHN Requests to store the Shipping Address */
-    public static final String TARGET_ADDRESS_SHIPPING = "addressShipping";
+    /** The key used on RHN Requests to store the Address */
+    public static final String TARGET_ADDRESS = "address";
 
     /** The key for the default struts forward */
     public static final String DEFAULT_FORWARD = "default";
