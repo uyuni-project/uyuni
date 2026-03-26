@@ -172,10 +172,6 @@
         <tag-class>com.redhat.rhn.frontend.taglibs.AddressTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
-            <name>type</name>
-            <required>true</required>
-        </attribute>
-        <attribute>
             <name>action</name>
             <required>true</required>
         </attribute>

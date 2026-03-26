@@ -18,7 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.redhat.rhn.domain.user.Address;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.ActionHelper;
 import com.redhat.rhn.testing.RhnBaseTestCase;
@@ -36,7 +35,6 @@ public class EditAddressSetupActionTest extends RhnBaseTestCase {
         EditAddressSetupAction action = new EditAddressSetupAction();
         ActionHelper sah = new ActionHelper();
         sah.setUpAction(action);
-        sah.getRequest().addParameter("type", Address.TYPE_MARKETING);
 
         User user = sah.getUser();
         user.setPhone("555-1212");

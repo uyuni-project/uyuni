@@ -26,6 +26,7 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.util.Pbkdf2Sha256Crypt;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.user.legacy.UserImpl;
 import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
@@ -121,9 +122,16 @@ public class UserTest extends RhnJmockBaseTestCase {
     @Test
     public void testAddAddress() {
         User usr = UserTestUtils.createUser(this);
-        Address addr = UserTestUtils.createTestAddress(usr);
+        Address addr = UserTestUtils.createTestAddress();
+        usr.setAddress(addr);
         UserFactory.save(usr);
-        assertTrue(addr.getId() != 0);
+        TestUtils.flushAndEvict(usr);
+
+        UserImpl reloadedUser = UserFactory.lookupById(usr.getId());
+        assertEquals(usr, reloadedUser);
+        assertEquals(addr, reloadedUser.getAddress());
+        assertEquals(addr.getAddress1(), reloadedUser.getAddress1());
+        assertEquals(addr.getAddress2(), reloadedUser.getAddress2());
     }
 
 

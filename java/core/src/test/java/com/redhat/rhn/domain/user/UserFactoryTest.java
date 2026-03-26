@@ -34,7 +34,6 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -324,24 +323,9 @@ public class UserFactoryTest extends RhnBaseTestCase {
         assertTrue(usr.getId() > 0);
         assertNotNull(usr.getOrg());
 
+        // No address should be created when none is provided
         Address address = usr.getEnterpriseUser().getAddress();
-        assertNotNull(address);
-        // keys
-        assertNotNull(address.getId());
-        assertEquals(usr.getId(), address.getUser().getId());
-        // default values
-        assertEquals(StringUtils.SPACE, address.getAddress1());
-        assertEquals(StringUtils.SPACE, address.getCity());
-        // default is 2 spaces for legacy reasons
-        assertEquals(StringUtils.SPACE + StringUtils.SPACE, address.getCountry());
-        assertEquals("0", address.getIsPoBox());
-        assertEquals(Address.TYPE_MARKETING, address.getType());
-        // null values
-        assertEquals(StringUtils.SPACE, address.getAddress2());
-        assertEquals(StringUtils.SPACE, address.getState());
-        assertEquals(StringUtils.SPACE, address.getZip());
-        assertEquals(StringUtils.SPACE, address.getPhone());
-        assertEquals(StringUtils.SPACE, address.getFax());
+        assertNull(address);
 
     }
 
