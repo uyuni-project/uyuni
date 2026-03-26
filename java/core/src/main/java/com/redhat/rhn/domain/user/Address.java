@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LLC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -174,5 +175,17 @@ public interface Address extends Serializable {
      * @param modifiedIn New value for modified
      */
     void setModified(Date modifiedIn);
+
+    /**
+     * Gets the user associated with this address
+     * @return user associated with this address
+     */
+    User getUser();
+
+    /**
+     * Sets the user associated with this address
+     * @param user New value for user
+     */
+    void setUser(User user);
 
 }

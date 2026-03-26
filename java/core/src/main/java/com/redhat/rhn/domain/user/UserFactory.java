@@ -326,6 +326,7 @@ public class UserFactory extends HibernateFactory {
     protected User addNewUser(User usr, Address addr, Long orgId) {
         LOG.debug("Starting addNewUser");
         if (addr != null) {
+            addr.setUser(usr);
             usr.setAddress1(addr.getAddress1());
             usr.setAddress2(addr.getAddress2());
             usr.setCity(addr.getCity());

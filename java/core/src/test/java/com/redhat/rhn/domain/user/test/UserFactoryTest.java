@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LLC
  * Copyright (c) 2009--2016 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -41,6 +42,7 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -308,6 +310,47 @@ public class UserFactoryTest extends RhnBaseTestCase {
         Address dbAddr = usr.getEnterpriseUser().getAddress();
         assertTrue(dbAddr.getId().intValue() > 0);
         assertEquals("444 Castro", dbAddr.getAddress1());
+    }
+
+    @Test
+    public void testCreateNewUserWithoutAddress() {
+        Org org = UserTestUtils.createOrg();
+        User usr = UserFactory.createUser();
+
+        usr.setLogin("userFactoryTestUser " + TestUtils.randomString());
+        usr.setPassword("password");
+        usr.setFirstNames("userName");
+        usr.setLastName("userName");
+        String prefix = (String) LocalizationService.getInstance().availablePrefixes().toArray()[0];
+        usr.setPrefix(prefix);
+        usr.setEmail("javaTest@example.com");
+
+        //
+        usr = UserFactory.saveNewUser(usr, null, org.getId());
+
+        //
+        assertTrue(usr.getId() > 0);
+        assertNotNull(usr.getOrg());
+
+        Address address = usr.getEnterpriseUser().getAddress();
+        assertNotNull(address);
+        // keys
+        assertNotNull(address.getId());
+        assertEquals(usr.getId(), address.getUser().getId());
+        // default values
+        assertEquals(StringUtils.SPACE, address.getAddress1());
+        assertEquals(StringUtils.SPACE, address.getCity());
+        // default is 2 spaces for legacy reasons
+        assertEquals(StringUtils.SPACE + StringUtils.SPACE, address.getCountry());
+        assertEquals("0", address.getIsPoBox());
+        assertEquals(Address.TYPE_MARKETING, address.getType());
+        // null values
+        assertNull(address.getAddress2());
+        assertNull(address.getState());
+        assertNull(address.getZip());
+        assertNull(address.getPhone());
+        assertNull(address.getFax());
+
     }
 
     @Test

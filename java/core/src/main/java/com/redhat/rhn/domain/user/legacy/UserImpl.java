@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 SUSE LLC
+ * Copyright (c) 2025--2026 SUSE LLC
  * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -121,7 +121,7 @@ public class UserImpl extends BaseDomainHelper implements User {
     @JoinColumn(name = "org_id")
     private Org org;
 
-    @OneToMany(mappedBy = "id", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<AddressImpl> addresses = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, orphanRemoval = true)
@@ -1055,7 +1055,9 @@ public class UserImpl extends BaseDomainHelper implements User {
 
     protected void setAddress(Address addIn) {
         addresses.clear();
-        addresses.add((AddressImpl) addIn);
+        AddressImpl address = (AddressImpl) addIn;
+        address.setUser(this);
+        addresses.add(address);
     }
 
     protected Address getAddress() {
@@ -1085,7 +1087,9 @@ public class UserImpl extends BaseDomainHelper implements User {
                 addr.setState(baddr.getState());
                 addr.setZip(baddr.getZip());
             }
-            addresses.add((AddressImpl)addr);
+            AddressImpl address = (AddressImpl) addr;
+            address.setUser(this);
+            addresses.add(address);
         }
         return addr;
     }
@@ -1096,6 +1100,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      */
     protected void setAddresses(Set<AddressImpl> s) {
         addresses = s;
+        addresses.forEach(address -> address.setUser(this));
     }
 
     /**
@@ -1351,7 +1356,9 @@ public class UserImpl extends BaseDomainHelper implements User {
         @Override
         public void setAddress(Address addressIn) {
             addresses.clear();
-            addresses.add((AddressImpl)addressIn);
+            AddressImpl address = (AddressImpl) addressIn;
+            address.setUser(UserImpl.this);
+            addresses.add(address);
         }
 
         /**
@@ -1386,7 +1393,9 @@ public class UserImpl extends BaseDomainHelper implements User {
                     addr.setState(baddr.getState());
                     addr.setZip(baddr.getZip());
                 }
-                addresses.add((AddressImpl)addr);
+                AddressImpl address = (AddressImpl) addr;
+                address.setUser(UserImpl.this);
+                addresses.add(address);
             }
             return addr;
         }
