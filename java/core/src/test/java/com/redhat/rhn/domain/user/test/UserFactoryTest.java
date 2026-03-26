@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2026 SUSE LLC
+ * Copyright (c) 2026 SUSE LCC
  * Copyright (c) 2009--2016 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -29,6 +29,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.test.ServerFactoryTest;
 import com.redhat.rhn.domain.user.Address;
+import com.redhat.rhn.domain.user.AddressType;
 import com.redhat.rhn.domain.user.RhnTimeZone;
 import com.redhat.rhn.domain.user.State;
 import com.redhat.rhn.domain.user.StateChange;
@@ -343,7 +344,7 @@ public class UserFactoryTest extends RhnBaseTestCase {
         // default is 2 spaces for legacy reasons
         assertEquals(StringUtils.SPACE + StringUtils.SPACE, address.getCountry());
         assertEquals("0", address.getIsPoBox());
-        assertEquals(Address.TYPE_MARKETING, address.getType());
+        assertEquals(AddressType.ADDRESS_TYPE_MARKETING, address.getType());
         // null values
         assertNull(address.getAddress2());
         assertNull(address.getState());

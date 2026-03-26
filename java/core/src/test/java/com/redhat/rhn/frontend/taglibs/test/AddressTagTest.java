@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LCC
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -17,6 +18,7 @@ package com.redhat.rhn.frontend.taglibs.test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.redhat.rhn.domain.user.Address;
+import com.redhat.rhn.domain.user.AddressType;
 import com.redhat.rhn.frontend.action.user.AddressesAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.frontend.taglibs.AddressTag;
@@ -64,7 +66,7 @@ public class AddressTagTest extends RhnBaseTestCase {
         // setup mock objects
         RhnMockJspWriter out = (RhnMockJspWriter)tth.getPageContext().getOut();
         String expectedData = getPopulatedReturnValue(sah.getUser().getId());
-        addtg.setType(Address.TYPE_MARKETING);
+        addtg.setType(AddressType.ADDRESS_TYPE_MARKETING.getType());
         addtg.setUser(sah.getUser());
         addtg.setAddress(
                 (Address) sah.getRequest().getAttribute(RhnHelper.TARGET_ADDRESS_MARKETING));
@@ -86,7 +88,7 @@ public class AddressTagTest extends RhnBaseTestCase {
 
         // The test User in the super class shouldn't have
         // a SHIPPING address
-        addtg.setType(Address.TYPE_MARKETING);
+        addtg.setType(AddressType.ADDRESS_TYPE_MARKETING.getType());
         addtg.setUser(sah.getUser());
         // ok let's test the tag
         tth.assertDoStartTag(Tag.SKIP_BODY);

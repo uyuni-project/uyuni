@@ -27,11 +27,6 @@ import java.util.Date;
 public interface Address extends Serializable {
 
     /**
-    * Public string representing the marketing type of address
-    */
-    String TYPE_MARKETING = "M";
-
-    /**
      * Getter for id
      * @return Id
      */
@@ -149,7 +144,13 @@ public interface Address extends Serializable {
      * Getter for type
      * @return Type
      */
-    String getType();
+    AddressType getType();
+
+    /**
+     * Sets the type of Address
+     * @param addressType New value for type
+     */
+    void setType(AddressType addressType);
 
 
     /**
@@ -184,8 +185,9 @@ public interface Address extends Serializable {
 
     /**
      * Sets the user associated with this address
+     * @param <T> Type of User
      * @param user New value for user
      */
-    void setUser(User user);
+    <T extends User> void setUser(T user);
 
 }

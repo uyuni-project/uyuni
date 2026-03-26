@@ -16,6 +16,7 @@ package com.redhat.rhn.frontend.taglibs;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.user.Address;
+import com.redhat.rhn.domain.user.AddressType;
 import com.redhat.rhn.domain.user.User;
 
 import org.apache.commons.lang3.StringUtils;
@@ -73,9 +74,9 @@ public class AddressTag extends TagSupport {
      * @param typeIn the type of this address: MAILING, BILLING, SHIPPING
      */
     public void setType(String typeIn) {
-        if (!typeIn.equals(Address.TYPE_MARKETING)) {
-            throw new IllegalArgumentException("The type attribute must be  of the " +
-                "static TYPE fields in com.redhat.rhn.domain.user.Address (M)");
+        if (!AddressType.ADDRESS_TYPE_MARKETING.getType().equals(typeIn)) {
+            throw new IllegalArgumentException("The type attribute must be " +
+                                               AddressType.ADDRESS_TYPE_MARKETING.getType());
         }
         type = typeIn;
     }

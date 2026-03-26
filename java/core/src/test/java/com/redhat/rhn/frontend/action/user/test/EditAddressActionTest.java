@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LCC
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -18,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.domain.role.RoleFactory;
-import com.redhat.rhn.domain.user.Address;
+import com.redhat.rhn.domain.user.AddressType;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.action.user.EditAddressAction;
@@ -121,7 +122,7 @@ public class EditAddressActionTest extends RhnBaseTestCase {
         // as that is the only address in the User, we know there is no SHIPPING
         // address.
         try {
-            executeAction(Address.TYPE_MARKETING);
+            executeAction(AddressType.ADDRESS_TYPE_MARKETING.getType());
             fail("Should have failed.");
         }
         catch (RuntimeException e) {
@@ -135,6 +136,6 @@ public class EditAddressActionTest extends RhnBaseTestCase {
         // Creating a user automatically creates a MARKETING address, so as long
         // as that is the only address in the User, we know there is no SHIPPING
         // address.
-        executeAction(Address.TYPE_MARKETING);
+        executeAction(AddressType.ADDRESS_TYPE_MARKETING.getType());
     }
 }

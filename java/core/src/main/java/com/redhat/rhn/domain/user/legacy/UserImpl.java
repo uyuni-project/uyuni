@@ -36,6 +36,7 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerGroup;
 import com.redhat.rhn.domain.user.Address;
 import com.redhat.rhn.domain.user.AddressImpl;
+import com.redhat.rhn.domain.user.AddressType;
 import com.redhat.rhn.domain.user.EnterpriseUser;
 import com.redhat.rhn.domain.user.Pane;
 import com.redhat.rhn.domain.user.RhnTimeZone;
@@ -60,6 +61,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -1055,43 +1057,49 @@ public class UserImpl extends BaseDomainHelper implements User {
 
     protected void setAddress(Address addIn) {
         addresses.clear();
-        AddressImpl address = (AddressImpl) addIn;
-        address.setUser(this);
-        addresses.add(address);
+        setAddressToUser(addIn);
     }
 
+    /**
+     * Returns the user's marketing address.
+     * If no marketing address exists, a new address will be created and populated with the billing address
+     * information, if it exists.
+     * Otherwise, a blank address will be created.
+     *
+     * @return the user's marketing {@link Address}, never {@code null}
+     */
     protected Address getAddress() {
-        Address baddr = null;
-        Address addr = null;
-        Address[] addrA = addresses.toArray(new Address[addresses.size()]);
-        if (!addresses.isEmpty()) {
-            for (Address addressIn : addrA) {
-                if (addressIn.getType().equals(Address.TYPE_MARKETING)) {
-                    addr = addressIn;
-                }
-                if (addressIn.getType().equals("B")) {
-                    baddr = addressIn;
-                }
-            }
+        Optional<AddressImpl> marketingAddress = addresses.stream()
+                .filter(a -> a.getType() == AddressType.ADDRESS_TYPE_MARKETING)
+                .findFirst();
+
+        if (marketingAddress.isPresent()) {
+            return marketingAddress.get();
         }
-        if (addr == null) {
-            addr = UserFactory.createAddress();
-            if (baddr != null) {
-                addr.setAddress1(baddr.getAddress1());
-                addr.setAddress2(baddr.getAddress2());
-                addr.setCity(baddr.getCity());
-                addr.setCountry(baddr.getCountry());
-                addr.setFax(baddr.getFax());
-                addr.setIsPoBox(baddr.getIsPoBox());
-                addr.setPhone(baddr.getPhone());
-                addr.setState(baddr.getState());
-                addr.setZip(baddr.getZip());
-            }
-            AddressImpl address = (AddressImpl) addr;
-            address.setUser(this);
-            addresses.add(address);
-        }
-        return addr;
+
+        Address address = UserFactory.createAddress();
+        addresses.stream()
+                .filter(a -> a.getType() == AddressType.ADDRESS_TYPE_BILLING)
+                .findFirst()
+                .ifPresent(billingAddress -> {
+                    address.setAddress1(billingAddress.getAddress1());
+                    address.setAddress2(billingAddress.getAddress2());
+                    address.setCity(billingAddress.getCity());
+                    address.setCountry(billingAddress.getCountry());
+                    address.setFax(billingAddress.getFax());
+                    address.setIsPoBox(billingAddress.getIsPoBox());
+                    address.setPhone(billingAddress.getPhone());
+                    address.setState(billingAddress.getState());
+                    address.setZip(billingAddress.getZip());
+                });
+
+        setAddressToUser(address);
+        return address;
+    }
+
+    private void setAddressToUser(Address address) {
+        address.setUser(this);
+        addresses.add((AddressImpl) address);
     }
 
     /**
@@ -1177,17 +1185,7 @@ public class UserImpl extends BaseDomainHelper implements User {
         */
         @Override
         public void setPassword(String passwordIn) {
-            /**
-            * If we're using encrypted passwords, encode the
-            * password before setting it. Otherwise, just
-            * set it.
-            */
-            if (Config.get().getBoolean(ConfigDefaults.WEB_ENCRYPTED_PASSWORDS)) {
-                password = SHA256Crypt.crypt(passwordIn);
-            }
-            else {
-                password = passwordIn;
-            }
+            UserImpl.this.setPassword(passwordIn);
         }
 
         /**
@@ -1355,10 +1353,7 @@ public class UserImpl extends BaseDomainHelper implements User {
         */
         @Override
         public void setAddress(Address addressIn) {
-            addresses.clear();
-            AddressImpl address = (AddressImpl) addressIn;
-            address.setUser(UserImpl.this);
-            addresses.add(address);
+            UserImpl.this.setAddress(addressIn);
         }
 
         /**
@@ -1367,40 +1362,8 @@ public class UserImpl extends BaseDomainHelper implements User {
         */
         @Override
         public Address getAddress() {
-            Address baddr = null;
-            Address addr = null;
-            Address[] addrA = addresses.toArray(new Address[addresses.size()]);
-            if (!addresses.isEmpty()) {
-                for (Address addressIn : addrA) {
-                    if (addressIn.getType().equals(Address.TYPE_MARKETING)) {
-                        addr = addressIn;
-                    }
-                    if (addressIn.getType().equals("B")) {
-                        baddr = addressIn;
-                    }
-                }
-            }
-            if (addr == null) {
-                addr = UserFactory.createAddress();
-                if (baddr != null) {
-                    addr.setAddress1(baddr.getAddress1());
-                    addr.setAddress2(baddr.getAddress2());
-                    addr.setCity(baddr.getCity());
-                    addr.setCountry(baddr.getCountry());
-                    addr.setFax(baddr.getFax());
-                    addr.setIsPoBox(baddr.getIsPoBox());
-                    addr.setPhone(baddr.getPhone());
-                    addr.setState(baddr.getState());
-                    addr.setZip(baddr.getZip());
-                }
-                AddressImpl address = (AddressImpl) addr;
-                address.setUser(UserImpl.this);
-                addresses.add(address);
-            }
-            return addr;
+            return UserImpl.this.getAddress();
         }
-
-
 
         /**
         *
