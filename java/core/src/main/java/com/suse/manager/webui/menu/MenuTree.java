@@ -124,7 +124,7 @@ public class MenuTree {
                                 .withAltUrl("/rhn/account/EditAddress.do"))
                         .addChild(new MenuItem("Change Email")
                                 .withVisibility(isUserAuthorizedFor(user, "home.account.email"))
-                                .withPrimaryUrl("/rhn/account/ChangeEmail.do"))
+                                .withPrimaryUrl("/rhn/account/changeemail"))
                         .addChild(new MenuItem("Account Deactivation")
                                 .withVisibility(isUserAuthorizedFor(user, "home.account.deactivate"))
                                 .withPrimaryUrl("/rhn/account/AccountDeactivation.do")))

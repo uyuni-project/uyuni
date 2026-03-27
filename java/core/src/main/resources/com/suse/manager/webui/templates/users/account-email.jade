@@ -1,0 +1,155 @@
+-
+  Copyright (c) 2026 SUSE LLC
+
+  This software is licensed to you under the GNU General Public License,
+  version 2 (GPLv2). There is NO WARRANTY for this software, express or
+  implied, including the implied warranties of MERCHANTABILITY or FITNESS
+  FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+  along with this software; if not, see
+  http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+
+  Red Hat trademarks are not licensed under GPLv2. No permission is
+  granted to use or replicate Red Hat trademarks that are incorporated
+  in this software or its documentation.
+
+html
+  body
+    .rhn-toolbar
+      h1.page-title
+        i.fa.fa-user
+        |  #{t('yourchangeemail.jsp.title')}
+
+    .panel.panel-default
+      .panel-heading
+        h3.panel-title= pageInstructions
+
+      .panel-body
+        form#emailChangeForm.form-horizontal(data-senna-off="true")
+          input(type="hidden" name="csrf_token" value=csrfToken)
+          input(type="hidden" name="uid" value=targetUserId)
+
+          .form-group
+            label.col-sm-3.control-label
+              |  #{t('channel.edit.jsp.emailaddress')}:
+            .col-sm-6
+              input#emailInput.form-control(
+                type="email"
+                name="email"
+                value=currentEmail
+                maxlength="256"
+                required="required"
+                placeholder="user@example.com"
+              )
+              .help-block.hidden-by-default
+                small
+                  |  #{t('error.email_format')}
+
+          .form-group
+            .col-sm-offset-3.offset-sm-3.col-sm-6
+              button#submitBtn.btn.btn-primary(type="submit")
+                |  #{buttonLabel}
+
+          #successMessage.alert.alert-success.hidden-by-default(role="alert")
+            .media
+              .media-body
+                strong.media-heading
+                  |  #{t('message.success')}
+                span#successText
+
+          #errorMessage.alert.alert-danger.hidden-by-default(role="alert")
+            .media
+              .media-body
+                strong.media-heading
+                  |  #{t('message.error')}
+                span#errorText
+
+script.
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('emailChangeForm');
+    const emailInput = document.getElementById('emailInput');
+    const submitBtn = document.getElementById('submitBtn');
+    const successMsg = document.getElementById('successMessage');
+    const errorMsg = document.getElementById('errorMessage');
+    const successText = document.getElementById('successText');
+    const errorText = document.getElementById('errorText');
+    const csrfToken = document.querySelector('input[name="csrf_token"]').value;
+
+    // Reset messages on input
+    emailInput.addEventListener('input', function() {
+      successMsg.classList.add('hidden-by-default');
+      errorMsg.classList.add('hidden-by-default');
+    });
+
+    // Form submission handler
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      // Clear previous messages
+      successMsg.classList.add('hidden-by-default');
+      errorMsg.classList.add('hidden-by-default');
+
+      // Basic HTML5 validation check
+      if (!emailInput.validity.valid) {
+        errorText.textContent = '#{t('error.addr_invalid')}' + ' ' + emailInput.value;
+        errorMsg.classList.remove('hidden-by-default');
+        return;
+      }
+
+      // Disable button during submission
+      submitBtn.disabled = true;
+      const originalText = submitBtn.textContent;
+      submitBtn.textContent = '#{t('message.submitting')}...';
+
+      // Build request payload
+      const payload = JSON.stringify({
+        email: emailInput.value.trim(),
+        uid: document.querySelector('input[name="uid"]').value
+      });
+
+      // Submit via AJAX
+      fetch('/rhn/account/changeemail', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': csrfToken
+        },
+        body: payload
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          successText.textContent = data.data || '#{t('email.verified')}';
+          successMsg.classList.remove('hidden-by-default');
+          // Optionally refresh page after delay
+          setTimeout(() => {
+            location.reload();
+          }, 2000);
+        } else {
+          errorText.textContent = data.data || '#{t('error.unknown')}';
+          errorMsg.classList.remove('hidden-by-default');
+        }
+      })
+      .catch(error => {
+        errorText.textContent = 'Network error: ' + error.message;
+        errorMsg.classList.remove('hidden-by-default');
+      })
+      .finally(() => {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+      });
+    });
+  });
+
+style.
+  .hidden-by-default {
+    display: none !important;
+  }
+
+  .rhn-toolbar {
+    margin-bottom: 20px;
+  }
+
+  .page-title {
+    margin-top: 0;
+  }
+

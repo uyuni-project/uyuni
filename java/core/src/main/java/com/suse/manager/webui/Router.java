@@ -86,6 +86,7 @@ import com.suse.manager.webui.controllers.login.LoginController;
 import com.suse.manager.webui.controllers.maintenance.MaintenanceCalendarController;
 import com.suse.manager.webui.controllers.maintenance.MaintenanceController;
 import com.suse.manager.webui.controllers.maintenance.MaintenanceScheduleController;
+import com.suse.manager.webui.controllers.users.AccountEmailController;
 import com.suse.manager.webui.errors.NotFoundException;
 import com.suse.manager.webui.services.RbacRouteValidator;
 import com.suse.manager.webui.services.iface.SaltApi;
@@ -161,6 +162,9 @@ public class Router implements SparkApplication {
 
         // Login
         LoginController.initRoutes(jade);
+
+        // Account Management
+        AccountEmailController.initRoutes(jade);
 
         //CVEAudit
         CVEAuditController.initRoutes(jade);
