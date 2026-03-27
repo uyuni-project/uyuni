@@ -140,13 +140,6 @@
             <form-property name="selectedGroups" type="java.lang.String[]"/>
             <form-property name="defaultGroups" type="java.lang.String[]"/>
         </form-bean>
-        <!-- DEPRECATED: Migrated to Spark AccountEmailController (/rhn/account/changeemail)
-        <form-bean name="changeEmailForm"
-                   type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
-            <form-property name="uid" type="java.lang.Long"/>
-            <form-property name="email" type="java.lang.String"/>
-        </form-bean>
-        -->
         <form-bean name="editAddressForm"
             type="com.redhat.rhn.frontend.struts.ScrubbingDynaActionForm">
             <form-property name="uid" type="java.lang.Long"/>
@@ -1473,59 +1466,6 @@
                     value="user_role(org_admin)"/>
       <forward name="default" path="/WEB-INF/pages/admin/assignedgroups.jsp" />
     </action>
-
-    <!-- DEPRECATED: Migrated to Spark AccountEmailController (/rhn/account/changeemail)
-         Use new endpoint: GET /rhn/account/changeemail (display form)
-                          POST /rhn/account/changeemail (submit with JSON body)
-
-    <action path="/account/ChangeEmail"
-        name="changeEmailForm"
-        scope="request"
-        input="/WEB-INF/pages/user/edit/yourchangeemail.jsp"
-        type="com.redhat.rhn.frontend.action.user.ChangeEmailSetupAction">
-      <forward name="default" path="/WEB-INF/pages/user/edit/yourchangeemail.jsp" />
-    </action>
-
-    <action path="/account/ChangeEmailSubmit"
-        name="changeEmailForm"
-        scope="request"
-        input="/WEB-INF/pages/user/edit/yourchangeemail.jsp"
-        type="com.redhat.rhn.frontend.action.user.ChangeEmailAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-      <set-property property="postRequired" value="true" />
-      <forward name="updated" path="/account/ChangeEmail.do" redirect="true" />
-      <forward name="failure" path="/account/ChangeEmail.do" />
-    </action>
-    -->
-
-    <!-- DEPRECATED: /users/ChangeEmail - Legacy admin interface
-         This was for admin users to change other users' emails.
-         Functionality now integrated into AccountEmailController with uid parameter support.
-
-    <action path="/users/ChangeEmail"
-        name="changeEmailForm"
-        scope="request"
-        input="/WEB-INF/pages/admin/users/changeemail.jsp"
-        type="com.redhat.rhn.frontend.action.user.ChangeEmailSetupAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-      <set-property property="acls"
-                    value="user_role(org_admin)"/>
-      <forward name="default" path="/WEB-INF/pages/admin/users/changeemail.jsp" />
-    </action>
-
-    <action path="/users/ChangeEmailSubmit"
-        name="changeEmailForm"
-        scope="request"
-        input="/WEB-INF/pages/admin/users/changeemail.jsp"
-        type="com.redhat.rhn.frontend.action.user.ChangeEmailAction"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-      <set-property property="postRequired" value="true" />
-      <set-property property="acls"
-                    value="user_role(org_admin)"/>
-      <forward name="updated" path="/users/ChangeEmail.do" redirect="true" />
-      <forward name="failure" path="/users/ChangeEmail.do" />
-    </action>
-    -->
 
     <action path="/users/Addresses"
             scope="request"

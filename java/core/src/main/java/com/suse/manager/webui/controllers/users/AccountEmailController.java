@@ -99,21 +99,15 @@ public class AccountEmailController {
             throw new BadParameterException("Invalid uid parameter format");
         }
 
-        // Populate model for template
+        // Populate model for React template
         model.put("currentEmail", targetUser.getEmail());
         model.put("targetUserId", targetUser.getId());
         model.put("pageInstructions", ls.getMessage("yourchangeemail.instructions"));
         model.put("buttonLabel", ls.getMessage("message.Update"));
         model.put("csrfToken", request.attribute("csrf_token"));
 
-        // Check if React is available (via query param or default to React)
-        // For now, we support both Jade and React, defaulting to React
-        String templateEngine = request.queryParamOrDefault("template", "react");
-//        String templatePath = "react".equals(templateEngine)
-//            ? "users/account-email-react.jade"
-//            : "users/account-email.jade";
-
-        return new ModelAndView(model, "users/account-email-react.jade" );
+        // Use React template exclusively
+        return new ModelAndView(model, "users/account-email.jade");
     }
 
     /**
@@ -129,7 +123,7 @@ public class AccountEmailController {
         // Parse request body
         EmailChangeRequest emailRequest = GSON.fromJson(request.body(), EmailChangeRequest.class);
         try {
-            String newEmail = emailRequest != null ? emailRequest.getEmail() : null;
+            String newEmail = emailRequest.getEmail();
 
             if (newEmail == null || newEmail.trim().isEmpty()) {
                 return json(GSON, response, 
@@ -180,7 +174,7 @@ public class AccountEmailController {
         } catch (AddressException e) {
             return json(GSON, response,
                 ResultJson.error(LS.getMessage("error.addr_invalid", 
-                    emailRequest != null ? emailRequest.getEmail() : "unknown")),
+                    emailRequest.getEmail())),
                 new TypeToken<>() { });
         } catch (BadParameterException e) {
             response.status(400);
@@ -212,8 +206,6 @@ public class AccountEmailController {
     public static class EmailChangeRequest {
         private String email;
 
-        public EmailChangeRequest() {
-        }
 
         public EmailChangeRequest(String emailIn) {
             this.email = emailIn;
