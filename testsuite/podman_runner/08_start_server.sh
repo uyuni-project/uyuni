@@ -105,7 +105,7 @@ wait_for_server_ready || exit 1
 $PODMAN_CMD exec -d server prometheus
 
 $PODMAN_CMD exec server bash -c "echo 'java.salt_ssh_connect_timeout = 30' >> /etc/rhn/rhn.conf"
-$PODMAN_CMD exec server bash -c "echo 'ProxyTimeout 900' >> /etc/apache2/conf.d/zz-spacewalk-www.conf"
+$PODMAN_CMD exec server bash -c "sed -i '/^ProxyTimeout /d' /etc/apache2/conf.d/zz-spacewalk-www.conf; echo 'ProxyTimeout 1800' >> /etc/apache2/conf.d/zz-spacewalk-www.conf"
 $PODMAN_CMD exec server bash -c "systemctl reload apache2"
 
 echo "Setting SCC mirror to /mirror"
@@ -121,4 +121,3 @@ $PODMAN_CMD exec server bash -c "rm -f /usr/bin/mgrctl"
 
 # publish mirrors in apache
 $PODMAN_CMD exec server bash -c "cd /srv/www/htdocs/pub && ln -s /mirror . && chown root:root mirror && chown -R root:root /mirror"
-
