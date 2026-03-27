@@ -100,7 +100,7 @@ $PODMAN_CMD run --cap-add AUDIT_CONTROL \
     -p 4506:4506 \
     -d --name=server \
     --network network \
-    ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-server-all-in-one-dev:$UYUNI_VERSION
+    uyuni-server-built:$UYUNI_VERSION
 wait_for_server_ready || exit 1
 $PODMAN_CMD exec -d server prometheus
 
