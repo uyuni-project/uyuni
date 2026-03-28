@@ -11,10 +11,10 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 SSH_INIT_CLIENTS_CMD="cd /testsuite && rake cucumber:github_validation_init_clients_ssh_minion"
 
 if ! $PODMAN_CMD exec controller bash --login -c "$SSH_INIT_CLIENTS_CMD"; then
-  echo "SSH minion bootstrap failed, clearing stale salt-ssh state on server and retrying..."
-  $PODMAN_CMD exec server bash -c "pkill -f 'mgr-salt-ssh.*opensusessh|salt-ssh.*opensusessh' || true; rm -f /var/cache/salt/master/salt-ssh/session/opensusessh.p || true; chown -R salt:salt /var/cache/salt/master || true"
-    # $PODMAN_CMD rm -f opensusessh || true
-    # bash "${SCRIPT_DIR}/10_run_sshminion.sh"
+  echo "SSH minion bootstrap failed, killing orphan processes on opensusessh and retrying..."
+  $PODMAN_CMD exec opensusessh bash -c "echo 'Processes before cleanup:'; ps aux; kill -9 -1 || true"
+  sleep 2
+  $PODMAN_CMD exec opensusessh bash -c "rm -rf /var/tmp/venv-salt-minion /var/cache/salt /etc/salt /tmp/salt-bundle-*; ssh-keygen -A; /usr/sbin/sshd -e; echo 'Processes after cleanup:'; ps aux"
   $PODMAN_CMD exec controller bash --login -c "$SSH_INIT_CLIENTS_CMD"
 fi
 
