@@ -1,0 +1,123 @@
+# micro-client: persistent test minion for Uyuni local lab
+#
+# Uses PersistentVolumeClaims to survive pod restarts without re-bootstrap:
+#   - salt-config:  /etc/venv-salt-minion  (minion id, keys, config)
+#   - salt-lib:     /usr/lib/venv-salt-minion  (salt Python venv + binaries)
+#   - salt-persist: /opt/salt-persist  (backup of /usr/bin/venv-salt-minion + machine-id)
+#
+# How it works:
+#   1. Bootstrap installs salt-minion (RPM puts files in /etc, /usr/lib, /usr/bin).
+#   2. Post-bootstrap step copies /usr/bin/venv-salt-minion and /etc/machine-id
+#      to /opt/salt-persist/ for safekeeping.
+#   3. On pod restart, the entrypoint restores the binary and machine-id from
+#      the persistent volume, then starts the salt-minion daemon automatically.
+#
+# Apply:
+#   kubectl apply -f micro-client-deployment.yaml
+#
+# Clean delete (removes data too):
+#   kubectl delete -f micro-client-deployment.yaml
+#   kubectl -n uyuni delete pvc salt-config salt-lib salt-persist
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: salt-config
+  namespace: uyuni
+spec:
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 50Mi
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: salt-lib
+  namespace: uyuni
+spec:
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 500Mi
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: salt-persist
+  namespace: uyuni
+spec:
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 10Mi
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: micro-client
+  namespace: uyuni
+  labels:
+    app: micro-client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: micro-client
+  template:
+    metadata:
+      labels:
+        app: micro-client
+    spec:
+      containers:
+        - name: micro-client
+          image: registry.opensuse.org/opensuse/leap-micro/6.1/toolbox:latest
+          command:
+            - sh
+            - -c
+            - |
+              # --- Restore machine-id from persistent volume ---
+              if [ -f /opt/salt-persist/machine-id ]; then
+                chmod 644 /etc/machine-id 2>/dev/null || true
+                cat /opt/salt-persist/machine-id > /etc/machine-id
+                echo "Restored /etc/machine-id from persistent volume."
+              fi
+
+              # --- Restore /usr/bin/venv-salt-minion from persistent volume ---
+              if [ -f /opt/salt-persist/venv-salt-minion ] && [ ! -x /usr/bin/venv-salt-minion ]; then
+                cp /opt/salt-persist/venv-salt-minion /usr/bin/venv-salt-minion
+                chmod +x /usr/bin/venv-salt-minion
+                echo "Restored /usr/bin/venv-salt-minion from persistent volume."
+              fi
+
+              # --- Start salt-minion if bootstrap was previously completed ---
+              if [ -x /usr/bin/venv-salt-minion ] && [ -f /etc/venv-salt-minion/minion_id ]; then
+                echo "Starting venv-salt-minion daemon..."
+                /usr/bin/venv-salt-minion -d || true
+              else
+                echo "Salt minion not yet installed. Run bootstrap to install."
+              fi
+
+              # Keep container alive
+              exec sleep infinity
+          volumeMounts:
+            - name: salt-config
+              mountPath: /etc/venv-salt-minion
+            - name: salt-lib
+              mountPath: /usr/lib/venv-salt-minion
+            - name: salt-persist
+              mountPath: /opt/salt-persist
+      volumes:
+        - name: salt-config
+          persistentVolumeClaim:
+            claimName: salt-config
+        - name: salt-lib
+          persistentVolumeClaim:
+            claimName: salt-lib
+        - name: salt-persist
+          persistentVolumeClaim:
+            claimName: salt-persist

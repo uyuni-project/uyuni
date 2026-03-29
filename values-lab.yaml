@@ -1,0 +1,26 @@
+credentials:
+  admin:
+    user: admin
+    password: "admin"
+  db:
+    internal:
+      user: susemanager
+      password: "admin"
+    admin:
+      user: postgres
+      password: "admin"
+    reportdb:
+      user: pythia
+      password: "admin"
+
+global:
+  fqdn: "uyuni.home.arpa"
+
+server-helm:
+  repository: "registry.opensuse.org/systemsmanagement/uyuni/master/containerfile/uyuni"
+  tag: "2026.03"
+  server:
+    superPrivileged: true
+  ingress:
+    type: ""
+    class: nginx
