@@ -1,0 +1,10 @@
+# Session outputs
+results/*
+!results/.gitkeep
+
+# Local environment overrides
+config/phase3.env
+
+# Temporary runtime files
+*.tmp
+*.log

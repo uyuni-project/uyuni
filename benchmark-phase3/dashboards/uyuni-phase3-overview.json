@@ -1,0 +1,112 @@
+{
+  "annotations": {"list": []},
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "id": 1,
+      "title": "Node Disk Read Throughput (bytes/s) - Session ${session}",
+      "type": "timeseries",
+      "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+      "targets": [{"expr": "sum(rate(node_disk_read_bytes_total[1m]))", "refId": "A"}],
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0}
+    },
+    {
+      "id": 2,
+      "title": "Node Disk Write Throughput (bytes/s) - Session ${session}",
+      "type": "timeseries",
+      "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+      "targets": [{"expr": "sum(rate(node_disk_written_bytes_total[1m]))", "refId": "A"}],
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0}
+    },
+    {
+      "id": 3,
+      "title": "Node Disk Reads/sec - Workload ${workload}",
+      "type": "timeseries",
+      "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+      "targets": [{"expr": "sum(rate(node_disk_reads_completed_total[1m]))", "refId": "A"}],
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8}
+    },
+    {
+      "id": 4,
+      "title": "Node Disk Writes/sec - Workload ${workload}",
+      "type": "timeseries",
+      "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+      "targets": [{"expr": "sum(rate(node_disk_writes_completed_total[1m]))", "refId": "A"}],
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8}
+    },
+    {
+      "id": 5,
+      "title": "DB Pod CPU (cores) - Workload ${workload}",
+      "type": "timeseries",
+      "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+      "targets": [{"expr": "sum(rate(container_cpu_usage_seconds_total{namespace=\"uyuni\",pod=~\"db-.*\",container!=\"\",image!=\"\"}[1m]))", "refId": "A"}],
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 16}
+    },
+    {
+      "id": 6,
+      "title": "Uyuni Pod CPU (cores) - Workload ${workload}",
+      "type": "timeseries",
+      "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+      "targets": [{"expr": "sum(rate(container_cpu_usage_seconds_total{namespace=\"uyuni\",pod=~\"uyuni-.*\",container!=\"\",image!=\"\"}[1m]))", "refId": "A"}],
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 16}
+    },
+    {
+      "id": 7,
+      "title": "DB Pod Memory (bytes) - Session ${session}",
+      "type": "timeseries",
+      "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+      "targets": [{"expr": "sum(container_memory_working_set_bytes{namespace=\"uyuni\",pod=~\"db-.*\",container!=\"\",image!=\"\"})", "refId": "A"}],
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 24}
+    },
+    {
+      "id": 8,
+      "title": "Uyuni Pod Memory (bytes) - Session ${session}",
+      "type": "timeseries",
+      "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+      "targets": [{"expr": "sum(container_memory_working_set_bytes{namespace=\"uyuni\",pod=~\"uyuni-.*\",container!=\"\",image!=\"\"})", "refId": "A"}],
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 24}
+    },
+    {
+      "id": 9,
+      "title": "PostgreSQL Exporter (optional) - Last Scrape Error",
+      "type": "timeseries",
+      "datasource": {"type": "prometheus", "uid": "${DS_PROMETHEUS}"},
+      "targets": [{"expr": "sum(pg_exporter_last_scrape_error)", "refId": "A"}],
+      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 32}
+    }
+  ],
+  "refresh": "30s",
+  "schemaVersion": 39,
+  "style": "dark",
+  "tags": ["uyuni", "phase3", "benchmark", "rke2"],
+  "templating": {
+    "list": [
+      {
+        "name": "session",
+        "type": "textbox",
+        "label": "Session Label",
+        "query": "latest",
+        "current": {"text": "latest", "value": "latest"}
+      },
+      {
+        "name": "workload",
+        "type": "textbox",
+        "label": "Workload Label",
+        "query": "all",
+        "current": {"text": "all", "value": "all"}
+      }
+    ]
+  },
+  "time": {"from": "now-1h", "to": "now"},
+  "timepicker": {},
+  "timezone": "utc",
+  "title": "Uyuni Phase3 Overview",
+  "uid": "uyuni-phase3-overview",
+  "version": 1,
+  "weekStart": ""
+}

@@ -1,0 +1,53 @@
+profiles:
+  smoke:
+    runs: 3
+    pgbench:
+      scenarios:
+        - builtin_default
+        - readonly_custom
+      scale: 10
+      clients: [1, 4, 8]
+      duration: 60
+    uyuni:
+      repo_sync_minimal:
+        enabled: false
+        runs: 0
+      metadata_refresh:
+        enabled: true
+        runs: 3
+      ui_locust:
+        enabled: true
+        users: [5, 10]
+        spawn_rate: 2
+        duration: 120
+      package_download:
+        enabled: true
+        concurrency: [1, 4]
+        limit: 5
+
+  full:
+    runs: 3
+    pgbench:
+      scenarios:
+        - builtin_default
+        - readonly_custom
+        - wal_small_update
+      scale: 50
+      clients: [1, 4, 8, 16]
+      duration: 120
+    uyuni:
+      repo_sync_minimal:
+        enabled: true
+        runs: 3
+      metadata_refresh:
+        enabled: true
+        runs: 3
+      ui_locust:
+        enabled: true
+        users: [5, 10, 20]
+        spawn_rate: 2
+        duration: 180
+      package_download:
+        enabled: true
+        concurrency: [1, 4, 8]
+        limit: 5

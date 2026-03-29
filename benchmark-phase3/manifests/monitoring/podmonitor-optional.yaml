@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: uyuni-phase3-optional
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/name: benchmark-phase3
+spec:
+  namespaceSelector:
+    matchNames:
+      - uyuni
+  selector:
+    matchLabels:
+      benchmark-phase3-pod-monitor: "true"
+  podMetricsEndpoints:
+    - interval: 15s
+      scrapeTimeout: 10s
+      path: /metrics
+      port: http

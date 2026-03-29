@@ -1,0 +1,20 @@
+queries:
+  - name: node_disk_read_bytes_rate
+    query: sum(rate(node_disk_read_bytes_total[1m]))
+  - name: node_disk_write_bytes_rate
+    query: sum(rate(node_disk_written_bytes_total[1m]))
+  - name: node_disk_reads_rate
+    query: sum(rate(node_disk_reads_completed_total[1m]))
+  - name: node_disk_writes_rate
+    query: sum(rate(node_disk_writes_completed_total[1m]))
+  - name: uyuni_pod_cpu_rate
+    query: sum(rate(container_cpu_usage_seconds_total{namespace="uyuni",pod=~"uyuni-.*",container!="",image!=""}[1m]))
+  - name: db_pod_cpu_rate
+    query: sum(rate(container_cpu_usage_seconds_total{namespace="uyuni",pod=~"db-.*",container!="",image!=""}[1m]))
+  - name: uyuni_pod_memory_workingset
+    query: sum(container_memory_working_set_bytes{namespace="uyuni",pod=~"uyuni-.*",container!="",image!=""})
+  - name: db_pod_memory_workingset
+    query: sum(container_memory_working_set_bytes{namespace="uyuni",pod=~"db-.*",container!="",image!=""})
+  - name: postgres_exporter_scrapes_total
+    query: sum(pg_exporter_last_scrape_error)
+    optional: true

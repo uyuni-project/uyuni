@@ -1,0 +1,20 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: uyuni-db-phase3
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/name: benchmark-phase3
+spec:
+  namespaceSelector:
+    matchNames:
+      - uyuni
+  selector:
+    matchLabels:
+      benchmark-phase3-target: db
+  endpoints:
+    - interval: 15s
+      scrapeTimeout: 10s
+      path: /metrics
+      scheme: http
+      targetPort: 5432
