@@ -1,0 +1,3 @@
+- Clean up temporary Cobbler system entries after successful
+  kickstart provisioning to avoid stale entries remaining
+  in the system.
