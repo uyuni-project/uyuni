@@ -26,6 +26,8 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.legacy.UserImpl;
 import com.redhat.rhn.manager.system.SystemManager;
+import com.redhat.rhn.manager.kickstart.cobbler.CobblerSystemRemoveCommand;
+import com.redhat.rhn.domain.user.UserFactory;
 
 import org.hibernate.type.YesNoConverter;
 
@@ -512,11 +514,26 @@ public class KickstartSession extends BaseDomainHelper {
      * @param messageIn to fill into into the History field
      */
     public void markComplete(String messageIn) {
-        this.setState(KickstartFactory.SESSION_STATE_COMPLETE);
-        this.setAction(null);
-        this.addHistory(this.getState(), messageIn);
-        SystemManager.updateSystemOverview(this.currentServer());
+    this.setState(KickstartFactory.SESSION_STATE_COMPLETE);
+    this.setAction(null);
+    this.addHistory(this.getState(), messageIn);
+    SystemManager.updateSystemOverview(this.currentServer());
+
+    // Cleanup Cobbler system entry created during kickstart provisioning
+    if (shouldCleanupCobbler()) {
+        Server server = this.currentServer();
+        if (server != null) {
+            CobblerSystemRemoveCommand cmd =
+                new CobblerSystemRemoveCommand(UserFactory.getSystemUser(), server);
+            cmd.store();
+        }
     }
+}
+
+private boolean shouldCleanupCobbler() {
+    return this.currentServer() != null
+        && this.getState() == KickstartFactory.SESSION_STATE_COMPLETE;
+}
 
     /**
      * Add a History entry
