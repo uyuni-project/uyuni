@@ -19,5 +19,5 @@ $PODMAN_CMD exec opensusessh bash -c "zypper rs container-suseconnect-zypp 2>/de
 
 SERVER_IP=$($PODMAN_CMD inspect -f '{{.NetworkSettings.Networks.network.IPAddress}}' server)
 OPENSUSESSH_IP=$($PODMAN_CMD inspect -f '{{.NetworkSettings.Networks.network.IPAddress}}' opensusessh)
-$PODMAN_CMD exec server bash -c "sed -i '/opensusessh/d' /etc/hosts; echo '$OPENSUSESSH_IP opensusessh' >> /etc/hosts"
-$PODMAN_CMD exec opensusessh bash -c "sed -i '/server/d' /etc/hosts; echo '$SERVER_IP server' >> /etc/hosts"
+$PODMAN_CMD exec server bash -c "grep -v opensusessh /etc/hosts > /tmp/hosts.tmp && cat /tmp/hosts.tmp > /etc/hosts && echo '$OPENSUSESSH_IP opensusessh' >> /etc/hosts && rm /tmp/hosts.tmp"
+$PODMAN_CMD exec opensusessh bash -c "grep -v ' server$' /etc/hosts > /tmp/hosts.tmp && cat /tmp/hosts.tmp > /etc/hosts && echo '$SERVER_IP server' >> /etc/hosts && rm /tmp/hosts.tmp"
