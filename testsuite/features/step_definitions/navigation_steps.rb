@@ -1504,3 +1504,8 @@ When(/^I bootstrap "([^"]*)" via the UI$/) do |host|
   end
 end
 
+Given(/^"([^"]*)" is not already registered$/) do |host|
+  system_name = get_system_name(host)
+  pending if $api_test.system.search_by_name(system_name).any?
+end
+
