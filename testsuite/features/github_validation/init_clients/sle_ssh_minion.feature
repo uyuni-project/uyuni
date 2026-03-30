@@ -8,12 +8,14 @@ Feature: Bootstrap a Salt host managed via salt-ssh
     Given I am authorized for the "Admin" section
 
   Scenario: Register this SSH minion for service pack migration
+    Given "ssh_minion" is not already registered
     When I bootstrap "ssh_minion" via the UI
     And I follow the left menu "Systems > System List > All"
     And I wait until I see the name of "ssh_minion", refreshing the page
 
   Scenario: Subscribe the SSH minion to a base channel
-    Given I am on the Systems overview page of this "ssh_minion"
+    Given "ssh_minion" is not already registered
+    And I am on the Systems overview page of this "ssh_minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
