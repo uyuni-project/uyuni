@@ -76,6 +76,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import javax.security.auth.login.LoginException;
 
 /** JUnit test case for the User
  *  class.
@@ -652,4 +653,76 @@ public class UserManagerTest extends RhnBaseTestCase {
        SystemSearchResult sr = dr.get(0);
        assertNotNull(sr.getDescription());
    }
+    /**
+     * Tests that a valid user can log in successfully with correct credentials.
+     */
+    @Test
+    public void testLoginUserSuccess() throws Exception {
+        User user = UserTestUtils.createUser(this);
+        User result = UserManager.loginUser(user.getLogin(), "password");
+        assertNotNull(result);
+        assertEquals(user.getLogin(), result.getLogin());
+    }
+
+    /**
+     * Tests that passing a null username throws a LoginException.
+     */
+    @Test
+    public void testLoginUserNullUsername() {
+        try {
+            UserManager.loginUser(null, "password");
+            fail("Expected LoginException for null username");
+        }
+        catch (LoginException e) {
+            assertEquals("error.invalid_login", e.getMessage());
+        }
+    }
+
+    /**
+     * Tests that an incorrect password throws a LoginException.
+     */
+    @Test
+    public void testLoginUserWrongPassword() {
+        try {
+            User user = UserTestUtils.createUser(this);
+            UserManager.loginUser(user.getLogin(), "wrongpassword");
+            fail("Expected LoginException for wrong password");
+        }
+        catch (LoginException e) {
+            assertEquals("error.invalid_login", e.getMessage());
+        }
+    }
+
+    /**
+     * Tests that attempting to log in as a disabled user throws a LoginException.
+     */
+    @Test
+    public void testLoginUserDisabled() {
+        try {
+            User admin = UserTestUtils.createUser("adminUser", "testOrg");
+            admin.addPermanentRole(RoleFactory.ORG_ADMIN);
+            UserManager.storeUser(admin);
+            User user = UserTestUtils.createUser("disabledUser", admin.getOrg().getId());
+            UserManager.disableUser(admin, user);
+            UserManager.loginUser(user.getLogin(), "password");
+            fail("Expected LoginException for disabled user");
+        }
+        catch (LoginException e) {
+            assertEquals("account.disabled", e.getMessage());
+        }
+    }
+
+    /**
+     * Tests that logging in with a non-existent username throws a LoginException.
+     */
+    @Test
+    public void testLoginUserNotFound() {
+        try {
+            UserManager.loginUser("nonexistentuser123", "password");
+            fail("Expected LoginException for non-existent user");
+        }
+        catch (LoginException e) {
+            assertEquals("error.invalid_login", e.getMessage());
+        }
+    }
 }
