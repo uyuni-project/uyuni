@@ -83,7 +83,7 @@ public class SmtpMail implements Mail {
         props.put("mail.smtp.auth", smtpAuth);
         props.put("mail.smtp.ssl.enable", smtpSSL);
         props.put("mail.smtp.starttls.enable", smtpStartTLS);
-        props.put("mail.smtp.ssl.protocols", "TLSv1.2");
+        props.put("mail.smtp.ssl.protocols", "TLSv1.2 TLSv1.3");
         props.put("mail.smtp.connectiontimeout", smtpConnectionTimeout);
         props.put("mail.smtp.timeout", smtpTimeout);
         props.put("mail.smtp.writetimeout", smtpWriteTimeout);

@@ -21,7 +21,9 @@
 import re
 
 # pylint: disable-next=deprecated-module
-import crypt
+import hashlib
+import os as _os
+import base64 as _base64
 
 # Global Modules
 from rhn.UserDictCase import UserDictCase
@@ -126,10 +128,10 @@ class User:
         if (
             ret
             and CFG.encrypted_passwords
-            and self.contact["password"].find("$1$") == 0
+            and not self.contact["password"].startswith(_PBKDF2_PREFIX)
         ):
-            # If successfully authenticated and the current password is
-            # MD5 encoded, convert the password to SHA-256 and save it in the DB.
+            # If successfully authenticated and the stored password is not yet
+            # using PBKDF2-SHA256, upgrade it transparently on next login.
             self.contact["password"] = encrypt_password(password)
             self.contact.save()
             rhnSQL.commit()
@@ -642,47 +644,48 @@ def check_password(key, pwd1):
         return 0  # Invalid
 
     # Crypted passwords in the database
-    if pwd1.find("$5") == 0:  # SHA-256 encrypted password
+    if pwd1.startswith(_PBKDF2_PREFIX):  # PBKDF2-SHA256 password
+        parts = pwd1.split("$")
+        # format: $pbkdf2-sha256$<iter>$<b64salt>$<b64hash>
+        if len(parts) == 6:
+            iterations = int(parts[2])
+            raw_salt = _base64.b64decode(parts[3])
+            dk = hashlib.pbkdf2_hmac("sha256", key.encode(), raw_salt, iterations)
+            if _base64.b64encode(dk).decode() == parts[4]:
+                return 1
+    elif pwd1.find("$5") == 0:  # legacy SHA-256 crypt(3) password
         if pwd1 == encrypt_password(key, pwd1, "SHA-256"):
-            return 1
-    elif pwd1.find("$1$") == 0:  # MD5 encrypted password
-        if pwd1 == encrypt_password(key, pwd1, "MD5"):
             return 1
 
     log_debug(4, "Encrypted password doesn't match")
     return 0  # invalid
 
 
+_PBKDF2_ITERATIONS = 600000
+_PBKDF2_PREFIX = "$pbkdf2-sha256$"
+
+
 def encrypt_password(key, salt=None, method="SHA-256"):
-    """Encrypt the key
-    If no salt is supplied, generates one (md5-crypt salt)
+    """Hash the key using PBKDF2-SHA256 (600 000 iterations, 32-byte salt).
+
+    The ``method`` and ``salt`` parameters are kept for backwards compatibility
+    when verifying existing SHA-256 crypt(3) hashes stored as ``$5$…``.  New
+    passwords are always hashed with PBKDF2 and stored as
+    ``$pbkdf2-sha256$<iterations>$<b64salt>$<b64hash>``.
     """
+    if salt and str(salt).find("$5$") == 0:
+        # Legacy path: verify an existing SHA-256 crypt(3) hash.
+        # We keep this only for read-side verification; new passwords are
+        # never written in crypt(3) format.
+        import crypt as _crypt  # pylint: disable=import-outside-toplevel
+        return _crypt.crypt(key, str(salt))
 
-    pw_params = {
-        "MD5": [8, "$1$"],  # method: [salt length, prefix]
-        "SHA-256": [16, "$5$"],
-    }
-
-    if not salt:
-        # No salt supplied, generate it ourselves
-        # pylint: disable-next=import-outside-toplevel
-        import base64
-
-        # pylint: disable-next=import-outside-toplevel
-        import time
-
-        # pylint: disable-next=import-outside-toplevel
-        import os
-
-        # Get the first 15 digits after the decimal point from time.time(), and
-        # add the pid too
-        salt = (time.time() % 1) * 1e15 + os.getpid()
-        # base64 it and keep only the first n chars
-        salt = base64.encodestring(str(salt).encode()).decode()[: pw_params[method][0]]
-        # slap the magic in front of the salt
-        salt = pw_params[method][1] + salt + "$"
-    salt = str(salt)
-    return crypt.crypt(key, salt)
+    # New path: PBKDF2-SHA256 with a cryptographically random 32-byte salt.
+    raw_salt = _os.urandom(32)
+    dk = hashlib.pbkdf2_hmac("sha256", key.encode(), raw_salt, _PBKDF2_ITERATIONS)
+    b64salt = _base64.b64encode(raw_salt).decode()
+    b64hash = _base64.b64encode(dk).decode()
+    return f"{_PBKDF2_PREFIX}{_PBKDF2_ITERATIONS}${b64salt}${b64hash}"
 
 
 def validate_new_password(password):

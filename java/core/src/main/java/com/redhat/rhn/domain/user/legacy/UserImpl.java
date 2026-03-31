@@ -469,7 +469,7 @@ public class UserImpl extends BaseDomainHelper implements User {
          * authenticate via pam, otherwise, use the db.
          */
         if (!StringUtils.isBlank(pamAuthService) && this.getUsePamAuthentication()) {
-            if (password.startsWith(CryptHelper.getMD5Prefix())) {
+            if (password.startsWith("$1$")) {
                 // password field in DB is NOT NULL, so we set a random password
                 // when using PAM authentication. Here the password is still MD5
                 // based. Just set a new one with SHA256crypt

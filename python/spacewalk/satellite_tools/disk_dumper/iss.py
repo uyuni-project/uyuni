@@ -1885,18 +1885,18 @@ class ExporterMain:
                     iso_type=self.options.make_isos,
                 )
 
-                # Generate md5sum digest file for isos
+                # Generate sha256sum digest file for isos
                 if os.path.exists(iso_output):
                     # pylint: disable-next=unspecified-encoding
-                    f = open(os.path.join(iso_output, "MD5SUM"), "w")
+                    f = open(os.path.join(iso_output, "SHA256SUM"), "w")
                     for iso_file in os.listdir(iso_output):
-                        if self.options.make_isos != "dvds" and iso_file != "MD5SUM":
-                            md5_val = getFileChecksum(
-                                "md5", (os.path.join(iso_output, iso_file))
+                        if self.options.make_isos != "dvds" and iso_file != "SHA256SUM":
+                            sha256_val = getFileChecksum(
+                                "sha256", (os.path.join(iso_output, iso_file))
                             )
                             # pylint: disable-next=consider-using-f-string
-                            md5str = "%s  %s\n" % (md5_val, iso_file)
-                            f.write(md5str)
+                            sha256str = "%s  %s\n" % (sha256_val, iso_file)
+                            f.write(sha256str)
                     f.close()
 
             if self.options.email:

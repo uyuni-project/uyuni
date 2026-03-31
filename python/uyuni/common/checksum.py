@@ -16,35 +16,12 @@
 
 import os
 
-try:
-    import hashlib
-    import inspect
+import hashlib
+import inspect
 
-    hashlib_has_usedforsecurity = (
-        "usedforsecurity" in inspect.getargspec(hashlib.new)[0]
-    )
-except ImportError:
-    import md5
-    import sha
-
-    # pylint: disable=F0401
-    # pylint can't find Crypto.Hash here, but it is present on older systems.
-    from Crypto.Hash import SHA256 as sha256
-
-    hashlib_has_usedforsecurity = False
-
-    # pylint: disable-next=invalid-name
-    class hashlib(object):
-        @staticmethod
-        def new(checksum):
-            if checksum == "md5":
-                return md5.new()
-            elif checksum == "sha1":
-                return sha.new()
-            elif checksum == "sha256":
-                return sha256.new()
-            else:
-                raise ValueError("Incompatible checksum type")
+hashlib_has_usedforsecurity = (
+    "usedforsecurity" in inspect.getfullargspec(hashlib.new)[0]
+)
 
 
 # pylint: disable-next=invalid-name
