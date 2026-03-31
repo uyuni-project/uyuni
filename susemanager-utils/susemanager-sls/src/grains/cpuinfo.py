@@ -135,11 +135,28 @@ def cpusockets():
 
 
 def total_num_cpus():
-    """returns the total number of CPU in system.
-    /proc/cpuinfo shows the number of active CPUs
-    On s390x this can be different from the number of present CPUs in a system
-    See IBM redbook: "Using z/VM for Test and Development Environments: A Roundup" chapter 3.5
+    """Returns the total number of CPUs in the system.
+
+    The definition of "CPU" varies by architecture to provide the most accurate
+    representation for licensing and UI display. Note that /proc/cpuinfo shows the
+    number of active CPUs, which can differ from the number of present CPUs.
+
+    Architectural differences:
+    - On x86_64 and other general architectures, it returns the logical processor
+      count (Cores x SMT threads) by counting entries in /sys/devices/system/cpu/.
+    - On ppc64/ppc64le, it returns the Virtual Processor (VP) count from
+      /proc/ppc64/lparcfg, ignoring SMT threads to avoid inflated counts.
+    - On s390x, it returns the number of present CPUs, which may differ from
+      active CPUs shown in /proc/cpuinfo (see IBM Redbook: "Using z/VM for Test
+      and Development Environments: A Roundup" chapter 3.5).
     """
+    arch = _get_architecture()
+    if arch in ["ppc64", "ppc64le"]:
+        lparcfg = _read_file("/proc/ppc64/lparcfg")
+        match = re.search(r"partition_active_processors\s*=\s*(\d+)", lparcfg)
+        if match:
+            return {"total_num_cpus": int(match.group(1))}
+
     re_cpu = re.compile(r"^cpu[0-9]+$")
     sysdev = "/sys/devices/system/cpu/"
     return {
@@ -246,7 +263,15 @@ def _add_ppc64_extras(specs):
         match = re.search(r"shared_processor_mode\s*=\s*(\d+)", lparcfg_content)
         if match:
             specs["lpar_mode"] = "shared" if match.group(1) == "1" else "dedicated"
-
+        match = re.search(r"partition_active_processors\s*=\s*(\d+)", lparcfg_content)
+        if match:
+            specs["total_virtual_processors"] = int(match.group(1))
+        match = re.search(r"partition_entitled_capacity\s*=\s*(\d+)", lparcfg_content)
+        if match:
+            specs["entitled_capacity"] = int(match.group(1))
+        match = re.search(r"capped\s*=\s*(\d+)", lparcfg_content)
+        if match:
+            specs["capping_mode"] = "capped" if match.group(1) == "1" else "uncapped"
 
 def _add_arm64_extras(specs):
     """
