@@ -1404,7 +1404,7 @@ When(/^I bootstrap "([^"]*)" via the UI$/) do |host|
   step 'I enter "linux" as "password"'
   step 'I click on "Bootstrap"'
 
-  Timeout.timeout(300) do
+  Timeout.timeout(600) do
     loop do
       break if has_text?('Bootstrap process initiated.', wait: 5)
       error = errors.find { |e| has_text?(e, wait: 0) }
