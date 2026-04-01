@@ -1,0 +1,1 @@
+- Fix CPU reporting for ppc64le clients (bsc#1259521)

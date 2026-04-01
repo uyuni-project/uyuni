@@ -13,39 +13,24 @@ mockery.setup_environment()
 from ..grains import cpuinfo
 
 
-def test_total_num_cpus():
+@pytest.mark.parametrize(
+    "arch, lparcfg_content, expected_count",
+    [("ppc64le", "partition_active_processors=8\n", 8), ("x86_64", None, 4)],
+)
+def test_total_num_cpus(arch, lparcfg_content, expected_count):
     """
-    Test total_num_cpus function.
-
-    :return:
+    Test that total_num_cpus returns the correct count based on architecture.
     """
-    os_listdir = [
-        "cpu0",
-        "cpu1",
-        "cpu2",
-        "cpu3",
-        "cpufreq",
-        "cpuidle",
-        "power",
-        "modalias",
-        "kernel_max",
-        "possible",
-        "online",
-        "offline",
-        "isolated",
-        "uevent",
-        "intel_pstate",
-        "microcode",
-        "present",
-    ]
+    os_listdir = ["cpu0", "cpu1", "cpu2", "cpu3"]
 
-    with patch("os.path.exists", MagicMock(return_value=True)):
-        with patch("os.listdir", MagicMock(return_value=os_listdir)):
-            cpus = cpuinfo.total_num_cpus()
-            # pylint: disable-next=unidiomatic-typecheck
-            assert type(cpus) == dict
-            assert "total_num_cpus" in cpus
-            assert cpus["total_num_cpus"] == 4
+    with patch("os.path.exists", return_value=True), patch(
+        "os.listdir", return_value=os_listdir
+    ), patch("src.grains.cpuinfo._get_architecture", return_value=arch), patch(
+        "src.grains.cpuinfo._read_file", return_value=lparcfg_content
+    ):
+
+        cpus = cpuinfo.total_num_cpus()
+        assert cpus["total_num_cpus"] == expected_count
 
 
 def test_cpusockets_dmidecode_count_sockets():
@@ -167,19 +152,29 @@ def test_arch_specs_unknown():
 
 
 def test_arch_specs_ppc64():
+    """
+    Test that arch_specs extracts all relevant PPC64 LPAR and device tree fields.
+    """
     # pylint: disable-next=protected-access
     cpuinfo._get_architecture = MagicMock(return_value="ppc64")
     # pylint: disable-next=protected-access
     cpuinfo._read_file = MagicMock(
         side_effect=lambda path: (
-            "shared_processor_mode = 1"
+            "shared_processor_mode = 1\n"
+            "partition_active_processors = 4\n"
+            "partition_entitled_capacity = 2\n"
+            "capped = 0\n"
             if path == "/proc/ppc64/lparcfg"
             else "device tree content"
         )
     )
     specs = cpuinfo.arch_specs()
-    assert specs == {
-        "cpu_arch_specs": {"lpar_mode": "shared", "device_tree": "device tree content"}
+    assert specs["cpu_arch_specs"] == {
+        "lpar_mode": "shared",
+        "total_virtual_processors": 4,
+        "entitled_capacity": 2,
+        "capping_mode": "uncapped",
+        "device_tree": "device tree content",
     }
 
 
