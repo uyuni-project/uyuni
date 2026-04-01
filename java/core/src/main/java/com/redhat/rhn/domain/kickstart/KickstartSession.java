@@ -24,10 +24,10 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.profile.Profile;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.domain.user.legacy.UserImpl;
-import com.redhat.rhn.manager.system.SystemManager;
-import com.redhat.rhn.manager.kickstart.cobbler.CobblerSystemRemoveCommand;
 import com.redhat.rhn.domain.user.UserFactory;
+import com.redhat.rhn.domain.user.legacy.UserImpl;
+import com.redhat.rhn.manager.kickstart.cobbler.CobblerSystemRemoveCommand;
+import com.redhat.rhn.manager.system.SystemManager;
 
 import org.hibernate.type.YesNoConverter;
 
@@ -531,8 +531,8 @@ public class KickstartSession extends BaseDomainHelper {
 }
 
 private boolean shouldCleanupCobbler() {
-    return this.currentServer() != null
-        && this.getState() == KickstartFactory.SESSION_STATE_COMPLETE;
+    return this.currentServer() != null &&
+           this.getState() == KickstartFactory.SESSION_STATE_COMPLETE;
 }
 
     /**
