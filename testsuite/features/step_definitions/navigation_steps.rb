@@ -1394,6 +1394,7 @@ Then(/^the following restrictions should be (enabled|disabled):$/) do |expected_
 end
 
 When(/^I bootstrap "([^"]*)" via the UI$/) do |host|
+  system_name = get_system_name(host)
   errors = ['Unable to bootstrap', 'Server error, please check log files', 'Internal Server Error', 'Service Unavailable']
 
   step 'I follow the left menu "Systems > Bootstrapping"'
@@ -1404,12 +1405,33 @@ When(/^I bootstrap "([^"]*)" via the UI$/) do |host|
   step 'I enter "linux" as "password"'
   step 'I click on "Bootstrap"'
 
-  Timeout.timeout(600) do
-    loop do
-      break if has_text?('Bootstrap process initiated.', wait: 5)
-      error = errors.find { |e| has_text?(e, wait: 0) }
-      raise ScriptError, "Bootstrap failed for #{host}: '#{error}'" if error
+  result = :timeout
+  start_time = Time.now
+  while Time.now - start_time <= 360
+    if has_text?('Bootstrap process initiated.', wait: 5) || has_text?('seems to already exist', wait: 0)
+      result = :success
+      break
     end
+    error = errors.find { |e| has_text?(e, wait: 0) }
+    if error
+      log "Bootstrap error: '#{error}' after #{(Time.now - start_time).to_i}s"
+      break
+    end
+  end
+
+  unless result == :success
+    poll_start = Time.now
+    registered = false
+    while (Time.now - poll_start) < 360
+      sleep 60
+      step 'I follow the left menu "Systems > System List > All"'
+      if has_text?(system_name, wait: 10)
+        log "#{system_name} appeared after #{(Time.now - poll_start).to_i}s polling"
+        registered = true
+        break
+      end
+    end
+    raise ScriptError, "Bootstrap failed for #{host} — system not registered" unless registered
   end
 end
 
