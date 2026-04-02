@@ -12,6 +12,7 @@ import "./legacy";
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { initializeTooltips } from "../components/tooltips";
+import Account from "./account";
 import Admin from "./admin";
 import Appstreams from "./appstreams";
 import Audit from "./audit";
@@ -38,6 +39,7 @@ import ActivationKeys from "./systems/activation-key";
 
 const pages = {
   ...ActivationKeys,
+  ...Account,
   ...Admin,
   ...Appstreams,
   ...Audit,

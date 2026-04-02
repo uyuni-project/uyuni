@@ -1,4 +1,5 @@
-import { po } from "gettext-parser";
+import pkg from "gettext-parser";
+const { po } = pkg;
 
 export default function (source) {
   this.cacheable();
