@@ -77,17 +77,8 @@
                     </div>
                     <div class="form-group">
                         <label class="col-lg-3 control-label">
-                            <bean:message key="channel.edit.jsp.emailaddress"/>:
+                            <bean:message key="created.displayname"/>:
                         </label>
-                        <div class="col-lg-6">
-                            <p class="form-control-static">
-                                ${user.email}
-                                <a href="/rhn/account/changeemail?uid=${user.id}" class="btn btn-xs btn-default">
-                                    <i class="fa fa-edit"></i>
-                                    <bean:message key="button.edit"/>
-                                </a>
-                            </p>
-                        </div>
                     </div>
                         <div class="col-lg-6">
                             <p class="form-control-static">

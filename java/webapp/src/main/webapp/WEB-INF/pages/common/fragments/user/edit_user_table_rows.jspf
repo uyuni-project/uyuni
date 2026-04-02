@@ -72,10 +72,10 @@
     <c:set var="email_display" value="change.displayname"/>
     <c:choose>
         <c:when test="${param.uid != null}">
-            <c:set var="email_link" value="/rhn/users/ChangeEmail.do?uid=${param.uid}"/>
+            <c:set var="email_link" value="/rhn/manager/account/changeemail?uid=${param.uid}"/>
         </c:when>
         <c:otherwise>
-            <c:set var="email_link" value="/rhn/account/ChangeEmail.do"/>
+            <c:set var="email_link" value="/rhn/manager/account/changeemail?uid=${user.id}"/>
         </c:otherwise>
     </c:choose>
 

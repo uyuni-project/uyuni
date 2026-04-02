@@ -17,6 +17,7 @@ package com.suse.manager.webui.controllers.users;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.asJson;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.json;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withCsrfToken;
+import static com.suse.manager.webui.utils.SparkApplicationHelper.withOrgAdmin;
 import static com.suse.manager.webui.utils.SparkApplicationHelper.withUser;
 import static spark.Spark.get;
 import static spark.Spark.post;
@@ -60,61 +61,89 @@ public class AccountEmailController {
      * @param jade the Jade template engine
      */
     public static void initRoutes(JadeTemplateEngine jade) {
-        // Display email change form
-        get("/rhn/account/changeemail",
-            withCsrfToken(withUser(AccountEmailController::displayForm)), jade);
+        // Display email change form - user's own email
+        get("/manager/account/changeemail",
+            withCsrfToken(withUser(AccountEmailController::displayOwnEmailForm)), jade);
+
+        // Display email change form - admin changing user's email
+        get("/manager/users/:uid/account/email",
+            withCsrfToken(withOrgAdmin(AccountEmailController::displayAdminEmailForm)), jade);
 
         // Submit email change form (JSON response for AJAX)
-        post("/rhn/account/changeemail",
+        post("/manager/api/account/changeemail",
             asJson(withUser(AccountEmailController::submitForm)));
     }
 
     /**
-     * Display the email change form with current email address.
-     * Supports optional uid parameter for admin user lookups.
+     * Handler for user's own email change form.
      *
      * @param request the HTTP request
      * @param response the HTTP response
      * @param user the currently logged-in user
      * @return ModelAndView containing form data and template
      */
-    public static ModelAndView displayForm(Request request, Response response, User user) {
+    public static ModelAndView displayOwnEmailForm(Request request, Response response, User user) {
+        return displayForm(request, user, "own", null);
+    }
+
+    /**
+     * Handler for admin email change form.
+     *
+     * @param request the HTTP request
+     * @param response the HTTP response
+     * @param user the currently logged-in admin user
+     * @return ModelAndView containing form data and template
+     */
+    public static ModelAndView displayAdminEmailForm(Request request, Response response, User user) {
+        Long uid = Long.parseLong(request.params(":uid"));
+        return displayForm(request, user, "admin", uid);
+    }
+
+    /**
+     * Display the email change form with current email address.
+     * Supports both user's own email change and admin changing user's email.
+     *
+     * @param request the HTTP request
+     * @param user the currently logged-in user
+     * @param contextMode either "own" (user changing own email) or "admin" (admin changing user's email)
+     * @param targetUid the uid of the target user when in admin mode, null for own mode
+     * @return ModelAndView containing form data and template
+     */
+    public static ModelAndView displayForm(Request request, User user, String contextMode, Long targetUid) {
         Map<String, Object> model = new HashMap<>();
         LocalizationService ls = LS;
 
-        // Determine target user (admin can edit other users via uid parameter)
+        // Determine target user based on context mode
         User targetUser;
-        try {
-            String uidParam = request.queryParams("uid");
-            if (uidParam != null && !uidParam.isEmpty()) {
-                Long uid = Long.parseLong(uidParam);
-                targetUser = UserManager.lookupUser(user, uid);
-                if (targetUser == null) {
-                    throw new BadParameterException("Invalid uid, target user not found");
-                }
-            } else {
-                targetUser = user; // Editing own email
+        if ("admin".equals(contextMode)) {
+            // Admin route: get user by uid
+            targetUser = UserManager.lookupUser(user, targetUid);
+            if (targetUser == null) {
+                throw new BadParameterException("Invalid uid, target user not found");
             }
-        } catch (NumberFormatException e) {
-            throw new BadParameterException("Invalid uid parameter format");
+        } else {
+            // Own route: user changing their own email
+            targetUser = user;
         }
 
         // Populate model for React template
         model.put("currentEmail", targetUser.getEmail());
         model.put("targetUserId", targetUser.getId());
+        model.put("targetUserName", targetUser.getLogin());
+        model.put("contextMode", contextMode);
         model.put("pageInstructions", ls.getMessage("yourchangeemail.instructions"));
         model.put("buttonLabel", ls.getMessage("message.Update"));
         model.put("csrfToken", request.attribute("csrf_token"));
 
         // Use React template exclusively
-        return new ModelAndView(model, "users/account-email.jade");
+        return new ModelAndView(model, "templates/users/account-email.jade");
     }
 
     /**
      * Submit and process the email change form.
      * Validates email address and updates user record.
      *
-     * @param request the HTTP request (expects JSON body with email field)
+     * @param request the HTTP request (expects JSON body with email and optional uid)
      * @param response the HTTP response
      * @param user the currently logged-in user
      * @return JSON response with success or error status
@@ -133,21 +162,21 @@ public class AccountEmailController {
 
             newEmail = newEmail.trim();
 
-            // Determine target user (admin can change other users' emails)
+            // Determine target user (uid in request body indicates admin mode)
             User targetUser;
-            String uidParam = request.queryParams("uid");
-            if (uidParam != null && !uidParam.isEmpty()) {
-                try {
-                    Long uid = Long.parseLong(uidParam);
-                    targetUser = UserManager.lookupUser(user, uid);
-                    if (targetUser == null) {
-                        throw new BadParameterException("Invalid uid, target user not found");
-                    }
-                } catch (NumberFormatException e) {
-                    throw new BadParameterException("Invalid uid parameter format");
+            Long uid = emailRequest.getUid();
+            if (uid != null && uid > 0) {
+                // Admin changing user's email
+                targetUser = UserManager.lookupUser(user, uid);
+                if (targetUser == null) {
+                    response.status(400);
+                    return json(GSON, response,
+                        ResultJson.error("Invalid uid, target user not found"),
+                        new TypeToken<>() { });
                 }
             } else {
-                targetUser = user; // Editing own email
+                // User changing own email
+                targetUser = user;
             }
 
             String currentEmail = targetUser.getEmail();
@@ -205,7 +234,7 @@ public class AccountEmailController {
      */
     public static class EmailChangeRequest {
         private String email;
-
+        private Long uid;
 
         public EmailChangeRequest(String emailIn) {
             this.email = emailIn;
@@ -217,6 +246,14 @@ public class AccountEmailController {
 
         public void setEmail(String emailIn) {
             this.email = emailIn;
+        }
+
+        public Long getUid() {
+            return uid;
+        }
+
+        public void setUid(Long uidIn) {
+            this.uid = uidIn;
         }
     }
 }
