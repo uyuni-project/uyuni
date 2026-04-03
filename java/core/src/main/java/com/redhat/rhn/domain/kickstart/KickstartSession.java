@@ -515,22 +515,31 @@ public class KickstartSession extends BaseDomainHelper {
      */
     public void markComplete(String messageIn) {
     this.setState(KickstartFactory.SESSION_STATE_COMPLETE);
+
     this.setAction(null);
     this.addHistory(this.getState(), messageIn);
+
     SystemManager.updateSystemOverview(this.currentServer());
 
     // Cleanup Cobbler system entry created during kickstart provisioning
     if (shouldCleanupCobbler()) {
+
         Server server = this.currentServer();
-        if (server != null) {
+        User user = this.getUser();
+
+        if (server != null && user != null) {
+
             CobblerSystemRemoveCommand cmd =
-                new CobblerSystemRemoveCommand(UserFactory.getSystemUser(), server);
+                new CobblerSystemRemoveCommand(user, server);
+
             cmd.store();
+
         }
     }
 }
 
 private boolean shouldCleanupCobbler() {
+
     return this.currentServer() != null &&
            this.getState() == KickstartFactory.SESSION_STATE_COMPLETE;
 }
