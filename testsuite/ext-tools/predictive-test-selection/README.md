@@ -13,14 +13,25 @@ The project is composed of several interconnected parts. This README explains ea
   - [2. Pull Request Data Extraction Script](#2-pull-request-data-extraction-script)
   - [3. Cucumber Results Extraction Script](#3-cucumber-results-extraction-script)
   - [4. Runs Feature Result Extraction Script](#4-runs-feature-result-extraction-script)
-  - [5. Insert Test Runs Into Database Script](#5-insert-test-runs-into-database-script)
+  - [5. Backfill Test Runs Into Database Script](#5-backfill-test-runs-into-database-script)
   - [6. Generate Training Data Script](#6-generate-training-data-script)
+
+
+![](readme_resources/gather_training_data_diagram.png)
+
+- [Phase 2 - Training \& Cutoffs Calibration](#phase-2---training--cutoffs-calibration)
+  - [1. Preprocessing Data](#1-preprocessing-data)
+  - [2. Train XGBoost Classifier](#2-train-xgboost-classifier)
+  - [3. Calibrate Cutoffs \& Predict](#3-calibrate-cutoffs--predict)
+
+
+![](readme_resources/training_and_cutoff_calibration_diagram.png)
+
+# Phase 1 - Gathering Training Data
 
 High-level diagram of this phase
 
-![](images/gather_training_data_diagram.png)
-
-# Phase 1 - Gathering Training Data
+![](readme_resources/gather_training_data_diagram.png)
 
 ## 1. Storing Test Runs' Test Results
 
@@ -56,7 +67,7 @@ We chose to use a relational database, specifically PostgreSQL, for three key re
 
 Below is the Postgres schema I designed:
 
-![](images/postgres_db_schema.png)
+![](readme_resources/postgres_db_schema.png)
 
 [postgres_schema.sql](postgres_schema.sql)
 
@@ -124,14 +135,14 @@ python pr_data_extraction.py <N> | <YYYY-MM-DD> | '#<PR_NUMBER>'
 #### Test Runs' Cucumber Reports
 Notice how for each PR, data is extracted for **each test run** that ran on this PR and produced Cucumber reports, `run_1` is the first test run that ran on the PR, `run_2` is the second, and so on.
 
-<img src="images/pr_data_extract_test_runs_output.png" style="width:40%;">
+<img src="readme_resources/pr_data_extract_test_runs_output.png" style="width:40%;">
 
 #### Run data JSON file
 
-<img src="images/pr_data_extract_run_data_json.png" style="width:80%;">
+<img src="readme_resources/pr_data_extract_run_data_json.png" style="width:80%;">
 
 #### CSV File
-<img src="images/pr_data_extract_output_csv.png" style="width:80%;">
+<img src="readme_resources/pr_data_extract_output_csv.png" style="width:80%;">
 
 > [!IMPORTANT]
 > - `Changes_last_X_days` indicate the number of changes/modifications that happened on the modified files over several recent days.
@@ -204,7 +215,7 @@ A direct example of this is `srv_users.feature`, in which always two scenarios a
 
 This can be shown in the below test statistic generated from a PR that had `srv_users` run on it as a recommended test. Here, the two scenarios were detected as skipped, but still, the feature was considered as passed.
 
-![](images/cucumber_results_srv_users.png)
+![](readme_resources/cucumber_results_srv_users.png)
 
 </details>
 
@@ -243,9 +254,9 @@ A JSON file like the following will be generated inside each test run’s folder
 ]
 ```
 
-## 5. Insert Test Runs Into Database Script
+## 5. Backfill Test Runs Into Database Script
 
-[insert_test_runs_into_db.py](insert_test_runs_into_db.py)
+[backfill_test_runs_into_db.py](backfill_test_runs_into_db.py)
 
 ### Functionality
 
@@ -268,7 +279,7 @@ This script is responsible for backfilling test runs into the database.
 
 The example below shows the contents of the `test_runs` table. Other tables are populated as well.
 
-![](images/postgres_test_runs_table.png)
+![](readme_resources/postgres_test_runs_table.png)
 
 I tested the database using https://neon.com/
 
@@ -292,7 +303,7 @@ Each pull request is represented by **one test run**:
 
 ### Example Output
 
-![](images/training_data_csv.png)
+![](readme_resources/training_data_csv.png)
 
 > [!IMPORTANT]
 > - `Modifications_Xd` indicate the number of modifications that happened on the modified files over several recent days.
@@ -309,5 +320,260 @@ Each pull request is represented by **one test run**:
 My intuition is that we should focus on the first test run because it best reflects the real-world scenario we want to model: predicting test failures as soon as a new PR is opened, before any feedback or fixes have occurred. By using the initial test run, we capture the state of the code as it was originally submitted, ensuring our predictions are based on the same conditions developers face when their code is first tested. This approach avoids any bias introduced by subsequent test runs, which may include fixes or changes made in response to earlier failures.
 
 Additionally, failed features/tests are underrepresented in our data. To try to improve this imbalance, we prefer the first failed run if it exists, even if it's not the first run, as this increases the number of samples where failures occur. An alternative approach could be to represent PRs only by their first failed run (and ignore PRs without test failures), though this would reduce the overall dataset size.
+
+</details>
+
+<br>
+
+# Phase 2 - Training & Cutoffs Calibration
+
+High-level diagram of this phase
+
+![](readme_resources/training_and_cutoff_calibration_diagram.png)
+
+## 1. Preprocessing Data
+
+[preprocessing_pipeline.py](preprocessing_pipeline.py)
+
+### Functionality
+
+- Data quality checks and cleaning
+- Time-ordered train/test split by PR number based on `TEST_SET_SIZE` in [config.py](config.py).
+- Consistent preprocessing using sklearn Pipeline
+- Saving pipeline for production use
+
+### Preprocessing
+
+#### Extensions (Multi-hot Encoding)
+
+- Keeps top extensions covering X% frequency, e.g., 95% of the extensions that appear, this value can be tweaked in [config.py](config.py) by tweaking `EXTENSION_COVERAGE_THRESHOLD`.
+- Groups remaining as `ext_other`.
+- Creates binary features: `ext_java`, `ext_ts`, etc.
+- This captures most of the information without exploding dimensionality, and allows handling future unseen extensions.
+
+#### Modifications (Log1p Transform)
+
+- Applied log transformation to reduce the impact of extreme outliers. This ensures that pull requests with an unusually high number of modifications are brought closer in scale to the rest, which I read helps improve model training performance.
+
+#### Run Number (Keep As-Is)
+- Added binary `is_first_run` (1 if run_number == 1)
+
+#### Categorical (One-hot Encoding)
+- One-hot encoded `feature` and `feature_category`.
+
+#### Scenario Count (Log1p Transform)
+
+#### Failures (Keep As-Is)
+
+#### Target Variable
+- `result` → `failed` (binary: 1 if failed, 0 if passed)
+
+### Outputs
+
+1. Preprocessed training data CSV
+2. Preprocessed testing data CSV
+3. Preprocessing pipeline to be used in production
+
+### Preprocessing Example
+
+> [!TIP]
+> View the CSVs using a CSV viewer instead of viewing them as plain text.
+
+You can view how the explained above preprocessing takes effect on a single PR by viewing the [training data CSV file for PR 10883](readme_resources/pr.csv) and the [same PR data after preprocessing it](readme_resources/preprocessed_pr.csv).
+
+## 2. Train XGBoost Classifier
+
+[train_xgboost_classifier.py](train_xgboost_classifier.py)
+
+### Functionality
+
+This script trains an XGBoost classifier on the preprocessed training data to predict test failures. It handles the severe class imbalance in our dataset using `scale_pos_weight` and performs comprehensive hyperparameter tuning.
+
+### How to Use the Script
+
+- Run `preprocessing_pipeline.py` first to generate the preprocessed training data
+
+Usage:
+```bash
+python train_xgboost_classifier.py
+```
+
+### Outputs
+
+1. Trained XGBoost Classifier: Saved as artifacts/xgboost_classifier.joblib
+2. Training Logs: Detailed logs saved to logs/train_xgboost_classifier.log
+3. Feature Importance: Top features logged
+
+## 3. Calibrate Cutoffs & Predict
+
+> [!TIP]
+> It is strongly adviced to check the "Prediction Program Development" and specifically the "Parameter Tuning & Evaluation" section in the "Project Details" in my [GSoC Proposal](https://drive.google.com/file/d/1M9X60Arj5J-LVw0fQSaVWgtxCChwtq6T/view?usp=sharing) to completely understand this part. The ScoreCutOff, CountCutOff, TestRecall, ChanegeRecall, and SelectionRate are all thoroughly explained there.
+
+[predict.py](predict.py)
+
+### Functionality
+
+This script operates in two distinct modes to complete the predictive test selection pipeline:
+
+#### Calibration Mode
+Calibrates `ScoreCutOff` and `CountCutOff` parameters to meet desired performance metrics on the test set.
+
+#### Prediction Mode  
+Applies the trained model and calibrated cutoffs to predict which subset of tests should be executed for a new pull request.
+
+### How to Use the Script
+
+Prerequisites:
+- Run `preprocessing_pipeline.py` to generate test data
+- Run `train_xgboost_classifier.py` to train the model
+
+#### Calibration Mode
+
+Usage:
+```bash
+python predict.py --mode calibration --test-recall 0.90 --change-recall 1.0 --selection-rate 0.50
+```
+
+Parameters:
+- `--test-recall`: Desired minimum TestRecall (range: 0.0–1.0) — ensures that at least this proportion of failed tests are correctly identified.
+- `--change-recall`: Desired minimum ChangeRecall (0.0-1.0) - ensures that at least this proportion of PRs with failures are correctly identified.
+- `--selection-rate`: Desired average SelectionRate (range: 0.0–1.0) — specifies the maximum proportion of tests to be selected on average, controlling the percentage of the total tests run per PR.
+
+#### Prediction Mode
+
+Usage:
+```bash
+python predict.py --mode prediction --input-csv new_pr.csv --cutoff-params calibration.json
+```
+
+Parameters:
+- `--input-csv`: Preprocessed CSV file for the new PR, like the preprocessed training data but for a single PR. ([example](readme_resources/preprocessed_pr.csv))
+- `--cutoff-params`: JSON file containing calibrated cutoff parameters (the output of the calibration mode)
+
+### Outputs
+
+#### Calibration Mode Outputs
+
+1. Calibrated CutOffs JSON: Contains optimal ScoreCutOff and CountCutOff
+2. Performance Visualizations:
+   - `selection_rate_vs_change_recall.png`: Trade-off between selection efficiency and change detection
+   - `selection_rate_vs_test_recall.png`: Trade-off between selection efficiency and test detection
+   - `change_recall_heatmap.png`: ChangeRecall across all cutoff combinations
+   - `test_recall_heatmap.png`: TestRecall across all cutoff combinations
+
+Example Calibrated CutOffs JSON:
+
+> [!IMPORTANT]
+> The `status` field shows if the program was able to find a cutoffs combination that satisfies, or is better than the desired recalls and selection rate.
+
+The below is an example of the output when running the following:
+
+```bash
+python predict.py --mode calibration --test-recall 0.90 --change-recall 1.0 --selection-rate 0.50
+```
+
+```json
+{
+  "status": "success",
+  "calibrated_cutoffs": {
+    "score_cutoff": 0.45,
+    "count_cutoff": 30
+  },
+  "achieved_metrics": {
+    "test_recall": 0.943,
+    "change_recall": 1.000,
+    "selection_rate": 0.453
+  },
+  "target_metrics": {
+    "test_recall": 0.90,
+    "change_recall": 1.0,
+    "selection_rate": 0.50
+  }
+}
+```
+
+Example Calibration Visualizations:
+
+`selection_rate_vs_change_recall.png`
+
+![](readme_resources/selection_rate_vs_change_recall.png)
+
+`change_recall_heatmap.png`
+
+![](readme_resources/change_recall_heatmap.png)
+
+The calibration process generates several visualization files in a `visualizations/` folder to help understand the performance trade-offs. These visualizations help you understand how different cutoff settings affect performance and make informed decisions about target metrics.
+
+#### Prediction Mode Output
+
+Prediction Results JSON: Contains selected tests ranked with failure probabilities.
+
+The below is an example of the output when running the following:
+
+```bash
+python predict.py --mode prediction --input-csv new_preprocessed_pr.csv --cutoff-params calibrated_cutoffs.json
+```
+
+- `new_preprocessed_pr.csv` is exactly the same as [preprocessed_pr.csv](readme_resources/preprocessed_pr.csv) but with the `failed` column non-existent since this is now what we're trying to predict.
+- `calibrated_cutoffs.json` is the output JSON file from the calibration mode, which is demonstrated above in the calibration mode outputs.
+
+```json
+{
+  "cutoff_parameters": {
+    "score_cutoff": 0.45,
+    "count_cutoff": 30
+  },
+  "selected_tests": [
+    {
+      "test_name": "min_retracted_patches",
+      "failure_probability": 0.69,
+      "rank": 1
+    },
+    {
+      "test_name": "min_salt_lock_packages",
+      "failure_probability": 0.66,
+      "rank": 2
+    },
+    {
+      "test_name": "min_recurring_action",
+      "failure_probability": 0.66,
+      "rank": 3
+    },
+    {
+      "test_name": "min_config_state_channel",
+      "failure_probability": 0.65,
+      "rank": 4
+    },
+    {
+      "test_name": "buildhost_docker_build_image",
+      "failure_probability": 0.64,
+      "rank": 5
+    },
+    {
+      "test_name": "allcli_software_channels",
+      "failure_probability": 0.61,
+      "rank": 6
+    },
+    // And so on till the test number 30.
+    // Output is truncated to not take too much space in the readme.
+  ],
+  "summary": {
+    "total_tests": 67,
+    "selected_tests": 30,
+    "selection_rate": 0.44776119402985076
+  }
+}
+```
+
+If you closely examine the [original CSV file](readme_resources/pr.csv) for the [new_preprocessed_pr.csv](readme_resources/preprocessed_pr.csv), you will find that the test that had failed on this PR was `min_retracted_patches`, and this is the test predicted with the highest probability of failure by our model 😉
+
+### Q&A
+
+<details>
+<summary>Expand</summary>
+
+#### Why prioritize ChangeRecall over TestRecall?
+
+ChangeRecall measures whether we catch PRs that introduce failures, which is more critical for preventing broken code from being merged. TestRecall measures individual test failure detection, which is important but secondary to overall change quality.
 
 </details>

@@ -35,7 +35,13 @@ CREATE TABLE rhnActionPackage
                              REFERENCES rhnPackageEvr (id),
     package_arch_id  NUMERIC
                          CONSTRAINT rhn_act_p_paid_fk
-                             REFERENCES rhnPackageArch (id)
+                             REFERENCES rhnPackageArch (id),
+
+    created             TIMESTAMPTZ
+                            DEFAULT (current_timestamp) NOT NULL,
+    modified            TIMESTAMPTZ
+                            DEFAULT (current_timestamp) NOT NULL
+
 )
 
 ;

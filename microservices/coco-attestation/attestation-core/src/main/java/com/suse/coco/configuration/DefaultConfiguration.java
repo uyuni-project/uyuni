@@ -18,7 +18,7 @@ import com.suse.common.configuration.ResourceConfigurationSource;
 
 import java.util.List;
 import java.util.Properties;
-import java.util.stream.Stream;
+import java.util.Set;
 
 /**
  * Default application configuration. Values are first read from the environment then from a property file
@@ -28,10 +28,16 @@ import java.util.stream.Stream;
 public class DefaultConfiguration implements Configuration {
 
     // These are the only properties that do not have a default value in configuration-defaults.properties
-    private static final Stream<String> MANDATORY_PROPERTIES = Stream.of(
+    private static final Set<String> MANDATORY_PROPERTIES = Set.of(
         "database_user",
-        "database_password",
-        "database_connection"
+        "database_password"
+    );
+
+    // These properties need to be all defined if database_connection is not set
+    private static final Set<String> CONNECTION_PROPERTIES = Set.of(
+        "database_host",
+        "database_port",
+        "database_name"
     );
 
     private final ConfigurationSource configurationSource;
@@ -40,17 +46,27 @@ public class DefaultConfiguration implements Configuration {
      * Default constructor
      */
     public DefaultConfiguration() {
-        configurationSource = new MultipleConfigurationSource(List.of(
-            new EnvironmentConfigurationSource(),
-            new ResourceConfigurationSource("configuration-defaults.properties")
-        ));
+        this(new MultipleConfigurationSource(List.of(
+                new EnvironmentConfigurationSource(),
+                new ResourceConfigurationSource("configuration-defaults.properties")
+        )));
+    }
 
-        List<String> missingProperty = MANDATORY_PROPERTIES
+    protected DefaultConfiguration(ConfigurationSource configSource) {
+        configurationSource = configSource;
+        List<String> missingProperty = MANDATORY_PROPERTIES.stream()
             .filter(property -> configurationSource.getString(property).isEmpty())
             .toList();
 
         if (!missingProperty.isEmpty()) {
             throw new IllegalArgumentException("Mandatory configuration properties are missing: " + missingProperty);
+        }
+
+        List<String> missingCnxProps = CONNECTION_PROPERTIES.stream()
+                .filter(property ->  configurationSource.getString(property).isEmpty())
+                .toList();
+        if (configurationSource.getString("database_connection").isEmpty() && !missingCnxProps.isEmpty()) {
+            throw new IllegalArgumentException("Missing either database connection or " + missingCnxProps);
         }
     }
 
@@ -67,6 +83,21 @@ public class DefaultConfiguration implements Configuration {
     @Override
     public String getDatabaseConnectionString() {
         return configurationSource.requireString("database_connection");
+    }
+
+    @Override
+    public String getDatabaseHostString() {
+        return configurationSource.getString("database_host").orElse("");
+    }
+
+    @Override
+    public int getDatabasePort() {
+        return configurationSource.getInteger("database_port").orElse(5432);
+    }
+
+    @Override
+    public String getDatabaseNameString() {
+        return configurationSource.getString("database_name").orElse("");
     }
 
     @Override
@@ -91,6 +122,16 @@ public class DefaultConfiguration implements Configuration {
 
     @Override
     public Properties toProperties() {
-        return configurationSource.toProperties();
+        Properties properties = configurationSource.toProperties();
+
+        String host = getDatabaseHostString();
+        int port = getDatabasePort();
+        String name = getDatabaseNameString();
+
+        if (!host.isEmpty() && port != 0 && !name.isEmpty()) {
+            String cnx = String.format("jdbc:postgresql://%s:%s/%s", host, port, name);
+            properties.setProperty("database_connection", cnx);
+        }
+        return properties;
     }
 }

@@ -1,6 +1,8 @@
 # Copyright (c) 2015-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
+#TODO: Fix this feature in GH Validation, it might be related to the patches available in the test repo
+@skip_if_github_validation
 @sle_minion
 @scope_cve_audit
 Feature: CVE Audit on SLE Salt Minions

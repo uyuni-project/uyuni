@@ -1,0 +1,37 @@
+suite: test services
+templates:
+  - services.yaml
+tests:
+  - it: should render db services with default values
+    set:
+      global.fqdn: uyuni.example.com
+    asserts:
+      - isKind:
+          of: Service
+        documentSelector:
+          path: metadata.name
+          value: db
+      - isKind:
+          of: Service
+        documentSelector:
+          path: metadata.name
+          value: reportdb
+
+  - it: should not render db services when db is disabled
+    set:
+      global.fqdn: uyuni.example.com
+      db:
+        enable: false
+    asserts:
+      - hasDocuments:
+          count: 0
+        documentSelector:
+          path: metadata.name
+          value: db
+          skipEmptyTemplates: true
+      - hasDocuments:
+          count: 0
+        documentSelector:
+          path: metadata.name
+          value: reportdb
+          skipEmptyTemplates: true

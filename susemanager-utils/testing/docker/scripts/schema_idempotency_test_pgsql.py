@@ -149,6 +149,7 @@ def create_fake_migration_path(schema_path, new_version, pr_file=None, version=N
     print("Creating: " + fake_path)
     os.mkdir(fake_path)
     num = 0
+    # pylint: disable-next=possibly-used-before-assignment
     for migration_file in files:
         pcom = migration_file.split("/")
         f = pcom.pop()
@@ -276,6 +277,8 @@ def diff_dumps(initial_dump, migrated_dump):
             return [
                 line.rstrip()
                 for line in re.sub("\t", "       ", fd.read()).splitlines()
+                # Exclude sequence values as they change between dumps and cause false positives
+                if not line.startswith("SELECT pg_catalog.setval")
             ]
 
     def get_sorted_tables(lines):
@@ -357,7 +360,6 @@ def argparser():
         )
     # Exclude tables and sequences that are not updated by the SQL scripts (version control)
     args.excluded_tables = [
-        "pg_catalog.setval",
         "public.rhnpackageevr",
         "public.rhn_pkg_evr_seq",
         "public.rhnversioninfo",

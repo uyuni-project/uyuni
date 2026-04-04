@@ -13,15 +13,15 @@ Feature: Clone a channel
     And I select "Fake-RPM-SUSE-Channel" as the origin channel
     And I choose "original"
     And I click on "Clone Channel"
-    And I enter "Fake-Clone-RPM-SLES15SP4-Channel" as "Channel Name"
+    And I enter "Fake-Clone-RPM-SLES15SP7-Channel" as "Channel Name"
     And I should see a "Create Software Channel" text
     And I should see a "Original state of the channel" text
     And I click on "Clone Channel"
-    Then I should see a "Fake-Clone-RPM-SLES15SP4-Channel" text
+    Then I should see a "Fake-Clone-RPM-SLES15SP7-Channel" text
 
   Scenario: Check that this channel has no patches
     When I follow the left menu "Software > Manage > Channels"
-    And I follow "Fake-Clone-RPM-SLES15SP4-Channel"
+    And I follow "Fake-Clone-RPM-SLES15SP7-Channel"
     And I follow "Patches" in the content area
     And I follow "List/Remove Patches"
     Then I should see a "There are no patches associated with this channel." text
@@ -32,15 +32,15 @@ Feature: Clone a channel
     And I select "Fake-RPM-SUSE-Channel" as the origin channel
     And I choose "current"
     And I click on "Clone Channel"
-    And I enter "Fake-Clone-2-RPM-SLES15SP4-Channel" as "Channel Name"
+    And I enter "Fake-Clone-2-RPM-SLES15SP7-Channel" as "Channel Name"
     And I should see a "Create Software Channel" text
     And I should see a "Current state of the channel" text
     And I click on "Clone Channel"
-    Then I should see a "Fake-Clone-2-RPM-SLES15SP4-Channel" text
+    Then I should see a "Fake-Clone-2-RPM-SLES15SP7-Channel" text
 
   Scenario: Check that this channel has patches
     When I follow the left menu "Software > Manage > Channels"
-    And I follow "Fake-Clone-2-RPM-SLES15SP4-Channel"
+    And I follow "Fake-Clone-2-RPM-SLES15SP7-Channel"
     And I follow "Patches" in the content area
     And I follow "List/Remove Patches"
     Then I should see a "CL-hoag-dummy-7890" link
@@ -54,12 +54,12 @@ Feature: Clone a channel
     And I select "Fake-RPM-SUSE-Channel" as the origin channel
     And I choose "select"
     And I click on "Clone Channel"
-    And I enter "Fake-Clone-3-RPM-SLES15SP4-Channel" as "Channel Name"
+    And I enter "Fake-Clone-3-RPM-SLES15SP7-Channel" as "Channel Name"
     And I should see a "Create Software Channel" text
     And I should see a "Select patches" text
     And I click on "Clone Channel"
-    And I should see a "Fake-Clone-3-RPM-SLES15SP4-Channel" text
-    And I should see a "Channel Fake-Clone-3-RPM-SLES15SP4-Channel cloned from channel Fake-RPM-SUSE-Channel." text
+    And I should see a "Fake-Clone-3-RPM-SLES15SP7-Channel" text
+    And I should see a "Channel Fake-Clone-3-RPM-SLES15SP7-Channel cloned from channel Fake-RPM-SUSE-Channel." text
     And I should see a "You may now wish to clone the patches associated with Fake-RPM-SUSE-Channel." text
     And I check the row with the "hoag-dummy-7890" link
     And I check the row with the "virgo-dummy-3456" link
@@ -100,10 +100,10 @@ Feature: Clone a channel
 
   Scenario: Compare channel packages
     When I follow the left menu "Software > Manage > Channels"
-    And I follow "Fake-Clone-2-RPM-SLES15SP4-Channel"
+    And I follow "Fake-Clone-2-RPM-SLES15SP7-Channel"
     And I follow "Packages" in the content area
     And I follow "Compare"
-    And I select "Fake-Clone-3-RPM-SLES15SP4-Channel" from "selected_channel"
+    And I select "Fake-Clone-3-RPM-SLES15SP7-Channel" from "selected_channel"
     And I click on "View Packages"
     Then I should see a "andromeda-dummy" text
     And I should see a "2.0-1.1" link
@@ -111,25 +111,25 @@ Feature: Clone a channel
 
   Scenario: Cleanup: remove cloned channels
     When I follow the left menu "Software > Manage > Channels"
-    And I follow "Fake-Clone-RPM-SLES15SP4-Channel"
+    And I follow "Fake-Clone-RPM-SLES15SP7-Channel"
     And I follow "Delete Channel"
     And I check "unsubscribeSystems"
     And I click on "Delete Channel"
-    Then I should see a "Fake-Clone-RPM-SLES15SP4-Channel" text
+    Then I should see a "Fake-Clone-RPM-SLES15SP7-Channel" text
     And I should see a "has been deleted." text
     Given I follow the left menu "Software > Manage > Channels"
-    When I follow "Fake-Clone-2-RPM-SLES15SP4-Channel"
+    When I follow "Fake-Clone-2-RPM-SLES15SP7-Channel"
     And I follow "Delete Channel"
     And I check "unsubscribeSystems"
     And I click on "Delete Channel"
-    Then I should see a "Fake-Clone-2-RPM-SLES15SP4-Channel" text
+    Then I should see a "Fake-Clone-2-RPM-SLES15SP7-Channel" text
     And I should see a "has been deleted." text
     Given I follow the left menu "Software > Manage > Channels"
-    When I follow "Fake-Clone-3-RPM-SLES15SP4-Channel"
+    When I follow "Fake-Clone-3-RPM-SLES15SP7-Channel"
     And I follow "Delete Channel"
     And I check "unsubscribeSystems"
     And I click on "Delete Channel"
-    Then I should see a "Fake-Clone-3-RPM-SLES15SP4-Channel" text
+    Then I should see a "Fake-Clone-3-RPM-SLES15SP7-Channel" text
     And I should see a "has been deleted." text
 
   Scenario: Cleanup: remove remaining systems from SSM after channel cloning tests

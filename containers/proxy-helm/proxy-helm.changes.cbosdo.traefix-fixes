@@ -1,0 +1,2 @@
+- Allow configuring the ingress class on the traefik routes
+- Add experimental Gateway API support

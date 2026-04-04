@@ -49,12 +49,13 @@
 %endif
 
 Name:           spacewalk-backend
-Version:        5.2.0
+Version:        5.2.5
 Release:        0
 Summary:        Common programs needed to be installed on the %{productprettyname} servers/proxies
 License:        GPL-2.0-only
 Group:          System/Management
 URL:            https://github.com/uyuni-project/uyuni
+#!CreateArchive: %{name}
 Source0:        %{name}-%{version}.tar.gz
 %if !0%{?suse_version} || 0%{?suse_version} >= 1120
 BuildArch:      noarch
@@ -182,7 +183,6 @@ BuildRequires:  systemd-rpm-macros
 Requires:       python3-spacewalk-client-tools
 Requires:       python3-solv
 Requires:       python3-urlgrabber >= 4
-Requires:       python3-looseversion
 Requires:       spacewalk-admin >= 0.1.1-0
 Requires:       spacewalk-certs-tools
 Requires:       susemanager-tools
@@ -253,9 +253,6 @@ cd -
 
 install -m 644 rhn-conf/signing.cnf %{buildroot}%{rhnconf}/signing.conf
 
-install -m 644 satellite_tools/spacewalk-diskcheck.service %{buildroot}/%{_unitdir}
-install -m 644 satellite_tools/spacewalk-diskcheck.timer %{buildroot}/%{_unitdir}
-
 install -m 644 satellite_tools/ulnauth.py %{buildroot}/%{python3rhnroot}/satellite_tools
 
 %find_lang %{name}-server
@@ -294,37 +291,10 @@ if [ ! -e %{rhnconf}/rhn.conf ]; then
     exit 0
 fi
 
-%pre tools
-%if !0%{?rhel}
-%service_add_pre spacewalk-diskcheck.service spacewalk-diskcheck.timer
-%endif
-
-%post tools
-%if 0%{?rhel}
-%{systemd_post} spacewalk-diskcheck.service
-%{systemd_post} spacewalk-diskcheck.timer
-%else
-%service_add_post spacewalk-diskcheck.service spacewalk-diskcheck.timer
-%endif
 if test -f %{_localstatedir}/log/rhn/rhn_server_satellite.log; then
     chown -f %{apache_user}:%{apache_group} %{_localstatedir}/log/rhn/rhn_server_satellite.log
 fi
 
-%preun tools
-%if 0%{?rhel}
-%systemd_preun spacewalk-diskcheck.service
-%systemd_preun spacewalk-diskcheck.timer
-%else
-%service_del_preun spacewalk-diskcheck.service spacewalk-diskcheck.timer
-%endif
-
-%postun tools
-%if 0%{?rhel}
-%{systemd_postun} spacewalk-diskcheck.service
-%{systemd_postun} spacewalk-diskcheck.timer
-%else
-%service_del_postun spacewalk-diskcheck.service spacewalk-diskcheck.timer
-%endif
 
 %files
 %defattr(-,root,root)
@@ -597,8 +567,6 @@ fi
 %{_mandir}/man8/spacewalk-data-fsck.8*
 %{_mandir}/man8/spacewalk-update-signatures.8*
 %{_mandir}/man8/update-packages.8*
-%attr(644, root, root) %{_unitdir}/spacewalk-diskcheck.service
-%attr(644, root, root) %{_unitdir}/spacewalk-diskcheck.timer
 
 %files xml-export-libs
 %defattr(-,root,root)

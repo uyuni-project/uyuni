@@ -33,12 +33,13 @@
 %define apache_group apache
 %endif
 Name:           uyuni-base
-Version:        5.2.0
+Version:        5.2.2
 Release:        0
 Summary:        %{productprettyname} Base Package
 License:        GPL-2.0-only
 Group:          System/Fhs
 URL:            https://github.com/uyuni-project/uyuni
+#!CreateArchive: %{name}
 Source0:        %{name}-%{version}.tar.gz
 
 %description
@@ -65,7 +66,7 @@ Group:          System/Fhs
 Requires(pre):  %{_sbindir}/groupadd
 Requires(pre):  %{_sbindir}/usermod
 Requires(pre):  salt
-Requires(pre):  tomcat
+Requires(pre):  tomcat11
 Requires(pre):  uyuni-base-common
 Provides:       group(susemanager)
 %if 0%{?suse_version} >= 1500

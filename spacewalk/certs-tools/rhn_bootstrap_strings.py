@@ -20,7 +20,6 @@
 from spacewalk.common.rhnConfig import isUyuni, cfg_component
 import os.path
 
-
 _header = """\
 #!/bin/bash
 
@@ -119,13 +118,18 @@ USING_GPG={using_gpg}
 
 REGISTER_THIS_BOX=1
 
+# Flag to generate a custom machine_id to be used in the context of uyuni server.
+# This will ignore the existing machine_id and generate a grain based machine_id
+# using uuidgen.
+GENERATE_OWN_MACHINEID=0
+
 # Set if you want to specify profilename for client systems.
 # NOTE: Make sure it's set correctly if any external command is used.
 #
-# ex. PROFILENAME="foo.example.com"  # For specific client system
-#     PROFILENAME=`hostname -s`      # Short hostname
-#     PROFILENAME=`hostname -f`      # FQDN
-PROFILENAME=""   # Empty by default to let it be set automatically.
+# ex. PROFILE_NAME="foo.example.com"  # For specific client system
+#     PROFILE_NAME=`hostname -s`      # Short hostname
+#     PROFILE_NAME=`hostname -f`      # FQDN
+PROFILE_NAME=""   # Empty by default to let it be set automatically.
 
 # SUSE Multi-Linux Manager Specific settings:
 #
@@ -411,7 +415,7 @@ function setup_bootstrap_repo() {{
 
     if [ -n "$CLIENT_REPO_URL" ]; then
         echo " adding client software repository at $repourl"
-        cat <<EOF >"$repopath"
+        repo_cmd="cat <<EOF >$repopath
 [$reponame]
 name=$reponame
 baseurl=$repourl
@@ -419,7 +423,15 @@ enabled=1
 autorefresh=1
 keeppackages=0
 gpgcheck=0
-EOF
+EOF"
+        if [[ "$Z_CLIENT_CODE_BASE" = "slmicro" && \
+              "$Z_CLIENT_CODE_VERSION" = "6" && \
+              "$Z_CLIENT_CODE_PATCHLEVEL" -ge "2" ]]
+        then
+            call_tukit "$repo_cmd"
+        else
+            bash <<< "$repo_cmd"
+        fi
     fi
 
     # Avoid modularity failsafe mechanism in dnf 4.2.7 or greater
@@ -561,6 +573,12 @@ elif [ "$INSTALLER" == zypper ]; then
             grep -q 'Micro' /etc/os-release && BASE="${{BASE}}micro"
             VERSION="$(grep '^\(VERSION_ID\)' /etc/os-release | sed -n 's/.*"\([[:digit:]]\+\).*/\\1/p')"
             PATCHLEVEL="$(grep '^\(VERSION_ID\)' /etc/os-release | sed -n 's/.*\.\([[:digit:]]*\).*/\\1/p')"
+            # With SLES 16.0 / SL Micro 6.2, the VERSION_ID is common, we need to rely on the SUSE_SUPPORT_PRODUCT_VERSION
+            if grep '^SUSE_SUPPORT_PRODUCT_VERSION=' /etc/os-release; then
+                VERSION="$(grep '^\(SUSE_SUPPORT_PRODUCT_VERSION\)' /etc/os-release | sed -n 's/.*"\([[:digit:]]\+\).*/\\1/p')"
+                PATCHLEVEL="$(grep '^\(SUSE_SUPPORT_PRODUCT_VERSION\)' /etc/os-release | sed -n 's/.*\.\([[:digit:]]*\).*/\\1/p')"
+                grep -q 'Micro' /etc/os-release && BASE="slmicro"
+            fi
             # openSUSE MicroOS
             grep -q 'MicroOS' /etc/os-release && BASE='opensusemicroos' && VERSION='latest'
             # openSUSE Tumbleweed
@@ -809,7 +827,11 @@ if [ ! -z "$ORG_GPG_KEY" ]; then
            apt-get --yes install --no-install-recommends gnupg
            apt-key add $GPG_KEY
         else
-           rpm --import $GPG_KEY
+            if [ -z "$SNAPSHOT_ID" ]; then
+                rpm --import $GPG_KEY
+            else
+                call_tukit "rpm --import $GPG_KEY"
+            fi
         fi
         rm -f ${GPG_KEY}
     done
@@ -903,7 +925,7 @@ echo
         # we need to copy certificate to the trustroot outside of transaction for zypper
         cp "$ORG_CA_CERT" /etc/pki/trust/anchors/
         call_tukit "test -d '$CERT_DIR' || mkdir -p '$CERT_DIR'"
-        call_tukit "cp '/etc/pki/trust/anchors/$ORG_CA_CERT' '${CERT_DIR}/${CERT_FILE}'"
+        call_tukit "cp '$ORG_CA_CERT' '${CERT_DIR}/${CERT_FILE}'"
     else
         test -d "$CERT_DIR" || mkdir -p "$CERT_DIR"
         mv "$ORG_CA_CERT" "${CERT_DIR}/${CERT_FILE}"
@@ -933,7 +955,11 @@ if [[ $ACTIVATION_KEYS =~ , ]]; then
 fi
 
 SNAPSHOT_PREFIX=""
-if [ -n "$SNAPSHOT_ID" ]; then
+if [[ "$Z_CLIENT_CODE_BASE" = "slmicro" && \
+      "$Z_CLIENT_CODE_VERSION" = "6" && \
+      "$Z_CLIENT_CODE_PATCHLEVEL" -lt "2" ]]
+then
+    # SLM 6.1 and older requires writing to snapshot
     SNAPSHOT_PREFIX="/var/lib/overlay/$SNAPSHOT_ID"
 fi
 
@@ -949,6 +975,14 @@ if [ $VENV_ENABLED -eq 1 ]; then
     MINION_CONFIG_DIR="${{SNAPSHOT_PREFIX}}/etc/venv-salt-minion/minion.d"
     SUSEMANAGER_MASTER_FILE="${{MINION_CONFIG_DIR}}/susemanager.conf"
     MINION_SERVICE="venv-salt-minion"
+fi
+
+if [[ "$Z_CLIENT_CODE_BASE" = "slmicro" && \
+      "$Z_CLIENT_CODE_VERSION" = "6" && \
+      "$Z_CLIENT_CODE_PATCHLEVEL" -ge "2" ]]
+then
+    # TU minion writing to /etc, create /etc directories
+    mkdir -p $MINION_CONFIG_DIR
 fi
 
 if [ $REGISTER_THIS_BOX -eq 1 ]; then
@@ -1003,6 +1037,15 @@ system-environment:
         SALT_RUNNING: 1
 EOF
 
+if [ $GENERATE_OWN_MACHINEID -eq 1 ]; then
+    echo "* generating machine ID file"
+    NEW_MACHINID=$(uuidgen | sed 's/-//g')
+    cat <<EOF >> "${{MINION_CONFIG_DIR}}/machine_id.conf"
+grains:
+    machine_id: $NEW_MACHINID
+EOF
+fi
+
 if [ -n "$SNAPSHOT_ID" ]; then
     cat <<EOF >> "${{MINION_CONFIG_DIR}}/transactional_update.conf"
 # Enable the transactional_update executor
@@ -1051,9 +1094,7 @@ else
     /sbin/chkconfig --add $MINION_SERVICE
 fi
 echo "-bootstrap complete-"
-""".format(
-        productName=productName
-    )
+""".format(productName=productName)
 
 
 # pylint: disable-next=invalid-name

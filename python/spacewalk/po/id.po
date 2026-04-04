@@ -8,39 +8,38 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-08-22 09:58+0200\n"
-"PO-Revision-Date: 2020-09-12 19:48+0000\n"
-"Last-Translator: Kukuh Syafaat <syafaatkukuh@gmail.com>\n"
+"PO-Revision-Date: 2025-10-05 15:59+0000\n"
+"Last-Translator: Ferdinan Rizky Budiarto <ferdinan.rizky@yahoo.com>\n"
 "Language-Team: Indonesian <https://l10n.opensuse.org/projects/uyuni/backend/id/>\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 3.6.1\n"
+"X-Generator: Weblate 5.13.3\n"
 
 #: ../server/apacheAuth.py:72
-#, fuzzy, python-format
+#, python-format
 msgid "incomplete proxy authentication token: %s"
-msgstr "token otentikasi proksi tidak lengkap: %s"
+msgstr "token autentikasi proksi tidak lengkap: %s"
 
 #: ../server/apacheAuth.py:103
-#, fuzzy, python-format
+#, python-format
 msgid "Sent proxy signature %s does not match ours %s."
-msgstr "Tanda tangan proksi terkirim %s tidak cocok dengan %s kita."
+msgstr "Tanda tangan proksi yang dikirim %s tidak cocok dengan milik kami %s."
 
 #: ../server/apacheAuth.py:142
-#, fuzzy
 msgid "declined proxy authentication"
-msgstr "otentikasi proxy yang ditolak"
+msgstr "autentikasi proksi ditolak"
 
 #: ../server/apacheRequest.py:68
-#, fuzzy, python-format
+#, python-format
 msgid "Invalid request received (%s)."
 msgstr "Permintaan tidak valid diterima (%s)."
 
 #. Send the message as a fault.
 #: ../server/apacheRequest.py:130
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "IMPORTANT MESSAGE FOLLOWS:\n"
 "%s"
@@ -49,98 +48,95 @@ msgstr ""
 "%s"
 
 #: ../server/apacheRequest.py:160
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "While running '%s': caught\n"
 "%s : %s\n"
 msgstr ""
 "Saat menjalankan '%s': tertangkap\n"
-"%s : %s (Dalam Bahasa Inggris)"
+"%s : %s\n"
 
 #. pylint: disable-next=consider-using-f-string
 #: ../server/apacheRequest.py:675
-#, fuzzy, python-format
+#, python-format
 msgid "Invalid URI %s"
 msgstr "URI “%s” Tidak Sah"
 
 #: ../server/handlers/app/packages.py:220
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "                   %s Account has been deactivated on this server.\n"
 "                   Please contact your Org administrator for more help."
 msgstr ""
-"Akun %s telah dinonaktifkan pada server ini.\n"
+"\n"
+"                   Akun %s telah dinonaktifkan pada server ini.\n"
 "                   Silakan hubungi administrator Organisasi Anda untuk bantuan lebih lanjut."
 
 #: ../server/handlers/xmlrpc/proxy.py:71
-#, fuzzy, python-format
+#, python-format
 msgid "SUSE Multi-Linux Manager Proxy service not enabled for server profile: \"%s\""
-msgstr "Layanan Proksi Manajer SUSE tidak diaktifkan untuk profil server: \"%s\""
+msgstr "Layanan SUSE Multi-Linux Manager Proxy tidak diaktifkan untuk profil server: \"%s\""
 
 #: ../server/handlers/xmlrpc/proxy.py:94
-#, fuzzy
 msgid "Invalid session key"
 msgstr "Kunci sesi tidak valid"
 
 #: ../server/handlers/xmlrpc/proxy.py:102
-#, fuzzy
 msgid "This server ID no longer exists"
-msgstr "ID server ini tidak ada lagi"
+msgstr "ID server ini sudah tidak ada"
 
 #: ../server/importlib/userAuth.py:109
-#, fuzzy
 msgid "You are not authorized to manage packages in the null org"
-msgstr "Anda tidak berwenang untuk mengelola paket di null org"
+msgstr "Anda tidak memiliki otorisasi untuk mengelola paket di null org"
 
 #: ../server/importlib/userAuth.py:115
-#, fuzzy, python-format
+#, python-format
 msgid "You are not allowed to manage packages in the %s org"
 msgstr "Anda tidak diizinkan untuk mengelola paket dalam organisasi %s"
 
 #. ok, you're a regular user who doesn't manage any channels.
 #. take a hike.
 #: ../server/importlib/userAuth.py:132
-#, fuzzy
 msgid "You are not allowed to perform administrative tasks"
 msgstr "Anda tidak diizinkan untuk melakukan tugas administratif"
 
 #: ../server/importlib/userAuth.py:159
-#, fuzzy, python-format
+#, python-format
 msgid "You are not allowed to manage channel %s, or that channel does not exist"
 msgstr "Anda tidak diizinkan untuk mengelola saluran %s, atau saluran tersebut tidak ada"
 
 #: ../server/importlib/userAuth.py:229
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "               %s Account has been deactivated on this server.\n"
 "               Please contact your Org administrator for more help."
 msgstr ""
-"Akun %s telah dinonaktifkan pada server ini.\n"
+"\n"
+"               Akun %s telah dinonaktifkan pada server ini.\n"
 "               Silakan hubungi administrator Organisasi Anda untuk bantuan lebih lanjut."
 
 #: ../server/rhnChannel.py:2216
-#, fuzzy, python-format
+#, python-format
 msgid "Your account does not have access to any channels matching (release='%(release)s', arch='%(arch)s')%(www_activation)s"
 msgstr "Akun Anda tidak memiliki akses ke saluran apa pun yang cocok (release='%(release)s', arch='%(arch)s')%(www_activation)s"
 
 #: ../server/rhnChannel.py:2235
-#, fuzzy, python-format
+#, python-format
 msgid "Insufficient subscription permissions for release (%s, %s"
-msgstr "Izin berlangganan tidak cukup untuk rilis (%s, %s"
+msgstr "Hak langganan untuk rilis (%s, %s) tidak mencukupi"
 
 #. Various messages that can be reused
 #.
 #. bretm 02/07/2007 -- when we have better old-client documentation, probably
 #. will be safe to get rid of all this crap
 #: ../server/rhnChannel.py:2549 ../server/rhnChannel.py:2568
-#, fuzzy
 msgid "System Registered but Inactive"
 msgstr "Sistem Terdaftar tetapi Tidak Aktif"
 
 #: ../server/rhnChannel.py:2551
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "Invalid Architecture and OS release combination (%s, %s).\n"
@@ -148,13 +144,14 @@ msgid ""
 "because it could not be subscribed to a base channel.\n"
 "Please contact your organization administrator for assistance.\n"
 msgstr ""
-"Kombinasi pelepas Arsitektur dan OS tidak valid (%s, %s).\n"
+"\n"
+"Kombinasi Arsitektur dan rilis OS tidak valid (%s, %s).\n"
 "Sistem Anda telah terdaftar, tetapi tidak akan menerima pembaruan\n"
-"karena tidak dapat di subscribe ke base channel.\n"
-"Hubungi administrator organisasi Anda untuk mendapatkan bantuan."
+"karena tidak dapat berlangganan ke saluran dasar.\n"
+"Silakan hubungi administrator organisasi Anda untuk bantuan.\n"
 
 #: ../server/rhnChannel.py:2560
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "  This system has been successfully registered, but is not yet entitled\n"
@@ -162,13 +159,14 @@ msgid ""
 "\n"
 "  %(entitlement_url)s\n"
 msgstr ""
-"Sistem ini telah berhasil didaftarkan, namun belum\n"
-"  layanan.  Untuk memberikan hak sistem ini ke layanan, login ke situs web di:\n"
 "\n"
-"%(entitlement_url)s (Dalam Bahasa Inggris)"
+"  Sistem ini telah berhasil didaftarkan, tetapi belum memiliki hak akses\n"
+"  untuk layanan.  Untuk memberikan hak akses layanan pada sistem ini, masuklah ke situs web di:\n"
+"\n"
+"  %(entitlement_url)s\n"
 
 #: ../server/rhnChannel.py:2570
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "  This system has been successfully registered, but no service entitlements\n"
@@ -176,14 +174,14 @@ msgid ""
 "\n"
 "  %(entitlement_url)s\n"
 msgstr ""
-"Sistem ini telah berhasil didaftarkan, tetapi tidak ada hak layanan\n"
-"  tersedia.  Untuk memberikan hak sistem ini ke layanan, login ke situs web di:\n"
 "\n"
-"%(entitlement_url)s (Dalam Bahasa Inggris)"
+"  Sistem ini telah berhasil didaftarkan, tetapi belum memiliki hak akses\n"
+"  untuk layanan.  Untuk memberikan hak akses layanan pada sistem ini, masuklah ke situs web di:\n"
+"\n"
+"  %(entitlement_url)s\n"
 
 #. Invalid server certificate.
 #: ../server/rhnHandler.py:62
-#, fuzzy
 msgid "Please run rhn_register as root on this client"
 msgstr "Silakan jalankan rhn_register sebagai root pada klien ini"
 

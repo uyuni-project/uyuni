@@ -26,7 +26,7 @@
 %endif
 %endif
 
-%if !(0%{?rhel} >= 8 || 0%{?sle_version} >= 150000 )
+%if !(0%{?rhel} >= 8 || 0%{?suse_version} >= 1500 )
 %global build_py2   1
 %{!?__python2:%global __python2 /usr/bin/python2}
 %if %{undefined python2_sitelib}
@@ -40,11 +40,12 @@
 %endif
 
 Name:           rhnlib
-Version:        5.2.0
+Version:        5.2.4
 Release:        0
 Summary:        Python libraries for the Spacewalk project
 License:        GPL-2.0-only
 URL:            https://github.com/uyuni-project/uyuni
+#!CreateArchive: %{name}
 Source0:        %{name}-%{version}.tar.gz
 %if "%{_vendor}" == "debbuild"
 Group:          python
@@ -57,6 +58,9 @@ Group:          Development/Libraries
 BuildArch:      noarch
 %endif
 BuildRequires:  make
+%if 0%{?debian} || 0%{?ubuntu} || (0%{?suse_version} >= 1600 && 0%{?suse_version} < 1699)
+ExclusiveArch:  do_not_build
+%endif
 
 %description
 rhnlib is a collection of python modules used by the Spacewalk (http://spacewalk.redhat.com) software.
@@ -74,6 +78,7 @@ Requires:       python2-pyOpenSSL
 Requires:       python2-defusedxml
 %else
 BuildRequires:  python-devel
+BuildRequires:  python-setuptools
 Requires:       python-defusedxml
 %if 0%{?suse_version}
 %if 0%{?suse_version} > 1200
@@ -90,6 +95,7 @@ Requires:       pyOpenSSL
 
 %if "%{_vendor}" == "debbuild"
 BuildRequires:  python-dev
+BuildRequires:  python-setuptools
 BuildRequires:  rpm
 Requires(preun):python-minimal
 Requires(post): python-minimal
@@ -122,6 +128,7 @@ Group:          python
 
 %if "%{_vendor}" != "debbuild"
 BuildRequires:  python3-devel
+BuildRequires:  python3-setuptools
 %if 0%{?suse_version}
 BuildRequires:  python-rpm-macros
 %endif
@@ -131,6 +138,7 @@ Requires:       python3-defusedxml
 
 %if "%{_vendor}" == "debbuild"
 BuildRequires:  python3-dev
+BuildRequires:  python3-setuptools
 BuildRequires:  rpm
 Requires(preun): python3-minimal
 Requires(post): python3-minimal

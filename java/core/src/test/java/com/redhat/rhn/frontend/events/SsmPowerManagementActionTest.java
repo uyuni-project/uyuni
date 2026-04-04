@@ -1,0 +1,87 @@
+/*
+ * Copyright (c) 2013 SUSE LLC
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
+
+package com.redhat.rhn.frontend.events;
+
+import static org.junit.jupiter.api.Assertions.assertNull;
+
+import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.frontend.action.ssm.PowerManagementConfigurationActionTest;
+import com.redhat.rhn.frontend.dto.SystemOverview;
+import com.redhat.rhn.manager.kickstart.cobbler.CobblerPowerCommand.Operation;
+import com.redhat.rhn.manager.kickstart.cobbler.CobblerPowerSettingsUpdateCommand;
+import com.redhat.rhn.manager.kickstart.cobbler.CobblerSystemCreateCommand;
+import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
+import com.redhat.rhn.testing.BaseTestCaseWithUser;
+
+import org.cobbler.CobblerConnection;
+import org.cobbler.MockConnection;
+import org.cobbler.SystemRecord;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.util.LinkedList;
+import java.util.List;
+
+/**
+ * Tests SsmPowerManagementAction.
+ */
+public class SsmPowerManagementActionTest extends BaseTestCaseWithUser {
+
+    private CobblerConnection connection;
+    private List<Server> servers;
+    private List<SystemOverview> systemOverviews;
+
+    /**
+     * Sets up a request.
+     * @throws Exception if things go wrong
+     * @see com.redhat.rhn.testing.RhnMockStrutsTestCase#setUp()
+     */
+    @Override
+    @BeforeEach
+    public void setUp() throws Exception {
+        super.setUp();
+        connection = CobblerXMLRPCHelper.getConnection(user.getLogin());
+        servers = PowerManagementConfigurationActionTest
+            .setUpTestProvisionableSsmServers(user);
+        systemOverviews = new LinkedList<>();
+        for (Server server : servers) {
+            SystemOverview systemOverview = new SystemOverview();
+            systemOverview.setId(server.getId());
+            systemOverviews.add(systemOverview);
+
+            assertNull(new CobblerPowerSettingsUpdateCommand(user, server, "ipmi",
+                "192.168.0.1", "user", "password", null).store());
+        }
+    }
+
+    /**
+     * Tests action execution.
+     */
+    @Test
+    public void testAction() {
+        SsmPowerManagementAction action = new SsmPowerManagementAction();
+        action.execute(new SsmPowerManagementEvent(user.getId(), systemOverviews,
+            Operation.POWER_ON));
+
+        for (Server server : servers) {
+            String cobblerName = CobblerSystemCreateCommand
+                .getCobblerSystemRecordName(server.getName(), server.getOrgId());
+            SystemRecord systemRecord = SystemRecord.lookupByName(connection, cobblerName);
+            assertContains(MockConnection.getPowerCommands(), "power_system on " +
+                systemRecord.getId());
+        }
+    }
+}

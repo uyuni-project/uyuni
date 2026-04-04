@@ -5,7 +5,7 @@ import { useImmer } from "use-immer";
 import Network from "utils/network";
 
 type LoginApiStateType = {
-  messages: Array<string>;
+  messages: string[];
   success: boolean;
   loading: boolean;
 };
@@ -59,8 +59,8 @@ const useLoginApi = () => {
           xhr.status === 0
             ? [t("Request interrupted or invalid response received from the server. Please try again.")]
             : xhr.responseJSON?.message
-            ? [xhr.responseJSON.message]
-            : Network.errorMessageByStatus(xhr.status);
+              ? [xhr.responseJSON.message]
+              : Network.errorMessageByStatus(xhr.status);
         setLoginApiState((state) => {
           state.success = false;
           state.messages = errMessages;

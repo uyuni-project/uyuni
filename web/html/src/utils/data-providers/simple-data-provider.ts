@@ -1,26 +1,21 @@
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
+
 import { Comparator, PagedData } from "./index";
 import PageControl from "./page-control";
 
 export default class SimpleDataProvider {
-  data: Array<any>;
+  data: any[];
   identifier: (row: any) => any;
   filter: ((row: any, criteria: string) => boolean) | null | undefined;
-  comparators:
-    | {
-        [key: string]: Comparator;
-      }
-    | null
-    | undefined;
+  comparators: Record<string, Comparator> | null | undefined;
   loading: boolean | null | undefined;
   selectable?: boolean | ((row: any) => boolean);
 
   constructor(
-    data: Array<any>,
+    data: any[],
     identifier: (row: any) => any,
     filter?: (row: any, criteria: string) => boolean,
-    comparators?: {
-      [key: string]: Comparator;
-    },
+    comparators?: Record<string, Comparator>,
     loading?: boolean,
     selectable: boolean | ((row: any) => boolean) = false
   ) {
@@ -60,14 +55,16 @@ export default class SimpleDataProvider {
     callback(Promise.resolve({ items: data, total: total }));
   }
 
-  getIds(callback: (promise: Promise<Array<any>>) => any, criteria?: string) {
+  getIds(callback: (promise: Promise<any[]>) => any, criteria?: string) {
     const filtered = this.getFilteredData(criteria);
     const isSelectable = typeof this.selectable === "boolean" ? undefined : this.selectable;
-    const selectable = isSelectable != null ? filtered.filter((item) => isSelectable(item)) : filtered;
+    const selectable = DEPRECATED_unsafeEquals(isSelectable, null)
+      ? filtered
+      : filtered.filter((item) => isSelectable(item));
     callback(Promise.resolve(selectable.map(this.identifier)));
   }
 
-  getFilteredData(criteria: string | null | undefined): Array<any> {
+  getFilteredData(criteria: string | null | undefined): any[] {
     if (criteria && this.filter) {
       return this.data.filter((row) => !this.filter || this.filter(row, criteria));
     }

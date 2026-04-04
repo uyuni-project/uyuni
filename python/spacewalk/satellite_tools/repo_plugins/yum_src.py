@@ -50,7 +50,6 @@ import traceback
 # pylint: disable-next=unused-import
 import types
 import urlgrabber
-import looseversion
 import json
 
 try:
@@ -1438,7 +1437,14 @@ password={passwd}
         url = "media.1/products"
         media_products_path = os.path.join(self._get_repodata_path(), url)
         grabber = urlgrabber.grabber.URLGrabber()
-        mirror_group = MirrorGroup(grabber, self.repo.urls)
+        urls = []
+        for url in self.repo.urls:
+            # A URL might contain an auth token
+            if url.endswith("/"):
+                url = url[:-1]
+            urls.append(url)
+        mirror_group = MirrorGroup(grabber, urls)
+
         try:
             urlgrabber_opts = {}
             self.set_download_parameters(urlgrabber_opts, url, media_products_path)
@@ -1493,15 +1499,9 @@ password={passwd}
 
         if latest:
             latest_pkgs = {}
-            # pylint: disable-next=unused-variable
-            new_pkgs = []
             for pkg in pkglist:
-                # pylint: disable-next=consider-using-f-string
-                ident = "{}.{}".format(pkg.name, pkg.arch)
-                # pylint: disable-next=consider-iterating-dictionary
-                if ident not in latest_pkgs.keys() or looseversion.LooseVersion(
-                    str(pkg.evr)
-                ) > looseversion.LooseVersion(str(latest_pkgs[ident].evr)):
+                ident = f"{pkg.name}.{pkg.arch}"
+                if ident not in latest_pkgs or pkg.evrcmp(latest_pkgs[ident]) > 0:
                     latest_pkgs[ident] = pkg
             pkglist = list(latest_pkgs.values())
 
@@ -1644,6 +1644,8 @@ password={passwd}
         params["ssl_ca_cert"] = self.sslcacert
         params["ssl_client_cert"] = self.sslclientcert
         params["ssl_client_key"] = self.sslclientkey
+        params["ssl_cert"] = self.sslclientcert
+        params["ssl_key"] = self.sslclientkey
         params["checksum_type"] = checksum_type
         params["checksum"] = checksum_value
         params["bytes_range"] = bytes_range

@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: MIT
 #!BuildTag: uyuni/server:latest
 
-ARG INIT_IMAGE=uyuni/init:latest
-FROM $INIT_IMAGE
+ARG INIT_BASE=registry.suse.com/bci/bci-init:15.7
+FROM $INIT_BASE
 
 ARG PRODUCT_PATTERN_PREFIX="patterns-uyuni"
 
@@ -13,15 +13,30 @@ ARG USEPYTHON="python3"
 # Extra packages can be added via project configuration
 ARG EXTRAPACKAGES
 
+# Create stable static UID and GID for salt, tomcat, apache (wwwrun)...
+RUN groupadd -r --gid 10550 susemanager && \
+  groupadd -r --gid 10551 tomcat && \
+  groupadd -r --gid 10552 www && \
+  groupadd -r --gid 10553 wwwrun && \
+  groupadd -r --gid 10554 salt && \
+  groupadd -r --gid 10555 tftp
+
+RUN useradd -r -s /usr/sbin/nologin -G susemanager,www -g tomcat -d /usr/share/tomcat --uid 10551 tomcat && \
+  useradd -r -s /usr/sbin/nologin -G susemanager,www -g wwwrun -d /var/lib/wwwrun --uid 10552 wwwrun && \
+  useradd -r -s /usr/sbin/nologin -G susemanager -g salt -d /var/lib/salt --uid 10554 salt && \
+  useradd -r -s /usr/sbin/nologin -g tftp -d /srv/tftpboot --uid 10555 tftp
+
 # Main packages
-RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf && \
-    zypper ref && zypper --non-interactive up && \
+RUN zypper ref && zypper --non-interactive up && \
     zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses --force-resolution \
         ${EXTRAPACKAGES} \
         ${PRODUCT_PATTERN_PREFIX}_server \
         ${PRODUCT_PATTERN_PREFIX}_retail \
         ${USEPYTHON}-pygit2 \
+        ${USEPYTHON}-ldap \
         billing-data-service \
+        #required by mgrSetup.sh
+        bind-utils \
         drbd-formula \
         ed \
         golang-github-QubitProducts-exporter_exporter \
@@ -35,7 +50,7 @@ RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf && \
         ipmitool \
         javamail \
         locale-formula \
-        postgresql16 \
+        postgresql18 \
         prometheus-exporters-formula \
         prometheus-formula \
         prometheus-jmx_exporter \
@@ -53,10 +68,12 @@ RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf && \
         sssd-ad \
         sssd-dbus \
         sssd-ipa \
+        susemanager \
+        susemanager-tools \
+        susemanager-tools-salt \
         sssd-krb5 \
         sssd-ldap \
         sssd-tools \
-        susemanager-tftpsync \
         uyuni-config-formula \
         vim \
         virtual-host-gatherer-Libvirt \
@@ -65,15 +82,26 @@ RUN echo "rpm.install.excludedocs = yes" >>/etc/zypp/zypp.conf && \
         virtual-host-gatherer-libcloud \
         virtualization-formulas \
         zchunk && \
+    zypper --non-interactive clean --all && \
+    rpm -e container-suseconnect && \
     systemctl enable prometheus-node_exporter && \
     systemctl enable sssd && \
     rm /etc/krb5.conf.d/crypto-policies && \
     ln -s /etc/crypto-policies/back-ends/krb5.config /etc/krb5.conf.d/crypto-policies && \
     mv "/etc/krb5.conf.d" "/etc/rhn/krb5.conf.d" && \
-    ln -s "/etc/rhn/krb5.conf.d" "/etc/krb5.conf.d"
-
-RUN set -euo pipefail; zypper -n rr -a; \
-    rm -rf /var/log/{alternatives.log,lastlog,tallylog,zypper.log,zypp/history,YaST2}
+    ln -s "/etc/rhn/krb5.conf.d" "/etc/krb5.conf.d" && \
+    mkdir -p /etc/systemd/system.conf.d/ && \
+    printf "[Manager]\nLogColor=no" >/etc/systemd/system.conf.d/01-nocolor.conf && \
+# Credentials fail on Kubernetes, removing them to setup tmpfiles
+    sed -i "/^ImportCredential=.*/d" /usr/lib/systemd/system/systemd-tmpfiles-setup.service && \
+# Silence services that generate errors are not really needed in a container
+    ln -sf /dev/null /etc/systemd/system/dev-hugepages.mount && \
+    ln -sf /dev/null /etc/systemd/system/systemd-logind.service && \
+    ln -sf /dev/null /etc/systemd/system/systemd-sysusers.service && \
+    ln -sf /dev/null /etc/systemd/system/systemd-timedated.service && \
+    ln -sf /dev/null /etc/systemd/system/systemd-tmpfiles-clean.service && \
+    ln -sf /dev/null /etc/systemd/system/console-getty.service && \
+    rm -rf /var/log/{alternatives.log,lastlog,tallylog,suseconnect.log,zypper.log,zypp/history,YaST2}
 
 ADD --chown=root:root root.tar.gz /
 
@@ -104,11 +132,11 @@ LABEL org.opencontainers.image.description="All-in-one ${PRODUCT} server image"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opencontainers.image.version=5.2.0
+LABEL org.opencontainers.image.version=5.2.6
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix
 LABEL org.uyuni.version="${PRODUCT_VERSION}"
 
 CMD ["/usr/lib/systemd/systemd"]
-HEALTHCHECK --interval=60s --timeout=120s --retries=5 --start-period=300s CMD ["/usr/bin/healthcheck.sh"]
+HEALTHCHECK --interval=10s --start-period=180s --timeout=120s --retries=1 CMD ["/usr/bin/healthcheck.sh"]

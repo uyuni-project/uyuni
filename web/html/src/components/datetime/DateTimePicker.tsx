@@ -4,6 +4,8 @@ import { forwardRef, useRef, useState } from "react";
 
 import ReactDatePicker from "react-datepicker";
 
+import { DEPRECATED_onClick } from "components/utils";
+
 import { localizedMoment, parseTimeString } from "utils";
 
 // Turn this on to view internal state under the picker in the UI
@@ -52,13 +54,13 @@ export const DateTimePicker = (props: Props) => {
   const datePickerId = props.legacyId
     ? `${props.legacyId}_datepicker_widget_input`
     : props.id
-    ? props.id + "_date"
-    : undefined;
+      ? props.id + "_date"
+      : undefined;
   const timePickerId = props.legacyId
     ? `${props.legacyId}_timepicker_widget_input`
     : props.id
-    ? props.id + "_time"
-    : undefined;
+      ? props.id + "_time"
+      : undefined;
 
   const openDatePicker = () => {
     if (props.disabled) {
@@ -114,7 +116,7 @@ export const DateTimePicker = (props: Props) => {
     {
       name: "arrow",
       options: {
-        padding: ({ popper, reference, placement }) => ({
+        padding: ({ popper, reference }) => ({
           right: Math.min(popper.width, reference.width) - 24,
         }),
       },
@@ -135,7 +137,7 @@ export const DateTimePicker = (props: Props) => {
               key="calendar"
               className="input-group-addon input-group-text"
               data-picker-type="date"
-              onClick={() => openDatePicker()}
+              {...DEPRECATED_onClick(() => openDatePicker())}
             >
               <i className="fa fa-calendar"></i>
             </span>
@@ -185,7 +187,7 @@ export const DateTimePicker = (props: Props) => {
               key="clock"
               className="input-group-addon input-group-text no-right-border"
               data-picker-type="time"
-              onClick={openTimePicker}
+              {...DEPRECATED_onClick(openTimePicker)}
             >
               <i className="fa fa-clock-o"></i>
             </span>

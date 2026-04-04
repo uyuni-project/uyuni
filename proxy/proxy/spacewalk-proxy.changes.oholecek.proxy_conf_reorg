@@ -1,6 +1,0 @@
-- Reorganize proxy apache configuration
-  * remove unused access to pub dir
-  * move cobbler configs from the uyuni-config to the proxy package
-  * add max workers limit to 150 (bsc#1244552)
-  * use proxypass instead of wsgi to pass API calls to the server
-  and anonymous dirs (bsc#1241880)

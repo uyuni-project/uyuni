@@ -17,18 +17,19 @@
 
 
 Name:           billing-data-service
-Version:        5.2.0
+Version:        5.2.2
 Release:        0
 Summary:        Server to request billing information
 License:        GPL-2.0-only
 Group:          System/Daemons
 URL:            https://github.com/uyuni-project/uyuni
+#!CreateArchive: %{name}
 Source:         %{name}-%{version}.tar.gz
 Requires:       apache2
 Requires:       python3-Flask
 Requires:       spacewalk-backend-sql
 Requires:       spacewalk-taskomatic
-Requires:       tomcat
+Requires:       tomcat11
 Recommends:     csp-billing-adapter-service
 BuildArch:      noarch
 

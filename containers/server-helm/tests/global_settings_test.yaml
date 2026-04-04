@@ -1,0 +1,81 @@
+suite: test global settings (timezone, email, pullPolicy)
+templates:
+  - server.yaml
+  - db.yaml
+  - saline.yaml
+  - config.yaml
+  - setup-job.yaml
+tests:
+  - it: should apply custom timezone to all relevant deployments
+    set:
+      global.fqdn: uyuni.example.com
+      timezone: "Europe/Berlin"
+      saline:
+        enable: true
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[?(@.name=="uyuni")].env[?(@.name=="TZ")].value
+          value: "Europe/Berlin"
+        template: server.yaml
+        documentSelector:
+          path: metadata.name
+          value: uyuni
+      - equal:
+          path: spec.template.spec.containers[?(@.name=="db")].env[?(@.name=="TZ")].value
+          value: "Europe/Berlin"
+        template: db.yaml
+        documentSelector:
+          path: metadata.name
+          value: db
+      - equal:
+          path: spec.template.spec.containers[?(@.name=="saline")].env[?(@.name=="TZ")].value
+          value: "Europe/Berlin"
+        template: saline.yaml
+        documentSelector:
+          path: metadata.name
+          value: saline
+
+  - it: should apply custom email to the configmap
+    set:
+      global.fqdn: uyuni.example.com
+      server:
+        email: "support@example.com"
+    asserts:
+      - equal:
+          path: data.email
+          value: "support@example.com"
+        template: config.yaml
+
+  - it: should apply custom pullPolicy to containers and initContainers
+    set:
+      global.fqdn: uyuni.example.com
+      pullPolicy: "Always"
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[?(@.name=="uyuni")].imagePullPolicy
+          value: "Always"
+        template: server.yaml
+        documentSelector:
+          path: metadata.name
+          value: uyuni
+      - equal:
+          path: spec.template.spec.initContainers[?(@.name=="db-waiter")].imagePullPolicy
+          value: "Always"
+        template: server.yaml
+        documentSelector:
+          path: metadata.name
+          value: uyuni
+      - equal:
+          path: spec.template.spec.initContainers[?(@.name=="setup-waiter")].imagePullPolicy
+          value: "Always"
+        template: server.yaml
+        documentSelector:
+          path: metadata.name
+          value: uyuni
+      - equal:
+          path: spec.template.spec.containers[?(@.name=="db")].imagePullPolicy
+          value: "Always"
+        template: db.yaml
+        documentSelector:
+          path: metadata.name
+          value: db

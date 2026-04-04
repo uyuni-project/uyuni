@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<repomd xmlns="http://linux.duke.edu/metadata/repo" xmlns:rpm="http://linux.duke.edu/metadata/rpm">
+  <revision>1725454896</revision>
+  <tags>
+    <repo>obsrepository://build.opensuse.org/systemsmanagement:Uyuni:Test-Packages:Appstream/rhlike</repo>
+    <repo>obsbuildid:1725454441</repo>
+  </tags>
+  <data type="primary">
+    <checksum type="sha256">62f50fc58823281409eb7a25078a0a56885305a6970060fe39ec35301ca936fb</checksum>
+    <open-checksum type="sha256">3be33f33d2bff1d25280337e73d8d526276f73bdb1a5f438b125839208624735</open-checksum>
+    <location href="repodata/62f50fc58823281409eb7a25078a0a56885305a6970060fe39ec35301ca936fb-primary.xml.gz"/>
+    <timestamp>1725454896</timestamp>
+    <size>1173</size>
+    <open-size>6671</open-size>
+  </data>
+  <data type="filelists">
+    <checksum type="sha256">b70c517d8d1dc7de279d04686bd6e8b34ab2e2f859a1e79ad865f8107b6165de</checksum>
+    <open-checksum type="sha256">6caa62574147eb7d17eeb01c221ecedc186a641c2277b3621a8e980a6e637c3d</open-checksum>
+    <location href="repodata/b70c517d8d1dc7de279d04686bd6e8b34ab2e2f859a1e79ad865f8107b6165de-filelists.xml.gz"/>
+    <timestamp>1725454896</timestamp>
+    <size>549</size>
+    <open-size>1644</open-size>
+  </data>
+  <data type="other">
+    <checksum type="sha256">87d202d6e8a0a84fd142d14af6b826ce4f3b8051e1fa9c0ea173f9ae40af427b</checksum>
+    <open-checksum type="sha256">894181a35e83fcbf5943b0a427b34a3c661d095a018d1b9505ab40317de684df</open-checksum>
+    <location href="repodata/87d202d6e8a0a84fd142d14af6b826ce4f3b8051e1fa9c0ea173f9ae40af427b-other.xml.gz"/>
+    <timestamp>1725454896</timestamp>
+    <size>535</size>
+    <open-size>1688</open-size>
+  </data>
+  <data type="modules">
+    <checksum type="sha256">7f2cdc0cf8fdc454c85b73c836ef8d8a7170e1e01a18b87035c7fab28be55b59</checksum>
+    <open-checksum type="sha256">223ac542c969b8554967128073501f28886da42824d00d4786c2ea922db7be68</open-checksum>
+    <location href="repodata/7f2cdc0cf8fdc454c85b73c836ef8d8a7170e1e01a18b87035c7fab28be55b59-modules.yaml.gz"/>
+    <timestamp>1725454896</timestamp>
+    <size>580</size>
+    <open-size>2021</open-size>
+  </data>
+</repomd>

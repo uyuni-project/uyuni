@@ -1,8 +1,6 @@
-import * as React from "react";
 import { useRef, useState } from "react";
 
-import { AsyncButton } from "components/buttons";
-import { Button } from "components/buttons";
+import { AsyncButton, Button } from "components/buttons";
 import { InnerPanel } from "components/panels/InnerPanel";
 
 import MaintenanceCalendarEdit from "./calendar-edit";
@@ -32,7 +30,7 @@ const MaintenanceWindowsEdit = (props: MaintenanceEditProps) => {
   };
 
   const buttons = [
-    <div className="row">
+    <div className="row" key="update-row">
       <div className="col-md-offset-3 offset-md-3 col-md-6">
         <AsyncButton
           id={"editButton"}
@@ -46,7 +44,7 @@ const MaintenanceWindowsEdit = (props: MaintenanceEditProps) => {
   ];
 
   const buttonsLeft = [
-    <div className="btn-group pull-left">
+    <div className="btn-group pull-left" key="back-button">
       <Button
         id="back-btn"
         className="btn-default"

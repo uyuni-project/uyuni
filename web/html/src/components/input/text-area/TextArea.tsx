@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useContext } from "react";
 
 import { FormContext } from "../form/Form";
 import { InputBase, InputBaseProps } from "../InputBase";
@@ -21,15 +21,15 @@ type Props = InputBaseProps & {
 };
 
 export const TextArea = (props: Props) => {
-  const { rows, cols, placeholder, inputClass, ...propsToPass } = props;
-  const formContext = React.useContext(FormContext);
+  const { required = false, disabled = false, rows, cols, placeholder, inputClass, ...propsToPass } = props;
+  const formContext = useContext(FormContext);
   return (
-    <InputBase {...propsToPass}>
+    <InputBase required={required} disabled={disabled} {...propsToPass}>
       {({ setValue, onBlur }) => {
         const onChange = (event: any) => {
           setValue(event.target.name, event.target.value);
         };
-        const fieldValue = (formContext.model || {})[props.name] || props.defaultValue || "";
+        const fieldValue = formContext.model?.[props.name] || props.defaultValue || "";
         return (
           <textarea
             className={"form-control " + (inputClass ?? "")}
@@ -48,21 +48,4 @@ export const TextArea = (props: Props) => {
       }}
     </InputBase>
   );
-};
-
-TextArea.defaultProps = {
-  rows: undefined,
-  cols: undefined,
-  placeholder: undefined,
-  inputClass: undefined,
-  defaultValue: undefined,
-  label: undefined,
-  hint: undefined,
-  labelClass: undefined,
-  divClass: undefined,
-  className: undefined,
-  required: false,
-  disabled: false,
-  invalidHint: undefined,
-  onChange: undefined,
 };

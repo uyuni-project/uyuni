@@ -1,0 +1,102 @@
+{{- if .Values.gateway.enable }}
+{{- $gatewayName := .Values.gateway.name | default "uyuni-gateway" -}}
+apiVersion: gateway.networking.k8s.io/v1alpha2
+kind: TCPRoute
+metadata:
+  name: salt-publish
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/part-of: uyuni
+spec:
+  parentRefs:
+  - name: {{ $gatewayName }}
+    sectionName: salt-publish
+  rules:
+    - backendRefs:
+      - name: salt
+        port: 4505
+---
+apiVersion: gateway.networking.k8s.io/v1alpha2
+kind: TCPRoute
+metadata:
+  name: salt-request
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/part-of: uyuni
+spec:
+  parentRefs:
+  - name: {{ $gatewayName }}
+    sectionName: salt-request
+  rules:
+    - backendRefs:
+      - name: salt
+        port: 4506
+{{- if .Values.db.enable }}
+---
+apiVersion: gateway.networking.k8s.io/v1alpha2
+kind: TCPRoute
+metadata:
+  name: reportdb-pgsql
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/part-of: uyuni
+spec:
+  parentRefs:
+  - name: {{ $gatewayName }}
+    sectionName: reportdb-pgsql
+  rules:
+    - backendRefs:
+      - name: reportdb
+        port: 5432
+{{- end }}
+{{- if .Values.exposeJavaDebug }}
+---
+apiVersion: gateway.networking.k8s.io/v1alpha2
+kind: TCPRoute
+metadata:
+  name: tasko-debug
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/part-of: uyuni
+spec:
+  parentRefs:
+  - name: {{ $gatewayName }}
+    sectionName: tasko-debug
+  rules:
+    - backendRefs:
+      - name: taskomatic
+        port: 8001
+---
+apiVersion: gateway.networking.k8s.io/v1alpha2
+kind: TCPRoute
+metadata:
+  name: search-debug
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/part-of: uyuni
+spec:
+  parentRefs:
+  - name: {{ $gatewayName }}
+    sectionName: search-debug
+  rules:
+    - backendRefs:
+      - name: search
+        port: 8002
+---
+apiVersion: gateway.networking.k8s.io/v1alpha2
+kind: TCPRoute
+metadata:
+  name: tomcat-debug
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/part-of: uyuni
+spec:
+  parentRefs:
+  - name: {{ $gatewayName }}
+    sectionName: tomcat-debug
+  rules:
+    - backendRefs:
+      - name: tomcat
+        port: 8003
+{{- end }}
+{{- end }}

@@ -3,6 +3,8 @@ storage:
   path: /srv/www/htdocs/pub/
 
 http:
-  - url: http://downloadcontent.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Updates/rpm
-  - url: http://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Appstream/rhlike
+  - url: http://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Pool/rpm
+  - url: http://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Updates/rpm
+  - url: http://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Pool/deb/
   - url: http://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Updates/deb/
+  - url: http://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Appstream/rhlike

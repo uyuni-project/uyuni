@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import DefaultJsError from "manager/errors/default-js-error";
 
@@ -10,7 +10,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-class ErrorBoundary extends React.Component<Props, State> {
+class ErrorBoundary extends Component<Props, State> {
   state = new State();
 
   componentDidCatch(error: Error, info: React.ErrorInfo) {

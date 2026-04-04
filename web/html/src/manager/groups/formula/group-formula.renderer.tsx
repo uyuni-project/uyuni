@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import SpaRenderer from "core/spa/spa-renderer";
 
 import FormulaForm from "components/FormulaForm";
@@ -24,10 +22,10 @@ export const renderer = (renderId, { groupId, formulaId }) => {
   function addFormulaNavBar(formulaList, activeId) {
     jQuery("#formula-nav-bar").remove();
 
-    var navBar = "<ul class='nav nav-tabs nav-tabs-pf' id='formula-nav-bar'>\n";
+    let navBar = "<ul class='nav nav-tabs nav-tabs-pf' id='formula-nav-bar'>\n";
     navBar +=
       "<li><a href='/rhn/manager/groups/details/formulas?sgid=" + groupId + "'>" + t("Formulas") + "</a></li>\n";
-    for (var i in formulaList)
+    for (const i in formulaList)
       navBar +=
         "<li" +
         (DEPRECATED_unsafeEquals(i, activeId) ? " class='active'>" : ">") +

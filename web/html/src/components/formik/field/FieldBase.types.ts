@@ -5,7 +5,7 @@ type WithRenderer<RendererProps> = Omit<RendererProps, keyof FieldInputProps<any
 };
 
 type WithoutRenderer = {
-  as?: string | never;
+  as?: string;
 };
 
 type MaybeRenderer<RendererProps> = WithRenderer<RendererProps> | WithoutRenderer;

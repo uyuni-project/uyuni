@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
@@ -17,7 +17,7 @@ export type Channel = {
   recommended: boolean;
 };
 
-export type availableChannelsType = Array<{ base: Channel | null | undefined; children: Array<Channel> }>;
+export type availableChannelsType = { base: Channel | null | undefined; children: Channel[] }[];
 
 type ChildrenArgsProps = {
   messages: any[];
@@ -32,20 +32,20 @@ type ActivationKeyChannelsProps = {
   defaultBaseId: number;
   activationKeyId: number;
   currentSelectedBaseId: number;
-  onNewBaseChannel: Function;
+  onNewBaseChannel: (...args: any[]) => any;
   children: (arg0: ChildrenArgsProps) => JSX.Element;
 };
 
 type ActivationKeyChannelsState = {
-  messages: Array<any>;
+  messages: any[];
   loading: boolean;
   loadingChildren: boolean;
-  availableBaseChannels: Array<Channel>; //[base1, base2],
+  availableBaseChannels: Channel[]; //[base1, base2],
   availableChannels: availableChannelsType; //[{base : null, children: []}]
-  fetchedData: Map<number, Array<number>>;
+  fetchedData: Map<number, availableChannelsType>;
 };
 
-class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProps, ActivationKeyChannelsState> {
+class ActivationKeyChannelsApi extends Component<ActivationKeyChannelsProps, ActivationKeyChannelsState> {
   constructor(props: ActivationKeyChannelsProps) {
     super(props);
 
@@ -66,10 +66,9 @@ class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProp
   }
 
   fetchBaseChannels = () => {
-    let future;
     this.setState({ loading: true });
 
-    future = Network.get(`/rhn/manager/api/activation-keys/base-channels`)
+    const future = Network.get(`/rhn/manager/api/activation-keys/base-channels`)
       .then((data) => {
         this.setState({
           availableBaseChannels: Array.from(data.data).map((channel: any) => channel.base),
@@ -96,9 +95,7 @@ class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProp
         })
         .catch(this.handleResponseError);
     } else {
-      future = new Promise(function (resolve, reject) {
-        resolve();
-      });
+      future = Promise.resolve();
     }
     return future;
   };
@@ -106,24 +103,22 @@ class ActivationKeyChannelsApi extends React.Component<ActivationKeyChannelsProp
   fetchChildChannels = (baseId: number) => {
     let future: Promise<void>;
 
-    const currentObject: any = this;
-    if (currentObject.state.fetchedData && currentObject.state.fetchedData.has(baseId)) {
-      future = new Promise((resolve, reject) => {
-        resolve(
-          currentObject.setState({
-            availableChannels: currentObject.state.fetchedData.get(baseId),
-          })
-        );
-      });
+    const availableChannels = this.state.fetchedData.get(baseId);
+    if (this.state.fetchedData && availableChannels) {
+      future = Promise.resolve(
+        this.setState({
+          availableChannels,
+        })
+      );
     } else {
       this.setState({ loadingChildren: true });
       future = Network.get(`/rhn/manager/api/activation-keys/base-channels/${baseId}/child-channels`)
         .then((data) => {
-          this.setState({
+          this.setState((prevState) => ({
             availableChannels: data.data,
-            fetchedData: this.state.fetchedData.set(baseId, data.data),
+            fetchedData: prevState.fetchedData.set(baseId, data.data),
             loadingChildren: false,
-          });
+          }));
         })
         .catch(this.handleResponseError);
     }

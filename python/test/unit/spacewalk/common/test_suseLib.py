@@ -12,7 +12,7 @@
 #
 
 import unittest
-import mock
+import unittest.mock
 
 from spacewalk.common import suseLib
 
@@ -28,7 +28,7 @@ class SuseLibTest(unittest.TestCase):
     @classmethod
     # pylint: disable-next=bad-classmethod-argument
     def setUpClass(self):
-        self.initCFG = mock.patch("spacewalk.common.suseLib.initCFG")
+        self.initCFG = unittest.mock.patch("spacewalk.common.suseLib.initCFG")
         self.initCFG.start()
 
     @classmethod
@@ -36,14 +36,14 @@ class SuseLibTest(unittest.TestCase):
     def tearDownClass(self):
         self.initCFG.stop()
 
-    @mock.patch("spacewalk.common.suseLib.CFG")
-    @mock.patch("builtins.open")
+    @unittest.mock.patch("spacewalk.common.suseLib.CFG")
+    @unittest.mock.patch("builtins.open")
     def test_get_proxy_from_yast(self, mocked_open, mocked_CFG):
         mocked_CFG.http_proxy = None
         mocked_CFG.http_proxy_username = None
         mocked_CFG.http_proxy_password = None
 
-        mocked_file = mock.MagicMock()
+        mocked_file = unittest.mock.MagicMock()
         # pylint: disable-next=consider-using-f-string
         mocked_file.read.return_value = ' --proxy "%s"\n --proxy-user "%s:%s"' % (
             HTTPS_PROXY,
@@ -56,14 +56,14 @@ class SuseLibTest(unittest.TestCase):
 
         self.assertEqual((HTTPS_PROXY, PROXY_USER, PROXY_PASS), suseLib.get_proxy())
 
-    @mock.patch("spacewalk.common.suseLib.CFG")
-    @mock.patch("builtins.open")
+    @unittest.mock.patch("spacewalk.common.suseLib.CFG")
+    @unittest.mock.patch("builtins.open")
     def test_get_proxy_from_yast_no_creds(self, mocked_open, mocked_CFG):
         mocked_CFG.http_proxy = None
         mocked_CFG.http_proxy_username = None
         mocked_CFG.http_proxy_password = None
 
-        mocked_file = mock.MagicMock()
+        mocked_file = unittest.mock.MagicMock()
         # pylint: disable-next=consider-using-f-string
         mocked_file.read.return_value = ' --proxy "%s"' % HTTPS_PROXY
         mocked_file.close.return_value = True
@@ -72,15 +72,15 @@ class SuseLibTest(unittest.TestCase):
 
         self.assertEqual((HTTPS_PROXY, None, None), suseLib.get_proxy())
 
-    @mock.patch("spacewalk.common.suseLib.CFG")
-    @mock.patch("spacewalk.common.suseLib.log_debug")
-    @mock.patch("builtins.open")
+    @unittest.mock.patch("spacewalk.common.suseLib.CFG")
+    @unittest.mock.patch("spacewalk.common.suseLib.log_debug")
+    @unittest.mock.patch("builtins.open")
     def test_get_proxy_none(self, mocked_open, mocked_log_debug, mocked_CFG):
         mocked_CFG.http_proxy = None
         mocked_CFG.http_proxy_username = None
         mocked_CFG.http_proxy_password = None
 
-        mocked_file = mock.MagicMock()
+        mocked_file = unittest.mock.MagicMock()
         mocked_file.read.return_value = ""
         mocked_file.close.return_value = True
 
@@ -97,7 +97,7 @@ class SuseLibTest(unittest.TestCase):
         )
         self.assertEqual(2, mocked_log_debug.call_count)
 
-    @mock.patch("spacewalk.common.suseLib.CFG")
+    @unittest.mock.patch("spacewalk.common.suseLib.CFG")
     def test_get_proxy_rhn_conf_no_creds(self, mocked_CFG):
         mocked_CFG.http_proxy = PROXY_ADDR
         mocked_CFG.http_proxy_username = None
@@ -105,7 +105,7 @@ class SuseLibTest(unittest.TestCase):
 
         self.assertEqual((HTTP_PROXY, None, None), suseLib.get_proxy())
 
-    @mock.patch("spacewalk.common.suseLib.CFG")
+    @unittest.mock.patch("spacewalk.common.suseLib.CFG")
     def test_get_proxy_rhn_conf_creds(self, mocked_CFG):
         mocked_CFG.http_proxy = PROXY_ADDR
         mocked_CFG.http_proxy_username = PROXY_USER
@@ -113,7 +113,7 @@ class SuseLibTest(unittest.TestCase):
 
         self.assertEqual((HTTP_PROXY, PROXY_USER, PROXY_PASS), suseLib.get_proxy())
 
-    @mock.patch("spacewalk.common.suseLib.CFG")
+    @unittest.mock.patch("spacewalk.common.suseLib.CFG")
     def test_get_proxy_rhn_only_username(self, mocked_CFG):
         mocked_CFG.http_proxy = PROXY_ADDR
         mocked_CFG.http_proxy_username = "user"
@@ -121,7 +121,7 @@ class SuseLibTest(unittest.TestCase):
 
         self.assertEqual((HTTP_PROXY, "user", None), suseLib.get_proxy())
 
-    @mock.patch("spacewalk.common.suseLib.CFG")
+    @unittest.mock.patch("spacewalk.common.suseLib.CFG")
     def test_get_proxy_rhn_conf_password_with_commas(self, mocked_CFG):
         mocked_CFG.http_proxy = PROXY_ADDR
         mocked_CFG.http_proxy_username = PROXY_USER

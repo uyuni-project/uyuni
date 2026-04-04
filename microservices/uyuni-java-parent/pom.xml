@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright (c) 2024 SUSE LLC
+  ~ Copyright (c) 2025 SUSE LLC and contributors
   ~
   ~ This software is licensed to you under the GNU General Public License,
   ~ version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -17,16 +17,19 @@
 
     <groupId>org.uyuni-project</groupId>
     <artifactId>uyuni-java-parent</artifactId>
-    <version>5.1.3</version>
+    <version>5.2.4</version>
     <packaging>pom</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
     <modules>
         <module>../uyuni-java-common</module>
         <module>../coco-attestation</module>
+        <module>../../branding</module>
+        <module>../../java</module>
     </modules>
 
     <!-- Global dependencies based on the package version in OBS -->
@@ -40,7 +43,7 @@
             <dependency>
                 <groupId>org.mybatis</groupId>
                 <artifactId>mybatis</artifactId>
-                <version>3.5.6</version>
+                <version>3.5.19</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
@@ -51,11 +54,43 @@
                 <groupId>org.postgresql</groupId>
                 <artifactId>postgresql</artifactId>
                 <version>42.2.25</version>
+                <exclusions>
+                    <!-- Not used at runtime -->
+                    <exclusion>
+                        <groupId>org.checkerframework</groupId>
+                        <artifactId>checker-qual</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>com.ongres.scram</groupId>
+                <artifactId>client</artifactId>
+                <version>2.1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ongres.scram</groupId>
+                <artifactId>common</artifactId>
+                <version>2.1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ongres.stringprep</groupId>
+                <artifactId>stringprep</artifactId>
+                <version>1.1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ongres.stringprep</groupId>
+                <artifactId>saslprep</artifactId>
+                <version>1.1</version>
             </dependency>
             <dependency>
                 <groupId>com.mchange</groupId>
                 <artifactId>c3p0</artifactId>
                 <version>0.9.5.5</version>
+            </dependency>
+            <dependency>
+                <groupId>com.mchange</groupId>
+                <artifactId>mchange-commons-java</artifactId>
+                <version>0.2.20</version>
             </dependency>
 
             <!-- Test dependencies -->
@@ -83,7 +118,7 @@
                 <version>4.2.1</version>
                 <scope>test</scope>
             </dependency>
-        </dependencies>
+         </dependencies>
     </dependencyManagement>
 
     <build>

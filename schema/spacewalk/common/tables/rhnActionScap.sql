@@ -25,7 +25,12 @@ CREATE TABLE rhnActionScap
                              ON DELETE CASCADE,
     path             VARCHAR(2048) NOT NULL,
     ovalfiles        VARCHAR(8192),
-    parameters       BYTEA
+    parameters       BYTEA,
+
+    created             TIMESTAMPTZ
+                            DEFAULT (current_timestamp) NOT NULL,
+    modified            TIMESTAMPTZ
+                            DEFAULT (current_timestamp) NOT NULL
 )
 
 

@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
@@ -14,6 +14,7 @@ import SchedulePlaybook from "./schedule-playbook";
 type PropsType = {
   minionServerId: number;
   pathContentType: string;
+  recurringDetails?: any;
   isRecurring?: boolean;
   onSelectPlaybook?: (playbook: any) => void;
 };
@@ -27,7 +28,7 @@ type StateType = {
   loading: boolean;
 };
 
-class AnsiblePathContent extends React.Component<PropsType, StateType> {
+class AnsiblePathContent extends Component<PropsType, StateType> {
   constructor(props) {
     super(props);
 
@@ -59,6 +60,7 @@ class AnsiblePathContent extends React.Component<PropsType, StateType> {
       return (
         <SchedulePlaybook
           playbook={this.state.selectedPlaybook}
+          recurringDetails={this.props.recurringDetails}
           isRecurring={this.props.isRecurring}
           onBack={() => this.setState({ selectedPlaybook: null })}
           onSelectPlaybook={this.props.onSelectPlaybook}

@@ -1,2 +1,0 @@
-- Use JSON instead of pickle for spacecmd
-  cache (bsc#1227579)

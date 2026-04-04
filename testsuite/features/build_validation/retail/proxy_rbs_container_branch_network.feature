@@ -1,5 +1,8 @@
-# Copyright (c) 2024 SUSE LLC
+# Copyright (c) 2024-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
+#
+# This feature depends on:
+#   features/build_validation/init_clients/proxy.feature
 
 @proxy
 @private_net

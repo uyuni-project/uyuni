@@ -59,13 +59,14 @@
 %global debug_package %{nil}
 
 Name:           susemanager
-Version:        5.2.0
+Version:        5.2.5
 Release:        0
 Summary:        %{productprettyname} specific scripts
 License:        GPL-2.0-only
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/System
 URL:            https://github.com/uyuni-project/uyuni
+#!CreateArchive: %{name}
 Source0:        %{name}-%{version}.tar.gz
 #BuildArch:      noarch - not noarch because of ifarch usage!!!!
 
@@ -106,7 +107,6 @@ Requires(post): user(%{apache_user})
 %endif
 Requires(pre):  salt
 Requires:       cobbler
-Requires:       openslp-server
 Requires:       spacewalk-admin
 Requires:       spacewalk-setup
 %ifarch %{ix86} x86_64
@@ -119,7 +119,6 @@ Requires:       less
 Requires:       rsync
 Requires:       spacewalk-schema
 Requires:       susemanager-tools
-# migration.sh need either sqlplus or psql
 Recommends:     susemanager-branding
 BuildRequires:  uyuni-base-server
 Requires(pre):  uyuni-base-server
@@ -129,10 +128,6 @@ Requires:       firewalld
 %endif
 Requires:       postfix
 Requires:       reprepro >= 5.4
-# mgr-setup want to call mksubvolume for btrfs filesystems
-Recommends:     snapper
-# mgr-setup calls dig
-Requires:       bind-utils
 %define python_sitelib %(%{pythonX} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")
 %global pythonsmroot %{python_sitelib}/spacewalk
 
@@ -142,6 +137,7 @@ setup tasks, re-installation, upgrades and managing.
 
 %package tools
 Summary:        %{productprettyname} Tools
+License:        GPL-2.0-only AND LGPL-2.1-only
 Group:          Productivity/Other
 
 %if 0%{?build_py3}
@@ -169,6 +165,15 @@ BuildRequires:  docbook-utils
 
 %description tools
 This package contains %{productprettyname} tools
+
+%package tools-salt
+Summary:        Salt related tools for %{productprettyname}
+Group:          Productivity/Other
+License:        Apache-2.0
+Supplements:    susemanager-tools
+
+%description tools-salt
+This package contains %{productprettyname} tools related with Salt
 
 %package bash-completion
 Summary:        Bash completion for %{productprettyname} CLI tools
@@ -201,15 +206,11 @@ sed -i '1s=^#!/usr/bin/python3=#!/usr/bin/%{use_python_shebang}=' src/mgr-salt-s
 mkdir -p %{buildroot}/%{_prefix}/lib/susemanager/bin/
 mkdir -p %{buildroot}/%{_prefix}/lib/susemanager/hooks/
 install -m 0755 bin/* %{buildroot}/%{_prefix}/lib/susemanager/bin/
-ln -s mgr-setup %{buildroot}/%{_prefix}/lib/susemanager/bin/migration.sh
-ln -s pg-migrate-94-to-96.sh %{buildroot}/%{_prefix}/lib/susemanager/bin/pg-migrate.sh
 
 mkdir -p %{buildroot}/%{_datadir}/rhn/config-defaults
-mkdir -p %{buildroot}/%{_sysconfdir}/slp.reg.d
 mkdir -p %{buildroot}/%{_sysconfdir}/logrotate.d
 install -m 0644 rhn-conf/rhn_server_susemanager.conf %{buildroot}/%{_datadir}/rhn/config-defaults
 install -m 0644 etc/logrotate.d/susemanager-tools %{buildroot}/%{_sysconfdir}/logrotate.d
-install -m 0644 etc/slp.reg.d/susemanager.reg %{buildroot}/%{_sysconfdir}/slp.reg.d
 make -C src install PREFIX=%{buildroot} PYTHON_BIN=%{pythonX} MANDIR=%{_mandir}
 install -d -m 755 %{buildroot}/%{wwwroot}/os-images/
 mkdir -p %{buildroot}%{_sysconfdir}/apache2/conf.d
@@ -228,11 +229,6 @@ install -m 0644 etc/firewalld/services/suse-manager-server.xml %{buildroot}/%{_p
 %else
 mkdir -p %{buildroot}/%{_sysconfdir}/firewalld/services
 install -m 0644 etc/firewalld/services/suse-manager-server.xml %{buildroot}/%{_sysconfdir}/firewalld/services
-%endif
-
-%if 0%{?sle_version} && !0%{?is_opensuse}
-# this script migrate the server to Uyuni. It should not be available on SUSE Multi-Linux Manager
-rm -f %{buildroot}/%{_prefix}/lib/susemanager/bin/server-migrator.sh
 %endif
 
 make -C po install PREFIX=%{buildroot}
@@ -278,9 +274,7 @@ sed -i '/You can access .* via https:\/\//d' /tmp/motd 2> /dev/null ||:
 %dir %{_prefix}/lib/susemanager
 %dir %{_prefix}/lib/susemanager/bin/
 %dir %{_prefix}/lib/susemanager/hooks/
-%dir %{_sysconfdir}/slp.reg.d
 %{_prefix}/lib/susemanager/bin/*
-%config %{_sysconfdir}/slp.reg.d/susemanager.reg
 %attr(775,%{salt_user},susemanager) %dir %{wwwroot}/os-images/
 %if 0%{?suse_version} > 1320
 %{_prefix}/lib/firewalld/services/suse-manager-server.xml
@@ -290,6 +284,7 @@ sed -i '/You can access .* via https:\/\//d' /tmp/motd 2> /dev/null ||:
 
 %files tools
 %defattr(-,root,root,-)
+%license COPYING COPYING.LGPL-2.1
 %dir %{pythonsmroot}
 %dir %{pythonsmroot}/susemanager
 %dir %{_datadir}/rhn/
@@ -305,7 +300,6 @@ sed -i '/You can access .* via https:\/\//d' /tmp/motd 2> /dev/null ||:
 %dir %{_sysconfdir}/apache2/conf.d
 %config(noreplace) %{_sysconfdir}/logrotate.d/susemanager-tools
 %{_datadir}/rhn/config-defaults/rhn_*.conf
-%attr(0755,root,root) %{_bindir}/mgr-salt-ssh
 %attr(0755,root,root) %{_sbindir}/mgr-clean-old-patchnames
 %attr(0755,root,root) %{_sbindir}/mgr-create-bootstrap-repo
 %attr(0755,root,root) %{_sbindir}/mgr-delete-patch
@@ -329,6 +323,10 @@ sed -i '/You can access .* via https:\/\//d' /tmp/motd 2> /dev/null ||:
 %{reporoot}/repositories/empty-deb/Packages
 %{reporoot}/repositories/empty-deb/Release
 %{_sysconfdir}/apache2/conf.d/empty-repo.conf
+
+%files tools-salt
+%license COPYING.Apache-2.0
+%attr(0755,root,root) %{_bindir}/mgr-salt-ssh
 
 %files bash-completion
 %{_datadir}/bash-completion/completions/mgr-sync

@@ -1,5 +1,4 @@
-import { convertNumbers, flattenModel, stripBlankValues } from "./form-utils";
-import { unflattenModel } from "./form-utils";
+import { convertNumbers, flattenModel, stripBlankValues, unflattenModel } from "./form-utils";
 
 describe("Testing flattenModel", () => {
   test("test copying simple items", () => {

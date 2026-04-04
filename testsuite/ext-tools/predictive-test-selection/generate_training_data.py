@@ -15,7 +15,7 @@ Usage:
 import csv
 import json
 import logging
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timedelta
 from typing import Any, Dict, List
 
 from sqlalchemy import create_engine, select, func, and_
@@ -28,7 +28,7 @@ from config import (
     FEATURE_FAILURE_RECENT_DAYS,
     REPO_FULL_NAME
 )
-from insert_test_runs_into_db import (
+from backfill_test_runs_into_db import (
     Feature, FeatureCategory, FeatureResult, TestRun, RunModifiedFile, File,
     get_database_connection_string
 )
@@ -54,21 +54,18 @@ class DatabaseManager:
         logger.debug("Creating new database session")
         return self.session_local()
 
-    def get_features(self, session: Session) -> List[Feature]:
-        """Get all features from the database."""
-        logger.debug("Getting all features")
-        return session.execute(select(Feature)).scalars().all()
-
-    def get_feature_failure_rates(self, session: Session, feature_id: int,
-                                 recent_days: List[int]) -> Dict[int, int]:
+    def get_feature_failure_rates_before_run(self, session: Session, feature_id: int,
+                        recent_days: List[int], run_execution_date: datetime) -> Dict[int, int]:
         """
-        Calculate the historical failure rates for a given feature over several recent day ranges.
+        Calculate the historical failure rates for a given feature over several day ranges before
+        the execution date of the test run, this ensures no future data leakage occurs and the
+        training data correctly mirrors the production data.
         """
         failure_rates = {days: 0 for days in recent_days}
-        now = datetime.now(timezone.utc)
 
         for days in recent_days:
-            start_date = now - timedelta(days=days)
+            start_date = run_execution_date - timedelta(days=days)
+            end_date = run_execution_date
             stmt = (
                 select(func.count(FeatureResult.run_id))
                 .join(TestRun, FeatureResult.run_id == TestRun.id)
@@ -76,7 +73,8 @@ class DatabaseManager:
                     and_(
                         FeatureResult.feature_id == feature_id,
                         FeatureResult.passed.is_(False),
-                        TestRun.executed_at >= start_date
+                        TestRun.executed_at >= start_date,
+                        TestRun.executed_at < end_date,
                     )
                 )
             )
@@ -117,7 +115,6 @@ class TrainingDataGenerator:
         """Initialize the generator with a database manager."""
         self.db_manager = db_manager
         self.repo = None  # Initialized when needed
-        self.file_history_cache = {}
 
     def _get_repo(self):
         """Initializes and returns the GitHub repository object."""
@@ -132,13 +129,6 @@ class TrainingDataGenerator:
         Generate the training data and write it to a CSV file.
         """
         with self.db_manager.get_session() as session:
-            features = self.db_manager.get_features(session)
-            feature_failure_rates = {
-                feature.id: self.db_manager.get_feature_failure_rates(
-                    session, feature.id, FEATURE_FAILURE_RECENT_DAYS
-                )
-                for feature in features
-            }
 
             pr_numbers = session.execute(
                 select(TestRun.pr_number)
@@ -151,7 +141,7 @@ class TrainingDataGenerator:
 
                 for pr_number in pr_numbers:
                     self._process_pr(
-                        session, pr_number, feature_failure_rates, csv_writer, include_passed_prs
+                        session, pr_number, csv_writer, include_passed_prs
                     )
 
     def _setup_csv_writer(self, csvfile: Any) -> Any:
@@ -168,7 +158,6 @@ class TrainingDataGenerator:
         return csv_writer
 
     def _process_pr(self, session: Session, pr_number: int,
-                    feature_failure_rates: Dict[int, Dict[int, int]],
                     csv_writer: Any, include_passed_prs: bool):
         """Process a single pull request."""
         logger.info("Processing PR #%d", pr_number)
@@ -191,7 +180,7 @@ class TrainingDataGenerator:
         file_extensions = get_file_extensions(modified_files)
         extensions_field = json.dumps(file_extensions, ensure_ascii=False)
         change_history = get_files_change_history(
-            self._get_repo(), modified_files, MODIFIED_FILES_RECENT_DAYS, self.file_history_cache
+            self._get_repo(), modified_files, MODIFIED_FILES_RECENT_DAYS, run_to_process.executed_at
         )
         change_history_values = [change_history.get(days, 0) for days in MODIFIED_FILES_RECENT_DAYS]
 
@@ -202,8 +191,11 @@ class TrainingDataGenerator:
         for feature_result in feature_results:
             feature = session.get(Feature, feature_result.feature_id)
             category = session.get(FeatureCategory, feature.category_id)
-            failure_values = [feature_failure_rates.get(feature.id, {}).get(days, 0)
-                  for days in FEATURE_FAILURE_RECENT_DAYS]
+            failure_values = list(
+                self.db_manager.get_feature_failure_rates_before_run(
+                    session, feature.id, FEATURE_FAILURE_RECENT_DAYS, run_to_process.executed_at
+                ).values()
+            )
 
             row = (
                 [extensions_field]

@@ -6,7 +6,6 @@
 #                       buildhost_docker_auth_registry.feature
 #
 # This feature is a dependency for:
-# - features/secondary/buildhost_docker_build_image.feature
 # - features/secondary/buildhost_docker_auth_registry.feature
 #
 # This feature can cause failures in the following features:

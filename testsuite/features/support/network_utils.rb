@@ -1,12 +1,10 @@
-# Copyright (c) 2024 SUSE LLC.
+# Copyright (c) 2026 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'net/scp'
 require 'net/ssh'
+require 'openssl'
 require 'stringio'
-
-Net::SSH::Transport::Algorithms::ALGORITHMS.each_value { |algs| algs.reject! { |a| a.match(/^ecd(sa|h)-sha2/) } }
-Net::SSH::KnownHosts::SUPPORTED_TYPE.reject! { |t| t.match(/^ecd(sa|h)-sha2/) }
 
 # This method is used to execute a command on a remote host using SSH and return the output of the command.
 #
@@ -28,7 +26,7 @@ def ssh_command(command, host, port: 22, timeout: DEFAULT_TIMEOUT, buffer_size: 
     end
   rescue Timeout::Error
     puts "SSH operation timed out after #{timeout} seconds."
-  rescue Net::SSH::ConnectionTimeout, Errno::ECONNREFUSED, Errno::EHOSTUNREACH
+  rescue Net::SSH::ConnectionTimeout, Errno::ECONNREFUSED, Errno::EHOSTUNREACH, Errno::ECONNRESET
     puts "Unable to reach the SSH server at #{host}:#{port}"
   rescue Net::SSH::AuthenticationFailed
     puts "Authentication failed for user #{user} on #{host}"
@@ -73,8 +71,13 @@ def scp_download_command(remote_path, local_path, host, port: 22, timeout: DEFAU
   end
 end
 
-private
-
+# This helper method executes a command on an SSH session and returns the output.
+# It's an internal helper used by ssh_command.
+#
+# @param [Net::SSH::Connection::Session] ssh The SSH session object.
+# @param [String] command The command to execute on the remote host.
+# @param [Integer] timeout The timeout to use when waiting for the command to complete.
+# @return [Array] An array containing the stdout, stderr, and exit code of the command.
 def ssh_exec!(ssh, command, timeout: 10)
   stdout = ''
   stderr = ''
@@ -111,4 +114,48 @@ def ssh_exec!(ssh, command, timeout: 10)
   end
 
   [stdout, stderr, exit_code]
+end
+
+# This helper method generates dummy CA certificate
+#
+# @param [String] file name, the CA certificate will be stored there.
+# @param [String] CA certificate subject.
+def generate_dummy_cacert(filename, subject = '/DC=localdomain/DC=localhost/CN=dummy CA')
+  begin
+    root_key = OpenSSL::PKey::RSA.new(2048)
+    root_ca = OpenSSL::X509::Certificate.new
+    root_ca.public_key = root_key.public_key
+    # RFC 5280, "v3" certificate
+    root_ca.version = 2
+    root_ca.serial = 1
+    root_ca.subject = OpenSSL::X509::Name.parse(subject)
+    root_ca.issuer = root_ca.subject
+    root_ca.not_before = Time.now
+    # 10 days
+    root_ca.not_after = root_ca.not_before + (60 * 60 * 24 * 10)
+    ef = OpenSSL::X509::ExtensionFactory.new
+    ef.subject_certificate = root_ca
+    ef.issuer_certificate = root_ca
+    root_ca.add_extension(ef.create_extension('basicConstraints', 'CA:TRUE', true))
+    root_ca.add_extension(ef.create_extension('keyUsage', 'keyCertSign, cRLSign', true))
+    root_ca.sign(root_key, OpenSSL::Digest.new('SHA256'))
+    File.write(filename, root_ca.to_pem)
+  rescue StandardError => e
+    # issues to generate certificate
+    puts e.message
+  end
+end
+
+# This helper method returns dummy CA certificate data
+#
+# @param [String] file name, it the CA certificate will be stored there.
+# @return [String] dummy CA certificate
+def get_dummy_cacert(filename)
+  begin
+    certificate = File.read(filename)
+  rescue StandardError => e
+    # issues to read certificate file
+    puts e.message
+  end
+  certificate
 end

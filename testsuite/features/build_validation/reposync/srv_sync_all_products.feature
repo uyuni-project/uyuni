@@ -1,4 +1,4 @@
-# Copyright 2017-2025 SUSE LLC
+# Copyright 2017-2026 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 Feature: Synchronize products in the products page of the Setup Wizard
@@ -40,7 +40,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP3 x86_64"
     And I select "SUSE Linux Enterprise Server LTSS 15 SP3 x86_64" as a product
     Then I should see the "SUSE Linux Enterprise Server LTSS 15 SP3 x86_64" selected
-    And I open the sub-list of the product "Basesystem Module 15 SP3 x86_64"
+    When I open the sub-list of the product "Basesystem Module 15 SP3 x86_64"
     And I select "Desktop Applications Module 15 SP3 x86_64" as a product
     Then I should see the "Desktop Applications Module 15 SP3 x86_64" selected
     When I open the sub-list of the product "Desktop Applications Module 15 SP3 x86_64"
@@ -113,6 +113,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I open the sub-list of the product "Desktop Applications Module 15 SP5 x86_64"
     And I select "Development Tools Module 15 SP5 x86_64" as a product
     Then I should see the "Development Tools Module 15 SP5 x86_64" selected
+    When I select "SUSE Linux Enterprise Server LTSS 15 SP5 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Server LTSS 15 SP5 x86_64" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Enterprise Server 15 SP5 x86_64" product has been added
@@ -148,6 +150,8 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I open the sub-list of the product "Desktop Applications Module 15 SP6 x86_64"
     And I select "Development Tools Module 15 SP6 x86_64" as a product
     Then I should see the "Development Tools Module 15 SP6 x86_64" selected
+    When I select "SUSE Linux Enterprise Server LTSS 15 SP6 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Server LTSS 15 SP6 x86_64" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Enterprise Server 15 SP6 x86_64" product has been added
@@ -182,45 +186,6 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until the channel "sles15-sp7-devel-uyuni-client-x86_64" has been synced
 
 @susemanager
-@slemicro51_minion
-  Scenario: Add SUSE Linux Enterprise Micro 5.1
-    Given I am authorized for the "Admin" section
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    And I wait until I do not see "currently running" text
-    And I wait until I do not see "Loading" text
-    And I enter "SUSE Linux Enterprise Micro 5.1" as the filtered product description
-    And I select "SUSE Linux Enterprise Micro 5.1 x86_64" as a product
-    Then I should see the "SUSE Linux Enterprise Micro 5.1 x86_64" selected
-    When I open the sub-list of the product "SUSE Linux Enterprise Micro 5.1 x86_64"
-    And I select "SUSE Multi-Linux Manager Client Tools for SLE Micro 5 x86_64" as a product
-    Then I should see the "SUSE Multi-Linux Manager Client Tools for SLE Micro 5 x86_64" selected
-    When I click the Add Product button
-    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-    And I wait until I see "SUSE Linux Enterprise Micro 5.1 x86_64" product has been added
-    And I wait until all synchronized channels for "suse-microos-5.1" have finished
-
-@uyuni
-@slemicro51_minion
-  Scenario: Add SUSE Linux Enterprise Micro 5.1
-    Given I am authorized for the "Admin" section
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    And I wait until I do not see "currently running" text
-    And I wait until I do not see "Loading" text
-    And I enter "SUSE Linux Enterprise Micro 5.1" as the filtered product description
-    And I select "SUSE Linux Enterprise Micro 5.1 x86_64" as a product
-    Then I should see the "SUSE Linux Enterprise Micro 5.1 x86_64" selected
-    When I click the Add Product button
-    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-    And I wait until I see "SUSE Linux Enterprise Micro 5.1 x86_64" product has been added
-    And I wait until all synchronized channels for "suse-microos-5.1" have finished
-
-@uyuni
-@slemicro51_minion
-  Scenario: Add SUSE Linux Enterprise Micro 5.1 Uyuni Client tools
-    When I use spacewalk-common-channel to add channel "suse-microos-5.1-devel-uyuni-client" with arch "x86_64"
-    And I wait until the channel "suse-microos-5.1-devel-uyuni-client-x86_64" has been synced
-
-@susemanager
 @slemicro52_minion
   Scenario: Add SUSE Linux Enterprise Micro 5.2
     Given I am authorized for the "Admin" section
@@ -231,8 +196,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I select "SUSE Linux Enterprise Micro 5.2 x86_64" as a product
     Then I should see the "SUSE Linux Enterprise Micro 5.2 x86_64" selected
     When I open the sub-list of the product "SUSE Linux Enterprise Micro 5.2 x86_64"
-    And I select "SUSE Multi-Linux Manager Client Tools for SLE Micro 5 x86_64" as a product
-    Then I should see the "SUSE Multi-Linux Manager Client Tools for SLE Micro 5 x86_64" selected
+    And I open the sub-list of the product "SUSE Multi-Linux Manager Client Tools for SLE Micro 5 x86_64"
+    And I select "SUSE Multi-Linux Manager Beta Client Tools for SLE Micro 5 x86_64 (BETA)" as a product
+    Then I should see the "SUSE Multi-Linux Manager Beta Client Tools for SLE Micro 5 x86_64 (BETA)" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Enterprise Micro 5.2 x86_64" product has been added
@@ -270,8 +236,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I select "SUSE Linux Enterprise Micro 5.3 x86_64" as a product
     Then I should see the "SUSE Linux Enterprise Micro 5.3 x86_64" selected
     When I open the sub-list of the product "SUSE Linux Enterprise Micro 5.3 x86_64"
-    And I select "SUSE Multi-Linux Manager Client Tools for SLE Micro 5 x86_64" as a product
-    Then I should see the "SUSE Multi-Linux Manager Client Tools for SLE Micro 5 x86_64" selected
+    And I open the sub-list of the product "SUSE Multi-Linux Manager Client Tools for SLE Micro 5 x86_64"
+    And I select "SUSE Multi-Linux Manager Beta Client Tools for SLE Micro 5 x86_64 (BETA)" as a product
+    Then I should see the "SUSE Multi-Linux Manager Beta Client Tools for SLE Micro 5 x86_64 (BETA)" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Enterprise Micro 5.3 x86_64" product has been added
@@ -309,8 +276,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I select "SUSE Linux Enterprise Micro 5.4 x86_64" as a product
     Then I should see the "SUSE Linux Enterprise Micro 5.4 x86_64" selected
     When I open the sub-list of the product "SUSE Linux Enterprise Micro 5.4 x86_64"
-    And I select "SUSE Multi-Linux Manager Client Tools for SLE Micro 5 x86_64" as a product
-    Then I should see the "SUSE Multi-Linux Manager Client Tools for SLE Micro 5 x86_64" selected
+    And I open the sub-list of the product "SUSE Multi-Linux Manager Client Tools for SLE Micro 5 x86_64"
+    And I select "SUSE Multi-Linux Manager Beta Client Tools for SLE Micro 5 x86_64 (BETA)" as a product
+    Then I should see the "SUSE Multi-Linux Manager Beta Client Tools for SLE Micro 5 x86_64 (BETA)" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Enterprise Micro 5.4 x86_64" product has been added
@@ -348,8 +316,9 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I select "SUSE Linux Enterprise Micro 5.5 x86_64" as a product
     Then I should see the "SUSE Linux Enterprise Micro 5.5 x86_64" selected
     When I open the sub-list of the product "SUSE Linux Enterprise Micro 5.5 x86_64"
-    And I select "SUSE Multi-Linux Manager Client Tools for SLE Micro 5 x86_64" as a product
-    Then I should see the "SUSE Multi-Linux Manager Client Tools for SLE Micro 5 x86_64" selected
+    And I open the sub-list of the product "SUSE Multi-Linux Manager Client Tools for SLE Micro 5 x86_64"
+    And I select "SUSE Multi-Linux Manager Beta Client Tools for SLE Micro 5 x86_64 (BETA)" as a product
+    Then I should see the "SUSE Multi-Linux Manager Beta Client Tools for SLE Micro 5 x86_64 (BETA)" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Enterprise Micro 5.5 x86_64" product has been added
@@ -365,9 +334,6 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I enter "SUSE Linux Enterprise Micro 5.5" as the filtered product description
     And I select "SUSE Linux Enterprise Micro 5.5 x86_64" as a product
     Then I should see the "SUSE Linux Enterprise Micro 5.5 x86_64" selected
-    When I open the sub-list of the product "SUSE Linux Enterprise Micro 5.5 x86_64"
-    And I open the sub-list of the product "SUSE Multi-Linux Manager Client Tools for SLE Micro 5 x86_64" if present
-    And I select or deselect "SUSE Multi-Linux Manager Beta Client Tools Beta for SLE Micro 5 x86_64 (BETA)" beta client tools
     And I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Enterprise Micro 5.5 x86_64" product has been added
@@ -389,6 +355,10 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I enter "SUSE Linux Micro 6.0" as the filtered product description
     And I select "SUSE Linux Micro 6.0 x86_64" as a product
     Then I should see the "SUSE Linux Micro 6.0 x86_64" selected
+    When I open the sub-list of the product "SUSE Linux Micro 6.0 x86_64"
+    And I open the sub-list of the product "SUSE Multi-Linux Manager Client Tools for SUSE Linux Micro 6 x86_64"
+    And I select "SUSE Multi-Linux Manager Beta Client Tools for SUSE Linux Micro 6 x86_64 (BETA)" as a product
+    Then I should see the "SUSE Multi-Linux Manager Beta Client Tools for SUSE Linux Micro 6 x86_64 (BETA)" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Micro 6.0 x86_64" product has been added
@@ -414,6 +384,25 @@ Feature: Synchronize products in the products page of the Setup Wizard
   Scenario: Add SUSE Linux Micro 6.0 Uyuni Client tools
     When I use spacewalk-common-channel to add channel "sl-micro-6.0-devel-uyuni-client" with arch "x86_64"
     And I wait until the channel "sl-micro-6.0-devel-uyuni-client-x86_64" has been synced
+
+@susemanager
+@slmicro61_minion
+  Scenario: Add SUSE Linux Micro 6.1
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
+    And I wait until I do not see "Loading" text
+    And I enter "SUSE Linux Micro 6.1" as the filtered product description
+    And I select "SUSE Linux Micro 6.1 x86_64" as a product
+    Then I should see the "SUSE Linux Micro 6.1 x86_64" selected
+    When I open the sub-list of the product "SUSE Linux Micro 6.1 x86_64"
+    And I open the sub-list of the product "SUSE Multi-Linux Manager Client Tools for SUSE Linux Micro 6 x86_64"
+    And I select "SUSE Multi-Linux Manager Beta Client Tools for SUSE Linux Micro 6 x86_64 (BETA)" as a product
+    Then I should see the "SUSE Multi-Linux Manager Beta Client Tools for SUSE Linux Micro 6 x86_64 (BETA)" selected
+    When I click the Add Product button
+    And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
+    And I wait until I see "SUSE Linux Micro 6.1 x86_64" product has been added
+    And I wait until all synchronized channels for "sl-micro-6.1" have finished
 
 @uyuni
 @slmicro61_minion
@@ -539,20 +528,6 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @susemanager
 @centos7_minion
-  Scenario: Add SUSE Liberty Linux 7
-    Given I am authorized for the "Admin" section
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    And I wait until I do not see "currently running" text
-    And I wait until I do not see "Loading" text
-    And I enter "SUSE Liberty Linux 7" as the filtered product description
-    And I select "SUSE Liberty Linux 7 x86_64" as a product
-    Then I should see the "SUSE Liberty Linux 7 x86_64" selected
-    When I click the Add Product button
-    And I wait until I see "SUSE Liberty Linux 7 x86_64" product has been added
-    And I wait until all synchronized channels for "res7" have finished
-
-@susemanager
-@centos7_minion
   Scenario: Add SUSE Liberty Linux 7 LTSS
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
@@ -562,7 +537,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I select "SUSE Liberty Linux LTSS 7 x86_64" as a product
     Then I should see the "SUSE Liberty Linux LTSS 7 x86_64" selected
     When I open the sub-list of the product "SUSE Liberty Linux LTSS 7 x86_64"
-    And I should see the "SUSE Multi-Linux Manager Beta Client Tools for SUSE Liberty Linux 7, RHEL and clones 7 x86_64 (BETA)" selected
+    And I should see the "SUSE Multi-Linux Manager Client Tools for SUSE Liberty Linux 7, RHEL and clones 7 x86_64" selected
     When I click the Add Product button
     And I wait until I see "SUSE Liberty Linux LTSS 7 x86_64" product has been added
     And I wait until all synchronized channels for "sll-7-ltss" have finished
@@ -571,7 +546,7 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @centos7_minion
   Scenario: Add CentOS 7
     When I use spacewalk-common-channel to add all "centos7" channels with arch "x86_64"
-    And I wait until all synchronized channels for "res7" have finished
+    And I wait until all synchronized channels for "sll-7-ltss" have finished
 
 @susemanager
 @liberty9_minion
@@ -678,26 +653,6 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until all synchronized channels for "rockylinux9" have finished
 
 @susemanager
-@ubuntu2004_minion
-  Scenario: Add Ubuntu 20.04
-    Given I am authorized for the "Admin" section
-    When I follow the left menu "Admin > Setup Wizard > Products"
-    And I wait until I do not see "currently running" text
-    And I wait until I do not see "Loading" text
-    And I enter "Ubuntu 20.04" as the filtered product description
-    And I select "Ubuntu 20.04" as a product
-    Then I should see the "Ubuntu 20.04" selected
-    When I click the Add Product button
-    And I wait until I see "Ubuntu 20.04" product has been added
-    And I wait until all synchronized channels for "ubuntu-2004" have finished
-
-@uyuni
-@ubuntu2004_minion
-  Scenario: Add Ubuntu 20.04
-    When I use spacewalk-common-channel to add all "ubuntu-2004" channels with arch "amd64-deb"
-    And I wait until all synchronized channels for "ubuntu-2004" have finished
-
-@susemanager
 @ubuntu2204_minion
   Scenario: Add Ubuntu 22.04
     Given I am authorized for the "Admin" section
@@ -759,24 +714,24 @@ Feature: Synchronize products in the products page of the Setup Wizard
 
 @uyuni
 @proxy
-  Scenario: Add Uyuni Leap 15.6 Proxy, including Uyuni Client Tools
-    When I use spacewalk-common-channel to add all "leap15.6" channels with arch "x86_64"
+  Scenario: Add Uyuni Proxy on Tumbleweed, including Uyuni Client Tools
+    When I use spacewalk-common-channel to add all "tumbleweed" channels with arch "x86_64"
     And I wait until all synchronized channels for "uyuni-proxy" have finished
 
 @susemanager
-@run_if_proxy_transactional_or_slmicro61_minion
-  Scenario: Add SUSE Linux Micro 6.1
+@run_if_proxy_transactional_or_slmicro62_minion
+  Scenario: Add SUSE Linux Micro 6.2
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
-    And I enter "SUSE Linux Micro 6.1" as the filtered product description
-    And I select "SUSE Linux Micro 6.1 x86_64" as a product
-    Then I should see the "SUSE Linux Micro 6.1 x86_64" selected
+    And I enter "SUSE Linux Micro 6.2" as the filtered product description
+    And I select "SUSE Linux Micro 6.2 x86_64" as a product
+    Then I should see the "SUSE Linux Micro 6.2 x86_64" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-    And I wait until I see "SUSE Linux Micro 6.1 x86_64" product has been added
-    And I wait until all synchronized channels for "sl-micro-6.1" have finished
+    And I wait until I see "SUSE Linux Micro 6.2 x86_64" product has been added
+    And I wait until all synchronized channels for "sl-micro-6.2" have finished
 
 @susemanager
 @run_if_proxy_not_transactional_or_sles15sp7_minion
@@ -786,15 +741,27 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
     And I enter "SUSE Linux Enterprise Server 15 SP7" as the filtered product description
-    And I select "SUSE Linux Enterprise Server 15 SP7 x86_64" as a product
-    Then I should see the "SUSE Linux Enterprise Server 15 SP7 x86_64" selected
-    When I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP7 x86_64"
+    And I wait until I see "SUSE Linux Enterprise Server 15 SP7 x86_64" text
+    And I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP7 x86_64"
     And I open the sub-list of the product "Basesystem Module 15 SP7 x86_64"
-    And I select "Desktop Applications Module 15 SP7 x86_64" as a product
-    Then I should see the "Desktop Applications Module 15 SP7 x86_64" selected
-    When I open the sub-list of the product "Desktop Applications Module 15 SP7 x86_64"
+    And I open the sub-list of the product "Desktop Applications Module 15 SP7 x86_64"
+    And I open the sub-list of the product "SUSE Multi-Linux Manager Client Tools for SLE 15 x86_64" if present
+    Then I should see that the "Basesystem Module 15 SP7 x86_64" product is "recommended"
+    And I should see that the "Server Applications Module 15 SP7 x86_64" product is "recommended"
+    And I should see that the "SUSE Multi-Linux Manager Client Tools for SLE 15 x86_64" product is "recommended"
+    When I select "SUSE Linux Enterprise Server 15 SP7 x86_64" as a product
+    Then I should see the "SUSE Linux Enterprise Server 15 SP7 x86_64" selected
+    And I should see the "Basesystem Module 15 SP7 x86_64" selected
+    And I should see the "Server Applications Module 15 SP7 x86_64" selected
+    And I should see the "SUSE Multi-Linux Manager Client Tools for SLE 15 x86_64" selected
+    When I select "Desktop Applications Module 15 SP7 x86_64" as a product
     And I select "Development Tools Module 15 SP7 x86_64" as a product
-    Then I should see the "Development Tools Module 15 SP7 x86_64" selected
+    Then I should see the "Desktop Applications Module 15 SP7 x86_64" selected
+    And I should see the "Development Tools Module 15 SP7 x86_64" selected
+    When I select "Python 3 Module 15 SP7 x86_64" as a product
+    Then I should see the "Python 3 Module 15 SP7 x86_64" selected
+    When I select "Containers Module 15 SP7 x86_64" as a product
+    Then I should see the "Containers Module 15 SP7 x86_64" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Enterprise Server 15 SP7 x86_64" product has been added
@@ -803,24 +770,24 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @susemanager
 @proxy
 @transactional_server
-  Scenario: Add SUSE Manager Proxy Extension 5.1 on top of SUSE Linux Enterprise Micro 6.1
+  Scenario: Add SUSE Manager Proxy Extension 5.2 on top of SUSE Linux Enterprise Micro 6.2
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
-    And I enter "SUSE Multi-Linux Manager Proxy Extension 5.1" as the filtered product description
-    Then I should see the "SUSE Linux Micro 6.1 x86_64" selected
-    When I open the sub-list of the product "SUSE Linux Micro 6.1 x86_64"
-    And I select "SUSE Multi-Linux Manager Proxy Extension 5.1 x86_64" as a product
-    Then I should see the "SUSE Multi-Linux Manager Proxy Extension 5.1 x86_64" selected
+    And I enter "SUSE Multi-Linux Manager Proxy Extension 5.2 x86_64 (BETA)" as the filtered product description
+    Then I should see the "SUSE Linux Micro 6.2 x86_64" selected
+    When I open the sub-list of the product "SUSE Linux Micro 6.2 x86_64"
+    And I select "SUSE Multi-Linux Manager Proxy Extension 5.2 x86_64 (BETA)" as a product
+    Then I should see the "SUSE Multi-Linux Manager Proxy Extension 5.2 x86_64 (BETA)" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-    And I wait until I see "SUSE Multi-Linux Manager Proxy Extension 5.1 x86_64" product has been added
-    And I wait until all synchronized channels for "suse-multi-linux-manager-proxy-51" have finished
+    And I wait until I see "SUSE Multi-Linux Manager Proxy Extension 5.2 x86_64 (BETA)" product has been added
+    And I wait until all synchronized channels for "suse-multi-linux-manager-proxy-52" have finished
 
 @uyuni
 @proxy
-  Scenario: Add openSUSE Leap Micro 5.5 Proxy, including Uyuni Client Tools
+  Scenario: Add Uyuni Proxy for Tumbleweed, including Uyuni Client Tools
     When I use spacewalk-common-channel to add all "uyuni-proxy" channels with arch "x86_64"
     And I wait until all synchronized channels for "uyuni-proxy" have finished
 
@@ -847,20 +814,20 @@ Feature: Synchronize products in the products page of the Setup Wizard
 @susemanager
 @proxy
 @transactional_server
-  Scenario: Add SUSE Manager Retail Branch Server Extension 5.1 on top of SUSE Linux Enterprise Micro 6.1
+  Scenario: Add SUSE Multi-Linux Manager Retail Branch Server Extension 5.2 on top of SUSE Linux Enterprise Micro 6.2
     Given I am authorized for the "Admin" section
     When I follow the left menu "Admin > Setup Wizard > Products"
     And I wait until I do not see "currently running" text
     And I wait until I do not see "Loading" text
-    And I enter "SUSE Multi-Linux Manager Retail Branch Server Extension 5.1" as the filtered product description
-    Then I should see the "SUSE Linux Micro 6.1 x86_64" selected
-    When I open the sub-list of the product "SUSE Linux Micro 6.1 x86_64"
-    And I select "SUSE Multi-Linux Manager Retail Branch Server Extension 5.1 x86_64" as a product
-    Then I should see the "SUSE Multi-Linux Manager Retail Branch Server Extension 5.1 x86_64" selected
+    And I enter "SUSE Multi-Linux Manager Retail Branch Server Extension 5.2" as the filtered product description
+    Then I should see the "SUSE Linux Micro 6.2 x86_64" selected
+    When I open the sub-list of the product "SUSE Linux Micro 6.2 x86_64"
+    And I select "SUSE Multi-Linux Manager Retail Branch Server Extension 5.2 x86_64 (BETA)" as a product
+    Then I should see the "SUSE Multi-Linux Manager Retail Branch Server Extension 5.2 x86_64 (BETA)" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-    And I wait until I see "SUSE Multi-Linux Manager Proxy Extension 5.1 x86_64" product has been added
-    And I wait until all synchronized channels for "suse-multi-linux-manager-retail-branch-server-51" have finished
+    And I wait until I see "SUSE Multi-Linux Manager Proxy Extension 5.2 x86_64 (BETA)" product has been added
+    And I wait until all synchronized channels for "suse-multi-linux-manager-retail-branch-server-52" have finished
 
 @susemanager
 @proxy
@@ -874,13 +841,17 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I open the sub-list of the product "SUSE Linux Enterprise Server 15 SP7 x86_64"
     And I open the sub-list of the product "Basesystem Module 15 SP7 x86_64"
     And I open the sub-list of the product "Containers Module 15 SP7 x86_64"
-    And I select "SUSE Multi-Linux Manager Retail Branch Server Extension for SLE 5.1 x86_64 " as a product
-    Then I should see the "SUSE Multi-Linux Manager Retail Branch Server Extension for SLE 5.1 x86_64 " selected
+    And I select "SUSE Multi-Linux Manager Retail Branch Server Extension for SLE 5.1 x86_64" as a product
+    Then I should see the "SUSE Multi-Linux Manager Retail Branch Server Extension for SLE 5.1 x86_64" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until all synchronized channels for "suse-multi-linux-manager-retail-branch-server-51-sp7" have finished
 
 # There are no channels for Retail under Uyuni
+
+  Scenario: Verify all channels are solved
+    When I wait until all synchronized channels have solved their dependencies
+    Then all channels have been synced without errors
 
   Scenario: Detect product loading issues from the UI in Build Validation
     Given I am authorized for the "Admin" section

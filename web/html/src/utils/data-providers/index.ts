@@ -3,9 +3,9 @@ export { default as SimpleDataProvider } from "./simple-data-provider";
 export { default as AsyncDataProvider } from "./async-data-provider";
 
 export type PagedData = {
-  items: Array<any>;
+  items: any[];
   total: number;
-  selectedIds?: Array<number>;
+  selectedIds?: number[];
 };
 
 export type Comparator = (a: any, b: any, key: string, direction: number) => number;

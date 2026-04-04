@@ -19,7 +19,7 @@
 # Copyright 2013 Aron Parsons <aronparsons@gmail.com>
 #
 
-""" spacecmd - a command line interface to Spacewalk """
+"""spacecmd - a command line interface to Spacewalk"""
 from spacecmd.i18n import _N
 
 import errno
@@ -28,6 +28,7 @@ import logging
 import os
 import re
 import sys
+
 try:
     from xmlrpc import client as xmlrpclib
 except ImportError:
@@ -43,20 +44,23 @@ except ImportError:  # python 2
 
 import socket
 
-translation = gettext.translation('spacecmd', fallback=True)
+translation = gettext.translation("spacecmd", fallback=True)
 try:
     _ = translation.ugettext
 except AttributeError:
     _ = translation.gettext
 
-_INTRO = _('''Welcome to spacecmd, a command-line interface to Spacewalk.
+_INTRO = _(
+    """Welcome to spacecmd, a command-line interface to Spacewalk.
 
 Type: 'help' for a list of commands
       'help <cmd>' for command-specific help
       'quit' to quit
-''')
+"""
+)
 
-_SYSTEM_CONF_FILE = '/etc/spacecmd.conf'
+_SYSTEM_CONF_FILE = "/etc/spacecmd.conf"
+
 
 def get_localhost_fqdn():
     """
@@ -67,7 +71,8 @@ def get_localhost_fqdn():
     fqdn = None
     try:
         for family, socktype, proto, canonname, sockaddr in socket.getaddrinfo(
-                socket.gethostname(), 0, 0, 0, 0, socket.AI_CANONNAME):
+            socket.gethostname(), 0, 0, 0, 0, socket.AI_CANONNAME
+        ):
             if canonname:
                 fqdn = canonname
                 break
@@ -78,6 +83,7 @@ def get_localhost_fqdn():
 
     return fqdn or socket.getfqdn()
 
+
 def _redirect_stdout_to_devnull():
     # Python flushes standard streams on exit; redirect remaining output
     # to devnull to avoid another BrokenPipeError at shutdown
@@ -85,39 +91,57 @@ def _redirect_stdout_to_devnull():
     os.dup2(devnull, sys.stdout.fileno())
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # disable no-member error message
     # pylint: disable=E1101
 
     try:
         if not sys.stdout.isatty():
-            try: # Python 3
-                sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout.buffer)
-            except AttributeError: # Python 2
+            try:  # Python 3
+                sys.stdout = codecs.getwriter(locale.getpreferredencoding())(
+                    sys.stdout.buffer
+                )
+            except AttributeError:  # Python 2
                 sys.stdout = codecs.getwriter(locale.getpreferredencoding())(sys.stdout)
 
-        usage = '%(prog)s [options] [command] [-- [command options]]'
+        usage = "%(prog)s [options] [command] [-- [command options]]"
         parser = argparse.ArgumentParser(usage=usage)
-        parser.add_argument('-c', '--config',
-                             help=_('config file to use [default: ~/.spacecmd/config]'))
-        parser.add_argument('-u', '--username',
-                            help=_('use this username to connect to the server'))
-        parser.add_argument('-p', '--password',
-                            help=_('use this password to connect to the server (insecure). Use config instead or spacecmd will ask.'))
-        parser.add_argument('-s', '--server',
-                            help=_('connect to this server [default: local hostname]'))
-        parser.add_argument('--nossl', action='store_true',
-                            help=_('use HTTP instead of HTTPS'))
-        parser.add_argument('--nohistory', action='store_true',
-                            help=_('do not store command history'))
-        parser.add_argument('-y', '--yes', action='store_true',
-                            help=_('answer yes for all questions'))
-        parser.add_argument('-q', '--quiet', action='store_true',
-                            help=_('print only error messages'))
-        parser.add_argument('-d', '--debug', action='count', default=0,
-                            help=_('print debug messages (can be passed multiple times)'))
-        parser.add_argument('command', nargs='*',
-                            help=argparse.SUPPRESS)
+        parser.add_argument(
+            "-c", "--config", help=_("config file to use [default: ~/.spacecmd/config]")
+        )
+        parser.add_argument(
+            "-u", "--username", help=_("use this username to connect to the server")
+        )
+        parser.add_argument(
+            "-p",
+            "--password",
+            help=_(
+                "use this password to connect to the server (insecure). Use config instead or spacecmd will ask."
+            ),
+        )
+        parser.add_argument(
+            "-s", "--server", help=_("connect to this server [default: local hostname]")
+        )
+        parser.add_argument(
+            "--nossl", action="store_true", help=_("use HTTP instead of HTTPS")
+        )
+        parser.add_argument(
+            "--nohistory", action="store_true", help=_("do not store command history")
+        )
+        parser.add_argument(
+            "-y", "--yes", action="store_true", help=_("answer yes for all questions")
+        )
+        parser.add_argument(
+            "-q", "--quiet", action="store_true", help=_("print only error messages")
+        )
+        parser.add_argument(
+            "-d",
+            "--debug",
+            action="count",
+            default=0,
+            help=_("print debug messages (can be passed multiple times)"),
+        )
+        parser.add_argument("command", nargs="*", help=argparse.SUPPRESS)
 
         options = parser.parse_args()
         if options.command:
@@ -134,19 +158,19 @@ if __name__ == '__main__':
             level = logging.INFO
 
         # configure logging
-        logging.basicConfig(level=level, format='%(levelname)s: %(message)s')
+        logging.basicConfig(level=level, format="%(levelname)s: %(message)s")
 
         # files are loaded from ~/.spacecmd/
-        conf_dir = os.path.expanduser('~/.spacecmd')
-        user_conf_file = os.path.join(conf_dir, 'config')
+        conf_dir = os.path.expanduser("~/.spacecmd")
+        user_conf_file = os.path.join(conf_dir, "config")
 
         # server-specifics will be loaded from the configuration file later
         config = ConfigParser()
 
         # prevent readline from outputting escape sequences to non-terminals
         if not sys.stdout.isatty():
-            logging.debug('stdout is not a TTY, setting TERM=dumb')
-            os.environ['TERM'] = 'dumb'
+            logging.debug("stdout is not a TTY, setting TERM=dumb")
+            os.environ["TERM"] = "dumb"
 
         # import our Cmd subclass after we settle our TERM value
         from spacecmd.shell import SpacewalkShell, UnknownCallException
@@ -156,44 +180,48 @@ if __name__ == '__main__':
 
         # set the default server to local hostname
         if shell.options.server:
-            shell.config['server'] = shell.options.server
+            shell.config["server"] = shell.options.server
         else:
-            shell.config['server'] = "localhost"
-            shell.config['nossl'] = True
+            shell.config["server"] = "localhost"
+            shell.config["nossl"] = True
 
         # don't automatically create config files passed via --config
         if shell.options.config:
             if not os.path.isfile(shell.options.config):
-                logging.error(_N('Config file %s does not exist.'), shell.options.config)
+                logging.error(
+                    _N("Config file %s does not exist."), shell.options.config
+                )
                 sys.exit(1)
         else:
-        # create an empty configuration file if one's not present
+            # create an empty configuration file if one's not present
             if not os.path.isfile(user_conf_file):
                 try:
                     # create ~/.spacecmd
                     if not os.path.isdir(conf_dir):
-                        logging.debug('Creating %s', conf_dir)
-                        os.mkdir(conf_dir, int('0700', 8))
+                        logging.debug("Creating %s", conf_dir)
+                        os.mkdir(conf_dir, int("0700", 8))
 
                     # create a template configuration file
-                    logging.debug('Creating configuration file: %s', user_conf_file)
-                    handle = open(user_conf_file, 'w')
-                    handle.write('[spacecmd]\n')
+                    logging.debug("Creating configuration file: %s", user_conf_file)
+                    handle = open(user_conf_file, "w")
+                    handle.write("[spacecmd]\n")
                     handle.close()
                 except IOError:
-                    logging.error(_N('Could not create %s'), user_conf_file)
+                    logging.error(_N("Could not create %s"), user_conf_file)
 
         # load options from configuration files
         if shell.options.config:
-            files_read = config.read([_SYSTEM_CONF_FILE, user_conf_file, shell.options.config])
+            files_read = config.read(
+                [_SYSTEM_CONF_FILE, user_conf_file, shell.options.config]
+            )
         else:
             files_read = config.read([_SYSTEM_CONF_FILE, user_conf_file])
 
         for item in files_read:
-            logging.debug('Read configuration from %s', item)
+            logging.debug("Read configuration from %s", item)
 
         # load the default configuration section
-        shell.load_config_section('spacecmd')
+        shell.load_config_section("spacecmd")
 
         # run a single command from the command line
         if len(args):
@@ -202,14 +230,17 @@ if __name__ == '__main__':
                 # except for help command
                 command = args[0]
 
-                if command == 'help':
-                    command = ' '.join(args)
+                if command == "help":
+                    command = " ".join(args)
                 if len(args) > 1:
-                    command += ' %s' % ' '.join('%s' % s if not True in [ c.isspace() for c in s ] else "'%s'" % s for s in args[1:])
+                    command += " %s" % " ".join(
+                        "%s" % s if not True in [c.isspace() for c in s] else "'%s'" % s
+                        for s in args[1:]
+                    )
 
                 # run the command
                 precmd = shell.precmd(command)
-                if precmd == '':
+                if precmd == "":
                     sys.exit(1)
                 result = shell.onecmd(precmd)
                 logging.debug("command=%s, return_value=%s", precmd, repr(result))
@@ -217,7 +248,7 @@ if __name__ == '__main__':
                     sys.exit(result)
             except KeyboardInterrupt:
                 print()
-                print(_('User Interrupt'))
+                print(_("User Interrupt"))
             except UnknownCallException:
                 sys.exit(1)
             except BrokenPipeError:
@@ -239,7 +270,7 @@ if __name__ == '__main__':
             if not shell.options.quiet:
                 print(_INTRO)
 
-            if not shell.do_login(''):
+            if not shell.do_login(""):
                 sys.exit(1)
 
             # stay in the interactive shell forever
@@ -258,8 +289,8 @@ if __name__ == '__main__':
                         detail = detail.faultString
 
                         # the session expired
-                        if re.search(_('Could not find session'), detail, re.I):
-                            shell.session = ''
+                        if re.search(_("Could not find session"), detail, re.I):
+                            shell.session = ""
 
                     if shell.options.debug:
                         # print(the traceback when debugging)

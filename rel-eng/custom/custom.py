@@ -11,12 +11,16 @@ Code for building packages in SUSE that need generated code not tracked in git.
 """
 import os
 import shutil
+
+# pylint: disable-next=unused-import
 import tarfile
 import subprocess
 
 from tito.builder import Builder
-from tito.common import  run_command, debug, info_out
+from tito.common import run_command, debug, info_out
 
+
+# pylint: disable-next=missing-class-docstring
 class SuseGitExtraGenerationBuilder(Builder):
 
     def _setup_sources(self):
@@ -26,10 +30,19 @@ class SuseGitExtraGenerationBuilder(Builder):
         setup_file_dir = os.path.join(self.git_root, self.relative_project_dir)
         setup_file_path = os.path.join(setup_file_dir, setup_execution_file_name)
         if os.path.exists(setup_file_path):
-            output = run_command("[[ -x %s ]] && %s" % (setup_file_path, setup_file_path), True)
-            filename = output.split('\n')[-1]
+            output = run_command(
+                # pylint: disable-next=consider-using-f-string
+                "[[ -x %s ]] && %s" % (setup_file_path, setup_file_path),
+                True,
+            )
+            filename = output.split("\n")[-1]
+        # pylint: disable-next=possibly-used-before-assignment
         if filename and os.path.exists(os.path.join(setup_file_dir, filename)):
-            run_command("cp %s %s/" % (os.path.join(setup_file_dir, filename), self.rpmbuild_sourcedir))
+            run_command(
+                # pylint: disable-next=consider-using-f-string
+                "cp %s %s/"
+                % (os.path.join(setup_file_dir, filename), self.rpmbuild_sourcedir)
+            )
             self.sources.append(os.path.join(self.rpmbuild_sourcedir, filename))
 
 
@@ -58,9 +71,10 @@ test
 
 
 class ContainerBuilder(Builder):
-    '''
+    """
     Builder class adding the rel-eng/container_push.sh script modifying the Dockerfile when pushing to IBS
-    '''
+    """
+
     push_script = "container_push.sh"
 
     def run(self, options):
@@ -87,9 +101,9 @@ class ContainerBuilder(Builder):
         return self.artifacts
 
     def copy_sources(self):
-        '''
+        """
         Copy the container files to the rpmbuild source directory for the RPM build process
-        '''
+        """
         self.copy_push(self.push_script)
 
         gitdir = os.path.join(self.git_root, self.relative_project_dir)
@@ -116,18 +130,20 @@ class ContainerBuilder(Builder):
         self.ran_tgz = True
 
     def generate_spec(self):
-        '''
+        """
         Generate a spec file to build the SRPM with
-        '''
+        """
         debug(f"Generating spec with sources {self.sources}")
-        sources = "\n".join([f"SOURCE{idx}: {source}" for idx, source in enumerate(self.sources)])
+        sources = "\n".join(
+            [f"SOURCE{idx}: {source}" for idx, source in enumerate(self.sources)]
+        )
         spec_content = SPEC_FILE_TEMPLATE.format(self.project_name, sources)
 
         self.spec_file_name = f"{self.project_name}.spec"
         self.spec_file = os.path.join(self.rpmbuild_sourcedir, self.spec_file_name)
+        # pylint: disable-next=unspecified-encoding
         with open(self.spec_file, "w") as fd:
             fd.write(spec_content)
-            
 
     def copy_push(self, name):
         script_path = os.path.join(self.git_root, "rel-eng", name)
@@ -138,26 +154,64 @@ class ContainerBuilder(Builder):
 
 
 def tar(src, dest):
-    '''
+    """
     Create a dest tar.gz file from the files in the src folder.
-    '''
+    """
     debug(f"Compressing {src} into {dest}")
-    subprocess.run(["tar", "cf", dest, "--gzip", "--owner", "root", "--group", "root", "--directory", src, "."], check=True)
+    subprocess.run(
+        [
+            "tar",
+            "cf",
+            dest,
+            "--gzip",
+            "--owner",
+            "root",
+            "--group",
+            "root",
+            "--sort",
+            "name",
+            "--format",
+            "posix",
+            "--pax-option",
+            "delete=atime,delete=ctime",
+            "--mtime",
+            "@0",
+            "--directory",
+            src,
+            ".",
+        ],
+        check=True,
+    )
 
 
 class ChartBuilder(ContainerBuilder):
-    '''
+    """
     Builder class adding the rel-eng/chart_push.sh script modifying the Chart.yaml when pushing to IBS
-    '''
+    """
+
     push_script = "chart_push.sh"
 
-    helm_chart_files = ["values.yaml", "values.schema.json", "charts", "crds", "templates", "LICENSE", "README.md"]
+    helm_chart_files = [
+        "values.yaml",
+        "values.schema.json",
+        "charts",
+        "crds",
+        "templates",
+        "LICENSE",
+        "README.md",
+    ]
 
     def tgz(self):
         tar_file = os.path.join(self.rpmbuild_sourcedir, f"{self.project_name}.tar")
         gitdir = os.path.join(self.git_root, self.relative_project_dir)
-        files = [file for file in self.helm_chart_files if os.path.exists(os.path.join(gitdir, file))]
-        run_command(f'tar cf {tar_file} -C {gitdir} {" ".join(files)}')
+        files = [
+            file
+            for file in self.helm_chart_files
+            if os.path.exists(os.path.join(gitdir, file))
+        ]
+        run_command(
+            f'tar cf {tar_file} -C {gitdir} --sort=name --mtime="@0" --owner=0 --group=0 --numeric-owner --pax-option=delete=atime,delete=ctime {" ".join(files)}'
+        )
         self.sources.append(tar_file)
 
         self.ran_tgz = True

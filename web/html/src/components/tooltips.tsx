@@ -5,7 +5,6 @@ export function initializeTooltips() {
   const initTooltips = () => {
     const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
     tooltipTriggerList.forEach((el) => {
-      // @ts-ignore
       const tooltip = new bootstrap.Tooltip(el, {
         trigger: "hover",
       });

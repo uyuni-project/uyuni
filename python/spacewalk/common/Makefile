@@ -10,6 +10,7 @@ SPACEWALK_FILES	=   __init__ \
 	    apache \
             byterange \
             fileutils \
+            gpgverify \
             rhnApache \
             rhnCache \
             rhnConfig \

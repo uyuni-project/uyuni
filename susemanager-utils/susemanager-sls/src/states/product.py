@@ -63,6 +63,10 @@ def _get_missing_products(refresh):
         # No search results
         return None
 
+    # remove unsupported products
+    if "SLE-Micro-Rancher-release" in products:
+        products.remove("SLE-Micro-Rancher-release")
+
     # Exclude products that are already provided by another to prevent conflicts
     to_install = []
     for pkg in products:

@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Oct 27 15:31:46 CET 2025 - rosuna@suse.com
+
+- version 5.2.1-0
+  * Fix syntax error in changelog
+  * Overhaul for use inside of a container
+
+-------------------------------------------------------------------
 Tue Jun 17 19:34:19 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.4-0

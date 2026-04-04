@@ -1,33 +1,33 @@
-import * as React from "react";
-
+import { Fragment } from "react";
 type Props = {
   headingLevel?: keyof JSX.IntrinsicElements;
   collapseId?: string | null | undefined;
   customIconClass?: string | null | undefined;
-  title: string | null | undefined;
+  title?: string | null | undefined;
   className?: string;
   icon?: string | null | undefined;
   header?: React.ReactNode;
   footer?: React.ReactNode;
   children: React.ReactNode;
   buttons?: React.ReactNode;
+  collapsClose?: boolean;
 };
 
-const Panel = (props: Props) => {
+export const Panel = (props: Props) => {
   const { headingLevel: HeadingLevel = "h1" } = props;
 
   const titleContent = props.title && (
-    <React.Fragment>
+    <Fragment>
       {props.icon && <i className={`fa ${props.icon}`} />}
       {props.title}
-    </React.Fragment>
+    </Fragment>
   );
 
   const bodyContent = (
-    <React.Fragment>
+    <Fragment>
       <div className="panel-body">{props.children}</div>
       {props.footer && <div className="panel-footer">{props.footer}</div>}
-    </React.Fragment>
+    </Fragment>
   );
 
   return (
@@ -44,7 +44,7 @@ const Panel = (props: Props) => {
               className="pull-right btn-group"
               style={{
                 position: "absolute",
-                right: "20px",
+                right: "15px",
                 top: "50%",
                 transform: "translateY(-50%)",
               }}
@@ -59,6 +59,7 @@ const Panel = (props: Props) => {
                   data-bs-toggle="collapse"
                   data-bs-target={`#${props.collapseId}-panel-closable`}
                   className="accordion-toggle"
+                  aria-expanded="false"
                 >
                   <i
                     className={`fa fa-chevron-down show-on-collapsed ${
@@ -82,7 +83,10 @@ const Panel = (props: Props) => {
       )}
 
       {props.collapseId ? (
-        <div id={`${props.collapseId}-panel-closable`} className="panel-collapse collapse show">
+        <div
+          id={`${props.collapseId}-panel-closable`}
+          className={`panel-collapse collapse ${props.collapsClose ? "" : "show"}`}
+        >
           {bodyContent}
         </div>
       ) : (
@@ -91,13 +95,3 @@ const Panel = (props: Props) => {
     </div>
   );
 };
-
-Panel.defaultProps = {
-  title: undefined,
-  icon: undefined,
-  header: undefined,
-  footer: undefined,
-  buttons: undefined,
-};
-
-export { Panel };

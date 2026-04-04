@@ -35,10 +35,6 @@ create table rhnOrgConfiguration
                                    default ('Y') not null
                                    constraint rhn_org_conf_clm_sync_patches
                                    check (clm_sync_patches in ('Y', 'N')),
-    scap_file_sizelimit        NUMERIC
-                                   default(2097152) not null
-                                   constraint rhn_org_conf_scap_szlmt_chk
-                                   check (scap_file_sizelimit >= 0),
     scap_retention_period_days NUMERIC
                                    default(90)
                                    constraint rhn_org_conf_scap_reten_chk

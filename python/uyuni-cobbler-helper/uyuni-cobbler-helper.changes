@@ -1,0 +1,7 @@
+-------------------------------------------------------------------
+Wed Nov 12 10:44:11 CET 2025 - marina.latini@suse.com
+
+- version 5.2.1-0
+  * Add snippet helper reading the SSL root CA (bsc#1194792)
+  * Add helper function getting channels from a distribution tree
+

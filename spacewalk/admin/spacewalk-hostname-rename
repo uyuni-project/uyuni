@@ -137,6 +137,24 @@ COMMIT;
 EOS
 print_status 0  # just simulate end
 
+# Update Salt Master configuration
+ROSTER_CONF="/etc/salt/master.d/uyuni_roster.conf"
+if [ -f "$ROSTER_CONF" ]; then
+    echo -n "Updating Salt configuration files ... "
+    
+    SHORT_OLD_HOSTNAME="${OLD_HOSTNAME%%.*}"
+    SHORT_NEW_HOSTNAME="${UYUNI_HOSTNAME%%.*}"
+    ESCAPED_OLD_HOSTNAME="${OLD_HOSTNAME//./\\.}"
+
+    if grep -qE "$ESCAPED_OLD_HOSTNAME|\b$SHORT_OLD_HOSTNAME\b" "$ROSTER_CONF"; then
+        backup_file "$ROSTER_CONF"
+        sed -i -e "s/$ESCAPED_OLD_HOSTNAME/$UYUNI_HOSTNAME/g" \
+               -e "s/\b$SHORT_OLD_HOSTNAME\b/$SHORT_NEW_HOSTNAME/g" "$ROSTER_CONF"
+    fi
+    
+    print_status 0
+fi
+
 echo -n "Changing cobbler settings ... "
 /usr/bin/spacewalk-setup-cobbler --apache2-config-directory "/etc/apache2/conf.d" --fqdn $UYUNI_HOSTNAME 2>&1
 print_status $?

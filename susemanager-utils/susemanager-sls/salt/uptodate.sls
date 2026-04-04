@@ -21,7 +21,7 @@ mgr_keep_system_up2date_updatestack:
 mgr_keep_system_up2date_updatestack:
   pkg.latest:
     - pkgs:
-{%- if salt['pkg.version']('venv-salt-minion') %}
+{%- if '/venv-salt-minion/' in grains['pythonexecutable'] %}
       - venv-salt-minion
 {%- else %}
       - salt-minion

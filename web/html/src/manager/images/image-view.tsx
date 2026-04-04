@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 import { productName } from "core/user-preferences";
@@ -8,8 +8,7 @@ import { FromNow } from "components/datetime";
 import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
 import { ModalLink } from "components/dialog/ModalLink";
-import { Messages } from "components/messages/messages";
-import { Utils as MessagesUtils } from "components/messages/messages";
+import { Messages, Utils as MessagesUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 import { PopUp } from "components/popup";
 import { TabContainer } from "components/tab-container";
@@ -26,7 +25,7 @@ import { ImageViewPackages } from "./image-view-packages";
 import { ImageViewPatches } from "./image-view-patches";
 import { ImageViewRuntime } from "./image-view-runtime";
 
-// See java/code/src/com/suse/manager/webui/templates/content_management/view.jade
+// See java/core/src/main/resources/com/suse/manager/webui/templates/content_management/view.jade
 declare global {
   interface Window {
     imageId?: any;
@@ -77,7 +76,7 @@ type ImageViewState = {
   selectedCount?: any;
 };
 
-class ImageView extends React.Component<ImageViewProps, ImageViewState> {
+class ImageView extends Component<ImageViewProps, ImageViewState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -96,27 +95,32 @@ class ImageView extends React.Component<ImageViewProps, ImageViewState> {
   }
 
   pushMessages(severity, messages) {
-    const add = this.state.messages;
+    this.setState((prevState) => {
+      const add = prevState.messages;
 
-    const getMsgObj = (msg) => {
-      if (typeof messageMap[msg] === "string") {
-        return { severity: severity, text: messageMap[msg] };
+      const getMsgObj = (msg) => {
+        if (typeof messageMap[msg] === "string") {
+          return { severity: severity, text: messageMap[msg] };
+        } else {
+          return { severity: severity, text: msg };
+        }
+      };
+
+      if (Array.isArray(messages)) {
+        add.concat(messages.map(getMsgObj));
       } else {
-        return { severity: severity, text: msg };
+        add.push(getMsgObj(messages));
       }
-    };
-
-    if (Array.isArray(messages)) {
-      add.concat(messages.map(getMsgObj));
-    } else {
-      add.push(getMsgObj(messages));
-    }
-
-    this.setState({ messages: add });
+      return { messages: add };
+    });
   }
 
   updateView(id, tab) {
-    id ? this.getImageInfoDetails(id, tab) : this.getImageInfoList();
+    if (id) {
+      this.getImageInfoDetails(id, tab);
+    } else {
+      this.getImageInfoList();
+    }
     this.clearMessages();
   }
 
@@ -156,7 +160,7 @@ class ImageView extends React.Component<ImageViewProps, ImageViewState> {
     const msg = Network.responseErrorMessage(jqXHR, (status, msg) =>
       messageMap[msg] ? t(messageMap[msg], { arg }) : null
     );
-    this.setState({ messages: this.state.messages.concat(msg) });
+    this.setState((prevState) => ({ messages: prevState.messages.concat(msg) }));
   }
 
   //Accumulate runtime data from individual clusters into 'toData'
@@ -198,10 +202,10 @@ class ImageView extends React.Component<ImageViewProps, ImageViewState> {
   }
 
   getImageInfoList() {
-    let listPromise = Network.get("/rhn/manager/api/cm/images")
+    const listPromise = Network.get("/rhn/manager/api/cm/images")
       .then((data) => this.setState({ selected: undefined, images: data }))
       .catch(this.handleResponseError);
-    let updatedData: any = {};
+    const updatedData: any = {};
     if (this.props.runtimeInfoEnabled) {
       const runtimePromises: any[] = [];
       this.setState({ imagesRuntime: {} });
@@ -247,13 +251,13 @@ class ImageView extends React.Component<ImageViewProps, ImageViewState> {
     //overview, runtime
     else url = "/rhn/manager/api/cm/images/" + id;
 
-    let detailsPromise = Network.get(url)
+    const detailsPromise = Network.get(url)
       .then((data) => {
         this.setState({ selected: data });
       })
       .catch(this.handleResponseError);
 
-    let updatedData: any = {};
+    const updatedData: any = {};
     if (this.props.runtimeInfoEnabled) {
       const runtimePromises: any[] = [];
       //Get a list of cluster ids
@@ -304,11 +308,11 @@ class ImageView extends React.Component<ImageViewProps, ImageViewState> {
         // Waits for the 'Back' action if not in the list page
         const backAction = this.state.selected ? this.handleBackAction() : Promise.resolve();
         backAction.then(() =>
-          this.setState({
-            images: this.state.images.filter((img) => !idList.includes(img.id)),
-            selectedItems: this.state.selectedItems.filter((item) => !idList.includes(item)),
+          this.setState((prevState) => ({
+            images: prevState.images.filter((img) => !idList.includes(img.id)),
+            selectedItems: prevState.selectedItems.filter((item) => !idList.includes(item)),
             messages: MessagesUtils.info(t("Deleted successfully.")),
-          })
+          }))
         );
       })
       .catch(this.handleResponseError);
@@ -432,7 +436,7 @@ type ImageViewListState = {
   showObsolete: boolean;
 };
 
-class ImageViewList extends React.Component<ImageViewListProps, ImageViewListState> {
+class ImageViewList extends Component<ImageViewListProps, ImageViewListState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -571,7 +575,7 @@ class ImageViewList extends React.Component<ImageViewListProps, ImageViewListSta
 
     let totalCount = 0;
     if (row.instances) {
-      for (let clusterCount of Object.values(row.instances)) {
+      for (const clusterCount of Object.values(row.instances)) {
         totalCount += Number(clusterCount) || 0;
       }
     }
@@ -600,7 +604,7 @@ class ImageViewList extends React.Component<ImageViewListProps, ImageViewListSta
   };
 
   render() {
-    let runtimeColumns: React.ReactNode[] = [];
+    const runtimeColumns: ReactNode[] = [];
     if (this.props.runtimeInfoEnabled) {
       runtimeColumns.push(
         <Column columnKey="runtime" header={t("Runtime")} cell={(row) => this.renderRuntimeIcon(row)} />
@@ -678,6 +682,7 @@ class ImageViewList extends React.Component<ImageViewListProps, ImageViewListSta
             cell={(row) => <FromNow value={row.modified} />}
           />
           <Column
+            columnKey="actions"
             width="10%"
             columnClass="text-right"
             headerClass="text-right"
@@ -767,7 +772,7 @@ type ImageViewDetailsProps = {
   onCancel: (...args: any[]) => any;
 };
 
-class ImageViewDetails extends React.Component<ImageViewDetailsProps> {
+class ImageViewDetails extends Component<ImageViewDetailsProps> {
   getHashUrls(tabs) {
     const id = this.props.data.id;
     return tabs.map((t) => "#/" + t + "/" + id);

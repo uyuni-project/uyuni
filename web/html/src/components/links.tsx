@@ -1,14 +1,14 @@
-import * as React from "react";
+import type { HTMLProps, ReactNode } from "react";
 
 type LinkProps = {
   id: string | number;
   newWindow?: boolean;
-  children?: React.ReactNode;
+  children?: ReactNode;
   className?: string;
   title?: string;
 };
 
-const targetProps = (props: LinkProps): Partial<React.HTMLProps<HTMLAnchorElement>> => {
+const targetProps = (props: LinkProps): Partial<HTMLProps<HTMLAnchorElement>> => {
   const target = props.newWindow ? "_blank" : "_self";
   const rel = props.newWindow ? "noopener noreferrer" : undefined;
   return { target, rel };

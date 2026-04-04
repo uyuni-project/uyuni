@@ -8,25 +8,30 @@ postgres_exporter_service:
     - name: prometheus-postgres_exporter
     - enable: False
 
-# Workaround for previous tomcat configuration
-remove_tomcat_previous:
-  file.rename:
-    - source: /etc/sysconfig/tomcat
-    - name: /etc/sysconfig/tomcat.bak
-    - force: True
-    - onlyif: test -f /etc/sysconfig/tomcat
-
 jmx_tomcat_config:
   file.absent:
-    - name: /etc/sysconfig/tomcat/systemd/jmx.conf
-  mgrcompat.module_run:
-    - name: service.systemctl_reload
+    - name: /etc/tomcat/conf.d/tomcat_jmx.conf
 
 jmx_taskomatic_config:
   file.absent:
+    - name: /etc/rhn/taskomatic.conf.d/taskomatic_jmx.conf
+
+# Legacy systemd drop-in and sysconfig JMX config cleanup
+legacy_tomcat_sysconfig_jmx_cleanup:
+  file.absent:
+    - name: /etc/sysconfig/tomcat/systemd/jmx.conf
+
+legacy_tomcat_systemd_dropin_jmx_cleanup:
+  file.absent:
+    - name: /usr/lib/systemd/system/tomcat.service.d/jmx.conf
+
+legacy_taskomatic_sysconfig_jmx_cleanup:
+  file.absent:
     - name: /etc/sysconfig/taskomatic/systemd/jmx.conf
-  mgrcompat.module_run:
-    - name: service.systemctl_reload
+
+legacy_taskomatic_systemd_dropin_jmx_cleanup:
+  file.absent:
+    - name: /usr/lib/systemd/system/taskomatic.service.d/jmx.conf
 
 mgr_enable_prometheus_self_monitoring:
   cmd.run:

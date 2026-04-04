@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useContext } from "react";
 
 import { ControlledInput } from "../ControlledInput";
 import { FormContext } from "../form/Form";
@@ -22,17 +22,22 @@ type Props = InputBaseProps & {
   defaultEnd?: string;
 };
 
-export const Range = (props: Props) => {
+export const Range = ({ required = false, disabled = false, ...props }: Props) => {
   const { placeholder, inputClass, ...propsToPass } = props;
-  const formContext = React.useContext(FormContext);
+  const formContext = useContext(FormContext);
   return (
-    <InputBase {...propsToPass} name={[`${props.prefix}_start`, `${props.prefix}_end`]}>
+    <InputBase
+      required={required}
+      disabled={disabled}
+      {...propsToPass}
+      name={[`${props.prefix}_start`, `${props.prefix}_end`]}
+    >
       {({ setValue, onBlur }) => {
         const onChange = (event: any) => {
           setValue(event.target.name, event.target.value);
         };
-        const startValue = (formContext.model || {})[`${props.prefix}_start`] || props.defaultStart || "";
-        const endValue = (formContext.model || {})[`${props.prefix}_end`] || props.defaultEnd || "";
+        const startValue = formContext.model?.[`${props.prefix}_start`] || props.defaultStart || "";
+        const endValue = formContext.model?.[`${props.prefix}_end`] || props.defaultEnd || "";
         return (
           <div className="input-group">
             <ControlledInput
@@ -41,7 +46,7 @@ export const Range = (props: Props) => {
               name={`${props.prefix}_start`}
               value={startValue}
               onChange={onChange}
-              disabled={props.disabled}
+              disabled={disabled}
               onBlur={onBlur}
               placeholder={placeholder}
               aria-label={t(`${props.label || ""} start`)}
@@ -54,7 +59,7 @@ export const Range = (props: Props) => {
               name={`${props.prefix}_end`}
               value={endValue}
               onChange={onChange}
-              disabled={props.disabled}
+              disabled={disabled}
               onBlur={onBlur}
               placeholder={placeholder}
               aria-label={t(`${props.label || ""} end`)}
@@ -65,19 +70,4 @@ export const Range = (props: Props) => {
       }}
     </InputBase>
   );
-};
-
-Range.defaultProps = {
-  placeholder: undefined,
-  inputClass: undefined,
-  defaultStart: undefined,
-  defaultEnd: undefined,
-  label: undefined,
-  hint: undefined,
-  labelClass: undefined,
-  divClass: undefined,
-  required: false,
-  disabled: false,
-  invalidHint: undefined,
-  onChange: undefined,
 };

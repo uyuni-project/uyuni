@@ -1,2 +1,0 @@
-- Fix IllegalArgumentException for ImageInfo set build Server
-  where the Object was not a Minion Server (bsc#1241908)

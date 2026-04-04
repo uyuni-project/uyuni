@@ -1,4 +1,9 @@
-import { ErrorMessage, Field as FormikField, useFormikContext } from "formik";
+import {
+  ErrorMessage,
+  // eslint-disable-next-line no-restricted-imports
+  Field as FormikField,
+  useFormikContext,
+} from "formik";
 import _isNil from "lodash/isNil";
 
 import { FormGroup, Label } from "components/input";

@@ -1,0 +1,2 @@
+- Fix migration of peripheral servers to ISSv3
+- Add listPeripheralServers API method

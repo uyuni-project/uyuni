@@ -9,8 +9,7 @@ type Props = CheckProps & {
 };
 
 export const AsCheck = (props: Props) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [field, meta, helper] = useField(props.name);
+  const [field, _, helper] = useField(props.name);
 
   return (
     <div className={styles.container}>

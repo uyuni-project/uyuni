@@ -162,7 +162,7 @@ When(/^I click the Add Product button$/) do
   raise ScriptError, 'xpath: button#addProducts not found' unless find('button#addProducts').click
 end
 
-Then(/^the SLE15 (SP3|SP4|SP5) product should be added$/) do |sp_version|
+Then(/^the SLE15 (SP3|SP4|SP5|SP6|SP7) product should be added$/) do |sp_version|
   output, _code = get_target('server').run('echo -e "admin\nadmin\n" | mgr-sync list channels', check_errors: false, buffer_size: 1_000_000)
   log "Products list:\n#{output}"
   match = "[I] SLE-Product-SLES15-#{sp_version}-Pool for x86_64 SUSE Linux Enterprise Server 15 #{sp_version} x86_64 [sle-product-sles15-#{sp_version.downcase}-pool-x86_64]"
@@ -183,21 +183,21 @@ end
 # configuration management steps
 
 Then(/^I should see a table line with "([^"]*)", "([^"]*)", "([^"]*)"$/) do |arg1, arg2, arg3|
-  within(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{arg1}')]]") do
+  within(:xpath, "//div[contains(@class, \"table-responsive\")]//tr[.//td[contains(.,'#{arg1}')]]") do
     raise ScriptError, "Link #{arg2} not found" unless find_link(arg2)
     raise ScriptError, "Link #{arg3} not found" unless find_link(arg3)
   end
 end
 
 Then(/^I should see a table line with "([^"]*)", "([^"]*)"$/) do |arg1, arg2|
-  within(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{arg1}')]]") do
+  within(:xpath, "//div[contains(@class, \"table-responsive\")]//tr[.//td[contains(.,'#{arg1}')]]") do
     raise ScriptError, "Link #{arg2} not found" unless find_link(arg2)
   end
 end
 
 Then(/^a table line should contain system "([^"]*)", "([^"]*)"$/) do |host, text|
   system_name = get_system_name(host)
-  within(:xpath, "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{system_name}')]]") do
+  within(:xpath, "//div[contains(@class, \"table-responsive\")]//tr[.//td[contains(.,'#{system_name}')]]") do
     raise ScriptError, "Text #{text} not found" unless find_all(:xpath, "//td[contains(., '#{text}')]")
   end
 end
@@ -434,7 +434,7 @@ Then(/^I check the first notification message$/) do
     log 'There are no notification messages, nothing to do then'
   else
     within(:xpath, '//section') do
-      row = find(:xpath, '//div[@class="table-responsive"]/table/tbody/tr[.//td]', match: :first)
+      row = find(:xpath, '//div[@class="table-responsive"]//tr[.//td]', match: :first)
       row.find(:xpath, './/input[@type="checkbox"]', match: :first).set(true)
     end
   end
@@ -532,20 +532,21 @@ end
 
 When(/^I prepare the development repositories of "([^"]*)" as part of "([^"]*)" channel$/) do |host, channel_label|
   target = get_target(host)
-  repo_urls =
-    if deb_host?(host)
-      repo_list_output, _code = target.run('grep -rh ^deb /etc/apt/sources.list.d/')
-      repo_list_output.split("\n").map { |line| line.split[-2].strip }
-    elsif rh_host?(host)
-      repo_list_output, _code = target.run('grep -rh ^baseurl /etc/yum.repos.d/')
-      repo_list_output.split("\n").map { |line| line.split('=').last.strip }
-    elsif suse_host?(host)
-      repo_list_output, _code = target.run('grep -rh ^baseurl /etc/zypp/repos.d/')
-      repo_list_output.split("\n").map { |line| line.split('=').last.strip }
-    else
-      raise ArgumentError, "OS family not supported: #{target.os_family}"
-    end
+  repo_urls = if deb_host?(host)
+                out, = target.run('grep -rh ^deb /etc/apt/sources.list.d/')
+                out.split("\n").map { |line| line.split[1].strip }
+              elsif rh_host?(host)
+                out, = target.run('grep -rh "^\s*baseurl" /etc/yum.repos.d/')
+                out.split("\n").map { |line| line.split('=', 2).last.strip }
+              elsif suse_host?(host)
+                out, = target.run('grep -rh "^\s*baseurl" /etc/zypp/repos.d/')
+                out.split("\n").map { |line| line.split('=', 2).last.strip }
+              else
+                raise ArgumentError, "OS family not supported: #{target.os_family}"
+              end.compact.uniq
+
   repo_urls.each do |repo_url|
+    next if repo_url.empty?
     next unless devel_repo?(repo_url)
 
     unique_repo_name = generate_repository_name(repo_url)

@@ -1,10 +1,51 @@
 {
-  "name": "uyuni-dev-container",
-  "build": { "dockerfile": "Dockerfile" },
-  "remoteEnv": {
-    "JAVA_HOME": "/usr/lib64/jvm/java-17-openjdk"
+  "name": "Uyuni Dev (Compose)",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "uyuni-dev",
+  "workspaceFolder": "/workspaces/uyuni",
+
+  "containerEnv": {
+    "JAVA_HOME": "/usr/lib64/jvm/java-17-openjdk",
+    "ANT_HOME": "/usr/share/ant",
+    "DB_HOST": "db",
+    //"CONTAINER_HOST": "unix:///run/podman/podman.sock",
+    //"CONTAINER_CONNECTION_TYPE": "socket"
   },
-  "postCreateCommand": "cd /workspaces/uyuni &&  ant -f java/manager-build.xml ivy"
-  
-  // More info: https://containers.dev/implementors/json_reference/
+
+  "forwardPorts": [8001, 8002, 8003, 443, 80, 5432, 9000, 54320],
+
+  "portsAttributes": {
+    "8001": {
+      "label": "Debug Taskomatic",
+      "onAutoForward": "notify"
+    },
+    "8002": {
+      "label": "Debug Search Server",
+      "onAutoForward": "notify"
+    },
+    "8003": {
+      "label": "Debug Tomcat",
+      "onAutoForward": "notify"
+    },
+    "5432": {
+      "label": "DB",
+      "onAutoForward": "notify"
+    },
+    "54320": {
+      "label": "Unit Test DB (Postgres)",
+      "onAutoForward": "notify"
+    },
+    "443": {
+      "label": "Ephemeral Instance",
+      "onAutoForward": "notify",
+      "protocol": "https"
+    },
+    "9000": { 
+      "label": "Test Reports",
+      "onAutoForward": "notify"
+    }
+  },
+
+  "remoteUser": "uyuni",
+  "overrideCommand": false
 }

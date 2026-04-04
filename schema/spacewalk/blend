@@ -14,7 +14,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-"""
+r"""
 Blend is a tool used to sort and combine .sql files as defined by the arguments
 and the contents of the .deps files.  Files with an extension of (.sql|.pkb|.pks)
 are dependancy sorted as defined by the (optional) .deps files contained within each
@@ -95,6 +95,7 @@ end.sql -   If found in the current directory, the contents of this file is
             data or to exit an application used for the installation.
 """
 
+# pylint: disable-next=multiple-imports
 import sys, os, re
 from getopt import getopt, GetoptError
 from functools import cmp_to_key
@@ -106,6 +107,8 @@ aggregated = False
 # CLASSES
 #
 
+
+# pylint: disable-next=missing-class-docstring
 class Name:
 
     @classmethod
@@ -115,11 +118,12 @@ class Name:
             for bn in cls.basenames(fn):
                 names.append(bn)
             return tuple(names)
-        if not isinstance(nss, (tuple,list)):
+        if not isinstance(nss, (tuple, list)):
             nss = (nss,)
         for ns in nss:
             for bn in cls.basenames(fn):
-                name = '%s/%s' % (ns, bn)
+                # pylint: disable-next=consider-using-f-string
+                name = "%s/%s" % (ns, bn)
                 names.append(name)
         return tuple(names)
 
@@ -127,27 +131,31 @@ class Name:
     def basenames(cls, fn):
         names = [fn]
         try:
-            basename, ext = fn.rsplit('.', 1)
+            # pylint: disable-next=unused-variable
+            basename, ext = fn.rsplit(".", 1)
             names.append(basename)
+        # pylint: disable-next=bare-except
         except:
             pass
         return names
 
     @classmethod
     def qualified(cls, name):
-        return ( '/' in name )
+        return "/" in name
 
     @classmethod
     def unqualified(cls, name):
-        return ( not cls.qualified(name) )
+        return not cls.qualified(name)
 
 
+# pylint: disable-next=missing-class-docstring
 class DepTab:
 
     class Options(object):
         def __setitem__(self, k, v):
             setattr(self, k, v)
 
+    # pylint: disable-next=missing-class-docstring
     class Entry:
         def __init__(self, tab, info, subject):
             self.tab = tab
@@ -169,18 +177,19 @@ class DepTab:
                 deps += expanded
             return deps
 
-
         def __repr__(self):
             s = []
             s.append(self.subject)
-            s.append('::')
+            s.append("::")
             s.append(str(self.deps))
-            s.append('@')
+            s.append("@")
             s.append(self.info)
-            s.append('/%d' % self.hits)
-            return ''.join(s)
+            # pylint: disable-next=consider-using-f-string
+            s.append("/%d" % self.hits)
+            return "".join(s)
 
-    pattern = re.compile('[,\s]+')
+    # pylint: disable-next=anomalous-backslash-in-string
+    pattern = re.compile("[,\s]+")
 
     def __init__(self):
         self.content = []
@@ -189,22 +198,25 @@ class DepTab:
         self.aliases = None
 
     def read(self, ns, path):
+        # pylint: disable-next=unspecified-encoding
         fp = open(path)
         self.options.path = (ns,)
         star_entry = None
         for line in self.lines(fp):
             if self.setoption(ns, line[1]):
                 continue
-            parts = line[1].split('::', 1)
+            parts = line[1].split("::", 1)
             if len(parts) < 2:
                 continue
-            info = '%s:%d' % (path, line[0])
+            # pylint: disable-next=consider-using-f-string
+            info = "%s:%d" % (path, line[0])
             subject = parts[0].strip()
             entry = self.Entry(self, info, subject)
-            parts[1] = parts[1].replace('\\', '')
+            parts[1] = parts[1].replace("\\", "")
             deps = []
             for dep in self.values(parts[1]):
                 dep = dep.strip()
+                # pylint: disable-next=use-implicit-booleaness-not-len
                 if not len(dep):
                     continue
                 qnames = []
@@ -214,7 +226,7 @@ class DepTab:
             entry.deps = tuple(deps)
             if star_entry is not None:
                 entry.deps = star_entry.deps + entry.deps
-            if subject == '*':
+            if subject == "*":
                 star_entry = entry
                 continue
             self.content.append(entry)
@@ -223,13 +235,13 @@ class DepTab:
         fp.close()
 
     def setoption(self, ns, line):
-        parts = line.split('=', 1)
+        parts = line.split("=", 1)
         if len(parts) == 2:
             tag = parts[0].strip()
-            if tag == 'path':
+            if tag == "path":
                 values = []
                 for v in self.values(parts[1]):
-                    if v == '.':
+                    if v == ".":
                         v = ns
                     values.append(v)
                 self.options[tag] = values
@@ -242,16 +254,19 @@ class DepTab:
     def lines(self, fp):
         ln = 0
         lines = []
+        # pylint: disable-next=unused-variable
         append = False
         for line in fp.readlines():
             ln += 1
+            # pylint: disable-next=use-implicit-booleaness-not-len
             if not len(line):
                 continue
-            if line[0] == '#':
+            if line[0] == "#":
                 continue
-            if len(lines) and lines[-1][1].endswith('\\\n'):
+            # pylint: disable-next=use-implicit-booleaness-not-len
+            if len(lines) and lines[-1][1].endswith("\\\n"):
                 last = lines.pop()[1][:-2]
-                joined = ' '.join((last, line))
+                joined = " ".join((last, line))
                 lines.append((ln, joined))
             else:
                 lines.append((ln, line))
@@ -269,10 +284,11 @@ class DepTab:
         return result
 
     def expand(self, keyset, history):
-        result = ([],[])
+        result = ([], [])
         for key in keyset:
             if key in history:
-                print('circular (alias) reference:%s' % history)
+                # pylint: disable-next=consider-using-f-string
+                print("circular (alias) reference:%s" % history)
                 continue
             alias = self.aliases.get(key)
             if alias is None:
@@ -282,20 +298,23 @@ class DepTab:
             alias.hits += 1
             for deps in alias.expanded(history):
                 result[1].append(deps)
+        # pylint: disable-next=use-implicit-booleaness-not-len
         if len(result[1]):
             result = ([], result[1])
         return result
 
     def findaliases(self):
         self.aliases = {}
-        for s,e in self.index.items():
+        for s, e in self.index.items():
             if e.hits == 0:
                 self.aliases[s] = e
         return self
 
+
+# pylint: disable-next=missing-class-docstring
 class Reader:
 
-    EXT = ['sql', 'pks', 'pkb']
+    EXT = ["sql", "pks", "pkb"]
 
     def __init__(self):
         self.deptab = DepTab()
@@ -309,13 +328,14 @@ class Reader:
         return self
 
     def sort(self):
+        # pylint: disable-next=redefined-builtin
         sorted = self.deplist.sort()
         return [x[2] for x in sorted]
 
-
     def opendeptabs(self, directories):
         for d in directories:
-            for fn, path in self.files(d, ('deps',)):
+            # pylint: disable-next=unused-variable
+            for fn, path in self.files(d, ("deps",)):
                 self.deptab.read(d, path)
         return self
 
@@ -333,12 +353,14 @@ class Reader:
         return self
 
     def path(self, d, fn):
-        return '%s/%s' % (d, fn)
+        # pylint: disable-next=consider-using-f-string
+        return "%s/%s" % (d, fn)
 
     def files(self, d, extensions):
         files = []
+        # pylint: disable-next=redefined-builtin
         for fn, dir in self.flattened(d):
-            parts = fn.rsplit('.', 1)
+            parts = fn.rsplit(".", 1)
             if len(parts) != 2:
                 continue
             if parts[1] in extensions:
@@ -356,69 +378,84 @@ class Reader:
 
     def fsort(self, a, b):
         def cmp(a, b):
-            return (a > b) - (a < b) 
+            return (a > b) - (a < b)
+
         try:
-            A = a[0].rsplit('.', 1)
-            B = b[0].rsplit('.', 1)
+            # pylint: disable-next=invalid-name
+            A = a[0].rsplit(".", 1)
+            # pylint: disable-next=invalid-name
+            B = b[0].rsplit(".", 1)
+            # pylint: disable-next=invalid-name
             BC = cmp(A[0], B[0])
             if BC:
                 return BC
+            # pylint: disable-next=invalid-name
             IA = self.EXT.index(A[1])
+            # pylint: disable-next=invalid-name
             IB = self.EXT.index(B[1])
             return cmp(IA, IB)
+        # pylint: disable-next=bare-except
         except:
             return 0
 
+
+# pylint: disable-next=missing-class-docstring
 class Writer:
 
     comment = """
 -- Source: %s
     """
 
+    # pylint: disable-next=redefined-outer-name
     def __init__(self, aggregated=True):
         self.aggregated = aggregated
 
+    # pylint: disable-next=redefined-builtin
     def write(self, sorted, output):
-        self.copy('clean.sql', output, True)
-        self.copy('start.sql', output, True)
+        self.copy("clean.sql", output, True)
+        self.copy("start.sql", output, True)
         for p in sorted:
             self.copy(p, output)
-        self.copy('end.sql', output, True)
+        self.copy("end.sql", output, True)
 
     def copy(self, path, output, optional=False):
         if optional:
             if not os.path.exists(path):
                 return
+        # pylint: disable-next=unspecified-encoding
         f = open(path)
         output.write(self.comment % path)
         for line in f.readlines():
-            if line.startswith('--'):
+            if line.startswith("--"):
                 continue
-            if line.startswith('@'):
+            if line.startswith("@"):
                 self.copy(line[1:].strip(), output)
                 continue
-            if line.startswith('\i'):
+            # pylint: disable-next=anomalous-backslash-in-string
+            if line.startswith("\i"):
                 self.copy(line[2:].strip(), output)
                 continue
             output.write(line)
         f.close()
 
 
-
+# pylint: disable-next=missing-class-docstring
 class Postgres(Writer):
 
+    # pylint: disable-next=redefined-builtin
     def write(self, sorted, output):
         if self.aggregated:
             Writer.write(self, sorted, output)
             return
         self.start(output)
         for p in sorted:
-            entry = '\\i %s' % p
-            output.write('\n')
+            # pylint: disable-next=consider-using-f-string
+            entry = "\\i %s" % p
+            output.write("\n")
             output.write(entry)
 
 
-
+# pylint: disable-next=missing-class-docstring
 class DepList:
 
     def __init__(self):
@@ -447,10 +484,12 @@ class DepList:
         for item in self.unsorted:
             popped = []
             self.push(item)
+            # pylint: disable-next=use-implicit-booleaness-not-len
             while len(self.stack):
                 try:
                     top = self.top()
                     try:
+                        # pylint: disable-next=unnecessary-dunder-call
                         ref = top[1].__next__()
                     except AttributeError:
                         ref = top[1].next()
@@ -469,7 +508,7 @@ class DepList:
         return self.sorted
 
     def find(self, key):
-        if not isinstance(key, (tuple,list)):
+        if not isinstance(key, (tuple, list)):
             key = (key,)
         for k in key:
             v = self.index.get(k)
@@ -491,103 +530,118 @@ class DepList:
         try:
             frame = self.stack.pop()
             return frame[0]
+        # pylint: disable-next=bare-except
         except:
             pass
+
 
 #
 # FUNCTIONS
 #
 
+
 def generate(path, reader, writer, output, directories):
     os.chdir(path)
-    out = open(output, 'w')
+    # pylint: disable-next=unspecified-encoding
+    out = open(output, "w")
     ds = []
     for fn in directories:
         if os.path.isdir(fn):
             ds.append(fn)
     reader.read(ds)
+    # pylint: disable-next=redefined-builtin
     sorted = reader.sort()
     overrides = reader.overrides
-    print('\nOVERRIDES (%d):' % len(overrides))
+    # pylint: disable-next=consider-using-f-string
+    print("\nOVERRIDES (%d):" % len(overrides))
     for entry in overrides:
+        # pylint: disable-next=consider-using-f-string
         print('\t"%s" overridden by "%s"' % entry)
-    unused = \
-        [x for x in reader.deptab.content if x.hits == 0]
-    print('\nUNUSED RULES (%d):' % len(unused))
+    unused = [x for x in reader.deptab.content if x.hits == 0]
+    # pylint: disable-next=consider-using-f-string
+    print("\nUNUSED RULES (%d):" % len(unused))
     for entry in unused:
         if entry.hits == 0:
-            print('\t%s @%s' % (entry.subject,entry.info))
+            # pylint: disable-next=consider-using-f-string
+            print("\t%s @%s" % (entry.subject, entry.info))
     unfound = reader.deplist.unfound
-    print('\nUNFOUND (rule) REFERENCES (%d):' % len(unfound))
+    # pylint: disable-next=consider-using-f-string
+    print("\nUNFOUND (rule) REFERENCES (%d):" % len(unfound))
     for unf in unfound:
+        # pylint: disable-next=consider-using-f-string
         print('\t"%s" @%s' % unf)
     if verbose:
         ln = 1
-        print('\n\nFILES (%d):' % len(sorted))
+        # pylint: disable-next=consider-using-f-string
+        print("\n\nFILES (%d):" % len(sorted))
         for p in sorted:
-            print('\t%d %s' % (ln, p))
+            # pylint: disable-next=consider-using-f-string
+            print("\t%d %s" % (ln, p))
             ln += 1
     writer.write(sorted, out)
     out.close()
     errnum = 0
-    if (len(overrides)+len(unused)+len(unfound) > 0): errnum = 1
+    if len(overrides) + len(unused) + len(unfound) > 0:
+        errnum = 1
     return errnum
+
 
 def usage():
     s = []
-    s.append('Usage blend: [OPTIONS] directory ...')
-    s.append(' Options:')
-    s.append('  -h, --help')
-    s.append('      Show usage information.')
-    s.append('  -v, --verbose')
-    s.append('      Show extra processing information.')
-    s.append('  -a, --aggregated')
-    s.append('      Aggregate the contents vs. reference by includes')
-    s.append('  -s, --style')
-    s.append('      The output style (postres ).')
-    s.append('  -o, --output')
-    s.append('      The output file.  Default: main.sql')
-    s.append('  -d, --directory')
-    s.append('      The working directory to process.')
-    print('\n'.join(s))
+    s.append("Usage blend: [OPTIONS] directory ...")
+    s.append(" Options:")
+    s.append("  -h, --help")
+    s.append("      Show usage information.")
+    s.append("  -v, --verbose")
+    s.append("      Show extra processing information.")
+    s.append("  -a, --aggregated")
+    s.append("      Aggregate the contents vs. reference by includes")
+    s.append("  -s, --style")
+    s.append("      The output style (postres ).")
+    s.append("  -o, --output")
+    s.append("      The output file.  Default: main.sql")
+    s.append("  -d, --directory")
+    s.append("      The working directory to process.")
+    print("\n".join(s))
+
 
 def main(argv):
-    path = '.'
+    path = "."
     global verbose, aggregated
     reader = Reader()
     writer = Postgres()
-    output = 'main.sql'
-    flags = 'vhad:o:s:'
+    output = "main.sql"
+    flags = "vhad:o:s:"
     keywords = [
-        '--help',
-        '--verbose',
-        '--directory',
-        '--output',
-        '--style'
-        '--aggregated',
+        "--help",
+        "--verbose",
+        "--directory",
+        "--output",
+        "--style" "--aggregated",
     ]
     try:
         opts, args = getopt(argv, flags, keywords)
         for opt, arg in opts:
-            if opt in ('-h', '--help'):
+            if opt in ("-h", "--help"):
                 usage()
                 sys.exit(0)
-            if opt in ('-v', '--verbose'):
+            if opt in ("-v", "--verbose"):
                 verbose = True
                 continue
-            if opt in ('-a', '--aggregated'):
+            if opt in ("-a", "--aggregated"):
                 aggregated = True
                 continue
-            if opt in ('-o', '--output'):
+            if opt in ("-o", "--output"):
                 output = arg
                 continue
-            if opt in ('-d', '--directory'):
+            if opt in ("-d", "--directory"):
                 path = arg
                 continue
-            if opt in ('-s', '--style'):
-                if arg == 'postgres':
+            if opt in ("-s", "--style"):
+                if arg == "postgres":
                     writer = Postgres()
                     continue
+                # pylint: disable-next=broad-exception-raised,consider-using-f-string
                 raise Exception('style "%s" not valid' % arg)
         writer.aggregated = aggregated
         errnum = generate(path, reader, writer, output, args)
@@ -597,6 +651,6 @@ def main(argv):
         usage()
         sys.exit(2)
 
-if __name__ == '__main__':
-    main(sys.argv[1:])
 
+if __name__ == "__main__":
+    main(sys.argv[1:])

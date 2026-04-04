@@ -1,9 +1,7 @@
-import * as React from "react";
-import { useEffect, useRef } from "react";
-
+import { type ReactNode, useEffect, useRef } from "react";
 type Props = {
   onFocusOut: () => void;
-  children?: React.ReactNode;
+  children?: ReactNode;
 };
 
 export const FocusGroup = (props: Props) => {

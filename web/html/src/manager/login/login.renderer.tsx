@@ -1,4 +1,3 @@
-import * as React from "react";
 import ReactDOM from "react-dom";
 
 import Login from "./login";
@@ -17,6 +16,7 @@ export const renderer = (
     loginLength,
     passwordLength,
     diskspaceSeverity,
+    dbDiskspaceSeverity,
     sccForwardWarning,
   }
 ) => {
@@ -35,6 +35,7 @@ export const renderer = (
         loginLength={loginLength}
         passwordLength={passwordLength}
         diskspaceSeverity={diskspaceSeverity}
+        dbDiskspaceSeverity={dbDiskspaceSeverity}
         sccForwardWarning={sccForwardWarning}
       />,
       elementToRender

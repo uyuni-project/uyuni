@@ -19,7 +19,6 @@ import time
 
 
 class ProgressBar:
-
     """A simplete progress bar class. See example in main below."""
 
     def __init__(

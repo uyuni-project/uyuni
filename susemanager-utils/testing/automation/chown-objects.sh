@@ -13,12 +13,12 @@ if [ ! -f /tmp/objects-init.txt -o ! -s /tmp/objects-init.txt ]; then
 fi
 # remove known nodejs modules
 pushd /manager
-rm -rf ./web/html/src/node_modules
+rm -rf ./web/node_modules
 popd
 find /manager | sort > /tmp/objects-end.txt
 for LINE in $(diff /tmp/objects-init.txt /tmp/objects-end.txt|grep '^> .*$'|sed -e 's/^> //'); do
   case $LINE in
-    /manager/web/html/src/node_modules/*) ;;
+    /manager/web/node_modules/*) ;;
     *) chown ${NEWUID}:${NEWGID} ${LINE};;
   esac
 done

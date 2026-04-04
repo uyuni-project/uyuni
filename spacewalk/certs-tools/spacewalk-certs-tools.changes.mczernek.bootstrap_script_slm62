@@ -1,0 +1,2 @@
+- Fix bootstrap script failure with SLM 6.2
+  during first execution (bsc#1258796)

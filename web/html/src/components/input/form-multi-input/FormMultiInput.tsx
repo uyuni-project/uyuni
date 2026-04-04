@@ -1,8 +1,10 @@
-import * as React from "react";
+import { type ReactNode, useContext } from "react";
 
 import { Button } from "components/buttons";
 import { Panel } from "components/panels/Panel";
 import { PanelRow } from "components/panels/PanelRow";
+
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 import { FormContext } from "../form/Form";
 
@@ -32,7 +34,7 @@ type Props = {
    * A function that renders the fields of one row given it's index.
    * The index parameter should be used for the field names.
    */
-  children: (index: number) => React.ReactNode;
+  children: (index: number) => ReactNode;
 
   /** Whether the fields are enabled or not. */
   disabled?: boolean;
@@ -48,7 +50,7 @@ type Props = {
   panelTitle?: (idx: number) => string;
 
   /** Content to display between the title and the first fields */
-  header?: React.ReactNode;
+  header?: ReactNode;
 
   /** CSS class for the row containing the fields of one item */
   rowClass?: string;
@@ -63,14 +65,14 @@ type Props = {
 /**
  * Compute the list of item keys in the model based of fields named like `${prefix}${idx}_${name}`
  */
-export function getOrderedItemsFromModel(model: any, prefix: string): Array<number> {
+export function getOrderedItemsFromModel(model: any, prefix: string): number[] {
   if (typeof model === "undefined" || model === null) {
     return [];
   }
   return Object.keys(model)
     .map((property) => {
       const result = property.match(new RegExp(`^${prefix}([0-9]+)`));
-      if (result != null) {
+      if (!DEPRECATED_unsafeEquals(result, null)) {
         return Number.parseInt(result[1], 10);
       }
       return -1;
@@ -130,8 +132,8 @@ export function getOrderedItemsFromModel(model: any, prefix: string): Array<numb
  * }}
  * ```
  */
-export function FormMultiInput(props: Props) {
-  const formContext = React.useContext(FormContext);
+export function FormMultiInput({ disabled = false, ...props }: Props) {
+  const formContext = useContext(FormContext);
   const items = getOrderedItemsFromModel(formContext.model, props.prefix);
   const new_index = (items.length > 0 && items[items.length - 1] + 1) || 0;
   return (
@@ -159,13 +161,13 @@ export function FormMultiInput(props: Props) {
             id={`remove_${props.prefix}${index}`}
             className="btn-default btn-sm"
             handler={() => props.onRemove(index)}
-            disabled={props.disabled}
+            disabled={disabled}
           />
         );
         const children = props.children(index);
-        if (props.panelTitle != null || props.panelIcon != null) {
-          const icon = props.panelIcon != null ? props.panelIcon(index) : null;
-          const title = props.panelTitle != null ? props.panelTitle(index) : null;
+        if (!DEPRECATED_unsafeEquals(props.panelTitle, null) || !DEPRECATED_unsafeEquals(props.panelIcon, null)) {
+          const icon = !DEPRECATED_unsafeEquals(props.panelIcon, null) ? props.panelIcon(index) : null;
+          const title = !DEPRECATED_unsafeEquals(props.panelTitle, null) ? props.panelTitle(index) : null;
           return (
             <Panel key={`${props.prefix}${index}`} icon={icon} title={title} headingLevel="h3" buttons={removeButton}>
               {children}
@@ -182,11 +184,3 @@ export function FormMultiInput(props: Props) {
     </Panel>
   );
 }
-
-FormMultiInput.defaultProps = {
-  disabled: false,
-  panelIcon: undefined,
-  panelTitle: undefined,
-  rowClass: undefined,
-  header: undefined,
-};

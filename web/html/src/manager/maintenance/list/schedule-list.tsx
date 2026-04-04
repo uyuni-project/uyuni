@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useState } from "react";
 
 import { Button } from "components/buttons";
@@ -44,6 +43,7 @@ const MaintenanceScheduleList = (props: ScheduleListProps) => {
           }
         />
         <Column
+          columnKey="actions"
           columnClass="text-right"
           headerClass="text-right"
           header={t("Actions")}

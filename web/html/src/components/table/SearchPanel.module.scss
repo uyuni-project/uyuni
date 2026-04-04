@@ -1,5 +1,6 @@
 :global(.old-theme),
 :global(.new-theme) {
+  .inlineSearchPanel,
   .searchPanel {
     display: flex;
     flex-wrap: wrap;
@@ -25,7 +26,8 @@
     }
   }
 
-  .pagination {
-    margin-left: 10px;
+  .inlineSearchPanel {
+    flex: 0;
+    flex-wrap: initial; 
   }
 }

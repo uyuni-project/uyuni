@@ -26,7 +26,7 @@
 
 .alert:after,
 .Toastify__toast:after {
-  font-family: "Fontawesome";
+  font-family: "FontAwesome";
   content: "\f00d";
   position: absolute;
   top: 9px;
@@ -84,8 +84,10 @@
 }
 
 .Toastify {
-  position: relative;
+  position: sticky;
   width: 100%;
+  top: 0;
+  z-index: 10;
 
   // Global alerts
   &#global .Toastify__toast-container {

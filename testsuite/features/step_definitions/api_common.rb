@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2025 SUSE LLC
+# Copyright (c) 2015-2026 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 ### This file contains the definitions for all steps concerning the API.
@@ -7,6 +7,38 @@ require 'json'
 require 'socket'
 
 # system namespace
+
+When(/^I delete all the imported terminals$/) do
+  terminals = read_terminals_from_yaml
+  short_names_to_process =
+    terminals.reject do |terminal_name|
+      terminal_name.include?('minion') || terminal_name.include?('client')
+    end
+  log "Terminals identified for deletion (short names): #{short_names_to_process.join(', ')}"
+  current_systems = $api_test.system.list_systems
+  full_names_to_delete = []
+  short_names_to_process.each do |short_name|
+    match =
+      current_systems.find do |s|
+        s['name'].split('.').include?(short_name)
+      end
+    if match
+      full_names_to_delete << match['name']
+    else
+      log "Warning: Could not find a registered system matching short name '#{short_name}'"
+    end
+  end
+  if full_names_to_delete.any?
+    $api_test.system.delete_systems_by_name(full_names_to_delete)
+  else
+    log 'No matching systems found to delete.'
+  end
+end
+
+When(/^I delete "([^"]*)" system using the api$/) do |host|
+  system_name = get_system_name(host)
+  $api_test.system.delete_systems_by_name([system_name])
+end
 
 Given(/^I want to operate on this "([^"]*)"$/) do |host|
   system_name = get_system_name(host)
@@ -137,31 +169,29 @@ When(/^I call user\.remove_role\(\) on "([^"]*)" with the role "([^"]*)"$/) do |
   refute($api_test.user.remove_role(luser, rolename) != 1)
 end
 
-Given(/^I create a user with name "([^"]*)" and password "([^"]*)"/) do |user, password|
+Given(/^I create a user with name "([^"]*)" and password "([^"]*)"(?: with roles "([^"]*)")?/) do |user, password, roles_string|
   $current_user = user
   $current_password = password
   next if $api_test.user.list_users.to_s.include? user
 
-  $api_test.user.create(user, password, user, user, 'galaxy-noise@localhost')
-  roles = %w[org_admin channel_admin config_admin system_group_admin activation_key_admin image_admin]
-  roles.each do |role|
-    $api_test.user.add_role(user, role)
-  end
-  add_context('user', user)
-  add_context('password', password)
-  log "New user #{user} created"
-end
-
-Given(/^I attempt to create a user with username "([^"]*)" and password "([^"]*)"/) do |user, password|
-  raise "User #{user} already exists. Cannot create duplicate." if $api_test.user.list_users.to_s.include?(user)
-
   begin
     $api_test.user.create(user, password, user, user, 'galaxy-noise@localhost')
-    roles = %w[config_admin system_group_admin activation_key_admin image_admin]
-    roles.each { |role| $api_test.user.add_role(user, role) }
+    default_roles = %w[org_admin channel_admin config_admin system_group_admin activation_key_admin image_admin]
+    roles_to_assign =
+      if roles_string
+        roles_string.split(',').map(&:strip).reject(&:empty?)
+      else
+        default_roles
+      end
 
+    roles_to_assign.each do |role|
+      $api_test.user.add_role(user, role)
+    end
+
+    add_context('user', user)
+    add_context('password', password)
     add_context('user_creation_status', 'success')
-    log "New user #{user} created"
+    log "New user #{user} created with roles: #{roles_to_assign.join(', ')}"
   rescue StandardError => e
     add_context('user_creation_status', 'error')
     add_context('user_creation_error', e.message)
@@ -200,11 +230,11 @@ Then(/^something should get listed with a call of listSoftwareChannels$/) do
 end
 
 Then(/^"([^"]*)" should get listed with a call of listSoftwareChannels$/) do |label|
-  assert($api_test.channel.verify_channel(label))
+  assert($api_test.channel.channel_verified?(label))
 end
 
 Then(/^"([^"]*)" should not get listed with a call of listSoftwareChannels$/) do |label|
-  assert_equal(false, $api_test.channel.verify_channel(label))
+  assert_equal(false, $api_test.channel.channel_verified?(label))
 end
 
 Then(/^"([^"]*)" should be the parent channel of "([^"]*)"$/) do |parent, child|
@@ -256,23 +286,48 @@ Then(/^I should get some activation keys$/) do
   raise ScriptError if $api_test.activationkey.get_activation_keys_count < 1
 end
 
-When(/^I create an activation key with id "([^"]*)", description "([^"]*)" and limit of (\d+)$/) do |id, dscr, limit|
-  key = $api_test.activationkey.create(id, dscr, '', limit.to_i)
-  raise ScriptError, 'Key creation failed' if key.nil?
-  raise ScriptError, 'Bad key name' if key != "1-#{id}"
+When(/^I create an activation key with id "([^"]*)", description "([^"]*)"(?:, base channel "([^"]*)")?(?:, limit of (\d+))?(?: and contact method "([^"]*)")?$/) do |id, description, base_channel_label, usage_limit_str, contact_method|
+  base_channel_label ||= ''
+  contact_method     ||= 'default'
+  usage_limit        = usage_limit_str.nil? ? 10 : usage_limit_str.to_i
+
+  activation_key = $api_test.activationkey.create(
+    id,
+    description,
+    base_channel_label,
+    usage_limit
+  )
+
+  raise ScriptError, 'Key creation failed' if activation_key.nil?
+  raise ScriptError, 'Bad key name' unless activation_key == "1-#{id}"
+
+  success = $api_test.activationkey.details_set?(
+    activation_key,
+    description,
+    base_channel_label,
+    usage_limit,
+    contact_method
+  )
+
+  raise 'Failed to set activation key details' unless success
+end
+
+When(/^I set the entitlements of the activation key "([^"]*)" to "([^"]*)"$/) do |activation_key, entitlements|
+  entitlements_array = entitlements.split(',').map(&:strip).reject(&:empty?)
+  $api_test.activationkey.set_entitlement(activation_key, entitlements_array)
 end
 
 Then(/^I should get the new activation key "([^"]*)"$/) do |activation_key|
-  raise ScriptError unless $api_test.activationkey.verify(activation_key)
+  raise ScriptError unless $api_test.activationkey.verified?(activation_key)
 end
 
 When(/^I delete the activation key "([^"]*)"$/) do |activation_key|
   raise ScriptError unless $api_test.activationkey.delete(activation_key)
-  raise ScriptError if $api_test.activationkey.verify(activation_key)
+  raise ScriptError if $api_test.activationkey.verified?(activation_key)
 end
 
 When(/^I set the description of the activation key "([^"]*)" to "([^"]*)"$/) do |activation_key, description|
-  raise RuntimeError unless $api_test.activationkey.set_details(activation_key, description, '', 10, 'default')
+  raise RuntimeError unless $api_test.activationkey.details_set?(activation_key, description, '', 10, 'default')
 end
 
 Then(/^I get the description "([^"]*)" for the activation key "([^"]*)"$/) do |description, activation_key|
@@ -297,19 +352,47 @@ When(/^I create an activation key including custom channels for "([^"]*)" via AP
   $stdout.puts "Activation key #{key} created" unless key.nil?
 
   is_ssh_minion = client.include? 'ssh_minion'
-  $api_test.activationkey.set_details(key, description, base_channel_label, 100, is_ssh_minion ? 'ssh-push' : 'default')
+  $api_test.activationkey.details_set?(key, description, base_channel_label, 100, is_ssh_minion ? 'ssh-push' : 'default')
   entitlements = client.include?('buildhost') ? ['osimage_build_host'] : ''
   $api_test.activationkey.set_entitlement(key, entitlements) unless entitlements.empty?
 
   # Get the list of child channels for this base channel
   child_channels = $api_test.channel.software.list_child_channels(base_channel_label)
 
-  # filter out wrong child channels for SLE Micro 5.5 as normal Minion
-  if client.include? 'slemicro55'
-    child_channels.reject! { |channel| channel.include? 'suse-manager-proxy-5.0-pool-x86_64' }
-    child_channels.reject! { |channel| channel.include? 'suse-manager-proxy-5.0-updates-x86_64' }
-    child_channels.reject! { |channel| channel.include? 'suse-manager-retail-branch-server-5.0-pool-x86_64' }
-    child_channels.reject! { |channel| channel.include? 'suse-manager-retail-branch-server-5.0-updates-x86_64' }
+  # Define which clients trigger which exclusions
+  channel_filters = {
+    /sle15sp6|slemicro55/ => %w[
+      suse-manager-proxy
+      suse-manager-retail-branch-server
+      suse-manager-server
+    ],
+    /sle15sp7|slmicro6[12]/ => %w[
+      suse-multi-linux-manager-proxy
+      suse-multi-linux-manager-retail-branch-server
+      suse-multi-linux-manager-server
+    ]
+  }.freeze
+
+  # Apply the filters to don't have wrong child channels on normal minions
+  channel_filters.each do |pattern, exclusions|
+    child_channels.reject! { |channel| exclusions.any? { |ex| channel.include?(ex) } } if client.match?(pattern)
+  end
+
+  if client.include?('proxy_nontransactional')
+    # The non-transactional proxy for 5.1 and 5.2 is based on the same HostOS SLES15 SP7
+    # we need to determine the proxy version and exclude the channels for the other proxy version.
+    version = product_version_full
+    version_to_exclude =
+      if version&.include?('5.1')
+        '5.2'
+      elsif version&.include?('5.2') || version&.include?('head')
+        '5.1'
+      else
+        nil
+      end
+
+    # Reject the channels containing the version we want to exclude
+    child_channels.reject! { |channel| channel.include?(version_to_exclude) } if version_to_exclude
   end
 
   $stdout.puts "Child_channels for #{key}: <#{child_channels}>"
@@ -602,7 +685,7 @@ When(/^I call system\.list_empty_system_profiles\(\)$/) do
 end
 
 Then(/^"([^"]*)" should be present in the result$/) do |profile_name|
-  assert($output.select { |p| p['name'] == profile_name }.count == 1)
+  assert($output.one? { |p| p['name'] == profile_name })
 end
 
 When(/^I create and modify the kickstart system "([^"]*)" with kickstart label "([^"]*)" and hostname "([^"]*)" via XML-RPC$/) do |name, kslabel, hostname, values|
@@ -622,7 +705,7 @@ When(/^I create "([^"]*)" kickstart tree via the API$/) do |distro_name|
   when 'fedora_kickstart_distro_api'
     $api_test.kickstart.tree.create_distro(distro_name, '/var/autoinstall/Fedora_12_i386/', 'fake-base-channel-rh-like', 'fedora18')
   when 'testdistro'
-    $api_test.kickstart.tree.create_distro(distro_name, '/var/autoinstall/SLES15-SP4-x86_64/DVD1/', 'sle-product-sles15-sp4-pool-x86_64', 'sles15generic')
+    $api_test.kickstart.tree.create_distro(distro_name, '/var/autoinstall/SLES15-SP7-x86_64/DVD1/', 'sle-product-sles15-sp7-pool-x86_64', 'sles15generic')
   else
     # Raise an error for unrecognized value
     raise ArgumentError, "Unrecognized value: #{distro_name}"

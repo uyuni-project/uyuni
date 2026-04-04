@@ -1,9 +1,8 @@
-import * as React from "react";
+import { Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
-import { Messages as MessageContainer } from "components/messages/messages";
-import { Utils as MessagesUtils } from "components/messages/messages";
+import { Messages as MessageContainer, Utils as MessagesUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 import { TabContainer } from "components/tab-container";
 
@@ -22,13 +21,15 @@ type SubscriptionMatchingProps = {
   refreshInterval: number;
 };
 
-class SubscriptionMatching extends React.Component<SubscriptionMatchingProps> {
+class SubscriptionMatchingState {
+  serverData: any | null = null;
+  error: any | null = null;
+}
+
+class SubscriptionMatching extends Component<SubscriptionMatchingProps, SubscriptionMatchingState> {
   timerId?: number;
   refreshRequest?: Cancelable;
-  state = {
-    serverData: null as any | null,
-    error: null as any | null,
-  };
+  state = new SubscriptionMatchingState();
 
   UNSAFE_componentWillMount() {
     this.refreshServerData();
@@ -53,8 +54,8 @@ class SubscriptionMatching extends React.Component<SubscriptionMatchingProps> {
           error: DEPRECATED_unsafeEquals(response.status, 401)
             ? "authentication"
             : response.status >= 500
-            ? "general"
-            : null,
+              ? "general"
+              : null,
         });
       });
   };
@@ -63,9 +64,11 @@ class SubscriptionMatching extends React.Component<SubscriptionMatchingProps> {
     if (this.refreshRequest) {
       this.refreshRequest.cancel();
     }
-    const serverData = this.state.serverData;
-    serverData.pinnedMatches = pinnedMatches;
-    this.setState({ serverData: serverData });
+    this.setState((prevState) => {
+      const serverData = prevState.serverData;
+      serverData.pinnedMatches = pinnedMatches;
+      return { serverData: serverData };
+    });
   };
 
   onMatcherRunSchedule = () => {
@@ -93,9 +96,9 @@ class SubscriptionMatching extends React.Component<SubscriptionMatchingProps> {
         <ErrorMessage error={this.state.error} />
         <SubscriptionMatchingTabContainer data={data} onPinChanged={this.onPinChanged} />
         <MatcherRunPanel
-          dataAvailable={data != null}
-          initialLatestStart={data == null ? null : data.latestStart}
-          initialLatestEnd={data == null ? null : data.latestEnd}
+          dataAvailable={!DEPRECATED_unsafeEquals(data, null)}
+          initialLatestStart={DEPRECATED_unsafeEquals(data, null) ? null : data.latestStart}
+          initialLatestEnd={DEPRECATED_unsafeEquals(data, null) ? null : data.latestEnd}
           onMatcherRunSchedule={this.onMatcherRunSchedule}
         />
       </div>
@@ -109,8 +112,8 @@ const ErrorMessage = (props) => (
       props.error === "authentication"
         ? MessagesUtils.warning(t("Session expired, please reload the page to see up-to-date data."))
         : props.error === "general"
-        ? MessagesUtils.warning(t("Server error, please check log files."))
-        : []
+          ? MessagesUtils.warning(t("Server error, please check log files."))
+          : []
     }
   />
 );
@@ -120,7 +123,7 @@ type SubscriptionMatchingTabContainerProps = {
   onPinChanged: (...args: any[]) => any;
 };
 
-class SubscriptionMatchingTabContainer extends React.Component<SubscriptionMatchingTabContainerProps> {
+class SubscriptionMatchingTabContainer extends Component<SubscriptionMatchingTabContainerProps> {
   state = { activeTabHash: document.location.hash };
 
   UNSAFE_componentWillMount() {
@@ -137,7 +140,7 @@ class SubscriptionMatchingTabContainer extends React.Component<SubscriptionMatch
   render() {
     const data = this.props.data;
 
-    if (data == null || !data.matcherDataAvailable) {
+    if (DEPRECATED_unsafeEquals(data, null) || !data.matcherDataAvailable) {
       return null;
     }
 
@@ -153,22 +156,23 @@ class SubscriptionMatchingTabContainer extends React.Component<SubscriptionMatch
         labels={[
           t("Subscriptions"),
           t("Unmatched Products"),
-          <span>
+          <span key="pins">
             {t("Pins ")}
             {pinLabelIcon}
           </span>,
-          <span>
+          <span key="messages">
             {t("Messages ")}
             {messageLabelIcon}
           </span>,
         ]}
         hashes={["#subscriptions", "#unmatched-products", "#pins", "#messages"]}
         tabs={[
-          <Subscriptions subscriptions={data.subscriptions} />,
+          <Subscriptions subscriptions={data.subscriptions} key="subscriptions" />,
           <UnmatchedProducts
             products={data.products}
             unmatchedProductIds={data.unmatchedProductIds}
             systems={data.systems}
+            key="unmatched-products"
           />,
           <Pins
             pinnedMatches={data.pinnedMatches}
@@ -176,8 +180,14 @@ class SubscriptionMatchingTabContainer extends React.Component<SubscriptionMatch
             systems={data.systems}
             subscriptions={data.subscriptions}
             onPinChanged={this.props.onPinChanged}
+            key="pins"
           />,
-          <Messages messages={data.messages} systems={data.systems} subscriptions={data.subscriptions} />,
+          <Messages
+            messages={data.messages}
+            systems={data.systems}
+            subscriptions={data.subscriptions}
+            key="messages"
+          />,
         ]}
         initialActiveTabHash={this.state.activeTabHash}
         onTabHashChange={this.onTabHashChange}

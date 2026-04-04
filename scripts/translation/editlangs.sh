@@ -14,7 +14,7 @@
 #
 # PS: Source is often be better than any other documentation ;-).
 
-RESOURCES_BASE="java/code/src/com/redhat/rhn/frontend/strings"
+RESOURCES_BASE="java/core/src/main/resources/com/redhat/rhn/frontend/strings"
 GIT_ROOT="$( git -c alias.a='!pwd' a )"
 
 function fail() {

@@ -560,5 +560,17 @@ insert into rhnServerPackageArchCompat
 (server_arch_id, package_arch_id, preference) values
 (LOOKUP_SERVER_ARCH('arm64-debian-linux'), LOOKUP_PACKAGE_ARCH('all-deb'), 1000);
 
+insert into rhnServerPackageArchCompat
+(server_arch_id, package_arch_id, preference) values
+(LOOKUP_SERVER_ARCH('armhf-debian-linux'), LOOKUP_PACKAGE_ARCH('armhf-deb'), 0);
+
+insert into rhnServerPackageArchCompat
+(server_arch_id, package_arch_id, preference) values
+(LOOKUP_SERVER_ARCH('armhf-debian-linux'), LOOKUP_PACKAGE_ARCH('arm-deb'), 100);
+
+insert into rhnServerPackageArchCompat
+(server_arch_id, package_arch_id, preference) values
+(LOOKUP_SERVER_ARCH('armhf-debian-linux'), LOOKUP_PACKAGE_ARCH('all-deb'), 1000);
+
 commit;
 

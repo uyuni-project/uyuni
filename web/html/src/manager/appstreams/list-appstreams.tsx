@@ -7,14 +7,14 @@ import { AppStreamModule, Channel, ChannelAppStream } from "./appstreams.type";
 import { AppStreamPanel } from "./panel-appstream";
 import { numberOfChanges } from "./utils";
 
-interface Props {
+type Props = {
   channelsAppStreams: ChannelAppStream[];
   toEnable: Map<number, string[]>;
   toDisable: Map<number, string[]>;
   onReset: () => void;
   onSubmitChanges: () => void;
   onModuleEnableDisable: (channel: Channel, module: AppStreamModule) => void;
-}
+};
 
 export const AppStreamsList = ({
   channelsAppStreams,

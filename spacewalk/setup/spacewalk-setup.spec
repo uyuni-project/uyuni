@@ -38,13 +38,14 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           spacewalk-setup
-Version:        5.2.0
+Version:        5.2.4
 Release:        0
 Summary:        Initial setup tools for %{productprettyname}
 License:        GPL-2.0-only
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/System
 URL:            https://github.com/uyuni-project/uyuni
+#!CreateArchive: %{name}
 Source0:        %{name}-%{version}.tar.gz
 BuildArch:      noarch
 %if 0%{?fedora}
@@ -58,7 +59,7 @@ BuildRequires:  python3-Sphinx
 %else
 BuildRequires:  python3-sphinx
 %endif
-BuildRequires:  tomcat
+BuildRequires:  tomcat11
 ## non-core
 #BuildRequires:  perl(Getopt::Long), perl(Pod::Usage)
 #BuildRequires:  perl(Test::Pod::Coverage), perl(Test::Pod)
@@ -70,11 +71,9 @@ Requires:       perl
 %endif
 Requires:       perl-Params-Validate
 Requires:       spacewalk-schema
-Requires:       perl(Term::Completion::Path)
 %if 0%{?suse_version}
 Requires:       curl
 Requires:       patch
-Requires:       perl-Frontier-RPC
 Requires:       perl-XML-LibXML
 Requires:       perl-XML-SAX
 Requires:       perl-libwww-perl
@@ -96,7 +95,7 @@ Requires:       perl-Satcon
 Requires:       spacewalk-admin
 Requires:       spacewalk-backend-tools
 Requires:       spacewalk-certs-tools
-Requires(post): tomcat
+Requires(post): tomcat11
 %if 0%{?build_py3}
 Requires:       (python3-PyYAML or python3-pyyaml)
 %else

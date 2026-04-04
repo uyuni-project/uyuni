@@ -12,7 +12,9 @@ DOMPurify.addHook("uponSanitizeElement", (node, data) => {
    * insert it as text instead (bsc#1211469).
    */
   if (data.tagName.includes("@")) {
-    return (node.textContent = data.tagName + node.textContent);
+    const textContent = data.tagName + node.textContent;
+    node.textContent = textContent;
+    return textContent;
   }
   // Otherwise keep default behavior
   return undefined;

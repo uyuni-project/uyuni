@@ -20,4 +20,9 @@
 #   to keep the process running, so now we use this script to rid ourselves of output! :{
 #
 
+if [ -f /run/.containerenv ] || [ -f /.dockerenv ]; then
+    touch /var/run/uyuni-restart-pending
+    exit 0
+fi
+
 /usr/sbin/spacewalk-service restart &> /dev/null < /dev/null

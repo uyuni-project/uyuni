@@ -7,5 +7,3 @@ jest.mock("components/ace-editor", () => {
     },
   };
 });
-
-export {};

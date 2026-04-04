@@ -1,0 +1,2 @@
+- Fixed multiple issues with repository persistence (bsc#1259499,
+  gh#uyuni-project/uyuni#11451)

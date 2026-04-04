@@ -1,0 +1,18 @@
+suite: test setup job
+templates:
+  - setup-job.yaml
+tests:
+  - it: should include registry credentials in env when registrySecret is set
+    set:
+      global.fqdn: uyuni.example.com
+      registrySecret: "my-secret"
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[0].env
+          content:
+            name: SCC_USER
+            valueFrom:
+              secretKeyRef:
+                key: username
+                name: "my-secret"
+                optional: false

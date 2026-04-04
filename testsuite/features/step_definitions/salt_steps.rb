@@ -1,4 +1,4 @@
-# Copyright 2015-2024 SUSE LLC
+# Copyright 2015-2025 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 ### This file contains all step definitions concerning Salt and bootstrapping
@@ -149,7 +149,7 @@ end
 Then(/^it should contain the OS of "([^"]*)"$/) do |host|
   node = get_target(host)
   os_family = node.os_family
-  family = os_family.match?(/^opensuse/) ? 'Leap' : 'SLES'
+  family = os_family.match?(/^opensuse/) ? '(Leap|Tumbleweed)' : 'SLES'
   assert_match(/#{family}/, $output)
 end
 
@@ -298,29 +298,29 @@ end
 
 When(/^I ([^ ]*) the "([^"]*)" formula$/) do |action, formula|
   # Complicated code because the checkbox is not a <input type=checkbox> but an <i>
-  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == 'check'
-  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == 'uncheck'
+  xpath_query = "//button[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == 'check'
+  xpath_query = "//button[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == 'uncheck'
   # DOM refreshes content of chooseFormulas element by accessing it. Then conditions are evaluated properly.
   find('#chooseFormulas')['innerHTML']
   if has_xpath?(xpath_query, wait: 2)
     raise ScriptError, "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: 2).click
   else
-    xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == 'check'
-    xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == 'uncheck'
+    xpath_query = "//button[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if action == 'check'
+    xpath_query = "//button[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if action == 'uncheck'
     raise ScriptError, "xpath: #{xpath_query} not found" unless has_xpath?(xpath_query, wait: 2)
   end
 end
 
 Then(/^the "([^"]*)" formula should be ([^ ]*)$/) do |formula, state|
   # Complicated code because the checkbox is not a <input type=checkbox> but an <i>
-  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if state == 'checked'
-  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if state == 'unchecked'
+  xpath_query = "//button[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if state == 'checked'
+  xpath_query = "//button[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if state == 'unchecked'
   # DOM refreshes content of chooseFormulas element by accessing it. Then conditions are evaluated properly.
   find('#chooseFormulas')['innerHTML']
   raise ScriptError, "Checkbox is not #{state}" if has_xpath?(xpath_query)
 
-  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if state == 'checked'
-  xpath_query = "//a[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if state == 'unchecked'
+  xpath_query = "//button[@id = '#{formula}']/i[@class = 'fa fa-lg fa-check-square-o']" if state == 'checked'
+  xpath_query = "//button[@id = '#{formula}']/i[@class = 'fa fa-lg fa-square-o']" if state == 'unchecked'
   assert has_xpath?(xpath_query), 'Checkbox could not be found'
 end
 
@@ -439,13 +439,13 @@ end
 # Perform actions
 When(/^I reject "([^"]*)" from the Pending section$/) do |host|
   system_name = get_system_name(host)
-  xpath_query = "//tr[td[contains(.,'#{system_name}')]]//button[@title = 'Reject']"
+  xpath_query = "//tr[td[contains(.,'#{system_name}')]]//button[@aria-label = 'Reject']"
   raise ScriptError, "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
 end
 
 When(/^I delete "([^"]*)" from the Rejected section$/) do |host|
   system_name = get_system_name(host)
-  xpath_query = "//tr[td[contains(.,'#{system_name}')]]//button[@title = 'Delete']"
+  xpath_query = "//tr[td[contains(.,'#{system_name}')]]//button[@aria-label = 'Delete']"
   raise ScriptError, "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
 end
 
@@ -459,7 +459,7 @@ end
 
 When(/^I accept "([^"]*)" key$/) do |host|
   system_name = get_system_name(host)
-  xpath_query = "//tr[td[contains(.,'#{system_name}')]]//button[@title = 'Accept']"
+  xpath_query = "//tr[td[contains(.,'#{system_name}')]]//button[@aria-label = 'Accept']"
   raise ScriptError, "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query).click
 end
 
@@ -565,7 +565,7 @@ When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
   salt_classic_config_dir = '/etc/salt'
 
   # Define cleanup paths
-  salt_bundle_cleanup_paths = '/var/cache/venv-salt-minion /run/venv-salt-minion /var/venv-salt-minion.log /var/tmp/.root*'
+  salt_bundle_cleanup_paths = '/var/cache/venv-salt-minion /run/venv-salt-minion /var/log/venv-salt-minion.log /var/tmp/.root*'
   salt_classic_cleanup_paths = '/var/cache/salt/minion /var/run/salt /run/salt /var/log/salt /var/tmp/.root*'
 
   # File cleanup within the configuration directory
@@ -581,7 +581,7 @@ When(/^I perform a full salt minion cleanup on "([^"]*)"$/) do |host|
   node.run("rm -Rf /root/salt #{salt_bundle_cleanup_paths} #{salt_classic_cleanup_paths}", check_errors: false)
 
   # Package removal using the existing step
-  step %(I remove packages "venv-salt-minion salt salt-minion" from this "#{host}" without error control)
+  step %(I remove packages "venv-salt-minion salt salt-minion" from this "#{host}")
 
   # Disable repositories
   step %(I disable the repositories "tools_update_repo tools_pool_repo" on this "#{host}" without error control)

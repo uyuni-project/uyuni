@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# pylint: disable=missing-module-docstring,invalid-name
 
 import glob
 import hashlib
@@ -19,6 +20,7 @@ from spacewalk.server import rhnSQL
 from spacewalk.common.rhnLog import initLOG, log_time, log_clean, log_debug
 from spacewalk.common.rhnConfig import cfg_component
 
+# pylint: disable-next=unused-import
 from uyuni.common import usix, rhnLib
 
 
@@ -220,6 +222,7 @@ SELECT c.label, c.last_synced,
  WHERE (SELECT id FROM rhnchannel WHERE label = :basechannel) IN (c.parent_channel, c.id);
 """
 
+# pylint: disable-next=invalid-name
 _lookupToolsProductIds = """
 SELECT sp.product_id
   FROM suseProducts sp
@@ -230,6 +233,7 @@ SELECT sp.product_id
 """
 
 
+# pylint: disable-next=invalid-name
 def releaseLOCK():
     global LOCK
     if LOCK:
@@ -241,8 +245,10 @@ def log_error(msg):
     frame = traceback.extract_stack()[-2]
     log_clean(
         0,
+        # pylint: disable-next=consider-using-f-string
         "{0}: {1}.{2}({3}) - {4}".format(log_time(), frame[0], frame[2], frame[1], msg),
     )
+    # pylint: disable-next=consider-using-f-string
     sys.stderr.write("{0}\n".format(msg))
 
 
@@ -250,9 +256,11 @@ def log(msg, level=0):
     frame = traceback.extract_stack()[-2]
     log_clean(
         level,
+        # pylint: disable-next=consider-using-f-string
         "{0}: {1}.{2}({3}) - {4}".format(log_time(), frame[0], frame[2], frame[1], msg),
     )
     if level < 1:
+        # pylint: disable-next=consider-using-f-string
         sys.stdout.write("{0}\n".format(msg))
 
 
@@ -275,20 +283,24 @@ def create_bootstrap_failure_notification(label, messages: List[str]):
         return proxy.tasko.createBootstrapRepoFailedNotification(label, message)
 
 
+# pylint: disable-next=invalid-name
 def isBeta():
     global BETA
     global UYUNI
     if BETA is None:
+        # pylint: disable-next=redefined-outer-name,invalid-name
         with cfg_component("java") as CFG:
             BETA = CFG.PRODUCT_TREE_TAG == "Beta"
             UYUNI = CFG.PRODUCT_TREE_TAG == "Uyuni"
     return BETA
 
 
+# pylint: disable-next=invalid-name
 def isUyuni():
     global BETA
     global UYUNI
     if UYUNI is None:
+        # pylint: disable-next=redefined-outer-name,invalid-name
         with cfg_component("java") as CFG:
             BETA = CFG.PRODUCT_TREE_TAG == "Beta"
             UYUNI = CFG.PRODUCT_TREE_TAG == "Uyuni"
@@ -391,8 +403,10 @@ def cli():
     if options.debug:
         initLOG(logfile, level=5)
     else:
+        # pylint: disable-next=redefined-outer-name,invalid-name
         with cfg_component("server.susemanager") as CFG:
             initLOG(logfile, CFG.DEBUG or 1)
+    # pylint: disable-next=invalid-name
     with cfg_component("server.susemanager") as CFG:
         flush = CFG.BOOTSTRAP_REPO_FLUSH
     if options.flush:
@@ -405,11 +419,14 @@ def cli():
     if isBeta():
         log("Is a Beta installation", 1)
 
+    # pylint: disable-next=invalid-name
     blacklistedPids = []
     if isUyuni():
         log("Is a Uyuni installation", 1)
+        # pylint: disable-next=invalid-name
         blacklistedPids = list_products_needs_tools_subscription()
 
+    # pylint: disable-next=invalid-name
     with cfg_component("server.susemanager") as CFG:
         modulename = options.datamodule or CFG.BOOTSTRAP_REPO_DATAMODULE
     try:
@@ -461,6 +478,7 @@ def cli():
                     )
 
     except ImportError as e:
+        # pylint: disable-next=consider-using-f-string
         log_error("Unable to load module '%s'" % modulename)
         log_error(str(e))
         sys.exit(1)
@@ -484,14 +502,18 @@ def find_root_channel_labels(pdids):
     """
     h = rhnSQL.Statement(_sql_find_root_channel_label.format(pdids))
     root_labels = [x["label"] for x in rhnSQL.fetchall_dict(h) or []]
+    # pylint: disable-next=consider-using-f-string
     log("Root Labels: {}".format(root_labels), 3)
     if len(root_labels) > 1:
         h = rhnSQL.Statement(
             _sql_filter_root_channel_label.format(
-                pdids, ", ".join(["'{}'".format(x) for x in root_labels])
+                pdids,
+                # pylint: disable-next=consider-using-f-string
+                ", ".join(["'{}'".format(x) for x in root_labels]),
             )
         )
         filtered_root_labels = [x["label"] for x in rhnSQL.fetchall_dict(h) or []]
+        # pylint: disable-next=consider-using-f-string
         log("Filtered Root Labels: {}".format(filtered_root_labels), 3)
         if len(filtered_root_labels) >= 1:
             return filtered_root_labels
@@ -548,10 +570,12 @@ def list_labels(mgr_bootstrap_data, force=False, do_print=True):
                     )
                 ):
                     # skip native RHEL if not connected to cdn
+                    # pylint: disable-next=consider-using-f-string
                     log("{} not connected to CDN. Skipping".format(label), 1)
                     continue
 
             if do_print:
+                # pylint: disable-next=consider-using-f-string
                 print("{0}. {1}".format(label_index, label))
             label_map[label_index] = label
             label_index += 1
@@ -560,6 +584,7 @@ def list_labels(mgr_bootstrap_data, force=False, do_print=True):
             and mgr_bootstrap_data.DATA[label]["BASECHANNEL"] in custom_parent_channels
         ):
             if do_print:
+                # pylint: disable-next=consider-using-f-string
                 print("{0}. {1}".format(label_index, label))
             label_map[label_index] = label
             label_index += 1
@@ -570,13 +595,16 @@ def cleanup_dir(path):
     if os.path.exists(path):
         try:
             shutil.rmtree(path)
+            # pylint: disable-next=consider-using-f-string
             log("REMOVE dir {0}".format(path), 3)
         except OSError as err:
+            # pylint: disable-next=consider-using-f-string
             log_error("Error while deleting {0}: {1}".format(path, err))
             return False
     return True
 
 
+# pylint: disable-next=dangerous-default-value
 def create_repo(label, options, mgr_bootstrap_data, additional=[]):
     pdids = None
     usecustomchannels = options.usecustomchannels
@@ -586,6 +614,7 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
         pdids = ", ".join(mgr_bootstrap_data.DATA[label]["PDID"])
         if label in ("RHEL8-x86_64", "RHEL9-x86_64"):
             if not connected_to_rhel_cdn(find_root_channel_labels(pdids)):
+                # pylint: disable-next=consider-using-f-string
                 log("WARNING: {} not connected to CDN.".format(label))
 
         if (
@@ -606,7 +635,9 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
 
     destdir = os.path.normpath(mgr_bootstrap_data.DATA[label]["DEST"])
     dirprefix, lastdir = os.path.split(destdir)
+    # pylint: disable-next=consider-using-f-string
     destdirtmp = os.path.join(dirprefix, "{0}.{1}".format(lastdir, "tmp"))
+    # pylint: disable-next=consider-using-f-string
     destdirold = os.path.join(dirprefix, "{0}.{1}".format(lastdir, "old"))
     errors = 0
     messages = []
@@ -619,6 +650,7 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
             root_labels = find_custom_parent_channel_labels()
         if parentchannel and parentchannel not in root_labels:
             log_error(
+                # pylint: disable-next=consider-using-f-string
                 "'{0}' not found in existing parent channel options '{1}'".format(
                     parentchannel, root_labels
                 )
@@ -631,6 +663,7 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
                 )
                 log_error("and choose one of:")
                 for l in root_labels:
+                    # pylint: disable-next=consider-using-f-string
                     log_error("- {0}".format(l))
                 return 1
             elif len(root_labels) == 1:
@@ -649,6 +682,7 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
         return 1
 
     if options.dryrun:
+        # pylint: disable-next=consider-using-f-string
         log("Create directory: {0}".format(destdirtmp))
     else:
         if not os.path.exists(destdir):
@@ -659,8 +693,10 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
 
     print()
     if label.startswith("RES") or label.startswith("RHEL"):
+        # pylint: disable-next=consider-using-f-string
         log("Creating bootstrap repo for latest Service Pack of {0}".format(label))
     else:
+        # pylint: disable-next=consider-using-f-string
         log("Creating bootstrap repo for {0}".format(label))
 
     if pdids and not options.force:
@@ -673,6 +709,7 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
     repotype = mgr_bootstrap_data.DATA[label].get("TYPE", "yum")
     packagelist.extend(additional)
     log(
+        # pylint: disable-next=consider-using-f-string
         "The bootstrap repo should contain the following packages: {0}".format(
             packagelist
         ),
@@ -696,6 +733,7 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
 
     for pkgaltstr in packagelist:
         alt = pkgaltstr.split("|")
+        # pylint: disable-next=consider-using-f-string
         altpretty = ", ".join("'%s'" % (e) for e in alt)
         altcount = 0
         for pkgname in alt:
@@ -707,17 +745,21 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
             h.execute(parentchannel=parentchannel, pkgname=pkgname)
             pkgs = h.fetchall_dict() or []
             log(
+                # pylint: disable-next=consider-using-f-string
                 "Package {0} found {1} resulting packages:".format(pkgname, len(pkgs)),
                 2,
             )
             if len(pkgs) == 0:
                 if optional:
+                    # pylint: disable-next=consider-using-f-string
                     log("Optional package '{0}' not found".format(pkgname))
                     continue
                 if altcount >= len(alt):
                     if len(alt) > 1:
+                        # pylint: disable-next=consider-using-f-string
                         messages.append("ERROR: none of %s found" % altpretty)
                     else:
+                        # pylint: disable-next=consider-using-f-string
                         messages.append("ERROR: package '%s' not found" % pkgname)
                     errors += 1
                     if not suggestions["no-packages"]:
@@ -737,7 +779,9 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
                 )
                 if not os.path.exists(rpmdir) and not options.dryrun:
                     os.makedirs(rpmdir)
+                # pylint: disable-next=consider-using-f-string
                 log("copy '%s'" % p["nvrea"])
+                # pylint: disable-next=consider-using-f-string
                 log("copy {0} / {1} to {2}".format(basepath, p["path"], rpmdir), 2)
                 if not options.dryrun:
                     shutil.copy2(os.path.join(basepath, p["path"]), rpmdir)
@@ -746,11 +790,13 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
         if repotype == "deb":
             debs = " ".join([os.path.join(debs_dir, f) for f in os.listdir(debs_dir)])
             log(
+                # pylint: disable-next=consider-using-f-string
                 "/usr/bin/reprepro -b {0} includedeb {1} {2}".format(
                     destdirtmp, "bootstrap", debs
                 )
             )
         else:
+            # pylint: disable-next=consider-using-f-string
             log("createrepo -s sha256 %s" % destdirtmp)
     else:
         if repotype == "deb":
@@ -774,11 +820,13 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
             reprepro_conf_dir = os.path.join(destdirtmp, "conf")
             if not os.path.exists(reprepro_conf_dir):
                 os.makedirs(reprepro_conf_dir)
+            # pylint: disable-next=unspecified-encoding
             with open(
                 os.path.join(reprepro_conf_dir, "distributions"), "w"
             ) as conf_file:
                 conf_file.write(reprepro_conf)
             log(
+                # pylint: disable-next=consider-using-f-string
                 "Created reprepro config file in {0}".format(
                     os.path.join(destdirtmp, "distributions")
                 ),
@@ -791,6 +839,7 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
                     + debs,
                     check=True,
                 )
+                # pylint: disable-next=consider-using-f-string
                 log("Removing directory {0}".format(debs_dir), 2)
                 shutil.rmtree(debs_dir, ignore_errors=True)
             except subprocess.CalledProcessError as err:
@@ -798,6 +847,7 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
                 log(err, 2)
                 return 1
         else:
+            # pylint: disable-next=consider-using-f-string
             os.system("/usr/bin/createrepo -s sha256 %s" % destdirtmp)
         # ensure venv-enabled-{ARCH}.txt doesn't exist in repo with no salt bundle package
         # create venv-enabled-{ARCH}.txt for repos with salt bundle package
@@ -819,9 +869,13 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
                             break
                         dg.update(buff)
                 (l_path, arch) = l_path.rsplit("." if ext == "rpm" else "_", 1)
+                # pylint: disable-next=unspecified-encoding
                 with open(
-                    os.path.join(destdirtmp, "venv-enabled-{}.txt".format(arch)), "w"
+                    # pylint: disable-next=consider-using-f-string
+                    os.path.join(destdirtmp, "venv-enabled-{}.txt".format(arch)),
+                    "w",
                 ) as venv_enabled_file:
+                    # pylint: disable-next=consider-using-f-string
                     venv_enabled_file.write("{}  {}\n".format(dg.hexdigest(), rel_path))
                     venv_enabled_file.close()
         # move tmp dir to final location
@@ -841,6 +895,7 @@ def create_repo(label, options, mgr_bootstrap_data, additional=[]):
             log_error(
                 "If the installation media was imported into a custom channel, try to run again with --with-custom-channels option"
             )
+        # pylint: disable-next=invalid-name
         suggestions = list([_f for _f in list(suggestions.values()) if _f])
         if suggestions:
             log_error("\nSuggestions:")
@@ -867,6 +922,7 @@ def connected_to_rhel_cdn(root_channel_labels):
     if len(root_channel_labels) != 1:
         return False
     rcl = root_channel_labels.pop()
+    # pylint: disable-next=invalid-name
     _child_connected_to_redhat_cdn = """
     select ch.id
       from rhnchannel ch
@@ -897,6 +953,7 @@ def find_dists_for_regeneration(dest, dists, doall=False):
                 find_root_channel_labels(", ".join(dist["PDID"]))
             ):
                 # skip native RHEL if not connected to cdn
+                # pylint: disable-next=consider-using-f-string
                 log("{} not connected to CDN. Skipping".format(label), 1)
                 continue
         destfile = os.path.join(dest, "repodata", "repomd.xml")
@@ -907,6 +964,7 @@ def find_dists_for_regeneration(dest, dists, doall=False):
         if os.path.exists(destfile):
             filemodtime = os.path.getmtime(destfile)
 
+        # pylint: disable-next=consider-using-f-string
         log("{0} modified: {1}".format(destfile, filemodtime), 2)
         if "PDID" in dist:
             pdids = ", ".join(dist["PDID"])
@@ -929,10 +987,12 @@ def find_dists_for_regeneration(dest, dists, doall=False):
         if not res:
             continue
         regen = True
+        # pylint: disable-next=invalid-name
         oneNewerTimestamp = 0
         for channelinfo in res:
             if doall and channelinfo["last_synced"]:
                 log(
+                    # pylint: disable-next=consider-using-f-string
                     "{0} available. Full regeneration requested".format(
                         channelinfo["label"]
                     ),
@@ -941,6 +1001,7 @@ def find_dists_for_regeneration(dest, dists, doall=False):
                 regen = regen and True
             elif not doall and channelinfo["newer"] == 1:
                 log(
+                    # pylint: disable-next=consider-using-f-string
                     "{0} modified after last bootstrap generation".format(
                         channelinfo["label"]
                     ),
@@ -951,8 +1012,10 @@ def find_dists_for_regeneration(dest, dists, doall=False):
                     channelinfo["last_synced"]
                     and channelinfo["last_synced"].timestamp() > oneNewerTimestamp
                 ):
+                    # pylint: disable-next=invalid-name
                     oneNewerTimestamp = channelinfo["last_synced"].timestamp()
             else:
+                # pylint: disable-next=consider-using-f-string
                 log("{0} not modified".format(channelinfo["label"]), 2)
                 regen = regen and False
         # regen is True when *all* required channels were re-synced
@@ -963,6 +1026,7 @@ def find_dists_for_regeneration(dest, dists, doall=False):
             and time.time() - oneNewerTimestamp > 4 * 60 * 60
         ):
             log(
+                # pylint: disable-next=consider-using-f-string
                 "latest channel sync at: {0}. Grace period over. Regenarate bootstrap repo.".format(
                     oneNewerTimestamp
                 ),
@@ -974,6 +1038,7 @@ def find_dists_for_regeneration(dest, dists, doall=False):
     return regenerate
 
 
+# pylint: disable-next=dangerous-default-value
 def generate_all(options, mgr_bootstrap_data, additional=[]):
     repos = {}
     errors = 0
@@ -989,10 +1054,13 @@ def generate_all(options, mgr_bootstrap_data, additional=[]):
             destdir = os.path.normpath(dest)
             if os.path.exists(destdir):
                 dirprefix, lastdir = os.path.split(destdir)
+                # pylint: disable-next=consider-using-f-string
                 destdirold = os.path.join(dirprefix, "{0}.{1}".format(lastdir, "old"))
+                # pylint: disable-next=consider-using-f-string
                 log("FLUSH: move destdir '{0}' to old".format(destdir))
                 if not options.dryrun:
                     os.rename(destdir, destdirold)
+            # pylint: disable-next=unused-variable
             doall = True
         for label in labels:
             errors += create_repo(
@@ -1026,6 +1094,7 @@ def main():
         )
         sys.exit(1)
 
+    # pylint: disable-next=global-variable-not-assigned
     global BETA
 
     opts, args, mgr_bootstrap_data = cli()
@@ -1046,10 +1115,12 @@ def main():
                     int(input("Enter a number of a product label: ")), ""
                 )
                 break
+            # pylint: disable-next=broad-exception-caught
             except Exception:
                 print("Please enter a number.")
 
         if elabel not in mgr_bootstrap_data.DATA:
+            # pylint: disable-next=consider-using-f-string
             log_error("'%s' not found" % elabel)
             sys.exit(1)
 
@@ -1057,7 +1128,9 @@ def main():
             destdir = os.path.normpath(mgr_bootstrap_data.DATA[elabel]["DEST"])
             if os.path.exists(destdir):
                 dirprefix, lastdir = os.path.split(destdir)
+                # pylint: disable-next=consider-using-f-string
                 destdirold = os.path.join(dirprefix, "{0}.{1}".format(lastdir, "old"))
+                # pylint: disable-next=consider-using-f-string
                 log("FLUSH: move destdir '{0}' to old".format(destdir))
                 if not opts.dryrun:
                     os.rename(destdir, destdirold)
@@ -1066,13 +1139,16 @@ def main():
         list_labels(mgr_bootstrap_data, force=opts.force)
     elif opts.create:
         if opts.create not in mgr_bootstrap_data.DATA:
+            # pylint: disable-next=consider-using-f-string
             log_error("'%s' not found" % opts.create)
             sys.exit(1)
         if opts.flush:
             destdir = os.path.normpath(mgr_bootstrap_data.DATA[opts.create]["DEST"])
             if os.path.exists(destdir):
                 dirprefix, lastdir = os.path.split(destdir)
+                # pylint: disable-next=consider-using-f-string
                 destdirold = os.path.join(dirprefix, "{0}.{1}".format(lastdir, "old"))
+                # pylint: disable-next=consider-using-f-string
                 log("FLUSH: move destdir '{0}' to old".format(destdir))
                 if not opts.dryrun:
                     os.rename(destdir, destdirold)

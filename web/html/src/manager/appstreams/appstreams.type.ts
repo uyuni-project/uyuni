@@ -4,9 +4,7 @@ export type Channel = {
   name: string;
 };
 
-export type AppStreams = {
-  [key: string]: Array<AppStreamModule>;
-};
+export type AppStreams = Record<string, AppStreamModule[]>;
 
 export type ChannelAppStream = {
   channel: Channel;
@@ -20,4 +18,12 @@ export type AppStreamModule = {
   context: string;
   arch: string;
   enabled: boolean;
+  systemCount: number;
+};
+
+export type SSMAppStreamChannel = {
+  id: number;
+  name: string;
+  modular: boolean;
+  parentId: number | null;
 };

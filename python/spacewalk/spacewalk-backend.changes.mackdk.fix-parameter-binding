@@ -1,2 +1,0 @@
-- Fix parameter error when syncing product repositories in ISS v1
-  (bsc#1244724)

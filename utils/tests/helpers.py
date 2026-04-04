@@ -17,6 +17,7 @@ def symlink_source(script_name: str, mod_name: str, path: str = None) -> None:
     if path is None:
         path = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
 
+    # pylint: disable-next=consider-using-f-string
     s_link_path = os.path.join(path, "tests", "{}.py".format(mod_name))
     if not os.path.exists(s_link_path):
         os.symlink(os.path.join(path, script_name), s_link_path)
@@ -32,6 +33,7 @@ def unsymlink_source(mod_name: str, path: str = None) -> None:
     """
     if path is None:
         path = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir))
+    # pylint: disable-next=consider-using-f-string
     mod_path = os.path.join(path, "tests", "{}.py".format(mod_name))
 
     if os.path.exists(mod_path):

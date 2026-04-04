@@ -53,3 +53,6 @@ CREATE UNIQUE INDEX rhn_cnp_cid_nid_aid_uq
 CREATE UNIQUE INDEX rhn_cnp_cid_nid_uq
     ON rhnchannelnewestpackage (channel_id, name_id, package_arch_id)
     WHERE appstream_id IS NULL;
+
+CREATE INDEX rhn_cnp_cid_n_id_idx
+    ON rhnChannelNewestPackage(channel_id, name_id);

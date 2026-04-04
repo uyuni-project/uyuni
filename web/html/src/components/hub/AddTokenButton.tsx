@@ -1,4 +1,4 @@
-import React from "react";
+import { type ReactNode, Component } from "react";
 
 import { Button, DropdownButton, LinkButton } from "components/buttons";
 import { Dialog } from "components/dialog/Dialog";
@@ -28,7 +28,7 @@ type State = {
   generatedToken: string | undefined;
 };
 
-export class AddTokenButton extends React.Component<Props, State> {
+export class AddTokenButton extends Component<Props, State> {
   static defaultProps: Partial<Props> = {
     method: AddTokenMethod.IssueAndStore,
     onCreated: undefined,
@@ -44,7 +44,7 @@ export class AddTokenButton extends React.Component<Props, State> {
     };
   }
 
-  public render(): React.ReactNode {
+  public render(): ReactNode {
     return (
       <>
         {this.renderButton()}
@@ -54,7 +54,7 @@ export class AddTokenButton extends React.Component<Props, State> {
     );
   }
 
-  private renderButton(): React.ReactNode {
+  private renderButton(): ReactNode {
     switch (this.props.method) {
       case AddTokenMethod.Issue:
         return (
@@ -86,31 +86,29 @@ export class AddTokenButton extends React.Component<Props, State> {
             title={t("Add a new access token")}
             className="btn-primary"
             items={[
-              // eslint-disable-next-line jsx-a11y/anchor-is-valid
-              <a
+              <Button
                 id="issue-btn-link"
+                className="dropdown-item"
                 key="issue"
-                href="#"
-                onClick={() => this.setState({ createRequest: { type: TokenType.ISSUED } })}
+                handler={() => this.setState({ createRequest: { type: TokenType.ISSUED } })}
               >
                 {t("Issue a new token")}
-              </a>,
-              // eslint-disable-next-line jsx-a11y/anchor-is-valid
-              <a
+              </Button>,
+              <Button
                 id="store-btn-link"
+                className="dropdown-item"
                 key="store"
-                href="#"
-                onClick={() => this.setState({ createRequest: { type: TokenType.CONSUMED } })}
+                handler={() => this.setState({ createRequest: { type: TokenType.CONSUMED } })}
               >
                 {t("Store an external token")}
-              </a>,
+              </Button>,
             ]}
           />
         );
     }
   }
 
-  private renderCreationForm(): React.ReactNode {
+  private renderCreationForm(): ReactNode {
     if (this.state.createRequest === undefined) {
       return <></>;
     }
@@ -124,7 +122,11 @@ export class AddTokenButton extends React.Component<Props, State> {
         isOpen={this.state.createRequest !== undefined}
         onClose={() => this.setState({ createRequest: undefined })}
         content={
-          <Form model={this.state.createRequest} onValidate={(valid) => this.setState({ createRequestValid: valid })}>
+          <Form
+            model={this.state.createRequest}
+            onChange={(model) => this.setState({ createRequest: { ...model } })}
+            onValidate={(valid) => this.setState({ createRequestValid: valid })}
+          >
             <Text
               name="fqdn"
               label={t("Server FQDN")}
@@ -170,7 +172,7 @@ export class AddTokenButton extends React.Component<Props, State> {
     );
   }
 
-  private renderTokenModal(): React.ReactNode {
+  private renderTokenModal(): ReactNode {
     if (this.state.generatedToken === undefined) {
       return <></>;
     }

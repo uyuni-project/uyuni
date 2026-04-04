@@ -6,8 +6,10 @@
 *.src.rpm
 *.git.*.rpm
 *.Ds_Store
+branding/target
 java/build
 java/buildconf/ivy/repository/
+java/repository
 java/lib
 java/*.log
 java/*.log.*
@@ -16,6 +18,7 @@ java/buildconf/builder/config/local
 java/buildconf/manager-developer-build.properties
 java/buildconf/test/rhn.conf
 java/buildconf/tempjars/*
+java/**/target
 java/.checkstyle
 **/.classpath
 java/.externalToolBuilders
@@ -64,9 +67,10 @@ sqlnet.log
 backend/satellite_tools/spacewalk-repo-syncc
 node_modules
 node-modules.tar.gz
+node_modules.tar.gz
+# This should never be used since we use NPM, but avoid anyone accidentally committing it
+yarn.lock
 yarn-error.log
-# This should never be used since we use Yarn, but avoid anyone accidentally committing it
-package-lock.json
 
 # Intellij IDEA
 .idea/
@@ -79,7 +83,7 @@ reports/
 *.mypy*
 
 # VS Code
-java/.vscode/launch.json
+
 python/.vscode
 .vscode/launch.json
 *.code-workspace
@@ -93,11 +97,6 @@ wheels/
 __pycache__/
 build/
 .pytest_cache/
-
-# Predictive Test Selection Outputs
-**/predictive-test-selection/**/*.log
-**/predictive-test-selection/**/*.csv
-**/predictive-test-selection/PR*
 
 # Schema
 

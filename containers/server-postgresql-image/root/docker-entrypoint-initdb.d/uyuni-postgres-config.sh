@@ -20,7 +20,7 @@ postgres_reconfig() {
 # Get total memory in KB
 TOTAL_MEM_KB=$(sed -n -e '/MemTotal:/{s|MemTotal:[[:space:]]*\([0-9]*\).*|\1| p}' /proc/meminfo)
 
-# Check minimum memory requirement (255KB)
+# Check minimum memory requirement (255MB)
 if [ "$TOTAL_MEM_KB" -lt $((0xff * 1024)) ]; then
     echo "WARNING: low memory: $TOTAL_MEM_KB"
     TOTAL_MEM_KB=$((0xff * 1024))
@@ -101,12 +101,14 @@ if [ -f $SSL_KEY ] ; then
     postgres_reconfig "ssl_key_file" "'$SSL_KEY'"
 fi
 
+mkdir -p /var/lib/pgsql/data/postgresql.conf.d
+postgres_reconfig "include_dir" "'postgresql.conf.d'"
+
 echo "postgresql.conf updated"
 
-rm /var/lib/pgsql/data/pg_hba.conf
-
-chmod +x /usr/local/bin/docker-entrypoint.sh
-source /usr/local/bin/docker-entrypoint.sh
-pg_setup_hba_conf "$@"
+cat "$HBA_FILE" <<EOT
+local replication,postgres all trust
+host all all all scram-sha-256
+EOT
 
 echo "pg_hba.conf updated"

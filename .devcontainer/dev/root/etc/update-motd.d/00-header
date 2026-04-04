@@ -1,0 +1,78 @@
+#!/bin/bash
+
+# ---------------------------------------------------------------------
+# DYNAMIC CONFIGURATION
+# ---------------------------------------------------------------------
+
+# Detect if running in GitHub Codespaces
+if [[ $CODESPACES == "true" ]]; then
+  # 1. Web/Debug Ports (Exposed via Public URL)
+  EPHEMERAL_UI_URL="https://${CODESPACE_NAME}-443.app.github.dev"
+  
+  # Debug ports on the Ephemeral Server
+  TASKOMATIC_DEBUG_URL="https://${CODESPACE_NAME}-8001.app.github.dev"
+  SEARCH_DEBUG_URL="https://${CODESPACE_NAME}-8002.app.github.dev"
+  TOMCAT_DEBUG_URL="https://${CODESPACE_NAME}-8003.app.github.dev"
+  
+  # 2. TCP Ports (Forwarded to localhost via VS Code Tunnel)
+  DB_EXTERNAL="localhost:54320"
+  DB_NOTE="(Forwarded via VS Code)"
+
+  UNIT_TEST_URL="https://${CODESPACE_NAME}-9000.app.github.dev"
+else
+  # Local Docker Environment
+  EPHEMERAL_UI_URL="https://localhost"
+  
+  TASKOMATIC_DEBUG_URL="http://localhost:8001"
+  SEARCH_DEBUG_URL="http://localhost:8002"
+  TOMCAT_DEBUG_URL="http://localhost:8003"
+  
+  # Standard Port Mapping
+  DB_EXTERNAL="localhost:54320"
+  DB_NOTE="(Running on Host)"
+
+  UNIT_TEST_URL="http://localhost:9000"
+fi
+
+# ---------------------------------------------------------------------
+# VISUAL STYLING
+# ---------------------------------------------------------------------
+CYAN='\e[33;0;36m'
+YELLOW='\e[33;1;93m'
+PINK='\e[38;5;198m'
+GREEN='\e[32m'
+RESET='\e[0m'
+
+# ---------------------------------------------------------------------
+# MESSAGE OUTPUT
+# ---------------------------------------------------------------------
+
+printf "\n"
+printf "${CYAN}Welcome to the Integrated Uyuni Development Environment!${RESET}\n"
+printf "\n"
+
+printf "${YELLOW}📦 Ephemeral Server (Full Uyuni Instance):${RESET}\n"
+printf "   1. Setup/Install:     ${PINK}sudo mgradm install podman -c /etc/uyuni-tools/uyuni-tools.yaml${RESET}\n"
+printf "      (You must run this once to install the server)\n"
+printf "   2. Web UI:            ${PINK}${EPHEMERAL_UI_URL}${RESET} (Visible AFTER setup)\n"
+printf "\n"
+printf "   ${YELLOW}Debug Endpoints (Active after setup):${RESET}\n"
+printf "   * Taskomatic:         ${PINK}${TASKOMATIC_DEBUG_URL}${RESET}\n"
+printf "   * Search Server:      ${PINK}${SEARCH_DEBUG_URL}${RESET}\n"
+printf "   * Tomcat:             ${PINK}${TOMCAT_DEBUG_URL}${RESET}\n"
+printf "\n"
+
+printf "${YELLOW}🗄️  Unit Test Database (Postgres):${RESET}\n"
+printf "   * Internal Host:      ${GREEN}db${RESET}   (Use this inside Java/Ant/Unit Tests)\n"
+printf "   * Internal Port:      ${GREEN}54320${RESET}\n"
+printf "   * External Access:    ${PINK}${DB_EXTERNAL}${RESET} ${DB_NOTE}\n"
+printf "   * JDBC String:        ${PINK}jdbc:postgresql://db:54320/spaceschema${RESET}\n"
+printf "\n"
+
+printf "${YELLOW}🛠️  Build & Test Commands (Ant):${RESET}\n"
+printf "   * Download Deps:      ${PINK}ant -f java/manager-build.xml ivy${RESET}\n"
+printf "   * Compile Code:       ${PINK}ant -f java/manager-build.xml compile${RESET}\n"
+printf "   * Run Unit Tests:     ${PINK}ant -f java/manager-build.xml test-report${RESET}\n"
+printf "     Setup View:       ${PINK}python3 -m http.server 9000 --directory java/test-results/html${RESET}\n"
+printf "     View Reports:       ${PINK}${UNIT_TEST_URL}${RESET}\n"
+printf "\n"

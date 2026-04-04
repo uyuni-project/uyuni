@@ -13,7 +13,7 @@ export type FilterServerType = {
   criteriaKey: string;
   criteriaValue: string;
   rule: string;
-  projects?: Array<Project>;
+  projects?: Project[];
 };
 
 export type FilterFormType = {
@@ -22,7 +22,7 @@ export type FilterFormType = {
   rule: string;
   id?: number;
   filter_name: string;
-  projects?: Array<Project>;
+  projects?: Project[];
   packageName?: string;
   epoch?: string;
   version?: string;

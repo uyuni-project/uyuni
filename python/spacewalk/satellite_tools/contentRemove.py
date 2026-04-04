@@ -418,7 +418,7 @@ def __deleteRepoData(labels):
     directory = "/var/cache/" + CFG.repomd_path_prefix
     for label in labels:
         if os.path.isdir(directory + "/" + label):
-            # pylint: disable=W4903
+            # pylint: disable-next=deprecated-argument
             shutil.rmtree(directory + "/" + label, onerror=__rmtree_error)
 
 
@@ -662,7 +662,7 @@ def _delete_ks_files(channel_labels):
             # pylint: disable-next=consider-using-f-string
             log_debug(1, "Not removing %s: no such file" % path)
             continue
-        # pylint: disable=W4903
+        # pylint: disable-next=deprecated-argument
         shutil.rmtree(path, onerror=__rmtree_error)
 
 

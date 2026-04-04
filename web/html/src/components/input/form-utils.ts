@@ -1,10 +1,13 @@
 import _isNil from "lodash/isNil";
-import validator from "validator";
+
+import Validation from "components/validation";
+
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 type SingleOrArray<T> = T | T[] | undefined;
-interface TreeLikeModel<T = any> {
+type TreeLikeModel<T = any> = {
   [key: string]: SingleOrArray<T | TreeLikeModel<T>>;
-}
+};
 
 /**
  * Convert a tree-like model into a flat model for use with the Form and Input components.
@@ -61,7 +64,7 @@ export function stripBlankValues<T = any>(flatModel: Record<string, T>): Record<
 export function convertNumbers<T>(flatModel: Record<string, T>): Record<string, T> {
   return Object.fromEntries(
     Object.entries(flatModel).map((entry) => {
-      if (typeof entry[1] === "string" && (validator.isFloat(entry[1]) || validator.isInt(entry[1]))) {
+      if (typeof entry[1] === "string" && (Validation.isFloat(entry[1]) || Validation.isInt(entry[1]))) {
         const floatValue = Number.parseFloat(entry[1]);
         if (!Number.isNaN(floatValue)) {
           return [entry[0], floatValue];
@@ -76,14 +79,14 @@ export function convertNumbers<T>(flatModel: Record<string, T>): Record<string, 
  * Reverse of flattenModel.
  */
 export function unflattenModel<T>(flatModel: Record<string, T>): TreeLikeModel<T> {
-  let treeModel: any = {};
+  const treeModel: any = {};
 
   const aggregate = (obj: Record<string, any>, name: string, value: any) => {
     const pos = name.indexOf("_");
     if (pos >= 0) {
       const segment = name.substring(0, pos);
       const tail = name.substring(pos + 1);
-      if (obj[segment] == null) {
+      if (DEPRECATED_unsafeEquals(obj[segment], null)) {
         obj[segment] = {};
       }
       aggregate(obj[segment], tail, value);
@@ -94,7 +97,7 @@ export function unflattenModel<T>(flatModel: Record<string, T>): TreeLikeModel<T
 
   const mergeArrays = (model: any): any => {
     return Object.keys(model).reduce((result, key) => {
-      const matcher = key.match(/^([a-zA-Z0-9]*[A-zA-Z])[0-9]+$/);
+      const matcher = key.match(/^([a-zA-Z0-9]*[a-zA-Z])[0-9]+$/);
       const mergedValue =
         typeof model[key] === "object" && !Array.isArray(model[key]) ? mergeArrays(model[key]) : model[key];
       if (matcher) {

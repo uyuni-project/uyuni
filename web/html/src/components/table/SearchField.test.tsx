@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useState } from "react";
 
 import { render, screen, type } from "utils/test-utils";

@@ -47,7 +47,7 @@ Feature: Salt SSH action chain
   Scenario: Create a custom action chain for the SSH minion
     When I create an action chain with label "minssh_action_chain" via API  
     And I follow the left menu "Schedule > Action Chains"
-    Then I should see a "minssh_action_chain" text
+    Then I wait until I see "minssh_action_chain" text
 
   Scenario: Add a patch installation to the action chain on SSH minion
     Given I am on the Systems overview page of this "ssh_minion"

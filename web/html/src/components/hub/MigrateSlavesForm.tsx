@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, Component } from "react";
 
 import { AsyncButton, Button } from "components/buttons";
 import { Dialog } from "components/dialog/Dialog";
@@ -23,19 +23,19 @@ import {
 
 type Props = {
   title: string;
-  migrationEntries: Array<MigrationEntry>;
+  migrationEntries: MigrationEntry[];
   migrateFrom: MigrationVersion;
 };
 
 type State = {
-  tableModel: Array<MigrationEntry>;
+  tableModel: MigrationEntry[];
   tableModelValid: boolean;
   loading: boolean;
   submitted: boolean;
   migrationResult: MigrationResult | undefined;
 };
 
-export class MigrateSlavesForm extends React.Component<Props, State> {
+export class MigrateSlavesForm extends Component<Props, State> {
   static defaultProps: Partial<Props> = {
     migrationEntries: [],
   };
@@ -54,7 +54,7 @@ export class MigrateSlavesForm extends React.Component<Props, State> {
     };
   }
 
-  public render(): React.ReactNode {
+  public render(): ReactNode {
     return (
       <TopPanel
         title={this.props.title}
@@ -79,10 +79,8 @@ export class MigrateSlavesForm extends React.Component<Props, State> {
       >
         {/* Loading banner for when the submit is in progress */}
         {this.state.loading && this.renderLoadingBanner()}
-
         {/* Modal dialog to show the problems happened during migration */}
         {this.state.migrationResult && this.renderMigrationResultDialog()}
-
         {/* When we are migrating from ISSv1 it is possible that we don't have any server to migrate. In this case
          * show an error message instead of the server table. This cannot happen for ISSv2 because the user must always
          * insert the server information manually. */}
@@ -127,7 +125,7 @@ export class MigrateSlavesForm extends React.Component<Props, State> {
     }));
   }
 
-  private renderLoadingBanner(): React.ReactNode {
+  private renderLoadingBanner(): ReactNode {
     return (
       <Messages
         items={[
@@ -140,7 +138,7 @@ export class MigrateSlavesForm extends React.Component<Props, State> {
     );
   }
 
-  private renderMigrationResultDialog(): React.ReactNode {
+  private renderMigrationResultDialog(): ReactNode {
     if (this.state.migrationResult === undefined) {
       return <></>;
     }
@@ -193,7 +191,7 @@ export class MigrateSlavesForm extends React.Component<Props, State> {
     return this.state.tableModel.length === 0;
   }
 
-  private renderNothingToMigrateMessage(): React.ReactNode {
+  private renderNothingToMigrateMessage(): ReactNode {
     return (
       <>
         <Messages
@@ -217,7 +215,7 @@ export class MigrateSlavesForm extends React.Component<Props, State> {
     );
   }
 
-  private renderServerTable(): React.ReactNode {
+  private renderServerTable(): ReactNode {
     return (
       <>
         <Table data={this.state.tableModel} identifier={(row: MigrationEntry) => row.id}>
@@ -258,7 +256,7 @@ export class MigrateSlavesForm extends React.Component<Props, State> {
     );
   }
 
-  private renderSelection(row: MigrationEntry): React.ReactNode {
+  private renderSelection(row: MigrationEntry): ReactNode {
     return (
       <input
         type="checkbox"
@@ -277,7 +275,7 @@ export class MigrateSlavesForm extends React.Component<Props, State> {
     );
   }
 
-  private renderToken(row: MigrationEntry): React.ReactNode {
+  private renderToken(row: MigrationEntry): ReactNode {
     const tokenPresent = row.accessToken !== null && row.accessToken.trim().length > 0;
 
     return (
@@ -315,7 +313,7 @@ export class MigrateSlavesForm extends React.Component<Props, State> {
     });
   }
 
-  private renderRootCA(row: MigrationEntry): React.ReactNode {
+  private renderRootCA(row: MigrationEntry): ReactNode {
     return (
       <div className="container pl-0">
         <div className="row align-items-center">
@@ -355,7 +353,7 @@ export class MigrateSlavesForm extends React.Component<Props, State> {
     );
   }
 
-  private renderResultMessage(message: MigrationMessage): React.ReactNode {
+  private renderResultMessage(message: MigrationMessage): ReactNode {
     let iconClass: string, iconTitle: string;
 
     switch (message.severity) {
@@ -385,7 +383,7 @@ export class MigrateSlavesForm extends React.Component<Props, State> {
     );
   }
 
-  private isTableModeValid(entries: Array<MigrationEntry>): boolean {
+  private isTableModeValid(entries: MigrationEntry[]): boolean {
     // Filter only the entries that can be migrated and are selected
     const migratable = entries.filter((entry) => !entry.disabled && entry.selected);
 
@@ -413,7 +411,7 @@ export class MigrateSlavesForm extends React.Component<Props, State> {
     field: K,
     id: number,
     value: MigrationEntry[K]
-  ): Array<MigrationEntry> {
+  ): MigrationEntry[] {
     return this.state.tableModel.map((entry) => (entry.id === id ? { ...entry, [field]: value } : entry));
   }
 }

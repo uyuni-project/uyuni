@@ -17,113 +17,104 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-11 13:25+0200\n"
+"POT-Creation-Date: 2025-10-03 11:04+0200\n"
 "PO-Revision-Date: 2018-03-16 10:59+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
-"Language-Team: Welsh (http://www.transifex.com/projects/p/spacewalk/language/"
-"cy/)\n"
+"Language-Team: Welsh (http://www.transifex.com/projects/p/spacewalk/language/cy/)\n"
 "Language: cy\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n==2) ? 1 : (n != 8 && n != "
-"11) ? 2 : 3;\n"
+"Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n==2) ? 1 : (n != 8 && n != 11) ? 2 : 3;\n"
 "X-Generator: Zanata 4.6.2\n"
 
-#: ../src/up2date_client/config.py:162
+#. pylint: disable-next=consider-using-f-string
+#: ../src/up2date_client/config.py:166
 #, python-format
 msgid "%s was not found"
 msgstr "Ni chafwyd %s"
 
-#: ../src/up2date_client/rpcServer.py:55
+#: ../src/up2date_client/rpcServer.py:70
 msgid "Error: Server Unavailable. Please try later."
 msgstr ""
 
-#: ../src/up2date_client/rpcServer.py:181
+#. pylint: disable-next=consider-using-f-string
+#: ../src/up2date_client/rpcServer.py:221
 #, fuzzy
 msgid "ERROR: can not find server CA file"
 msgstr "GWALL: Ni chafwyd ffeil RHNS CA"
 
-#: ../src/up2date_client/up2dateErrors.py:47
-#: ../src/up2date_client/up2dateErrors.py:80
+#: ../src/up2date_client/up2dateErrors.py:62
+#: ../src/up2date_client/up2dateErrors.py:101
 #, python-format
 msgid "class %s has no attribute '%s'"
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:107
+#: ../src/up2date_client/up2dateErrors.py:135
 msgid "RPM error.  The message was:\n"
 msgstr "Gwall RPM.  Dyma oedd y neges:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:114
+#: ../src/up2date_client/up2dateErrors.py:145
 msgid "Password error. The message was:\n"
 msgstr "Gwall cyfrinair. Dyma oedd y neges:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:118
+#: ../src/up2date_client/up2dateErrors.py:151
 msgid "RPM dependency error. The message was:\n"
 msgstr "Gwall dibyniaeth RPM. Dyma oedd y neges:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:128
+#: ../src/up2date_client/up2dateErrors.py:163
 msgid "Error communicating with server. The message was:\n"
 msgstr "Gwall cyfathrebu â'r gweinydd. Dyma oedd y neges:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:135
+#: ../src/up2date_client/up2dateErrors.py:172
 msgid "File Not Found: \n"
 msgstr "Ffeil Heb ei Chanfod: \n"
 
-#: ../src/up2date_client/up2dateErrors.py:142
+#: ../src/up2date_client/up2dateErrors.py:180
 msgid "Delay error from server.  The message was:\n"
 msgstr "Gwall oedi o'r gweinydd.  Dyma oedd y neges:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:178
+#: ../src/up2date_client/up2dateErrors.py:229
 msgid "Error validating data at server:\n"
 msgstr "Gwall wrth wirio data wrth y gweinydd:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:191
+#: ../src/up2date_client/up2dateErrors.py:246
 msgid ""
 "\n"
 "Red Hat Network Classic is not supported.\n"
 "    "
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:197
+#: ../src/up2date_client/up2dateErrors.py:255
 msgid "The installation number is invalid"
 msgstr "Annilys yw'r rhif tanysgrifiad"
 
-#: ../src/up2date_client/up2dateErrors.py:200
+#: ../src/up2date_client/up2dateErrors.py:259
 msgid "Error parsing the oemInfo file at field:\n"
 msgstr "Gwall wrth ddyrannu'r ffeil oemInfo wrth faes:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:227
+#: ../src/up2date_client/up2dateErrors.py:294
 msgid "Network error: "
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:295
+#: ../src/up2date_client/up2dateErrors.py:385
 msgid ""
 "\n"
-"    Your organization does not have enough Management entitlements to "
-"register this\n"
+"    Your organization does not have enough Management entitlements to register this\n"
 "    system. Please notify your organization administrator of this error.\n"
-"    You should be able to register this system after your organization frees "
-"existing\n"
-"    or purchases additional entitlements. Additional entitlements may be "
-"purchased by your\n"
+"    You should be able to register this system after your organization frees existing\n"
+"    or purchases additional entitlements. Additional entitlements may be purchased by your\n"
 "    organization administrator in the SUSE Customer Center.\n"
 "\n"
 "    A common cause of this error code is due to having mistakenly setup an\n"
-"    Activation Key which is set as the universal default.  If an activation "
-"key is set\n"
-"    on the account as a universal default, you can disable this key and "
-"retry to avoid\n"
+"    Activation Key which is set as the universal default.  If an activation key is set\n"
+"    on the account as a universal default, you can disable this key and retry to avoid\n"
 "    requiring a Management entitlement."
 msgstr ""
 
 #, python-format
-#~ msgid ""
-#~ "This client requires the server to support %s, which the current server "
-#~ "does not support"
-#~ msgstr ""
-#~ "Mae'r dibynnydd yma'n mynnu bod y gweinydd yn cynnal %s, nad yw'r "
-#~ "gweinydd cyfredol yn ei gynnal"
+#~ msgid "This client requires the server to support %s, which the current server does not support"
+#~ msgstr "Mae'r dibynnydd yma'n mynnu bod y gweinydd yn cynnal %s, nad yw'r gweinydd cyfredol yn ei gynnal"
 
 #~ msgid "Getting list of packages installed on the system"
 #~ msgstr "Yn nôl rhestr becynnau arsefydlog ar y system"
@@ -155,10 +146,8 @@ msgstr ""
 #~ msgid "Error reading machine info:"
 #~ msgstr "Problem wrth ddarllen gwybodaeth cpu:"
 
-#~ msgid ""
-#~ "This system may not be updated until it is associated with a channel."
-#~ msgstr ""
-#~ "Ni cheir diweddaru'r system yma nes ei bod yn gysylltiedig â sianel."
+#~ msgid "This system may not be updated until it is associated with a channel."
+#~ msgstr "Ni cheir diweddaru'r system yma nes ei bod yn gysylltiedig â sianel."
 
 #, fuzzy
 #~ msgid "Show additional output. Repeat for more detail."
@@ -192,12 +181,8 @@ msgstr ""
 #~ msgid "There was an SSL error: %s\n"
 #~ msgstr "Bu gwall SSL: %s\n"
 
-#~ msgid ""
-#~ "A common cause of this error is the system time being incorrect. Verify "
-#~ "that the time on this system is correct.\n"
-#~ msgstr ""
-#~ "Mae bod yr amser system yn anghywir yn achos cyffredin o'r gwall yma. "
-#~ "Gwiriwch fod yr amser ar y system yma'n gywir.\n"
+#~ msgid "A common cause of this error is the system time being incorrect. Verify that the time on this system is correct.\n"
+#~ msgstr "Mae bod yr amser system yn anghywir yn achos cyffredin o'r gwall yma. Gwiriwch fod yr amser ar y system yma'n gywir.\n"
 
 #, python-format
 #~ msgid "There was a SSL crypto error: %s\n"
@@ -259,21 +244,11 @@ msgstr ""
 #~ msgstr "Cysylltu eich system"
 
 #, fuzzy, python-brace-format
-#~ msgid ""
-#~ "A Profile Name is a descriptive name that you choose to identify this "
-#~ "System Profile on the {PRODUCT_NAME} web pages. Optionally, include a "
-#~ "computer serial or identification number."
-#~ msgstr ""
-#~ "Mae Enw Proffil yn enw disgrifiadol rydych yn ei ddewis i ddynodi'r "
-#~ "Proffil System yma ar dudalennau gwe y Red Hat Network. Yn ddewisol, gall "
-#~ "gynnwys rhif cyfresol neu ddynodiad cyfrifiadur."
+#~ msgid "A Profile Name is a descriptive name that you choose to identify this System Profile on the {PRODUCT_NAME} web pages. Optionally, include a computer serial or identification number."
+#~ msgstr "Mae Enw Proffil yn enw disgrifiadol rydych yn ei ddewis i ddynodi'r Proffil System yma ar dudalennau gwe y Red Hat Network. Yn ddewisol, gall gynnwys rhif cyfresol neu ddynodiad cyfrifiadur."
 
-#~ msgid ""
-#~ "Additional hardware information including PCI devices, disk sizes and "
-#~ "mount points will be included in the profile."
-#~ msgstr ""
-#~ "Fe gaiff gwybodaeth caledwedd ychwanegol gan gynnwys dyfeisiau PCI, "
-#~ "meintiau disgiau a mannau gosod eu cynnwys yn y proffil."
+#~ msgid "Additional hardware information including PCI devices, disk sizes and mount points will be included in the profile."
+#~ msgstr "Fe gaiff gwybodaeth caledwedd ychwanegol gan gynnwys dyfeisiau PCI, meintiau disgiau a mannau gosod eu cynnwys yn y proffil."
 
 #~ msgid "Include the following information about hardware and network:"
 #~ msgstr "Cynnwys y wybodaeth ganlynol am galedwedd a rhwydwaith:"
@@ -281,16 +256,11 @@ msgstr ""
 #~ msgid "Create Profile - Packages"
 #~ msgstr "Cysylltu eich system"
 
-#~ msgid ""
-#~ "RPM information is important to determine what updated software packages "
-#~ "are relevant to this system."
-#~ msgstr ""
-#~ "Mae gwybodaeth RPM yn bwysig ar gyfer pennu pa becynnau meddalwedd wedi'u "
-#~ "diweddaru sy'n briodol i'r system yma."
+#~ msgid "RPM information is important to determine what updated software packages are relevant to this system."
+#~ msgstr "Mae gwybodaeth RPM yn bwysig ar gyfer pennu pa becynnau meddalwedd wedi'u diweddaru sy'n briodol i'r system yma."
 
 #~ msgid "Include RPM packages installed on this system in my System Profile"
-#~ msgstr ""
-#~ "Cynnwys pecynnau RPM arsefydlog ar y system yma yn fy Mhroffil System"
+#~ msgstr "Cynnwys pecynnau RPM arsefydlog ar y system yma yn fy Mhroffil System"
 
 #~ msgid "You may deselect individual packages by unchecking them below."
 #~ msgstr "Cewch ddad-ddewis pecynnau unigol drwy dynnu'r marc isod."
@@ -302,9 +272,7 @@ msgstr ""
 #~ msgstr "*Cyfeiriad e-bost:"
 
 #~ msgid "System Already Registered"
-#~ msgstr ""
-#~ "    --force                    - cofrestru'r system hyd yn oed os yw'n "
-#~ "gofrestredig yn barod"
+#~ msgstr "    --force                    - cofrestru'r system hyd yn oed os yw'n gofrestredig yn barod"
 
 #~ msgid "It appears this system has already been set up for software updates:"
 #~ msgstr "Yn ailddechrau up2date"
@@ -317,8 +285,7 @@ msgstr ""
 #~ msgstr "Disgrifiad"
 
 #, fuzzy
-#~ msgid ""
-#~ "Subscriptions have been activated for the following products/services:"
+#~ msgid "Subscriptions have been activated for the following products/services:"
 #~ msgstr "Annilys yw'r rhif tanysgrifiad"
 
 #~ msgid "Software Channel Subscriptions:"
@@ -361,8 +328,7 @@ msgstr ""
 #~ msgstr "Arwyddodd y gweinydd wall:\n"
 
 #~ msgid "There was an error communicating with the registration server:\n"
-#~ msgstr ""
-#~ "Bu gwall wrth gyfathrebu â'r gweinydd cofrestru.  Dyma oedd y neges:\n"
+#~ msgstr "Bu gwall wrth gyfathrebu â'r gweinydd cofrestru.  Dyma oedd y neges:\n"
 
 #~ msgid "Profile name:"
 #~ msgstr "Enw proffil:"
@@ -417,12 +383,8 @@ msgstr ""
 #~ msgid "Finish"
 #~ msgstr "Gorffen"
 
-#~ msgid ""
-#~ "  <Tab>/<Alt-Tab> between elements  |  <Space> selects  |  <F12> next "
-#~ "screen"
-#~ msgstr ""
-#~ "  <Tab>/<Eil-Tab> rhwng elfennau  |  <Gofodnod> i ddewis  |  <F12> sgrin "
-#~ "nesaf"
+#~ msgid "  <Tab>/<Alt-Tab> between elements  |  <Space> selects  |  <F12> next screen"
+#~ msgstr "  <Tab>/<Eil-Tab> rhwng elfennau  |  <Gofodnod> i ddewis  |  <F12> sgrin nesaf"
 
 #, fuzzy, python-brace-format
 #~ msgid "You must run the {PRODUCT_NAME} registration program as root."
@@ -432,48 +394,31 @@ msgstr ""
 #~ msgstr "Penodwch ba url gweinydd i'w ddefnyddio"
 
 #~ msgid "Specify a file to use as the ssl CA cert"
-#~ msgstr ""
-#~ "    --sslCACert=<llwybr>       - penodwch ffeil i'w defnyddio fel y tyst "
-#~ "ssl CA"
+#~ msgstr "    --sslCACert=<llwybr>       - penodwch ffeil i'w defnyddio fel y tyst ssl CA"
 
 #~ msgid "Specify an activation key"
 #~ msgstr "Penodwch ddirprwy http i'w ddefnyddio"
 
 #~ msgid "[Deprecated] Read contact info from stdin"
-#~ msgstr ""
-#~ "    --contactinfo              - darllen gwybodaeth gysylltu o stdin "
+#~ msgstr "    --contactinfo              - darllen gwybodaeth gysylltu o stdin "
 
 #~ msgid "Do not probe or upload any hardware info"
-#~ msgstr ""
-#~ "    --nohardware               - peidio ag archwilio na llwytho i fyny "
-#~ "unrhyw wybodaeth caledwedd "
+#~ msgstr "    --nohardware               - peidio ag archwilio na llwytho i fyny unrhyw wybodaeth caledwedd "
 
 #~ msgid "Do not profile or upload any package info"
-#~ msgstr ""
-#~ "    --nopackages               - peidio â phroffilio na lanlwytho unrhyw "
-#~ "wybodaeth pecynnau "
+#~ msgstr "    --nopackages               - peidio â phroffilio na lanlwytho unrhyw wybodaeth pecynnau "
 
 #~ msgid "Register the system even if it is already registered"
-#~ msgstr ""
-#~ "    --force                    - cofrestru'r system hyd yn oed os yw'n "
-#~ "gofrestredig yn barod"
+#~ msgstr "    --force                    - cofrestru'r system hyd yn oed os yw'n gofrestredig yn barod"
 
 #~ msgid "A username and password are required to register a system."
-#~ msgstr ""
-#~ "Mynnir enw defnyddiwr, cyfrinair a chyfeiriad e-bost ar gyfer cofrestru "
-#~ "system."
+#~ msgstr "Mynnir enw defnyddiwr, cyfrinair a chyfeiriad e-bost ar gyfer cofrestru system."
 
 #~ msgid "This system is already registered. Use --force to override"
-#~ msgstr ""
-#~ "Mae'r system yma'n gofrestredig yn barod. Defnyddiwch --force i orfodi"
+#~ msgstr "Mae'r system yma'n gofrestredig yn barod. Defnyddiwch --force i orfodi"
 
-#~ msgid ""
-#~ "A profilename was not specified, and hostname and IP address could not be "
-#~ "determined to use as a profilename, please specify one."
-#~ msgstr ""
-#~ "Ni phenodwyd enw proffil, ac nid oedd modd pennu enw gwesteiwr a "
-#~ "chyfeiriad IP i'w defnyddio fel enw proffil, penodwch un os gwelwch yn "
-#~ "dda."
+#~ msgid "A profilename was not specified, and hostname and IP address could not be determined to use as a profilename, please specify one."
+#~ msgstr "Ni phenodwyd enw proffil, ac nid oedd modd pennu enw gwesteiwr a chyfeiriad IP i'w defnyddio fel enw proffil, penodwch un os gwelwch yn dda."
 
 #, fuzzy
 #~ msgid "Software updates setup unsuccessful"
@@ -509,12 +454,10 @@ msgstr ""
 
 #, fuzzy
 #~ msgid "There was an error communicating with Spacewalk server."
-#~ msgstr ""
-#~ "Bu gwall wrth gyfathrebu â'r gweinydd cofrestru.  Dyma oedd y neges:\n"
+#~ msgstr "Bu gwall wrth gyfathrebu â'r gweinydd cofrestru.  Dyma oedd y neges:\n"
 
 #, python-format
-#~ msgid ""
-#~ "Please enter your account information for the <b>%s</b> Spacewalk server:"
+#~ msgid "Please enter your account information for the <b>%s</b> Spacewalk server:"
 #~ msgstr "Gwybodaeth gofrestru ar gyfer:"
 
 #~ msgid "You must enter a login."
@@ -526,11 +469,8 @@ msgstr ""
 #~ msgid "There was an error while logging in."
 #~ msgstr "Roedd problem wrth gofrestru'r system."
 
-#~ msgid ""
-#~ "There was an error communicating with the registration server.  The "
-#~ "message was:\n"
-#~ msgstr ""
-#~ "Bu gwall wrth gyfathrebu â'r gweinydd cofrestru.  Dyma oedd y neges:\n"
+#~ msgid "There was an error communicating with the registration server.  The message was:\n"
+#~ msgstr "Bu gwall wrth gyfathrebu â'r gweinydd cofrestru.  Dyma oedd y neges:\n"
 
 #~ msgid "There was an error while assembling information for the profile."
 #~ msgstr "Bu gwall angheuol wrth arsefydlu'r pecyn."
@@ -554,11 +494,8 @@ msgstr ""
 #~ msgstr "Problem wrth gofrestru'r system."
 
 #, python-format
-#~ msgid ""
-#~ "The installation number [ %s ] provided is not a valid installation "
-#~ "number. Please go back to the previous screen and fix it."
-#~ msgstr ""
-#~ "Nid yw'r rhif tanysgrifiad [ %s ] a roddwyd yn rhif tanysgrifiad dilys."
+#~ msgid "The installation number [ %s ] provided is not a valid installation number. Please go back to the previous screen and fix it."
+#~ msgstr "Nid yw'r rhif tanysgrifiad [ %s ] a roddwyd yn rhif tanysgrifiad dilys."
 
 #~ msgid "There was a problem registering this system."
 #~ msgstr "Roedd problem wrth gofrestru'r system."
@@ -593,8 +530,7 @@ msgstr ""
 #~ msgid "Arch"
 #~ msgstr "Bwa"
 
-#~ msgid ""
-#~ "Building a list of RPM packages installed on your system.  Please wait."
+#~ msgid "Building a list of RPM packages installed on your system.  Please wait."
 #~ msgstr "Yn adeiladu rhestr o'r pecynnau RPM sydd ar eich system.  Arhoswch."
 
 #~ msgid ""
@@ -612,12 +548,8 @@ msgstr ""
 #~ "Bu gwall wrth gadw'ch cyfluniad. Sicrhewch mai chi sy'n berchen\n"
 #~ "%s."
 
-#~ msgid ""
-#~ "You need to register this system by running `rhn_register` before using "
-#~ "this option"
-#~ msgstr ""
-#~ "Mae angen i chi gofrestru'r system yma drwy redeg `up2date --register` "
-#~ "cyn defnyddio'r dewisiad yma"
+#~ msgid "You need to register this system by running `rhn_register` before using this option"
+#~ msgstr "Mae angen i chi gofrestru'r system yma drwy redeg `up2date --register` cyn defnyddio'r dewisiad yma"
 
 #~ msgid "Updating package profile..."
 #~ msgstr "Yn diweddaru proffil pecynnau..."

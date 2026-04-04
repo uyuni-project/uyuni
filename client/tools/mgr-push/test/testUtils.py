@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring,invalid-name
 #
 # Copyright (c) 2008--2016 Red Hat, Inc.
 #
@@ -17,14 +18,15 @@ import unittest
 import utils
 
 
+# pylint: disable-next=missing-class-docstring
 class TestObj1:
 
     def __init__(self):
         self.a = 1
         self.b = 2
         self.c = 3
-        self._d = '1'
-        self._e = '2'
+        self._d = "1"
+        self._e = "2"
 
     @staticmethod
     def _private_function():
@@ -35,15 +37,16 @@ class TestObj1:
         print("This is public and belongs to TestObj1")
 
 
+# pylint: disable-next=missing-class-docstring
 class TestObj2:
 
     def __init__(self):
         self.a = 4
         self.b = 5
         self.c = 6
-        self._d = '4'
-        self._e = '5'
-        self.f = 'aaa'
+        self._d = "4"
+        self._e = "5"
+        self.f = "aaa"
 
     @staticmethod
     def _private_function():
@@ -54,6 +57,7 @@ class TestObj2:
         print("This is public and belongs to TestObj2")
 
 
+# pylint: disable-next=missing-class-docstring
 class UtilsTestCase(unittest.TestCase):
 
     def setUp(self):
@@ -67,12 +71,15 @@ class UtilsTestCase(unittest.TestCase):
     # pylint: disable=W0212
     def testMakeCommonAttrEqual(self):
         self.obj1, self.obj2 = utils.make_common_attr_equal(self.obj1, self.obj2)
-        assert (self.obj1._d == '1'
-                and self.obj2._d == '4'
-                and self.obj1.a == 4
-                and self.obj1.b == 5
-                and self.obj1.c == 6
-                and self.obj2.f == 'aaa')
+        assert (
+            self.obj1._d == "1"
+            and self.obj2._d == "4"
+            and self.obj1.a == 4
+            and self.obj1.b == 5
+            and self.obj1.c == 6
+            and self.obj2.f == "aaa"
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

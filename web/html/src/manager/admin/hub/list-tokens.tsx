@@ -1,20 +1,20 @@
-import * as React from "react";
+import { type ReactNode, type RefObject, Component, createRef } from "react";
 
 import { AddTokenButton, TokenTable } from "components/hub";
 import { TopPanel } from "components/panels";
 
-type Props = {};
+type Props = Record<never, never>;
 
-export class TokenList extends React.Component<Props> {
-  private tokenTable: React.RefObject<TokenTable>;
+export class TokenList extends Component<Props> {
+  private tokenTable: RefObject<TokenTable>;
 
   public constructor(props: Props) {
     super(props);
 
-    this.tokenTable = React.createRef();
+    this.tokenTable = createRef();
   }
 
-  public render(): React.ReactNode {
+  public render(): ReactNode {
     return (
       <TopPanel
         title={t("Access Tokens")}

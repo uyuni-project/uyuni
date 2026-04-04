@@ -1,20 +1,20 @@
-import * as React from "react";
+import type { ReactNode } from "react";
 
 import { HelpLink } from "components/utils/HelpLink";
 
 type Props = {
   helpUrl?: string;
-  button?: React.ReactNode;
+  button?: ReactNode;
   title: string;
   icon?: string;
-  children?: React.ReactNode;
+  children?: ReactNode;
 };
 
 export function TopPanel(props: Props) {
   const help = props.helpUrl ? <HelpLink url={props.helpUrl} /> : null;
 
   return (
-    <div>
+    <>
       <div className="spacewalk-toolbar-h1">
         {props.button}
         <h1>
@@ -25,12 +25,6 @@ export function TopPanel(props: Props) {
         </h1>
       </div>
       {props.children}
-    </div>
+    </>
   );
 }
-
-TopPanel.defaultProps = {
-  helpUrl: undefined,
-  button: undefined,
-  icon: undefined,
-};

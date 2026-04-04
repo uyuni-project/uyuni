@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import isNil from "lodash/isNil";
 
@@ -10,10 +10,10 @@ import { Table } from "components/table/Table";
 
 import { localizedMoment } from "utils";
 import { Utils } from "utils/functions";
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
 
-import { humanReadablePolicy, SystemLabel, ToolTip } from "./subscription-matching-util";
-import { WarningIcon } from "./subscription-matching-util";
+import { humanReadablePolicy, SystemLabel, ToolTip, WarningIcon } from "./subscription-matching-util";
 
 type PinsProps = {
   pinnedMatches: any[];
@@ -23,7 +23,7 @@ type PinsProps = {
   subscriptions: any[];
 };
 
-class Pins extends React.Component<PinsProps> {
+class Pins extends Component<PinsProps> {
   state = {
     showPopUp: false,
   };
@@ -33,14 +33,15 @@ class Pins extends React.Component<PinsProps> {
 
     return pinnedMatches.map((p) => {
       const system = systems[p.systemId];
-      const systemName = system == null ? "System " + p.systemId : system.name;
-      const systemType = system == null ? null : system.type;
+      const systemName = DEPRECATED_unsafeEquals(system, null) ? "System " + p.systemId : system.name;
+      const systemType = DEPRECATED_unsafeEquals(system, null) ? null : system.type;
       const subscription = subscriptions[p.subscriptionId];
-      const subscriptionDescription =
-        subscription == null ? "Subscription " + p.subscriptionId : subscription.description;
-      const subscriptionPolicy = subscription == null ? " " : subscription.policy;
-      const subscriptionEndDate = subscription == null ? " " : subscription.endDate;
-      const subscriptionPartNumber = subscription == null ? "" : subscription.partNumber;
+      const subscriptionDescription = DEPRECATED_unsafeEquals(subscription, null)
+        ? "Subscription " + p.subscriptionId
+        : subscription.description;
+      const subscriptionPolicy = DEPRECATED_unsafeEquals(subscription, null) ? " " : subscription.policy;
+      const subscriptionEndDate = DEPRECATED_unsafeEquals(subscription, null) ? " " : subscription.endDate;
+      const subscriptionPartNumber = DEPRECATED_unsafeEquals(subscription, null) ? "" : subscription.partNumber;
 
       return {
         id: p.id,
@@ -227,13 +228,13 @@ type AddPinPopUpProps = {
   subscriptions: any[];
 };
 
-class AddPinPopUp extends React.Component<AddPinPopUpProps> {
+class AddPinPopUp extends Component<AddPinPopUpProps> {
   state = {
     systemId: null,
   };
 
   sortByCpuCount = (a, b, columnKey, sortDirection) => {
-    var result = a[columnKey] - b[columnKey];
+    const result = a[columnKey] - b[columnKey];
     return (result || Utils.sortById(a, b)) * sortDirection;
   };
 
@@ -263,7 +264,7 @@ class AddPinPopUp extends React.Component<AddPinPopUpProps> {
   };
 
   render() {
-    var popUpContent;
+    let popUpContent;
     const systemId = this.state.systemId;
 
     if (isNil(systemId)) {
@@ -361,7 +362,7 @@ type PinSubscriptionSelectorProps = {
   onSubscriptionSelected: (...args: any[]) => any;
 };
 
-class PinSubscriptionSelector extends React.Component<PinSubscriptionSelectorProps> {
+class PinSubscriptionSelector extends Component<PinSubscriptionSelectorProps> {
   render() {
     if (this.props.subscriptions.length > 0) {
       return (

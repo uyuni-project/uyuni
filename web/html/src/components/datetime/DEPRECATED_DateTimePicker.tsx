@@ -1,10 +1,14 @@
-import * as React from "react";
+import { Component, PureComponent } from "react";
+
+import { DEPRECATED_onClick } from "components/utils";
 
 import { localizedMoment } from "utils";
 
 // These aren't the actual proper types, just what I've inferred from code usage below
 type Instance = JQuery & Date;
-type StaticProperties = { dates: any };
+type StaticProperties = {
+  dates: any;
+};
 type PickerType = ((config: object) => Instance) & ((method: "show" | "hide") => Instance) & StaticProperties;
 
 type DatePickerType = PickerType & ((method: "setDate", value: Date) => void) & ((method: "getDate") => Date);
@@ -52,7 +56,7 @@ type DatePickerProps = {
   onDateChanged: (year: number, month: number, date: number) => void;
 };
 
-class DatePicker extends React.PureComponent<DatePickerProps> {
+class DatePicker extends PureComponent<DatePickerProps> {
   _input: JQuery | null = null;
 
   componentDidMount() {
@@ -145,11 +149,12 @@ type TimePickerProps = {
   onTimeChanged: (hours: number, minutes: number, seconds: number) => void;
 };
 
-class TimePicker extends React.PureComponent<TimePickerProps> {
+class TimePicker extends PureComponent<TimePickerProps> {
   _input: JQuery | null = null;
 
   componentDidMount() {
     this._input?.timepicker({
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       roundingFunction: (seconds, options) => seconds,
     });
     this._input?.on("timeFormatError", () => {
@@ -249,7 +254,10 @@ type DateTimePickerState = {
   timeZone: typeof localizedMoment.userTimeZone | typeof localizedMoment.serverTimeZone;
 };
 
-export class DEPRECATED_DateTimePicker extends React.Component<DateTimePickerProps, DateTimePickerState> {
+/**
+ * @deprecated
+ */
+export class DEPRECATED_DateTimePicker extends Component<DateTimePickerProps, DateTimePickerState> {
   constructor(props: DateTimePickerProps) {
     super(props);
     this.state = {
@@ -274,15 +282,15 @@ export class DEPRECATED_DateTimePicker extends React.Component<DateTimePickerPro
   };
 
   toggleDatepicker = () => {
-    this.setState({
-      dateOpen: !this.state.dateOpen,
-    });
+    this.setState((prevState) => ({
+      dateOpen: !prevState.dateOpen,
+    }));
   };
 
   toggleTimepicker = () => {
-    this.setState({
-      timeOpen: !this.state.timeOpen,
-    });
+    this.setState((prevState) => ({
+      timeOpen: !prevState.timeOpen,
+    }));
   };
 
   onDateChanged = (year: number, month: number, day: number) => {
@@ -326,20 +334,20 @@ export class DEPRECATED_DateTimePicker extends React.Component<DateTimePickerPro
     const datePickerId = this.props.legacyId
       ? `${this.props.legacyId}_datepicker_widget_input`
       : this.props.id
-      ? this.props.id + "_date"
-      : undefined;
+        ? this.props.id + "_date"
+        : undefined;
     const timePickerId = this.props.legacyId
       ? `${this.props.legacyId}_timepicker_widget_input`
       : this.props.id
-      ? this.props.id + "_time"
-      : undefined;
+        ? this.props.id + "_time"
+        : undefined;
     return (
       <div className="input-group">
         {!this.state.hideDate && [
           <span
             className="input-group-addon input-group-text"
             data-picker-type="date"
-            onClick={this.toggleDatepicker}
+            {...DEPRECATED_onClick(this.toggleDatepicker)}
             key="calendar"
           >
             &nbsp;<i className="fa fa-calendar"></i>
@@ -359,7 +367,7 @@ export class DEPRECATED_DateTimePicker extends React.Component<DateTimePickerPro
           <span
             className="input-group-addon input-group-text"
             data-picker-type="time"
-            onClick={this.toggleTimepicker}
+            {...DEPRECATED_onClick(this.toggleDatepicker)}
             key="clock"
           >
             &nbsp;<i className="fa fa-clock-o"></i>

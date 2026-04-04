@@ -1,14 +1,14 @@
-import * as React from "react";
+import { type ReactNode, Component } from "react";
 
 import { SectionToolbar } from "components/section-toolbar/section-toolbar";
+import { MessagesContainer, showErrorToastr, showInfoToastr, showWarningToastr } from "components/toastr/toastr";
 
 import { Utils } from "utils/functions";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 import { AsyncButton, Button } from "../components/buttons";
 import Network from "../utils/network";
-import { Messages, MessageType } from "./messages/messages";
-
+import { MessageType } from "./messages/messages";
 const capitalize = Utils.capitalize;
 
 type Props = {
@@ -26,10 +26,10 @@ type State = {
   acviteSelectedFormulas: any[];
   showDescription: boolean;
   messages: MessageType[];
-  errors?: MessageType[];
+  errors: MessageType[];
 };
 
-class FormulaSelection extends React.Component<Props, State> {
+class FormulaSelection extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
@@ -40,6 +40,7 @@ class FormulaSelection extends React.Component<Props, State> {
       acviteSelectedFormulas: [],
       showDescription: false,
       messages: [],
+      errors: [],
     };
     this.init();
   }
@@ -75,7 +76,7 @@ class FormulaSelection extends React.Component<Props, State> {
      * Do not assign to state fields directly, use `setState()` instead
      */
     (this.state as any).activeFormulas = selectedFormulas;
-    return this.props.saveRequest(this, selectedFormulas).then((data) => {
+    return this.props.saveRequest(this, selectedFormulas).then(() => {
       this.init();
       window.scrollTo(0, 0);
     });
@@ -124,7 +125,7 @@ class FormulaSelection extends React.Component<Props, State> {
   }
 
   generateList = () => {
-    var list: React.ReactNode[] = [];
+    const list: ReactNode[] = [];
     const groups = this.state.groups;
 
     if (groups.groupless.length > 0) {
@@ -138,9 +139,7 @@ class FormulaSelection extends React.Component<Props, State> {
       );
       groups.groupless.forEach(function (this: FormulaSelection, formula) {
         list.push(
-          // eslint-disable-next-line jsx-a11y/anchor-is-valid
-          <a
-            href="#"
+          <button
             onClick={this.onListItemClick}
             id={formula.name}
             key={formula.name}
@@ -154,18 +153,16 @@ class FormulaSelection extends React.Component<Props, State> {
               <i id={"info_button_" + formula.name} className="fa fa-lg fa-info-circle pull-right" />
             ) : null}
             {this.getDescription(formula)}
-          </a>
+          </button>
         );
       }, this);
     }
-    for (var group_name in groups) {
+    for (const group_name in groups) {
       if (group_name === "groupless") continue;
       const group = groups[group_name];
       const group_state = this.getGroupItemState(group);
       list.push(
-        // eslint-disable-next-line jsx-a11y/anchor-is-valid
-        <a
-          href="#"
+        <button
           onClick={this.onGroupItemClick}
           id={"group_" + group_name}
           key={"group_" + group_name}
@@ -175,13 +172,11 @@ class FormulaSelection extends React.Component<Props, State> {
             <i className={this.getListIcon(group_state)} />
             {" " + capitalize(group_name)}
           </strong>
-        </a>
+        </button>
       );
       group.forEach(function (this: FormulaSelection, formula) {
         list.push(
-          // eslint-disable-next-line jsx-a11y/anchor-is-valid
-          <a
-            href="#"
+          <button
             onClick={this.onListItemClick}
             id={formula.name}
             key={formula.name}
@@ -199,7 +194,7 @@ class FormulaSelection extends React.Component<Props, State> {
               />
             ) : null}
             {this.getDescription(formula)}
-          </a>
+          </button>
         );
       }, this);
     }
@@ -226,7 +221,7 @@ class FormulaSelection extends React.Component<Props, State> {
   onGroupItemClick = (e) => {
     e.preventDefault();
 
-    var group = e.target;
+    let group = e.target;
     while (!group.id.startsWith("group_")) group = group.parentElement;
     group = this.state.groups[group.id.slice(6)];
     const state = this.getGroupItemState(group);
@@ -246,27 +241,32 @@ class FormulaSelection extends React.Component<Props, State> {
     this.forceUpdate();
   };
 
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.warningMessage !== prevProps.warningMessage && this.props.warningMessage) {
+      showWarningToastr(this.props.warningMessage);
+    }
+    if (this.state.messages !== prevState.messages && this.state.messages.length > 0) {
+      showInfoToastr(
+        <>
+          {this.state.messages.map((msg, index) => (
+            <div key={`error${index}`}>{msg}</div>
+          ))}
+        </>
+      );
+    }
+    if (this.state.errors !== prevState.errors && this.state.errors.length > 0) {
+      showErrorToastr(
+        <>
+          {this.state.errors.map((err, index) => (
+            <div key={`error${index}`}>{err}</div>
+          ))}
+        </>,
+        { autoHide: false }
+      );
+    }
+  }
+
   render() {
-    var items: MessageType[] = [];
-    if (this.props.warningMessage) {
-      items.push({ severity: "warning", text: this.props.warningMessage });
-    }
-    if (this.state.messages.length > 0) {
-      items = items.concat(
-        this.state.messages.map(function (msg) {
-          return { severity: "info", text: msg };
-        })
-      );
-    }
-
-    if (this.state.errors && this.state.errors.length > 0) {
-      items = items.concat(
-        this.state.errors.map(function (e) {
-          return { severity: "error", text: e };
-        })
-      );
-    }
-
     this.props.addFormulaNavBar(this.state.activeFormulas);
 
     return (
@@ -276,9 +276,9 @@ class FormulaSelection extends React.Component<Props, State> {
             "On this page you can select Salt Formulas for this group/system, which can then be configured on group and system level. This allows you to automatically install and configure software."
           )}
         </p>
-        <Messages items={items} />
         <SectionToolbar>
-          <div className="action-button-wrapper">
+          <div className="action-button-wrapper d-block w-100">
+            <MessagesContainer />
             <span className="btn-group pull-right">
               <Button
                 id="clear-btn"

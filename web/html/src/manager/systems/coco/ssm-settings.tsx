@@ -1,16 +1,18 @@
-import * as React from "react";
+import { type ReactNode, Component } from "react";
 
 import CoCoSettingsForm from "components/coco-attestation/CoCoSettingsForm";
 import { Settings } from "components/coco-attestation/Utils";
 import { Messages, MessageType, Utils as MessagesUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
 import { Column } from "components/table/Column";
-import { SystemData, TargetSystems } from "components/target-systems";
+import { TargetSystems } from "components/target-systems";
 
 import Network from "utils/network";
 
+import { CoCoSystemData } from "./types";
+
 type Props = {
-  systemSupport: SystemData[];
+  systemSupport: CoCoSystemData[];
   availableEnvironmentTypes: object;
 };
 
@@ -18,7 +20,7 @@ type State = {
   messages: MessageType[];
 };
 
-class CoCoSSMSettings extends React.Component<Props, State> {
+class CoCoSSMSettings extends Component<Props, State> {
   private readonly emptySettings: Settings;
 
   constructor(props: Props) {
@@ -53,7 +55,7 @@ class CoCoSSMSettings extends React.Component<Props, State> {
     );
   };
 
-  render(): React.ReactNode {
+  render(): ReactNode {
     return (
       <>
         <TopPanel title="Confidential Computing Settings">
@@ -67,11 +69,9 @@ class CoCoSSMSettings extends React.Component<Props, State> {
         </TopPanel>
         <TargetSystems systemsData={this.props.systemSupport}>
           <Column
-            columnClass="text-center"
-            headerClass="text-center"
             columnKey="cocoSupport"
             header={t("Confidential Computing Capability")}
-            cell={(system: SystemData) => (system.cocoSupport ? t("Yes") : t("No"))}
+            cell={(system: CoCoSystemData) => (system.cocoSupport ? t("Yes") : t("No"))}
           />
         </TargetSystems>
       </>

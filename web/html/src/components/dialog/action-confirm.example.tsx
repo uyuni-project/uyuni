@@ -1,10 +1,10 @@
-import * as React from "react";
+import { useState } from "react";
 
 import { Button } from "../buttons";
 import { ActionConfirm } from "./ActionConfirm";
 
 export default () => {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const items = [{ name: "Item 1" }, { name: "Item 2" }, { name: "Item 3" }];
   const doAction = (type, toAct, params) => {
     const names = toAct.map((obj) => obj.name).join();

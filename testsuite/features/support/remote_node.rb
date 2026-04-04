@@ -1,4 +1,4 @@
-# Copyright (c) 2024 SUSE LLC.
+# Copyright (c) 2024-2025 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'timeout'
@@ -54,7 +54,16 @@ class RemoteNode
 
     if (PRIVATE_ADDRESSES.key? host) && !$private_net.nil?
       @private_ip = net_prefix + PRIVATE_ADDRESSES[host]
-      @private_interface = 'eth1'
+      @private_interface = nil
+      %w[eth1 ens4].each do |dev|
+        _output, code = run_local("ip address show dev #{dev}", check_errors: false)
+
+        if code.zero?
+          @private_interface = dev
+          break
+        end
+      end
+      raise StandardError, "No private interface for '#{@hostname}'." if @private_interface.nil?
     end
 
     ip = client_public_ip
@@ -101,10 +110,47 @@ class RemoteNode
   # @param successcodes [Array<Integer>] An array with the values to be accepted as success codes from the command run.
   # @param buffer_size [Integer] The maximum buffer size in bytes.
   # @param verbose [Boolean] Whether to log the output of the command in case of success.
+  # @param exec_option [Boolean] The container exec option.
   # @return [Array<String, String, Integer>] The output, error, and exit code.
   def run(cmd, runs_in_container: true, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, successcodes: [0], buffer_size: 65_536, verbose: false, exec_option: '-i')
     cmd_prefixed = @has_mgrctl && runs_in_container ? "mgrctl exec #{exec_option} '#{cmd.gsub('\'', '\'"\'"\'')}'" : cmd
     run_local(cmd_prefixed, separated_results: separated_results, check_errors: check_errors, timeout: timeout, successcodes: successcodes, buffer_size: buffer_size, verbose: verbose)
+  end
+
+  # Runs a command that contains commands chained by pipes in it and returns the output, error, and exit code of all the commands chained. Just for debugging purpouses.
+  #
+  # @param cmd [String] The command to run.
+  # @param expected_pipestatus_codes [Array<Integer>] Expected stderrs of the commands chained by pipes.
+  # @param runs_in_container [Boolean] Whether the command should be run in the container or on the host. Defaults to true.
+  # @param separated_results [Boolean] Whether the results should be stored separately. Defaults to false.
+  # @param check_errors [Boolean] Whether to check for errors or not. Defaults to true.
+  # @param timeout [Integer] The timeout to be used, in seconds.
+  # @param successcodes [Array<Integer>] An array with the values to be accepted as success codes from the command run.
+  # @param buffer_size [Integer] The maximum buffer size in bytes.
+  # @param verbose [Boolean] Whether to log the output of the command in case of success.
+  # @param exec_option [Boolean] The container exec option.
+  # # @return [Array<String, Integer>] The output, error, and exit code.
+  def run_pipe(cmd, expected_pipestatus_codes, runs_in_container: true, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, successcodes: [0], buffer_size: 65_536, verbose: false, exec_option: '-i')
+    pipestatus_file_path = '/tmp/temp_file_with_stderrs'
+    cmd += "; echo ${PIPESTATUS[*]} > #{pipestatus_file_path}"
+    cmd_read_codes = "cat #{pipestatus_file_path}; rm #{pipestatus_file_path}"
+    if @has_mgrctl && runs_in_container
+      cmd = "mgrctl exec #{exec_option} '#{cmd.gsub('\'', '\'"\'"\'')}'"
+      cmd_read_codes = "mgrctl exec #{exec_option} '#{cmd_read_codes.gsub('\'', '\'"\'"\'')}'"
+    end
+
+    out, initial_code = run_local(cmd, separated_results: separated_results, check_errors: check_errors, timeout: timeout, successcodes: successcodes, buffer_size: buffer_size, verbose: verbose)
+    stderr_of_commands, _code = run_local(cmd_read_codes)
+
+    stderr_of_commands_array = stderr_of_commands.split.map(&:to_i)
+    raise "Expected the number of expected pipestatus codes does not match the number of commands chained by pipes. Expected stderr:#{expected_pipestatus_codes}, current stderr:#{stderr_of_commands_array}" if expected_pipestatus_codes.length != stderr_of_commands_array.length
+    raise "Expected outcome does not match with current outcome. Expected stderr:#{expected_pipestatus_codes}, current stderr:#{stderr_of_commands_array}" if check_errors && stderr_of_commands_array.each_index.any? { |i| stderr_of_commands_array[i] != expected_pipestatus_codes[i] }
+
+    if separated_results
+      [out, stderr_of_commands, initial_code]
+    else
+      [out + stderr_of_commands, initial_code]
+    end
   end
 
   # Runs a command locally and returns the output, error, and exit code.
@@ -127,22 +173,6 @@ class RemoteNode
       [out, err, code]
     else
       [out + err, code]
-    end
-  end
-
-  # Runs a local command until it succeeds or times out.
-  #
-  # @param cmd [String] The command to run.
-  # @param timeout [Integer] The timeout to be used, in seconds.
-  # @param runs_in_container [Boolean] Whether the command should be run in the container or on the host.
-  # @return [Array<String, Integer>] The result and exit code.
-  def run_local_until_ok(cmd, timeout: DEFAULT_TIMEOUT, runs_in_container: true)
-    repeat_until_timeout(timeout: timeout, report_result: true) do
-      result, code = run_local(cmd, check_errors: false, runs_in_container: runs_in_container)
-      return [result, code] if code.zero?
-
-      sleep 2
-      result
     end
   end
 
@@ -236,7 +266,7 @@ class RemoteNode
   #
   # @param file [String] The path of the file to check.
   # @return [Boolean] Returns true if the file exists, false otherwise.
-  def file_exists(file)
+  def file_exists?(file)
     if @has_mgrctl
       _out, code = run_local("mgrctl exec -- 'test -f #{file}'", check_errors: false)
     else
@@ -250,7 +280,7 @@ class RemoteNode
   #
   # @param file [String] The path of the folder to check.
   # @return [Boolean] Returns true if the folder exists, false otherwise.
-  def folder_exists(file)
+  def folder_exists?(file)
     if @has_mgrctl
       _out, code = run_local("mgrctl exec -- 'test -d #{file}'", check_errors: false)
     else
@@ -331,7 +361,7 @@ class RemoteNode
         return output.strip
       end
     else
-      %w[br0 eth0 eth1 ens0 ens1 ens2 ens3 ens4 ens5 ens6 ens7].each do |dev|
+      %w[br0 eth0 eth1 eth1000 ens0 ens1 ens2 ens3 ens4 ens5 ens6 ens7].each do |dev|
         output, code = run_local("ip address show dev #{dev} | grep 'inet '", check_errors: false)
 
         next unless code.zero?
@@ -372,8 +402,34 @@ class RemoteNode
     end
 
     os_version.delete! '"'
-    # on SLES, we need to replace the dot with '-SP'
-    os_version.gsub!('.', '-SP') if os_family.match(/^sles/)
+
+    if os_family.match(/^sles/)
+      if os_version.match(/^16/)
+        os_variant_raw, code = run('grep "^VARIANT=" /etc/os-release', runs_in_container: runs_in_container, check_errors: false)
+        return nil, nil unless code.zero?
+
+        os_variant = os_variant_raw.strip
+        os_variant = os_variant.split('=')[1]
+
+        os_variant.delete! '"'
+
+        if os_variant == 'Micro'
+          os_family = 'sle-micro'
+
+          os_version_raw, code = run('grep "^SUSE_SUPPORT_PRODUCT_VERSION=" /etc/os-release', runs_in_container: runs_in_container, check_errors: false)
+          return nil, nil unless code.zero?
+
+          os_version = os_version_raw.strip.split('=')[1]
+          return nil, nil if os_version.nil?
+
+          os_version.delete! '"'
+        end
+      else
+        # on older SLES, we need to replace the dot with '-SP'
+        os_version.gsub!('.', '-SP')
+      end
+    end
+
     $stdout.puts "Node: #{@hostname}, OS Version: #{os_version}, Family: #{os_family}"
     [os_version, os_family]
   end

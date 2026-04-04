@@ -1,16 +1,15 @@
-import * as React from "react";
-
+import { type ReactNode, Component } from "react";
 type Props = {
-  labels: React.ReactNode[];
+  labels: ReactNode[];
   /** Must start with # */
   hashes: string[];
-  tabs: React.ReactNode[];
+  tabs: ReactNode[];
   initialActiveTabHash: string;
   /** Takes a hash parameter */
   onTabHashChange: (hash: string) => any;
 };
 
-class TabContainer extends React.Component<Props> {
+class TabContainer extends Component<Props> {
   UNSAFE_componentWillReceiveProps(nextProps: Props) {
     this.setState({ activeTabHash: this.sanitizeHash(nextProps.initialActiveTabHash, nextProps.hashes) });
   }
@@ -53,7 +52,7 @@ class TabContainer extends React.Component<Props> {
 
     return (
       <div>
-        <div className="spacewalk-content-nav">
+        <div className="spacewalk-content-nav mb-5">
           <ul className="nav nav-tabs">{labels}</ul>
         </div>
         {tab}
@@ -66,7 +65,7 @@ type TabLabelProps = {
   active?: boolean;
   hash?: string;
   onClick?: (...args: any[]) => any;
-  text: React.ReactNode;
+  text: ReactNode;
 };
 
 const TabLabel = (props: TabLabelProps) => (

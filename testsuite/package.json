@@ -1,0 +1,7 @@
+{
+  "type": "commonjs",
+  "description": "This is a convenience project descriptor to isolate our testsuite from the product descriptor",
+  "scripts": {
+    "cucumber-html-report": "node index.cjs results/$BUILD_NUMBER &> cucumber_reporter.log"
+  }
+}

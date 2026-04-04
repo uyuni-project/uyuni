@@ -20,11 +20,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-11 13:25+0200\n"
+"POT-Creation-Date: 2025-10-03 11:04+0200\n"
 "PO-Revision-Date: 2018-03-16 11:04+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
-"Language-Team: Turkish (http://www.transifex.com/projects/p/spacewalk/"
-"language/tr/)\n"
+"Language-Team: Turkish (http://www.transifex.com/projects/p/spacewalk/language/tr/)\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -32,99 +31,92 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Zanata 4.6.2\n"
 
-#: ../src/up2date_client/config.py:162
+#. pylint: disable-next=consider-using-f-string
+#: ../src/up2date_client/config.py:166
 #, python-format
 msgid "%s was not found"
 msgstr "%s bulanamadı"
 
-#: ../src/up2date_client/rpcServer.py:55
+#: ../src/up2date_client/rpcServer.py:70
 msgid "Error: Server Unavailable. Please try later."
 msgstr ""
 
-#: ../src/up2date_client/rpcServer.py:181
+#. pylint: disable-next=consider-using-f-string
+#: ../src/up2date_client/rpcServer.py:221
 msgid "ERROR: can not find server CA file"
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:47
-#: ../src/up2date_client/up2dateErrors.py:80
+#: ../src/up2date_client/up2dateErrors.py:62
+#: ../src/up2date_client/up2dateErrors.py:101
 #, python-format
 msgid "class %s has no attribute '%s'"
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:107
+#: ../src/up2date_client/up2dateErrors.py:135
 msgid "RPM error.  The message was:\n"
 msgstr "RPM hatası. Hata iletisi:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:114
+#: ../src/up2date_client/up2dateErrors.py:145
 msgid "Password error. The message was:\n"
 msgstr "Parola hatası. Hata iletisi:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:118
+#: ../src/up2date_client/up2dateErrors.py:151
 msgid "RPM dependency error. The message was:\n"
 msgstr "RPM bağımlılık hatası. Hata iletisi:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:128
+#: ../src/up2date_client/up2dateErrors.py:163
 msgid "Error communicating with server. The message was:\n"
 msgstr "Sunucu ile haberleşilirken hata. Hata iletisi:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:135
+#: ../src/up2date_client/up2dateErrors.py:172
 msgid "File Not Found: \n"
 msgstr "Dosya Bulunamadı: \n"
 
-#: ../src/up2date_client/up2dateErrors.py:142
+#: ../src/up2date_client/up2dateErrors.py:180
 msgid "Delay error from server.  The message was:\n"
 msgstr "Sunucuda gecikme hatası. Hata iletisi:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:178
+#: ../src/up2date_client/up2dateErrors.py:229
 msgid "Error validating data at server:\n"
 msgstr "Veri sunucuda onaylanırken hata:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:191
+#: ../src/up2date_client/up2dateErrors.py:246
 msgid ""
 "\n"
 "Red Hat Network Classic is not supported.\n"
 "    "
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:197
+#: ../src/up2date_client/up2dateErrors.py:255
 msgid "The installation number is invalid"
 msgstr "    --activationkey=<value>    - bir aktivasyon şifresi belirtin "
 
-#: ../src/up2date_client/up2dateErrors.py:200
+#: ../src/up2date_client/up2dateErrors.py:259
 msgid "Error parsing the oemInfo file at field:\n"
 msgstr "Oem Bilgi dosyası ayrıştırılırken hataların oluştuğu alanlar:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:227
+#: ../src/up2date_client/up2dateErrors.py:294
 msgid "Network error: "
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:295
+#: ../src/up2date_client/up2dateErrors.py:385
 msgid ""
 "\n"
-"    Your organization does not have enough Management entitlements to "
-"register this\n"
+"    Your organization does not have enough Management entitlements to register this\n"
 "    system. Please notify your organization administrator of this error.\n"
-"    You should be able to register this system after your organization frees "
-"existing\n"
-"    or purchases additional entitlements. Additional entitlements may be "
-"purchased by your\n"
+"    You should be able to register this system after your organization frees existing\n"
+"    or purchases additional entitlements. Additional entitlements may be purchased by your\n"
 "    organization administrator in the SUSE Customer Center.\n"
 "\n"
 "    A common cause of this error code is due to having mistakenly setup an\n"
-"    Activation Key which is set as the universal default.  If an activation "
-"key is set\n"
-"    on the account as a universal default, you can disable this key and "
-"retry to avoid\n"
+"    Activation Key which is set as the universal default.  If an activation key is set\n"
+"    on the account as a universal default, you can disable this key and retry to avoid\n"
 "    requiring a Management entitlement."
 msgstr ""
 
 #, python-format
-#~ msgid ""
-#~ "This client requires the server to support %s, which the current server "
-#~ "does not support"
-#~ msgstr ""
-#~ "İstemci için sunucunun %s desteği olması gerekiyor. fakat sunucunun buna "
-#~ "desteği yok"
+#~ msgid "This client requires the server to support %s, which the current server does not support"
+#~ msgstr "İstemci için sunucunun %s desteği olması gerekiyor. fakat sunucunun buna desteği yok"
 
 #~ msgid "Getting list of packages installed on the system"
 #~ msgstr "Sistemde kurulu paketlerin listesi alınıyor"
@@ -156,8 +148,7 @@ msgstr ""
 #~ msgid "Error reading machine info:"
 #~ msgstr "Cpu bilgisi okuma hatası:"
 
-#~ msgid ""
-#~ "This system may not be updated until it is associated with a channel."
+#~ msgid "This system may not be updated until it is associated with a channel."
 #~ msgstr "Sistem bir kanalla iliştirilene kadar güncellenmez"
 
 #, fuzzy
@@ -168,8 +159,7 @@ msgstr ""
 #~ msgstr "Kullanmak için http proxy belirleyin"
 
 #~ msgid "Specify a username to use with an authenticated http proxy"
-#~ msgstr ""
-#~ "Yetkili bir http proxy ile kullanmak üzere bir kullanıcı adı belirleyin"
+#~ msgstr "Yetkili bir http proxy ile kullanmak üzere bir kullanıcı adı belirleyin"
 
 #~ msgid "Specify a password to use with an authenticated http proxy"
 #~ msgstr "Kimlikli http proxy kullanmak için bir şifre belirtin"
@@ -193,12 +183,8 @@ msgstr ""
 #~ msgid "There was an SSL error: %s\n"
 #~ msgstr "SSL hatası var: %s\n"
 
-#~ msgid ""
-#~ "A common cause of this error is the system time being incorrect. Verify "
-#~ "that the time on this system is correct.\n"
-#~ msgstr ""
-#~ "Bu hata büyük ihtimalle nedeni sistem saatindeki yanlışlık. Sistem "
-#~ "saatinizin doğru olduğundan emin olun\n"
+#~ msgid "A common cause of this error is the system time being incorrect. Verify that the time on this system is correct.\n"
+#~ msgstr "Bu hata büyük ihtimalle nedeni sistem saatindeki yanlışlık. Sistem saatinizin doğru olduğundan emin olun\n"
 
 #, python-format
 #~ msgid "There was a SSL crypto error: %s\n"
@@ -293,21 +279,11 @@ msgstr ""
 #~ msgstr "Up2date - Doanım Profili"
 
 #, fuzzy, python-brace-format
-#~ msgid ""
-#~ "A Profile Name is a descriptive name that you choose to identify this "
-#~ "System Profile on the {PRODUCT_NAME} web pages. Optionally, include a "
-#~ "computer serial or identification number."
-#~ msgstr ""
-#~ "Bir profil adı sisteminizi Red Hat Ağı web sayfalarında tanıyabilmeniz "
-#~ "için kullanacağınız bir isimdir. İsteğe bağlı olarak bir bilgisayar seri "
-#~ "numarası veya kimlik numarası olabilir."
+#~ msgid "A Profile Name is a descriptive name that you choose to identify this System Profile on the {PRODUCT_NAME} web pages. Optionally, include a computer serial or identification number."
+#~ msgstr "Bir profil adı sisteminizi Red Hat Ağı web sayfalarında tanıyabilmeniz için kullanacağınız bir isimdir. İsteğe bağlı olarak bir bilgisayar seri numarası veya kimlik numarası olabilir."
 
-#~ msgid ""
-#~ "Additional hardware information including PCI devices, disk sizes and "
-#~ "mount points will be included in the profile."
-#~ msgstr ""
-#~ "Bu profilde ek donanım bilgisi olan PCI aygıtları, dik boyutları, "
-#~ "bağlantı noktalarıda eklenecek."
+#~ msgid "Additional hardware information including PCI devices, disk sizes and mount points will be included in the profile."
+#~ msgstr "Bu profilde ek donanım bilgisi olan PCI aygıtları, dik boyutları, bağlantı noktalarıda eklenecek."
 
 #~ msgid "Include the following information about hardware and network:"
 #~ msgstr "Donanım ve ağ hakkındaki aşağıdaki bilgileri ekle:"
@@ -315,19 +291,14 @@ msgstr ""
 #~ msgid "Create Profile - Packages"
 #~ msgstr "Up2date - Doanım Profili"
 
-#~ msgid ""
-#~ "RPM information is important to determine what updated software packages "
-#~ "are relevant to this system."
-#~ msgstr ""
-#~ "RPM bilgisi sitem kurulu olan paketlerden hangilerinin güncellendiğini "
-#~ "anlamak için çok önemlidir."
+#~ msgid "RPM information is important to determine what updated software packages are relevant to this system."
+#~ msgstr "RPM bilgisi sitem kurulu olan paketlerden hangilerinin güncellendiğini anlamak için çok önemlidir."
 
 #~ msgid "Include RPM packages installed on this system in my System Profile"
 #~ msgstr "Bu sistemde kurulu paketleri Sistem Profilime ekle"
 
 #~ msgid "You may deselect individual packages by unchecking them below."
-#~ msgstr ""
-#~ "Kişisel paketleri alttan seçimlerini kaldırarak seçim dışı yapabilirsiniz."
+#~ msgstr "Kişisel paketleri alttan seçimlerini kaldırarak seçim dışı yapabilirsiniz."
 
 #~ msgid "Building Package List"
 #~ msgstr "Paket Listesi Oluşturuluyor"
@@ -336,9 +307,7 @@ msgstr ""
 #~ msgstr "*E-posta Adresi"
 
 #~ msgid "System Already Registered"
-#~ msgstr ""
-#~ "    --force                    - sistemi daha önce kaydedilmiş olsada "
-#~ "kaydet"
+#~ msgstr "    --force                    - sistemi daha önce kaydedilmiş olsada kaydet"
 
 #~ msgid "It appears this system has already been set up for software updates:"
 #~ msgstr "Up2date yeniden başlatılıyor"
@@ -354,8 +323,7 @@ msgstr ""
 #~ msgstr "Açıklama"
 
 #, fuzzy
-#~ msgid ""
-#~ "Subscriptions have been activated for the following products/services:"
+#~ msgid "Subscriptions have been activated for the following products/services:"
 #~ msgstr "    --activationkey=<value>    - bir aktivasyon şifresi belirtin "
 
 #~ msgid "Software Channel Subscriptions:"
@@ -401,9 +369,7 @@ msgstr ""
 #~ msgstr "Sunucu bir hata belirledi:\n"
 
 #~ msgid "There was an error communicating with the registration server:\n"
-#~ msgstr ""
-#~ "Kayıt sunucusu ile haberleşilirken ölümcül bir hata oluştu.  Hata "
-#~ "iletisi:\n"
+#~ msgstr "Kayıt sunucusu ile haberleşilirken ölümcül bir hata oluştu.  Hata iletisi:\n"
 
 #~ msgid "Profile name:"
 #~ msgstr "Profil adı:"
@@ -458,12 +424,8 @@ msgstr ""
 #~ msgid "Finish"
 #~ msgstr "Bitir"
 
-#~ msgid ""
-#~ "  <Tab>/<Alt-Tab> between elements  |  <Space> selects  |  <F12> next "
-#~ "screen"
-#~ msgstr ""
-#~ "  <Tab>/<Alt-Tab> nesneler arasında geçiş  |  <Space> seçim  |  <F12> "
-#~ "sonraki ekran"
+#~ msgid "  <Tab>/<Alt-Tab> between elements  |  <Space> selects  |  <F12> next screen"
+#~ msgstr "  <Tab>/<Alt-Tab> nesneler arasında geçiş  |  <Space> seçim  |  <F12> sonraki ekran"
 
 #, fuzzy, python-brace-format
 #~ msgid "You must run the {PRODUCT_NAME} registration program as root."
@@ -473,9 +435,7 @@ msgstr ""
 #~ msgstr "Kullanılacak sunucu url'sini girin"
 
 #~ msgid "Specify a file to use as the ssl CA cert"
-#~ msgstr ""
-#~ "    --sslCACert=<path>         - ssl CA sertifikası olarak kullanılacak "
-#~ "dosyayı belirtin"
+#~ msgstr "    --sslCACert=<path>         - ssl CA sertifikası olarak kullanılacak dosyayı belirtin"
 
 #~ msgid "Specify an activation key"
 #~ msgstr "Kullanmak için http proxy belirleyin"
@@ -484,33 +444,22 @@ msgstr ""
 #~ msgstr "    --contactinfo              - stdin'den bağlantı bilgisini okur "
 
 #~ msgid "Do not probe or upload any hardware info"
-#~ msgstr ""
-#~ "    --nohardware               - her hangi bir donanım bilgisi araştırma "
-#~ "ve göndeme  "
+#~ msgstr "    --nohardware               - her hangi bir donanım bilgisi araştırma ve göndeme  "
 
 #~ msgid "Do not profile or upload any package info"
-#~ msgstr ""
-#~ "    --nopackages               - profil veya paket bilgisi gönderme "
+#~ msgstr "    --nopackages               - profil veya paket bilgisi gönderme "
 
 #~ msgid "Register the system even if it is already registered"
-#~ msgstr ""
-#~ "    --force                    - sistemi daha önce kaydedilmiş olsada "
-#~ "kaydet"
+#~ msgstr "    --force                    - sistemi daha önce kaydedilmiş olsada kaydet"
 
 #~ msgid "A username and password are required to register a system."
-#~ msgstr ""
-#~ "Sistem kaydı için bir kullanıcı adı, şifre ve e-mail adresi gereklidir."
+#~ msgstr "Sistem kaydı için bir kullanıcı adı, şifre ve e-mail adresi gereklidir."
 
 #~ msgid "This system is already registered. Use --force to override"
-#~ msgstr ""
-#~ "Sistem zaten kayıtlı. Tekrar kaydetmek için --force komutunu kullanın"
+#~ msgstr "Sistem zaten kayıtlı. Tekrar kaydetmek için --force komutunu kullanın"
 
-#~ msgid ""
-#~ "A profilename was not specified, and hostname and IP address could not be "
-#~ "determined to use as a profilename, please specify one."
-#~ msgstr ""
-#~ "Bir profil adı belirtilmemiş, ve makine adı, IP adresi profil adı olarak "
-#~ "kullanmak için çözümlenemedi, lütfen bir profil adı belirtin."
+#~ msgid "A profilename was not specified, and hostname and IP address could not be determined to use as a profilename, please specify one."
+#~ msgstr "Bir profil adı belirtilmemiş, ve makine adı, IP adresi profil adı olarak kullanmak için çözümlenemedi, lütfen bir profil adı belirtin."
 
 #, fuzzy
 #~ msgid "Software updates setup unsuccessful"
@@ -551,9 +500,7 @@ msgstr ""
 
 #, fuzzy
 #~ msgid "There was an error communicating with Spacewalk server."
-#~ msgstr ""
-#~ "Kayıt sunucusu ile haberleşilirken ölümcül bir hata oluştu.  Hata "
-#~ "iletisi:\n"
+#~ msgstr "Kayıt sunucusu ile haberleşilirken ölümcül bir hata oluştu.  Hata iletisi:\n"
 
 #~ msgid "You must enter a login."
 #~ msgstr "Bir kullanıcı adı girmelisiniz."
@@ -564,12 +511,8 @@ msgstr ""
 #~ msgid "There was an error while logging in."
 #~ msgstr "Sorun kaydetme sistemi"
 
-#~ msgid ""
-#~ "There was an error communicating with the registration server.  The "
-#~ "message was:\n"
-#~ msgstr ""
-#~ "Kayıt sunucusu ile haberleşilirken ölümcül bir hata oluştu.  Hata "
-#~ "iletisi:\n"
+#~ msgid "There was an error communicating with the registration server.  The message was:\n"
+#~ msgstr "Kayıt sunucusu ile haberleşilirken ölümcül bir hata oluştu.  Hata iletisi:\n"
 
 #~ msgid "There was an error while assembling information for the profile."
 #~ msgstr "Bu paket kurulurken bir ölümcül hata oluştu:"
@@ -622,11 +565,8 @@ msgstr ""
 #~ msgid "Arch"
 #~ msgstr "Arş"
 
-#~ msgid ""
-#~ "Building a list of RPM packages installed on your system.  Please wait."
-#~ msgstr ""
-#~ "Kayıt Sihirbazı sisteminize kurulu RPM paketlerinin listesini "
-#~ "oluşturuyor.  Lütfen bekleyin."
+#~ msgid "Building a list of RPM packages installed on your system.  Please wait."
+#~ msgstr "Kayıt Sihirbazı sisteminize kurulu RPM paketlerinin listesini oluşturuyor.  Lütfen bekleyin."
 
 #~ msgid ""
 #~ "There was an error loading your configuration.  Make sure that\n"
@@ -643,12 +583,8 @@ msgstr ""
 #~ "Yapılandırmanız kaydedilirken bir hata oluştu.\n"
 #~ "Kendi %s olduğundan emin olun."
 
-#~ msgid ""
-#~ "You need to register this system by running `rhn_register` before using "
-#~ "this option"
-#~ msgstr ""
-#~ "Bu seçeneği kullanmadan önce `up2date --register` komutunu çalıştırarak "
-#~ "sisteminizi kayıt ettirmelisiniz"
+#~ msgid "You need to register this system by running `rhn_register` before using this option"
+#~ msgstr "Bu seçeneği kullanmadan önce `up2date --register` komutunu çalıştırarak sisteminizi kayıt ettirmelisiniz"
 
 #~ msgid "Updating package profile..."
 #~ msgstr "Paket profili güncelleniyor..."

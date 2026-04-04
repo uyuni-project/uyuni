@@ -1,0 +1,81 @@
+<rl:listset name="groupSet" legend="errata">
+    <rhn:csrf />
+
+    <div class="spacewalk-section-toolbar">
+        <div class="action-button-wrapper">
+            <rl:csv
+                name="errataList"
+                exportColumns="advisoryType,advisoryName,synopsis,updateDate"/>
+            <button type="submit" name="dispatch" class="btn btn-danger"
+                value='<bean:message key="erratalist.jsp.deleteerrata"/>'>
+                <bean:message key="erratalist.jsp.deleteerrata"/>
+            </button>
+        </div>
+    </div>
+
+    <rl:list emptykey="${emptyListKey}">
+
+        <rl:decorator name="ElaborationDecorator" />
+        <rl:decorator name="PageSizeDecorator"/>
+        <rl:decorator name="SelectableDecorator"/>
+
+        <rl:selectablecolumn value="${current.selectionKey}"
+                             selected="${current.selected}"
+                             disabled="${not current.selectable}"/>
+
+        <rl:column headerkey="erratalist.jsp.type">
+            <c:if test="${current.securityAdvisory}">
+                <c:choose>
+                    <c:when test="${current.severityid=='0'}">
+                        <rhn:icon type="errata-security-critical"
+                                  title="erratalist.jsp.securityadvisory" />
+                    </c:when>
+                    <c:when test="${current.severityid=='1'}">
+                        <rhn:icon type="errata-security-important"
+                                  title="erratalist.jsp.securityadvisory" />
+                    </c:when>
+                    <c:when test="${current.severityid=='2'}">
+                        <rhn:icon type="errata-security-moderate"
+                                  title="erratalist.jsp.securityadvisory" />
+                    </c:when>
+                    <c:when test="${current.severityid=='3'}">
+                        <rhn:icon type="errata-security-low"
+                                  title="erratalist.jsp.securityadvisory" />
+                    </c:when>
+                    <c:otherwise>
+                        <rhn:icon type="errata-security"
+                                  title="erratalist.jsp.securityadvisory" />
+                    </c:otherwise>
+                </c:choose>
+            </c:if>
+            <c:if test="${current.bugFix}">
+                <rhn:icon type="errata-bugfix" title="erratalist.jsp.bugadvisory" />
+            </c:if>
+            <c:if test="${current.productEnhancement}">
+                <rhn:icon type="errata-enhance" title="erratalist.jsp.productenhancementadvisory" />
+            </c:if>
+            <c:if test="${current.rebootSuggested}">
+                <rhn:icon type="errata-reboot" title="errata-legend.jsp.reboot" />
+            </c:if>
+            <c:if test="${current.restartSuggested}">
+                <rhn:icon type="errata-restart" title="errata.jsp.restart-tooltip" />
+            </c:if>
+            <c:if test="${current.advisoryStatus.metadataValue == 'retracted'}">
+                <rhn:icon type="errata-retracted" title="errata.jsp.retracted-tooltip" />
+            </c:if>
+        </rl:column>
+        <rl:column headerkey="erratalist.jsp.advisory">
+            <a href="/rhn/errata/manage/Edit.do?eid=${current.id}">${current.advisoryName}</a>
+        </rl:column>
+        <rl:column headerkey="erratalist.jsp.synopsis"
+                   filterattr="synopsis">
+            ${current.synopsis}
+        </rl:column>
+        <rl:column headerkey="erratalist.jsp.updated">
+            ${current.updateDate}
+        </rl:column>
+
+    </rl:list>
+    <rhn:submitted/>
+
+</rl:listset>

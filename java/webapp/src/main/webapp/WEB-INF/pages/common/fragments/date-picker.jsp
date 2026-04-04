@@ -1,0 +1,13 @@
+<%@ page
+    pageEncoding="iso-8859-1"
+    contentType="text/html;charset=utf-8" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
+<%@ taglib uri="jakarta.tags.functions" prefix="fn" %>
+<%@ taglib uri="http://rhn.redhat.com/rhn" prefix="rhn" %>
+<%--
+  @param widget name of the date picker bean which should be in the request
+                scope. The bean should be DatePickerBean
+--%>
+<c:set value="${requestScope[param.widget]}" var="picker"/>
+<rhn:datepicker data="${picker}"/>

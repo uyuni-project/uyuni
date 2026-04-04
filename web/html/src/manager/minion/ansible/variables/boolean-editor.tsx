@@ -1,0 +1,64 @@
+import { useState } from "react";
+
+import { FieldInputProps, useField } from "formik";
+
+import { Button } from "components/buttons";
+
+type PlainObject = Record<string, any>;
+
+const BooleanEditor = (props: FieldInputProps<PlainObject> & { onClose?: () => void }) => {
+  const [field, , helper] = useField<PlainObject>(props.name);
+  const { onClose } = props;
+  const [newKey, setNewKey] = useState("");
+  const [newValue, setNewValue] = useState<boolean>(false);
+  const handleAddBoolean = () => {
+    if (!newKey.trim()) return;
+    const newTree = { ...field.value, [newKey]: newValue };
+    helper.setValue(newTree);
+    setNewKey("");
+    setNewValue(false);
+  };
+
+  return (
+    <>
+      {
+        <div className="border-top mt-4 mb-4 p-0 w-100">
+          <div className="d-block">
+            <h5 className="pull-left">{t("Add Boolean")}</h5>
+            <Button className="pull-right btn-tertiary btn-sm" title="Close" icon="fa-times" handler={onClose} />
+          </div>
+          <div className="row">
+            <div className="col-md-4 control-label">
+              <label>{t("Name")}</label>
+            </div>
+            <div className="col-md-8 form-group">
+              <input
+                className="form-control"
+                placeholder="Key"
+                value={newKey}
+                onChange={(e) => setNewKey(e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-md-4"></div>
+            <div className="col-md-8 form-group">
+              <label className="d-flex gap-3 p-0">
+                <input type="radio" checked={newValue === true} onChange={() => setNewValue(true)} /> {t("True")}
+              </label>
+              <label className="d-flex gap-3 p-0 mt-2">
+                <input type="radio" checked={newValue === false} onChange={() => setNewValue(false)} /> {t("False")}
+              </label>
+            </div>
+          </div>
+          <div className="d-flex offset-md-4 mt-3">
+            <Button className=" btn-primary btn-sm mt-2" text={t("Add Boolean")} handler={handleAddBoolean} />
+          </div>
+        </div>
+      }
+    </>
+  );
+};
+
+export default BooleanEditor;

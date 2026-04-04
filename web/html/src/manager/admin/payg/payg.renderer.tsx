@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import { RolesProvider } from "core/auth/roles-context";
 import SpaRenderer from "core/spa/spa-renderer";
 
@@ -10,10 +8,9 @@ import Pyag from "./payg";
 type RendererProps = {
   payg?: string;
   wasFreshlyCreatedMessage?: string;
-  readOnly?: boolean;
 };
 
-export const renderer = (id: string, { payg, wasFreshlyCreatedMessage, readOnly }: RendererProps = {}) => {
+export const renderer = (id: string, { payg, wasFreshlyCreatedMessage }: RendererProps = {}) => {
   let paygJson: any = {};
   try {
     paygJson = JSON.parse(payg || "");

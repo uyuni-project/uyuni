@@ -1,8 +1,6 @@
-import * as React from "react";
 import { useState } from "react";
 
-import { AsyncButton } from "components/buttons";
-import { SubmitButton } from "components/buttons";
+import { AsyncButton, SubmitButton } from "components/buttons";
 import { Form } from "components/input/form/Form";
 import { FormMultiInput } from "components/input/form-multi-input/FormMultiInput";
 import { unflattenModel } from "components/input/form-utils";
@@ -12,37 +10,38 @@ import { Panel } from "components/panels/Panel";
 import { TopPanel } from "components/panels/TopPanel";
 import Validation from "components/validation";
 
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
 
 import { ContainerConfigMessages } from "./container-config-messages";
 
 enum SSLMode {
+  NoSSL = "no-ssl",
   UseSSL = "use-ssl",
   CreateSSL = "create-ssl",
 }
 
-const initialModel = {
-  caCertificate: "",
-  caKey: "",
-  caPassword: "",
-  country: "",
-  state: "",
-  city: "",
-  org: "",
-  orgUnit: "",
-  sslEmail: "",
-  rootCA: "",
-  proxyCertificate: "",
-  proxyKey: "",
-  proxyAdminEmail: "",
-  sslMode: SSLMode.CreateSSL,
-  maxSquidCacheSize: "",
-  proxyFQDN: "",
-  serverFQDN: "",
-  proxyPort: "8022",
-};
-
-export function ProxyConfig() {
+export function ProxyConfig({ noSSL }: { noSSL: boolean }) {
+  const initialModel = {
+    caCertificate: "",
+    caKey: "",
+    caPassword: "",
+    country: "",
+    state: "",
+    city: "",
+    org: "",
+    orgUnit: "",
+    sslEmail: "",
+    rootCA: "",
+    proxyCertificate: "",
+    proxyKey: "",
+    proxyAdminEmail: "",
+    sslMode: noSSL ? SSLMode.NoSSL : SSLMode.CreateSSL,
+    maxSquidCacheSize: "",
+    proxyFQDN: "",
+    serverFQDN: "",
+    proxyPort: "8022",
+  };
   const [messages, setMessages] = useState<React.ReactNode[]>([]);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState<boolean | undefined>();
@@ -64,13 +63,13 @@ export function ProxyConfig() {
 
     const fileReaders = Object.keys(model)
       .filter((key) => {
-        const matcher = key.match(/^([a-zA-Z0-9]*[A-zA-Z])[0-9]+$/);
+        const matcher = key.match(/^([a-zA-Z0-9]*[a-zA-Z])[0-9]+$/);
         const fieldName = matcher ? matcher[1] : key;
         return fileFields[fieldName] === model.sslMode;
       })
       .map((fieldName) => {
         const field = document.getElementById(fieldName);
-        if (field !== null && field instanceof HTMLInputElement && field.files != null) {
+        if (field !== null && field instanceof HTMLInputElement && !DEPRECATED_unsafeEquals(field.files, null)) {
           const file = field.files[0];
           return new Promise((resolve) => {
             const reader = new FileReader();
@@ -128,11 +127,9 @@ export function ProxyConfig() {
             setSuccess(false);
             setMessages([
               <>
-                {JSON.parse(xhr.responseText)
-                  .split("\n")
-                  .map((line: string) => (
-                    <p>{line}</p>
-                  ))}
+                {xhr.responseJSON.messages.map((line: string) => (
+                  <p key={line}>{line}</p>
+                ))}
               </>,
             ]);
             setLoading(false);
@@ -187,7 +184,7 @@ export function ProxyConfig() {
       </p>
       {ContainerConfigMessages(success, messages, loading)}
       <Form
-        className="form-horizontal"
+        className="form-horizontal mt-5"
         model={model}
         onValidate={onValidate}
         onChange={onChange}
@@ -255,9 +252,10 @@ export function ProxyConfig() {
           required
           labelClass="col-md-3"
           divClass="col-md-6"
-          defaultValue={SSLMode.CreateSSL}
+          defaultValue={noSSL ? SSLMode.NoSSL : SSLMode.CreateSSL}
           items={[
-            { label: t("Generate"), value: SSLMode.CreateSSL },
+            { label: t("Skip SSL configuration"), value: SSLMode.NoSSL },
+            ...(!noSSL ? [{ label: t("Generate"), value: SSLMode.CreateSSL }] : []),
             { label: t("Use existing"), value: SSLMode.UseSSL },
           ]}
         />

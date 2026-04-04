@@ -3,24 +3,26 @@
  * This avoids issues with mismatched packages when building patches or working in OBS/IBS.
  */
 
-/* eslint-disable no-console */
-const fs = require("fs");
-const path = require("path");
-const semver = require("semver");
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import semver from "semver";
 
-module.exports = async (opts) => {
+const __filename = fileURLToPath(import.meta.url);
+
+export default async (opts) => {
   let hasFailed = false;
 
   const dirname = path.dirname(__filename);
-  const webHtmlSrc = path.resolve(dirname, "..");
-  const pkg = JSON.parse(await fs.promises.readFile(path.resolve(webHtmlSrc, "package.json"), "utf8"));
+  const web = path.resolve(dirname, "../../..");
+  const pkg = JSON.parse(await fs.promises.readFile(path.resolve(web, "package.json"), "utf8"));
 
   // Currently we only check production dependencies
   const dependencies = pkg.dependencies;
   // If we ever need to support resolutions, they're available here:
   // const resolutions = pkg.resolutions;
 
-  const nodeModules = path.resolve(webHtmlSrc, "node_modules");
+  const nodeModules = path.resolve(web, "node_modules");
   for (const [dependency, expectedVersion] of Object.entries(dependencies)) {
     const installedPkg = JSON.parse(
       await fs.promises.readFile(path.resolve(nodeModules, dependency, "package.json"), "utf8")
@@ -42,7 +44,7 @@ module.exports = async (opts) => {
     }
   }
   if (hasFailed) {
-    const errorMessage = "Have you installed the latest dependencies? Try running: yarn install";
+    const errorMessage = "Have you installed the latest dependencies? Try running: npm install";
     if (opts.force) {
       console.error(errorMessage);
       console.warn("WARN: Ignoring package check errors because build was called with --force");

@@ -1,0 +1,53 @@
+{{- if and .Values.gateway.enable (eq .Values.gateway.name "") }}
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: uyuni-gateway
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/part-of: uyuni
+spec:
+  gatewayClassName: "{{ .Values.gateway.class }}"
+  listeners:
+    # HTTP/HTTPS Listeners
+    - name: {{ default .Values.gateway.listeners.http.name "web" }}
+      protocol: HTTP
+      port: {{ default .Values.gateway.listeners.http.port 8000 }}
+      allowedRoutes:
+        namespaces:
+          from: Same
+    
+    - name: {{ default .Values.gateway.listeners.http.name "websecure" }}
+      protocol: HTTPS
+      port: {{ default .Values.gateway.listeners.https.port 8443 }}
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: proxy-cert
+      allowedRoutes:
+        namespaces:
+          from: Same
+
+    # TCP Listeners
+    - name: salt-publish
+      protocol: TCP
+      port: 4505
+      allowedRoutes:
+        namespaces:
+          from: Same
+
+    - name: salt-request
+      protocol: TCP
+      port: 4506
+      allowedRoutes:
+        namespaces:
+          from: Same
+
+    - name: ssh
+      protocol: TCP
+      port: 8022
+      allowedRoutes:
+        namespaces:
+          from: Same
+{{- end }}
+

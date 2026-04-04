@@ -8,7 +8,12 @@
 -- along with this software; if not, see
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
-
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('admin.access', 'R', 'List and detail custom access groups.')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('admin.access', 'W', 'Create, modify and delete custom access groups.')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('admin.hub', 'R', 'Browse Hub Online Synchronization pages')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
@@ -1512,9 +1517,11 @@ INSERT INTO access.namespace (namespace, access_mode, description)
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.sync.hub.store_access_token', 'W', 'Generate a new access token for ISS for accessing this system')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
-
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.sync.hub.get_all_peripheral_channels', 'R', 'List all peripheral channels')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.sync.hub.list_peripheral_servers', 'R', 'List all peripheral servers')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.sync.hub.get_manager_info', 'R', 'Get Manager Server Details')
@@ -1546,7 +1553,9 @@ INSERT INTO access.namespace (namespace, access_mode, description)
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.sync.hub.list_peripheral_channels_to_sync', 'R', 'List channels which are configured to be synchronized with a peripheral server')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
-
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.sync.hub.schedule_update_task', 'W', 'Schedule mgr-sync refresh with reposync on peripheral server')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.image.add_image_file', 'W', 'Delete image file')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
@@ -2379,6 +2388,12 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.system.appstreams.enable', 'W', 'Schedule enabling of module streams. Invalid modules will be filtered out. If all provided')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.system.appstreams.ssm_disable', 'W', 'Schedule disabling of module streams from a given modular channel for SSM')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.system.appstreams.ssm_enable', 'W', 'Schedule enabling of module streams from a given modular channel for SSM')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.system.appstreams.list_module_streams', 'R', 'List available module streams for a given system.')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
@@ -3079,4 +3094,7 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.virtualhostmanager.list_virtual_host_managers', 'R', 'Lists Virtual Host Managers visible to a user')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.proxy.backup_configuration', 'W', 'Saves the configuration of a proxy to the server for later conversion')
     ON CONFLICT (namespace, access_mode) DO NOTHING;

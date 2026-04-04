@@ -1,0 +1,212 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/helm-unittest/helm-unittest/main/schema/helm-testsuite.json
+suite: test node selection
+templates:
+  - deployment.yaml
+  - tftp.yaml
+tests:
+  - it: check node selector on proxy
+    set:
+      global:
+        config: "dummy"
+        httpd: "dummy"
+        ssh: "dummy"
+      proxy:
+        nodeName: "proxy-node"
+        nodeSelector:
+          "node": "proxy"
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+              - matchExpressions:
+                - key: "node"
+                  operator: In
+                  values:
+                  - "proxy"
+        tolerations:
+        - key: "proxy"
+          operator: "Equal"
+          value: "true"
+          effect: "NoSchedule"
+    asserts:
+      - equal:
+          path: spec.template.spec.nodeName
+          value: "proxy-node"
+        template: deployment.yaml
+      - equal:
+          path: spec.template.spec.nodeSelector
+          value:
+            "node": "proxy"
+        template: deployment.yaml
+      - equal:
+          path: spec.template.spec.affinity
+          value:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: "node"
+                    operator: In
+                    values:
+                    - "proxy"
+        template: deployment.yaml
+      - equal:
+          path: spec.template.spec.tolerations
+          value:
+          - key: "proxy"
+            operator: "Equal"
+            value: "true"
+            effect: "NoSchedule"
+        template: deployment.yaml
+      - isKind:
+          of: Deployment
+        template: deployment.yaml
+      - isAPIVersion:
+          of: apps/v1
+        template: deployment.yaml
+  - it: check node selector on tftp
+    set:
+      global:
+        config: "dummy"
+        httpd: "dummy"
+        ssh: "dummy"
+      tftp:
+        nodeName: "tftp-node"
+        nodeSelector:
+          "node": "tftp"
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+              - matchExpressions:
+                - key: "node"
+                  operator: In
+                  values:
+                  - "tftp"
+        tolerations:
+        - key: "tftp"
+          operator: "Equal"
+          value: "true"
+          effect: "NoSchedule"
+    asserts:
+      - equal:
+          path: spec.template.spec.nodeName
+          value: "tftp-node"
+        template: tftp.yaml
+      - equal:
+          path: spec.template.spec.nodeSelector
+          value:
+            "node": "tftp"
+        template: tftp.yaml
+      - equal:
+          path: spec.template.spec.affinity
+          value:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: "node"
+                    operator: In
+                    values:
+                    - "tftp"
+        template: tftp.yaml
+      - equal:
+          path: spec.template.spec.tolerations
+          value:
+          - key: "tftp"
+            operator: "Equal"
+            value: "true"
+            effect: "NoSchedule"
+        template: tftp.yaml
+      - isKind:
+          of: Deployment
+        template: tftp.yaml
+      - isAPIVersion:
+          of: apps/v1
+        template: tftp.yaml
+  - it: check global node placement fallback
+    set:
+      global:
+        config: "dummy"
+        httpd: "dummy"
+        ssh: "dummy"
+      placement:
+        nodeName: "global-fallback-node"
+        nodeSelector:
+          "tier": "global"
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+              - matchExpressions:
+                - key: "tier"
+                  operator: In
+                  values:
+                  - "global"
+        tolerations:
+        - key: "global"
+          operator: "Equal"
+          value: "true"
+          effect: "NoSchedule"
+    asserts:
+      # Check that the proxy deployment inherited the global values
+      - equal:
+          path: spec.template.spec.nodeName
+          value: "global-fallback-node"
+        template: deployment.yaml
+      - equal:
+          path: spec.template.spec.nodeSelector
+          value:
+            "tier": "global"
+        template: deployment.yaml
+      - equal:
+          path: spec.template.spec.affinity
+          value:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: "tier"
+                    operator: In
+                    values:
+                    - "global"
+        template: deployment.yaml
+      - equal:
+          path: spec.template.spec.tolerations
+          value:
+          - key: "global"
+            operator: "Equal"
+            value: "true"
+            effect: "NoSchedule"
+        template: deployment.yaml
+      # Check that the tftp deployment ALSO inherited the global values
+      - equal:
+          path: spec.template.spec.nodeName
+          value: "global-fallback-node"
+        template: tftp.yaml
+      - equal:
+          path: spec.template.spec.nodeSelector
+          value:
+            "tier": "global"
+        template: tftp.yaml
+      - equal:
+          path: spec.template.spec.affinity
+          value:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: "tier"
+                    operator: In
+                    values:
+                    - "global"
+        template: tftp.yaml
+      - equal:
+          path: spec.template.spec.tolerations
+          value:
+          - key: "global"
+            operator: "Equal"
+            value: "true"
+            effect: "NoSchedule"
+        template: tftp.yaml
+

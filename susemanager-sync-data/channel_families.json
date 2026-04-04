@@ -120,6 +120,10 @@
     "name" : "openSUSE Products"
   },
   {
+    "label" : "RBS-LTS-X86-64",
+    "name" : "SUSE Manager Retail Branch Server LTS x86_64"
+  },
+  {
     "label" : "RES",
     "name" : "SUSE Linux Enterprise RedHat Expanded Support"
   },
@@ -404,6 +408,22 @@
     "name" : "SUSE Linux Enterprise Server LTSS 15 SP5 Z-Series"
   },
   {
+    "label" : "SLES15-SP6-LTSS-ARM64",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 SP6 ARM64"
+  },
+  {
+    "label" : "SLES15-SP6-LTSS-PPC",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 SP6 PPC"
+  },
+  {
+    "label" : "SLES15-SP6-LTSS-X86",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 SP6 x86_64"
+  },
+  {
+    "label" : "SLES15-SP6-LTSS-Z",
+    "name" : "SUSE Linux Enterprise Server LTSS 15 SP6 Z-Series"
+  },
+  {
     "label" : "SLESMT",
     "name" : "SUSE Linux Enterprise Subscription Management Tool"
   },
@@ -444,24 +464,20 @@
     "name" : "SUSE Manager Server System Z"
   },
   {
-    "label" : "SUMA-LTS-PPC",
-    "name" : "SUSE Manager LTS PPC"
+    "label" : "STUDIOONSITE",
+    "name" : "SUSE Studio Onsite"
   },
   {
-    "label" : "SUMA-LTS-Z",
-    "name" : "SUSE Manager LTS System Z"
+    "label" : "SUMA-LTS-PPC",
+    "name" : "SUSE Manager LTS PPC"
   },
   {
     "label" : "SUMA-LTS-X86-64",
     "name" : "SUSE Manager LTS x86_64"
   },
   {
-    "label" : "RBS-LTS-X86-64",
-    "name" : "SUSE Manager Retail Branch Server LTS x86_64"
-  },
-  {
-    "label" : "STUDIOONSITE",
-    "name" : "SUSE Studio Onsite"
+    "label" : "SUMA-LTS-Z",
+    "name" : "SUSE Manager LTS System Z"
   },
   {
     "label" : "SUSE_CLOUD",

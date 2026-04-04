@@ -1,4 +1,38 @@
 -------------------------------------------------------------------
+Mon Mar 02 13:10:32 CET 2026 - michael.calmer@suse.com
+
+- version 5.2.5
+  * Image rebuilt to the newest version with updated dependencies
+    for SUSE Multi-Linux Manager 5.2 Beta 1
+
+-------------------------------------------------------------------
+Tue Jan 27 09:29:53 WET 2026 - psuarezhernandez@suse.com
+
+- version 5.2.4
+  * Configure squid replacement policy properly before cache dir
+    (bsc#1253773)
+
+-------------------------------------------------------------------
+Tue Dec 09 13:52:34 CET 2025 - michael.calmer@suse.com
+
+- version 5.2.3
+  * Remove libzypp and container-suseconnect from image
+
+-------------------------------------------------------------------
+Thu Nov 27 11:10:06 CET 2025 - michael.calmer@suse.com
+
+- version 5.2.2
+  * Clean up the image
+
+-------------------------------------------------------------------
+Tue Oct 28 10:18:49 CET 2025 - rosuna@suse.com
+
+- version 5.2.1
+  * Allow override all parameters in squid conf (bsc#1250940)
+  * Set the default timeout for /pub to 30min (bsc#1247644)
+  * Use absolute paths when invoking external commands
+
+-------------------------------------------------------------------
 Tue Jun 17 19:42:10 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.7

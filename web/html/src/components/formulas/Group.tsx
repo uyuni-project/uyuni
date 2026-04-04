@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useEffect, useState } from "react";
+import { type ReactNode, Fragment, useEffect, useState } from "react";
 
 import { SectionState } from "components/FormulaForm";
 import { Highlight } from "components/table/Highlight";
@@ -11,9 +10,9 @@ type Props = {
   id: string;
   sectionsExpanded: SectionState;
   setSectionsExpanded: (SectionState) => void;
-  header?: React.ReactNode;
-  help?: React.ReactNode;
-  children?: React.ReactNode;
+  header?: ReactNode;
+  help?: ReactNode;
+  children?: ReactNode;
   isVisibleByCriteria?: () => boolean;
   criteria: string;
 };
@@ -57,10 +56,10 @@ const Group = (props: Props) => {
       </SectionToggle>
       <div>
         {visible ? (
-          <React.Fragment>
+          <Fragment>
             {props.help ? <p>{props.help}</p> : null}
             {props.children}
-          </React.Fragment>
+          </Fragment>
         ) : null}
       </div>
     </div>

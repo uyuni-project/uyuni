@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import { AttestationResult, renderTime } from "./Utils";
 
@@ -7,7 +7,7 @@ type Props = {
   result: AttestationResult;
 };
 
-class CoCoResult extends React.Component<Props> {
+class CoCoResult extends Component<Props> {
   render = () => {
     const result = this.props.result;
     return (

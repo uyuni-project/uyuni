@@ -1,9 +1,10 @@
-import * as React from "react";
+import { type MouseEvent, type ReactNode, Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 import { isUyuni } from "core/user-preferences";
 
 import { MessagesContainer } from "components/toastr/toastr";
+import { DEPRECATED_onClick } from "components/utils";
 
 import { stringToReact } from "utils";
 import { flatten } from "utils/jsx";
@@ -16,8 +17,8 @@ type LinkProps = {
   className?: string;
   target?: string;
   title?: string;
-  responsiveLabel?: React.ReactNode;
-  label?: React.ReactNode;
+  responsiveLabel?: ReactNode;
+  label?: ReactNode;
 };
 
 const Link = (props: LinkProps) => (
@@ -28,7 +29,7 @@ const Link = (props: LinkProps) => (
 );
 
 type NodeProps = {
-  handleClick: ((event?: React.MouseEvent) => any) | null;
+  handleClick: ((event?: MouseEvent) => any) | null;
   isLeaf?: boolean;
   icon?: string;
   url: string;
@@ -38,7 +39,7 @@ type NodeProps = {
   isOpen?: boolean;
 };
 
-class Node extends React.Component<NodeProps> {
+class Node extends Component<NodeProps> {
   handleClick = (event) => {
     // if the click is triggered on a link, do not toggle the menu, just offload the page and go to the requested link
     if (!event.target.href) {
@@ -48,7 +49,11 @@ class Node extends React.Component<NodeProps> {
 
   render() {
     return (
-      <div className={this.props.isLeaf ? "leafLink" : "nodeLink"} onClick={(event) => this.handleClick(event)}>
+      <div
+        className={this.props.isLeaf ? "leafLink" : "nodeLink"}
+        {...DEPRECATED_onClick((event) => this.handleClick(event))}
+        role="button"
+      >
         {this.props.icon ? <i className={"fa " + this.props.icon}></i> : null}
         <Link url={this.props.url} target={this.props.target} label={stringToReact(this.props.label)} />
         {this.props.isLeaf ? null : !this.props.isSearchActive ? (
@@ -67,11 +72,22 @@ type ElementProps = {
   forceCollapse?: any;
 };
 
-class Element extends React.Component<ElementProps> {
-  state = {
-    open: this.props.element?.active ? true : false,
-    visiblityForcedByParent: false,
-  };
+class ElementState {
+  open: boolean;
+  visiblityForcedByParent = false;
+
+  constructor(props: ElementProps) {
+    this.open = props.element?.active ? true : false;
+  }
+}
+
+class Element extends Component<ElementProps, ElementState> {
+  state: ElementState;
+
+  constructor(props: ElementProps) {
+    super(props);
+    this.state = new ElementState(props);
+  }
 
   UNSAFE_componentWillReceiveProps(nextProps: ElementProps) {
     this.setState({
@@ -81,7 +97,7 @@ class Element extends React.Component<ElementProps> {
   }
 
   isCurrentVisible = (element, search) => {
-    if (search == null || DEPRECATED_unsafeEquals(search.length, 0)) {
+    if (DEPRECATED_unsafeEquals(search, null) || DEPRECATED_unsafeEquals(search.length, 0)) {
       return true;
     }
 
@@ -89,7 +105,7 @@ class Element extends React.Component<ElementProps> {
   };
 
   isVisible = (element, search) => {
-    if (search == null || DEPRECATED_unsafeEquals(search.length, 0)) {
+    if (DEPRECATED_unsafeEquals(search, null) || DEPRECATED_unsafeEquals(search.length, 0)) {
       return true;
     }
 
@@ -101,11 +117,11 @@ class Element extends React.Component<ElementProps> {
   };
 
   isLeaf = (element) => {
-    return element.submenu == null;
+    return DEPRECATED_unsafeEquals(element.submenu, null);
   };
 
   toggleView = () => {
-    this.setState({ open: !this.state.open });
+    this.setState((prevState) => ({ open: !prevState.open }));
   };
 
   getUrl = (element) => {
@@ -155,9 +171,9 @@ type MenuLevelProps = {
   forceCollapse?: any;
 };
 
-class MenuLevel extends React.Component<MenuLevelProps> {
+class MenuLevel extends Component<MenuLevelProps> {
   render() {
-    var contentMenu = this.props.elements.map((el, i) => (
+    const contentMenu = this.props.elements.map((el, i) => (
       <Element
         element={el}
         key={this.props.level + "_" + el.label + "_" + i}
@@ -171,14 +187,14 @@ class MenuLevel extends React.Component<MenuLevelProps> {
   }
 }
 
-class Nav extends React.Component {
+class Nav extends Component {
   state = { search: "", forceCollapse: false };
 
   onSearch = (e) => {
     this.setState({ search: e.target.value });
   };
 
-  closeEmAll = () => {
+  closeAll = () => {
     this.setState({ search: "", forceCollapse: true });
   };
 
@@ -187,7 +203,7 @@ class Nav extends React.Component {
   };
 
   render() {
-    const isSearchActive = this.state.search != null && this.state.search.length > 0;
+    const isSearchActive = !DEPRECATED_unsafeEquals(this.state.search, null) && this.state.search.length > 0;
     return (
       <nav className={isSearchActive ? "" : "collapsed"}>
         <div className="nav-tool-box">
@@ -202,7 +218,11 @@ class Nav extends React.Component {
           />
           <span className={"input-right-icon " + (isSearchActive ? "clear" : "")}>
             {isSearchActive ? (
-              <i className="fa fa-times-circle-o no-margin" onClick={this.closeEmAll} title={t("Clear Menu")}></i>
+              <i
+                className="fa fa-times-circle-o no-margin"
+                {...DEPRECATED_onClick(this.closeAll)}
+                title={t("Clear Menu")}
+              ></i>
             ) : (
               <i className="fa fa-search no-margin" title={t("Filter menu")}></i>
             )}
@@ -221,17 +241,15 @@ class Nav extends React.Component {
 
 SpaRenderer.renderGlobalReact(<Nav />, document.getElementById("nav"));
 
-class Breadcrumb extends React.Component {
-  componentDidMount() {}
-
+class Breadcrumb extends Component {
   onSPAEndNavigation() {
     this.forceUpdate();
   }
 
   render() {
-    var breadcrumbArray: any[] = [];
-    var level = window.JSONMenu.find((l) => l.active);
-    while (level != null) {
+    const breadcrumbArray: any[] = [];
+    let level = window.JSONMenu.find((l) => l.active);
+    while (!DEPRECATED_unsafeEquals(level, null)) {
       breadcrumbArray.push(level);
       level = level.submenu ? level.submenu.find((l) => l.active) : null;
     }
@@ -285,8 +303,6 @@ class Breadcrumb extends React.Component {
 SpaRenderer.renderGlobalReact(<Breadcrumb />, document.getElementById("breadcrumb"));
 
 SpaRenderer.renderGlobalReact(
-  <>
-    <MessagesContainer containerId="global" />
-  </>,
+  <MessagesContainer containerId="global" />,
   document.getElementById("messages-container")
 );

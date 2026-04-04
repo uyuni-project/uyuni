@@ -17,13 +17,14 @@
 
 
 Name:           mgr-libmod
-Version:        5.2.0
+Version:        5.2.1
 Release:        0
 Summary:        Modular dependency resolver for content lifecycle management
 License:        MIT
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
 URL:            https://github.com/uyuni-project/uyuni
+#!CreateArchive: %{name}
 Source:         %{name}-%{version}.tar.gz
 BuildRequires:  python3-pytest
 BuildRequires:  python3-rpm-macros

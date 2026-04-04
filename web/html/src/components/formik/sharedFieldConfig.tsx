@@ -1,5 +1,4 @@
-import React, { createContext, useContext } from "react";
-
+import { type ReactNode, createContext, useContext } from "react";
 export type SharedFieldConfigType = {
   /** CSS class to use for the label */
   labelClass?: string;
@@ -19,7 +18,7 @@ const FormMetadataContext = createContext<Partial<SharedFieldConfigType>>(initia
 export const useSharedFieldConfig = () => useContext(FormMetadataContext);
 
 type Props = Partial<SharedFieldConfigType> & {
-  children?: React.ReactNode;
+  children?: ReactNode;
 };
 
 export const SharedFieldConfigProvider = ({ children, ...rest }: Props) => (

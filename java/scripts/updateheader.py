@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# pylint: disable=missing-module-docstring
 
 from optparse import OptionParser
 
@@ -12,16 +13,19 @@ if len(terms) < 2:
 hdrfile = terms[0]
 dafile = terms[1]
 
+# pylint: disable-next=unspecified-encoding
 f = open(hdrfile, "r")
 hdr = f.readlines()
 hdrsz = len(hdr)
 f.close()
 
+# pylint: disable-next=unspecified-encoding
 f = open(dafile, "r")
 toupdate = f.readlines()
 sz = len(toupdate)
 f.close()
 
+# pylint: disable-next=unspecified-encoding
 f = open(dafile, "w")
 f.writelines(hdr)
 f.writelines(toupdate[hdrsz:sz])

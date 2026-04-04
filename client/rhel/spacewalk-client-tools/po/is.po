@@ -15,11 +15,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-04-11 13:25+0200\n"
+"POT-Creation-Date: 2025-10-03 11:04+0200\n"
 "PO-Revision-Date: 2018-03-16 11:01+0000\n"
 "Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
-"Language-Team: Icelandic (http://www.transifex.com/projects/p/spacewalk/"
-"language/is/)\n"
+"Language-Team: Icelandic (http://www.transifex.com/projects/p/spacewalk/language/is/)\n"
 "Language: is\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,99 +26,93 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Zanata 4.6.2\n"
 
-#: ../src/up2date_client/config.py:162
+#. pylint: disable-next=consider-using-f-string
+#: ../src/up2date_client/config.py:166
 #, python-format
 msgid "%s was not found"
 msgstr "%s fannst ekki"
 
-#: ../src/up2date_client/rpcServer.py:55
+#: ../src/up2date_client/rpcServer.py:70
 msgid "Error: Server Unavailable. Please try later."
 msgstr ""
 
-#: ../src/up2date_client/rpcServer.py:181
+#. pylint: disable-next=consider-using-f-string
+#: ../src/up2date_client/rpcServer.py:221
 #, fuzzy
 msgid "ERROR: can not find server CA file"
 msgstr "VILLA: get ekki fundið RHNS CA skrána:"
 
-#: ../src/up2date_client/up2dateErrors.py:47
-#: ../src/up2date_client/up2dateErrors.py:80
+#: ../src/up2date_client/up2dateErrors.py:62
+#: ../src/up2date_client/up2dateErrors.py:101
 #, python-format
 msgid "class %s has no attribute '%s'"
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:107
+#: ../src/up2date_client/up2dateErrors.py:135
 msgid "RPM error.  The message was:\n"
 msgstr "RPM villa. Skilaboðin voru:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:114
+#: ../src/up2date_client/up2dateErrors.py:145
 msgid "Password error. The message was:\n"
 msgstr "Villa í lykilorði. Skilaboðin voru:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:118
+#: ../src/up2date_client/up2dateErrors.py:151
 msgid "RPM dependency error. The message was:\n"
 msgstr "RPM pakkaþarfavilla. Skilaboðin voru:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:128
+#: ../src/up2date_client/up2dateErrors.py:163
 msgid "Error communicating with server. The message was:\n"
 msgstr "Villa í samskiptum við þjóninn.  Skilaboðin voru:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:135
+#: ../src/up2date_client/up2dateErrors.py:172
 msgid "File Not Found: \n"
 msgstr "Skráin finnst ekki: \n"
 
-#: ../src/up2date_client/up2dateErrors.py:142
+#: ../src/up2date_client/up2dateErrors.py:180
 msgid "Delay error from server.  The message was:\n"
 msgstr "Biðvilla frá þjóni. Skilaboðin voru:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:178
+#: ../src/up2date_client/up2dateErrors.py:229
 msgid "Error validating data at server:\n"
 msgstr "Villa við stafestingu gagna á þjóni:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:191
+#: ../src/up2date_client/up2dateErrors.py:246
 msgid ""
 "\n"
 "Red Hat Network Classic is not supported.\n"
 "    "
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:197
+#: ../src/up2date_client/up2dateErrors.py:255
 msgid "The installation number is invalid"
 msgstr "Áskriftarnúmerið er ógilt"
 
-#: ../src/up2date_client/up2dateErrors.py:200
+#: ../src/up2date_client/up2dateErrors.py:259
 msgid "Error parsing the oemInfo file at field:\n"
 msgstr "Villa við þáttun OEMupplýsinga í dálk:\n"
 
-#: ../src/up2date_client/up2dateErrors.py:227
+#: ../src/up2date_client/up2dateErrors.py:294
 msgid "Network error: "
 msgstr ""
 
-#: ../src/up2date_client/up2dateErrors.py:295
+#: ../src/up2date_client/up2dateErrors.py:385
 msgid ""
 "\n"
-"    Your organization does not have enough Management entitlements to "
-"register this\n"
+"    Your organization does not have enough Management entitlements to register this\n"
 "    system. Please notify your organization administrator of this error.\n"
-"    You should be able to register this system after your organization frees "
-"existing\n"
-"    or purchases additional entitlements. Additional entitlements may be "
-"purchased by your\n"
+"    You should be able to register this system after your organization frees existing\n"
+"    or purchases additional entitlements. Additional entitlements may be purchased by your\n"
 "    organization administrator in the SUSE Customer Center.\n"
 "\n"
 "    A common cause of this error code is due to having mistakenly setup an\n"
-"    Activation Key which is set as the universal default.  If an activation "
-"key is set\n"
-"    on the account as a universal default, you can disable this key and "
-"retry to avoid\n"
+"    Activation Key which is set as the universal default.  If an activation key is set\n"
+"    on the account as a universal default, you can disable this key and retry to avoid\n"
 "    requiring a Management entitlement."
 msgstr ""
 
 #, python-format
-#~ msgid ""
-#~ "This client requires the server to support %s, which the current server "
-#~ "does not support"
-#~ msgstr ""
-#~ "Þessi biðlari þarf að þjónninn styðji %s sem núverandi þjónn styður ekki"
+#~ msgid "This client requires the server to support %s, which the current server does not support"
+#~ msgstr "Þessi biðlari þarf að þjónninn styðji %s sem núverandi þjónn styður ekki"
 
 #~ msgid "Getting list of packages installed on the system"
 #~ msgstr "Bý til lista yfir þá pakka sem þegar eru uppsettir"
@@ -151,10 +144,8 @@ msgstr ""
 #~ msgid "Error reading machine info:"
 #~ msgstr "Villa við lestur upplýsinga um örgjörvann:"
 
-#~ msgid ""
-#~ "This system may not be updated until it is associated with a channel."
-#~ msgstr ""
-#~ "Það er ekki hægt að uppfæra þessa vél fyrr en hún er tengd einhverri rás."
+#~ msgid "This system may not be updated until it is associated with a channel."
+#~ msgstr "Það er ekki hægt að uppfæra þessa vél fyrr en hún er tengd einhverri rás."
 
 #, fuzzy
 #~ msgid "Show additional output. Repeat for more detail."
@@ -188,12 +179,8 @@ msgstr ""
 #~ msgid "There was an SSL error: %s\n"
 #~ msgstr "Það kom upp SSL villa: %s\n"
 
-#~ msgid ""
-#~ "A common cause of this error is the system time being incorrect. Verify "
-#~ "that the time on this system is correct.\n"
-#~ msgstr ""
-#~ "Algeng orsök þessarar villu er iðullega sú að klukka vélarinnar er röng. "
-#~ "Staðfestu að kerfistími sé réttur.\n"
+#~ msgid "A common cause of this error is the system time being incorrect. Verify that the time on this system is correct.\n"
+#~ msgstr "Algeng orsök þessarar villu er iðullega sú að klukka vélarinnar er röng. Staðfestu að kerfistími sé réttur.\n"
 
 #, python-format
 #~ msgid "There was a SSL crypto error: %s\n"
@@ -253,21 +240,11 @@ msgstr ""
 #~ msgstr "Tengja vélina þína"
 
 #, fuzzy, python-brace-format
-#~ msgid ""
-#~ "A Profile Name is a descriptive name that you choose to identify this "
-#~ "System Profile on the {PRODUCT_NAME} web pages. Optionally, include a "
-#~ "computer serial or identification number."
-#~ msgstr ""
-#~ "Heiti kerfislýsingar ætti að vera heiti sem er lýsandi fyrir þessa vél á "
-#~ "Red Hat Network vefsíðunum. Þú getur látið það innihalda raðnúmer "
-#~ "vélarinnar eða aðrar einkenandi upplýsingar."
+#~ msgid "A Profile Name is a descriptive name that you choose to identify this System Profile on the {PRODUCT_NAME} web pages. Optionally, include a computer serial or identification number."
+#~ msgstr "Heiti kerfislýsingar ætti að vera heiti sem er lýsandi fyrir þessa vél á Red Hat Network vefsíðunum. Þú getur látið það innihalda raðnúmer vélarinnar eða aðrar einkenandi upplýsingar."
 
-#~ msgid ""
-#~ "Additional hardware information including PCI devices, disk sizes and "
-#~ "mount points will be included in the profile."
-#~ msgstr ""
-#~ "Auka tækjapplýsingar eins og PCI tæki, stærðir diska og tengipunktur "
-#~ "drifa verða skráð í kerfisupplýsingarnar"
+#~ msgid "Additional hardware information including PCI devices, disk sizes and mount points will be included in the profile."
+#~ msgstr "Auka tækjapplýsingar eins og PCI tæki, stærðir diska og tengipunktur drifa verða skráð í kerfisupplýsingarnar"
 
 #~ msgid "Include the following information about hardware and network:"
 #~ msgstr "Hafa með eftirfarandi upplýsingar um vélbúnað og net:"
@@ -275,19 +252,14 @@ msgstr ""
 #~ msgid "Create Profile - Packages"
 #~ msgstr "Tengja vélina þína"
 
-#~ msgid ""
-#~ "RPM information is important to determine what updated software packages "
-#~ "are relevant to this system."
-#~ msgstr ""
-#~ "RPM upplýsingar eru nauðsyn til að finna út hvaða uppfærðir pakkar eru "
-#~ "nauðsynlegir fyrir kerfið"
+#~ msgid "RPM information is important to determine what updated software packages are relevant to this system."
+#~ msgstr "RPM upplýsingar eru nauðsyn til að finna út hvaða uppfærðir pakkar eru nauðsynlegir fyrir kerfið"
 
 #~ msgid "Include RPM packages installed on this system in my System Profile"
 #~ msgstr "Bý til lista yfir þá pakka sem þegar eru uppsettir"
 
 #~ msgid "You may deselect individual packages by unchecking them below."
-#~ msgstr ""
-#~ "Þú getur afvalið hvern pakka fyrir sig með því að haka úr fyrir framan þá"
+#~ msgstr "Þú getur afvalið hvern pakka fyrir sig með því að haka úr fyrir framan þá"
 
 #~ msgid "Building Package List"
 #~ msgstr "Bý til pakkalista"
@@ -296,9 +268,7 @@ msgstr ""
 #~ msgstr "Netfang rafpósts:"
 
 #~ msgid "System Already Registered"
-#~ msgstr ""
-#~ "    --force                    - Skrá kerfið þó það sé þegar búið að skrá "
-#~ "það"
+#~ msgstr "    --force                    - Skrá kerfið þó það sé þegar búið að skrá það"
 
 #~ msgid "It appears this system has already been set up for software updates:"
 #~ msgstr "Endurræsi up2date"
@@ -311,8 +281,7 @@ msgstr ""
 #~ msgstr "Lýsing"
 
 #, fuzzy
-#~ msgid ""
-#~ "Subscriptions have been activated for the following products/services:"
+#~ msgid "Subscriptions have been activated for the following products/services:"
 #~ msgstr "Áskriftarnúmerið er ógilt"
 
 #~ msgid "Software Channel Subscriptions:"
@@ -355,8 +324,7 @@ msgstr ""
 #~ msgstr "Þjónninn kom með villu:\n"
 
 #~ msgid "There was an error communicating with the registration server:\n"
-#~ msgstr ""
-#~ "Það kom upp banvæn villa í samskiptum við þjóninn.  Skilaboðin voru:\n"
+#~ msgstr "Það kom upp banvæn villa í samskiptum við þjóninn.  Skilaboðin voru:\n"
 
 #~ msgid "Profile name:"
 #~ msgstr "Heiti Kerfislýsingar:"
@@ -411,11 +379,8 @@ msgstr ""
 #~ msgid "Finish"
 #~ msgstr "Ljúka"
 
-#~ msgid ""
-#~ "  <Tab>/<Alt-Tab> between elements  |  <Space> selects  |  <F12> next "
-#~ "screen"
-#~ msgstr ""
-#~ "<Tab>/<Alt-Tab> milli valmöguleika  | <Space> velur  | <F12> Næsta valmynd"
+#~ msgid "  <Tab>/<Alt-Tab> between elements  |  <Space> selects  |  <F12> next screen"
+#~ msgstr "<Tab>/<Alt-Tab> milli valmöguleika  | <Space> velur  | <F12> Næsta valmynd"
 
 #, fuzzy, python-brace-format
 #~ msgid "You must run the {PRODUCT_NAME} registration program as root."
@@ -425,8 +390,7 @@ msgstr ""
 #~ msgstr "Skráðu hvaða vefslóð á að nota"
 
 #~ msgid "Specify a file to use as the ssl CA cert"
-#~ msgstr ""
-#~ "    --sslCACert=<slóð>         - velja skrá til að nota sem ssl CA vottorð"
+#~ msgstr "    --sslCACert=<slóð>         - velja skrá til að nota sem ssl CA vottorð"
 
 #~ msgid "Specify an activation key"
 #~ msgstr "Gefðu upp vefsel (proxy) til að nota"
@@ -435,18 +399,13 @@ msgstr ""
 #~ msgstr "    --contactinfo              - lesa kveðjumáta frá stdin  "
 
 #~ msgid "Do not probe or upload any hardware info"
-#~ msgstr ""
-#~ "    --nohardware               - ekki skanna né senda "
-#~ "vélbúnaðarupplýsingar "
+#~ msgstr "    --nohardware               - ekki skanna né senda vélbúnaðarupplýsingar "
 
 #~ msgid "Do not profile or upload any package info"
-#~ msgstr ""
-#~ "    --nopackages               - ekki skrá né senda pakkaupplýsingar"
+#~ msgstr "    --nopackages               - ekki skrá né senda pakkaupplýsingar"
 
 #~ msgid "Register the system even if it is already registered"
-#~ msgstr ""
-#~ "    --force                    - Skrá kerfið þó það sé þegar búið að skrá "
-#~ "það"
+#~ msgstr "    --force                    - Skrá kerfið þó það sé þegar búið að skrá það"
 
 #~ msgid "A username and password are required to register a system."
 #~ msgstr "Notandanafn, lykilorð og netfang er nauðsyn til að skrá kerfi."
@@ -454,12 +413,8 @@ msgstr ""
 #~ msgid "This system is already registered. Use --force to override"
 #~ msgstr "Þetta kerfi er þegar skráð. Notaðu --force til að hunsa"
 
-#~ msgid ""
-#~ "A profilename was not specified, and hostname and IP address could not be "
-#~ "determined to use as a profilename, please specify one."
-#~ msgstr ""
-#~ "Heiti kerfislýsingar var ekki gefið upp og heiti og IP vistfang var ekki "
-#~ "hægt að nýta sem heiti kerfislýsingu. Vinsamlegast skilgreindu nafn."
+#~ msgid "A profilename was not specified, and hostname and IP address could not be determined to use as a profilename, please specify one."
+#~ msgstr "Heiti kerfislýsingar var ekki gefið upp og heiti og IP vistfang var ekki hægt að nýta sem heiti kerfislýsingu. Vinsamlegast skilgreindu nafn."
 
 #, fuzzy
 #~ msgid "Software updates setup unsuccessful"
@@ -496,8 +451,7 @@ msgstr ""
 
 #, fuzzy
 #~ msgid "There was an error communicating with Spacewalk server."
-#~ msgstr ""
-#~ "Það kom upp banvæn villa í samskiptum við þjóninn.  Skilaboðin voru:\n"
+#~ msgstr "Það kom upp banvæn villa í samskiptum við þjóninn.  Skilaboðin voru:\n"
 
 #~ msgid "You must enter a login."
 #~ msgstr "Þú verður að skrá eftirnafn."
@@ -508,11 +462,8 @@ msgstr ""
 #~ msgid "There was an error while logging in."
 #~ msgstr "Það kom upp vandamál við skráningu þessarar vélar."
 
-#~ msgid ""
-#~ "There was an error communicating with the registration server.  The "
-#~ "message was:\n"
-#~ msgstr ""
-#~ "Það kom upp banvæn villa í samskiptum við þjóninn.  Skilaboðin voru:\n"
+#~ msgid "There was an error communicating with the registration server.  The message was:\n"
+#~ msgstr "Það kom upp banvæn villa í samskiptum við þjóninn.  Skilaboðin voru:\n"
 
 #~ msgid "There was an error while assembling information for the profile."
 #~ msgstr "Banvæn villa kom upp við að setja inn pakkann:"
@@ -533,9 +484,7 @@ msgstr ""
 #~ msgstr "Vandamál við skráningu kerfis."
 
 #, python-format
-#~ msgid ""
-#~ "The installation number [ %s ] provided is not a valid installation "
-#~ "number. Please go back to the previous screen and fix it."
+#~ msgid "The installation number [ %s ] provided is not a valid installation number. Please go back to the previous screen and fix it."
 #~ msgstr "Áskriftarnúmerið [ %s ] er ekki gilt áskriftarnúmer."
 
 #~ msgid "There was a problem registering this system."
@@ -571,11 +520,8 @@ msgstr ""
 #~ msgid "Arch"
 #~ msgstr "Örgjörvi"
 
-#~ msgid ""
-#~ "Building a list of RPM packages installed on your system.  Please wait."
-#~ msgstr ""
-#~ "Bý til lista yfir þá RPM pakka sem uppsettir eru á vélinni. Vinsamlegast "
-#~ "bíðið."
+#~ msgid "Building a list of RPM packages installed on your system.  Please wait."
+#~ msgstr "Bý til lista yfir þá RPM pakka sem uppsettir eru á vélinni. Vinsamlegast bíðið."
 
 #~ msgid ""
 #~ "There was an error loading your configuration.  Make sure that\n"
@@ -592,12 +538,8 @@ msgstr ""
 #~ "Það kom upp villa við að vista stillingum þínum. Gakktu úr\n"
 #~ "skugga um að þú eigir skrána %s."
 
-#~ msgid ""
-#~ "You need to register this system by running `rhn_register` before using "
-#~ "this option"
-#~ msgstr ""
-#~ "Þú verður að skrá þetta kerfi með því að keyra `up2date --register` áður "
-#~ "en hægt er að nýta þennann valmöguleika"
+#~ msgid "You need to register this system by running `rhn_register` before using this option"
+#~ msgstr "Þú verður að skrá þetta kerfi með því að keyra `up2date --register` áður en hægt er að nýta þennann valmöguleika"
 
 #~ msgid "Updating package profile..."
 #~ msgstr "Uppfæri pakkalýsingu..."

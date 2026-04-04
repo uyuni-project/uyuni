@@ -28,7 +28,13 @@ CREATE TABLE rhnActionImageDeploy
     download_url  VARCHAR(256) NOT NULL,
     proxy_server  VARCHAR(64),
     proxy_user    VARCHAR(32),
-    proxy_pass    VARCHAR(64)
+    proxy_pass    VARCHAR(64),
+
+    created       TIMESTAMPTZ
+                  DEFAULT (current_timestamp) NOT NULL,
+    modified      TIMESTAMPTZ
+                  DEFAULT (current_timestamp) NOT NULL
+
 )
 
 ;

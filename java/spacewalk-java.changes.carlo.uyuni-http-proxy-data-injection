@@ -1,0 +1,2 @@
+- Sanitize inputs to avoid injection in rhn_conf
+  of http proxy settings inputs (bsc#1245107)

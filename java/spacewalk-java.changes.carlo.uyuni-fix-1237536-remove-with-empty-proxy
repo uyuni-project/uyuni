@@ -1,2 +1,0 @@
-- Ensure null safety when converting from proxy paths to host
-  names (bsc#1237536)

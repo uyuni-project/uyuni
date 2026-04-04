@@ -4,7 +4,7 @@ import { Cancelable } from "utils/functions";
 import Network from "utils/network";
 
 type returnUsePaygActionsApi = {
-  onAction: (actionBodyRequest: any, action: NetworkActionKey, id?: String | null) => Promise<any>;
+  onAction: (actionBodyRequest: any, action: NetworkActionKey, id?: string | null) => Promise<any>;
   cancelAction: () => void;
   isLoading: boolean;
 };

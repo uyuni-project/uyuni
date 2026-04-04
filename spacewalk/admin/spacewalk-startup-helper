@@ -136,13 +136,7 @@ check_database() {
 }
 
 wait_for_tomcat() {
-if [ -x /etc/init.d/tomcat5 ]; then
-   TOMCAT_PID=$(cat /var/run/tomcat5.pid 2>/dev/null)
-elif [ -x /etc/init.d/tomcat6 ]; then
-   TOMCAT_PID=$(cat /var/run/tomcat6.pid 2>/dev/null)
-elif [ -e /usr/lib/systemd/system/tomcat.service ]; then
-   TOMCAT_PID=$(systemctl show --property=MainPID tomcat.service | sed 's/^MainPID=0*//')
-elif [ -e /usr/lib/systemd/system/tomcat.service ]; then
+if [ -e /usr/lib/systemd/system/tomcat.service ]; then
    TOMCAT_PID=$(systemctl show --property=MainPID tomcat.service | sed 's/^MainPID=0*//')
 else
    echo "No tomcat service found."

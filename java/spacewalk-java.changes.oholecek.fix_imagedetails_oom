@@ -1,0 +1,2 @@
+- Improve performance by using lazy fetch for ImageDetails
+  and related classes (bsc#1252548)

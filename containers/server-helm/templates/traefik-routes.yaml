@@ -1,0 +1,232 @@
+{{- if and (not .Values.gateway.enable) (eq ((.Values.ingress).type) "traefik") }}
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: uyuni-https-redirect
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/part-of: uyuni
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: uyuni-strip-prefixes
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/part-of: uyuni
+spec:
+  stripPrefix:
+    prefixes:
+      - /postgresql-exporter
+      - /node-exporter
+      - /tasko-exporter
+      - /tasko-jmx
+      - /tomcat-jmx
+      - /saline
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: reportdb-pgsql-route
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/part-of: uyuni
+  annotations:
+    kubernetes.io/ingress.class: {{ .Values.ingress.class }}
+spec:
+  entryPoints:
+    - reportdb-pgsql
+  routes:
+    - match: HostSNI(`*`)
+      services:
+      - name: reportdb
+        port: 5432
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: salt-publish-route
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/part-of: uyuni
+  annotations:
+    kubernetes.io/ingress.class: {{ .Values.ingress.class }}
+spec:
+  entryPoints:
+    - salt-publish
+  routes:
+    - match: HostSNI(`*`)
+      services:
+      - name: salt
+        port: 4505
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: salt-request-route
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/part-of: uyuni
+  annotations:
+    kubernetes.io/ingress.class: {{ .Values.ingress.class }}
+spec:
+  entryPoints:
+    - salt-request
+  routes:
+    - match: HostSNI(`*`)
+      services:
+      - name: salt
+        port: 4506
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: cobbler-route
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/part-of: uyuni
+  annotations:
+    kubernetes.io/ingress.class: {{ .Values.ingress.class }}
+spec:
+  entryPoints:
+    - cobbler
+  routes:
+    - match: HostSNI(`*`)
+      services:
+      - name: cobbler
+        port: 25151
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: node-xport-route
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/part-of: uyuni
+  annotations:
+    kubernetes.io/ingress.class: {{ .Values.ingress.class }}
+spec:
+  entryPoints:
+    - node-xport
+  routes:
+    - match: HostSNI(`*`)
+      services:
+      - name: tomcat
+        port: 9100
+{{- if ne .Values.enableMonitoring false }}
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: db-xport-route
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/part-of: uyuni
+  annotations:
+    kubernetes.io/ingress.class: {{ .Values.ingress.class }}
+spec:
+  entryPoints:
+    - db-xport
+  routes:
+    - match: HostSNI(`*`)
+      services:
+      - name: db
+        port: 9187
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: tasko-jmx-route
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/part-of: uyuni
+  annotations:
+    kubernetes.io/ingress.class: {{ .Values.ingress.class }}
+spec:
+  entryPoints:
+    - tasko-jmx
+  routes:
+    - match: HostSNI(`*`)
+      services:
+      - name: taskomatic
+        port: 5556
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: tomcat-jmx-route
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/part-of: uyuni
+  annotations:
+    kubernetes.io/ingress.class: {{ .Values.ingress.class }}
+spec:
+  entryPoints:
+    - tomcat-jmx
+  routes:
+    - match: HostSNI(`*`)
+      services:
+      - name: tomcat
+        port: 5557
+{{- end }}
+{{- if .Values.exposeJavaDebug }}
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: tomcat-debug-route
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/part-of: uyuni
+  annotations:
+    kubernetes.io/ingress.class: {{ .Values.ingress.class }}
+spec:
+  entryPoints:
+    - tomcat-debug
+  routes:
+    - match: HostSNI(`*`)
+      services:
+      - name: tomcat
+        port: 8003
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: search-debug-route
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/part-of: uyuni
+  annotations:
+    kubernetes.io/ingress.class: {{ .Values.ingress.class }}
+spec:
+  entryPoints:
+    - search-debug
+  routes:
+    - match: HostSNI(`*`)
+      services:
+      - name: search
+        port: 8002
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: tasko-debug-route
+  namespace: "{{ .Release.Namespace }}"
+  labels:
+    app.kubernetes.io/part-of: uyuni
+  annotations:
+    kubernetes.io/ingress.class: {{ .Values.ingress.class }}
+spec:
+  entryPoints:
+    - tasko-debug
+  routes:
+    - match: HostSNI(`*`)
+      services:
+      - name: taskomatic
+        port: 8001
+{{- end }}
+{{- end }}

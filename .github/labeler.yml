@@ -14,14 +14,14 @@ ui:
 webapp:
 - changed-files:
   - any-glob-to-any-file:
-    - java/code/webapp/*
-    - java/code/webapp/**/*
+    - java/webapp/src/main/webapp/*
+    - java/webapp/src/main/webapp/**/*
 
 cobbler:
 - changed-files:
   - any-glob-to-any-file:
-    - java/code/src/org/cobbler/*
-    - java/code/src/org/cobbler/**/*
+    - java/core/src/main/java/org/cobbler/*
+    - java/core/src/main/java/org/cobbler/**/*
 
 documentation:
 - changed-files:
@@ -38,22 +38,22 @@ proxy:
 API:
 - changed-files:
   - any-glob-to-any-file:
-    - java/code/src/com/redhat/rhn/frontend/*
-    - java/code/src/com/redhat/rhn/frontend/**/*
+    - java/core/src/main/java/com/redhat/rhn/frontend/*
+    - java/core/src/main/java/com/redhat/rhn/frontend/**/*
 
 Virtualization management:
 - changed-files:
   - any-glob-to-any-file:
-    - java/code/src/com/suse/manager/virtualization/*
-    - java/code/src/com/suse/manager/virtualization/**/*
+    - java/core/src/main/java/com/suse/manager/virtualization/*
+    - java/core/src/main/java/com/suse/manager/virtualization/**/*
 
 monitoring:
 - changed-files:
   - any-glob-to-any-file:
-    - java/code/src/com/suse/manager/webui/services/impl/test/monitoring/*
-    - java/code/src/com/suse/manager/webui/services/impl/test/monitoring/**/*
-    - java/code/src/com/redhat/rhn/frontend/xmlrpc/admin/monitoring/*
-    - java/code/src/com/redhat/rhn/frontend/xmlrpc/admin/monitoring/**/*
+    - java/core/src/test/java/com/suse/manager/webui/services/impl/test/monitoring/*
+    - java/core/src/test/java/com/suse/manager/webui/services/impl/test/monitoring/**/*
+    - java/core/src/main/java/com/redhat/rhn/frontend/xmlrpc/admin/monitoring/*
+    - java/core/src/main/java/com/redhat/rhn/frontend/xmlrpc/admin/monitoring/**/*
 
 python3:
 - changed-files:
@@ -74,53 +74,53 @@ database:
 content-management:
 - changed-files:
   - any-glob-to-any-file:
-    - java/code/src/com/suse/manager/webui/controllers/contentmanagement/*
-    - java/code/src/com/suse/manager/webui/controllers/contentmanagement/**/*
+    - java/core/src/main/java/com/suse/manager/webui/controllers/contentmanagement/*
+    - java/core/src/main/java/com/suse/manager/webui/controllers/contentmanagement/**/*
 
 spark-router:
 - changed-files:
   - any-glob-to-any-file:
-    - java/code/src/com/suse/manager/webui/Router.java
+    - java/core/src/main/java/com/suse/manager/webui/Router.java
 
 webui-templates:
 - changed-files:
   - any-glob-to-any-file:
-    - java/code/src/com/suse/manager/webui/templates/*
-    - java/code/src/com/suse/manager/webui/templates/**/*
+    - java/core/src/main/resources/com/suse/manager/webui/templates/*
+    - java/core/src/main/resources/com/suse/manager/webui/templates/**/*
 
 webui-controllers:
 - changed-files:
   - any-glob-to-any-file:
-    - java/code/src/com/suse/manager/webui/controller/*
-    - java/code/src/com/suse/manager/webui/controller/**/*
+    - java/core/src/main/java/com/suse/manager/webui/controller/*
+    - java/core/src/main/java/com/suse/manager/webui/controller/**/*
 
 salt-actions-implementations:
 - changed-files:
   - any-glob-to-any-file:
-    - java/code/src/com/suse/manager/webui/services/SaltServerActionService.java
+    - java/core/src/main/java/com/suse/manager/webui/services/SaltServerActionService.java
 
 salt-events-listener:
 - changed-files:
   - any-glob-to-any-file:
-    - java/code/src/com/suse/manager/reactor/SaltReactor.java
+    - java/core/src/main/java/com/suse/manager/reactor/SaltReactor.java
 
 data-model:
 - changed-files:
   - any-glob-to-any-file:
-    - java/code/src/com/redhat/rhn/domain/*
-    - java/code/src/com/redhat/rhn/domain/**/*
+    - java/core/src/main/java/com/redhat/rhn/domain/*
+    - java/core/src/main/java/com/redhat/rhn/domain/**/*
 
 old-ui:
 - changed-files:
   - any-glob-to-any-file:
-    - java/code/src/com/redhat/rhn/frontend/*
-    - java/code/src/com/redhat/rhn/frontend/**/*
+    - java/core/src/main/java/com/redhat/rhn/frontend/*
+    - java/core/src/main/java/com/redhat/rhn/frontend/**/*
 
 xmlrpc:
 - changed-files:
   - any-glob-to-any-file:
-    - java/code/src/com/redhat/rhn/frontend/xmlrpc/*
-    - java/code/src/com/redhat/rhn/frontend/xmlrpc/**/*
+    - java/core/src/main/java/com/redhat/rhn/frontend/xmlrpc/*
+    - java/core/src/main/java/com/redhat/rhn/frontend/xmlrpc/**/*
 
 # QE labels
 testing:
@@ -171,7 +171,7 @@ backend_unittests_pgsql:
     - backend/*
     - backend/**/*
 
-javascript_lint:
+frontend_checks:
 - changed-files:
   - any-glob-to-any-file:
     - web/*

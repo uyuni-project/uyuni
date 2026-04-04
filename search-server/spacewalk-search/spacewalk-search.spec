@@ -1,7 +1,7 @@
 #
 # spec file for package spacewalk-search
 #
-# Copyright (c) 2025 SUSE LLC
+# Copyright (c) 2025 SUSE LLC and contributors
 # Copyright (c) 2008-2018 Red Hat, Inc.
 #
 # All modifications and additions to the file contributed by third parties
@@ -27,7 +27,7 @@
 %define oro (oro or jakarta-oro)
 
 Name:           spacewalk-search
-Version:        5.2.0
+Version:        5.2.2
 Release:        0
 Summary:        Spacewalk Full Text Search Server
 License:        Apache-2.0 AND GPL-2.0-only
@@ -39,6 +39,7 @@ Group:          Applications/Internet
 # cd search-server
 # make test-srpm
 URL:            https://github.com/uyuni-project/uyuni
+#!CreateArchive: %{name}
 Source0:        %{name}-%{version}.tar.gz
 BuildRequires:  %{oro}
 BuildRequires:  ant
@@ -61,7 +62,7 @@ BuildRequires:  slf4j
 BuildRequires:  systemd
 BuildRequires:  (java-devel >= %{java_version} or java-%{java_version}-openjdk-devel)
 BuildRequires:  mvn(javassist:javassist)
-BuildRequires:  mvn(org.apache.commons:commons-ognl)
+BuildRequires:  mvn(ognl:ognl)
 BuildRequires:  mvn(org.mybatis:mybatis)
 %if 0%{?rhel}
 BuildRequires:  systemd-rpm-macros
@@ -85,7 +86,7 @@ Requires:       quartz >= 2.0
 Requires:       redstone-xmlrpc
 Requires:       simple-core
 Requires:       mvn(javassist:javassist)
-Requires:       mvn(org.apache.commons:commons-ognl)
+Requires:       mvn(ognl:ognl)
 Requires:       mvn(org.mybatis:mybatis)
 Obsoletes:      rhn-search < 5.3.0
 Requires:       log4j

@@ -1,5 +1,3 @@
-import * as React from "react";
-
 const DefaultJsError = () => (
   <div className="container-fluid">
     <h1>Something wrong happened.</h1>

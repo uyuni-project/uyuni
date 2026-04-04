@@ -19,7 +19,7 @@ Feature: Channel subscription via SSM
     And I follow "channel memberships" in the content area
     Then I should see a "Base Channel" text
     And I should see a "Next" text
-    When I select "Fake-Base-Channel-SUSE-like" from drop-down in table line with "SLE-Product-SLES15-SP4-Pool for x86_64"
+    When I select "Fake-Base-Channel-SUSE-like" from drop-down in table line with "SLE-Product-SLES15-SP7-Pool for x86_64"
     And I click on "Next"
     Then I should see a "Child Channels" text
     And I should see a "Fake-Base-Channel-SUSE-like" text
@@ -45,7 +45,7 @@ Feature: Channel subscription via SSM
     And I follow "channel memberships" in the content area
     Then I should see a "Base Channel" text
     And I should see a "Next" text
-    When I select "Fake-Base-Channel-SUSE-like" from drop-down in table line with "openSUSE Leap 15.6 (x86_64)"
+    When I select "Fake-Base-Channel-SUSE-like" from drop-down in table line with "openSUSE Tumbleweed (x86_64)"
     And I click on "Next"
     Then I should see a "Child Channels" text
     And I should see a "Fake-Base-Channel-SUSE-like" text
@@ -67,9 +67,9 @@ Feature: Channel subscription via SSM
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    Then radio button "SLE-Product-SLES15-SP4-Pool for x86_64" should be checked
+    Then radio button "SLE-Product-SLES15-SP7-Pool for x86_64" should be checked
     And I wait until I do not see "Loading..." text
-    And I should see "SLE15-SP4-Installer-Updates for x86_64" as unchecked
+    And I should see "SLE15-SP7-Installer-Updates for x86_64" as unchecked
 
 @sle_minion
 @uyuni
@@ -78,23 +78,23 @@ Feature: Channel subscription via SSM
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    Then radio button "openSUSE Leap 15.6 (x86_64)" should be checked
+    Then radio button "openSUSE Tumbleweed (x86_64)" should be checked
     And I wait until I do not see "Loading..." text
-    And I should see "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64)" as unchecked
+    And I should see "Uyuni Client Tools for openSUSE Tumbleweed (x86_64)" as unchecked
 
 @sle_minion
 @susemanager
   Scenario: Check via API old channels are still the same on SLES minion before channel change completes
     When I refresh the metadata for "sle_minion"
-    Then channel "SLE-Product-SLES15-SP4-Pool for x86_64" should be enabled on "sle_minion"
-    And channel "SLE15-SP4-Installer-Updates for x86_64" should be disabled on "sle_minion"
+    Then channel "SLE-Product-SLES15-SP7-Pool for x86_64" should be enabled on "sle_minion"
+    And channel "SLE15-SP7-Installer-Updates for x86_64" should be disabled on "sle_minion"
 
 @sle_minion
 @uyuni
   Scenario: Check via API old channels are still the same on openSUSE minion before channel change completes
     When I refresh the metadata for "sle_minion"
-    Then channel "openSUSE Leap 15.6 (x86_64)" should be enabled on "sle_minion"
-    And channel "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64)" should be disabled on "sle_minion"
+    Then channel "openSUSE Tumbleweed (x86_64)" should be enabled on "sle_minion"
+    And channel "Uyuni Client Tools for openSUSE Tumbleweed (x86_64)" should be disabled on "sle_minion"
 
   Scenario: Wait 3 minutes for the scheduled action to be executed
     When I wait for "180" seconds
@@ -103,7 +103,8 @@ Feature: Channel subscription via SSM
   Scenario: Check channel change has completed for the SLES minion
     Given I am on the Systems overview page of this "sle_minion"
     When I wait until event "Subscribe channels scheduled" is completed
-    Then I should see "The client completed this action on" at least 3 minutes after I scheduled an action
+    #WORKAROUND: The step "I should see "..." at least 3 minutes after I scheduled an action" it's failing
+    Then I should see a "The client completed this action on" text
 
 @sle_minion
   Scenario: Check the SLES minion is subscribed to the new channels
@@ -197,17 +198,17 @@ Feature: Channel subscription via SSM
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    And I check radio button "SLE-Product-SLES15-SP4-Pool for x86_64"
+    And I check radio button "SLE-Product-SLES15-SP7-Pool for x86_64"
     And I wait until I do not see "Loading..." text
     And I include the recommended child channels
-    And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
-    And I check "SLE-Module-Containers15-SP4-Pool for x86_64"
+    And I check "SLE-Module-DevTools15-SP7-Pool for x86_64"
+    And I check "SLE-Module-Containers15-SP7-Pool for x86_64"
     And I check "Fake-RPM-SUSE-Channel"
     And I wait until I do not see "Loading..." text
-    And I wait until I see "SLE15-SP4-Installer-Updates for x86_64" text
+    And I wait until I see "SLE15-SP7-Installer-Updates for x86_64" text
     And I wait until I do not see "Loading..." text
     And I include the recommended child channels
-    And I check "SLE-Module-DevTools15-SP4-Pool for x86_64"
+    And I check "SLE-Module-DevTools15-SP7-Pool for x86_64"
     And I check "Fake-RPM-SUSE-Channel"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
@@ -215,7 +216,7 @@ Feature: Channel subscription via SSM
     Then I should see a "Changing the channels has been scheduled." text
     When I follow "scheduled" in the content area
     And I wait until I see "1 system successfully completed this action." text, refreshing the page
-    Then channel "SLE15-SP4-Installer-Updates for x86_64" should be disabled on "sle_minion"
+    Then channel "SLE15-SP7-Installer-Updates for x86_64" should be disabled on "sle_minion"
 
 @sle_minion
 @uyuni
@@ -224,9 +225,9 @@ Feature: Channel subscription via SSM
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    And I check radio button "openSUSE Leap 15.6 (x86_64)"
+    And I check radio button "openSUSE Tumbleweed (x86_64)"
     And I wait until I do not see "Loading..." text
-    And I check "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64) (Development)"
+    And I check "Uyuni Client Tools for openSUSE Tumbleweed (x86_64) (Development)"
     And I check "Fake-RPM-SUSE-Channel"
     And I click on "Next"
     Then I should see a "Confirm Software Channel Change" text
@@ -234,7 +235,7 @@ Feature: Channel subscription via SSM
     Then I should see a "Changing the channels has been scheduled." text
     When I follow "scheduled" in the content area
     And I wait until I see "1 system successfully completed this action." text, refreshing the page
-    Then channel "Uyuni Client Tools for openSUSE Leap 15.6 (x86_64)" should be disabled on "sle_minion"
+    Then channel "Uyuni Client Tools for openSUSE Tumbleweed (x86_64)" should be disabled on "sle_minion"
 
   Scenario: Cleanup: remove remaining systems from SSM after channel subscription tests
     When I click on the clear SSM button

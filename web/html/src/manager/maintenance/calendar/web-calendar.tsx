@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useEffect, useRef, useState } from "react";
 
 // Needs to be imported before plugins and rest
@@ -21,7 +20,7 @@ import Network from "utils/network";
 type WebCalendarProps = {
   id: number;
   type: string;
-  eventNames: Array<string>;
+  eventNames: string[];
   messages: (messages: MessageType[]) => void;
   clearMessages: (messages: void) => void;
   responseError: (messages: MessageType[]) => void;
@@ -218,8 +217,13 @@ const WebCalendar = (props: WebCalendarProps) => {
       case "current":
         getApi().gotoDate(getApi().currentDataManager.data.currentDate);
         break;
-      default:
-        props.date ? getApi().gotoDate(props.date.format("YYYY-MM-DD")) : getApi().today();
+      default: {
+        if (props.date) {
+          getApi().gotoDate(props.date.format("YYYY-MM-DD"));
+        } else {
+          getApi().today();
+        }
+      }
     }
   };
 
@@ -354,7 +358,6 @@ const WebCalendar = (props: WebCalendarProps) => {
         eventColor={"#192072"}
         editable={false}
         eventContent={(eventContent) => setEventContent(eventContent)}
-        eventsSet={() => setEvents(events)}
         eventDisplay={"block"}
         nowIndicator={true}
       />

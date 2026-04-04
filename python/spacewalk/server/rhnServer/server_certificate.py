@@ -20,9 +20,7 @@
 
 import sys
 import hashlib
-import time
 import secrets
-import socket
 
 try:
     #  python 2
@@ -39,17 +37,7 @@ from .server_lib import check_entitlement_by_machine_id
 
 def gen_secret():
     """Generate a secret"""
-    seed = repr(time.time())
-    # pylint: disable-next=redefined-builtin
-    sum = hashlib.new("sha256", seed.encode())
-    # feed some random numbers
-    # pylint: disable-next=unused-variable
-    for k in range(1, secrets.SystemRandom().randint(5, 15)):
-        sum.update(repr(secrets.SystemRandom().random()).encode())
-    sum.update(socket.gethostname().encode())
-    ret = sum.hexdigest()
-    del sum
-    return ret
+    return secrets.token_hex(32)
 
 
 class Checksum:

@@ -25,7 +25,7 @@ Feature: Distribution Channel Mapping
     When I enter "SUSE Linux Enterprise Server 15 SP 4" as "os"
     And I enter "15.5" as "release"
     And I select "x86_64" from "architecture"
-    And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "channel_label"
+    And I select "SLE-Product-SLES15-SP7-Pool for x86_64" from "channel_label"
     And I click on "Create Mapping"
     Then I should see a "SUSE Linux Enterprise Server 15 SP 4" link in the content area
 
@@ -35,12 +35,12 @@ Feature: Distribution Channel Mapping
     When I follow the left menu "Software > Distribution Channel Mapping"
     And I follow "Create Distribution Channel Mapping"
     Then I should see a "Create Distribution Channel Map" text
-    When I enter "openSUSE Leap 15.6" as "os"
-    And I enter "15.6" as "release"
+    When I enter "openSUSE Tumbleweed" as "os"
+    And I enter "20250928" as "release"
     And I select "x86_64" from "architecture"
-    And I select "openSUSE Leap 15.6 (x86_64)" from "channel_label"
+    And I select "openSUSE Tumbleweed (x86_64)" from "channel_label"
     And I click on "Create Mapping"
-    Then I should see a "openSUSE Leap 15.6" link in the content area
+    Then I should see a "openSUSE Tumbleweed" link in the content area
 
 @deblike_minion
   Scenario: Create new map for amd64 Ubuntu clients with test base channel
@@ -72,29 +72,29 @@ Feature: Distribution Channel Mapping
     When I follow the left menu "Software > Distribution Channel Mapping"
     Then I should see the text "SUSE Linux Enterprise Server 15 SP 4" in the Operating System field
     And I should see the text "x86_64" in the Architecture field
-    And I should see the text "sle-product-sles15-sp4-pool-x86_64" in the Channel Label field
+    And I should see the text "sle-product-sles15-sp7-pool-x86_64" in the Channel Label field
     When I follow "SUSE Linux Enterprise Server 15 SP 4"
     Then I should see a "Update Distribution Channel Map" text
     When I enter "SUSE Linux Enterprise Server 15 SP 4 modified" as "os"
-    And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "channel_label"
+    And I select "SLE-Product-SLES15-SP7-Pool for x86_64" from "channel_label"
     And I click on "Update Mapping"
     Then I should see the text "SUSE Linux Enterprise Server 15 SP 4 modified" in the Operating System field
-    And I should see the text "sle-product-sles15-sp4-pool-x86_64" in the Channel Label field
+    And I should see the text "sle-product-sles15-sp7-pool-x86_64" in the Channel Label field
 
 @scc_credentials
 @uyuni
   Scenario: Update map for x86_64 openSUSE clients using test-x86_64 channel
     When I follow the left menu "Software > Distribution Channel Mapping"
-    Then I should see the text "openSUSE Leap 15.6" in the Operating System field
+    Then I should see the text "openSUSE Tumbleweed" in the Operating System field
     And I should see the text "x86_64" in the Architecture field
-    And I should see the text "opensuse_leap15_6-x86_64" in the Channel Label field
-    When I follow "openSUSE Leap 15.6"
+    And I should see the text "opensuse_tumbleweed-x86_64" in the Channel Label field
+    When I follow "openSUSE Tumbleweed"
     Then I should see a "Update Distribution Channel Map" text
-    When I enter "openSUSE Leap 15.6 modified" as "os"
-    And I select "openSUSE Leap 15.6 (x86_64)" from "channel_label"
+    When I enter "openSUSE Tumbleweed modified" as "os"
+    And I select "openSUSE Tumbleweed (x86_64)" from "channel_label"
     And I click on "Update Mapping"
-    Then I should see the text "openSUSE Leap 15.6 modified" in the Operating System field
-    And I should see the text "opensuse_leap15_6-x86_64" in the Channel Label field
+    Then I should see the text "openSUSE Tumbleweed modified" in the Operating System field
+    And I should see the text "opensuse_tumbleweed-x86_64" in the Channel Label field
 
 @deblike_minion
   Scenario: Update map for amd64 Ubuntu clients using test base channel
@@ -138,15 +138,15 @@ Feature: Distribution Channel Mapping
 @uyuni
   Scenario: Cleanup: delete the map created for x68_64 openSUSE clients
     When I follow the left menu "Software > Distribution Channel Mapping"
-    Then I should see the text "openSUSE Leap 15.6 modified" in the Operating System field
+    Then I should see the text "openSUSE Tumbleweed modified" in the Operating System field
     And I should see the text "x86_64" in the Architecture field
-    When I follow "openSUSE Leap 15.6 modified"
+    When I follow "openSUSE Tumbleweed modified"
     Then I should see a "Update Distribution Channel Map" text
     And I should see a "Delete Distribution Channel" link
     When I follow "Delete Distribution Channel Mapping"
     Then I should see a "Delete Distribution Channel Map" text
     When I click on "Delete Mapping"
-    Then I should not see a "openSUSE Leap 15.6 modified" link
+    Then I should not see a "openSUSE Tumbleweed modified" link
 
 @deblike_minion
   Scenario: Cleanup: delete the map created for amd64 Ubuntu clients

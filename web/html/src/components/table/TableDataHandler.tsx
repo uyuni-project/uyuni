@@ -1,33 +1,33 @@
-import * as React from "react";
+import { type ReactComponentElement, type ReactElement, type ReactNode, Children, Component, createRef } from "react";
 
 import _isEqual from "lodash/isEqual";
 
 import { pageSize } from "core/user-preferences";
 
-import { Loading } from "components/utils";
+import { cloneReactElement, Loading } from "components/utils";
 
-import { AsyncDataProvider, PageControl, SimpleDataProvider } from "utils/data-providers";
-import { Comparator, PagedData } from "utils/data-providers";
+import { AsyncDataProvider, Comparator, PageControl, PagedData, SimpleDataProvider } from "utils/data-providers";
 import { Utils } from "utils/functions";
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
 
 import { ItemsPerPageSelector, PaginationBlock } from "../pagination";
 import { Header } from "./Header";
 import { SearchField } from "./SearchField";
 import { SearchPanel } from "./SearchPanel";
+import { SelectedRowDetails } from "./SelectedRowDetails";
 
 type ChildrenArgsProps = {
-  currItems: Array<any>;
-  headers: React.ReactNode;
-  handleSelect: Function;
-  selectable: boolean | ((row: any) => boolean);
-  selectedItems: Array<any>;
-  deletable?: boolean | ((row: any) => boolean);
+  currItems: any[];
+  headers: ReactNode;
+  handleSelect: (...args: any[]) => any;
+  selectedItems: any[];
   criteria?: string;
   field?: string;
+  headerHeight?: number | null;
 };
 
 type Props = {
-  columns: Array<React.ReactElement<any>>;
+  columns: ReactElement<any>[];
 
   /**
    * Either an array of data items of any type where each element is a row data,
@@ -43,7 +43,7 @@ type Props = {
    *
    * See: utils/data-providers/paged-data-endpoint.js for async usage
    */
-  data: Array<any> | string;
+  data: any[] | string;
 
   /** Function extracting the unique key of the row from the data object */
   identifier: (row: any) => any;
@@ -54,8 +54,11 @@ type Props = {
   /** 1 for ascending, -1 for descending */
   initialSortDirection?: number;
 
+  /** Callback for search input, setting `onSearch` sets `searchField` to a simple search input if none is provided */
+  onSearch?: (criteria: string) => void;
+
   /** the React Object that contains the filter search field */
-  searchField?: React.ReactComponentElement<typeof SearchField>;
+  searchField?: ReactComponentElement<typeof SearchField>;
 
   /** Default column to search on */
   defaultSearchField?: string;
@@ -63,8 +66,11 @@ type Props = {
   /** Initial search query */
   initialSearch?: string;
 
-  /** the initial number of how many row-per-page to show. If it's 0 table header and footer are hidden */
+  /** the initial number of how many row-per-page to show.*/
   initialItemsPerPage?: number;
+
+  /** Hide header and footer */
+  hideHeaderFooter?: string;
 
   /** enables item selection.
    * tells if a row is selectable.
@@ -73,16 +79,18 @@ type Props = {
   selectable: boolean | ((row: unknown) => boolean);
 
   /** the handler to call when the table selection is updated. If not provided, the select boxes won't be rendered */
-  onSelect?: (items: Array<any>) => void;
+  onSelect?: (items: any[]) => void;
 
   /** the identifiers for selected items */
-  selectedItems?: Array<any>;
+  selectedItems?: any[];
 
   /** Allow items to be deleted */
   deletable?: boolean | ((row: any) => boolean);
 
   /** The handler to call when an item is deleted. */
   onDelete?: (row: any) => void;
+
+  expandable?: boolean;
 
   /** The message which is shown when there are no rows to display */
   emptyText?: string;
@@ -93,18 +101,28 @@ type Props = {
   /** The message which is shown when the data is loading */
   loadingText?: string;
 
+  onLoad?: () => void;
+
   /** Children node in the table */
-  children: (args: ChildrenArgsProps) => React.ReactNode;
+  children: (args: ChildrenArgsProps) => ReactNode;
 
   /** Other filter fields */
-  additionalFilters?: Array<React.ReactNode>;
+  additionalFilters?: ReactNode[];
 
   /** Title buttons to add next to the items per page selection */
-  titleButtons?: Array<React.ReactNode>;
+  titleButtons?: ReactNode[];
+
+  /** Sticky table header */
+  stickyHeader?: boolean;
+
+  /** Align search fields inline */
+  searchPanelInline?: boolean;
+
+  onDataLoaded?: (items: any[], info?: { totalItems: number; currentPage: number }) => void;
 };
 
 type State = {
-  data: Array<any>;
+  data: any[];
   provider: SimpleDataProvider | AsyncDataProvider;
   currentPage: number;
   itemsPerPage: number;
@@ -114,17 +132,20 @@ type State = {
   sortColumnKey: string | null;
   sortDirection: number;
   loading: boolean;
+  headerHeight: number | null;
 };
 
-export class TableDataHandler extends React.Component<Props, State> {
+export class TableDataHandler extends Component<Props, State> {
   static defaultProps = {
     selectable: false,
     deletable: false,
     columns: [],
   };
+  panelHeaderRef: React.RefObject<HTMLDivElement>;
 
   constructor(props: Props) {
     super(props);
+    this.panelHeaderRef = createRef();
     this.state = {
       data: [],
       provider: this.getProvider(),
@@ -136,6 +157,7 @@ export class TableDataHandler extends React.Component<Props, State> {
       sortColumnKey: this.props.initialSortColumnKey || null,
       sortDirection: this.props.initialSortDirection || 1,
       loading: false,
+      headerHeight: null,
     };
   }
 
@@ -143,9 +165,7 @@ export class TableDataHandler extends React.Component<Props, State> {
     const data = this.props.data;
     if (Array.isArray(data)) {
       // Gather comparators from columns
-      const comparators: {
-        [key: string]: Comparator;
-      } = this.props.columns.reduce((comparators, col) => {
+      const comparators: Record<string, Comparator> = this.props.columns.reduce((comparators, col) => {
         if (col.props.columnKey) {
           comparators[col.props.columnKey] = col.props.comparator;
         }
@@ -184,15 +204,25 @@ export class TableDataHandler extends React.Component<Props, State> {
 
     this.setState({ loading: true }, () => {
       this.state.provider.get((promise) => {
-        promise.then((data) => this.updateData(data)).finally(() => this.setState({ loading: false }));
+        promise
+          .then((data) => this.updateData(data))
+          .finally(() => {
+            this.setState({ loading: false });
+          });
       }, pageControl);
     });
   }
 
   updateData({ items, total, selectedIds }: PagedData) {
     this.setState({ data: items, totalItems: total }, () => {
-      if (selectedIds != null) {
+      if (!DEPRECATED_unsafeEquals(selectedIds, null)) {
         this.props.onSelect?.(selectedIds);
+      }
+      if (this.props.onDataLoaded) {
+        this.props.onDataLoaded(items, {
+          totalItems: total,
+          currentPage: this.state.currentPage,
+        });
       }
       const lastPage = this.getLastPage();
       if (this.state.currentPage > lastPage) {
@@ -203,6 +233,10 @@ export class TableDataHandler extends React.Component<Props, State> {
 
   componentDidMount() {
     this.getData();
+
+    if (this.panelHeaderRef.current) {
+      this.setState({ headerHeight: this.panelHeaderRef.current.clientHeight });
+    }
   }
 
   componentDidUpdate(prevProps: Props) {
@@ -234,13 +268,14 @@ export class TableDataHandler extends React.Component<Props, State> {
     return lastPage > 0 ? lastPage : 1;
   };
 
-  onSearch = (criteria?: string): void => {
+  onSearch = (criteria: string = ""): void => {
+    this.props.onSearch?.(criteria);
     this.setState({ currentPage: 1, criteria: criteria }, () => this.getData());
   };
 
   onSearchField = (field?: string): void => {
     this.setState({ currentPage: 1, field: field }, () => {
-      if (this.state.criteria != null && this.state.criteria !== "") {
+      if (!DEPRECATED_unsafeEquals(this.state.criteria, null) && this.state.criteria !== "") {
         this.getData();
       }
     });
@@ -270,21 +305,29 @@ export class TableDataHandler extends React.Component<Props, State> {
     }
   };
 
+  renderTitleButtons = () => {
+    return Children.map(this.props.titleButtons, (item: ReactNode) =>
+      cloneReactElement(item, {
+        search: { field: this.state.field, criteria: this.state.criteria },
+      })
+    );
+  };
+
   render() {
     // Skip rendering the headers if no header was provided
     const headers =
       this.props.columns.filter((column) => column.props.header).length > 0 &&
-      this.props.columns.map((column, index) => {
+      this.props.columns.map((column) => {
         if (column.props.header) {
           const sortDirection = column.props.columnKey === this.state.sortColumnKey ? this.state.sortDirection : 0;
           let comparator = column.props.comparator;
-          if (!comparator && column.props.sortable) {
+          if (!comparator && !!column.props.sortable) {
             comparator = Utils.sortByText;
           }
 
           return (
             <Header
-              key={index}
+              key={column.props.columnKey}
               columnKey={column.props.columnKey}
               sortDirection={sortDirection}
               onSortChange={this.onSortChange.bind(this)}
@@ -296,27 +339,33 @@ export class TableDataHandler extends React.Component<Props, State> {
             </Header>
           );
         } else {
-          return <Header key={index} width={column.props.width} className={column.props.headerClass} />;
+          return (
+            <Header key={column.props.columnKey} width={column.props.width} className={column.props.headerClass} />
+          );
         }
       });
 
     const itemsPerPage = this.state.itemsPerPage;
     const currentPage = this.state.currentPage;
     const firstItemIndex = (currentPage - 1) * itemsPerPage;
-
     const currItems = this.state.data;
     const selectedItems = this.props.selectedItems || [];
     const itemCount = this.state.totalItems || 0;
     const fromItem = itemCount > 0 ? firstItemIndex + 1 : 0;
     const toItem = firstItemIndex + itemsPerPage <= itemCount ? firstItemIndex + itemsPerPage : itemCount;
     const isEmpty = itemCount === 0;
+    let searchField = this.props.searchField;
+    if (!searchField && this.props.onSearch) {
+      searchField = <SearchField />;
+    }
+    const isTableHeaderEmpty = !this.props.titleButtons && !searchField && !this.props.additionalFilters;
+    const stickyHeader = this.props.stickyHeader;
 
     if (this.props.selectable) {
       const isSelectable =
         typeof this.props.selectable === "boolean" ? () => this.props.selectable : this.props.selectable;
       const selectableItems = currItems.filter((item) => isSelectable(item));
       const currIds = selectableItems.map((item) => this.props.identifier(item));
-
       const handleSelectAll = (sel) => {
         let arr = selectedItems;
         if (sel) {
@@ -333,7 +382,16 @@ export class TableDataHandler extends React.Component<Props, State> {
           <input type="checkbox" checked={allSelected} onChange={(e) => handleSelectAll(e.target.checked)} />
         </Header>
       );
-      headers && headers.unshift(checkbox);
+      if (headers) {
+        headers.unshift(checkbox);
+      }
+    }
+
+    if (this.props.expandable) {
+      const spacer = <Header key="expandable" width="30px" />;
+      if (headers) {
+        headers.unshift(spacer);
+      }
     }
 
     if (this.props.deletable) {
@@ -341,7 +399,9 @@ export class TableDataHandler extends React.Component<Props, State> {
         // Intentionally empty
         <Header key="delete" width="30px" />
       );
-      headers && headers.push(deleteHeader);
+      if (headers) {
+        headers.push(deleteHeader);
+      }
     }
 
     const handleSelect = (id, sel) => {
@@ -375,40 +435,42 @@ export class TableDataHandler extends React.Component<Props, State> {
 
     const emptyText = this.props.emptyText || t("There are no entries to show.");
     const isSelectable = typeof this.props.selectable !== "undefined" && this.props.selectable !== false;
-
+    const hideHeader = this.props.hideHeaderFooter === "header" || this.props.hideHeaderFooter === "both";
+    const hideFooter = this.props.hideHeaderFooter === "footer" || this.props.hideHeaderFooter === "both";
     return (
-      <div className="spacewalk-list">
+      <div className={`spacewalk-list ${stickyHeader ? "overflow-visible" : ""}`}>
         <div className="panel panel-default">
-          {this.props.initialItemsPerPage !== 0 ? (
-            <div className="panel-heading">
-              <div className="spacewalk-list-head-addons">
-                <SearchPanel
-                  fromItem={fromItem}
-                  toItem={toItem}
-                  itemCount={itemCount}
-                  criteria={this.state.criteria}
-                  field={this.state.field}
-                  onSearch={this.onSearch}
-                  onSearchField={this.onSearchField}
-                  onClear={handleSearchPanelClear}
-                  onSelectAll={handleSearchPanelSelectAll}
-                  selectedCount={selectedItems.length}
-                  selectable={isSelectable}
-                >
-                  {this.props.searchField}
-                  {this.props.additionalFilters}
-                </SearchPanel>
-                <div className="spacewalk-list-head-addons-extra table-items-per-page-wrapper">
-                  <ItemsPerPageSelector
-                    key="itemsPerPageSelector"
-                    currentValue={this.state.itemsPerPage}
-                    onChange={this.onItemsPerPageChange}
-                  />{" "}
-                  {t("items per page")}
-                  {this.props.titleButtons}
+          {!hideHeader && !isTableHeaderEmpty ? (
+            <>
+              <div ref={this.panelHeaderRef} className={` panel-heading ${stickyHeader ? "sticky-panel-heading" : ""}`}>
+                <div className="spacewalk-list-head-addons align-items-center">
+                  <SearchPanel
+                    criteria={this.state.criteria}
+                    field={this.state.field}
+                    onSearch={this.onSearch}
+                    onSearchField={this.onSearchField}
+                    onClear={handleSearchPanelClear}
+                    onSelectAll={handleSearchPanelSelectAll}
+                    selectedCount={selectedItems.length}
+                    selectable={isSelectable}
+                    searchPanelInline={this.props.searchPanelInline}
+                  >
+                    {searchField}
+                    {this.props.additionalFilters}
+                  </SearchPanel>
+                  <div className="spacewalk-list-head-addons-extra table-items-per-page-wrapper">
+                    {this.renderTitleButtons()}
+                  </div>
                 </div>
               </div>
-            </div>
+              <SelectedRowDetails
+                itemCount={itemCount}
+                onClear={handleSearchPanelClear}
+                onSelectAll={handleSearchPanelSelectAll}
+                selectable={isSelectable}
+                selectedCount={selectedItems.length}
+              />
+            </>
           ) : null}
           {this.state.loading ? (
             <Loading text={this.props.loadingText} />
@@ -418,23 +480,30 @@ export class TableDataHandler extends React.Component<Props, State> {
             </div>
           ) : (
             <div>
-              <div className="table-responsive">
+              <div className={`table-responsive ${stickyHeader ? "overflow-visible" : ""}`}>
                 {this.props.children({
                   currItems,
                   headers,
                   handleSelect,
-                  selectable: this.props.selectable,
                   selectedItems: selectedItems,
-                  deletable: this.props.deletable,
                   criteria: this.state.criteria,
                   field: this.state.field,
+                  headerHeight: this.state.headerHeight,
                 })}
               </div>
             </div>
           )}
-          {this.props.initialItemsPerPage !== 0 ? (
+          {!hideFooter ? (
             <div className="panel-footer">
-              <div className="spacewalk-list-bottom-addons">
+              <div className="spacewalk-list-bottom-addons d-flex justify-content-between">
+                <ItemsPerPageSelector
+                  key="itemsPerPageSelector"
+                  currentValue={this.state.itemsPerPage}
+                  fromItem={fromItem}
+                  toItem={toItem}
+                  itemCount={itemCount}
+                  onChange={this.onItemsPerPageChange}
+                />
                 <PaginationBlock
                   key="paginationBlock"
                   currentPage={this.state.currentPage}

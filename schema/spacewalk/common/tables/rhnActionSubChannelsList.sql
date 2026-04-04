@@ -26,3 +26,6 @@ CREATE TABLE rhnActionSubChannelsList (
 )
 
 ;
+
+CREATE INDEX rhn_action_sub_channels_list_sub_channels_id_idx
+on rhnActionSubChannelsList (subscribe_channels_id);

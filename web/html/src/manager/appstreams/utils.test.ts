@@ -1,22 +1,24 @@
 import { AppStreamModule, Channel, ChannelAppStream } from "./appstreams.type";
 import { getStreamName, handleModuleEnableDisable, numberOfChanges } from "./utils";
 
-const nodejs = (stream: string, enabled: boolean = true): AppStreamModule => ({
+const nodejs = (stream: string, enabled = true): AppStreamModule => ({
   name: "nodejs",
   stream,
   version: "1234-test-version",
   context: "context-test",
   arch: "x86_64",
   enabled,
+  systemCount: 0,
 });
 
-const redis = (stream: string, enabled: boolean = true): AppStreamModule => ({
+const redis = (stream: string, enabled = true): AppStreamModule => ({
   name: "redis",
   stream,
   version: "4321-test-version",
   context: "context",
   arch: "x86_64",
   enabled,
+  systemCount: 0,
 });
 
 const CHANNEL: Channel = { id: 1, label: "stream-channel-1", name: "Stream Channel 1" };

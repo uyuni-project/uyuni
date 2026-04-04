@@ -33,4 +33,6 @@ DROP TABLE IF EXISTS rhnVirtualInstanceEventLog,
                      rhnActionVirtVcpu,
                      rhnActionVirtVolDelete CASCADE;
 
-DELETE FROM rhnActionType WHERE label LIKE 'virt.%';
+DELETE FROM rhnAction WHERE action_type IN (SELECT id FROM rhnActionType WHERE label LIKE 'virt.%' AND label <> 'virt.refresh_list');
+
+DELETE FROM rhnActionType WHERE label LIKE 'virt.%' AND label <> 'virt.refresh_list';

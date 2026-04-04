@@ -1,4 +1,35 @@
 -------------------------------------------------------------------
+Mon Mar 02 13:12:26 CET 2026 - michael.calmer@suse.com
+
+- version 5.2.5
+  * Image rebuilt to the newest version with updated dependencies
+    for SUSE Multi-Linux Manager 5.2 Beta 1
+
+-------------------------------------------------------------------
+Tue Jan 27 09:29:16 WET 2026 - psuarezhernandez@suse.com
+
+- version 5.2.4
+  * Image rebuilt to the newest version with updated dependencies
+
+-------------------------------------------------------------------
+Tue Dec 09 13:50:18 CET 2025 - michael.calmer@suse.com
+
+- version 5.2.3
+  * Remove libzypp and container-suseconnect from image
+
+-------------------------------------------------------------------
+Thu Nov 27 10:40:49 CET 2025 - michael.calmer@suse.com
+
+- version 5.2.2
+  * Clean up the image
+
+-------------------------------------------------------------------
+Tue Oct 28 10:21:13 CET 2025 - rosuna@suse.com
+
+- version 5.2.1
+  * Bump version to 5.2.0
+
+-------------------------------------------------------------------
 Tue Jun 17 19:46:31 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.7

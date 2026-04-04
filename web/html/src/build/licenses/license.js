@@ -1,6 +1,7 @@
-const fs = require("fs").promises;
-const path = require("path");
-const { applyOverrides } = require("./override");
+import { promises as fs } from "node:fs";
+import path from "node:path";
+
+import { applyOverrides } from "./override.js";
 
 const readLicenseText = async (packageDirectory) => {
   const files = await fs.readdir(packageDirectory);
@@ -11,7 +12,7 @@ const readLicenseText = async (packageDirectory) => {
   return await fs.readFile(path.join(packageDirectory, licenseFilename), "utf8");
 };
 
-const getLicense = async (dependency, packageDirectory) => {
+export const getLicense = async (dependency, packageDirectory) => {
   const name = dependency.name;
   const version = dependency.version;
 
@@ -33,8 +34,4 @@ const getLicense = async (dependency, packageDirectory) => {
   const licenseText = await readLicenseText(packageDirectory);
 
   return { license, licenseText, version };
-};
-
-module.exports = {
-  getLicense,
 };

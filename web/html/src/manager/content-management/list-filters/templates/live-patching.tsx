@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { DEPRECATED_Select, FormContext } from "components/input";
 
@@ -51,7 +50,7 @@ export default (props: FilterFormProps & { template: Template }) => {
   const template = props.template;
   const prevTemplate = usePrevious(template);
 
-  const formContext = React.useContext(FormContext);
+  const formContext = useContext(FormContext);
   const setModelValue = formContext.setModelValue;
   const { productId, systemId, systemName, kernelName } = formContext.model;
   const [products, setProducts] = useState<Product[]>([]);
@@ -101,31 +100,27 @@ export default (props: FilterFormProps & { template: Template }) => {
   return (
     <>
       {template === Template.LivePatchingProduct && (
-        <>
-          <DEPRECATED_Select
-            name="productId"
-            label={t("Product")}
-            labelClass="col-md-3"
-            divClass="col-md-8"
-            options={products}
-            getOptionValue={(product) => product.id}
-            getOptionLabel={(product) => product.label}
-          />
-        </>
+        <DEPRECATED_Select
+          name="productId"
+          label={t("Product")}
+          labelClass="col-md-3"
+          divClass="col-md-8"
+          options={products}
+          getOptionValue={(product) => product.id}
+          getOptionLabel={(product) => product.label}
+        />
       )}
       {template === Template.LivePatchingSystem && (
-        <>
-          <DEPRECATED_Select
-            loadOptions={getSystems}
-            name="systemId"
-            label={t("System")}
-            labelClass="col-md-3"
-            divClass="col-md-8"
-            getOptionValue={(system) => system.id}
-            getOptionLabel={(system) => `${system.name} (${system.kernel})`}
-            defaultValueOption={defaultValueOption}
-          />
-        </>
+        <DEPRECATED_Select
+          loadOptions={getSystems}
+          name="systemId"
+          label={t("System")}
+          labelClass="col-md-3"
+          divClass="col-md-8"
+          getOptionValue={(system) => system.id}
+          getOptionLabel={(system) => `${system.name} (${system.kernel})`}
+          defaultValueOption={defaultValueOption}
+        />
       )}
       <DEPRECATED_Select
         name="kernelId"

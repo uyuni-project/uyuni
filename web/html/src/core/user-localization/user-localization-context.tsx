@@ -1,16 +1,17 @@
 // Note: to use this component you have to make sure the current user localization are injected with
 // the jade mixin userLocalization
-import * as React from "react";
-
+import { type ReactNode, createContext } from "react";
 export type userLocalizationType = {
   timezone: string;
   localTime: string;
 };
-declare var global_user_localization: userLocalizationType | undefined;
+declare global {
+  var global_user_localization: userLocalizationType | undefined;
+}
 
-const UserLocalizationContext = React.createContext<Partial<userLocalizationType>>({});
+const UserLocalizationContext = createContext<Partial<userLocalizationType>>({});
 
-const UserLocalizationProvider = ({ children }: { children: React.ReactNode }) => (
+const UserLocalizationProvider = ({ children }: { children: ReactNode }) => (
   <UserLocalizationContext.Provider
     value={typeof global_user_localization !== "undefined" ? global_user_localization : {}}
   >

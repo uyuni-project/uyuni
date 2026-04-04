@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import { MessagesContainer, showSuccessToastr } from "./toastr";
 
 export default () => {

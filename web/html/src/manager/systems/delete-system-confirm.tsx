@@ -1,12 +1,10 @@
-import * as React from "react";
-
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { Utils } from "utils/functions";
 
 import { DeleteSystem } from "./delete-system";
 
-// See java/code/webapp/WEB-INF/pages/systems/sdc/delete_confirm.jsp
+// See java/core/src/main/resources/WEB-INF/pages/systems/sdc/delete_confirm.jsp
 declare global {
   interface Window {
     getServerIdToDelete: () => any;

@@ -1,0 +1,22 @@
+Archive: deb
+Codename: deb
+Origin: obs://build.opensuse.org/systemsmanagement:Uyuni:Test-Packages:Updates/deb
+Label: systemsmanagement:Uyuni:Test-Packages:Updates
+Architectures: amd64
+Date: Wed Mar 19 10:36:20 2025
+Description: Testsuite Test Packages - Updates (deb)
+MD5Sum:
+ d8a0fde5b9eeb42c3639e13779520442 4143 Packages
+ 5fb5111f94f6d5b72b63ed4ad76bc413 1431 Packages.gz
+ f6634f2c7b5a163e6d28e3426fbd061b 6424 Sources
+ f0c2c99f61015eb9ab0ed27403798b4b 2103 Sources.gz
+SHA1:
+ 1a137cd5058e6686c96bde0a589ed3615bd98021 4143 Packages
+ 66f94557c555ea3ea3db633e40d31a89de0c4302 1431 Packages.gz
+ 1b34cf91b1d22397def9746253d2797cdc12ebf2 6424 Sources
+ 2c6bdfb1e4924849820386c958a3f0adc7ed3a06 2103 Sources.gz
+SHA256:
+ 0bf69769f4de96e8bb541825bfec79ed4573c4ef5d2ea40c1b02a0fffd5f38e3 4143 Packages
+ b1a2b1f7ef20252671a758eec049a9960a39ae83ee1dadf49323164ec36c12a1 1431 Packages.gz
+ c9c5fe5d31db75685b49398b16eaee71a4a87497c25dc58135cfacf36c36fb3f 6424 Sources
+ e563ff33655577ab292a0a02ce734b93fbdea4a50dc39b0eab6e1c8036fb0aea 2103 Sources.gz

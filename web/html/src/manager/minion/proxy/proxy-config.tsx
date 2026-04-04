@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useEffect, useState } from "react";
 
 import { AsyncButton, SubmitButton } from "components/buttons";
@@ -22,7 +21,7 @@ export function ProxyConfig({
   serverId,
   parents,
   currentConfig,
-  initFailMessage,
+  validationErrors,
   registryUrlExample,
   registryTagExample,
   hasCertificates,
@@ -46,9 +45,9 @@ export function ProxyConfig({
   useEffect(() => {
     setModel((prev) => ({ ...prev }));
 
-    if (initFailMessage) {
+    if (validationErrors && validationErrors.length > 0) {
       setSuccess(false);
-      setMessages([initFailMessage]);
+      setMessages(validationErrors);
     }
   }, [currentConfig]);
 
@@ -141,9 +140,9 @@ export function ProxyConfig({
     >
       <p>{t("Convert an already onboarded minion to a proxy or update the configuration of an existing proxy.")}</p>
       {ContainerConfigMessages(success, messages, loading)}
-      {!initFailMessage && (
+      {(!validationErrors || validationErrors.length === 0) && (
         <Form
-          className=""
+          className="mt-5"
           divClass="row"
           model={model}
           onValidate={onValidate}
@@ -435,7 +434,7 @@ export function ProxyConfig({
             </>
           )}
           <div className="offset-md-3 col-md-6 mb-2">
-            <SubmitButton id="submit-btn" className="btn-success" text={t("Apply")} disabled={!isValidated} />
+            <SubmitButton id="submit-btn" className="btn-primary" text={t("Apply")} disabled={!isValidated} />
             <AsyncButton
               id="clear-btn"
               defaultType="btn-default pull-right"

@@ -1,2 +1,0 @@
-- Fix bug: XMLRPC API endpoint updateRepoSsl resets
-  hasSignedMetadata repository property

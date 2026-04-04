@@ -61,6 +61,7 @@ def _parse_os_release(*os_release_files):
         except OSError as error:
             errno = error.errno
     else:
+        # pylint: disable-next=inconsistent-quotes
         raise OSError(errno, f"Unable to read files {', '.join(os_release_files)}")
 
     return ret

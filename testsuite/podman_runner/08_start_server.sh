@@ -1,10 +1,41 @@
 #!/bin/bash
 set -xe
+
+if [[ "$(uname)" == "Darwin" ]]; then
+  PODMAN_CMD="podman"
+else
+  PODMAN_CMD="sudo -i podman"
+fi
+
+wait_for_server_ready() {
+    local timeout=${1:-360}  # Default timeout of 360 seconds if not provided
+    local podman_cmd=${2:-$PODMAN_CMD}  # Use provided PODMAN_CMD or fall back to variable
+
+    local start_time=$(date +%s)
+
+    echo "Waiting for Tomcat to be ready..."
+
+    while ! $podman_cmd exec server curl -kfs https://localhost/rhn/Login.do > /dev/null 2>&1; do
+        local current_time=$(date +%s)
+        if [ $((current_time - start_time)) -ge $timeout ]; then
+            echo ""
+            echo "Timeout reached while waiting for Tomcat to restart."
+            return 1
+        fi
+        printf "."
+        sleep 5
+    done
+
+    echo ""
+    echo "Tomcat is ready!"
+    return 0
+}
+
 src_dir=$(cd $(dirname "$0")/../.. && pwd -P)
 
-setup_pm_path=`sudo -i podman run --rm -ti ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-server-all-in-one-dev:$UYUNI_VERSION sh -c 'rpm -ql spacewalk-setup | grep Setup.pm' | tr -d '\r'`
+setup_pm_path=`$PODMAN_CMD run -ti ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-server-all-in-one-dev:$UYUNI_VERSION sh -c 'rpm -ql spacewalk-setup | grep Setup.pm' | tr -d '\r'`
 
-sudo -i podman run --cap-add AUDIT_CONTROL --rm \
+$PODMAN_CMD run --cap-add AUDIT_CONTROL \
     --tmpfs /run \
     -v var-cobbler:/var/lib/cobbler \
     -v var-search:/var/lib/rhn/search \
@@ -45,6 +76,9 @@ sudo -i podman run --cap-add AUDIT_CONTROL --rm \
     -v ${src_dir}/schema/reportdb/upgrade/:/usr/share/susemanager/db/reportdb-schema-upgrade/ \
     -v ${src_dir}/spacewalk/uyuni-setup-reportdb/bin/uyuni-setup-reportdb-user:/usr/bin/uyuni-setup-reportdb-user \
     -v ${src_dir}/web:/web \
+    -v ${src_dir}/.npmrc:/.npmrc \
+    -v ${src_dir}/package.json:/package.json \
+    -v ${src_dir}/package-lock.json:/package-lock.json \
     -v ${src_dir}/branding:/branding \
     -v ${src_dir}/java:/java \
     -v ${src_dir}/client:/client \
@@ -57,6 +91,7 @@ sudo -i podman run --cap-add AUDIT_CONTROL --rm \
     -v /sys/fs/cgroup:/sys/fs/cgroup:rw \
     -v /tmp/testing:/tmp \
     --cgroupns=host \
+    --privileged \
     -h server \
     -p 8443:443 \
     -p 8080:80 \
@@ -66,17 +101,20 @@ sudo -i podman run --cap-add AUDIT_CONTROL --rm \
     -d --name=server \
     --network network \
     ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-server-all-in-one-dev:$UYUNI_VERSION
-sudo -i podman exec -d server prometheus
+wait_for_server_ready || exit 1
+$PODMAN_CMD exec -d server prometheus
 
 echo "Setting SCC mirror to /mirror"
-sudo -i podman exec server bash -c "echo \"server.susemanager.fromdir = /mirror\" >> /etc/rhn/rhn.conf"
-sudo -i podman exec server bash -c "rctomcat restart"
+$PODMAN_CMD exec server bash -c "echo \"server.susemanager.fromdir = /mirror\" >> /etc/rhn/rhn.conf"
+$PODMAN_CMD exec server bash -c "systemctl restart tomcat"
+wait_for_server_ready || exit 1
+
 echo "Syncing with latest changes"
-sudo -i podman exec server bash -c "rsync -av /testsuite/dockerfiles/server-all-in-one-dev/mirror/ /mirror/"
+$PODMAN_CMD exec server bash -c "rsync -av /testsuite/dockerfiles/server-all-in-one-dev/mirror/ /mirror/"
 
 # mgrctl should not be installed in this container
-sudo -i podman exec server bash -c "rm -f /usr/bin/mgrctl"
+$PODMAN_CMD exec server bash -c "rm -f /usr/bin/mgrctl"
 
 # publish mirrors in apache
-sudo -i podman exec server bash -c "cd /srv/www/htdocs/pub && ln -s /mirror . && chown root:root mirror && chown -R root:root /mirror"
+$PODMAN_CMD exec server bash -c "cd /srv/www/htdocs/pub && ln -s /mirror . && chown root:root mirror && chown -R root:root /mirror"
 

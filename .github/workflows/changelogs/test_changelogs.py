@@ -1,9 +1,12 @@
+# pylint: disable=missing-module-docstring
 import pytest
 import os
 import re
 import io
 import bugzilla
 from bugzilla.bug import Bug
+
+# pylint: disable-next=wildcard-import,unused-wildcard-import
 from changelogs import *
 
 
@@ -16,8 +19,7 @@ def issues_to_str(issues, num_expected):
 @pytest.fixture
 def tracker_filename(tmp_path):
     p = tmp_path / "trackers.xml"
-    p.write_text(
-        r"""
+    p.write_text(r"""
 <issue-trackers>
    <issue-tracker>
        <name>tckr</name>
@@ -28,8 +30,7 @@ def tracker_filename(tmp_path):
        <regex>(?:bsc|bnc)#(\d+)</regex>
    </issue-tracker>
 </issue-trackers>
-        """
-    )
+        """)
     return str(p)
 
 
@@ -46,8 +47,10 @@ def file_list():
 
 
 @pytest.fixture
+# pylint: disable-next=redefined-outer-name
 def base_path(tmp_path, file_list):
     # Create a temp base dir
+    # pylint: disable-next=redefined-outer-name
     base_path = tmp_path / "base"
     base_path.mkdir()
 
@@ -76,12 +79,14 @@ def base_path(tmp_path, file_list):
 
 
 @pytest.fixture
+# pylint: disable-next=redefined-outer-name
 def chlog_file(base_path):
     file = base_path / "pkg/path/mypkg.changes.my.feature"
     return file
 
 
 @pytest.fixture
+# pylint: disable-next=redefined-outer-name,unused-argument
 def validator(monkeypatch, base_path):
     return ChangelogValidator(
         base_path, None, None, DEFAULT_LINE_LENGTH, RegexRules(None)
@@ -89,6 +94,7 @@ def validator(monkeypatch, base_path):
 
 
 @pytest.fixture
+# pylint: disable-next=redefined-outer-name
 def validator_with_trackers(monkeypatch, tracker_filename, base_path):
     monkeypatch.setenv("BZ_TOKEN", "my-bugzilla-token")
     monkeypatch.setenv("GH_TOKEN", "my-github-token")
@@ -102,6 +108,7 @@ Second commit message
         if re.search(r"^gh api repos/[^/]*/[^/]*/pulls/999 .*", api_cmd):
             return io.StringIO(pr_data)
         else:
+            # pylint: disable-next=broad-exception-raised
             raise Exception(
                 "An error occurred when getting the PR information from the GitHub API."
             )
@@ -128,6 +135,7 @@ Second commit message
     )
 
 
+# pylint: disable-next=redefined-outer-name
 def test_regex_trackers(tracker_filename):
     regex = RegexRules(tracker_filename)
     assert "tckr" in regex.trackers
@@ -151,7 +159,8 @@ def test_issue_warning_string_all_params():
         severe=False,
     )
     assert (
-        str(issue) == f"WARNING: {IssueType.WRONG_SPACING} for package mypackage in file myfile.txt#L1"
+        str(issue)
+        == f"WARNING: {IssueType.WRONG_SPACING} for package mypackage in file myfile.txt#L1"
     )
 
 
@@ -159,10 +168,12 @@ def test_issue_gh_action_string(monkeypatch):
     monkeypatch.setenv("GITHUB_ACTION", "true")
     issue = Issue(IssueType.WRONG_CAP, "myfile.txt", 3, 5)
     assert (
-        str(issue) == f"::error file=myfile.txt,line=3,endLine=5::{IssueType.WRONG_CAP} in file myfile.txt#L3-5"
+        str(issue)
+        == f"::error file=myfile.txt,line=3,endLine=5::{IssueType.WRONG_CAP} in file myfile.txt#L3-5"
     )
 
 
+# pylint: disable-next=redefined-outer-name
 def test_get_pkg_index(validator, file_list):
     pkg_idx = validator.get_pkg_index(file_list)
 
@@ -176,7 +187,10 @@ def test_get_pkg_index(validator, file_list):
     assert 1 == len(pkg_idx["mypkg-extra"]["files"])
     assert 1 == len(pkg_idx["mypkg-extra"]["changes"])
     assert "pkg/path-extra/myfile-extra.txt" in pkg_idx["mypkg-extra"]["files"]
-    assert "pkg/path-extra/mypkg-extra.changes.my.feature" in pkg_idx["mypkg-extra"]["changes"]
+    assert (
+        "pkg/path-extra/mypkg-extra.changes.my.feature"
+        in pkg_idx["mypkg-extra"]["changes"]
+    )
 
     assert "otherpkg" in pkg_idx
     assert 1 == len(pkg_idx["otherpkg"]["files"])
@@ -185,16 +199,15 @@ def test_get_pkg_index(validator, file_list):
     assert "pkg/other/otherpkg.changes.my.feature" in pkg_idx["otherpkg"]["changes"]
 
 
+# pylint: disable-next=redefined-outer-name
 def test_extract_trackers(validator_with_trackers):
-    trackers = validator_with_trackers.extract_trackers(
-        """
+    trackers = validator_with_trackers.extract_trackers("""
         This is a tckr#23 tracker.
         Repeat tckr#23.
         And another tckr#24.
         Not a valid tracker tckr#1,
         Also not a valid tracker tkr#333.
-        """
-    )
+        """)
     assert "tckr" in trackers
     assert len(trackers["tckr"]) == 2
     assert ("tckr#23", "23") in trackers["tckr"]
@@ -203,6 +216,7 @@ def test_extract_trackers(validator_with_trackers):
     assert ("tkr#333", "333") not in trackers["tckr"]
 
 
+# pylint: disable-next=redefined-outer-name
 def test_get_entry_obj(validator):
     buffer = ["- This is a changelog entry."]
 
@@ -214,6 +228,7 @@ def test_get_entry_obj(validator):
     assert not entry.trackers
 
 
+# pylint: disable-next=redefined-outer-name
 def test_get_entry_obj_multiline(validator):
     buffer = ["- This is a ", "multi line ", "changelog entry."]
 
@@ -225,6 +240,7 @@ def test_get_entry_obj_multiline(validator):
     assert not entry.trackers
 
 
+# pylint: disable-next=redefined-outer-name
 def test_get_entry_obj_with_tracker(validator_with_trackers):
     buffer = ["- This is a changelog entry with a tracker (tckr#99)"]
 
@@ -232,6 +248,7 @@ def test_get_entry_obj_with_tracker(validator_with_trackers):
     assert ("tckr#99", "99") in entry.trackers["tckr"]
 
 
+# pylint: disable-next=redefined-outer-name
 def test_get_entry_obj_with_multiple_trackers(validator_with_trackers):
     buffer = ["- This is a changelog entry with trackers (tckr#01, tckr#02)"]
 
@@ -253,6 +270,7 @@ def test_get_entry_obj_with_multiple_trackers(validator_with_trackers):
         "- This is an entry with a version-1.2.3 string\n",
     ],
 )
+# pylint: disable-next=redefined-outer-name
 def test_validate_chlog_file_valid(validator, chlog_file, entry_text):
     chlog_file.write_text(entry_text)
     issues, entries = validator.validate_chlog_file(str(chlog_file))
@@ -260,6 +278,7 @@ def test_validate_chlog_file_valid(validator, chlog_file, entry_text):
     assert len(entries) == 1
 
 
+# pylint: disable-next=redefined-outer-name
 def test_validate_chlog_file_multiple_entries(validator, chlog_file):
     chlog_file.write_text(
         "- This is a valid\n  multiline changelog entry\n- This is a second entry\n"
@@ -269,6 +288,7 @@ def test_validate_chlog_file_multiple_entries(validator, chlog_file):
     assert len(entries) == 2
 
 
+# pylint: disable-next=redefined-outer-name
 def test_validate_chlog_file_multiple_entries_line_numbers(validator, chlog_file):
     chlog_file.write_text(
         "- This is a valid\n  multiline changelog entry\n- This is a second entry\n- a multiline\n  entry\n"
@@ -282,12 +302,15 @@ def test_validate_chlog_file_multiple_entries_line_numbers(validator, chlog_file
     assert issue.end_line == 5
 
 
+# pylint: disable-next=redefined-outer-name
 def test_validate_chlog_file_empty_file(validator, chlog_file):
+    # pylint: disable-next=unused-variable
     issues, entries = validator.validate_chlog_file(str(chlog_file))
     assert len(issues) == 1
     assert IssueType.EMPTY_CHLOG in str(issues[0])
 
 
+# pylint: disable-next=redefined-outer-name
 def test_validate_chlog_file_multiple_issues_and_entries(validator, chlog_file):
     content = """- This is a valid entry
 - This is a valid
@@ -304,21 +327,13 @@ def test_validate_chlog_file_multiple_issues_and_entries(validator, chlog_file):
 
 # Tests for the basic rules
 
+
 @pytest.mark.parametrize(
     "entry_text, issue_msg",
     [
-        (
-            "- This entry has\n  trailing whitespaces \n",
-            IssueType.TRAIL_WHITESPACE
-        ),
-        (
-            "- This entry has an  extra whitespace\n",
-            IssueType.MULTI_WHITESPACEi
-        ),
-        (
-            " - This is an invalid changelog entry\n",
-            IssueType.WRONG_INDENT
-        ),
+        ("- This entry has\n  trailing whitespaces \n", IssueType.TRAIL_WHITESPACE),
+        ("- This entry has an  extra whitespace\n", IssueType.MULTI_WHITESPACE),
+        (" - This is an invalid changelog entry\n", IssueType.WRONG_INDENT),
         (
             "- This is an invalid changelog entry\n This line has only 1 leading whitespace instead of 2\n",
             IssueType.WRONG_INDENT,
@@ -331,12 +346,8 @@ def test_validate_chlog_file_multiple_issues_and_entries(validator, chlog_file):
             "- This is an invalid changelog entry without a newline at the end",
             IssueType.MISSING_NEWLINE,
         ),
-        ("- This entry\n\n  has an empty line in between\n",
-            IssueType.EMPTY_LINE
-        ),
-        ("- this entry has wrong capitalization\n",
-            IssueType.WRONG_CAP
-        ),
+        ("- This entry\n\n  has an empty line in between\n", IssueType.EMPTY_LINE),
+        ("- this entry has wrong capitalization\n", IssueType.WRONG_CAP),
         (
             "- This entry has wrong capitalization\n  in the. second sentence\n",
             IssueType.WRONG_CAP,
@@ -349,9 +360,7 @@ def test_validate_chlog_file_multiple_issues_and_entries(validator, chlog_file):
             "- This entry does not have a space.After a full stop\n",
             IssueType.WRONG_SPACING,
         ),
-        ("- This entry does not have a space:After a colon\n",
-            IssueType.WRONG_SPACING
-        ),
+        ("- This entry does not have a space:After a colon\n", IssueType.WRONG_SPACING),
         (
             "- Entry with version string 2.0 with.Wrong spacing.\n",
             IssueType.WRONG_SPACING,
@@ -360,13 +369,13 @@ def test_validate_chlog_file_multiple_issues_and_entries(validator, chlog_file):
             "- This entry is" + " very" * 10 + " long\n",
             IssueType.LINE_TOO_LONG.format(DEFAULT_LINE_LENGTH),
         ),
-        ("- Here's a duplicate\n- Here's a duplicate\n",
-            IssueType.DUPLICATE_ENTRY
-        ),
+        ("- Here's a duplicate\n- Here's a duplicate\n", IssueType.DUPLICATE_ENTRY),
     ],
 )
+# pylint: disable-next=redefined-outer-name
 def test_validate_chlog_file_rules(validator, chlog_file, entry_text, issue_msg):
     chlog_file.write_text(entry_text)
+    # pylint: disable-next=unused-variable
     issues, entries = validator.validate_chlog_file(str(chlog_file))
     assert len(issues) == 1, issues_to_str(issues, 1)
     assert issue_msg in str(issues[0])
@@ -374,6 +383,8 @@ def test_validate_chlog_file_rules(validator, chlog_file, entry_text, issue_msg)
 
 # Tests for tracker validation rules
 
+
+# pylint: disable-next=redefined-outer-name
 def test_validate_trackers(validator_with_trackers, chlog_file):
     chlog_file.write_text("- This entry has a tracker (tckr#99)\n")
     issues, entries = validator_with_trackers.validate_chlog_file(str(chlog_file))
@@ -384,6 +395,7 @@ def test_validate_trackers(validator_with_trackers, chlog_file):
     assert not issues, issues_to_str(issues, 0)
 
 
+# pylint: disable-next=redefined-outer-name
 def test_validate_trackers_mistyped(validator, chlog_file):
     chlog_file.write_text("- This entry has a mistyped trackers (ckr#01, yckr#02)\n")
     issues, entries = validator.validate_chlog_file(str(chlog_file))
@@ -395,6 +407,7 @@ def test_validate_trackers_mistyped(validator, chlog_file):
     assert IssueType.MISTYPED_TRACKER in str(issues[0])
 
 
+# pylint: disable-next=redefined-outer-name
 def test_validate_trackers_multiple(validator_with_trackers, chlog_file):
     chlog_file.write_text(
         "- This entry has trackers (tckr#01, tckr#02)\n- More trackers (tckr#02, tckr#03)\n"
@@ -413,6 +426,7 @@ def test_validate_trackers_multiple(validator_with_trackers, chlog_file):
     assert not issues, issues_to_str(issues, 0)
 
 
+# pylint: disable-next=redefined-outer-name
 def test_validate_trackers_with_pr(validator_with_trackers, chlog_file):
     chlog_file.write_text(
         "- This entry has a tracker matching with the PR title (tckr#99)\n"
@@ -437,7 +451,14 @@ def test_validate_trackers_with_pr(validator_with_trackers, chlog_file):
         ),
     ],
 )
-def test_validate_trackers_tracker_mismatch(validator_with_trackers, chlog_file, entry_text, issue_msg):
+def test_validate_trackers_tracker_mismatch(
+    # pylint: disable-next=redefined-outer-name
+    validator_with_trackers,
+    # pylint: disable-next=redefined-outer-name
+    chlog_file,
+    entry_text,
+    issue_msg,
+):
     # Set PR number to validate trackers against the PR
     validator_with_trackers.git_repo = "test/repo"
     validator_with_trackers.pr_number = 999
@@ -449,6 +470,7 @@ def test_validate_trackers_tracker_mismatch(validator_with_trackers, chlog_file,
     assert issue_msg in str(issues[0])
 
 
+# pylint: disable-next=redefined-outer-name
 def test_validate(validator_with_trackers, base_path, file_list):
     for f in file_list:
         if ".changes." in f:
@@ -459,6 +481,7 @@ def test_validate(validator_with_trackers, base_path, file_list):
     assert not issues, issues_to_str(issues, 0)
 
 
+# pylint: disable-next=redefined-outer-name
 def test_validate_no_changes_in_pkg(validator, chlog_file):
     chlog_file.write_text("- This is a changelog entry.\n")
 
@@ -469,12 +492,15 @@ def test_validate_no_changes_in_pkg(validator, chlog_file):
 
 # Tests for changelogs for correct packages
 
+
+# pylint: disable-next=redefined-outer-name,unused-argument
 def test_validate_missing_chlog(validator, chlog_file):
     issues = validator.validate(["pkg/path/myfile.txt"])
     assert len(issues) == 1, issues_to_str(issues, 1)
     assert IssueType.MISSING_CHLOG in str(issues[0])
 
 
+# pylint: disable-next=redefined-outer-name
 def test_validate_chlog_for_wrong_pkg(validator, chlog_file):
     chlog_file.write_text("- This is a changelog entry.\n")
     issues = validator.validate(
@@ -491,7 +517,23 @@ def test_validate_chlog_for_wrong_pkg(validator, chlog_file):
     )
 
 
+# pylint: disable-next=redefined-outer-name
+def test_validate_chlog_invalid_filename(validator, base_path):
+    # pylint: disable-next=redefined-outer-name
+    chlog_file = base_path / "pkg/path/invalid.changes.my.feature"
+    chlog_file.write_text("- This is a changelog entry.\n")
+    issues = validator.validate(
+        ["pkg/path/invalid.changes.my.feature", "pkg/path/myfile.txt"]
+    )
+    assert len(issues) == 1, issues_to_str(issues, 1)
+
+    expected_msg = IssueType.INVALID_CHLOG_FILENAME.format("mypkg")
+    assert expected_msg in str(issues[0]) and "mypkg" in str(issues[0])
+
+
+# pylint: disable-next=redefined-outer-name
 def test_validate_change_in_subdir(validator, base_path):
+    # pylint: disable-next=redefined-outer-name
     chlog_file = base_path / "pkg/other/otherpkg.changes.my.feature"
     chlog_file.write_text("- This is a changelog entry.\n")
     issues = validator.validate(
@@ -502,6 +544,8 @@ def test_validate_change_in_subdir(validator, base_path):
 
 # Tests for Bugzilla trackers
 
+
+# pylint: disable-next=redefined-outer-name
 def test_validate_bsc(validator_with_trackers, chlog_file):
     chlog_file.write_text("- This is an entry with a valid BZ tracker (bsc#1000000)\n")
     issues, entries = validator_with_trackers.validate_chlog_file(str(chlog_file))
@@ -512,6 +556,7 @@ def test_validate_bsc(validator_with_trackers, chlog_file):
     assert not issues, issues_to_str(issues, 0)
 
 
+# pylint: disable-next=redefined-outer-name
 def test_validate_bsc_non_existent(validator_with_trackers, chlog_file):
     chlog_file.write_text(
         "- This is an entry with a non-existent BZ tracker (bsc#1234567)\n"
@@ -525,6 +570,7 @@ def test_validate_bsc_non_existent(validator_with_trackers, chlog_file):
     assert IssueType.BUG_NOT_FOUND.format("1234567") in str(issues[0])
 
 
+# pylint: disable-next=redefined-outer-name
 def test_validate_bsc_not_authorized(validator_with_trackers, chlog_file):
     chlog_file.write_text(
         "- This is an entry with a private BZ tracker (bsc#9999999)\n"
@@ -538,6 +584,7 @@ def test_validate_bsc_not_authorized(validator_with_trackers, chlog_file):
     assert IssueType.BUG_NOT_AUTHORIZED.format("9999999") in str(issues[0])
 
 
+# pylint: disable-next=redefined-outer-name
 def test_validate_bsc_wrong_product(validator_with_trackers, chlog_file):
     chlog_file.write_text(
         "- An entry with a BZ tracker for another product (bsc#2000000)\n"

@@ -1,11 +1,11 @@
 #!/usr/bin/python
-""" Checks diskspace sizes for for /rhnsat and /opt.
-    Used only by the install.sh code.
+"""Checks diskspace sizes for for /rhnsat and /opt.
+Used only by the install.sh code.
 
-    Copyright (c) 2002--2012 Red Hat, Inc.
-    All rights reserved.
+Copyright (c) 2002--2012 Red Hat, Inc.
+All rights reserved.
 
-    Author: Todd Warner <taw@redhat.com>
+Author: Todd Warner <taw@redhat.com>
 """
 
 import os

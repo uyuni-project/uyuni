@@ -1,5 +1,1963 @@
 [
     {
+        "id" : -61,
+        "name" : "RaspberryPiOS",
+        "identifier" : "RaspberryPi-Client",
+        "former_identifier" : "",
+        "version" : "13",
+        "release_type" : null,
+        "arch" : "arm64",
+        "friendly_name" : "Raspberry Pi OS 13 (Tech Preview)",
+        "product_class" : "SLE-M-T-BETA",
+        "cpe" : null,
+        "free" : true,
+        "description" : null,
+        "release_stage" : "beta",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+            -48
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -784,
+                "url" : "http://deb.debian.org/debian/dists/trixie/main/binary-arm64/",
+                "name" : "raspberrypios-13-pool",
+                "distro_target" : "arm64",
+                "description" : "Raspberry Pi OS 13 (trixie) main for ARM64",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "arm64"
+                ]
+            },
+            {
+                "id" : -785,
+                "url" : "http://deb.debian.org/debian/dists/trixie-updates/main/binary-arm64/",
+                "name" : "raspberrypios-13-main-updates",
+                "distro_target" : "arm64",
+                "description" : "Raspberry Pi OS 13 (trixie) ARM64 Main Updates",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "arm64"
+                ]
+            },
+            {
+                "id" : -786,
+                "url" : "http://security.debian.org/debian-security/dists/trixie-security/updates/main/binary-arm64/",
+                "name" : "raspberrypios-13-main-security",
+                "distro_target" : "arm64",
+                "description" : "Raspberry Pi OS 13 (trixie) ARM64 Main Security",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "arm64"
+                ]
+            },
+            {
+                "id" : -787,
+                "url" : "http://deb.debian.org/debian/dists/trixie/contrib/binary-arm64/",
+                "name" : "raspberrypios-13-contrib",
+                "distro_target" : "arm64",
+                "description" : "Raspberry Pi OS 13 (trixie) ARM64 Contrib",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "arm64"
+                ]
+            },
+            {
+                "id" : -788,
+                "url" : "http://deb.debian.org/debian/dists/trixie/non-free/binary-arm64/",
+                "name" : "raspberrypios-13-non-free",
+                "distro_target" : "arm64",
+                "description" : "Raspberry Pi OS 13 (trixie) ARM64 Non-free",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "arm64"
+                ]
+            },
+            {
+                "id" : -789,
+                "url" : "http://deb.debian.org/debian/dists/trixie/non-free-firmware/binary-arm64/",
+                "name" : "raspberrypios-13-non-free-firmware",
+                "distro_target" : "arm64",
+                "description" : "Raspberry Pi OS 13 (trixie) ARM64 Non-free-firmware",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "arm64"
+                ]
+            },
+            {
+                "id" : -790,
+                "url" : "http://deb.debian.org/debian/dists/trixie-updates/contrib/binary-arm64/",
+                "name" : "raspberrypios-13-contrib-updates",
+                "distro_target" : "arm64",
+                "description" : "Raspberry Pi OS 13 (trixie) ARM64 Contrib Updates",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "arm64"
+                ]
+            },
+            {
+                "id" : -791,
+                "url" : "http://deb.debian.org/debian/dists/trixie-updates/non-free/binary-arm64/",
+                "name" : "raspberrypios-13-non-free-updates",
+                "distro_target" : "arm64",
+                "description" : "Raspberry Pi OS 13 (trixie) ARM64 Non-free Updates",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "arm64"
+                ]
+            },
+            {
+                "id" : -792,
+                "url" : "http://deb.debian.org/debian/dists/trixie-updates/non-free-firmware/binary-arm64/",
+                "name" : "raspberrypios-13-non-free-firmware-updates",
+                "distro_target" : "arm64",
+                "description" : "Raspberry Pi OS 13 (trixie) ARM64 Non-free-firmware Updates",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "arm64"
+                ]
+            },
+            {
+                "id" : -793,
+                "url" : "http://deb.debian.org/debian-security/dists/trixie-security/updates/contrib/binary-arm64/",
+                "name" : "raspberrypios-13-contrib-security",
+                "distro_target" : "arm64",
+                "description" : "Raspberry Pi OS 13 (trixie) ARM64 Contrib Security",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "arm64"
+                ]
+            },
+            {
+                "id" : -794,
+                "url" : "http://deb.debian.org/debian-security/dists/trixie-security/updates/non-free/binary-arm64/",
+                "name" : "raspberrypios-13-non-free-security",
+                "distro_target" : "arm64",
+                "description" : "Raspberry Pi OS 13 (trixie) ARM64 Non-free Security",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "arm64"
+                ]
+            },
+            {
+                "id" : -795,
+                "url" : "http://deb.debian.org/debian-security/dists/trixie-security/updates/non-free-firmware/binary-arm64/",
+                "name" : "raspberrypios-13-non-free-firmware-security",
+                "distro_target" : "arm64",
+                "description" : "Raspberry Pi OS 13 (trixie) ARM64 Non-free-firmware Security",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "arm64"
+                ]
+            },
+            {
+                "id" : -796,
+                "url" : "http://deb.debian.org/debian/dists/trixie-backports/main/binary-arm64/",
+                "name" : "raspberrypios-13-main-backports",
+                "distro_target" : "arm64",
+                "description" : "Raspberry Pi OS 13 (trixie) ARM64 Main Backports",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "arm64"
+                ]
+            },
+            {
+                "id" : -797,
+                "url" : "http://deb.debian.org/debian/dists/trixie-backports/contrib/binary-arm64/",
+                "name" : "raspberrypios-13-contrib-backports",
+                "distro_target" : "arm64",
+                "description" : "Raspberry Pi OS 13 (trixie) ARM64 Contrib Backports",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "arm64"
+                ]
+            },
+            {
+                "id" : -798,
+                "url" : "http://deb.debian.org/debian/dists/trixie-backports/non-free/binary-arm64/",
+                "name" : "raspberrypios-13-non-free-backports",
+                "distro_target" : "arm64",
+                "description" : "Raspberry Pi OS 13 (trixie) ARM64 Non-free Backports",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "arm64"
+                ]
+            },
+            {
+                "id" : -799,
+                "url" : "http://deb.debian.org/debian/dists/trixie-backports/non-free-firmware/binary-arm64/",
+                "name" : "raspberrypios-13-non-free-firmware-backports",
+                "distro_target" : "arm64",
+                "description" : "Raspberry Pi OS 13 (trixie) ARM64 Non-free-firmware Backports",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "arm64"
+                ]
+            },
+            {
+                "id" : -800,
+                "url" : "https://archive.raspberrypi.com/debian/dists/trixie/main/binary-arm64/",
+                "name" : "raspberrypios-13-raspberry",
+                "distro_target" : "arm64",
+                "description" : "Raspberry Pi OS 13 (trixie) ARM64 Raspberry",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "arm64"
+                ]
+            }
+        ]
+    },
+    {
+        "id" : -60,
+        "name" : "Debian",
+        "identifier" : "Debian-Client",
+        "former_identifier" : "",
+        "version" : "13",
+        "release_type" : null,
+        "arch" : "arm64",
+        "friendly_name" : "Debian 13 arm64",
+        "product_class" : "SLE-M-T-BETA",
+        "cpe" : null,
+        "free" : true,
+        "description" : null,
+        "release_stage" : "beta",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -781,
+                "url" : "http://deb.debian.org/debian/dists/trixie/main/binary-arm64/",
+                "name" : "debian-13-pool",
+                "distro_target" : "arm64",
+                "description" : "Debian 13 (trixie) pool for arm64",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "arm64"
+                ]
+            },
+            {
+                "id" : -782,
+                "url" : "http://deb.debian.org/debian/dists/trixie-updates/main/binary-arm64/",
+                "name" : "debian-13-main-updates",
+                "distro_target" : "arm64",
+                "description" : "Debian 13 (trixie) ARM64 Main Updates",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "arm64"
+                ]
+            },
+            {
+                "id" : -783,
+                "url" : "http://security.debian.org/debian-security/dists/trixie-security/updates/main/binary-arm64/",
+                "name" : "debian-13-main-security",
+                "distro_target" : "arm64",
+                "description" : "Debian 13 (trixie) ARM64 Main Security",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "arm64"
+                ]
+            }
+        ]
+    },
+    {
+        "id" : -59,
+        "name" : "Debian",
+        "identifier" : "Debian-Client",
+        "former_identifier" : "",
+        "version" : "13",
+        "release_type" : null,
+        "arch" : "amd64",
+        "friendly_name" : "Debian 13",
+        "product_class" : "SLE-M-T-BETA",
+        "cpe" : null,
+        "free" : true,
+        "description" : null,
+        "release_stage" : "beta",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -778,
+                "url" : "http://deb.debian.org/debian/dists/trixie/main/binary-amd64/",
+                "name" : "debian-13-pool",
+                "distro_target" : "amd64",
+                "description" : "Debian 13 (trixie) pool for amd64",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "amd64"
+                ]
+            },
+            {
+                "id" : -779,
+                "url" : "http://deb.debian.org/debian/dists/trixie-updates/main/binary-amd64/",
+                "name" : "debian-13-main-updates",
+                "distro_target" : "amd64",
+                "description" : "Debian 13 (trixie) AMD64 Main Updates",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "amd64"
+                ]
+            },
+            {
+                "id" : -780,
+                "url" : "http://security.debian.org/debian-security/dists/trixie-security/updates/main/binary-amd64/",
+                "name" : "debian-13-main-security",
+                "distro_target" : "amd64",
+                "description" : "Debian 13 (trixie) AMD64 Main Security",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "amd64"
+                ]
+            }
+        ]
+    },
+    {
+        "id" : -58,
+        "name" : "RHEL and Liberty Base",
+        "identifier" : "el-base",
+        "former_identifier" : "",
+        "version" : "10",
+        "release_type" : null,
+        "arch" : "x86_64",
+        "friendly_name" : "RHEL and Liberty 10 Base",
+        "product_class" : "SLE-M-T-BETA",
+        "cpe" : null,
+        "free" : false,
+        "description" : null,
+        "release_stage" : "beta",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -770,
+                "url" : "http://localhost/pub/repositories/empty/",
+                "name" : "EL10-Pool",
+                "distro_target" : "x86_64",
+                "description" : "EL10-Pool",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            }
+        ]
+    },
+    {
+        "id" : -57,
+        "name" : "Oracle Linux",
+        "identifier" : "oraclelinux",
+        "former_identifier" : "",
+        "version" : "10",
+        "release_type" : null,
+        "arch" : "aarch64",
+        "friendly_name" : "Oracle Linux 10 aarch64",
+        "product_class" : "SLE-M-T-BETA",
+        "cpe" : null,
+        "free" : true,
+        "description" : null,
+        "release_stage" : "beta",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -765,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL10/baseos/latest/aarch64/",
+                "name" : "oraclelinux10",
+                "distro_target" : "aarch64",
+                "description" : "Oracle Linux 10",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "aarch64"
+                ]
+            },
+            {
+                "id" : -766,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL10/appstream/aarch64/",
+                "name" : "oraclelinux10-appstream",
+                "distro_target" : "aarch64",
+                "description" : "Oracle Linux 10 AppStream",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "aarch64"
+                ]
+            },
+            {
+                "id" : -767,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL10/addons/aarch64/",
+                "name" : "oraclelinux10-addons",
+                "distro_target" : "aarch64",
+                "description" : "Addons for Oracle Linux 10",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "aarch64"
+                ]
+            },
+            {
+                "id" : -768,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL10/codeready/builder/aarch64/",
+                "name" : "oraclelinux10-codereadybuilder",
+                "distro_target" : "aarch64",
+                "description" : "Latest CodeReady Builder packages for Oracle Linux 10",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "aarch64"
+                ]
+            },
+            {
+                "id" : -769,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL10/UEKR8/aarch64/",
+                "name" : "oraclelinux10-uek-r8",
+                "distro_target" : "aarch64",
+                "description" : "Latest Unbreakable Enterprise Kernel Release 8 for Oracle Linux 10",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "aarch64"
+                ]
+            }
+        ]
+    },
+    {
+        "id" : -56,
+        "name" : "Rocky Linux",
+        "identifier" : "rockylinux",
+        "former_identifier" : "",
+        "version" : "10",
+        "release_type" : null,
+        "arch" : "x86_64",
+        "friendly_name" : "Rocky Linux 10 x86_64",
+        "product_class" : "SLE-M-T-BETA",
+        "cpe" : null,
+        "free" : true,
+        "description" : null,
+        "release_stage" : "beta",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -756,
+                "url" : "https://mirrors.rockylinux.org/mirrorlist?repo=BaseOS-10&arch=x86_64",
+                "name" : "rockylinux-10",
+                "distro_target" : "x86_64",
+                "description" : "Rocky Linux 10",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -757,
+                "url" : "https://mirrors.rockylinux.org/mirrorlist?repo=AppStream-10&arch=x86_64",
+                "name" : "rockylinux-10-appstream",
+                "distro_target" : "x86_64",
+                "description" : "Rocky Linux 10 AppStream",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -758,
+                "url" : "https://mirrors.rockylinux.org/mirrorlist?repo=extras-10&arch=x86_64",
+                "name" : "rockylinux-10-extras",
+                "distro_target" : "x86_64",
+                "description" : "Rocky Linux 10 Extras",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -759,
+                "url" : "https://mirrors.rockylinux.org/mirrorlist?repo=CRB-10&arch=x86_64",
+                "name" : "rockylinux-10-crb",
+                "distro_target" : "x86_64",
+                "description" : "Rocky Linux 10 CRB",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -760,
+                "url" : "https://mirrors.rockylinux.org/mirrorlist?repo=plus-10&arch=x86_64",
+                "name" : "rockylinux-10-plus",
+                "distro_target" : "x86_64",
+                "description" : "Rocky Linux 10 Plus",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -761,
+                "url" : "https://mirrors.rockylinux.org/mirrorlist?repo=HighAvailability-10&arch=x86_64",
+                "name" : "rockylinux-10-ha",
+                "distro_target" : "x86_64",
+                "description" : "Rocky Linux 10 HighAvailability",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -762,
+                "url" : "https://mirrors.fedoraproject.org/mirrorlist?repo=epel-10&arch=x86_64",
+                "name" : "rockylinux-10-epel10",
+                "distro_target" : "x86_64",
+                "description" : "EPEL 10 for Rocky Linux",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -763,
+                "url" : "https://mirrors.rockylinux.org/mirrorlist?repo=NFV-10&arch=x86_64",
+                "name" : "rockylinux-10-nfv",
+                "distro_target" : "x86_64",
+                "description" : "Rocky Linux 10 NFV",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -764,
+                "url" : "https://mirrors.rockylinux.org/mirrorlist?repo=RT-10&arch=x86_64",
+                "name" : "rockylinux-10-rt",
+                "distro_target" : "x86_64",
+                "description" : "Rocky Linux 10 RT",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            }
+        ]
+    },
+    {
+        "id" : -55,
+        "name" : "Rocky Linux",
+        "identifier" : "rockylinux",
+        "former_identifier" : "",
+        "version" : "10",
+        "release_type" : null,
+        "arch" : "aarch64",
+        "friendly_name" : "Rocky Linux 10 aarch64",
+        "product_class" : "SLE-M-T-BETA",
+        "cpe" : null,
+        "free" : true,
+        "description" : null,
+        "release_stage" : "beta",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -749,
+                "url" : "https://mirrors.rockylinux.org/mirrorlist?repo=BaseOS-10&arch=aarch64",
+                "name" : "rockylinux-10",
+                "distro_target" : "aarch64",
+                "description" : "Rocky Linux 10",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "aarch64"
+                ]
+            },
+            {
+                "id" : -750,
+                "url" : "https://mirrors.rockylinux.org/mirrorlist?repo=AppStream-10&arch=aarch64",
+                "name" : "rockylinux-10-appstream",
+                "distro_target" : "aarch64",
+                "description" : "Rocky Linux 10 AppStream",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "aarch64"
+                ]
+            },
+            {
+                "id" : -751,
+                "url" : "https://mirrors.rockylinux.org/mirrorlist?repo=extras-10&arch=aarch64",
+                "name" : "rockylinux-10-extras",
+                "distro_target" : "aarch64",
+                "description" : "Rocky Linux 10 Extras",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "aarch64"
+                ]
+            },
+            {
+                "id" : -752,
+                "url" : "https://mirrors.rockylinux.org/mirrorlist?repo=CRB-10&arch=aarch64",
+                "name" : "rockylinux-10-crb",
+                "distro_target" : "aarch64",
+                "description" : "Rocky Linux 10 CRB",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "aarch64"
+                ]
+            },
+            {
+                "id" : -753,
+                "url" : "https://mirrors.rockylinux.org/mirrorlist?repo=plus-10&arch=aarch64",
+                "name" : "rockylinux-10-plus",
+                "distro_target" : "aarch64",
+                "description" : "Rocky Linux 10 Plus",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "aarch64"
+                ]
+            },
+            {
+                "id" : -754,
+                "url" : "https://mirrors.rockylinux.org/mirrorlist?repo=HighAvailability-10&arch=aarch64",
+                "name" : "rockylinux-10-ha",
+                "distro_target" : "aarch64",
+                "description" : "Rocky Linux 10 HighAvailability",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "aarch64"
+                ]
+            },
+            {
+                "id" : -755,
+                "url" : "https://mirrors.fedoraproject.org/mirrorlist?repo=epel-10&arch=aarch64",
+                "name" : "rockylinux-10-epel10",
+                "distro_target" : "aarch64",
+                "description" : "EPEL 10 for Rocky Linux",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "aarch64"
+                ]
+            }
+        ]
+    },
+    {
+        "id" : -54,
+        "name" : "AlmaLinux",
+        "identifier" : "almalinux",
+        "former_identifier" : "",
+        "version" : "10",
+        "release_type" : null,
+        "arch" : "x86_64",
+        "friendly_name" : "AlmaLinux 10 x86_64",
+        "product_class" : "SLE-M-T-BETA",
+        "cpe" : null,
+        "free" : true,
+        "description" : null,
+        "release_stage" : "beta",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -740,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/10/baseos",
+                "name" : "almalinux10",
+                "distro_target" : null,
+                "description" : "AlmaLinux 10",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                ]
+            },
+            {
+                "id" : -741,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/10/appstream",
+                "name" : "almalinux10-appstream",
+                "distro_target" : null,
+                "description" : "AlmaLinux 10 AppStream",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                ]
+            },
+            {
+                "id" : -742,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/10/extras",
+                "name" : "almalinux10-extras",
+                "distro_target" : null,
+                "description" : "AlmaLinux 10 Extras",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                ]
+            },
+            {
+                "id" : -743,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/10/crb",
+                "name" : "almalinux10-crb",
+                "distro_target" : null,
+                "description" : "AlmaLinux 9 CRB",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                ]
+            },
+            {
+                "id" : -744,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/10/highavailability",
+                "name" : "almalinux10-highavailability",
+                "distro_target" : null,
+                "description" : "AlmaLinux 10 High Availability",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                ]
+            },
+            {
+                "id" : -745,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/10/plus",
+                "name" : "almalinux10-plus",
+                "distro_target" : null,
+                "description" : "AlmaLinux 10 Plus",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                ]
+            },
+            {
+                "id" : -746,
+                "url" : "http://mirrors.fedoraproject.org/mirrorlist?repo=epel-10&arch=x86_64",
+                "name" : "almalinux10-epel10",
+                "distro_target" : null,
+                "description" : "EPEL 10",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                ]
+            },
+            {
+                "id" : -747,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/10/nfv",
+                "name" : "almalinux10-nfv",
+                "distro_target" : null,
+                "description" : "AlmaLinux 10 NFV",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                ]
+            },
+            {
+                "id" : -748,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/10/rt",
+                "name" : "almalinux10-rt",
+                "distro_target" : null,
+                "description" : "AlmaLinux 10 RT",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                ]
+            }
+        ]
+    },
+    {
+        "id" : -53,
+        "name" : "AlmaLinux",
+        "identifier" : "almalinux",
+        "former_identifier" : "",
+        "version" : "10",
+        "release_type" : null,
+        "arch" : "aarch64",
+        "friendly_name" : "AlmaLinux 10 aarch64",
+        "product_class" : "SLE-M-T-BETA",
+        "cpe" : null,
+        "free" : true,
+        "description" : null,
+        "release_stage" : "beta",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -733,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/10/baseos",
+                "name" : "almalinux10",
+                "distro_target" : null,
+                "description" : "AlmaLinux 10",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                ]
+            },
+            {
+                "id" : -734,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/10/appstream",
+                "name" : "almalinux10-appstream",
+                "distro_target" : null,
+                "description" : "AlmaLinux 10 AppStream",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                ]
+            },
+            {
+                "id" : -735,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/10/extras",
+                "name" : "almalinux10-extras",
+                "distro_target" : null,
+                "description" : "AlmaLinux 10 Extras",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                ]
+            },
+            {
+                "id" : -736,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/10/crb",
+                "name" : "almalinux10-crb",
+                "distro_target" : null,
+                "description" : "AlmaLinux 9 CRB",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                ]
+            },
+            {
+                "id" : -737,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/10/highavailability",
+                "name" : "almalinux10-highavailability",
+                "distro_target" : null,
+                "description" : "AlmaLinux 10 High Availability",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                ]
+            },
+            {
+                "id" : -738,
+                "url" : "https://mirrors.almalinux.org/mirrorlist/10/plus",
+                "name" : "almalinux10-plus",
+                "distro_target" : null,
+                "description" : "AlmaLinux 10 Plus",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                ]
+            },
+            {
+                "id" : -739,
+                "url" : "http://mirrors.fedoraproject.org/mirrorlist?repo=epel-10&arch=aarch64",
+                "name" : "almalinux10-epel10",
+                "distro_target" : null,
+                "description" : "EPEL 10",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                ]
+            }
+        ]
+    },
+    {
+        "id" : -52,
+        "name" : "Oracle Linux",
+        "identifier" : "oraclelinux",
+        "former_identifier" : "",
+        "version" : "10",
+        "release_type" : null,
+        "arch" : "x86_64",
+        "friendly_name" : "Oracle Linux 10 x86_64",
+        "product_class" : "SLE-M-T-BETA",
+        "cpe" : null,
+        "free" : true,
+        "description" : null,
+        "release_stage" : "beta",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -727,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL10/baseos/latest/x86_64/",
+                "name" : "oraclelinux10",
+                "distro_target" : "x86_64",
+                "description" : "Oracle Linux 10",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -728,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL10/appstream/x86_64/",
+                "name" : "oraclelinux10-appstream",
+                "distro_target" : "x86_64",
+                "description" : "Oracle Linux 10 AppStream",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -729,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL10/addons/x86_64/",
+                "name" : "oraclelinux10-addons",
+                "distro_target" : "x86_64",
+                "description" : "Addons for Oracle Linux 10",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -730,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL10/codeready/builder/x86_64/",
+                "name" : "oraclelinux10-codereadybuilder",
+                "distro_target" : "x86_64",
+                "description" : "Latest CodeReady Builder packages for Oracle Linux 10",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -731,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL10/RDMA/x86_64/",
+                "name" : "oraclelinux10-rdma",
+                "distro_target" : "x86_64",
+                "description" : "Latest RDMA packages on Oracle Linux 10 for the Oracle Integrated Stack.",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -732,
+                "url" : "https://yum.oracle.com/repo/OracleLinux/OL10/UEKR8/x86_64/",
+                "name" : "oraclelinux10-uek-r8",
+                "distro_target" : "x86_64",
+                "description" : "Latest Unbreakable Enterprise Kernel Release 8 for Oracle Linux 10",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            }
+        ]
+    },
+    {
+        "id" : -51,
+        "name" : "Open Enterprise Server",
+        "identifier" : "OES",
+        "former_identifier" : "",
+        "version" : "25.4",
+        "release_type" : null,
+        "arch" : "x86_64",
+        "friendly_name" : "Open Enterprise Server 25.4",
+        "product_class" : "OES2-BETA",
+        "cpe" : null,
+        "free" : false,
+        "description" : null,
+        "release_stage" : "beta",
+        "eula_url" : "",
+        "product_type" : "base",
+        "offline_predecessor_ids" : [
+        ],
+        "online_predecessor_ids" : [
+            -45
+        ],
+        "shortname" : null,
+        "recommended" : false,
+        "extensions" : [
+        ],
+        "repositories" : [
+            {
+                "id" : -665,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-Pool/sle-15-x86_64/",
+                "name" : "OES25.4-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "Open Enterprise Server 25.4",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                ]
+            },
+            {
+                "id" : -666,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-Updates/sle-15-x86_64/",
+                "name" : "OES25.4-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "Open Enterprise Server 25.4",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                ]
+            },
+            {
+                "id" : -667,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Basesystem15-SP7-Pool/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Basesystem15-SP7-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Basesystem15-SP7-Pool for sle-15-x86_64",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -668,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Basesystem15-SP7-Updates/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Basesystem15-SP7-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Basesystem15-SP7-Updates for sle-15-x86_64",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -669,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Product-SLES15-SP7-Pool/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Product-SLES15-SP7-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Product-SLES15-SP7-Pool for sle-15-x86_64",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -670,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Product-SLES15-SP7-Updates/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Product-SLES15-SP7-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Product-SLES15-SP7-Updates for sle-15-x86_64",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -671,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Server-Applications15-SP7-Pool/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Server-Applications15-SP7-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Server-Applications15-SP7-Pool for sle-15-x86_64",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -672,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Server-Applications15-SP7-Updates/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Server-Applications15-SP7-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Server-Applications15-SP7-Updates for sle-15-x86_64",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -673,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Containers15-SP7-Pool/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Containers15-SP7-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Containers15-SP7-Pool for sle-15-x86_64",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -674,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Containers15-SP7-Updates/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Containers15-SP7-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Containers15-SP7-Updates for sle-15-x86_64",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -675,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Desktop-Applications15-SP7-Pool/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Desktop-Applications15-SP7-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Desktop-Applications15-SP7-Pool for sle-15-x86_64",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -676,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Desktop-Applications15-SP7-Updates/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Desktop-Applications15-SP7-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Desktop-Applications15-SP7-Updates for sle-15-x86_64",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -677,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Python3-15-SP7-Pool/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Python3-15-SP7-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Python3-15-SP7-Pool for sle-15-x86_64",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -678,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Python3-15-SP7-Updates/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Python3-15-SP7-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Python3-15-SP7-Updates for sle-15-x86_64",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -679,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Systems-Management-15-SP7-Pool/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Systems-Management-15-SP7-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Systems-Management-15-SP7-Pool for sle-15-x86_64",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -680,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Systems-Management-15-SP7-Updates/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Systems-Management-15-SP7-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Systems-Management-15-SP7-Updates for sle-15-x86_64",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -681,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Public-Cloud15-SP7-Pool/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Public-Cloud15-SP7-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Public-Cloud15-SP7-Pool for sle-15-x86_64",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -682,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Public-Cloud15-SP7-Updates/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Public-Cloud15-SP7-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Public-Cloud15-SP7-Updates for sle-15-x86_64",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -683,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Basesystem15-SP7-Source-Pool/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Basesystem15-SP7-Source-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Basesystem15-SP7-Source-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -684,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Basesystem15-SP7-Debuginfo-Pool/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Basesystem15-SP7-Debuginfo-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Basesystem15-SP7-Debuginfo-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -685,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Basesystem15-SP7-Debuginfo-Updates/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Basesystem15-SP7-Debuginfo-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Basesystem15-SP7-Debuginfo-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -686,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Product-SLES15-SP7-Source-Pool/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Product-SLES15-SP7-Source-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Product-SLES15-SP7-Source-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -687,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Product-SLES15-SP7-Debuginfo-Pool/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Product-SLES15-SP7-Debuginfo-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Product-SLES15-SP7-Debuginfo-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -688,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Product-SLES15-SP7-Debuginfo-Updates/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Product-SLES15-SP7-Debuginfo-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Product-SLES15-SP7-Debuginfo-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -689,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Server-Applications15-SP7-Source-Pool/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Server-Applications15-SP7-Source-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Server-Applications15-SP7-Source-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -690,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Server-Applications15-SP7-Debuginfo-Pool/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Server-Applications15-SP7-Debuginfo-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Server-Applications15-SP7-Debuginfo-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -691,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Server-Applications15-SP7-Debuginfo-Updates/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Server-Applications15-SP7-Debuginfo-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Server-Applications15-SP7-Debuginfo-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -692,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Containers15-SP7-Source-Pool/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Containers15-SP7-Source-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Containers15-SP7-Source-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -693,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Containers15-SP7-Debuginfo-Pool/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Containers15-SP7-Debuginfo-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Containers15-SP7-Debuginfo-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -694,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Containers15-SP7-Debuginfo-Updates/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Containers15-SP7-Debuginfo-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Containers15-SP7-Debuginfo-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -695,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Desktop-Applications15-SP7-Source-Pool/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Desktop-Applications15-SP7-Source-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Desktop-Applications15-SP7-Source-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -696,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Desktop-Applications15-SP7-Debuginfo-Pool/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Desktop-Applications15-SP7-Debuginfo-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Desktop-Applications15-SP7-Debuginfo-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -697,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Desktop-Applications15-SP7-Debuginfo-Updates/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Desktop-Applications15-SP7-Debuginfo-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Desktop-Applications15-SP7-Debuginfo-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -698,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Python3-15-SP7-Source-Pool/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Python3-15-SP7-Source-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Python3-15-SP7-Source-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -699,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Python3-15-SP7-Debuginfo-Pool/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Python3-15-SP7-Debuginfo-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Python3-15-SP7-Debuginfo-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -700,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Python3-15-SP7-Debuginfo-Updates/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Python3-15-SP7-Debuginfo-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Python3-15-SP7-Debuginfo-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -701,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Systems-Management-15-SP7-Source-Pool/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Systems-Management-15-SP7-Source-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Systems-Management-15-SP7-Source-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -702,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Systems-Management-15-SP7-Debuginfo-Pool/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Systems-Management-15-SP7-Debuginfo-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Systems-Management-15-SP7-Debuginfo-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -703,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Systems-Management-15-SP7-Debuginfo-Updates/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Systems-Management-15-SP7-Debuginfo-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Systems-Management-15-SP7-Debuginfo-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -704,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Public-Cloud15-SP7-Source-Pool/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Public-Cloud15-SP7-Source-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Public-Cloud15-SP7-Source-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -705,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Public-Cloud15-SP7-Debuginfo-Pool/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Public-Cloud15-SP7-Debuginfo-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Public-Cloud15-SP7-Debuginfo-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -706,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Public-Cloud15-SP7-Debuginfo-Updates/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Public-Cloud15-SP7-Debuginfo-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Public-Cloud15-SP7-Debuginfo-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -707,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-DevTools15-SP7-Pool/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-DevTools15-SP7-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-DevTools15-SP7-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -708,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-DevTools15-SP7-Updates/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-DevTools15-SP7-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-DevTools15-SP7-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -709,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-DevTools15-SP7-Source-Pool/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-DevTools15-SP7-Source-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-DevTools15-SP7-Source-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -710,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-DevTools15-SP7-Debuginfo-Pool/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-DevTools15-SP7-Debuginfo-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-DevTools15-SP7-Debuginfo-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -711,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-DevTools15-SP7-Debuginfo-Updates/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-DevTools15-SP7-Debuginfo-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-DevTools15-SP7-Debuginfo-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -712,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Web-Scripting15-SP7-Pool/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Web-Scripting15-SP7-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Web-Scripting15-SP7-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -713,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Web-Scripting15-SP7-Updates/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Web-Scripting15-SP7-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Web-Scripting15-SP7-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -714,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Web-Scripting15-SP7-Source-Pool/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Web-Scripting15-SP7-Source-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Web-Scripting15-SP7-Source-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -715,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Web-Scripting15-SP7-Debuginfo-Pool/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Web-Scripting15-SP7-Debuginfo-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Web-Scripting15-SP7-Debuginfo-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -716,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Web-Scripting15-SP7-Debuginfo-Updates/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Web-Scripting15-SP7-Debuginfo-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Web-Scripting15-SP7-Debuginfo-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -717,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Manager-Tools15-Pool/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Manager-Tools15-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Manager-Tools15-Pool for sle-15-x86_64",
+                "enabled" : true,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -718,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Manager-Tools15-Updates/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Manager-Tools15-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Manager-Tools15-Updates for sle-15-x86_64",
+                "enabled" : true,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -719,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Manager-Tools15-Source-Pool/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Manager-Tools15-Source-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Manager-Tools15-Source-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -720,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Manager-Tools15-Debuginfo-Pool/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Manager-Tools15-Debuginfo-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Manager-Tools15-Debuginfo-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -721,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Manager-Tools15-Debuginfo-Updates/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Manager-Tools15-Debuginfo-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Manager-Tools15-Debuginfo-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -722,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Legacy15-SP7-Pool/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Legacy15-SP7-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Legacy15-SP7-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -723,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Legacy15-SP7-Updates/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Legacy15-SP7-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Legacy15-SP7-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -724,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Legacy15-SP7-Source-Pool/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Legacy15-SP7-Source-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Legacy15-SP7-Source-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -725,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Legacy15-SP7-Debuginfo-Pool/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Legacy15-SP7-Debuginfo-Pool",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Legacy15-SP7-Debuginfo-Pool for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : false,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            },
+            {
+                "id" : -726,
+                "url" : "https://nu.novell.com/repo/$RCE/OES25.4-SLE-Module-Legacy15-SP7-Debuginfo-Updates/sle-15-x86_64/",
+                "name" : "OES25.4-SLE-Module-Legacy15-SP7-Debuginfo-Updates",
+                "distro_target" : "sle-15-x86_64",
+                "description" : "SLE-Module-Legacy15-SP7-Debuginfo-Updates for sle-15-x86_64",
+                "enabled" : false,
+                "autorefresh" : true,
+                "installer_updates" : false,
+                "arch" : [
+                    "x86_64"
+                ]
+            }
+        ]
+    },
+    {
         "id" : -50,
         "name" : "openEuler",
         "identifier" : "openEuler-Client",
@@ -5374,8 +7332,8 @@
         ],
         "repositories" : [
             {
-                "id" : -217,
-                "url" : "http://deb.debian.org/debian/dists/buster/main/binary-amd64/",
+                "id" : -657,
+                "url" : "http://archive.debian.org/debian/dists/buster/main/binary-amd64/",
                 "name" : "debian-10-pool",
                 "distro_target" : "amd64",
                 "description" : "Debian 10 (buster) pool for amd64",
@@ -5387,8 +7345,8 @@
                 ]
             },
             {
-                "id" : -218,
-                "url" : "http://deb.debian.org/debian/dists/buster-updates/main/binary-amd64/",
+                "id" : -658,
+                "url" : "http://archive.debian.org/debian/dists/buster-updates/main/binary-amd64/",
                 "name" : "debian-10-main-updates",
                 "distro_target" : "amd64",
                 "description" : "Debian 10 (buster) AMD64 Main Updates",
@@ -5400,8 +7358,8 @@
                 ]
             },
             {
-                "id" : -219,
-                "url" : "http://security-cdn.debian.org/debian-security/dists/buster/updates/main/binary-amd64/",
+                "id" : -659,
+                "url" : "http://archive.debian.org/debian-security/dists/buster/updates/main/binary-amd64/",
                 "name" : "debian-10-main-security",
                 "distro_target" : "amd64",
                 "description" : "Debian 10 (buster) AMD64 Main Security",

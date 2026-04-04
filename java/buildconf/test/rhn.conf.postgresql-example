@@ -17,30 +17,31 @@ report_db_port = 5432
 report_db_ssl_enabled = 0
 
 # Hibernate configuration
-hibernate.dialect = org.hibernate.dialect.PostgreSQLDialect
 hibernate.connection.driver_class = org.postgresql.Driver
 hibernate.connection.driver_proto = jdbc:postgresql
 # Uncomment to log all SQL statements issued by Hibernate
 # hibernate.show_sql = true
 hibernate.use_outer_join = true
 hibernate.jdbc.batch_size = 0
-hibernate.cache.region.factory_class = org.hibernate.cache.ehcache.EhCacheRegionFactory
-hibernate.cache.use_query_cache = true
 hibernate.bytecode.use_reflection_optimizer = false
-hibernate.id.new_generator_mappings = false
+hibernate.id.new_generator_mappings = true
+hibernate.cache.use_second_level_cache = true
+hibernate.cache.use_query_cache = true
+hibernate.cache.region.factory_class = org.hibernate.cache.jcache.internal.JCacheRegionFactory
+hibernate.jakarta.cache.uri = ehcache.xml
+hibernate.jakarta.cache.provider = org.ehcache.jsr107.EhcacheCachingProvider
+hibernate.jakarta.cache.missing_cache_strategy = create
 
 # Hibernate configuration
-reporting.hibernate.dialect = org.hibernate.dialect.PostgreSQLDialect
 reporting.hibernate.connection.driver_class = org.postgresql.Driver
 reporting.hibernate.connection.driver_proto = jdbc:postgresql
 # Uncomment to log all SQL statements issued by Hibernate
 # reporting.hibernate.show_sql = true
 reporting.hibernate.use_outer_join = true
 reporting.hibernate.jdbc.batch_size = 0
-reporting.hibernate.cache.region.factory_class = org.hibernate.cache.ehcache.EhCacheRegionFactory
-reporting.hibernate.cache.use_query_cache = true
 reporting.hibernate.bytecode.use_reflection_optimizer = false
 reporting.hibernate.id.new_generator_mappings = false
+reporting.hibernate.cache.use_second_level_cache = false
 
 # User creation settings
 min_user_len = 3

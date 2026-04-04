@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useState } from "react";
 
 import { docsLocale, productName } from "core/user-preferences";
@@ -27,6 +26,7 @@ const SusemanagerThemeLogin = (props: ThemeProps) => {
     props.validationErrors,
     props.schemaUpgradeRequired,
     props.diskspaceSeverity,
+    props.dbDiskspaceSeverity,
     props.sccForwardWarning
   );
   const formMessages = getFormMessages(success, messages);

@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useContext } from "react";
 
 import { DateTimePicker } from "components/datetime";
 
@@ -12,15 +12,15 @@ type Props = InputBaseProps<moment.Moment> & {
   name: string;
 };
 
-export function DateTime(props: Props) {
-  const formContext = React.useContext(FormContext);
+export function DateTime({ required = false, disabled = false, ...props }: Props) {
+  const formContext = useContext(FormContext);
   return (
-    <InputBase<moment.Moment> {...props}>
+    <InputBase<moment.Moment> required={required} disabled={disabled} {...props}>
       {({ setValue }) => {
         const onChange = (value: moment.Moment) => {
           setValue(props.name, value);
         };
-        const fieldValue = (formContext.model || {})[props.name] || props.defaultValue || undefined;
+        const fieldValue = formContext.model?.[props.name] || props.defaultValue || undefined;
         const isValid = fieldValue?.isValid?.() ?? true;
         if (fieldValue && isValid) {
           return <DateTimePicker onChange={onChange} value={localizedMoment(fieldValue)} />;
@@ -31,15 +31,3 @@ export function DateTime(props: Props) {
     </InputBase>
   );
 }
-
-DateTime.defaultProps = {
-  defaultValue: undefined,
-  label: undefined,
-  hint: undefined,
-  labelClass: undefined,
-  divClass: undefined,
-  required: false,
-  disabled: false,
-  invalidHint: undefined,
-  onChange: undefined,
-};

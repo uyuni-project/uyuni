@@ -12,13 +12,13 @@
 .oldfile {
   float: left;
   width: 48%;
-  font-family: "monospace";
+  font-family: "monospace", monospace;
 }
 
 .newfile {
   float: right;
   width: 48%;
-  font-family: "monospace";
+  font-family: "monospace", monospace;
 }
 
 .changed {

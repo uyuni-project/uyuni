@@ -1,0 +1,2 @@
+- Add api endpoint to generate proxy configuration without
+  SSL certificate

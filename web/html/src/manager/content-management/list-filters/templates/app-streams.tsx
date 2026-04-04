@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { DEPRECATED_Select, FormContext } from "components/input";
 
@@ -23,7 +22,7 @@ export default (props: FilterFormProps & { template: Template }) => {
   const template = props.template;
   const prevTemplate = usePrevious(template);
 
-  const formContext = React.useContext(FormContext);
+  const formContext = useContext(FormContext);
   const setModelValue = formContext.setModelValue;
   const [channels, setChannels] = useState<Channel[]>([]);
 

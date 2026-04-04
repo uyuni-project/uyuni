@@ -15,13 +15,16 @@
 
 CREATE TABLE suseOVALVulnerablePackage
 (
-    id             NUMERIC NOT NULL
+    id             BIGINT
+                      GENERATED ALWAYS AS IDENTITY
                       CONSTRAINT suse_oval_vulnerable_pkg_id_pk PRIMARY KEY,
+    plat_vuln_id   BIGINT NOT NULL
+                      REFERENCES suseOVALPlatformVulnerable(id)
+                      ON DELETE CASCADE,
     name           VARCHAR NOT NULL,
-    fix_version    VARCHAR
+    fix_version    evr_t,
+                   CONSTRAINT plat_vuln_id_name_uq UNIQUE (plat_vuln_id, name)
 );
 
-
-CREATE SEQUENCE suse_oval_vulnerable_pkg_id_seq;
-
-CREATE INDEX suse_oval_vulnerable_pkg_name_idx ON suseOVALVulnerablePackage(name);
+CREATE INDEX suse_oval_vulnerable_pkg_plat_vuln_id_idx ON suseOVALVulnerablePackage(plat_vuln_id);
+CREATE INDEX suse_oval_vulnerable_pkg_plat_vuln_id_name_idx ON suseOVALVulnerablePackage(plat_vuln_id, name);

@@ -26,7 +26,7 @@ check_role(user_id_in in numeric, role_in in varchar)
     	throwaway numeric;
     begin
         -- the idea: if we get past this query, the org has the setting, else catch the exception and return 0
-        if role_in = 'org_admin' or role_in = 'sat_admin' then
+        if role_in = 'org_admin' or role_in = 'satellite_admin' then
             select 1 into throwaway
               from rhnUserGroupType UGT,
                    rhnUserGroup UG,

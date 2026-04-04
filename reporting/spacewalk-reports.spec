@@ -24,13 +24,14 @@
 %define pythonX %{?build_py3:python3}%{!?build_py3:python2}
 
 Name:           spacewalk-reports
-Version:        5.2.0
+Version:        5.2.1
 Release:        0
 Summary:        Script based reporting
 License:        GPL-2.0-only
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
 URL:            https://github.com/uyuni-project/uyuni
+#!CreateArchive: %{name}
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 Requires:       %{pythonX}
 Requires:       spacewalk-branding

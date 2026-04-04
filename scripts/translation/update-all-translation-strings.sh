@@ -88,9 +88,9 @@ for podir in ${PO_DIRS[@]}; do
     fi
 done
 
-XLIFF_DIRS=(java/code/src/com/redhat/rhn/frontend/strings/database java/code/src/com/redhat/rhn/frontend/strings/java \
-	java/code/src/com/redhat/rhn/frontend/strings/jsp java/code/src/com/redhat/rhn/frontend/strings/nav \
-	java/code/src/com/redhat/rhn/frontend/strings/template )
+XLIFF_DIRS=(java/core/src/main/resources/com/redhat/rhn/frontend/strings/database java/core/src/main/resources/com/redhat/rhn/frontend/strings/java \
+	java/core/src/main/resources/com/redhat/rhn/frontend/strings/jsp java/core/src/main/resources/com/redhat/rhn/frontend/strings/nav \
+	java/core/src/main/resources/com/redhat/rhn/frontend/strings/template )
 
 for xliffdir in ${XLIFF_DIRS[@]}; do
     update_xliff $xliffdir

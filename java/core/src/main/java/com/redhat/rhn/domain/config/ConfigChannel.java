@@ -1,0 +1,364 @@
+/*
+ * Copyright (c) 2009--2012 Red Hat, Inc.
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
+package com.redhat.rhn.domain.config;
+
+import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.Identifiable;
+import com.redhat.rhn.domain.org.Org;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.hibernate.annotations.SortComparator;
+
+import java.util.Date;
+import java.util.SortedSet;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+
+/**
+ * ConfigChannel - Class representation of the table rhnConfigChannel.
+ */
+@Entity
+@Table(name = "rhnConfigChannel")
+public class ConfigChannel extends BaseDomainHelper implements Identifiable {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "rhn_confchan_seq")
+    @SequenceGenerator(name = "rhn_confchan_seq", sequenceName = "rhn_confchan_id_seq", allocationSize = 1)
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "org_id")
+    private Org org;
+
+    @Column
+    private String name;
+
+    @Column
+    private String label;
+
+    @Column
+    private String description;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "confchan_type_id")
+    private ConfigChannelType configChannelType;
+
+    @OneToMany(mappedBy = "configChannel", fetch = FetchType.LAZY)
+    @SortComparator(com.redhat.rhn.domain.config.ConfigFileTypeComparator.class)
+    private SortedSet<ConfigFile> configFiles;
+
+    /**
+     * Default constructor, used by hibernate
+     */
+    protected ConfigChannel() {
+        // Nothing to do
+    }
+
+    /**
+     /**
+     * Create a new instance
+     * @param orgIn The org for this configuration channel.
+     * @param typeIn The type. Please use the constants located in this class.
+     */
+    public ConfigChannel(Org orgIn, ConfigChannelType typeIn) {
+        this(orgIn, typeIn, null, null, null);
+    }
+
+    /**
+     * Create a new instance
+     * @param orgIn The org for this configuration channel.
+     * @param typeIn The type.  Please use the constants located in this class.
+     * @param nameIn The name of this configuration channel.
+     * @param labelIn The label for this configuration channel.
+     * @param descriptionIn The description of this configuration channel.
+     */
+    public ConfigChannel(Org orgIn, ConfigChannelType typeIn, String nameIn, String labelIn, String descriptionIn) {
+        this.org = orgIn;
+        this.name = nameIn;
+        this.label = labelIn;
+        this.description = descriptionIn;
+        this.configChannelType = typeIn;
+    }
+
+    /**
+     * Getter for id
+     * @return Long to get
+    */
+    @Override
+    public Long getId() {
+        return this.id;
+    }
+
+    /**
+     * Setter for id
+     * @param idIn to set
+    */
+    protected void setId(Long idIn) {
+        this.id = idIn;
+    }
+
+    /**
+     * Getter for orgId
+     * @return Long to get
+    */
+    public Long getOrgId() {
+        return this.org.getId();
+    }
+
+    /**
+     * Getter for name
+     * @return String to get
+    */
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Setter for name
+     * @param nameIn to set
+    */
+    public void setName(String nameIn) {
+        this.name = nameIn;
+    }
+
+    /**
+     * Getter for label
+     * @return String to get
+    */
+    public String getLabel() {
+        return this.label;
+    }
+
+    /**
+     * Setter for label
+     * @param labelIn to set
+    */
+    public void setLabel(String labelIn) {
+        this.label = labelIn;
+    }
+
+    /**
+     * Getter for description
+     * @return String to get
+    */
+    public String getDescription() {
+        return this.description;
+    }
+
+    /**
+     * Setter for description
+     * @param descriptionIn to set
+    */
+    public void setDescription(String descriptionIn) {
+        this.description = descriptionIn;
+    }
+
+    /**
+     * @return Returns the configChannelType.
+     */
+    public ConfigChannelType getConfigChannelType() {
+        return configChannelType;
+    }
+
+    /**
+     * @param configChannelTypeIn The configChannelType to set.
+     */
+    public void setConfigChannelType(ConfigChannelType configChannelTypeIn) {
+        this.configChannelType = configChannelTypeIn;
+    }
+
+
+    /**
+     * @return Returns the org.
+     */
+    public Org getOrg() {
+        return org;
+    }
+
+
+    /**
+     * @param orgIn The org to set.
+     */
+    public void setOrg(Org orgIn) {
+        org = orgIn;
+    }
+
+    // Utility routines for common use cases
+
+    /**
+     * Is this a local (i.e. system) channel?
+     * @return true if local
+     */
+    public boolean isLocalChannel() {
+        return ConfigChannelType.local().equals(
+                getConfigChannelType());
+    }
+
+    /**
+     * Is this a global channel?
+     * @return true if global
+     */
+    public boolean isGlobalChannel() {
+        return ConfigChannelType.normal().equals(getConfigChannelType()) ||
+                ConfigChannelType.state().equals(getConfigChannelType());
+    }
+
+    /**
+     * Is this a normal channel?
+     * @return true if normal
+     */
+    public boolean isNormalChannel() {
+        return ConfigChannelType.normal().equals(
+                getConfigChannelType());
+    }
+
+    /**
+     * Is this a sandbox channel?
+     * @return true if sandbox
+     */
+    public boolean isSandboxChannel() {
+        return ConfigChannelType.sandbox().equals(
+                getConfigChannelType());
+    }
+
+    /**
+     * Is this a state channel?
+     * @return true if of type state
+     */
+    public boolean isStateChannel() {
+        return ConfigChannelType.state().equals(
+                getConfigChannelType());
+    }
+
+    /**
+     * @return Returns the set of config files associated to this channel.
+     */
+
+    public SortedSet<ConfigFile> getConfigFiles() {
+        return configFiles;
+    }
+
+    /**
+     * Setter for list of config files associated to this channel
+     * @param cfg to set
+    */
+    protected void setConfigFiles(SortedSet<ConfigFile> cfg) {
+        this.configFiles = cfg;
+    }
+
+
+    /**
+     * Provide a wrapper that returns a useful, I18N'd, name for a channel -
+     * relies on the utility function in ConfigurationFactory.
+     *
+     * @return displayable, I18N'd channel name, even for local and sandbox channels
+     */
+    public String getDisplayName() {
+        String typeStr = getConfigChannelType().getLabel();
+        return ConfigurationFactory.getChannelNameDisplay(typeStr, getName());
+    }
+
+    /**
+     * Creates a configuration file and saves it to the database
+     * with the given information.
+     * Note: users of the same org do not automatically have access to this file.
+     * See rhn_config_channel.get_user_file_access
+     * @param state The state of the file (dead or alive)
+     * @param cfn The file's path
+     * @return T        he newly created ConfigFile
+     */
+    public ConfigFile createConfigFile(ConfigFileState state, ConfigFileName cfn) {
+         ConfigFile file = ConfigurationFactory.newConfigFile();
+         file.setConfigChannel(this);
+         file.setConfigFileState(state);
+         file.setConfigFileName(cfn);
+         file.setCreated(new Date());
+         file.setModified(new Date());
+         return ConfigurationFactory.commit(file);
+    }
+
+     /**
+      * See createConfigFile(ConfigFileState, ConfigFileName).
+      * @param state The state of the file (dead or alive)
+      * @param path The path of the file
+      * @return The newly created ConfigFile
+      */
+     public ConfigFile createConfigFile(ConfigFileState state, String path) {
+         ConfigFileName cfn = ConfigurationFactory.lookupOrInsertConfigFileName(path);
+         return createConfigFile(state, cfn);
+     }
+
+    /**
+     *
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof ConfigChannel that)) {
+            return false;
+        }
+        return new EqualsBuilder().
+                append(this.getLabel(), that.getLabel()).
+                append(this.getOrg(), that.getOrg()).
+                append(this.getName(), that.getName()).
+                append(this.getConfigChannelType(), that.getConfigChannelType()).
+                isEquals();
+    }
+
+    /**
+     *
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        // The id field has been intentionally ignored here
+        // because for a new object the id can be null
+        // The label, name, org_id, channel type uniquely identify a Channel
+       HashCodeBuilder builder = new HashCodeBuilder();
+
+       builder.append(this.getOrg());
+       builder.append(this.getName());
+       builder.append(this.getLabel());
+       builder.append(this.getConfigChannelType());
+
+       return builder.toHashCode();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        ToStringBuilder builder = new ToStringBuilder(this);
+        builder.append("id", getId()).
+                append("label", getLabel()).
+                append("name", getName()).
+                append("org", getOrg()).
+                append("type", getConfigChannelType());
+        return builder.toString();
+    }
+}

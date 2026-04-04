@@ -32,6 +32,8 @@ RES9 = [
     "venv-salt-minion",
 ]
 
+RES10 = ["venv-salt-minion"]
+
 OPENEULER = [
     "venv-salt-minion",
 ]
@@ -65,6 +67,25 @@ PKGLIST15_PPC = [
 ]
 
 PKGLIST15_Z = []
+
+PKGLIST16_SALT = [
+    "venv-salt-minion"
+]
+
+ONLYSLE16 = [
+    "gio-branding-SLE",
+]
+
+PKGLIST16_X86_ARM = [
+    "dmidecode",
+    "libunwind8",
+]
+
+PKGLIST16_PPC = [
+    "libunwind8",
+]
+
+PKGLIST16_Z = []
 
 PKGLISTUBUNTU2004 = ["venv-salt-minion", "logrotate"]
 
@@ -123,6 +144,45 @@ PKGLISTDEBIAN12 = [
     "venv-salt-minion",
 ]
 
+PKGLISTDEBIAN13 = [
+    # gnupg dependencies
+    "dirmngr",
+    "gnupg",
+    "gnupg-l10n",
+    "gnupg-utils",
+    "gpg",
+    "gpg-agent",
+    "gpg-wks-client",
+    "gpgconf",
+    "gpgsm",
+    "gpgv",
+    "libassuan9",
+    "libffi8",
+    "libgcrypt20",
+    "libgnutls30t64",
+    "libgpg-error-l10n",
+    "libgpg-error0",
+    "libgpm2",
+    "libidn2-0",
+    "libksba8",
+    "libldap-common",
+    "libldap2",
+    "libncursesw6",
+    "libnpth0t64",
+    "libp11-kit0",
+    "libreadline8t64",
+    "libsasl2-2",
+    "libsasl2-modules",
+    "libsasl2-modules-db",
+    "libtasn1-6",
+    "libunistring5",
+    "pinentry-curses",
+    "readline-common",
+    # end of gnupg dependencies
+    "logrotate",
+    "venv-salt-minion",
+]
+
 PKGLISTRASPBERRYPIOS12 = [
     # gnupg dependencies
     "dirmngr",
@@ -147,6 +207,8 @@ PKGLISTRASPBERRYPIOS12 = [
     # end of gnupg dependencies
     "venv-salt-minion",
 ]
+
+PKGLISTRASPBERRYPIOS13 = PKGLISTDEBIAN13
 
 DATA = {
     "SLE-12-ppc64le": {
@@ -427,6 +489,11 @@ DATA = {
         "PKGLIST": PKGLIST15_SALT + PKGLIST15_X86_ARM,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/15/4/bootstrap/",
     },
+    "OES25.4": {
+        "PDID": -51,
+        "PKGLIST": PKGLIST15_SALT + PKGLIST15_X86_ARM,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/15/7/bootstrap/",
+    },
     "SLE-15-aarch64": {
         "PDID": [1589, 3052],
         "BETAPDID": [3056],
@@ -668,6 +735,42 @@ DATA = {
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/15/7/bootstrap/",
     },
     # When adding new SLE15 Service packs, keep in mind the first PDID is for the BaseSystem product (not the base product)!
+    "SLE-16.0-x86_64": {
+        "PDID": [2930, 3246],
+        "BETAPDID": [3250],
+        "PKGLIST": ONLYSLE16 + PKGLIST16_SALT + PKGLIST16_X86_ARM,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/16/0/bootstrap/",
+    },
+    "SLE-16.0-aarch64": {
+        "PDID": [2931, 3247],
+        "BETAPDID": [3251],
+        "PKGLIST": ONLYSLE16 + PKGLIST16_SALT + PKGLIST16_X86_ARM,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/16/0/bootstrap/",
+    },
+    "SLE-16.0-ppc64le": {
+        "PDID": [2933, 3249],
+        "BETAPDID": [3253],
+        "PKGLIST": ONLYSLE16 + PKGLIST16_SALT + PKGLIST16_PPC,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/16/0/bootstrap/",
+    },
+    "SLE-16.0-s390x": {
+        "PDID": [2932, 3248],
+        "BETAPDID": [3252],
+        "PKGLIST": ONLYSLE16 + PKGLIST16_SALT + PKGLIST16_Z,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/16/0/bootstrap/",
+    },
+    "SLES4SAP-16.0-ppc64le": {
+        "PDID": [2986, 3249],
+        "BETAPDID": [3253],
+        "PKGLIST": ONLYSLE16 + PKGLIST16_SALT + PKGLIST16_PPC,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/16/0/bootstrap/",
+    },
+    "SLES4SAP-16.0-x86_64": {
+        "PDID": [2985, 3246],
+        "BETAPDID": [3251],
+        "PKGLIST": ONLYSLE16 + PKGLIST16_SALT + PKGLIST16_X86_ARM,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/16/0/bootstrap/",
+    },
     "SUMA-43-PROXY-x86_64": {
         "PDID": [2299, 2384, 2379],
         "BETAPDID": [],
@@ -842,6 +945,46 @@ DATA = {
         "PKGLIST": PKGLIST15_SALT + PKGLIST15_X86_ARM,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/opensuse/15/6/bootstrap/",
     },
+    "openSUSE-Leap-16.0-x86_64": {
+        "PDID": [2921, 3246],
+        "PKGLIST": PKGLIST16_SALT + PKGLIST16_X86_ARM,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/opensuse/16/0/bootstrap/",
+    },
+    "openSUSE-Leap-16.0-x86_64-uyuni": {
+        "BASECHANNEL": "opensuse_leap16_0-x86_64",
+        "PKGLIST": PKGLIST16_SALT + PKGLIST16_X86_ARM,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/opensuse/16/0/bootstrap/",
+    },
+    "openSUSE-Leap-16.0-aarch64": {
+        "PDID": [2922, 3247],
+        "PKGLIST": PKGLIST16_SALT + PKGLIST16_X86_ARM,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/opensuse/16/0/bootstrap/",
+    },
+    "openSUSE-Leap-16.0-aarch64-uyuni": {
+        "BASECHANNEL": "opensuse_leap16_0-aarch64",
+        "PKGLIST": PKGLIST16_SALT + PKGLIST16_X86_ARM,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/opensuse/16/0/bootstrap/",
+    },
+    "openSUSE-Leap-16.0-s390x": {
+        "PDID": [2923, 3248],
+        "PKGLIST": PKGLIST16_SALT + PKGLIST16_Z,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/opensuse/16/0/bootstrap/",
+    },
+    "openSUSE-Leap-16.0-s390x-uyuni": {
+        "BASECHANNEL": "opensuse_leap16_0-s390x",
+        "PKGLIST": PKGLIST16_SALT + PKGLIST16_Z,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/opensuse/16/0/bootstrap/",
+    },
+    "openSUSE-Leap-16.0-ppc64le": {
+        "PDID": [2924, 3249],
+        "PKGLIST": PKGLIST16_SALT + PKGLIST16_PPC,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/opensuse/16/0/bootstrap/",
+    },
+    "openSUSE-Leap-16.0-ppc64le-uyuni": {
+        "BASECHANNEL": "opensuse_leap16_0-ppc64le",
+        "PKGLIST": PKGLIST16_SALT + PKGLIST16_PPC,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/opensuse/16/0/bootstrap/",
+    },
     "openSUSE-Leap-Micro-5.3-x86_64-uyuni": {
         "BASECHANNEL": "opensuse_micro5_3-x86_64",
         "PKGLIST": PKGLISTMICRO_BUNDLE_ONLY,
@@ -984,26 +1127,26 @@ DATA = {
         "DEST": DOCUMENT_ROOT + "/pub/repositories/slmicro/6/1/bootstrap/",
     },
     "SL-MICRO-6.2-aarch64": {
-        "PDID": [2914, 3112],
-        "BETAPDID": [3116],
+        "PDID": [2914, 3247],
+        "BETAPDID": [3251],
         "PKGLIST": PKGLISTMICRO_BUNDLE_ONLY,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/slmicro/6/2/bootstrap/",
     },
     "SL-MICRO-6.2-ppc64le": {
-        "PDID": [2916, 3114],
-        "BETAPDID": [3118],
+        "PDID": [2916, 3249],
+        "BETAPDID": [3253],
         "PKGLIST": PKGLISTMICRO_BUNDLE_ONLY,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/slmicro/6/2/bootstrap/",
     },
     "SL-MICRO-6.2-s390x": {
-        "PDID": [2915, 3113],
-        "BETAPDID": [3117],
+        "PDID": [2915, 3248],
+        "BETAPDID": [3252],
         "PKGLIST": PKGLISTMICRO_BUNDLE_ONLY,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/slmicro/6/2/bootstrap/",
     },
     "SL-MICRO-6.2-x86_64": {
-        "PDID": [2913, 3111],
-        "BETAPDID": [3115],
+        "PDID": [2913, 3246],
+        "BETAPDID": [3250],
         "PKGLIST": PKGLISTMICRO_BUNDLE_ONLY,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/slmicro/6/2/bootstrap/",
     },
@@ -1126,6 +1269,28 @@ DATA = {
         "BASECHANNEL": "oraclelinux9-aarch64",
         "PKGLIST": RES9,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/oracle/9/bootstrap/",
+    },
+    "oracle-10-x86_64": {
+        "PDID": [-52, 3339],
+        "BETAPDID": [3370],
+        "PKGLIST": RES10,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/oracle/10/bootstrap/",
+    },
+    "oracle-10-aarch64": {
+        "PDID": [-57, 3338],
+        "BETAPDID": [3369],
+        "PKGLIST": RES10,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/oracle/10/bootstrap/",
+    },
+    "oracle-10-x86_64-uyuni": {
+        "BASECHANNEL": "oraclelinux10-x86_64",
+        "PKGLIST": RES10,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/oracle/10/bootstrap/",
+    },
+    "oracle-10-aarch64-uyuni": {
+        "BASECHANNEL": "oraclelinux10-aarch64",
+        "PKGLIST": RES10,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/oracle/10/bootstrap/",
     },
     "amazonlinux-2-x86_64": {
         "PDID": [-22, 3033],
@@ -1280,6 +1445,38 @@ DATA = {
         "PKGLIST": RES9,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/almalinux/9/bootstrap/",
     },
+    "almalinux-10-x86_64": {
+        "PDID": [-54, 3339],
+        "BETAPDID": [3370],
+        "PKGLIST": RES10,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/almalinux/10/bootstrap/",
+    },
+    "almalinux-10-aarch64": {
+        "PDID": [-53, 3338],
+        "BETAPDID": [3369],
+        "PKGLIST": RES10,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/almalinux/10/bootstrap/",
+    },
+    "almalinux-10-x86_64-uyuni": {
+        "BASECHANNEL": "almalinux10-x86_64",
+        "PKGLIST": RES10,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/almalinux/10/bootstrap/",
+    },
+    "almalinux-10-aarch64-uyuni": {
+        "BASECHANNEL": "almalinux10-aarch64",
+        "PKGLIST": RES10,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/almalinux/10/bootstrap/",
+    },
+    "almalinux-10-ppc64le-uyuni": {
+        "BASECHANNEL": "almalinux10-ppc64le",
+        "PKGLIST": RES10,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/almalinux/10/bootstrap/",
+    },
+    "almalinux-10-s390x-uyuni": {
+        "BASECHANNEL": "almalinux10-s390x",
+        "PKGLIST": RES10,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/almalinux/10/bootstrap/",
+    },
     "rockylinux-8-x86_64": {
         "PDID": [-24, 3037],
         "BETAPDID": [3039],
@@ -1334,6 +1531,38 @@ DATA = {
         "PKGLIST": RES9,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/rockylinux/9/bootstrap/",
     },
+    "rockylinux-10-x86_64": {
+        "PDID": [-56, 3339],
+        "BETAPDID": [3370],
+        "PKGLIST": RES10,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/rockylinux/10/bootstrap/",
+    },
+    "rockylinux-10-aarch64": {
+        "PDID": [-55, 3338],
+        "BETAPDID": [3369],
+        "PKGLIST": RES10,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/rockylinux/10/bootstrap/",
+    },
+    "rockylinux-10-x86_64-uyuni": {
+        "BASECHANNEL": "rockylinux10-x86_64",
+        "PKGLIST": RES10,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/rockylinux/10/bootstrap/",
+    },
+    "rockylinux-10-aarch64-uyuni": {
+        "BASECHANNEL": "rockylinux10-aarch64",
+        "PKGLIST": RES10,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/rockylinux/10/bootstrap/",
+    },
+    "rockylinux-10-ppc64le-uyuni": {
+        "BASECHANNEL": "rockylinux10-ppc64le",
+        "PKGLIST": RES10,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/rockylinux/10/bootstrap/",
+    },
+    "rockylinux-10-s390x-uyuni": {
+        "BASECHANNEL": "rockylinux10-s390x",
+        "PKGLIST": RES10,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/rockylinux/10/bootstrap/",
+    },
     "ubuntu-22.04-amd64": {
         "PDID": [-33, 3060],
         "BETAPDID": [3061],
@@ -1385,6 +1614,52 @@ DATA = {
         "DEST": DOCUMENT_ROOT + "/pub/repositories/raspbian/12/bootstrap/",
         "TYPE": "deb",
     },
+    "raspberrypios-12-arm64": {
+        "PDID": [-48, 3029],
+        "BETAPDID": [3031],
+        "PKGLIST": PKGLISTRASPBERRYPIOS12,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/debian/12/bootstrap/",
+        "TYPE": "deb",
+    },
+    "debian13-amd64": {
+        "PDID": [-59, 3365],
+        "BETAPDID": [3367],
+        "PKGLIST": PKGLISTDEBIAN13,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/debian/13/bootstrap/",
+        "TYPE": "deb",
+    },
+    "debian13-arm64": {
+        "PDID": [-60, 3366],
+        "BETAPDID": [3368],
+        "PKGLIST": PKGLISTDEBIAN13,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/debian/13/bootstrap/",
+        "TYPE": "deb",
+    },
+    "debian13-amd64-uyuni": {
+        "BASECHANNEL": "debian-13-pool-amd64-uyuni",
+        "PKGLIST": PKGLISTDEBIAN13,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/debian/13/bootstrap/",
+        "TYPE": "deb",
+    },
+    "raspberrypios-13-arm64": {
+        "PDID": [-61, 3366],
+        "BETAPDID": [3368],
+        "PKGLIST": PKGLISTRASPBERRYPIOS13,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/debian/13/bootstrap/",
+        "TYPE": "deb",
+    },
+    "raspberrypios-13-arm64-uyuni": {
+        "BASECHANNEL": "raspberrypios-13-pool-arm64-uyuni",
+        "PKGLIST": PKGLISTRASPBERRYPIOS13,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/debian/13/bootstrap/",
+        "TYPE": "deb",
+    },
+    "raspberrypios-13-armhf-uyuni": {
+        "BASECHANNEL": "raspberrypios-13-pool-armhf-uyuni",
+        "PKGLIST": PKGLISTRASPBERRYPIOS13,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/raspbian/13/bootstrap/",
+        "TYPE": "deb",
+    },
     "openeuler22.03-x86_64-uyuni": {
         "BASECHANNEL": "openeuler2203-x86_64",
         "PKGLIST": OPENEULER,
@@ -1406,12 +1681,5 @@ DATA = {
         "BETAPDID": [3042],
         "PKGLIST": OPENEULER,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/openEuler/24.03/bootstrap/",
-    },
-    "raspberrypios12-arm64": {
-        "PDID": [-48, 3029],
-        "BETAPDID": [3031],
-        "PKGLIST": PKGLISTRASPBERRYPIOS12,
-        "DEST": DOCUMENT_ROOT + "/pub/repositories/raspbian/12/bootstrap/",
-        "TYPE": "deb",
-    },
+    }
 }

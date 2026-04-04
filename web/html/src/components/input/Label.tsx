@@ -1,5 +1,3 @@
-import * as React from "react";
-
 type Props = {
   name?: string;
   htmlFor?: string;
@@ -7,17 +5,12 @@ type Props = {
   required?: boolean;
 };
 
-export function Label(props: Props) {
+export function Label({ required = false, ...props }: Props) {
   return (
     <label className={`control-label${props.className ? ` ${props.className}` : ""}`} htmlFor={props.htmlFor}>
       {props.name}
-      {props.required ? <span className="required-form-field"> *</span> : null}
-      {props.name || props.required ? ":" : null}
+      {required ? <span className="required-form-field"> *</span> : null}
+      {props.name || required ? ":" : null}
     </label>
   );
 }
-
-Label.defaultProps = {
-  className: undefined,
-  required: false,
-};

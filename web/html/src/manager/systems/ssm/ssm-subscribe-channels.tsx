@@ -1,14 +1,12 @@
-import * as React from "react";
+import { type ReactNode, Component } from "react";
 
 import * as ChannelUtils from "core/channels/utils/channels-dependencies.utils";
 import SpaRenderer from "core/spa/spa-renderer";
 
-import { ActionSchedule } from "components/action-schedule";
-import { ActionChain } from "components/action-schedule";
+import { ActionChain, ActionSchedule } from "components/action-schedule";
 import { AsyncButton, Button } from "components/buttons";
 import { ActionChainLink, ActionLink, ChannelLink, SystemLink } from "components/links";
-import { Messages } from "components/messages/messages";
-import { Utils as MessagesUtils } from "components/messages/messages";
+import { Messages, Utils as MessagesUtils } from "components/messages/messages";
 import { BootstrapPanel } from "components/panels/BootstrapPanel";
 import { PopUp } from "components/popup";
 import { Column } from "components/table/Column";
@@ -18,10 +16,9 @@ import { Toggler } from "components/toggler";
 import { localizedMoment } from "utils";
 import { Utils } from "utils/functions";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
-import Network from "utils/network";
-import { JsonResult } from "utils/network";
+import Network, { JsonResult } from "utils/network";
 
-// See java/code/webapp/WEB-INF/pages/channel/ssm/channelssub.jsp
+// See java/core/src/main/resources/WEB-INF/pages/channel/ssm/channelssub.jsp
 declare global {
   interface Window {
     actionChains?: any;
@@ -54,13 +51,13 @@ function getAllowedChangeId(allowed: SsmAllowedChildChannelsDto, childId: string
 }
 
 type ServersListPopupProps = {
-  servers: Array<SsmServerDto>;
+  servers: SsmServerDto[];
   channelName: string;
   title: string;
   onClosePopUp: () => void;
 };
 
-class ServersListPopup extends React.Component<ServersListPopupProps> {
+class ServersListPopup extends Component<ServersListPopupProps> {
   render() {
     return (
       <PopUp
@@ -93,19 +90,19 @@ class ServersListPopup extends React.Component<ServersListPopupProps> {
 }
 
 type BaseChannelProps = {
-  baseChannels: Array<SsmAllowedBaseChannelsJson>;
+  baseChannels: SsmAllowedBaseChannelsJson[];
   baseChanges: SsmBaseChannelChangesJson;
-  footer: React.ReactNode;
+  footer: ReactNode;
   onSelectBase: (arg0: string, arg1: string) => void;
 };
 
 type BaseChannelState = {
   baseChanges: Map<string, string>;
-  popupServersList: Array<SsmServerDto>;
+  popupServersList: SsmServerDto[];
   popupServersChannelName: string;
 };
 
-class BaseChannelPage extends React.Component<BaseChannelProps, BaseChannelState> {
+class BaseChannelPage extends Component<BaseChannelProps, BaseChannelState> {
   constructor(props: BaseChannelProps) {
     super(props);
     this.state = {
@@ -116,10 +113,12 @@ class BaseChannelPage extends React.Component<BaseChannelProps, BaseChannelState
   }
 
   onChangeBase = (oldBaseId: string, newBaseId: string) => {
-    const changes = this.state.baseChanges;
-    changes.set(oldBaseId, newBaseId);
-    this.setState({
-      baseChanges: changes,
+    this.setState((prevState) => {
+      const changes = prevState.baseChanges;
+      changes.set(oldBaseId, newBaseId);
+      return {
+        baseChanges: changes,
+      };
     });
     this.props.onSelectBase(oldBaseId, newBaseId);
   };
@@ -182,15 +181,14 @@ class BaseChannelPage extends React.Component<BaseChannelProps, BaseChannelState
             comparator={Utils.sortByText}
             header={t("Systems")}
             cell={(channel: SsmAllowedBaseChannelsJson) => (
-              // eslint-disable-next-line jsx-a11y/anchor-is-valid
-              <a
-                href="#"
+              <button
+                className="modal-link"
                 data-bs-toggle="modal"
                 data-bs-target="#channelServersPopup"
                 onClick={() => this.showServersListPopUp(channel)}
               >
                 {channel.servers.length}
-              </a>
+              </button>
             )}
           />
           <Column
@@ -264,22 +262,22 @@ type SsmAllowedChildChannelsDto = {
   oldBaseChannel: SsmChannelDto;
   newBaseChannel?: SsmChannelDto;
   newBaseDefault: boolean;
-  servers: Array<SsmServerDto>;
-  childChannels: Array<SsmChannelDto>;
-  incompatibleServers: Array<SsmServerDto>;
+  servers: SsmServerDto[];
+  childChannels: SsmChannelDto[];
+  incompatibleServers: SsmServerDto[];
 };
 
 type ChildChannelProps = {
-  childChannels: Array<SsmAllowedChildChannelsDto>;
-  childChanges: Array<ChannelChangeDto>;
-  footer: React.ReactNode;
+  childChannels: SsmAllowedChildChannelsDto[];
+  childChanges: ChannelChangeDto[];
+  footer: ReactNode;
   // Here and below, strings and numbers are used interchangably for childId, if you work on this code, please choose one or the other
   onChangeChild: (allowedChannels: SsmAllowedChildChannelsDto, childId: string | number, action: string) => void;
 };
 
 type ChildChannelState = {
   selections: Map<string, string>;
-  popupServersList: Array<SsmServerDto>;
+  popupServersList: SsmServerDto[];
   popupServersChannelName: string;
   // channel dependencies: which child channels are required by a child channel?
   requiredChannels: Map<number | string, Set<number>>;
@@ -287,11 +285,11 @@ type ChildChannelState = {
   requiredByChannels: Map<number | string, Set<number>>;
 };
 
-class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelState> {
+class ChildChannelPage extends Component<ChildChannelProps, ChildChannelState> {
   constructor(props: ChildChannelProps) {
     super(props);
 
-    const selections: Map<string, string> = new Map();
+    const selections = new Map<string, string>();
     props.childChanges.forEach((change) => {
       change.childChannelActions.forEach((childAction, childId) =>
         selections.set(this.getChangeId(change, childId), childAction)
@@ -314,7 +312,7 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
       this.props.childChannels.flatMap((dto) => dto.childChannels.map((channel) => channel.id))
     );
     Network.post("/rhn/manager/api/admin/mandatoryChannels", childrenIds)
-      .then((response: JsonResult<Map<number, Array<number>>>) => {
+      .then((response: JsonResult<Map<number, number[]>>) => {
         const channelDeps = ChannelUtils.processChannelDependencies(response.data);
         this.setState({
           requiredChannels: channelDeps.requiredChannels,
@@ -351,9 +349,11 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
 
     // change the channel AND its dependencies
     [childId].concat(dependencies).forEach((channelId) => {
-      const allowedId = getAllowedChangeId(allowedChannels, channelId);
-      this.state.selections.set(allowedId, action);
-      this.setState({ selections: this.state.selections });
+      this.setState((prevState) => {
+        const allowedId = getAllowedChangeId(allowedChannels, channelId);
+        prevState.selections.set(allowedId, action);
+        return { selections: prevState.selections };
+      });
       this.props.onChangeChild(allowedChannels, channelId, action);
     });
   };
@@ -399,7 +399,7 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
     return recommendedChannels.length > 0 && recommendedNonSubscribeActions.length === 0;
   };
 
-  showServersListPopUp = (channelName: string, servers: Array<SsmServerDto>) => {
+  showServersListPopUp = (channelName: string, servers: SsmServerDto[]) => {
     this.setState({
       popupServersList: servers,
       popupServersChannelName: channelName,
@@ -438,9 +438,8 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
             <div className="col-md-4 text-right">
               <strong>
                 {allowed.servers && allowed.servers.length > 0 ? (
-                  // eslint-disable-next-line jsx-a11y/anchor-is-valid
-                  <a
-                    href="#"
+                  <button
+                    className="btn btn-tertiary"
                     data-bs-toggle="modal"
                     data-bs-target="#channelServersPopup"
                     onClick={() =>
@@ -451,12 +450,11 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
                     }
                   >
                     {allowed.servers.length} {t("system(s) to subscribe")}
-                  </a>
+                  </button>
                 ) : null}
                 {allowed.incompatibleServers && allowed.incompatibleServers.length > 0 ? (
-                  // eslint-disable-next-line jsx-a11y/anchor-is-valid
-                  <a
-                    href="#"
+                  <button
+                    className="btn btn-tertiary"
                     data-bs-toggle="modal"
                     data-bs-target="#channelServersPopup"
                     onClick={() =>
@@ -466,9 +464,9 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
                       )
                     }
                   >
-                    <i className="fa fa-exclamation-triangle fa-1-5x" aria-hidden="true"></i>
+                    <i className="fa fa-exclamation-triangle" aria-hidden="true"></i>
                     {allowed.incompatibleServers.length} {t("system(s) incompatible")}
-                  </a>
+                  </button>
                 ) : null}
               </strong>
             </div>
@@ -483,13 +481,12 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
                   </ChannelLink>{" "}
                   &nbsp;
                   {this.dependenciesTooltip(child.id) ? (
-                    // eslint-disable-next-line jsx-a11y/anchor-is-valid
-                    <a href="#">
+                    <span>
                       <i
                         className="fa fa-info-circle spacewalk-help-link"
                         title={this.dependenciesTooltip(child.id)}
                       ></i>
-                    </a>
+                    </span>
                   ) : null}
                   &nbsp;
                   {child.recommended ? (
@@ -570,21 +567,21 @@ class ChildChannelPage extends React.Component<ChildChannelProps, ChildChannelSt
 }
 
 type SummaryPageProps = {
-  allowedChanges: Array<SsmAllowedChildChannelsDto>;
-  finalChanges: Array<ChannelChangeDto>;
-  footer: React.ReactNode;
+  allowedChanges: SsmAllowedChildChannelsDto[];
+  finalChanges: ChannelChangeDto[];
+  footer: ReactNode;
   onChangeEarliest: (earliest: moment.Moment) => void;
   onChangeActionChain: (actionChain: ActionChain | null | undefined) => void;
 };
 
 type SummaryPageState = {
-  popupServersList: Array<SsmServerDto>;
+  popupServersList: SsmServerDto[];
   popupServersChannelName: string;
   earliest: moment.Moment;
   actionChain: ActionChain | null | undefined;
 };
 
-class SummaryPage extends React.Component<SummaryPageProps, SummaryPageState> {
+class SummaryPage extends Component<SummaryPageProps, SummaryPageState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -600,7 +597,7 @@ class SummaryPage extends React.Component<SummaryPageProps, SummaryPageState> {
     this.props.onChangeEarliest(value);
   };
 
-  showServersListPopUp = (channelName: string, servers: Array<SsmServerDto>) => {
+  showServersListPopUp = (channelName: string, servers: SsmServerDto[]) => {
     this.setState({
       popupServersList: servers,
       popupServersChannelName: channelName,
@@ -668,27 +665,25 @@ class SummaryPage extends React.Component<SummaryPageProps, SummaryPageState> {
             <div className="col-md-4 text-right">
               <strong>
                 {allowed.servers && allowed.servers.length > 0 ? (
-                  // eslint-disable-next-line jsx-a11y/anchor-is-valid
-                  <a
-                    href="#"
+                  <button
+                    className="btn btn-tertiary"
                     data-bs-toggle="modal"
                     data-bs-target="#channelServersPopup"
                     onClick={() => this.showServersListPopUp(newBaseName, allowed.servers)}
                   >
                     {allowed.servers.length} {t("system(s) to subscribe")}
-                  </a>
+                  </button>
                 ) : null}
                 {allowed.incompatibleServers && allowed.incompatibleServers.length > 0 ? (
-                  // eslint-disable-next-line jsx-a11y/anchor-is-valid
-                  <a
-                    href="#"
+                  <button
+                    className="btn btn-tertiary"
                     data-bs-toggle="modal"
                     data-bs-target="#channelServersPopup"
                     onClick={() => this.showServersListPopUp(newBaseName, allowed.incompatibleServers)}
                   >
                     <i className="fa fa-exclamation-triangle fa-1-5x" aria-hidden="true"></i>
                     {allowed.incompatibleServers.length} {t("system(s) incompatible")}
-                  </a>
+                  </button>
                 ) : null}
               </strong>
             </div>
@@ -751,11 +746,11 @@ class SummaryPage extends React.Component<SummaryPageProps, SummaryPageState> {
 }
 
 type ResultPageProps = {
-  results: Array<ScheduleChannelChangesResultDto>;
-  footer: React.ReactNode;
+  results: ScheduleChannelChangesResultDto[];
+  footer: ReactNode;
 };
 
-class ResultPage extends React.Component<ResultPageProps> {
+class ResultPage extends Component<ResultPageProps> {
   render() {
     return (
       <BootstrapPanel
@@ -809,8 +804,8 @@ class ResultPage extends React.Component<ResultPageProps> {
 
 type SsmAllowedBaseChannelsJson = {
   base: SsmChannelDto;
-  allowedBaseChannels: Array<SsmChannelDto>;
-  servers: Array<SsmServerDto>;
+  allowedBaseChannels: SsmChannelDto[];
+  servers: SsmServerDto[];
 };
 
 type SsmBaseChannelChangesJson_Change = {
@@ -819,22 +814,22 @@ type SsmBaseChannelChangesJson_Change = {
 };
 
 type SsmBaseChannelChangesJson = {
-  changes: Array<SsmBaseChannelChangesJson_Change>;
+  changes: SsmBaseChannelChangesJson_Change[];
 };
 
-type SsmChannelProps = {};
+type SsmChannelProps = Record<never, never>;
 
 type SsmChannelState = {
-  groupedChildChannels: Array<SsmAllowedChildChannelsDto>;
-  allowedChanges: Array<SsmAllowedChildChannelsDto>;
-  allowedBaseChannels: Array<SsmAllowedBaseChannelsJson>;
-  messages: Array<any>;
+  groupedChildChannels: SsmAllowedChildChannelsDto[];
+  allowedChanges: SsmAllowedChildChannelsDto[];
+  allowedBaseChannels: SsmAllowedBaseChannelsJson[];
+  messages: any[];
   baseChanges: SsmBaseChannelChangesJson;
-  finalChanges: Array<ChannelChangeDto>;
+  finalChanges: ChannelChangeDto[];
   earliest: moment.Moment;
   actionChain: ActionChain | null | undefined;
   page: number;
-  scheduleResults: Array<ScheduleChannelChangesResultDto>;
+  scheduleResults: ScheduleChannelChangesResultDto[];
 };
 
 type ChannelChangeDto = {
@@ -846,7 +841,7 @@ type ChannelChangeDto = {
 
 type SsmScheduleChannelChangesJson = {
   earliest: moment.Moment;
-  changes: Array<ChannelChangeDto>;
+  changes: ChannelChangeDto[];
   actionChain?: any;
 };
 
@@ -858,12 +853,12 @@ type ScheduleChannelChangesResultDto = {
 
 type SsmScheduleChannelChangesResultJson = {
   actionChainId: number;
-  result: Array<ScheduleChannelChangesResultDto>;
+  result: ScheduleChannelChangesResultDto[];
 };
 
 type FooterProps = {
   page: number;
-  children?: React.ReactNode;
+  children?: ReactNode;
 };
 
 const Footer = (props: FooterProps) => (
@@ -875,7 +870,7 @@ const Footer = (props: FooterProps) => (
   </span>
 );
 
-class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
+class SsmChannelPage extends Component<SsmChannelProps, SsmChannelState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -894,7 +889,7 @@ class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
 
   componentDidMount() {
     Network.get(`/rhn/manager/systems/ssm/channels/bases`)
-      .then((data: JsonResult<Array<SsmAllowedBaseChannelsJson>>) => {
+      .then((data: JsonResult<SsmAllowedBaseChannelsJson[]>) => {
         this.setState({
           allowedBaseChannels: data.data,
           baseChanges: {
@@ -919,27 +914,29 @@ class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
     if (jqXHR.responseJSON.data) {
       const anySuccess = jqXHR.responseJSON.data.some((dto) => dto.actionId && !dto.errorMessage);
       if (anySuccess) {
-        msg.concat(MessagesUtils.warning(t("Some changes scheduled successfully.")));
+        msg.push(...MessagesUtils.warning(t("Some changes scheduled successfully.")));
       }
     }
 
-    this.setState({ messages: this.state.messages.concat(msg) });
+    this.setState((prevState) => ({ messages: prevState.messages.concat(msg) }));
   };
 
   onChangeBase = (oldBaseId: string, newBaseId: string) => {
-    let change = this.state.baseChanges.changes.find((e) => DEPRECATED_unsafeEquals(e.oldBaseId, oldBaseId));
-    if (!change) {
-      change = {
-        oldBaseId: oldBaseId,
-        newBaseId: newBaseId,
-      };
-      this.state.baseChanges.changes.push(change);
-    } else {
-      change.newBaseId = newBaseId;
-    }
+    this.setState((prevState) => {
+      let change = prevState.baseChanges.changes.find((e) => DEPRECATED_unsafeEquals(e.oldBaseId, oldBaseId));
+      if (!change) {
+        change = {
+          oldBaseId: oldBaseId,
+          newBaseId: newBaseId,
+        };
+        prevState.baseChanges.changes.push(change);
+      } else {
+        change.newBaseId = newBaseId;
+      }
 
-    this.setState({
-      baseChanges: this.state.baseChanges,
+      return {
+        baseChanges: prevState.baseChanges,
+      };
     });
   };
 
@@ -958,15 +955,15 @@ class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
 
   onGotoChildChannels = () => {
     return Network.post("/rhn/manager/systems/ssm/channels/allowed-changes", this.state.baseChanges)
-      .then((data: JsonResult<Array<SsmAllowedChildChannelsDto>>) => {
+      .then((data: JsonResult<SsmAllowedChildChannelsDto[]>) => {
         // group the allowed changes by the new base in order to show child channels only once
-        const groupByNewBase: Map<string, SsmAllowedChildChannelsDto> = new Map();
-        const finalChanges: Array<ChannelChangeDto> = [];
+        const groupByNewBase = new Map<string, SsmAllowedChildChannelsDto>();
+        const finalChanges: ChannelChangeDto[] = [];
         data.data.forEach((e: SsmAllowedChildChannelsDto) => {
           // sort child channels by name to have a consisten order in the UI
           e.childChannels.sort((a, b) => a.name.localeCompare(b.name));
 
-          let newBaseId = !e.newBaseChannel ? "nonewbase" : e.newBaseChannel.id;
+          const newBaseId = !e.newBaseChannel ? "nonewbase" : e.newBaseChannel.id;
 
           let allowedChildren: SsmAllowedChildChannelsDto | null | undefined = groupByNewBase.get(newBaseId);
           if (!allowedChildren) {
@@ -1042,30 +1039,32 @@ class SsmChannelPage extends React.Component<SsmChannelProps, SsmChannelState> {
     };
     return Network.post("/rhn/manager/systems/ssm/channels", req)
       .then((data: JsonResult<SsmScheduleChannelChangesResultJson>) => {
-        const msg = MessagesUtils.info(
-          this.state.actionChain ? (
-            <span>
-              {t("Action has been successfully added to the Action Chain ")}
-              <ActionChainLink id={data.data.actionChainId}>
-                {this.state.actionChain ? this.state.actionChain.text : ""}
-              </ActionChainLink>
-              .
-            </span>
-          ) : (
-            <span>{t("Channel changes scheduled.")}</span>
-          )
-        );
-        this.setState({
-          messages: msg,
-          scheduleResults: data.data.result,
-          page: 3,
+        this.setState((prevState) => {
+          const msg = MessagesUtils.info(
+            prevState.actionChain ? (
+              <span>
+                {t("Action has been successfully added to the Action Chain ")}
+                <ActionChainLink id={data.data.actionChainId}>
+                  {prevState.actionChain ? prevState.actionChain.text : ""}
+                </ActionChainLink>
+                .
+              </span>
+            ) : (
+              <span>{t("Channel changes scheduled.")}</span>
+            )
+          );
+          return {
+            messages: msg,
+            scheduleResults: data.data.result,
+            page: 3,
+          };
         });
       })
       .catch(this.handleResponseError);
   };
 
   render() {
-    let content: React.ReactNode;
+    let content: ReactNode;
     if (DEPRECATED_unsafeEquals(this.state.page, 0)) {
       content = (
         <BaseChannelPage

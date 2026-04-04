@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import SpaRenderer from "core/spa/spa-renderer";
 
 import { ConfigChannels } from "components/config-channels";
@@ -7,7 +5,7 @@ import { Utils as MessagesUtils } from "components/messages/messages";
 
 import Network from "utils/network";
 
-// See java/code/src/com/suse/manager/webui/templates/yourorg/custom.jade
+// See java/core/src/main/resources/com/suse/manager/webui/templates/yourorg/custom.jade
 declare global {
   interface Window {
     orgId?: any;
@@ -23,7 +21,7 @@ function applyRequest(component) {
     id: window.orgId,
     type: "ORG",
     states: ["custom_org"],
-  }).then((data) => {
+  }).then(() => {
     component.setState({
       messages: MessagesUtils.info(
         t("Applying the config channels has been scheduled for each minion server in this organization")

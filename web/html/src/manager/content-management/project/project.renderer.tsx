@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import { RolesProvider } from "core/auth/roles-context";
 import SpaRenderer from "core/spa/spa-renderer";
 

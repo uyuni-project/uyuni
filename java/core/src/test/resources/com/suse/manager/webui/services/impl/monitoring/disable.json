@@ -1,0 +1,132 @@
+{
+    "local": {
+        "service_|-node_exporter_service_|-prometheus-node_exporter_|-dead": {
+            "name": "prometheus-node_exporter",
+            "changes": {
+                "prometheus-node_exporter": true
+            },
+            "result": true,
+            "comment": "Service prometheus-node_exporter has been disabled, and is dead",
+            "__sls__": "srvmonitoring.disable",
+            "__run_num__": 0,
+            "start_time": "15:41:29.204182",
+            "duration": 570.393,
+            "__id__": "node_exporter_service"
+        },
+        "service_|-postgres_exporter_service_|-prometheus-postgres_exporter_|-dead": {
+            "name": "prometheus-postgres_exporter",
+            "changes": {
+                "prometheus-postgres_exporter": true
+            },
+            "result": true,
+            "comment": "Service prometheus-postgres_exporter has been disabled, and is dead",
+            "__sls__": "srvmonitoring.disable",
+            "__run_num__": 1,
+            "start_time": "15:41:29.774981",
+            "duration": 632.209,
+            "__id__": "postgres_exporter_service"
+        },
+        "file_|-jmx_tomcat_config_|-/etc/tomcat/conf.d/tomcat_jmx.conf_|-absent": {
+            "name": "/etc/tomcat/conf.d/tomcat_jmx.conf",
+            "changes": {
+                "removed": "/etc/tomcat/conf.d/tomcat_jmx.conf"
+            },
+            "result": true,
+            "comment": "Removed file /etc/tomcat/conf.d/tomcat_jmx.conf",
+            "__sls__": "srvmonitoring.disable",
+            "__run_num__": 2,
+            "start_time": "15:41:30.412150",
+            "duration": 1.791,
+            "__id__": "jmx_tomcat_config"
+        },
+        "file_|-jmx_taskomatic_config_|-/etc/rhn/taskomatic.conf.d/taskomatic_jmx.conf_|-absent": {
+            "name": "/etc/rhn/taskomatic.conf.d/taskomatic_jmx.conf",
+            "changes": {
+                "removed": "/etc/rhn/taskomatic.conf.d/taskomatic_jmx.conf"
+            },
+            "result": true,
+            "comment": "Removed file /etc/rhn/taskomatic.conf.d/taskomatic_jmx.conf",
+            "__sls__": "srvmonitoring.disable",
+            "__run_num__": 4,
+            "start_time": "15:41:30.844762",
+            "duration": 1.905,
+            "__id__": "jmx_taskomatic_config"
+        },
+        "file_|-legacy_tomcat_sysconfig_jmx_cleanup_|-/etc/sysconfig/tomcat/systemd/jmx.conf_|-absent": {
+            "name": "/etc/sysconfig/tomcat/systemd/jmx.conf",
+            "changes": {},
+            "result": true,
+            "comment": "File /etc/sysconfig/tomcat/systemd/jmx.conf is not present",
+            "__sls__": "srvmonitoring.disable",
+            "__run_num__": 5,
+            "start_time": "15:41:30.850000",
+            "duration": 2.000,
+            "__id__": "legacy_tomcat_sysconfig_jmx_cleanup"
+        },
+        "file_|-legacy_tomcat_systemd_dropin_jmx_cleanup_|-/usr/lib/systemd/system/tomcat.service.d/jmx.conf_|-absent": {
+            "name": "/usr/lib/systemd/system/tomcat.service.d/jmx.conf",
+            "changes": {},
+            "result": true,
+            "comment": "File /usr/lib/systemd/system/tomcat.service.d/jmx.conf is not present",
+            "__sls__": "srvmonitoring.disable",
+            "__run_num__": 6,
+            "start_time": "15:41:30.860000",
+            "duration": 2.000,
+            "__id__": "legacy_tomcat_systemd_dropin_jmx_cleanup"
+        },
+        "file_|-legacy_taskomatic_sysconfig_jmx_cleanup_|-/etc/sysconfig/taskomatic/systemd/jmx.conf_|-absent": {
+            "name": "/etc/sysconfig/taskomatic/systemd/jmx.conf",
+            "changes": {},
+            "result": true,
+            "comment": "File /etc/sysconfig/taskomatic/systemd/jmx.conf is not present",
+            "__sls__": "srvmonitoring.disable",
+            "__run_num__": 7,
+            "start_time": "15:41:30.870000",
+            "duration": 2.000,
+            "__id__": "legacy_taskomatic_sysconfig_jmx_cleanup"
+        },
+        "file_|-legacy_taskomatic_systemd_dropin_jmx_cleanup_|-/usr/lib/systemd/system/taskomatic.service.d/jmx.conf_|-absent": {
+            "name": "/usr/lib/systemd/system/taskomatic.service.d/jmx.conf",
+            "changes": {},
+            "result": true,
+            "comment": "File /usr/lib/systemd/system/taskomatic.service.d/jmx.conf is not present",
+            "__sls__": "srvmonitoring.disable",
+            "__run_num__": 8,
+            "start_time": "15:41:30.880000",
+            "duration": 2.000,
+            "__id__": "legacy_taskomatic_systemd_dropin_jmx_cleanup"
+        },
+        "cmd_|-mgr_enable_prometheus_self_monitoring_|-/usr/bin/grep -q '^prometheus_monitoring_enabled.*=.*' /etc/rhn/rhn.conf && sed -i 's/^prometheus_monitoring_enabled.*/prometheus_monitoring_enabled = 0/' /etc/rhn/rhn.conf || echo 'prometheus_monitoring_enabled = 0' >> /etc/rhn/rhn.conf_|-run": {
+            "name": "/usr/bin/grep -q '^prometheus_monitoring_enabled.*=.*' /etc/rhn/rhn.conf && sed -i 's/^prometheus_monitoring_enabled.*/prometheus_monitoring_enabled = 0/' /etc/rhn/rhn.conf || echo 'prometheus_monitoring_enabled = 0' >> /etc/rhn/rhn.conf",
+            "changes": {
+                "pid": 27137,
+                "retcode": 0,
+                "stdout": "",
+                "stderr": ""
+            },
+            "result": true,
+            "comment": "Command \"/usr/bin/grep -q '^prometheus_monitoring_enabled.*=.*' /etc/rhn/rhn.conf && sed -i 's/^prometheus_monitoring_enabled.*/prometheus_monitoring_enabled = 0/' /etc/rhn/rhn.conf || echo 'prometheus_monitoring_enabled = 0' >> /etc/rhn/rhn.conf\" run",
+            "__sls__": "srvmonitoring.disable",
+            "__run_num__": 6,
+            "start_time": "15:41:31.294412",
+            "duration": 16.521,
+            "__id__": "mgr_enable_prometheus_self_monitoring"
+        },
+        "cmd_|-mgr_is_prometheus_self_monitoring_disabled_|-/usr/bin/grep -qF 'prometheus_monitoring_enabled = 0' /etc/rhn/rhn.conf_|-run": {
+            "name": "/usr/bin/grep -qF 'prometheus_monitoring_enabled = 0' /etc/rhn/rhn.conf",
+            "changes": {
+                "pid": 27140,
+                "retcode": 0,
+                "stdout": "",
+                "stderr": ""
+            },
+            "result": true,
+            "comment": "Command \"/usr/bin/grep -qF 'prometheus_monitoring_enabled = 0' /etc/rhn/rhn.conf\" run",
+            "__sls__": "srvmonitoring.disable",
+            "__run_num__": 7,
+            "start_time": "15:41:31.311538",
+            "duration": 13.529,
+            "__id__": "mgr_is_prometheus_self_monitoring_disabled"
+        }
+    }
+}

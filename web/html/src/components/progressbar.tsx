@@ -1,5 +1,3 @@
-import * as React from "react";
-
 type Props = {
   width?: string;
   progress: number;

@@ -1,4 +1,4 @@
-import React from "react";
+import { Fragment } from "react";
 
 import ReactDOMServer from "react-dom/server";
 
@@ -9,8 +9,8 @@ describe("stringToReact", () => {
     a: string | JSX.Element | (string | JSX.Element)[],
     b: string | JSX.Element | (string | JSX.Element)[]
   ) => {
-    const aResult = ReactDOMServer.renderToStaticMarkup(<React.Fragment key="a">{a}</React.Fragment>);
-    const bResult = ReactDOMServer.renderToStaticMarkup(<React.Fragment key="b">{b}</React.Fragment>);
+    const aResult = ReactDOMServer.renderToStaticMarkup(<Fragment key="a">{a}</Fragment>);
+    const bResult = ReactDOMServer.renderToStaticMarkup(<Fragment key="b">{b}</Fragment>);
 
     return expect(aResult).toEqual(bResult);
   };
@@ -46,7 +46,7 @@ describe("stringToReact", () => {
   test("bracketed email matcher doesn't break default sanitizer behavior (bsc#1211469)", () => {
     expectRenderToEqual(
       stringToReact("<img src=x onerror=alert(1)//>"),
-      // eslint-disable-next-line jsx-a11y/alt-text
+
       <img src="x" />
     );
 

@@ -98,7 +98,6 @@ INSERT INTO access.accessGroupNamespace
     ON CONFLICT DO NOTHING;
 
 -- Namespace: software.details.*
--- Namespace: software.manage.*
 -- Namespace: software.distro
 -- Namespace: software.list
 -- Namespace: software.search
@@ -107,12 +106,12 @@ INSERT INTO access.accessGroupNamespace
     SELECT ag.id, ns.id
     FROM access.accessGroup ag, access.namespace ns
     WHERE (ns.namespace LIKE 'software.details.%' OR
-        ns.namespace LIKE 'software.manage.%' OR
         ns.namespace = 'software.distro' OR
         ns.namespace = 'software.list' OR
         ns.namespace = 'software.search')
     ON CONFLICT DO NOTHING;
 
+-- Namespace: software.manage.*
 -- Namespace: patches.manage.*
 -- Namespace: patches.clone
 -- Namespace: users.channels
@@ -121,7 +120,8 @@ INSERT INTO access.accessGroupNamespace
     SELECT ag.id, ns.id
     FROM access.accessGroup ag, access.namespace ns
     WHERE ag.label = 'channel_admin'
-    AND (ns.namespace LIKE 'patches.manage.%' OR
+    AND (ns.namespace LIKE 'software.manage.%' OR
+        ns.namespace LIKE 'patches.manage.%' OR
         ns.namespace = 'patches.clone' OR
         ns.namespace = 'users.channels')
     ON CONFLICT DO NOTHING;

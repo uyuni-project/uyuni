@@ -1,0 +1,235 @@
+import { useRef, useState } from "react";
+
+import AccessGroupTabContainer from "manager/admin/access-control/access-group-tab-container";
+
+import withPageWrapper from "components/general/with-page-wrapper";
+import { Messages, MessageType, Utils as MessagesUtils } from "components/messages/messages";
+import { TopPanel } from "components/panels/TopPanel";
+import { StepsProgressBar } from "components/steps-progress-bar";
+
+import Network from "utils/network";
+
+import AccessGroupDetails, { AccessGroupDetailsHandle } from "./access-group-details";
+import AccessGroupPermissions from "./access-group-permissions";
+import AccessGroupReview from "./access-group-review";
+import AccessGroupUsers from "./access-group-user";
+
+type Permission = {
+  id: number;
+  namespace: string;
+  description: string;
+  accessMode: string;
+  view: boolean;
+  modify: boolean;
+};
+
+type User = { id: number; username: string; email: string; orgId: string };
+
+type AccessGroupType<P> = {
+  id: number | undefined;
+  name: string;
+  description: string;
+  orgId: number | undefined;
+  orgName: string;
+  accessGroups: string[];
+  permissions: P;
+  users: User[];
+  errors: any;
+  permissionsModified: boolean;
+};
+
+export type AccessGroupPropsType = AccessGroupType<Permission[]>;
+
+export type AccessGroupState = AccessGroupType<Record<string, Permission>>;
+
+type AccessGroupProps = {
+  accessGroup?: AccessGroupPropsType;
+};
+
+const defaultAccessGroupState: AccessGroupState = {
+  id: undefined,
+  name: "",
+  description: "",
+  orgId: undefined,
+  orgName: "",
+  accessGroups: [],
+  permissions: {},
+  users: [],
+  errors: {},
+  permissionsModified: false,
+};
+
+const parsePermissions = (accessGroupProps: AccessGroupPropsType): AccessGroupState => {
+  const newPermissions: AccessGroupState["permissions"] = accessGroupProps.permissions.reduce(
+    (accumulator, currentPermission) => {
+      accumulator[currentPermission.namespace] = currentPermission;
+      return accumulator;
+    },
+    {}
+  );
+
+  return {
+    ...accessGroupProps,
+    permissions: newPermissions,
+    permissionsModified: false,
+  };
+};
+
+const LIST_PAGE_URL = "/rhn/manager/admin/access-control";
+
+const AccessGroup = (props: AccessGroupProps) => {
+  // TODO: Handle displaying success messages on create / update on access-group-list
+  const [messages, setMessages] = useState<MessageType[]>([]);
+  const [accessGroupState, setAccessGroupState] = useState<AccessGroupState>(
+    props.accessGroup ? parsePermissions(props.accessGroup) : defaultAccessGroupState
+  );
+
+  const detailsTabRef = useRef<AccessGroupDetailsHandle>(null);
+
+  const validateDetailsTab = async () => {
+    if (detailsTabRef.current) {
+      return await detailsTabRef.current.validate();
+    }
+    return false;
+  };
+
+  const handleFormChange = (newAccessGroupState) => {
+    setAccessGroupState((prevState) => {
+      const prevAccessGroups = Array.isArray(prevState.accessGroups) ? prevState.accessGroups : [];
+
+      const nextAccessGroups = Array.isArray(newAccessGroupState.accessGroups) ? newAccessGroupState.accessGroups : [];
+
+      const agChanged = prevAccessGroups.join(",") !== nextAccessGroups.join(",");
+      return {
+        ...prevState,
+        name: newAccessGroupState.name,
+        description: newAccessGroupState.description,
+        orgId: newAccessGroupState.orgId,
+        orgName: newAccessGroupState.orgName,
+        users:
+          prevState.orgId !== newAccessGroupState.orgId || prevState.users.length === 0
+            ? []
+            : newAccessGroupState.users,
+        accessGroups: nextAccessGroups,
+        ...(agChanged && {
+          permissions: {},
+          permissionsModified: false,
+        }),
+      };
+    });
+  };
+
+  const handlePermissionsChange = (changes: Record<string, AccessGroupState["permissions"][0] | undefined>) => {
+    setAccessGroupState((prevState) => {
+      const newPermissions = { ...prevState.permissions };
+
+      for (const namespace in changes) {
+        const change = changes[namespace];
+        if (change) {
+          newPermissions[namespace] = change;
+        } else {
+          delete newPermissions[namespace];
+        }
+      }
+
+      return {
+        ...prevState,
+        permissions: newPermissions,
+        permissionsModified: true,
+      };
+    });
+  };
+
+  const handleUsers = (user, action) => {
+    setAccessGroupState((prevState) => {
+      if (action === "add") {
+        return {
+          ...prevState,
+          users: [...prevState.users, user], // Add user
+        };
+      } else if (action === "remove") {
+        return {
+          ...prevState,
+          users: prevState.users.filter((u) => u.id !== user.id), // Remove user
+        };
+      }
+      return prevState;
+    });
+  };
+
+  const handleSaveAccessGroup = () => {
+    const permissions = Object.values(accessGroupState.permissions).map((permission) => ({
+      id: permission.id,
+      namespace: permission.namespace,
+      accessMode: permission.accessMode,
+      view: permission.view ?? false,
+      modify: permission.modify ?? false,
+    }));
+    const payload = {
+      ...accessGroupState,
+      permissions: permissions,
+    };
+
+    Network.post("/rhn/manager/api/admin/access-control/access-group/save", payload)
+      .then(() => {
+        setMessages(MessagesUtils.info(t("Access Group successfully created.")));
+        window.pageRenderers?.spaengine?.navigate?.(LIST_PAGE_URL);
+      })
+      .catch((error) => setMessages(Network.responseErrorMessage(error)));
+  };
+
+  const isEditMode = !!props.accessGroup?.id;
+
+  const steps = [
+    {
+      title: t("Details"),
+      content: (
+        <AccessGroupDetails
+          ref={detailsTabRef}
+          state={accessGroupState}
+          onChange={handleFormChange}
+          errors={accessGroupState.errors}
+        />
+      ),
+      validate: validateDetailsTab,
+    },
+    {
+      title: t("Namespaces & Permissions"),
+      content: (
+        <AccessGroupPermissions
+          state={accessGroupState}
+          onChange={handlePermissionsChange}
+          errors={accessGroupState.errors}
+        />
+      ),
+      validate: null,
+    },
+    {
+      title: t("Users"),
+      content: <AccessGroupUsers state={accessGroupState} onChange={handleUsers} errors={accessGroupState.errors} />,
+      validate: null,
+    },
+    !isEditMode && {
+      title: t("Review"),
+      content: <AccessGroupReview state={accessGroupState} />,
+      validate: null,
+    },
+  ].filter(Boolean);
+  return (
+    <>
+      {props.accessGroup && props.accessGroup.id ? (
+        <TopPanel title={t("Access Group Details")}>
+          <Messages items={messages} />
+          <AccessGroupTabContainer tabs={steps} onUpdate={handleSaveAccessGroup} onCancelRedirectTo={LIST_PAGE_URL} />
+        </TopPanel>
+      ) : (
+        <TopPanel title={t("Create: Access Group")}>
+          <Messages items={messages} />
+          <StepsProgressBar steps={steps} onCreate={handleSaveAccessGroup} onCancel={LIST_PAGE_URL} />
+        </TopPanel>
+      )}
+    </>
+  );
+};
+
+export default withPageWrapper<AccessGroupProps>(AccessGroup);

@@ -1,8 +1,8 @@
-import * as React from "react";
+import type { ReactNode } from "react";
 
 type Props = {
   className?: string;
-  children: React.ReactNode;
+  children: ReactNode;
 };
 
 function PanelRow(props: Props) {

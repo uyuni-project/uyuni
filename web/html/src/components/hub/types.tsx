@@ -47,7 +47,7 @@ export type PeripheralListData = {
   nSyncedOrgs: number;
 };
 
-export interface IssServerDetailData {
+export type IssServerDetailData = {
   id: number;
   role: IssRole;
   fqdn: string;
@@ -55,16 +55,16 @@ export interface IssServerDetailData {
   sccUsername: string;
   created: Date;
   modified: Date;
-}
+};
 
-export interface HubDetailData extends IssServerDetailData {
+export type HubDetailData = {
   gpgKey: string | null;
-}
+} & IssServerDetailData;
 
-export interface PeripheralDetailData extends IssServerDetailData {
+export type PeripheralDetailData = {
   nSyncedChannels: number;
   nSyncedOrgs: number;
-}
+} & IssServerDetailData;
 
 export enum MigrationVersion {
   v1 = "v1",
@@ -99,7 +99,7 @@ export type MigrationMessage = {
 
 export type MigrationResult = {
   resultCode: MigrationResultCode;
-  messageSet: Array<MigrationMessage>;
+  messageSet: MigrationMessage[];
 };
 
 export type Org = {
@@ -108,32 +108,22 @@ export type Org = {
 };
 
 export type Channel = {
-  channelId: number;
-  channelName: string;
-  channelLabel: string;
-  channelArch: string;
-  channelOrg: Org | null;
-  selectedPeripheralOrg: Org | null;
-  parentChannelLabel: string | null; // if null, this is a root channel
+  id: number;
+  name: string;
+  label: string;
+  architecture: string;
+  hubOrg: Org | null;
+  peripheralOrg: Org | null;
+  parentId: number | null; // if null, this is a root channel
   children: Channel[]; // for easy hierarchical references
+  clones: Channel[];
   strictOrg: boolean;
   synced: boolean;
-};
-
-export type FlatChannel = {
-  channelId: number;
-  channelName: string;
-  channelLabel: string;
-  channelArch: string;
-  channelOrg: Org | null;
-  selectedPeripheralOrg: Org | null;
-  parentChannelLabel: string | null; // if null, this is a root channel
-  childrenLabels: string[]; // for easy lookup if needed
-  strictOrg: boolean;
-  synced: boolean; // no need for another class that tells us if the channel is synced or not
 };
 
 export type ChannelSyncProps = {
   peripheralOrgs: Org[];
   channels: Channel[];
+  mandatoryMap: [number, number[]][];
+  reversedMandatoryMap: [number, number[]][];
 };

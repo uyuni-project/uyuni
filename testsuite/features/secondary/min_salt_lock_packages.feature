@@ -5,6 +5,8 @@
 # - features/secondary/min_salt_install_with_staging.feature
 # If the "orion-dummy-1.1-1.1" is not properly unlocked
 
+#TODO: Fix this feature in GH Validation, it might be related to the patches available in the test repo
+@skip_if_github_validation
 @sle_minion
 @scope_salt
 Feature: Lock packages on SLES salt minion

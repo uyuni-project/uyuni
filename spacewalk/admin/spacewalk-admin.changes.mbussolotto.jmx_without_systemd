@@ -1,0 +1,1 @@
+- Allow proper restart for server container using a drop-in file.

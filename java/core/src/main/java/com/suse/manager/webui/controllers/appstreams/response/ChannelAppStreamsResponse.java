@@ -1,0 +1,66 @@
+/*
+ * Copyright (c) 2024 SUSE LLC
+ *
+ * This software is licensed to you under the GNU General Public License,
+ * version 2 (GPLv2). There is NO WARRANTY for this software, express or
+ * implied, including the implied warranties of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
+ * along with this software; if not, see
+ * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
+ *
+ * Red Hat trademarks are not licensed under GPLv2. No permission is
+ * granted to use or replicate Red Hat trademarks that are incorporated
+ * in this software or its documentation.
+ */
+package com.suse.manager.webui.controllers.appstreams.response;
+
+import com.redhat.rhn.domain.channel.AppStream;
+import com.redhat.rhn.domain.channel.Channel;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.BiPredicate;
+
+public class ChannelAppStreamsResponse {
+
+    /**
+     * Constructs a ChannelAppStreamsResponse object based on the provided parameters.
+     *
+     * @param channelIn               The channel that the AppStreams belong to.
+     * @param appStreamsIn            The set of AppStream objects associated with the channel.
+     * @param appStreamEnabledChecker The object used to check module enablement.
+     */
+    public ChannelAppStreamsResponse(
+        Channel channelIn,
+        List<AppStream> appStreamsIn,
+        BiPredicate<String, String> appStreamEnabledChecker
+    ) {
+        channel = new ChannelAppStreamsJson(channelIn);
+        appStreams = new HashMap<>();
+        appStreamsIn.forEach(it -> {
+            var enabled = appStreamEnabledChecker.test(it.getName(), it.getStream());
+            var module = new AppStreamModuleResponse(it, enabled);
+            if (appStreams.containsKey(it.getName())) {
+                appStreams.get(it.getName()).add(module);
+            }
+            else {
+                appStreams.put(it.getName(), new HashSet<>(List.of(module)));
+            }
+        });
+    }
+
+    private final ChannelAppStreamsJson channel;
+    private final Map<String, Set<AppStreamModuleResponse>> appStreams;
+
+    public ChannelAppStreamsJson getChannel() {
+        return channel;
+    }
+
+    public Map<String, Set<AppStreamModuleResponse>> getAppStreams() {
+        return appStreams;
+    }
+
+}

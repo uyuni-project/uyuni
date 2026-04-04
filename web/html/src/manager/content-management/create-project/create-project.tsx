@@ -1,6 +1,3 @@
-import { hot } from "react-hot-loader/root";
-
-import * as React from "react";
 import { useState } from "react";
 
 import { isOrgAdmin } from "core/auth/auth.utils";
@@ -61,4 +58,4 @@ const CreateProject = () => {
   );
 };
 
-export default hot(withPageWrapper<{}>(CreateProject));
+export default withPageWrapper(CreateProject);

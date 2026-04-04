@@ -1,0 +1,306 @@
+diff --git a/java/core/src/test/java/com/redhat/rhn/manager/channel/test/ChannelManagerTest.java b/java/core/src/test/java/com/redhat/rhn/manager/channel/test/ChannelManagerTest.java
+index b42a178ac9b..b413a722642 100644
+--- a/java/core/src/test/java/com/redhat/rhn/manager/channel/test/ChannelManagerTest.java
++++ b/java/core/src/test/java/com/redhat/rhn/manager/channel/test/ChannelManagerTest.java
+@@ -460,7 +460,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
+         // load official product data as test data into the DB
+         s.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
+         SUSEProductTestUtils.createVendorSUSEProductEnvironment(user,
+-                "/com/redhat/rhn/manager/content/test/data4", true);
++                "/com/redhat/rhn/manager/content/data4", true);
+         TestUtils.flushAndClearSession();
+ 
+         // "mirror" the products and mandatory base channels
+diff --git a/java/core/src/test/java/com/redhat/rhn/manager/content/test/ContentSyncManagerTest.java b/java/core/src/test/java/com/redhat/rhn/manager/content/test/ContentSyncManagerTest.java
+index fe422cbc377..7149cfe0925 100644
+--- a/java/core/src/test/java/com/redhat/rhn/manager/content/test/ContentSyncManagerTest.java
++++ b/java/core/src/test/java/com/redhat/rhn/manager/content/test/ContentSyncManagerTest.java
+@@ -130,7 +130,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+     private static final Logger LOGGER = LogManager.getLogger(ContentSyncManagerTest.class);
+ 
+     // Files we read
+-    private static final String JARPATH = "/com/redhat/rhn/manager/content/test/";
++    private static final String JARPATH = "/com/redhat/rhn/manager/content/";
+ 
+     private static final String SUBSCRIPTIONS_JSON = "organizations_subscriptions.json";
+     private static final String ORDERS_JSON = "organizations_orders.json";
+@@ -269,7 +269,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+                 }
+             }
+             SUSEProductTestUtils.createVendorSUSEProductEnvironment(
+-                    user, "/com/redhat/rhn/manager/content/test", false);
++                    user, "/com/redhat/rhn/manager/content", false);
+             TestUtils.flushAndClearSession();
+             subtempFile.delete();
+             ordertempFile.delete();
+@@ -302,7 +302,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
+                 .create();
+         InputStreamReader inputStreamReader3 = new InputStreamReader(
+-                ContentSyncManager.class.getResourceAsStream("/com/redhat/rhn/manager/content/test/repositories.json"));
++                ContentSyncManager.class.getResourceAsStream("/com/redhat/rhn/manager/content/repositories.json"));
+         List<SCCRepositoryJson> repositories = gson.fromJson(
+                 inputStreamReader3, new TypeToken<List<SCCRepositoryJson>>() { }.getType());
+ 
+@@ -333,7 +333,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+         CredentialsFactory.storeCredentials(credentials);
+ 
+         InputStreamReader inputStreamReader = new InputStreamReader(
+-                ContentSyncManager.class.getResourceAsStream("/com/redhat/rhn/manager/content/test/repositories.json"));
++                ContentSyncManager.class.getResourceAsStream("/com/redhat/rhn/manager/content/repositories.json"));
+         List<SCCRepositoryJson> repositories = gson.fromJson(inputStreamReader,
+                 new TypeToken<List<SCCRepositoryJson>>() { }.getType());
+ 
+@@ -376,7 +376,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+     @Test
+     public void testReleaseStageOverride() throws Exception {
+         SUSEProductTestUtils.createVendorSUSEProductEnvironment(
+-                user, "/com/redhat/rhn/manager/content/test/smallBase", true);
++                user, "/com/redhat/rhn/manager/content/smallBase", true);
+         TestUtils.flushAndClearSession();
+         SUSEProduct product = SUSEProductFactory.lookupByProductId(1150);
+         assertEquals(ReleaseStage.beta, product.getReleaseStage());
+@@ -385,7 +385,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+     @Test
+     public void testClonedVendorChannelMandadory() throws Exception {
+         SUSEProductTestUtils.createVendorSUSEProductEnvironment(user,
+-                "/com/redhat/rhn/manager/content/test/smallBase", true);
++                "/com/redhat/rhn/manager/content/smallBase", true);
+         TestUtils.flushAndClearSession();
+ 
+         SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1575));
+@@ -438,7 +438,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+     @Test
+     public void testUpdateChannels() throws Exception {
+         SUSEProductTestUtils.createVendorSUSEProductEnvironment(
+-                user, "/com/redhat/rhn/manager/content/test/smallBase", true);
++                user, "/com/redhat/rhn/manager/content/smallBase", true);
+         TestUtils.flushAndClearSession();
+ 
+         // SLES12 GA
+@@ -467,16 +467,16 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
+                 .create();
+         InputStreamReader inReaderProducts = new InputStreamReader(ContentSyncManager.class
+-                .getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/productsUnscoped.json"));
++                .getResourceAsStream("/com/redhat/rhn/manager/content/data1/productsUnscoped.json"));
+         List<SCCProductJson> productsChanged = gson.fromJson(
+                 inReaderProducts, new TypeToken<List<SCCProductJson>>() { }.getType());
+         InputStreamReader inReaderTree = new InputStreamReader(ContentSyncManager.class
+-                .getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/product_tree.json"));
++                .getResourceAsStream("/com/redhat/rhn/manager/content/data1/product_tree.json"));
+         List<ProductTreeEntry> staticTreeChanged = JsonParser.GSON.fromJson(
+                 inReaderTree, new TypeToken<List<ProductTreeEntry>>() { }.getType());
+ 
+         InputStreamReader inReaderAddRepos = new InputStreamReader(ContentSyncManager.class
+-                .getResourceAsStream("/com/redhat/rhn/manager/content/test/smallBase/additional_repositories.json"));
++                .getResourceAsStream("/com/redhat/rhn/manager/content/smallBase/additional_repositories.json"));
+         List<SCCRepositoryJson> additionalRepos = gson.fromJson(inReaderAddRepos,
+                 new TypeToken<List<SCCRepositoryJson>>() { }.getType());
+ 
+@@ -517,7 +517,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+         testMinionServer = ServerFactory.save(testMinionServer);
+ 
+         SUSEProductTestUtils.createVendorSUSEProductEnvironment(user,
+-                "/com/redhat/rhn/manager/content/test/smallBase", true);
++                "/com/redhat/rhn/manager/content/smallBase", true);
+         TestUtils.flushAndClearSession();
+ 
+         // SLES12 GA
+@@ -565,16 +565,16 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+                 .create();
+ 
+         InputStreamReader inReaderProducts = new InputStreamReader(ContentSyncManager.class
+-                .getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/productsUnscoped.json"));
++                .getResourceAsStream("/com/redhat/rhn/manager/content/data1/productsUnscoped.json"));
+         List<SCCProductJson> productsChanged = gson.fromJson(
+                 inReaderProducts, new TypeToken<List<SCCProductJson>>() { }.getType());
+         InputStreamReader inReaderTree = new InputStreamReader(ContentSyncManager.class
+-                .getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/product_tree.json"));
++                .getResourceAsStream("/com/redhat/rhn/manager/content/data1/product_tree.json"));
+         List<ProductTreeEntry> staticTreeChanged = JsonParser.GSON.fromJson(
+                 inReaderTree, new TypeToken<List<ProductTreeEntry>>() { }.getType());
+ 
+         InputStreamReader inReaderAddRepos = new InputStreamReader(ContentSyncManager.class
+-                .getResourceAsStream("/com/redhat/rhn/manager/content/test/smallBase/additional_repositories.json"));
++                .getResourceAsStream("/com/redhat/rhn/manager/content/smallBase/additional_repositories.json"));
+         List<SCCRepositoryJson> additionalRepos = gson.fromJson(inReaderAddRepos,
+                 new TypeToken<List<SCCRepositoryJson>>() { }.getType());
+ 
+@@ -622,7 +622,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+     @Test
+     public void testUpdateChannelsWithSimilarPath() throws Exception {
+         SUSEProductTestUtils.createVendorSUSEProductEnvironment(
+-                user, "/com/redhat/rhn/manager/content/test/smallBase", true);
++                user, "/com/redhat/rhn/manager/content/smallBase", true);
+         TestUtils.flushAndClearSession();
+ 
+         // SLES12 GA
+@@ -649,20 +649,20 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
+                 .create();
+         InputStreamReader inReaderProducts = new InputStreamReader(ContentSyncManager.class
+-                .getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/productsUnscoped.json"));
++                .getResourceAsStream("/com/redhat/rhn/manager/content/data1/productsUnscoped.json"));
+         List<SCCProductJson> productsChanged = gson.fromJson(
+                 inReaderProducts, new TypeToken<List<SCCProductJson>>() { }.getType());
+         InputStreamReader inReaderTree = new InputStreamReader(ContentSyncManager.class
+-                .getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/product_tree.json"));
++                .getResourceAsStream("/com/redhat/rhn/manager/content/data1/product_tree.json"));
+         List<ProductTreeEntry> staticTreeChanged = JsonParser.GSON.fromJson(
+                 inReaderTree, new TypeToken<List<ProductTreeEntry>>() { }.getType());
+         InputStreamReader inReaderRepos = new InputStreamReader(ContentSyncManager.class
+-                .getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/repositories.json"));
++                .getResourceAsStream("/com/redhat/rhn/manager/content/data1/repositories.json"));
+         List<SCCRepositoryJson> repositoriesChanged = gson.fromJson(
+                 inReaderRepos, new TypeToken<List<SCCRepositoryJson>>() { }.getType());
+ 
+         InputStreamReader inReaderAddRepos = new InputStreamReader(ContentSyncManager.class
+-                .getResourceAsStream("/com/redhat/rhn/manager/content/test/smallBase/additional_repositories.json"));
++                .getResourceAsStream("/com/redhat/rhn/manager/content/smallBase/additional_repositories.json"));
+         List<SCCRepositoryJson> additionalRepos = gson.fromJson(inReaderAddRepos,
+                 new TypeToken<List<SCCRepositoryJson>>() { }.getType());
+         repositoriesChanged.addAll(additionalRepos);
+@@ -705,7 +705,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+      */
+     public void testUpdateChannelsWithPtfReposMainProducts() throws Exception {
+         SUSEProductTestUtils.createVendorSUSEProductEnvironment(user,
+-                "/com/redhat/rhn/manager/content/test/data2", true);
++                "/com/redhat/rhn/manager/content/data2", true);
+         TestUtils.flushAndClearSession();
+ 
+         // SLES12 GA
+@@ -778,7 +778,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+      */
+     public void testUpdateChannelsWithPtfReposAllModules() throws Exception {
+         SUSEProductTestUtils.createVendorSUSEProductEnvironment(user,
+-                "/com/redhat/rhn/manager/content/test/data3", true);
++                "/com/redhat/rhn/manager/content/data3", true);
+         TestUtils.flushAndClearSession();
+ 
+         // SLES15 SP2
+@@ -903,7 +903,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+     @Test
+     public void testSwitchingBestAuthItem() throws Exception {
+         SUSEProductTestUtils.createVendorSUSEProductEnvironment(user,
+-                "/com/redhat/rhn/manager/content/test/smallBase", true);
++                "/com/redhat/rhn/manager/content/smallBase", true);
+         TestUtils.flushAndClearSession();
+ 
+         // SLES15 GA
+@@ -936,7 +936,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
+                 .create();
+         InputStreamReader inReaderRepos = new InputStreamReader(ContentSyncManager.class
+-                .getResourceAsStream("/com/redhat/rhn/manager/content/test/data1/repositories.json"));
++                .getResourceAsStream("/com/redhat/rhn/manager/content/data1/repositories.json"));
+         List<SCCRepositoryJson> repositoriesChanged = gson.fromJson(
+                 inReaderRepos, new TypeToken<List<SCCRepositoryJson>>() { }.getType());
+ 
+@@ -1339,7 +1339,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+     @Test
+     public void testGetAvailableChannels() throws Exception {
+         SUSEProductTestUtils.createVendorSUSEProductEnvironment(
+-                user, "/com/redhat/rhn/manager/content/test/smallBase", true);
++                user, "/com/redhat/rhn/manager/content/smallBase", true);
+         TestUtils.flushAndClearSession();
+ 
+         ContentSyncManager csm = new SUSEProductTestUtils.TestContentSyncManager();
+@@ -1366,7 +1366,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+      */
+     @Test
+     public void testNoDupInGetAvailableChannels() throws Exception {
+-        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, "/com/redhat/rhn/manager/content/test/", true);
++        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, "/com/redhat/rhn/manager/content/", true);
+         TestUtils.flushAndClearSession();
+ 
+         ContentSyncManager csm = new SUSEProductTestUtils.TestContentSyncManager();
+@@ -1724,7 +1724,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+     @Test
+     public void testListChannels() throws Exception {
+         SUSEProductTestUtils.createVendorSUSEProductEnvironment(
+-                user, "/com/redhat/rhn/manager/content/test/smallBase", true);
++                user, "/com/redhat/rhn/manager/content/smallBase", true);
+         TestUtils.flushAndClearSession();
+ 
+         // SLES12 GA
+@@ -1771,7 +1771,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+     @Test
+     public void testListProductsAvailability() throws Exception {
+         SUSEProductTestUtils.createVendorSUSEProductEnvironment(
+-                user, "/com/redhat/rhn/manager/content/test/smallBase", true);
++                user, "/com/redhat/rhn/manager/content/smallBase", true);
+         TestUtils.flushAndClearSession();
+ 
+         // SLES12 GA
+@@ -1812,7 +1812,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+     @Test
+     public void testIsRefreshNeeded() throws Exception {
+         SUSEProductTestUtils.createVendorSUSEProductEnvironment(
+-                user, "/com/redhat/rhn/manager/content/test/smallBase", true);
++                user, "/com/redhat/rhn/manager/content/smallBase", true);
+         Config.get().remove(ContentSyncManager.RESOURCE_PATH);
+         TestUtils.flushAndClearSession();
+ 
+@@ -1848,7 +1848,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+     @Test
+     public void testIsRefreshNeededFromDir() throws Exception {
+         SUSEProductTestUtils.createVendorSUSEProductEnvironment(
+-                user, "/com/redhat/rhn/manager/content/test/smallBase", true, true);
++                user, "/com/redhat/rhn/manager/content/smallBase", true, true);
+         TestUtils.flushAndClearSession();
+ 
+         // SLES12 GA
+@@ -1916,7 +1916,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+     @Test
+     public void testUpdateChannelsWithPtfReposUbuntuWithTools() throws Exception {
+         SUSEProductTestUtils.createVendorSUSEProductEnvironment(user,
+-                "/com/redhat/rhn/manager/content/test/data3", true);
++                "/com/redhat/rhn/manager/content/data3", true);
+         TestUtils.flushAndClearSession();
+ 
+         //  Ubuntu 20.04
+@@ -1974,7 +1974,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+     @Test
+     public void testAddChannel() throws Exception {
+         SUSEProductTestUtils.createVendorSUSEProductEnvironment(
+-                user, "/com/redhat/rhn/manager/content/test/smallBase", true);
++                user, "/com/redhat/rhn/manager/content/smallBase", true);
+         TestUtils.flushAndClearSession();
+ 
+         ContentSyncManager csm = new SUSEProductTestUtils.TestContentSyncManager();
+@@ -2179,7 +2179,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
+             // remove "fromdir" config
+             Config.get().remove(ContentSyncManager.RESOURCE_PATH);
+             SUSEProductTestUtils.createVendorSUSEProductEnvironment(
+-                    user, "/com/redhat/rhn/manager/content/test/smallBase", true);
++                    user, "/com/redhat/rhn/manager/content/smallBase", true);
+ 
+             TestUtils.flushAndClearSession();
+ 
+diff --git a/java/core/src/test/java/com/suse/manager/maintenance/test/IcalUtilsTest.java b/java/core/src/test/java/com/suse/manager/maintenance/test/IcalUtilsTest.java
+index 2c5f0ae41de..109bf8efb90 100644
+--- a/java/core/src/test/java/com/suse/manager/maintenance/test/IcalUtilsTest.java
++++ b/java/core/src/test/java/com/suse/manager/maintenance/test/IcalUtilsTest.java
+@@ -63,7 +63,7 @@ public class IcalUtilsTest {
+ 
+     private MaintenanceCalendar maintenanceCalendar;
+ 
+-    private static final String TESTDATAPATH = "/com/suse/manager/maintenance/test/testdata";
++    private static final String TESTDATAPATH = "/com/suse/manager/maintenance/testdata";
+     private static final String GOOGLE_ICS = "maintenance-windows-google-multizones.ics";
+ 
+     private static final String TEST_ICAL = """
+diff --git a/java/core/src/test/java/com/suse/manager/webui/controllers/test/DownloadControllerTest.java b/java/core/src/test/java/com/suse/manager/webui/controllers/test/DownloadControllerTest.java
+index 40b52caa2cb..56b6c3f8dbe 100644
+--- a/java/core/src/test/java/com/suse/manager/webui/controllers/test/DownloadControllerTest.java
++++ b/java/core/src/test/java/com/suse/manager/webui/controllers/test/DownloadControllerTest.java
+@@ -921,7 +921,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
+         minion.setInstalledProducts(Collections.emptySet());
+ 
+         SUSEProductTestUtils.createVendorSUSEProductEnvironment(user,
+-                "/com/redhat/rhn/manager/content/test/smallBase", true);
++                "/com/redhat/rhn/manager/content/smallBase", true);
+         TestUtils.flushSession();
+ 
+         // Test case - Token passed minion has no products

@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Fragment } from "react";
 
 import { IconTag } from "components/icontag";
 
@@ -16,10 +16,10 @@ const PaygStatus = (props: Props) => {
   }
 
   return (
-    <React.Fragment>
+    <Fragment>
       <IconTag type={icon} />
       {props.statusMessage}
-    </React.Fragment>
+    </Fragment>
   );
 };
 

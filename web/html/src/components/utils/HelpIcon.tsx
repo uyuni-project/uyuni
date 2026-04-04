@@ -1,5 +1,3 @@
-import * as React from "react";
-
 type Props = {
   /** Title of the icon */
   text?: string | null;

@@ -31,15 +31,17 @@
 %{!?nodejs_sitelib:%define nodejs_sitelib %{_prefix}/lib/node_modules}
 
 Name:           spacewalk-web
-Version:        5.2.0
+Version:        5.2.6
 Release:        0
 Summary:        Spacewalk Web site - Perl modules
 License:        GPL-2.0-only
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
 URL:            https://github.com/uyuni-project/uyuni
+#!CreateArchive: %{name}
 Source0:        https://github.com/uyuni-project/uyuni/archive/%{name}-%{version}.tar.gz
-Source1:        node-modules.tar.gz
+#!CreateArchive: node_modules
+Source1:        node_modules.tar.gz
 Source2:        spacewalk-web-rpmlintrc
 BuildRequires:  gettext
 BuildRequires:  make
@@ -109,16 +111,8 @@ Obsoletes:      spacewalk-grail < %{version}
 Obsoletes:      spacewalk-pxt < %{version}
 Obsoletes:      spacewalk-sniglets < %{version}
 Provides:       rhn-base = 5.3.0
-%if 0%{?suse_version}
-Requires:       susemanager-frontend-libs
-%if 0%{?suse_version} >= 1500
 Requires:       python3-PyJWT
 Requires:       python3-numpy
-%else
-Requires:       python-PyJWT
-Requires:       python-numpy
-%endif
-%endif
 
 %description -n spacewalk-base
 This package includes the core RHN:: packages necessary to manipulate the
@@ -154,17 +148,13 @@ Configuration file for spacewalk-base-minimal package.
 
 %prep
 %setup -q
-pushd html/src
 tar xf %{S:1}
-popd
 
 %build
 make -f Makefile.spacewalk-web PERLARGS="INSTALLDIRS=vendor" %{?_smp_mflags}
-pushd html/src
 mkdir -p %{buildroot}%{nodejs_sitelib}
 cp -pr node_modules/* %{buildroot}%{nodejs_sitelib}
-NODE_OPTIONS="--trace-warnings --trace-deprecation --trace-uncaught --unhandled-rejections=strict" node build.js --check-spec=false
-popd
+NODE_OPTIONS="--trace-warnings --trace-deprecation --trace-uncaught --unhandled-rejections=strict" node html/src/build.js --check-spec=false
 rm -rf %{buildroot}%{nodejs_sitelib}
 sed -i -r "s/^(web.buildtimestamp *= *)_OBS_BUILD_TIMESTAMP_$/\1$(date +'%%Y%%m%%d%%H%%M%%S')/" conf/rhn_web.conf
 

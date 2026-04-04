@@ -13,10 +13,15 @@
 
     .list-group-item {
       border-bottom: 1px solid $eos-bc-gray-100;
+      text-align: left;
 
       &:last-child {
         border-bottom: none;
       }
+    }
+
+    .ui-sortable .list-group-item {
+      cursor: grab;
     }
 
     > .panel-body .list-group {

@@ -1,4 +1,5 @@
 #!/usr/bin/env -S bash -euo pipefail
+# -*- sh-indentation: 2 -*-
 
 # Check pre-requisites
 if ! command -v git &>/dev/null ; then

@@ -5,10 +5,10 @@
 #              about a SUSE Multi-Linux Manager Client
 # License:     GPLv2
 # Author:      Michael Calmer <mc@suse.de>
-# Modified:    2025 June 06
+# Modified:    2026 March 16
 #############################################################
 
-SVER=5.1.0
+SVER=5.2.0
 RCFILE="/usr/lib/supportconfig/resources/supportconfig.rc"
 OF='plugin-susemanager-client.txt'
 

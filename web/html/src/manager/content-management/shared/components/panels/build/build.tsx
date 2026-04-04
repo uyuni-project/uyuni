@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useEffect, useState } from "react";
 
 import _last from "lodash/last";
@@ -19,9 +18,9 @@ import DownArrow from "../../down-arrow/down-arrow";
 
 type Props = {
   projectId: string;
-  onBuild: Function;
+  onBuild: (...args: any[]) => any;
   currentHistoryEntry?: Partial<ProjectHistoryEntry>;
-  changesToBuild: Array<string>;
+  changesToBuild: string[];
   disabled?: boolean;
   hasChannelsWithUnsyncedPatches: boolean;
 };
@@ -120,47 +119,45 @@ const Build = ({
           )
         }
         buttons={
-          <React.Fragment>
-            <div className="col-lg-offset-6 offset-lg-6 col-lg-6">
-              <div className="pull-right btn-group">
-                <Button
-                  id={`cm-build-modal-cancel-button`}
-                  className="btn-default"
-                  text={t("Cancel")}
-                  handler={() => closeDialog(modalNameId)}
-                />
-                <Button
-                  id={`cm-build-modal-save-button`}
-                  className="btn-primary"
-                  text={t("Build")}
-                  handler={() => {
-                    onAction(
-                      {
-                        projectLabel: projectId,
-                        message: buildVersionForm.message?.concat("\n\n").concat(changesToBuild.join("")),
-                      },
-                      "action",
-                      projectId
-                    )
-                      .then((projectWithUpdatedSources: any) => {
-                        closeDialog(modalNameId);
-                        showSuccessToastr(
-                          t("Version {version} successfully built into {environmentName}", {
-                            version: (_last(projectWithUpdatedSources.properties.historyEntries) as any).version,
-                            environmentName: projectWithUpdatedSources.environments[0].name,
-                          })
-                        );
-                        onBuild(projectWithUpdatedSources);
-                      })
-                      .catch((error) => {
-                        showErrorToastr(error.messages, { autoHide: false });
-                        closeDialog(modalNameId);
-                      });
-                  }}
-                />
-              </div>
+          <div className="col-lg-offset-6 offset-lg-6 col-lg-6">
+            <div className="pull-right btn-group">
+              <Button
+                id={`cm-build-modal-cancel-button`}
+                className="btn-default"
+                text={t("Cancel")}
+                handler={() => closeDialog(modalNameId)}
+              />
+              <Button
+                id={`cm-build-modal-save-button`}
+                className="btn-primary"
+                text={t("Build")}
+                handler={() => {
+                  onAction(
+                    {
+                      projectLabel: projectId,
+                      message: buildVersionForm.message?.concat("\n\n").concat(changesToBuild.join("")),
+                    },
+                    "action",
+                    projectId
+                  )
+                    .then((projectWithUpdatedSources: any) => {
+                      closeDialog(modalNameId);
+                      showSuccessToastr(
+                        t("Version {version} successfully built into {environmentName}", {
+                          version: (_last(projectWithUpdatedSources.properties.historyEntries) as any).version,
+                          environmentName: projectWithUpdatedSources.environments[0].name,
+                        })
+                      );
+                      onBuild(projectWithUpdatedSources);
+                    })
+                    .catch((error) => {
+                      showErrorToastr(error.messages, { autoHide: false });
+                      closeDialog(modalNameId);
+                    });
+                }}
+              />
             </div>
-          </React.Fragment>
+          </div>
         }
       />
 

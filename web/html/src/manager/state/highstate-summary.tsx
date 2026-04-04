@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useEffect, useState } from "react";
 
 import { productName } from "core/user-preferences";
@@ -10,7 +9,7 @@ import { Table } from "components/table/Table";
 import { Utils } from "utils/functions";
 import Network from "utils/network";
 
-interface StateSource {
+type StateSource = {
   id?: number;
   name: string;
   type: "STATE" | "CONFIG" | "FORMULA" | "INTERNAL";
@@ -18,7 +17,7 @@ interface StateSource {
   sourceId: number;
   sourceName: string;
   sourceType: "SYSTEM" | "GROUP" | "ORG";
-}
+};
 
 const typeMap = {
   STATE: t("State channel"),
@@ -31,7 +30,7 @@ const typeMap = {
 
 export default function HighstateSummary({ minionId }) {
   const [summary, setSummary] = useState<StateSource[]>([]);
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const toDisplayValues = (state: StateSource) => {
     if (state.type === "INTERNAL") state.name = t("Internal states");
@@ -41,11 +40,11 @@ export default function HighstateSummary({ minionId }) {
   };
 
   useEffect(() => {
-    setLoading(true);
+    setIsLoading(true);
     Network.get(`/rhn/manager/api/states/summary?sid=${minionId}`)
       .then((data) => data.map(toDisplayValues))
       .then(setSummary)
-      .then(() => setLoading(false));
+      .then(() => setIsLoading(false));
   }, [minionId]);
 
   if (isLoading) {
@@ -66,7 +65,7 @@ export default function HighstateSummary({ minionId }) {
 
   return (
     <>
-      <Table identifier={identifier} data={summary} initialItemsPerPage={0}>
+      <Table identifier={identifier} data={summary} hideHeaderFooter="both">
         <Column
           header={t("State Source")}
           comparator={Utils.sortByText}
@@ -117,16 +116,7 @@ function HighstateOutput({ minionId }) {
 }
 
 function State({ minionId, state }: { minionId: number; state: StateSource }) {
-  if (state.type === "STATE") {
-    return (
-      <>
-        <i className="spacewalk-icon-software-channels" data-bs-toggle="tooltip" title={state.typeName} />
-        <strong>
-          <a href={`/rhn/configuration/ChannelOverview.do?ccid=${state.id}`}>{state.name}</a>
-        </strong>
-      </>
-    );
-  } else if (state.type === "CONFIG") {
+  if (state.type === "STATE" || state.type === "CONFIG") {
     return (
       <>
         <i className="spacewalk-icon-software-channels" data-bs-toggle="tooltip" title={state.typeName} />

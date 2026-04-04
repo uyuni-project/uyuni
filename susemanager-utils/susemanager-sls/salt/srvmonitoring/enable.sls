@@ -75,32 +75,31 @@ jmx_exporter_tomcat_yaml_config:
     - source:
       - salt://srvmonitoring/java_agent.yaml
 
-# Workaround for previous tomcat configuration
-remove_tomcat_previous:
-  file.rename:
-    - source: /etc/sysconfig/tomcat
-    - name: /etc/sysconfig/tomcat.bak
-    - force: True
-    - onlyif: test -f /etc/sysconfig/tomcat
-
 jmx_tomcat_config:
   file.managed:
-    - name: /etc/sysconfig/tomcat/systemd/jmx.conf
+    - name: /etc/tomcat/conf.d/tomcat_jmx.conf
     - makedirs: True
     - user: root
     - group: root
     - mode: 644
     - source:
-      - salt://srvmonitoring/tomcat/systemd/jmx.conf
+      - salt://srvmonitoring/tomcat_jmx.conf
     - require:
       - cmd: jmx_exporter
-  mgrcompat.module_run:
-    - name: service.systemctl_reload
 
 jmx_exporter_tomcat_service_cleanup:
   service.dead:
     - name: prometheus-jmx_exporter@tomcat
     - enable: False
+
+# Legacy systemd drop-in and sysconfig JMX config cleanup
+legacy_tomcat_sysconfig_jmx_cleanup:
+  file.absent:
+    - name: /etc/sysconfig/tomcat/systemd/jmx.conf
+
+legacy_tomcat_systemd_dropin_jmx_cleanup:
+  file.absent:
+    - name: /usr/lib/systemd/system/tomcat.service.d/jmx.conf
 
 jmx_exporter_taskomatic_systemd_config_cleanup:
   file.absent:
@@ -122,22 +121,28 @@ jmx_exporter_taskomatic_yaml_config:
 
 jmx_taskomatic_config:
   file.managed:
-    - name: /etc/sysconfig/taskomatic/systemd/jmx.conf
+    - name: /etc/rhn/taskomatic.conf.d/taskomatic_jmx.conf
     - makedirs: True
     - user: root
     - group: root
     - mode: 644
     - source:
-      - salt://srvmonitoring/taskomatic/systemd/jmx.conf
+      - salt://srvmonitoring/taskomatic_jmx.conf
     - require:
       - cmd: jmx_exporter
-  mgrcompat.module_run:
-    - name: service.systemctl_reload
 
 jmx_exporter_taskomatic_service_cleanup:
   service.dead:
     - name: prometheus-jmx_exporter@taskomatic
     - enable: False
+
+legacy_taskomatic_sysconfig_jmx_cleanup:
+  file.absent:
+    - name: /etc/sysconfig/taskomatic/systemd/jmx.conf
+
+legacy_taskomatic_systemd_dropin_jmx_cleanup:
+  file.absent:
+    - name: /usr/lib/systemd/system/taskomatic.service.d/jmx.conf
 
 mgr_enable_prometheus_self_monitoring:
   cmd.run:

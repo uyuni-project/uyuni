@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Mon Oct 27 15:36:01 CET 2025 - rosuna@suse.com
+
+- version 5.2.1-0
+  * Allow existing pylint failures
+  * Reformat Python code with black
+  * Add table to show differences between CLM environments
+    (jsc#SUMA-301)
+  * Add last_boot_time to system table
+  * Add status and extra_pkg_count to systemoutdated table
+  * Add a System Hardware Report View
+  * Create SystemHardware table (jsc#SUMA-316)
+
+-------------------------------------------------------------------
 Fri Apr 11 17:13:47 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.4-0

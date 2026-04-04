@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import SpaRenderer from "core/spa/spa-renderer";
 
@@ -118,7 +118,7 @@ function cveAudit(cveId, target, statuses) {
   });
 }
 
-type Props = {};
+type Props = Record<never, never>;
 
 type State = {
   cveNumber: string;
@@ -132,7 +132,7 @@ type State = {
   auditExecuted?: boolean;
 };
 
-class CVEAudit extends React.Component<Props, State> {
+class CVEAudit extends Component<Props, State> {
   constructor(props) {
     super(props);
 
@@ -187,7 +187,7 @@ class CVEAudit extends React.Component<Props, State> {
   onCVEChange = (e) => {
     const value = e.target.value;
     const parts = CVE_REGEX.exec(value);
-    if (parts != null && DEPRECATED_unsafeEquals(parts.length, 3)) {
+    if (!DEPRECATED_unsafeEquals(parts, null) && DEPRECATED_unsafeEquals(parts.length, 3)) {
       const year = Number.parseInt(parts[1], 10);
       if (YEARS.includes(year)) {
         const number = parts[2];
@@ -266,7 +266,9 @@ class CVEAudit extends React.Component<Props, State> {
               className="form-control"
             >
               {YEARS.map((year) => (
-                <option value={year}>{year}</option>
+                <option value={year} key={year}>
+                  {year}
+                </option>
               ))}
             </select>
             <span className="input-group-addon input-group-text">-</span>
@@ -280,20 +282,20 @@ class CVEAudit extends React.Component<Props, State> {
           <div>
             {ALL.map((status) => {
               return (
-                <div className="checkbox">
+                <div className="checkbox" key={PATCH_STATUS_LABEL[status].label}>
                   <label>
                     <input
                       type="checkbox"
                       checked={this.state.statuses.includes(status)}
-                      onChange={(e) => {
+                      onChange={() => {
                         if (this.state.statuses.includes(status)) {
-                          this.setState({
-                            statuses: this.state.statuses.filter((x) => x !== status),
-                          });
+                          this.setState((prevState) => ({
+                            statuses: prevState.statuses.filter((x) => x !== status),
+                          }));
                         } else {
-                          this.setState({
-                            statuses: this.state.statuses.concat([status]),
-                          });
+                          this.setState((prevState) => ({
+                            statuses: prevState.statuses.concat([status]),
+                          }));
                         }
                       }}
                     />
@@ -386,7 +388,7 @@ class CVEAudit extends React.Component<Props, State> {
               width="10%"
               comparator={Utils.sortByText}
               header={t("Status")}
-              cell={(row, criteria) => (
+              cell={(row) => (
                 <div>
                   <i
                     className={"fa fa-big " + PATCH_STATUS_LABEL[row.patchStatus].className}
@@ -423,7 +425,7 @@ class CVEAudit extends React.Component<Props, State> {
               width="45%"
               comparator={Utils.sortByText}
               header={t("Actions")}
-              cell={(row, criteria) => {
+              cell={(row) => {
                 if (this.state.resultType === TARGET_SERVER) {
                   if (
                     row.patchStatus === NOT_AFFECTED ||
@@ -444,7 +446,7 @@ class CVEAudit extends React.Component<Props, State> {
                         </div>
                         {row.erratas.map((errata) => {
                           return (
-                            <div>
+                            <div key={errata.id}>
                               <a href={"/rhn/errata/details/SystemsAffected.do?eid=" + errata.id}>{errata.advisory}</a>
                             </div>
                           );
@@ -485,7 +487,7 @@ class CVEAudit extends React.Component<Props, State> {
                         </div>
                         {row.erratas.map((errata) => {
                           return (
-                            <div>
+                            <div key={errata.id}>
                               <a href={"/rhn/errata/details/SystemsAffected.do?eid=" + errata.id}>{errata.advisory}</a>
                             </div>
                           );

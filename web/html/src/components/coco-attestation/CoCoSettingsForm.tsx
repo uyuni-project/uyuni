@@ -1,4 +1,4 @@
-import * as React from "react";
+import { type ReactNode, Component } from "react";
 
 import { AsyncButton, Button } from "../buttons";
 import { BootstrapPanel } from "../panels/BootstrapPanel";
@@ -15,7 +15,7 @@ type Props = {
 
 type State = Settings;
 
-class CoCoSettingsForm extends React.Component<Props, State> {
+class CoCoSettingsForm extends Component<Props, State> {
   public static readonly defaultProps: Partial<Props> = {
     showOnScheduleOption: true,
   };
@@ -68,7 +68,7 @@ class CoCoSettingsForm extends React.Component<Props, State> {
     });
   };
 
-  render(): React.ReactNode {
+  render(): ReactNode {
     return (
       <>
         <BootstrapPanel>
@@ -133,7 +133,6 @@ class CoCoSettingsForm extends React.Component<Props, State> {
             <RecurringEventPicker
               mode="Inline"
               hideScheduleName
-              timezone={window.timezone}
               scheduleName={this.state.scheduleName}
               type={this.state.scheduleType}
               cron={this.state.scheduleCron}

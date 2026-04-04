@@ -1,4 +1,4 @@
-import * as React from "react";
+import { Component } from "react";
 
 import { DateTimePicker } from "components/datetime";
 import { Loading } from "components/utils/loading/Loading";
@@ -7,8 +7,7 @@ import { localizedMoment } from "utils";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
 
-import { Combobox } from "./combobox";
-import { ComboboxItem } from "./combobox";
+import { Combobox, ComboboxItem } from "./combobox";
 
 export type MaintenanceWindow = {
   id: number;
@@ -25,10 +24,10 @@ export type ActionChain = {
 
 type ActionScheduleProps = {
   earliest: moment.Moment;
-  actionChains?: Array<ActionChain>;
+  actionChains?: ActionChain[];
   onDateTimeChanged: (value: moment.Moment) => void;
   onActionChainChanged?: (actionChain: ActionChain | null) => void;
-  systemIds?: Array<string | number>;
+  systemIds?: (string | number)[];
   actionType?: string;
 };
 
@@ -37,16 +36,16 @@ type ActionScheduleState = {
   type: "earliest" | "actionChain";
   earliest: moment.Moment;
   actionChain?: ActionChain;
-  actionChains?: Array<ActionChain>;
+  actionChains?: ActionChain[];
   isMaintenanceModeEnabled: boolean;
   multiMaintenanceWindows: boolean;
   maintenanceWindow: MaintenanceWindow;
-  maintenanceWindows: Array<MaintenanceWindow>;
-  systemIds: Array<string | number>;
+  maintenanceWindows: MaintenanceWindow[];
+  systemIds: (string | number)[];
   actionType: string;
 };
 
-class ActionSchedule extends React.Component<ActionScheduleProps, ActionScheduleState> {
+class ActionSchedule extends Component<ActionScheduleProps, ActionScheduleState> {
   newActionChainOpt = { id: Number(0), text: t("new action chain") };
 
   constructor(props: ActionScheduleProps) {
@@ -116,7 +115,7 @@ class ActionSchedule extends React.Component<ActionScheduleProps, ActionSchedule
   };
 
   handleResponseError = (jqXHR) => {
-    Loggerhead.error(Network.responseErrorMessage(jqXHR).toString());
+    Loggerhead.error(Network.responseErrorMessage(jqXHR));
     this.setState({ loading: false });
   };
 

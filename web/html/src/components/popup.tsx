@@ -1,21 +1,20 @@
-import * as React from "react";
-
+import { type ReactNode, Component } from "react";
 type Props = {
   /** The id of the html div tag */
   id: string;
   /** The css className for the 'modal-dialog' div */
   className?: string;
-  title?: React.ReactNode;
+  title?: ReactNode;
   /** The body of the popup */
-  content?: React.ReactNode;
-  footer?: React.ReactNode;
+  content?: ReactNode;
+  footer?: ReactNode;
   hideHeader?: boolean;
   closableModal?: boolean;
   /** A callback function with no parameters */
   onClosePopUp?: () => any;
 };
 
-export class PopUp extends React.Component<Props> {
+export class PopUp extends Component<Props> {
   componentDidMount() {
     if (this.props.onClosePopUp) {
       jQuery("#" + this.props.id).on("hidden.bs.modal", this.props.onClosePopUp);

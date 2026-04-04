@@ -14,9 +14,9 @@ ROOTCA="RootCA"
 ORGCA="OrgCa"
 TEAMCA="TeamCA"
 SRVCRT="server"
-SRVALTNAME="DNS:uyuni-server"
+SRVALTNAME="DNS:server.fqdn"
 DBCRT="db"
-DBALTNAME="DNS:uyuni-db,DNS:uyuni-reportdb"
+DBALTNAME="DNS:db,DNS:reportdb,$SRVALTNAME"
 
 export country="DE"
 export state="STATE"
@@ -187,11 +187,11 @@ openssl ca -config $DIR/openssl.cnf -create_serial -extensions req_server_x509_e
 mkdir -p $DIR/package
 openssl x509 -text -in $DIR/$ROOTCA.crt > $DIR/package/root-ca.crt
 cat $DIR/certs/$ORGCA.crt $DIR/certs/$TEAMCA.crt > $DIR/package/intermediate-ca.crt
-cp $DIR/certs/$SRVCRT.crt $DIR/package/db.crt
+cp $DIR/certs/$DBCRT.crt $DIR/package/db.crt
 if [ $PKEYALGO = "rsa" ]; then
-  openssl rsa -passin pass:$PASSWORD -in $DIR/private/$SRVCRT.key -out $DIR/package/db.key
+  openssl rsa -passin pass:$PASSWORD -in $DIR/private/$DBCRT.key -out $DIR/package/db.key
 else
-  openssl ec -passin pass:$PASSWORD -in $DIR/private/$SRVCRT.key -out $DIR/package/db.key
+  openssl ec -passin pass:$PASSWORD -in $DIR/private/$DBCRT.key -out $DIR/package/db.key
 fi
 
 echo "Test Certificates in $DIR/package/"

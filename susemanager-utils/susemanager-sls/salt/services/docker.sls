@@ -1,5 +1,5 @@
 {% if pillar['addon_group_types'] is defined and 'container_build_host' in pillar['addon_group_types'] %}
-{% set use_venv_salt = salt['pkg.version']('venv-salt-minion') %}
+{% set use_venv_salt = '/venv-salt-minion/' in grains['pythonexecutable'] %}
 mgr_install_docker:
   pkg.installed:
     - pkgs:

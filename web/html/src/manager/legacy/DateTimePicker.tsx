@@ -3,7 +3,6 @@
  * It is the Javascript helper side for DateTimePickerTag.java but bound to the timezone-aware picker component.
  * This wrapper is NOT HMR-ready, you will need to reload for your changes.
  */
-import * as React from "react";
 import { useState } from "react";
 import ReactDOM from "react-dom";
 

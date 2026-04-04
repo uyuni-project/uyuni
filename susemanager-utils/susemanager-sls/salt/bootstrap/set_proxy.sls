@@ -1,8 +1,8 @@
 {%- set conf_file = '/etc/salt/minion.d/susemanager.conf' %}
 {%- set salt_service = 'salt-minion' %}
 
-{# Prefer venv-salt-minion if installed #}
-{%- if salt['pkg.version']('venv-salt-minion') %}
+{# Use venv-salt-minion if the state applied with it #}
+{%- if '/venv-salt-minion/' in grains['pythonexecutable'] %}
 {%- set conf_file = '/etc/venv-salt-minion/minion.d/susemanager.conf' %}
 {%- set salt_service = 'venv-salt-minion' %}
 {%- endif -%}

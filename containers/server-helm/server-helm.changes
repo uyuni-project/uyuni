@@ -1,4 +1,34 @@
 -------------------------------------------------------------------
+Mon Mar 02 13:07:56 CET 2026 - michael.calmer@suse.com
+
+- version 5.2.4
+  * Move TFTP server to its own pod
+  * Reorganize the values by component
+  * Increase readiness time for server.
+  * Remove script from setup-job and use the one provided by
+    the image.
+  * Changing volumes and permissions for RKE2.
+
+-------------------------------------------------------------------
+Tue Jan 27 09:31:14 WET 2026 - psuarezhernandez@suse.com
+
+- version 5.2.3
+  * Adjust helm chart to work without mgradm
+
+-------------------------------------------------------------------
+Thu Nov 27 11:19:05 CET 2025 - michael.calmer@suse.com
+
+- version 5.2.2
+  * Chart rebuilt to the newest version with updated dependencies
+    for SUSE Multi-Linux Manager 5.2.0 Alpha 1
+
+-------------------------------------------------------------------
+Tue Oct 28 10:20:50 CET 2025 - rosuna@suse.com
+
+- version 5.2.1
+  * Bump version to 5.2.0
+
+-------------------------------------------------------------------
 Tue Jun 17 19:45:38 CEST 2025 - marina.latini@suse.com
 
 - version 5.1.7

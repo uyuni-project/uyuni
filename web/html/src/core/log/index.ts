@@ -42,6 +42,7 @@ window.addEventListener("error", (event) => {
 declare global {
   var Loggerhead: LoggerheadInstance;
 
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace NodeJS {
     interface Global {
       Loggerhead: LoggerheadInstance;

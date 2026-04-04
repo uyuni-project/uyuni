@@ -1,5 +1,3 @@
-import * as React from "react";
-
 const ToolTip = (props) => <span title={props.title}>{props.content}</span>;
 
 const CsvLink = (props) => (
@@ -12,7 +10,7 @@ const CsvLink = (props) => (
 );
 
 const SystemLabel = (props) => {
-  var icon;
+  let icon;
   if (props.type === "nonVirtual") {
     icon = <i className="fa fa-desktop"></i>;
   } else if (props.type === "virtualHost") {
@@ -31,7 +29,7 @@ const SystemLabel = (props) => {
 };
 
 function humanReadablePolicy(rawPolicy) {
-  var message;
+  let message;
   switch (rawPolicy) {
     case "physical_only":
       message = t("Physical deployment only");

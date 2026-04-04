@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { AsyncButton } from "components/buttons";
 import { ActionConfirm } from "components/dialog/ActionConfirm";
@@ -11,25 +10,26 @@ import { Table, TableRef } from "components/table/Table";
 import { MessagesContainer, showSuccessToastr } from "components/toastr/toastr";
 
 import { Utils } from "utils/functions";
+import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
 
 type Props = {
   /** Locale of the help links */
   docsLocale: string;
   /** List of selected package ids */
-  selected: Array<string>;
+  selected: string[];
   /** The entry to select in the channel field */
   selectedChannel: string | null;
 };
 
 export function PackageList(props: Props) {
-  const [open, setOpen] = React.useState(false);
-  const [selectedPackages, setSelectedPackages] = React.useState<string[]>(props.selected);
-  const [formModel, setFormModel] = React.useState<object>({ binary: "binary", channel: props.selectedChannel });
-  const [channels, setChannels] = React.useState([]);
+  const [open, setOpen] = useState(false);
+  const [selectedPackages, setSelectedPackages] = useState<string[]>(props.selected);
+  const [formModel, setFormModel] = useState<object>({ binary: "binary", channel: props.selectedChannel });
+  const [channels, setChannels] = useState([]);
   const tableRef = useRef<TableRef>(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     let ignore = false;
     Network.get("/rhn/manager/api/channels/owned")
       .then((resp) => {
@@ -39,7 +39,7 @@ export function PackageList(props: Props) {
               return {
                 value: `channel/${c["id"]}`,
                 label: c["name"],
-                hasParent: c["parentId"] != null,
+                hasParent: !DEPRECATED_unsafeEquals(c["parentId"], null),
               };
             })
           );
@@ -132,13 +132,13 @@ export function PackageList(props: Props) {
         onClose={() => setOpen(false)}
       />
 
-      {formModel["channel"] != null && formModel["channel"] !== "" && (
+      {!DEPRECATED_unsafeEquals(formModel["channel"], null) && formModel["channel"] !== "" && (
         <Table
           ref={tableRef}
           data={`/rhn/manager/api/packages/list/${formModel["binary"]}/${formModel["channel"]}`}
           identifier={(item) => item.id}
           initialSortColumnKey="nvrea"
-          selectable={(item) => item.hasOwnProperty("id")}
+          selectable={(item) => "id" in item}
           selectedItems={selectedPackages}
           onSelect={handleSelectedPackages}
           searchField={<SearchField placeholder={t("Filter by package name")} />}

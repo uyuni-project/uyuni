@@ -1,7 +1,4 @@
-import * as React from "react";
 import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
-
-import validator from "validator";
 
 import { Button } from "components/buttons";
 import { DangerDialog } from "components/dialog/LegacyDangerDialog";
@@ -10,6 +7,7 @@ import { DEPRECATED_Check } from "components/input/check/DEPRECATED_Check";
 import { Form } from "components/input/form/Form";
 import { Text } from "components/input/text/Text";
 import { MessageType, Utils as MessagesUtils } from "components/messages/messages";
+import Validation from "components/validation";
 
 type CalendarEditProps = {
   messages: (messages: MessageType[]) => any;
@@ -40,9 +38,10 @@ const MaintenanceCalendarEdit = forwardRef((props: CalendarEditProps, ref) => {
   }, [props.calendar]);
 
   const onFormChanged = (newModel) => {
-    /* strategy gets initialized as empty string, but we want the initial value to be false.
-     * Is equivalent to: if strategy is "" then set it to false */
-    newModel.strategy === "" && (newModel.strategy = false);
+    /* strategy gets initialized as empty string, but we want the initial value to be false. */
+    if (newModel.strategy === "") {
+      newModel.strategy = false;
+    }
     setModel({ name: newModel.name, strategy: newModel.strategy });
   };
 
@@ -55,7 +54,9 @@ const MaintenanceCalendarEdit = forwardRef((props: CalendarEditProps, ref) => {
     const reader = new FileReader();
     reader.onload = (e) => icalFileLoaded(e.target?.result);
     reader.readAsText(event.target.files[0]);
-    !props.isEdit && setDataText(event.target.files[0].name);
+    if (!props.isEdit) {
+      setDataText(event.target.files[0].name);
+    }
   };
 
   const onIcalFileRemove = () => {
@@ -95,7 +96,7 @@ const MaintenanceCalendarEdit = forwardRef((props: CalendarEditProps, ref) => {
     if (urlIn.trim() === "") {
       return true;
     }
-    return validator.isURL(urlIn, { protocols: ["http", "https"] });
+    return Validation.isURL(urlIn);
   };
 
   useImperativeHandle(ref, () => ({
@@ -110,9 +111,11 @@ const MaintenanceCalendarEdit = forwardRef((props: CalendarEditProps, ref) => {
         params.id = props.calendar?.id;
         params.strategy = model.strategy ? "Cancel" : "Fail";
       }
-      validateUrl(params.url)
-        ? props.onEdit(params)
-        : props.messages(MessagesUtils.error(t('Url "{url}" is invalid', { url: params.url })));
+      if (validateUrl(params.url)) {
+        props.onEdit(params);
+      } else {
+        props.messages(MessagesUtils.error(t('Url "{url}" is invalid', { url: params.url })));
+      }
     },
   }));
 

@@ -1,4 +1,3 @@
-import * as React from "react";
 import { useState } from "react";
 
 import { WebCalendar } from "manager/maintenance/calendar/web-calendar";
@@ -14,8 +13,8 @@ import { Table } from "components/table/Table";
 type CalendarDetailsProps = {
   id: number;
   name: string;
-  eventNames: Array<string>;
-  scheduleNames: Array<Record<string, string>>;
+  eventNames: string[];
+  scheduleNames: Record<string, string>[];
   url: string;
   onDelete: (...args: any[]) => any;
   onMessage: (messages: MessageType[]) => void;
@@ -70,8 +69,8 @@ const MaintenanceCalendarDetails = (props: CalendarDetailsProps) => {
 type OverviewProps = {
   id: number;
   name: string;
-  eventNames: Array<string>;
-  scheduleNames: Array<Record<string, string>>;
+  eventNames: string[];
+  scheduleNames: Record<string, string>[];
   url: string;
   onMessage: (messages: MessageType[]) => void;
   clearMessages: (messages: void) => void;
@@ -83,12 +82,14 @@ const MaintenanceCalendarOverview = (props: OverviewProps) => {
     { left: t("Calendar Name") + ":", right: props.name },
     { left: t("Used by Schedule") + ":", right: props.scheduleNames.map((name) => name.name).join(", ") },
   ];
-  props.url && tableData.push({ left: t("Url") + ":", right: props.url });
+  if (props.url) {
+    tableData.push({ left: t("Url") + ":", right: props.url });
+  }
 
   return (
     <div>
       <BootstrapPanel title={t("Calendar Details")}>
-        <Table data={tableData} identifier={(row) => tableData.indexOf(row)} initialItemsPerPage={0}>
+        <Table data={tableData} identifier={(row) => tableData.indexOf(row)} hideHeaderFooter="both">
           <Column columnKey="left" cell={(row) => row.left} />
           <Column columnKey="right" cell={(row) => row.right} />
         </Table>

@@ -25,7 +25,7 @@ Feature: Manipulate activation keys
     And I wait until I do not see "Loading..." text
     And I enter "20" as "usageLimit"
     And I click on "Update Activation Key"
-    Then I should see a "Activation key SUSE Test Key i586 has been modified." text
+    Then I wait until I see "Activation key SUSE Test Key i586 has been modified." text
     And I should see "20" in field identified by "usageLimit"
 
   Scenario: Change the base channel of the i586 activation key
@@ -34,7 +34,7 @@ Feature: Manipulate activation keys
     And I wait until I do not see "Loading..." text
     And I select "Fake-Base-Channel-i586" from "selectedBaseChannel"
     And I click on "Update Activation Key"
-    Then I should see a "Activation key SUSE Test Key i586 has been modified." text
+    Then I wait until I see "Activation key SUSE Test Key i586 has been modified." text
 
   Scenario: Delete the i586 activation key
     When I follow the left menu "Systems > Activation Keys"
@@ -74,7 +74,7 @@ Feature: Manipulate activation keys
     And I enter "SUSE Test PKG Key x86_64" as "description"
     And I enter "SUSE-TEST-x86_64" as "key"
     And I enter "20" as "usageLimit"
-    And I select "SLE-Product-SLES15-SP4-Pool for x86_64" from "selectedBaseChannel"
+    And I select "SLE-Product-SLES15-SP7-Pool for x86_64" from "selectedBaseChannel"
     And I click on "Create Activation Key"
     And I follow "Packages"
     And I enter "sed" as "packages"
@@ -90,7 +90,7 @@ Feature: Manipulate activation keys
     And I enter "SUSE Test PKG Key x86_64" as "description"
     And I enter "SUSE-TEST-x86_64" as "key"
     And I enter "20" as "usageLimit"
-    And I select "openSUSE Leap 15.6 (x86_64)" from "selectedBaseChannel"
+    And I select "openSUSE Tumbleweed (x86_64)" from "selectedBaseChannel"
     And I click on "Create Activation Key"
     And I follow "Packages"
     And I enter "sed" as "packages"

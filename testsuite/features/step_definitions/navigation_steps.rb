@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2025 SUSE LLC.
+# Copyright (c) 2010-2026 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 ### This file contains the definitions for all steps concerning navigation through the Web UI
@@ -48,8 +48,19 @@ When(/^I wait at most (\d+) seconds until I see "([^"]*)" text$/) do |seconds, t
   raise ScriptError, "Text '#{text}' not found" unless check_text_and_catch_request_timeout_popup?(text, timeout: seconds.to_i)
 end
 
-When(/^I wait until I see "([^"]*)" text or "([^"]*)" text$/) do |text1, text2|
-  raise ScriptError, "Text '#{text1}' or '#{text2}' not found" unless check_text_and_catch_request_timeout_popup?(text1, text2: text2, timeout: DEFAULT_TIMEOUT)
+When(/^I wait until I see "([^"]*)" text or "([^"]*)" text(?:, (refreshing the page))?$/) do |text1, text2, refresh_option|
+  if refresh_option
+    # refreshing the page
+    repeat_until_timeout(message: "Couldn't find text '#{text1}' or text '#{text2}'") do
+      break if has_content?(text1) || has_content?(text2)
+
+      sleep(3)
+      refresh_page
+    end
+  else
+    raise ScriptError, "Text '#{text}' not found" unless check_text_and_catch_request_timeout_popup?(text, timeout: DEFAULT_TIMEOUT)
+
+  end
 end
 
 When(/^I wait until I see "([^"]*)" (text|regex), refreshing the page$/) do |text, type|
@@ -87,7 +98,14 @@ When(/^I wait at most (\d+) seconds until the event is completed, refreshing the
 
   repeat_until_timeout(timeout: timeout.to_i, message: 'Event not yet completed') do
     break if has_content?('This action\'s status is: Completed.', wait: 3)
-    raise SystemCallError, 'Event failed' if has_content?('This action\'s status is: Failed.', wait: 3)
+
+    if has_content?('This action\'s status is: Failed.', wait: 3)
+      details = all(:xpath, '//li[.//strong[text()=\'Details:\']]//pre', visible: true)
+      details_array = details.map(&:text)
+      combined_details = details_array.join("\n")
+      log "Event Details:\n#{combined_details}"
+      raise SystemCallError, 'Event failed'
+    end
 
     current = Time.now
     if current - last > 150
@@ -97,6 +115,11 @@ When(/^I wait at most (\d+) seconds until the event is completed, refreshing the
 
     refresh_page
   end
+end
+
+When(/^I wait until I see the system name of "([^"]*)"$/) do |host|
+  system_name = get_system_name(host)
+  step %(I wait until I see "#{system_name}" text)
 end
 
 When(/^I wait until I see the name of "([^"]*)", refreshing the page$/) do |host|
@@ -172,13 +195,19 @@ When(/^I (check|uncheck) "([^"]*)" by label$/) do |action, label|
   end
 end
 
+When(/^I select the channel "([^"]*)"$/) do |channel|
+  checkbox = find(:xpath, "//a[text()='#{channel}']/preceding-sibling::input[@type='checkbox']").check
+  checkbox.check
+  raise ScriptError, "Checkbox #{label} not checked." unless checkbox.checked?
+end
+
 When(/^I select "([^"]*)" from "([^"]*)"$/) do |option, field|
   if has_select?(field, with_options: [option], wait: 1)
     select(option, from: field)
   else
     # Custom React selector
     xpath_field = "//*[contains(@class, 'data-testid-#{field}-child__control')]"
-    xpath_option = ".//*[contains(@class, 'data-testid-#{field}-child__option') and contains(text(), '#{option}')]"
+    xpath_option = ".//*[contains(@class, 'data-testid-#{field}-child__option') and contains(., '#{option}')]"
     find(:xpath, xpath_field).click
     find(:xpath, xpath_option, match: :first).click
   end
@@ -190,8 +219,16 @@ When(/^I select the parent channel for the "([^"]*)" from "([^"]*)"$/) do |clien
 end
 
 When(/^I select "([^"]*)" from drop-down in table line with "([^"]*)"$/) do |value, line|
-  select = find(:xpath, ".//div[@class='table-responsive']/table/tbody/tr[contains(td/a,'#{line}')]//select")
-  select(value, from: select[:id])
+  xpath_query = "//div[contains(@class, 'table-responsive')]//tr[contains(., '#{line}')]//select"
+  dropdown = find(:xpath, xpath_query, wait: DEFAULT_TIMEOUT)
+  dropdown.select(value)
+end
+
+# Choose a radio button by its visible label text.
+# The 'choose' method automatically finds the associated input element by matching the text of a label tag to the radio button's ID/Name.
+When(/^I choose "([^"]*)" radio button$/) do |label_text|
+  choose(label_text)
+  raise ScriptError, "Radio button '#{label_text}' not checked." unless has_checked_field?(label_text)
 end
 
 When(/^I choose radio button "([^"]*)" for child channel "([^"]*)"$/) do |radio, channel|
@@ -232,6 +269,12 @@ When(/^I enter "([^"]*)" as "([^"]*)"$/) do |text, field|
   fill_in(field, with: text, fill_options: { clear: :backspace })
 end
 
+When(/^I enter data from table with value as field name$/) do |table|
+  table.raw.each do |row|
+    step %(I enter "#{row.first}" as "#{row.last}")
+  end
+end
+
 When(/^I enter "([^"]*)" in the placeholder "([^"]*)"$/) do |text, placeholder|
   find("input[placeholder='#{placeholder}']").set(text)
 end
@@ -270,13 +313,6 @@ end
 #
 When(/^I click on "([^"]*)"$/) do |text|
   click_button_and_wait(text, match: :first)
-end
-
-#
-# Click on a button by nav item
-#
-When(/^I click on a button within the item containing "([^"]*)"$/) do |text_in_item|
-  find(:xpath, "//li[.//span[text()='#{text_in_item}']]//button").click
 end
 
 #
@@ -511,7 +547,7 @@ Then(/^table row for "([^"]*)" should contain "([^"]*)"$/) do |arg1, arg2|
 end
 
 Then(/^I wait until table row for "([^"]*)" contains "([^"]*)"$/) do |arg1, arg2|
-  xpath_query = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//*[contains(.,'#{arg1}')]]"
+  xpath_query = "//tr[.//*[contains(.,'#{arg1}')]]"
   within(:xpath, xpath_query) do
     raise ScriptError, "xpath: #{xpath_query} has no content #{arg2}" unless check_text_and_catch_request_timeout_popup?(arg2, timeout: DEFAULT_TIMEOUT)
   end
@@ -525,10 +561,10 @@ Then(/^the table row for "([^"]*)" should( not)? contain "([^"]*)" icon$/) do |r
     raise ScriptError, "Unsupported icon '#{icon}' in the step definition"
   end
 
-  xpath_query = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//*[contains(.,'#{row}')]]"
+  xpath_query = "//tr[.//*[contains(.,'#{row}')]]"
   within(:xpath, xpath_query) do
     if should_not
-      raise ScriptError, "xpath: #{xpath_query} has no icon #{icon}" unless has_no_css?(content_selector, wait: 2)
+      raise ScriptError, "xpath: #{xpath_query} has icon #{icon}" unless has_no_css?(content_selector, wait: 2)
     else
       raise ScriptError, "xpath: #{xpath_query} has no icon #{icon}" unless has_css?(content_selector, wait: 2)
     end
@@ -545,7 +581,7 @@ When(/^I wait until table row for "([^"]*)" contains button "([^"]*)"$/) do |tex
 end
 
 When(/^I wait until table row contains a "([^"]*)" text$/) do |text|
-  xpath_query = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{text}')]]"
+  xpath_query = "//tr[.//td[contains(.,'#{text}')]]"
   raise ScriptError, "xpath: #{xpath_query} not found" unless find(:xpath, xpath_query, wait: DEFAULT_TIMEOUT)
 end
 
@@ -616,7 +652,7 @@ Then(/^I am logged in$/) do
 end
 
 Then(/^I should see an update in the list$/) do
-  xpath_query = '//div[@class="table-responsive"]/table/tbody/tr/td/a'
+  xpath_query = '//div[@class="table-responsive"]//tr/td/a'
   raise ScriptError, "xpath: #{xpath_query} not found" unless has_xpath?(xpath_query)
 end
 
@@ -855,13 +891,17 @@ Then(/^I check the row with the "([^"]*)" text$/) do |text|
 end
 
 When(/^I check the first patch in the list, that does not require a reboot$/) do
-  row = find(:xpath, '//section//div[@class=\'table-responsive\']/table/tbody/tr', match: :first)
+  row = find(:xpath, '//section//div[@class=\'table-responsive\']//tr', match: :first)
   reboot_required = row.has_xpath?('.//*[contains(@title,\'Reboot Required\')]')
   if reboot_required
     step 'I check the second row in the list'
   else
     step 'I check the first row in the list'
   end
+end
+
+When(/^I click on the Legal button$/) do
+  find_and_wait_click(:xpath, '//li[.//span[text()=\'Legal\']]//button').click
 end
 
 When(/^I click on the red confirmation button$/) do
@@ -953,7 +993,7 @@ When(/^I uncheck row with "([^"]*)" and arch of "([^"]*)"$/) do |text, client|
 end
 
 When(/^I check row with "([^"]*)" and "([^"]*)" in the list$/) do |text1, text2|
-  top_level_xpath_query = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{text1}')] and .//td[contains(.,'#{text2}')]]//input[@type='checkbox']"
+  top_level_xpath_query = "//div[contains(@class, 'table-responsive')]//tr[.//td[contains(.,'#{text1}')] and .//td[contains(.,'#{text2}')]]//input[@type='checkbox']"
   row = find(:xpath, top_level_xpath_query)
   raise ScriptError, "xpath: #{top_level_xpath_query} not found" if row.nil?
 
@@ -961,7 +1001,7 @@ When(/^I check row with "([^"]*)" and "([^"]*)" in the list$/) do |text1, text2|
 end
 
 When(/^I uncheck row with "([^"]*)" and "([^"]*)" in the list$/) do |text1, text2|
-  top_level_xpath_query = "//div[@class=\"table-responsive\"]/table/tbody/tr[.//td[contains(.,'#{text1}')] and .//td[contains(.,'#{text2}')]]//input[@type='checkbox']"
+  top_level_xpath_query = "//div[contains(@class, 'table-responsive')]//tr[.//td[contains(.,'#{text1}')] and .//td[contains(.,'#{text2}')]]//input[@type='checkbox']"
   row = find(:xpath, top_level_xpath_query, match: :first)
   raise ScriptError, "xpath: #{top_level_xpath_query} not found" if row.nil?
 
@@ -970,14 +1010,14 @@ end
 
 When(/^I check the second row in the list$/) do
   within(:xpath, '//section') do
-    row = find(:xpath, '//div[@class=\'table-responsive\']/table/tbody/tr[2]/td', match: :first)
+    row = find(:xpath, '//div[@class=\'table-responsive\']//tr[2]/td', match: :first)
     row.find(:xpath, './/input[@type=\'checkbox\']', match: :first).set(true)
   end
 end
 
 When(/^I check the first row in the list$/) do
   within(:xpath, '//section') do
-    row = find(:xpath, '//div[@class=\'table-responsive\']/table/tbody/tr[.//td]', match: :first)
+    row = find(:xpath, '//div[@class=\'table-responsive\']//tr[.//td]', match: :first)
     row.find(:xpath, './/input[@type=\'checkbox\']', match: :first).set(true)
   end
 end
@@ -1133,7 +1173,7 @@ When(/^I visit "([^"]*)" endpoint of this "([^"]*)"$/) do |service, host|
   port, protocol, path, text =
     case service
     when 'Proxy' then [443, 'https', '/pub/', 'Index of /pub']
-    when 'Prometheus' then [9090, 'http', '', 'graph']
+    when 'Prometheus' then [9090, 'http', '/query', 'Prometheus Time Series Collection']
     when 'Prometheus node exporter' then [9100, 'http', '', 'Node Exporter']
     when 'Prometheus apache exporter' then [9117, 'http', '', 'Apache Exporter']
     when 'Prometheus postgres exporter' then [9187, 'http', '', 'Postgres Exporter']
@@ -1248,7 +1288,7 @@ end
 Then(/^I should see "([^"]*)" hostname as first search result$/) do |host|
   system_name = get_system_name(host)
   within(:xpath, '//section') do
-    row = find(:xpath, '//div[@class=\'table-responsive\']/table/tbody/tr[.//td]', match: :first)
+    row = find(:xpath, '//div[@class=\'table-responsive\']//tr[.//td]', match: :first)
     within(row) do
       raise ScriptError, "Text '#{system_name}' not found" unless check_text_and_catch_request_timeout_popup?(system_name)
     end
@@ -1294,23 +1334,23 @@ end
 ## Password Policy navigation steps
 ###################################
 
-And(/^I set the minimum password length to "([^"]*)"$/) do |min_length|
+When(/^I set the minimum password length to "([^"]*)"$/) do |min_length|
   fill_in 'minLength', with: min_length
 end
 
-And(/^I set the maximum password length to "([^"]*)"$/) do |max_length|
+When(/^I set the maximum password length to "([^"]*)"$/) do |max_length|
   fill_in 'maxLength', with: max_length
 end
 
-And(/^I set the special characters list to "([^"]*)"$/) do |characters_list|
+When(/^I set the special characters list to "([^"]*)"$/) do |characters_list|
   fill_in 'specialChars', with: characters_list
 end
 
-And(/^I set the maximum allowed occurrence of any character to "([^"]*)"$/) do |max_occurence|
+When(/^I set the maximum allowed occurrence of any character to "([^"]*)"$/) do |max_occurence|
   fill_in 'maxCharacterOccurrence', with: max_occurence
 end
 
-And(/^I (enable|disable) the following restrictions:$/) do |action, table|
+When(/^I (enable|disable) the following restrictions:$/) do |action, table|
   restriction_map = {
     'Require Digits' => 'digitFlag',
     'Require Lowercase Characters' => 'lowerCharFlag',

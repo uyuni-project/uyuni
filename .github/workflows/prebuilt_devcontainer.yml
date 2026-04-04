@@ -1,0 +1,43 @@
+# SPDX-FileCopyrightText: 2023 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+
+name: 'pre-built devcontainer'
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - '.devcontainer/dev/**'
+  workflow_dispatch:
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and Push
+        uses: devcontainers/ci@8bf61b26e9c3a98f69cb6ce2f88d24ff59b785c6 # v0.3.1900000417
+        with:
+          configFile: .devcontainer/dev/devcontainer.ci.json
+          
+          subFolder: .devcontainer/dev
+
+          imageName: ghcr.io/${{ github.repository }}/devcontainer
+          imageTag: latest,${{ github.sha }}
+          
+          push: always
+          
+          noCache: true

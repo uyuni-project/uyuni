@@ -26,14 +26,15 @@ RUN zypper ref -f && \
       postgresql14-devel \
       chromium \
       chromedriver \
+      libgbm-devel \
       npm \
       openssh-server \
       openssh-clients \
       hostname \
       iproute2 \
-      && \
-    zypper -n install libssh4 && \
-    zypper -n install libssh-devel && \
+      vi \
+      libssh4 \
+      libssh-devel && \
     zypper -n clean -a
 COPY etc_pam.d_sshd /etc/pam.d/sshd
 CMD ssh-keygen -A && /usr/sbin/sshd -De

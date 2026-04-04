@@ -20,7 +20,7 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           perl-Satcon
-Version:        5.2.0
+Version:        5.2.1
 Release:        0
 Summary:        Framework for configuration files
 License:        GPL-2.0-only
@@ -29,6 +29,7 @@ Group:          Applications/System
 URL:            https://github.com/uyuni-project/uyuni
 BuildArch:      noarch
 Requires:       perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
+#!CreateArchive: %{name}
 Source0:        https://github.com/spacewalkproject/spacewalk/archive/%{name}-%{version}.tar.gz
 BuildRequires:  perl(ExtUtils::MakeMaker)
 %if 0%{?suse_version}

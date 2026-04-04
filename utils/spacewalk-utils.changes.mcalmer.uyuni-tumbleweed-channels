@@ -1,7 +1,0 @@
-- Change Uyuni Server and Proxy repositories for new tumbleweed
-  and microos base channels
-- Drop Debian 9 and 10 repositories after end of LTS
-- Drop EOL SLES and SLE Micro repositories
-- Drop EOL openSUSE Leap and Leap Micro repositories
-- Drop all legacy spacewalk repositories
-- Drop all Centos 6 and clones

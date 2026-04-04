@@ -1,3 +1,0 @@
-- Add container based kiwi10 build system
-- Do not use pkg search in jinja (bsc#1240882)
-- Remove SLE11 kiwi bundle build support

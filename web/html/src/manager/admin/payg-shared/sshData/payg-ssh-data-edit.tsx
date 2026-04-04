@@ -1,5 +1,3 @@
-import * as React from "react";
-
 import { paygProperties } from "manager/admin/payg/payg";
 import useLifecyclePaygActionsApi from "manager/admin/payg-shared/api/payg-actions-api";
 import PaygSshDataForm from "manager/admin/payg-shared/sshData/payg-ssh-data-form";
@@ -14,7 +12,7 @@ type Props = {
   paygId: string;
   isInstance: boolean;
   labelPrefix: string;
-  onChange: Function;
+  onChange: (...args: any[]) => any;
   readOnly?: boolean;
 };
 
@@ -43,7 +41,7 @@ const PaygSshDataEdit = (props: Props) => {
       });
   };
 
-  let title = props.labelPrefix + " SSH connection";
+  const title = props.labelPrefix + " SSH connection";
 
   return (
     <div id={props.labelPrefix + "-panel-wrapper"}>
@@ -61,12 +59,8 @@ const PaygSshDataEdit = (props: Props) => {
           setErrors(null);
         }}
         disableEditing={props.readOnly}
-        renderContent={() => (
-          <React.Fragment>
-            <PaygSshDataView payg={props.paygSshData} isInstance={props.isInstance} />
-          </React.Fragment>
-        )}
-        renderCreationContent={({ open, item, setItem, errors }) => {
+        renderContent={() => <PaygSshDataView payg={props.paygSshData} isInstance={props.isInstance} />}
+        renderCreationContent={({ item, setItem, errors }) => {
           if (isLoading) {
             return <Loading text={t("Editing ssh connection data..")} />;
           }

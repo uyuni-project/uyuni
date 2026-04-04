@@ -1,38 +1,45 @@
 #!/bin/bash
 set -xe
 
+if [[ "$(uname)" == "Darwin" ]]; then
+  PODMAN_CMD="podman"
+else
+  PODMAN_CMD="sudo -i podman"
+fi
+
 src_dir=$(cd $(dirname "$0")/../.. && pwd -P)
 
-mkdir -p /tmp/ssl
+mkdir -p /tmp/testing/ssl
 
 # Generate the SSL certificates
-sudo -i podman run --cap-add AUDIT_CONTROL --rm \
+$PODMAN_CMD run --cap-add AUDIT_CONTROL \
     --tmpfs /run \
     -v root:/root:z \
     -v ${src_dir}/testsuite:/testsuite \
     -v /tmp/testing:/tmp \
-    -v /tmp/ssl:/ssl:z \
+    -v /tmp/testing/ssl:/ssl:z \
     --name=ssl-generator \
     --network network \
+    --pull newer \
     ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-server-all-in-one-dev:$UYUNI_VERSION \
     bash -xc "/testsuite/podman_runner/generate_certificates.sh"
 
 # Generate the Secret for the SSL certificates and the DB credentials
-sudo -i podman secret create uyuni-ca /tmp/ssl/ca.crt
-sudo -i podman secret create uyuni-db-ca /tmp/ssl/ca.crt
-sudo -i podman secret create uyuni-cert /tmp/ssl/server.crt
-sudo -i podman secret create uyuni-key /tmp/ssl/server.key
-sudo -i podman secret create uyuni-db-cert /tmp/ssl/reportdb.crt
-sudo -i podman secret create uyuni-db-key /tmp/ssl/reportdb.key
-echo -n "admin" | sudo -i podman secret create uyuni-db-user -
-echo -n "spacewalk" | sudo -i podman secret create uyuni-db-pass -
-echo -n "dbadmin" | sudo -i podman secret create uyuni-db-admin-user -
-echo -n "dbpass" | sudo -i podman secret create uyuni-db-admin-pass -
-echo -n "pythia_susemanager" | sudo -i podman secret create uyuni-reportdb-user -
-echo -n "pythia_susemanager" | sudo -i podman secret create uyuni-reportdb-pass -
+$PODMAN_CMD secret create uyuni-ca /tmp/testing/ssl/ca.crt
+$PODMAN_CMD secret create uyuni-db-ca /tmp/testing/ssl/ca.crt
+$PODMAN_CMD secret create uyuni-cert /tmp/testing/ssl/server.crt
+$PODMAN_CMD secret create uyuni-key /tmp/testing/ssl/server.key
+$PODMAN_CMD secret create uyuni-db-cert /tmp/testing/ssl/reportdb.crt
+$PODMAN_CMD secret create uyuni-db-key /tmp/testing/ssl/reportdb.key
+echo -n "admin" | $PODMAN_CMD secret create uyuni-db-user -
+echo -n "spacewalk" | $PODMAN_CMD secret create uyuni-db-pass -
+echo -n "dbadmin" | $PODMAN_CMD secret create uyuni-db-admin-user -
+echo -n "dbpass" | $PODMAN_CMD secret create uyuni-db-admin-pass -
+echo -n "pythia_susemanager" | $PODMAN_CMD secret create uyuni-reportdb-user -
+echo -n "pythia_susemanager" | $PODMAN_CMD secret create uyuni-reportdb-pass -
 
 # Start the Database container
-sudo -i podman run \
+$PODMAN_CMD run \
     --cgroups=no-conmon \
     -d \
     --shm-size=0 \
@@ -40,6 +47,7 @@ sudo -i podman run \
     --hostname uyuni-db.mgr.internal \
     --network-alias db \
     --network-alias reportdb \
+    --pull newer \
     --secret uyuni-db-ca,type=mount,target=/etc/pki/trust/anchors/DB-RHN-ORG-TRUSTED-SSL-CERT \
     --secret uyuni-db-key,type=mount,uid=999,mode=0400,target=/etc/pki/tls/private/pg-spacewalk.key \
     --secret uyuni-db-cert,type=mount,target=/etc/pki/tls/certs/spacewalk.crt \
@@ -58,7 +66,7 @@ max_iterations=12
 iteration=0
 
 while [ "$iteration" -lt "$max_iterations" ]; do
-  if sudo -i podman exec -ti uyuni-db pg_isready -U pgadmin -h localhost -p 5432; then
+  if $PODMAN_CMD exec -ti uyuni-db pg_isready -U pgadmin -h localhost -p 5432; then
     if [ $? -eq 0 ]; then
       echo "uyuni-db up and running."
       break
@@ -80,11 +88,11 @@ fi
 
 
 # Run the setup container
-setup_pm_path=`sudo -i podman run --rm -ti ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-server-all-in-one-dev:$UYUNI_VERSION sh -c 'rpm -ql spacewalk-setup | grep Setup.pm' | tr -d '\r'`
-certs_py_path=`sudo -i podman run --rm -ti ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-server-all-in-one-dev:$UYUNI_VERSION sh -c 'rpm -ql python3-spacewalk-certs-tools | grep mgr_ssl_cert_setup.py' | tr -d '\r'`
+setup_pm_path=`$PODMAN_CMD run -ti ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-server-all-in-one-dev:$UYUNI_VERSION sh -c 'rpm -ql spacewalk-setup | grep Setup.pm' | tr -d '\r'`
+certs_py_path=`$PODMAN_CMD run -ti ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-server-all-in-one-dev:$UYUNI_VERSION sh -c 'rpm -ql python3-spacewalk-certs-tools | grep mgr_ssl_cert_setup.py' | tr -d '\r'`
 python_path=${certs_py_path%%certs*}
 
-sudo -i podman run --cap-add AUDIT_CONTROL --rm \
+$PODMAN_CMD run --cap-add AUDIT_CONTROL \
     --tmpfs /run \
     -v var-cobbler:/var/lib/cobbler \
     -v var-search:/var/lib/rhn/search \
@@ -117,12 +125,15 @@ sudo -i podman run --cap-add AUDIT_CONTROL --rm \
     -v ${src_dir}/testsuite:/testsuite \
     -v ${src_dir}/schema/reportdb/upgrade/:/usr/share/susemanager/db/reportdb-schema-upgrade/ \
     -v ${src_dir}/web:/web \
+    -v ${src_dir}/.npmrc:/.npmrc \
+    -v ${src_dir}/package.json:/package.json \
+    -v ${src_dir}/package-lock.json:/package-lock.json \
     -v ${src_dir}/branding:/branding \
     -v ${src_dir}/java:/java \
     -v ${src_dir}/client:/client \
     -v ${src_dir}/susemanager-utils:/susemanager-utils \
     -v ${src_dir}/susemanager:/susemanager \
-    -v ${src_dir}/susemanager/bin/mgr-setup:/usr/lib/susemanager/bin/mgr-setup \
+    -v ${src_dir}/containers/server-image/root/docker-entrypoint-init.d/00-mgrSetup.sh:/docker-entrypoint-init.d/00-mgrSetup.sh \
     -v ${src_dir}/spacewalk/setup/share/tomcat_java_opts.conf:/etc/tomcat/conf.d/tomcat_java_opts.conf \
     -v ${src_dir}/spacewalk/setup/share/tomcat_java_opts_suse.conf:/etc/tomcat/conf.d/tomcat_java_opts_suse.conf \
     -v ${src_dir}/java/conf/default/rhn_taskomatic_daemon.conf:/usr/share/rhn/config-defaults/rhn_taskomatic_daemon.conf \
@@ -131,7 +142,7 @@ sudo -i podman run --cap-add AUDIT_CONTROL --rm \
     -v ${src_dir}/spacewalk/certs-tools/mgr_ssl_cert_setup.py:${python_path}/certs/mgr_ssl_cert_setup.py \
     -v /sys/fs/cgroup:/sys/fs/cgroup:rw \
     -v /tmp/testing:/tmp \
-    -v /tmp/ssl:/ssl \
+    -v /tmp/testing/ssl:/ssl \
     --secret uyuni-db-user,type=env,target=MANAGER_USER \
     --secret uyuni-db-pass,type=env,target=MANAGER_PASS \
     --secret uyuni-reportdb-user,type=env,target=REPORT_DB_USER \
@@ -153,9 +164,14 @@ sudo -i podman run --cap-add AUDIT_CONTROL --rm \
     -e REPORT_DB_PORT="5432"  \
     -e REPORT_DB_NAME="reportdb"  \
     -e EXTERNALDB_PROVIDER=""  \
-    -e ISS_PARENT=""  \
     -e SCC_USER="test"  \
     -e SCC_PASS="test"  \
+    -e ORG_NAME='SUSE Test'  \
+    -e ADMIN_USER="admin"  \
+    -e ADMIN_PASS="admin"  \
+    -e ADMIN_FIRST_NAME="Admin"  \
+    -e ADMIN_LAST_NAME="Admin"  \
+    -e NO_SSL="N"  \
     --cgroupns=host \
     -h server \
     --name=server-setup \
@@ -163,7 +179,7 @@ sudo -i podman run --cap-add AUDIT_CONTROL --rm \
     ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-server-all-in-one-dev:$UYUNI_VERSION \
     bash -xc "/testsuite/podman_runner/provide-db-schema.sh && \
              cp /manager/spacewalk/config/var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf /var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf && \
-             /usr/lib/susemanager/bin/mgr-setup && \
+             /docker-entrypoint-init.d/00-mgrSetup.sh && \
              /usr/bin/spacewalk-schema-upgrade -y && \
              /testsuite/podman_runner/run_db_migrations.sh susemanager-schema && \
              /testsuite/podman_runner/run_db_migrations.sh uyuni-reportdb-schema && \
@@ -171,4 +187,4 @@ sudo -i podman run --cap-add AUDIT_CONTROL --rm \
 
 ${src_dir}/testsuite/podman_runner/setup-nginx-proxy-for-docker-registries.sh
 
-sudo -i rm -rf /tmp/ssl
+sudo -i rm -rf /tmp/testing/ssl
