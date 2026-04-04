@@ -57,6 +57,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import spark.Request;
 import spark.Response;
@@ -112,15 +113,16 @@ public class FilterApiController {
                                 new NoSuchElementException("No content project found with label: " + projectLabel));
 
 
+        // Use only active filters to avoid treating previously detached filters as still attached
         List<Long> activeFilterIds = dbContentProject.getActiveFilters()
                 .stream()
                 .map(ContentFilter::getId)
-                .toList();
+                .collect(Collectors.toList());
 
         List<Long> filterIdsToDetach = activeFilterIds
                 .stream()
                 .filter(filterId -> !filtersIdToUpdate.contains(filterId))
-                .toList();
+                .collect(Collectors.toList());
         filterIdsToDetach.forEach(filterId -> CONTENT_MGR.detachFilter(
                 projectLabel,
                 filterId,
@@ -130,7 +132,7 @@ public class FilterApiController {
         List<Long> filterIdsToAttach = filtersIdToUpdate
                 .stream()
                 .filter(filterId -> !activeFilterIds.contains(filterId))
-                .toList();
+                .collect(Collectors.toList());
         filterIdsToAttach
                 .forEach(filterId ->
                         CONTENT_MGR.attachFilter(
