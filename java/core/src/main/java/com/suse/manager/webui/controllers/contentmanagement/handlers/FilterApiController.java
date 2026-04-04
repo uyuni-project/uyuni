@@ -112,9 +112,13 @@ public class FilterApiController {
                                 new NoSuchElementException("No content project found with label: " + projectLabel));
 
 
-        List<Long> filterIdsToDetach = dbContentProject.getProjectFilters()
+        List<Long> activeFilterIds = dbContentProject.getActiveFilters()
                 .stream()
-                .map(pf -> pf.getFilter().getId())
+                .map(ContentFilter::getId)
+                .toList();
+
+        List<Long> filterIdsToDetach = activeFilterIds
+                .stream()
                 .filter(filterId -> !filtersIdToUpdate.contains(filterId))
                 .toList();
         filterIdsToDetach.forEach(filterId -> CONTENT_MGR.detachFilter(
@@ -125,11 +129,7 @@ public class FilterApiController {
 
         List<Long> filterIdsToAttach = filtersIdToUpdate
                 .stream()
-                .filter(filterId ->
-                        dbContentProject.getProjectFilters()
-                                .stream()
-                                .noneMatch(pf -> pf.getFilter().getId().equals(filterId))
-                )
+                .filter(filterId -> !activeFilterIds.contains(filterId))
                 .toList();
         filterIdsToAttach
                 .forEach(filterId ->
