@@ -24390,16 +24390,6 @@
         "enabled": true
     },
     {
-        "description": "Ubuntu-16.04-SUSE-Manager-Tools for amd64",
-        "distro_target": "amd64",
-        "autorefresh": true,
-        "id": 3869,
-        "enabled": true,
-        "name": "Ubuntu-16.04-SUSE-Manager-Tools",
-        "url": "https://updates.suse.com/SUSE/Updates/Ubuntu/16.04-CLIENT-TOOLS/x86_64/update/?k3K7Y5TERPRIUsQY2T2vFHmOjPi7pJR9WMmLbbmnjfexW2xQHi6ZPHSjSh4np7Rd86EYNErZV0Ib63czHzYXqLFVwc2YUKs3Emc7i62MUfcpO7Ovsw7OFVwScX6yPxJF3zETuk7Vwu3hzvZTL65V9f35FQ",
-        "installer_updates": false
-    },
-    {
         "distro_target": "amd64",
         "description": "Ubuntu-18.04-SUSE-Manager-Tools for amd64",
         "autorefresh": true,
@@ -29198,16 +29188,6 @@
         "installer_updates": false,
         "url": "https://updates.suse.com/SUSE/Products/SLE-Product-HPC/15-ESPOS/x86_64/product_source/?sB4bpm0qoa9R7r-gfuBq_dYExaXmelt2vfMc8n5qQEk1TEO9kQutX55GXf5LaOrfPaWEsmD6MAksZPxc6i9OA4o7CB_m5G6EFrpdXU5fXrPgyHSQnd5c9a1zIsoz0QYBcw3K7L9vCPIDyPYMPeghXKoU-mofZotpDZul",
         "name": "SLE-Product-HPC-ESPOS15-Source-Pool"
-    },
-    {
-        "installer_updates": false,
-        "url": "https://updates.suse.com/SUSE/Updates/Ubuntu/16.04-CLIENT-TOOLS-BETA/x86_64/update/?aTwbKrLuG4YjQHLYtQi8kCEIjUWfGIx_QeJChZeGAnKky7s2ruR7brwXwKEIwhX2JTFzgtwItaKWt9G0i_6gM-yE2tDvz8K5Wzw0l-PhA75ZB7NUa-An6ZdPYcPnUAsOwqaa54KNIvhUTYnN704TxvSL0gyMVLN9",
-        "name": "Ubuntu-16.04-SUSE-Manager-Tools-Beta",
-        "enabled": true,
-        "id": 4406,
-        "autorefresh": true,
-        "description": "Ubuntu-16.04-SUSE-Manager-Tools-Beta for amd64",
-        "distro_target": "amd64"
     },
     {
         "autorefresh": true,
