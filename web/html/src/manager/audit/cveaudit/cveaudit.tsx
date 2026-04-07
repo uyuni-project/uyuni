@@ -6,6 +6,7 @@ import { AsyncButton, LinkButton } from "components/buttons";
 import { IconTag } from "components/icontag";
 import { Messages } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
+import { Loading } from "components/utils/loading/Loading";
 import { Column } from "components/table/Column";
 import { Highlight } from "components/table/Highlight";
 import { SearchField } from "components/table/SearchField";
@@ -130,6 +131,7 @@ type State = {
   selectedItems: any[];
   target?: any;
   auditExecuted?: boolean;
+  loading: boolean;
 };
 
 class CVEAudit extends Component<Props, State> {
@@ -145,6 +147,7 @@ class CVEAudit extends Component<Props, State> {
       messages: [],
       selectedItems: [],
       auditExecuted: false,
+      loading: false,
     };
   }
 
@@ -208,24 +211,29 @@ class CVEAudit extends Component<Props, State> {
   }
 
   audit = (target) => {
-    cveAudit("CVE-" + this.state.cveYear + "-" + this.state.cveNumber, target, this.state.statuses).then((data) => {
-      if (data.success) {
-        this.setState({
-          results: data.data,
-          selectedItems: data.data.filter((i) => i.selected).map((i) => i.id),
-          resultType: target,
-          messages: [],
-          auditExecuted: true,
-        });
-      } else {
-        this.setState({
-          results: [],
-          selectedItems: [],
-          messages: data.messages,
-          auditExecuted: false,
-        });
-      }
-    });
+    this.setState({ loading: true });
+    return cveAudit("CVE-" + this.state.cveYear + "-" + this.state.cveNumber, target, this.state.statuses)
+      .then((data) => {
+        if (data.success) {
+          this.setState({
+            results: data.data,
+            selectedItems: data.data.filter((i) => i.selected).map((i) => i.id),
+            resultType: target,
+            messages: [],
+            auditExecuted: true,
+          });
+        } else {
+          this.setState({
+            results: [],
+            selectedItems: [],
+            messages: data.messages,
+            auditExecuted: false,
+          });
+        }
+      })
+      .finally(() => {
+        this.setState({ loading: false });
+      });
   };
 
   getPatchStatusAccuracyWarning = (row) => {
@@ -374,6 +382,7 @@ class CVEAudit extends Component<Props, State> {
               </p>
             </div>
           )}
+          {this.state.loading && <Loading text={t("Auditing in progress...")} />}
           <Table
             data={this.state.results}
             identifier={(row) => row.id}
