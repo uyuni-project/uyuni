@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019--2025 SUSE LLC
+ * Copyright (c) 2019--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -19,6 +19,7 @@ import static com.suse.manager.webui.utils.SparkApplicationHelper.withUserPrefer
 import static spark.Spark.get;
 
 import com.redhat.rhn.common.localization.LocalizationService;
+import com.redhat.rhn.common.util.TimeUtils;
 import com.redhat.rhn.common.util.validation.password.PasswordPolicy;
 import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.access.NamespaceFactory;
@@ -222,26 +223,28 @@ public class AdminViewsController {
             throw Spark.halt(HttpStatus.SC_NOT_FOUND, "Peripheral not found");
         }
 
-        String peripheralFqdn;
-        ChannelSyncModel channelSyncModel;
+        return TimeUtils.logTime(LOG, "Creating channel model", () -> {
+            String peripheralFqdn;
+            ChannelSyncModel channelSyncModel;
 
-        try {
-            channelSyncModel = HUB_MANAGER.getChannelSyncModelForPeripheral(user, peripheralId);
-            peripheralFqdn = HUB_FACTORY.findPeripheralById(peripheralId).getFqdn();
-        }
-        catch (CertificateException eIn) {
-            LOG.error("Unexpected error while processing the root certificate.", eIn);
-            throw Spark.halt(HttpStatus.SC_INTERNAL_SERVER_ERROR, LOC.getMessage("hub.invalid_root_ca"));
-        }
-        catch (IOException eIn) {
-            LOG.error("Connecting the remote server failed.", eIn);
-            throw Spark.halt(HttpStatus.SC_INTERNAL_SERVER_ERROR, LOC.getMessage("hub.error_connecting_remote"));
-        }
-        Map<String, Object> data = new HashMap<>();
-        data.put("peripheralId", GSON.toJson(peripheralId));
-        data.put("peripheralFqdn", GSON.toJson(peripheralFqdn));
-        data.put("channelsSyncData", GSON.toJson(channelSyncModel));
-        return new ModelAndView(data, "controllers/admin/templates/peripheral_sync_channels.jade");
+            try {
+                channelSyncModel = HUB_MANAGER.getChannelSyncModelForPeripheral(user, peripheralId);
+                peripheralFqdn = HUB_FACTORY.findPeripheralById(peripheralId).getFqdn();
+            }
+            catch (CertificateException eIn) {
+                LOG.error("Unexpected error while processing the root certificate.", eIn);
+                throw Spark.halt(HttpStatus.SC_INTERNAL_SERVER_ERROR, LOC.getMessage("hub.invalid_root_ca"));
+            }
+            catch (IOException eIn) {
+                LOG.error("Connecting the remote server failed.", eIn);
+                throw Spark.halt(HttpStatus.SC_INTERNAL_SERVER_ERROR, LOC.getMessage("hub.error_connecting_remote"));
+            }
+            Map<String, Object> data = new HashMap<>();
+            data.put("peripheralId", GSON.toJson(peripheralId));
+            data.put("peripheralFqdn", GSON.toJson(peripheralFqdn));
+            data.put("channelsSyncData", GSON.toJson(channelSyncModel));
+            return new ModelAndView(data, "controllers/admin/templates/peripheral_sync_channels.jade");
+        });
     }
 
     /**
