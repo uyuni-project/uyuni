@@ -228,8 +228,8 @@ public class AdminViewsController {
             ChannelSyncModel channelSyncModel;
 
             try {
-                channelSyncModel = HUB_MANAGER.getChannelSyncModelForPeripheral(user, peripheralId);
-                peripheralFqdn = HUB_FACTORY.findPeripheralById(peripheralId).getFqdn();
+                channelSyncModel = HUB_MANAGER.getChannelSyncModelForPeripheral(user, issPeripheral);
+                peripheralFqdn = issPeripheral.getFqdn();
             }
             catch (CertificateException eIn) {
                 LOG.error("Unexpected error while processing the root certificate.", eIn);
