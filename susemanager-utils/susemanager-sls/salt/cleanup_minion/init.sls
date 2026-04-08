@@ -32,45 +32,38 @@ mgrchannels_repo_clean_keyring:
     - name: /usr/share/keyrings/mgr-archive-keyring.gpg
 {%- endif %}
 
-mgr_mark_no_longer_managed:
-  file.absent:
-    - name: /etc/sysconfig/rhn/systemid
+{%- if not grains.get('transactional', False) %}
+mgr_async_identity_cleanup:
+  cmd.run:
+    - bg: True
+    - name: |
+        /usr/bin/sleep 1 && \
+        /usr/bin/rm -f /etc/sysconfig/rhn/systemid \
+                       {{ salt_config_dir }}/minion.d/susemanager.conf \
+                       {{ salt_config_dir }}/minion.d/master.conf \
+                       {{ salt_config_dir }}/pki/minion/minion.pem \
+                       {{ salt_config_dir }}/pki/minion/minion.pub \
+                       {{ salt_config_dir }}/pki/minion/minion_master.pub
+{%- endif %}
 
-mgr_remove_salt_config:
-  file.absent:
-    - name: {{ salt_config_dir }}/minion.d/susemanager.conf
-
-mgr_remove_salt_config_altname:
-  file.absent:
-     - name: {{ salt_config_dir }}/minion.d/master.conf
-
-mgr_remove_salt_priv_key:
-  file.absent:
-     - name: {{ salt_config_dir }}/pki/minion/minion.pem
-
-mgr_remove_salt_pub_key:
-  file.absent:
-     - name: {{ salt_config_dir }}/pki/minion/minion.pub
-
-mgr_remove_salt_master_key:
-
-  file.absent:
-     - name: {{ salt_config_dir }}/pki/minion/minion_master.pub
+{%- if not grains.get('transactional', False) %}
+mgr_schedule_salt_minion_stop:
+  schedule.present:
+    - function: cmd.run
+    - seconds: 3
+    - once: True
+    - persist: False
+    - maxrunning: 1
+    - job_args:
+      - |
+        /usr/bin/rm -rf /var/cache/{{ salt_minion_name }} && \
+        /usr/bin/rm -f {{ salt_config_dir }}/minion.d/_schedule.conf && \
+        /usr/bin/systemctl stop {{ salt_minion_name }}
+    - order: last
+{%- endif %}
 
 {%- if salt['pillar.get']('contact_method') not in ['ssh-push', 'ssh-push-tunnel'] %}
 mgr_disable_salt:
   cmd.run:
     - name: /usr/bin/systemctl disable {{ salt_minion_name }}
-    - require:
-      - file: mgr_remove_salt_config
-
-{%- if not grains['transactional'] %}
-mgr_stop_salt:
-  cmd.run:
-    - bg: True
-    - name: /usr/bin/sleep 9 && /usr/bin/systemctl stop {{ salt_minion_name }}
-    - order: last
-    - require:
-      - file: mgr_remove_salt_config
-{% endif %}
-{% endif %}
+{%- endif %}
