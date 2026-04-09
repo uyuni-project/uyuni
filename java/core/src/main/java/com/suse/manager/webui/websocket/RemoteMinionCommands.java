@@ -14,9 +14,13 @@
  */
 package com.suse.manager.webui.websocket;
 
+import static com.redhat.rhn.manager.user.UserManager.ensureRoleBasedAccess;
+
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
+import com.redhat.rhn.common.security.PermissionException;
 import com.redhat.rhn.common.util.StringUtil;
+import com.redhat.rhn.domain.access.Namespace;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.session.WebSession;
@@ -106,7 +110,14 @@ public class RemoteMinionCommands {
             }
         }
         else {
-            HEARTBEAT_SERVICE.register(session);
+            try {
+                if (validateWebSession(session, getWebSession())) {
+                    HEARTBEAT_SERVICE.register(session);
+                }
+            }
+            finally {
+                HibernateFactory.closeSession();
+            }
         }
     }
 
@@ -134,9 +145,8 @@ public class RemoteMinionCommands {
         ExecuteMinionActionDto msg = Json.GSON.fromJson(
                 messageBody, ExecuteMinionActionDto.class);
         try {
-            WebSession webSession = WebSessionFactory.lookupById(sessionId);
-
-            if (invalidWebSession(session, webSession)) {
+            WebSession webSession = getWebSession();
+            if (!validateWebSession(session, webSession)) {
                 return;
             }
 
@@ -347,20 +357,38 @@ public class RemoteMinionCommands {
         );
     }
 
-    private boolean invalidWebSession(Session session, WebSession webSession) {
+    private boolean validateWebSession(Session session, WebSession webSession) {
+        boolean valid = true;
         if (webSession == null || webSession.getUser() == null) {
-            LOG.debug("Invalid web sessionId. Closing the web socket.");
-            sendMessage(session, new ActionErrorEventDto(null,
-                    "INVALID_SESSION", "Invalid user session."));
+            valid = false;
+            LOG.debug("Invalid web sessionId.");
+            sendMessage(session, new ActionErrorEventDto(null, "INVALID_SESSION", "Invalid user session."));
+        }
+        else {
             try {
-                session.close();
-                return true;
+                ensureRoleBasedAccess(webSession.getUser(), "salt.remote_commands", Namespace.AccessMode.W);
             }
-            catch (IOException e) {
-                LOG.debug("Error closing web socket session", e);
+            catch (PermissionException ePerm) {
+                valid = false;
+                LOG.debug("Session unauthorized.", ePerm);
+                sendMessage(session, new ActionErrorEventDto(null, "UNAUTHORIZED", "User is unauthorized."));
             }
         }
-        return false;
+
+        if (!valid) {
+            try {
+                LOG.debug("Closing websocket session.");
+                session.close();
+            }
+            catch (IOException e) {
+                LOG.debug("Error closing websocket session.", e);
+            }
+        }
+        return valid;
+    }
+
+    private WebSession getWebSession() {
+        return WebSessionFactory.lookupById(this.sessionId);
     }
 
     /**

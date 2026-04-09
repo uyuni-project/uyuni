@@ -252,6 +252,9 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('salt.keys', 'W', NULL)
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('salt.remote_commands', 'W', 'Execute remote commands on systems')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('salt.formulas', 'R', NULL)
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
