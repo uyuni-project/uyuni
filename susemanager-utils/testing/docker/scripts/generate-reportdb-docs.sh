@@ -114,7 +114,9 @@ SCHEMASPY_VERSION=6.1.1
 SCHEMASPY_JAR=/root/schemaspy.jar
 if [ ! -f $SCHEMASPY_JAR ]; then
     echo "Retrieving SchemaSpy version $SCHEMASPY_VERSION"
+    SCHEMASPY_SHA256="9d8142f50dd42426c812bb80b0915388837322de2508b48a7827e6abbbe6deca"
     wget -q --show-progress "https://github.com/$SCHEMASPY_REPO/releases/download/v$SCHEMASPY_VERSION/schemaspy-$SCHEMASPY_VERSION.jar" -O $SCHEMASPY_JAR
+    echo "${SCHEMASPY_SHA256}  ${SCHEMASPY_JAR}" | sha256sum -c -
 fi
 
 # Check postgresql runtime dependency. If version is >= 42.2.19, we need ongres-stringprep as well

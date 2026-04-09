@@ -1,4 +1,4 @@
-FROM redis:latest
+FROM redis:latest@sha256:009cc37796fbdbe1b631b4cc0582bed167e5e403ed8bcd06f77eb6cb5aeb6f93
 
 RUN apt-get update && apt-get install -y redis-tools
 
