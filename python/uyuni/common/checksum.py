@@ -19,8 +19,12 @@ import os
 import hashlib
 import inspect
 
+try:
+    _hashlib_new_sig = inspect.signature(hashlib.new)
+except (ValueError, TypeError):
+    _hashlib_new_sig = None
 hashlib_has_usedforsecurity = (
-    "usedforsecurity" in inspect.getfullargspec(hashlib.new)[0]
+    _hashlib_new_sig is not None and "usedforsecurity" in _hashlib_new_sig.parameters
 )
 
 
