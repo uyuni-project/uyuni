@@ -20,6 +20,8 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerGroupFactory;
 import com.redhat.rhn.frontend.events.AlignSoftwareTargetAction;
 import com.redhat.rhn.frontend.events.AlignSoftwareTargetMsg;
+import com.redhat.rhn.frontend.events.AnalyzeAlignTablesAction;
+import com.redhat.rhn.frontend.events.AnalyzeAlignTablesMsg;
 import com.redhat.rhn.frontend.events.CloneErrataAction;
 import com.redhat.rhn.frontend.events.CloneErrataEvent;
 import com.redhat.rhn.frontend.events.NewCloneErrataAction;
@@ -332,6 +334,10 @@ public class MessageQueue {
         // Copy SW source contents to an Environment target
         MessageQueue.registerAction(new AlignSoftwareTargetAction(),
                                     AlignSoftwareTargetMsg.class);
+
+        // Analyze CLM tables after align transaction finishes
+        MessageQueue.registerAction(new AnalyzeAlignTablesAction(),
+                        AnalyzeAlignTablesMsg.class);
 
         // Asynchronously schedule immediate repo sync
         MessageQueue.registerAction(new ScheduleRepoSyncAction(),
