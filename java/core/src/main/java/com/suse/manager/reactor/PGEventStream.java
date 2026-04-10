@@ -206,7 +206,7 @@ public class PGEventStream extends AbstractEventStream {
     /**
      * Polls for PostgreSQL LISTEN/NOTIFY notifications and process them.
      */
-    public void pollForNotifications() {
+    protected void pollForNotifications() {
         try {
             PGConnection pgConn = connection.unwrap(PGConnection.class);
             PGNotification[] notifications = pgConn.getNotifications(1);
@@ -235,7 +235,7 @@ public class PGEventStream extends AbstractEventStream {
      * Connection watchdog task that checks the database connection health and reschedules any orphaned events that
      * lost their notifications.
      */
-    public void connectionWatchdog() {
+    protected void connectionWatchdog() {
         try {
             try (Statement s = connection.createStatement()) {
                 s.execute("SELECT 'salt-event-connection-watchdog';");

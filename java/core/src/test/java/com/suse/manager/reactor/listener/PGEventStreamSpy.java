@@ -55,9 +55,9 @@ public class PGEventStreamSpy extends PGEventStream {
         int earlyWatchdogInvocations = EARLY_WATCHDOG_INVOCATIONS.getAndSet(0);
 
 
-        this.notificationHandlerInvocations = new AtomicInteger(earlyNotificationPollerInvocations);
-        this.notificationPollerInvocations = new AtomicInteger(EARLY_NOTIFICATION_POLLER_INVOCATIONS.getAndSet(0));
-        this.watchdogInvocations = new AtomicInteger(EARLY_WATCHDOG_INVOCATIONS.getAndSet(0));
+        this.notificationHandlerInvocations = new AtomicInteger(earlyNotificationHandlerInvocations);
+        this.notificationPollerInvocations = new AtomicInteger(earlyNotificationPollerInvocations);
+        this.watchdogInvocations = new AtomicInteger(earlyWatchdogInvocations);
 
         this.notificationHandlerLatch =
                 new CountDownLatch(Math.max(0, notificationHandlerLatchCount - earlyNotificationHandlerInvocations));

@@ -10,13 +10,13 @@
  */
 package com.suse.manager.reactor.listener;
 
-import static com.suse.TestUtils.setConfigDefaultsInstance;
 import static com.suse.manager.reactor.PGEventStream.SUSE_SALT_EVENT_NOTIFICATION_CHANNEL;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.testing.RhnJmockBaseTestCase;
@@ -24,10 +24,9 @@ import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 import com.suse.manager.reactor.PGEventStream;
 import com.suse.salt.netapi.exception.SaltException;
 
-import org.jmock.Expectations;
-import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -50,43 +49,36 @@ import java.util.stream.LongStream;
  */
 class PGEventStreamTest extends RhnJmockBaseTestCase {
     private static final int QUEUE_COUNT = ConfigDefaults.get().getSaltEventThreadPoolSize() + 1;
-    private final ConfigDefaults configDefaults = ConfigDefaults.get();
+    private static final int DEFAULT_SALT_EVENT_NOTIFICATION_POLL_INTERVAL_MS_VALUE =
+            ConfigDefaults.get().getSaltEventNotificationPollIntervalMs();
+    private static final int DEFAULT_SALT_EVENT_CONNECTION_WATCHDOG_INTERVAL_SECONDS_VALUE =
+            ConfigDefaults.get().getSaltEventConnectionWatchdogIntervalSeconds();
     private PGEventStream stream;
 
-    @Override
-    @BeforeEach
-    public void setUp() throws Exception {
-        super.setUp();
-        context.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
 
-        // set/confirm main threads intervals are set
-        ConfigDefaults mockConfigDefaults = context.mock(ConfigDefaults.class);
-        context.checking(new Expectations() {{
-            allowing(mockConfigDefaults).getSaltEventNotificationPollIntervalMs();
-            will(returnValue(100));
-            allowing(mockConfigDefaults).getSaltEventConnectionWatchdogIntervalSeconds();
-            will(returnValue(1));
-            allowing(mockConfigDefaults).getSaltEventsPerCommit();
-            will(returnValue(configDefaults.getSaltEventsPerCommit()));
-            allowing(mockConfigDefaults).getSaltEventThreadPoolSize();
-            will(returnValue(configDefaults.getSaltEventThreadPoolSize()));
-            allowing(mockConfigDefaults).isPrometheusMonitoringEnabled();
-            will(returnValue(configDefaults.isPrometheusMonitoringEnabled()));
-            allowing(mockConfigDefaults).getJdbcConnectionString();
-            will(returnValue(configDefaults.getJdbcConnectionString()));
+    @BeforeAll
+    public static void beforeAll() {
+        Config.get().setString(ConfigDefaults.SALT_EVENT_NOTIFICATION_POLL_INTERVAL_MS, "100");
+        Config.get().setString(ConfigDefaults.SALT_EVENT_CONNECTION_WATCHDOG_INTERVAL_SECONDS, "1");
+    }
 
-
-
-        }});
-        setConfigDefaultsInstance(mockConfigDefaults);
+    @AfterAll
+    public static void afterAll() {
+        Config.get().setString(
+                ConfigDefaults.SALT_EVENT_NOTIFICATION_POLL_INTERVAL_MS,
+                String.valueOf(DEFAULT_SALT_EVENT_NOTIFICATION_POLL_INTERVAL_MS_VALUE)
+        );
+        Config.get().setString(
+                ConfigDefaults.SALT_EVENT_CONNECTION_WATCHDOG_INTERVAL_SECONDS,
+                String.valueOf(DEFAULT_SALT_EVENT_CONNECTION_WATCHDOG_INTERVAL_SECONDS_VALUE)
+        );
     }
 
     @AfterEach
-    void closeStream() throws IOException, NoSuchFieldException, IllegalAccessException {
+    void closeStream() throws IOException {
         if (stream != null && !stream.isEventStreamClosed()) {
             stream.close();
         }
-        setConfigDefaultsInstance(configDefaults);
     }
 
     /**
@@ -133,7 +125,7 @@ class PGEventStreamTest extends RhnJmockBaseTestCase {
 
         // assert all executorServices are set
         List<ThreadPoolExecutor> executorServices = getStreamField("executorServices");
-        assertEquals(configDefaults.getSaltEventThreadPoolSize() + 1, executorServices.size());
+        assertEquals(ConfigDefaults.get().getSaltEventThreadPoolSize() + 1, executorServices.size());
 
         assertEquals(1, pgEventStreamSpy.getNotificationHandlerInvocations());
         assertTrue(pgEventStreamSpy.getNotificationPollerLatch().await(3, TimeUnit.SECONDS),
@@ -231,7 +223,8 @@ class PGEventStreamTest extends RhnJmockBaseTestCase {
         };
 
         AtomicBoolean shutdownInProgress = getStreamField("shutdownInProgress");
-        assertTrue(shutdownInProgress.get());
+        awaitTrue(shutdownInProgress,
+                ConfigDefaults.get().getSaltEventConnectionWatchdogIntervalSeconds() * 1000L * 3L);
     }
 
     @Test
@@ -244,9 +237,23 @@ class PGEventStreamTest extends RhnJmockBaseTestCase {
             }
         };
 
-        Thread.sleep(configDefaults.getSaltEventNotificationPollIntervalMs() * 3L);
         AtomicBoolean shutdownInProgress = getStreamField("shutdownInProgress");
-        assertTrue(shutdownInProgress.get());
+        awaitTrue(shutdownInProgress, ConfigDefaults.get().getSaltEventNotificationPollIntervalMs() * 3L);
+    }
+
+    /**
+     * Wait until the given flag becomes true or fail after the timeout expires.
+     *
+     * @param condition the flag to observe
+     * @param timeoutMs the maximum time to wait in milliseconds
+     * @throws InterruptedException if the wait is interrupted
+     */
+    private void awaitTrue(AtomicBoolean condition, long timeoutMs) throws InterruptedException {
+        long deadline = System.nanoTime() + TimeUnit.MILLISECONDS.toNanos(timeoutMs);
+        while (!condition.get() && System.nanoTime() < deadline) {
+            Thread.sleep(10L);
+        }
+        assertTrue(condition.get());
     }
 
     /**
