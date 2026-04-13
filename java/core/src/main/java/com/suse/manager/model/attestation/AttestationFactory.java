@@ -190,7 +190,7 @@ public class AttestationFactory extends HibernateFactory {
             result.setEnvironmentType(envType);
             result.setResultType(t);
             result.setReport(report);
-            result.setStatus(CoCoResultStatus.PENDING);
+            result.setStatus(CoCoResultStatus.REQUESTED);
             result.setDescription(t.getTypeDescription());
             save(result);
             report.addResults(result);
