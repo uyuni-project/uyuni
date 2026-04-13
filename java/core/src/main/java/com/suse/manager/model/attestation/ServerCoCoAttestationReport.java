@@ -48,7 +48,7 @@ public class ServerCoCoAttestationReport extends BaseDomainHelper implements Ser
     private Server server;
     private Action action;
     private CoCoEnvironmentType environmentType;
-    private CoCoAttestationStatus status;
+    private CoCoReportStatus status;
     private Map<String, Object> inData = new TreeMap<>();
     private Map<String, Object> outData = new TreeMap<>();
     private List<CoCoAttestationResult> results = new ArrayList<>();
@@ -91,7 +91,7 @@ public class ServerCoCoAttestationReport extends BaseDomainHelper implements Ser
 
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    public CoCoAttestationStatus getStatus() {
+    public CoCoReportStatus getStatus() {
         return status;
     }
 
@@ -144,7 +144,7 @@ public class ServerCoCoAttestationReport extends BaseDomainHelper implements Ser
     /**
      * @param statusIn the status to set
      */
-    public void setStatus(CoCoAttestationStatus statusIn) {
+    public void setStatus(CoCoReportStatus statusIn) {
         status = statusIn;
     }
 

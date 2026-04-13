@@ -26,7 +26,7 @@ import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.AnsibleManager;
 
 import com.suse.manager.model.attestation.AttestationFactory;
-import com.suse.manager.model.attestation.CoCoAttestationStatus;
+import com.suse.manager.model.attestation.CoCoReportStatus;
 import com.suse.manager.model.attestation.ServerCoCoAttestationConfig;
 import com.suse.manager.utils.MachinePasswordUtils;
 
@@ -121,7 +121,7 @@ public class MinionGeneralPillarGenerator extends MinionPillarGeneratorBase {
         cocoCnf.filter(ServerCoCoAttestationConfig::isEnabled).ifPresent(cnf -> {
             AttestationFactory attfct = new AttestationFactory();
             Map<String, Object> attestationPillar = attfct.lookupLatestReportByServer(minion)
-                    .filter(r -> r.getStatus().equals(CoCoAttestationStatus.PENDING))
+                    .filter(r -> r.getStatus().equals(CoCoReportStatus.PENDING))
                     .map(r -> new HashMap<>(r.getInData()))
                     .orElse(new HashMap<>());
             attestationPillar.put("environment_type", cnf.getEnvironmentType().name());

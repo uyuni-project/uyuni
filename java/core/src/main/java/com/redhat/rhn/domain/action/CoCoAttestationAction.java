@@ -16,7 +16,7 @@ import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionSummary;
 
 import com.suse.manager.attestation.AttestationManager;
-import com.suse.manager.model.attestation.CoCoAttestationStatus;
+import com.suse.manager.model.attestation.CoCoReportStatus;
 import com.suse.manager.model.attestation.ServerCoCoAttestationReport;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltParameters;
@@ -64,7 +64,7 @@ public class CoCoAttestationAction extends Action {
                 if (rep.getResults().isEmpty()) {
                     // results are not initialized yet. So we need to set the report status
                     // directly to failed.
-                    rep.setStatus(CoCoAttestationStatus.FAILED);
+                    rep.setStatus(CoCoReportStatus.FAILED);
                 }
             });
         }
@@ -131,7 +131,7 @@ public class CoCoAttestationAction extends Action {
             if (report.getResults().isEmpty()) {
                 // results are not initialized yet. So we need to set the report status
                 // directly to failed.
-                report.setStatus(CoCoAttestationStatus.FAILED);
+                report.setStatus(CoCoReportStatus.FAILED);
             }
         }
         else {
