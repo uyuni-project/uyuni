@@ -11,8 +11,18 @@
 
 package com.suse.coco.model;
 
+import java.util.List;
+
 public enum AttestationStatus {
     PENDING,
     SUCCEEDED,
-    FAILED
+    FAILED,
+    REQUESTED,
+    QUEUED,
+    SUBMITTED;
+
+
+    public static List<AttestationStatus> statusToListenList() {
+        return List.of(REQUESTED, PENDING);
+    }
 }
