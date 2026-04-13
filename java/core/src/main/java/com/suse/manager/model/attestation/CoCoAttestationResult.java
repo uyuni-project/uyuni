@@ -41,7 +41,7 @@ public class CoCoAttestationResult implements Serializable {
     private Long id;
     private ServerCoCoAttestationReport report;
     private CoCoResultType resultType;
-    private CoCoAttestationStatus status;
+    private CoCoResultStatus status;
     private String description;
     private String details;
     private String processOutput;
@@ -80,7 +80,7 @@ public class CoCoAttestationResult implements Serializable {
      */
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
-    public CoCoAttestationStatus getStatus() {
+    public CoCoResultStatus getStatus() {
         return status;
     }
 
@@ -156,7 +156,7 @@ public class CoCoAttestationResult implements Serializable {
     /**
      * @param statusIn the status to set
      */
-    public void setStatus(CoCoAttestationStatus statusIn) {
+    public void setStatus(CoCoResultStatus statusIn) {
         status = statusIn;
     }
 
