@@ -39,8 +39,9 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.model.attestation.AttestationFactory;
 import com.suse.manager.model.attestation.CoCoAttestationResult;
-import com.suse.manager.model.attestation.CoCoAttestationStatus;
 import com.suse.manager.model.attestation.CoCoEnvironmentType;
+import com.suse.manager.model.attestation.CoCoReportStatus;
+import com.suse.manager.model.attestation.CoCoResultStatus;
 import com.suse.manager.model.attestation.ServerCoCoAttestationConfig;
 import com.suse.manager.model.attestation.ServerCoCoAttestationReport;
 import com.suse.manager.webui.services.pillar.MinionGeneralPillarGenerator;
@@ -174,7 +175,7 @@ public class AttestationManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(2, reports.size());
 
         ServerCoCoAttestationReport latestReport = mgr.lookupLatestCoCoAttestationReport(user, server);
-        assertEquals(CoCoAttestationStatus.SUCCEEDED, latestReport.getStatus());
+        assertEquals(CoCoReportStatus.SUCCEEDED, latestReport.getStatus());
         assertEquals("Some details", latestReport.getResults().get(0).getDetailsOpt().orElse(""));
     }
 
@@ -274,7 +275,7 @@ public class AttestationManagerTest extends JMockBaseTestCaseWithUser {
     }
     private void fakeSuccessfullAttestation(ServerCoCoAttestationReport reportIn) {
         reportIn.getResults().forEach(res -> {
-            res.setStatus(CoCoAttestationStatus.SUCCEEDED);
+            res.setStatus(CoCoResultStatus.SUCCEEDED);
             res.setDetails("Some details");
             res.setAttested(new Date());
         });

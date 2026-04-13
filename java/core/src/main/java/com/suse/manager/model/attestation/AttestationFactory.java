@@ -169,7 +169,7 @@ public class AttestationFactory extends HibernateFactory {
             ServerCoCoAttestationReport rpt = new ServerCoCoAttestationReport();
             rpt.setServer(serverIn);
             rpt.setEnvironmentType(cnf.get().getEnvironmentType());
-            rpt.setStatus(CoCoAttestationStatus.PENDING);
+            rpt.setStatus(CoCoReportStatus.PENDING);
             save(rpt);
             serverIn.addCocoAttestationReports(rpt);
             return rpt;
@@ -189,7 +189,7 @@ public class AttestationFactory extends HibernateFactory {
             CoCoAttestationResult result = new CoCoAttestationResult();
             result.setResultType(t);
             result.setReport(report);
-            result.setStatus(CoCoAttestationStatus.PENDING);
+            result.setStatus(CoCoResultStatus.PENDING);
             result.setDescription(t.getTypeDescription());
             save(result);
             report.addResults(result);
