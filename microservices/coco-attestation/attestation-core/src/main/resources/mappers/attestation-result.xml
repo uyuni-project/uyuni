@@ -22,7 +22,7 @@
         LIMIT #{batchSize}
     </select>
 
-    <select id="selectForUpdate" parameterType="long" resultType="com.suse.coco.model.AttestationResult">
+    <select id="selectForUpdate" parameterType="map" resultType="com.suse.coco.model.AttestationResult">
           SELECT id
                     , report_id
                     , result_type
@@ -32,7 +32,7 @@
                     , attested
             FROM suseCoCoAttestationResult
            WHERE id = #{id}
-                    AND status = 'PENDING'
+           AND status IN <foreach item="statusToListen" collection="statusToListenList" open="(" close=")" separator=",">#{statusToListen}</foreach>
         FOR NO KEY UPDATE NOWAIT
     </select>
 
