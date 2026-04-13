@@ -38,6 +38,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.OffsetDateTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -70,16 +71,18 @@ class AttestationResultServiceTest {
     @DisplayName("The attestation results are listed and filtered by the result types")
     void canListPendingResultsByType() {
         when(session.selectList(
-            "AttestationResult.listPendingForResultType",
-            Map.of("supportedTypes", List.of(1, 2, 3), "batchSize", 10)
+            "AttestationResult.listForResultType",
+            Map.of("statusToListenList", List.of(AttestationStatus.REQUESTED, AttestationStatus.PENDING),
+                    "supportedTypes", List.of(1, 2, 3), "batchSize", 10)
         )).thenReturn(List.of(5L, 7L, 13L));
 
-        List<Long> resultIds = service.getPendingResultByType(List.of(1, 2, 3), 10);
+        List<Long> resultIds = service.getResultByStatusAndType(List.of(1, 2, 3), 10);
         assertEquals(List.of(5L, 7L, 13L), resultIds);
 
         verify(session).selectList(
-            "AttestationResult.listPendingForResultType",
-            Map.of("supportedTypes", List.of(1, 2, 3), "batchSize", 10)
+            "AttestationResult.listForResultType",
+            Map.of("statusToListenList", List.of(AttestationStatus.REQUESTED, AttestationStatus.PENDING),
+                    "supportedTypes", List.of(1, 2, 3), "batchSize", 10)
         );
         verify(session).close();
 
