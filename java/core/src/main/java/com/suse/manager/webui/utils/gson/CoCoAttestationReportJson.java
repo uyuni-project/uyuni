@@ -21,7 +21,7 @@ import com.redhat.rhn.domain.action.ActionType;
 import com.redhat.rhn.domain.user.User;
 
 import com.suse.manager.model.attestation.CoCoAttestationResult;
-import com.suse.manager.model.attestation.CoCoAttestationStatus;
+import com.suse.manager.model.attestation.CoCoResultStatus;
 import com.suse.manager.model.attestation.ServerCoCoAttestationReport;
 
 import java.util.Date;
@@ -178,7 +178,7 @@ public class CoCoAttestationReportJson {
     }
 
     private static Date getAttestationTime(List<CoCoAttestationResult> results) {
-        if (results.stream().anyMatch(r -> r.getStatus() != CoCoAttestationStatus.SUCCEEDED)) {
+        if (results.stream().anyMatch(r -> r.getStatus() != CoCoResultStatus.SUCCEEDED)) {
             return null;
         }
 

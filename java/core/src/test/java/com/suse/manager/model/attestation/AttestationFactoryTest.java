@@ -141,7 +141,7 @@ public class AttestationFactoryTest extends BaseTestCaseWithUser {
         ServerCoCoAttestationReport report = attestationFactory.createReportForServer(server);
         TestUtils.flushSession();
         assertNotNull(report);
-        assertEquals(CoCoAttestationStatus.PENDING, report.getStatus());
+        assertEquals(CoCoReportStatus.PENDING, report.getStatus());
         assertEquals(cnf.getEnvironmentType(), report.getEnvironmentType());
         assertNull(report.getAction());
 
