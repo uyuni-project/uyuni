@@ -98,10 +98,7 @@ class ProcessingThread extends AbstractProcessorThread {
                 // Process each one of them in a separate worker thread
                 results.forEach(resultId -> executorService.execute(() -> {
                     try {
-                        service.processAttestationResult(resultId, (session, result) -> {
-                            AttestationWorker worker = moduleLoader.createWorker(result.getResultType());
-                            return worker.processAttestationVerification(session, result);
-                        });
+                        service.processAttestationResult(resultId, moduleLoader::createWorker);
                     }
                     catch (Exception ex) {
                         LOGGER.error("Unable to correctly process attestation result with id {}", resultId, ex);
