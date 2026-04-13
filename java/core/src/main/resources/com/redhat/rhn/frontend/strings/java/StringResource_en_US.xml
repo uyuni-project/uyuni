@@ -10034,6 +10034,15 @@ For a detailed analysis, please refer to the log files.
       <trans-unit id="coco.status.failed.description">
         <source>Failed</source>
       </trans-unit>
+      <trans-unit id="coco.status.requested.description">
+        <source>Requested</source>
+      </trans-unit>
+      <trans-unit id="coco.status.queued.description">
+        <source>Queued</source>
+      </trans-unit>
+      <trans-unit id="coco.status.submitted.description">
+        <source>Submitted</source>
+      </trans-unit>
       <trans-unit id="system.audit.coco.unsupported">
         <source>This system does not have any Confidential Computing capability.</source>
       </trans-unit>
