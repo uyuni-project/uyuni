@@ -58,11 +58,12 @@ public class AttestationResultService {
      * @param batchSize the number of results to fetch at max
      * @return the ids of the attestation results matching the criteria
      */
-    public List<Long> getPendingResultByType(Collection<Integer> resultTypeList, int batchSize) {
+    public List<Long> getResultByStatusAndType(Collection<Integer> resultTypeList, int batchSize) {
         try (SqlSession session = sessionFactory.openSession()) {
             return session.selectList(
-                "AttestationResult.listPendingForResultType",
-                Map.of("supportedTypes", resultTypeList, "batchSize", batchSize)
+                "AttestationResult.listForResultType",
+                Map.of("statusToListenList", AttestationStatus.statusToListenList(),
+                        "supportedTypes", resultTypeList, "batchSize", batchSize)
             );
         }
     }
