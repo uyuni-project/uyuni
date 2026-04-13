@@ -70,18 +70,18 @@ class AttestationResultServiceTest {
     @DisplayName("The attestation results are listed and filtered by the result types")
     void canListPendingResultsByType() {
         when(session.selectList(
-            "AttestationResult.listForResultType",
-            Map.of("statusToListenList", List.of(AttestationStatus.REQUESTED, AttestationStatus.PENDING),
-                    "supportedTypes", List.of(1, 2, 3), "batchSize", 10)
+                "AttestationResult.listForResultType",
+                Map.of("statusToListenList", List.of(AttestationStatus.REQUESTED, AttestationStatus.PENDING),
+                        "supportedTypes", List.of(1, 2, 3), "batchSize", 10)
         )).thenReturn(List.of(5L, 7L, 13L));
 
         List<Long> resultIds = service.getResultByStatusAndType(List.of(1, 2, 3), 10);
         assertEquals(List.of(5L, 7L, 13L), resultIds);
 
         verify(session).selectList(
-            "AttestationResult.listForResultType",
-            Map.of("statusToListenList", List.of(AttestationStatus.REQUESTED, AttestationStatus.PENDING),
-                    "supportedTypes", List.of(1, 2, 3), "batchSize", 10)
+                "AttestationResult.listForResultType",
+                Map.of("statusToListenList", List.of(AttestationStatus.REQUESTED, AttestationStatus.PENDING),
+                        "supportedTypes", List.of(1, 2, 3), "batchSize", 10)
         );
         verify(session).close();
 
@@ -97,16 +97,16 @@ class AttestationResultServiceTest {
         attestationResult.setAttested(null);
 
         when(session.selectOne("AttestationResult.selectForUpdate",
-                Map.of("statusToListenList", AttestationStatus.statusToListenList(),"id", 5L)))
+                Map.of("statusToListenList", AttestationStatus.statusToListenList(), "id", 5L)))
                 .thenReturn(attestationResult);
         when(worker.processAttestationVerification(session, attestationResult)).thenReturn(true);
 
         OffsetDateTime callStart = OffsetDateTime.now();
-        service.processAttestationResult(5L, worker);
+        service.processAttestationResult(5L, (dummyResultType) -> worker);
         OffsetDateTime callEnd = OffsetDateTime.now();
 
         verify(session).selectOne("AttestationResult.selectForUpdate",
-                Map.of("statusToListenList", AttestationStatus.statusToListenList(),"id", 5L));
+                Map.of("statusToListenList", AttestationStatus.statusToListenList(), "id", 5L));
         verify(worker).processAttestationVerification(session, attestationResult);
         verify(session).update("AttestationResult.update", attestationResult);
         verify(session).commit();
@@ -132,14 +132,14 @@ class AttestationResultServiceTest {
         attestationResult.setAttested(null);
 
         when(session.selectOne("AttestationResult.selectForUpdate",
-                Map.of("statusToListenList", AttestationStatus.statusToListenList(),"id", 5L)))
+                Map.of("statusToListenList", AttestationStatus.statusToListenList(), "id", 5L)))
                 .thenReturn(attestationResult);
         when(worker.processAttestationVerification(session, attestationResult)).thenReturn(false);
 
-        service.processAttestationResult(5L, worker);
+        service.processAttestationResult(5L, (dummyResultType) -> worker);
 
         verify(session).selectOne("AttestationResult.selectForUpdate",
-                Map.of("statusToListenList", AttestationStatus.statusToListenList(),"id", 5L));
+                Map.of("statusToListenList", AttestationStatus.statusToListenList(), "id", 5L));
         verify(worker).processAttestationVerification(session, attestationResult);
         verify(session).update("AttestationResult.update", attestationResult);
         verify(session).commit();
@@ -159,13 +159,13 @@ class AttestationResultServiceTest {
     void doesNotProcessIfAttestationResultIsAlreadyProcessed() {
         // Select for update returns null when another process already updated the same row
         when(session.selectOne("AttestationResult.selectForUpdate",
-                Map.of("statusToListenList", AttestationStatus.statusToListenList(),"id", 5L)))
+                Map.of("statusToListenList", AttestationStatus.statusToListenList(), "id", 5L)))
                 .thenReturn(null);
 
-        service.processAttestationResult(5L, worker);
+        service.processAttestationResult(5L, (dummyResultType) -> worker);
 
         verify(session).selectOne("AttestationResult.selectForUpdate",
-                Map.of("statusToListenList", AttestationStatus.statusToListenList(),"id", 5L));
+                Map.of("statusToListenList", AttestationStatus.statusToListenList(), "id", 5L));
         verify(session).rollback();
         verify(session).close();
 
@@ -178,13 +178,13 @@ class AttestationResultServiceTest {
     void doesNotProcessIfAttestationResultCannotBeLocked() {
         // Select for update returns null when another process already updated the same row
         when(session.selectOne("AttestationResult.selectForUpdate",
-                        Map.of("statusToListenList", AttestationStatus.statusToListenList(),"id", 5L)))
-            .thenThrow(new PersistenceException("PG/SQL Error: could not obtain lock on row"));
+                Map.of("statusToListenList", AttestationStatus.statusToListenList(), "id", 5L)))
+                .thenThrow(new PersistenceException("PG/SQL Error: could not obtain lock on row"));
 
-        service.processAttestationResult(5L, worker);
+        service.processAttestationResult(5L, (dummyResultType) -> worker);
 
         verify(session).selectOne("AttestationResult.selectForUpdate",
-                Map.of("statusToListenList", AttestationStatus.statusToListenList(),"id", 5L));
+                Map.of("statusToListenList", AttestationStatus.statusToListenList(), "id", 5L));
         verify(session).rollback();
         verify(session).close();
 

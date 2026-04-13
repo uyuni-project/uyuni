@@ -14,6 +14,7 @@ package com.suse.coco.attestation;
 import com.suse.coco.model.AttestationResult;
 import com.suse.coco.model.AttestationStatus;
 import com.suse.coco.module.AttestationWorker;
+import com.suse.coco.module.AttestationWorkerFactory;
 import com.suse.common.database.DatabaseSessionFactory;
 
 import org.apache.ibatis.exceptions.PersistenceException;
@@ -71,9 +72,9 @@ public class AttestationResultService {
     /**
      * Process an attestation result. The result is extracted from the database and locked for update.
      * @param id the id of the attestation result
-     * @param worker the worker processing the attestation result
+     * @param workerFactory the factory to create a worker processing the attestation result
      */
-    public void processAttestationResult(long id, AttestationWorker worker) {
+    public void processAttestationResult(long id, AttestationWorkerFactory workerFactory) {
         SqlSession session = sessionFactory.openSession();
 
         try {
@@ -83,6 +84,8 @@ public class AttestationResultService {
                 session.rollback();
                 return;
             }
+
+            AttestationWorker worker = workerFactory.createWorker(result.getResultType());
 
             LOGGER.info("AttestationResult with id {} selected for processing", id);
             boolean success = worker.processAttestationVerification(session, result);

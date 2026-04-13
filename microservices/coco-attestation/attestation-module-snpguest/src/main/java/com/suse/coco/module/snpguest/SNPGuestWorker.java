@@ -68,6 +68,11 @@ public class SNPGuestWorker implements AttestationWorker {
     }
 
     @Override
+    public boolean processAttestationRequest(SqlSession session, AttestationResult attestationResult) {
+        return false;
+    }
+
+    @Override
     public boolean processAttestationVerification(SqlSession session, AttestationResult result) {
         // Reset the output string builder
         outputBuilder.setLength(0);
