@@ -21,7 +21,6 @@ import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import java.security.SecureRandom;
-import java.util.Random;
 
 /**
  * CryptHelper - utility class for crypto routines
@@ -95,7 +94,7 @@ public class CryptHelper {
      */
     static String generateRandomSalt(Integer saltLength) {
         StringBuilder salt = new StringBuilder();
-        Random r = new SecureRandom();
+        SecureRandom r = new SecureRandom();
 
         for (int i = 0; i < saltLength; i++) {
             int rand = r.nextInt(b64t.length());
