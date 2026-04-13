@@ -19,7 +19,10 @@ import com.redhat.rhn.common.localization.LocalizationService;
 public enum CoCoResultStatus {
     PENDING,
     SUCCEEDED,
-    FAILED;
+    FAILED,
+    REQUESTED,
+    QUEUED,
+    SUBMITTED;
 
     private final String descriptionKey;
 
