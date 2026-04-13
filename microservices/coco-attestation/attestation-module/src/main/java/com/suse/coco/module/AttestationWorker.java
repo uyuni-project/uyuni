@@ -18,13 +18,20 @@ import org.apache.ibatis.session.SqlSession;
 /**
  * A worker to process and verify attestation results.
  */
-@FunctionalInterface
 public interface AttestationWorker {
 
     /**
-     * Process the attestation verification of the given attestation result.
+     * Process the attestation request of a given attestation result.
      * @param session the active mybatis database session
-     * @param attestationResult the attestation result to verify.
+     * @param attestationResult the attestation result to process.
+     * @return <code>true</code> if the processing succeeded, <code>false</code> otherwise.
+     */
+    boolean processAttestationRequest(SqlSession session, AttestationResult attestationResult);
+
+    /**
+     * Process the attestation verification of a given attestation result.
+     * @param session the active mybatis database session
+     * @param attestationResult the attestation result to process.
      * @return <code>true</code> if the processing succeeded, <code>false</code> otherwise.
      */
     boolean processAttestationVerification(SqlSession session, AttestationResult attestationResult);
