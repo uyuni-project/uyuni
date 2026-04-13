@@ -10,6 +10,9 @@
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 #
 
+import base64
+import crypt as _crypt  # pylint: disable=deprecated-module
+import hashlib
 import sys
 from unittest.mock import MagicMock
 
@@ -43,6 +46,8 @@ from spacewalk.server.rhnUser import (  # noqa: E402  pylint: disable=wrong-impo
 
 
 class TestEncryptPassword:
+    """Tests for the encrypt_password function."""
+
     def test_output_starts_with_prefix(self):
         result = encrypt_password("secret")
         assert result.startswith(_PBKDF2_PREFIX)
@@ -67,6 +72,8 @@ class TestEncryptPassword:
 
 
 class TestCheckPassword:
+    """Tests for the check_password function."""
+
     def test_roundtrip_new_password(self):
         hashed = encrypt_password("correcthorsebatterystaple")
         assert check_password("correcthorsebatterystaple", hashed) == 1
@@ -81,15 +88,11 @@ class TestCheckPassword:
 
     def test_legacy_crypt_hash_accepted(self):
         # SHA-256 crypt(3) hashes start with $5$; verify the legacy path still works
-        import crypt as _crypt  # pylint: disable=deprecated-module,import-outside-toplevel
-
         salt = "$5$testsalt"
         legacy_hash = _crypt.crypt("mypassword", salt)
         assert check_password("mypassword", legacy_hash) == 1
 
     def test_legacy_crypt_hash_wrong_password(self):
-        import crypt as _crypt  # pylint: disable=deprecated-module,import-outside-toplevel
-
         salt = "$5$testsalt"
         legacy_hash = _crypt.crypt("mypassword", salt)
         assert check_password("wrongpassword", legacy_hash) == 0
@@ -99,9 +102,6 @@ class TestCheckPassword:
 
     def test_pbkdf2_hash_with_wrong_iteration_count_rejected(self):
         # Craft a hash with iteration count out of the allowed range
-        import base64
-        import hashlib
-
         raw_salt = b"testsalt12345678"
         bad_iters = 9_999_999
         dk = hashlib.pbkdf2_hmac("sha256", b"secret", raw_salt, bad_iters)
@@ -116,8 +116,6 @@ class TestCheckPassword:
         """Simulates the scenario where a legacy $5$ hash is in the DB and the
         correct password is supplied — login must succeed so the caller can
         re-hash with PBKDF2 afterwards."""
-        import crypt as _crypt  # pylint: disable=deprecated-module,import-outside-toplevel
-
         salt = "$5$upgradetest"
         legacy_hash = _crypt.crypt("hunter2", salt)
         # Correct password returns 1 (caller may then call encrypt_password to upgrade)

@@ -632,7 +632,7 @@ def check_password(key, pwd1):
         try:
             if len(parts) == 5:
                 iterations = int(parts[2])
-                if not (1 <= iterations <= 2_000_000):
+                if not 1 <= iterations <= 2_000_000:
                     raise ValueError("iteration count out of range")
                 raw_salt = _base64.b64decode(parts[3])
                 dk = hashlib.pbkdf2_hmac("sha256", key.encode(), raw_salt, iterations)
@@ -643,7 +643,7 @@ def check_password(key, pwd1):
             log_debug(4, "PBKDF2 password verification failed")
             return 0
     elif pwd1.find("$5") == 0:  # legacy SHA-256 crypt(3) password
-        if pwd1 == encrypt_password(key, pwd1, "SHA-256"):
+        if pwd1 == encrypt_password(key, pwd1):
             return 1
 
     log_debug(4, "Encrypted password doesn't match")
@@ -654,19 +654,19 @@ _PBKDF2_ITERATIONS = 600000
 _PBKDF2_PREFIX = "$pbkdf2-sha256$"
 
 
-def encrypt_password(key, salt=None, method="SHA-256"):
+def encrypt_password(key, salt=None):
     """Hash the key using PBKDF2-SHA256 (600 000 iterations, 32-byte salt).
 
-    The ``method`` and ``salt`` parameters are kept for backwards compatibility
-    when verifying existing SHA-256 crypt(3) hashes stored as ``$5$…``.  New
-    passwords are always hashed with PBKDF2 and stored as
+    The ``salt`` parameter is kept for backwards compatibility when verifying
+    existing SHA-256 crypt(3) hashes stored as ``$5$…``.  New passwords are
+    always hashed with PBKDF2 and stored as
     ``$pbkdf2-sha256$<iterations>$<b64salt>$<b64hash>``.
     """
     if salt and str(salt).find("$5$") == 0:
         # Legacy path: verify an existing SHA-256 crypt(3) hash.
         # We keep this only for read-side verification; new passwords are
         # never written in crypt(3) format.
-        import crypt as _crypt  # pylint: disable=import-outside-toplevel
+        import crypt as _crypt  # pylint: disable=import-outside-toplevel,deprecated-module
 
         return _crypt.crypt(key, str(salt))
 
