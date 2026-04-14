@@ -60,8 +60,13 @@ public class CVEAuditHandler extends BaseHandler {
      */
     @ReadOnly
     public List<CVEAuditServer> listSystemsByPatchStatusVEX(User loggedInUser, String cveIdentifier)
-            throws UnknownCVEIdentifierException {
-        return CVEAuditManagerVEX.listSystemsByPatchStatus(loggedInUser, cveIdentifier, null);
+            throws FaultException {
+        try {
+            return CVEAuditManagerVEX.listSystemsByPatchStatus(loggedInUser, cveIdentifier, null);
+        }
+        catch (UnknownCVEIdentifierException e) {
+            throw new UnknownCVEIdentifierFaultException();
+        }
     }
 
     /**
