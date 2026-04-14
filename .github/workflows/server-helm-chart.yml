@@ -11,10 +11,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
       - name: Set up Helm unit tests
-        uses: d3adb5/helm-unittest-action@v2
+        uses: d3adb5/helm-unittest-action@850bc76597579183998069830d5fa8c3ef0ea34a # v2.5.0
         with:
           install-mode: if-not-present
           charts: containers/server-helm
@@ -29,7 +29,7 @@ jobs:
           helm unittest containers/server-helm
 
       - name: Set up Kubeconform
-        uses: bmuschko/setup-kubeconform@v1
+        uses: bmuschko/setup-kubeconform@5ccaecbbf012bcb1eeeab66e649db64a477ade8f # v1.0.0
 
       - name: Validate Kubernetes Manifests
         run: |

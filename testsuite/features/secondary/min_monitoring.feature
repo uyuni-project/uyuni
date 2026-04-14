@@ -3,6 +3,7 @@
 # This feature depends on:
 # - sumaform : As it is configuring monitoring to be enabled after deployment
 
+@susemanager
 @sle_minion
 @scope_monitoring
 @skip_if_github_validation

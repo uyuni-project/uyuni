@@ -2140,6 +2140,24 @@ public class SystemManager extends BaseManager {
         }
     }
 
+    /**
+     * Create and provide proxy container configuration without SSL certificates.
+     *
+     * @param user            the current user
+     * @param proxyName       the FQDN of the proxy
+     * @param proxyPort       the SSH port the proxy listens on
+     * @param server          the FQDN of the server the proxy uses
+     * @param maxCache        the maximum memory cache size
+     * @param email           the email of proxy admin
+     * @return the tarball configuration file as a byte array
+     */
+    public byte[] createProxyContainerConfig(User user, String proxyName, Integer proxyPort, String server,
+                                             Long maxCache, String email) {
+        return proxyContainerConfigCreateFacade.create(
+                saltApi, systemEntitlementManager, user, server, proxyName, proxyPort, maxCache, email,
+                null, null, null, null, null, null, null);
+    }
+
 
     /**
      * Create and provide proxy container configuration.

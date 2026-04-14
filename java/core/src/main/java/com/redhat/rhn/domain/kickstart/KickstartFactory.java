@@ -394,9 +394,8 @@ public class KickstartFactory extends HibernateFactory {
      * used if you want to save the KickstartData and associate the
      *
      * @param ksdataIn Kickstart Data to be stored in db
-     * @param ksession KickstartSession to associate with this save.
      */
-    public static void saveKickstartData(KickstartData ksdataIn, KickstartSession ksession) {
+    public static void saveKickstartData(KickstartData ksdataIn) {
         log.debug("saveKickstartData: {}", ksdataIn.getLabel());
         KickstartData kickstartData = singleton.saveObject(ksdataIn);
         String fileData = null;
@@ -408,7 +407,7 @@ public class KickstartFactory extends HibernateFactory {
         else {
             log.debug("saveKickstartData wizard.  use object");
             KickstartFormatter formatter = new KickstartFormatter(
-                    KickstartUrlHelper.COBBLER_SERVER_VARIABLE, kickstartData, ksession);
+                    KickstartUrlHelper.COBBLER_SERVER_VARIABLE, kickstartData);
             fileData = formatter.getFileData();
         }
         Profile p = Profile.lookupById(CobblerXMLRPCHelper.getAutomatedConnection(),
@@ -434,14 +433,6 @@ public class KickstartFactory extends HibernateFactory {
             path = p.getKickstart();
         }
         return path;
-    }
-
-    /**
-     *
-     * @param ksdataIn Kickstart Data to be stored in db
-     */
-    public static void saveKickstartData(KickstartData ksdataIn) {
-        saveKickstartData(ksdataIn, null);
     }
 
     /**
@@ -601,7 +592,8 @@ public class KickstartFactory extends HibernateFactory {
      */
     public static KickstartableTree lookupKickstartTreeByLabel(String label) {
         Session session = HibernateFactory.getSession();
-        return (KickstartableTree) session.createQuery("FROM KickstartableTree AS k WHERE k.label = :label")
+        return session.createQuery("FROM KickstartableTree AS k WHERE k.label = :label",
+                        KickstartableTree.class)
                 .setParameter(LABEL, label)
                 .uniqueResult();
     }

@@ -39,7 +39,6 @@ import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -112,14 +111,6 @@ public abstract class HibernateFactory {
     }
 
     /**
-     * Register Prometheus Statistics Collector component name
-     * @param componentName Name of the application component which will be added to the metric as the `unit` label
-     */
-    public static void registerComponentName(String componentName) {
-        connectionManager.setComponentName(componentName);
-    }
-
-    /**
      * Get the Logger for the derived class so log messages show up on the
      * correct class
      * @return Logger for this class.
@@ -129,23 +120,6 @@ public abstract class HibernateFactory {
     /**
      * Finds a single instance of a persistent object, given one parameter of type long
      * This convenience method is aimed at replacing simple named queries on a single parameter
-     * e.g. an environment like:
-     *
-     * ActionType-xbm.xml:
-     *      <query name="ActionType.findById">
-     *         <![CDATA[from com.redhat.rhn.domain.action.ActionType as t where t.id = :id]]>
-     *     </query>
-     * Anywhere in the code:
-     *     ActionType actType =
-     *          hibernateFactory.lookupObjectByNamedQuery("ActionType.findById", Map.of("id", id), true);
-     *
-     * can be substituted with
-     *
-     * ActionType-xbm.xml:
-     *      .... removed! .....
-     * Anywhere in the code:
-     *      ActionType actType = hibernateFactory.lookupObjectByParam("id", id, ActionType.class, true);
-     *
      * @param paramName the parameter name (e.g. "label", "name", "id" etc.)
      * @param paramValue the parameter actual value
      * @param objClass class of the query object
@@ -176,146 +150,6 @@ public abstract class HibernateFactory {
 
     protected <T, V> T lookupObjectByParam(Class<T> objClass, String paramName, V paramValue) {
         return lookupObjectByParam(objClass, paramName, paramValue, false);
-    }
-
-    /**
-     * Binds the values of the map to a named query parameter, whose value
-     * matches the key in the given Map, guessing the Hibernate type from the
-     * class of the given object.
-     * @param query Query to be modified.
-     * @param parameters named query parameters to be bound.
-     * @throws HibernateException if there is a problem with updating the Query.
-     * @throws ClassCastException if the key in the given Map is NOT a String.
-     */
-    private <T> void bindParameters(Query<T> query, Map<String, Object> parameters)
-        throws HibernateException {
-        if (parameters == null) {
-            return;
-        }
-
-        for (Map.Entry<String, Object> entry: parameters.entrySet()) {
-            if (entry.getValue() instanceof Collection c) {
-                if (c.size() > 1000) {
-                    LOG.error("Query executed with Collection larger than 1000");
-                }
-                query.setParameterList(entry.getKey(), c);
-            }
-            else {
-                query.setParameter(entry.getKey(), entry.getValue());
-            }
-        }
-    }
-
-    /**
-     * Finds a single instance of a persistent object given a named query.
-     * @param qryName The name of the query used to find the persistent object.
-     * It should be formulated to ensure a single object is returned or an error
-     * will occur.
-     * @param qryParams Map of named bind parameters whose keys are Strings. The
-     * map can also be null.
-     * @return Object found by named query or null if nothing found.
-     */
-    protected <T> T lookupObjectByNamedQuery(String qryName, Map<String, Object> qryParams) {
-        return lookupObjectByNamedQuery(qryName, qryParams, false);
-    }
-
-    /**
-     * Finds a single instance of a persistent object given a named query.
-     * @param qryName The name of the query used to find the persistent object.
-     * It should be formulated to ensure a single object is returned or an error
-     * will occur.
-     * @param qryParams Map of named bind parameters whose keys are Strings. The
-     * map can also be null.
-     * @param cacheable if we should cache the results of this object
-     * @return Object found by named query or null if nothing found.
-     */
-    @SuppressWarnings("unchecked")
-    protected <T> T lookupObjectByNamedQuery(String qryName, Map<String, Object> qryParams,
-            boolean cacheable) {
-        try {
-            Session session = HibernateFactory.getSession();
-
-            Query<T> query = session.getNamedQuery(qryName).setCacheable(cacheable);
-            bindParameters(query, qryParams);
-            return query.uniqueResult();
-        }
-        catch (MappingException me) {
-            throw new HibernateRuntimeException("Mapping not found for " + qryName, me);
-        }
-        catch (HibernateException he) {
-            throw new HibernateRuntimeException("Executing query " + qryName +
-                    " with params " + qryParams + " failed", he);
-        }
-    }
-
-    /**
-     * Using a named query, find all the objects matching the criteria within.
-     * Warning: This can be very expensive if the returned list is large. Use
-     * only for small tables with static data
-     * @param qryName Named query to use to find a list of objects.
-     * @param qryParams Map of named bind parameters whose keys are Strings. The
-     * map can also be null.
-     * @return List of objects returned by named query, or null if nothing
-     * found.
-     */
-    protected <T> List<T> listObjectsByNamedQuery(String qryName, Map<String, Object> qryParams) {
-        return listObjectsByNamedQuery(qryName, qryParams, false);
-    }
-
-    /**
-     * Using a named query, find all the objects matching the criteria within.
-     * Warning: This can be very expensive if the returned list is large. Use
-     * only for small tables with static data
-     * @param qryName Named query to use to find a list of objects.
-     * @param qryParams Map of named bind parameters whose keys are Strings. The
-     * map can also be null.
-     * @param col the collection to use as an inclause
-     * @param colLabel the label the collection will have
-     * @return List of objects returned by named query, or null if nothing
-     * found.
-     */
-    protected <T> List<T> listObjectsByNamedQuery(String qryName, Map<String, Object> qryParams,
-                                        Collection<Long> col, String colLabel) {
-
-        if (col.isEmpty()) {
-            return Collections.emptyList();
-        }
-
-        List<Long> tmpList = new ArrayList<>(col);
-        List<T> toRet = new ArrayList<>();
-
-        for (int i = 0; i < col.size();) {
-            int fin = Math.min(i + 500, col.size());
-            List<Long> sublist = tmpList.subList(i, fin);
-
-            Map<String, Object> params = new HashMap<>(qryParams);
-            params.put(colLabel, sublist);
-            toRet.addAll(listObjectsByNamedQuery(qryName, params, false));
-            i = fin;
-        }
-        return toRet;
-    }
-
-
-
-    /**
-     * Using a named query, find all the objects matching the criteria within.
-     * Warning: This can be very expensive if the returned list is large. Use
-     * only for small tables with static data
-     * @param qryName Named query to use to find a list of objects.
-     * @param qryParams Map of named bind parameters whose keys are Strings. The
-     * map can also be null.
-     * @param cacheable if we should cache the results of this query
-     * @return List of objects returned by named query, or null if nothing
-     * found.
-     */
-    @SuppressWarnings("unchecked")
-    protected <T> List<T> listObjectsByNamedQuery(String qryName, Map<String, Object> qryParams, boolean cacheable) {
-        Session session = HibernateFactory.getSession();
-        Query<T> query = session.getNamedQuery(qryName);
-        query.setCacheable(cacheable);
-        bindParameters(query, qryParams);
-        return query.list();
     }
 
      /**

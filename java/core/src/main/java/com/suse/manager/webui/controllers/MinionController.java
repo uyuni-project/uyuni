@@ -272,6 +272,7 @@ public class MinionController {
         data.put("orgName", OrgFactory.lookupById(Long.valueOf(orgId)).getName());
         data.put("entityType", "ORG");
         data.put("is_org_admin", user.hasRole(RoleFactory.ORG_ADMIN));
+        data.put("betaEnabled", user.getBetaFeaturesEnabled());
         data.put("tabs",
                 ViewHelper.getInstance().renderNavigationMenu(request, "/WEB-INF/nav/org_tabs.xml"));
         return new ModelAndView(data, "templates/org/recurring-actions.jade");
@@ -320,6 +321,7 @@ public class MinionController {
         data.put("orgName", user.getOrg().getName());
         data.put("is_org_admin", user.hasRole(RoleFactory.ORG_ADMIN));
         data.put("entityType", "ORG");
+        data.put("betaEnabled", user.getBetaFeaturesEnabled());
         return new ModelAndView(data, "templates/yourorg/recurring-actions.jade");
     }
 
@@ -388,6 +390,7 @@ public class MinionController {
         data.put("tabs",
                 ViewHelper.getInstance().renderNavigationMenu(request, "/WEB-INF/nav/system_group_detail.xml"));
         data.put("is_org_admin", user.hasRole(RoleFactory.ORG_ADMIN));
+        data.put("betaEnabled", user.getBetaFeaturesEnabled());
         return new ModelAndView(data, "templates/groups/recurring-actions.jade");
     }
 
@@ -469,6 +472,7 @@ public class MinionController {
         data.put("entityType", "MINION");
         data.put("is_org_admin", user.hasRole(RoleFactory.ORG_ADMIN));
         data.put("isControlNode", server.hasEntitlement(EntitlementManager.ANSIBLE_CONTROL_NODE));
+        data.put("betaEnabled", user.getBetaFeaturesEnabled());
         return new ModelAndView(data, "templates/minion/recurring-actions.jade");
     }
 

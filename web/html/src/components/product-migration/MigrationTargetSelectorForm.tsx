@@ -80,7 +80,13 @@ export const MigrationTargetSelectorForm: FC<Props> = ({
         }))}
       />
       <div className="col-md-offset-3 offset-md-3 col-md-6">
-        <AsyncButton id="submit-btn" className="btn-primary" text={t("Select Channels")} action={onSubmit} />
+        <AsyncButton
+          id="submit-btn"
+          className="btn-primary"
+          text={t("Select Channels")}
+          action={onSubmit}
+          disabled={!formModel.selectedTarget}
+        />
       </div>
     </Form>
   );

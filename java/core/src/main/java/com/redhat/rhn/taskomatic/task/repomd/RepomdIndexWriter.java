@@ -14,17 +14,14 @@
  */
 package com.redhat.rhn.taskomatic.task.repomd;
 
-import org.apache.xml.serialize.OutputFormat;
-import org.apache.xml.serialize.XMLSerializer;
 import org.xml.sax.SAXException;
 
-import java.io.IOException;
 import java.io.Writer;
 
-/**
- *
- *
- */
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.sax.TransformerHandler;
+import javax.xml.transform.stream.StreamResult;
+
 public class RepomdIndexWriter {
 
     private SimpleContentHandler handler;
@@ -50,11 +47,9 @@ public class RepomdIndexWriter {
      * @param modulesIn modules data
      * @param productsIn products data
      */
-    public RepomdIndexWriter(Writer writerIn, RepomdIndexData primaryIn,
-            RepomdIndexData filelistsIn, RepomdIndexData otherIn,
-            RepomdIndexData susedataDataIn, RepomdIndexData updateinfoIn,
-            RepomdIndexData groupIn, RepomdIndexData modulesIn,
-            RepomdIndexData productsIn) {
+    public RepomdIndexWriter(Writer writerIn, RepomdIndexData primaryIn, RepomdIndexData filelistsIn,
+                             RepomdIndexData otherIn, RepomdIndexData susedataDataIn, RepomdIndexData updateinfoIn,
+                             RepomdIndexData groupIn, RepomdIndexData modulesIn, RepomdIndexData productsIn) {
 
         this.primary = primaryIn;
         this.filelists = filelistsIn;
@@ -65,21 +60,15 @@ public class RepomdIndexWriter {
         this.products = productsIn;
         this.susedata = susedataDataIn;
 
-        OutputFormat of = new OutputFormat();
-
-        XMLSerializer serializer = new XMLSerializer(writerIn, of);
-
         try {
-            handler = new SimpleContentHandler(serializer.asContentHandler());
-        }
-        catch (IOException e) {
-            // XXX fatal error
-        }
-        try {
+            TransformerHandler transformerHandler = SaxSerializerFactory.newTransformerHandler(false);
+            transformerHandler.setResult(new StreamResult(writerIn));
+
+            handler = new SimpleContentHandler(transformerHandler);
             handler.startDocument();
         }
-        catch (SAXException e) {
-            // XXX fatal error
+        catch (TransformerException | SAXException e) {
+            throw new IllegalStateException("Failed to initialize XML serializer", e);
         }
     }
 
@@ -161,8 +150,7 @@ public class RepomdIndexWriter {
                 handler.endElement("open-checksum");
             }
 
-            handler.addElementWithCharacters("timestamp", Long.toString(data
-                    .getTimestamp().getTime() / 1000));
+            handler.addElementWithCharacters("timestamp", Long.toString(data.getTimestamp().getTime() / 1000));
 
             handler.endElement("data");
         }

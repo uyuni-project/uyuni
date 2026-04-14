@@ -1183,6 +1183,24 @@
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="preferences.jsp.betafeatures" xml:space="preserve">
+        <source> Enable beta features</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/UserPreferences</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="preferences.jsp.betaheader" xml:space="preserve">
+        <source>Beta Features</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/UserPreferences</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="preferences.jsp.betadescription" xml:space="preserve">
+        <source>Beta features are experimental and may not be fully tested. Enable this option to access new functionality that is still under development. Use with caution in production environments.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/UserPreferences</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="preferences.jsp.listsize" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ List Page Size</source>
         <context-group name="ctx">
@@ -1282,6 +1300,18 @@
       </trans-unit>
       <trans-unit id="preferences.subscription-warning.description" xml:space="preserve">
         <source> Show expired subscriptions warning.</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/UserPreferences</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="preferences.disk-check-warning.name" xml:space="preserve">
+        <source>Disk Check Warning</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/UserPreferences</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="preferences.disk-check-warning.description" xml:space="preserve">
+        <source> Show disk space warning when running low.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
@@ -12721,6 +12751,12 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
           <context context-type="sourcefile">Detailed view of SCAP XCCDF scan</context>
         </context-group>
         </trans-unit>
+        <trans-unit id="system.audit.xccdfdetails.jsp.action">
+          <source>Action</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">Detailed view of SCAP XCCDF scan</context>
+        </context-group>
+        </trans-unit>
         <trans-unit id="system.audit.xccdfdetails.jsp.unknown">
           <source>Unknown</source>
         <context-group name="ctx">
@@ -23618,6 +23654,12 @@ given channel.</source>
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="bunch.jsp.description.diskcheck-task-bunch" xml:space="preserve">
+        <source>Schedule a disk check</source>
+            <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="schedule.jsp.noschedules" xml:space="preserve">
         <source>There're no schedules available.</source>
         <context-group name="ctx">
@@ -23985,6 +24027,9 @@ given channel.</source>
       <trans-unit id="task.status.clear-log-history" xml:space="preserve">
         <source>Clean Log History</source>
       </trans-unit>
+      <trans-unit id="task.status.clm-channel-diff" xml:space="preserve">
+        <source>CLM Channel Comparison</source>
+      </trans-unit>
       <trans-unit id="task.status.cobbler-sync" xml:space="preserve">
         <source>Cobbler Sync</source>
       </trans-unit>
@@ -24066,6 +24111,10 @@ given channel.</source>
       <trans-unit id="task.status.ssh-service" xml:space="preserve">
         <source>Resume Action Chains and Checkin Salt SSH Systems </source>
       </trans-unit>
+      <trans-unit id="task.status.diskcheck-task" xml:space="preserve">
+        <source>Disk Check Actions</source>
+      </trans-unit>
+
       <trans-unit id="actions.jsp.pickedup" xml:space="preserve">
         <source>Picked Up</source>
       </trans-unit>
@@ -24799,6 +24848,27 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.allow.vendor.change">
         <source>Allow Vendor Change</source>
+      </trans-unit>
+      <trans-unit id="spmigration.sles16.preflight.title" xml:space="preserve">
+        <source>Before Migrating to SLES 16 — Please ensure</source>
+      </trans-unit>
+      <trans-unit id="spmigration.sles16.preflight.patch.title" xml:space="preserve">
+        <source>System is fully up to date</source>
+      </trans-unit>
+      <trans-unit id="spmigration.sles16.preflight.diskspace.title" xml:space="preserve">
+        <source>Sufficient disk space is available</source>
+      </trans-unit>
+      <trans-unit id="spmigration.sles16.preflight.ssh.title" xml:space="preserve">
+        <source>Ensure SSH key-based access is available for at least one user. If root login is required, create /etc/ssh/sshd_config.d/50-permit-root-login.conf with: PermitRootLogin yes</source>
+      </trans-unit>
+      <trans-unit id="spmigration.sles16.preflight.kvmguests.title" xml:space="preserve">
+        <source>KVM guests are shut down (if applicable)</source>
+      </trans-unit>
+      <trans-unit id="spmigration.sles16.preflight.network.title" xml:space="preserve">
+        <source>Network configuration will be migrated from wicked to NetworkManager</source>
+      </trans-unit>
+      <trans-unit id="spmigration.sles16.preflight.selinux.title" xml:space="preserve">
+        <source>AppArmor profiles will be migrated to SELinux</source>
       </trans-unit>
       <trans-unit id="spmigration.jsp.error.targetProductSelectedEmpty" xml:space="preserve">
         <source>Please select one target product to migrate</source>

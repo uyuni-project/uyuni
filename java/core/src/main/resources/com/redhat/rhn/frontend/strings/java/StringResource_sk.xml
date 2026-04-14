@@ -6522,13 +6522,6 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="kickstart.schedule.noup2date" xml:space="preserve">
-        <source>An autoinstallation was not scheduled for &lt;strong&gt;&lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;&lt;/strong&gt; because the package profile did not contain the 'up2date' package. An update of that system's package profile may be required.</source>
-        <target>Automatická inštalácia nebola naplánovaná pre &lt;strong&gt;&lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;&lt;/strong&gt;, pretože profil balíkov neobsahoval balík 'up2date'. Môže byť potrebná aktualizácia profilu balíkov tohto systému.</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="kickstart.session.newsession" xml:space="preserve">
         <source>A new autoinstall session was initiated for this system.</source>
         <target>Pre tento systém bolo začaté nové sedenie automatickej inštalácie.</target>
@@ -6560,13 +6553,6 @@ Vezmite, prosím, na vedomie, že neaktívne systémy nemôžu prijímať žiadn
       <trans-unit id="kickstart.session.newprofile" xml:space="preserve">
         <source>Profile for autoinstall session {0}.</source>
         <target>Profil pre sedenie automatickej inštalácie {0}.</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="kickstart.schedule.noup2dateinchannel" xml:space="preserve">
-        <source>We require version {0} or greater of up2date in order to kickstart a system. &lt;strong&gt;{2}&lt;/strong&gt; has {1} installed but we could not find a version of up2date in this system's channels to upgrade it to the required version or above.</source>
-        <target>Na kickstart systému potrebujeme verziu {0} alebo vyššiu pre up2date. &lt;strong&gt;{2}&lt;/strong&gt; má nainštalované {1}, ale v kanáloch tohto systému sme nenašli verziu up2date, aby sme ju mohli aktualizovať na požadovanú alebo vyššiu verziu.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
@@ -12121,6 +12107,23 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
       <trans-unit id="pxeeventfailed" xml:space="preserve">
         <source>PXE Event Failed</source>
         <target state="translated">Udalosť PXE zlyhala</target>
+      </trans-unit>
+      <trans-unit id="ARMHF Debian" xml:space="preserve">
+        <source>ARMHF Debian</source>
+        <target>ARMHF Debian</target>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="diskcheckwarning" xml:space="preserve">
+        <source>Disk Check</source>
+        <target state="translated">Kontrola diskov</target>
+      </trans-unit>
+      <trans-unit id="notification.diskcheck.summary" xml:space="preserve">
+        <source>You are running out of space on your @@PRODUCT_NAME@@ {0}. This is {1}</source>
+        <target state="translated">Na vašom @@PRODUCT_NAME@@ {0} dochádza miesto. Je to {1}</target>
+      </trans-unit>
+      <trans-unit id="notification.diskcheck.details" xml:space="preserve">
+        <source>You are running out of space on your @@PRODUCT_NAME@@ {0}. This is {1}. If you run out of disk space, @@PRODUCT_NAME@@ will stop running, and this could lead to a loss of data. @@PRODUCT_NAME@@ will shutdown automatically.</source>
+        <target state="translated">Na vašom @@PRODUCT_NAME@@ {0} dochádza miesto. Je to {1}. Ak vám dôjde miesto na disku, @@PRODUCT_NAME@@ prestane fungovať, čo môže viesť k strate dát. @@PRODUCT_NAME@@ sa automaticky vypne.</target>
       </trans-unit>
     </body>
   </file>

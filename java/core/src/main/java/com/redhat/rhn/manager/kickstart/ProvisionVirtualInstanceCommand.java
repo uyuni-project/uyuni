@@ -206,16 +206,6 @@ public class ProvisionVirtualInstanceCommand extends KickstartScheduleCommand {
     }
 
     /**
-     * This is a noop in the virtualization case - up2date isn't required
-     *
-     * @return Returns a ValidatorError if something goes wrong.  ie, never
-     */
-    @Override
-    protected ValidatorError validateUp2dateVersion() {
-        return null;
-    }
-
-    /**
      * Returns the mac address
      * @return the mac address
      */

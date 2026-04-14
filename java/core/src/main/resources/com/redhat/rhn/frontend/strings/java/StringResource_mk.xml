@@ -6512,13 +6512,6 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="kickstart.schedule.noup2date" xml:space="preserve">
-        <source>An autoinstallation was not scheduled for &lt;strong&gt;&lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;&lt;/strong&gt; because the package profile did not contain the 'up2date' package. An update of that system's package profile may be required.</source>
-        <target/>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="kickstart.session.newsession" xml:space="preserve">
         <source>A new autoinstall session was initiated for this system.</source>
         <target/>
@@ -6549,13 +6542,6 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit id="kickstart.session.newprofile" xml:space="preserve">
         <source>Profile for autoinstall session {0}.</source>
-        <target/>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="kickstart.schedule.noup2dateinchannel" xml:space="preserve">
-        <source>We require version {0} or greater of up2date in order to kickstart a system. &lt;strong&gt;{2}&lt;/strong&gt; has {1} installed but we could not find a version of up2date in this system's channels to upgrade it to the required version or above.</source>
         <target/>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
@@ -11998,6 +11984,23 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
   </trans-unit>
       <trans-unit id="pxeeventfailed" xml:space="preserve">
         <source>PXE Event Failed</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="ARMHF Debian" xml:space="preserve">
+        <source>ARMHF Debian</source>
+        <target>ARMHF Debian</target>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="diskcheckwarning" xml:space="preserve">
+        <source>Disk Check</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="notification.diskcheck.summary" xml:space="preserve">
+        <source>You are running out of space on your @@PRODUCT_NAME@@ {0}. This is {1}</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="notification.diskcheck.details" xml:space="preserve">
+        <source>You are running out of space on your @@PRODUCT_NAME@@ {0}. This is {1}. If you run out of disk space, @@PRODUCT_NAME@@ will stop running, and this could lead to a loss of data. @@PRODUCT_NAME@@ will shutdown automatically.</source>
       <target state="new"/>
   </trans-unit>
       </body>

@@ -12,7 +12,7 @@ tests:
           path: metadata.name
           value: uyuni
       - equal:
-          path: spec.template.spec.containers[0].image
+          path: spec.template.spec.containers[?(@.name=="uyuni")].image
           value: registry.opensuse.org/uyuni/server:latest
 
   - it: should override image when values.images is provided
@@ -23,5 +23,5 @@ tests:
         tag: 5.0.0
     asserts:
       - equal:
-          path: spec.template.spec.containers[0].image
+          path: spec.template.spec.containers[?(@.name=="uyuni")].image
           value: my-custom-registry/uyuni-server:5.0.0

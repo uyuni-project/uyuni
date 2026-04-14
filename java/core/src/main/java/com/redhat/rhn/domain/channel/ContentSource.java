@@ -75,13 +75,12 @@ public class ContentSource extends BaseDomainHelper implements Identifiable {
     private boolean metadataSigned;
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
-    @JoinTable(
-                name = "rhnChannelContentSource",
-                joinColumns = @JoinColumn(name = "source_id"),
+    @JoinTable(name = "rhnChannelContentSource", joinColumns = @JoinColumn(name = "source_id"),
                 inverseJoinColumns = @JoinColumn(name = "channel_id"))
     private Set<Channel> channels = new HashSet<>();
 
-    @OneToMany(mappedBy = "contentSource", cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "contentSource", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE},
+                fetch = FetchType.LAZY, orphanRemoval = true)
     private Set<SslContentSource> sslSets = new HashSet<>();
 
     @OneToOne(mappedBy = "contentSource", fetch = FetchType.LAZY)

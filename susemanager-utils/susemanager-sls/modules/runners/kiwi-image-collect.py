@@ -14,7 +14,10 @@ log = logging.getLogger(__name__)
 
 def upload_file_from_minion(minion, minion_ip, filetoupload, targetdir):
     # pylint: disable-next=undefined-variable
-    fqdn = __salt__["cache.grains"](tgt=minion).get(minion, {}).get("fqdn")
+    fqdn = __salt__["cache.pillar"](tgt=minion).get(minion, {}).get("primary_fqdn")
+    if not fqdn:
+        # pylint: disable-next=undefined-variable
+        fqdn = __salt__["cache.grains"](tgt=minion).get(minion, {}).get("fqdn")
     # pylint: disable-next=undefined-variable
     ssh_port = __salt__["cache.grains"](tgt=minion).get(minion, {}).get("ssh_port", 22)
     log.info(

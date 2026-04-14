@@ -98,7 +98,6 @@ INSERT INTO access.accessGroupNamespace
     ON CONFLICT DO NOTHING;
 
 -- Namespace: software.details.*
--- Namespace: software.manage.*
 -- Namespace: software.distro
 -- Namespace: software.list
 -- Namespace: software.search
@@ -107,12 +106,12 @@ INSERT INTO access.accessGroupNamespace
     SELECT ag.id, ns.id
     FROM access.accessGroup ag, access.namespace ns
     WHERE (ns.namespace LIKE 'software.details.%' OR
-        ns.namespace LIKE 'software.manage.%' OR
         ns.namespace = 'software.distro' OR
         ns.namespace = 'software.list' OR
         ns.namespace = 'software.search')
     ON CONFLICT DO NOTHING;
 
+-- Namespace: software.manage.*
 -- Namespace: patches.manage.*
 -- Namespace: patches.clone
 -- Namespace: users.channels
@@ -121,7 +120,8 @@ INSERT INTO access.accessGroupNamespace
     SELECT ag.id, ns.id
     FROM access.accessGroup ag, access.namespace ns
     WHERE ag.label = 'channel_admin'
-    AND (ns.namespace LIKE 'patches.manage.%' OR
+    AND (ns.namespace LIKE 'software.manage.%' OR
+        ns.namespace LIKE 'patches.manage.%' OR
         ns.namespace = 'patches.clone' OR
         ns.namespace = 'users.channels')
     ON CONFLICT DO NOTHING;
@@ -1259,3 +1259,37 @@ INSERT INTO access.accessGroupNamespace
         'api.virtualhostmanager.list_virtual_host_managers'
     )
     ON CONFLICT DO NOTHING;
+
+-- Namespace: audit.scap.management and audit.scap.execution
+-- Permit to all
+INSERT INTO access.accessGroupNamespace (group_id, namespace_id)
+    SELECT ag.id, ns.id FROM access.accessGroup ag, access.namespace ns
+    WHERE ns.namespace IN ('audit.scap.management', 'audit.scap.execution')
+ON CONFLICT (group_id, namespace_id) DO NOTHING;
+
+-- New SCAP XML-RPC API Permissions
+INSERT INTO access.accessGroupNamespace (group_id, namespace_id)
+    SELECT ag.id, ns.id FROM access.accessGroup ag, access.namespace ns
+    WHERE ns.namespace IN (
+        'api.system.scap.list_scap_content',
+        'api.system.scap.list_policies',
+        'api.system.scap.list_tailoring_files'
+    )
+    AND ns.access_mode = 'R'
+ON CONFLICT (group_id, namespace_id) DO NOTHING;
+
+INSERT INTO access.accessGroupNamespace (group_id, namespace_id)
+    SELECT ag.id, ns.id FROM access.accessGroup ag, access.namespace ns
+    WHERE ns.namespace IN (
+        'api.system.scap.schedule_beta_xccdf_scan_custom',
+        'api.system.scap.schedule_beta_xccdf_scan_with_policy'
+    )
+    AND ns.access_mode = 'W'
+ON CONFLICT (group_id, namespace_id) DO NOTHING;
+
+-- New endpoint
+INSERT INTO access.accessGroupNamespace (group_id, namespace_id)
+    SELECT ag.id, ns.id
+    FROM access.accessGroup ag, access.namespace ns
+    WHERE ns.namespace = 'api.system.list_migration_targets_with_channels' AND ns.access_mode = 'R'
+    ON CONFLICT (group_id, namespace_id) DO NOTHING;

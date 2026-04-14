@@ -29,3 +29,6 @@ CREATE TABLE rhnActionSubChannelsTokens (
 
 CREATE INDEX rhn_action_sub_channels_tokens_sub_channels_id_idx
 on rhnActionSubChannelsTokens (subscribe_channels_id);
+
+CREATE INDEX rhn_action_sub_channels_tokens_token_id_idx
+on rhnActionSubChannelsTokens (token_id);

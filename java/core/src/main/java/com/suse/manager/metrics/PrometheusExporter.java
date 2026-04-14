@@ -24,7 +24,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
 
-import io.prometheus.client.exporter.HTTPServer;
+import io.prometheus.metrics.exporter.httpserver.HTTPServer;
+import io.prometheus.metrics.model.registry.PrometheusRegistry;
 
 /**
  * Exports Prometheus metrics.
@@ -46,7 +47,7 @@ public enum PrometheusExporter {
     public void startHttpServer() {
         if (ENABLED) {
             try {
-                new HTTPServer(PORT);
+                HTTPServer.builder().port(PORT).buildAndStart();
             }
             catch (IOException e) {
                 LOG.warn("Unable to register Prometheus HttpServer on port " + PORT, e);
@@ -61,7 +62,7 @@ public enum PrometheusExporter {
      */
     public void registerThreadPool(ThreadPoolExecutor pool, String poolId) {
         if (ENABLED) {
-            new ThreadPoolCollector(pool, poolId).register();
+            PrometheusRegistry.defaultRegistry.register(new ThreadPoolCollector(pool, poolId));
         }
     }
 
@@ -72,7 +73,7 @@ public enum PrometheusExporter {
      */
     public void registerThreadPoolList(List<ThreadPoolExecutor> pool, String poolId) {
         if (ENABLED) {
-            new ThreadPoolListCollector(pool, poolId).register();
+            PrometheusRegistry.defaultRegistry.register(new ThreadPoolListCollector(pool, poolId));
         }
     }
 
@@ -83,7 +84,7 @@ public enum PrometheusExporter {
      */
     public void registerScheduler(Scheduler scheduler, String schedulerId) {
         if (ENABLED) {
-            new SchedulerCollector(scheduler, schedulerId).register();
+            PrometheusRegistry.defaultRegistry.register(new SchedulerCollector(scheduler, schedulerId));
         }
     }
 
@@ -92,7 +93,7 @@ public enum PrometheusExporter {
      */
     public void registerSystemsCollector() {
         if (ENABLED) {
-            new SystemsCollector().register();
+            PrometheusRegistry.defaultRegistry.register(new SystemsCollector());
         }
     }
 }

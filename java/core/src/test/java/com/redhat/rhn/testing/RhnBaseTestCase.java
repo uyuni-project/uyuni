@@ -24,7 +24,7 @@ import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.MessageQueue;
 
-import com.suse.manager.webui.services.test.TestSaltApi;
+import com.suse.manager.webui.services.TestSaltApi;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

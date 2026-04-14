@@ -34,6 +34,8 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
+import com.suse.manager.webui.services.pillar.MinionPillarManager;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -89,6 +91,8 @@ public class SystemHardwareAction extends RhnAction {
             if (ctx.hasParam("update_networking_properties")) {
                 server.setPrimaryInterfaceWithName(form.get("primaryInterface").toString());
                 server.setPrimaryFQDNWithName(form.get("primaryFQDN").toString());
+                server.asMinionServer().ifPresent(m -> MinionPillarManager.INSTANCE.generatePillar(m,
+                                                  false, MinionPillarManager.PillarSubset.GENERAL));
                 createSuccessMessage(request, "message.interfaceSet", null);
             }
             else {

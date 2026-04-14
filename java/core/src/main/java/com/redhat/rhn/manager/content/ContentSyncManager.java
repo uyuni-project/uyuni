@@ -233,7 +233,12 @@ public class ContentSyncManager {
                 new Tuple2<>(-26L, -8L), // almalinux-8-None.x86_64  => rhel-base-8-None.x86_64
                 new Tuple2<>(-41L, -35L), // oraclelinux-9-None.x86_64 => el-base-9-None.x86_64
                 new Tuple2<>(-36L, -35L), // rockylinux-9-None.x86_64 => el-base-9-None.x86_64
-                new Tuple2<>(-38L, -35L) // almalinux-9-None.x86_64 => el-base-9-None.x86_64
+                new Tuple2<>(-38L, -35L), // almalinux-9-None.x86_64 => el-base-9-None.x86_64
+                // SLES 15 SP7 => SLES 16.0 upgrade paths
+                new Tuple2<>(2793L, 2930L), // SLES-15.7-None.x86_64 => SLES-16.0-None.x86_64
+                new Tuple2<>(2792L, 2932L), // SLES-15.7-None.s390x => SLES-16.0-None.s390x
+                new Tuple2<>(2791L, 2933L), // SLES-15.7-None.ppc64le => SLES-16.0-None.ppc64le
+                new Tuple2<>(2790L, 2931L)  // SLES-15.7-None.aarch64 => SLES-16.0-None.aarch64
         );
         return upgradePaths.stream();
     }

@@ -34,9 +34,6 @@ import com.redhat.rhn.domain.kickstart.KickstartSession;
 import com.redhat.rhn.domain.kickstart.KickstartSessionState;
 import com.redhat.rhn.domain.kickstart.KickstartVirtualizationType;
 import com.redhat.rhn.domain.kickstart.RegistrationType;
-import com.redhat.rhn.domain.rhnpackage.Package;
-import com.redhat.rhn.domain.rhnpackage.PackageEvr;
-import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.profile.Profile;
 import com.redhat.rhn.domain.rhnpackage.profile.ProfileFactory;
 import com.redhat.rhn.domain.server.NetworkInterface;
@@ -46,7 +43,6 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.token.ActivationKey;
 import com.redhat.rhn.domain.token.ActivationKeyFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.dto.PackageListItem;
 import com.redhat.rhn.frontend.dto.ProfileDto;
 import com.redhat.rhn.frontend.dto.kickstart.CobblerProfileDto;
 import com.redhat.rhn.frontend.dto.kickstart.KickstartDto;
@@ -54,7 +50,6 @@ import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerSystemCreateCommand;
 import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.profile.ProfileManager;
-import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.system.BaseSystemOperation;
 import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.token.ActivationKeyManager;
@@ -850,15 +845,6 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
             return error;
         }
 
-        if (ksdata.isRhel()) {
-            // Check that we have a valid up2date version
-            log.debug("** Checking valid up2date");
-            error = validateUp2dateVersion();
-            if (error != null) {
-                return error;
-            }
-        }
-
         // we already shall be subscribed to the tools channel
         // (since validateKickstartPackage), so no other actions needed
         return null;
@@ -1051,91 +1037,6 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
      */
     public List<String> getKickstartPackageNames() {
         return this.ksdata.getKickstartPackageNames();
-    }
-
-    // Check to make sure up2date is 2.9.0
-    protected ValidatorError validateUp2dateVersion() {
-        Server hostServer = getHostServer();
-        List<PackageListItem> packages = PackageManager.systemPackageList(hostServer.getId(), null);
-        if (packages != null) {
-            log.debug("    packages.size() : {}", packages.size());
-        }
-        // PackageListItem
-        Iterator<PackageListItem> i = packages.iterator();
-        String up2dateepoch = null;
-        String up2dateversion = null;
-        String up2daterelease = null;
-
-        while (i.hasNext()) {
-            PackageListItem pli = i.next();
-            if (pli.getName().equals("dnf-plugin-spacewalk")) {
-                // found dnf-plugin-spacewalk - returning
-                return null;
-            }
-            if (pli.getName().equals("yum-rhn-plugin")) {
-                // found yum-rhn-plugin - returning
-                return null;
-            }
-            if (pli.getName().equals("zypp-plugin-spacewalk")) {
-                // found zypp-plugin-spacewalk - returning
-                return null;
-            }
-            if (pli.getName().equals("salt-minion")) {
-                // found salt-minion - returning
-                return null;
-            }
-
-            if (pli.getName().equals("up2date")) {
-                log.debug("    found up2date ...");
-                up2dateepoch = pli.getEpoch();
-                up2dateversion = pli.getVersion();
-                up2daterelease = pli.getRelease();
-
-                log.debug("    e: {} v: {} r : {}", up2dateepoch, up2dateversion, up2daterelease);
-            }
-        }
-
-        if (up2dateepoch == null && up2dateversion == null &&
-                up2daterelease == null) {
-            Object[] args = new Object[2];
-            args[0] = hostServer.getId();
-            args[1] = hostServer.getName();
-            return new ValidatorError("kickstart.schedule.noup2date", args);
-        }
-
-
-        up2dateepoch = up2dateepoch == null ? "0" : up2dateepoch;
-        up2dateversion = up2dateversion == null ? "0" : up2dateversion;
-        up2daterelease = up2daterelease == null ? "0" : up2daterelease;
-
-        PackageEvr v1 = new PackageEvr(up2dateepoch, up2dateversion, up2daterelease, hostServer.getPackageType());
-        PackageEvr v2 = new PackageEvr("0", UP2DATE_VERSION, "0", hostServer.getPackageType());
-        int comp = v1.compareTo(v2);
-
-        log.debug("    Got back comp from verCmp: {}", comp);
-        if (comp < 0) {
-            Long packageId = PackageManager.
-                    getServerNeededUpdatePackageByName(hostServer.getId(), "up2date");
-            if (packageId == null) {
-                Object[] args = new Object[2];
-                args[0] = UP2DATE_VERSION;
-                args[1] = up2dateversion;
-                args[2] = hostServer.getName();
-                return new ValidatorError("kickstart.schedule.noup2dateinchannel", args);
-            }
-            Package p = PackageFactory.lookupByIdAndUser(packageId, this.user);
-
-            Map<String, Long> evrmap = new HashMap<>();
-            evrmap.put("name_id", p.getPackageName().getId());
-            evrmap.put("evr_id", p.getPackageEvr().getId());
-            evrmap.put("arch_id", p.getPackageArch().getId());
-            packagesToInstall.add(evrmap);
-        }
-        else {
-            return null;
-        }
-
-        return null;
     }
 
     /**

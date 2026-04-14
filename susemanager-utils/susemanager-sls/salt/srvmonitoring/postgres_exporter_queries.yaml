@@ -20,14 +20,14 @@ mgr_serveractions:
         WHERE status = (
           SELECT id FROM rhnActionStatus WHERE name IN ('Completed')
        )
-    ) AS completed,
+    ) AS completed_total,
     (
       SELECT COUNT(*)
         FROM rhnServerAction
         WHERE status = (
           SELECT id FROM rhnActionStatus WHERE name IN ('Failed')
        )
-    ) AS failed;
+    ) AS failed_total;
   metrics:
     - queued:
         usage: "GAUGE"
@@ -35,9 +35,9 @@ mgr_serveractions:
     - picked_up:
         usage: "GAUGE"
         description: "Count of picked up Actions"
-    - completed:
+    - completed_total:
         usage: "COUNTER"
         description: "Count of completed Actions"
-    - failed:
+    - failed_total:
         usage: "COUNTER"
         description: "Count of failed Actions"

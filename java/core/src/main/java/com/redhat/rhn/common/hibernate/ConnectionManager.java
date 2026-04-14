@@ -59,13 +59,6 @@ public interface ConnectionManager {
     boolean isInitialized();
 
     /**
-     * Set the name for Prometheus Hiberante Statistics collector
-     *
-     * @param componentName The component name for collector registration, used for metric label value
-     */
-    void setComponentName(String componentName);
-
-    /**
      * Returns Hibernate session stored in ThreadLocal storage. If not
      * present, creates a new one and stores it in ThreadLocal; creating the
      * session also begins a transaction implicitly.

@@ -1,11 +1,11 @@
 resumessh:
-    mgrcompat.module_run:
+    module.run:
     -   name: mgractionchains.resume
     - require:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
       - saltutil: sync_modules
 {%- else %}
-      - mgrcompat: sync_modules
+      - module: sync_modules
 {%- endif %}
 
 include:

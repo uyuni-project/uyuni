@@ -255,7 +255,7 @@
   -->
    <servlet>
         <servlet-name>metrics</servlet-name>
-        <servlet-class>io.prometheus.client.exporter.MetricsServlet</servlet-class>
+        <servlet-class>io.prometheus.metrics.exporter.servlet.jakarta.PrometheusMetricsServlet</servlet-class>
     </servlet>
 
   <!--

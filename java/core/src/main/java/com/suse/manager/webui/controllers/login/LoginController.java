@@ -143,6 +143,7 @@ public class LoginController {
         model.put("docsLocale", ConfigDefaults.get().getDefaultDocsLocale());
         model.put("webTheme", ConfigDefaults.get().getDefaultWebTheme());
         model.put("diskspaceSeverity", LoginHelper.validateDiskSpaceAvailability());
+        model.put("dbDiskspaceSeverity", LoginHelper.validateDBDiskSpaceAvailability());
 
         // Pay as you go code
         boolean sccForwardWarning = GlobalInstanceHolder.PAYG_MANAGER.isPaygInstance() &&

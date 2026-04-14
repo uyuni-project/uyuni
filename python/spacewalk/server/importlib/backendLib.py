@@ -90,6 +90,8 @@ class Table:
         "attribute": str,
         "map": DictType,
         "nullable": ListType,  # Will become a hash eventually
+        "or_null": ListType,
+        "select_extension": str,
         "severityHash": DictType,
         "defaultSeverity": IntType,
         "sequenceColumn": str,
@@ -112,6 +114,8 @@ class Table:
         self.attribute = None
         # Nullable columns; will become a hash
         self.nullable = []
+        self.or_null = []
+        self.select_extension = ""
         # Compute the diff
         self.severityHash = {}
         self.defaultSeverity = 4
@@ -157,9 +161,13 @@ class Table:
 
     def isNullable(self, field):
         if field not in self.fields:
-            # pylint: disable-next=consider-using-f-string
-            raise TypeError("Unknown field %s" % field)
+            raise TypeError(f"Unknown field {field}")
         return field in self.nullable
+
+    def isOrNull(self, field):
+        if field not in self.fields:
+            raise TypeError(f"Unknown field {field}")
+        return field in self.or_null
 
     def getPK(self):
         return self.pk
@@ -228,12 +236,13 @@ class BaseTableLookup:
                 key = keys[i]
                 query = queries[i]
                 k.append(key + [0])
-                # pylint: disable-next=consider-using-f-string
-                q.append(query + ["%s = :%s" % (col, col)])
+                if self.table.isOrNull(col):
+                    q.append(query + [f"({col} = :{col} or {col} is null)"])
+                else:
+                    q.append(query + [f"{col} = :{col}"])
                 if self.table.isNullable(col):
                     k.append(key + [1])
-                    # pylint: disable-next=consider-using-f-string
-                    q.append(query + ["%s is null" % col])
+                    q.append(query + [f"{col} is null"])
             keys = k
             queries = q
         # Now put the queries in self.sqlqueries, keyed on the list of 0/1
@@ -282,10 +291,14 @@ class BaseTableLookup:
 class TableLookup(BaseTableLookup):
     def __init__(self, table, dbmodule):
         BaseTableLookup.__init__(self, table, dbmodule)
-        self.queryTemplate = "select * from %s where %s"
+        self.queryTemplate = "select * from %s where %s%s"
 
     def _buildQuery(self, key):
-        return self.queryTemplate % (self.table.name, self.whereclauses[key])
+        return self.queryTemplate % (
+            self.table.name,
+            self.whereclauses[key],
+            self.table.select_extension,
+        )
 
 
 # pylint: disable-next=missing-class-docstring
@@ -425,10 +438,16 @@ class TableUpdate(BaseTableLookup):
 
 
 # pylint: disable-next=missing-class-docstring
-class TableDelete(TableLookup):
+class TableDelete(BaseTableLookup):
     def __init__(self, table, dbmodule):
-        TableLookup.__init__(self, table, dbmodule)
+        BaseTableLookup.__init__(self, table, dbmodule)
         self.queryTemplate = "delete from %s where %s"
+
+    def _buildQuery(self, key):
+        return self.queryTemplate % (
+            self.table.name,
+            self.whereclauses[key],
+        )
 
     def query(self, values):
         # Build the values hash

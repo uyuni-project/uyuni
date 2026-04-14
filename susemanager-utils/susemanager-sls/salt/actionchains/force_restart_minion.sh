@@ -8,7 +8,7 @@ if [ "$(readlink /proc/1/exe)" = "/sbin/init" ]; then
        SALT_MINION_PID="/var/run/venv-salt-minion.pid"
    fi
    T0=$(stat -c '%Z' "$SALT_MINION_PID")
-   RESTART_MINION="/usr/sbin/rc$SALT_MINION_NAME restart"
+   RESTART_MINION="command -p rc$SALT_MINION_NAME restart"
 else
    # systemd
    SALT_MINION_NAME="salt-minion"

@@ -1,0 +1,59 @@
+suite: test server security options
+templates:
+  - server.yaml
+tests:
+  - it: should render the minimal security options by default
+    set:
+      global.fqdn: uyuni.example.com
+    asserts:
+      - isSubset:
+          path: spec.template.spec.containers[?(@.name=="uyuni")].securityContext
+          content:
+            capabilities:
+              add:
+              - SYS_ADMIN
+      - isNotSubset:
+          path: spec.template.spec.containers[?(@.name=="uyuni")].securityContext
+          content:
+            appArmorProfile:
+              type: Unconfined
+            seLinuxOptions:
+              type: "spc_t"
+
+  - it: should render the super privileged options
+    set:
+      global.fqdn: uyuni.example.com
+      server:
+        superPrivileged: true
+    asserts:
+      - isSubset:
+          path: spec.template.spec.containers[?(@.name=="uyuni")].securityContext
+          content:
+            capabilities:
+              add:
+              - SYS_ADMIN
+            appArmorProfile:
+              type: Unconfined
+            seLinuxOptions:
+              type: "spc_t"
+
+  - it: should render the AppArmor profile
+    set:
+      global.fqdn: uyuni.example.com
+      server:
+        apparmorProfile: test-prof
+    asserts:
+      - isSubset:
+          path: spec.template.spec.containers[?(@.name=="uyuni")].securityContext
+          content:
+            capabilities:
+              add:
+              - SYS_ADMIN
+            appArmorProfile:
+              type: Localhost
+              localhostProfile: test-prof
+      - isNotSubset:
+          path: spec.template.spec.containers[?(@.name=="uyuni")].securityContext
+          content:
+            seLinuxOptions:
+              type: "spc_t"

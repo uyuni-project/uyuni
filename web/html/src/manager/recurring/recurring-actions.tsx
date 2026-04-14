@@ -31,6 +31,7 @@ declare global {
     isControlNode?: boolean;
     timezone?: any;
     localTime?: any;
+    betaEnabled?: boolean;
   }
 }
 

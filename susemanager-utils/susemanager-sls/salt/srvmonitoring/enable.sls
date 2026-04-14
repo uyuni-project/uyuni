@@ -1,6 +1,6 @@
 node_exporter:
   cmd.run:
-    - name: /usr/bin/rpm --query --info golang-github-prometheus-node_exporter
+    - name: command -p rpm --query --info golang-github-prometheus-node_exporter
 
 node_exporter_service:
   service.running:
@@ -17,7 +17,7 @@ node_exporter_service:
 {% if global.has_pillar_data %}
 postgres_exporter:
   cmd.run:
-    - name: /usr/bin/rpm --query --info prometheus-postgres_exporter || /usr/bin/rpm --query --info golang-github-wrouesnel-postgres_exporter
+    - name: command -p rpm --query --info prometheus-postgres_exporter || command -p rpm --query --info golang-github-wrouesnel-postgres_exporter
 
 postgres_exporter_cleanup:
   file.absent:
@@ -50,7 +50,7 @@ postgres_exporter_service:
     - require:
       - cmd: postgres_exporter
       - file: postgres_exporter_configuration
-  mgrcompat.module_run:
+  module.run:
     - name: service.systemctl_reload
   service.running:
     - name: prometheus-postgres_exporter
@@ -63,7 +63,7 @@ postgres_exporter_service:
 
 jmx_exporter:
   cmd.run:
-    - name: /usr/bin/rpm --query --info prometheus-jmx_exporter
+    - name: command -p rpm --query --info prometheus-jmx_exporter
 
 jmx_exporter_tomcat_yaml_config:
   file.managed:
@@ -75,32 +75,31 @@ jmx_exporter_tomcat_yaml_config:
     - source:
       - salt://srvmonitoring/java_agent.yaml
 
-# Workaround for previous tomcat configuration
-remove_tomcat_previous:
-  file.rename:
-    - source: /etc/sysconfig/tomcat
-    - name: /etc/sysconfig/tomcat.bak
-    - force: True
-    - onlyif: test -f /etc/sysconfig/tomcat
-
 jmx_tomcat_config:
   file.managed:
-    - name: /etc/sysconfig/tomcat/systemd/jmx.conf
+    - name: /etc/tomcat/conf.d/tomcat_jmx.conf
     - makedirs: True
     - user: root
     - group: root
     - mode: 644
     - source:
-      - salt://srvmonitoring/tomcat/systemd/jmx.conf
+      - salt://srvmonitoring/tomcat_jmx.conf
     - require:
       - cmd: jmx_exporter
-  mgrcompat.module_run:
-    - name: service.systemctl_reload
 
 jmx_exporter_tomcat_service_cleanup:
   service.dead:
     - name: prometheus-jmx_exporter@tomcat
     - enable: False
+
+# Legacy systemd drop-in and sysconfig JMX config cleanup
+legacy_tomcat_sysconfig_jmx_cleanup:
+  file.absent:
+    - name: /etc/sysconfig/tomcat/systemd/jmx.conf
+
+legacy_tomcat_systemd_dropin_jmx_cleanup:
+  file.absent:
+    - name: /usr/lib/systemd/system/tomcat.service.d/jmx.conf
 
 jmx_exporter_taskomatic_systemd_config_cleanup:
   file.absent:
@@ -122,27 +121,33 @@ jmx_exporter_taskomatic_yaml_config:
 
 jmx_taskomatic_config:
   file.managed:
-    - name: /etc/sysconfig/taskomatic/systemd/jmx.conf
+    - name: /etc/rhn/taskomatic.conf.d/taskomatic_jmx.conf
     - makedirs: True
     - user: root
     - group: root
     - mode: 644
     - source:
-      - salt://srvmonitoring/taskomatic/systemd/jmx.conf
+      - salt://srvmonitoring/taskomatic_jmx.conf
     - require:
       - cmd: jmx_exporter
-  mgrcompat.module_run:
-    - name: service.systemctl_reload
 
 jmx_exporter_taskomatic_service_cleanup:
   service.dead:
     - name: prometheus-jmx_exporter@taskomatic
     - enable: False
 
+legacy_taskomatic_sysconfig_jmx_cleanup:
+  file.absent:
+    - name: /etc/sysconfig/taskomatic/systemd/jmx.conf
+
+legacy_taskomatic_systemd_dropin_jmx_cleanup:
+  file.absent:
+    - name: /usr/lib/systemd/system/taskomatic.service.d/jmx.conf
+
 mgr_enable_prometheus_self_monitoring:
   cmd.run:
-    - name:  /usr/bin/grep -q '^prometheus_monitoring_enabled.*=.*' /etc/rhn/rhn.conf && /usr/bin/sed -i 's/^prometheus_monitoring_enabled.*/prometheus_monitoring_enabled = 1/' /etc/rhn/rhn.conf || /usr/bin/echo 'prometheus_monitoring_enabled = 1' >> /etc/rhn/rhn.conf
+    - name:  command -p grep -q '^prometheus_monitoring_enabled.*=.*' /etc/rhn/rhn.conf && command -p sed -i 's/^prometheus_monitoring_enabled.*/prometheus_monitoring_enabled = 1/' /etc/rhn/rhn.conf || command -p echo 'prometheus_monitoring_enabled = 1' >> /etc/rhn/rhn.conf
 
 mgr_is_prometheus_self_monitoring_enabled:
   cmd.run:
-    - name: /usr/bin/grep -qF 'prometheus_monitoring_enabled = 1' /etc/rhn/rhn.conf
+    - name: command -p grep -qF 'prometheus_monitoring_enabled = 1' /etc/rhn/rhn.conf

@@ -114,6 +114,42 @@
                 </plugins>
             </build>
         </profile>
+        <profile>
+            <id>purge-caches</id>
+            <activation>
+                <property>
+                    <name>purge.caches</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <!-- Configuration to run the clean up script -->
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>3.4.1</version>
+                        <inherited>false</inherited>
+                        <executions>
+                            <execution>
+                                <id>clean-all-caches</id>
+                                <phase>clean</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <useMavenLogger>true</useMavenLogger>
+                                    <executable>/bin/bash</executable>
+                                    <commandlineArgs>
+                                        ${spacewalk-java.dir}/scripts/maven/purge-caches.sh -i -f
+                                    </commandlineArgs>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
     </profiles>
 
     <build>
@@ -177,26 +213,6 @@
                 <groupId>org.eclipse.angus</groupId>
                 <artifactId>jakarta.mail</artifactId>
                 <version>2.0.3</version>
-            </dependency>
-            <dependency>
-                <groupId>com.ongres.scram</groupId>
-                <artifactId>client</artifactId>
-                <version>2.1</version>
-            </dependency>
-            <dependency>
-                <groupId>com.ongres.scram</groupId>
-                <artifactId>common</artifactId>
-                <version>2.1</version>
-            </dependency>
-            <dependency>
-                <groupId>com.ongres.stringprep</groupId>
-                <artifactId>stringprep</artifactId>
-                <version>1.1</version>
-            </dependency>
-            <dependency>
-                <groupId>com.ongres.stringprep</groupId>
-                <artifactId>saslprep</artifactId>
-                <version>1.1</version>
             </dependency>
             <dependency>
                 <groupId>commons-beanutils</groupId>
@@ -548,28 +564,38 @@
             </dependency>
             <dependency>
                 <groupId>io.prometheus</groupId>
-                <artifactId>simpleclient</artifactId>
-                <version>0.3.0</version>
+                <artifactId>prometheus-metrics-config</artifactId>
+                <version>1.5.1</version>
             </dependency>
             <dependency>
                 <groupId>io.prometheus</groupId>
-                <artifactId>simpleclient_common</artifactId>
-                <version>0.3.0</version>
+                <artifactId>prometheus-metrics-core</artifactId>
+                <version>1.5.1</version>
             </dependency>
             <dependency>
                 <groupId>io.prometheus</groupId>
-                <artifactId>simpleclient_hibernate</artifactId>
-                <version>0.3.0</version>
+                <artifactId>prometheus-metrics-model</artifactId>
+                <version>1.5.1</version>
             </dependency>
             <dependency>
                 <groupId>io.prometheus</groupId>
-                <artifactId>simpleclient_httpserver</artifactId>
-                <version>0.3.0</version>
+                <artifactId>prometheus-metrics-exporter-common</artifactId>
+                <version>1.5.1</version>
             </dependency>
             <dependency>
                 <groupId>io.prometheus</groupId>
-                <artifactId>simpleclient_servlet</artifactId>
-                <version>0.3.0</version>
+                <artifactId>prometheus-metrics-exporter-httpserver</artifactId>
+                <version>1.5.1</version>
+            </dependency>
+            <dependency>
+                <groupId>io.prometheus</groupId>
+                <artifactId>prometheus-metrics-exporter-servlet-jakarta</artifactId>
+                <version>1.5.1</version>
+            </dependency>
+            <dependency>
+                <groupId>io.prometheus</groupId>
+                <artifactId>prometheus-metrics-exposition-textformats</artifactId>
+                <version>1.5.1</version>
             </dependency>
             <dependency>
                 <groupId>org.yaml</groupId>
@@ -628,35 +654,6 @@
                     <exclusion>
                         <groupId>commons-fileupload</groupId>
                         <artifactId>commons-fileupload</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>xalan</groupId>
-                <artifactId>xalan</artifactId>
-                <version>2.7.3</version>
-            </dependency>
-            <dependency>
-                <groupId>xalan</groupId>
-                <artifactId>serializer</artifactId>
-                <version>2.7.3</version>
-                <exclusions>
-                    <!-- We do not provide this at runtime -->
-                    <exclusion>
-                        <groupId>xml-apis</groupId>
-                        <artifactId>xml-apis</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>xerces</groupId>
-                <artifactId>xercesImpl</artifactId>
-                <version>2.12.2</version>
-                <exclusions>
-                    <!-- We do not provide this at runtime -->
-                    <exclusion>
-                        <groupId>xml-apis</groupId>
-                        <artifactId>xml-apis</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -721,35 +718,9 @@
                 <version>2.17.2</version>
             </dependency>
             <dependency>
-                <groupId>com.mchange</groupId>
-                <artifactId>mchange-commons-java</artifactId>
-                <version>0.2.20</version>
-            </dependency>
-            <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
                 <version>1.7.36</version>
-            </dependency>
-            <dependency>
-                <groupId>org.simpleframework</groupId>
-                <artifactId>simple-xml</artifactId>
-                <version>2.7.1</version>
-                <exclusions>
-                    <!-- StAX is no longer needed since it's included in Java 6+ -->
-                    <exclusion>
-                        <groupId>stax</groupId>
-                        <artifactId>stax-api</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>stax</groupId>
-                        <artifactId>stax</artifactId>
-                    </exclusion>
-                    <!-- XML Pull feature is not used -->
-                    <exclusion>
-                        <artifactId>xpp3</artifactId>
-                        <groupId>xpp3</groupId>
-                    </exclusion>
-                </exclusions>
             </dependency>
 
             <!-- These are not available on maven central -->

@@ -161,11 +161,11 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I enter "SUSE Linux Micro 6.2" as the filtered product description
     When I open the sub-list of the product "SUSE Linux Micro 6.2 x86_64"
     And I select "SUSE Linux Micro 6.2 x86_64" as a product
-    And I select "SUSE Multi-Linux Manager Proxy Extension 5.2 x86_64 (ALPHA)" as a product
-    Then I should see the "SUSE Multi-Linux Manager Proxy Extension 5.2 x86_64 (ALPHA)" selected
+    And I select "SUSE Multi-Linux Manager Proxy Extension 5.2 x86_64 (BETA)" as a product
+    Then I should see the "SUSE Multi-Linux Manager Proxy Extension 5.2 x86_64 (BETA)" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-    And I wait until I see "SUSE Multi-Linux Manager Proxy Extension 5.2 x86_64 (ALPHA)" product has been added
+    And I wait until I see "SUSE Multi-Linux Manager Proxy Extension 5.2 x86_64 (BETA)" product has been added
     And I wait until all synchronized channels for "suse-multi-linux-manager-proxy-52" have finished
 
 @proxy
@@ -196,11 +196,11 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I enter "SUSE Linux Micro 6.2" as the filtered product description
     When I open the sub-list of the product "SUSE Linux Micro 6.2 x86_64"
     And I select "SUSE Linux Micro 6.2 x86_64" as a product
-    And I select "SUSE Multi-Linux Manager Retail Branch Server Extension 5.2 x86_64 (ALPHA)" as a product
-    Then I should see the "SUSE Multi-Linux Manager Retail Branch Server Extension 5.2 x86_64 (ALPHA)" selected
+    And I select "SUSE Multi-Linux Manager Retail Branch Server Extension 5.2 x86_64 (BETA)" as a product
+    Then I should see the "SUSE Multi-Linux Manager Retail Branch Server Extension 5.2 x86_64 (BETA)" selected
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
-    And I wait until I see "SUSE Multi-Linux Manager Retail Branch Server Extension 5.2 x86_64 (ALPHA)" product has been added
+    And I wait until I see "SUSE Multi-Linux Manager Retail Branch Server Extension 5.2 x86_64 (BETA)" product has been added
     And I wait until all synchronized channels for "suse-multi-linux-manager-retail-branch-server-52" have finished
 
 @proxy

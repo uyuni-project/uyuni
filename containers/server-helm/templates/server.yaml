@@ -20,6 +20,7 @@ spec:
         app.kubernetes.io/component: server
         app.kubernetes.io/part-of: uyuni
     spec:
+{{- include "uyuni.nodePlacement" (dict "global" .Values.placement "local" .Values.server) | nindent 6 }}
       containers:
       - env:
         - name: container
@@ -64,8 +65,14 @@ spec:
             add:
             - SYS_ADMIN
   {{- if .Values.server.superPrivileged }}
+          appArmorProfile:
+            type: Unconfined
           seLinuxOptions:
             type: "spc_t"
+  {{- else if .Values.server.apparmorProfile }}
+          appArmorProfile:
+            type: Localhost
+            localhostProfile: {{ .Values.server.apparmorProfile }}
   {{- end }}
         ports:
         - containerPort: 80

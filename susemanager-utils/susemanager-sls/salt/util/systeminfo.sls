@@ -6,15 +6,15 @@ include:
   - util.syncgrains
   - util.syncbeacons
 status_uptime:
-  mgrcompat.module_run:
+  module.run:
     - name: status.uptime
 grains_update:
-  mgrcompat.module_run:
+  module.run:
     - name: grains.item
     - args:
       - kernelrelease
       - master
 
 kernel_live_version:
-  mgrcompat.module_run:
+  module.run:
     - name: sumautil.get_kernel_live_version

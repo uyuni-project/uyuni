@@ -57,10 +57,31 @@ public class SslContentSource extends BaseDomainHelper {
     @JoinColumn(name = "ssl_client_key_id")
     private  SslCryptoKey clientKey;
 
+    protected SslContentSource() {
+        // Default constructor for hibernate
+    }
+
     /**
-     * Constructor
+     * Creates an empty instance for the given content source
+     * @param contentSourceIn the content source
      */
-    public SslContentSource() {
+    public SslContentSource(ContentSource contentSourceIn) {
+        this(contentSourceIn, null, null, null);
+    }
+
+    /**
+     * Creates an instance for the given content source
+     * @param contentSourceIn the content source
+     * @param caCertIn the CA certificate
+     * @param clientCertIn the client certificate
+     * @param clientKeyIn the key for the client certificate
+     */
+    public SslContentSource(ContentSource contentSourceIn, SslCryptoKey caCertIn, SslCryptoKey clientCertIn,
+                            SslCryptoKey clientKeyIn) {
+        this.contentSource = contentSourceIn;
+        this.caCert = caCertIn;
+        this.clientCert = clientCertIn;
+        this.clientKey = clientKeyIn;
     }
 
     /**

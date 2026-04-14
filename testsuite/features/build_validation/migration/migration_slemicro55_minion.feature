@@ -1,8 +1,9 @@
-# Copyright (c) 2025 SUSE LLC
+# Copyright (c) 2025-2026 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @slemicro55_minion
-Feature: Migrate a SLE Micro 5.5 Salt minion to SL Micro 6.1
+# SL Micro 6.2 is reposynched even if there is no SL Micro 6.2 minion deployed
+Feature: Migrate a SLE Micro 5.5 Salt minion to SL Micro 6.2
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section
@@ -13,16 +14,16 @@ Feature: Migrate a SLE Micro 5.5 Salt minion to SL Micro 6.1
   Scenario: Prerequisite: Reboot the slemicro 5.5 after updating zypper
     When I reboot the "slemicro55_minion" host through SSH, waiting until it comes back
     
-  Scenario: Migrate this minion to SL Micro 6.1
+  Scenario: Migrate this minion to SL Micro 6.2
     Given I am on the Systems overview page of this "slemicro55_minion"
     When I follow "Software" in the content area
     And I follow "Product Migration" in the content area
     And I wait until I see "Target Products:" text, refreshing the page
-    And I wait until I see "SUSE Linux Micro 6.1 x86_64" text
-    When I choose "SUSE Linux Micro 6.1 x86_64" radio button
+    And I wait until I see "SUSE Linux Micro 6.2 x86_64" text
+    When I choose "SUSE Linux Micro 6.2 x86_64" radio button
     And I click on "Select Channels"
-    When I select the channel "Custom Channel for slmicro61_minion"
-    And I select the channel "ManagerTools-SL-Micro-6.1 for x86_64"
+    When I select the channel "Custom Channel for slmicro62_minion"
+    And I select the channel "ManagerTools-SLE-16 for x86_64"
     And I check "allowVendorChange"
     And I click on "Schedule Migration"
     Then I should see a "Product Migration - Confirm" text
@@ -37,15 +38,15 @@ Feature: Migrate a SLE Micro 5.5 Salt minion to SL Micro 6.1
     And I wait until event "Package List Refresh" is completed
     And I reboot the "slemicro55_minion" minion through the web UI
     And I follow "Details" in the content area
-    Then I wait until I see "SUSE Linux Micro 6.1 x86_64" text, refreshing the page
+    Then I wait until I see "SUSE Linux Micro 6.2 x86_64" text, refreshing the page
     And vendor change should be enabled for product migration on "slemicro55_minion"
 
-  Scenario: Verify the SLE Micro minion is subscribed to SL Micro 6.1 child channels
+  Scenario: Verify the SLE Micro minion is subscribed to SL Micro 6.2 child channels
     Given I am on the Systems overview page of this "slemicro55_minion"
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    Then I should see the child channel "ManagerTools-SL-Micro-6.1 for x86_64" "selected"
+    Then I should see the child channel "ManagerTools-SLE-16 for x86_64" "selected"
 
   Scenario: Detect latest Salt changes on the SLE Micro minion
     When I query latest Salt changes on "slemicro55_minion"

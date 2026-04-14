@@ -18,41 +18,41 @@ mgr_inst_snpguest:
 
 mgr_write_request_data:
   cmd.run:
-    - name: /usr/bin/echo "{{ salt['pillar.get']('attestation_data:nonce') }}" | /usr/bin/base64 -d > /tmp/cocoattest/request-data.txt
-    - onlyif: /usr/bin/test -x /usr/bin/base64
+    - name: command -p echo "{{ salt['pillar.get']('attestation_data:nonce') }}" | command -p base64 -d > /tmp/cocoattest/request-data.txt
+    - onlyif: command -p test -x command -p base64
     - require:
       - file: mgr_create_attestdir
 
 mgr_create_snpguest_report:
   cmd.run:
-    - name: /usr/bin/snpguest report /tmp/cocoattest/report.bin /tmp/cocoattest/request-data.txt
+    - name: command -p snpguest report /tmp/cocoattest/report.bin /tmp/cocoattest/request-data.txt
     - require:
       - cmd: mgr_write_request_data
       - file: mgr_create_attestdir
 
 mgr_snpguest_report:
   cmd.run:
-    - name: /usr/bin/cat /tmp/cocoattest/report.bin | /usr/bin/base64
+    - name: command -p cat /tmp/cocoattest/report.bin | command -p base64
     - require:
       - cmd: mgr_create_snpguest_report
       - file: mgr_create_attestdir
 
 mgr_create_vlek_certificate:
   cmd.run:
-    - name: /usr/bin/snpguest certificates PEM /tmp/cocoattest
+    - name: command -p snpguest certificates PEM /tmp/cocoattest
     - require:
       - file: mgr_create_attestdir
 
 mgr_vlek_certificate:
   cmd.run:
-    - name: /usr/bin/cat /tmp/cocoattest/vlek.pem
+    - name: command -p cat /tmp/cocoattest/vlek.pem
     - require:
       - cmd: mgr_create_vlek_certificate
       - file: mgr_create_attestdir
 
 mgr_secureboot_enabled:
   cmd.run:
-    - name: /usr/bin/mokutil --sb-state
+    - name: command -p mokutil --sb-state
     - success_retcodes:
       - 255
       - 0

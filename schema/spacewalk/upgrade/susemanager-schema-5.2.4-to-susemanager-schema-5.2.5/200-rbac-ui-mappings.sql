@@ -1,14 +1,33 @@
 -- Set POST instead of GET
-UPDATE access.endpoint SET http_method = 'POST' WHERE endpoint = '/manager/api/oidcLogin';
+DELETE FROM access.endpoint WHERE endpoint = '/manager/api/oidcLogin' AND http_method = 'GET'
+    AND EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/api/oidcLogin' AND http_method = 'POST');
+UPDATE access.endpoint SET http_method = 'POST' WHERE endpoint = '/manager/api/oidcLogin' AND http_method = 'GET';
 
 -- Rename 'create' to 'create-access-group'
-UPDATE access.endpoint SET endpoint = '/manager/admin/access-control/create-access-group' WHERE endpoint = '/manager/admin/access-control/create';
+DELETE FROM access.endpoint WHERE endpoint = '/manager/admin/access-control/create'
+    AND EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/admin/access-control/create-access-group');
+UPDATE access.endpoint SET endpoint = '/manager/admin/access-control/create-access-group'
+    WHERE endpoint = '/manager/admin/access-control/create';
 
 -- Remove leading '/rhn' from endpoints
+DELETE FROM access.endpoint WHERE endpoint = '/rhn/manager/systems/ssm/appstreams'
+    AND EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/systems/ssm/appstreams');
 UPDATE access.endpoint SET endpoint = '/manager/systems/ssm/appstreams' WHERE endpoint = '/rhn/manager/systems/ssm/appstreams';
+
+DELETE FROM access.endpoint WHERE endpoint = '/rhn/manager/systems/ssm/appstreams/configure/:channelId'
+    AND EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/systems/ssm/appstreams/configure/:channelId');
 UPDATE access.endpoint SET endpoint = '/manager/systems/ssm/appstreams/configure/:channelId' WHERE endpoint = '/rhn/manager/systems/ssm/appstreams/configure/:channelId';
+
+DELETE FROM access.endpoint WHERE endpoint = '/rhn/manager/api/ssm/appstreams/save'
+    AND EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/api/ssm/appstreams/save');
 UPDATE access.endpoint SET endpoint = '/manager/api/ssm/appstreams/save' WHERE endpoint = '/rhn/manager/api/ssm/appstreams/save';
+
+DELETE FROM access.endpoint WHERE endpoint = '/rhn/manager/api/system/appstreams/ssmEnable'
+    AND EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/api/system/appstreams/ssmEnable');
 UPDATE access.endpoint SET endpoint = '/manager/api/system/appstreams/ssmEnable' WHERE endpoint = '/rhn/manager/api/system/appstreams/ssmEnable';
+
+DELETE FROM access.endpoint WHERE endpoint = '/rhn/manager/api/system/appstreams/ssmDisable'
+    AND EXISTS (SELECT 1 FROM access.endpoint WHERE endpoint = '/manager/api/system/appstreams/ssmDisable');
 UPDATE access.endpoint SET endpoint = '/manager/api/system/appstreams/ssmDisable' WHERE endpoint = '/rhn/manager/api/system/appstreams/ssmDisable';
 
 -- Add namespaces for API endpoints

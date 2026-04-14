@@ -46,37 +46,6 @@
     }
   },
 
-  "customizations": {
-    "vscode": {
-      "settings": {
-        "java.jdt.ls.java.home": "/usr/lib64/jvm/java-25-openjdk",
-        "java.configuration.runtimes": [
-          {
-            "name": "JavaSE-17",
-            "path": "/usr/lib64/jvm/java-17-openjdk",
-            "default": true
-          },
-          {
-            "name": "JavaSE-25",
-            "path": "/usr/lib64/jvm/java-25-openjdk",
-            "default": true
-          }
-        ]
-      },
-      "extensions": [
-        "nickheap.vscode-ant",
-        "vscjava.vscode-java-debug",
-        "redhat.java",
-        "shengchen.vscode-checkstyle",
-        "SonarSource.sonarlint-vscode",
-        "vscjava.vscode-java-test",
-        "vscjava.vscode-maven",
-        "vscjava.vscode-java-dependency",
-        "ckolkman.vscode-postgres"
-      ]
-    }
-  },
-
   "remoteUser": "uyuni",
   "overrideCommand": false
 }

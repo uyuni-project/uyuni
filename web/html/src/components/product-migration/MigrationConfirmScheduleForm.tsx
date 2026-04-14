@@ -16,9 +16,11 @@ import { MigrationProduct } from "./types";
 type Props = {
   systemsData: SystemData[];
   actionChains: ActionChain[];
+  migrationSource?: MigrationProduct | null;
   migrationTarget: MigrationProduct;
   migrationChannels: ChannelTreeType;
   allowVendorChange: boolean;
+  hasDryRunCapability?: boolean;
   onBack?: () => void;
   onConfirm: (dryRun: boolean, earliest: moment.Moment, actionChain?: ActionChain) => Promise<void>;
 };
@@ -26,9 +28,11 @@ type Props = {
 export const MigrationConfirmScheduleForm: FC<Props> = ({
   systemsData,
   actionChains,
+  migrationSource,
   migrationTarget,
   migrationChannels,
   allowVendorChange,
+  hasDryRunCapability = true,
   onBack,
   onConfirm,
 }) => {
@@ -94,16 +98,37 @@ export const MigrationConfirmScheduleForm: FC<Props> = ({
             onActionChainChanged={(actionChain) => setSelectedActionChain(actionChain ? actionChain : undefined)}
             onDateTimeChanged={setSelectedEarliest}
             systemIds={systemsData.map((system) => system.id)}
-            actionType="coco.attestation"
+            actionType="distupgrade.upgrade"
           />
         </FormGroup>
-        <Messages
-          items={MessagesUtils.warning(
-            t(
-              "In order to detect any possible problems it is recommended to always do a Dry Run before scheduling the actual Product Migration."
-            )
+        {/* SLES 16 pre-flight checklist — shown only for SLES 15 → 16 migrations */}
+        {migrationSource?.name?.includes("SUSE Linux Enterprise Server 15") &&
+          migrationTarget.name?.includes("SUSE Linux Enterprise Server 16") && (
+            <div className="alert alert-warning">
+              <strong>{t("Before Migrating to SLES 16 — Please ensure")}</strong>
+              <ul>
+                <li>{t("System is fully up to date")}</li>
+                <li>{t("Sufficient disk space is available")}</li>
+                <li>
+                  {t(
+                    "Ensure SSH key-based access is available for at least one user. If root login is required, create /etc/ssh/sshd_config.d/50-permit-root-login.conf with: PermitRootLogin yes"
+                  )}
+                </li>
+                <li>{t("KVM guests are shut down (if applicable)")}</li>
+                <li>{t("Network configuration will be migrated from wicked to NetworkManager")}</li>
+                <li>{t("AppArmor profiles will be migrated to SELinux")}</li>
+              </ul>
+            </div>
           )}
-        />
+        {hasDryRunCapability && (
+          <Messages
+            items={MessagesUtils.warning(
+              t(
+                "In order to detect any possible problems it is recommended to always do a Dry Run before scheduling the actual Product Migration."
+              )
+            )}
+          />
+        )}
         <div className="col-md-offset-3 offset-md-3 btn-group">
           {onBack !== undefined && (
             <Button
@@ -119,6 +144,8 @@ export const MigrationConfirmScheduleForm: FC<Props> = ({
             className="btn-default"
             text={t("Dry run")}
             action={() => onConfirm(true, selectedEarliest, selectedActionChain)}
+            disabled={!hasDryRunCapability}
+            title={!hasDryRunCapability ? t("Dry run is not available for this migration") : undefined}
           />
           <AsyncButton
             id="migrate-btn"

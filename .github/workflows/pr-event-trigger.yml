@@ -1,0 +1,31 @@
+name: "PR event trigger"
+
+# Generic PR lifecycle trigger.
+# This workflow intentionally does no business logic and exists so other workflows
+# can safely subscribe via `workflow_run`.
+# Keep event types aligned with consumers that rely on PR open/reopen/synchronize.
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+
+permissions:
+  contents: read
+
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Save PR number
+        run: echo "${{ github.event.pull_request.number }}" > pr-number
+
+      - name: Upload PR metadata
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 #v5.0.0
+        with:
+          name: pr-metadata
+          path: pr-number
+
+      - run: echo "PR event trigger workflow completed"

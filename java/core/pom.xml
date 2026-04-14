@@ -199,15 +199,31 @@
         </dependency>
         <dependency>
             <groupId>io.prometheus</groupId>
-            <artifactId>simpleclient</artifactId>
+            <artifactId>prometheus-metrics-config</artifactId>
         </dependency>
         <dependency>
             <groupId>io.prometheus</groupId>
-            <artifactId>simpleclient_hibernate</artifactId>
+            <artifactId>prometheus-metrics-core</artifactId>
         </dependency>
         <dependency>
             <groupId>io.prometheus</groupId>
-            <artifactId>simpleclient_httpserver</artifactId>
+            <artifactId>prometheus-metrics-model</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.prometheus</groupId>
+            <artifactId>prometheus-metrics-exporter-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.prometheus</groupId>
+            <artifactId>prometheus-metrics-exporter-httpserver</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.prometheus</groupId>
+            <artifactId>prometheus-metrics-exporter-servlet-jakarta</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.prometheus</groupId>
+            <artifactId>prometheus-metrics-exposition-textformats</artifactId>
         </dependency>
         <dependency>
             <groupId>com.github.mwiede</groupId>
@@ -253,28 +269,12 @@
             <artifactId>oro</artifactId>
         </dependency>
         <dependency>
-            <groupId>xalan</groupId>
-            <artifactId>xalan</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>xalan</groupId>
-            <artifactId>serializer</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>xerces</groupId>
-            <artifactId>xercesImpl</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.impossibl.pgjdbc-ng</groupId>
             <artifactId>pgjdbc-ng</artifactId>
         </dependency>
         <dependency>
             <groupId>suse</groupId>
             <artifactId>simple-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.simpleframework</groupId>
-            <artifactId>simple-xml</artifactId>
         </dependency>
 
         <!-- Runtime Dependencies -->
@@ -366,7 +366,6 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
@@ -458,16 +457,6 @@
             <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>io.prometheus</groupId>
-            <artifactId>simpleclient_common</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.prometheus</groupId>
-            <artifactId>simpleclient_servlet</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
             <groupId>com.impossibl.pgjdbc-ng</groupId>
             <artifactId>spy</artifactId>
             <scope>runtime</scope>
@@ -475,7 +464,6 @@
         <dependency>
             <groupId>org.codehaus.woodstox</groupId>
             <artifactId>stax2-api</artifactId>
-            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.codehaus.woodstox</groupId>
@@ -637,9 +625,6 @@
                     <skipTests>${skipTests}</skipTests>
                     <argLine>--add-opens java.base/java.lang=ALL-UNNAMED -ea
                         -Drhn.config.dir=${basedir}/../buildconf/test/ -Dlog4j.threshold=debug</argLine>
-                    <includes>
-                        <include>**/test/*Test.class</include>
-                    </includes>
                     <excludes>
                         <!-- Add here entries for tests you want to exclude -->
                     </excludes>

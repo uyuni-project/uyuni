@@ -123,7 +123,7 @@ public class IssFactory extends HibernateFactory {
      */
     public static void unmapLocalOrg(Org inOrg) {
         HibernateFactory.getSession().
-            createQuery("UPDATE IssMasterOrg mo SET mo.localOrg = null WHERE mo.localOrg = :inOrg").
+            createMutationQuery("UPDATE IssMasterOrg mo SET mo.localOrg = null WHERE mo.localOrg = :inOrg").
             setParameter("inOrg", inOrg).
             executeUpdate();
     }

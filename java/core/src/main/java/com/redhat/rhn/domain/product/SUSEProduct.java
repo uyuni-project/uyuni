@@ -285,6 +285,23 @@ public class SUSEProduct extends BaseDomainHelper implements Serializable {
     }
 
     /**
+     * Helper to determine if this product represents SLES 16.x
+     * @return true if this is a SLES 16 base product
+     */
+    public boolean isSles16() {
+        return isBase() && "sles".equalsIgnoreCase(getName()) &&
+               getVersion() != null && getVersion().startsWith("16");
+    }
+
+    /**
+     * Helper to determine if this product represents SLES 15.x
+     * @return true if this is a SLES 15 base product
+     */
+    public boolean isSles15() {
+        return isBase() && "sles".equalsIgnoreCase(getName()) &&
+               getVersion() != null && getVersion().startsWith("15");
+    }
+    /**
      * Is the product free?
      * @return the state of the free flag
      */

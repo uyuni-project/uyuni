@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 SUSE LLC
+ * Copyright (c) 2025--2026 SUSE LLC
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -16,12 +16,15 @@
 package com.redhat.rhn.domain.user;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
+import com.redhat.rhn.domain.user.legacy.UserImpl;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
@@ -56,6 +59,10 @@ public class AddressImpl extends BaseDomainHelper implements Address {
     private String isPoBox;
     @Column(name = "type")
     private String privType;
+
+    @ManyToOne
+    @JoinColumn(name = "web_user_id")
+    private UserImpl user;
 
     /**
      * Protect the constructor
@@ -260,6 +267,21 @@ public class AddressImpl extends BaseDomainHelper implements Address {
             return Address.TYPE_MARKETING;
         }
         return privType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public User getUser() {
+        return user;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setUser(User userIn) {
+        user = (UserImpl) userIn;
     }
 
     /**

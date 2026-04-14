@@ -751,11 +751,22 @@ end
 
 Then(/^files on container volumes should all have the proper SELinux label$/) do
   node = get_target('server')
-  cmd = '[ "$(sestatus 2>/dev/null | head -n 1 | grep enabled)" != "" ] && ' \
-        '(find /var/lib/containers/storage/volumes/*/_data -exec ls -Zd {} \; | grep -v ":object_r:container_file_t:s0 ")'
-  output, _code = node.run_local(cmd, check_errors: false)
-  log output if output != ''
-  raise ScriptError, 'Wrong SELinux labels' if output != ''
+  # Check SELinux is enabled
+  sestatus, = node.run_local('sestatus | head -n 1', check_errors: false)
+  raise ScriptError, "SELinux is NOT enabled on the server host." unless sestatus.include?('enabled')
+
+  volume_path = '/var/lib/containers/storage/volumes/*/_data'
+  expected_context = ':object_r:container_file_t:s0'
+  # Get containers' labels
+  output, = node.run_local("find #{volume_path} -exec ls -Zd {} +", check_errors: false)
+  # Filter out files with the expected label
+  invalid_files = output.split("\n").reject { |line| line.include?(expected_context) }
+  # If any file with an unexpected label remains, log it and fail
+  if invalid_files.any?
+    log "Found files with incorrect SELinux labels:"
+    invalid_files.each { |f| log "  #{f}" }
+    raise ScriptError, "SELinux Label Validation Failed: #{invalid_files.size} files incorrectly labeled."
+  end
 end
 
 When(/^I run "([^"]*)" on "([^"]*)"$/) do |cmd, host|

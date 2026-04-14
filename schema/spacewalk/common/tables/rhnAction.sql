@@ -62,5 +62,13 @@ CREATE INDEX rhn_action_prereq_id_idx
 CREATE INDEX rhn_action_created_idx
     ON rhnAction(created);
 
+CREATE INDEX rhn_action_org_earliest_id_unarch_idx
+    ON rhnAction(org_id, earliest_action DESC, id)
+    WHERE archived = 0;
+
+CREATE INDEX rhn_action_org_earliest_id_arch_idx
+    ON rhnAction(org_id, earliest_action DESC, id)
+    WHERE archived = 1;
+
 CREATE SEQUENCE rhn_event_id_seq;
 

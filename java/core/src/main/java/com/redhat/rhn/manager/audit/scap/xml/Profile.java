@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 SUSE LLC
+ * Copyright (c) 2017--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,29 +7,33 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.redhat.rhn.manager.audit.scap.xml;
 
-import org.simpleframework.xml.Attribute;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.Optional;
+
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlAttribute;
 
 /**
  * Bean used to unmarshall an intermediary SCAP report.
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Profile {
 
-    @Attribute
+    @XmlAttribute(required = true)
     private String title;
 
-    @Attribute
+    @XmlAttribute(required = true)
     private String id;
 
-    @Attribute(required = false)
+    @XmlAttribute
     private String description;
 
     /**
@@ -89,5 +93,40 @@ public class Profile {
      */
     public void setDescription(String descriptionIn) {
         this.description = descriptionIn;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof Profile profile)) {
+            return false;
+        }
+
+        return new EqualsBuilder()
+            .append(title, profile.title)
+            .append(id, profile.id)
+            .append(description, profile.description)
+            .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+            .append(title)
+            .append(id)
+            .append(description)
+            .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+            .append("title", title)
+            .append("id", id)
+            .append("description", description)
+            .toString();
     }
 }

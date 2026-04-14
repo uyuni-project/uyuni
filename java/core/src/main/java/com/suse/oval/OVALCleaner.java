@@ -42,7 +42,6 @@ import java.util.stream.Collectors;
  * OVAL data from multiple sources and make changes to it to have a more predictable format.
  */
 public class OVALCleaner {
-
     private OVALCleaner() {
     }
 
@@ -50,12 +49,10 @@ public class OVALCleaner {
      * Cleanup the given {@code root} based on {@code osFamily} and {@code osVersion}
      *
      * @param root the OVAL root to clean up
-     * @param osFamily the osFamily of the OVAL
-     * @param osVersion the osVersion of the OVAL
      * */
-    public static void cleanup(OvalRootType root, OsFamily osFamily, String osVersion) {
-        root.setOsFamily(osFamily);
-        root.setOsVersion(osVersion);
+    public static void cleanup(OvalRootType root) {
+        OsFamily osFamily = root.getOsFamily();
+        String osVersion = root.getOsVersion();
 
         if (osFamily == OsFamily.REDHAT_ENTERPRISE_LINUX) {
             root.getDefinitions().removeIf(def -> def.getId().contains("unaffected"));

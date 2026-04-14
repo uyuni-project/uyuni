@@ -21,7 +21,7 @@ endpoint accepts a POST request with a JSON body that has <code>login</code> and
 <p/>
 
 <pre>
-$ API=https://manager.example.com/rhn/manager/api
+$ API=https://<%= (request.getServerName()) %>/rhn/manager/api
 $ curl -H "Content-Type: application/json" -d '{"login": "myusername", "password": "mypass"}' -i $API/auth/login
 
 HTTP/1.1 200 200
@@ -41,7 +41,7 @@ In a GET request, method parameters must be sent as query string key-value pairs
 <em>The JSON output is pretty-printed for clarity.</em>
 <p/>
 <pre>
-$ API=https://manager.example.com/rhn/manager/api
+$ API=https://<%= (request.getServerName()) %>/rhn/manager/api
 $ curl -H "Content-Type: application/json" --cookie "pxt-session-cookie=&lt;tokenhash&gt;;" \
 > $API/contentmanagement/lookupProject?projectLabel=myproject
 {
@@ -68,7 +68,7 @@ The following examples show both approaches.<br/>
 <p/>
 <h4>Using the query string</h4>
 <pre>
-$ API=https://manager.example.com/rhn/manager/api
+$ API=https://<%= (request.getServerName()) %>/rhn/manager/api
 $ curl -H "Content-Type: application/json" --cookie "pxt-session-cookie=&lt;tokenhash&gt;;" -X POST \
 > "$API/contentmanagement/createProject?projectLabel=myproject&name=My%20Project&description="
 {
@@ -87,7 +87,7 @@ The request body must be a top-level JSON object that contains all the parameter
 properties.
 <p/>
 <pre>
-$ API=https://manager.example.com/rhn/manager/api
+$ API=https://<%= (request.getServerName()) %>/rhn/manager/api
 $ curl -H "Content-Type: application/json" --cookie "pxt-session-cookie=&lt;tokenhash&gt;;" \
 > -d '{"projectLabel":"myproject","name":"My Project","description":""}' \
 > $API/contentmanagement/createProject
@@ -111,7 +111,7 @@ Below is an example of the <code>system.listActiveSystems</code> call being used
 import requests
 import pprint
 
-MANAGER_URL = "https://manager.example.com/rhn/manager/api"
+MANAGER_URL = "https://<%= (request.getServerName()) %>/rhn/manager/api"
 MANAGER_LOGIN = "username"
 MANAGER_PASSWORD = "password"
 SSLVERIFY = "/path/to/CA" # or False to disable verify;
@@ -153,7 +153,7 @@ The <code>Frontier::Client</code> Perl module can be found in the "perl-Frontier
 #!/usr/bin/perl
 use Frontier::Client;
 
-my $HOST = 'manager.example.com';
+my $HOST = '<%= (request.getServerName()) %>';
 my $user = 'username';
 my $pass = 'password';
 
@@ -176,7 +176,7 @@ Below is an example of the <code>user.listUsers</code> call being used.  Only th
 #!/usr/bin/python
 import xmlrpclib
 
-MANAGER_URL = "http://manager.example.com/rpc/api"
+MANAGER_URL = "http://<%= (request.getServerName()) %>/rpc/api"
 MANAGER_LOGIN = "username"
 MANAGER_PASSWORD = "password"
 
@@ -201,7 +201,7 @@ from datetime import datetime
 import time
 import xmlrpclib
 
-MANAGER_URL = "http://manager.example.com/rpc/api"
+MANAGER_URL = "http://<%= (request.getServerName()) %>/rpc/api"
 MANAGER_LOGIN = "username"
 MANAGER_PASSWORD = "password"
 
@@ -225,7 +225,7 @@ Below is an example of the <code>user.listUsers</code> call being used.
 from xmlrpc.client import ServerProxy
 import ssl
 
-MANAGER_URL = "https://manager.example.com/rpc/api"
+MANAGER_URL = "https://<%= (request.getServerName()) %>/rpc/api"
 MANAGER_LOGIN = "username"
 MANAGER_PASSWORD = "password"
 
@@ -249,7 +249,7 @@ Below is an example of the <code>user.listUsers</code> call being used.
 #!/usr/bin/env python3
 from xmlrpc.client import ServerProxy
 
-MANAGER_URL = "http://manager.example.com/rpc/api"
+MANAGER_URL = "http://<%= (request.getServerName()) %>/rpc/api"
 MANAGER_LOGIN = "username"
 MANAGER_PASSWORD = "password"
 
@@ -271,7 +271,7 @@ ID <code>1000000001</code>.
 from datetime import datetime
 from xmlrpc.client import ServerProxy
 
-MANAGER_URL = "http://manager.example.com/rpc/api"
+MANAGER_URL = "http://<%= (request.getServerName()) %>/rpc/api"
 MANAGER_LOGIN = "username"
 MANAGER_PASSWORD = "password"
 
@@ -294,7 +294,7 @@ Below is an example of the <code>channel.listAllChannels</code> API call. List o
 #!/usr/bin/ruby
 require "xmlrpc/client"
 
-@MANAGER_URL = "http://manager.example.com/rpc/api"
+@MANAGER_URL = "http://<%= (request.getServerName()) %>/rpc/api"
 @MANAGER_LOGIN = "username"
 @MANAGER_PASSWORD = "password"
 

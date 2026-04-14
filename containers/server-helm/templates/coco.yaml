@@ -21,6 +21,7 @@ spec:
         app.kubernetes.io/component: coco-attestation
         app.kubernetes.io/part-of: uyuni
     spec:
+{{- include "uyuni.nodePlacement" (dict "global" .Values.placement "local" .Values.coco) | nindent 6 }}
       containers:
       - env:
         - name: database_user

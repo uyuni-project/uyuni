@@ -14,8 +14,8 @@
  */
 package com.suse.manager.metrics;
 
-import io.prometheus.client.CounterMetricFamily;
-import io.prometheus.client.GaugeMetricFamily;
+import io.prometheus.metrics.model.snapshots.CounterSnapshot;
+import io.prometheus.metrics.model.snapshots.GaugeSnapshot;
 
 /**
  * Shared methods for Prometheus metrics.
@@ -32,8 +32,14 @@ public class CustomCollectorUtils {
      * @param metricPrefix prefix for the metric name
      * @return a Gauge object
      */
-    public static GaugeMetricFamily gaugeFor(String metricName, String help, double metricValue, String metricPrefix) {
-        return new GaugeMetricFamily(metricPrefix + "_" + metricName, metricPrefix + " - " + help, metricValue);
+    public static GaugeSnapshot gaugeFor(String metricName, String help, double metricValue, String metricPrefix) {
+        return GaugeSnapshot.builder()
+                .name(metricPrefix + "_" + metricName)
+                .help(metricPrefix + " - " + help)
+                .dataPoint(GaugeSnapshot.GaugeDataPointSnapshot.builder()
+                        .value(metricValue)
+                        .build())
+                .build();
     }
 
     /**
@@ -44,8 +50,14 @@ public class CustomCollectorUtils {
      * @param metricPrefix prefix for the metric name
      * @return a Counter object
      */
-    public static CounterMetricFamily counterFor(String metricName, String help, long metricValue,
-                                                 String metricPrefix) {
-        return new CounterMetricFamily(metricPrefix + "_" + metricName, metricPrefix + " - " + help, metricValue);
+    public static CounterSnapshot counterFor(String metricName, String help, long metricValue,
+                                               String metricPrefix) {
+        return CounterSnapshot.builder()
+                .name(metricPrefix + "_" + metricName)
+                .help(metricPrefix + " - " + help)
+                .dataPoint(CounterSnapshot.CounterDataPointSnapshot.builder()
+                        .value(metricValue)
+                        .build())
+                .build();
     }
 }

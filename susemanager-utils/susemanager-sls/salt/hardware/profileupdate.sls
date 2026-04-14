@@ -10,84 +10,84 @@ mgr_install_dmidecode:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
       - saltutil: sync_states
 {%- else %}
-      - mgrcompat: sync_states
+      - module: sync_states
 {%- endif %}
 {%- endif %}
 
 grains:
-  mgrcompat.module_run:
+  module.run:
     - name: grains.items
     - require:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
       - saltutil: sync_states
 {%- else %}
-      - mgrcompat: sync_states
+      - module: sync_states
 {%- endif %}
 cpuinfo:
-  mgrcompat.module_run:
+  module.run:
     - name: status.cpuinfo
     - require:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
       - saltutil: sync_states
 {%- else %}
-      - mgrcompat: sync_states
+      - module: sync_states
 {%- endif %}
 udev:
-  mgrcompat.module_run:
+  module.run:
     - name: udev.exportdb
     - require:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
       - saltutil: sync_states
 {%- else %}
-      - mgrcompat: sync_states
+      - module: sync_states
 {%- endif %}
 network-interfaces:
-  mgrcompat.module_run:
+  module.run:
     - name: network.interfaces
     - require:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
       - saltutil: sync_states
 {%- else %}
-      - mgrcompat: sync_states
+      - module: sync_states
 {%- endif %}
 network-ips:
-  mgrcompat.module_run:
+  module.run:
     - name: sumautil.primary_ips
     - require:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
       - saltutil: sync_states
       - saltutil: sync_modules
 {%- else %}
-      - mgrcompat: sync_states
-      - mgrcompat: sync_modules
+      - module: sync_states
+      - module: sync_modules
 {%- endif %}
 network-modules:
-  mgrcompat.module_run:
+  module.run:
     - name: sumautil.get_net_modules
     - require:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
       - saltutil: sync_states
       - saltutil: sync_modules
 {%- else %}
-      - mgrcompat: sync_states
-      - mgrcompat: sync_modules
+      - module: sync_states
+      - module: sync_modules
 {%- endif %}
 
 instance-flavor:
-  mgrcompat.module_run:
+  module.run:
     - name: sumautil.instance_flavor
     - require:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
       - saltutil: sync_states
       - saltutil: sync_modules
 {%- else %}
-      - mgrcompat: sync_states
-      - mgrcompat: sync_modules
+      - module: sync_states
+      - module: sync_modules
 {%- endif %}
 
 {% if grains['cpuarch'] in ['i386', 'i486', 'i586', 'i686', 'x86_64'] %}
 smbios-records-bios:
-  mgrcompat.module_run:
+  module.run:
     - name: smbios.records
     - rec_type: 0
     - clean: False
@@ -95,10 +95,10 @@ smbios-records-bios:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
       - saltutil: sync_states
 {%- else %}
-      - mgrcompat: sync_states
+      - module: sync_states
 {%- endif %}
 smbios-records-system:
-  mgrcompat.module_run:
+  module.run:
     - name: smbios.records
     - rec_type: 1
     - clean: False
@@ -106,10 +106,10 @@ smbios-records-system:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
       - saltutil: sync_states
 {%- else %}
-      - mgrcompat: sync_states
+      - module: sync_states
 {%- endif %}
 smbios-records-baseboard:
-  mgrcompat.module_run:
+  module.run:
     - name: smbios.records
     - rec_type: 2
     - clean: False
@@ -117,10 +117,10 @@ smbios-records-baseboard:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
       - saltutil: sync_states
 {%- else %}
-      - mgrcompat: sync_states
+      - module: sync_states
 {%- endif %}
 smbios-records-chassis:
-  mgrcompat.module_run:
+  module.run:
     - name: smbios.records
     - rec_type: 3
     - clean: False
@@ -128,81 +128,81 @@ smbios-records-chassis:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
       - saltutil: sync_states
 {%- else %}
-      - mgrcompat: sync_states
+      - module: sync_states
 {%- endif %}
 {% elif grains['cpuarch'] in ['s390', 's390x'] %}
 mainframe-sysinfo:
-  mgrcompat.module_run:
+  module.run:
     - name: mainframesysinfo.read_values
     - require:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
       - saltutil: sync_states
 {%- else %}
-      - mgrcompat: sync_states
+      - module: sync_states
 {%- endif %}
 {% endif %}
 
 {%- if grains['saltversioninfo'][0] >= 2018 %}
 {% if 'mgrnet.dns_fqdns' in salt %}
 dns_fqdns:
-  mgrcompat.module_run:
+  module.run:
     - name: mgrnet.dns_fqdns
     - require:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
       - saltutil: sync_states
 {%- else %}
-      - mgrcompat: sync_states
+      - module: sync_states
 {%- endif %}
     - onlyif:
-        /usr/bin/which host || /usr/bin/which nslookup
+        command -v host || command -v nslookup
 {% endif%}
 {% if 'network.fqdns' in salt %}
 fqdns:
-  mgrcompat.module_run:
+  module.run:
     - name: network.fqdns
     - require:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
       - saltutil: sync_states
 {%- else %}
-      - mgrcompat: sync_states
+      - module: sync_states
 {%- endif %}
 {% endif%}
 {%- endif%}
 
 {% if grains['os_family'] == 'Suse' %}
 sap_workloads:
-  mgrcompat.module_run:
+  module.run:
     - name: sap.get_workloads
     - require:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
       - saltutil: sync_modules
 {%- else %}
-      - mgrcompat: sync_modules
+      - module: sync_modules
 {%- endif %}
 {% endif %}
 
 uname:
   cmd.run:
-    - name: /usr/bin/uname -r -v
+    - name: command -p uname -r -v
 
 container_runtime:
-  mgrcompat.module_run:
+  module.run:
     - name: container_runtime.get_container_runtime
     - require:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
       - saltutil: sync_modules
 {%- else %}
-      - mgrcompat: sync_modules
+      - module: sync_modules
 {%- endif %}
 
 proxy_info:
-  mgrcompat.module_run:
+  module.run:
     - name: proxy.info
     - require:
 {%- if grains.get('__suse_reserved_saltutil_states_support', False) %}
       - saltutil: sync_modules
 {%- else %}
-      - mgrcompat: sync_modules
+      - module: sync_modules
 {%- endif %}
 
 include:

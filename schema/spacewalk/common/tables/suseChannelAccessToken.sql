@@ -33,3 +33,6 @@ CREATE SEQUENCE suse_chan_access_token_id_seq;
 
 CREATE UNIQUE INDEX suse_accesstoken_token_uq
     ON suseChannelAccessToken (token);
+
+CREATE INDEX suse_accesstoken_minion_id_idx
+    ON suseChannelAccessToken (minion_id);

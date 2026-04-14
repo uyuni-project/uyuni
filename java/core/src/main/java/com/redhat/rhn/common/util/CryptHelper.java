@@ -29,6 +29,7 @@ public class CryptHelper {
     private static String b64t = // a string containing acceptable salt chars
         "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     private static String sha256prefix = "$5$";
+    private static Random secureRandom = new SecureRandom();
 
     /**
      * CryptHelper
@@ -97,7 +98,7 @@ public class CryptHelper {
         SecureRandom r = new SecureRandom();
 
         for (int i = 0; i < saltLength; i++) {
-            int rand = r.nextInt(b64t.length());
+            int rand = secureRandom.nextInt(b64t.length());
             salt.append(b64t.charAt(rand));
         }
 

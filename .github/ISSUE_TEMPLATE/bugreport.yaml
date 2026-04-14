@@ -14,36 +14,29 @@ body:
       required: true
   - type: textarea
     attributes:
-      label: Steps to reproduce
-      description: Walk us through a minimal test case.
-      value: |
-        1.
-        2.
-        3.
-        ...
+      label: Steps to reproduce the issue
+      description: Please explain the steps to reproduce the issue
+      placeholder: "Steps to reproduce the issue\n1.\n2.\n3.\n"
     validations:
       required: true
   - type: textarea
     attributes:
-      label: Uyuni version
-      placeholder: |
-        Paste output of `zypper info Uyuni-Server-release`
+      label: Uyuni-tools version used to deploy/manage the server (or proxy)
+      description: "Paste the output of `zypper info mgradm`, `zypper info mgrctl` (and `zypper info mgrpxy`, if you use a proxy)"
+      render: bash
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Uyuni server version
+      description: "Paste the output of `mgrctl exec -t cat /etc/uyuni-release` and `podman images -f label=org.uyuni.version -f containers=true --digests`"
       render: bash
     validations:
       required: true
   - type: textarea
     attributes:
       label: Uyuni proxy version (if used)
-      placeholder: |
-        Paste output of `zypper info Uyuni-Proxy-release`
-      render: bash
-    validations:
-      required: false
-  - type: textarea
-    attributes:
-      label: uyuni-tools version used to deploy/manage the server or proxy (if relevant)
-      placeholder: |
-        Paste output of `zypper info mgradm`, or `zypper info mgrpxy`, or `zypper info mgrctl`, depending on the context
+      description: "Paste the output of `podman images -f label=org.uyuni.version -f containers=true --digests`"
       render: bash
     validations:
       required: false

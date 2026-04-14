@@ -27,6 +27,13 @@
         </script>
       </div>
       </c:if>
+      <c:if test="${requestScope.diskCheckWarning == 'y'}">
+      <div id="disk-check-warning" class="col-md-12">
+        <script type="text/javascript">
+          ajax("disk-check-warning", "", makeRendererHandler("disk-check-warning", false).callback);
+        </script>
+      </div>
+      </c:if>
     </div>
     <div class="row">
       <c:if test="${requestScope.tasks == 'y'}">

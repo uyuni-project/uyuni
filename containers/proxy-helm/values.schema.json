@@ -25,6 +25,10 @@
       "default": "",
       "description": "Name of the secret containing credentials for the registry"
     },
+    "placement": {
+      "$ref": "#/definitions/nodeSelectorConfig",
+      "description": "Default node placement rules for all pods"
+    },
     "global": {
       "type": "object",
       "required": ["config", "httpd", "ssh"],
@@ -123,7 +127,8 @@
       "type": ["object", "null"],
       "description": "configuration of the tftp server component",
       "allOf": [
-        { "$ref": "#/definitions/imageConfig" }
+        { "$ref": "#/definitions/imageConfig" },
+        { "$ref": "#/definitions/nodeSelectorConfig" }
       ],
       "properties": {
         "hostNetwork": {
@@ -136,6 +141,15 @@
     "salt": { "$ref": "#/definitions/componentConfig" }
   },
   "definitions": {
+    "nodeSelectorConfig": {
+      "type": ["object", "null"],
+      "properties": {
+        "nodeSelector": { "type": ["object", "null"], "description": "Node label matching rules." },
+        "affinity": { "type": ["object", "null"], "description": "Advanced scheduling rules." },
+        "tolerations": { "type": ["array", "null"], "description": "Node taint tolerations." },
+        "nodeName": { "type": ["string", "null"], "description": "Specific node assignment." }
+      }
+    },
     "imageConfig": {
       "type": ["object", "null"],
       "properties": {
@@ -145,7 +159,10 @@
     },
     "componentConfig": {
       "type": ["object", "null"],
-      "allOf": [ { "$ref": "#/definitions/imageConfig"} ],
+      "allOf": [
+        { "$ref": "#/definitions/imageConfig" },
+        { "$ref": "#/definitions/nodeSelectorConfig" }
+      ],
       "properties": {
         "image": { "type": ["string", "null"], "description": "Override default image name" },
         "tag": { "type": ["string", "null"], "description": "Override default tag" },

@@ -14,12 +14,13 @@
 # This provides "git_pillar_foobar: 12345" as part of the pillar data
 # for all minions and master.
 #
+set -e
 
 GIT_REPO="/tmp/test_salt_git_pillar.git"
 
 if [ "$1" == "setup" ]; then
 	echo "Setting up git_pillar environment and restarting Salt master and Salt API"
-	zypper in -y git-core
+	zypper in -y git-core || zypper in -y git
 	mkdir $GIT_REPO
 	cd $GIT_REPO
 	git init
@@ -45,6 +46,7 @@ EOF
 	ssh-keygen -A
 	/usr/sbin/sshd -D &
 
+	mkdir -p /etc/salt/master.d/
 	cat << 'EOF' > /etc/salt/master.d/zz-testing-gitpillar.conf
 ext_pillar:
   - suma_minion: True

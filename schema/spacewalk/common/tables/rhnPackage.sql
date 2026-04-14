@@ -87,3 +87,5 @@ CREATE SEQUENCE rhn_package_id_seq;
 
 CREATE INDEX rhn_package_is_ptf_idx ON rhnPackage (is_ptf);
 CREATE INDEX rhn_package_is_part_of_ptf_idx ON rhnPackage (is_part_of_ptf);
+
+CREATE INDEX rhn_package_csid_idx ON rhnPackage (checksum_id);

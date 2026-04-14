@@ -1,0 +1,13 @@
+{# DMS Configuration Template for SLES 16 Migration #}
+{# https://documentation.suse.com/suse-distribution-migration-system/15/html/distribution-migration-system/index.html #}
+
+migration_product: SLES/16.0/{{ grains['osarch'] }}
+use_zypper_migration: false
+pre_checks_fix: true
+network:
+  wicked2nm-continue-migration: true
+preserve:
+  static:
+    - /etc/machine-id
+    - /etc/venv-salt-minion/minion_id
+    - /etc/hosts

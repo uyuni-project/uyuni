@@ -31,6 +31,10 @@
       "description": "The time zone to set in the containers",
       "default": "Etc/UTC"
     },
+    "placement": {
+      "$ref": "#/definitions/nodeSelectorConfig",
+      "description": "Default node placement rules for all pods"
+    },
     "global": {
       "type": "object",
       "required": [
@@ -47,7 +51,8 @@
       "type": ["object", "null"],
       "description": "configuration of the server component",
       "allOf": [
-        { "$ref": "#/definitions/imageConfig" }
+        { "$ref": "#/definitions/imageConfig" },
+        { "$ref": "#/definitions/nodeSelectorConfig" }
       ],
       "properties": {
         "email": {
@@ -57,8 +62,12 @@
         },
         "superPrivileged": {
           "type": "boolean",
-          "description": "Run the server container with super privileges, bypassing a lot of selinux checks. This is dangerous!",
+          "description": "Run the server container with super privileges, bypassing a lot of selinux or AppArmor checks. This is dangerous!",
           "default": false
+        },
+        "apparmorProfile": {
+          "type": "string",
+          "description": "appArmor profile is the name of an AppArmor profile to use for the server pod."
         },
         "systemdLogLevel": {
           "type": "string",
@@ -83,7 +92,8 @@
       "type": ["object", "null"],
       "description": "configuration of the tftp server component",
       "allOf": [
-        { "$ref": "#/definitions/imageConfig" }
+        { "$ref": "#/definitions/imageConfig" },
+        { "$ref": "#/definitions/nodeSelectorConfig" }
       ],
       "properties": {
         "hostNetwork": {
@@ -167,7 +177,8 @@
             "sslRedirect": { "type": "object" },
             "nossl": { "type": "object" },
             "saline": { "type": "object" },
-            "hub": { "type": "object" }
+            "hub": { "type": "object" },
+            "exporters": { "type": "object" }
           }
         }
       }
@@ -205,7 +216,8 @@
       "type": ["object", "null"],
       "description": "configuration of the hub API component",
       "allOf": [
-        { "$ref": "#/definitions/imageConfig" }
+        { "$ref": "#/definitions/imageConfig" },
+        { "$ref": "#/definitions/nodeSelectorConfig" }
       ],
       "properties": {
         "enable": {
@@ -219,7 +231,8 @@
       "type": ["object", "null"],
       "description": "configuration of the confidential computing attestation component",
       "allOf": [
-        { "$ref": "#/definitions/imageConfig" }
+        { "$ref": "#/definitions/imageConfig" },
+        { "$ref": "#/definitions/nodeSelectorConfig" }
       ],
       "properties": {
         "replicas": {
@@ -234,7 +247,8 @@
       "type": ["object", "null"],
       "description": "configuration of the saline component",
       "allOf": [
-        { "$ref": "#/definitions/imageConfig" }
+        { "$ref": "#/definitions/imageConfig" },
+        { "$ref": "#/definitions/nodeSelectorConfig" }
       ],
       "properties": {
         "enable": {
@@ -248,7 +262,8 @@
       "type": ["object", "null"],
       "description": "configuration of the PostgreSQL database",
       "allOf": [
-        { "$ref": "#/definitions/imageConfig" }
+        { "$ref": "#/definitions/imageConfig" },
+        { "$ref": "#/definitions/nodeSelectorConfig" }
       ],
       "properties": {
         "enable": {
@@ -262,6 +277,15 @@
     }
   },
   "definitions": {
+    "nodeSelectorConfig": {
+      "type": ["object", "null"],
+      "properties": {
+        "nodeSelector": { "type": ["object", "null"], "description": "Node label matching rules." },
+        "affinity": { "type": ["object", "null"], "description": "Advanced scheduling rules." },
+        "tolerations": { "type": ["array", "null"], "description": "Node taint tolerations." },
+        "nodeName": { "type": ["string", "null"], "description": "Specific node assignment." }
+      }
+    },
     "imageConfig": {
       "type": ["object", "null"],
       "properties": {

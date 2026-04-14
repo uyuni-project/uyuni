@@ -1,0 +1,1 @@
+- Drop all pg-migrate scripts as this is now done in the containers

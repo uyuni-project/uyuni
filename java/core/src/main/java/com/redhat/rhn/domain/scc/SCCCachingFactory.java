@@ -274,7 +274,7 @@ import java.util.stream.Stream;
             return;
         }
         getSession()
-        .createQuery("DELETE FROM SCCOrderItem AS o WHERE o.credentials = :creds")
+        .createMutationQuery("DELETE FROM SCCOrderItem AS o WHERE o.credentials = :creds")
         .setParameter("creds", c)
         .executeUpdate();
     }
@@ -284,7 +284,7 @@ import java.util.stream.Stream;
      */
     public static void clearOrderItems() {
         getSession()
-        .createQuery("DELETE FROM SCCOrderItem")
+        .createMutationQuery("DELETE FROM SCCOrderItem")
         .executeUpdate();
     }
 

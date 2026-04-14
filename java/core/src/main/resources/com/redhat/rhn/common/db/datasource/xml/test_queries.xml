@@ -102,7 +102,7 @@
 
 
 <mode name="find_all_in_table"
- class="com.redhat.rhn.common.db.datasource.test.AdvDataSourceDto">
+ class="com.redhat.rhn.common.db.datasource.AdvDataSourceDto">
   <query params="">
     SELECT foobar, id
       FROM adv_datasource
@@ -112,7 +112,7 @@
 
 
 <mode name="find_in_table"
-                class="com.redhat.rhn.common.db.datasource.test.AdvDataSourceDto">
+                class="com.redhat.rhn.common.db.datasource.AdvDataSourceDto">
   <query params="foobar">
     SELECT foobar, id
       FROM adv_datasource
@@ -149,7 +149,7 @@
 </callable-mode>
 
 <!-- Test to benchmark datasource vs hibernate -->
-<mode name="withClass_pg" class="com.redhat.rhn.common.db.datasource.test.TableData">
+<mode name="withClass_pg" class="com.redhat.rhn.common.db.datasource.TableData">
   <query params="">
       SELECT t.tablename as table_name
         FROM pg_tables t
@@ -165,7 +165,7 @@
 </mode>
 
 
-<mode name="user_class_pg" class="com.redhat.rhn.common.db.datasource.test.UserData">
+<mode name="user_class_pg" class="com.redhat.rhn.common.db.datasource.UserData">
   <query params="username">
       SELECT u.usename as USERNAME, u.usesysid as USER_ID
         FROM pg_user u

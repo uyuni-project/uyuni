@@ -79,7 +79,7 @@ def do_proxy_container_config(self, args):
     args, options = parse_command_arguments(args, arg_parser)
 
     try:
-        (proxy_fqdn, server_fqdn, max_cache, email, root_ca, certificate, key) = args
+        proxy_fqdn, server_fqdn, max_cache, email, root_ca, certificate, key = args
     except ValueError:
         self.help_proxy_container_config()
         return
@@ -100,6 +100,61 @@ def do_proxy_container_config(self, args):
         intermediate_cas,
         cert,
         key,
+    )
+
+    with open(options.output, "wb") as fd:
+        fd.write(config.data)
+    print(options.output)
+
+
+# pylint: disable-next=unused-argument
+def help_proxy_container_config_nossl(self):
+    print(
+        _(
+            "proxy_container_config_nossl: create a proxy system and return its configuration file without SSL certificate"
+        )
+    )
+    print(
+        _(
+            """usage: proxy_container_config_nossl [options] PROXY_FQDN SERVER_FQDN MAX_CACHE EMAIL
+
+parameters:
+  PROXY_FQDN  the unique, DNS-resolvable FQDN of this proxy.
+  SERVER_FQDN the fully qualified domain name of the server to connect to proxy to.
+  MAX_CACHE   the maximum cache size in MB. 60% of the storage is a good value.
+  EMAIL       the email of the proxy administrator
+
+options:
+  -o, --output Path where to create the generated configuration. Default: 'config.tar.gz'
+  -p, --ssh-port SSH port the proxy listens one. Default: 8022
+
+examples:
+  proxy_container_config_nossl -o config.zip proxy.lab server.lab 51200 proxy@acme.org
+"""
+        )
+    )
+
+
+def do_proxy_container_config_nossl(self, args):
+    arg_parser = get_argument_parser()
+    arg_parser.add_argument("-o", "--output", default="config.tar.gz")
+    arg_parser.add_argument("-p", "--ssh-port", type=int, default=8022)
+
+    args, options = parse_command_arguments(args, arg_parser)
+
+    try:
+        proxy_fqdn, server_fqdn, max_cache, email = args
+    except ValueError:
+        self.help_proxy_container_config()
+        return
+
+    config = self.client.proxy.container_config(
+        self.session,
+        proxy_fqdn,
+        options.ssh_port,
+        server_fqdn,
+        int(max_cache),
+        email,
     )
 
     with open(options.output, "wb") as fd:
@@ -169,7 +224,7 @@ def do_proxy_container_config_generate_cert(self, args):
     args, options = parse_command_arguments(args, arg_parser)
 
     try:
-        (proxy_fqdn, server_fqdn, max_cache, email) = args
+        proxy_fqdn, server_fqdn, max_cache, email = args
     except ValueError:
         self.help_proxy_container_config_generate_cert()
         return

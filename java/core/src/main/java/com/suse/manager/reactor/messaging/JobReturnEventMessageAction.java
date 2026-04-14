@@ -20,6 +20,7 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionChain;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.VirtualInstance;
@@ -151,6 +152,12 @@ public class JobReturnEventMessageAction implements MessageAction {
         boolean isStandaloneAction = !isActionChainInvolved && !isFunctionTestMode;
         if (isStandaloneAction) {
             handleStandaloneAction(jobResult, jobReturnEvent, function, actionId);
+
+            // find and update the original pending DistUpgradeAction.
+            if (isMajorMigrationVerifyJob(jobReturnEvent, function)) {
+                handleMajorMigrationVerificationResult(jobReturnEvent.getMinionId(), jobResult);
+            }
+
         }
 
         // Check if event was triggered in response to state scheduled at minion start-up event
@@ -271,6 +278,80 @@ public class JobReturnEventMessageAction implements MessageAction {
         }
     }
 
+    /**
+     * Checks if the job return event corresponds to a post-reboot verification state
+     * used in major version migrations (specifically the SLES 15 to 16 bridge).
+     *
+     * @param jobReturnEvent the Salt event
+     * @param function the Salt function called (e.g., state.apply)
+     * @return true if this is a major migration verification handshake
+     */
+    private boolean isMajorMigrationVerifyJob(JobReturnEvent jobReturnEvent, String function) {
+        LOG.debug("Checking if job {} is major migration verify job", jobReturnEvent.getJobId());
+        if (!"state.apply".equals(function) && !"state.sls".equals(function)) {
+            return false;
+        }
+
+        Object funArgs = jobReturnEvent.getData().getFunArgs();
+        if (!(funArgs instanceof List<?> funArgsList) || funArgsList.isEmpty()) {
+            return false;
+        }
+
+        Object firstArg = funArgsList.get(0);
+        if (ApplyStatesEventMessage.DISTUPGRADE_SLES16_VERIFY.equals(firstArg)) {
+            return true;
+        }
+        if (firstArg instanceof Map<?, ?> argMap) {
+            Object mods = argMap.get("mods");
+            if (ApplyStatesEventMessage.DISTUPGRADE_SLES16_VERIFY.equals(mods)) {
+                return true;
+            }
+            else if (mods instanceof List<?> modsList) {
+                return modsList.contains(ApplyStatesEventMessage.DISTUPGRADE_SLES16_VERIFY);
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Update the original pending {@link DistUpgradeAction} when sles16_verify completes.
+     * This method finds the still-pending DistUpgradeAction and passes the FULL result map
+     * to {@link DistUpgradeAction#handleUpdateServerAction} so that
+     * {@code isVerificationStateResult} recognises it and calls {@code handleVerificationResult}.
+     *
+     * @param minionId  the reconnected minion
+     * @param jobResult the full state.apply result from sles16_verify
+     */
+    private void handleMajorMigrationVerificationResult(String minionId, Optional<JsonElement> jobResult) {
+        MinionServerFactory.findByMinionId(minionId).ifPresent(minion ->
+            jobResult.filter(JsonElement::isJsonObject).ifPresent(result -> {
+                if (!DistUpgradeAction.isMajorMigrationVerificationResult(result)) {
+                    return;
+                }
+                // Find the SLES 15.x -> 16.x migration action
+                ActionFactory.listServerActionsForServer(minion, ActionFactory.ALL_PENDING_STATUSES)
+                    .stream()
+                    .filter(sa -> sa.getParentAction() instanceof DistUpgradeAction dup &&
+                      dup.getDetails(minion.getId()) != null && dup.getDetails(minion.getId()).isSles15To16Migration())
+                    .findFirst()
+                    .ifPresentOrElse(
+                        sa -> {
+                            DistUpgradeAction dupAction = (DistUpgradeAction) sa.getParentAction();
+                            LOG.info("SLES 16 verify: Found pending migration {} for minion {}. Updating...",
+                                     dupAction.getId(), minionId);
+                            // Delegate the actual result parsing back to the Action class
+                            dupAction.handleUpdateServerAction(sa, result, null);
+                            ActionFactory.save(sa);
+                            LOG.info("SLES 16: Migration action {} for {} updated to: {}",
+                                     dupAction.getId(), minionId, sa.getStatus().getName());
+                        },
+                        () -> LOG.warn("SLES 16: No pending SLES 15->16 action found for minion {}", minionId)
+                    );
+            })
+        );
+    }
+
     private void handleStandaloneAction(Optional<JsonElement> jobResult, JobReturnEvent jobReturnEvent,
                                                  String function, Optional<Long> actionId) {
         PackageChangeOutcome changeOutcome = handlePackageChanges(jobReturnEvent,
@@ -297,7 +378,15 @@ public class JobReturnEventMessageAction implements MessageAction {
             executionTime = Instant.now().plusSeconds(30);
         }
 
-        schedulePackageRefresh(scheduler, jobReturnEvent.getMinionId(), Date.from(executionTime));
+        boolean isSles15To16Migration = action
+                .filter(a -> a instanceof DistUpgradeAction)
+                .map(a -> (DistUpgradeAction) a)
+                .map(DistUpgradeAction::isSles15To16Migration)
+                .orElse(false);
+        // No package refresh needed for SLES 15 -> 16 migration
+        if (!isSles15To16Migration) {
+            schedulePackageRefresh(scheduler, jobReturnEvent.getMinionId(), Date.from(executionTime));
+        }
     }
 
     private void updateHostWhenS390(MinionServer m) {

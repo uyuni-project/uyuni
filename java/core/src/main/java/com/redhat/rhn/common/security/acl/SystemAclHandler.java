@@ -190,4 +190,16 @@ public class SystemAclHandler extends BaseHandler {
         return ret;
     }
 
+    /**
+     * Checks if the current user has beta features enabled.
+     * This can be used in navigation XML files to conditionally show/hide beta features.
+     * @param ctx Context Map to pass in
+     * @param params Parameters to use (unused)
+     * @return true if user has beta features enabled
+     */
+    public boolean aclUserHasBetaFeaturesEnabled(Map<String, Object> ctx, String[] params) {
+        User user = (User) ctx.get("user");
+        return user != null && user.getBetaFeaturesEnabled();
+    }
+
 }

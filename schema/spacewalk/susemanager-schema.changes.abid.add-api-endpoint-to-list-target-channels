@@ -1,0 +1,2 @@
+- Added the rbac mapping for listMigrationTargetsWithChannels
+  end point (jsc#SUMA-320)

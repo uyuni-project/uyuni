@@ -12,6 +12,7 @@ export type MigrationTarget = {
   id: string;
   targetProduct: MigrationProduct;
   missingChannels: string[];
+  hasDryRunCapability: boolean;
 };
 
 export type MigrationSystemData = {

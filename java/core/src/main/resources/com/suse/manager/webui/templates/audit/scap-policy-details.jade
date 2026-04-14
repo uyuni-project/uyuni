@@ -1,0 +1,12 @@
+include ../common.jade
+
+#scap-policy-details
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+    // scapPolicyPageData contains: policyData, isEditMode, isReadOnly, scapDataStreams, tailoringFiles, policyId
+    window.scapPolicyPageData = !{scapPolicyPageDataJson};
+
+script(type='text/javascript').
+    spaImportReactPage('audit/scap-policy-details')
+        .then(function(module) { module.renderer('scap/scap-policy-details') });

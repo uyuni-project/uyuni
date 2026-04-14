@@ -20,9 +20,6 @@ import static com.redhat.rhn.common.ExceptionMessage.NOT_INSTANTIABLE;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Collections;
-import java.util.Map;
-import java.util.WeakHashMap;
 import java.util.function.Supplier;
 
 /**
@@ -35,7 +32,6 @@ public class ErrorReportingStrategies {
         throw new UnsupportedOperationException(NOT_INSTANTIABLE);
     }
 
-    private static final Map<Object, Logger> OBJ_LOGGER = Collections.synchronizedMap(new WeakHashMap<>());
     private static final UyuniReportStrategy<UyuniError> VALIDATION_REPORT_STRATEGY;
 
     static {
@@ -45,7 +41,6 @@ public class ErrorReportingStrategies {
             }
         };
     }
-
 
     /**
      * Returns a default validation reporting strategy
@@ -62,7 +57,7 @@ public class ErrorReportingStrategies {
      * @return Supplier of RhnRuntimeException that logs the message and throw the exception
      */
     public static Supplier<RhnRuntimeException> raiseAndLog(Object obj, String message) {
-        Logger logger = OBJ_LOGGER.computeIfAbsent(obj, key -> LogManager.getLogger(obj.getClass().getName()));
+        Logger logger = getLogger(obj);
         return () -> {
             logger.error(message);
             return new RhnRuntimeException(message);
@@ -75,12 +70,22 @@ public class ErrorReportingStrategies {
      * @return UyuniReportStrategy
      */
     public static UyuniReportStrategy<UyuniError> logReportingStrategy(Object obj) {
-        Logger logger = OBJ_LOGGER.computeIfAbsent(obj, key -> LogManager.getLogger(obj.getClass().getName()));
-
+        Logger logger = getLogger(obj);
         return errors -> {
             for (UyuniError error : errors) {
                 logger.error(error.getMessage());
             }
         };
     }
+
+
+
+    /**
+     * Gets (or creates) a logger for an object
+     * @return Logger
+     */
+    private static Logger getLogger(Object obj) {
+        return LogManager.getLogger(obj.getClass());
+    }
+
 }

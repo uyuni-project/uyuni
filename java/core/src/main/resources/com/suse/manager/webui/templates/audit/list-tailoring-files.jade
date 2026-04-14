@@ -1,0 +1,11 @@
+include ../common.jade
+
+#scap-tailoring-files
+
+script(type='text/javascript').
+    window.csrfToken = "#{csrf_token}";
+    window.tailoringFiles = !{tailoringFiles};
+
+script(type='text/javascript').
+    spaImportReactPage('audit/list-tailoring-files')
+        .then(function(module) { module.renderer('scap/list-tailoring-files') });

@@ -124,11 +124,7 @@ public class ErrataConfirmAction extends RhnListDispatchAction {
 
         if (actionChain == null) {
             Action update = ActionManager.createErrataAction(user, user.getOrg(), currentErrata);
-            for (Object systemIn : systems) {
-                ActionFactory.addServerToAction(
-                        ((SystemOverview) systemIn).getId(),
-                        update);
-            }
+            systems.forEach(systemIn -> ActionFactory.addServerToAction(systemIn.getId(), update));
 
             update.setEarliestAction(getStrutsDelegate().readScheduleDate(form, "date",
                     DatePicker.YEAR_RANGE_POSITIVE));
@@ -155,11 +151,11 @@ public class ErrataConfirmAction extends RhnListDispatchAction {
         }
         else {
             int sortOrder = ActionChainFactory.getNextSortOrderValue(actionChain);
-            for (Object systemIn : systems) {
+            for (SystemOverview systemIn : systems) {
                 Action update = ActionManager.createErrataAction(user, user.getOrg(), currentErrata);
                 ActionFactory.save(update);
                 ActionChainFactory.queueActionChainEntry(update, actionChain,
-                        ((SystemOverview) systemIn).getId(), sortOrder);
+                        systemIn.getId(), sortOrder);
             }
 
             messageKey = "message.addedtoactionchain";

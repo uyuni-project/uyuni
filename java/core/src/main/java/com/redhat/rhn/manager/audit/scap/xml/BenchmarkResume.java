@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 SUSE LLC
+ * Copyright (c) 2017--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,34 +7,43 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.redhat.rhn.manager.audit.scap.xml;
 
-import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.Element;
-import org.simpleframework.xml.Root;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
+import java.util.List;
+
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 /**
  * Bean used to unmarshall an intermediary SCAP report.
  */
-@Root(name = "benchmark-resume", strict = false)
+@XmlRootElement(name = "benchmark-resume")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class BenchmarkResume {
 
-    @Attribute
+    @XmlAttribute(required = true)
     private String id;
 
-    @Attribute
+    @XmlAttribute(required = true)
     private String version;
 
-    @Element(name = "profile", required = false)
+    @XmlElement(name = "profile")
     private Profile profile;
 
-    @Element(name = "TestResult")
+    @XmlElement(name = "TestResult", required = true)
     private TestResult testResult;
+
+    @XmlElement(name = "rule")
+    private List<Rule> rules;
 
     /**
      * @return id to get
@@ -91,5 +100,56 @@ public class BenchmarkResume {
     public void setTestResult(TestResult testResultIn) {
         this.testResult = testResultIn;
     }
-}
 
+    /**
+     * @return rules to get
+     */
+    public List<Rule> getRules() {
+        return rules;
+    }
+
+    /**
+     * @param rulesIn to set
+     */
+    public void setRules(List<Rule> rulesIn) {
+        this.rules = rulesIn;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof BenchmarkResume that)) {
+            return false;
+        }
+
+        return new EqualsBuilder()
+            .append(id, that.id)
+            .append(version, that.version)
+            .append(profile, that.profile)
+            .append(testResult, that.testResult)
+            .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+            .append(id)
+            .append(version)
+            .append(profile)
+            .append(testResult)
+            .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+            .append("id", id)
+            .append("version", version)
+            .append("profile", profile)
+            .append("testResult", testResult)
+            .toString();
+    }
+}

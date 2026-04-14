@@ -11,7 +11,6 @@
   -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xml="http://www.w3.org/XML/1998/namespace"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
@@ -64,9 +63,34 @@
                 </exclusions>
             </dependency>
             <dependency>
+                <groupId>com.ongres.scram</groupId>
+                <artifactId>client</artifactId>
+                <version>2.1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ongres.scram</groupId>
+                <artifactId>common</artifactId>
+                <version>2.1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ongres.stringprep</groupId>
+                <artifactId>stringprep</artifactId>
+                <version>1.1</version>
+            </dependency>
+            <dependency>
+                <groupId>com.ongres.stringprep</groupId>
+                <artifactId>saslprep</artifactId>
+                <version>1.1</version>
+            </dependency>
+            <dependency>
                 <groupId>com.mchange</groupId>
                 <artifactId>c3p0</artifactId>
                 <version>0.9.5.5</version>
+            </dependency>
+            <dependency>
+                <groupId>com.mchange</groupId>
+                <artifactId>mchange-commons-java</artifactId>
+                <version>0.2.20</version>
             </dependency>
 
             <!-- Test dependencies -->

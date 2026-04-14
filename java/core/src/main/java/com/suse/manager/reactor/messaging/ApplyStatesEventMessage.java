@@ -43,6 +43,8 @@ public class ApplyStatesEventMessage implements EventDatabaseMessage {
     public static final String SYNC_ALL = "util.syncall";
     public static final String SYNC_STATES = "util.syncstates";
     public static final String DISTUPGRADE = "distupgrade";
+    public static final String DISTUPGRADE_SLES16 = "distupgrade.sles16";
+    public static final String DISTUPGRADE_SLES16_VERIFY = "distupgrade.sles16_verify";
     public static final String SALTBOOT = "saltboot";
     public static final String SYSTEM_INFO = "util.systeminfo";
     public static final String SYSTEM_INFO_FULL = "util.systeminfo_full";

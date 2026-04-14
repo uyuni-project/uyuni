@@ -19,5 +19,7 @@ import java.util.List;
  * @param targetProduct the target products of this possible migration.
  * @param missingChannels the list of the channels that are currently missing (not synced in current configuration). Any
  * value different from an empty list will make this target not usable.
+ * @param hasDryRunCapability whether a dry-run can be performed for this migration target
  */
-public record MigrationTarget(String id, MigrationProduct targetProduct, List<String> missingChannels) { }
+public record MigrationTarget(String id, MigrationProduct targetProduct, List<String> missingChannels,
+                               boolean hasDryRunCapability) { }

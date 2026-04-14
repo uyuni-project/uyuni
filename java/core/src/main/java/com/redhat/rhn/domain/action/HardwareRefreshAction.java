@@ -36,6 +36,7 @@ import com.suse.manager.reactor.hardware.HardwareMapper;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.gson.ProxyConfigUpdateJson;
 import com.suse.manager.webui.utils.salt.custom.HwProfileUpdateSlsResult;
 import com.suse.proxy.ProxyConfigUtils;
@@ -187,6 +188,9 @@ public class HardwareRefreshAction extends Action {
                     hwMapper.getErrors().stream().collect(Collectors.joining("\n")));
             serverAction.setResultCode(-1L);
         }
+
+        MinionPillarManager.INSTANCE.generatePillar(server, false,
+                MinionPillarManager.PillarSubset.GENERAL);
 
         if (LOG.isDebugEnabled()) {
             long duration = Duration.between(start, Instant.now()).getSeconds();

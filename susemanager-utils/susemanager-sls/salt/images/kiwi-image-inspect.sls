@@ -10,7 +10,7 @@
 # saltboot image pillar
 
 mgr_inspect_kiwi_image:
-  mgrcompat.module_run:
+  module.run:
     - name: kiwi_info.inspect_image
     - dest: {{ dest_dir }}
     - build_id: {{ build_id }}
@@ -20,6 +20,6 @@ mgr_inspect_kiwi_image:
 
 mgr_kiwi_cleanup:
   cmd.run:
-    - name: "/usr/bin/rm -rf '{{ root_dir }}'"
+    - name: "command -p rm -rf '{{ root_dir }}'"
     - require:
-      - mgrcompat: mgr_inspect_kiwi_image
+      - module: mgr_inspect_kiwi_image

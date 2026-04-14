@@ -24,7 +24,6 @@ import com.suse.manager.webui.services.impl.MonitoringService;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -36,13 +35,11 @@ import java.util.stream.Collectors;
  */
 public class AdminMonitoringHandler extends BaseHandler {
 
-    private static Map<String, String> messageMap;
-    {
-        messageMap = new HashMap<>();
-        messageMap.put("enable", "enable_again_to_sync_config");
-        messageMap.put("disable", "disable_again_to_sync_config");
-        messageMap.put("restart", "restart_needed");
-    }
+    private static Map<String, String> messageMap = Map.of(
+            "enable", "enable_again_to_sync_config",
+            "disable", "disable_again_to_sync_config",
+            "restart", "restart_needed"
+    );
 
     private static String toString(boolean enabled, String msg) {
         String str = enabled ? "enabled" : "disabled";

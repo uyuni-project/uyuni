@@ -38,6 +38,76 @@ spec:
             port:
               number: 80
         pathType: Prefix
+  {{- if ne .Values.enableMonitoring false }}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  creationTimestamp: null
+  name: exporters-ingress-ssl
+  namespace: "{{ .Release.Namespace }}"
+  annotations:
+  {{- if eq ((.Values.ingress).type) "traefik" }}
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    traefik.ingress.kubernetes.io/router.tls.domains.n.main: "{{ required "global.fqdn is needed!" .Values.global.fqdn }}"
+    traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+    traefik.ingress.kubernetes.io/router.priority: "100"
+    traefik.ingress.kubernetes.io/router.middlewares: "{{ .Release.Namespace }}-uyuni-strip-prefixes@kubernetescrd"
+  {{- end }}
+  {{- if (((.Values.ingress).annotations).exporters) }}
+{{ toYaml .Values.ingress.annotations.exporters | indent 4 }}
+  {{- end }}
+  labels:
+    app.kubernetes.io/part-of: uyuni
+    app.kubernetes.io/component: server
+spec:
+  {{- if ((.Values.ingress).class) }}
+  ingressClassName: {{ .Values.ingress.class }}
+  {{- end }}
+  tls:
+    - hosts:
+      - {{ required "global.fqdn is needed!" .Values.global.fqdn }}
+      secretName: uyuni-cert
+  rules:
+  - host: {{ required "global.fqdn is needed!" .Values.global.fqdn }}
+    http:
+      paths:
+      - path: /postgresql-exporter
+        backend:
+          service:
+            name: tomcat
+            port:
+              number: 9187
+        pathType: Prefix
+      - path: /node-exporter
+        backend:
+          service:
+            name: tomcat
+            port:
+              number: 9100
+        pathType: Prefix
+      - path: /tasko-exporter
+        backend:
+          service:
+            name: taskomatic
+            port:
+              number: 9800
+        pathType: Prefix
+      - path: /tasko-jmx
+        backend:
+          service:
+            name: taskomatic
+            port:
+              number: 5557
+        pathType: Prefix
+      - path: /tomcat-jmx
+        backend:
+          service:
+            name: tomcat
+            port:
+              number: 5556
+        pathType: Prefix
+  {{- end }}
   {{- if .Values.saline.enable }}
 ---
 apiVersion: networking.k8s.io/v1

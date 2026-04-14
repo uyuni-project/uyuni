@@ -6,10 +6,10 @@ pkg_downloaded-patches:
       - {{ patch }}
 {%- endfor %}
     - require:
-      - mgrcompat: applychannels
+      - module: applychannels
 {% endif %}
 
 applychannels:
-    mgrcompat.module_run:
+    module.run:
     -  name: state.apply
     -  mods: channels

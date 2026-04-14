@@ -41,13 +41,13 @@ CREATE TABLE rhnServerAction
 ;
 
 CREATE INDEX rhn_ser_act_sid_aid_s_idx
-    ON rhnServerAction (server_id, action_id, status)
-    ;
+    ON rhnServerAction (server_id, action_id, status);
 
 CREATE INDEX rhn_ser_act_aid_idx
-    ON rhnServerAction (action_id)
-    
-    ;
+    ON rhnServerAction (action_id);
+
+CREATE INDEX rhn_ser_act_aid_status_sid_idx
+    ON rhnServerAction (action_id, status, server_id);
 
 ALTER TABLE rhnServerAction
     ADD CONSTRAINT rhn_server_action_sid_aid_uq UNIQUE (server_id, action_id);

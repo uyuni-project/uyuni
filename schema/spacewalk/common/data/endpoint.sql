@@ -1602,6 +1602,12 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     VALUES ('', '/ssm/ViewCompletedLog.do', 'POST', 'W', False)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/ssm/ViewLogDetails.do', 'GET', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('', '/ssm/ViewLogDetails.do', 'POST', 'W', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('', '/systems/ssm/ListSystems.do', 'GET', 'W', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
@@ -3833,6 +3839,9 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
     VALUES ('com.redhat.rhn.frontend.xmlrpc.admin.monitoring.AdminMonitoringHandler.getStatus', '/manager/api/admin/monitoring/getStatus', 'GET', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.redhat.rhn.frontend.xmlrpc.admin.ssh.AdminSshHandler.removeKnownHost', '/manager/api/admin/ssh/removeKnownHost', 'POST', 'A', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.suse.manager.xmlrpc.admin.AdminPaygHandler.create', '/manager/api/admin/payg/create', 'POST', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
@@ -6037,3 +6046,48 @@ INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_re
 INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
     VALUES ('com.redhat.rhn.frontend.xmlrpc.proxy.ProxyHandler.backupConfiguration', '/manager/api/proxy/backupConfiguration', 'POST', 'A', True)
     ON CONFLICT (endpoint, http_method) DO NOTHING;
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required)
+    VALUES ('com.redhat.rhn.frontend.xmlrpc.system.SystemHandler.listMigrationTargetsWithChannels', '/manager/api/system/listMigrationTargetsWithChannels', 'GET', 'A', True)
+    ON CONFLICT (endpoint, http_method) DO NOTHING;
+
+-- =============================================================================
+-- SCAP System API and Web UI Endpoints
+-- =============================================================================
+
+INSERT INTO access.endpoint (class_method, endpoint, http_method, scope, auth_required) VALUES
+    ('com.redhat.rhn.frontend.xmlrpc.system.scap.SystemScapHandler.listScapContent', '/manager/api/system/scap/listScapContent', 'GET', 'A', True),
+    ('com.redhat.rhn.frontend.xmlrpc.system.scap.SystemScapHandler.listPolicies', '/manager/api/system/scap/listPolicies', 'GET', 'A', True),
+    ('com.redhat.rhn.frontend.xmlrpc.system.scap.SystemScapHandler.listTailoringFiles', '/manager/api/system/scap/listTailoringFiles', 'GET', 'A', True),
+    ('com.redhat.rhn.frontend.xmlrpc.system.scap.SystemScapHandler.scheduleBetaXccdfScanCustom', '/manager/api/system/scap/scheduleBetaXccdfScanCustom', 'POST', 'A', True),
+    ('com.redhat.rhn.frontend.xmlrpc.system.scap.SystemScapHandler.scheduleBetaXccdfScanWithPolicy', '/manager/api/system/scap/scheduleBetaXccdfScanWithPolicy', 'POST', 'A', True),
+    ('', '/manager/api/recurringactions/policies', 'GET', 'W', True),
+    ('', '/manager/audit/scap/content', 'GET', 'W', True),
+    ('', '/manager/audit/scap/content/create', 'GET', 'W', True),
+    ('', '/manager/audit/scap/content/edit/:id', 'GET', 'W', True),
+    ('', '/manager/api/audit/scap/content/create', 'POST', 'W', True),
+    ('', '/manager/api/audit/scap/content/update', 'POST', 'W', True),
+    ('', '/manager/api/audit/scap/content/delete', 'POST', 'W', True),
+    ('', '/manager/audit/scap/tailoring-files', 'GET', 'W', True),
+    ('', '/manager/audit/scap/tailoring-file/create', 'GET', 'W', True),
+    ('', '/manager/audit/scap/tailoring-file/edit/:id', 'GET', 'W', True),
+    ('', '/manager/api/audit/scap/tailoring-file/create', 'POST', 'W', True),
+    ('', '/manager/api/audit/scap/tailoring-file/update', 'POST', 'W', True),
+    ('', '/manager/api/audit/scap/tailoring-file/delete', 'POST', 'W', True),
+    ('', '/manager/audit/scap/policies', 'GET', 'W', True),
+    ('', '/manager/audit/scap/policy/create', 'GET', 'W', True),
+    ('', '/manager/audit/scap/policy/edit/:id', 'GET', 'W', True),
+    ('', '/manager/audit/scap/policy/details/:id', 'GET', 'W', True),
+    ('', '/manager/api/audit/profiles/list/:type/:id', 'GET', 'W', True),
+    ('', '/manager/api/audit/scap/policy/view/:id', 'GET', 'W', True),
+    ('', '/manager/api/audit/scap/policy/:id/scan-history', 'GET', 'W', True),
+    ('', '/manager/api/audit/scap/policy/create', 'POST', 'W', True),
+    ('', '/manager/api/audit/scap/policy/update', 'POST', 'W', True),
+    ('', '/manager/api/audit/scap/policy/delete', 'POST', 'W', True),
+    ('', '/manager/systems/details/schedule-scap-scan', 'GET', 'W', True),
+    ('', '/manager/systems/ssm/audit/schedule-scap-scan', 'GET', 'W', True),
+    ('', '/manager/api/audit/schedule/create', 'POST', 'W', True),
+    ('', '/manager/audit/scap/scan/rule-result-details/:sid/:rrid', 'GET', 'W', True),
+    ('', '/manager/api/audit/scap/custom-remediation/:identifier/:benchmarkId', 'GET', 'W', True),
+    ('', '/manager/api/audit/scap/custom-remediation', 'POST', 'W', True),
+    ('', '/manager/api/audit/scap/custom-remediation/:identifier/:benchmarkId/:scriptType', 'DELETE', 'W', True),
+    ('', '/manager/api/audit/scap/scan/rule-apply-remediation', 'POST', 'W', True);

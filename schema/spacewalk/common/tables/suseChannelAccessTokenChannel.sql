@@ -34,3 +34,7 @@ CREATE TABLE suseChannelAccessTokenChannel
 CREATE UNIQUE INDEX suse_catc_tid_cid_uq
     ON suseChannelAccessTokenChannel (token_id, channel_id)
     ;
+
+CREATE INDEX suse_catc_cid_idx
+    ON suseChannelAccessTokenChannel (channel_id)
+    ;

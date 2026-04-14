@@ -111,27 +111,26 @@
 
   <property name="build.jar.dependencies"
             value="ant ant-junit ${ant-contrib.path} antlr4/antlr4-runtime ${test.build.jar.dependencies}
-              ${common.jar.dependencies} ${tomcat-jars} ${jasper-jars} xalan-j2" />
+              ${common.jar.dependencies} ${tomcat-jars} ${jasper-jars}" />
 
   <property name="run.jar.dependencies"
             value="antlr4/antlr4-runtime ${c3p0} commons-discovery ${jaf} ${jta} sitemesh
-              xalan-j2 xalan-j2-serializer xerces-j2 ${common.jar.dependencies}" />
+              ${common.jar.dependencies}" />
 
   <!-- =================== RPM build, use jpackage syntax ======================= -->
 
   <!-- SUSE extra dependencies: build and runtime -->
-  <property name="suse-common-jars" value="jade4j jose4j salt-netapi-client spark-core spark-template-jade httpasyncclient simpleclient simpleclient_common simpleclient_hibernate simpleclient_servlet simpleclient_httpserver pgjdbc-ng/pgjdbc-ng pgjdbc-ng/spy netty/netty-common netty/netty-buffer netty/netty-resolver netty/netty-transport netty/netty-codec netty/netty-handler netty/netty-transport-native-unix-common java-saml java-saml-core joda-time woodstox-core-asl xmlsec stax2-api stax-api ${commons-jexl} ical4j ${product-common-jars} ${jaxb} ${jstl}" />
+  <property name="suse-common-jars" value="jade4j jose4j salt-netapi-client spark-core spark-template-jade httpasyncclient prometheus-metrics-java/prometheus-metrics-exporter-common prometheus-metrics-java/prometheus-metrics-core prometheus-metrics-java/prometheus-metrics-config prometheus-metrics-java/prometheus-metrics-model prometheus-metrics-java/prometheus-metrics-exporter-servlet-jakarta prometheus-metrics-java/prometheus-metrics-exporter-httpserver prometheus-metrics-java/prometheus-metrics-exposition-textformats pgjdbc-ng/pgjdbc-ng pgjdbc-ng/spy netty/netty-common netty/netty-buffer netty/netty-resolver netty/netty-transport netty/netty-codec netty/netty-handler netty/netty-transport-native-unix-common java-saml java-saml-core joda-time woodstox-core-asl xmlsec stax2-api stax-api ${commons-jexl} ical4j ${product-common-jars} ${jaxb} ${jstl}" />
 
   <!-- SUSE extra dependencies: runtime only -->
   <property name="suse-runtime-jars" value="${commons-lang} apache-commons-text/commons-text concurrentlinkedhashmap-lru slf4j/api ${product-runtime-jars} jctools/jctools-core" />
 
   <property name="install.build.jar.dependencies"
             value="ant ant/ant-junit ${ant-contrib.path} antlr4/antlr4-runtime ${jasper-jars} ${test.build.jar.dependencies}
-              ${install.common.jar.dependencies} xalan-j2" />
+              ${install.common.jar.dependencies}" />
 
   <property name="install.run.jar.dependencies"
-            value="antlr4/antlr4-runtime ${c3p0} commons-discovery ${jaf} ${jta} sitemesh
-              xalan-j2 xalan-j2-serializer xerces-j2 ${install.common.jar.dependencies}" />
+            value="antlr4/antlr4-runtime ${c3p0} commons-discovery ${jaf} ${jta} sitemesh ${install.common.jar.dependencies}" />
 
   <property name="install.common.jar.dependencies"
             value="commons-beanutils commons-cli commons-codec commons-collections commons-digester commons-discovery
@@ -139,7 +138,7 @@
               apache-commons-text/commons-text commons-logging ${commons-validator} ${hibernatedeps} ${commons-compress}
               ${tomcat-jars} ${javamail} jdom jsch ${log4j-jars} oro redstone-xmlrpc-client redstone-xmlrpc
               ${struts-jars} ${postgresql-jdbc} quartz ${suse-common-jars} velocity-engine-core simple-core snakeyaml
-              simpleframework/simplexml ${commons-jexl}" />
+              ${commons-jexl}" />
 
   <property name="dist.jar.dependencies"
             value="antlr4/antlr4-runtime ${c3p0} commons-collections commons-beanutils commons-cli commons-codec
@@ -147,8 +146,8 @@
               commons-io ${commons-lang} apache-commons-text/commons-text commons-logging ${commons-compress}
               ${commons-validator} ${hibernatedeps} ${jta} ${jaf} ${jasper-jars} ${javamail} ${jaxb} ${jstl} jdom
               ${tomcat-jars} ${log4j-jars} redstone-xmlrpc-client redstone-xmlrpc oro quartz sitemesh ${struts-jars}
-              ${postgresql-jdbc} snakeyaml simpleframework/simplexml ${suse-common-jars} ${suse-runtime-jars}
-              xalan-j2 xalan-j2-serializer xerces-j2 simple-core ${jcache} ${other-jars}" />
+              ${postgresql-jdbc} snakeyaml ${suse-common-jars} ${suse-runtime-jars}
+              simple-core ${jcache} ${other-jars}" />
 
   <property name="taskomatic.jar.dependencies" value="${dist.jar.dependencies} jsch" />
 

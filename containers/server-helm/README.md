@@ -61,6 +61,47 @@ They all are using the `ReadWriteOnce` access mode and can be configured in the 
 Changing the default volume sizes according to the distributions you plan to synchronize and manage is recommended.
 See the [requirements documentation](https://www.uyuni-project.org/uyuni-docs/en/uyuni/installation-and-upgrade/uyuni-install-requirements.html) for more information.
 
+### Node Tuning
+
+For each of the components it is possible to tune the node where the pod will be scheduled.
+This chart supports a **default** configuration with **local overrides**, allowing baseline rules to be set for all pods and customized for specific components when needed.
+
+Scheduling can be controlled using `nodeSelector`, `affinity`, `tolerations`, or `nodeName`. It is not necessary to use all of them; simply choose the method that matches the cluster's scheduling strategy.
+
+For example, to set a baseline rule for all components but override the placement for the `db` pod specifically, the `values.yaml` would look like this:
+
+```yaml
+# DEFAULTS
+# These rules apply to all pods unless overridden by a specific component.
+placement:
+  nodeSelector:
+    environment: production
+
+  tolerations:
+  - key: "server-tier"
+    operator: "Equal"
+    value: "true"
+    effect: "NoSchedule"
+
+# LOCAL OVERRIDES
+# These rules apply ONLY to the specific component and override the global equivalents.
+db:
+  nodeSelector:
+    "kubernetes.io/hostname": "node-42"
+
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: "kubernetes.io/hostname"
+            operator: In
+            values:
+            - "node-42"
+
+  # nodeName: "node-42"
+```
+
 ### Exposing ports
 
 Uyuni requires some TCP and UDP ports to be routed to its services.
@@ -81,7 +122,7 @@ Here is a list of the ports to map:
 
 
 Exposing the `tftp` service has to be done differently due to the way TFTP protocol is working.
-Either use the host network using the `tftp.hostnetwork` value or configure a load balancer for the `tftp` service.
+Either use the host network using the `tftp.hostNetwork` value or configure a load balancer for the `tftp` service.
 Note that not all load balancers will work: `serviceLB` implementation is not compatible with TFTP protocol, while MetalLB works.
 
 ### Ingress vs Gateway API
@@ -95,6 +136,118 @@ To enable it, set the `gateway.enable` value.
 The other values in the `gateway` structure may need to be set depending on the cluster setup.
 
 **Note that on RKE2 1.35 on top of enabling Traefik with Gateway API, the `TLSRoute` and `TCPRoute` CRDs need to be manually added and the Traefik helm chart has to be deployed with the `providers.kubernetesGateway.experimentalChannel`.**
+
+### AppArmor
+
+If the node where the server pod is running has AppArmor, the containerd profile won't let it mount the cgroup2 file system.
+This can be addressed in two different ways.
+The easiest, but unsafe way is to set `server.superPrivileged=true` value so the server containers run unconfined.
+Otherwise set the `server.apparmorProfile` to the name of a profile containing a definition like the following.
+If using exactly this content, the name of the profile to use will be `k8s-systemd-uyuni`.
+
+To deploy the AppArmor profile, copy this content to `/etc/apparmor.d/k8s-systemd-uyuni` and run `apparmor_parser -r /etc/apparmor.d/k8s-systemd-uyuni` to load it.
+
+```
+#include <tunables/global>
+
+profile k8s-systemd-uyuni flags=(attach_disconnected,mediate_deleted) {
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+
+  # Standard container permissions
+  file,
+  network,
+  capability,
+  ptrace,
+  unix,
+
+  # Deny writes to critical kernel interfaces that systemd doesn't need to change
+  deny /sys/firmware/** rwklx,
+  deny /sys/kernel/debug/** rwklx,
+
+  # Broadly allow the specific flag combinations used for systemd hardening
+  # This covers /dev/pts/, /dev/mqueue/, and the previous /etc/ errors.
+  mount options=(ro, nosuid, noexec, nodev, remount, bind) -> **,
+  mount options=(ro, nosuid, noexec, remount, bind) -> **,
+  mount options=(ro, nosuid, nodev, remount, bind) -> **,
+  mount options=(ro, nosuid, remount, bind) -> **,
+  mount options=(ro, remount, bind) -> **,
+
+  # Allow mount propagation (Required for systemd to function at all)
+  mount options=(rw, rslave) -> **,
+  mount options=(rw, slave) -> **,
+  mount options=(rw, shared) -> **,
+
+  # Specific filesystem types for systemd's API mounts
+  mount fstype=tmpfs options=(rw, nosuid, nodev, noexec) -> /tmp/,
+  mount fstype=tmpfs options=(rw, nosuid, nodev) -> /tmp/,
+  mount fstype=tmpfs -> /run/**,
+  mount fstype=cgroup2 -> /sys/fs/cgroup/,
+  mount fstype=mqueue -> /dev/mqueue/,
+  mount fstype=fusectl -> /sys/fs/fuse/connections/,
+  mount fstype=devpts -> /dev/pts/,
+
+  # Generic remounts (for general compatibility)
+  mount options=(rw, remount) -> **,
+  mount options=(ro, remount) -> **, 
+  
+  # Required for the uyuni server container specifically
+  /sys/fs/cgroup/** rw,
+  /run/** rw,
+  /var/** rw,
+  # Allow reading the various config volumes mapped in the chart
+  /etc/** r,
+}
+```
+
+### SELinux
+
+If the node where the server pod is running has SELinux and RKE2 is configured to use it, the container won't be able to mount the cgroup2 file system.
+This can be addressed in two different ways.
+The easiest, but unsafe way is to set `server.superPrivileged=true` value so the server containers run with the `spc_t` label.
+Otherwise apply the following custom policy:
+
+* Create a `/root/systemdcontainerpolicy.te` file with this content:
+
+```sepolicy
+module systemdcontainerpolicy 1.0;
+
+require {
+    type container_t;
+    type cgroup_t;
+    type tmpfs_t;
+    type proc_t;
+    
+    class dir { search write add_name create remove_name rmdir setattr getattr mounton search };
+    class file { create open write append read unlink setattr getattr watch };
+    class filesystem { mount getattr relabelfrom relabelto };
+}
+
+#============= container_t ==============
+allow container_t cgroup_t:dir { add_name create remove_name rmdir setattr write search getattr };
+allow container_t cgroup_t:file { create open write append read setattr getattr unlink watch };
+allow container_t cgroup_t:filesystem { mount getattr relabelfrom relabelto };
+
+# Allow systemd's credential helper (sd-mkdcreds) to use /dev/shm as a mount point for service credentials.
+allow container_t tmpfs_t:dir mounton;
+
+# Standard lookups and attributes for the mount point
+allow container_t tmpfs_t:dir { getattr search };
+
+# Allow systemd to mount/remount the proc filesystem for namespacing
+allow container_t proc_t:filesystem { mount remount unmount };
+
+# Required to use directories as mount points
+allow container_t proc_t:dir mounton;
+```
+
+* Apply it:
+
+```sh
+checkmodule -M -m -o /root/systemdcontainerpolicy.mod /root/systemdcontainerpolicy.te
+semodule_package -o /root/systemdcontainerpolicy.pp -m /root/systemdcontainerpolicy.mod
+semodule -i /root/systemdcontainerpolicy.pp
+```
 
 ## Usage
 

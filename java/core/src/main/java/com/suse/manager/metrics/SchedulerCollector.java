@@ -25,12 +25,14 @@ import org.quartz.SchedulerException;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.prometheus.client.Collector;
+import io.prometheus.metrics.model.registry.MultiCollector;
+import io.prometheus.metrics.model.snapshots.MetricSnapshot;
+import io.prometheus.metrics.model.snapshots.MetricSnapshots;
 
 /**
  * Collector for a Taskomatic Scheduler.
  */
-public class SchedulerCollector extends Collector {
+public class SchedulerCollector implements MultiCollector {
 
     private static final Logger LOG = LogManager.getLogger(SchedulerCollector.class);
 
@@ -48,8 +50,8 @@ public class SchedulerCollector extends Collector {
     }
 
     @Override
-    public List<MetricFamilySamples> collect() {
-        List<MetricFamilySamples> out = new ArrayList<>();
+    public MetricSnapshots collect() {
+        List<MetricSnapshot> out = new ArrayList<>();
 
         try {
             out.add(counterFor("scheduler_threads",
@@ -68,6 +70,6 @@ public class SchedulerCollector extends Collector {
         catch (SchedulerException e) {
             LOG.warn("Unable to collect scheduler info ", e);
         }
-        return out;
+        return new MetricSnapshots(out);
     }
 }

@@ -499,6 +499,7 @@ public class HubHandler extends BaseHandler {
      * @return a list of {@link Org} on success, exception otherwise
      * @apidoc.doc Remotely collect data about peripheral organizations
      * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "fqdn", "The FQDN identifying the peripheral server")
      * @apidoc.returntype #return_array_begin()
      * $OrgInfoJsonSerializer
      * #array_end()
@@ -523,6 +524,7 @@ public class HubHandler extends BaseHandler {
      * @return a list of {@link Channel} on success, exception otherwise
      * @apidoc.doc Remotely collect data about peripheral channels
      * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "fqdn", "The FQDN identifying the peripheral server")
      * @apidoc.returntype #return_array_begin()
      * $ChannelInfoJsonSerializer
      * #array_end()
@@ -759,8 +761,8 @@ public class HubHandler extends BaseHandler {
      * @apidoc.doc Migrate the existing ISSv1 slaves to Hub Online Synchronization peripherals.
      * @apidoc.param #session_key()
      * @apidoc.param
-     *   #array_begin("migration_data")
-     *     #struct_begin("slave_migration_data")
+     *   #array_begin("migrationData")
+     *     #struct_begin("")
      *       #prop_desc("string", "fqdn", "The fully qualified domain name of the remote slave server.")
      *       #prop_desc("string", "token", "The token used to authenticate on the remote server.")
      *       #prop_desc("string", "root_ca", "The root ca needed to establish a secure connection to the
@@ -801,8 +803,8 @@ public class HubHandler extends BaseHandler {
      * @apidoc.doc Migrate the existing ISSv2 peripherals to Hub Online Synchronization peripherals.
      * @apidoc.param #session_key()
      * @apidoc.param
-     *   #array_begin("migration_data")
-     *     #struct_begin("peripheral_migration_data")
+     *   #array_begin("migrationData")
+     *     #struct_begin("")
      *       #prop_desc("string", "fqdn", "The fully qualified domain name of the remote peripheral server.")
      *       #prop_desc("string", "token", "The token used to authenticate on the remote server.")
      *       #prop_desc("string", "root_ca", "The root ca needed to establish a secure connection to the

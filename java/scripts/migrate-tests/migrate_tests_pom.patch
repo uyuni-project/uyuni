@@ -1,0 +1,31 @@
+diff --git a/java/pom.xml b/java/pom.xml
+index b0659ae3b4a..027dfdf0069 100644
+--- a/java/pom.xml
++++ b/java/pom.xml
+@@ -116,6 +116,26 @@
+     <build>
+         <pluginManagement>
+             <plugins>
++                <!-- plugin to migrate tests -->
++                <plugin>
++                    <groupId>org.openrewrite.maven</groupId>
++                    <artifactId>rewrite-maven-plugin</artifactId>
++                    <version>6.25.0</version>
++                    <configuration>
++                        <activeRecipes>
++                            <recipe>com.suse.MigrateTestPackages</recipe>
++                        </activeRecipes>
++                    </configuration>
++                    <dependencies>
++                        <dependency>
++                            <groupId>org.openrewrite.recipe</groupId>
++                            <artifactId>rewrite-migrate-java</artifactId>
++                            <version>3.23.0</version>
++                        </dependency>
++                    </dependencies>
++                </plugin>
++                <!-- end plugin to migrate tests -->
++
+                 <!-- Always skip the default deployment plugin -->
+                 <plugin>
+                     <groupId>org.apache.maven.plugins</groupId>

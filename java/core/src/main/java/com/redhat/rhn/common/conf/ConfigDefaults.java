@@ -244,6 +244,20 @@ public class ConfigDefaults {
 
     public static final String CVE_AUDIT_ENABLE_OVAL_METADATA = "java.cve_audit.enable_oval_metadata";
 
+    public static final String OVAL_DEFINITIONS_BULK_SIZE = "java.oval_definitions_bulk_size";
+
+    /**
+     * SCAP XCCDF profiles XSL transformation file path
+     */
+    public static final String SCAP_XCCDF_PROFILES_XSL = "scap.xccdf.profiles.xsl";
+    private static final String DEFAULT_SCAP_XCCDF_PROFILES_XSL = "/usr/share/susemanager/scap/xccdf-profiles.xslt.in";
+
+    /**
+     * SCAP XCCDF resume XSL transformation file path
+     */
+    public static final String SCAP_XCCDF_RESUME_XSL = "scap.xccdf.resume.xsl";
+    private static final String DEFAULT_SCAP_XCCDF_RESUME_XSL = "/usr/share/susemanager/scap/xccdf-resume.xslt.in";
+
     /**
      * Token lifetime in seconds
      */
@@ -346,11 +360,6 @@ public class ConfigDefaults {
      * Single Sign-On associated config option name in rhn.conf
      */
     public static final String SINGLE_SIGN_ON_ENABLED = "java.sso";
-
-    /**
-     * List of distributions for which use salt for registration in kickstart
-     */
-    public static final String SALT_ENABLED_KICKSTART_INSTALL_TYPES = "salt_enabled_kickstart_install_types";
 
     /**
      * Allows to publish erratas into the configured vendor channels via the api
@@ -464,6 +473,7 @@ public class ConfigDefaults {
     public String getOidcUsernameClaim() {
         return Config.get().getString(OIDC_JWT_USERNAME_CLAIM, "preferred_username");
     }
+
 
 
     private ConfigDefaults() {
@@ -1196,14 +1206,6 @@ public class ConfigDefaults {
     }
 
     /**
-     * Returns list of install type labels for which use salt for registration in kickstart profile.
-     * @return list of distributions
-     */
-    public List<String> getUserSelectedSaltInstallTypeLabels() {
-        return Config.get().getList(SALT_ENABLED_KICKSTART_INSTALL_TYPES);
-    }
-
-    /**
      * Return the default locale. If not supported return en_US as default language.
      *
      * @return the preferred locale
@@ -1306,6 +1308,13 @@ public class ConfigDefaults {
     }
 
     /**
+     * @return the number of OVAL definitions to be parsed in bulk.
+     */
+    public int getOvalDefinitionsBulkSize() {
+        return Config.get().getInt(OVAL_DEFINITIONS_BULK_SIZE, 500);
+    }
+
+    /**
      * Return the url to download advisory-map.csv, the map of errata patch id, announcement id and advisory URL
      *
      * @return the url to download advisory-map.csv, the map of errata patch id, announcement id and advisory URL
@@ -1313,5 +1322,21 @@ public class ConfigDefaults {
     public String getErrataAdvisoryMapCsvDownloadUrl() {
         return Config.get().getString(ERRATA_ADVISORY_MAP_CSV_DOWNLOAD_URL,
                 "https://ftp.suse.com/pub/projects/security/advisory-map.csv");
+    }
+
+    /**
+     * Returns the path to the SCAP XCCDF profiles XSL transformation file.
+     * @return the path to the XSL file
+     */
+    public String getScapXccdfProfilesXsl() {
+        return Config.get().getString(SCAP_XCCDF_PROFILES_XSL, DEFAULT_SCAP_XCCDF_PROFILES_XSL);
+    }
+
+    /**
+     * Returns the path to the SCAP XCCDF resume XSL transformation file.
+     * @return the path to the XSL file
+     */
+    public String getScapXccdfResumeXsl() {
+        return Config.get().getString(SCAP_XCCDF_RESUME_XSL, DEFAULT_SCAP_XCCDF_RESUME_XSL);
     }
 }

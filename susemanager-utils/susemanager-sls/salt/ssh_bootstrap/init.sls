@@ -37,7 +37,7 @@ proxy_ssh_identity:
 
 generate_own_ssh_key:
   cmd.run:
-    - name: /usr/bin/ssh-keygen -N '' -C 'susemanager-own-ssh-push' -f {{ home }}/.ssh/mgr_own_id -t rsa -q
+    - name: command -p ssh-keygen -N '' -C 'susemanager-own-ssh-push' -f {{ home }}/.ssh/mgr_own_id -t rsa -q
     - creates: {{ home }}/.ssh/mgr_own_id.pub
 
 ownership_own_ssh_key:

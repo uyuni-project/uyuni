@@ -32,6 +32,8 @@ import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
 
 import com.suse.manager.saltboot.SaltbootException;
 import com.suse.manager.saltboot.SaltbootUtils;
+import com.suse.manager.webui.services.pillar.MinionPillarManager;
+import com.suse.manager.webui.services.pillar.MinionReportDBPillarGenerator;
 import com.suse.utils.Maps;
 import com.suse.utils.Opt;
 
@@ -65,6 +67,7 @@ public class FormulaFactory {
 
     /** This formula is coupled with the monitoring system type */
     public static final String PROMETHEUS_EXPORTERS = "prometheus-exporters";
+    public static final String GRAFANA = "grafana";
     public static final String PREFIX = "formula-";
 
     /** Saltboot group deployment formula */
@@ -244,6 +247,17 @@ public class FormulaFactory {
                     systemEntitlementManager.addEntitlementToServer(s, EntitlementManager.MONITORING);
                 }
             });
+        }
+
+        if (GRAFANA.equals(formulaName)) {
+            Optional<Pillar> reportDBPillar = minion.getPillarByCategory("reportDB");
+            if (reportDBPillar.isEmpty() && hasReportingEnabled(formData)) {
+                MinionPillarManager.INSTANCE.generatePillar(minion, false,
+                    MinionPillarManager.PillarSubset.REPORT_DB);
+            }
+            else if (reportDBPillar.isPresent() && !hasReportingEnabled(formData)) {
+                MinionReportDBPillarGenerator.INSTANCE.removePillar(minion);
+            }
         }
     }
 
@@ -722,6 +736,25 @@ public class FormulaFactory {
         else {
             return false;
         }
+    }
+
+    /**
+     * Check wether Grafana formula has reporting datasource enabled.
+     * @param formData data of the Grafana formula
+     * @return true if datasource is enabled, otherwise false
+     */
+    public static boolean hasReportingEnabled(Map<String, Object> formData) {
+        boolean grafanaEnabled = Maps.getValueByPath(formData, "grafana:enabled")
+                .filter(Boolean.class::isInstance)
+                .map(Boolean.class::cast)
+                .orElse(false);
+
+        boolean reportDbEnabled = Maps.getValueByPath(formData, "grafana:datasources:reportdb:enabled")
+                .filter(Boolean.class::isInstance)
+                .map(Boolean.class::cast)
+                .orElse(false);
+
+        return grafanaEnabled && reportDbEnabled;
     }
 
     /**

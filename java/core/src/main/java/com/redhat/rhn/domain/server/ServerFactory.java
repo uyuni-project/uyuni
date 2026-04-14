@@ -1142,6 +1142,7 @@ public class ServerFactory extends HibernateFactory {
                                 FROM UserServerPermission usp
                                 WHERE usp.user.id = :userId
                                         AND usp.server.org.id = :orgId
+                                        AND usp.server.proxyInfo IS NOT NULL
                                 """, Server.class)
                 .setParameter("userId", user.getId())
                 .setParameter("orgId", user.getOrg().getId())

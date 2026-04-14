@@ -19,6 +19,7 @@ spec:
         app.kubernetes.io/component: tftp
         app.kubernetes.io/part-of: uyuni
     spec:
+{{- include "uyuni.nodePlacement" (dict "global" .Values.placement "local" .Values.tftp) | nindent 6 }}
 {{- if .Values.tftp.hostNetwork }}
       dnsPolicy: ClusterFirstWithHostNet
       hostNetwork: true
@@ -42,4 +43,15 @@ spec:
       imagePullSecrets:
       - name: {{ .Values.registrySecret }}
 {{- end }}
+      initContainers:
+      - command:
+        - sh
+        - -c
+        - |2
+          until curl -L http://web/rhn/manager/api/api/getVersion; do
+            sleep 60
+          done
+        image: {{ include "uyuni.image" (dict "name" "proxy-tftpd" "global" . "local" .Values.tftp) }}
+        imagePullPolicy: {{ .Values.pullPolicy }}
+        name: server-waiter
 {{- end }}

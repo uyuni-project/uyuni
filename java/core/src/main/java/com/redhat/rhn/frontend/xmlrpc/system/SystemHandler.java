@@ -59,6 +59,7 @@ import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.org.CustomDataKey;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
+import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.product.Tuple2;
 import com.redhat.rhn.domain.rhnpackage.Package;
@@ -84,6 +85,7 @@ import com.redhat.rhn.domain.server.Note;
 import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.domain.server.PushClient;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFQDN;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerSnapshot;
@@ -196,6 +198,7 @@ import com.suse.manager.model.attestation.CoCoAttestationResult;
 import com.suse.manager.model.attestation.CoCoEnvironmentType;
 import com.suse.manager.model.attestation.ServerCoCoAttestationConfig;
 import com.suse.manager.model.attestation.ServerCoCoAttestationReport;
+import com.suse.manager.model.products.migration.MigrationDataFactory;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.xmlrpc.NoSuchHistoryEventException;
@@ -216,6 +219,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -7546,6 +7550,115 @@ public class SystemHandler extends BaseHandler {
     }
 
     /**
+     * Lists the valid migration targets for a given server, including channel details.
+     * @param loggedInUser The current user
+     * @param sid The server ID
+     * @return List of maps containing migration targets and their channel options
+     * @throws FaultException A FaultException is thrown if the server corresponding to
+     * sid cannot be found or if the server has no products installed.
+     *
+     * @apidoc.doc Lists the eligible migration targets for a given server, including channel details.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "sid")
+     * @apidoc.returntype
+     *      #return_array_begin()
+     *          #struct_begin("migration target")
+     *              #prop("string", "ident", "Product IDs for the target product set ( e.g. '[1894, 1905]')")
+     *              #prop("string", "friendly", "Friendly name of the target product set")
+     *              #prop_array_begin("channel_options")
+     *                  #struct_begin("channel option")
+     *                      #prop("string", "base_channel_label", "Label of the base channel")
+     *                      #prop("string", "base_channel_name", "Name of the base channel")
+     *                      #prop_array_begin("child_channels")
+     *                          #struct_begin("child channel")
+     *                              #prop("string", "label", "Channel label")
+     *                              #prop("string", "name", "Channel name")
+     *                              #prop("boolean", "mandatory", "Whether the channel is mandatory")
+     *                          #struct_end()
+     *                      #array_end()
+     *                  #struct_end()
+     *              #array_end()
+     *          #struct_end()
+     *      #array_end()
+     */
+    @ReadOnly
+    public List<Map<String, Object>> listMigrationTargetsWithChannels(User loggedInUser, Integer sid) {
+        List<Map<String, Object>> returnList = new ArrayList<>();
+        Server server = lookupServer(loggedInUser, sid);
+        Optional<SUSEProductSet> installedProducts = server.getInstalledProductSet();
+        if (!installedProducts.isPresent()) {
+            throw new FaultException(-1, "listMigrationTargetError",
+                    "Server has no Products installed.");
+        }
+        ChannelArch arch = server.getServerArch().getCompatibleChannelArch();
+        List<SUSEProductSet> migrationTargets = DistUpgradeManager.
+                getTargetProductSets(installedProducts, arch, loggedInUser);
+
+        for (SUSEProductSet target : migrationTargets) {
+            if (!target.getIsEveryChannelSynced()) {
+                continue;
+            }
+
+            Map<String, Object> targetMap = new HashMap<>();
+            targetMap.put("ident", target.getSerializedProductIDs());
+            targetMap.put("friendly", target.toString());
+
+            List<Map<String, Object>> channelOptions = new ArrayList<>();
+
+            // 1. Default Base Channel
+            Channel baseChannel = DistUpgradeManager.getProductBaseChannel(
+                    target.getBaseProduct().getId(), arch, loggedInUser);
+
+            if (baseChannel != null) {
+                // Get required child channels for this target/base pairing
+                List<EssentialChannelDto> requiredChannels = DistUpgradeManager.getRequiredChannels(
+                        target, baseChannel.getId());
+                List<Long> requiredChannelIds = requiredChannels.stream()
+                        .map(EssentialChannelDto::getId)
+                        .collect(toList());
+
+                channelOptions.add(buildChannelOptionMap(baseChannel, loggedInUser, requiredChannelIds));
+            }
+
+            // 2. Alternative Base Channels (Clones)
+            SortedMap<ClonedChannel, List<Long>> alternatives = DistUpgradeManager.getAlternatives(
+                    target, arch, loggedInUser);
+
+            for (Map.Entry<ClonedChannel, List<Long>> entry : alternatives.entrySet()) {
+                channelOptions.add(buildChannelOptionMap(entry.getKey(), loggedInUser, entry.getValue()));
+            }
+
+            targetMap.put("channel_options", channelOptions);
+            returnList.add(targetMap);
+        }
+
+        return returnList;
+    }
+
+    private Map<String, Object> buildChannelOptionMap(Channel baseChannel, User user, List<Long> requiredChannelIds) {
+        Map<String, Object> optionMap = new HashMap<>();
+        optionMap.put("base_channel_label", baseChannel.getLabel());
+        optionMap.put("base_channel_name", baseChannel.getName());
+
+        List<Map<String, Object>> childChannelsList = new ArrayList<>();
+        List<Channel> accessibleChildren = baseChannel.getAccessibleChildrenFor(user);
+
+        // Sort by name
+        accessibleChildren.sort(Comparator.comparing(Channel::getName));
+
+        for (Channel child : accessibleChildren) {
+             Map<String, Object> childMap = new HashMap<>();
+             childMap.put("label", child.getLabel());
+             childMap.put("name", child.getName());
+             childMap.put("mandatory", requiredChannelIds.contains(child.getId()));
+             childChannelsList.add(childMap);
+        }
+
+        optionMap.put("child_channels", childChannelsList);
+        return optionMap;
+    }
+
+    /**
      * Schedule a Product migration for a system. This call is the recommended and
      * supported way of migrating a system to the next Service Pack.
      *
@@ -7959,6 +8072,17 @@ public class SystemHandler extends BaseHandler {
         }
         if (!targets.isEmpty()) {
             SUSEProductSet targetProducts = getTargetProducts(targetIdent, targets);
+
+            // Validate dry-run capability
+            if (dryRun) {
+                boolean isRedHat = ServerConstants.REDHAT.equals(server.getOsFamily());
+                SUSEProduct sourceBase = installedProducts.map(SUSEProductSet::getBaseProduct).orElse(null);
+                SUSEProduct targetBase = targetProducts.getBaseProduct();
+                if (!MigrationDataFactory.computeHasDryRunCapability(isRedHat, sourceBase, targetBase)) {
+                    throw new FaultException(-1, "dryRunNotSupported",
+                            "Dry run is not supported for this product migration.");
+                }
+            }
 
             // See if vendor channels are matching the given base channel
             EssentialChannelDto baseChannel = DistUpgradeManager.getProductBaseChannelDto(

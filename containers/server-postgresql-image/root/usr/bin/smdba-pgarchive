@@ -39,28 +39,28 @@ if [ ! -d "$DESTDIR" ]; then
 fi
 
 if [ -f "$DESTINATION" ]; then
-    # file already exist in the backup
-    # remove it and exit with error.
     echo "File already exists: $DESTINATION" >&2
+    rm -f "$DESTINATION"
+    # returning 1 will instruct postgres to retry
     exit 1
 fi
 
-if ! cp --preserve=all "$SOURCE" "$DESTINATION"; then
+TMPDEST="${DESTINATION}.TMP"
+if ! cp --preserve=all "$SOURCE" "$TMPDEST"; then
     echo "Copy command failed" >&2
-    if [ -e "$DESTINATION" ]; then
-	rm -f "$DESTINATION"
-    fi
+    [ -e "$TMPDEST" ] && rm -f "$TMPDEST"
     exit 1
 fi
 
-SHA1SOURCE=$(sha1sum "$SOURCE" | awk '{print $1}')
-SHA1DEST=$(sha1sum "$DESTINATION" | awk '{print $1}')
+SHA1SOURCE=$(sha1sum "$SOURCE" | cut -f1 -d' ')
+SHA1DEST=$(sha1sum "$TMPDEST" | cut -f1 -d' ')
 
 if [ "$SHA1SOURCE" != "$SHA1DEST" ]; then
     echo "Checksum error $DESTINATION: $SHA1SOURCE vs. $SHA1DEST" >&2
     # remove broken backup file
-    rm -f "$DESTINATION"
+    rm -f "$TMPDEST"
     exit 1
 fi
 
+mv "$TMPDEST" "$DESTINATION"
 exit 0

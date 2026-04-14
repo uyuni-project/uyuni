@@ -19,10 +19,12 @@ import com.redhat.rhn.domain.server.ServerInfo;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.prometheus.client.Collector;
+import io.prometheus.metrics.model.registry.MultiCollector;
+import io.prometheus.metrics.model.snapshots.MetricSnapshot;
+import io.prometheus.metrics.model.snapshots.MetricSnapshots;
 import jakarta.persistence.Tuple;
 
-public class SystemsCollector extends Collector {
+public class SystemsCollector implements MultiCollector {
 
     public static final String PRODUCT_NAME = "uyuni";
 
@@ -45,8 +47,8 @@ public class SystemsCollector extends Collector {
     }
 
     @Override
-    public List<MetricFamilySamples> collect() {
-        List<MetricFamilySamples> out = new ArrayList<>();
+    public MetricSnapshots collect() {
+        List<MetricSnapshot> out = new ArrayList<>();
         long start = System.nanoTime();
         long numberOfSystems = getNumberOfSystems();
 
@@ -63,7 +65,7 @@ public class SystemsCollector extends Collector {
                     "statistics scrape", (System.nanoTime() - start) / 1.0E9, PRODUCT_NAME));
         }
 
-        return out;
+        return new MetricSnapshots(out);
     }
 
     private long getNumberOfSystems() {

@@ -38,6 +38,62 @@ spec:
   hostnames:
     - {{ $fqdn | quote }}
   rules:
+    {{- if ne .Values.enableMonitoring false }}
+    # postgresql exporter
+    - matches:
+        - path: { type: PathPrefix, value: /postgresql-exporter }
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path: { type: ReplacePrefixMatch, replacePrefixMatch: / }
+      backendRefs:
+        - name: tomcat
+          port: 9187
+
+    # Node exporter
+    - matches:
+        - path: { type: PathPrefix, value: /node-exporter }
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path: { type: ReplacePrefixMatch, replacePrefixMatch: / }
+      backendRefs:
+        - name: tomcat
+          port: 9100
+
+    # Tomcat Monitoring JMX
+    - matches:
+        - path: { type: PathPrefix, value: /tomcat-jmx }
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path: { type: ReplacePrefixMatch, replacePrefixMatch: / }
+      backendRefs:
+        - name: tomcat
+          port: 5556
+    
+    # Taskomatic Monitoring Exporter
+    - matches:
+        - path: { type: PathPrefix, value: /tasko-exporter }
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path: { type: ReplacePrefixMatch, replacePrefixMatch: / }
+      backendRefs:
+        - name: taskomatic
+          port: 9800
+    
+    # Taskomatic Monitoring JMX
+    - matches:
+        - path: { type: PathPrefix, value: /tasko-jmx }
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path: { type: ReplacePrefixMatch, replacePrefixMatch: / }
+      backendRefs:
+        - name: taskomatic
+          port: 5557
+    {{- end }}
     {{- if .Values.saline.enable }}
     - matches:
         - path: { type: PathPrefix, value: /saline }

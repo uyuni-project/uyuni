@@ -12,7 +12,7 @@ proxy_new_mgr_ssh_identity:
   ssh_auth.present:
     - user: mgrsshtunnel
     - source: salt://salt_ssh/new_mgr_ssh_id.pub
-    - onlyif: /usr/bin/grep -q mgrsshtunnel /etc/passwd
+    - onlyif: command -p grep -q mgrsshtunnel /etc/passwd
 {% endif %}
 
 {% if salt['cp.list_master'](prefix='salt_ssh/disabled_mgr_ssh_id.pub') %}
@@ -33,12 +33,12 @@ proxy_old_mgr_ssh_identity:
   ssh_auth.absent:
     - user: mgrsshtunnel
     - source: salt://salt_ssh/disabled_mgr_ssh_id.pub
-    - onlyif: /usr/bin/grep -q mgrsshtunnel /etc/passwd
+    - onlyif: command -p grep -q mgrsshtunnel /etc/passwd
 
 # to prevent to lock out yourself
 proxy_current_mgr_ssh_identity:
   ssh_auth.present:
     - user: mgrsshtunnel
     - source: salt://salt_ssh/mgr_ssh_id.pub
-    - onlyif: /usr/bin/grep -q mgrsshtunnel /etc/passwd
+    - onlyif: command -p grep -q mgrsshtunnel /etc/passwd
 {% endif %}

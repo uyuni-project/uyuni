@@ -172,7 +172,7 @@ public class Severity implements Serializable {
         }
 
         Severity newSeverity = new Severity();
-        newSeverity.setId(Integer.valueOf(id).longValue());
+        newSeverity.setId(id.longValue());
         newSeverity.setLabel(SEVERITY_MAP.get(id));
         newSeverity.setRank(id);
         return newSeverity;

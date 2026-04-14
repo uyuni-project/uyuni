@@ -2483,6 +2483,16 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'systems.ssm' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/ssm/ViewLogDetails.do' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'systems.ssm' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/ssm/ViewLogDetails.do' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'systems.list' AND ns.access_mode = 'R'
     AND ep.endpoint = '/systems/ssm/ListSystems.do' AND ep.http_method = 'GET'
     ON CONFLICT DO NOTHING;
@@ -6076,6 +6086,11 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.admin.ssh.remove_known_host' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/admin/ssh/removeKnownHost' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'api.ansible.create_ansible_path' AND ns.access_mode = 'W'
     AND ep.endpoint = '/manager/api/ansible/createAnsiblePath' AND ep.http_method = 'POST'
     ON CONFLICT DO NOTHING;
@@ -9649,3 +9664,100 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     WHERE ns.namespace = 'api.proxy.backup_configuration' AND ns.access_mode = 'W'
     AND ep.endpoint = '/manager/api/proxy/backupConfiguration' AND ep.http_method = 'POST'
     ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.system.list_migration_targets_with_channels' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/manager/api/system/listMigrationTargetsWithChannels' AND ep.http_method = 'GET'
+    ON CONFLICT (endpoint_id, namespace_id) DO NOTHING;
+
+
+-- XML-RPC System SCAP New API Endpoints
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.system.scap.list_scap_content' AND ns.access_mode = 'R'
+      AND ep.endpoint = '/manager/api/system/scap/listScapContent' AND ep.http_method = 'GET';
+
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.system.scap.list_policies' AND ns.access_mode = 'R'
+      AND ep.endpoint = '/manager/api/system/scap/listPolicies' AND ep.http_method = 'GET';
+
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.system.scap.list_tailoring_files' AND ns.access_mode = 'R'
+      AND ep.endpoint = '/manager/api/system/scap/listTailoringFiles' AND ep.http_method = 'GET';
+
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.system.scap.schedule_beta_xccdf_scan_custom' AND ns.access_mode = 'W'
+      AND ep.endpoint = '/manager/api/system/scap/scheduleBetaXccdfScanCustom' AND ep.http_method = 'POST';
+
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.system.scap.schedule_beta_xccdf_scan_with_policy' AND ns.access_mode = 'W'
+      AND ep.endpoint = '/manager/api/system/scap/scheduleBetaXccdfScanWithPolicy' AND ep.http_method = 'POST';
+
+-- Recurring Action Policies (Mapped to Existing Namespaces)
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace IN ('systems.groups.recurring', 'systems.recurring', 'home.account.myorg.recurring')
+      AND ns.access_mode = 'W'
+      AND ep.endpoint = '/manager/api/recurringactions/policies' AND ep.http_method = 'GET';
+
+-- SCAP Management - READ
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'audit.scap.management' AND ns.access_mode = 'R'
+      AND ep.endpoint IN (
+        '/manager/audit/scap/content',
+        '/manager/audit/scap/tailoring-files',
+        '/manager/audit/scap/policies',
+        '/manager/audit/scap/policy/details/:id',
+        '/manager/api/audit/profiles/list/:type/:id',
+        '/manager/api/audit/scap/policy/view/:id',
+        '/manager/api/audit/scap/policy/:id/scan-history'
+      );
+
+-- SCAP Management - WRITE
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'audit.scap.management' AND ns.access_mode = 'W'
+      AND ep.endpoint IN (
+        '/manager/audit/scap/content/create',
+        '/manager/audit/scap/content/edit/:id',
+        '/manager/api/audit/scap/content/create',
+        '/manager/api/audit/scap/content/update',
+        '/manager/api/audit/scap/content/delete',
+        '/manager/audit/scap/tailoring-file/create',
+        '/manager/audit/scap/tailoring-file/edit/:id',
+        '/manager/api/audit/scap/tailoring-file/create',
+        '/manager/api/audit/scap/tailoring-file/update',
+        '/manager/api/audit/scap/tailoring-file/delete',
+        '/manager/audit/scap/policy/create',
+        '/manager/audit/scap/policy/edit/:id',
+        '/manager/api/audit/scap/policy/create',
+        '/manager/api/audit/scap/policy/update',
+        '/manager/api/audit/scap/policy/delete'
+      );
+
+-- SCAP Execution - READ
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'audit.scap.execution' AND ns.access_mode = 'R'
+      AND ep.endpoint IN (
+        '/manager/audit/scap/scan/rule-result-details/:sid/:rrid',
+        '/manager/api/audit/scap/custom-remediation/:identifier/:benchmarkId'
+      );
+
+-- SCAP Execution - WRITE (Includes the fixed schedule/create URL)
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'audit.scap.execution' AND ns.access_mode = 'W'
+      AND ep.endpoint IN (
+        '/manager/systems/details/schedule-scap-scan',
+        '/manager/systems/ssm/audit/schedule-scap-scan',
+        '/manager/api/audit/schedule/create',
+        '/manager/api/audit/scap/custom-remediation',
+        '/manager/api/audit/scap/custom-remediation/:identifier/:benchmarkId/:scriptType',
+        '/manager/api/audit/scap/scan/rule-apply-remediation'
+      );

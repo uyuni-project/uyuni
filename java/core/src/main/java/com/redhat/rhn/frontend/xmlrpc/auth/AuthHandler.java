@@ -25,6 +25,7 @@ import com.redhat.rhn.manager.user.UserManager;
 
 import com.suse.manager.api.ApiIgnore;
 import com.suse.manager.api.ApiType;
+import com.suse.manager.api.ReadOnly;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -59,6 +60,9 @@ public class AuthHandler extends BaseHandler {
      * @apidoc.returntype #return_int_success()
      */
     @ApiIgnore(ApiType.HTTP)
+    // logout() actually removes the session, so it changes the state, but we need to annotate it anyway, otherwise
+    // a read-only user won't be able to terminate their session
+    @ReadOnly
     public int logout(String sessionKey) {
         SessionManager.killSession(sessionKey);
         return 1;

@@ -31,9 +31,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Properties;
 
-import io.prometheus.client.hibernate.HibernateStatisticsCollector;
-
-
 /**
  * Manages the lifecycle of Hibernate SessionFactory and associated
  * thread-scoped Hibernate sessions.
@@ -46,8 +43,6 @@ abstract class AbstractConnectionManager implements ConnectionManager {
 
     private final List<Configurator> configurators;
     private final ThreadLocal<SessionInfo> sessionInfoThreadLocal;
-    private String unitLabelValue;
-
 
     /**
      * Set up the connection manager.
@@ -57,13 +52,6 @@ abstract class AbstractConnectionManager implements ConnectionManager {
         this.log = LogManager.getLogger(getClass());
         this.configurators = new ArrayList<>();
         this.sessionInfoThreadLocal = new ThreadLocal<>();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void setComponentName(String componentName) {
-        this.unitLabelValue = componentName;
     }
 
     /**
@@ -134,9 +122,6 @@ abstract class AbstractConnectionManager implements ConnectionManager {
         }
 
         createSessionFactory();
-        if (unitLabelValue != null) {
-            new HibernateStatisticsCollector(sessionFactory, unitLabelValue).register();
-        }
     }
 
     /**

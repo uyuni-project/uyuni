@@ -9,6 +9,7 @@ script(type='text/javascript').
     window.minions = [{id: #{server.id}, name: "#{server.name}"}];
     window.entityType = "#{entityType}";
     window.isControlNode = #{isControlNode};
+    window.betaEnabled = #{betaEnabled};
     window.timezone = "#{h.renderTimezone()}";
     window.localTime = "#{h.renderLocalTime()}";
 

@@ -51,7 +51,7 @@
         <fileset dir="${lib.dir}">
             <include name="**/*.jar"/>
             <!-- Exclude checkstyle and jacoco -->
-            <exclude name="all-10.12.7.jar"/>
+            <exclude name="zz-checkstyle-all-10.12.7.jar"/>
             <exclude name="nodeps-0.8.7.jar"/>
         </fileset>
     </path>
@@ -497,7 +497,7 @@
 
     <target name="checkstyle" depends="compile" description="Runs the checkstyle tool on sources">
         <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties"
-                 classpath="${lib.dir}/all-10.12.7.jar"/>
+                 classpath="${lib.dir}/zz-checkstyle-all-10.12.7.jar"/>
         <checkstyle config="${basedir}/buildconf/checkstyle.xml">
             <classpath>
                 <path location="${build.dir}/classes"/>

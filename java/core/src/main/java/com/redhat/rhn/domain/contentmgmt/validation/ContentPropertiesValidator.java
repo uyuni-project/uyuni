@@ -49,21 +49,23 @@ public class ContentPropertiesValidator {
         if (StringUtils.isEmpty(label)) {
             result.addFieldError("label", "contentmanagement.label_required");
         }
-
-        if (!isLabelValid(label)) {
-            result.addFieldError("label", "contentmanagement.label_invalid");
+        else {
+            if (label.length() > 24) {
+                result.addFieldError("label", "contentmanagement.project_label_too_long");
+            }
         }
 
-        if (label.length() > 24) {
-            result.addFieldError("label", "contentmanagement.project_label_too_long");
+        if ((null != label) && (!isLabelValid(label))) {
+            result.addFieldError("label", "contentmanagement.label_invalid");
         }
 
         if (StringUtils.isEmpty(name)) {
             result.addFieldError("name", "contentmanagement.name_required");
         }
-
-        if (name.length() > 128) {
-            result.addFieldError("name", "contentmanagement.project_name_too_long");
+        else {
+            if (name.length() > 128) {
+                result.addFieldError("name", "contentmanagement.project_name_too_long");
+            }
         }
 
         ContentManager.lookupProjectByNameAndOrg(name, user).ifPresent(cp -> {
@@ -90,21 +92,23 @@ public class ContentPropertiesValidator {
         if (StringUtils.isEmpty(label)) {
             result.addFieldError("label", "contentmanagement.label_required");
         }
+        else {
+            if (label.length() > 16) {
+                result.addFieldError("label", "contentmanagement.environment_lbl_too_long");
+            }
+        }
 
         if (StringUtils.isEmpty(name)) {
             result.addFieldError("name", "contentmanagement.name_required");
         }
+        else {
+            if (name.length() > 128) {
+                result.addFieldError("name", "contentmanagement.environment_name_too_long");
+            }
+        }
 
-        if (!isLabelValid(label)) {
+        if ((null != label) && (!isLabelValid(label))) {
             result.addFieldError("label", "contentmanagement.label_invalid");
-        }
-
-        if (label.length() > 16) {
-            result.addFieldError("label", "contentmanagement.environment_lbl_too_long");
-        }
-
-        if (name.length() > 128) {
-            result.addFieldError("name", "contentmanagement.environment_name_too_long");
         }
 
         if (result.hasErrors()) {
@@ -125,7 +129,7 @@ public class ContentPropertiesValidator {
             result.addFieldError("filter_name", "contentmanagement.name_required");
         }
 
-        if (name.length() > 128) {
+        if ((null != name) && (name.length() > 128)) {
             result.addFieldError("filter_name", "contentmanagement.filter_name_too_long");
         }
 

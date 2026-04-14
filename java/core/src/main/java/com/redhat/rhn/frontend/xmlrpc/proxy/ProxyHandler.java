@@ -317,6 +317,33 @@ public class ProxyHandler extends BaseHandler {
     }
 
     /**
+     * Create and provide proxy container configuration without any SSL certificate and key.
+     *
+     * @param loggedInUser the current user
+     * @param proxyName  the FQDN of the proxy
+     * @param proxyPort the SSH port the proxy listens on
+     * @param server the FQDN of the server the proxy uses
+     * @param maxCache the maximum memory cache size
+     * @param email the email of proxy admin
+     * @return the configuration file
+     *
+     * @apidoc.doc Compute and download the configuration for proxy containers without adding the TLS certificate
+     *   for Apache. In such a case, the certificate files need to be deployed to the proxy in a different way.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "proxyName", "The FQDN of the proxy")
+     * @apidoc.param #param_desc("int", "proxyPort", "The SSH port the proxy listens on")
+     * @apidoc.param #param_desc("string", "server", "The server FQDN the proxy will connect to")
+     * @apidoc.param #param_desc("int", "maxCache", "Max cache size in MB")
+     * @apidoc.param #param_desc("string", "email", "The proxy admin email")
+     * @apidoc.returntype #array_single("byte", "binary object - package file")
+     */
+    public byte[] containerConfig(User loggedInUser, String proxyName, Integer proxyPort, String server,
+                                  Integer maxCache, String email) {
+        return systemManager.createProxyContainerConfig(loggedInUser, proxyName, proxyPort, server,
+                maxCache.longValue(), email);
+    }
+
+    /**
      * Create and provide proxy container configuration, generate the proxy certificate and key.
      *
      * @param loggedInUser the current user

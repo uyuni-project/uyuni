@@ -57,6 +57,7 @@ public class AttestationManager {
     private static final Logger LOG = LogManager.getLogger(AttestationManager.class);
     private final AttestationFactory factory;
     private final TaskomaticApi taskomaticApi;
+    private SecureRandom secureRandom = new SecureRandom();
 
     /**
      * Constructor
@@ -186,9 +187,8 @@ public class AttestationManager {
         ServerCoCoAttestationReport initReport = factory.createReportForServer(minion);
         initReport.setAction(action);
         if (initReport.getEnvironmentType().isNonceRequired()) {
-            SecureRandom rand = new SecureRandom();
             byte[] bytes = new byte[64];
-            rand.nextBytes(bytes);
+            secureRandom.nextBytes(bytes);
             initReport.setInData(Map.of("nonce", Base64.getEncoder().encodeToString(bytes)));
         }
 

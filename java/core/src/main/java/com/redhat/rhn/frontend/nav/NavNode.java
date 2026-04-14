@@ -375,5 +375,21 @@ public class NavNode {
     public String getTarget() {
         return target;
     }
+
+    private String cssClass;
+
+    /**
+     * @return the cssClass
+     */
+    public String getCssClass() {
+        return cssClass;
+    }
+
+    /**
+     * @param cssClassIn the cssClass to set
+     */
+    public void setCssClass(String cssClassIn) {
+        this.cssClass = cssClassIn;
+    }
 }
 

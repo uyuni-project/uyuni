@@ -898,15 +898,6 @@ public class ChannelFactory extends HibernateFactory {
     }
 
     /**
-     * Creates empty SSL set for repository
-     *
-     * @return empty SSL set
-     */
-    public static SslContentSource createRepoSslSet() {
-        return new SslContentSource();
-    }
-
-    /**
      * Utility to call {@link #refreshNewestPackageCache(Long, String)} given a channel.
      *
      * @param c     channel to be refreshed

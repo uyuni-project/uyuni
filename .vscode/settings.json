@@ -1,17 +1,16 @@
 {
   "typescript.tsdk": "${workspaceFolder}/web/node_modules/typescript/lib",
+  "editor.formatOnSave": true,
   "[javascript][javascriptreact][typescript][typescriptreact][json][jsonc][css][less][scss][html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.tabSize": 2,
     "files.insertFinalNewline": true,
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
       "source.fixAll.eslint": "explicit"
-    },
+    }
   },
-  "typescript.preferences.autoImportFileExcludePatterns": [
-    "formik",
-    "node-gettext"
-  ],
+  "typescript.preferences.autoImportFileExcludePatterns": ["formik", "node-gettext"],
   "css.lint.emptyRules": "ignore",
   "less.lint.emptyRules": "ignore",
   "scss.lint.emptyRules": "ignore",
@@ -20,28 +19,21 @@
     "projectKey": "uyuni-project_uyuni"
   },
   "java.test.config": {
-    "vmArgs": [
-      "-Drhn.config.dir=${workspaceFolder}/java/buildconf/test"
-    ]
+    "vmArgs": ["-Drhn.config.dir=${workspaceFolder}/java/buildconf/test"]
   },
-  "java.project.referencedLibraries": [
-    "java/lib/*.jar", "java/buildconf/ivy/repository/suse/*jar"
-  ],
-  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
-  "editor.formatOnSave": true,
+  "java.completion.importOrder": ["com.redhat.rhn", "com.suse", "com", "org", "java", "javax", "#"],
+  "java.project.referencedLibraries": ["java/lib/*.jar", "java/buildconf/ivy/repository/suse/*jar"],
   "ant.home": "/usr/share/ant",
   "ant.executable": "/usr/bin/ant",
   "ant.buildFilenames": "java/manager-build.xml",
   "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx8G -Xms2G -Xlog:disable",
-
   "java.configuration.runtimes": [
     {
       "name": "JavaSE-17",
       "path": "/usr/lib64/jvm/java-17-openjdk",
       "default": true
-    },
+    }
   ],
-
   "java.checkstyle.configuration": "${workspaceFolder}/java/buildconf/checkstyle.xml",
   "java.checkstyle.properties": {
     "checkstyle.cache.file": "${workspaceFolder}/java/build/checkstyle.cache.src",
@@ -52,12 +44,48 @@
     "javadoc.type.scope": "package",
     "javadoc.var.scope": "package"
   },
-  
-	"vscode-postgres.virtualFolders": [
-    "functions"
-  ],
+  "java.checkstyle.enabled": true,
+  "java.format.enabled": true,
+  "[java]": {
+    "editor.defaultFormatter": "redhat.java",
+    "editor.formatOnSave": false,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true,
+      "source.fixAll.checkstyle": true
+    }
+  },
+  "java.format.settings.url": "${workspaceFolder}/java/conf/eclipse/code_formatter_rhn.xml",
+  "java.format.settings.profile": "RHN",
+  "vscode-postgres.virtualFolders": ["functions"],
   "prettier.configPath": "web/.prettierrc",
   "[json]": {
     "editor.defaultFormatter": "prettier.prettier-vscode"
+  },
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.autopep8",
+    "editor.formatOnSave": true
+  },
+  "[ruby]": {
+    "editor.defaultFormatter": "Shopify.ruby-lsp",
+    "editor.formatOnSave": true
+  },
+  "[perl]": {
+    "editor.defaultFormatter": "peterevans.perl",
+    "editor.formatOnSave": true
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+  "[xml]": {
+    "editor.defaultFormatter": "redhat.vscode-xml"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
 }

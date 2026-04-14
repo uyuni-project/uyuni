@@ -21,7 +21,7 @@ package com.redhat.rhn.frontend.action.kickstart;
  */
 public enum KickstartTreeUpdateType {
     ALL("all"), RED_HAT("red_hat"), NONE("none");
-    private String type;
+    private final String type;
 
     /**
      * Create a new KickstartTreeUpdateType
@@ -37,14 +37,6 @@ public enum KickstartTreeUpdateType {
      */
     public String getType() {
         return type;
-    }
-
-    /**
-     * Set the type
-     * @param updateType the update type to set
-     */
-    public void setType(String updateType) {
-        type = updateType;
     }
 
     /**

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-13 09:07+0100\n"
+"POT-Creation-Date: 2026-04-03 14:32+0200\n"
 "PO-Revision-Date: 2025-04-02 20:56+0000\n"
 "Last-Translator: Zilmar Junior <zilmar.jr@gmail.com>\n"
 "Language-Team: Portuguese (Brazil) <https://l10n.opensuse.org/projects/uyuni/web/pt_BR/>\n"
@@ -179,7 +179,7 @@ msgstr "Primeiro Nome"
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:354
 #: ../html/src/manager/admin/access-control/access-group-review.tsx:175
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:410
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:169
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:179
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:97
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:139
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:28
@@ -266,7 +266,7 @@ msgstr ""
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:130
 #: ../html/src/manager/admin/access-control/access-group-user.tsx:142
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:427
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:198
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:208
 #: ../html/src/manager/images/image-profiles.tsx:191
 #: ../html/src/manager/images/image-stores.tsx:193
 #: ../html/src/manager/images/image-view.tsx:689
@@ -374,7 +374,7 @@ msgstr "Selecionar uma agenda"
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:120
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:194
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:15
-#: ../html/src/manager/minion/ansible/edit-ansible-vars-modal.tsx:95
+#: ../html/src/manager/minion/ansible/edit-ansible-vars-modal.tsx:98
 #: ../html/src/manager/minion/ansible/new-ansible-path.tsx:33
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:172
 #: ../html/src/manager/minion/packages/package-states.tsx:193
@@ -451,7 +451,7 @@ msgstr "Tem certeza de que deseja {0} os {1}s selecionados? ({2} {1}s selecionad
 #: ../html/src/manager/images/image-view-overview.tsx:806
 #: ../html/src/manager/images/image-view-overview.tsx:807
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:18
-#: ../html/src/manager/minion/ansible/edit-ansible-vars-modal.tsx:87
+#: ../html/src/manager/minion/ansible/edit-ansible-vars-modal.tsx:90
 #: ../html/src/manager/systems/delete-system.tsx:79
 #: ../html/src/manager/systems/delete-system.tsx:80
 msgid "Cancel"
@@ -471,7 +471,8 @@ msgstr "Cancelar"
 #: ../html/src/manager/admin/payg/payg.tsx:70
 #: ../html/src/manager/admin/payg/payg.tsx:71
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:162
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:142
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:154
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:229
 #: ../html/src/manager/content-management/project/project.tsx:106
 #: ../html/src/manager/images/image-profiles.tsx:136
 #: ../html/src/manager/images/image-profiles.tsx:211
@@ -484,8 +485,8 @@ msgstr "Cancelar"
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:46
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:92
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:72
-#: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:311
-#: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:330
+#: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:314
+#: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:333
 #: ../html/src/manager/minion/ansible/edit-ansible-path.tsx:22
 #: ../html/src/manager/notifications/notifications-list.tsx:115
 #: ../html/src/manager/packages/list.tsx:72
@@ -542,8 +543,8 @@ msgstr ""
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:25
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:74
 #: ../html/src/manager/images/image-store-edit.tsx:180
-#: ../html/src/manager/login/susemanager/login.tsx:98
-#: ../html/src/manager/login/uyuni/login.tsx:96
+#: ../html/src/manager/login/susemanager/login.tsx:99
+#: ../html/src/manager/login/uyuni/login.tsx:97
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:427
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:550
 msgid "Password"
@@ -903,7 +904,7 @@ msgstr "Não há estados atribuídos."
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:28
 #: ../html/src/manager/maintenance/details/maintenance-windows-details.tsx:30
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:52
-#: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:266
+#: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:269
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:149
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:234
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:236
@@ -1083,7 +1084,7 @@ msgstr ""
 #: ../html/src/manager/admin/access-control/access-group-user.tsx:136
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:106
 #: ../html/src/manager/images/image-store-edit.tsx:171
-#: ../html/src/manager/login/susemanager/login.tsx:87
+#: ../html/src/manager/login/susemanager/login.tsx:88
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:164
 msgid "Username"
 msgstr ""
@@ -1521,7 +1522,7 @@ msgid "Users"
 msgstr "Usuários"
 
 #: ../html/src/components/input/form-multi-input/single-field.example.tsx:47
-#: ../html/src/manager/login/uyuni/login.tsx:84
+#: ../html/src/manager/login/uyuni/login.tsx:85
 msgid "Login"
 msgstr "Acesso"
 
@@ -2339,13 +2340,13 @@ msgstr ""
 
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:282
 #: ../html/src/manager/admin/access-control/access-group-review.tsx:128
-#: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:255
+#: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:258
 msgid "Expand All"
 msgstr ""
 
 #: ../html/src/manager/admin/access-control/access-group-permissions.tsx:282
 #: ../html/src/manager/admin/access-control/access-group-review.tsx:128
-#: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:255
+#: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:258
 msgid "Collapse All"
 msgstr ""
 
@@ -3887,36 +3888,69 @@ msgstr ""
 msgid "Rule"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:82
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:77
+msgid "Filter has been deleted."
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:93
 msgid "Some of the selected filters are used in projects and can not be deleted."
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:125
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:102
+msgid "Filter have been deleted."
+msgstr ""
+
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:137
 #, fuzzy
 msgid "Create Filter"
 msgstr "Canal de configuração de estado"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:137
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:149
 #, fuzzy
 msgid "Select unused"
 msgstr "Selecionar uma agenda"
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:149
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:161
 msgid "Content Lifecycle Filters"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:158
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:170
 msgid "Filter by name or project"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:174
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:184
 msgid "Projects in use"
 msgstr ""
 
-#: ../html/src/manager/content-management/list-filters/list-filters.tsx:206
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:217
 #, fuzzy
 msgid "Edit Filter"
 msgstr "Editar"
+
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:242
+#, fuzzy
+msgid "Delete Filter"
+msgstr "Canal de configuração de estado"
+
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:245
+#, fuzzy
+msgid "Are you sure you want to delete the filter"
+msgstr "Tem certeza que deseja excluir o projeto "
+
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:254
+#, fuzzy
+msgid "Delete Selected Filter(s)"
+msgstr "Remover"
+
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:258
+#, fuzzy
+msgid "Are you sure you want to delete the selected filter?"
+msgstr "Tem certeza que deseja excluir o projeto "
+
+#: ../html/src/manager/content-management/list-filters/list-filters.tsx:259
+#, fuzzy
+msgid "Are you sure you want to delete selected filters? ({count} filters selected)"
+msgstr "Tem certeza de que deseja {0} os {1}s selecionados? ({2} {1}s selecionados)"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:32
 msgid "Live patching based on a specific system"
@@ -5130,52 +5164,68 @@ msgstr ""
 msgid "Are you sure you want to delete selected images? ({count} images selected)"
 msgstr "Tem certeza de que deseja {0} os {1}s selecionados? ({2} {1}s selecionados)"
 
-#: ../html/src/manager/login/messages.tsx:12
+#: ../html/src/manager/login/messages.tsx:18
 msgid "A schema upgrade is required. Please upgrade your schema at your earliest convenience to receive latest bug fixes and avoid potential problems."
 msgstr ""
 
-#: ../html/src/manager/login/messages.tsx:21
-msgid "Unable to validate the disk space availability. Please contact your system admistrator if this problem persists."
+#: ../html/src/manager/login/messages.tsx:27
+msgid "Unable to validate the disk space availability on Server. Please contact your system administrator if this problem persists."
 msgstr ""
 
-#: ../html/src/manager/login/messages.tsx:26
+#: ../html/src/manager/login/messages.tsx:32
 msgid "Some important directories are missing. Please contact your system administrator to review the configuration."
 msgstr ""
 
-#: ../html/src/manager/login/messages.tsx:31
-msgid "The available disk space on the server is running low. Please contact your system administrator to add more disk space."
+#: ../html/src/manager/login/messages.tsx:37
+msgid "The available disk space for the server is low. To prevent an automatic shutdown via health check, please contact your system administrator immediately to allocate additional space."
 msgstr ""
 
-#: ../html/src/manager/login/messages.tsx:36
-msgid "The available disk space on the server is critically low. Please contact your system administrator to add more disk space."
+#: ../html/src/manager/login/messages.tsx:42
+msgid "The available disk space for the server is critically low. To prevent an automatic shutdown via health check, please contact your system administrator immediately to allocate additional space."
 msgstr ""
 
-#: ../html/src/manager/login/messages.tsx:51
+#: ../html/src/manager/login/messages.tsx:59
+msgid "Unable to validate the disk space availability on Database. Please contact your system administrator if this problem persists."
+msgstr ""
+
+#: ../html/src/manager/login/messages.tsx:64
+msgid "Some important directories are missing on database. Please contact your system administrator to review the configuration."
+msgstr ""
+
+#: ../html/src/manager/login/messages.tsx:69
+msgid "The available disk space for the database is low. To prevent an automatic shutdown via health check, please contact your system administrator immediately to allocate additional space."
+msgstr ""
+
+#: ../html/src/manager/login/messages.tsx:74
+msgid "The available disk space for the database is critically low. To prevent an automatic shutdown via health check, please contact your system administrator immediately to allocate additional space."
+msgstr ""
+
+#: ../html/src/manager/login/messages.tsx:89
 msgid "SUSE Multi-Linux Manager PAYG instances must forward registration data to SCC when credentials are provided. Data will be sent independently of the configuration setting. To hide this warning please set 'forward_registration = 1' in rhn.conf."
 msgstr ""
 
-#: ../html/src/manager/login/messages.tsx:61
+#: ../html/src/manager/login/messages.tsx:99
 msgid "Signing in ..."
 msgstr ""
 
-#: ../html/src/manager/login/susemanager/login.tsx:40
-#: ../html/src/manager/login/uyuni/login.tsx:46
+#: ../html/src/manager/login/susemanager/login.tsx:41
+#: ../html/src/manager/login/uyuni/login.tsx:47
 msgid "Discover a new way of managing your servers, packages, patches and more via one interface."
 msgstr ""
 
-#: ../html/src/manager/login/susemanager/login.tsx:43
+#: ../html/src/manager/login/susemanager/login.tsx:44
 msgid "<link>Learn more</link> about {productName}."
 msgstr ""
 
-#: ../html/src/manager/login/susemanager/login.tsx:86
-#: ../html/src/manager/login/susemanager/login.tsx:112
-#: ../html/src/manager/login/uyuni/login.tsx:58
-#: ../html/src/manager/login/uyuni/login.tsx:104
+#: ../html/src/manager/login/susemanager/login.tsx:87
+#: ../html/src/manager/login/susemanager/login.tsx:113
+#: ../html/src/manager/login/uyuni/login.tsx:59
+#: ../html/src/manager/login/uyuni/login.tsx:105
 msgid "Sign In"
 msgstr ""
 
-#: ../html/src/manager/login/susemanager/login.tsx:119
-#: ../html/src/manager/login/uyuni/login.tsx:120
+#: ../html/src/manager/login/susemanager/login.tsx:120
+#: ../html/src/manager/login/uyuni/login.tsx:121
 msgid "{productName} release {versionNumber}"
 msgstr ""
 
@@ -5195,11 +5245,11 @@ msgstr ""
 msgid "Are you sure you want to close this page while login is in progress?"
 msgstr ""
 
-#: ../html/src/manager/login/uyuni/login.tsx:48
+#: ../html/src/manager/login/uyuni/login.tsx:49
 msgid "Learn more about {productName}:"
 msgstr ""
 
-#: ../html/src/manager/login/uyuni/login.tsx:52
+#: ../html/src/manager/login/uyuni/login.tsx:53
 msgid "View website"
 msgstr ""
 
@@ -5585,7 +5635,7 @@ msgstr ""
 msgid "Edit YAML"
 msgstr "Editar"
 
-#: ../html/src/manager/minion/ansible/edit-ansible-vars-modal.tsx:65
+#: ../html/src/manager/minion/ansible/edit-ansible-vars-modal.tsx:68
 #, fuzzy
 msgid "Edit variables"
 msgstr "Editar"

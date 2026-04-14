@@ -6515,13 +6515,6 @@ Seguiu aquesta url per veure la llista completa de sistemes inactius:
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="kickstart.schedule.noup2date" xml:space="preserve">
-        <source>An autoinstallation was not scheduled for &lt;strong&gt;&lt;a href="/rhn/systems/details/Overview.do?sid={0}"&gt;{1}&lt;/a&gt;&lt;/strong&gt; because the package profile did not contain the 'up2date' package. An update of that system's package profile may be required.</source>
-        <target state="translated">No s'ha programat una autoinstal·lació per a lt;stronggt;lt;a href."/rhn/systems/details/Overview.do?sid.{0}"gt;{1}lt;/agt;lt;/stronggt; perquè el perfil del paquet no conté el paquet «up2date». És possible que es requereixi una actualització del perfil de paquet d'aquest sistema.</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="kickstart.session.newsession" xml:space="preserve">
         <source>A new autoinstall session was initiated for this system.</source>
         <target state="translated">S'ha iniciat una nova sessió d'autoinstal·lació per a aquest sistema.</target>
@@ -6553,13 +6546,6 @@ Seguiu aquesta url per veure la llista completa de sistemes inactius:
       <trans-unit id="kickstart.session.newprofile" xml:space="preserve">
         <source>Profile for autoinstall session {0}.</source>
         <target state="translated">Perfil per a la sessió d'autoinstal·lació {0}.</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="kickstart.schedule.noup2dateinchannel" xml:space="preserve">
-        <source>We require version {0} or greater of up2date in order to kickstart a system. &lt;strong&gt;{2}&lt;/strong&gt; has {1} installed but we could not find a version of up2date in this system's channels to upgrade it to the required version or above.</source>
-        <target state="translated">Es requereix la versió {0} o superior d'actualitzada per tal d'arrencar un sistema. lt;stronggt;{2}lt;/stronggt; té {1} instal·lat, però no hem pogut trobar una versió d'actualització en els canals d'aquest sistema per a actualitzar-la a la versió requerida o superior.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/ScheduleKickstart.do</context>
         </context-group>
@@ -12121,6 +12107,23 @@ Per a esmenar aquesta situació, afegiu credencials SCC lt;a href""/rhn/admin/se
       <trans-unit id="pxeeventfailed" xml:space="preserve">
         <source>PXE Event Failed</source>
         <target state="translated">L'esdeveniment de PXE ha fallat</target>
+      </trans-unit>
+      <trans-unit id="ARMHF Debian" xml:space="preserve">
+        <source>ARMHF Debian</source>
+        <target>ARMHF Debian</target>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="diskcheckwarning" xml:space="preserve">
+        <source>Disk Check</source>
+        <target state="translated">Comprovació del disc</target>
+      </trans-unit>
+      <trans-unit id="notification.diskcheck.summary" xml:space="preserve">
+        <source>You are running out of space on your @@PRODUCT_NAME@@ {0}. This is {1}</source>
+        <target state="translated">Us quedeu sense espai a @@PRODUCT_NAME@@ {0}. Això és {1}</target>
+      </trans-unit>
+      <trans-unit id="notification.diskcheck.details" xml:space="preserve">
+        <source>You are running out of space on your @@PRODUCT_NAME@@ {0}. This is {1}. If you run out of disk space, @@PRODUCT_NAME@@ will stop running, and this could lead to a loss of data. @@PRODUCT_NAME@@ will shutdown automatically.</source>
+        <target state="translated">Us quedeu sense espai a @@PRODUCT_NAME@@ {0}. Això és {1}. Si us quedeu sense espai al disc, @@PRODUCT_NAME@@ deixarà de funcionar i això podria provocar una pèrdua de dades. @@PRODUCT_NAME@@ s'apagarà automàticament.</target>
       </trans-unit>
     </body>
   </file>

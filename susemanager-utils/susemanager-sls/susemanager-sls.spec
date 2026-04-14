@@ -137,10 +137,6 @@ py.test%{?rhel:-3} test_pillar_suma_minion.py
 cd ../src/tests
 py.test%{?rhel:-3}
 
-# Check that SLS files don't contain any call to "module.run" which has
-# been replaced by "mgrcompat.module_run" calls.
-! grep --include "*.sls" -r "module\.run" %{buildroot}%{_datadir}/susemanager/salt || exit 1
-
 %pre
 # change /usr/share/susemanager/salt/certs/RHN-ORG-TRUSTED-SSL-CERT
 # from symlink into a real file

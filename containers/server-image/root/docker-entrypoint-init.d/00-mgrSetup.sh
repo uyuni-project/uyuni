@@ -13,7 +13,7 @@
 : "${REPORT_DB_HOST:=reportdb}"
 : "${REPORT_DB_PORT:=5432}"
 : "${REPORT_DB_NAME:=reportdb}"
-: "${REPORT_DB_CA_CERT:=/etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT}"
+: "${REPORT_DB_CA_CERT:=/etc/pki/trust/anchors/DB-RHN-ORG-TRUSTED-SSL-CERT}"
 
 : "${ORG_NAME:=SUSE Test}"
 : "${ADMIN_USER:=admin}"

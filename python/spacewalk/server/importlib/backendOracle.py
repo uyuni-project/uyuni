@@ -251,6 +251,8 @@ class OracleBackend(Backend):
             },
             pk=["org_id", "name_id", "evr_id", "package_arch_id", "checksum_id"],
             nullable=["org_id"],
+            or_null=["org_id"],
+            select_extension=" order by org_id nulls first",
             severityHash={
                 "path": 1,
                 "package_size": 2,

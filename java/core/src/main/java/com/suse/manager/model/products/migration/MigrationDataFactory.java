@@ -17,6 +17,7 @@ import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
 import com.redhat.rhn.domain.action.dup.DistUpgradeChannelTask;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelArch;
+import com.redhat.rhn.domain.channel.ChannelFamily;
 import com.redhat.rhn.domain.channel.ClonedChannel;
 import com.redhat.rhn.domain.product.SUSEProduct;
 import com.redhat.rhn.domain.product.SUSEProductFactory;
@@ -24,6 +25,7 @@ import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.EssentialChannelDto;
 import com.redhat.rhn.manager.channel.ChannelManager;
@@ -87,8 +89,12 @@ public class MigrationDataFactory {
 
         var migrationSource = sourceProductSet.map(sourceSet -> toMigrationProduct(sourceSet)).orElse(null);
 
+        // Check if any system in the batch is a RedHat minion
+        boolean hasRedHatMinion = serverList.stream()
+            .anyMatch(server -> ServerConstants.REDHAT.equals(server.getOsFamily()));
+
         var migrationTargets = targetSets.stream()
-            .map(targetSet -> toMigrationTarget(targetSet))
+            .map(targetSet -> toMigrationTarget(targetSet, sourceProductSet, hasRedHatMinion))
             .sorted(Comparator.comparing(targetSet -> targetSet.targetProduct().name()))
             .toList();
 
@@ -137,7 +143,8 @@ public class MigrationDataFactory {
         var targetSet = DistUpgradeManager.getTargetProductSets(user, serverList, sourceSet).stream()
             .filter(productSet -> targetBaseProduct.getId() == productSet.getBaseProduct().getId())
             .findFirst()
-            .orElseThrow(() -> new IllegalArgumentException(""));
+            .orElseThrow(() -> new IllegalArgumentException(
+                    "No matching target product set found for base product: " + targetBaseProduct.getFriendlyName()));
 
         var systemsData = serverList.stream()
             .map(server -> toSystemData(server, sourceSet.map(SUSEProductSet::getBaseProduct), List.of(targetSet)))
@@ -192,16 +199,64 @@ public class MigrationDataFactory {
     /**
      * Create a {@link MigrationTarget} from a set of products and the servers involved in the migration.
      * @param targetProductSet the product set
+     * @param sourceProductSet the source product set (used to compute dry-run capability)
+     * @param isRedHatMinion whether any system in the migration batch is a RedHat minion
      * @return an instance of {@link MigrationTarget}
      */
-    public MigrationTarget toMigrationTarget(SUSEProductSet targetProductSet) {
+    public MigrationTarget toMigrationTarget(SUSEProductSet targetProductSet,
+                                             Optional<SUSEProductSet> sourceProductSet,
+                                             boolean isRedHatMinion) {
         MigrationProduct targetProduct = toMigrationProduct(targetProductSet);
-        List<String> missingChannels = Collections.unmodifiableList(targetProductSet.getMissingChannels());
+        List<String> missingChannels = targetProductSet.getMissingChannels() == null ?
+                Collections.emptyList() : Collections.unmodifiableList(targetProductSet.getMissingChannels());
 
         // Get the unique serialized id of the product set
         String serializedId = targetProductSet.getSerializedProductIDs();
 
-        return new MigrationTarget(serializedId, targetProduct, missingChannels);
+        SUSEProduct sourceBase = sourceProductSet.map(SUSEProductSet::getBaseProduct).orElse(null);
+        SUSEProduct targetBase = targetProductSet.getBaseProduct();
+        boolean hasDryRun = computeHasDryRunCapability(isRedHatMinion, sourceBase, targetBase);
+
+        return new MigrationTarget(serializedId, targetProduct, missingChannels, hasDryRun);
+    }
+
+    /**
+     * Compute whether a dry-run is available for a product migration.
+     * Dry-run is NOT available when:
+     * <ul>
+     *     <li>The system is a RedHat minion</li>
+     *     <li>The source and target product classes (channel family labels) differ</li>
+     *     <li>The migration is a SLES 15.x to SLES 16.x major version jump</li>
+     * </ul>
+     *
+     * This method is shared between the single-system migration ({@code SPMigrationAction})
+     * and the SSM batch migration.
+     *
+     * @param isRedHatMinion whether the system (or any system in the batch) is a RedHat minion
+     * @param sourceBase the source base product, or null if unknown
+     * @param targetBase the target base product
+     * @return true if dry-run is available
+     */
+    public static boolean computeHasDryRunCapability(boolean isRedHatMinion,
+                                                     SUSEProduct sourceBase,
+                                                     SUSEProduct targetBase) {
+        if (isRedHatMinion) {
+            return false;
+        }
+       // 1. Extract channel family labels safely
+        if (sourceBase == null || targetBase == null) {
+            return false;
+        }
+        String sourceClass = Optional.ofNullable(sourceBase.getChannelFamily())
+                .map(ChannelFamily::getLabel).orElse("");
+        String targetClass = Optional.ofNullable(targetBase.getChannelFamily())
+                .map(ChannelFamily::getLabel).orElse("");
+        // 2. Products must be in the same family (e.g., SLES to SLES)
+        if (!sourceClass.equals(targetClass)) {
+            return false;
+        }
+        // 3. Block SLES 15 -> 16 major jump (DMS is destructive, dry-run is technically impossible)
+        return !(sourceBase.isSles15() && targetBase.isSles16());
     }
 
     /**

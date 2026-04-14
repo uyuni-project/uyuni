@@ -157,8 +157,11 @@ public class UserNotificationFactory extends HibernateFactory {
         if (!isNotificationTypeDisabled(notificationMessage)) {
             String[] receipients = users.stream()
                                         .filter(user -> !user.isDisabled())
-                                        .peek(user -> UserNotificationFactory.store(
-                                                new UserNotification(user, notificationMessage)))
+                                        .map(user -> {
+                                            UserNotificationFactory.store(
+                                                new UserNotification(user, notificationMessage));
+                                            return user;
+                                        })
                                         .filter(user -> user.getEmailNotify() == 1)
                                         .map(User::getEmail)
                                         .toArray(String[]::new);

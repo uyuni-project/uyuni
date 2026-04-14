@@ -18,12 +18,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
 
-import io.prometheus.client.Collector;
+import io.prometheus.metrics.model.registry.MultiCollector;
+import io.prometheus.metrics.model.snapshots.MetricSnapshot;
+import io.prometheus.metrics.model.snapshots.MetricSnapshots;
 
 /**
  * Collector for a ThreadPool.
  */
-public class ThreadPoolCollector extends Collector {
+public class ThreadPoolCollector implements MultiCollector {
 
     private ThreadPoolExecutor pool;
     private String poolId;
@@ -39,8 +41,8 @@ public class ThreadPoolCollector extends Collector {
     }
 
     @Override
-    public List<MetricFamilySamples> collect() {
-        List<MetricFamilySamples> out = new ArrayList<>();
+    public MetricSnapshots collect() {
+        List<MetricSnapshot> out = new ArrayList<>();
 
         out.add(CustomCollectorUtils.counterFor("thread_pool_threads",
                 "Threads total count", this.pool.getPoolSize(), this.poolId));
@@ -51,6 +53,6 @@ public class ThreadPoolCollector extends Collector {
         out.add(CustomCollectorUtils.counterFor("thread_pool_completed_task_count",
                 "Number of tasks ever completed", this.pool.getCompletedTaskCount(), this.poolId));
 
-        return out;
+        return new MetricSnapshots(out);
     }
 }

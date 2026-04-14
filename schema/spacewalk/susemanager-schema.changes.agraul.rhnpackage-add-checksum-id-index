@@ -1,0 +1,2 @@
+- Add index on rhnPackage (checksum_id) (bsc#1258041)
+  (gh#uyuni-project/uyuni#11585)

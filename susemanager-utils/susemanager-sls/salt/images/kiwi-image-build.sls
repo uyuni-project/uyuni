@@ -32,7 +32,7 @@ mgr_buildimage_prepare_source:
   file.directory:
     - name: {{ root_dir }}
     - clean: True
-  mgrcompat.module_run:
+  module.run:
     - name: kiwi_source.prepare_source
     - source: {{ source }}
     - root: {{ root_dir }}
@@ -61,23 +61,23 @@ mgr_eib:
   file.directory:
     - name: {{ source_dir }}/root/oem
     - onlyif:
-      - test -f {{ source_dir }}/eib/eib.yaml
+      - command -p test -f {{ source_dir }}/eib/eib.yaml
   cmd.run:
     - names:
-      - podman run --rm --privileged -v {{ source_dir }}/eib:/eib:ro,Z {{ eib_image }} build --definition-file=eib.yaml
-      - xorriso -osirrox on -indev {{ source_dir }}/eib/combustion.iso extract / {{ source_dir }}/root/oem
+      - command -p podman run --rm --privileged -v {{ source_dir }}/eib:/eib:ro,Z {{ eib_image }} build --definition-file=eib.yaml
+      - command -p xorriso -osirrox on -indev {{ source_dir }}/eib/combustion.iso extract / {{ source_dir }}/root/oem
     - require:
       - file: mgr_eib
     - onlyif:
-      - test -f {{ source_dir }}/eib/eib.yaml
+      - command -p test -f {{ source_dir }}/eib/eib.yaml
 
 {# need ca-certificates for kiwi to trust CA #}
 {# need /dev for losetup error during create #}
 {% set kiwi_mount = ' -v '+ kiwi_dir + ':/var/lib/Kiwi:Z ' %}
 {% set kiwi_yml_mount = ' -v ' + source_dir + '/kiwi.yml:/etc/kiwi.yml:ro,Z ' %}
-{%- set kiwi = '/usr/bin/podman run --rm --privileged -v /var/lib/ca-certificates:/var/lib/ca-certificates:ro -v /dev:/dev '+ kiwi_mount + kiwi_yml_mount + kiwi_image + ' kiwi-ng' -%}
+{%- set kiwi = 'command -p podman run --rm --privileged -v /var/lib/ca-certificates:/var/lib/ca-certificates:ro -v /dev:/dev '+ kiwi_mount + kiwi_yml_mount + kiwi_image + ' kiwi-ng' -%}
 {%- elif kiwi_method == 'kiwi-ng' -%}
-{%- set kiwi = '/usr/bin/kiwi-ng' -%}
+{%- set kiwi = 'command -p kiwi-ng' -%}
 {%- endif -%} {# kiwi_method #}
 
 {%- if kiwi_method == 'podman' or kiwi_method == 'kiwi-ng' %}
@@ -103,7 +103,7 @@ mgr_buildimage_kiwi_prepare:
       - GLOBAL_PARAMS: "--logfile={{ root_dir }}/build.log --shared-cache-dir={{ cache_dir }}"
       - PARAMS:  "--description {{ source_dir }} --root {{ chroot_dir }} {{ kiwi_params() }}"
     - require:
-      - mgrcompat: mgr_buildimage_prepare_source
+      - module: mgr_buildimage_prepare_source
       - file: mgr_buildimage_prepare_activation_key_in_source
       {{ kpartx_require }}
       {{ eib_require }}
@@ -126,7 +126,7 @@ mgr_buildimage_kiwi_bundle:
 
 # i586 build on x86_64 host must be called with linux32
 # let's consider the build i586 if there is no x86_64 repo specified
-{%- set kiwi = '/usr/bin/linux32 /usr/sbin/kiwi' if (pillar.get('kiwi_repositories')|join(' ')).find('x86_64') == -1 and grains.get('osarch') == 'x86_64' else '/usr/sbin/kiwi' %}
+{%- set kiwi = 'command -p linux32 command -p kiwi' if (pillar.get('kiwi_repositories')|join(' ')).find('x86_64') == -1 and grains.get('osarch') == 'x86_64' else 'command -p kiwi' %}
 
 # in SLES11 Kiwi the --add-repotype is required
 {%- macro kiwi_params() -%}
@@ -147,7 +147,7 @@ mgr_buildimage_kiwi_prepare:
   cmd.run:
     - name: "{{ kiwi }} --logfile {{ root_dir }}/build.log --nocolor --force-new-root --prepare {{ source_dir }} --root {{ chroot_dir }} {{ kiwi_params() }}"
     - require:
-      - mgrcompat: mgr_buildimage_prepare_source
+      - module: mgr_buildimage_prepare_source
       - file: mgr_buildimage_prepare_activation_key_in_source
 
 mgr_buildimage_kiwi_create:
@@ -168,7 +168,7 @@ mgr_buildimage_kiwi_bundle:
 
 {%- if pillar.get('use_salt_transport') %}
 mgr_buildimage_kiwi_collect_image:
-  mgrcompat.module_run:
+  module.run:
     - name: cp.push_dir
     {%- if use_bundle_build %}
     - path: {{ bundle_dir }}
@@ -182,7 +182,7 @@ mgr_buildimage_kiwi_collect_image:
 {%- endif %} {# use_salt_transport #}
 
 mgr_buildimage_info:
-  mgrcompat.module_run:
+  module.run:
     - name: kiwi_info.build_info
     - dest: {{ dest_dir }}
     - build_id: {{ build_id }}
@@ -201,7 +201,7 @@ mgr_buildimage_info:
 {%- endif %} {# use_salt_transport #}
 
 mgr_buildimage_kiwi_collect_logs:
-  mgrcompat.module_run:
+  module.run:
     - name: cp.push
     - path: {{ root_dir }}/build.log
     - upload_path: /image-{{ build_id }}.log

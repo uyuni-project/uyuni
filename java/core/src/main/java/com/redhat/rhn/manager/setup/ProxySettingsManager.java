@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014--2025 SUSE LLC
+ * Copyright (c) 2014--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -19,6 +19,9 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.validator.ValidatorError;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.satellite.ProxySettingsConfigureSatelliteCommand;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -49,6 +52,9 @@ public final class ProxySettingsManager {
      */
     public static ValidatorError[] storeProxySettings(ProxySettingsDto settings,
             User userIn, HttpServletRequest request) {
+
+        sanitizeInput(settings);
+
         ProxySettingsConfigureSatelliteCommand configCommand = new ProxySettingsConfigureSatelliteCommand(userIn);
         configCommand.updateString(ConfigDefaults.HTTP_PROXY, settings.getHostname());
         configCommand.updateString(ConfigDefaults.HTTP_PROXY_USERNAME, settings.getUsername());
@@ -60,5 +66,28 @@ public final class ProxySettingsManager {
             SetupWizardSessionCache.clearAllSubscriptions(request);
         }
         return ret;
+    }
+
+    /**
+     * Sanitizes any input string
+     *
+     * @param stringIn the input string to sanitize
+     * @return the safe string
+     */
+    public static String sanitizeInput(String stringIn) {
+        Pattern pattern = Pattern.compile("\\p{C}"); //any control character
+        Matcher matcher = pattern.matcher(stringIn);
+        return matcher.replaceAll("");
+    }
+
+    /**
+     * Sanitizes any input settings
+     *
+     * @param settings the input settings to sanitize
+     */
+    public static void sanitizeInput(ProxySettingsDto settings) {
+        settings.setHostname(sanitizeInput(settings.getHostname()));
+        settings.setUsername(sanitizeInput(settings.getUsername()));
+        settings.setPassword(sanitizeInput(settings.getPassword()));
     }
 }

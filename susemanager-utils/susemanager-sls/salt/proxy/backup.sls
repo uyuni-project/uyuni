@@ -1,2 +1,2 @@
 proxy.backup:
-  mgrcompat.module_run
+  module.run

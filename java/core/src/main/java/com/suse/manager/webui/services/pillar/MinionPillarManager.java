@@ -34,7 +34,8 @@ public class MinionPillarManager {
         GENERAL,
         GROUP_MEMBERSHIP,
         VIRTUALIZATION,
-        CUSTOM_INFO
+        CUSTOM_INFO,
+        REPORT_DB
     }
 
     /** Logger */
@@ -44,12 +45,14 @@ public class MinionPillarManager {
                     MinionGeneralPillarGenerator.INSTANCE,
                     MinionGroupMembershipPillarGenerator.INSTANCE,
                     MinionVirtualizationPillarGenerator.INSTANCE,
-                    MinionCustomInfoPillarGenerator.INSTANCE);
+                    MinionCustomInfoPillarGenerator.INSTANCE,
+                    MinionReportDBPillarGenerator.INSTANCE);
 
     private MinionPillarGenerator generalPillarGenerator;
     private MinionPillarGenerator groupMembershipPillarGenerator;
     private MinionPillarGenerator virtualizationPillarGenerator;
     private MinionPillarGenerator customInfoPillarGenerator;
+    private MinionPillarGenerator reportDBPillarGenerator;
 
     /**
      * Constructor for MinionPillarManager
@@ -57,15 +60,18 @@ public class MinionPillarManager {
      * @param groupMembershipPillarGeneratorIn group membership pillar generator
      * @param virtualizationPillarGeneratorIn virtualization pillar generator
      * @param customInfoPillarGeneratorIn custom info pillar generator
+     * @param reportDBPillarGeneratorIn reportDB pillar generator
      */
     public MinionPillarManager(MinionPillarGenerator generalPillarGeneratorIn,
                                MinionPillarGenerator groupMembershipPillarGeneratorIn,
                                MinionPillarGenerator virtualizationPillarGeneratorIn,
-                               MinionPillarGenerator customInfoPillarGeneratorIn) {
+                               MinionPillarGenerator customInfoPillarGeneratorIn,
+                               MinionPillarGenerator reportDBPillarGeneratorIn) {
         this.generalPillarGenerator = generalPillarGeneratorIn;
         this.groupMembershipPillarGenerator = groupMembershipPillarGeneratorIn;
         this.virtualizationPillarGenerator = virtualizationPillarGeneratorIn;
         this.customInfoPillarGenerator = customInfoPillarGeneratorIn;
+        this.reportDBPillarGenerator = reportDBPillarGeneratorIn;
     }
 
     /**
@@ -101,6 +107,9 @@ public class MinionPillarManager {
                 case CUSTOM_INFO:
                     customInfoPillarGenerator.generatePillarData(minion);
                     break;
+                case REPORT_DB:
+                    reportDBPillarGenerator.generatePillarData(minion);
+                    break;
                 default:
                     throw new RuntimeException("unreachable");
             }
@@ -135,5 +144,6 @@ public class MinionPillarManager {
         groupMembershipPillarGenerator.removePillar(minion);
         virtualizationPillarGenerator.removePillar(minion);
         customInfoPillarGenerator.removePillar(minion);
+        reportDBPillarGenerator.removePillar(minion);
     }
 }

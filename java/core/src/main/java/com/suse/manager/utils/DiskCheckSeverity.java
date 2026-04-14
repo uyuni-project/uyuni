@@ -56,9 +56,17 @@ public enum DiskCheckSeverity {
                 return ALERT;
             case 3:
                 return CRITICAL;
+            case -1:
             default:
-                throw new IllegalArgumentException("Exit value " + exitValue + " is not valid");
+                return UNDEFINED;
         }
+    }
 
+    /**
+     * Checks if this severity level requires attention.
+     * @return true if the severity is ALERT or CRITICAL, false otherwise.
+     */
+    public boolean needsAttention() {
+        return this.compareTo(ALERT) >= 0;
     }
 }

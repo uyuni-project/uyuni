@@ -1,0 +1,59 @@
+{
+    "tag": "salt/job/20260328164744197908/ret/192.168.101.240",
+    "data": {
+        "cmd": "_return",
+        "id": "192.168.101.240",
+        "success": true,
+        "jid": "20260328164744197908",
+        "fun": "state.apply",
+        "fun_args": [
+            {
+                "mods": [
+                    "distupgrade.sles16_verify"
+                ],
+                "queue": true
+            }
+        ],
+        "metadata": {
+            "suma-action-id": 50,
+            "suma-force-pkg-list-refresh": false,
+            "suma-action-chain": false,
+            "batch-mode": true,
+            "suma-minion-startup": false
+        },
+        "out": "highstate",
+        "return": {
+            "file_|-sles16_migration_cleanup_marker_|-/var/lib/uyuni/sles16_migration_started_|-absent": {
+                "__id__": "sles16_migration_cleanup_marker",
+                "__run_num__": 1,
+                "__sls__": "distupgrade.sles16_verify",
+                "changes": {
+                    "removed": "/var/lib/uyuni/sles16_migration_started"
+                },
+                "comment": "Removed file /var/lib/uyuni/sles16_migration_started",
+                "duration": 2.366,
+                "name": "/var/lib/uyuni/sles16_migration_started",
+                "result": true,
+                "start_time": "20:47:48.307863"
+            },
+            "test_|-sles16_migration_success_|-sles16_migration_success_|-configurable_test_state": {
+                "__id__": "sles16_migration_success",
+                "__run_num__": 0,
+                "__sls__": "distupgrade.sles16_verify",
+                "changes": {
+                    "testing": {
+                        "new": "Something pretended to change",
+                        "old": "Unchanged"
+                    }
+                },
+                "comment": "SLES 16 migration completed successfully\nCurrent OS: SLES 16.0\nArchitecture: x86_64\n",
+                "duration": 1.9,
+                "name": "sles16_migration_success",
+                "result": true,
+                "start_time": "20:47:48.243147"
+            }
+        },
+        "retcode": 0,
+        "_stamp": "2026-03-28T16:47:48.389057"
+    }
+}

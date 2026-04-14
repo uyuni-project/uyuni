@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.recurringactions.state.RecurringStateConfig;
 import com.redhat.rhn.domain.recurringactions.type.RecurringActionType;
 import com.redhat.rhn.domain.recurringactions.type.RecurringHighstate;
 import com.redhat.rhn.domain.recurringactions.type.RecurringPlaybook;
+import com.redhat.rhn.domain.recurringactions.type.RecurringScapPolicy;
 import com.redhat.rhn.domain.recurringactions.type.RecurringState;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
@@ -35,6 +36,7 @@ import com.suse.manager.maintenance.MaintenanceManager;
 import org.quartz.JobExecutionContext;
 
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -114,6 +116,37 @@ public class RecurringActionJob extends RhnJavaJob {
                         Optional.empty(),
                         action.getCreator()
                 );
+            }
+            else if (actionType instanceof RecurringScapPolicy scapPolicyType) {
+                if (!action.getCreator().getBetaFeaturesEnabled()) {
+                    log.warn("RecurringScapPolicy {} execution skipped because creator does not have" +
+                        " beta features enabled",
+                            action.getId());
+                }
+                else if (scapPolicyType.getScapPolicy() != null) {
+                    // Build parameters for SCAP scan
+                    String parameters = "--profile " + scapPolicyType.getScapPolicy().getXccdfProfileId();
+                    if (scapPolicyType.getScapPolicy().getTailoringFile() != null &&
+                            scapPolicyType.getScapPolicy().getTailoringProfileId() != null) {
+                        parameters += " --tailoring-file " + scapPolicyType.getScapPolicy().getTailoringFile().
+                          getFileName() + " --tailoring-profile-id " + scapPolicyType.getScapPolicy().
+                          getTailoringProfileId();
+                    }
+                    ActionManager.scheduleXccdfEval(
+                            action.getCreator(),
+                            new HashSet<>(minionIds),
+                            scapPolicyType.getScapPolicy().getDataStreamName(),
+                            parameters,
+                            null, // ovalFiles
+                            context.getFireTime(),
+                            scapPolicyType.getScapPolicy().getId(),
+                            true // recurring=true
+                    );
+                }
+                else {
+                    log.warn("RecurringScapPolicy {} has no SCAP policy assigned, skipping execution",
+                            action.getId());
+                }
             }
         }
         catch (TaskomaticApiException e) {

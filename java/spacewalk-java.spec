@@ -129,12 +129,17 @@ BuildRequires:  netty
 BuildRequires:  perl
 BuildRequires:  pgjdbc-ng
 BuildRequires:  postgresql-jdbc
-BuildRequires:  prometheus-client-java
+BuildRequires:  prometheus-metrics-java-core
+BuildRequires:  prometheus-metrics-java-config
+BuildRequires:  prometheus-metrics-java-model
+BuildRequires:  prometheus-metrics-java-exporter-servlet-jakarta
+BuildRequires:  prometheus-metrics-java-exporter-common
+BuildRequires:  prometheus-metrics-java-exporter-httpserver
+BuildRequires:  prometheus-metrics-java-exposition-textformats
 BuildRequires:  quartz
 BuildRequires:  redstone-xmlrpc
 BuildRequires:  salt-netapi-client >= 1.0.0
 BuildRequires:  simple-core
-BuildRequires:  simplexml
 BuildRequires:  sitemesh
 BuildRequires:  snakeyaml >= 1.33
 BuildRequires:  spark-core
@@ -144,7 +149,6 @@ BuildRequires:  tomcat11
 BuildRequires:  tomcat11-lib
 BuildRequires:  uyuni-base-server
 BuildRequires:  woodstox
-BuildRequires:  xalan-j2
 BuildRequires:  xmlsec
 BuildRequires:  (google-gson >= 2.2.4 with google-gson < 2.10.0)
 BuildRequires:  mvn(org.apache.velocity:velocity-engine-core) >= 2.2
@@ -212,12 +216,17 @@ Requires:       log4j-slf4j
 Requires:       mgr-libmod
 Requires:       netty
 Requires:       pgjdbc-ng
-Requires:       prometheus-client-java
+Requires:       prometheus-metrics-java-core
+Requires:       prometheus-metrics-java-config
+Requires:       prometheus-metrics-java-model
+Requires:       prometheus-metrics-java-exporter-common
+Requires:       prometheus-metrics-java-exporter-servlet-jakarta
+Requires:       prometheus-metrics-java-exporter-httpserver
+Requires:       prometheus-metrics-java-exposition-textformats
 Requires:       redstone-xmlrpc
 Requires:       salt-netapi-client >= 1.0.0
 Requires:       tomcat11-servlet-6_1-api
 Requires:       simple-core
-Requires:       simplexml
 Requires:       sitemesh
 Requires:       snakeyaml >= 1.33
 Requires:       spacewalk-branding
@@ -232,8 +241,6 @@ Requires:       susemanager-docs_en
 Requires:       system-lock-formula
 Requires:       tomcat11-lib
 Requires:       woodstox
-Requires:       xalan-j2 >= 2.6.0
-Requires:       xerces-j2
 Requires:       xmlsec
 Requires:       (/sbin/unix2_chkpwd or /usr/sbin/unix2_chkpwd)
 Requires:       (google-gson >= 2.2.4 with google-gson < 2.10.0)
@@ -373,8 +380,6 @@ Requires:       simple-core
 Requires:       spacewalk-java-config
 Requires:       spacewalk-java-jdbc
 Requires:       spacewalk-java-lib = %{version}
-Requires:       xalan-j2 >= 2.6.0
-Requires:       xerces-j2
 Requires:       (/sbin/unix2_chkpwd or /usr/sbin/unix2_chkpwd)
 Requires:       mvn(org.hibernate.orm:hibernate-c3p0) >= 7
 Requires:       mvn(org.hibernate.orm:hibernate-core) >= 7
@@ -528,6 +533,7 @@ install -m 644 conf/default/rhn_hibernate.conf %{buildroot}%{_datadir}/rhn/confi
 install -m 644 conf/default/rhn_reporting_hibernate.conf %{buildroot}%{_datadir}/rhn/config-defaults/rhn_reporting_hibernate.conf
 install -m 644 conf/default/rhn_taskomatic_daemon.conf %{buildroot}%{_datadir}/rhn/config-defaults/rhn_taskomatic_daemon.conf
 install -m 644 conf/default/taskomatic.conf %{buildroot}%{_sysconfdir}/rhn/taskomatic.conf
+install -d -m 755 %{buildroot}%{_sysconfdir}/rhn/taskomatic.conf.d
 install -m 644 conf/default/rhn_org_quartz.conf %{buildroot}%{_datadir}/rhn/config-defaults/rhn_org_quartz.conf
 install -m 644 conf/rhn_java.conf %{buildroot}%{_datadir}/rhn/config-defaults
 install -m 644 conf/rhn_java_sso.conf %{buildroot}%{_datadir}/rhn/config-defaults
@@ -757,6 +763,7 @@ fi
 %{_datadir}/rhn/config-defaults/rhn_reporting_hibernate.conf
 %{_datadir}/rhn/config-defaults/rhn_taskomatic_daemon.conf
 %config(noreplace) %{_sysconfdir}/rhn/taskomatic.conf
+%dir %{_sysconfdir}/rhn/taskomatic.conf.d
 %{_datadir}/rhn/config-defaults/rhn_org_quartz.conf
 %{_datadir}/rhn/config-defaults/rhn_java.conf
 %{_datadir}/rhn/config-defaults/rhn_java_sso.conf

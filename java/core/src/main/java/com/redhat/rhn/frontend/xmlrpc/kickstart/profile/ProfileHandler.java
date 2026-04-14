@@ -1003,12 +1003,7 @@ public class ProfileHandler extends BaseHandler {
                custom.setModified(new Date());
                customSet.add(custom);
            }
-           if (cmd.getKickstartData().getCustomOptions() == null) {
-               cmd.getKickstartData().setCustomOptions(customSet);
-           }
-           else {
-               cmd.getKickstartData().setCustomOptions(customSet);
-           }
+           cmd.getKickstartData().setCustomOptions(customSet);
            cmd.store();
        }
        return 1;

@@ -21,6 +21,7 @@ import org.hibernate.type.YesNoConverter;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -64,7 +65,7 @@ public class ImageFile extends BaseDomainHelper {
     /**
      * @return the image info
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "image_info_id", nullable = false)
     public ImageInfo getImageInfo() {
         return imageInfo;

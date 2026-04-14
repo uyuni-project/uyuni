@@ -225,4 +225,30 @@ public class DistUpgradeActionDetails extends BaseDomainHelper {
     public void setParentAction(Action parentActionIn) {
         this.parentAction = parentActionIn;
     }
+    /**
+     * Check if these details represent a cross-major migration from SLES 15 to SLES 16.
+     * This specific path requires the DMS/reboot-to-live workflow.
+     *
+     * @return true if a SLES 15 to SLES 16 upgrade path exists in this action
+     */
+    public boolean isSles15To16Migration() {
+        if (getProductUpgrades() == null) {
+            return false;
+        }
+        return getProductUpgrades().stream()
+                .anyMatch(u -> u.getFromProduct() != null && u.getFromProduct().isSles15() &&
+                        u.getToProduct() != null && u.getToProduct().isSles16());
+    }
+
+    /**
+     * Get the channels for a given task type.
+     * @param task the task type (e.g. DistUpgradeChannelTask.SUBSCRIBE)
+     * @return list of channels
+     */
+    public java.util.List<com.redhat.rhn.domain.channel.Channel> getChannelsByTask(char task) {
+        return getChannelTasks().stream()
+                .filter(ct -> ct.getTask() == task)
+                .map(DistUpgradeChannelTask::getChannel)
+                .collect(java.util.stream.Collectors.toList());
+    }
 }

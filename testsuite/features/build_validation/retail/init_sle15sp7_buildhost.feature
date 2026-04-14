@@ -29,10 +29,6 @@ Feature: Prepare buildhost and build OS image for SLES 15 SP7
     And I wait until I see "Bootstrap process initiated." text
     And I wait until onboarding is completed for "sle15sp7_buildhost"
 
-  # WORKAROUND for bugzilla.suse.com/show_bug.cgi?id=1253024
-  Scenario: Install kiwi10
-    When I install package "python11-kiwi" on this "sle15sp7_buildhost"
-
   Scenario: Check the new bootstrapped SLES 15 SP7 build host in System Overview page
     When I follow the left menu "Salt > Keys"
     Then I should see a "accepted" text
@@ -52,7 +48,6 @@ Feature: Prepare buildhost and build OS image for SLES 15 SP7
     And I follow "Proxy" in the content area
     Then I should see "sle15sp7_buildhost" hostname
 
-  # WORKAROUND for bugzilla.suse.com/show_bug.cgi?id=1253024, don't verify events because they fail
-#  Scenario: Check events history for failures on SLES 15 SP7 minion
-#    Given I am on the Systems overview page of this "sle15sp7_buildhost"
-#    Then I check for failed events on history event page
+  Scenario: Check events history for failures on SLES 15 SP7 minion
+    Given I am on the Systems overview page of this "sle15sp7_buildhost"
+    Then I check for failed events on history event page

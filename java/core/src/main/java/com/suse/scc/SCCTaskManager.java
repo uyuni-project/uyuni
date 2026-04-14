@@ -107,7 +107,10 @@ public class SCCTaskManager {
     protected Optional<SCCCredentials> getSCCCredentialsPeripheralCase(IssHub hub) {
         List<SCCCredentials> credentials = CredentialsFactory.listSCCCredentials();
         Optional<SCCCredentials> optHubCredential = credentials.stream()
-                .filter(c -> hub.getFqdn().equals(c.getUrl()))
+                .filter(c -> hub.getFqdn().equals(c.getUrl()
+                        .replace("http://", "")
+                        .replace("https://", "")
+                ))
                 .findFirst();
 
         if (optHubCredential.isEmpty()) {

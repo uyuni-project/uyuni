@@ -18,6 +18,7 @@ spec:
         app.kubernetes.io/component: proxy-tftp
         app.kubernetes.io/part-of: uyuni
     spec:
+{{- include "uyuni.nodePlacement" (dict "global" .Values.placement "local" .Values.tftp) | nindent 6 }}
 {{- if .Values.registrySecret }}
       imagePullSecrets:
         - name: {{ .Values.registrySecret }}

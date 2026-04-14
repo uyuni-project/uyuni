@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 SUSE LLC
+# Copyright (c) 2023-2026 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 # This function returns the net prefix, caching it
@@ -99,11 +99,12 @@ def execute_expect_command_proxy(host, exp_file, context)
   mac = mac.tr(':', '')
   eui64_base = "#{mac[0..5]}fffe#{mac[6..11]}"
   hex = (eui64_base.to_i(16) ^ 0x0200000000000000).to_s(16)
-  interface = product == 'Uyuni' ? 'ens4' : 'eth1'
-  ipv6 = "fe80::#{hex[0..3]}:#{hex[4..7]}:#{hex[8..11]}:#{hex[12..15]}%#{interface}"
+
+  proxy = get_target('proxy')
+  ipv6 = "fe80::#{hex[0..3]}:#{hex[4..7]}:#{hex[8..11]}:#{hex[12..15]}%#{proxy.private_interface}"
   source = "#{File.dirname(__FILE__)}/../upload_files/#{exp_file}"
   dest = "/tmp/#{exp_file}"
-  success = file_inject(get_target('proxy'), source, dest)
+  success = file_inject(proxy, source, dest)
   raise ScriptError, 'File injection failed' unless success
 
   get_target('proxy').run("expect -f /tmp/#{exp_file} #{ipv6} #{context}")

@@ -1,0 +1,493 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/helm-unittest/helm-unittest/main/schema/helm-testsuite.json
+suite: test node selection
+templates:
+  - server.yaml
+  - db.yaml
+  - tftp.yaml
+  - coco.yaml
+  - saline.yaml
+  - hub.yaml
+tests:
+  - it: check node selector on server
+    set:
+      global:
+        fqdn: "test.example.com"
+      server:
+        nodeName: "node-42"
+        nodeSelector:
+          "kubernetes.io/hostname": "node-42"
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+              - matchExpressions:
+                - key: "kubernetes.io/hostname"
+                  operator: In
+                  values:
+                  - "node-42"
+        tolerations:
+        - key: "key"
+          operator: "Equal"
+          value: "value"
+          effect: "NoSchedule"
+    asserts:
+      - equal:
+          path: spec.template.spec.nodeName
+          value: "node-42"
+        template: server.yaml
+      - equal:
+          path: spec.template.spec.nodeSelector
+          value:
+            "kubernetes.io/hostname": "node-42"
+        template: server.yaml
+      - equal:
+          path: spec.template.spec.affinity
+          value:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: "kubernetes.io/hostname"
+                    operator: In
+                    values:
+                    - "node-42"
+        template: server.yaml
+      - equal:
+          path: spec.template.spec.tolerations
+          value:
+          - key: "key"
+            operator: "Equal"
+            value: "value"
+            effect: "NoSchedule"
+        template: server.yaml
+      - isKind:
+          of: Deployment
+        template: server.yaml
+      - isAPIVersion:
+          of: apps/v1
+        template: server.yaml
+      - isNull:
+          path: spec.template.spec.topologySpreadConstraints
+        template: server.yaml
+  - it: check node selector on db
+    set:
+      global:
+        fqdn: "test.example.com"
+      db:
+        nodeName: "db-node"
+        nodeSelector:
+          "node": "db"
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+              - matchExpressions:
+                - key: "node"
+                  operator: In
+                  values:
+                  - "db"
+        tolerations:
+        - key: "db"
+          operator: "Equal"
+          value: "true"
+          effect: "NoSchedule"
+    asserts:
+      - equal:
+          path: spec.template.spec.nodeName
+          value: "db-node"
+        template: db.yaml
+      - equal:
+          path: spec.template.spec.nodeSelector
+          value:
+            "node": "db"
+        template: db.yaml
+      - equal:
+          path: spec.template.spec.affinity
+          value:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: "node"
+                    operator: In
+                    values:
+                    - "db"
+        template: db.yaml
+      - equal:
+          path: spec.template.spec.tolerations
+          value:
+          - key: "db"
+            operator: "Equal"
+            value: "true"
+            effect: "NoSchedule"
+        template: db.yaml
+      - isKind:
+          of: Deployment
+        template: db.yaml
+      - isAPIVersion:
+          of: apps/v1
+        template: db.yaml
+  - it: check node selector on tftp
+    set:
+      global:
+        fqdn: "test.example.com"
+      tftp:
+        nodeName: "tftp-node"
+        nodeSelector:
+          "node": "tftp"
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+              - matchExpressions:
+                - key: "node"
+                  operator: In
+                  values:
+                  - "tftp"
+        tolerations:
+        - key: "tftp"
+          operator: "Equal"
+          value: "true"
+          effect: "NoSchedule"
+    asserts:
+      - equal:
+          path: spec.template.spec.nodeName
+          value: "tftp-node"
+        template: tftp.yaml
+      - equal:
+          path: spec.template.spec.nodeSelector
+          value:
+            "node": "tftp"
+        template: tftp.yaml
+      - equal:
+          path: spec.template.spec.affinity
+          value:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: "node"
+                    operator: In
+                    values:
+                    - "tftp"
+        template: tftp.yaml
+      - equal:
+          path: spec.template.spec.tolerations
+          value:
+          - key: "tftp"
+            operator: "Equal"
+            value: "true"
+            effect: "NoSchedule"
+        template: tftp.yaml
+      - isKind:
+          of: Deployment
+        template: tftp.yaml
+      - isAPIVersion:
+          of: apps/v1
+        template: tftp.yaml
+  - it: check node selector on coco
+    set:
+      global:
+        fqdn: "test.example.com"
+      coco:
+        replicas: 1
+        nodeName: "coco-node"
+        nodeSelector:
+          "node": "coco"
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+              - matchExpressions:
+                - key: "node"
+                  operator: In
+                  values:
+                  - "coco"
+        tolerations:
+        - key: "coco"
+          operator: "Equal"
+          value: "true"
+          effect: "NoSchedule"
+    asserts:
+      - equal:
+          path: spec.template.spec.nodeName
+          value: "coco-node"
+        template: coco.yaml
+      - equal:
+          path: spec.template.spec.nodeSelector
+          value:
+            "node": "coco"
+        template: coco.yaml
+      - equal:
+          path: spec.template.spec.affinity
+          value:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: "node"
+                    operator: In
+                    values:
+                    - "coco"
+        template: coco.yaml
+      - equal:
+          path: spec.template.spec.tolerations
+          value:
+          - key: "coco"
+            operator: "Equal"
+            value: "true"
+            effect: "NoSchedule"
+        template: coco.yaml
+      - isKind:
+          of: Deployment
+        template: coco.yaml
+      - isAPIVersion:
+          of: apps/v1
+        template: coco.yaml
+  - it: check node selector on saline
+    set:
+      global:
+        fqdn: "test.example.com"
+      saline:
+        enable: true
+        nodeName: "saline-node"
+        nodeSelector:
+          "node": "saline"
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+              - matchExpressions:
+                - key: "node"
+                  operator: In
+                  values:
+                  - "saline"
+        tolerations:
+        - key: "saline"
+          operator: "Equal"
+          value: "true"
+          effect: "NoSchedule"
+    asserts:
+      - equal:
+          path: spec.template.spec.nodeName
+          value: "saline-node"
+        template: saline.yaml
+      - equal:
+          path: spec.template.spec.nodeSelector
+          value:
+            "node": "saline"
+        template: saline.yaml
+      - equal:
+          path: spec.template.spec.affinity
+          value:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: "node"
+                    operator: In
+                    values:
+                    - "saline"
+        template: saline.yaml
+      - equal:
+          path: spec.template.spec.tolerations
+          value:
+          - key: "saline"
+            operator: "Equal"
+            value: "true"
+            effect: "NoSchedule"
+        template: saline.yaml
+      - isKind:
+          of: Deployment
+        template: saline.yaml
+      - isAPIVersion:
+          of: apps/v1
+        template: saline.yaml
+  - it: check node selector on hub
+    set:
+      global:
+        fqdn: "test.example.com"
+      hubAPI:
+        enable: true
+        nodeName: "hub-node"
+        nodeSelector:
+          "node": "hub"
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+              - matchExpressions:
+                - key: "node"
+                  operator: In
+                  values:
+                  - "hub"
+        tolerations:
+        - key: "hub"
+          operator: "Equal"
+          value: "true"
+          effect: "NoSchedule"
+    asserts:
+      - equal:
+          path: spec.template.spec.nodeName
+          value: "hub-node"
+        template: hub.yaml
+      - equal:
+          path: spec.template.spec.nodeSelector
+          value:
+            "node": "hub"
+        template: hub.yaml
+      - equal:
+          path: spec.template.spec.affinity
+          value:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: "node"
+                    operator: In
+                    values:
+                    - "hub"
+        template: hub.yaml
+      - equal:
+          path: spec.template.spec.tolerations
+          value:
+          - key: "hub"
+            operator: "Equal"
+            value: "true"
+            effect: "NoSchedule"
+        template: hub.yaml
+      - isKind:
+          of: Deployment
+        template: hub.yaml
+      - isAPIVersion:
+          of: apps/v1
+        template: hub.yaml
+  - it: check global node placement fallback
+    set:
+      global:
+        fqdn: "test.example.com"
+      placement:
+        nodeName: "global-fallback-node"
+        nodeSelector:
+          "tier": "global"
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+              - matchExpressions:
+                - key: "tier"
+                  operator: In
+                  values:
+                  - "global"
+        tolerations:
+        - key: "global"
+          operator: "Equal"
+          value: "true"
+          effect: "NoSchedule"
+    asserts:
+      - equal:
+          path: spec.template.spec.nodeName
+          value: "global-fallback-node"
+        template: server.yaml
+      - equal:
+          path: spec.template.spec.nodeSelector
+          value:
+            "tier": "global"
+        template: server.yaml
+      - equal:
+          path: spec.template.spec.affinity
+          value:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                - matchExpressions:
+                  - key: "tier"
+                    operator: In
+                    values:
+                    - "global"
+        template: server.yaml
+      - equal:
+          path: spec.template.spec.tolerations
+          value:
+          - key: "global"
+            operator: "Equal"
+            value: "true"
+            effect: "NoSchedule"
+        template: server.yaml
+      - equal:
+          path: spec.template.spec.nodeName
+          value: "global-fallback-node"
+        template: db.yaml
+      - equal:
+          path: spec.template.spec.nodeSelector
+          value:
+            "tier": "global"
+        template: db.yaml
+      - equal:
+          path: spec.template.spec.nodeName
+          value: "global-fallback-node"
+        template: tftp.yaml
+      - equal:
+          path: spec.template.spec.nodeSelector
+          value:
+            "tier": "global"
+        template: tftp.yaml
+  - it: check local override takes precedence over placement defaults
+    set:
+      global:
+        fqdn: "test.example.com"
+      placement:
+        nodeName: "default-node"
+        nodeSelector:
+          "tier": "default"
+        tolerations:
+        - key: "default"
+          operator: "Equal"
+          value: "true"
+          effect: "NoSchedule"
+      server:
+        nodeName: "server-override-node"
+        nodeSelector:
+          "tier": "server-only"
+        tolerations:
+        - key: "server"
+          operator: "Equal"
+          value: "true"
+          effect: "NoSchedule"
+    asserts:
+      # Server should use its own overrides
+      - equal:
+          path: spec.template.spec.nodeName
+          value: "server-override-node"
+        template: server.yaml
+      - equal:
+          path: spec.template.spec.nodeSelector
+          value:
+            "tier": "server-only"
+        template: server.yaml
+      - equal:
+          path: spec.template.spec.tolerations
+          value:
+          - key: "server"
+            operator: "Equal"
+            value: "true"
+            effect: "NoSchedule"
+        template: server.yaml
+      # DB should still use the placement defaults
+      - equal:
+          path: spec.template.spec.nodeName
+          value: "default-node"
+        template: db.yaml
+      - equal:
+          path: spec.template.spec.nodeSelector
+          value:
+            "tier": "default"
+        template: db.yaml
+      - equal:
+          path: spec.template.spec.tolerations
+          value:
+          - key: "default"
+            operator: "Equal"
+            value: "true"
+            effect: "NoSchedule"
+        template: db.yaml

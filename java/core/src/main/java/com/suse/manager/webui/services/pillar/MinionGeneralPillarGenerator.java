@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.Pillar;
+import com.redhat.rhn.domain.server.ServerFQDN;
 import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.AnsibleManager;
 
@@ -81,6 +82,8 @@ public class MinionGeneralPillarGenerator extends MinionPillarGeneratorBase {
 
         pillar.add("mgr_origin_server", ConfigDefaults.get().getJavaHostname());
         pillar.add("mgr_server_is_uyuni", ConfigDefaults.get().isUyuni());
+        pillar.add("primary_fqdn", Optional.ofNullable(minion.findPrimaryFqdn())
+                .map(ServerFQDN::getName).orElse(minion.getHostname()));
         pillar.add("machine_password", MachinePasswordUtils.machinePassword(minion));
 
         Map<String, Object> chanPillar = new HashMap<>();

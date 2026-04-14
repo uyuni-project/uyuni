@@ -1,6 +1,9 @@
 #!/bin/sh
 # TaskomaticDaemon start script
 . /etc/rhn/taskomatic.conf
+for conf in /etc/rhn/taskomatic.conf.d/*.conf; do
+    [ -f "$conf" ] && . "$conf"
+done
 
 RHN_MEM=`grep ^[[:blank:]]*taskomatic.java.maxmemory /etc/rhn/rhn.conf | sed -e "s/.*=[[:blank:]]*\([0-9]\+\)[[:blank:]]*/\1/"`
 if [ "x$RHN_MEM" != "x" ]; then

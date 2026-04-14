@@ -34,7 +34,7 @@ public class ProxyContainerConfigCreateGenerateFileMaps implements ProxyContaine
         context.getConfigMap().put("email", context.getEmail());
         context.getConfigMap().put("server_version", ConfigDefaults.get().getProductVersion());
         context.getConfigMap().put("proxy_fqdn", context.getProxyFqdn());
-        if (ConfigDefaults.get().isSsl()) {
+        if (context.getRootCaCert() != null) {
             context.getConfigMap().put("ca_crt", context.getRootCaCert());
         }
         String cobblerFqdn = Config.get().getString(ConfigDefaults.SERVER_HOSTNAME);
@@ -43,7 +43,8 @@ public class ProxyContainerConfigCreateGenerateFileMaps implements ProxyContaine
         // httpd.yaml
         Map<String, Object> httpdConfig = new HashMap<>();
         httpdConfig.put("system_id", context.getClientCertificate().asXml());
-        if (ConfigDefaults.get().isSsl()) {
+        if (context.getCertificate() != null &&
+                context.getProxyPair() != null && context.getProxyPair().getKey() != null) {
             httpdConfig.put("server_crt", context.getCertificate());
             httpdConfig.put("server_key", context.getProxyPair().getKey());
         }

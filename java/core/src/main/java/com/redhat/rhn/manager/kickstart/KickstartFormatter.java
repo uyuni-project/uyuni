@@ -93,9 +93,7 @@ public class KickstartFormatter {
         NEWLINE;
     private static final List<String> UPDATE_PKG_NAMES =
     List.of("pyOpenSSL", "rhnlib", "libxml2-python", "libxml2");
-    private static final List<String> FRESH_PKG_NAMES_RHEL8 =
-            List.of("rhn-client-tools", "dnf-plugin-spacewalk", "rhnlib", "spacewalk-koan");
-    private static final List<String> FRESH_PKG_NAMES_RHEL8_FOR_SALT = List.of("salt-minion");
+    private static final List<String> FRESH_PKG_NAMES_RHEL8 = List.of("venv-salt-minion");
     private static final String REMOTE_CMD =
         "mkdir -p /etc/sysconfig/rhn/allowed-actions/script" + NEWLINE +
         "touch /etc/sysconfig/rhn/allowed-actions/script/run";
@@ -120,7 +118,6 @@ public class KickstartFormatter {
 
     private static final String ISCRYPTED = "--iscrypted ";
 
-    private static final String REDHAT_MGMT_SERVER = "$redhat_management_server";
     public static final String STATIC_NETWORK_VAR = "static_network";
     public static final String USE_IPV6_GATEWAY = "use_ipv6_gateway";
     public static final String KS_DISTRO = "ks_distro";
@@ -144,7 +141,6 @@ public class KickstartFormatter {
     private final KickstartData ksdata;
     private final String ksHost;
     private final User user;
-    private KickstartSession session;
     private int postLogPostfix;
     private int preLogPostfix;
 
@@ -162,26 +158,11 @@ public class KickstartFormatter {
         this.preLogPostfix = 1;
     }
 
-    /**
-     * Constructor with KickstartSession.
-     * @param hostIn that is kickstarting from
-     * @param ksdataIn that is is to be 'formatted' for output
-     * @param sessionIn associated with the formatting.
-     */
-    public KickstartFormatter(String hostIn, KickstartData ksdataIn,
-            KickstartSession sessionIn) {
-        this(hostIn, ksdataIn);
-        this.session = sessionIn;
-    }
-
     public static List<String> getUpdatePkgNames() {
         return UPDATE_PKG_NAMES;
     }
     public static List<String> getFreshPkgNamesRhel8() {
         return FRESH_PKG_NAMES_RHEL8;
-    }
-    public static List<String> getFreshPkgNamesRhel8ForSalt() {
-        return FRESH_PKG_NAMES_RHEL8_FOR_SALT;
     }
 
     private void addLogBegin(StringBuilder buff, String logFile, String interpreter) {
@@ -528,19 +509,7 @@ public class KickstartFormatter {
             buf.append("xen" + NEWLINE);
         }
 
-        // packages necessary for rhel2.1
-        if (ConfigDefaults.get().getUserSelectedSaltInstallTypeLabels().contains(ksdata.getInstallType().getLabel())) {
-         // packages necessary for RHEL 6+ and Fedora (salt)
-            buf.append("venv-salt-minion" + NEWLINE);
-        }
-        else if (this.ksdata.isRhel7OrGreater() || this.ksdata.isFedora()) {
-            // packages necessary for RHEL 7 and Fedora (traditional)
-            buf.append("perl" + NEWLINE);
-            buf.append("wget" + NEWLINE);
-            buf.append("rhn-setup" + NEWLINE);
-            buf.append("rhn-check" + NEWLINE);
-            buf.append("rhn-client-tools" + NEWLINE);
-        }
+        buf.append("venv-salt-minion" + NEWLINE);
         return buf.toString();
     }
 
@@ -632,30 +601,6 @@ public class KickstartFormatter {
                     this.ksHost.indexOf(XMLRPC_HOST));
         }
 
-        String up2datehost = REDHAT_MGMT_SERVER;
-        //check if server going through Spacewalk Proxy,
-        //if so, register through proxy instead
-        if (this.session != null &&
-                this.session.getSystemRhnHost() != null &&
-                !this.session.getSystemRhnHost().equals("unknown")) {
-            up2datehost = this.session.getSystemRhnHost();
-        }
-
-        if (!ConfigDefaults.get().getUserSelectedSaltInstallTypeLabels().contains(ksdata.getInstallType().getLabel())) {
-            log.debug("adding perl -npe for /etc/sysconfig/rhn/up2date");
-            // both rhel 2 and rhel3/4 need the following
-            retval.append("perl -npe " +
-                    "'s|^(\\s*(noSSLS\\|s)erverURL\\s*=\\s*[^:]+://)[^/]*/|\\${1}" +
-                    up2datehost +
-                    "/|' -i /etc/sysconfig/rhn/up2date" + NEWLINE);
-
-            if (this.ksdata.getVerboseUp2date()) {
-                retval.append("[ -r /etc/sysconfig/rhn/up2date ] && " +
-                        "sed 's/debug=0/debug=1/' -i /etc/sysconfig/rhn/up2date" +
-                        NEWLINE);
-            }
-        }
-
         if (this.ksdata.getVerboseUp2date()) {
             retval.append("[ -r /etc/yum.conf ] && " +
                     "sed 's/debuglevel=2/debuglevel=5/' -i /etc/yum.conf" +
@@ -684,9 +629,7 @@ public class KickstartFormatter {
 
         addCobblerSnippet(retval, DEFAULT_MOTD);
 
-        if (ConfigDefaults.get().getUserSelectedSaltInstallTypeLabels().contains(ksdata.getInstallType().getLabel())) {
-            addCobblerSnippet(retval, REDHAT_REGISTER_USING_SALT_SNIPPET);
-        }
+        addCobblerSnippet(retval, REDHAT_REGISTER_USING_SALT_SNIPPET);
 
         retval.append("# end cobbler snippet" + NEWLINE);
 
@@ -759,7 +702,6 @@ public class KickstartFormatter {
     private String renderKeys() {
         StringBuilder retval = new StringBuilder();
 
-        HashSet<CryptoKey> sslKeys = new HashSet<>();
         HashSet<CryptoKey> gpgKeys = new HashSet<>();
 
         // setup keys for rendering
@@ -768,9 +710,6 @@ public class KickstartFormatter {
                 if (tmpKey.isGPG()) {
                     gpgKeys.add(tmpKey);
                 }
-                else if (tmpKey.isSSL()) {
-                    sslKeys.add(tmpKey);
-                }
             }
         }
 
@@ -778,10 +717,6 @@ public class KickstartFormatter {
             retval.append(renderGpgKeys(gpgKeys));
         }
 
-        if (!ConfigDefaults.get().getUserSelectedSaltInstallTypeLabels()
-                .contains(ksdata.getInstallType().getLabel()) && !sslKeys.isEmpty()) {
-            retval.append(renderSslKeys(sslKeys));
-        }
         return retval.toString();
     }
 
@@ -800,28 +735,6 @@ public class KickstartFormatter {
             retval.append("rpm --import /tmp/gpg-key-" + peg + NEWLINE);
             peg++;
         }
-        return retval.toString();
-    }
-
-    /**
-     * Helper method to render ssl keys for kickstart file
-     * @param setIn of sll keys for this kickstart
-     * @return rendered sll key string for kickstart
-     */
-    private String renderSslKeys(HashSet<CryptoKey> setIn) {
-        StringBuilder retval = new StringBuilder();
-        int peg = 1;
-        for (CryptoKey myKey : setIn) {
-            retval.append("cat > /tmp/ssl-key-" + peg + " <<'EOF'" + NEWLINE);
-            retval.append(myKey.getKeyString() + NEWLINE);
-            retval.append(NEWLINE);
-            retval.append("EOF\n# ssl-key" + peg + NEWLINE);
-            peg++;
-        }
-
-        retval.append("cat /tmp/ssl-key-* > /usr/share/rhn/RHN-ORG-TRUSTED-SSL-CERT" + NEWLINE);
-        retval.append("sed 's/RHNS-CA-CERT/RHN-ORG-TRUSTED-SSL-CERT/g' -i /etc/sysconfig/rhn/up2date" + NEWLINE);
-
         return retval.toString();
     }
 

@@ -267,9 +267,11 @@ export const SSMProductMigration: FC<Props> = ({
         <MigrationConfirmScheduleForm
           systemsData={systemsData}
           actionChains={actionChains ?? []}
+          migrationSource={migrationSource}
           migrationTarget={selectedTarget!.targetProduct}
           migrationChannels={selectedChannelTree!}
           allowVendorChange={allowVendorChange}
+          hasDryRunCapability={selectedTarget!.hasDryRunCapability}
           onBack={() => setMigrationStep(MigrationStep.ChannelsSelection)}
           onConfirm={performMigration}
         />

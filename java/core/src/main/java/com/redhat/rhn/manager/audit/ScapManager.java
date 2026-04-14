@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LLC
  * Copyright (c) 2012--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -15,18 +16,19 @@
 package com.redhat.rhn.manager.audit;
 
 import com.redhat.rhn.common.RhnRuntimeException;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.CallableMode;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
-import com.redhat.rhn.common.util.DateFormatTransformer;
 import com.redhat.rhn.domain.action.scap.ScapAction;
 import com.redhat.rhn.domain.audit.ScapFactory;
 import com.redhat.rhn.domain.audit.XccdfBenchmark;
 import com.redhat.rhn.domain.audit.XccdfIdent;
 import com.redhat.rhn.domain.audit.XccdfProfile;
+import com.redhat.rhn.domain.audit.XccdfRuleFix;
 import com.redhat.rhn.domain.audit.XccdfRuleResult;
 import com.redhat.rhn.domain.audit.XccdfRuleResultType;
 import com.redhat.rhn.domain.audit.XccdfTestResult;
@@ -39,8 +41,10 @@ import com.redhat.rhn.frontend.dto.XccdfTestResultDto;
 import com.redhat.rhn.manager.BaseManager;
 import com.redhat.rhn.manager.action.ActionManager;
 import com.redhat.rhn.manager.audit.scap.file.ScapFileManager;
+import com.redhat.rhn.manager.audit.scap.xml.BenchMark;
 import com.redhat.rhn.manager.audit.scap.xml.BenchmarkResume;
 import com.redhat.rhn.manager.audit.scap.xml.Profile;
+import com.redhat.rhn.manager.audit.scap.xml.Rule;
 import com.redhat.rhn.manager.audit.scap.xml.TestResult;
 import com.redhat.rhn.manager.audit.scap.xml.TestResultRuleResult;
 import com.redhat.rhn.manager.audit.scap.xml.TestResultRuleResultIdent;
@@ -51,9 +55,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.mutable.MutableBoolean;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.simpleframework.xml.core.Persister;
-import org.simpleframework.xml.transform.RegistryMatcher;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -63,18 +67,27 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.sql.Types;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.xml.XMLConstants;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
 
 /**
  * ScapManager
@@ -83,10 +96,12 @@ public class ScapManager extends BaseManager {
 
     private static final String SCAP_QUERIES = "scap_queries";
 
-    private static Logger log = LogManager.getLogger(ScapManager.class);
+    private static final Logger LOGGER = LogManager.getLogger(ScapManager.class);
 
     private static final List<String> SEARCH_TERM_PRECEDENCE = Arrays.asList(
             "slabel", "start", "end", "result");
+
+    private static final JAXBContext JAXB_CONTEXT = initializeJaxbContext();
 
     /**
      * Returns the given system is scap enabled.
@@ -465,13 +480,6 @@ public class ScapManager extends BaseManager {
         try (OutputStream resumeOut = new FileOutputStream(output)) {
             StreamResult out = new StreamResult(resumeOut);
 
-            // Prevent XXE Attack: Ensure using the correct factory class to create TrasformerFactory instance
-            // This will instruct Java to use to version which supports using ACCESS_EXTERNAL_DTD argument,
-            // using com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl
-            // instead of org.apache.xalan.processor.TransformerFactoryImpl
-            System.setProperty("javax.xml.transform.TransformerFactory",
-                    "com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl");
-
             TransformerFactory factory = TransformerFactory.newInstance();
 
             //disable access to external entities in xml parsing
@@ -494,7 +502,68 @@ public class ScapManager extends BaseManager {
             Files.delete(output.toPath());
         }
     }
+    /**
+     * Evaluate the XCCDF results report and store the results in the db.
+     * Uses in-memory transformation to avoid disk I/O overhead.
+     * @param xccdfXml the XCCDF file
+     * @return the {@link BenchMark} result
+     * @throws IOException if the input files could not be read
+     */
+    public static BenchMark getProfileList(File xccdfXml) throws IOException {
+        File xsltFile = new File(ConfigDefaults.get().getScapXccdfProfilesXsl());
+        try (InputStream xccdfStream = new FileInputStream(xccdfXml);
+            InputStream xsltStream = new FileInputStream(xsltFile)) {
+            ByteArrayOutputStream memoryOut = new ByteArrayOutputStream();
+            applyXsltTransformation(xccdfStream, xsltStream, memoryOut);
+            try (InputStream resultStream = new ByteArrayInputStream(memoryOut.toByteArray())) {
+                XMLInputFactory inputFactory = XMLInputFactory.newFactory();
+                inputFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
+                inputFactory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
+                XMLStreamReader streamReader = inputFactory.createXMLStreamReader(resultStream);
+                BenchMark benchmark;
+                try {
+                    benchmark = (BenchMark) JAXB_CONTEXT.createUnmarshaller().unmarshal(streamReader);
+                }
+                finally {
+                    streamReader.close();
+                }
+                List<Profile> profiles = Optional.ofNullable(benchmark.getProfiles())
+                        .orElse(Collections.emptyList());
+                if (profiles.isEmpty()) {
+                    LOGGER.error("Scap data stream misses profiles");
+                    throw new RuntimeException("Scap data stream misses profiles");
+                }
+                return benchmark;
+            }
+        }
+        catch (Exception e) {
+            LOGGER.error("Scap xccdf eval failed", e);
+            throw new RuntimeException("Scap xccdf eval failed", e);
+        }
+    }
 
+    /**
+     * Apply XSLT transformation to the given XML input stream.
+     * @param xmlIn XML input stream
+     * @param xsltIn XSLT input stream
+     * @param out Output stream
+     */
+    private static void applyXsltTransformation(InputStream xmlIn, InputStream xsltIn, OutputStream out) {
+        try {
+            TransformerFactory factory = TransformerFactory.newInstance();
+            factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+            factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+            factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
+            StreamSource xmlSource = new StreamSource(xmlIn);
+            StreamSource xsltSource = new StreamSource(xsltIn);
+            StreamResult result = new StreamResult(out);
+            Transformer transformer = factory.newTransformer(xsltSource);
+            transformer.transform(xmlSource, result);
+        }
+        catch (TransformerException | IllegalArgumentException e) {
+            throw new RuntimeException("XSL transform failed or insecure factory configuration", e);
+        }
+    }
     /**
      * Evaluate the SCAP results report and store the results in the db.
      * @param server the server
@@ -509,15 +578,27 @@ public class ScapManager extends BaseManager {
                                                   InputStream resumeXml) {
         ScapFactory.clearTestResult(server.getId(), action.getId());
         try {
-            BenchmarkResume resume = createXmlPersister()
-                    .read(BenchmarkResume.class, resumeXml);
-            Profile profile = Optional.ofNullable(resume.getProfile()).orElse(
-                    new Profile("None",
-                            "No profile selected. Using defaults.",
-                            ""));
+            XMLInputFactory inputFactory = XMLInputFactory.newFactory();
+
+            // Disable external entities to prevent XXE
+            inputFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
+            inputFactory.setProperty(XMLInputFactory.SUPPORT_DTD, false);
+
+            XMLStreamReader streamReader = inputFactory.createXMLStreamReader(resumeXml);
+            BenchmarkResume resume;
+
+            try {
+                resume = (BenchmarkResume) JAXB_CONTEXT.createUnmarshaller().unmarshal(streamReader);
+            }
+            finally {
+                streamReader.close();
+            }
+
+            Profile profile = Optional.ofNullable(resume.getProfile())
+                .orElse(new Profile("None", "No profile selected. Using defaults.", ""));
             TestResult testResults = resume.getTestResult();
             if (testResults == null) {
-                log.error("Scap report misses profile or testresult element");
+                LOGGER.error("Scap report misses profile or testresult element");
                 throw new RhnRuntimeException(
                         "Scap report misses profile or testresult element");
             }
@@ -535,7 +616,6 @@ public class ScapManager extends BaseManager {
             result.setProfile(xccdfProfile);
             result.setStartTime(testResults.getStartTime());
             result.setEndTime(testResults.getEndTime());
-
             processRuleResult(result, testResults.getPass(), "pass", truncated);
             processRuleResult(result, testResults.getFail(), "fail", truncated);
             processRuleResult(result, testResults.getError(), "error", truncated);
@@ -549,7 +629,6 @@ public class ScapManager extends BaseManager {
             processRuleResult(result, testResults.getInformational(),
                     "informational", truncated);
             processRuleResult(result, testResults.getFixed(), "fixed", truncated);
-
             String errs = errors;
             if (returnCode != 0) {
                 errs += String.format("xccdf_eval: oscap tool returned %d%n", returnCode);
@@ -559,10 +638,42 @@ public class ScapManager extends BaseManager {
                     "\nSome text strings were truncated when saving to the database.";
             }
             result.setErrors(HibernateFactory.stringToByteArray(errs));
-            return new ScapFactory().save(result);
+            new ScapFactory().save(result);
+
+            // Process rule remediations - only save if content changed
+            if (resume.getRules() == null || resume.getRules().isEmpty()) {
+                return result;
+            }
+
+            List<Rule> rulesWithRemediations = resume.getRules().stream()
+                .filter(rule -> rule.getRemediation() != null)
+                .collect(Collectors.toList());
+
+            if (rulesWithRemediations.isEmpty()) {
+                return result;
+            }
+
+            // Bulk fetch all existing remediations for this benchmark in a single query
+            Map<String, XccdfRuleFix> existingFixes =
+                ScapFactory.lookupRuleRemediationsByBenchmark(resume.getId());
+
+            // Process each rule and only save if content changed
+            rulesWithRemediations.forEach(rule -> {
+                XccdfRuleFix fix = existingFixes.computeIfAbsent(
+                    rule.getId(),
+                    id -> new XccdfRuleFix(resume.getId(), id, null)
+                );
+
+                if (!Objects.equals(fix.getRemediation(), rule.getRemediation())) {
+                    fix.setRemediation(rule.getRemediation());
+                    ScapFactory.saveXccfRuleFix(fix);
+                }
+            });
+
+            return result;
         }
         catch (Exception e) {
-            log.error("Scap xccdf eval failed", e);
+            LOGGER.error("Scap xccdf eval failed", e);
             throw new RhnRuntimeException("Scap xccdf eval failed", e);
         }
     }
@@ -637,12 +748,6 @@ public class ScapManager extends BaseManager {
                                         system));
     }
 
-    private static Persister createXmlPersister() {
-        RegistryMatcher registryMatcher = new RegistryMatcher();
-        registryMatcher.bind(Date.class, DateFormatTransformer.createXmlDateTransformer());
-        return new Persister(registryMatcher);
-    }
-
     private static String truncate(String string, int maxLen, MutableBoolean truncated) {
         if (string != null && string.length() > maxLen) {
             truncated.setValue(true);
@@ -651,4 +756,12 @@ public class ScapManager extends BaseManager {
         return string;
     }
 
+    private static JAXBContext initializeJaxbContext() {
+        try {
+            return JAXBContext.newInstance(BenchmarkResume.class, BenchMark.class);
+        }
+        catch (JAXBException e) {
+            throw new RhnRuntimeException("Unable to initialize JAXB context", e);
+        }
+    }
 }

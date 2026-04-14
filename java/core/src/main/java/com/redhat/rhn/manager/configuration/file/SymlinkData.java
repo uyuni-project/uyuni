@@ -114,6 +114,6 @@ public class SymlinkData extends DirectoryData {
        if (!super.matchesRevision(cRevision)) {
            return Boolean.FALSE;
        }
-       return getTargetPath().equals(cRevision.getConfigInfo().getTargetFileName());
+       return getTargetPath().equals(cRevision.getConfigInfo().getTargetFileName().getPath());
    }
 }

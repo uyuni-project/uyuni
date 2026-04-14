@@ -73,7 +73,11 @@ CREATE TABLE rhnUserInfo
                                 DEFAULT (',') NOT NULL
                                 CONSTRAINT rhn_user_info_csv_ck
                                     CHECK (csv_separator in (',',';')),
-    web_theme               VARCHAR(32)
+    web_theme               VARCHAR(32),
+    beta_features_enabled   CHAR(1)
+                                DEFAULT ('N') NOT NULL
+                                CONSTRAINT rhn_user_info_beta_ck
+                                    CHECK (beta_features_enabled in ('Y', 'N'))
 )
 
 ;

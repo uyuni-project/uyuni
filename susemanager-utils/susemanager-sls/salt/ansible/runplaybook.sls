@@ -13,7 +13,7 @@
 #
 
 run_ansible_playbook:
-  mgrcompat.module_run:
+  module.run:
     - name: ansible.playbooks
     - playbook: {{ pillar["playbook_path"] }}
     - rundir: {{ pillar["rundir"] }}

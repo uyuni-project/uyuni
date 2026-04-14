@@ -74,7 +74,7 @@ public class ErrataAdvisoryMapFactory extends HibernateFactory {
      * Clear all repositories from the database.
      */
     public void clearErrataAdvisoryMap() {
-        getSession().createQuery("DELETE FROM ErrataAdvisoryMap").executeUpdate();
+        getSession().createMutationQuery("DELETE FROM ErrataAdvisoryMap").executeUpdate();
     }
 }
 

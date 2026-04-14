@@ -19,14 +19,17 @@ import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.stream.IntStream;
 
-import io.prometheus.client.Collector;
-import io.prometheus.client.CounterMetricFamily;
-import io.prometheus.client.GaugeMetricFamily;
+import io.prometheus.metrics.model.registry.MultiCollector;
+import io.prometheus.metrics.model.snapshots.CounterSnapshot;
+import io.prometheus.metrics.model.snapshots.GaugeSnapshot;
+import io.prometheus.metrics.model.snapshots.Labels;
+import io.prometheus.metrics.model.snapshots.MetricSnapshot;
+import io.prometheus.metrics.model.snapshots.MetricSnapshots;
 
 /**
  * Collector for a List of ThreadPool.
  */
-public class ThreadPoolListCollector extends Collector {
+public class ThreadPoolListCollector implements MultiCollector {
 
     private final List<ThreadPoolExecutor> pool;
     private final String poolId;
@@ -42,33 +45,49 @@ public class ThreadPoolListCollector extends Collector {
     }
 
     @Override
-    public List<MetricFamilySamples> collect() {
-        List<MetricFamilySamples> out = new ArrayList<>();
+    public MetricSnapshots collect() {
+        List<MetricSnapshot> out = new ArrayList<>();
 
-        GaugeMetricFamily poolThreads = new GaugeMetricFamily(poolId + "_" + "thread_pool_size",
-                "Number of threads in the pool", List.of("queue"));
-        IntStream.range(0, this.pool.size()).forEach(i -> poolThreads.addMetric(List.of(String.format("%d", i)),
-                this.pool.get(i).getPoolSize()));
-        out.add(poolThreads);
+        GaugeSnapshot.Builder poolThreadsBuilder = GaugeSnapshot.builder()
+                .name(poolId + "_" + "thread_pool_size")
+                .help("Number of threads in the pool");
+        IntStream.range(0, this.pool.size()).forEach(i -> poolThreadsBuilder.dataPoint(
+                GaugeSnapshot.GaugeDataPointSnapshot.builder()
+                        .labels(Labels.of("queue", String.format("%d", i)))
+                        .value(this.pool.get(i).getPoolSize())
+                        .build()));
+        out.add(poolThreadsBuilder.build());
 
-        GaugeMetricFamily activeThreads = new GaugeMetricFamily(poolId + "_" + "thread_pool_active_threads",
-                "Number of active threads", List.of("queue"));
-        IntStream.range(0, this.pool.size()).forEach(i -> activeThreads.addMetric(List.of(String.format("%d", i)),
-                this.pool.get(i).getActiveCount()));
-        out.add(activeThreads);
+        GaugeSnapshot.Builder activeThreadsBuilder = GaugeSnapshot.builder()
+                .name(poolId + "_" + "thread_pool_active_threads")
+                .help("Number of active threads");
+        IntStream.range(0, this.pool.size()).forEach(i -> activeThreadsBuilder.dataPoint(
+                GaugeSnapshot.GaugeDataPointSnapshot.builder()
+                        .labels(Labels.of("queue", String.format("%d", i)))
+                        .value(this.pool.get(i).getActiveCount())
+                        .build()));
+        out.add(activeThreadsBuilder.build());
 
-        CounterMetricFamily tasks = new CounterMetricFamily(poolId + "_" + "thread_pool_tasks_total",
-                "Tasks count", List.of("queue"));
-        IntStream.range(0, this.pool.size()).forEach(i -> tasks.addMetric(List.of(String.format("%d", i)),
-                this.pool.get(i).getTaskCount()));
-        out.add(tasks);
+        CounterSnapshot.Builder tasksBuilder = CounterSnapshot.builder()
+                .name(poolId + "_" + "thread_pool_tasks")
+                .help("Tasks count");
+        IntStream.range(0, this.pool.size()).forEach(i -> tasksBuilder.dataPoint(
+                CounterSnapshot.CounterDataPointSnapshot.builder()
+                        .labels(Labels.of("queue", String.format("%d", i)))
+                        .value(this.pool.get(i).getTaskCount())
+                        .build()));
+        out.add(tasksBuilder.build());
 
-        CounterMetricFamily completed = new CounterMetricFamily(poolId + "_" + "thread_pool_completed_tasks_total",
-                "Completed tasks count", List.of("queue"));
-        IntStream.range(0, this.pool.size()).forEach(i -> completed.addMetric(List.of(String.format("%d", i)),
-                this.pool.get(i).getCompletedTaskCount()));
-        out.add(completed);
+        CounterSnapshot.Builder completedBuilder = CounterSnapshot.builder()
+                .name(poolId + "_" + "thread_pool_completed_tasks")
+                .help("Completed tasks count");
+        IntStream.range(0, this.pool.size()).forEach(i -> completedBuilder.dataPoint(
+                CounterSnapshot.CounterDataPointSnapshot.builder()
+                        .labels(Labels.of("queue", String.format("%d", i)))
+                        .value(this.pool.get(i).getCompletedTaskCount())
+                        .build()));
+        out.add(completedBuilder.build());
 
-        return out;
+        return new MetricSnapshots(out);
     }
 }

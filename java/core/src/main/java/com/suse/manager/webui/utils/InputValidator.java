@@ -34,8 +34,8 @@ public enum InputValidator {
      */
     INSTANCE;
 
-    // Allow English letters, numbers, '.', '\', '_' and '-'
-    private static final Pattern USERNAME = Pattern.compile("^[a-zA-Z0-9\\.\\\\_-]*$");
+    // Allow English letters, numbers, '.', '\', '_', '-' and '@'
+    private static final Pattern USERNAME = Pattern.compile("^[a-zA-Z0-9\\.\\\\_\\-\\@]*$");
 
     /**
      * Validate input as sent from the minion bootstrapping UI.
@@ -51,7 +51,7 @@ public enum InputValidator {
         String user = params.getUser();
         if (StringUtils.isEmpty(user) || !USERNAME.matcher(user).matches()) {
             errors.add("Non-valid user. Allowed characters are: letters, numbers, '.'," +
-                    " '\\', '-' and '_'");
+                    " '\\', '-', '_' and '@'");
         }
 
         boolean invalidPort = params.getPort()

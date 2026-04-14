@@ -11,7 +11,7 @@
 package com.redhat.rhn.common.hibernate;
 
 
-import com.redhat.rhn.domain.test.TestEntity;
+import com.redhat.rhn.domain.TestEntity;
 
 import java.util.ArrayList;
 import java.util.List;

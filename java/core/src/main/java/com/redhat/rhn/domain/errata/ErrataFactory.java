@@ -264,8 +264,8 @@ public class ErrataFactory extends HibernateFactory {
                 packagesToPush.add(pack);
             }
 
-            Errata e = addErrataPackagesToChannel(errata, chan, user, packagesToPush);
-            toReturn.add(e);
+            addErrataPackagesToChannel(errata, chan, user, packagesToPush);
+            toReturn.add(errata);
         }
         if (performPostActions) {
             ChannelManager.refreshWithNewestPackages(chan, "java::addErrataPackagesToChannel");
@@ -281,20 +281,18 @@ public class ErrataFactory extends HibernateFactory {
      * @param chan channel to add it to
      * @param user the user doing the adding
      * @param packages the packages to add
-     * @return the added errata
      */
-    public static Errata addToChannel(Errata errata, Channel chan, User user,
+    public static void addToChannel(Errata errata, Channel chan, User user,
                                       Set<Package> packages) {
         errata.addChannel(chan);
-        errata = addErrataPackagesToChannel(errata, chan, user, packages);
+        addErrataPackagesToChannel(errata, chan, user, packages);
         ChannelManager.refreshWithNewestPackages(chan, "java::addErrataPackagesToChannel");
-        return errata;
     }
 
     /**
      * Private helper method that pushes errata packages to a channel
      */
-    private static Errata addErrataPackagesToChannel(Errata errata,
+    private static void addErrataPackagesToChannel(Errata errata,
                                                      Channel chan, User user, Set<Package> packages) {
         // Much quicker to push all packages at once
         List<Long> pids = new ArrayList<>();
@@ -319,8 +317,6 @@ public class ErrataFactory extends HibernateFactory {
         ChannelFactory.save(chan);
 
         ErrataCacheManager.insertCacheForChannelErrataAsync(List.of(chan.getId()), errata);
-
-        return errata;
     }
 
     /**

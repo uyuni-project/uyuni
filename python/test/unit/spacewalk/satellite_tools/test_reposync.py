@@ -534,7 +534,13 @@ class RepoSyncTest(unittest.TestCase):
                 "epoch": "e2",
             },
         ]
-        checksum = {"epoch": None, "checksum_type": None, "checksum": None, "id": None}
+        checksum = {
+            "epoch": None,
+            "checksum_type": None,
+            "checksum": None,
+            "id": None,
+            "org_id": 1,
+        }
 
         _mock_rhnsql(self.reposync, checksum)
         # pylint: disable-next=protected-access
@@ -567,6 +573,7 @@ class RepoSyncTest(unittest.TestCase):
             "checksum_type": "md5",
             "checksum": "12345",
             "id": "cs_package_id",
+            "org_id": 1,
         }
 
         _mock_rhnsql(self.reposync, checksum)

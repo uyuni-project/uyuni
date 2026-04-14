@@ -1,9 +1,9 @@
 {%- if grains['osrelease']|int == 6 %}
 enable_ca_store:
   cmd.run:
-    - name: /usr/bin/update-ca-trust enable
+    - name: command -p update-ca-trust enable
     - runas: root
-    - unless: "/usr/bin/update-ca-trust check | /usr/bin/grep \"PEM/JAVA Status: ENABLED\""
+    - unless: "command -p update-ca-trust check | command -p grep \"PEM/JAVA Status: ENABLED\""
 {%- endif %}
 
 mgr_ca_cert:
@@ -18,7 +18,7 @@ mgr_ca_cert:
 
 update-ca-certificates:
   cmd.run:
-    - name: /usr/bin/update-ca-trust extract
+    - name: command -p update-ca-trust extract
     - runas: root
     - onchanges:
       - file: mgr_ca_cert

@@ -86,10 +86,4 @@ public class KickstartRawData extends KickstartData {
         return copied;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public String getFileData(String host,
-            KickstartSession session) {
-        return getData();
-    }
 }

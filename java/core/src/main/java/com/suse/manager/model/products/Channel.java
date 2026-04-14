@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013 SUSE LLC
+ * Copyright (c) 2013--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 
 package com.suse.manager.model.products;
@@ -18,7 +14,6 @@ package com.suse.manager.model.products;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.simpleframework.xml.Attribute;
 
 /**
  * A software Channel in a Product.
@@ -31,14 +26,11 @@ public class Channel {
     public static final String STATUS_NOT_PROVIDED = ".";
 
     /** The label. */
-    @Attribute
     private String label;
 
     /** The status. */
-    @Attribute
     private String status;
 
-    @Attribute
     private boolean installerUpdates;
 
     /**

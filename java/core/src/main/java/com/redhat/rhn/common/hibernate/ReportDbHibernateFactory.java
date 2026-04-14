@@ -20,7 +20,6 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 
-import org.apache.commons.collections.ListUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -36,7 +35,6 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.sql.Blob;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -402,61 +400,6 @@ public class ReportDbHibernateFactory {
     protected void executeCallableMode(String name, String mode, Map<String, Object> params) {
         CallableMode m = ModeFactory.getCallableMode(name, mode);
         m.execute(params, new HashMap<>());
-    }
-
-    /**
-     * Executes a 'lookup' query to retrieve data from the database given a list of ids.
-     * The query will be execute in batches of LIST_BATCH_MAX_SIZE ids each.
-     * @param <T> the type of the returned objects
-     * @param <ID>
-     * @param ids the ids to search for
-     * @param queryName the name of the query to be executed
-     * @param idsParameterName the name of the parameter to match the ids
-     * @return a list of the objects found
-     */
-    protected <T, ID> List<T> findByIds(List<ID> ids, String queryName, String idsParameterName) {
-        return findByIds(ids, queryName, idsParameterName, new HashMap<>());
-    }
-
-    /**
-     * Executes an 'update' query to the database given a list of parameters.
-     * The query will be executed in batches of LIST_BATCH_MAX_SIZE parameters each.
-     * @param <E> the type of the list parameters
-     * @param list the list of parameters to search for
-     * @param queryName the name of the query to be executed
-     * @param parameterName the name of the parameter to match the parameters in the list
-     * @return the count of affected rows
-     */
-    @SuppressWarnings("unchecked")
-    protected <E> int udpateByIds(List<E> list, String queryName, String parameterName,
-            Map<String, Object> parameters) {
-        Query<Integer> query = getSession().getNamedQuery(queryName);
-
-        parameters.entrySet().stream().forEach(entry -> query.setParameter(entry.getKey(), entry.getValue()));
-
-        return splitAndExecuteQuery(list, parameterName, query, query::executeUpdate, 0, Integer::sum);
-    }
-
-    /**
-     * Executes a 'lookup' query to retrieve data from the database given a list of ids.
-     * The query will be execute in batches of LIST_BATCH_MAX_SIZE ids each.
-     * @param <T> the type of the returned objects
-     * @param <ID> the type of the ids
-     * @param ids the ids to search for
-     * @param queryName the name of the query to be executed
-     * @param idsParameterName the name of the parameter to match the ids
-     * @param parameters extra parameters to include in the query
-     * @return a list of the objects found
-     */
-    @SuppressWarnings("unchecked")
-    protected <T, ID> List<T> findByIds(List<ID> ids, String queryName,
-            String idsParameterName, Map<String, Object> parameters) {
-        Query<T> query = getSession().getNamedQuery(queryName);
-
-        parameters.entrySet().stream().forEach(entry -> query.setParameter(entry.getKey(), entry.getValue()));
-
-        return splitAndExecuteQuery(ids, idsParameterName, query, query::getResultList,
-                new ArrayList<T>(), ListUtils::union);
     }
 
     /**

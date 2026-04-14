@@ -1,7 +1,8 @@
-# Copyright (c) 2022-2025 SUSE LLC
+# Copyright (c) 2022-2026 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @slemicro54_minion
+@slemicro55_minion
 Feature: Migrate a SLE Micro 5.4 Salt minion to SLE Micro 5.5
 
   Scenario: Log in as admin user

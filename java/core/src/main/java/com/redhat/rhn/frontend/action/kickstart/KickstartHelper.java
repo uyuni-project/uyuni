@@ -21,7 +21,6 @@ import com.redhat.rhn.common.util.StringUtil;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
-import com.redhat.rhn.domain.kickstart.RepoInfo;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.user.User;
@@ -42,11 +41,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -370,44 +367,7 @@ public class KickstartHelper {
             // check on  a rawdata this is the place to fix that
             return true;
         }
-        return (!checkAutoKickstart || hasKickstartPackage(ksdata, user)) && hasAppStream(ksdata);
-    }
-
-    private boolean hasAppStream(KickstartData ksdata) {
-        if (!ksdata.isRhel8()) {
-            return true;
-        }
-
-        // is AppStream "addon" enabled?
-        for (RepoInfo repo : ksdata.getRepoInfos()) {
-            if (repo.getName().equals("AppStream")) {
-                return true;
-            }
-        }
-
-        // does a child channel contain needed packages?
-        Channel channel = ksdata.getChannel();
-        // copy child channel set otherwise you'd modify it as an unwanted side effect
-        Set<Channel> channelsToCheck = new HashSet<>(ksdata.getChildChannels());
-        channelsToCheck.add(channel);
-        List<String> packagesToLook = KickstartFormatter.getFreshPkgNamesRhel8();
-        if (ksdata.isUserSelectedSaltInstallType()) {
-            packagesToLook =  KickstartFormatter.getFreshPkgNamesRhel8ForSalt();
-        }
-        for (String pkgName : packagesToLook) {
-            boolean found = false;
-            for (Channel current : channelsToCheck) {
-                Long pid = ChannelManager.getLatestPackageEqual(current.getId(), pkgName);
-                if (pid != null) {
-                    found = true;
-                    break;
-                }
-            }
-            if (!found) {
-                return false;
-            }
-        }
-        return true;
+        return !checkAutoKickstart || hasKickstartPackage(ksdata, user);
     }
 
     private boolean hasKickstartPackage(KickstartData ksdata, User user) {
@@ -467,12 +427,7 @@ public class KickstartHelper {
         //First create a list of all the packages needed
         List<String> packages = new ArrayList<>();
         if (ksdata.isRhel8()) {
-            if (ksdata.isUserSelectedSaltInstallType()) {
-                packages.addAll(KickstartFormatter.getFreshPkgNamesRhel8ForSalt());
-            }
-            else {
-                packages.addAll(KickstartFormatter.getFreshPkgNamesRhel8());
-            }
+            packages.addAll(KickstartFormatter.getFreshPkgNamesRhel8());
         }
         else {
             packages.addAll(KickstartFormatter.getUpdatePkgNames());

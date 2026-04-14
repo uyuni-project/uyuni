@@ -22,9 +22,12 @@ CREATE TABLE suseOVALPlatformVulnerable
     platform_id          NUMERIC NOT NULL
                             REFERENCES suseOVALPlatform (id)
                             ON DELETE CASCADE,
+    product_os_id        NUMERIC NOT NULL
+                            REFERENCES suseOVALOsProduct (id)
+                            ON DELETE CASCADE,
     cve_id               NUMERIC NOT NULL
                             REFERENCES rhnCve (id),
-                         CONSTRAINT platform_cve_id_uq UNIQUE (platform_id, cve_id)
+                         CONSTRAINT platform_prod_cve_id_uq UNIQUE (platform_id, product_os_id, cve_id)
 );
 
 CREATE INDEX suse_oval_plat_vuln_plat_id_idx ON suseOVALPlatformVulnerable(platform_id);

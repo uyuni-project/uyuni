@@ -65,7 +65,7 @@ public class PaygProductFactory extends HibernateFactory {
         Session session = getSession();
 
         // First delete all the existing products
-        session.createQuery("DELETE FROM PaygCredentialsProduct AS p WHERE p.credentialsId = :credsId")
+        session.createMutationQuery("DELETE FROM PaygCredentialsProduct AS p WHERE p.credentialsId = :credsId")
                 .setParameter("credsId", credentials.getId())
                 .executeUpdate();
 

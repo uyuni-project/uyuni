@@ -74,30 +74,29 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
         fqdns.add(context.getProxyFqdn());
 
         //config.yaml
-        if (ConfigDefaults.get().isSsl()) {
-            SSLCertPair proxyPair = context.getProxyCertKey();
-            String rootCaCert = context.getRootCA();
-            if (proxyPair == null || !proxyPair.isComplete()) {
-                proxyPair = context.getCertManager().generateCertificate(
-                        context.getCaPair(),
-                        context.getCaPassword(),
-                        context.getCertData()
-                );
-                rootCaCert = context.getCaPair().getCertificate();
-            }
+        SSLCertPair proxyPair = context.getProxyCertKey();
+        String rootCaCert = context.getRootCA();
+        if (ConfigDefaults.get().isSsl() && (proxyPair == null || !proxyPair.isComplete())) {
+            proxyPair = context.getCertManager().generateCertificate(
+                    context.getCaPair(),
+                    context.getCaPassword(),
+                    context.getCertData()
+            );
+            rootCaCert = context.getCaPair().getCertificate();
+        }
+        context.setProxyPair(proxyPair);
+        context.setRootCaCert(rootCaCert);
 
-            context.setProxyPair(proxyPair);
-            context.setRootCaCert(rootCaCert);
+        SSLCertPair proxyCertKey = context.getProxyCertKey();
+        if (proxyCertKey != null && proxyCertKey.getCertificate() != null) {
+            // Get the cnames from the certificate using openssl
+            fqdns.addAll(context.getCertManager().getNamesFromSslCert(proxyCertKey.getCertificate()));
+        }
+        else if (context.getCertData() != null) {
+            fqdns.addAll(context.getCertData().getAllCnames());
+        }
 
-            SSLCertPair proxyCertKey = context.getProxyCertKey();
-            if (proxyCertKey != null && proxyCertKey.getCertificate() != null) {
-                // Get the cnames from the certificate using openssl
-                fqdns.addAll(context.getCertManager().getNamesFromSslCert(proxyCertKey.getCertificate()));
-            }
-            else {
-                fqdns.addAll(context.getCertData().getAllCnames());
-            }
-
+        if (rootCaCert != null && proxyPair != null) {
             // Check the SSL files using mgr-ssl-cert-setup
             try {
                 context.setCertificate(saltApi.checkSSLCert(rootCaCert, proxyPair,
@@ -106,7 +105,6 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
             catch (IllegalArgumentException err) {
                 throw new RhnRuntimeException("Certificate check failure: " + err.getMessage());
             }
-
         }
 
         Server proxySystem = getOrCreateProxySystem(

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 SUSE LLC
+ * Copyright (c) 2017--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,29 +7,31 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.redhat.rhn.manager.audit.scap.xml;
 
-import org.simpleframework.xml.Attribute;
-import org.simpleframework.xml.ElementList;
-import org.simpleframework.xml.Root;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
+
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlElement;
 
 /**
  * Bean used to unmarshall an intermediary SCAP report.
  */
-@Root(name = "rr", strict = false)
+@XmlAccessorType(XmlAccessType.FIELD)
 public class TestResultRuleResult {
 
-    @Attribute
+    @XmlAttribute(required = true)
     private String id;
 
-    @ElementList(entry = "ident", inline = true, required = false)
+    @XmlElement(name = "ident")
     private List<TestResultRuleResultIdent> idents;
 
     /**
@@ -58,5 +60,37 @@ public class TestResultRuleResult {
      */
     public void setIdents(List<TestResultRuleResultIdent> identsIn) {
         this.idents = identsIn;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof TestResultRuleResult that)) {
+            return false;
+        }
+
+        return new EqualsBuilder()
+            .append(id, that.id)
+            .append(idents, that.idents)
+            .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+            .append(id)
+            .append(idents)
+            .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+            .append("id", id)
+            .append("idents", idents)
+            .toString();
     }
 }

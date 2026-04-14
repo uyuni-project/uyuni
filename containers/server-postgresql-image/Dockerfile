@@ -2,18 +2,11 @@
 #!BuildTag: uyuni/server-postgresql:latest
 
 ARG BASE=registry.suse.com/bci/bci-base:15.7
-ARG PG_BASE=registry.opensuse.org/opensuse/postgres:18
+ARG PG_BASE=registry.opensuse.org/opensuse/postgres:18-contrib
 
 FROM $BASE AS builder
-RUN zypper --non-interactive install --download-only --force --no-recommends postgresql18-contrib tar && \
-    mkdir -p /opt/contrib /opt/results && \
-    find /var/cache/zypp/packages \( -name postgresql18-contrib* -o -name tar* \) -exec cp {} /opt/contrib \; && \
-    cd /opt/contrib && rpm2cpio postgresql18-contrib.rpm | cpio -idmv && rpm2cpio tar*.rpm | cpio -idmv && \
-    find . -name pg_trgm* -type f -exec cp --parents {} ../results/ \; && \
-    cp --parents /usr/bin/tar ../results/
 
 FROM $PG_BASE
-COPY --from=builder /opt/results/ /
 ADD --chown=root:root root.tar.gz /
 
 # LABELs
@@ -41,5 +34,9 @@ LABEL org.uyuni.version="${PRODUCT_VERSION}"
 RUN /usr/sbin/groupmod -g 999 postgres && \
     /usr/sbin/usermod -u 999 -g 999 postgres
 
-ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+RUN echo "${REFERENCE_PREFIX}/server-postgresql:${PRODUCT_VERSION}.%RELEASE%" > /etc/uyuni-image-ref
+
+ENTRYPOINT ["/uyuni-entrypoint.sh"]
+
 CMD ["postgres"]
+HEALTHCHECK --interval=10s --start-period=10s --timeout=5s --retries=3 CMD ["/usr/bin/healthcheck.sh"]

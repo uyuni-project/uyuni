@@ -47,6 +47,7 @@ public class Pane implements Serializable {
     public static final String PENDING_ACTIONS = "pending-actions";
     public static final String RECENTLY_REGISTERED_SYSTEMS = "recently-registered-systems";
     public static final String SUBSCRIPTION_WARNING = "subscription-warning";
+    public static final String DISK_CHECK_WARNING = "disk-check-warning";
 
     /**
      * Maps to RHNINFOPANE.LABEL

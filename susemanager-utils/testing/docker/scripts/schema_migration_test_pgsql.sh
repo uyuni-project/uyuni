@@ -55,7 +55,6 @@ su - postgres -c "/usr/lib/postgresql/bin/pg_ctl start"
 touch /var/lib/rhn/rhn-satellite-prep/etc/rhn/rhn.conf
 # SUSE Manager initialization
 cp /root/rhn.conf /etc/rhn/rhn.conf
-smdba system-check autotuning --max_connections=50
 
 # we changed the schema dir, but we start with a schema which live still in the old location
 # provide a symlink to make the tooling work

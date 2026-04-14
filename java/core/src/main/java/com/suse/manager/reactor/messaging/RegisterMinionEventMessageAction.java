@@ -21,6 +21,10 @@ import com.redhat.rhn.common.messaging.EventMessage;
 import com.redhat.rhn.common.messaging.MessageAction;
 import com.redhat.rhn.common.messaging.MessageQueue;
 import com.redhat.rhn.common.util.StringUtil;
+import com.redhat.rhn.domain.action.ActionFactory;
+import com.redhat.rhn.domain.action.dup.DistUpgradeAction;
+import com.redhat.rhn.domain.action.dup.DistUpgradeActionDetails;
+import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.notification.NotificationMessage;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
 import com.redhat.rhn.domain.notification.types.OnboardingFailed;
@@ -327,6 +331,8 @@ public class RegisterMinionEventMessageAction implements MessageAction {
             saltApi.updateSystemInfo(minionTarget);
             scheduleCoCoAttestation(registeredMinion);
             schedulePackageListRefresh(registeredMinion);
+            // Check for pending SLES 16 migration verification
+            scheduleSLES16VerificationIfNeeded(registeredMinion);
         }
     }
 
@@ -378,6 +384,62 @@ public class RegisterMinionEventMessageAction implements MessageAction {
         catch (TaskomaticApiException e) {
             LOG.error("Unable to schedule package list refresh action. ", e);
         }
+    }
+
+    /**
+     * Trigger SLES 16 post-migration verification if a qualifying migration is pending.
+     * This runs automatically when a minion reconnects. The 'sles16_verify' state
+     * independently checks for the presence of the migration marker file.
+     * @param minion the minion server instance
+     */
+    private void scheduleSLES16VerificationIfNeeded(MinionServer minion) {
+        // Find the specific migration action that triggered this flow
+        Optional<ServerAction> sles16MigrationAction = ActionFactory
+                .listServerActionsForServer(minion, ActionFactory.ALL_PENDING_STATUSES)
+                .stream()
+                .filter(sa -> isSles15To16Migration(sa, minion))
+                .findFirst();
+
+        if (sles16MigrationAction.isEmpty()) {
+            LOG.debug("No pending SLES 15 -> 16 DistUpgradeAction for minion {}, skipping verify.",
+                      minion.getMinionId());
+            return;
+        }
+
+        ServerAction action = sles16MigrationAction.get();
+        Long parentActionId = action.getParentAction().getId();
+
+        try {
+            LOG.info("SLES 16: Minion {} reconnected. Scheduling verification for action: {}",
+                     minion.getMinionId(), parentActionId);
+
+            // This publishes a Salt event to run the verification SLS
+            MessageQueue.publish(new ApplyStatesEventMessage(
+                minion.getId(),
+                false,
+                ApplyStatesEventMessage.DISTUPGRADE_SLES16_VERIFY
+            ));
+        }
+        catch (Exception e) {
+            LOG.error("SLES 16: Failed to schedule verification for minion: {} (Action: {})",
+                      minion.getMinionId(), parentActionId, e);
+        }
+    }
+
+    /**
+     * Determines if a ServerAction represents a cross-major migration from SLES 15 to SLES 16.
+     * This specific path requires the 'reboot-to-live' verification flow.
+     *
+     * @param sa the server action to check
+     * @param minion the minion to check
+     * @return true if the server action is a pending SLES 15 -> SLES 16 migration for the given minion
+     */
+    private boolean isSles15To16Migration(ServerAction sa, MinionServer minion) {
+        if (sa.getParentAction() instanceof DistUpgradeAction dup) {
+            DistUpgradeActionDetails details = dup.getDetails(minion.getId());
+            return (details != null) && details.isSles15To16Migration();
+        }
+        return false;
     }
 
     /**

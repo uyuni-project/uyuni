@@ -1,7 +1,8 @@
-# Copyright (c) 2025 SUSE LLC
+# Copyright (c) 2025-2026 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @sle15sp6_ssh_minion
+@sle15sp7_minion
 Feature: Migrate a SLES 15 SP6 Salt SSH minion to 15 SP7
 
   Scenario: Log in as admin user

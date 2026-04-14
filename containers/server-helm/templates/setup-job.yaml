@@ -144,6 +144,14 @@ spec:
               name: root
             - mountPath: /etc/pki/trust/anchors/
               name: ca-certs
+            - mountPath: /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT
+              name: ca-cert
+              readOnly: true
+              subPath: ca.crt
+            - mountPath: /etc/pki/trust/anchors/DB-RHN-ORG-TRUSTED-SSL-CERT
+              name: db-ca-cert
+              readOnly: true
+              subPath: ca.crt
             - mountPath: /run/salt/master
               name: run-salt-master
             - mountPath: /etc/apache2
@@ -243,6 +251,14 @@ spec:
               name: root
             - mountPath: /mnt/etc/pki/trust/anchors/
               name: ca-certs
+            - mountPath: /etc/pki/trust/anchors/LOCAL-RHN-ORG-TRUSTED-SSL-CERT
+              name: ca-cert
+              readOnly: true
+              subPath: ca.crt
+            - mountPath: /etc/pki/trust/anchors/DB-RHN-ORG-TRUSTED-SSL-CERT
+              name: db-ca-cert
+              readOnly: true
+              subPath: ca.crt
             - mountPath: /mnt/run/salt/master
               name: run-salt-master
             - mountPath: /mnt/etc/apache2
@@ -411,12 +427,12 @@ spec:
         - name: etc-rhn
           persistentVolumeClaim:
             claimName: etc-rhn
-        - configMap:
+        - name: ca-cert
+          configMap:
             name: uyuni-ca
-          name: ca-cert
-        - configMap:
+        - name: db-ca-cert
+          configMap:
             name: db-ca
-          name: db-ca-cert
         - name: tls
           secret:
             items:
@@ -426,6 +442,3 @@ spec:
                 mode: 256
                 path: tls/private/spacewalk.key
             secretName: uyuni-cert
-        - configMap:
-            name: db-ca
-          name: db-ca
