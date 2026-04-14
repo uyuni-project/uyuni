@@ -20,12 +20,15 @@ import com.suse.coco.module.snpguest.io.VerificationDirectoryProvider;
 import com.suse.coco.module.snpguest.model.AttestationReport;
 import com.suse.coco.module.snpguest.model.EpycGeneration;
 import com.suse.common.io.ByteSequenceFinder;
+import com.suse.common.utilities.JsonUtilities;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.nio.file.Path;
+import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.Optional;
 
 /**
@@ -44,6 +47,8 @@ public class SNPGuestWorker implements AttestationWorker {
     private final ByteSequenceFinder sequenceFinder;
 
     private final StringBuilder outputBuilder;
+
+    private final SecureRandom secureRandom = new SecureRandom();
 
     /**
      * Default constructor.
@@ -67,8 +72,28 @@ public class SNPGuestWorker implements AttestationWorker {
         this.outputBuilder = new StringBuilder();
     }
 
+    public static final String NONCE_TAG = "nonce";
+
     @Override
-    public boolean processAttestationRequest(SqlSession session, AttestationResult attestationResult) {
+    public boolean processAttestationRequest(SqlSession session, AttestationResult result) {
+        try {
+            LOGGER.debug("Processing attestation request {}", result.getId());
+
+            //create nonce
+            int nonceLength = 64;
+            byte[] bytes = new byte[nonceLength];
+            secureRandom.nextBytes(bytes);
+            String nonceString = Base64.getEncoder().encodeToString(bytes);
+
+            String attestationRequest = JsonUtilities.createJson(NONCE_TAG, nonceString);
+            result.setInData(attestationRequest);
+            return true;
+        }
+        catch (Exception ex) {
+            String exceptionMessage = Optional.ofNullable(ex.getMessage()).orElse(ex.getClass().getName());
+            appendError("Unable to process attestation result: " + exceptionMessage, ex);
+        }
+
         return false;
     }
 
