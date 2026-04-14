@@ -17,7 +17,7 @@ package com.redhat.rhn.manager.audit;
 
 public enum ScanDataSource {
 
-    VEX("Oval"),
+    VEX("Vex"),
     OVAL("Oval"),
     CHANNELS("Channels");
 
