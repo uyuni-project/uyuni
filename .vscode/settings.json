@@ -34,11 +34,11 @@
       "default": true
     }
   ],
-  "java.checkstyle.configuration": "${workspaceFolder}/java/buildconf/checkstyle.xml",
+  "java.checkstyle.configuration": "${workspaceFolder}/java/spacewalk-java/buildconf/checkstyle.xml",
   "java.checkstyle.properties": {
-    "checkstyle.cache.file": "${workspaceFolder}/java/build/checkstyle.cache.src",
-    "checkstyle.header.file": "${workspaceFolder}/java/buildconf/LICENSE.txt",
-    "checkstyle.suppressions.file": "${workspaceFolder}/java/buildconf/checkstyle-suppressions.xml",
+    "checkstyle.cache.file": "${workspaceFolder}/java/spacewalk-java/build/checkstyle.cache.src",
+    "checkstyle.header.file": "${workspaceFolder}/java/spacewalk-java/buildconf/LICENSE.txt",
+    "checkstyle.suppressions.file": "${workspaceFolder}/java/spacewalk-java/buildconf/checkstyle-suppressions.xml",
     "javadoc.lazy": "false",
     "javadoc.method.scope": "public",
     "javadoc.type.scope": "package",
@@ -54,7 +54,7 @@
       "source.fixAll.checkstyle": true
     }
   },
-  "java.format.settings.url": "${workspaceFolder}/java/conf/eclipse/code_formatter_rhn.xml",
+  "java.format.settings.url": "${workspaceFolder}/java/spacewalk-java/conf/eclipse/code_formatter_rhn.xml",
   "java.format.settings.profile": "RHN",
   "vscode-postgres.virtualFolders": ["functions"],
   "prettier.configPath": "web/.prettierrc",

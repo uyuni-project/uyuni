@@ -5,8 +5,8 @@ on:
     branches:
       - master
     paths:
-      - 'java/**.java'
-      - 'java/**.xml'
+      - 'java/spacewalk-java/**.java'
+      - 'java/spacewalk-java/**.xml'
       - '.github/workflows/java-checkstyle.yml'
   pull_request:
     types:
@@ -18,8 +18,8 @@ on:
       - '**.py'
       - 'web/html/src/**.ts'
       - 'web/html/src/**.tsx'
-      - 'java/**.java'
-      - 'java/**.xml'
+      - 'java/spacewalk-java/**.java'
+      - 'java/spacewalk-java/**.xml'
       - '.github/workflows/java-checkstyle.yml'
 
 jobs:
@@ -46,7 +46,7 @@ jobs:
       run: ant -f java/manager-build.xml checkstyle
 
     - name: Compress build results
-      run: tar cf java-build.tar.gz java/build java/lib
+      run: tar cf java-build.tar.gz java/spacewalk-java/build java/spacewalk-java/lib
 
     - name: Save PR data to file
       run: |

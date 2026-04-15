@@ -5,7 +5,9 @@ on:
     branches:
       - master
     paths:
-      - 'microservices/**'
+      - 'java/uyuni-java-parent/**'
+      - 'java/uyuni-java-common/**'
+      - 'java/coco-attestation/**'
       - '.github/workflows/java-microservices-mvn-build.yml'
   pull_request:
     types:
@@ -13,7 +15,9 @@ on:
       - reopened
       - synchronize
     paths:
-      - 'microservices/**'
+      - 'java/uyuni-java-parent/**'
+      - 'java/uyuni-java-common/**'
+      - 'java/coco-attestation/**'
       - '.github/workflows/java-microservices-mvn-build.yml'
 
 
@@ -32,12 +36,12 @@ jobs:
 
       - name: Install and verify uyuni-java-parent
         run: >
-          mvn -B --no-transfer-progress --file microservices/uyuni-java-parent/pom.xml --non-recursive install checkstyle:check
+          mvn -B --no-transfer-progress --file java/uyuni-java-parent/pom.xml --non-recursive install checkstyle:check
 
       - name: Install and verify uyuni-java-common
         run: >
-          mvn -B --no-transfer-progress --file microservices/uyuni-java-common/pom.xml install checkstyle:check
+          mvn -B --no-transfer-progress --file java/uyuni-java-common/pom.xml install checkstyle:check
 
       - name: Install and verify coco-attestation
         run: >
-          mvn -B --no-transfer-progress --file microservices/coco-attestation/pom.xml install checkstyle:check
+          mvn -B --no-transfer-progress --file java/coco-attestation/pom.xml install checkstyle:check
