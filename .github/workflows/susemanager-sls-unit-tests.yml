@@ -4,6 +4,9 @@ on:
   pull_request:
     paths: 'susemanager-utils/susemanager-sls/**/*'
 
+permissions:
+  contents: read
+
 jobs:
   susemanager_sls_unit_tests:
     runs-on: ubuntu-latest
