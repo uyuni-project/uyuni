@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024 SUSE LLC
+ * Copyright (c) 2024--2026 SUSE LLC
  * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -99,6 +99,16 @@ public class PxtAuthenticationService extends BaseAuthenticationService {
     @Override
     protected Set<String> getPostUnprotectedURIs() {
         return POST_UNPROTECTED_URIS;
+    }
+
+    /**
+     * Retrieves the PxtSessionDelegate that this service object uses to perform operations on PXT sessions.
+     * This method is primarily intended for testing purposes, and it is not expected that client code will
+     * typically need to invoke this.
+     * @return the instance of {@link PxtSessionDelegate} used by this service object.
+     */
+    public PxtSessionDelegate getPxtDelegate() {
+        return pxtDelegate;
     }
 
     /**

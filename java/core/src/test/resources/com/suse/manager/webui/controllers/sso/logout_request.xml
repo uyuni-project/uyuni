@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<samlp:LogoutRequest ID="{requestId}" Version="2.0" IssueInstant="2020-01-01T00:00:00Z" Destination="https://localhost/manager/sso/sls"
+        xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">
+    <saml:Issuer>https://idp</saml:Issuer>
+    <saml:NameID Format="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified">{user}</saml:NameID>
+</samlp:LogoutRequest>

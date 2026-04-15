@@ -10,6 +10,7 @@
  */
 package com.suse.manager.webui.controllers;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -31,14 +32,26 @@ import com.suse.manager.webui.services.OidcAuthHandler;
 import com.suse.manager.webui.utils.LoginHelper;
 import com.suse.utils.Json;
 
+import com.onelogin.saml2.settings.Saml2Settings;
+import com.onelogin.saml2.util.Util;
+
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.security.Signature;
+import java.security.cert.X509Certificate;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 import spark.ModelAndView;
 import spark.Request;
@@ -51,6 +64,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
     private LoginController loginController;
 
     private boolean ssoEnabled;
+    private Saml2Settings saml2Settings;
 
     @Override
     @BeforeEach
@@ -58,7 +72,8 @@ public class LoginControllerTest extends BaseControllerTestCase {
         super.setUp();
 
         ssoEnabled = Config.get().getBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED);
-        loginController = new LoginController(new OidcAuthHandler(), SSOTestUtils.getSaml2Settings());
+        saml2Settings = SSOTestUtils.getSaml2Settings();
+        loginController = new LoginController(new OidcAuthHandler(), Optional.of(saml2Settings));
     }
 
     @Override
@@ -94,7 +109,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
     }
 
     @Test
-    public void testLoginWithSSO() {
+    public void testLoginWithSSO() throws URISyntaxException {
         Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, "true");
 
         final String requestUrl = "http://localhost:8080/rhn/manager/login";
@@ -106,12 +121,101 @@ public class LoginControllerTest extends BaseControllerTestCase {
 
         response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
         ModelAndView result = loginController.loginView(RequestResponseFactory.create(match, mockRequest), response);
-        assertNotNull(result); // redirect to the SSO login page
+        assertNotNull(result);
 
         // we still need to check that the model has been correctly populated
         @SuppressWarnings("unchecked")
         Map<String, Object> model = (Map<String, Object>) result.getModel();
         assertNotNull(model.get("webTheme"));
+
+        // check if we redirect to the SSO login page
+        RhnMockHttpServletResponse mockResponse = (RhnMockHttpServletResponse) response.raw();
+
+        assertNotNull(mockResponse.getRedirect(), "The controller must issue a redirect to the IdP");
+        String redirectUrl = URLDecoder.decode(mockResponse.getRedirect(), StandardCharsets.UTF_8);
+
+        assertTrue(redirectUrl.startsWith("https://idp/sso"));
+
+        Map<String, String> parametersMap = new HashMap<>();
+        Stream.of(new URI(redirectUrl).getRawQuery().split("&"))
+                .forEach(keyValuePair -> {
+                    String[] parts = keyValuePair.split("=", 2);
+                    parametersMap.put(parts[0], parts[1]);
+                });
+
+        // The url_bounce is ignored when doing IdP login
+        assertEquals("/rhn/YourRhn.do", parametersMap.get("RelayState"));
+        String samlRequest = parametersMap.get("SAMLRequest");
+        assertNotNull(samlRequest);
+
+        String rawSamlXml = Util.base64decodedInflated(samlRequest);
+        // Verify the request is the correct type
+        assertTrue(rawSamlXml.contains("<samlp:AuthnRequest"));
+        // Check the issuer (SP Entity ID)
+        assertTrue(rawSamlXml.contains("<saml:Issuer>https://localhost/metadata.jsp</saml:Issuer>"));
+        // Check the ACL url
+        assertTrue(rawSamlXml.contains("AssertionConsumerServiceURL=\"https://localhost/acs.jsp\""));
+        // Check the destination (IdP SSO URL)
+        assertTrue(rawSamlXml.contains("Destination=\"https://idp/sso\""));
+    }
+
+    @Test
+    public void testLoginWithSSOSignatureValidation() throws Exception {
+        Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, "true");
+
+        // Force the AuthNRequest signature logic to trigger
+        saml2Settings.setAuthnRequestsSigned(true);
+
+        final String requestUrl = "http://localhost:8080/rhn/manager/login";
+        final RouteMatch match = new RouteMatch(new Object(), requestUrl, requestUrl, "");
+        final RhnMockHttpServletRequest mockRequest = new RhnMockHttpServletRequest();
+        mockRequest.setRequestURL(requestUrl);
+        mockRequest.addParameter("url_bounce", "/rhn/systems/Overview.do");
+
+        response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
+
+        // Execute Controller
+        loginController.loginView(RequestResponseFactory.create(match, mockRequest), response);
+
+        // 5. Extract the Redirect URL and Parameters
+        RhnMockHttpServletResponse mockResponse = (RhnMockHttpServletResponse) response.raw();
+        assertNotNull(mockResponse.getRedirect(), "The controller must issue a redirect to the IdP");
+        String redirectUrl = URLDecoder.decode(mockResponse.getRedirect(), StandardCharsets.UTF_8);
+
+        // Deconstruct the URL using Apache URIBuilder
+        Map<String, String> parametersMap = new HashMap<>();
+        Stream.of(StringUtils.substringAfter(redirectUrl, "?").split("&"))
+                .forEach(keyValuePair -> {
+                    String[] parts = keyValuePair.split("=", 2);
+                    parametersMap.put(parts[0], parts[1]);
+                });
+
+        String samlRequest = parametersMap.get("SAMLRequest");
+        String relayState = parametersMap.get("RelayState");
+        String sigAlg = parametersMap.get("SigAlg");
+        String signatureBase64 = parametersMap.get("Signature");
+
+        // Ensure the processor successfully attached the signature parameters
+        assertAll(
+            () -> assertNotNull(samlRequest, "SAMLRequest parameter is missing"),
+            () -> assertNotNull(relayState, "RelayState parameter is missing"),
+            () -> assertNotNull(sigAlg, "SigAlg parameter is missing"),
+            () -> assertNotNull(signatureBase64, "Signature parameter is missing")
+        );
+
+        StringBuilder signedMessage = new StringBuilder()
+                .append("SAMLRequest=").append(Util.urlEncoder(samlRequest))
+                .append("&RelayState=").append(Util.urlEncoder(relayState))
+                .append("&SigAlg=").append(Util.urlEncoder(sigAlg));
+
+        // Verify the signature
+        X509Certificate cert = SSOTestUtils.getTestCertificate();
+        Signature sig = java.security.Signature.getInstance("SHA256withRSA");
+        sig.initVerify(cert.getPublicKey());
+        sig.update(signedMessage.toString().getBytes(StandardCharsets.UTF_8));
+
+        boolean isSignatureValid = sig.verify(Base64.getDecoder().decode(signatureBase64));
+        assertTrue(isSignatureValid, "The cryptographic signature must be valid");
     }
 
     @Test
