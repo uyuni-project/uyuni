@@ -36,7 +36,6 @@
         <dependency org="suse" name="hibernate-models" rev="1.0.1" />
         <dependency org="suse" name="hibernate-core" rev="7.1.6" />
         <dependency org="suse" name="hibernate-jcache" rev="7.1.6" />
-        <dependency org="suse" name="hypersistence-utils-hibernate-71" rev="3.11.0" />
         <dependency org="suse" name="httpasyncclient" rev="4.1.4" />
         <dependency org="suse" name="httpclient" rev="4.5.14" />
         <dependency org="suse" name="httpcore" rev="4.4.14" />

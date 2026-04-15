@@ -17,13 +17,13 @@
 package com.redhat.rhn.domain;
 
 
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -60,7 +60,7 @@ public class TestEntity extends BaseDomainHelper implements TestInterface {
     @Column
     private Integer pin;
 
-    @Type(JsonType.class)
+    @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "jsonb", name = "additional_data")
     private Map<String, Object> additionalData;
 

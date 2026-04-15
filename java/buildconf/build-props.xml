@@ -82,8 +82,7 @@
 
   <property name="hibernatedeps"
             value="${jpa} ${hibernate-core} ${hibernate-models} slf4j/api ${byte-buddy} jboss-logging ${jcache}
-              ${ehcache} classmate/classmate hypersistence-utils/hypersistence-utils-hibernate-71 jackson-databind
-              jackson-core jackson-annotations"/>
+              ${ehcache} classmate/classmate jackson-databind jackson-core jackson-annotations"/>
 
   <property name="c3p0" value="mchange-commons/mchange-commons-java c3p0"/>
 

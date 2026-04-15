@@ -103,7 +103,6 @@ BuildRequires:  jakarta-websocket
 BuildRequires:  jakarta-transactions
 BuildRequires:  jakarta-jstl
 BuildRequires:  hibernate-models
-BuildRequires:  hypersistence-utils-hibernate-71
 BuildRequires:  jakarta-persistence-api
 BuildRequires:  httpcomponents-asyncclient
 BuildRequires:  httpcomponents-client
@@ -155,6 +154,9 @@ BuildRequires:  mvn(org.apache.velocity:velocity-engine-core) >= 2.2
 BuildRequires:  mvn(org.hibernate.orm:hibernate-c3p0) >= 7
 BuildRequires:  mvn(org.hibernate.orm:hibernate-core) >= 7
 BuildRequires:  mvn(org.hibernate.orm:hibernate-jcache) >= 7
+BuildRequires:  jackson-annotations
+BuildRequires:  jackson-core
+BuildRequires:  jackson-databind
 BuildRequires:  tomcat11-servlet-6_1-api
 %if 0%{?suse_version}
 BuildRequires:  ant-nodeps
@@ -193,7 +195,6 @@ Requires:       jakarta-websocket
 Requires:       jakarta-transactions
 Requires:       jakarta-jstl
 Requires:       hibernate-models
-Requires:       hypersistence-utils-hibernate-71
 Requires:       httpcomponents-client
 Requires:       ical4j
 Requires:       istack-commons-runtime
@@ -248,6 +249,9 @@ Requires:       mvn(org.apache.tomcat:tomcat-servlet-api) > 11
 Requires:       mvn(org.hibernate.orm:hibernate-c3p0) >= 7
 Requires:       mvn(org.hibernate.orm:hibernate-core) >= 7
 Requires:       mvn(org.hibernate.orm:hibernate-jcache) >= 7
+Requires:       jackson-annotations
+Requires:       jackson-core
+Requires:       jackson-databind
 Requires:       openssl
 # libtcnative-1-0 is only recommended in tomcat.
 # We want it always to prevent warnings about openssl cannot be used

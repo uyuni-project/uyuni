@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 SUSE LLC
+ * Copyright (c) 2025--2026 SUSE LLC
  * Copyright (c) 2009--2013 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -19,12 +19,12 @@ import com.redhat.rhn.domain.BaseDomainHelper;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.util.Map;
 import java.util.TreeMap;
 
-import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -91,11 +91,10 @@ public class CPU extends BaseDomainHelper {
 
     /**
      * This field stores CPU architecture-specific information. Although the
-     * corresponding database field is of type
-     * JSONB, it is mapped here as a String due to limitations in XML mapping for
-     * JSON types.
+     * corresponding database field is of type JSONB, it is mapped here as
+     * a {@code Map<String, Object>}.
      */
-    @Type(JsonType.class)
+    @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "arch_specs", columnDefinition = "jsonb")
     private Map<String, Object> archSpecs = new TreeMap<>();
 

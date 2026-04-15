@@ -24,7 +24,6 @@ import com.redhat.rhn.domain.TestInterface;
 
 import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
 
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -651,9 +650,8 @@ public class HibernateTest extends HibernateBaseTest {
         entity.setAdditionalData(additionalData);
 
         if (json == null) {
-            HibernateException ex = assertThrows(HibernateException.class, () -> session.flush());
-            assertInstanceOf(IllegalArgumentException.class, ex.getCause());
-            assertInstanceOf(InvalidDefinitionException.class, ex.getCause().getCause());
+            IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> session.flush());
+            assertInstanceOf(InvalidDefinitionException.class, ex.getCause());
             return;
         }
 
