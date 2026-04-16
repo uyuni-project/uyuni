@@ -126,7 +126,6 @@ BuildRequires:  angus-mail-core
 BuildRequires:  javapackages-tools
 BuildRequires:  jboss-logging >= 3.6.1
 BuildRequires:  jdom
-BuildRequires:  joda-time
 BuildRequires:  jose4j
 BuildRequires:  jsch
 BuildRequires:  libxml2
@@ -154,7 +153,8 @@ BuildRequires:  struts >= 1.2.9
 BuildRequires:  tomcat11
 BuildRequires:  tomcat11-lib
 BuildRequires:  uyuni-base-server
-BuildRequires:  woodstox
+BuildRequires:  woodstox-core
+BuildRequires:  stax2-api
 BuildRequires:  xmlsec
 BuildRequires:  (google-gson >= 2.2.4 with google-gson < 2.10.0)
 BuildRequires:  mvn(org.apache.velocity:velocity-engine-core) >= 2.2
@@ -214,7 +214,6 @@ Requires:       javapackages-tools
 Requires:       jboss-logging >= 3.6.1
 Requires:       jctools
 Requires:       jdom
-Requires:       joda-time
 Requires:       jose4j
 Requires:       jakarta-persistence-api
 Requires:       libsolv-tools

@@ -26,7 +26,6 @@ import com.suse.manager.webui.utils.SparkApplicationHelper;
 import com.onelogin.saml2.Auth;
 import com.onelogin.saml2.exception.Error;
 import com.onelogin.saml2.exception.SettingsException;
-import com.onelogin.saml2.exception.XMLEntityException;
 import com.onelogin.saml2.servlet.ServletUtils;
 import com.onelogin.saml2.settings.Saml2Settings;
 
@@ -216,7 +215,7 @@ public final class SSOController {
             auth.logout();
             return response;
         }
-        catch (SettingsException | IOException | XMLEntityException e) {
+        catch (SettingsException | IOException e) {
             LOG.error("Unable to parse settings for SSO and/or XML parsing: {}", e.getMessage(), e);
         }
 
