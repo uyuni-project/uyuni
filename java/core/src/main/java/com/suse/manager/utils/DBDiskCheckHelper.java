@@ -13,7 +13,11 @@ package com.suse.manager.utils;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Savepoint;
 import java.sql.Statement;
 
@@ -22,6 +26,11 @@ import java.sql.Statement;
  * Uses a JDBC savepoint so that a failure does not poison the Hibernate transaction.
  */
 public class DBDiskCheckHelper extends DiskCheckHelper {
+
+    private static final Logger LOG = LogManager.getLogger(DBDiskCheckHelper.class);
+
+    // PostgreSQL SQLSTATE for undefined_function
+    private static final String SQLSTATE_UNDEFINED_FUNCTION = "42883";
 
     /**
      * {@inheritDoc}
@@ -36,8 +45,12 @@ public class DBDiskCheckHelper extends DiskCheckHelper {
                 connection.releaseSavepoint(sp);
                 return rs.getInt(1);
             }
-            catch (Exception e) {
+            catch (SQLException e) {
                 connection.rollback(sp);
+                if (SQLSTATE_UNDEFINED_FUNCTION.equals(e.getSQLState())) {
+                    LOG.warn("get_pgsql_disk_severity() is not installed; reporting UNDEFINED");
+                    return -1;
+                }
                 throw e;
             }
         });
