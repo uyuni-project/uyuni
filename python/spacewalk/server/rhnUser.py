@@ -634,9 +634,9 @@ def check_password(key, pwd1):
                 iterations = int(parts[2])
                 if not 1 <= iterations <= 2_000_000:
                     raise ValueError("iteration count out of range")
-                raw_salt = _base64.b64decode(parts[3])
+                raw_salt = _base64.b64decode(_b64_pad(parts[3]))
                 dk = hashlib.pbkdf2_hmac("sha256", key.encode(), raw_salt, iterations)
-                stored = _base64.b64decode(parts[4])
+                stored = _base64.b64decode(_b64_pad(parts[4]))
                 if hmac.compare_digest(dk, stored):
                     return 1
         except Exception:  # pylint: disable=broad-except
@@ -652,6 +652,11 @@ def check_password(key, pwd1):
 
 _PBKDF2_ITERATIONS = 600000
 _PBKDF2_PREFIX = "$pbkdf2-sha256$"
+
+
+def _b64_pad(s):
+    """Restore '=' padding that was stripped from a base64 string."""
+    return s + "=" * (-len(s) % 4)
 
 
 def encrypt_password(key, salt=None):
@@ -671,10 +676,13 @@ def encrypt_password(key, salt=None):
         return _crypt.crypt(key, str(salt))
 
     # New path: PBKDF2-SHA256 with a cryptographically random 32-byte salt.
+    # Base64 output is stripped of '=' padding to keep the encoded hash
+    # within the 110-char web_contact.password column (44+44+padding=89
+    # would overflow once combined with the $pbkdf2-sha256$600000$$ envelope).
     raw_salt = _os.urandom(32)
     dk = hashlib.pbkdf2_hmac("sha256", key.encode(), raw_salt, _PBKDF2_ITERATIONS)
-    b64salt = _base64.b64encode(raw_salt).decode()
-    b64hash = _base64.b64encode(dk).decode()
+    b64salt = _base64.b64encode(raw_salt).decode().rstrip("=")
+    b64hash = _base64.b64encode(dk).decode().rstrip("=")
     return f"{_PBKDF2_PREFIX}{_PBKDF2_ITERATIONS}${b64salt}${b64hash}"
 
 
