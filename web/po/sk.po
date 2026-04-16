@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-14 11:17+0200\n"
-"PO-Revision-Date: 2026-04-14 16:04+0000\n"
+"PO-Revision-Date: 2026-04-16 19:04+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 5.16.2\n"
+"X-Generator: Weblate 5.17\n"
 
 #: ../html/javascript/spacewalk-essentials.js:409
 msgid "remaining"
@@ -146,10 +146,8 @@ msgid "Loading the scheduler..."
 msgstr "Načítava sa plánovač..."
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:147
-#, fuzzy
-#| msgid "The action has been {0}."
 msgid "SCAP scan has been "
-msgstr "Akcia bola {0}."
+msgstr "Skenovanie SCAP bolo "
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:148
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:311
@@ -184,10 +182,8 @@ msgid "SCAP Content"
 msgstr "Obsah scenára"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:198
-#, fuzzy
-#| msgid "A positive integer is required"
 msgid "SCAP Content is required."
-msgstr "Vyžaduje sa kladné celé číslo"
+msgstr "Vyžaduje sa obsah SCAP."
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:227
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:194
@@ -3649,10 +3645,8 @@ msgstr "Nepodarilo sa pripojiť"
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:61
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:62
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:59
-#, fuzzy
-#| msgid "An unexpected error occurred while fetching users."
 msgid "An unexpected error occurred while deleting"
-msgstr "Pri načítavaní používateľov došlo k neočakávanej chybe."
+msgstr "Pri vymazávaní došlo k neočakávanej chybe"
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:82
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:83
@@ -3682,10 +3676,8 @@ msgid "Are you sure you want to delete"
 msgstr "Naozaj chcete vymazať úložisko"
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:160
-#, fuzzy
-#| msgid "Loading content.."
 msgid "this content"
-msgstr "Načítava sa obsah.."
+msgstr "tento obsah"
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:44
 #, fuzzy
@@ -4900,10 +4892,8 @@ msgid "The page you requested, {currentUrl}, was not found."
 msgstr "Požadovaná stránka {currentUrl} sa nenašla."
 
 #: ../html/src/manager/errors/not-found.tsx:10
-#, fuzzy
-#| msgid "If you typed this address into your browser, double-check the spelling and capitalization. The address you are copying may also be outdated."
 msgid "If you typed this address into your browser, double-check the spelling and capitalization."
-msgstr "Ak ste túto adresu zadali do prehliadača, prekontrolujte si pravopis a písanie veľkých písmen. Adresa, ktorú kopírujete, môže byť tiež neaktuálna."
+msgstr "Ak ste zadali túto adresu do svojho prehliadača, znova skontrolujte pravopis a veľké písmená."
 
 #: ../html/src/manager/errors/not-found.tsx:16
 msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
@@ -6174,10 +6164,8 @@ msgid "Name and value"
 msgstr "Názov a hodnota"
 
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:310
-#, fuzzy
-#| msgid "The action has been {0}."
 msgid "Remediation has been "
-msgstr "Akcia bola {0}."
+msgstr "Náprava bola "
 
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:399
 #, fuzzy
