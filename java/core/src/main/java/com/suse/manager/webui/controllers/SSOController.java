@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 SUSE LLC
+ * Copyright (c) 2019--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.suse.manager.webui.controllers;
 
@@ -18,7 +14,6 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.conf.sso.SSOConfig;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
@@ -58,31 +53,24 @@ public final class SSOController {
 
     private static final Logger LOG = LogManager.getLogger(SSOController.class);
 
-    private static Optional<Saml2Settings> ssoConfig;
-
-    static {
-        ssoConfig = SSOConfig.getSSOSettings();
-    }
-
-    private SSOController() {
-    }
+    private final Optional<Saml2Settings> ssoConfig;
 
     /**
-     * Used for test purposes only
-     * @param ssoConfigIn the SSO configuration provided by the test class
+     * Default constructor.
+     * @param ssoConfigIn the SSO configuration
      */
-    public static void setSsoConfig(Optional<Saml2Settings> ssoConfigIn) {
-        SSOController.ssoConfig = ssoConfigIn;
+    public SSOController(Optional<Saml2Settings> ssoConfigIn) {
+        this.ssoConfig = ssoConfigIn;
     }
 
     /**
      * Method used to init routes in Spark
      */
-    public static void initRoutes() {
-        get("/manager/sso/metadata", SSOController::getMetadata);
-        post("/manager/sso/acs", SSOController::getACS);
-        get("/manager/sso/logout", SSOController::logout);
-        get("/manager/sso/sls", SSOController::sls);
+    public void initRoutes() {
+        get("/manager/sso/metadata", this::getMetadata);
+        post("/manager/sso/acs", this::getACS);
+        get("/manager/sso/logout", this::logout);
+        get("/manager/sso/sls", this::sls);
     }
 
     /**
@@ -91,11 +79,8 @@ public final class SSOController {
      * @param response the Spark Response instance used in the current response scope
      * @return the response object
      */
-    public static Object getACS(Request request, Response response) {
-        if (!ssoConfig.isPresent()) {
-            return null;
-        }
-        if (!ConfigDefaults.get().isSingleSignOnEnabled()) {
+    public Object getACS(Request request, Response response) {
+        if (!ConfigDefaults.get().isSingleSignOnEnabled() || ssoConfig.isEmpty()) {
             return null;
         }
 
@@ -179,35 +164,37 @@ public final class SSOController {
      * @param response the Spark Response instance used in the current response scope
      * @return the response object
      */
-    public static Object getMetadata(Request request, Response response) {
-        if (ssoConfig.isPresent() && ConfigDefaults.get().isSingleSignOnEnabled()) {
-            try {
-                final Auth auth = new Auth(ssoConfig.get(), request.raw(), response.raw());
-                final Saml2Settings settings = auth.getSettings();
-                settings.setSPValidationOnly(true);
-                final String metadata = settings.getSPMetadata();
-                final List<String> errors = Saml2Settings.validateMetadata(metadata);
-                if (errors.isEmpty()) {
-                    response.type("text/xml; charset=UTF-8");
-                    return metadata;
-                }
-                else {
-                    for (final String error : errors) {
-                        LOG.error(error);
-                    }
-                    return SparkApplicationHelper.internalServerError(response, errors.toArray(new String[0]));
-                }
-            }
-            catch (IOException | SettingsException | Error | CertificateEncodingException e) {
-                LOG.error("Unable to parse settings for SSO and/or certificate error: {}", e.getMessage(), e);
-            }
-            catch (Exception e) {
-                LOG.error(e.getMessage(), e);
-            }
-            return response;
+    public Object getMetadata(Request request, Response response) {
+        if (ssoConfig.isEmpty() || !ConfigDefaults.get().isSingleSignOnEnabled()) {
+            return null;
         }
 
-        return null;
+        try {
+            final Auth auth = new Auth(ssoConfig.get(), request.raw(), response.raw());
+            final Saml2Settings settings = auth.getSettings();
+            settings.setSPValidationOnly(true);
+            final String metadata = settings.getSPMetadata();
+            final List<String> errors = Saml2Settings.validateMetadata(metadata);
+            if (errors.isEmpty()) {
+                response.type("text/xml; charset=UTF-8");
+                return metadata;
+            }
+            else {
+                for (final String error : errors) {
+                    LOG.error(error);
+                }
+                return SparkApplicationHelper.internalServerError(response, errors.toArray(new String[0]));
+            }
+        }
+        catch (IOException | SettingsException | Error | CertificateEncodingException e) {
+            LOG.error("Unable to parse settings for SSO and/or certificate error: {}", e.getMessage(), e);
+        }
+        catch (Exception e) {
+            LOG.error(e.getMessage(), e);
+        }
+
+        return response;
+
     }
 
     /**
@@ -216,19 +203,21 @@ public final class SSOController {
      * @param response the Spark Response instance used in the current response scope
      * @return the response object
      */
-    public static Object logout(Request request, Response response) {
-        if (ssoConfig.isPresent() && ConfigDefaults.get().isSingleSignOnEnabled()) {
-            try {
-                AuthenticationServiceFactory.getInstance()
-                        .getAuthenticationService()
-                        .invalidate(request.raw(), response.raw());
-                final Auth auth = new Auth(ssoConfig.get(), request.raw(), response.raw());
-                auth.logout();
-                return response;
-            }
-            catch (SettingsException | IOException | XMLEntityException e) {
-                LOG.error("Unable to parse settings for SSO and/or XML parsing: {}", e.getMessage(), e);
-            }
+    public Object logout(Request request, Response response) {
+        if (ssoConfig.isEmpty() || !ConfigDefaults.get().isSingleSignOnEnabled()) {
+            return null;
+        }
+
+        try {
+            AuthenticationServiceFactory.getInstance()
+                    .getAuthenticationService()
+                    .invalidate(request.raw(), response.raw());
+            final Auth auth = new Auth(ssoConfig.get(), request.raw(), response.raw());
+            auth.logout();
+            return response;
+        }
+        catch (SettingsException | IOException | XMLEntityException e) {
+            LOG.error("Unable to parse settings for SSO and/or XML parsing: {}", e.getMessage(), e);
         }
 
         return null;
@@ -240,23 +229,26 @@ public final class SSOController {
      * @param response the Spark Response instance used in the current response scope
      * @return the response object
      */
-    public static Object sls(Request request, Response response) {
-        if (ssoConfig.isPresent() && ConfigDefaults.get().isSingleSignOnEnabled()) {
-            try {
-                AuthenticationServiceFactory.getInstance()
-                        .getAuthenticationService()
-                        .invalidate(request.raw(), response.raw());
-                final Auth auth = new Auth(ssoConfig.get(), request.raw(), response.raw());
-                auth.processSLO();
-                return "You have been logged out";
-            }
-            catch (ServletException | SettingsException e) {
-                LOG.error("Unable to parse settings for SSO: {}", e.getMessage(), e);
-            }
-            catch (Exception e) {
-                LOG.error(e.getMessage(), e);
-            }
+    public Object sls(Request request, Response response) {
+        if (ssoConfig.isEmpty() || !ConfigDefaults.get().isSingleSignOnEnabled()) {
+            return null;
         }
+
+        try {
+            AuthenticationServiceFactory.getInstance()
+                    .getAuthenticationService()
+                    .invalidate(request.raw(), response.raw());
+            final Auth auth = new Auth(ssoConfig.get(), request.raw(), response.raw());
+            auth.processSLO();
+            return "You have been logged out";
+        }
+        catch (ServletException | SettingsException e) {
+            LOG.error("Unable to parse settings for SSO: {}", e.getMessage(), e);
+        }
+        catch (Exception e) {
+            LOG.error(e.getMessage(), e);
+        }
+
         return null;
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019--2021 SUSE LLC
+ * Copyright (c) 2019--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.suse.manager.webui.controllers;
 
@@ -31,9 +27,11 @@ import com.redhat.rhn.testing.SparkTestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.webui.controllers.login.LoginController;
+import com.suse.manager.webui.services.OidcAuthHandler;
 import com.suse.manager.webui.utils.LoginHelper;
 import com.suse.utils.Json;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -50,10 +48,26 @@ import spark.routematch.RouteMatch;
 
 public class LoginControllerTest extends BaseControllerTestCase {
 
+    private LoginController loginController;
+
+    private boolean ssoEnabled;
+
     @Override
     @BeforeEach
     public void setUp() throws Exception {
         super.setUp();
+
+        ssoEnabled = Config.get().getBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED);
+        loginController = new LoginController(new OidcAuthHandler(), SSOTestUtils.getSaml2Settings());
+    }
+
+    @Override
+    @AfterEach
+    public void tearDown() throws Exception {
+        // Restore the original SSO Enabled value
+        Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, Boolean.toString(ssoEnabled));
+
+        super.tearDown();
     }
 
     @Test
@@ -71,15 +85,18 @@ public class LoginControllerTest extends BaseControllerTestCase {
         response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
         // logging in
         LoginHelper.successfulLogin(mockRequest, response.raw(), user);
-        ModelAndView result = LoginController.loginView(RequestResponseFactory.create(match, mockRequest), response);
-        HashMap<String, String> model = (HashMap<String, String>) result.getModel();
+        ModelAndView result = loginController.loginView(RequestResponseFactory.create(match, mockRequest), response);
+
+        @SuppressWarnings("unchecked")
+        Map<String, String> model = (Map<String, String>) result.getModel();
         assertNotNull(mockRequest.getSession().getAttribute("webUserID"));
-        assertEquals(model.get("url_bounce"), "/rhn/users/UserDetails.do?uid=1");
+        assertEquals("/rhn/users/UserDetails.do?uid=1", model.get("url_bounce"));
     }
 
     @Test
     public void testLoginWithSSO() {
         Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, "true");
+
         final String requestUrl = "http://localhost:8080/rhn/manager/login";
         final RouteMatch match = new RouteMatch(new Object(), requestUrl, requestUrl, "");
         final RhnMockHttpServletRequest mockRequest = new RhnMockHttpServletRequest();
@@ -88,10 +105,13 @@ public class LoginControllerTest extends BaseControllerTestCase {
         mockRequest.addParameter("url_bounce", "/rhn/users/UserDetails.do?uid=1");
 
         response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
-        ModelAndView result = LoginController.loginView(RequestResponseFactory.create(match, mockRequest), response);
+        ModelAndView result = loginController.loginView(RequestResponseFactory.create(match, mockRequest), response);
         assertNotNull(result); // redirect to the SSO login page
+
         // we still need to check that the model has been correctly populated
-        assertNotNull(((Map<String, Object>) result.getModel()).get("webTheme"));
+        @SuppressWarnings("unchecked")
+        Map<String, Object> model = (Map<String, Object>) result.getModel();
+        assertNotNull(model.get("webTheme"));
     }
 
     @Test
@@ -107,15 +127,18 @@ public class LoginControllerTest extends BaseControllerTestCase {
         mockRequest.addParameter("url_bounce", "/rhn/users/UserDetails.do?uid=1");
 
         response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
-        ModelAndView result = LoginController.loginView(RequestResponseFactory.create(match, mockRequest), response);
-        HashMap<String, String> model = (HashMap<String, String>) result.getModel();
+        ModelAndView result = loginController.loginView(RequestResponseFactory.create(match, mockRequest), response);
+
+        @SuppressWarnings("unchecked")
+        Map<String, String> model = (Map<String, String>) result.getModel();
         assertNull(mockRequest.getSession().getAttribute("webUserID"));
-        assertEquals(model.get("url_bounce"), "/rhn/users/UserDetails.do?uid=1");
+        assertEquals("/rhn/users/UserDetails.do?uid=1", model.get("url_bounce"));
     }
 
     @Test
     public void testLoginOK() throws UnsupportedEncodingException {
         Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, "false");
+
         Map<String, String> params = new HashMap<>();
         Request request = SparkTestUtils.createMockRequestWithBody(
                 "http://localhost:8080/rhn/manager/api/login",
@@ -124,7 +147,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
                 params);
         Response response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
 
-        String modelView = LoginController.login(request, response);
+        String modelView = loginController.login(request, response);
         LoginController.LoginResult result = Json.GSON.fromJson(modelView, LoginController.LoginResult.class);
         assertTrue(result.isSuccess());
     }
@@ -132,6 +155,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
     @Test
     public void testLoginKO() throws UnsupportedEncodingException {
         Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, "false");
+
         Map<String, String> params = new HashMap<>();
         Request request = SparkTestUtils.createMockRequestWithBody(
                 "http://localhost:8080/rhn/manager/api/login",
@@ -140,7 +164,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
                 params);
         Response response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
 
-        String modelView = LoginController.login(request, response);
+        String modelView = loginController.login(request, response);
         LoginController.LoginResult result = Json.GSON.fromJson(modelView, LoginController.LoginResult.class);
         assertFalse(result.isSuccess());
         assertEquals(
@@ -152,6 +176,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
     @Test
     public void testLoginWithEmptyPassword() throws UnsupportedEncodingException {
         Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, "false");
+
         Map<String, String> params = new HashMap<>();
         Request request = SparkTestUtils.createMockRequestWithBody(
                 "http://localhost:8080/rhn/manager/api/login",
@@ -160,7 +185,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
                 params);
         Response response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
 
-        String modelView = LoginController.login(request, response);
+        String modelView = loginController.login(request, response);
         LoginController.LoginResult result = Json.GSON.fromJson(modelView, LoginController.LoginResult.class);
         assertFalse(result.isSuccess());
         assertEquals(
@@ -172,6 +197,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
     @Test
     public void testLoginWithEmptyUsername() throws UnsupportedEncodingException {
         Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, "false");
+
         Map<String, String> params = new HashMap<>();
         Request request = SparkTestUtils.createMockRequestWithBody(
                 "http://localhost:8080/rhn/manager/api/login",
@@ -180,7 +206,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
                 params);
         Response response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
 
-        String modelView = LoginController.login(request, response);
+        String modelView = loginController.login(request, response);
         LoginController.LoginResult result = Json.GSON.fromJson(modelView, LoginController.LoginResult.class);
         assertFalse(result.isSuccess());
         assertEquals(
@@ -192,6 +218,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
     @Test
     public void testLoginWithInvalidUsername() throws UnsupportedEncodingException {
         Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, "false");
+
         Map<String, String> params = new HashMap<>();
         Request request = SparkTestUtils.createMockRequestWithBody(
                 "http://localhost:8080/rhn/manager/api/login",
@@ -200,7 +227,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
                         "017324193274913741974")), params);
         Response response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
 
-        String modelView = LoginController.login(request, response);
+        String modelView = loginController.login(request, response);
         LoginController.LoginResult result = Json.GSON.fromJson(modelView, LoginController.LoginResult.class);
         assertFalse(result.isSuccess());
         assertEquals(
@@ -211,6 +238,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
     @Test
     public void testLoginWithDisabledUsername() throws UnsupportedEncodingException {
         Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, "false");
+
         User u = UserTestUtils.createUser(this);
         UserManager.disableUser(u, u);
         Map<String, String> params = new HashMap<>();
@@ -221,7 +249,7 @@ public class LoginControllerTest extends BaseControllerTestCase {
                         "password")), params);
         Response response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
 
-        String modelView = LoginController.login(request, response);
+        String modelView = loginController.login(request, response);
         LoginController.LoginResult result = Json.GSON.fromJson(modelView, LoginController.LoginResult.class);
         assertFalse(result.isSuccess());
         assertEquals(
