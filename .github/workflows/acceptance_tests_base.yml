@@ -176,7 +176,12 @@ jobs:
       - name: Collect and tag flaky tests in controller
         # For security reasons, it only runs on uyuni-project/uyuni repository, as it collects data from a private GH board
         if: ${{ !inputs.skip_tests && github.repository == 'uyuni-project/uyuni' && needs.filters.outputs.require_acceptance_tests == 'true' }}
-        run: ./testsuite/podman_runner/06_collect_and_tag_flaky_tests_in_controller.sh
+        run: |
+          if [ -n "${GITHUB_TOKEN}" ]; then
+            ./testsuite/podman_runner/06_collect_and_tag_flaky_tests_in_controller.sh
+          else
+            echo "Skipping flaky test collection: GH_TOKEN_GALAXY_CI is not available for this workflow run."
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN_GALAXY_CI }}
 
