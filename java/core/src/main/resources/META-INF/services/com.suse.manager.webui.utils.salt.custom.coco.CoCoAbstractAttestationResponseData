@@ -1,2 +1,3 @@
 com.suse.manager.webui.utils.salt.custom.coco.CoCoAmdEpycAttestationResponseData
 com.suse.manager.webui.utils.salt.custom.coco.CoCoSecureBootAttestationResponseData
+com.suse.manager.webui.utils.salt.custom.coco.CoCoIbmZAttestationResponseData
