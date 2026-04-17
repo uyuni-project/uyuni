@@ -154,7 +154,16 @@ public class RemoteMinionCommands {
                 String target = StringUtils.trim(msg.getTarget());
 
                 Optional<CompletionStage<Map<String, Result<Boolean>>>> resSSH =
-                        SALT_API.matchAsyncSSH(target, failAfter);
+                        StringUtils.containsAny(target, '*', '?', '[', ']') ?
+                        // If we detect a glob pattern, we use Salt to match it
+                        SALT_API.matchAsyncSSH(target, failAfter) :
+                        // If it's not a glob pattern, we do a direct lookup. This is to avoid the Salt-SSH behavior
+                        // that tries to connect to any direct hostname, regardless of whether it is in
+                        // the roster or not
+                        MinionServerFactory.findByMinionId(target)
+                                .filter(MinionServer::isSSHPush)
+                                .map(minion -> CompletableFuture.completedFuture(
+                                        Collections.singletonMap(target, Result.success(true))));
 
                 Map<String, CompletionStage<Result<Boolean>>> res = SALT_API.matchAsync(target, failAfter);
                 if (res.isEmpty() && resSSH.isEmpty()) {
