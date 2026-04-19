@@ -4,7 +4,7 @@
     <div class="spacewalk-section-toolbar">
         <div class="action-button-wrapper">
             <rl:csv
-                name="errataList"
+                name="list"
                 exportColumns="advisoryType,advisoryName,synopsis,updateDate"/>
             <button type="submit" name="dispatch" class="btn btn-danger"
                 value='<bean:message key="erratalist.jsp.deleteerrata"/>'>

@@ -130,6 +130,7 @@ type State = {
   selectedItems: any[];
   target?: any;
   auditExecuted?: boolean;
+  criteria: string;
 };
 
 class CVEAudit extends Component<Props, State> {
@@ -145,6 +146,7 @@ class CVEAudit extends Component<Props, State> {
       messages: [],
       selectedItems: [],
       auditExecuted: false,
+      criteria: "",
     };
   }
 
@@ -154,6 +156,8 @@ class CVEAudit extends Component<Props, State> {
     }
     return true;
   };
+
+  handleSearch = (criteria) => this.setState({ criteria });
 
   handleSelectItems = (items) => {
     const removed = this.state.selectedItems.filter((i) => !items.includes(i));
@@ -336,7 +340,9 @@ class CVEAudit extends Component<Props, State> {
                   "&target=" +
                   this.state.resultType +
                   "&statuses=" +
-                  this.state.statuses
+                  this.state.statuses +
+                  "&q=" +
+                  encodeURIComponent(this.state.criteria)
                 }
                 data-senna-off="true"
                 className="btn btn-default"
@@ -380,6 +386,7 @@ class CVEAudit extends Component<Props, State> {
             initialSortColumnKey="id"
             selectable={this.state.resultType === TARGET_SERVER && this.state.results.length > 0}
             onSelect={this.handleSelectItems}
+            onSearch={this.handleSearch}
             selectedItems={this.state.selectedItems}
             searchField={<SearchField filter={this.searchData} placeholder={t("Filter by name")} />}
           >
