@@ -4,6 +4,7 @@ import { LinkButton } from "components/buttons";
 import { IconTag } from "components/icontag";
 import * as Systems from "components/systems";
 import { Column } from "components/table/Column";
+import { DownloadCSVButton } from "components/table/DownloadCSVButton";
 import { Table } from "components/table/Table";
 
 import { Utils } from "utils/functions";
@@ -17,26 +18,6 @@ type Props = {
   isAdmin: boolean;
   queryColumn?: string;
   query?: string;
-};
-
-const DownloadCSVButton = ({ search }) => {
-  let url = "/rhn/manager/systems/csv/all";
-  if (search?.field && search?.criteria) {
-    const searchParams = new URLSearchParams({
-      qc: search.field,
-      q: search.criteria,
-    });
-    url += `?${searchParams.toString()}`;
-  }
-  return (
-    <LinkButton
-      text={t("Download CSV")}
-      href={url}
-      className="btn btn-default"
-      icon="spacewalk-icon-download-csv"
-      data-senna-off="true"
-    />
-  );
 };
 
 export function AllSystems(props: Props) {
@@ -85,7 +66,7 @@ export function AllSystems(props: Props) {
         defaultSearchField={props.queryColumn || "server_name"}
         initialSearch={props.query}
         emptyText={t("No Systems.")}
-        titleButtons={[<DownloadCSVButton key="download-csv-button" search={{}} />]}
+        titleButtons={[<DownloadCSVButton key="download-csv-button" url="/rhn/manager/systems/csv/all" />]}
       >
         <Column
           columnKey="server_name"
