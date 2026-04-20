@@ -4,6 +4,7 @@
 
 var reporter = require('cucumber-html-reporter');
 var path = require('path');
+var fs = require('fs');
 
 // Read command-line arguments
 var args = process.argv.slice(2);
@@ -14,7 +15,7 @@ var options = {
   jsonDir: jsonDir,
   output: 'cucumber_report/cucumber_report.html',
   reportSuiteAsScenarios: true,
-  launchReport: true,
+  launchReport: false,
   columnLayout: 1,
   scenarioTimestamp: true,
   screenshotsDirectory: './cucumber_report/screenshots/',
@@ -32,3 +33,34 @@ var options = {
 };
 
 reporter.generate(options);
+
+var customScript = `
+<script>
+  setTimeout(() => {
+    const descriptions = document.querySelectorAll('.description');
+    const urlPattern = /(https?:\\/\\/[^\\s]+)/g;
+    let count = 0;
+
+    descriptions.forEach(el => {
+      const originalText = el.textContent;
+      if (urlPattern.test(originalText)) {
+        const newHTML = originalText.replace(
+          urlPattern,
+          '<a href="$1" target="_blank" rel="noopener noreferrer" style="color: #007bff; text-decoration: underline; word-break: break-all;">$1</a>'
+        );
+        el.innerHTML = newHTML;
+        count++;
+      }
+    });
+  }, 500);
+</script>
+`;
+
+try {
+    var htmlFilePath = path.resolve(options.output);
+    var htmlContent = fs.readFileSync(htmlFilePath, 'utf8');
+    htmlContent = htmlContent.replace('</body>', customScript + '\n</body>');
+    fs.writeFileSync(htmlFilePath, htmlContent, 'utf8');
+} catch (error) {
+    console.error('Error injecting custom script into the report:', error);
+}
