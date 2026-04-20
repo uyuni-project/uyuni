@@ -1,0 +1,1 @@
+- Default SAML2 signature algorithm to rsa-sha256 on fresh installs
