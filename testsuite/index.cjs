@@ -60,8 +60,13 @@ var customScript = `
 try {
     var htmlFilePath = path.resolve(options.output);
     var htmlContent = fs.readFileSync(htmlFilePath, 'utf8');
-    htmlContent = htmlContent.replace('</body>', customScript + '\n</body>');
-    fs.writeFileSync(htmlFilePath, htmlContent, 'utf8');
+    var updatedHtmlContent = htmlContent.replace(/<\/body\s*>/i, customScript + '\n</body>');
+
+    if (updatedHtmlContent === htmlContent) {
+        throw new Error('Could not find closing </body> tag in the generated report.');
+    }
+
+    fs.writeFileSync(htmlFilePath, updatedHtmlContent, 'utf8');
 } catch (error) {
     console.error('Error injecting custom script into the report:', error);
 }
