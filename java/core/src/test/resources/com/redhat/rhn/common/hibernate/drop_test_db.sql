@@ -1,0 +1,3 @@
+DROP TABLE IF EXISTS persist_test CASCADE;
+
+DROP SEQUENCE IF EXISTS persist_sequence;

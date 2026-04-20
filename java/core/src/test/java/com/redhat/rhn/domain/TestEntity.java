@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 SUSE LLC
+ * Copyright (c) 2025--2026 SUSE LLC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -17,9 +17,13 @@
 package com.redhat.rhn.domain;
 
 
+import org.hibernate.annotations.Type;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -55,6 +59,10 @@ public class TestEntity extends BaseDomainHelper implements TestInterface {
 
     @Column
     private Integer pin;
+
+    @Type(JsonType.class)
+    @Column(columnDefinition = "jsonb", name = "additional_data")
+    private Map<String, Object> additionalData;
 
     @Transient
     private String noColumnField;
@@ -104,6 +112,14 @@ public class TestEntity extends BaseDomainHelper implements TestInterface {
 
     public void setPin(Integer pinIn) {
         pin = pinIn;
+    }
+
+    public Map<String, Object> getAdditionalData() {
+        return additionalData;
+    }
+
+    public void setAdditionalData(Map<String, Object> additionalDataIn) {
+        this.additionalData = additionalDataIn;
     }
 
     public String getNoColumnField() {
