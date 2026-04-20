@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-14 11:17+0200\n"
-"PO-Revision-Date: 2026-04-16 19:04+0000\n"
+"PO-Revision-Date: 2026-04-20 21:04+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -83,7 +83,7 @@ msgstr "Podrobnosti atestačnej správy"
 
 #: ../html/src/components/ComplianceBadge.tsx:13
 msgid "No Scans"
-msgstr ""
+msgstr "Žiadne skenovania"
 
 #: ../html/src/components/FormulaForm.tsx:24
 msgid "Formula saved. Applying the highstate is not needed for this formula."
@@ -155,23 +155,17 @@ msgid "scheduled."
 msgstr "naplánované."
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:171
-#, fuzzy
-#| msgid "Schedule Name"
 msgid "Schedule New XCCDF Scan"
-msgstr "Názov plánu"
+msgstr "Naplánovať nové skenovanie XCCDF"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:180
 #: ../html/src/components/policies-picker.tsx:117
-#, fuzzy
-#| msgid "Policy"
 msgid "SCAP Policy"
-msgstr "Politika"
+msgstr "Pravidlá SCAP"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:184
-#, fuzzy
-#| msgid "No profile selected"
 msgid "No Policy Selected"
-msgstr "Žiadny profil nebol vybraný"
+msgstr "Neboli vybrané žiadne pravidlá"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:194
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:173
@@ -1835,10 +1829,8 @@ msgid "Select a Schedule"
 msgstr "Vybrať plán"
 
 #: ../html/src/components/policies-picker.tsx:91
-#, fuzzy
-#| msgid "State assignments have been saved."
 msgid "Policy assignment has been saved."
-msgstr "Priradenia stavov boli uložené."
+msgstr "Priradenie pravidiel bolo uložené."
 
 #: ../html/src/components/policies-picker.tsx:94
 #: ../html/src/components/states-picker.tsx:176
@@ -1867,10 +1859,8 @@ msgstr "Hľadať"
 
 #: ../html/src/components/policies-picker.tsx:175
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:318
-#, fuzzy
-#| msgid "Policy"
 msgid "Policy Name"
-msgstr "Politika"
+msgstr "Názov pravidiel"
 
 #: ../html/src/components/policies-picker.tsx:176
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:322
@@ -3572,13 +3562,11 @@ msgstr ""
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:158
 msgid "Edit Compliance Policy"
-msgstr ""
+msgstr "Upraviť pravidlá súladu"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:158
-#, fuzzy
-#| msgid "Create Image Profile"
 msgid "Create Compliance Policy"
-msgstr "Vytvoriť profil obrazu"
+msgstr "Vytvoriť pravidlá súladu"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:231
 #, fuzzy
@@ -3680,10 +3668,8 @@ msgid "this content"
 msgstr "tento obsah"
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:44
-#, fuzzy
-#| msgid "Image profile has been deleted."
 msgid "Scap Policy has been deleted."
-msgstr "Profil obrazu bol vymazaný."
+msgstr "Pravidlá Scap boli vymazané."
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:45
 #, fuzzy
@@ -3693,7 +3679,7 @@ msgstr "Profily obrazov boli vymazané."
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:59
 msgid "Failed to delete SCAP policy"
-msgstr ""
+msgstr "Zlyhalo vymazanie pravidiel SCAP"
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:117
 msgid "Scap Policies"
@@ -3718,14 +3704,12 @@ msgid "Compliance"
 msgstr "Dokončené"
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:179
-#, fuzzy
-#| msgid "Delete Pin"
 msgid "Delete Scap Policy"
-msgstr "Vymazať pripnutie"
+msgstr "Vymazať pravidlá Scap"
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:182
 msgid "this policy"
-msgstr ""
+msgstr "tieto pravidlá"
 
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:41
 #, fuzzy
@@ -3776,10 +3760,8 @@ msgid "Non-Compliant"
 msgstr ""
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:162
-#, fuzzy
-#| msgid "Proxy Configuration"
 msgid "Policy Configuration"
-msgstr "Konfigurácia proxy"
+msgstr "Konfigurácia pravidiel"
 
 #. Scan History Table - Separate Panel
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:185
@@ -3788,7 +3770,7 @@ msgstr ""
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:191
 msgid "No scans have been performed with this policy yet."
-msgstr ""
+msgstr "Na základe týchto pravidiel sa zatiaľ nevykonali žiadne skenovania."
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:203
 msgid "Show only latest scan per system"
@@ -3956,7 +3938,7 @@ msgstr "Predplatné"
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:372
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:86
 msgid "Policy"
-msgstr "Politika"
+msgstr "Pravidlá"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:136
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:375
@@ -6961,10 +6943,8 @@ msgid "Order"
 msgstr "Usporiadať"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:310
-#, fuzzy
-#| msgid "State Summary for {name}"
 msgid "SCAP Policy for {name}"
-msgstr "Súhrn stavu pre {name}"
+msgstr "Pravidlá SCAP pre {name}"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:332
 #, fuzzy
