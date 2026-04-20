@@ -38,12 +38,13 @@ var customScript = `
 <script>
   setTimeout(() => {
     const descriptions = document.querySelectorAll('.description');
+    const urlPatternTest = /(https?:\\/\\/[^\\s]+)/;
     const urlPattern = /(https?:\\/\\/[^\\s]+)/g;
     let count = 0;
 
     descriptions.forEach(el => {
       const originalText = el.textContent;
-      if (urlPattern.test(originalText)) {
+      if (urlPatternTest.test(originalText)) {
         const newHTML = originalText.replace(
           urlPattern,
           '<a href="$1" target="_blank" rel="noopener noreferrer" style="color: #007bff; text-decoration: underline; word-break: break-all;">$1</a>'
