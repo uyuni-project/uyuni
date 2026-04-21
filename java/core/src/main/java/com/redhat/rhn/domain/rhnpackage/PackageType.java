@@ -30,6 +30,11 @@ public enum PackageType {
         return dbString;
     }
 
+    /**
+     * Get PackageType from db string.
+     * @param dbString the db string
+     * @return the PackageType
+     */
     public static PackageType fromDbString(String dbString) {
         return EnumSet.allOf(PackageType.class).stream()
                 .filter(packageType -> packageType.dbString.equals(dbString))

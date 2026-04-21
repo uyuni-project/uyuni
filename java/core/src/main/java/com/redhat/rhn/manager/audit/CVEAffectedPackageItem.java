@@ -18,6 +18,9 @@ package com.redhat.rhn.manager.audit;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageType;
 
+/**
+ * A package that is affected by a CVE
+ */
 public class CVEAffectedPackageItem {
     private Long systemId;
     private String systemName;
@@ -29,15 +32,26 @@ public class CVEAffectedPackageItem {
 
     /**
      * Standard constructor
-     * */
-    public CVEAffectedPackageItem(Long systemId, String systemName, String packageName, PackageType packageType, String patchedVersion,
-                                  String installedEpoch, String installedVersion, String installedRelease, String cveIn) {
-        this.systemId = systemId;
-        this.systemName = systemName;
-        this.packageName = packageName;
-        this.packageType = packageType;
-        this.patchedVersion = patchedVersion;
-        this.installedPackageEvr = new PackageEvr(installedEpoch, installedVersion, installedRelease, packageType);
+     * @param systemIdIn the system id
+     * @param systemNameIn the system name
+     * @param packageNameIn the package name
+     * @param packageTypeIn the package type
+     * @param patchedVersionIn the patched version
+     * @param installedEpochIn the installed epoch
+     * @param installedVersionIn the installed version
+     * @param installedReleaseIn the installed release
+     * @param cveIn the cve identifier
+     */
+    public CVEAffectedPackageItem(Long systemIdIn, String systemNameIn, String packageNameIn, PackageType packageTypeIn,
+                                  String patchedVersionIn, String installedEpochIn, String installedVersionIn,
+                                  String installedReleaseIn, String cveIn) {
+        this.systemId = systemIdIn;
+        this.systemName = systemNameIn;
+        this.packageName = packageNameIn;
+        this.packageType = packageTypeIn;
+        this.patchedVersion = patchedVersionIn;
+        this.installedPackageEvr = new PackageEvr(installedEpochIn, installedVersionIn, installedReleaseIn,
+                packageTypeIn);
         this.cve = cveIn;
     }
 
@@ -45,54 +59,82 @@ public class CVEAffectedPackageItem {
         return systemId;
     }
 
-    public void setSystemId(Long systemId) {
-        this.systemId = systemId;
+    /**
+     * Set the system id.
+     * @param systemIdIn the system id
+     */
+    public void setSystemId(Long systemIdIn) {
+        this.systemId = systemIdIn;
     }
 
     public String getSystemName() {
         return systemName;
     }
 
-    public void setSystemName(String systemName) {
-        this.systemName = systemName;
+    /**
+     * Set the system name.
+     * @param systemNameIn the system name
+     */
+    public void setSystemName(String systemNameIn) {
+        this.systemName = systemNameIn;
     }
 
     public String getPackageName() {
         return packageName;
     }
 
-    public void setPackageName(String packageName) {
-        this.packageName = packageName;
+    /**
+     * Set the package name.
+     * @param packageNameIn the package name
+     */
+    public void setPackageName(String packageNameIn) {
+        this.packageName = packageNameIn;
     }
 
     public PackageType getPackageType() {
         return packageType;
     }
 
-    public void setPackageType(PackageType packageType) {
-        this.packageType = packageType;
+    /**
+     * Set the package type.
+     * @param packageTypeIn the package type
+     */
+    public void setPackageType(PackageType packageTypeIn) {
+        this.packageType = packageTypeIn;
     }
 
     public String getPatchedVersion() {
         return patchedVersion;
     }
 
-    public void setPatchedVersion(String patchedVersion) {
-        this.patchedVersion = patchedVersion;
+    /**
+     * Set the patched version.
+     * @param patchedVersionIn the patched version
+     */
+    public void setPatchedVersion(String patchedVersionIn) {
+        this.patchedVersion = patchedVersionIn;
     }
 
     public PackageEvr getInstalledPackageEvr() {
         return installedPackageEvr;
     }
 
-    public void setInstalledPackageEvr(PackageEvr installedPackageEvr) {
-        this.installedPackageEvr = installedPackageEvr;
+    /**
+     * Set the installed package evr.
+     * @param installedPackageEvrIn the installed package evr
+     */
+    public void setInstalledPackageEvr(PackageEvr installedPackageEvrIn) {
+        this.installedPackageEvr = installedPackageEvrIn;
     }
 
     public String getCve() {
         return cve;
     }
 
+    /**
+     * Set the cve.
+     * @param cveIn the cve identifier
+     */
     public void setCve(String cveIn) {
         cve = cveIn;
     }

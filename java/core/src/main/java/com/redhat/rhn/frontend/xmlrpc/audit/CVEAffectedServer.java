@@ -26,33 +26,51 @@ public class CVEAffectedServer {
     private String name;
     private List<CVEAffectedPackage> affectedPackages;
 
-    public CVEAffectedServer(Long id, String name, List<CVEAffectedPackage> affectedPackages) {
-        this.id = id;
-        this.name = name;
-        this.affectedPackages = new ArrayList<>(affectedPackages);
+    /**
+     * Standard constructor
+     * @param idIn the server id
+     * @param nameIn the server name
+     * @param affectedPackagesIn the list of affected packages
+     */
+    public CVEAffectedServer(Long idIn, String nameIn, List<CVEAffectedPackage> affectedPackagesIn) {
+        this.id = idIn;
+        this.name = nameIn;
+        this.affectedPackages = new ArrayList<>(affectedPackagesIn);
     }
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    /**
+     * Set the server id.
+     * @param idIn the server id
+     */
+    public void setId(Long idIn) {
+        this.id = idIn;
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    /**
+     * Set the server name.
+     * @param nameIn the server name
+     */
+    public void setName(String nameIn) {
+        this.name = nameIn;
     }
 
     public List<CVEAffectedPackage> getAffectedPackages() {
         return affectedPackages;
     }
 
-    public void setAffectedPackages(List<CVEAffectedPackage> affectedPackages) {
-        this.affectedPackages = affectedPackages;
+    /**
+     * Set the list of affected packages.
+     * @param affectedPackagesIn the list of affected packages
+     */
+    public void setAffectedPackages(List<CVEAffectedPackage> affectedPackagesIn) {
+        this.affectedPackages = affectedPackagesIn;
     }
 }

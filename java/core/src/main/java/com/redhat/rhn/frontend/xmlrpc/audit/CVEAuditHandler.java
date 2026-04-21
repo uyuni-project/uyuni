@@ -238,6 +238,7 @@ public class CVEAuditHandler extends BaseHandler {
      * @apidoc.param #session_key()
      * @apidoc.param #param("string", "cveIdentifier")
      * @apidoc.returntype #return_array_begin() $CVEAffectedServerSerializer #array_end()
+     * @return the list of affected systems
      */
     @ReadOnly
     public List<CVEAffectedServer> listAffectedSystems(User loggedInUser, String cveIdentifier) {
@@ -257,6 +258,7 @@ public class CVEAuditHandler extends BaseHandler {
      * affected packages
      * @apidoc.param #session_key()
      * @apidoc.returntype #return_array_begin() $CVEAffectedServerSerializer #array_end()
+     * @return the list of affected systems
      */
     @ReadOnly
     public Map<String, List<CVEAffectedServer>> listAffectedSystemsByCve(User loggedInUser) {

@@ -31,16 +31,23 @@ public class CVEAffectedPackage {
     private PackageType packageType;
     private Status status;
 
-    public CVEAffectedPackage(String packageName, String installedVersion, String patchedVersion,
-                              PackageType packageType) {
-        Objects.requireNonNull(packageName);
-        Objects.requireNonNull(packageType);
-        Objects.requireNonNull(installedVersion);
+    /**
+     * Standard constructor
+     * @param packageNameIn the package name
+     * @param installedVersionIn the installed version
+     * @param patchedVersionIn the patched version
+     * @param packageTypeIn the package type
+     */
+    public CVEAffectedPackage(String packageNameIn, String installedVersionIn, String patchedVersionIn,
+                              PackageType packageTypeIn) {
+        Objects.requireNonNull(packageNameIn);
+        Objects.requireNonNull(packageTypeIn);
+        Objects.requireNonNull(installedVersionIn);
 
-        this.packageName = packageName;
-        this.installedVersion = installedVersion;
-        this.patchedVersion = patchedVersion;
-        this.packageType = packageType;
+        this.packageName = packageNameIn;
+        this.installedVersion = installedVersionIn;
+        this.patchedVersion = patchedVersionIn;
+        this.packageType = packageTypeIn;
 
         updateStatus();
     }
