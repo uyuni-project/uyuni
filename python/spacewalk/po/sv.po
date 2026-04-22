@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-08-22 09:58+0200\n"
-"PO-Revision-Date: 2026-04-20 15:04+0000\n"
+"PO-Revision-Date: 2026-04-22 13:04+0000\n"
 "Last-Translator: Luna  Jernberg <bittin@opensuse.org>\n"
 "Language-Team: Swedish <https://l10n.opensuse.org/projects/uyuni/backend/sv/>\n"
 "Language: sv\n"
@@ -885,20 +885,19 @@ msgstr "Kan inte jämföra filer med olika filtyp"
 #. 5100 - 5199: scap results reporting error
 #: ../common/rhnException.py:267
 msgid "SCAP results file transfer is invalid or incomplete"
-msgstr ""
+msgstr "Filöverföringen av SCAP-resultat är ogiltig eller ofullständig"
 
 #: ../common/rhnException.py:268
 msgid "Error composing directory path for detailed SCAP results"
-msgstr ""
+msgstr "Fel vid sammanställning av katalogsökväg för detaljerade SCAP-resultat"
 
 #: ../common/rhnException.py:269
 msgid "Error composing file path for detailed SCAP results"
-msgstr ""
+msgstr "Fel vid sammanställning av katalogsökväg för detaljerade SCAP-resultat"
 
 #: ../common/rhnException.py:270
-#, fuzzy
 msgid "Invalid content encoding"
-msgstr "Ogiltig elementkod"
+msgstr "Ogiltig innehållskodning"
 
 #: ../common/rhnException.py:317
 #, fuzzy
@@ -943,7 +942,7 @@ msgstr "Förklaring: %s"
 #: ../common/rhnTB.py:220
 #, python-format
 msgid "ERROR: %s %s: %s"
-msgstr ""
+msgstr "FEL: %s %s: %s"
 
 #: ../common/rhnTB.py:221
 #, python-format
@@ -954,7 +953,7 @@ msgstr ""
 #: ../satellite_tools/disk_dumper/iss.py:1640
 #, python-format
 msgid "format of %s should be at least YYYYMMDD.\n"
-msgstr ""
+msgstr "format av %s bör vara minst ÅÅÅÅMMDD.\n"
 
 #: ../satellite_tools/messages.py:28
 #, python-format
@@ -982,6 +981,9 @@ msgid ""
 "ERROR: there was a problem synchronizing the information.\n"
 "       Error message: %s\n"
 msgstr ""
+"\n"
+"FEL: det uppstod ett problem med att synkronisera informationen.\n"
+"       Felmeddelande: %s\n"
 
 #: ../satellite_tools/messages.py:52
 #, python-format
@@ -1016,7 +1018,7 @@ msgstr ""
 #: ../satellite_tools/messages.py:77
 #, python-format
 msgid "  ERROR: not enough free space (%s KB) on device."
-msgstr ""
+msgstr "  FEL:inte tillräckligt med ledigt utrymme (%s KB) på enhet."
 
 #: ../satellite_tools/messages.py:79
 #, python-format
@@ -1024,19 +1026,19 @@ msgid "    %3d/%s Fetch successful: %s (%s bytes)"
 msgstr ""
 
 #: ../satellite_tools/messages.py:80
-#, fuzzy, python-format
+#, python-format
 msgid "    Extinct package:  %s"
-msgstr "Ett paket förväntades, inte: %s"
+msgstr "    Utdött paket:  %s"
 
 #: ../satellite_tools/messages.py:81
 #, python-format
 msgid "   Total size: %s"
-msgstr ""
+msgstr "   Total storlek: %s"
 
 #: ../satellite_tools/messages.py:83
 #, python-format
 msgid "      Downloaded %s of %s. Estimated remaining time: %s"
-msgstr ""
+msgstr "      Nedladdat %s av %s. Beräknad återstående tid: %s"
 
 #: ../satellite_tools/messages.py:85
 #, python-format
@@ -1056,7 +1058,7 @@ msgstr ""
 #: ../satellite_tools/messages.py:88
 #, python-format
 msgid "       failed:  %d"
-msgstr ""
+msgstr "       misslyckades:  %d"
 
 #: ../satellite_tools/messages.py:89
 #, python-format
