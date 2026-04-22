@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-14 11:17+0200\n"
-"PO-Revision-Date: 2026-04-20 21:04+0000\n"
+"PO-Revision-Date: 2026-04-22 18:04+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -170,10 +170,8 @@ msgstr "Neboli vybrané žiadne pravidlá"
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:194
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:173
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:111
-#, fuzzy
-#| msgid "Playbook Content"
 msgid "SCAP Content"
-msgstr "Obsah scenára"
+msgstr "Obsah SCAP"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:198
 msgid "SCAP Content is required."
@@ -182,27 +180,21 @@ msgstr "Vyžaduje sa obsah SCAP."
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:227
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:194
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:323
-#, fuzzy
-#| msgid "Delete Profile"
 msgid "XCCDF Profile"
-msgstr "Vymazať profil"
+msgstr "Profil XCCDF"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:231
-#, fuzzy
-#| msgid "Image version is required."
 msgid "XCCDF Profile is required."
-msgstr "Vyžaduje sa verzia obrazu."
+msgstr "Vyžaduje sa profil XCCDF."
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:238
-#, fuzzy
-#| msgid "Select a module..."
 msgid "Select XCCDF profile..."
-msgstr "Vybrať modul..."
+msgstr "Vybrať profil XCCDF..."
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:253
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:210
 msgid "Tailoring File"
-msgstr ""
+msgstr "Súbor prispôsobenia"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:257
 #, fuzzy
