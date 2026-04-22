@@ -22,6 +22,7 @@ require_relative 'quality_intelligence'
 require_relative 'remote_nodes_env'
 require_relative 'commonlib'
 require_relative 'navigation_step_helper'
+require_relative 'ai_test_reviewer'
 
 $stdout.puts("Using Ruby version: #{RUBY_VERSION}")
 
@@ -152,6 +153,7 @@ end
 After do |scenario|
   current_epoch = Time.new.to_i
   log "This scenario took: #{current_epoch - @scenario_start_time} seconds"
+  screenshot_path = nil
   if scenario.failed?
     begin
       if scenario.exception.is_a?(Selenium::WebDriver::Error::WebDriverError)
@@ -171,13 +173,15 @@ After do |scenario|
             false
           end
         if session_active
-          handle_screenshot_and_relog(scenario, current_epoch)
+          screenshot_path = handle_screenshot_and_relog(scenario, current_epoch)
         else
           warn 'There is no active web session; unable to take a screenshot or relog.'
         end
       end
     ensure
       print_server_logs
+      review_output = AITestReviewer.review!(scenario, screenshot_path)
+      attach review_output, 'text/plain' unless review_output.nil? || review_output.empty?
     end
   end
   page.instance_variable_set(:@touched, false) if capybara_session_created?
@@ -210,9 +214,11 @@ def handle_screenshot_and_relog(scenario, current_epoch)
     attach "#{Time.at(@scenario_start_time).strftime('%H:%M:%S:%L')} - #{Time.at(current_epoch).strftime('%H:%M:%S:%L')} | Current URL: #{current_url}", 'text/plain'
   rescue StandardError => e
     warn "Error message: #{e.message}"
+    path = nil
   ensure
     relog_and_visit_previous_url
   end
+  path
 end
 
 # Try to get the minion details when on minion page

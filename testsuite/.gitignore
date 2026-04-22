@@ -6,6 +6,8 @@ output_*
 failed.txt
 Gemfile.lock
 screenshots/
+tmp/failtale/
+tmp/ai_test_reviewer/
 
 # Predictive Test Selection Outputs
 **/predictive-test-selection/CSVs

@@ -77,7 +77,7 @@ namespace :parallel do
       # Create a per-build screenshots folder and pass it to Cucumber workers via env var.
       screenshot_dir = "#{result_folder}/screenshots"
       sh "mkdir -p #{screenshot_dir}", verbose: false
-      old_screenshot_dir = ENV['SCREENSHOT_DIR']
+      old_screenshot_dir = ENV.fetch('SCREENSHOT_DIR', nil)
       ENV['SCREENSHOT_DIR'] = screenshot_dir
       cucumber_opts = "#{include_profiles} #{include_tags} #{html_results} #{json_results} #{junit_results} -f CustomFormatter::PrettyFormatter -r features "
       # Publish the results in reports.cucumber.io if the environment variable PUBLISH_CUCUMBER_REPORT is set
@@ -402,5 +402,225 @@ namespace :jenkins do
     Rake::Task['jenkins:generate_rake_files_add_maintenance_update_repository'].reenable
     Rake::Task['jenkins:generate_rake_files_migration_tests'].invoke
     Rake::Task['jenkins:generate_rake_files_migration_tests'].reenable
+  end
+end
+
+namespace :ai_test_reviewer do
+  # Helper: run a shell command and abort with a friendly message on failure.
+  def ai_sh(cmd)
+    puts "  → #{cmd}"
+    system(cmd) || abort("Command failed: #{cmd}")
+  end
+
+  # Helper: check whether a binary is already on PATH.
+  def tool_installed?(name)
+    system("command -v #{name} > /dev/null 2>&1")
+  end
+
+  desc 'Install uv (Python package/virtualenv manager used by crewAI)'
+  task :install_uv do
+    if tool_installed?('uv')
+      puts 'uv is already installed, skipping.'
+    else
+      puts 'Installing uv...'
+      ai_sh 'curl -LsSf https://astral.sh/uv/install.sh | sh'
+      # Ensure the uv binary added to ~/.local/bin (or ~/.cargo/bin) is on PATH
+      # for subsequent tasks in the same Ruby process.
+      [File.expand_path('~/.local/bin'), File.expand_path('~/.cargo/bin')].each do |dir|
+        ENV['PATH'] = "#{dir}:#{ENV.fetch('PATH', '')}" if File.directory?(dir)
+      end
+      puts 'uv installed successfully.'
+    end
+  end
+
+  desc 'Install Docker (used by UyuniMCPTool inside FailTale)'
+  task :install_docker do
+    if tool_installed?('docker')
+      puts 'Docker is already installed, skipping.'
+    else
+      puts 'Installing Docker...'
+      os = RUBY_PLATFORM
+      if os.include?('darwin')
+        if tool_installed?('brew')
+          ai_sh 'brew install --cask docker'
+          puts 'Docker Desktop installed via Homebrew. Please start Docker Desktop manually.'
+        else
+          abort 'Homebrew is required to install Docker on macOS. Install it from https://brew.sh and retry.'
+        end
+      elsif File.exist?('/etc/debian_version')
+        ai_sh 'apt-get update -qq && apt-get install -y docker.io'
+        ai_sh 'systemctl enable --now docker || true'
+      elsif File.exist?('/etc/os-release') && File.read('/etc/os-release').include?('suse')
+        ai_sh 'zypper --non-interactive install docker'
+        ai_sh 'systemctl enable --now docker || true'
+      elsif File.exist?('/etc/redhat-release') || File.exist?('/etc/rocky-release')
+        ai_sh 'yum install -y docker'
+        ai_sh 'systemctl enable --now docker || true'
+      else
+        abort 'Unsupported OS. Please install Docker manually: https://docs.docker.com/get-docker/'
+      end
+      puts 'Docker installed successfully.'
+    end
+  end
+
+  desc 'Install Node.js and npx (used by SSHMCPTool inside FailTale)'
+  task :install_npx do
+    if tool_installed?('npx')
+      puts 'npx is already available, skipping.'
+    elsif tool_installed?('node') || tool_installed?('nodejs')
+      puts 'Node.js is installed but npx is missing – installing via npm...'
+      ai_sh 'npm install -g npx'
+    else
+      puts 'Installing Node.js (includes npx)...'
+      os = RUBY_PLATFORM
+      if os.include?('darwin')
+        if tool_installed?('brew')
+          ai_sh 'brew install node'
+        else
+          abort 'Homebrew is required to install Node.js on macOS. Install it from https://brew.sh and retry.'
+        end
+      elsif File.exist?('/etc/debian_version')
+        ai_sh 'apt-get update -qq && apt-get install -y nodejs npm'
+      elsif File.exist?('/etc/os-release') && File.read('/etc/os-release').include?('suse')
+        ai_sh 'zypper --non-interactive install nodejs npm'
+      elsif File.exist?('/etc/redhat-release') || File.exist?('/etc/rocky-release')
+        ai_sh 'yum install -y nodejs npm'
+      else
+        abort 'Unsupported OS. Please install Node.js manually: https://nodejs.org/'
+      end
+      puts 'Node.js and npx installed successfully.'
+    end
+  end
+
+  desc 'Install Ollama (local LLM runtime used for knowledge embeddings)'
+  task :install_ollama do
+    if tool_installed?('ollama')
+      puts 'Ollama is already installed, skipping.'
+    else
+      puts 'Installing Ollama...'
+      os = RUBY_PLATFORM
+      if os.include?('darwin') && tool_installed?('brew')
+        ai_sh 'brew install ollama'
+      else
+        ai_sh 'curl -fsSL https://ollama.com/install.sh | sh'
+      end
+      puts 'Ollama installed successfully.'
+    end
+  end
+
+  desc 'Start Ollama service and pull the nomic-embed-text embedding model'
+  task pull_nomic_embed_text: :install_ollama do
+    puts 'Ensuring Ollama service is running...'
+    # Start in background if not already running; ignore errors if already up.
+    system('ollama serve > /dev/null 2>&1 &')
+    sleep 2
+
+    puts 'Pulling nomic-embed-text model (required for knowledge embeddings)...'
+    ai_sh 'ollama pull nomic-embed-text'
+    puts 'nomic-embed-text model pulled successfully.'
+  end
+
+  desc 'Clone FailTale repository and install crewAI with its dependencies'
+  task :install_failtale do
+    failtale_home = ENV.fetch('AI_TEST_REVIEWER_HOME', nil) ||
+                    ENV.fetch('FAILTALE_HOME', nil) ||
+                    File.expand_path('~/failtale-uyuni')
+
+    puts "FailTale home directory: #{failtale_home}"
+
+    if Dir.exist?(failtale_home)
+      puts "Directory already exists at #{failtale_home}. Pulling latest changes..."
+      ai_sh "git -C #{failtale_home} pull"
+    else
+      puts 'Cloning FailTale repository...'
+      ai_sh "git clone https://github.com/srbarrios/failtale-uyuni.git #{failtale_home}"
+    end
+
+    puts 'Installing uv and crewAI CLI via pip...'
+    ai_sh 'pip install uv crewai'
+
+    puts 'Installing FailTale locked dependencies via crewAI...'
+    Dir.chdir(failtale_home) do
+      ai_sh 'crewai install'
+    end
+
+    # Enable AI Test Reviewer when installing it
+    bashrc = '/root/.bashrc'
+    if File.writable?(bashrc) || File.writable?(File.dirname(bashrc))
+      lines = File.exist?(bashrc) ? File.read(bashrc) : ''
+      File.open(bashrc, 'a') do |f|
+        f.puts 'export AI_TEST_REVIEWER_ENABLED=true' unless lines.include?('AI_TEST_REVIEWER_ENABLED=true')
+        f.puts "export AI_TEST_REVIEWER_HOME=#{failtale_home}" unless lines.include?("AI_TEST_REVIEWER_HOME=#{failtale_home}")
+      end
+      puts "Environment variables written to #{bashrc}."
+    else
+      puts "Warning: Could not write to #{bashrc}. Please add the exports manually."
+    end
+
+    puts "FailTale installed successfully at #{failtale_home}."
+    puts ''
+    puts 'Next steps:'
+    puts "  1. Export AI_TEST_REVIEWER_HOME=#{failtale_home}"
+    puts '  2. Create/edit .env inside that directory and set your API key:'
+    puts '       GOOGLE_API_KEY=<your_key>   # default Gemini provider'
+    puts '       # or GEMINI_API_KEY / OPENAI_API_KEY'
+    puts '  3. Edit examples/uyuni/config.yaml with your environment details.'
+    puts '  4. Enable the integration when running the testsuite:'
+    puts '       export AI_TEST_REVIEWER_ENABLED=true'
+    puts '       export AI_TEST_REVIEWER_BACKEND=failtale'
+  end
+
+  desc 'Verify FailTale installation by executing a dry crewai run'
+  task :verify_failtale do
+    failtale_home = ENV.fetch('AI_TEST_REVIEWER_HOME', nil) ||
+                    ENV.fetch('FAILTALE_HOME', nil) ||
+                    File.expand_path('~/failtale-uyuni')
+
+    unless Dir.exist?(failtale_home)
+      abort "FailTale directory not found at #{failtale_home}. " \
+            "Run 'rake ai_test_reviewer:install_failtale' first."
+    end
+
+    api_key = ENV.fetch('GOOGLE_API_KEY', nil) ||
+              ENV.fetch('GEMINI_API_KEY', nil) ||
+              ENV.fetch('OPENAI_API_KEY', nil)
+    abort 'No API key found. Export GOOGLE_API_KEY, GEMINI_API_KEY, or OPENAI_API_KEY and retry.' unless api_key
+
+    puts "Verifying FailTale installation in #{failtale_home}..."
+    Dir.chdir(failtale_home) do
+      ai_sh 'crewai run'
+    end
+    puts 'FailTale verification completed successfully.'
+  end
+
+  desc 'Full setup: install all prerequisites and FailTale (runs all sub-tasks in order)'
+  task setup: %i[
+    install_uv
+    install_docker
+    install_npx
+    install_ollama
+    pull_nomic_embed_text
+    install_failtale
+  ] do
+    failtale_home = ENV.fetch('AI_TEST_REVIEWER_HOME', nil) ||
+                    ENV.fetch('FAILTALE_HOME', nil) ||
+                    File.expand_path('~/failtale-uyuni')
+    puts ''
+    puts '=========================================================='
+    puts ' AI Test Reviewer (FailTale) setup completed successfully!'
+    puts '=========================================================='
+    puts ''
+    puts 'Enable the integration by exporting these variables before'
+    puts 'running the testsuite:'
+    puts ''
+    puts '  export AI_TEST_REVIEWER_ENABLED=true'
+    puts '  export AI_TEST_REVIEWER_BACKEND=failtale'
+    puts "  export AI_TEST_REVIEWER_HOME=#{failtale_home}"
+    puts '  export GOOGLE_API_KEY=<your_api_key>'
+    puts ''
+    puts 'Optional variables:'
+    puts '  export AI_TEST_REVIEWER_TIMEOUT=600'
+    puts '  export AI_TEST_REVIEWER_MAX_RUNS=5'
+    puts '  export AI_TEST_REVIEWER_OUT=tmp/ai_test_reviewer'
   end
 end
