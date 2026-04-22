@@ -3,6 +3,7 @@ import { useState } from "react";
 import { IconTag } from "components/icontag";
 import * as Systems from "components/systems";
 import { Column } from "components/table/Column";
+import { DownloadCSVButton } from "components/table/DownloadCSVButton";
 import { Table } from "components/table/Table";
 
 import { Utils } from "utils/functions";
@@ -57,16 +58,7 @@ export function VirtualSystems(props: Props) {
         initialSearch={props.query}
         emptyText={t("No Virtual Systems.")}
         titleButtons={[
-          <a
-            key="download-csv"
-            href="/rhn/manager/systems/csv/virtualSystems"
-            title="Download CSV"
-            className="btn btn-default"
-            data-senna-off="true"
-          >
-            <IconTag type="item-download-csv" />
-            {t("Download CSV")}
-          </a>,
+          <DownloadCSVButton key="download-csv" url="/rhn/manager/systems/csv/virtualSystems" />,
         ]}
       >
         <Column

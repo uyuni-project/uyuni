@@ -18,7 +18,7 @@
     <div class="spacewalk-section-toolbar">
         <div class="action-button-wrapper">
             <rl:csv dataset="pageList"
-                name="packageList"
+                name="errataList"
                 exportColumns="id, advisory, advisoryType, advisorySynopsis, updateDate" />
         </div>
     </div>
