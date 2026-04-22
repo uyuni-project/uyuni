@@ -12144,7 +12144,7 @@ Ak chcete túto situáciu napraviť, pridajte prihlasovacie údaje SCC &lt;a hre
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target state="translated">Prispôsobenie súborov</target>
+        <target state="translated">Súbory prispôsobenia</target>
       </trans-unit>
       <trans-unit id="distupgrade.sles16.migration.success" xml:space="preserve">
         <source>SLES 16 migration completed successfully.{0}</source>
