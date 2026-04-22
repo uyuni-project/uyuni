@@ -482,12 +482,18 @@ public class ScapManager extends BaseManager {
 
             TransformerFactory factory = TransformerFactory.newInstance();
 
-            //disable access to external entities in xml parsing
-            factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
-            factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
-
-            //secure processing
+            // Protect against XXE attacks
             factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+            try {
+                // Disable access to external entities and stylesheets
+                factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+                factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
+                factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+            }
+            catch (IllegalArgumentException e) {
+                LOGGER.warn("XML Parser does not support disabling external entities. " +
+                        "XXE protection might be incomplete. Error: {}", e.getMessage());
+            }
 
             Transformer transformer = factory.newTransformer(xslStream);
             transformer.transform(in, out);
@@ -551,17 +557,26 @@ public class ScapManager extends BaseManager {
     private static void applyXsltTransformation(InputStream xmlIn, InputStream xsltIn, OutputStream out) {
         try {
             TransformerFactory factory = TransformerFactory.newInstance();
+            // Protect against XXE attacks
             factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-            factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
-            factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
+            try {
+                // Disable access to external entities and stylesheets
+                factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, "");
+                factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, "");
+                factory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "");
+            }
+            catch (IllegalArgumentException e) {
+                LOGGER.warn("XML Parser does not support disabling external DTDs. " +
+                        "XXE protection might be incomplete. Error: {}", e.getMessage());
+            }
             StreamSource xmlSource = new StreamSource(xmlIn);
             StreamSource xsltSource = new StreamSource(xsltIn);
             StreamResult result = new StreamResult(out);
             Transformer transformer = factory.newTransformer(xsltSource);
             transformer.transform(xmlSource, result);
         }
-        catch (TransformerException | IllegalArgumentException e) {
-            throw new RuntimeException("XSL transform failed or insecure factory configuration", e);
+        catch (TransformerException e) {
+            throw new RuntimeException("XSL transform failed", e);
         }
     }
     /**
