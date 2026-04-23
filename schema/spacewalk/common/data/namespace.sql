@@ -1380,6 +1380,12 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.audit.list_systems_by_patch_status', 'R', 'List visible systems with their patch status regarding a given CVE')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.audit.list_affected_systems', 'R', 'List visible systems with their corresponding affected packages regarding a given CVE identifier')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.audit.list_affected_systems_by_cve', 'R', 'List known CVEs along the visible systems affected by the CVE with their corresponding affected packages')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.image.delta.create_delta_image', 'W', 'Import an image and schedule an inspect afterwards. The "size" entries in the pillar')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
