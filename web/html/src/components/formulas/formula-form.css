@@ -56,16 +56,39 @@
   background-color: #fcf8e3;
 }
 
+:global(.formula-primitive-group-item) {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+:global(.formula-primitive-group-item-content) {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
 :global(.formula-content-section-open) {
   margin-left: 5px;
-  border-left: 5px solid #a7a9ac;
+  border-left: 2px solid #a7a9ac;
   border-top: 1px solid #dcddde;
   padding-left: 10px;
 }
 
 :global(.formula-content-section-closed) {
   margin-left: 5px;
-  border-left: 5px solid #dcddde;
+  border-left: 2px solid #dcddde;
   border-top: 1px solid #dcddde;
   padding-left: 10px;
+}
+
+:global(.level-3) {
+  border-left: 0;
+}
+:global(.level-5) {
+  border-left: 0;
+  margin-left: 0;
 }
