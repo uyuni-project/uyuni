@@ -15,9 +15,11 @@ type Props = {
   children?: ReactNode;
   isVisibleByCriteria?: () => boolean;
   criteria: string;
+  level?: number;
 };
 
 const Group = (props: Props) => {
+  const level = props.level ?? 1;
   const [visible, setVisible] = useState(props.sectionsExpanded !== SectionState.Collapsed);
 
   useEffect(() => {
@@ -38,7 +40,9 @@ const Group = (props: Props) => {
   return props.isVisibleByCriteria?.() ? (
     <div
       className={
-        visible ? "formula-content-section-open group-heading" : "formula-content-section-closed group-heading"
+        visible
+          ? `level-${level} formula-content-section-open group-heading`
+          : `level-${level} formula-content-section-closed group-heading`
       }
     >
       <SectionToggle setVisible={setVisibility} isVisible={isVisible}>
