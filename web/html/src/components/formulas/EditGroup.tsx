@@ -28,6 +28,7 @@ type EditGroupProps = {
   id: string;
   key: any;
   disabled?: boolean;
+  level?: number;
   value: any;
   formulaForm: any;
   element: ElementDefinition;
@@ -118,10 +119,16 @@ class EditGroup extends Component<EditGroupProps, EditGroupState> {
       Component = EditDictionaryGroup;
     }
 
+    const level = this.props.level ?? 1;
+
     return this.props.isVisibleByCriteria?.() ? (
       <div
         id={this.props.id}
-        className={this.isVisible() ? "formula-content-section-open" : "formula-content-section-closed"}
+        className={
+          this.isVisible()
+            ? `level-${level} formula-content-section-open`
+            : `level-${level} formula-content-section-closed`
+        }
       >
         <div className="group-heading">
           <SectionToggle setVisible={this.setVisible} isVisible={this.isVisible}>
@@ -133,17 +140,6 @@ class EditGroup extends Component<EditGroupProps, EditGroupState> {
               />
             </h4>
           </SectionToggle>
-          <i
-            className="fa fa-plus"
-            id={this.props.id + "#add_item"}
-            data-bs-toggle="tooltip"
-            title={
-              this.props.element.$maxItems! <= this.props.value.length ? "Max number of items reached" : "Add Item"
-            }
-            /* @ts-expect-error: The property `disabled` doesn't exist on the `<i>` tag, but this was here historically */
-            disabled={this.props.element.$maxItems! <= this.props.value.length || this.props.disabled}
-            {...DEPRECATED_onClick(this.handleAddItem)}
-          ></i>
         </div>
         <div>
           {this.state.visible ? (
@@ -154,12 +150,33 @@ class EditGroup extends Component<EditGroupProps, EditGroupState> {
                 isDisabled={this.isDisabled()}
                 id={this.props.id}
                 key={this.props.key}
+                level={this.props.level}
                 element={this.props.element}
                 value={this.props.value}
                 sectionsExpanded={this.props.sectionsExpanded}
                 setSectionsExpanded={this.props.setSectionsExpanded}
                 formulaForm={this.props.formulaForm}
               />
+              <div className="form-group">
+                <div className="col-lg-9 offset-lg-3">
+                  <button
+                    className="btn btn-default"
+                    type="button"
+                    id={this.props.id + "#add_item"}
+                    data-bs-toggle="tooltip"
+                    title={
+                      this.props.element.$maxItems! <= this.props.value.length
+                        ? "Max number of items reached"
+                        : "Add Item"
+                    }
+                    /* @ts-expect-error: The property `disabled` doesn't exist on the `<i>` tag, but this was here historically */
+                    disabled={this.props.element.$maxItems! <= this.props.value.length || this.props.disabled}
+                    {...DEPRECATED_onClick(this.handleAddItem)}
+                  >
+                    Add Item
+                  </button>
+                </div>
+              </div>
             </Fragment>
           ) : null}
         </div>
@@ -183,16 +200,23 @@ type EditPrimitiveGroupProps = {
  */
 class EditPrimitiveGroup extends Component<EditPrimitiveGroupProps> {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  simpleWrapper = (name, required, element, help = null) => {
+  simpleWrapper = (name, required, element, i, help = null) => {
     return (
       <Fragment>
-        <div className="col-lg-3">{element}</div>
+        <div className="col-lg-3 offset-lg-3">{element}</div>
         {required ? (
           <span className="required-form-field" style={{ float: "left", paddingRight: "10px" }}>
             *
           </span>
         ) : null}
         <HelpIcon text={this.props.element["$help"]} />
+        <div className="col-lg-3">
+          <RemoveButton
+            minItems={this.props.element.$minItems!}
+            currentLength={this.props.value.length}
+            handleRemoveItem={() => this.props.handleRemoveItem(i)}
+          />
+        </div>
       </Fragment>
     );
   };
@@ -205,20 +229,23 @@ class EditPrimitiveGroup extends Component<EditPrimitiveGroupProps> {
       }
       const id = this.props.id + "#" + i;
       elements.push(
-        <div className="form-group" id={id} key={id}>
-          {generateFormulaComponentForId(
-            this.props.element.$prototype,
-            this.props.value[i],
-            this.props.formulaForm,
-            id,
-            this.simpleWrapper,
-            this.props.isDisabled
-          )}
-          <RemoveButton
+        <div className="form-group formula-primitive-group-item" id={id} key={id}>
+          <div className="formula-primitive-group-item-content">
+            {generateFormulaComponentForId(
+              this.props.element.$prototype,
+              this.props.value[i],
+              this.props.formulaForm,
+              id,
+              this.simpleWrapper,
+              this.props.isDisabled,
+              this.props.level
+            )}
+          </div>
+          {/* <RemoveButton
             minItems={this.props.element.$minItems!}
             currentLength={this.props.value.length}
             handleRemoveItem={() => this.props.handleRemoveItem(i)}
-          />
+          /> */}
         </div>
       );
     }
@@ -242,12 +269,12 @@ type EditPrimitiveDictionaryGroupProps = {
 class EditPrimitiveDictionaryGroup extends Component<EditPrimitiveDictionaryGroupProps> {
   pairElementWrapper(elementName) {
     return (name, required, element) => (
-      <div key={elementName}>
-        <label className="col-lg-1 control-label">
+      <div className="d-inline-block me-3" key={elementName}>
+        <label className="control-label">
           {elementName}
           {required ? <span className="required-form-field"> *</span> : null}:
         </label>
-        <div className="col-lg-3">{element}</div>
+        <div className="d-inline-block">{element}</div>
       </div>
     );
   }
@@ -261,14 +288,15 @@ class EditPrimitiveDictionaryGroup extends Component<EditPrimitiveDictionaryGrou
       }
       const id = this.props.id + "#" + i;
       elements.push(
-        <div className="form-group" id={id} key={id}>
+        <div className="d-flex align-items-center offset-lg-3 mb-3 gap-3" id={id} key={id}>
           {generateFormulaComponentForId(
             this.props.element.$prototype.$key,
             this.props.value[i][0],
             this.props.formulaForm,
             id + "#0",
             this.pairElementWrapper(this.props.element.$prototype.$key.$name),
-            this.props.isDisabled
+            this.props.isDisabled,
+            this.props.level
           )}
           {generateFormulaComponentForId(
             this.props.element.$prototype,
@@ -276,7 +304,8 @@ class EditPrimitiveDictionaryGroup extends Component<EditPrimitiveDictionaryGrou
             this.props.formulaForm,
             id + "#1",
             this.pairElementWrapper(get(this.props.element.$prototype.$name, "Value")),
-            this.props.isDisabled
+            this.props.isDisabled,
+            this.props.level
           )}
           <RemoveButton
             minItems={this.props.element.$minItems!}
@@ -306,7 +335,7 @@ class RemoveButton extends Component<RemoveButtonProps> {
         onClick={() => this.props.handleRemoveItem()}
         disabled={this.props.minItems >= this.props.currentLength}
       >
-        <i className="fa fa-minus" /> Remove
+        <i className="fa fa-minus" />
       </button>
     );
   }
@@ -314,6 +343,7 @@ class RemoveButton extends Component<RemoveButtonProps> {
 
 type EditDictionaryGroupProps = {
   id: string;
+  level?: number;
   element: ElementDefinition;
   value: any;
   isDisabled?: boolean;
@@ -356,10 +386,12 @@ class EditDictionaryGroup extends Component<EditDictionaryGroupProps, EditDictio
           <span className="required-form-field"> *</span>:
         </label>
         <div className="col-lg-6">{innerHTML}</div>
-        <i
-          className="fa fa-question-circle"
-          title={t("This field is used as a 'key' identifier in the resulting pillar data.")}
-        ></i>
+        <div className="col-lg-3">
+          <i
+            className="fa fa-question-circle"
+            title={t("This field is used as a 'key' identifier in the resulting pillar data.")}
+          ></i>{" "}
+        </div>
       </div>
     );
   }
@@ -398,6 +430,7 @@ class EditDictionaryGroup extends Component<EditDictionaryGroupProps, EditDictio
         continue;
       }
       const id = this.props.id + "#" + i;
+      const level = (this.props.level ?? 1) + 1;
 
       const item_elements: React.ReactNode[] = [];
       for (const element_name in this.props.element.$prototype) {
@@ -409,7 +442,8 @@ class EditDictionaryGroup extends Component<EditDictionaryGroupProps, EditDictio
             this.props.formulaForm,
             id,
             element_name === "$key" ? this.wrapKeyGroup : undefined,
-            this.props.isDisabled
+            this.props.isDisabled,
+            level + 1
           )
         );
       }
@@ -418,7 +452,11 @@ class EditDictionaryGroup extends Component<EditDictionaryGroupProps, EditDictio
         <div
           id={id}
           key={id}
-          className={this.isVisible(i) ? "formula-content-section-open" : "formula-content-section-closed"}
+          className={
+            this.isVisible(i)
+              ? `level-${level} formula-content-section-open`
+              : `level-${level} formula-content-section-closed`
+          }
         >
           <div className="group-heading">
             <SectionToggle index={i} setVisible={this.setVisible} isVisible={this.isVisible}>
