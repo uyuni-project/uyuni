@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-08-22 09:58+0200\n"
-"PO-Revision-Date: 2026-04-22 13:04+0000\n"
+"PO-Revision-Date: 2026-04-23 11:04+0000\n"
 "Last-Translator: Luna  Jernberg <bittin@opensuse.org>\n"
 "Language-Team: Swedish <https://l10n.opensuse.org/projects/uyuni/backend/sv/>\n"
 "Language: sv\n"
@@ -112,15 +112,15 @@ msgid "You are not allowed to manage channel %s, or that channel does not exist"
 msgstr "Du har inte tillåtelse att hantera kanal %s, eller så finns inte kanalen"
 
 #: ../server/importlib/userAuth.py:229
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "               %s Account has been deactivated on this server.\n"
 "               Please contact your Org administrator for more help."
 msgstr ""
 "\n"
-"                   %s-kontot har avaktiverats på denna server.\n"
-"                   Kontakta din organisationsadministratör för mer hjälp."
+"               %s konto har avaktiverats på denna server.\n"
+"                   Vänligen kontakta din organisationsadministratör för mer hjälp."
 
 #: ../server/rhnChannel.py:2216
 #, python-format
@@ -1053,7 +1053,7 @@ msgstr ""
 #: ../satellite_tools/messages.py:87
 #, python-format
 msgid "       success: %d"
-msgstr ""
+msgstr "       lyckades: %d"
 
 #: ../satellite_tools/messages.py:88
 #, python-format
@@ -1092,12 +1092,11 @@ msgstr ""
 
 #: ../satellite_tools/messages.py:96
 msgid "   * WARNING: this may be a slow process."
-msgstr ""
+msgstr "   * VARNING: detta kan vara en långsam process."
 
 #: ../satellite_tools/messages.py:97
-#, fuzzy
 msgid "Linking packages to channels"
-msgstr "Baskanaler i konflikt"
+msgstr "Länkar paket till kanaler"
 
 #: ../satellite_tools/messages.py:98
 #, python-format
@@ -1120,7 +1119,7 @@ msgstr ""
 
 #: ../satellite_tools/reposync.py:138
 msgid "+++ sending log as an email +++"
-msgstr ""
+msgstr "+++ skickar logg som ett e-post +++"
 
 #: ../satellite_tools/reposync.py:141
 #, python-format
@@ -1129,7 +1128,7 @@ msgstr ""
 
 #: ../satellite_tools/reposync.py:151
 msgid "+++ email requested, but there is nothing to send +++"
-msgstr ""
+msgstr "+++ e-postadress begärt, men det finns inget att skicka +++"
 
 #, fuzzy
 #~ msgid "ISS is disabled on this server."
