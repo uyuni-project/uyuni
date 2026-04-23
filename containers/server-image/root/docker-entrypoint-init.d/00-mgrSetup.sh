@@ -39,8 +39,6 @@ check_current_installation
 : "${SCC_PASS:=}"
 : "${ISS_PARENT:=}"
 
-: "${MANAGER_ENABLE_TFTP:=n}"
-
 DEFAULT_RHN_CONF="/usr/share/rhn/config-defaults/rhn.conf"
 TMPDIR="/var/spacewalk/tmp"
 
@@ -153,7 +151,6 @@ report-db-host=${REPORT_DB_HOST}
 report-db-port=${REPORT_DB_PORT}
 report-db-user=${REPORT_DB_USER}
 report-db-password=${REPORT_DB_PASS}
-enable-tftp=${MANAGER_ENABLE_TFTP}
 product_name=${PRODUCT_NAME}
 hostname=${UYUNI_HOSTNAME}
 " > /root/spacewalk-answers

@@ -21,8 +21,6 @@ Feature: Sanity checks
     And service "salt-master" is active on "server"
     And service "taskomatic" is enabled on "server"
     And service "taskomatic" is active on "server"
-    And socket "tftp" is enabled on "server"
-    And socket "tftp" is active on "server"
     And service "tomcat" is enabled on "server"
     And service "tomcat" is active on "server"
 

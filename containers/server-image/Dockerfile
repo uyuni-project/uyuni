@@ -85,6 +85,8 @@ RUN zypper ref && zypper --non-interactive up && \
         zchunk && \
     zypper --non-interactive clean --all && \
     rpm -e container-suseconnect && \
+# Remove tftp even if cobbler says it needs it: we only want its data folder
+    rpm -e --nodeps tftp && mkdir -p -m 755 /srv/tftpboot \
     systemctl enable prometheus-node_exporter && \
     systemctl enable sssd && \
     rm /etc/krb5.conf.d/crypto-policies && \
