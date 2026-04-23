@@ -32,6 +32,7 @@ type EditGroupProps = {
   id: string;
   key: any;
   disabled?: boolean;
+  level?: number;
   value: any;
   formulaForm: any;
   element: ElementDefinition;
@@ -219,7 +220,7 @@ class EditPrimitiveGroup extends Component<EditPrimitiveGroupProps> {
             minItems={this.props.element.$minItems!}
             currentLength={this.props.value.length}
             handleRemoveItem={() => this.props.handleRemoveItem(i)}
-          />
+          /> */}
         </div>
       </>
     );
@@ -313,7 +314,8 @@ class EditPrimitiveDictionaryGroup extends Component<EditPrimitiveDictionaryGrou
             this.props.formulaForm,
             id + "#0",
             this.pairElementWrapper(this.props.element.$prototype.$key.$name),
-            this.props.isDisabled
+            this.props.isDisabled,
+            this.props.level
           )}
           {generateFormulaComponentForId(
             this.props.element.$prototype,
@@ -321,7 +323,8 @@ class EditPrimitiveDictionaryGroup extends Component<EditPrimitiveDictionaryGrou
             this.props.formulaForm,
             id + "#1",
             this.pairElementWrapper(get(this.props.element.$prototype.$name, "Value")),
-            this.props.isDisabled
+            this.props.isDisabled,
+            this.props.level
           )}
           <RemoveButton
             minItems={this.props.element.$minItems!}
@@ -368,6 +371,7 @@ class RemoveButton extends Component<RemoveButtonProps> {
 
 type EditDictionaryGroupProps = {
   id: string;
+  level?: number;
   element: ElementDefinition;
   value: any;
   isDisabled?: boolean;
@@ -455,6 +459,7 @@ class EditDictionaryGroup extends Component<EditDictionaryGroupProps, EditDictio
         continue;
       }
       const id = this.props.id + "#" + i;
+      const level = (this.props.level ?? 1) + 1;
 
       const item_elements: ReactNode[] = [];
       for (const element_name in this.props.element.$prototype) {
@@ -466,7 +471,8 @@ class EditDictionaryGroup extends Component<EditDictionaryGroupProps, EditDictio
             this.props.formulaForm,
             id,
             element_name === "$key" ? this.wrapKeyGroup : undefined,
-            this.props.isDisabled
+            this.props.isDisabled,
+            level + 1
           )
         );
       }

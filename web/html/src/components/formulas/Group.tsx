@@ -21,9 +21,11 @@ type Props = {
   children?: ReactNode;
   isVisibleByCriteria?: () => boolean;
   criteria: string;
+  level?: number;
 };
 
 const Group = (props: Props) => {
+  const level = props.level ?? 1;
   const [visible, setVisible] = useState(props.sectionsExpanded !== SectionState.Collapsed);
 
   useEffect(() => {
