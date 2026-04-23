@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-14 11:17+0200\n"
-"PO-Revision-Date: 2026-04-22 18:04+0000\n"
+"PO-Revision-Date: 2026-04-23 19:04+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -197,61 +197,51 @@ msgid "Tailoring File"
 msgstr "Súbor prispôsobenia"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:257
-#, fuzzy
-#| msgid "Select a module..."
 msgid "Select Tailoring file..."
-msgstr "Vybrať modul..."
+msgstr "Vybrať súbor prispôsobenia..."
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:276
 msgid "Profile from Tailoring File"
-msgstr ""
+msgstr "Profil zo súboru prispôsobenia"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:281
-#, fuzzy
-#| msgid "Select a module..."
 msgid "Select profile..."
-msgstr "Vybrať modul..."
+msgstr "Vybrať profil..."
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:292
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:246
-#, fuzzy
-#| msgid "Command-line Arguments"
 msgid "Advanced Arguments"
-msgstr "Argumenty príkazového riadka"
+msgstr "Pokročilé argumenty"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:296
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:250
 msgid "e.g: --rule <rule_id> --remediate"
-msgstr ""
+msgstr "napr.: --rule <id_pravidla> --remediate"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:297
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:251
-#, fuzzy
-#| msgid "Command-line Arguments"
 msgid "Additional command-line arguments for oscap"
-msgstr "Argumenty príkazového riadka"
+msgstr "Ďalšie argumenty príkazového riadku pre oscap"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:302
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:256
 msgid "OVAL Files"
-msgstr ""
+msgstr "Súbory OVAL"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:306
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:260
 msgid "e.g: /usr/share/xml/scap/suse-sles15-cve.xml"
-msgstr ""
+msgstr "napr.: /usr/share/xml/scap/suse-sles15-cve.xml"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:307
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:261
-#, fuzzy
-#| msgid "Has to be a comma-separated list of host names"
 msgid "Comma-separated list of OVAL files"
-msgstr "Musí byť zoznam názvov hostiteľov oddelený čiarkami"
+msgstr "Čiarkami oddelený zoznam súborov OVAL"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:310
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:264
 msgid "Note: Paths to local OVAL definitions on target system (comma separated)"
-msgstr ""
+msgstr "Poznámka: Cesty k lokálnym definíciám OVAL na cieľovom systéme (oddelené čiarkami)"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:316
 msgid "Fetch Remote Content"
