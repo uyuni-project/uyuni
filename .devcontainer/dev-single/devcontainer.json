@@ -1,0 +1,49 @@
+{
+  "name": "Uyuni Dev (Single Container)",
+  "build": { "dockerfile": "Containerfile" },
+
+  "containerEnv": {
+    "JAVA_HOME": "/usr/lib64/jvm/java-17-openjdk",
+    "ANT_HOME": "/usr/share/ant"
+  },
+
+  "portsAttributes": {
+    "8001": {
+      "label": "Debug Taskomatic",
+      "onAutoForward": "notify"
+    },
+    "8002": {
+      "label": "Debug Search Server",
+      "onAutoForward": "notify"
+    },
+    "8003": {
+      "label": "Debug Tomcat",
+      "onAutoForward": "notify"
+    }
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "vscjava.vscode-java-pack",
+        "shengchen.vscode-checkstyle",
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "peterevans.perl",
+        "ms-vscode.shellcheck",
+        "ms-ossdata.vscode-postgresql",
+        "redhat.vscode-yaml",
+        "redhat.vscode-xml",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "sonarsource.sonarlint-vscode",
+        "ian-h-chamberlain.rpm-specfile",
+        "lslezak.rpm-changes",
+        "CucumberOpen.cucumber-official"
+      ]
+    }
+  },
+
+  "remoteUser": "uyuni",
+  "postCreateCommand": "/bin/bash -C -- /home/uyuni/initialize.sh ${containerWorkspaceFolder}"
+}
