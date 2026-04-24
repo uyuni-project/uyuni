@@ -15,7 +15,6 @@
 
 package com.redhat.rhn.frontend.xmlrpc.audit;
 
-import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.rhnpackage.PackageType;
 
 import java.util.Objects;
@@ -31,25 +30,31 @@ public class CVEAffectedPackage {
     private PackageType packageType;
     private Status status;
 
+    public enum Status {
+        PATCHED, VULNERABLE
+    }
+
     /**
      * Standard constructor
+     *
      * @param packageNameIn the package name
      * @param installedVersionIn the installed version
      * @param patchedVersionIn the patched version
      * @param packageTypeIn the package type
+     * @param statusIn the pre-calculated status
      */
     public CVEAffectedPackage(String packageNameIn, String installedVersionIn, String patchedVersionIn,
-                              PackageType packageTypeIn) {
+                              PackageType packageTypeIn, Status statusIn) {
         Objects.requireNonNull(packageNameIn);
         Objects.requireNonNull(packageTypeIn);
         Objects.requireNonNull(installedVersionIn);
+        Objects.requireNonNull(statusIn);
 
         this.packageName = packageNameIn;
         this.installedVersion = installedVersionIn;
         this.patchedVersion = patchedVersionIn;
         this.packageType = packageTypeIn;
-
-        updateStatus();
+        this.status = statusIn;
     }
 
     public String getPackageName() {
@@ -71,23 +76,5 @@ public class CVEAffectedPackage {
 
     public PackageType getPackageType() {
         return packageType;
-    }
-
-    private void updateStatus() {
-        // No patches are currently available for this package; therefore, if it is installed,
-        // it must be running on a vulnerable version.
-        if (patchedVersion == null) {
-            status = Status.VULNERABLE;
-            return;
-        }
-
-        boolean isPackagePatched = PackageEvr.parsePackageEvr(packageType, installedVersion)
-                .compareTo(PackageEvr.parsePackageEvr(packageType, patchedVersion)) >= 0;
-
-        status = isPackagePatched ? Status.PATCHED : Status.VULNERABLE;
-    }
-
-    public enum Status {
-        PATCHED, VULNERABLE
     }
 }

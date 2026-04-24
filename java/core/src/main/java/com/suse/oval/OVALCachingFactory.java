@@ -206,7 +206,8 @@ public class OVALCachingFactory extends HibernateFactory {
                 (String) row.get("installed_epoch"),
                 (String) row.get("installed_version"),
                 (String) row.get("installed_release"),
-                (String) row.get("cve")
+                (String) row.get("cve"),
+                (String) row.get("patch_status")
         );
     }
 

@@ -80,7 +80,11 @@
                    pe.epoch AS installed_epoch,
                    pe.version AS installed_version,
                    pe.release AS installed_release,
-                   cve.name AS cve
+                   cve.name AS cve,
+                   CASE
+                       WHEN vulnerablePkg.fix_version IS NULL OR pe.evr < vulnerablePkg.fix_version THEN 'VULNERABLE'
+                       ELSE 'PATCHED'
+                   END AS patch_status
             FROM rhnCVE cve
             JOIN suseOVALPlatformVulnerable platVulnerable
               ON platVulnerable.cve_id = cve.id
@@ -97,7 +101,8 @@
               ON sp.server_id = s.id
                 AND sp.name_id = pn.id
             JOIN rhnPackageEVR pe
-              ON pe.id = sp.evr_id;
+              ON pe.id = sp.evr_id
+            ORDER BY s.id;
         </query>
     </mode>
 
@@ -111,7 +116,11 @@
                    pe.epoch AS installed_epoch,
                    pe.version AS installed_version,
                    pe.release AS installed_release,
-                   cve.name AS cve
+                   cve.name AS cve,
+                   CASE
+                       WHEN vulnerablePkg.fix_version IS NULL OR pe.evr < vulnerablePkg.fix_version THEN 'VULNERABLE'
+                       ELSE 'PATCHED'
+                   END AS patch_status
             FROM rhnCVE cve
             JOIN suseOVALPlatformVulnerable platVulnerable
               ON platVulnerable.cve_id = cve.id
@@ -127,7 +136,8 @@
               ON sp.server_id = s.id
                 AND sp.name_id = pn.id
             JOIN rhnPackageEVR pe
-              ON pe.id = sp.evr_id;
+              ON pe.id = sp.evr_id
+            ORDER BY cve.name, s.id;
         </query>
     </mode>
 
