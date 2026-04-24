@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-14 11:17+0200\n"
-"PO-Revision-Date: 2021-10-15 12:11+0000\n"
+"PO-Revision-Date: 2026-04-24 17:04+0000\n"
 "Last-Translator: Ricardo Mateus <rmateus@suse.com>\n"
 "Language-Team: Portuguese <https://l10n.opensuse.org/projects/uyuni/web/pt/>\n"
 "Language: pt\n"
@@ -21,15 +21,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 4.8.1\n"
+"X-Generator: Weblate 5.17\n"
 
 #: ../html/javascript/spacewalk-essentials.js:409
 msgid "remaining"
-msgstr ""
+msgstr "Restante"
 
 #: ../html/javascript/spacewalk-essentials.js:429
 msgid "The browser Internet Explorer is not supported. Try using Firefox, Chrome or Edge"
-msgstr ""
+msgstr "O browser Internet Explorer não é compatível. Experimente usar o Firefox, Chrome ou Edge"
 
 #: ../html/src/components/CoCoScansList.tsx:75
 #: ../html/src/components/package/PackageListActionScheduler.tsx:91
@@ -37,16 +37,16 @@ msgstr ""
 #: ../html/src/manager/minion/details/support-data.tsx:74
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:74
 msgid "The action has been <link>scheduled</link>."
-msgstr ""
+msgstr "A ação foi <link>agendada</link>."
 
 #: ../html/src/components/CoCoScansList.tsx:90
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:86
 msgid "Unable to schedule action. Please check the server logs for detailed information."
-msgstr ""
+msgstr "Não foi possível agendar a ação. Verifique os logs do servidor para obter informações detalhadas."
 
 #: ../html/src/components/CoCoScansList.tsx:122
 msgid "Confirm Attestation Execution"
-msgstr ""
+msgstr "Confirmar Execução"
 
 #: ../html/src/components/CoCoScansList.tsx:130
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:162
@@ -59,7 +59,7 @@ msgstr ""
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:250
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:108
 msgid "Schedule"
-msgstr ""
+msgstr "Agendar"
 
 #: ../html/src/components/CoCoScansList.tsx:137
 #: ../html/src/components/CoCoScansList.tsx:192
@@ -67,19 +67,19 @@ msgstr ""
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:43
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:260
 msgid "Back to list"
-msgstr ""
+msgstr "Voltar à lista"
 
 #: ../html/src/components/CoCoScansList.tsx:153
 msgid "Confidential Computing Attestations"
-msgstr ""
+msgstr "Verificação de Computação Confidencial"
 
 #: ../html/src/components/CoCoScansList.tsx:163
 msgid "Schedule Attestation"
-msgstr ""
+msgstr "Agendar Verificação"
 
 #: ../html/src/components/CoCoScansList.tsx:187
 msgid "Attestation Report details"
-msgstr ""
+msgstr "Detalhes de Relatório de Verificação"
 
 #: ../html/src/components/ComplianceBadge.tsx:13
 msgid "No Scans"
