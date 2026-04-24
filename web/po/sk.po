@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-14 11:17+0200\n"
-"PO-Revision-Date: 2026-04-23 19:04+0000\n"
+"PO-Revision-Date: 2026-04-24 21:04+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -245,11 +245,11 @@ msgstr "Poznámka: Cesty k lokálnym definíciám OVAL na cieľovom systéme (od
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:316
 msgid "Fetch Remote Content"
-msgstr ""
+msgstr "Načítať vzdialený obsah"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:332
 msgid "This requires internet and a lot of memory, make sure this minion has enough memory available!"
-msgstr ""
+msgstr "Na to je potrebné pripojenie k internetu a veľa pamäte, uistite sa, že tento minion má k dispozícii dostatok pamäte!"
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:357
 #: ../html/src/manager/state/highstate.tsx:142
@@ -1821,13 +1821,11 @@ msgstr "Pri ukladaní sa vyskytla chyba."
 
 #: ../html/src/components/policies-picker.tsx:105
 msgid "No SCAP Policies Found"
-msgstr ""
+msgstr "Nenašli sa žiadne pravidlá SCAP"
 
 #: ../html/src/components/policies-picker.tsx:160
-#, fuzzy
-#| msgid "Search in states"
 msgid "Search in SCAP policies"
-msgstr "Hľadať v stavoch"
+msgstr "Hľadanie v pravidlách SCAP"
 
 #: ../html/src/components/policies-picker.tsx:165
 #: ../html/src/components/states-picker.tsx:432
@@ -1846,10 +1844,8 @@ msgstr "Názov pravidiel"
 
 #: ../html/src/components/policies-picker.tsx:176
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:322
-#, fuzzy
-#| msgid "Stream"
 msgid "Data Stream"
-msgstr "Prúd"
+msgstr "Dátový tok"
 
 #: ../html/src/components/policies-picker.tsx:177
 #: ../html/src/components/states-picker.tsx:465
@@ -1937,27 +1933,23 @@ msgstr "Akciu naplánujte nie skôr ako na"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:108
 msgid "Before Migrating to SLES 16 — Please ensure"
-msgstr ""
+msgstr "Pred migráciou na SLES 16 — Uistite sa, že"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:110
-#, fuzzy
-#| msgid "System is up to date"
 msgid "System is fully up to date"
-msgstr "Systém je aktuálny"
+msgstr "Systém je úplne aktualizovaný"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:111
-#, fuzzy
-#| msgid "Affected, patch is unavailable"
 msgid "Sufficient disk space is available"
-msgstr "Ovplyvnené, oprava nie je k dispozícii"
+msgstr "Je k dispozícii dostatok miesta na disku"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:114
 msgid "Ensure SSH key-based access is available for at least one user. If root login is required, create /etc/ssh/sshd_config.d/50-permit-root-login.conf with: PermitRootLogin yes"
-msgstr ""
+msgstr "Zabezpečte, aby bol prístup založený na kľúčoch SSH dostupný aspoň pre jedného používateľa. Ak je potrebné prihlásenie správcu systému, vytvorte /etc/ssh/sshd_config.d/50-permit-root-login.conf s: PermitRootLogin yes"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:117
 msgid "KVM guests are shut down (if applicable)"
-msgstr ""
+msgstr "Hostitelia KVM sú vypnutí (ak je to možné)"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:118
 msgid "Network configuration will be migrated from wicked to NetworkManager"
