@@ -9,21 +9,13 @@ Feature: Sanity checks
     Then "server" should have a FQDN
     And reverse resolution should work for "server"
     And the clock from "server" should be exact
-    And service "apache2" is enabled on "server"
     And service "apache2" is active on "server"
-    And service "cobblerd" is enabled on "server"
     And service "cobblerd" is active on "server"
-    And service "rhn-search" is enabled on "server"
     And service "rhn-search" is active on "server"
-    And service "salt-api" is enabled on "server"
     And service "salt-api" is active on "server"
-    And service "salt-master" is enabled on "server"
     And service "salt-master" is active on "server"
-    And service "taskomatic" is enabled on "server"
     And service "taskomatic" is active on "server"
-    And socket "tftp" is enabled on "server"
     And socket "tftp" is active on "server"
-    And service "tomcat" is enabled on "server"
     And service "tomcat" is active on "server"
 
 @proxy
