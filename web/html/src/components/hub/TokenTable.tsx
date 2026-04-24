@@ -143,8 +143,7 @@ export class TokenTable extends Component<Props, State> {
                   ? this.setState({ confirmValidityDialog: true, selectedRow: row })
                   : this.onToggleValidity(row)
               }
-            >
-            </Button>
+            ></Button>
             {this.state.selectedRow && (
               <DangerDialog
                 id="confirm-validity-modal"

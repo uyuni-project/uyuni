@@ -1,10 +1,10 @@
 import { useState } from "react";
 
+import { LinkButton } from "components/buttons";
 import { IconTag } from "components/icontag";
 import * as Systems from "components/systems";
 import { Column } from "components/table/Column";
 import { Table } from "components/table/Table";
-import { LinkButton } from "components/buttons";
 
 import { Utils } from "utils/functions";
 import { DEPRECATED_unsafeEquals } from "utils/legacy";
@@ -65,7 +65,7 @@ export function VirtualSystems(props: Props) {
             icon="spacewalk-icon-download-csv"
             className="btn btn-default"
             data-senna-off="true"
-          />
+          />,
         ]}
       >
         <Column
