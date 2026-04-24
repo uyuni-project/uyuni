@@ -88,12 +88,12 @@ Feature: Lock packages on SLES salt minion
     And I follow "Lock / Unlock"
     And I enter "milkyway-dummy-2.0-1.1" as the filtered package name
     And I click on the filter button
-    And I save the ID of the last event for "sle_minion"
+    And I store the current last event id for "sle_minion"
     When I check row with "milkyway-dummy-2.0-1.1" and arch of "sle_minion"
     And I click on "Lock"
     Then I should see a "Packages has been requested for being locked." text
     And package "milkyway-dummy-2.0-1.1" is reported as pending to be locked
-    When I wait until the new "Lock packages scheduled" event is completed for "sle_minion"
+    When I wait until a new "Lock packages scheduled" event is completed for "sle_minion"
     Then "hoag-dummy-1.1-1.1" should be locked on "sle_minion"
     And "milkyway-dummy-2.0-1.1" should be locked on "sle_minion"
     When I follow "Software" in the content area
