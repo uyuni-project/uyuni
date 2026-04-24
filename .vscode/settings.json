@@ -58,15 +58,13 @@
   "java.format.settings.profile": "RHN",
   "vscode-postgres.virtualFolders": ["functions"],
   "prettier.configPath": "web/.prettierrc",
+  "cucumber.features": ["testsuite/features/**/*.feature"],
+  "cucumber.glue": ["testsuite/features/step_definitions/**/*.rb"],
   "[json]": {
     "editor.defaultFormatter": "prettier.prettier-vscode"
   },
   "[python]": {
     "editor.defaultFormatter": "ms-python.autopep8",
-    "editor.formatOnSave": true
-  },
-  "[ruby]": {
-    "editor.defaultFormatter": "Shopify.ruby-lsp",
     "editor.formatOnSave": true
   },
   "[perl]": {
