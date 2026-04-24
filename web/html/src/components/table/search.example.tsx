@@ -2,13 +2,13 @@ import { useState } from "react";
 
 import { useAsyncState } from "@etheryte/react-hooks";
 
+import { Button } from "components/buttons";
+import { DEPRECATED_Check } from "components/input";
 import { Column, Table } from "components/table";
 
 import { useDebounce } from "utils/hooks";
 
 import { getPlaceholderDataWithSearch, PlaceholderRow } from "./search.example.placeholderData";
-import { Button } from "components/buttons";
-import { DEPRECATED_Check } from "components/input";
 const dataNo = [];
 export default () => {
   const [criteria, setCriteria] = useState("");
@@ -28,7 +28,6 @@ export default () => {
     <div className="d-flex">
       <div className="ms-4">
         <div className="d-flex">
-          {/* <span className="control-label me-3">Filter by:</span> */}
           <span className="me-4">
             <DEPRECATED_Check label={t("API")} name="apiNamespace" key="apiNamespace" />
           </span>
@@ -50,17 +49,29 @@ export default () => {
         <Column columnKey="id" header={t("Item id")} cell={(row) => row.id} />
         <Column columnKey="name" header={t("Item name")} cell={(row) => row.name} />
       </Table>
-      <h4>Table header with search and bulk action buttons</h4>
+      <h4 className="mt-5">Table header with search and bulk action buttons</h4>
       <p>
         <code>titleButtons</code> places bulk action buttons in the table header (top-right or top area).
-      </p>{" "}
-      <Table data={dataNo} onSearch={onSearch} titleButtons={actionButtons}></Table>
-      <h4>Table header with search and inline filters</h4>
+      </p>
+      <Table data={dataNo} identifier={(row) => row.id} onSearch={onSearch} titleButtons={actionButtons}>
+        <Column columnKey="id" header="Item id" cell={(row) => row.id} />
+        <Column columnKey="name" header="Item name" cell={(row) => row.name} />
+      </Table>
+      <h4 className="mt-5">Table header with search and inline filters</h4>
       <p>
         <code>searchPanelInline</code>controls whether search and additionalFilters appear in one row; otherwise,
         additionalFilters are shown below the search bar.
       </p>
-      <Table data={dataNo} onSearch={onSearch} searchPanelInline additionalFilters={[namespacesFilter]}></Table>
+      <Table
+        data={dataNo}
+        identifier={(row) => row.id}
+        onSearch={onSearch}
+        searchPanelInline
+        additionalFilters={[namespacesFilter]}
+      >
+        <Column columnKey="id" header="Item id" cell={(row) => row.id} />
+        <Column columnKey="name" header="Item name" cell={(row) => row.name} />
+      </Table>
     </>
   );
 };
