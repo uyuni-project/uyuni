@@ -21,6 +21,18 @@ import com.suse.manager.api.ApiResponseSerializer;
 import com.suse.manager.api.SerializationBuilder;
 import com.suse.manager.api.SerializedApiResponse;
 
+/**
+ * CVEAffectedServerSerializer
+ *
+ * @apidoc.doc
+ * #struct_begin("CVE affected server")
+ *     #prop("int", "system_id")
+ *     #prop("string", "system_name")
+ *     #prop_array_begin("affected_packages")
+ *         $CVEAffectedPackageSerializer
+ *     #prop_array_end()
+ * #struct_end()
+ */
 public class CVEAffectedServerSerializer extends ApiResponseSerializer<CVEAffectedServer> {
     @Override
     public SerializedApiResponse serialize(CVEAffectedServer src) {

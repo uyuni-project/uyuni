@@ -21,6 +21,21 @@ import com.suse.manager.api.ApiResponseSerializer;
 import com.suse.manager.api.SerializationBuilder;
 import com.suse.manager.api.SerializedApiResponse;
 
+/**
+ * CVEAffectedPackageSerializer
+ *
+ * @apidoc.doc
+ * #struct_begin("CVE affected package")
+ *     #prop("string", "name")
+ *     #prop("string", "installed_version")
+ *     #prop("string", "patched_version")
+ *     #prop("string", "patch_status")
+ *         #options()
+ *             #item("PATCHED")
+ *             #item("VULNERABLE")
+ *         #options_end()
+ * #struct_end()
+ */
 public class CVEAffectedPackageSerializer extends ApiResponseSerializer<CVEAffectedPackage> {
     @Override
     public SerializedApiResponse serialize(CVEAffectedPackage src) {
