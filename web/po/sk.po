@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-14 11:17+0200\n"
-"PO-Revision-Date: 2026-04-24 21:04+0000\n"
+"PO-Revision-Date: 2026-04-26 21:04+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -1953,11 +1953,11 @@ msgstr "Hostitelia KVM sú vypnutí (ak je to možné)"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:118
 msgid "Network configuration will be migrated from wicked to NetworkManager"
-msgstr ""
+msgstr "Konfigurácia siete bude presunutá z wicked do NetworkManager"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:119
 msgid "AppArmor profiles will be migrated to SELinux"
-msgstr ""
+msgstr "Profily AppArmor budú migrované do SELinux"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:127
 msgid "In order to detect any possible problems it is recommended to always do a Dry Run before scheduling the actual Product Migration."
@@ -1973,7 +1973,7 @@ msgstr "Skúšobné spustenie"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:148
 msgid "Dry run is not available for this migration"
-msgstr ""
+msgstr "Pre túto migráciu nie je k dispozícii skúšobné spustenie"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:153
 #: ../html/src/manager/admin/hub/peripherals.tsx:37
@@ -3467,41 +3467,35 @@ msgid "Errata"
 msgstr "Opravy chýb"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:80
-#, fuzzy
-#| msgid "An error occurred while displaying the list of packages."
 msgid "An error occurred while uploading the SCAP content."
-msgstr "Pri zobrazovaní zoznamu balíkov sa vyskytla chyba."
+msgstr "Pri nahrávaní obsahu SCAP sa vyskytla chyba."
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:84
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:87
-#, fuzzy
-#| msgid "An unexpected error occurred while fetching users."
 msgid "An unexpected error occurred."
-msgstr "Pri načítavaní používateľov došlo k neočakávanej chybe."
+msgstr "Došlo k neočakávanej chybe."
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:91
 msgid "Edit SCAP Content"
-msgstr ""
+msgstr "Upraviť obsah SCAP"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:108
 msgid "SCAP Datastream File"
-msgstr ""
+msgstr "Súbor SCAP Datastream"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:113
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:128
-#, fuzzy
-#| msgid "Current Schedule"
 msgid "Current file"
-msgstr "Aktuálny plán"
+msgstr "Aktuálny súbor"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:115
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:130
 msgid "Upload a new file to replace the existing one"
-msgstr ""
+msgstr "Nahrať nový súbor, ktorý nahradí ten existujúci"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:118
 msgid "Upload the DataStream file (*-ds.xml)"
-msgstr ""
+msgstr "Nahrať súbor DataStream (*-ds.xml)"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:123
 msgid "XCCDF File"
