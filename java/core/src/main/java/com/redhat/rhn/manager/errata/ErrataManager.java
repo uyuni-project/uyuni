@@ -2109,7 +2109,7 @@ public class ErrataManager extends BaseManager {
         List<ErrataOverview> erratas =
                 SystemManager.relevantErrata(scheduler, server.getId());
         for (ErrataOverview errata : erratas) {
-            Errata erratum = ErrataManager.lookupErrata(errata.getIdAsLong(), scheduler);
+            Errata erratum = ErrataManager.lookupErrata(errata.getId(), scheduler);
             if (erratum.hasKeyword("restart_suggested")) {
                 needed = true;
                 break;

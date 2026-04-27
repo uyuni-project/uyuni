@@ -377,14 +377,6 @@ public class ErrataOverview extends BaseDto {
     }
 
     /**
-     * Returns id as a long
-     * @return id as a long
-     */
-    public long getIdAsLong() {
-        return id;
-    }
-
-    /**
      * Returns true if the advisory is a Product Enhancement.
      * @return true if the advisory is a Product Enhancement.
      */
