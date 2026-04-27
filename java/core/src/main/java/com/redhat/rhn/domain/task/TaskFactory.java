@@ -126,7 +126,7 @@ public class TaskFactory extends HibernateFactory {
                 builder.equal(root.get("org"), org),
                 builder.equal(root.get("priority"), priority)
         ));
-        session.createQuery(criteriaDelete).executeUpdate();
+        session.createMutationQuery(criteriaDelete).executeUpdate();
     }
 
     /**
@@ -144,7 +144,7 @@ public class TaskFactory extends HibernateFactory {
                 builder.equal(root.get("name"), name),
                 builder.equal(root.get("data"), data)
         ));
-        session.createQuery(criteriaDelete).executeUpdate();
+        session.createMutationQuery(criteriaDelete).executeUpdate();
     }
 
     /**
