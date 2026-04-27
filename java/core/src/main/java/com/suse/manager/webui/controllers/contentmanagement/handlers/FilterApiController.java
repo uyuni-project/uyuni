@@ -165,8 +165,7 @@ public class FilterApiController {
         List<ContentFilter> createdFilters;
         try {
             switch (createFilterRequest.getTemplate()) {
-            case "LivePatchingSystem":
-            case "LivePatchingProduct":
+            case "LivePatchingSystem", "LivePatchingProduct":
                 PackageEvr kernelEvr = PackageEvrFactory.lookupPackageEvrById(createFilterRequest.getKernelEvrId());
                 createdFilters = TEMPLATE_MGR.createLivePatchFilters(prefix, kernelEvr, user);
                 break;

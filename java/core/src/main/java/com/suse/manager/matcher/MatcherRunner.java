@@ -177,8 +177,7 @@ public class MatcherRunner {
         int debuglevel = Config.get().getInt("debug", 0);
 
         switch (debuglevel) {
-            case 0:
-            case 1:
+            case 0, 1:
                 return empty(); // use matcher default log level
             case 2:
                 return of("INFO");
