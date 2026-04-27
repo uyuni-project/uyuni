@@ -152,11 +152,12 @@ spec:
           capabilities:
             add:
             - SYS_ADMIN
+          seLinuxOptions:
+            level: "s0"
   {{- if .Values.server.superPrivileged }}
+            type: "spc_t"
           appArmorProfile:
             type: Unconfined
-          seLinuxOptions:
-            type: "spc_t"
   {{- else if .Values.server.apparmorProfile }}
           appArmorProfile:
             type: Localhost
@@ -308,6 +309,9 @@ spec:
         image: {{ include "uyuni.image" (dict "name" "server" "global" . "local" .Values.server) }}
         imagePullPolicy: {{ .Values.pullPolicy }}
         name: init-volumes
+        securityContext:
+          seLinuxOptions:
+            level: "s0"
         volumeMounts:
           - mountPath: /mnt/var/lib/cobbler
             name: var-cobbler
