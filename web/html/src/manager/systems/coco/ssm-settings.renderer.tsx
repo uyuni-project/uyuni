@@ -4,18 +4,13 @@ import CoCoSSMSettings from "./ssm-settings";
 import { CoCoSystemData } from "./types";
 
 // See java/core/src/main/resources/com/suse/manager/webui/templates/ssm/coco-ssm-settings.jade
-declare global {
-  interface Window {
-    systemSupport?: CoCoSystemData[];
-    availableEnvironmentTypes?: any;
-  }
+interface CoCoSSMSettingsProps {
+  systemSupport: CoCoSystemData[];
+  availableEnvironmentTypes: Record<string, string>;
 }
 
-export const renderer = (id) =>
+export const renderer = (id, { systemSupport, availableEnvironmentTypes }: CoCoSSMSettingsProps) =>
   SpaRenderer.renderNavigationReact(
-    <CoCoSSMSettings
-      systemSupport={window.systemSupport ?? []}
-      availableEnvironmentTypes={window.availableEnvironmentTypes ?? []}
-    />,
+    <CoCoSSMSettings systemSupport={systemSupport} availableEnvironmentTypes={availableEnvironmentTypes} />,
     document.getElementById(id)
   );
