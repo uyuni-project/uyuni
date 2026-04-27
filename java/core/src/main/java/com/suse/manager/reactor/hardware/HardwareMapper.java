@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016 SUSE LLC
+ * Copyright (c) 2016--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.suse.manager.reactor.hardware;
 
@@ -19,7 +15,6 @@ import com.redhat.rhn.domain.entitlement.VirtualizationEntitlement;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.scc.SCCCachingFactory;
 import com.redhat.rhn.domain.server.CPU;
-import com.redhat.rhn.domain.server.CPUArch;
 import com.redhat.rhn.domain.server.Device;
 import com.redhat.rhn.domain.server.Dmi;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -76,7 +71,8 @@ public class HardwareMapper {
 
     private final MinionServer server;
     private final ValueMap grains;
-    private List<String> errors = new LinkedList<>();
+    private final CpuInfoMapper cpuMapper;
+    private final List<String> errors = new LinkedList<>();
 
     private static final Pattern PRINTER_REGEX = Pattern.compile(".*/lp\\d+$");
     private static final String SYSFS_PATH = "P";
@@ -92,6 +88,7 @@ public class HardwareMapper {
     public HardwareMapper(MinionServer serverIn, ValueMap grainsIn) {
         this.server = serverIn;
         this.grains = grainsIn;
+        this.cpuMapper = new CpuInfoMapper(serverIn, grains);
     }
 
     /**
@@ -115,107 +112,14 @@ public class HardwareMapper {
         return grains.getValueAsLong("swap_total").orElse(0L);
     }
 
+
     /**
-     * Store CPU information given as a {@link ValueMap}.
+     * Map CPU information from grains and cpuInfo.
      *
-     * @param cpuinfo Salt returns /proc/cpuinfo data
+     * @param cpuInfo CPU info value map
      */
-    public void mapCpuInfo(ValueMap cpuinfo) {
-        final CPU cpu = Optional.ofNullable(server.getCpu()).orElseGet(CPU::new);
-
-        // os.uname[4]
-        String cpuarch = getCpuArch();
-
-        if (StringUtils.isBlank(cpuarch)) {
-            errors.add("CPU: Grain 'cpuarch' has no value");
-            LOG.error("Grain 'cpuarch' has no value for minion: {}", server.getMinionId());
-            return;
-        }
-
-        // See hardware.py read_cpuinfo()
-        if (CpuArchUtil.isX86(cpuarch)) {
-            if (cpuarch.equals("x86_64")) {
-                cpuarch = "x86_64";
-            }
-            else {
-                cpuarch = "i386";
-            }
-
-            // /proc/cpuinfo -> model name
-            cpu.setModel(truncateModel(grains.getValueAsString("cpu_model")));
-            // some machines don't report cpu MHz
-            cpu.setMHz(truncateMhz(cpuinfo.get("cpu MHz").flatMap(ValueMap::toString)
-                    .orElse("-1")));
-            cpu.setVendor(truncateVendor(cpuinfo, "vendor_id"));
-            cpu.setStepping(truncateStepping(cpuinfo, "stepping"));
-            cpu.setFamily(truncateFamily(cpuinfo, "cpu family"));
-            cpu.setCache(truncateCache(cpuinfo, "cache size"));
-            cpu.setBogomips(truncateBogomips(cpuinfo, "bogomips"));
-            cpu.setFlags(truncateFlags(cpuinfo.getValueAsCollection("flags")
-                    .map(c -> c.stream()
-                        .map(e -> Objects.toString(e, ""))
-                        .collect(Collectors.joining(" ")))
-                    .orElse(null)));
-            cpu.setVersion(truncateVersion(cpuinfo, "model"));
-        }
-        else if (CpuArchUtil.isPPC64(cpuarch)) {
-            cpu.setModel(truncateModel(cpuinfo.getValueAsString("cpu")));
-            cpu.setVersion(truncateVersion(cpuinfo, "revision"));
-            cpu.setBogomips(truncateBogomips(cpuinfo, "bogompis"));
-            cpu.setVendor(truncateVendor(cpuinfo, "machine"));
-            cpu.setMHz(truncateMhz(StringUtils.substring(cpuinfo.get("clock")
-                    .flatMap(ValueMap::toString)
-                    .orElse("-1MHz"), 0, -3))); // remove MHz sufix
-        }
-        else if (CpuArchUtil.isS390(cpuarch)) {
-            cpu.setVendor(truncateVendor(cpuinfo, "vendor_id"));
-            cpu.setModel(truncateModel(cpuarch));
-            cpu.setBogomips(truncateBogomips(cpuinfo, "bogomips per cpu"));
-            cpu.setFlags(truncateFlags(cpuinfo.get("features")
-                    .flatMap(ValueMap::toString).orElse(null)));
-            cpu.setMHz("0");
-        }
-        else if (CpuArchUtil.isAarch64(cpuarch)) {
-            cpu.setVendor(cpuarch);
-            cpu.setModel(cpuarch);
-            cpu.setBogomips(grains.getValueAsString("bogomips", 16));
-            cpu.setVendor(grains.getValueAsString("cpu_vendor", 32));
-            cpu.setStepping(grains.getValueAsString("cpu_stepping", 16));
-            cpu.setModel(truncateModel(grains.getValueAsString("cpu_model")));
-        }
-        else {
-            cpu.setVendor(cpuarch);
-            cpu.setModel(cpuarch);
-        }
-
-        CPUArch arch = ServerFactory.lookupCPUArchByName(cpuarch);
-        cpu.setArch(arch);
-
-        cpu.setNrsocket(grains.getValueAsLong("cpu_sockets").orElse(1L));
-        cpu.setNrCore(grains.getValueAsLong("cpu_cores").orElse(1L));
-        cpu.setNrThread(grains.getValueAsLong("cpu_threads").orElse(1L));
-        // Use our custom grain. Salt has a 'num_cpus' grain but it gives
-        // the number of active CPUs not the total num of CPUs in the system.
-        // On s390x this number of active and actual CPUs can be different.
-        cpu.setNrCPU(grains.getValueAsLong("total_num_cpus").orElse(0L));
-
-        var archSpecs = grains.get("cpu_arch_specs")
-            .filter(v -> v instanceof Map)
-            .map(v -> (Map<String, Object>) v)
-            .filter(map -> !map.isEmpty())
-            .orElse(null);
-        cpu.setArchSpecs(archSpecs);
-
-        if (arch != null) {
-            cpu.setServer(server);
-            server.setCpu(cpu);
-        }
-        else {
-            // should not happen but cpu.arch is not nullable so if we don't have
-            // the arch we cannot persist the cpu
-            LOG.warn("Did not set server CPU. Could not find CPUArch in db for value '{}' for minion '{}",
-                    cpuarch, server.getMinionId());
-        }
+    public void mapCpuInfo(ValueMap cpuInfo) {
+        cpuMapper.mapCpuInfo(cpuInfo).ifPresent(errors::add);
     }
 
     /**
@@ -981,42 +885,6 @@ public class HardwareMapper {
      */
     public List<String> getErrors() {
         return errors;
-    }
-
-    private String truncateVendor(ValueMap cpuinfo, String key) {
-        return cpuinfo.getValueAsString(key, 32);
-    }
-
-    private String truncateVersion(ValueMap cpuinfo, String key) {
-        return cpuinfo.getValueAsString(key, 32);
-    }
-
-    private String truncateBogomips(ValueMap cpuinfo, String key) {
-        return cpuinfo.getValueAsString(key, 16);
-    }
-
-    private String truncateCache(ValueMap cpuinfo, String key) {
-        return cpuinfo.getValueAsString(key, 16);
-    }
-
-    private String truncateFamily(ValueMap cpuinfo, String key) {
-        return cpuinfo.getValueAsString(key, 32);
-    }
-
-    private String truncateMhz(String value) {
-        return StringUtils.substring(value, 0, 16);
-    }
-
-    private String truncateStepping(ValueMap cpuinfo, String key) {
-        return cpuinfo.getValueAsString(key, 16);
-    }
-
-    private String truncateModel(String value) {
-        return StringUtils.substring(value, 0, 32);
-    }
-
-    private String truncateFlags(String value) {
-        return StringUtils.substring(value, 0, 2048);
     }
 
     private String getDeviceDesc(ValueMap attrs) {
