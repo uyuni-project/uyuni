@@ -22,6 +22,7 @@ import com.redhat.rhn.domain.product.SUSEProductFactory;
 import com.redhat.rhn.domain.server.Server;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -239,7 +240,7 @@ public class RhelUtils {
                 .anyMatch(ch -> ch.getProductName() != null &&
                         productName.equalsIgnoreCase(ch.getProductName().getName()));
         boolean hasReleasePackage = releasePackage
-                .filter(pkg -> StringUtils.startsWith(pkg, packagePrefix))
+                .filter(pkg ->  Strings.CS.startsWith(pkg, packagePrefix))
                 .isPresent();
         return hasChannels || hasReleasePackage;
     }

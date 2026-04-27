@@ -17,6 +17,7 @@
 package com.redhat.rhn.frontend.struts;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.DynaActionForm;
@@ -134,7 +135,7 @@ public class RhnHelper {
         for (String pairIn : pairs) {
             String[] param = StringUtils.split(pairIn, "=");
             String iname = param[0];
-            if (StringUtils.equals(name, iname) && param.length > 1) {
+            if (Strings.CS.equals(name, iname) && param.length > 1) {
                 return param[1];
             }
         }

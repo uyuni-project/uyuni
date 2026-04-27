@@ -49,6 +49,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.TimeZone;
 
@@ -346,9 +347,9 @@ public class UserFactory extends HibernateFactory {
         inParams.put("login", usr.getLogin());
         inParams.put("password", usr.getPassword());
         inParams.put("contactId", null);
-        inParams.put("prefix", StringUtils.defaultString(usr.getPrefix(), " "));
-        inParams.put("fname", StringUtils.defaultString(usr.getFirstNames(), null));
-        inParams.put("lname", StringUtils.defaultString(usr.getLastName(), null));
+        inParams.put("prefix", Objects.toString(usr.getPrefix(), " "));
+        inParams.put("fname", Objects.toString(usr.getFirstNames(), null));
+        inParams.put("lname", Objects.toString(usr.getLastName(), null));
         inParams.put("genqual", null);
         inParams.put("parentCompany", StringUtils.defaultIfEmpty(usr.getCompany(), null));
         inParams.put("company", StringUtils.defaultIfEmpty(usr.getCompany(), null));

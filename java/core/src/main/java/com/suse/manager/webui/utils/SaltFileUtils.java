@@ -14,7 +14,7 @@
  */
 package com.suse.manager.webui.utils;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 
 /**
  * Utilities for working with Salt .sls files.
@@ -38,7 +38,7 @@ public class SaltFileUtils {
      * @return file name without extension
      */
     public static String stripExtension(String fileName) {
-        return StringUtils.removeEnd(fileName, ".sls");
+        return Strings.CS.removeEnd(fileName, ".sls");
     }
 
     /**
