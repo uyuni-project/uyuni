@@ -1,33 +1,34 @@
 # Copyright (c) 2023 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
+require 'erb'
+
+# Render a cert-manager Certificate YAML from the shared ERB template.
+#
+# @param opts [Hash] Template variables: name, secret_name, fqdn, namespace, issuer_name, issuer_kind, issuer_group, subject, is_ca (nil=omit, false=emit isCA:false with leaf key settings).
+# @return [String] The rendered YAML string.
+def render_certificate_yaml(opts)
+  defaults = { namespace: nil, issuer_group: nil, subject: nil, is_ca: nil }
+  opts = defaults.merge(opts)
+  template_path = File.join(File.dirname(__FILE__), '..', 'upload_files', 'certificate.yaml.erb')
+  ERB.new(File.read(template_path), trim_mode: '-').result_with_hash(opts)
+end
+
 # Create an SSL certificate using cert-manager and return the path on the server where the files have been copied
 #
 # @param name [String] The name of the certificate.
 # @param fqdn [String] The fully qualified domain name (FQDN) for the certificate.
 # @return [Array<String>] An array containing the paths to the generated certificate files: [crt_path, key_path, ca_path].
 def generate_certificate(name, fqdn)
-  certificate = 'apiVersion: cert-manager.io/v1\\n'\
-                'kind: Certificate\\n'\
-                'metadata:\\n'\
-                "  name: uyuni-#{name}\\n"\
-                'spec:\\n'\
-                "  secretName: uyuni-#{name}-cert\\n"\
-                '  subject:\\n'\
-                "    countries: ['DE']\\n"\
-                "    provinces: ['Bayern']\\n"\
-                "    localities: ['Nuernberg']\\n"\
-                "    organizations: ['SUSE']\\n"\
-                "    organizationalUnits: ['SUSE']\\n"\
-                '  emailAddresses:\\n'\
-                '    - galaxy-noise@suse.de\\n'\
-                "  commonName: #{fqdn}\\n"\
-                '  dnsNames:\\n'\
-                "    - #{fqdn}\\n"\
-                '  issuerRef:\\n'\
-                '    name: uyuni-ca-issuer\\n'\
-                '    kind: Issuer'
-  _out, return_code = get_target('server').run_local("echo -e \"#{certificate}\" | kubectl apply -f -")
+  certificate = render_certificate_yaml(
+    name: "uyuni-#{name}",
+    secret_name: "uyuni-#{name}-cert",
+    fqdn: fqdn,
+    issuer_name: 'uyuni-ca-issuer',
+    issuer_kind: 'Issuer',
+    subject: { country: 'DE', province: 'Bayern', locality: 'Nuernberg', org: 'SUSE', ou: 'SUSE', email: 'galaxy-noise@suse.de' }
+  )
+  _out, return_code = get_target('server').run_local("cat <<'CERT_EOF' | kubectl apply -f -\n#{certificate}\nCERT_EOF")
   raise SystemCallError, "Failed to define #{name} Certificate resource" unless return_code.zero?
 
   # cert-manager takes some time to generate the secret, wait for it before continuing
