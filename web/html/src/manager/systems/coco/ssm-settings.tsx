@@ -13,7 +13,7 @@ import { CoCoSystemData } from "./types";
 
 type Props = {
   systemSupport: CoCoSystemData[];
-  availableEnvironmentTypes: object;
+  availableEnvironmentTypes: Record<string, string>;
 };
 
 type State = {

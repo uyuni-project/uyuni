@@ -10,7 +10,7 @@ import Network from "utils/network";
 
 type Props = {
   serverId: number;
-  availableEnvironmentTypes: object;
+  availableEnvironmentTypes: Record<string, string>;
   showOnScheduleOption?: boolean;
 };
 

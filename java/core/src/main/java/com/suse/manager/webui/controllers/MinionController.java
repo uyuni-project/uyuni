@@ -645,7 +645,6 @@ public class MinionController {
      */
     public static ModelAndView cocoSettings(Request request, Response response, User user, Server server) {
         Map<String, Object> data = new HashMap<>();
-        addActionChains(user, data);
         addCoCoMetadata(data);
         return new ModelAndView(data, "templates/minion/coco-settings.jade");
     }
