@@ -97,11 +97,13 @@ public class TextRenderer extends Renderable {
     /** {@inheritDoc} */
     @Override
     public void postNavNode(StringBuilder sb, int depth) {
+        //empty method
     }
 
     /** {@inheritDoc} */
     @Override
     public void postNavLevel(StringBuilder sb, int depth) {
+        //empty method
     }
 
     /** {@inheritDoc} */
@@ -113,11 +115,13 @@ public class TextRenderer extends Renderable {
     /** {@inheritDoc} */
     @Override
     public void preNav(StringBuilder sb) {
+        //empty method
     }
 
     /** {@inheritDoc} */
     @Override
     public void postNav(StringBuilder sb) {
+        //empty method
     }
 }
 

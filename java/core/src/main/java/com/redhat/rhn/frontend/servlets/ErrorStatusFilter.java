@@ -70,5 +70,6 @@ public class ErrorStatusFilter implements Filter {
      */
     @Override
     public void init(FilterConfig arg0) {
+        //empty method
     }
 }
