@@ -168,8 +168,7 @@ public class CobblerProfileSyncCommand extends CobblerCommand {
                 profile.setModified(new Date());
             }
             catch (RuntimeException re) {
-                if (re.getCause() instanceof XmlRpcFault) {
-                    XmlRpcFault xrf = (XmlRpcFault)re.getCause();
+                if (re.getCause() instanceof XmlRpcFault xrf) {
                     if (xrf.getMessage().contains("unknown profile name")) {
                         log.error("Cobbler doesn't know about this profile any more!");
                     }

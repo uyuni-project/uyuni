@@ -355,9 +355,9 @@ public class RecurringActionController {
         if (idParam != null) {
             Long id = Long.parseLong(idParam);
             Optional<RecurringAction> action = RecurringActionManager.find(id);
-            if (action.isPresent() && action.get().getRecurringActionType() instanceof RecurringScapPolicy) {
-                ScapPolicy assignedPolicy = ((RecurringScapPolicy) action.get().getRecurringActionType()).
-                  getScapPolicy();
+            if (action.isPresent() &&
+                    (action.get().getRecurringActionType() instanceof RecurringScapPolicy recurringScapPolicy)) {
+                ScapPolicy assignedPolicy = recurringScapPolicy.getScapPolicy();
                 if (assignedPolicy != null) {
                     assignedPolicyIds.add(assignedPolicy.getId());
                 }
