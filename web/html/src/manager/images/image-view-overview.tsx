@@ -638,25 +638,27 @@ class ImageViewOverview extends Component<ImageViewOverviewProps> {
                 </div>
               )}
               {window.isAdmin && data.buildServer && (
-                <div className="btn-group pull-right">
-                  {!data.external && (
-                    <ModalButton
-                      className="btn-default btn-xs"
-                      text={t("Rebuild")}
-                      title={t("Reschedule the build")}
-                      icon="fa-cogs"
-                      target="build-modal"
-                    />
-                  )}
-                  {this.canInspect() && (
-                    <ModalButton
-                      className="btn-default btn-xs"
-                      text={t("Reinspect")}
-                      title={t("Reschedule the inspect")}
-                      icon="fa-search"
-                      target="inspect-modal"
-                    />
-                  )}
+                <div className="d-flex pt-3 border-top mt-5">
+                  <div className="btn-group pull-right">
+                    {!data.external && (
+                      <ModalButton
+                        className="btn-default btn-xs"
+                        text={t("Rebuild")}
+                        title={t("Reschedule the build")}
+                        icon="fa-cogs"
+                        target="build-modal"
+                      />
+                    )}
+                    {this.canInspect() && (
+                      <ModalButton
+                        className="btn-default btn-xs"
+                        text={t("Reinspect")}
+                        title={t("Reschedule the inspect")}
+                        icon="fa-search"
+                        target="inspect-modal"
+                      />
+                    )}
+                  </div>
                 </div>
               )}
             </BootstrapPanel>
