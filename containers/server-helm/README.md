@@ -60,6 +60,12 @@ They all are using the `ReadWriteOnce` access mode and can be configured in the 
 Changing the default volume sizes according to the distributions you plan to synchronize and manage is recommended.
 See the [requirements documentation](https://www.uyuni-project.org/uyuni-docs/en/uyuni/installation-and-upgrade/uyuni-install-requirements.html) for more information.
 
+The `volumes.storageClass` can be used to change the storage class of all the persistent volume claims.
+This would be overridden by each claim's `volumes.<claim>.storageClass` value.
+
+The storage class supports a special `"-"` value to force the storage class to the empty string.
+This is different from the `""` value representing the default storage class by not setting any storage class at all.
+
 ### Node Tuning
 
 For each of the components it is possible to tune the node where the pod will be scheduled.

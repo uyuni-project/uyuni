@@ -46,6 +46,46 @@ tests:
         documentSelector:
           path: metadata.name
           value: var-pgsql18
+  
+  - it: should support global custom storageClass
+    set:
+      global.fqdn: uyuni.example.com
+      volumes:
+        storageClass: "fast-ssd"
+    asserts:
+      - equal:
+          path: spec.storageClassName
+          value: "fast-ssd"
+        documentSelector:
+          path: metadata.name
+          value: var-pgsql18
+      - equal:
+          path: spec.storageClassName
+          value: "fast-ssd"
+        documentSelector:
+          path: metadata.name
+          value: var-cache
+  
+  - it: should support global custom storageClass overrides
+    set:
+      global.fqdn: uyuni.example.com
+      volumes:
+        storageClass: "fast-ssd"
+        var-cache:
+          storageClass: "foo"
+    asserts:
+      - equal:
+          path: spec.storageClassName
+          value: "fast-ssd"
+        documentSelector:
+          path: metadata.name
+          value: var-pgsql18
+      - equal:
+          path: spec.storageClassName
+          value: "foo"
+        documentSelector:
+          path: metadata.name
+          value: var-cache
 
   - it: should render extraLabels and annotations when provided
     set:
