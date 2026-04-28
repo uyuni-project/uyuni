@@ -37,6 +37,7 @@ class TabContainer extends Component<Props> {
   render() {
     const labels = this.props.hashes.map((hash, i) => {
       const label = this.props.labels[i];
+      if (label === null) return null;
       return (
         <TabLabel
           onClick={(event) => this.onActiveTabChange(hash, event)}
