@@ -3,6 +3,8 @@
 {%- set mgrpxy_operation = 'install' if not mgrpxy_installed or 'Error: no installed proxy detected' in mgrpxy_status_output else 'upgrade' %}
 {%- set transactional = grains['transactional'] %}
 {%- set installPackages = not (pillar.get('registries') is mapping and pillar.get('registries') | length > 0) %}
+{# do not use secrets on transactional system or on legacy proxy #}
+{%- set use_secrets = not (transactional or mgrpxy_installed and salt['pkg.version_cmp'](mgrpxy_installed, '5.2.6') < 0) %}
 
 podman_installed:
   pkg.installed:
@@ -23,8 +25,10 @@ mgrpxy_installed:
     - template: jinja
     - contents: |
         server: {{ pillar['server'] }}
+        {%- if not use_secrets %}
         ca_crt: |
           {{ pillar['ca_crt'] | replace('\\n', '\n') | indent(10) }}
+        {%- endif %}
         proxy_fqdn: {{ pillar['proxy_fqdn'] }}
         max_cache_size_mb: {{ pillar['max_cache_size_mb']|int }}
         server_version: "{{ pillar['server_version'] }}"
@@ -42,10 +46,12 @@ mgrpxy_installed:
     - contents: |
         httpd:
           system_id: {{ pillar['httpd']['system_id'] }}
+          {%- if not use_secrets %}
           server_crt: |
             {{ pillar['httpd']['server_crt'] | replace('\\n', '\n') | indent(12) }}
           server_key: |
             {{ pillar['httpd']['server_key'] | replace('\\n', '\n') | indent(12) }}
+          {%- endif %}
 
 /etc/uyuni/proxy/ssh.yaml:
   file.managed:
@@ -95,6 +101,29 @@ install_proxy_packages:
 {% if salt['pillar.get']('registries:proxy-tftpd:url') and salt['pillar.get']('registries:proxy-tftpd:tag') %}
   {% do args.append("--tftpd-image " ~ salt['pillar.get']('registries:proxy-tftpd:url') ~ " --tftpd-tag " ~ salt['pillar.get']('registries:proxy-tftpd:tag')) %}
 {% endif %}
+
+{%- if use_secrets %}
+uyuni-ca-secret:
+  cmd.run:
+    - name: /usr/bin/podman secret rm -i uyuni-ca ; /usr/bin/podman secret create uyuni-ca -
+    - stdin: {{ pillar['ca_crt'] | replace('\\n', '\n') | json }}
+    - require:
+      - pkg: podman_installed
+
+uyuni-proxy-cert-secret:
+  cmd.run:
+    - name: /usr/bin/podman secret rm -i uyuni-proxy-cert ; /usr/bin/podman secret create uyuni-proxy-cert -
+    - stdin: {{ pillar['httpd']['server_crt'] | replace('\\n', '\n') | json }}
+    - require:
+      - pkg: podman_installed
+
+uyuni-proxy-key-secret:
+  cmd.run:
+    - name: /usr/bin/podman secret rm -i uyuni-proxy-key ; /usr/bin/podman secret create uyuni-proxy-key -
+    - stdin: {{ pillar['httpd']['server_key'] | replace('\\n', '\n') | json }}
+    - require:
+      - pkg: podman_installed
+{%- endif %}
 
 {% if transactional %}
 
@@ -157,5 +186,10 @@ apply_proxy_configuration:
       - file: /etc/uyuni/proxy/ssh.yaml
       - pkg: podman_installed
       - pkg: mgrpxy_installed
+      {%- if use_secrets %}
+      - cmd: uyuni-ca-secret
+      - cmd: uyuni-proxy-cert-secret
+      - cmd: uyuni-proxy-key-secret
+      {%- endif %}
 
 {%- endif %}
