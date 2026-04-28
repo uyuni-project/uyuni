@@ -249,12 +249,12 @@ public class CVEAuditHandler extends BaseHandler {
 
 
     /**
-     * List known CVEs along the visible systems affected by the CVE with their corresponding affected packages
+     * List known CVEs along the visible systems affected by the CVE with their corresponding vulnerable packages
      *
      * @param loggedInUser  The current user
      *
      * @apidoc.doc List known CVEs along the visible systems affected by the CVE with their corresponding
-     * affected packages
+     * vulnerable packages
      * @apidoc.param #session_key()
      * @apidoc.returntype #return_array_begin() $CVEAffectedServerSerializer #array_end()
      * @return the list of affected systems

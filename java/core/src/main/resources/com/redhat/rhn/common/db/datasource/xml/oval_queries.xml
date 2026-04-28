@@ -14,7 +14,7 @@
                 (vulnerablePkg.fix_version).release AS fix_release,
                 (vulnerablePkg.fix_version).type AS fix_type,
                 vulnerablePkg.fix_version IS NULL
-                  OR vulnerablePkg.fix_version > pe.evr AS affected
+                  OR vulnerablePkg.fix_version &gt; pe.evr AS affected
             FROM rhnCVE cve
             JOIN suseovalplatformvulnerable platVulnerable
               ON platVulnerable.cve_id = cve.id
@@ -82,7 +82,7 @@
                    pe.release AS installed_release,
                    cve.name AS cve,
                    CASE
-                       WHEN vulnerablePkg.fix_version IS NULL OR pe.evr < vulnerablePkg.fix_version THEN 'VULNERABLE'
+                       WHEN vulnerablePkg.fix_version IS NULL OR pe.evr &lt; vulnerablePkg.fix_version THEN 'VULNERABLE'
                        ELSE 'PATCHED'
                    END AS patch_status
             FROM rhnCVE cve
@@ -117,10 +117,7 @@
                    pe.version AS installed_version,
                    pe.release AS installed_release,
                    cve.name AS cve,
-                   CASE
-                       WHEN vulnerablePkg.fix_version IS NULL OR pe.evr < vulnerablePkg.fix_version THEN 'VULNERABLE'
-                       ELSE 'PATCHED'
-                   END AS patch_status
+                   'VULNERABLE' AS patch_status
             FROM rhnCVE cve
             JOIN suseOVALPlatformVulnerable platVulnerable
               ON platVulnerable.cve_id = cve.id
@@ -137,6 +134,7 @@
                 AND sp.name_id = pn.id
             JOIN rhnPackageEVR pe
               ON pe.id = sp.evr_id
+            WHERE (vulnerablePkg.fix_version IS NULL OR pe.evr &lt; vulnerablePkg.fix_version)
             ORDER BY cve.name, s.id;
         </query>
     </mode>
