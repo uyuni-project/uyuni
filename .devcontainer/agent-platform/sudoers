@@ -1,0 +1,4 @@
+node ALL=(root) NOPASSWD: /usr/local/bin/init-firewall.sh
+Defaults:node env_keep += "AGENT_PLATFORM_ALLOW_INTERNET"
+Defaults:node env_keep += "AGENT_PLATFORM_ALLOW_SSH_AGENT"
+Defaults:node env_keep += "AGENT_PLATFORM_ALLOW_HOST_NETWORK"

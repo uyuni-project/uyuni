@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "backlog-md": {
+      "command": "backlog-mcp",
+      "args": ["start"]
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp@latest", "--browser", "chromium"],
+      "env": {
+        "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD": "1",
+        "DISPLAY": ":99"
+      }
+    },
+    "context7": {
+      "command": "npx",
+      "args": ["@upstash/context7-mcp"]
+    }
+  }
+}
