@@ -19,7 +19,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-08-22 09:58+0200\n"
-"PO-Revision-Date: 2026-04-28 09:04+0000\n"
+"PO-Revision-Date: 2026-04-28 16:04+0000\n"
 "Last-Translator: sorau <sorau@proton.me>\n"
 "Language-Team: French <https://l10n.opensuse.org/projects/uyuni/backend/fr/>\n"
 "Language: fr\n"
@@ -85,9 +85,9 @@ msgstr ""
 "                   Veuillez contacter votre administrateur d'organisation pour plus d'assistance."
 
 #: ../server/handlers/xmlrpc/proxy.py:71
-#, fuzzy, python-format
+#, python-format
 msgid "SUSE Multi-Linux Manager Proxy service not enabled for server profile: \"%s\""
-msgstr "Service RHN Proxy non activé pour le profil de serveur : \"%s\""
+msgstr "Service RHN Proxy non activé pour le profil de serveur : \"%s\""
 
 #: ../server/handlers/xmlrpc/proxy.py:94
 msgid "Invalid session key"
@@ -118,14 +118,14 @@ msgid "You are not allowed to manage channel %s, or that channel does not exist"
 msgstr "Vous n'êtes pas autorisé à administrer le canal %s, ou ce canal n'existe pas"
 
 #: ../server/importlib/userAuth.py:229
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "               %s Account has been deactivated on this server.\n"
 "               Please contact your Org administrator for more help."
 msgstr ""
 "\n"
-"                   Le compte %s a été désactivé sur ce serveur.\n"
+"               Le compte %s a été désactivé sur ce serveur.\n"
 "                   Veuillez contacter votre administrateur d'organisation pour plus d'assistance."
 
 #: ../server/rhnChannel.py:2216
@@ -196,7 +196,7 @@ msgstr ""
 #. Invalid server certificate.
 #: ../server/rhnHandler.py:62
 msgid "Please run rhn_register as root on this client"
-msgstr ""
+msgstr "Merci de lancer rhn_register en tant qu'utilisateur root sur ce client"
 
 #: ../server/rhnHandler.py:76
 #, python-format
@@ -402,7 +402,7 @@ msgid "Unsupported server architecture."
 msgstr "Architecture serveur non supportée."
 
 #: ../common/rhnException.py:76
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "     The anonymous server functionality is no longer available.\n"
@@ -433,7 +433,7 @@ msgid "Invalid value for entry."
 msgstr "Valeur invalide pour l'entrée."
 
 #: ../common/rhnException.py:88
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "     This system does not have a valid entitlement for SUSE Multi-Linux Manager.\n"
@@ -491,7 +491,6 @@ msgid "Invalid channel version."
 msgstr "Version de canal invalide."
 
 #: ../common/rhnException.py:109
-#, fuzzy
 msgid ""
 "\n"
 "     User group membership limits exceeded.\n"
@@ -585,7 +584,6 @@ msgstr ""
 "     "
 
 #: ../common/rhnException.py:154
-#, fuzzy
 msgid ""
 "\n"
 "     The --force mgrpush option is disabled on this server.\n"
@@ -628,6 +626,9 @@ msgid ""
 "     No matching base channel found for your system.\n"
 "     "
 msgstr ""
+"\n"
+"     Aucun canal de base correspondant trouvé pour votre système.\n"
+"     "
 
 #: ../common/rhnException.py:176
 msgid ""
@@ -704,22 +705,19 @@ msgstr "Violation de la limite minimale de longueur du mot de passe"
 
 #: ../common/rhnException.py:202
 msgid "This user has read only API access. Action denied."
-msgstr ""
+msgstr "Cet utilisateur a un accès API en lecture seule. Action refusée."
 
 #: ../common/rhnException.py:203
-#, fuzzy
 msgid "System Name cannot be less than 1 character"
-msgstr "Le nom d'utilisateur doit comporter au plus %d caractères"
+msgstr "Le nom d'utilisateur doit comporter plus de %d caractère(s)"
 
 #. 1000-1999: Proxy specific errors:
 #. issued by a Proxy to the client
 #: ../common/rhnException.py:206
-#, fuzzy
 msgid "SUSE Multi-Linux Manager Proxy error."
 msgstr "Erreur de RHN Proxy."
 
 #: ../common/rhnException.py:207
-#, fuzzy
 msgid "SUSE Multi-Linux Manager Proxy unable to login."
 msgstr "Le Proxy RHN est incapable de se connecter."
 
@@ -730,19 +728,20 @@ msgid ""
 "     in the database.\n"
 "     "
 msgstr ""
+"\n"
+"     L'identifiant système Proxy Multi-Linux Manager SUSE ne correspond pas à un serveur Proxy Spacewalk.\n"
+"     dans la base de données.\n"
+"     "
 
 #: ../common/rhnException.py:215
-#, fuzzy
 msgid "SUSE Multi-Linux Manager Proxy session token is invalid."
 msgstr "Le jeton de session du Proxy RHN est invalide."
 
 #: ../common/rhnException.py:216
-#, fuzzy
 msgid "SUSE Multi-Linux Manager Proxy session token has expired."
 msgstr "Le jeton de session du Proxy RHN a expiré."
 
 #: ../common/rhnException.py:220
-#, fuzzy
 msgid ""
 "\n"
 "      user creation is not allowed via mgr_register;\n"
@@ -750,9 +749,8 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     La création d'un utilisateur sur RHN Satellite n'est pas autorisée\n"
-"     via rhn_register (ou up2date --register sur Red Hat\n"
-"     Enterprise Linux 3 ou plus) ; veuillez contacter votre      administrateur système afin qu'il puisse créer votre\n"
+"      La création d'un utilisateur n'est pas autorisée\n"
+"     via mgr_register; veuillez contacter votre      administrateur système afin qu'il puisse créer votre\n"
 "     compte utilisateur.\n"
 "     "
 
@@ -764,7 +762,7 @@ msgid ""
 "     "
 msgstr ""
 "\n"
-"     Ce serveur satellite n'est pas autorisé à utiliser la synchronisation inter-satellite\n"
+"     Ce serveur SUSE Multi-Linux Manager n'est pas autorisé à utiliser la synchronisation inter-satellite\n"
 "     "
 
 #: ../common/rhnException.py:231
@@ -910,9 +908,8 @@ msgid "Error composing file path for detailed SCAP results"
 msgstr ""
 
 #: ../common/rhnException.py:270
-#, fuzzy
 msgid "Invalid content encoding"
-msgstr "Code item invalide"
+msgstr "Encodage de contenu invalide"
 
 #: ../common/rhnException.py:317
 #, fuzzy
@@ -1045,7 +1042,7 @@ msgstr ""
 #: ../satellite_tools/messages.py:80
 #, fuzzy, python-format
 msgid "    Extinct package:  %s"
-msgstr "Paquet attendu, pas : %s"
+msgstr "    Paquet attendu, pas : %s"
 
 #: ../satellite_tools/messages.py:81
 #, python-format
@@ -1112,9 +1109,8 @@ msgid "   * WARNING: this may be a slow process."
 msgstr "   * AVERTISSEMENT : cette action pourrait prendre du temps."
 
 #: ../satellite_tools/messages.py:97
-#, fuzzy
 msgid "Linking packages to channels"
-msgstr "Canaux de base conflictuels"
+msgstr "Lier des paquets à des canaux"
 
 #: ../satellite_tools/messages.py:98
 #, python-format
