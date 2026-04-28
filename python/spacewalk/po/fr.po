@@ -19,15 +19,15 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-08-22 09:58+0200\n"
-"PO-Revision-Date: 2018-03-16 10:54+0000\n"
-"Last-Translator: Copied by Zanata <copied-by-zanata@zanata.org>\n"
-"Language-Team: French <trans-fr@lists.fedoraproject.org>\n"
+"PO-Revision-Date: 2026-04-28 09:04+0000\n"
+"Last-Translator: sorau <sorau@proton.me>\n"
+"Language-Team: French <https://l10n.opensuse.org/projects/uyuni/backend/fr/>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Zanata 4.6.2\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Generator: Weblate 5.17\n"
 
 #: ../server/apacheAuth.py:72
 #, python-format
@@ -46,7 +46,7 @@ msgstr "authentification proxy rejetée"
 #: ../server/apacheRequest.py:68
 #, python-format
 msgid "Invalid request received (%s)."
-msgstr "Réception de requête invalide (%s)"
+msgstr "Réception de requête invalide (%s)."
 
 #. Send the message as a fault.
 #: ../server/apacheRequest.py:130
@@ -65,7 +65,7 @@ msgid ""
 "%s : %s\n"
 msgstr ""
 "Lors de l'exécution de '%s': exception levée\n"
-"%s : %s\n"
+"%s : %s\n"
 
 #. pylint: disable-next=consider-using-f-string
 #: ../server/apacheRequest.py:675
@@ -512,7 +512,6 @@ msgstr ""
 "     "
 
 #: ../common/rhnException.py:119
-#, fuzzy
 msgid ""
 "\n"
 "     System group membership limits exceeded.\n"
@@ -533,7 +532,6 @@ msgstr ""
 "     "
 
 #: ../common/rhnException.py:129
-#, fuzzy
 msgid ""
 "\n"
 "     Invalid architecture.\n"
@@ -558,6 +556,10 @@ msgid ""
 "    please delete it first via the web UI or API and then register it using the traditional tools.\n"
 "    "
 msgstr ""
+"\n"
+"    Ce système est déjà enregistré comme Salt Minion. Si vous souhaitez l'enregistrer comme client traditionnel\n"
+"    veuillez le supprimer d'abord via l'interface web ou l'API, puis l'enregistrer à l'aide des outils traditionnels.\n"
+"    "
 
 #. For the uploading tools
 #: ../common/rhnException.py:144
@@ -647,7 +649,7 @@ msgstr "Vous ne pouvez pas vous désabonner du canal de base."
 
 #: ../common/rhnException.py:183
 msgid "SUSE Multi-Linux Manager or Proxy channel can not be subscribed."
-msgstr ""
+msgstr "SUSE Multi-Linux Manager ou Proxy channel ne peuvent être abonnés."
 
 #. 80-90: server group errors
 #: ../common/rhnException.py:185
@@ -897,7 +899,7 @@ msgstr "Impossible de comparer des fichiers de types différents"
 #. 5100 - 5199: scap results reporting error
 #: ../common/rhnException.py:267
 msgid "SCAP results file transfer is invalid or incomplete"
-msgstr ""
+msgstr "Le résultat du transfert SCAP est invalide ou incomplet"
 
 #: ../common/rhnException.py:268
 msgid "Error composing directory path for detailed SCAP results"
@@ -957,18 +959,18 @@ msgstr "Explication : %s"
 #: ../common/rhnTB.py:220
 #, python-format
 msgid "ERROR: %s %s: %s"
-msgstr ""
+msgstr "ERREUR: %s %s: %s"
 
 #: ../common/rhnTB.py:221
 #, python-format
 msgid "TRACEBACK: %s"
-msgstr ""
+msgstr "TRACEBACK: %s."
 
 #: ../satellite_tools/disk_dumper/iss.py:1634
 #: ../satellite_tools/disk_dumper/iss.py:1640
 #, python-format
 msgid "format of %s should be at least YYYYMMDD.\n"
-msgstr ""
+msgstr "le format de %s devrait être au moins AAAAMMJJ.\n"
 
 #: ../satellite_tools/messages.py:28
 #, python-format
@@ -977,6 +979,9 @@ msgid ""
 "ERROR: executing step %s. Error is:\n"
 "%s\n"
 msgstr ""
+"\n"
+"ERREUR: à l’exécution de l'étape %s. L'erreur est::\n"
+"%s\n"
 
 #: ../satellite_tools/messages.py:35
 #, python-format
@@ -1045,32 +1050,32 @@ msgstr "Paquet attendu, pas : %s"
 #: ../satellite_tools/messages.py:81
 #, python-format
 msgid "   Total size: %s"
-msgstr ""
+msgstr "   …Taille totale: %s"
 
 #: ../satellite_tools/messages.py:83
 #, python-format
 msgid "      Downloaded %s of %s. Estimated remaining time: %s"
-msgstr ""
+msgstr "      ……Téléchargement %s de %s. Temps estimé restant: %s"
 
 #: ../satellite_tools/messages.py:85
 #, python-format
 msgid "    Fetch unsuccessful: %s"
-msgstr ""
+msgstr "    ....    Récupération infructueuse: %s"
 
 #: ../satellite_tools/messages.py:86
 #, python-format
 msgid "   RPM fetch summary: %s"
-msgstr ""
+msgstr "   … Résumé de la récupération RPM: %s"
 
 #: ../satellite_tools/messages.py:87
 #, python-format
 msgid "       success: %d"
-msgstr ""
+msgstr "       …     succès: %d"
 
 #: ../satellite_tools/messages.py:88
 #, python-format
 msgid "       failed:  %d"
-msgstr ""
+msgstr "       ......échec: .. %d"
 
 #: ../satellite_tools/messages.py:89
 #, python-format
@@ -1100,11 +1105,11 @@ msgstr ""
 #: ../satellite_tools/messages.py:95
 #, python-format
 msgid "   Importing *relevant* package metadata: %s (%s)"
-msgstr ""
+msgstr "   ...  Importation des métadonnées *pertinentes* de: %s (%s)"
 
 #: ../satellite_tools/messages.py:96
 msgid "   * WARNING: this may be a slow process."
-msgstr ""
+msgstr "   * AVERTISSEMENT : cette action pourrait prendre du temps."
 
 #: ../satellite_tools/messages.py:97
 #, fuzzy
@@ -1114,34 +1119,34 @@ msgstr "Canaux de base conflictuels"
 #: ../satellite_tools/messages.py:98
 #, python-format
 msgid "   Importing *relevant* errata: %s (%s)"
-msgstr ""
+msgstr "   Importation des erratas *pertinentes* : %s (%s)"
 
 #: ../satellite_tools/messages.py:99
 msgid "   No new kickstartable tree to import"
-msgstr ""
+msgstr "   Pas de nouveau kickstartable tree à importer"
 
 #: ../satellite_tools/messages.py:100
 #, python-format
 msgid "Importing kickstartable trees (%d)"
-msgstr ""
+msgstr "Importer kickstartable trees (%d)"
 
 #: ../satellite_tools/messages.py:101
 #, python-format
 msgid "Imported kickstartable trees (%d)"
-msgstr ""
+msgstr "kickstartable trees importés (%d)"
 
 #: ../satellite_tools/reposync.py:138
 msgid "+++ sending log as an email +++"
-msgstr ""
+msgstr "+++ envoyer les journaux par courriel +++"
 
 #: ../satellite_tools/reposync.py:141
 #, python-format
 msgid "%s sync. report from %s"
-msgstr ""
+msgstr "%s synchronisation. Rapport de %s"
 
 #: ../satellite_tools/reposync.py:151
 msgid "+++ email requested, but there is nothing to send +++"
-msgstr ""
+msgstr "+++ courriel requis, mais il n'y a rien à envoyer +++"
 
 #, fuzzy
 #~ msgid "ISS is disabled on this server."
