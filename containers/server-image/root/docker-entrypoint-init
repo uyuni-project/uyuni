@@ -6,6 +6,9 @@
 # Fail if any init script fails
 set -e
 
+# Mark that initialization is in progress
+touch /var/run/uyuni-init-pending
+
 for f in $(find /docker-entrypoint-init.d/ -type f -name  '*.sh' | sort); do
     echo "Executing $f..."
     bash "$f"
@@ -37,6 +40,9 @@ unset SCC_USER
 unset SCC_PASS
 unset ISS_PARENT
 unset MANAGER_ENABLE_TFTP
+
+# Remove the in-progress marker - init completed successfully
+rm -f /var/run/uyuni-init-pending
 
 # This needs to be last for systemd to become PID1
 exec /usr/lib/systemd/systemd

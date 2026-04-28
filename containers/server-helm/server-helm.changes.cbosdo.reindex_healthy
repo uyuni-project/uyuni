@@ -1,0 +1,2 @@
+- Use a startup check with no limit for the main server container
+  (bsc#1263157)

@@ -103,6 +103,8 @@ spec:
               key: fqdn
               name: uyuni-config
               optional: false
+        - name: DEBUG_LONG_START
+          value: "y"
 {{- if .Values.exposeJavaDebug }}
         - name: DEBUG_JAVA
           value: "true"
@@ -137,16 +139,6 @@ spec:
               - /bin/sh
               - -c
               - spacewalk-service stop
-        livenessProbe:
-          failureThreshold: 5
-          httpGet:
-            path: /rhn/manager/api/api/getVersion
-            port: 80
-            scheme: HTTP
-          initialDelaySeconds: 180
-          periodSeconds: 30
-          successThreshold: 1
-          timeoutSeconds: 20
         name: uyuni
         securityContext:
           capabilities:
@@ -179,13 +171,26 @@ spec:
         - containerPort: 9187
         - containerPort: 9800
 {{- end }}
+        startupProbe:
+          exec:
+            command:
+            - /usr/bin/startup-check.sh
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3600 # Max 10h
+        livenessProbe:
+          exec:
+            command:
+            - /usr/bin/liveness-check.sh
+          timeoutSeconds: 5
+          failureThreshold: 5
+          periodSeconds: 60
         readinessProbe:
-          failureThreshold: 10
           httpGet:
             path: /rhn/manager/api/api/getVersion
             port: 80
             scheme: HTTP
-          periodSeconds: 30
+          periodSeconds: 10
           successThreshold: 1
           initialDelaySeconds: 120
         volumeMounts:
