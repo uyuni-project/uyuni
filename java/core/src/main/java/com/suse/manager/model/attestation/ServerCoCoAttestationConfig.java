@@ -14,8 +14,12 @@ import com.redhat.rhn.domain.server.Server;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.io.Serializable;
+import java.util.Map;
+import java.util.TreeMap;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
@@ -35,6 +39,7 @@ public class ServerCoCoAttestationConfig implements Serializable  {
     private Server server;
     private boolean enabled;
     private CoCoEnvironmentType environmentType;
+    private Map<String, Object> inData = new TreeMap<>();
     private boolean attestOnBoot;
 
     // Default empty constructor for hibernate
@@ -94,6 +99,18 @@ public class ServerCoCoAttestationConfig implements Serializable  {
         return environmentType;
     }
 
+    /**
+     * @return returns the input data
+     */
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(columnDefinition = "jsonb", name = "in_data")
+    public Map<String, Object> getInData() {
+        return inData;
+    }
+
+    /**
+     * @return returns true attest on boot flag is set
+     */
     @Column(name = "attest_on_boot")
     public boolean isAttestOnBoot() {
         return attestOnBoot;
@@ -128,6 +145,16 @@ public class ServerCoCoAttestationConfig implements Serializable  {
         environmentType = environmentTypeIn;
     }
 
+    /**
+     * @param inDataIn the input data to set
+     */
+    public void setInData(Map<String, Object> inDataIn) {
+        inData = inDataIn;
+    }
+
+    /**
+     * @param attestOnBootIn the value of attest on boot flag
+     */
     public void setAttestOnBoot(boolean attestOnBootIn) {
         this.attestOnBoot = attestOnBootIn;
     }
