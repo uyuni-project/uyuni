@@ -205,7 +205,8 @@ type EditPrimitiveGroupProps = {
  */
 class EditPrimitiveGroup extends Component<EditPrimitiveGroupProps> {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  simpleWrapper = (name, required, element, i, help = null) => {
+  simpleWrapper = (name, required, element, i, help = null, isLastItem = false) => {
+    const itemIndex = parseInt(i);
     return (
       <>
         <div className="col-lg-4 offset-lg-3">{element}</div>
