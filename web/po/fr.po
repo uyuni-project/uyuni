@@ -13,15 +13,15 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-14 11:17+0200\n"
-"PO-Revision-Date: 2025-09-08 08:59+0000\n"
-"Last-Translator: David D <dadu042@mailo.com>\n"
+"PO-Revision-Date: 2026-04-29 10:04+0000\n"
+"Last-Translator: sorau <sorau@proton.me>\n"
 "Language-Team: French <https://l10n.opensuse.org/projects/uyuni/web/fr/>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.13.1\n"
+"X-Generator: Weblate 5.17\n"
 
 #: ../html/javascript/spacewalk-essentials.js:409
 msgid "remaining"
@@ -59,7 +59,7 @@ msgstr "Confirmer l’exécution de l’attestation"
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:250
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:108
 msgid "Schedule"
-msgstr ""
+msgstr "Planifier"
 
 #: ../html/src/components/CoCoScansList.tsx:137
 #: ../html/src/components/CoCoScansList.tsx:192
@@ -71,7 +71,7 @@ msgstr "Retour à la liste"
 
 #: ../html/src/components/CoCoScansList.tsx:153
 msgid "Confidential Computing Attestations"
-msgstr ""
+msgstr "Attestations informatiques confidentielles"
 
 #: ../html/src/components/CoCoScansList.tsx:163
 msgid "Schedule Attestation"
@@ -131,7 +131,7 @@ msgstr "Pas de fenêtres de maintenance à venir"
 
 #: ../html/src/components/action-schedule.tsx:249
 msgid "Earliest:"
-msgstr ""
+msgstr "En premier :"
 
 #: ../html/src/components/action-schedule.tsx:249
 msgid "Maintenance Window:"
@@ -260,12 +260,12 @@ msgstr ""
 #: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:50
 #: ../html/src/components/input/text/Text.example.tsx:23
 msgid "First Name"
-msgstr ""
+msgstr "Prénom"
 
 #: ../html/src/components/buttons/index.example.tsx:229
 #: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:59
 msgid "Last Name"
-msgstr ""
+msgstr "Nom de famille"
 
 #. ref={nameInputRef}
 #: ../html/src/components/buttons/index.example.tsx:279
@@ -297,7 +297,7 @@ msgstr ""
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:83
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:77
 msgid "Name"
-msgstr ""
+msgstr "Nom"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:32
 msgid "Attestations"
@@ -407,7 +407,7 @@ msgstr "Statut :"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:67
 msgid "Created on"
-msgstr ""
+msgstr "Créé sur"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:75
 msgid "Last modified on"
@@ -447,11 +447,11 @@ msgstr "Attesté sur :"
 
 #: ../html/src/components/coco-attestation/CoCoResult.tsx:66
 msgid "Process Output"
-msgstr ""
+msgstr "Résultats du processus"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:80
 msgid "Enable attestation"
-msgstr ""
+msgstr "Activer l'attestation"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:105
 msgid "Executions"
@@ -467,7 +467,7 @@ msgstr ""
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:132
 msgid "Select a schedule"
-msgstr ""
+msgstr "Sélectionner une date"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:153
 #: ../html/src/components/formula-selection.tsx:302
@@ -486,7 +486,7 @@ msgstr "Sauvegarder"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:159
 msgid "Reset Changes"
-msgstr ""
+msgstr "Réinitialiser les changements"
 
 #: ../html/src/components/coco-attestation/Utils.tsx:49
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:166
@@ -527,7 +527,7 @@ msgstr "Êtes-vous sûr de vouloir {action} {nom}"
 
 #: ../html/src/components/dialog/ActionConfirm.tsx:84
 msgid "Are you sure you want to {action} the selected {name}s? ({count} {name}s selected)"
-msgstr ""
+msgstr "Êtes-vous sûr de vouloir lancer {action} sur les images {name}s ? ({count} {name}s séléctionnées)"
 
 #: ../html/src/components/dialog/DangerDialog.tsx:59
 #: ../html/src/components/dialog/DangerDialog.tsx:60
@@ -744,7 +744,7 @@ msgstr ""
 
 #: ../html/src/components/formula-selection.tsx:136
 msgid " No group"
-msgstr ""
+msgstr " Aucun groupe"
 
 #: ../html/src/components/formula-selection.tsx:276
 msgid "On this page you can select Salt Formulas for this group/system, which can then be configured on group and system level. This allows you to automatically install and configure software."
@@ -1421,7 +1421,7 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1134
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:688
 msgid "Confirm"
-msgstr ""
+msgstr "Confirmer"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:312
 msgid "{peripheralFqdn} - Peripheral Sync Channels"
@@ -1579,11 +1579,11 @@ msgstr ""
 
 #: ../html/src/components/input/datetime/DateTime.example.tsx:24
 msgid "Time"
-msgstr ""
+msgstr "Temps"
 
 #: ../html/src/components/input/form-multi-input/FormMultiInput.tsx:160
 msgid "Remove"
-msgstr ""
+msgstr "Enlever"
 
 #: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:24
 #: ../html/src/components/input/form-multi-input/single-field.example.tsx:24
@@ -1591,23 +1591,23 @@ msgstr ""
 #: ../html/src/manager/admin/access-control/access-group-list.tsx:122
 #: ../html/src/manager/admin/access-control/access-group.tsx:208
 msgid "Users"
-msgstr ""
+msgstr "Utilisateurs"
 
 #: ../html/src/components/input/form-multi-input/single-field.example.tsx:47
 #: ../html/src/manager/login/uyuni/login.tsx:85
 msgid "Login"
-msgstr ""
+msgstr "Identifiant"
 
 #: ../html/src/components/input/password/Password.example.tsx:25
 msgid "Must be at least 4 characters"
-msgstr ""
+msgstr "Il doit y avoir au moins 4 caractères"
 
 #: ../html/src/components/input/radio/horizontal-open.example.tsx:26
 #: ../html/src/components/input/radio/horizontal.example.tsx:26
 #: ../html/src/components/input/radio/vertical-open.example.tsx:25
 #: ../html/src/components/input/radio/vertical.example.tsx:25
 msgid "Level"
-msgstr ""
+msgstr "Niveau"
 
 #: ../html/src/components/input/radio/horizontal-open.example.tsx:32
 #: ../html/src/components/input/radio/horizontal.example.tsx:31
@@ -1617,7 +1617,7 @@ msgstr ""
 #: ../html/src/components/input/select/multiple.example.tsx:9
 #: ../html/src/components/input/select/simple.example.tsx:9
 msgid "Beginner"
-msgstr ""
+msgstr "Débutant"
 
 #: ../html/src/components/input/radio/horizontal-open.example.tsx:33
 #: ../html/src/components/input/radio/horizontal.example.tsx:32
@@ -1627,7 +1627,7 @@ msgstr ""
 #: ../html/src/components/input/select/multiple.example.tsx:13
 #: ../html/src/components/input/select/simple.example.tsx:13
 msgid "Normal"
-msgstr ""
+msgstr "Normal"
 
 #: ../html/src/components/input/radio/horizontal-open.example.tsx:34
 #: ../html/src/components/input/radio/horizontal.example.tsx:33
@@ -1637,15 +1637,15 @@ msgstr ""
 #: ../html/src/components/input/select/multiple.example.tsx:17
 #: ../html/src/components/input/select/simple.example.tsx:17
 msgid "Expert"
-msgstr ""
+msgstr "Expert"
 
 #: ../html/src/components/input/range/Range.example.tsx:23
 msgid "Port range"
-msgstr ""
+msgstr "Intervalle de ports"
 
 #: ../html/src/components/input/range/Range.test.tsx:72
 msgid "Both values need to be positive integers"
-msgstr ""
+msgstr "Les deux valeurs doivent être des entiers positifs"
 
 #: ../html/src/components/input/select/ClearIndicator.tsx:17
 #: ../html/src/components/table/SelectedRowDetails.tsx:37
@@ -1657,7 +1657,7 @@ msgstr ""
 #: ../html/src/components/input/select/DEPRECATED_Select.tsx:108
 #: ../html/src/components/input/select/Select.tsx:14
 msgid "No options"
-msgstr ""
+msgstr "Pas d'options"
 
 #: ../html/src/components/input/select/Select.tsx:13
 #: ../html/src/components/utils/loading/Loading.tsx:18
@@ -1716,17 +1716,17 @@ msgstr ""
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:105
 msgid "Unable to clear selection"
-msgstr ""
+msgstr "Impossible de supprimer la sélection"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:109
 msgid "Unable to perform action."
-msgstr ""
+msgstr "Impossible de lancer l'action."
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:210
 #: ../html/src/components/package/PackageListActionScheduler.tsx:243
 #: ../html/src/manager/packages/list.tsx:144
 msgid "Filter by package name"
-msgstr ""
+msgstr "Filtrer par nom de paquet"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:216
 #: ../html/src/components/package/PackageListActionScheduler.tsx:248
@@ -1738,7 +1738,7 @@ msgstr ""
 #: ../html/src/manager/images/image-view-packages.tsx:49
 #: ../html/src/manager/minion/packages/package-states.tsx:342
 msgid "Package Name"
-msgstr ""
+msgstr "Nom du paquet"
 
 #: ../html/src/components/pagination.tsx:109
 msgid "Items {from} - {to} of {total}"
@@ -1746,31 +1746,31 @@ msgstr ""
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:56
 msgid "Sunday"
-msgstr ""
+msgstr "Dimanche"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:57
 msgid "Monday"
-msgstr ""
+msgstr "Lundi"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:58
 msgid "Tuesday"
-msgstr ""
+msgstr "Mardi"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:59
 msgid "Wednesday"
-msgstr ""
+msgstr "Mercredi"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:60
 msgid "Thursday"
-msgstr ""
+msgstr "Jeudi"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:61
 msgid "Friday"
-msgstr ""
+msgstr "Vendredi"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:62
 msgid "Saturday"
-msgstr ""
+msgstr "Samedi"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:329
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:96
@@ -1782,7 +1782,7 @@ msgstr ""
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:349
 msgid "Hourly:"
-msgstr ""
+msgstr "Chaque heure :"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:366
 msgid "The action will be executed every hour at the specified minute"
@@ -1790,15 +1790,15 @@ msgstr ""
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:381
 msgid "Daily:"
-msgstr ""
+msgstr "Tous les jours :"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:405
 msgid "Weekly:"
-msgstr ""
+msgstr "Chaque semaine :"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:439
 msgid "Monthly:"
-msgstr ""
+msgstr "Chaque mois :"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:464
 msgid "Days are limited to 28 to have a recurring schedule available for all the months"
@@ -1806,7 +1806,7 @@ msgstr ""
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:479
 msgid "Custom Quartz format:"
-msgstr ""
+msgstr "Format Quartz personnalisé :"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:508
 msgid "Select a Schedule"
@@ -2020,13 +2020,13 @@ msgstr "Désync canal"
 #: ../html/src/components/states-picker.tsx:34
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:25
 msgid "State Configuration Channel"
-msgstr ""
+msgstr "État de configuration de la chaîne"
 
 #: ../html/src/components/ranking-table.tsx:23
 #: ../html/src/components/states-picker.tsx:37
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:28
 msgid "Internal State"
-msgstr ""
+msgstr "État interne"
 
 #: ../html/src/components/ranking-table.tsx:27
 #: ../html/src/components/salt-state-popup.tsx:14
@@ -2076,11 +2076,11 @@ msgstr ""
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:184
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:193
 msgid "Save Changes"
-msgstr ""
+msgstr "Sauvegarder les changements"
 
 #: ../html/src/components/states-picker.tsx:400
 msgid "Reorder"
-msgstr ""
+msgstr "Réorganiser"
 
 #: ../html/src/components/states-picker.tsx:426
 msgid "Search in states"
@@ -2871,7 +2871,7 @@ msgstr ""
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:134
 #: ../html/src/manager/appstreams/actions-appstreams.tsx:8
 msgid "Reset"
-msgstr ""
+msgstr "Remise à zéro"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:141
 msgid "Password Policy Reset to Default"
@@ -7931,13 +7931,13 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1107
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:578
 msgid "Next"
-msgstr ""
+msgstr "Suivant"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1100
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1131
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:681
 msgid "Prev"
-msgstr ""
+msgstr "Précédent"
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:247
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:463
@@ -8100,4 +8100,4 @@ msgstr "Ressource non trouvée."
 
 #: ../html/src/utils/network.ts:106
 msgid "HTTP Error code "
-msgstr "Code d'erreur HTTP "
+msgstr "Code d'erreur HTTP­ "
