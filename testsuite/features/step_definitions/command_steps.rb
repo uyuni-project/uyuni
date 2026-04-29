@@ -537,6 +537,12 @@ Then(/^the log messages should not contain out of memory errors$/) do
   raise ScriptError, "Out of memory errors in /var/log/messages:\n#{output}" if code.zero?
 end
 
+Then(/^the server log does not contain "([^"]*)" errors$/) do |component|
+  cmd = "cat /var/log/rhn/rhn_web_ui.log | grep -i 'Exception' | grep -i '#{component}'"
+  output, code = get_target('server').run(cmd, check_errors: false)
+  raise ScriptError, "Error related to \"#{component}\" found!\n#{output}" if code.zero?
+end
+
 When(/^I restart the spacewalk service$/) do
   get_target('server').run('spacewalk-service restart')
 end
