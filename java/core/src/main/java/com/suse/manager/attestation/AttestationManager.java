@@ -35,17 +35,13 @@ import com.suse.manager.model.attestation.CoCoAttestationResult;
 import com.suse.manager.model.attestation.CoCoEnvironmentType;
 import com.suse.manager.model.attestation.ServerCoCoAttestationConfig;
 import com.suse.manager.model.attestation.ServerCoCoAttestationReport;
-import com.suse.manager.webui.services.pillar.MinionPillarManager;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -57,7 +53,6 @@ public class AttestationManager {
     private static final Logger LOG = LogManager.getLogger(AttestationManager.class);
     private final AttestationFactory factory;
     private final TaskomaticApi taskomaticApi;
-    private SecureRandom secureRandom = new SecureRandom();
 
     /**
      * Constructor
@@ -145,7 +140,7 @@ public class AttestationManager {
                                                                   Set<MinionServer> minionsSet, Date earliest)
         throws TaskomaticApiException {
         CoCoAttestationAction action = createAttestationAction(userIn.orElse(null), orgIn, earliest);
-        minionsSet.forEach(minionServer -> initializeReport(action, minionServer));
+        minionsSet.forEach(minionServer -> initializeAttestation(action, minionServer));
 
         Set<Long> minionIds = minionsSet.stream().map(Server::getId).collect(Collectors.toSet());
         ActionFactory.scheduleForExecution(action, minionIds);
@@ -164,7 +159,7 @@ public class AttestationManager {
         List<CoCoAttestationAction> actionsList = new ArrayList<>();
         for (MinionServer server : minionsSet) {
             CoCoAttestationAction action = createAttestationAction(userIn.orElse(null), orgIn, earliest);
-            initializeReport(action, server);
+            initializeAttestation(action, server);
 
             ActionChainFactory.queueActionChainEntry(action, actionChain, server.getId(), nextSortOrder);
             actionsList.add(action);
@@ -183,16 +178,10 @@ public class AttestationManager {
         return action;
     }
 
-    private void initializeReport(CoCoAttestationAction action, MinionServer minion) {
+    private void initializeAttestation(CoCoAttestationAction action, MinionServer minion) {
         ServerCoCoAttestationReport initReport = factory.createReportForServer(minion);
         initReport.setAction(action);
-        if (initReport.getEnvironmentType().isNonceRequired()) {
-            byte[] bytes = new byte[64];
-            secureRandom.nextBytes(bytes);
-            initReport.setInData(Map.of("nonce", Base64.getEncoder().encodeToString(bytes)));
-        }
-
-        MinionPillarManager.INSTANCE.generatePillar(minion, false, MinionPillarManager.PillarSubset.GENERAL);
+        factory.initResultsForReport(initReport);
     }
 
     /**
