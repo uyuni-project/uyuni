@@ -187,6 +187,7 @@ public class AttestationFactory extends HibernateFactory {
         CoCoEnvironmentType envType = report.getEnvironmentType();
         for (CoCoResultType t : envType.getSupportedResultTypes()) {
             CoCoAttestationResult result = new CoCoAttestationResult();
+            result.setEnvironmentType(envType);
             result.setResultType(t);
             result.setReport(report);
             result.setStatus(CoCoResultStatus.PENDING);
