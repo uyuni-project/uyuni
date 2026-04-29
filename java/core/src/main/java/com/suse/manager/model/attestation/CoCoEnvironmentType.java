@@ -82,11 +82,4 @@ public enum CoCoEnvironmentType {
     public static List<CoCoEnvironmentType> validValues() {
         return Stream.of(CoCoEnvironmentType.values()).filter(e -> e != NONE).toList();
     }
-
-    /**
-     * @return returns if a nonce value is required
-     */
-    public boolean isNonceRequired() {
-        return (NONE != this);
-    }
 }
