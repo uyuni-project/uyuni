@@ -17,6 +17,7 @@ package com.suse.manager.attestation;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -53,7 +54,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -118,7 +118,9 @@ public class AttestationManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testCreateAttestationAction() throws TaskomaticApiException {
         MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
-        mgr.createConfig(user, minion, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, true);
+        var config = mgr.createConfig(user, minion, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, true);
+        config.setInData(Map.of("dummyConfigKey1", "dummyConfigVal1", "dummyConfigKey2", "dummyConfigVal2"));
+
         Date now = new Date();
         CoCoAttestationAction action = mgr.scheduleAttestationAction(user, minion, now);
         assertNotNull(action);
@@ -127,14 +129,18 @@ public class AttestationManagerTest extends JMockBaseTestCaseWithUser {
         Optional<ServerCoCoAttestationReport> latestReport = f.lookupLatestReportByServer(minion);
         Map<String, Object> inData = latestReport.orElse(new ServerCoCoAttestationReport()).getInData();
         assertNotNull(inData);
-        String nonceReport = (String) inData.getOrDefault("nonce", "not in report");
+        //no more data at initial stage
+        assertEquals(0, inData.size());
+
+        Map<String, Object> configData = latestReport.orElse(new ServerCoCoAttestationReport()).getConfigData();
+        assertNotNull(configData);
+        assertEquals(2, configData.size());
+        assertTrue(configData.containsKey("dummyConfigKey1"));
+        assertTrue(configData.containsKey("dummyConfigKey2"));
+
         Pillar pillar = minion.getPillarByCategory(MinionGeneralPillarGenerator.CATEGORY).orElse(new Pillar());
-        Map<String, Object> attestationData = (Map<String, Object>) pillar.getPillar()
-                .getOrDefault("attestation_data", new HashMap<>());
-        String noncePillar = (String) attestationData.getOrDefault("nonce", "not in pillar");
-        assertEquals(nonceReport, noncePillar);
-        assertEquals("KVM_AMD_EPYC_GENOA",
-                attestationData.getOrDefault("environment_type", "environment_type not found"));
+        //no more pillars at initial stage
+        assertNull(pillar.getPillar());
     }
 
     @Test
