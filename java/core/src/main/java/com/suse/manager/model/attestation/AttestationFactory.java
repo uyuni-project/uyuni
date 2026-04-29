@@ -170,6 +170,7 @@ public class AttestationFactory extends HibernateFactory {
             rpt.setServer(serverIn);
             rpt.setEnvironmentType(cnf.get().getEnvironmentType());
             rpt.setStatus(CoCoReportStatus.PENDING);
+            rpt.setConfigData(cnf.get().getInData());
             save(rpt);
             serverIn.addCocoAttestationReports(rpt);
             return rpt;
