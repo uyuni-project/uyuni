@@ -10,14 +10,14 @@
   display: inline-block;
 }
 
-:global(.group-heading > .fa-minus) {
+:global(.group-heading > .btn-tertiary) {
   position: absolute;
   right: 10px;
   top: 13px;
   cursor: pointer;
 }
 
-:global(.group-heading > .fa-minus[disabled]) {
+:global(.group-heading > .btn-tertiary[disabled]) {
   opacity: 0.65;
   cursor: not-allowed;
 }
