@@ -49,6 +49,7 @@ public class ServerCoCoAttestationReport extends BaseDomainHelper implements Ser
     private Action action;
     private CoCoEnvironmentType environmentType;
     private CoCoReportStatus status;
+    private Map<String, Object> configData = new TreeMap<>();
     private Map<String, Object> inData = new TreeMap<>();
     private Map<String, Object> outData = new TreeMap<>();
     private List<CoCoAttestationResult> results = new ArrayList<>();
@@ -93,6 +94,12 @@ public class ServerCoCoAttestationReport extends BaseDomainHelper implements Ser
     @Enumerated(EnumType.STRING)
     public CoCoReportStatus getStatus() {
         return status;
+    }
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(columnDefinition = "jsonb", name = "config_data")
+    public Map<String, Object> getConfigData() {
+        return configData;
     }
 
     @JdbcTypeCode(SqlTypes.JSON)
@@ -146,6 +153,13 @@ public class ServerCoCoAttestationReport extends BaseDomainHelper implements Ser
      */
     public void setStatus(CoCoReportStatus statusIn) {
         status = statusIn;
+    }
+
+    /**
+     * @param configDataIn the config data to set
+     */
+    public void setConfigData(Map<String, Object> configDataIn) {
+        configData = configDataIn;
     }
 
     /**
