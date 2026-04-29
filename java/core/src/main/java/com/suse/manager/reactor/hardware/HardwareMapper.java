@@ -18,14 +18,9 @@ import com.redhat.rhn.domain.server.CPU;
 import com.redhat.rhn.domain.server.Device;
 import com.redhat.rhn.domain.server.Dmi;
 import com.redhat.rhn.domain.server.MinionServer;
-import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
-import com.redhat.rhn.domain.server.ServerFQDN;
 import com.redhat.rhn.domain.server.ServerFactory;
-import com.redhat.rhn.domain.server.ServerNetAddress4;
-import com.redhat.rhn.domain.server.ServerNetAddress6;
-import com.redhat.rhn.domain.server.ServerNetworkFactory;
 import com.redhat.rhn.domain.server.VirtualInstance;
 import com.redhat.rhn.domain.server.VirtualInstanceFactory;
 import com.redhat.rhn.domain.server.VirtualInstanceState;
@@ -39,27 +34,22 @@ import com.suse.manager.webui.services.SaltGrains;
 import com.suse.manager.webui.utils.salt.custom.SumaUtil;
 import com.suse.salt.netapi.calls.modules.Network;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.security.SecureRandom;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  * Store minion hardware details in the SUSE Manager database.
@@ -71,8 +61,10 @@ public class HardwareMapper {
 
     private final MinionServer server;
     private final ValueMap grains;
-    private final CpuInfoMapper cpuMapper;
     private final List<String> errors = new LinkedList<>();
+
+    private final CpuInfoMapper cpuMapper;
+    private final NetworkMapper networkMapper;
 
     private static final Pattern PRINTER_REGEX = Pattern.compile(".*/lp\\d+$");
     private static final String SYSFS_PATH = "P";
@@ -89,6 +81,7 @@ public class HardwareMapper {
         this.server = serverIn;
         this.grains = grainsIn;
         this.cpuMapper = new CpuInfoMapper(serverIn, grains);
+        this.networkMapper = new NetworkMapper(server, grains);
     }
 
     /**
@@ -707,19 +700,6 @@ public class HardwareMapper {
         return virtUuidSwapped;
     }
 
-    private void setFqdns(MinionServer serverIn, List<String> fqdns) {
-        if (fqdns.isEmpty()) {
-            LOG.warn("Salt module 'network.fqdns' returned en empty value for minion: {}", server.getMinionId());
-        }
-        else {
-            Collection<ServerFQDN> serverFQDNs = serverIn.getFqdns();
-            Collection<ServerFQDN> srvFqdnsObj = fqdns.stream().map(fqdn -> new ServerFQDN(serverIn, fqdn))
-                    .collect(Collectors.toList());
-            serverFQDNs.retainAll(srvFqdnsObj);
-            serverFQDNs.addAll(srvFqdnsObj);
-        }
-    }
-
     /**
      * Store network information as returned by Salt.
      *
@@ -728,154 +708,13 @@ public class HardwareMapper {
      * @param netModules network modules
      * @param fqdns fqdns
      */
-    public void mapNetworkInfo(Map<String, Network.Interface> interfaces, Optional<Map<SumaUtil.IPVersion,
-            SumaUtil.IPRoute>> primaryIps, Map<String, Optional<String>> netModules, List<String> fqdns) {
-        if (interfaces.isEmpty()) {
-            errors.add("Network: Salt module 'network.interfaces' returned en empty value");
-            LOG.error("Salt module 'network.interfaces' returned en empty value for minion: {}", server.getMinionId());
-            return;
-        }
-        Optional<String> primaryIPv4 = primaryIps
-                    .flatMap(x -> Optional.ofNullable(x.get(SumaUtil.IPVersion.IPV4)))
-                    .map(SumaUtil.IPRoute::getSource)
-                    .filter(addr -> !"127.0.0.1".equals(addr));
-        Optional<String> primaryIPv6 = primaryIps
-                    .flatMap(x -> Optional.ofNullable(x.get(SumaUtil.IPVersion.IPV6)))
-                    .map(SumaUtil.IPRoute::getSource)
-                    .filter(addr -> !"::1".equals(addr));
-
-        server.setHostname(grains.getOptionalAsString("fqdn").orElse(null));
-        setFqdns(server, fqdns);
-
-        // remove interfaces not present in the Salt result
-        server.getNetworkInterfaces().removeAll(
-                server.getNetworkInterfaces().stream()
-                        .filter(netIf -> !interfaces.containsKey(netIf.getName()))
-                        .collect(Collectors.toSet()));
-
-        // add/update interfaces from the Salt result
-        interfaces.forEach((name, saltIface) -> {
-            NetworkInterface ifaceEntity = server.getNetworkInterface(name);
-            if (ifaceEntity == null) {
-                // we got a new interface
-                ifaceEntity = new NetworkInterface();
-            }
-            // else update the existing interface
-            NetworkInterface iface = ifaceEntity;
-
-            iface.setHwaddr(saltIface.getHWAddr());
-            iface.setModule(netModules.get(name).orElse(null));
-            iface.setServer(server);
-            iface.setName(name);
-
-            server.addNetworkInterface(iface);
-
-            // we have to do this because we need the id of the interface afterwards
-            iface = ServerFactory.saveNetworkInterface(iface);
-
-            List<ServerNetAddress4> dbipv4 = ServerNetworkFactory.findServerNetAddress4(iface.getInterfaceId());
-            List<Network.INet> saltipv4 = Optional.ofNullable(saltIface.getInet()).orElse(new LinkedList<>());
-
-            Set<ServerNetAddress4> dbfound = new HashSet<>();
-            for (Network.INet inet : saltipv4) {
-                boolean found = false;
-                for (ServerNetAddress4 dbinet: dbipv4) {
-                    if (inet.getAddress().orElse("").equals(dbinet.getAddress())) {
-                        // update
-                        dbinet.setNetmask(inet.getNetmask().orElse(null));
-                        dbinet.setBroadcast(inet.getBroadcast().orElse(null));
-                        found = true;
-                        dbfound.add(dbinet);
-                        break;
-                    }
-                }
-                if (!found) {
-                    // insert
-                    var ipv4 = new ServerNetAddress4(iface.getInterfaceId(), inet.getAddress().orElse(null));
-                    ipv4.setNetmask(inet.getNetmask().orElse(null));
-                    ipv4.setBroadcast(inet.getBroadcast().orElse(null));
-
-                    ServerNetworkFactory.saveServerNetAddress4(ipv4);
-                }
-            }
-            dbipv4.stream().filter(ipv4 -> !dbfound.contains(ipv4))
-                    .forEach(ServerNetworkFactory::removeServerNetAddress4);
-
-            List<ServerNetAddress6> dbipv6 = ServerNetworkFactory.findServerNetAddress6(iface.getInterfaceId());
-            List<Network.INet6> saltipv6 = Optional.ofNullable(saltIface.getInet6()).orElse(new LinkedList<>());
-
-            Set<ServerNetAddress6> dbfound6 = new HashSet<>();
-            for (Network.INet6 inet : saltipv6) {
-                boolean found = false;
-                for (ServerNetAddress6 dbinet: dbipv6) {
-                    if (inet.getAddress().equals(dbinet.getAddress())) {
-                        // update
-                        dbinet.setNetmask(inet.getPrefixlen());
-                        dbinet.setScope(Optional.ofNullable(inet.getScope()).orElse("unknown"));
-                        found = true;
-                        dbfound6.add(dbinet);
-                        break;
-                    }
-                }
-                if (!found) {
-                    // insert
-                    ServerNetAddress6 ipv6 = new ServerNetAddress6();
-                    ipv6.setInterfaceId(iface.getInterfaceId());
-                    ipv6.setAddress(inet.getAddress());
-                    ipv6.setNetmask(inet.getPrefixlen());
-                    ipv6.setScope(Optional.ofNullable(inet.getScope()).orElse("unknown"));
-
-                    ServerNetworkFactory.saveServerNetAddress6(ipv6);
-                }
-            }
-            dbipv6.stream().filter(ipv6 -> !dbfound6.contains(ipv6))
-                    .forEach(ServerNetworkFactory::removeServerNetAddress6);
-        });
-
-        // reset primary IP flag, we will re-compute it
-        server.getNetworkInterfaces().forEach(n -> n.setPrimary(null));
-
-        // find the interface having primary IPv4 addr
-        Optional<NetworkInterface> primaryNetIf = primaryIPv4.flatMap(pipv4 ->
-            server.getNetworkInterfaces().stream()
-                .filter(netIf -> netIf.getIPv4Addresses().stream()
-                        .anyMatch(addr -> Objects.equals(pipv4, addr.getAddress())))
-                .findFirst());
-
-        if (primaryNetIf.isEmpty()) {
-            // no primary IPv4, fallback to IPv6
-            primaryNetIf = primaryIPv6.flatMap(pipv6 ->
-                server.getNetworkInterfaces().stream()
-                    .filter(netIf -> netIf.getIPv6Addresses().stream()
-                            .anyMatch(addr -> Objects.equals(pipv6, addr.getAddress())))
-                    .findFirst());
-        }
-
-        // we found an interface with the same addr as the
-        // primary IPv4/v6 addr, make it primary
-        primaryNetIf.ifPresent(server::setPrimaryInterface);
-
-        // set primary FQDN to hostname if no primary FQDN is specified
-        if (StringUtils.isNotBlank(server.getHostname()) && server.getFqdns().stream()
-               .noneMatch(ServerFQDN::isPrimary)) {
-
-            server.setPrimaryFQDNWithName(server.getHostname());
-        }
-    }
-
-    private Optional<NetworkInterface> firstNetIf(Server serverIn) {
-        return serverIn.getNetworkInterfaces().stream()
-                .filter(this::notLocalhost)
-                // just sort alphabetically. eth0 should come first
-                .sorted((if1, if2) -> ObjectUtils.compare(if1.getName(), if2.getName()))
-                .findFirst();
-    }
-
-    private boolean notLocalhost(NetworkInterface netIf) {
-        return netIf.getIPv4Addresses().stream()
-                .noneMatch(addr -> "127.0.0.1".equals(addr.getAddress())) &&
-                netIf.getIPv6Addresses().stream()
-                .noneMatch(addr -> "::1".equals(addr.getAddress()));
+    public void mapNetworkInfo(
+            Map<String, Network.Interface> interfaces,
+            Optional<Map<SumaUtil.IPVersion, SumaUtil.IPRoute>> primaryIps,
+            Map<String, Optional<String>> netModules,
+            List<String> fqdns
+    ) {
+        networkMapper.mapNetworkInfo(interfaces, primaryIps, netModules, fqdns).ifPresent(errors::add);
     }
 
     /**
