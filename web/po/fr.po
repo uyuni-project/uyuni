@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-14 11:17+0200\n"
-"PO-Revision-Date: 2026-04-29 10:04+0000\n"
+"PO-Revision-Date: 2026-04-29 14:04+0000\n"
 "Last-Translator: sorau <sorau@proton.me>\n"
 "Language-Team: French <https://l10n.opensuse.org/projects/uyuni/web/fr/>\n"
 "Language: fr\n"
@@ -1088,19 +1088,19 @@ msgstr ""
 #: ../html/src/manager/notifications/notifications-list.tsx:337
 #: ../html/src/manager/notifications/notifications-list.tsx:338
 msgid "Info"
-msgstr "Info"
+msgstr "Information"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:367
 #: ../html/src/manager/notifications/notifications-list.tsx:344
 #: ../html/src/manager/notifications/notifications-list.tsx:345
 msgid "Warning"
-msgstr ""
+msgstr "Avertissement"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:372
 #: ../html/src/manager/notifications/notifications-list.tsx:351
 #: ../html/src/manager/notifications/notifications-list.tsx:352
 msgid "Error"
-msgstr ""
+msgstr "Erreur"
 
 #: ../html/src/components/hub/PeripheralsList.tsx:31
 msgid "Filter by FQDN"
@@ -1469,7 +1469,7 @@ msgstr ""
 #: ../html/src/manager/systems/list-filter.tsx:38
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:127
 msgid "Yes"
-msgstr ""
+msgstr "Oui"
 
 #: ../html/src/components/hub/TokenTable.tsx:76
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:90
@@ -1479,7 +1479,7 @@ msgstr ""
 #: ../html/src/manager/systems/list-filter.tsx:39
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:127
 msgid "No"
-msgstr ""
+msgstr "Non"
 
 #: ../html/src/components/hub/TokenTable.tsx:82
 msgid "Expired"
@@ -5801,7 +5801,7 @@ msgstr ""
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:250
 msgid "Update "
-msgstr ""
+msgstr "Mise à jour "
 
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:250
@@ -6336,7 +6336,7 @@ msgstr ""
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:155
 #: ../html/src/manager/proxy/container-config.tsx:207
 msgid "Parent FQDN"
-msgstr ""
+msgstr "Parent FQDN"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:156
 #: ../html/src/manager/proxy/container-config.tsx:210
@@ -6442,7 +6442,7 @@ msgstr ""
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:283
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:284
 msgid "Source"
-msgstr ""
+msgstr "Source"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:292
 msgid "RPM"
@@ -6633,7 +6633,7 @@ msgstr ""
 
 #: ../html/src/manager/notifications/notifications-list.tsx:133
 msgid "Severity"
-msgstr ""
+msgstr "Gravité"
 
 #: ../html/src/manager/notifications/notifications-list.tsx:158
 msgid "Read|Delete"
@@ -6654,7 +6654,7 @@ msgstr ""
 #: ../html/src/manager/notifications/notifications-list.tsx:223
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:149
 msgid "show details"
-msgstr ""
+msgstr "Montrer les détails"
 
 #: ../html/src/manager/notifications/notifications-list.tsx:239
 msgid "Retry"
@@ -6670,7 +6670,7 @@ msgstr ""
 
 #: ../html/src/manager/notifications/notifications-list.tsx:257
 msgid "Delete Notification"
-msgstr ""
+msgstr "Supprimer les notifications"
 
 #: ../html/src/manager/notifications/notifications-list.tsx:305
 msgid "{number} messages status updated successfully"
@@ -6714,7 +6714,7 @@ msgstr ""
 
 #: ../html/src/manager/packages/list.tsx:89
 msgid " Package Management "
-msgstr ""
+msgstr " Gestion des paquets "
 
 #: ../html/src/manager/packages/list.tsx:117
 msgid "Binary packages"
@@ -6776,7 +6776,7 @@ msgstr ""
 #: ../html/src/manager/proxy/container-config.tsx:248
 #: ../html/src/manager/proxy/container-config.tsx:249
 msgid "SSL certificate"
-msgstr ""
+msgstr "Certificat SSL"
 
 #: ../html/src/manager/proxy/container-config.tsx:257
 msgid "Skip SSL configuration"
@@ -6831,7 +6831,7 @@ msgstr ""
 
 #: ../html/src/manager/proxy/container-config.tsx:321
 msgid "City"
-msgstr ""
+msgstr "Ville"
 
 #: ../html/src/manager/proxy/container-config.tsx:323
 msgid "Organization Unit"
@@ -6869,7 +6869,7 @@ msgstr ""
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:168
 msgid "Test"
-msgstr ""
+msgstr "Test"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:173
 msgid "Action type"
@@ -7052,7 +7052,7 @@ msgstr ""
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:10
 #: ../html/src/manager/state/highstate.tsx:148
 msgid "Highstate"
-msgstr ""
+msgstr "Highstate"
 
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:11
 msgid "Custom State"
@@ -7110,7 +7110,7 @@ msgstr ""
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:219
 msgid "Remote Commands"
-msgstr ""
+msgstr "Commandes à distance"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:232
 msgid "Type the command here"
@@ -7155,11 +7155,11 @@ msgstr ""
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:93
 msgid "Formula Catalog"
-msgstr ""
+msgstr "Catalogue de formules"
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:103
 msgid "Filter by formula name"
-msgstr ""
+msgstr "Filtrer par nom de formule"
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:108
 #: ../html/src/manager/state/highstate-summary.tsx:25
@@ -7172,27 +7172,27 @@ msgstr ""
 
 #: ../html/src/manager/salt/keys/key-management.tsx:36
 msgid "Accept"
-msgstr ""
+msgstr "Accepter"
 
 #: ../html/src/manager/salt/keys/key-management.tsx:45
 msgid "Reject"
-msgstr ""
+msgstr "Rejeter"
 
 #: ../html/src/manager/salt/keys/key-management.tsx:70
 msgid "accepted"
-msgstr ""
+msgstr "accepté"
 
 #: ../html/src/manager/salt/keys/key-management.tsx:78
 msgid "rejected"
-msgstr ""
+msgstr "rejeté"
 
 #: ../html/src/manager/salt/keys/key-management.tsx:82
 msgid "denied"
-msgstr ""
+msgstr "Refusé"
 
 #: ../html/src/manager/salt/keys/key-management.tsx:148
 msgid "Keys"
-msgstr ""
+msgstr "Clés"
 
 #: ../html/src/manager/salt/keys/key-management.tsx:154
 msgid "Search by name or fingerprint"
@@ -7200,7 +7200,7 @@ msgstr ""
 
 #: ../html/src/manager/salt/keys/key-management.tsx:177
 msgid "Fingerprint"
-msgstr ""
+msgstr "Empreinte numérique"
 
 #: ../html/src/manager/shared/menu/menu.tsx:235
 msgid "Clear Menu"
@@ -7212,11 +7212,11 @@ msgstr ""
 
 #: ../html/src/manager/shared/menu/menu.tsx:273
 msgid "Uyuni"
-msgstr ""
+msgstr "Uyuni"
 
 #: ../html/src/manager/shared/menu/menu.tsx:275
 msgid "Uyuni homepage"
-msgstr ""
+msgstr "Page d'accueil d'Uyuni"
 
 #: ../html/src/manager/shared/menu/menu.tsx:288
 msgid "SUSE Multi-Linux Manager homepage"
@@ -7228,7 +7228,7 @@ msgstr ""
 
 #: ../html/src/manager/state/display-highstate.tsx:80
 msgid "There are no applicable systems."
-msgstr ""
+msgstr "Il n'existe pas de systèmes applicables."
 
 #: ../html/src/manager/state/highstate-summary.tsx:23
 msgid "State channel"
@@ -7272,7 +7272,7 @@ msgstr ""
 
 #: ../html/src/manager/state/highstate.tsx:129
 msgid "Apply Highstate"
-msgstr ""
+msgstr "Appliquer Highstate"
 
 #: ../html/src/manager/storybook/storybook.tsx:49
 msgid "Development debugging page"
@@ -7316,11 +7316,11 @@ msgstr ""
 
 #: ../html/src/manager/systems/activation-key/activation-keys-appstreams.tsx:42
 msgid "Activation key has been modified."
-msgstr ""
+msgstr "La clé d'activation a été modifiée."
 
 #: ../html/src/manager/systems/all-list.tsx:55
 msgid " Systems "
-msgstr ""
+msgstr " Systèmes "
 
 #: ../html/src/manager/systems/all-list.tsx:69
 msgid "Add system"
@@ -7328,17 +7328,17 @@ msgstr ""
 
 #: ../html/src/manager/systems/all-list.tsx:84
 msgid "No Systems."
-msgstr ""
+msgstr "Aucun systèmes."
 
 #: ../html/src/manager/systems/all-list.tsx:134
 #: ../html/src/manager/systems/list-filter.tsx:48
 msgid "Extra Packages"
-msgstr ""
+msgstr "Paquets supplémentaires"
 
 #: ../html/src/manager/systems/all-list.tsx:148
 #: ../html/src/manager/systems/list-filter.tsx:49
 msgid "Config Diffs"
-msgstr ""
+msgstr "Différences de configuration"
 
 #: ../html/src/manager/systems/all-list.tsx:163
 msgid "Last Checked In"
@@ -7354,7 +7354,7 @@ msgstr ""
 #: ../html/src/manager/systems/all-list.tsx:180
 #: ../html/src/manager/systems/list-filter.tsx:53
 msgid "System Type"
-msgstr ""
+msgstr "Type de système"
 
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-channel-selection.tsx:16
 msgid "No modular channels are available for the selected systems in SSM."
@@ -7404,7 +7404,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:41
 msgid "Error Details"
-msgstr ""
+msgstr "Détails de l'erreur"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:51
 msgid "Standard Output:"
@@ -7442,12 +7442,12 @@ msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:402
 msgid "Loading SSH Private Key.."
-msgstr ""
+msgstr "Chargement de la clé privée SSH..."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:410
 #: ../html/src/manager/systems/list-filter.tsx:14
 msgid "Bootstrap"
-msgstr ""
+msgstr "Bootstrap"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:434
 msgid "e.g., ••••••••••••"
@@ -7459,11 +7459,11 @@ msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:463
 msgid "Leave empty for no passphrase"
-msgstr ""
+msgstr "Laissez vide pour ne pas utiliser de mot de passe"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:475
 msgid "Bootstrap Minions"
-msgstr ""
+msgstr "Bootstrap Minions"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:478
 msgid "You can add systems to be managed by providing SSH credentials only. {productName} will prepare the system remotely and will perform the registration."
@@ -7471,7 +7471,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:492
 msgid "e.g., host.domain.com"
-msgstr ""
+msgstr "par exemple, hôte.domaine.com"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:529
 msgid "The user will have an effect only during the bootstrap process. Further connections will be made by the user specified in rhn.conf. The default user for the key 'ssh_push_sudo_user' is 'root'. This user is set after {productName}'s SSH key is deployed during the bootstrap procedure."
@@ -7479,7 +7479,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:538
 msgid "Authentication Method"
-msgstr ""
+msgstr "Méthode d'authentification"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:575
 msgid "Ansible control node"
@@ -7489,15 +7489,15 @@ msgstr ""
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:623
 #: ../html/src/manager/systems/proxy.tsx:124
 msgid "None"
-msgstr ""
+msgstr "Aucun"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:606
 msgid "Reactivation Key"
-msgstr ""
+msgstr "Clé de réactivation"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:612
 msgid "Leave empty when no reactivation is wanted"
-msgstr ""
+msgstr "Laissez le vide quand aucune réactivation n'est souhaitée"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:641
 msgid "The hostname of the proxy is not fully qualified. This may cause problems when accessing the channels."
@@ -7539,7 +7539,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:30
 msgid "Unknown System"
-msgstr ""
+msgstr "Système inconnu"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:31
 msgid "System is not a peripheral server"
@@ -7576,11 +7576,11 @@ msgstr ""
 
 #: ../html/src/manager/systems/list-filter.tsx:4
 msgid "Manager Server"
-msgstr ""
+msgstr "Gérer le serveur"
 
 #: ../html/src/manager/systems/list-filter.tsx:5
 msgid "Physical"
-msgstr ""
+msgstr "Physique"
 
 #: ../html/src/manager/systems/list-filter.tsx:12
 msgid "Ansible Control Node"
@@ -7596,7 +7596,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/list-filter.tsx:16
 msgid "Foreign"
-msgstr ""
+msgstr "Étranger"
 
 #: ../html/src/manager/systems/list-filter.tsx:17
 msgid "Management"
@@ -7612,7 +7612,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/list-filter.tsx:20
 msgid "Salt"
-msgstr ""
+msgstr "Salt"
 
 #: ../html/src/manager/systems/list-filter.tsx:21
 msgid "Virtualization Host"
@@ -7669,7 +7669,7 @@ msgstr ""
 #: ../html/src/manager/systems/list-filter.tsx:69
 #: ../html/src/manager/systems/virtual-list.tsx:83
 msgid "Virtual System"
-msgstr ""
+msgstr "Système virtuel"
 
 #: ../html/src/manager/systems/product-migration/migration-from-dry-run.tsx:58
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:96
@@ -7797,12 +7797,12 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:37
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:223
 msgid "No Change"
-msgstr ""
+msgstr "Aucun changement"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:38
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:520
 msgid "Subscribe"
-msgstr ""
+msgstr "Abonnez-vous"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:39
 msgid "Unsubsribe"
@@ -7855,7 +7855,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:462
 msgid "(none)"
-msgstr ""
+msgstr "(aucun)"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:468
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:685
@@ -7868,7 +7868,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:531
 msgid "Unsubscribe"
-msgstr ""
+msgstr "Désabonnement"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:547
 msgid "Below is a list of channels in your organization. "
@@ -7909,7 +7909,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:786
 msgid "Scheduled"
-msgstr ""
+msgstr "Planifier"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:794
 msgid "Unknown error. Could not schedule channel change"
@@ -7985,7 +7985,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:68
 msgid "Properties"
-msgstr ""
+msgstr "Propriétés"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:72
 msgid "Nodes"
@@ -7993,7 +7993,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:86
 msgid "OS"
-msgstr ""
+msgstr "Système d'exploitation"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:87
 msgid "CPU Arch"
@@ -8044,35 +8044,35 @@ msgstr ""
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:18
 msgid "File-based"
-msgstr ""
+msgstr "Basé sur des fichiers"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:19
 msgid "VMWare-based"
-msgstr ""
+msgstr "Basé sur VMWare"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:20
 msgid "Kubernetes Cluster"
-msgstr ""
+msgstr "Grappe Kubernetes"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:21
 msgid "Amazon EC2"
-msgstr ""
+msgstr "Amazon EC2"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:22
 msgid "Google Compute Engine"
-msgstr ""
+msgstr "Google Compute Engine"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:23
 msgid "Azure"
-msgstr ""
+msgstr "Azure"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:24
 msgid "Nutanix AHV"
-msgstr ""
+msgstr "Nutanix AHV"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:25
 msgid "Libvirt API"
-msgstr ""
+msgstr "Libvirt API"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:150
 msgid "Add a {type} Virtual Host Manager"
