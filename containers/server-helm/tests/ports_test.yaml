@@ -21,20 +21,16 @@ tests:
           content:
             name: jmx
             port: 5557
-            protocol: TCP
-            targetPort: 5557
         template: services.yaml
         documentSelector:
           path: metadata.name
-          value: taskomatic
+          value: taskomatic-internal
       # Test Database Service Ports
       - contains:
           path: spec.ports
           content:
             name: pgsql
             port: 5432
-            targetPort: 5432
-            protocol: TCP
         template: services.yaml
         documentSelector:
           path: metadata.name
@@ -44,8 +40,6 @@ tests:
           content:
             name: pgsql
             port: 5432
-            targetPort: 5432
-            protocol: TCP
         template: services.yaml
         documentSelector:
           path: metadata.name
@@ -83,20 +77,249 @@ tests:
           content:
             name: debug
             port: 8001
-            protocol: TCP
-            targetPort: 8001
         template: services.yaml
         documentSelector:
           path: metadata.name
           value: taskomatic
-      - notContains:
+
+      - hasDocuments:
+          count: 0
+        template: services.yaml
+        documentSelector:
+          path: metadata.name
+          value: taskomatic-internal
+          skipEmptyTemplates: true
+
+  - it: should set the default ports with global NodePort type
+    set:
+      global.fqdn: uyuni.example.com
+      exposeJavaDebug: true
+      services:
+        type: NodePort
+    asserts:
+      - equal:
+          path: spec.type
+          value: NodePort
+        template: services.yaml
+        documentSelector:
+          path: metadata.name
+          value: reportdb
+      - contains:
           path: spec.ports
           content:
-            name: jmx
-            port: 5557
-            protocol: TCP
-            targetPort: 5557
+            name: pgsql
+            port: 5432
+            nodePort: 30032
+        template: services.yaml
+        documentSelector:
+          path: metadata.name
+          value: reportdb
+
+      - equal:
+          path: spec.type
+          value: NodePort
+        template: services.yaml
+        documentSelector:
+          path: metadata.name
+          value: salt
+      - contains:
+          path: spec.ports
+          content:
+            name: publish
+            port: 4505
+            nodePort: 30005
+        template: services.yaml
+        documentSelector:
+          path: metadata.name
+          value: salt
+      - contains:
+          path: spec.ports
+          content:
+            name: request
+            port: 4506
+            nodePort: 30006
+        template: services.yaml
+        documentSelector:
+          path: metadata.name
+          value: salt
+
+      - equal:
+          path: spec.type
+          value: NodePort
+        template: services.yaml
+        documentSelector:
+          path: metadata.name
+          value: search
+      - contains:
+          path: spec.ports
+          content:
+            name: debug
+            port: 8002
+            nodePort: 30002
+        template: services.yaml
+        documentSelector:
+          path: metadata.name
+          value: search
+
+      - equal:
+          path: spec.type
+          value: NodePort
         template: services.yaml
         documentSelector:
           path: metadata.name
           value: taskomatic
+      - contains:
+          path: spec.ports
+          content:
+            name: debug
+            port: 8001
+            nodePort: 30001
+        template: services.yaml
+        documentSelector:
+          path: metadata.name
+          value: taskomatic
+
+      - equal:
+          path: spec.type
+          value: NodePort
+        template: services.yaml
+        documentSelector:
+          path: metadata.name
+          value: tomcat
+      - contains:
+          path: spec.ports
+          content:
+            name: debug
+            port: 8003
+            nodePort: 30003
+        template: services.yaml
+        documentSelector:
+          path: metadata.name
+          value: tomcat
+
+  - it: should set the ports with overridden values NodePort type
+    set:
+      global.fqdn: uyuni.example.com
+      exposeJavaDebug: true
+      services:
+        reportdb:
+          type: NodePort
+          ports:
+            pgsql: 30001
+        salt:
+          type: NodePort
+          ports:
+            publish: 30002
+            request: 30003
+        search:
+          type: NodePort
+          ports:
+            debug: 30004
+        taskomatic:
+          type: NodePort
+          ports:
+            debug: 30005
+        tomcat:
+          type: NodePort
+          ports:
+            debug: 30006
+    asserts:
+      - equal:
+          path: spec.type
+          value: NodePort
+        template: services.yaml
+        documentSelector:
+          path: metadata.name
+          value: reportdb
+      - contains:
+          path: spec.ports
+          content:
+            name: pgsql
+            port: 5432
+            nodePort: 30001
+        template: services.yaml
+        documentSelector:
+          path: metadata.name
+          value: reportdb
+
+      - equal:
+          path: spec.type
+          value: NodePort
+        template: services.yaml
+        documentSelector:
+          path: metadata.name
+          value: salt
+      - contains:
+          path: spec.ports
+          content:
+            name: publish
+            port: 4505
+            nodePort: 30002
+        template: services.yaml
+        documentSelector:
+          path: metadata.name
+          value: salt
+      - contains:
+          path: spec.ports
+          content:
+            name: request
+            port: 4506
+            nodePort: 30003
+        template: services.yaml
+        documentSelector:
+          path: metadata.name
+          value: salt
+
+      - equal:
+          path: spec.type
+          value: NodePort
+        template: services.yaml
+        documentSelector:
+          path: metadata.name
+          value: search
+      - contains:
+          path: spec.ports
+          content:
+            name: debug
+            port: 8002
+            nodePort: 30004
+        template: services.yaml
+        documentSelector:
+          path: metadata.name
+          value: search
+
+      - equal:
+          path: spec.type
+          value: NodePort
+        template: services.yaml
+        documentSelector:
+          path: metadata.name
+          value: taskomatic
+      - contains:
+          path: spec.ports
+          content:
+            name: debug
+            port: 8001
+            nodePort: 30005
+        template: services.yaml
+        documentSelector:
+          path: metadata.name
+          value: taskomatic
+
+      - equal:
+          path: spec.type
+          value: NodePort
+        template: services.yaml
+        documentSelector:
+          path: metadata.name
+          value: tomcat
+      - contains:
+          path: spec.ports
+          content:
+            name: debug
+            port: 8003
+            nodePort: 30006
+        template: services.yaml
+        documentSelector:
+          path: metadata.name
+          value: tomcat

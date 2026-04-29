@@ -6,26 +6,16 @@ metadata:
   labels:
     app.kubernetes.io/component: proxy
     app.kubernetes.io/part-of: uyuni
-{{- if .Values.services.annotations }}
-  annotations:
-{{ toYaml .Values.services.annotations | indent 4 }}
-{{- end }}
 spec:
   selector:
     app.kubernetes.io/component: proxy
     app.kubernetes.io/part-of: uyuni
-  type: {{ .Values.services.type }}
+  type: ClusterIP
   ports:
     - name: http
       port: 80
-{{- if eq .Values.services.type "NodePort" }}
-      nodePort: {{ .Values.httpd.ports.http }}
-{{- end }}
     - name: https
       port: 443
-{{- if eq .Values.services.type "NodePort" }}
-      nodePort: {{ .Values.httpd.ports.https }}
-{{- end }}
 ---
 apiVersion: v1
 kind: Service
@@ -35,25 +25,25 @@ metadata:
   labels:
     app.kubernetes.io/component: proxy
     app.kubernetes.io/part-of: uyuni
-{{- if .Values.services.annotations }}
+{{- if or .Values.services.annotations .Values.services.salt.annotations }}
   annotations:
-{{ toYaml .Values.services.annotations | indent 4 }}
+{{ toYaml ( mergeOverwrite (dict) (default (dict) .Values.services.annotations) (default (dict) .Values.services.salt.annotations) ) | indent 4 }}
 {{- end }}
 spec:
   selector:
     app.kubernetes.io/component: proxy
     app.kubernetes.io/part-of: uyuni
-  type: {{ .Values.services.type }}
+  type: {{ .Values.services.salt.type | default .Values.services.type }}
   ports:
-    - name: salt-publish
+    - name: publish
       port: 4505
-{{- if eq .Values.services.type "NodePort" }}
-      nodePort: {{ .Values.salt.ports.publish }}
+{{- if eq (default .Values.services.type .Values.services.salt.type) "NodePort" }}
+      nodePort: {{ .Values.services.salt.ports.publish }}
 {{- end }}
-    - name: salt-request
+    - name: request
       port: 4506
-{{- if eq .Values.services.type "NodePort" }}
-      nodePort: {{ .Values.salt.ports.request }}
+{{- if eq (default .Values.services.type .Values.services.salt.type) "NodePort" }}
+      nodePort: {{ .Values.services.salt.ports.request }}
 {{- end }}
 ---
 apiVersion: v1
@@ -64,21 +54,21 @@ metadata:
   labels:
     app.kubernetes.io/component: proxy
     app.kubernetes.io/part-of: uyuni
-{{- if .Values.services.annotations }}
+{{- if or .Values.services.annotations .Values.services.ssh.annotations }}
   annotations:
-{{ toYaml .Values.services.annotations | indent 4 }}
+{{ toYaml ( mergeOverwrite (dict) (default (dict) .Values.services.annotations) (default (dict) .Values.services.ssh.annotations) ) | indent 4 }}
 {{- end }}
 spec:
   selector:
     app.kubernetes.io/component: proxy
     app.kubernetes.io/part-of: uyuni
-  type: {{ .Values.services.type }}
+  type: {{ .Values.services.ssh.type | default .Values.services.type }}
   ports:
     - name: ssh
       port: 8022
       targetPort: 22
-{{- if eq .Values.services.type "NodePort" }}
-      nodePort: {{ .Values.ssh.ports.ssh }}
+{{- if eq (default .Values.services.type .Values.services.ssh.type) "NodePort" }}
+      nodePort: {{ .Values.services.ssh.ports.ssh }}
 {{- end }}
 {{- if not .Values.tftp.hostNetwork }}
 ---
@@ -90,9 +80,9 @@ metadata:
   labels:
     app.kubernetes.io/component: proxy
     app.kubernetes.io/part-of: uyuni
-{{- if .Values.services.annotations }}
+{{- if or .Values.services.annotations .Values.services.tftp.annotations }}
   annotations:
-{{ toYaml .Values.services.annotations | indent 4 }}
+{{ toYaml ( mergeOverwrite (dict) (default (dict) .Values.services.annotations) (default (dict) .Values.services.tftp.annotations) ) | indent 4 }}
 {{- end }}
 spec:
   selector:

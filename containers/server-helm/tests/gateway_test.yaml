@@ -195,7 +195,7 @@ tests:
                     type: ReplacePrefixMatch
                     replacePrefixMatch: /
             backendRefs:
-              - name: tomcat
+              - name: tomcat-internal
                 port: 9187
           any: true
         template: routes.yaml
@@ -217,7 +217,7 @@ tests:
                     type: ReplacePrefixMatch
                     replacePrefixMatch: /
             backendRefs:
-              - name: tomcat
+              - name: tomcat-internal
                 port: 9100
           any: true
         template: routes.yaml
@@ -239,7 +239,7 @@ tests:
                     type: ReplacePrefixMatch
                     replacePrefixMatch: /
             backendRefs:
-              - name: taskomatic
+              - name: taskomatic-internal
                 port: 9800
           any: true
         template: routes.yaml
@@ -261,7 +261,7 @@ tests:
                     type: ReplacePrefixMatch
                     replacePrefixMatch: /
             backendRefs:
-              - name: tomcat
+              - name: tomcat-internal
                 port: 5556
           any: true
         template: routes.yaml
@@ -283,7 +283,7 @@ tests:
                     type: ReplacePrefixMatch
                     replacePrefixMatch: /
             backendRefs:
-              - name: taskomatic
+              - name: taskomatic-internal
                 port: 5557
           any: true
         template: routes.yaml

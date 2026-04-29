@@ -193,7 +193,7 @@ tests:
             pathType: Prefix
             backend:
               service:
-                name: tomcat
+                name: tomcat-internal
                 port:
                   number: 9187
         documentSelector:
@@ -207,7 +207,7 @@ tests:
             pathType: Prefix
             backend:
               service:
-                name: tomcat
+                name: tomcat-internal
                 port:
                   number: 9100
         documentSelector:
@@ -220,7 +220,7 @@ tests:
             pathType: Prefix
             backend:
               service:
-                name: taskomatic
+                name: taskomatic-internal
                 port:
                   number: 9800
         documentSelector:
@@ -233,7 +233,7 @@ tests:
             pathType: Prefix
             backend:
               service:
-                name: taskomatic
+                name: taskomatic-internal
                 port:
                   number: 5557
         documentSelector:
@@ -246,7 +246,7 @@ tests:
             pathType: Prefix
             backend:
               service:
-                name: tomcat
+                name: tomcat-internal
                 port:
                   number: 5556
         documentSelector:

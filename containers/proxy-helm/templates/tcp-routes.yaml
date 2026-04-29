@@ -1,5 +1,6 @@
 {{- if .Values.gateway.enable }}
 {{- $gatewayName := .Values.gateway.name | default "uyuni-gateway" -}}
+  {{- if ne (default .Values.services.type .Values.services.salt.type) "NodePort" }}
 apiVersion: gateway.networking.k8s.io/v1alpha2
 kind: TCPRoute
 metadata:
@@ -32,6 +33,8 @@ spec:
       - name: salt
         port: 4506
 ---
+  {{- end }}
+  {{- if ne (default .Values.services.type .Values.services.ssh.type) "NodePort" }}
 apiVersion: gateway.networking.k8s.io/v1alpha2
 kind: TCPRoute
 metadata:
@@ -47,5 +50,6 @@ spec:
     - backendRefs:
       - name: ssh
         port: 8022
+  {{- end }}
 {{- end }}
 
