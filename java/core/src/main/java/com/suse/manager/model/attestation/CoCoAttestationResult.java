@@ -12,11 +12,15 @@ package com.suse.manager.model.attestation;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Map;
 import java.util.Optional;
+import java.util.TreeMap;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
@@ -41,6 +45,8 @@ public class CoCoAttestationResult implements Serializable {
     private Long id;
     private ServerCoCoAttestationReport report;
     private CoCoResultType resultType;
+    private CoCoEnvironmentType environmentType;
+    private Map<String, Object> inData = new TreeMap<>();
     private CoCoResultStatus status;
     private String description;
     private String details;
@@ -67,12 +73,30 @@ public class CoCoAttestationResult implements Serializable {
     }
 
     /**
-     * @return return the selected environment type
+     * @return return the selected result type
      */
     @Column(name = "result_type")
     @Convert(converter = CoCoResultTypeConverter.class)
     public CoCoResultType getResultType() {
         return resultType;
+    }
+
+    /**
+     * @return return the selected environment type
+     */
+    @Column(name = "env_type")
+    @Convert(converter = CoCoEnvironmentTypeConverter.class)
+    public CoCoEnvironmentType getEnvironmentType() {
+        return environmentType;
+    }
+
+    /**
+     * @return returns the input data
+     */
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(columnDefinition = "jsonb", name = "in_data")
+    public Map<String, Object> getInData() {
+        return inData;
     }
 
     /**
@@ -151,6 +175,20 @@ public class CoCoAttestationResult implements Serializable {
      */
     public void setResultType(CoCoResultType resultTypeIn) {
         resultType = resultTypeIn;
+    }
+
+    /**
+     * @param environmentTypeIn set the environment type
+     */
+    public void setEnvironmentType(CoCoEnvironmentType environmentTypeIn) {
+        environmentType = environmentTypeIn;
+    }
+
+    /**
+     * @param inDataIn the input data to set
+     */
+    public void setInData(Map<String, Object> inDataIn) {
+        inData = inDataIn;
     }
 
     /**
