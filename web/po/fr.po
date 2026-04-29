@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-14 11:17+0200\n"
-"PO-Revision-Date: 2026-04-29 14:04+0000\n"
+"PO-Revision-Date: 2026-04-29 17:04+0000\n"
 "Last-Translator: sorau <sorau@proton.me>\n"
 "Language-Team: French <https://l10n.opensuse.org/projects/uyuni/web/fr/>\n"
 "Language: fr\n"
@@ -6617,7 +6617,7 @@ msgstr ""
 
 #: ../html/src/manager/notifications/notifications-list.tsx:77
 msgid "Notification Messages"
-msgstr ""
+msgstr "Messages de notification"
 
 #: ../html/src/manager/notifications/notifications-list.tsx:82
 msgid "The server has collected the following notification messages."
@@ -6641,15 +6641,15 @@ msgstr ""
 
 #: ../html/src/manager/notifications/notifications-list.tsx:184
 msgid "Filter by type"
-msgstr ""
+msgstr "Filtrer par type"
 
 #: ../html/src/manager/notifications/notifications-list.tsx:202
 msgid "Unread Messages"
-msgstr ""
+msgstr "Messages non lus"
 
 #: ../html/src/manager/notifications/notifications-list.tsx:207
 msgid "All Messages"
-msgstr ""
+msgstr "Tous les messages"
 
 #: ../html/src/manager/notifications/notifications-list.tsx:223
 #: ../html/src/manager/systems/product-migration/ssm-product-migration.tsx:149
