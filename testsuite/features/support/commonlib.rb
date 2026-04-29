@@ -123,6 +123,7 @@ end
 # @return [Boolean] Returns true if the text is visible, false otherwise.
 def check_text?(text1, text2: nil, timeout: Capybara.default_max_wait_time)
   raise ScriptError, 'BUG DETECTED! Internal Server Error' if has_text?('Internal Server Error', wait: 0)
+
   has_text?(text1, wait: timeout) || (!text2.nil? && has_text?(text2, wait: timeout))
 end
 
