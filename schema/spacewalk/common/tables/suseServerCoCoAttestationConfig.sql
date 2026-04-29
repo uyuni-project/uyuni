@@ -18,6 +18,7 @@ CREATE TABLE suseServerCoCoAttestationConfig
                                 REFERENCES rhnServer (id) ON DELETE CASCADE,
     enabled             BOOLEAN NOT NULL DEFAULT FALSE,
     env_type            NUMERIC NULL,
+    in_data             JSONB NOT NULL default '{}',
     attest_on_boot      BOOLEAN NOT NULL DEFAULT FALSE
 );
 

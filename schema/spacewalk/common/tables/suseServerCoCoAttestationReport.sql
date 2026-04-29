@@ -23,6 +23,7 @@ CREATE TABLE suseServerCoCoAttestationReport
 	status      VARCHAR(32) NOT NULL
 	              CONSTRAINT suse_srvcocoatt_rep_st_ck
                         CHECK(status IN ('PENDING', 'SUCCEEDED', 'FAILED')),
+        config_data JSONB NOT NULL default '{}', -- copy of the configuration data
         in_data     JSONB NOT NULL, -- input data for the state.apply
         out_data    JSONB NOT NULL, -- output data from the state.apply
 	created     TIMESTAMPTZ DEFAULT (current_timestamp) NOT NULL,
