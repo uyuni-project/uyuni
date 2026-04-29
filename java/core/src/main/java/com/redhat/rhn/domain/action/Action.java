@@ -677,5 +677,14 @@ public class Action extends BaseDomainHelper implements Serializable, WebSocketA
         return false; //default
     }
 
+    /**
+     * checks whether the action is ready to run: if not, the action execution will be postponed by some seconds
+     * see MinionActionExecutor.execute()
+     * @return true if the action is ready to run
+     */
+    public boolean isReadyToRun() {
+        return true; //default
+    }
+
 }
 
