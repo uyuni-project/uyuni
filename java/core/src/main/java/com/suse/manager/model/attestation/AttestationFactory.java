@@ -291,4 +291,16 @@ public class AttestationFactory extends HibernateFactory {
             .setFirstResult(offsetIn)
             .list();
     }
+
+    /**
+     * @param actionIn the action
+     * @return returns the attestation report for this action if available
+     */
+    public List<ServerCoCoAttestationReport> listCoCoAttestationReportsForAction(Action actionIn) {
+        return getSession()
+                .createQuery("FROM ServerCoCoAttestationReport WHERE action = :action",
+                        ServerCoCoAttestationReport.class)
+                .setParameter("action", actionIn)
+                .list();
+    }
 }

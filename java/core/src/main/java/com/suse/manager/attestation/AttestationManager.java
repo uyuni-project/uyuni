@@ -379,6 +379,14 @@ public class AttestationManager {
         return factory.listCoCoAttestationReportsForUser(userIn, offset, limit);
     }
 
+    /**
+     * @param actionIn the action
+     * @return returns the attestation report for this server and action if available
+     */
+    public List<ServerCoCoAttestationReport> listCoCoAttestationReportsForAction(Action actionIn) {
+        return factory.listCoCoAttestationReportsForAction(actionIn);
+    }
+
     private void ensureSystemAccessible(User userIn, Server serverIn) {
         if (serverIn == null) {
             LOG.error("Server not found");
