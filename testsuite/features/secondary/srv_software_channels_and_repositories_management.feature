@@ -4,8 +4,8 @@
 @scope_software_channels_and_repositories
 @scope_hibernate
 Feature: Software channels and repositories management
-  To check and test operability of software channels and repositories,
-  and related CRUD operations encapsulated with hibernate.
+  Software channels and repositories can be operated,
+  related CRUD operation encapsultade with hibernate work.
 
   Scenario: Log in as org admin user
     Given I am authorized
