@@ -33,4 +33,12 @@ public enum CoCoResultStatus {
     public String getDescription() {
         return LocalizationService.getInstance().getMessage(descriptionKey);
     }
+
+    /**
+     * checks if status has input data present
+     * @return true if status has input data present
+     */
+    public boolean hasInputData() {
+        return (this != REQUESTED);
+    }
 }
