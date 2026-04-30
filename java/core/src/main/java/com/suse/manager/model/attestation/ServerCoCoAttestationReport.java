@@ -199,6 +199,20 @@ public class ServerCoCoAttestationReport extends BaseDomainHelper implements Ser
                 .allMatch(result -> result.getStatus().hasInputData());
     }
 
+    /**
+     * Sets failure in report and inputs not yet computed
+     */
+    public void setFailed() {
+        setStatus(CoCoReportStatus.FAILED);
+
+        getResults().stream()
+                .filter(result -> !result.getStatus().hasInputData())
+                .forEach(result -> {
+                    result.setStatus(CoCoResultStatus.FAILED);
+                    result.setDetails("No input data");
+                });
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
