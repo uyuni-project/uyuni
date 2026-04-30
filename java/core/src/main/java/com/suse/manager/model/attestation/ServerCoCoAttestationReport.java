@@ -190,6 +190,15 @@ public class ServerCoCoAttestationReport extends BaseDomainHelper implements Ser
         results.add(resultIn);
     }
 
+    /**
+     * Checks if all results have their input data already computed
+     * @return true if all results have their input data already computed
+     */
+    public boolean hasAllInputDataFromResults() {
+        return getResults().stream()
+                .allMatch(result -> result.getStatus().hasInputData());
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
