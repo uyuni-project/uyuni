@@ -21,8 +21,48 @@ public enum AttestationStatus {
     QUEUED,
     SUBMITTED;
 
-
+    /**
+     * Gets a list of status to be listened to
+     *
+     * @return the status list
+     */
     public static List<AttestationStatus> statusToListenList() {
         return List.of(REQUESTED, PENDING);
     }
+
+    /**
+     * Checks if status is REQUESTED
+     *
+     * @return true if status is REQUESTED
+     */
+    public boolean isProcessingAttestationRequest() {
+        return (this == REQUESTED);
+    }
+
+    /**
+     * Checks if status is PENDING
+     *
+     * @return true if status is PENDING
+     */
+    public boolean isProcessingAttestationVerification() {
+        return (this == PENDING);
+    }
+
+    /**
+     * Gets next status, depending on success and current status
+     *
+     * @param success true if current operation succeeded
+     * @return next status
+     */
+    public AttestationStatus getProcessingResultStatus(boolean success) {
+        if (success && isProcessingAttestationRequest()) {
+            return AttestationStatus.QUEUED;
+        }
+        if (success && isProcessingAttestationVerification()) {
+            return AttestationStatus.SUCCEEDED;
+        }
+
+        return AttestationStatus.FAILED;
+    }
+
 }

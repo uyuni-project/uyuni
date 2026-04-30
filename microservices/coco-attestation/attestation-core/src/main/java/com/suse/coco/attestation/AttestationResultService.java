@@ -87,16 +87,18 @@ public class AttestationResultService {
 
             AttestationWorker worker = workerFactory.createWorker(result.getResultType());
 
+            boolean success = false;
             LOGGER.info("AttestationResult with id {} selected for processing", id);
-            boolean success = worker.processAttestationVerification(session, result);
-            if (success) {
-                result.setStatus(AttestationStatus.SUCCEEDED);
-                result.setAttested(OffsetDateTime.now());
+
+            if (result.getStatus().isProcessingAttestationRequest()) {
+                success = worker.processAttestationRequest(session, result);
             }
-            else {
-                result.setStatus(AttestationStatus.FAILED);
-                result.setAttested(null);
+            if (result.getStatus().isProcessingAttestationVerification()) {
+                success = worker.processAttestationVerification(session, result);
+                result.setAttested(success ? OffsetDateTime.now() : null);
             }
+
+            result.setStatus(result.getStatus().getProcessingResultStatus(success));
 
             session.update("AttestationResult.update", result);
             session.commit();
