@@ -227,6 +227,19 @@ public class ServerCoCoAttestationReport extends BaseDomainHelper implements Ser
         getResults().forEach(result -> result.setStatus(CoCoResultStatus.SUBMITTED));
     }
 
+    /**
+     * Sets pending status in report and in all results
+     */
+    public void setPendingResults() {
+        setStatus(CoCoReportStatus.PENDING);
+
+        getResults().stream()
+                .filter(result -> result.getStatus().hasInputData())
+                .forEach(result -> {
+                    result.setStatus(CoCoResultStatus.PENDING);
+                });
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
