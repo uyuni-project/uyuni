@@ -26,7 +26,9 @@ public enum CoCoEnvironmentType {
     KVM_AMD_EPYC_GENOA(2, List.of(CoCoResultType.SEV_SNP, CoCoResultType.SECURE_BOOT)),
     KVM_AMD_EPYC_BERGAMO(3, List.of(CoCoResultType.SEV_SNP, CoCoResultType.SECURE_BOOT)),
     KVM_AMD_EPYC_SIENA(4, List.of(CoCoResultType.SEV_SNP, CoCoResultType.SECURE_BOOT)),
-    KVM_AMD_EPYC_TURIN(5, List.of(CoCoResultType.SEV_SNP, CoCoResultType.SECURE_BOOT));
+    KVM_AMD_EPYC_TURIN(5, List.of(CoCoResultType.SEV_SNP, CoCoResultType.SECURE_BOOT)),
+    KVM_IBM_Z16(6, List.of(CoCoResultType.IBM_PVATTEST)),
+    KVM_IBM_Z17(7, List.of(CoCoResultType.IBM_PVATTEST));
     // ATTENTION: KEEP CoCoAttestationReport_queries.xml up to date !
 
     private final long value;
