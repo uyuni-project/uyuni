@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-14 11:17+0200\n"
-"PO-Revision-Date: 2026-04-29 17:04+0000\n"
+"PO-Revision-Date: 2026-04-30 10:04+0000\n"
 "Last-Translator: sorau <sorau@proton.me>\n"
 "Language-Team: French <https://l10n.opensuse.org/projects/uyuni/web/fr/>\n"
 "Language: fr\n"
@@ -75,7 +75,7 @@ msgstr "Attestations informatiques confidentielles"
 
 #: ../html/src/components/CoCoScansList.tsx:163
 msgid "Schedule Attestation"
-msgstr ""
+msgstr "Attestation programmée"
 
 #: ../html/src/components/CoCoScansList.tsx:187
 msgid "Attestation Report details"
@@ -87,7 +87,7 @@ msgstr ""
 
 #: ../html/src/components/FormulaForm.tsx:24
 msgid "Formula saved. Applying the highstate is not needed for this formula."
-msgstr ""
+msgstr "Recette sauvegardée. L'application du highstate n'est pas nécessaire pour cette recette."
 
 #: ../html/src/components/FormulaForm.tsx:165
 msgid "Please input required fields: {fields}"
@@ -123,7 +123,7 @@ msgstr "nouvelle chaîne d’action"
 
 #: ../html/src/components/action-schedule.tsx:197
 msgid "There are multiple maintenance schedules for selected systems. Make sure that systems in the set use at most 1 maintenance schedule if you want to schedule by date or maintenance window."
-msgstr ""
+msgstr "Il existe plusieurs plannings de maintenance pour certains systèmes. Assurez-vous que les systèmes utilisent au maximum un calendrier de maintenance si vous souhaitez planifier par date ou fenêtre de maintenance."
 
 #: ../html/src/components/action-schedule.tsx:204
 msgid "No upcoming maintenance windows"
@@ -143,7 +143,7 @@ msgstr "Ajouter à :"
 
 #: ../html/src/components/action-schedule.tsx:297
 msgid "Loading the scheduler..."
-msgstr ""
+msgstr "Chargement du planificateur..."
 
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:147
 msgid "SCAP scan has been "
@@ -361,7 +361,7 @@ msgstr "Statut"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:104
 msgid "Attestation time"
-msgstr ""
+msgstr "Période d'attestation"
 
 #: ../html/src/components/coco-attestation/CoCoAttestationTable.tsx:111
 #: ../html/src/components/hub/TokenTable.tsx:104
@@ -421,7 +421,7 @@ msgstr "Action"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:89
 msgid "{actionName} scheduled by {actionScheduledBy}"
-msgstr ""
+msgstr "{actionName} programmé par {actionScheduledBy}"
 
 #: ../html/src/components/coco-attestation/CoCoReport.tsx:100
 msgid "Attested on"
@@ -459,11 +459,11 @@ msgstr "Exécutions"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:109
 msgid "Peform attestation during the boot process"
-msgstr ""
+msgstr "Lancer l'attestation pendant le démarrage"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:121
 msgid "Peform attestation on a schedule"
-msgstr ""
+msgstr "Utiliser le planificateur pour jouer l'attestation"
 
 #: ../html/src/components/coco-attestation/CoCoSettingsForm.tsx:132
 msgid "Select a schedule"
@@ -748,7 +748,7 @@ msgstr " Aucun groupe"
 
 #: ../html/src/components/formula-selection.tsx:276
 msgid "On this page you can select Salt Formulas for this group/system, which can then be configured on group and system level. This allows you to automatically install and configure software."
-msgstr ""
+msgstr "Sur cette page, vous pouvez sélectionner des formules de Salt pour ce groupe/système, qui peuvent ensuite être configurées au niveau du groupe et du système. Cela vous permet d'installer et configurer automatiquement des logiciels."
 
 #: ../html/src/components/formula-selection.tsx:309
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:63
@@ -758,7 +758,7 @@ msgstr "Formules"
 
 #: ../html/src/components/formulas/EditGroup.tsx:361
 msgid "This field is used as a 'key' identifier in the resulting pillar data."
-msgstr ""
+msgstr "Ce champ est utilisé comme identifiant « clé » dans les données pillar."
 
 #: ../html/src/components/formulas/PasswordInput.tsx:70
 msgid "Generate new password"
@@ -1652,7 +1652,7 @@ msgstr "Les deux valeurs doivent être des entiers positifs"
 #: ../html/src/components/table/SelectedRowDetails.tsx:60
 #: ../html/src/manager/admin/setup/products/products.tsx:341
 msgid "Clear"
-msgstr ""
+msgstr "Enlever"
 
 #: ../html/src/components/input/select/DEPRECATED_Select.tsx:108
 #: ../html/src/components/input/select/Select.tsx:14
@@ -1668,7 +1668,7 @@ msgstr "Pas d'options"
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:645
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:646
 msgid "Loading..."
-msgstr ""
+msgstr "Chargement..."
 
 #: ../html/src/components/large-text-attachment.tsx:75
 msgid "Data is present."
@@ -1742,7 +1742,7 @@ msgstr "Nom du paquet"
 
 #: ../html/src/components/pagination.tsx:109
 msgid "Items {from} - {to} of {total}"
-msgstr ""
+msgstr "Éléments {from} - {to} de {total}"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:56
 msgid "Sunday"
@@ -1778,7 +1778,7 @@ msgstr "Samedi"
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:162
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:17
 msgid "Schedule Name"
-msgstr ""
+msgstr "Nom du planificateur"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:349
 msgid "Hourly:"
@@ -1786,7 +1786,7 @@ msgstr "Chaque heure :"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:366
 msgid "The action will be executed every hour at the specified minute"
-msgstr ""
+msgstr "L'action sera exécutée toutes les heures à la minute spécifiée"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:381
 msgid "Daily:"
@@ -1802,7 +1802,7 @@ msgstr "Chaque mois :"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:464
 msgid "Days are limited to 28 to have a recurring schedule available for all the months"
-msgstr ""
+msgstr "Les jours sont limités à 28 pour avoir un planning récurrent disponible pour tous les mois"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:479
 msgid "Custom Quartz format:"
@@ -1810,7 +1810,7 @@ msgstr "Format Quartz personnalisé :"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:508
 msgid "Select a Schedule"
-msgstr ""
+msgstr "Sélectionner un planning"
 
 #: ../html/src/components/policies-picker.tsx:91
 msgid "Policy assignment has been saved."
@@ -1819,7 +1819,7 @@ msgstr ""
 #: ../html/src/components/policies-picker.tsx:94
 #: ../html/src/components/states-picker.tsx:176
 msgid "An error occurred on save."
-msgstr ""
+msgstr "Une erreur s'est produite lors de la sauvegarde."
 
 #: ../html/src/components/policies-picker.tsx:105
 msgid "No SCAP Policies Found"
@@ -1837,7 +1837,7 @@ msgstr ""
 #: ../html/src/manager/minion/packages/package-states.tsx:213
 #: ../html/src/manager/minion/packages/package-states.tsx:246
 msgid "Search"
-msgstr ""
+msgstr "Recherche"
 
 #: ../html/src/components/policies-picker.tsx:175
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:318
@@ -1875,12 +1875,12 @@ msgstr ""
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:301
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:327
 msgid "Description"
-msgstr ""
+msgstr "Description"
 
 #: ../html/src/components/policies-picker.tsx:178
 #: ../html/src/components/states-picker.tsx:466
 msgid "Assign"
-msgstr ""
+msgstr "Assigner"
 
 #: ../html/src/components/product-migration/MigrationChannelsSelectorForm.tsx:153
 #: ../html/src/components/product-migration/MigrationTargetSelectorForm.tsx:55
@@ -2033,44 +2033,44 @@ msgstr "État interne"
 #: ../html/src/components/states-picker.tsx:41
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:32
 msgid "Normal Configuration Channel"
-msgstr ""
+msgstr "Canal de configuration normale"
 
 #: ../html/src/components/ranking-table.tsx:44
 #: ../html/src/components/table/TableDataHandler.tsx:436
 msgid "There are no entries to show."
-msgstr ""
+msgstr "Il n'y a aucune entrée à montrer."
 
 #: ../html/src/components/salt-state-popup.tsx:48
 msgid "Configuration Channel: {name}"
-msgstr ""
+msgstr "Canal de configuration : {name}"
 
 #: ../html/src/components/salt-state-popup.tsx:59
 msgid "Edit Configuration Channel"
-msgstr ""
+msgstr "Modifier le canal de configuration"
 
 #: ../html/src/components/states-picker.tsx:96
 msgid "There are unsaved changes. Do you want to proceed?"
-msgstr ""
+msgstr "Il y a des modifications non enregistrées. Voulez-vous continuer ?"
 
 #: ../html/src/components/states-picker.tsx:112
 msgid "State configuration must not be empty"
-msgstr ""
+msgstr "La configuration ne doit pas être vide"
 
 #: ../html/src/components/states-picker.tsx:126
 msgid "Reboot state will be put last."
-msgstr ""
+msgstr "Le redémarrage sera mis en dernier."
 
 #: ../html/src/components/states-picker.tsx:135
 msgid "'Reboot system' and 'Reboot system if needed' states cannot be used together."
-msgstr ""
+msgstr "Les états « Redémarrer système » et « Redémarrer système si nécessaire » ne peuvent pas être utilisés ensemble."
 
 #: ../html/src/components/states-picker.tsx:158
 msgid "State assignments have been saved."
-msgstr ""
+msgstr "Les tâches ont été sauvegardées."
 
 #: ../html/src/components/states-picker.tsx:316
 msgid "No states assigned. Use search to find and assign states."
-msgstr ""
+msgstr "Aucun état assigné. Utilisez la recherche pour trouver et assigner des états."
 
 #: ../html/src/components/states-picker.tsx:385
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:184
@@ -2084,19 +2084,19 @@ msgstr "Réorganiser"
 
 #: ../html/src/components/states-picker.tsx:426
 msgid "Search in states"
-msgstr ""
+msgstr "Recherche dans les états"
 
 #: ../html/src/components/states-picker.tsx:426
 msgid "Search in configuration channels"
-msgstr ""
+msgstr "Recherche dans les canaux de configuration"
 
 #: ../html/src/components/states-picker.tsx:442
 msgid "Edit State Ranks"
-msgstr ""
+msgstr "Modifier les classements des états"
 
 #: ../html/src/components/states-picker.tsx:442
 msgid "Edit Channel Ranks"
-msgstr ""
+msgstr "Modifier les rangs des chaînes"
 
 #: ../html/src/components/states-picker.tsx:446
 msgid "Edit the ranking of the states by dragging them. They are listed in order from highest to lowest rank. In other words, the bottom ones will be applied first."
@@ -2108,129 +2108,129 @@ msgstr ""
 
 #: ../html/src/components/states-picker.tsx:455
 msgid "There are no states assigned."
-msgstr ""
+msgstr "Aucun état n'est assigné."
 
 #: ../html/src/components/states-picker.tsx:463
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:284
 msgid "State Name"
-msgstr ""
+msgstr "Nom de l'état"
 
 #: ../html/src/components/states-picker.tsx:464
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:297
 msgid "State Label"
-msgstr ""
+msgstr "Label d'état"
 
 #: ../html/src/components/states-picker.tsx:464
 #: ../html/src/components/table/nested-data.example.tsx:56
 msgid "Channel Label"
-msgstr ""
+msgstr "Étiquette de la chaîne"
 
 #: ../html/src/components/states-picker.tsx:527
 msgid "Select the systems to schedule for immediate state execution and confirm."
-msgstr ""
+msgstr "Sélectionnez les systèmes à programmer pour une exécution immédiate de l'état et confirmez."
 
 #: ../html/src/components/states-picker.tsx:538
 msgid "This table is empty"
-msgstr ""
+msgstr "Cette table est vide"
 
 #: ../html/src/components/states-picker.tsx:545
 #: ../html/src/components/states-picker.tsx:586
 msgid "System Name"
-msgstr ""
+msgstr "Nom du système"
 
 #: ../html/src/components/states-picker.tsx:565
 msgid "Execute States"
-msgstr ""
+msgstr "États d'exécution"
 
 #: ../html/src/components/states-picker.tsx:570
 msgid "Select Sytems"
-msgstr ""
+msgstr "Sélectionner les systèmes"
 
 #: ../html/src/components/systems.tsx:21
 msgid "Unprovisioned System"
-msgstr ""
+msgstr "Système non fourni"
 
 #: ../html/src/components/systems.tsx:26
 #: ../html/src/manager/systems/list-filter.tsx:7
 msgid "Virtual Guest"
-msgstr ""
+msgstr "Invité virtuel"
 
 #: ../html/src/components/systems.tsx:31
 #: ../html/src/manager/systems/list-filter.tsx:8
 #: ../html/src/manager/systems/list-filter.tsx:68
 #: ../html/src/manager/systems/virtual-list.tsx:75
 msgid "Virtual Host"
-msgstr ""
+msgstr "Hôte virtuel"
 
 #: ../html/src/components/systems.tsx:36
 msgid "Non-Virtual System"
-msgstr ""
+msgstr "Système non virtuel"
 
 #: ../html/src/components/systems.tsx:44
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:619
 #: ../html/src/manager/systems/list-filter.tsx:6
 #: ../html/src/manager/systems/list-filter.tsx:22
 msgid "Proxy"
-msgstr ""
+msgstr "Mandataire (Proxy)"
 
 #: ../html/src/components/systems.tsx:45
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:76
 msgid "Peripheral Server"
-msgstr ""
+msgstr "Serveur périphérique"
 
 #: ../html/src/components/systems.tsx:102
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:193
 msgid "Security Advisory"
-msgstr ""
+msgstr "Avis de sécurité"
 
 #: ../html/src/components/systems.tsx:115
 msgid "System Locked"
-msgstr ""
+msgstr "Système verrouillé"
 
 #: ../html/src/components/table/NumericSearchField.tsx:11
 msgid "less than"
-msgstr ""
+msgstr "inférieur à"
 
 #: ../html/src/components/table/NumericSearchField.tsx:12
 msgid "less than or equal to"
-msgstr ""
+msgstr "inférieur ou égal à"
 
 #: ../html/src/components/table/NumericSearchField.tsx:13
 msgid "equal to"
-msgstr ""
+msgstr "égale à"
 
 #: ../html/src/components/table/NumericSearchField.tsx:14
 msgid "greater than or equal to"
-msgstr ""
+msgstr "supérieur ou égal à"
 
 #: ../html/src/components/table/NumericSearchField.tsx:15
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:112
 msgid "greater than"
-msgstr ""
+msgstr "supérieur à"
 
 #: ../html/src/components/table/NumericSearchField.tsx:16
 msgid "not equal to"
-msgstr ""
+msgstr "pas égale à"
 
 #: ../html/src/components/table/NumericSearchField.tsx:62
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:138
 msgid "Matcher"
-msgstr ""
+msgstr "Réglage"
 
 #: ../html/src/components/table/SearchField.tsx:49
 #: ../html/src/components/table/TableFilter.tsx:75
 msgid "Filter"
-msgstr ""
+msgstr "Filtre"
 
 #: ../html/src/components/table/SearchField.tsx:53
 #: ../html/src/components/table/TableFilter.tsx:79
 msgid "Select a filter"
-msgstr ""
+msgstr "Sélectionner un filtre"
 
 #: ../html/src/components/table/SelectSearchField.tsx:5
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:229
 msgid "All"
-msgstr ""
+msgstr "Tous"
 
 #: ../html/src/components/table/nested-data.example.tsx:45
 msgid "Channel name"
@@ -2258,63 +2258,63 @@ msgstr ""
 
 #: ../html/src/components/target-systems.tsx:26
 msgid "Target Systems"
-msgstr ""
+msgstr "Systèmes cibles"
 
 #: ../html/src/components/target-systems.tsx:32
 msgid "No systems specified."
-msgstr ""
+msgstr "Aucun système spécifié."
 
 #: ../html/src/components/tree/tree.tsx:117
 msgid "Invalid data"
-msgstr ""
+msgstr "Données non valides"
 
 #: ../html/src/components/tree/tree.tsx:125
 msgid "No data"
-msgstr ""
+msgstr "Aucune donnée"
 
 #: ../html/src/components/utils/HelpIcon.example.tsx:4
 msgid "Text to display on hover"
-msgstr ""
+msgstr "Texte à afficher sur le curseur"
 
 #: ../html/src/components/utils/HelpLink.tsx:16
 msgid "Help"
-msgstr ""
+msgstr "Aide"
 
 #: ../html/src/components/utils/loading/text-border.example.tsx:7
 #: ../html/src/components/utils/loading/text.example.tsx:7
 msgid "Loading text"
-msgstr ""
+msgstr "Chargement du texte"
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.ts:18
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.tsx:7
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:22
 msgid "Base channel not found or not authorized."
-msgstr ""
+msgstr "Canal de base non trouvé ou non autorisé."
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.ts:19
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.tsx:8
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:23
 msgid "Child channel not found or not authorized."
-msgstr ""
+msgstr "Canal enfant non trouvé ou non autorisé."
 
 #: ../html/src/core/channels/api/use-mandatory-channels-api.ts:20
 #: ../html/src/manager/systems/activation-key/activation-key-channels-api.tsx:9
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:24
 msgid "Invalid channel id"
-msgstr ""
+msgstr "Id de chaîne non valide"
 
 #: ../html/src/core/channels/utils/channels-dependencies.utils.ts:22
 msgid "Required channels"
-msgstr ""
+msgstr "Canaux requis"
 
 #: ../html/src/core/channels/utils/channels-dependencies.utils.ts:24
 #: ../html/src/core/channels/utils/channels-dependencies.utils.ts:28
 msgid "none"
-msgstr ""
+msgstr "aucun"
 
 #: ../html/src/core/channels/utils/channels-dependencies.utils.ts:26
 msgid "Require this channel"
-msgstr ""
+msgstr "Requiert ce canal"
 
 #: ../html/src/core/intl/index.example.tsx:7
 msgid "Please see <link>Format.JS docs</link> for the message syntax."
@@ -2322,16 +2322,16 @@ msgstr ""
 
 #: ../html/src/core/intl/index.test.tsx:9
 msgid "foo"
-msgstr ""
+msgstr "foo"
 
 #: ../html/src/core/intl/index.test.tsx:10
 msgid "undefined"
-msgstr ""
+msgstr "indéfini"
 
 #: ../html/src/core/intl/index.test.tsx:18
 #: ../html/src/core/intl/index.test.tsx:19
 msgid "foo {insert} bar"
-msgstr ""
+msgstr "foo {insert} bar"
 
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:51
 msgid "An unexpected error occurred while fetching organizations."
@@ -2522,90 +2522,90 @@ msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:20
 msgid "Restart is needed for the configuration changes to take effect."
-msgstr ""
+msgstr "Un redémarrage est nécessaire pour que les modifications de configuration prennent effet."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:23
 msgid "An internal error has occurred. See the server logs for details."
-msgstr ""
+msgstr "Une erreur interne est survenue. Voir les journaux du serveur pour plus de détails."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:24
 msgid "Enabling monitoring failed. See the server logs for details."
-msgstr ""
+msgstr "Activation de la surveillance a échoué. Voir les journaux du serveur pour plus de détails."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:26
 msgid "Failed to enable all monitoring services. Some services are still disabled. See the server logs for details."
-msgstr ""
+msgstr "Aucun service de surveillance n'a été activé. Certains services sont toujours désactivés. Voir les journaux du serveur pour plus de détails."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:28
 msgid "Disabling monitoring failed. See the server logs for details."
-msgstr ""
+msgstr "Désactivation de la surveillance a échoué. Voir les journaux du serveur pour plus de détails."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:30
 msgid "Failed to disable all monitoring services. Some services are still enabled. See the server logs for details."
-msgstr ""
+msgstr "Échec de désactivation de tous les services de surveillance. Certains services sont toujours activés. Voir les journaux du serveur pour plus de détails."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:32
 msgid "Monitoring enabled successfully."
-msgstr ""
+msgstr "Surveillance activée avec succès."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:33
 msgid "Monitoring disabled successfully."
-msgstr ""
+msgstr "Surveillance désactivée."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:35
 msgid "The Tomcat Prometheus exporter is up but the JMX configuration is disabled. Click the Enable button to enable the JMX configuration or click Disable to stop the Prometheus exporter."
-msgstr ""
+msgstr "L'exportateur Tomcat Prometheus est activé mais la configuration JMX est désactivée. Cliquez sur le bouton Activer pour activer la configuration JMX ou sur Désactiver pour arrêter l'exporteur Prometheus."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:38
 msgid "The Tomcat Prometheus exporter is down but the JMX configuration is enabled. Click the Disable button to disable the JMX configuration or click Enable to start the Prometheus exporter."
-msgstr ""
+msgstr "L'exportateur Tomcat Prometheus est en panne mais la configuration JMX est activée. Cliquez sur le bouton Désactiver pour désactiver la configuration JMX ou cliquez sur Activer pour démarrer l'exporteur Prometheus."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:41
 msgid "The Taskomatic Prometheus exporter is up but the JMX configuration is disabled. Click the Enable button to enable the JMX configuration or click Disable to stop the Prometheus exporter."
-msgstr ""
+msgstr "L'exportateur Taskomatic Prometheus est en marche mais la configuration JMX est désactivée. Cliquez sur le bouton Activer pour activer la configuration JMX ou sur Désactiver pour arrêter l'exporteur Prometheus."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:44
 msgid "The Taskomatic Prometheus exporter is down but the JMX configuration is enabled. Click the Disable button to disable the JMX configuration or click Enable to start the Prometheus exporter."
-msgstr ""
+msgstr "L'exportateur Taskomatic Prometheus est en panne mais la configuration JMX est activée. Cliquez sur le bouton Désactiver pour désactiver la configuration JMX ou cliquez sur Activer pour démarrer l'exporteur Prometheus."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:49
 msgid "Monitoring status hasn't changed."
-msgstr ""
+msgstr "Le statut de surveillance n'a pas changé."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:50
 msgid "An error occurred. Monitoring status unknown. Refresh the page."
-msgstr ""
+msgstr "Une erreur est survenue. Statut de surveillance inconnu. Rafraîchissez la page."
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:55
 msgid "Tomcat (Java JMX)"
-msgstr ""
+msgstr "Tomcat (Java JMX)"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:56
 msgid "Taskomatic (Java JMX)"
-msgstr ""
+msgstr "Taskomatic (Java JMX)"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:57
 msgid "PostgreSQL database"
-msgstr ""
+msgstr "Base de données PostgreSQL"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:58
 msgid "Server self monitoring"
-msgstr ""
+msgstr "Surveillance automatique du serveur"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:74
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:76
 #: ../html/src/manager/appstreams/panel-appstream.tsx:22
 msgid "Enabled"
-msgstr ""
+msgstr "Activé"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:84
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:86
 msgid "Disabled"
-msgstr ""
+msgstr "Désactivé"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:138
 msgid "Server Monitoring"
-msgstr ""
+msgstr "Surveillance des serveurs"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:140
 msgid "The server uses <link>Prometheus</link> exporters to expose metrics about your environment."
@@ -2620,14 +2620,14 @@ msgstr ""
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:276
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:298
 msgid "Enable"
-msgstr ""
+msgstr "Activer"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:243
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:263
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:283
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:306
 msgid "Disable"
-msgstr ""
+msgstr "Désactiver"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:320
 msgid "{productName} Configuration - Monitoring"
@@ -2639,61 +2639,61 @@ msgstr ""
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:333
 msgid "General"
-msgstr ""
+msgstr "Général"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:338
 msgid "Bootstrap Script"
-msgstr ""
+msgstr "Le script de démarrage"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:343
 msgid "Organizations"
-msgstr ""
+msgstr "Organisations"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:348
 msgid "Restart"
-msgstr ""
+msgstr "Redémarrer"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:353
 msgid "Cobbler"
-msgstr ""
+msgstr "Cobbler"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:357
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:366
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:378
 msgid "Monitoring"
-msgstr ""
+msgstr "Surveillance"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:360
 msgid "Password Policy"
-msgstr ""
+msgstr "Politique de mot de passe"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:389
 msgid "Restarting"
-msgstr ""
+msgstr "Redémarrage"
 
 #: ../html/src/manager/admin/config/monitoring-admin.tsx:390
 msgid " Tomcat and Taskomatic is needed for the configuration changes to take effect."
-msgstr ""
+msgstr " Tomcat et Taskomatic sont nécessaires pour que les changements de configuration prennent effet."
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:37
 msgid "Add new PAYG ssh connection data"
-msgstr ""
+msgstr "Ajout d'une nouvelle connexion ssh PAYG"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:43
 msgid "PAYG connection Description"
-msgstr ""
+msgstr "Description de la connexion PAYG"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:48
 msgid "Instance SSH connection data"
-msgstr ""
+msgstr "Instancier une connexion SSH"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:51
 msgid "Bastion SSH connection data"
-msgstr ""
+msgstr "Connexion SSH en mode bastion"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:59
 msgid "Add PAYG ssh data"
-msgstr ""
+msgstr "Ajouter des données PAYG ssh"
 
 #: ../html/src/manager/admin/create-payg/create-payg.tsx:60
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:311
@@ -2708,7 +2708,7 @@ msgstr ""
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:210
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:171
 msgid "Create"
-msgstr ""
+msgstr "Créer"
 
 #: ../html/src/manager/admin/hub/hub-details.tsx:36
 msgid "Sync Channels"
@@ -2789,31 +2789,31 @@ msgstr ""
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:63
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:92
 msgid "Filter by any value"
-msgstr ""
+msgstr "Filtrer par une valeur"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:68
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:52
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:13
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:486
 msgid "Host"
-msgstr ""
+msgstr "Hôte"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:92
 msgid "Last Update Status"
-msgstr ""
+msgstr "Dernière mise à jour de l'hôte"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:93
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:114
 msgid "never"
-msgstr ""
+msgstr "jamais"
 
 #: ../html/src/manager/admin/list-payg/list-payg.tsx:112
 msgid "Add PAYG Connection"
-msgstr ""
+msgstr "Ajouter une connexion PAYG"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:20
 msgid "Server Configuration - Password Policy"
-msgstr ""
+msgstr "Configuration du serveur - Politique de mot de passe"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:23
 msgid "Set up your server local users password policy."
