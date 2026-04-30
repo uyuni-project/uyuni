@@ -104,4 +104,4 @@ Feature: Software channels and repositories management
     When I follow the left menu "Software > Manage > Channels"
     Then I should not see a "Hibernate test channel" text
     And I should not see a "Hibernate channel" text
-    And the server log does not contain "hibernate" errors
+    And the server log should not contain "hibernate" errors
