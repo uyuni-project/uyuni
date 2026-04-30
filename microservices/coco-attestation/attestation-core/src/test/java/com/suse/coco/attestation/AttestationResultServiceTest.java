@@ -38,7 +38,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.OffsetDateTime;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -100,7 +99,7 @@ class AttestationResultServiceTest {
         when(session.selectOne("AttestationResult.selectForUpdate",
                 Map.of("statusToListenList", AttestationStatus.statusToListenList(),"id", 5L)))
                 .thenReturn(attestationResult);
-        when(worker.process(session, attestationResult)).thenReturn(true);
+        when(worker.processAttestationVerification(session, attestationResult)).thenReturn(true);
 
         OffsetDateTime callStart = OffsetDateTime.now();
         service.processAttestationResult(5L, worker);
@@ -108,7 +107,7 @@ class AttestationResultServiceTest {
 
         verify(session).selectOne("AttestationResult.selectForUpdate",
                 Map.of("statusToListenList", AttestationStatus.statusToListenList(),"id", 5L));
-        verify(worker).process(session, attestationResult);
+        verify(worker).processAttestationVerification(session, attestationResult);
         verify(session).update("AttestationResult.update", attestationResult);
         verify(session).commit();
         verify(session).close();
@@ -135,13 +134,13 @@ class AttestationResultServiceTest {
         when(session.selectOne("AttestationResult.selectForUpdate",
                 Map.of("statusToListenList", AttestationStatus.statusToListenList(),"id", 5L)))
                 .thenReturn(attestationResult);
-        when(worker.process(session, attestationResult)).thenReturn(false);
+        when(worker.processAttestationVerification(session, attestationResult)).thenReturn(false);
 
         service.processAttestationResult(5L, worker);
 
         verify(session).selectOne("AttestationResult.selectForUpdate",
                 Map.of("statusToListenList", AttestationStatus.statusToListenList(),"id", 5L));
-        verify(worker).process(session, attestationResult);
+        verify(worker).processAttestationVerification(session, attestationResult);
         verify(session).update("AttestationResult.update", attestationResult);
         verify(session).commit();
         verify(session).close();

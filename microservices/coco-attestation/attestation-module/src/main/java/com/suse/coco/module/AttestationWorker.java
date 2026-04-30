@@ -22,10 +22,10 @@ import org.apache.ibatis.session.SqlSession;
 public interface AttestationWorker {
 
     /**
-     * Process the given attestation result.
+     * Process the attestation verification of the given attestation result.
      * @param session the active mybatis database session
-     * @param attestationResult the attestation result to process.
+     * @param attestationResult the attestation result to verify.
      * @return <code>true</code> if the processing succeeded, <code>false</code> otherwise.
      */
-    boolean process(SqlSession session, AttestationResult attestationResult);
+    boolean processAttestationVerification(SqlSession session, AttestationResult attestationResult);
 }
