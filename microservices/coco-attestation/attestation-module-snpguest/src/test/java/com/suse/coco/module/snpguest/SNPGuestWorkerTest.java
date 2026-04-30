@@ -81,8 +81,10 @@ class SNPGuestWorkerTest {
         result.setReportId(5L);
 
         report = new AttestationReport();
+        report.setCpuGeneration(EpycGeneration.MILAN);
         report.setId(5L);
         report.setVlekCertificate(null);
+
 
         // Common mocking
         when(session.selectOne("SNPGuestModule.retrieveReport", 5L)).thenReturn(report);
