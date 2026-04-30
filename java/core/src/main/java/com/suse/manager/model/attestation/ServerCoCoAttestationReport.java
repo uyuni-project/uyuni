@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
@@ -211,6 +212,19 @@ public class ServerCoCoAttestationReport extends BaseDomainHelper implements Ser
                     result.setStatus(CoCoResultStatus.FAILED);
                     result.setDetails("No input data");
                 });
+    }
+
+    /**
+     * Collects and merges input data from results, stores it in report input data member
+     */
+    public void mergeInputDataFromResults() {
+        Map<String, Object> mergedInputData = getResults().stream()
+                .map(CoCoAttestationResult::getInData)
+                .flatMap(map -> map.entrySet().stream())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+        setInData(mergedInputData);
+        getResults().forEach(result -> result.setStatus(CoCoResultStatus.SUBMITTED));
     }
 
     @Override
