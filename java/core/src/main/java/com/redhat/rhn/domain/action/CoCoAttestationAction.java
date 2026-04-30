@@ -29,7 +29,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -68,24 +67,8 @@ public class CoCoAttestationAction extends Action {
 
     @Override
     public void onFailAction(ServerAction serverActionIn) {
-        AttestationManager attestationManager = GlobalInstanceHolder.ATTESTATION_MANAGER;
         if (!Objects.equals(serverActionIn.getParentAction(), this)) {
             LOG.error("This is not the action which belongs to the passed server action");
-            return;
-        }
-        try {
-            Optional<ServerCoCoAttestationReport> report = attestationManager.lookupReportByServerAndAction(
-                    serverActionIn.getServer(), this);
-            report.ifPresent(rep -> {
-                if (rep.getResults().isEmpty()) {
-                    // results are not initialized yet. So we need to set the report status
-                    // directly to failed.
-                    rep.setStatus(CoCoReportStatus.FAILED);
-                }
-            });
-        }
-        catch (Exception e) {
-            LOG.log(Level.ERROR, e);
         }
     }
 
