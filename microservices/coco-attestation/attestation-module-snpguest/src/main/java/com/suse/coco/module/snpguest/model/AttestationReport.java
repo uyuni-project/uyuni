@@ -22,7 +22,7 @@ public class AttestationReport {
 
     private long id;
 
-    private EpycGeneration cpuGeneration;
+    private int envType;
 
     private byte[] randomNonce;
 
@@ -38,12 +38,12 @@ public class AttestationReport {
         this.id = idIn;
     }
 
-    public EpycGeneration getCpuGeneration() {
-        return cpuGeneration;
+    public int getEnvType() {
+        return envType;
     }
 
-    public void setCpuGeneration(EpycGeneration generationIn) {
-        this.cpuGeneration = generationIn;
+    public void setEnvType(int envTypeIn) {
+        this.envType = envTypeIn;
     }
 
     public byte[] getRandomNonce() {
@@ -78,6 +78,14 @@ public class AttestationReport {
         return (null != vlekCertificate) && (!vlekCertificate.isEmpty());
     }
 
+    public EpycGeneration getCpuGeneration() {
+        return EpycGeneration.fromValue(getEnvType());
+    }
+
+    public void setCpuGeneration(EpycGeneration generationIn) {
+        setEnvType(generationIn.getValue());
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -87,20 +95,20 @@ public class AttestationReport {
             return false;
         }
         return id == attestationReport.id &&
-            cpuGeneration == attestationReport.cpuGeneration &&
+                envType == attestationReport.envType &&
             Arrays.equals(randomNonce, attestationReport.randomNonce);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, cpuGeneration, Arrays.hashCode(randomNonce));
+        return Objects.hash(id, envType, Arrays.hashCode(randomNonce));
     }
 
     @Override
     public String toString() {
         return new StringJoiner(", ", AttestationReport.class.getSimpleName() + "[", "]")
             .add("id=" + id)
-            .add("cpuGeneration=" + cpuGeneration)
+            .add("envType=" + envType)
             .toString();
     }
 }
