@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-14 11:17+0200\n"
-"PO-Revision-Date: 2026-04-30 10:04+0000\n"
+"PO-Revision-Date: 2026-04-30 14:04+0000\n"
 "Last-Translator: sorau <sorau@proton.me>\n"
 "Language-Team: French <https://l10n.opensuse.org/projects/uyuni/web/fr/>\n"
 "Language: fr\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-"X-Generator: Weblate 5.17\n"
+"X-Generator: Weblate 5.17.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:409
 msgid "remaining"
@@ -2817,56 +2817,56 @@ msgstr "Configuration du serveur - Politique de mot de passe"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:23
 msgid "Set up your server local users password policy."
-msgstr ""
+msgstr "Configurez la stratégie de mot de passe des utilisateurs locaux de votre serveur."
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:26
 msgid "Password Policy Settings"
-msgstr ""
+msgstr "Paramètres de la politique de mot de passe"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:29
 msgid "Min Password Length"
-msgstr ""
+msgstr "Longueur minimale du mot de passe"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:38
 msgid "Max Password Length"
-msgstr ""
+msgstr "Longueur maximale du mot de passe"
 
 #. Require Digits
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:56
 msgid "Require Digits"
-msgstr ""
+msgstr "Nécessite des chiffres"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:59
 msgid "Require Lowercase Characters"
-msgstr ""
+msgstr "Nécessite des caractères minuscules"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:66
 msgid "Require Uppercase Characters"
-msgstr ""
+msgstr "Nécessite des caractères majuscules"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:73
 msgid "Restrict Consecutive Characters"
-msgstr ""
+msgstr "Restreindre les caractères consécutifs"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:80
 msgid "Require Special Characters"
-msgstr ""
+msgstr "Nécessite des caractères spéciaux"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:90
 msgid "Allowed Special Characters"
-msgstr ""
+msgstr "Caractères spéciaux autorisés"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:99
 msgid "Restrict Characters Occurrences"
-msgstr ""
+msgstr "Limiter les occurrences de caractères"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:106
 msgid "Max Characters Occurrences"
-msgstr ""
+msgstr "Nombre maximum d’occurrences de caractères"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:124
 msgid "Password Policy Changed"
-msgstr ""
+msgstr "Politique de mot de passe modifiée"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:134
 #: ../html/src/manager/appstreams/actions-appstreams.tsx:8
@@ -2875,31 +2875,31 @@ msgstr "Remise à zéro"
 
 #: ../html/src/manager/admin/password-policy/password-policy.tsx:141
 msgid "Password Policy Reset to Default"
-msgstr ""
+msgstr "Réinitialiser la stratégie de mot de passe à la valeur par défaut"
 
 #: ../html/src/manager/admin/payg-shared/api/payg-actions-api.ts:66
 #: ../html/src/manager/content-management/shared/api/use-lifecycle-actions-api.ts:75
 #: ../html/src/manager/login/use-login-api.ts:60
 msgid "Request interrupted or invalid response received from the server. Please try again."
-msgstr ""
+msgstr "La demande a été interrompue ou la réponse reçue du serveur est invalide. S'il vous plaît, réessayez."
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:23
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:31
 msgid "PAYG properties updated successfully"
-msgstr ""
+msgstr "Les propriétés de PAYG ont été mises à jour avec succès"
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:36
 msgid "Edit Information"
-msgstr ""
+msgstr "Modifier les informations"
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-edit.tsx:51
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.tsx:85
 msgid "Editing properties.."
-msgstr ""
+msgstr "Modifier les propriétés.."
 
 #: ../html/src/manager/admin/payg-shared/info/payg-info-view.tsx:24
 msgid "Last Status Update"
-msgstr ""
+msgstr "Dernière mise à jour"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:50
 #, fuzzy
@@ -2909,56 +2909,56 @@ msgstr "Éditer"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:65
 msgid "Editing ssh connection data.."
-msgstr ""
+msgstr "Modification des données de connexion ssh.."
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:44
 msgid "When editing the SSH connection all needed credentials must be re-provided."
-msgstr ""
+msgstr "Lors de la modification de la connexion SSH, toutes les informations d'identification nécessaires doivent être fournies à nouveau."
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:60
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:17
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:499
 msgid "SSH Port"
-msgstr ""
+msgstr "Port SSH"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:71
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:21
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:515
 msgid "User"
-msgstr ""
+msgstr "Utilisateur"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:80
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:31
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:444
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:562
 msgid "SSH Private Key"
-msgstr ""
+msgstr "Clé privée SSH"
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-form.tsx:102
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-view.tsx:37
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:456
 msgid "SSH Private Key Passphrase"
-msgstr ""
+msgstr "Mot de passe de la clé privée SSH"
 
 #: ../html/src/manager/admin/payg/payg.tsx:58
 msgid "The instance you are looking for does not exist or has been deleted"
-msgstr ""
+msgstr "L' instance que vous recherchez n' existe pas ou a été supprimée"
 
 #: ../html/src/manager/admin/payg/payg.tsx:65
 msgid "Instance Hostname: {host}"
-msgstr ""
+msgstr "Nom d'hôte de l'instance : {host}"
 
 #: ../html/src/manager/admin/payg/payg.tsx:80
 msgid "Delete PAYG Connection"
-msgstr ""
+msgstr "Supprimer une connexion PAYG"
 
 #: ../html/src/manager/admin/payg/payg.tsx:83
 msgid "Are you sure you want to delete connection"
-msgstr ""
+msgstr "Êtes-vous sûr de vouloir supprimer la connexion"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:153
 msgid "Refresh the product catalog from SUSE Customer Center"
-msgstr ""
+msgstr "Mettre à jour le catalogue de produits depuis le centre client SUSE"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:185
 #: ../html/src/manager/images/image-profiles.tsx:141
@@ -2966,20 +2966,20 @@ msgstr ""
 #: ../html/src/manager/images/image-view.tsx:380
 #: ../html/src/manager/notifications/notifications-list.tsx:108
 msgid "Refresh"
-msgstr ""
+msgstr "Actualiser"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:188
 msgid "Please be patient, this might take several minutes."
-msgstr ""
+msgstr "Soyez patient, cela peut prendre plusieurs minutes."
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:193
 #: ../html/src/manager/images/image-view-overview.tsx:147
 msgid "Completed"
-msgstr ""
+msgstr "Complété"
 
 #: ../html/src/manager/admin/setup/products/products-scc-dialog.tsx:198
 msgid "Operation not successful: Empty reply from the server"
-msgstr ""
+msgstr "Opération non réussie : réponse vide du serveur"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:135
 msgid "No SUSE Multi-Linux Manager Server Subscription available. Products requiring Client Tools Channel will not be shown."
@@ -2987,23 +2987,23 @@ msgstr ""
 
 #: ../html/src/manager/admin/setup/products/products.tsx:186
 msgid "The product catalog refresh is running..."
-msgstr ""
+msgstr "La mise à jour du catalogue de produits est en cours..."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:213
 msgid "The following product installations failed. Please check log files."
-msgstr ""
+msgstr "Les installations de produits suivantes ont échoué. Veuillez vérifier les fichiers journaux."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:260
 msgid "Selected channels were scheduled successfully for syncing."
-msgstr ""
+msgstr "Les canaux sélectionnés ont été programmés avec succès pour la synchronisation."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:296
 msgid "A refresh of the product data is currently running in the background. Please try again later."
-msgstr ""
+msgstr "Une mise à jour des données du produit est en cours d'exécution en arrière-plan. Veuillez réessayer plus tard."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:301
 msgid "The product catalog is still refreshing, please wait."
-msgstr ""
+msgstr "Le catalogue de produits est cours de rafraîchissement, s'il vous plaît patientez."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:303
 msgid "Select some product first."
