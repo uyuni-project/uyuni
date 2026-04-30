@@ -33,6 +33,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -77,10 +78,54 @@ public class CoCoAttestationAction extends Action {
      */
     @Override
     public Map<LocalCall<?>, List<MinionSummary>> getSaltCalls(List<MinionSummary> minionSummaries) {
-        return Map.of(
-                State.apply(Collections.singletonList(SaltParameters.COCOATTEST_REQUESTDATA), Optional.empty()),
-                minionSummaries
-        );
+        AttestationManager attestationManager = GlobalInstanceHolder.ATTESTATION_MANAGER;
+        List<ServerCoCoAttestationReport> actionReportList =
+                attestationManager.listCoCoAttestationReportsForAction(this);
+        if (actionReportList.isEmpty()) {
+            LOG.debug("Failed to find any report entry while creating the pillar data");
+            return Map.of();
+        }
+
+        Map<LocalCall<?>, List<MinionSummary>> ret = new HashMap<>();
+
+        minionSummaries.forEach(minionSummary -> {
+
+            Optional<ServerCoCoAttestationReport> optReport = actionReportList.stream()
+                    .filter(r -> r.getServer().getId().equals(minionSummary.getServerId()))
+                    .findAny();
+
+            Optional<Map<String, Object>> pillarData = Optional.empty();
+            if (optReport.isPresent()) {
+                ServerCoCoAttestationReport report = optReport.get();
+                report.mergeInputDataFromResults();
+
+                //pillar data sent to minion during coco attestation is cryptographically safe by design!
+                pillarData = createPillarData(report);
+            }
+            else {
+                LOG.debug("Failed to find a report entry while creating the pillar data for minion {}",
+                        minionSummary);
+            }
+
+            ret.put(State.apply(Collections.singletonList(SaltParameters.COCOATTEST_REQUESTDATA), pillarData),
+                    List.of(minionSummary));
+        });
+
+        return ret;
+    }
+
+    private Optional<Map<String, Object>> createPillarData(ServerCoCoAttestationReport report) {
+        Map<String, Object> attestationPillar = new HashMap<>(report.getInData());
+        attestationPillar.put("environment_type", report.getEnvironmentType().name());
+
+        List<String> resultTypes = report.getEnvironmentType().getSupportedResultTypes().stream()
+                .map(Enum::name).toList();
+        attestationPillar.put("result_types", resultTypes);
+
+        Map<String, Object> pillarData = new HashMap<>();
+        pillarData.put("attestation_data", attestationPillar);
+
+        return Optional.of(pillarData);
     }
 
     /**
