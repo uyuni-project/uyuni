@@ -387,6 +387,14 @@ public class AttestationManager {
         return factory.listCoCoAttestationReportsForAction(actionIn);
     }
 
+    /**
+     * @param reportIn the report to be saved
+     * @return returns the saved report
+     */
+    public ServerCoCoAttestationReport saveReport(ServerCoCoAttestationReport reportIn) {
+        return factory.save(reportIn);
+    }
+
     private void ensureSystemAccessible(User userIn, Server serverIn) {
         if (serverIn == null) {
             LOG.error("Server not found");
