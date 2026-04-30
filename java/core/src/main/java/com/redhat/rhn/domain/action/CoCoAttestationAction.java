@@ -16,14 +16,13 @@ import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionSummary;
 
 import com.suse.manager.attestation.AttestationManager;
-import com.suse.manager.model.attestation.CoCoReportStatus;
+import com.suse.manager.model.attestation.CoCoResultStatus;
 import com.suse.manager.model.attestation.ServerCoCoAttestationReport;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltParameters;
-import com.suse.manager.webui.utils.salt.custom.CoCoAttestationRequestData;
+import com.suse.manager.webui.utils.salt.custom.coco.CoCoAttestationResponseDataParser;
 import com.suse.salt.netapi.calls.LocalCall;
 import com.suse.salt.netapi.calls.modules.State;
-import com.suse.utils.Json;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonSyntaxException;
@@ -133,53 +132,57 @@ public class CoCoAttestationAction extends Action {
      */
     @Override
     public void handleUpdateServerAction(ServerAction serverAction, JsonElement jsonResult, UpdateAuxArgs auxArgs) {
-        AttestationManager mgr = new AttestationManager();
-
+        AttestationManager attestationManager = GlobalInstanceHolder.ATTESTATION_MANAGER;
         Optional<ServerCoCoAttestationReport> optReport =
-                mgr.lookupReportByServerAndAction(serverAction.getServer(), this);
+                attestationManager.lookupReportByServerAndAction(serverAction.getServer(), this);
         if (optReport.isEmpty()) {
-            serverAction.setStatusFailed();
-            serverAction.setResultMsg("Failed to find a report entry");
+            LOG.debug("Failed to find a report entry while parsing salt state apply result");
+            serverAction.fail("Failed to find a report entry");
             return;
         }
         ServerCoCoAttestationReport report = optReport.get();
 
         if (jsonResult == null) {
-            serverAction.setStatusFailed();
-            if (StringUtils.isBlank(serverAction.getResultMsg())) {
-                serverAction.setResultMsg("Error while request attestation data from target system:\n" +
-                        "Got no result from system");
+            String msg = serverAction.getResultMsg();
+            if (StringUtils.isBlank(msg)) {
+                msg = "Error while request attestation data from target system:\nGot no result from system";
             }
+            setFailure(msg, serverAction, report);
             return;
         }
 
         try {
-            CoCoAttestationRequestData requestData = Json.GSON.fromJson(jsonResult, CoCoAttestationRequestData.class);
-            report.setOutData(requestData.asMap());
-            mgr.initializeResults(report);
+            CoCoAttestationResponseDataParser responseDataParser = new CoCoAttestationResponseDataParser();
+            responseDataParser.parse(jsonResult);
+
+            report.setOutData(responseDataParser.asMap());
+            report.setPendingResults();
+            attestationManager.saveReport(report);
         }
         catch (JsonSyntaxException e) {
             String msg = "Failed to parse the attestation result:\n";
             msg += Optional.of(jsonResult)
                     .map(JsonElement::toString)
                     .orElse("Got no result");
-            LOG.error(msg);
-            serverAction.setStatusFailed();
-            serverAction.setResultMsg(msg);
+
+            setFailure(msg, serverAction, report);
             return;
         }
         if (serverAction.isStatusFailed()) {
             String msg = "Error while request attestation data from target system:\n";
             msg += SaltUtils.getJsonResultWithPrettyPrint(jsonResult);
             serverAction.setResultMsg(msg);
-            if (report.getResults().isEmpty()) {
-                // results are not initialized yet. So we need to set the report status
-                // directly to failed.
-                report.setStatus(CoCoReportStatus.FAILED);
-            }
         }
         else {
             serverAction.setResultMsg("Successfully collected attestation data");
         }
     }
+
+    private void setFailure(String message, ServerAction serverAction, ServerCoCoAttestationReport report) {
+        LOG.error(message);
+        serverAction.fail(message);
+        report.setFailed();
+        report.getResults().forEach(result -> result.setStatus(CoCoResultStatus.FAILED));
+    }
+
 }
