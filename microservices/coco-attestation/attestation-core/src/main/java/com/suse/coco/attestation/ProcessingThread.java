@@ -82,7 +82,8 @@ class ProcessingThread extends AbstractProcessorThread {
         try {
             while (!Thread.currentThread().isInterrupted() && listeningThread.isRunning()) {
                 // Load the pending attestation results of the supported types
-                List<Long> results = service.getResultByStatusAndType(moduleLoader.getSupportedResultTypes(), batchSize);
+                List<Long> results =
+                        service.getResultByStatusAndType(moduleLoader.getSupportedResultTypes(), batchSize);
                 if (results.isEmpty()) {
                     LOGGER.info("No attestation result to process - Waiting");
                     synchronized (dataAvailableLock) {
@@ -99,7 +100,7 @@ class ProcessingThread extends AbstractProcessorThread {
                     try {
                         service.processAttestationResult(resultId, (session, result) -> {
                             AttestationWorker worker = moduleLoader.createWorker(result.getResultType());
-                            return worker.process(session, result);
+                            return worker.processAttestationVerification(session, result);
                         });
                     }
                     catch (Exception ex) {
