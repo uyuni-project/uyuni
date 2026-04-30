@@ -85,7 +85,7 @@ public class AttestationResultService {
             }
 
             LOGGER.info("AttestationResult with id {} selected for processing", id);
-            boolean success = worker.process(session, result);
+            boolean success = worker.processAttestationVerification(session, result);
             if (success) {
                 result.setStatus(AttestationStatus.SUCCEEDED);
                 result.setAttested(OffsetDateTime.now());
