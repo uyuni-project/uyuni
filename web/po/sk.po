@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-14 11:17+0200\n"
-"PO-Revision-Date: 2026-04-26 21:04+0000\n"
+"PO-Revision-Date: 2026-05-03 15:04+0000\n"
 "Last-Translator: Ferdinand Galko <galko.ferdinand@gmail.com>\n"
 "Language-Team: Slovak <https://l10n.opensuse.org/projects/uyuni/web/sk/>\n"
 "Language: sk\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Weblate 5.17\n"
+"X-Generator: Weblate 5.17.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:409
 msgid "remaining"
@@ -3499,11 +3499,11 @@ msgstr "Nahrať súbor DataStream (*-ds.xml)"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:123
 msgid "XCCDF File"
-msgstr ""
+msgstr "Súbor XCCDF"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:133
 msgid "Upload the XCCDF file (*-xccdf.xml)"
-msgstr ""
+msgstr "Nahrať súbor XCCDF file (*-xccdf.xml)"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:145
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:311
@@ -3515,18 +3515,16 @@ msgid "Update"
 msgstr "Aktualizácia"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:123
-#, fuzzy
-#| msgid "A positive integer is required"
 msgid "SCAP Content is required"
-msgstr "Vyžaduje sa kladné celé číslo"
+msgstr "Vyžaduje sa obsah SCAP"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:127
 msgid "XCCDF Profile is required"
-msgstr ""
+msgstr "Vyžaduje sa profil XCCDF"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:154
 msgid "Unexpected error."
-msgstr ""
+msgstr "Neočakávaná chyba."
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:158
 msgid "Edit Compliance Policy"
@@ -3537,66 +3535,50 @@ msgid "Create Compliance Policy"
 msgstr "Vytvoriť pravidlá súladu"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:231
-#, fuzzy
-#| msgid "Image Profile"
 msgid "Tailoring Profile"
-msgstr "Profil obrazu"
+msgstr "Profil prispôsobenia"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:270
 msgid "Fetch Remote Resources"
-msgstr ""
+msgstr "Načítať vzdialené zdroje"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:286
 msgid "This requires internet access and significant memory. Ensure the target minion has sufficient available memory before applying it!"
-msgstr ""
+msgstr "Toto vyžaduje prístup k internetu a dostatočnú kapacitu pamäte. Pred použitím sa uistite, že cieľový minion má dostatok voľnej pamäte!"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:303
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:145
-#, fuzzy
-#| msgid "Back to list"
 msgid "Back to List"
 msgstr "Späť na zoznam"
 
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:83
-#, fuzzy
-#| msgid "An error occurred while displaying the list of packages."
 msgid "An error occurred while saving the tailoring file."
-msgstr "Pri zobrazovaní zoznamu balíkov sa vyskytla chyba."
+msgstr "Pri ukladaní súboru prispôsobenia sa vyskytla chyba."
 
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:94
-#, fuzzy
-#| msgid "Edit variables"
 msgid "Edit Tailoring File"
-msgstr "Upraviť premenné"
+msgstr "Upraviť súbor prispôsobenia"
 
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:113
-#, fuzzy
-#| msgid "Create Filter"
 msgid "Current File"
-msgstr "Vytvoriť filter"
+msgstr "Aktuálny súbor"
 
 #: ../html/src/manager/audit/scap/create-tailoring-file.tsx:122
 msgid "Replace File (optional)"
-msgstr ""
+msgstr "Nahradiť súbor (voliteľné)"
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:42
-#, fuzzy
-#| msgid "Filter has been deleted."
 msgid "SCAP content has been deleted."
-msgstr "Filter bol vymazaný."
+msgstr "Obsah SCAP bol vymazaný."
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:43
-#, fuzzy
-#| msgid "Filter have been deleted."
 msgid "SCAP content items have been deleted."
-msgstr "Filtre boli vymazané."
+msgstr "Položky obsahu SCAP boli vymazané."
 
 #. Handle server-returned error messages
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:58
-#, fuzzy
-#| msgid "Failed to connect"
 msgid "Failed to delete SCAP content"
-msgstr "Nepodarilo sa pripojiť"
+msgstr "Nepodarilo sa vymazať obsah SCAP"
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:61
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:62
@@ -3606,30 +3588,22 @@ msgstr "Pri vymazávaní došlo k neočakávanej chybe"
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:82
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:83
-#, fuzzy
-#| msgid "Upload a file"
 msgid "Upload"
-msgstr "Nahrať súbor"
+msgstr "Nahrať"
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:141
-#, fuzzy
-#| msgid "Filter Name"
 msgid "File Name"
-msgstr "Názov filtra"
+msgstr "Názov súboru"
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:157
-#, fuzzy
-#| msgid "Delete PAYG Connection"
 msgid "Delete SCAP Content"
-msgstr "Vymazať pripojenie PAYG"
+msgstr "Vymazať obsah SCAP"
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:160
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:182
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:147
-#, fuzzy
-#| msgid "Are you sure you want to delete store"
 msgid "Are you sure you want to delete"
-msgstr "Naozaj chcete vymazať úložisko"
+msgstr "Naozaj chcete vymazať"
 
 #: ../html/src/manager/audit/scap/list-scap-content.tsx:160
 msgid "this content"
@@ -3640,10 +3614,8 @@ msgid "Scap Policy has been deleted."
 msgstr "Pravidlá Scap boli vymazané."
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:45
-#, fuzzy
-#| msgid "Image profiles have been deleted."
 msgid "Scap Policies have been deleted."
-msgstr "Profily obrazov boli vymazané."
+msgstr "Pravidlá Scap boli vymazané."
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:59
 msgid "Failed to delete SCAP policy"
@@ -3651,25 +3623,19 @@ msgstr "Zlyhalo vymazanie pravidiel SCAP"
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:117
 msgid "Scap Policies"
-msgstr ""
+msgstr "Pravidlá Scap"
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:142
-#, fuzzy
-#| msgid "Playbook Content"
 msgid "Content"
-msgstr "Obsah scenára"
+msgstr "Obsah"
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:150
-#, fuzzy
-#| msgid "System Locked"
 msgid "Systems Scanned"
-msgstr "Systém uzamknutý"
+msgstr "Skenované systémy"
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:157
-#, fuzzy
-#| msgid "Completed"
 msgid "Compliance"
-msgstr "Dokončené"
+msgstr "Súlad"
 
 #: ../html/src/manager/audit/scap/list-scap-policies.tsx:179
 msgid "Delete Scap Policy"
@@ -3680,52 +3646,40 @@ msgid "this policy"
 msgstr "tieto pravidlá"
 
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:41
-#, fuzzy
-#| msgid "Image profile has been deleted."
 msgid "Tailoring file has been deleted."
-msgstr "Profil obrazu bol vymazaný."
+msgstr "Súbor prispôsobenia bol vymazaný."
 
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:42
-#, fuzzy
-#| msgid "Image profiles have been deleted."
 msgid "Tailoring files have been deleted."
-msgstr "Profily obrazov boli vymazané."
+msgstr "Súbory prispôsobenia boli vymazané."
 
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:56
 msgid "Failed to delete tailoring file"
-msgstr ""
+msgstr "Nepodarilo sa vymazať súbor prispôsobenia"
 
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:105
 msgid "Tailoring Files"
-msgstr ""
+msgstr "Súbory prispôsobenia"
 
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:128
-#, fuzzy
-#| msgid "Target Name"
 msgid "Tailoring File Name"
-msgstr "Názov cieľa"
+msgstr "Názov súboru prispôsobenia"
 
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:144
-#, fuzzy
-#| msgid "Delete Profile"
 msgid "Delete Tailoring file"
-msgstr "Vymazať profil"
+msgstr "Vymazať súbor prispôsobenia"
 
 #: ../html/src/manager/audit/scap/list-tailoring-files.tsx:147
-#, fuzzy
-#| msgid "Attach file"
 msgid "this file"
-msgstr "Priložiť súbor"
+msgstr "tento súbor"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:80
-#, fuzzy
-#| msgid "Completed"
 msgid "Compliant"
-msgstr "Dokončené"
+msgstr "Vyhovujúce"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:80
 msgid "Non-Compliant"
-msgstr ""
+msgstr "Nevyhovujúce"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:162
 msgid "Policy Configuration"
@@ -3734,7 +3688,7 @@ msgstr "Konfigurácia pravidiel"
 #. Scan History Table - Separate Panel
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:185
 msgid "Scan History"
-msgstr ""
+msgstr "História skenovania"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:191
 msgid "No scans have been performed with this policy yet."
@@ -3742,17 +3696,15 @@ msgstr "Na základe týchto pravidiel sa zatiaľ nevykonali žiadne skenovania."
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:203
 msgid "Show only latest scan per system"
-msgstr ""
+msgstr "Zobraziť len najnovšie skenovanie pre každý systém"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:222
 msgid "Scan Date"
-msgstr ""
+msgstr "Dátum skenovania"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:228
-#, fuzzy
-#| msgid "Password"
 msgid "Passed"
-msgstr "Heslo"
+msgstr "Úspešné"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:235
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:32
@@ -3763,17 +3715,15 @@ msgstr "Neúspešné"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:244
 msgid "Other"
-msgstr ""
+msgstr "Iné"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:249
 msgid "not selected or not applicable"
-msgstr ""
+msgstr "nevybrané alebo nepoužiteľné"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:275
-#, fuzzy
-#| msgid "Filter Details"
 msgid "View Details"
-msgstr "Podrobnosti filtra"
+msgstr "Zobraziť podrobnosti"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:64
 msgid "Match data status"
@@ -6118,38 +6068,32 @@ msgid "Remediation has been "
 msgstr "Náprava bola "
 
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:399
-#, fuzzy
-#| msgid "Loading..."
 msgid "Saving..."
-msgstr "Načítava sa..."
+msgstr "Ukladá sa..."
 
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:399
 msgid "Save Custom Remediation"
-msgstr ""
+msgstr "Uložiť vlastnú nápravu"
 
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:408
-#, fuzzy
-#| msgid "Delete Notification"
 msgid "Delete Custom Remediation"
-msgstr "Vymazať oznámenie"
+msgstr "Vymazať vlastnú nápravu"
 
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:461
 msgid "Original"
-msgstr ""
+msgstr "Pôvodné"
 
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:472
-#, fuzzy
-#| msgid "Custom value"
 msgid "Custom"
-msgstr "Vlastná hodnota"
+msgstr "Vlastné"
 
 #: ../html/src/manager/minion/audit/rule-result-detail.tsx:495
 msgid "Apply Remediation"
-msgstr ""
+msgstr "Aplikovať nápravu"
 
 #: ../html/src/manager/minion/audit/schedule-scap-scan.tsx:60
 msgid "OpenSCAP is not available on this system. Please install the package ''{package}'' to enable SCAP scanning."
-msgstr ""
+msgstr "OpenSCAP nie je v tomto systéme k dispozícii. Nainštalujte, prosím, balík ''{package}'', aby ste povolili skenovanie SCAP."
 
 #: ../html/src/manager/minion/coco/coco-settings.tsx:66
 msgid "Settings"
@@ -6915,10 +6859,8 @@ msgid "SCAP Policy for {name}"
 msgstr "Pravidlá SCAP pre {name}"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:332
-#, fuzzy
-#| msgid "Description"
 msgid "No description"
-msgstr "Popis"
+msgstr "Žiadny popis"
 
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:81
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:84
@@ -6949,7 +6891,7 @@ msgstr "Konfigurovať stavy na vykonanie"
 
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:314
 msgid "SCAP Policies"
-msgstr ""
+msgstr "Pravidlá Scap"
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:105
 msgid "Create Recurring Action"
