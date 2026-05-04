@@ -257,19 +257,15 @@ class FormulaForm extends Component<Props, State> {
       if (this.props.addFormulaNavBar !== undefined) {
         this.props.addFormulaNavBar(this.state.formulaList, this.props.formulaId);
       }
-      const nextHref = this.props.getFormulaUrl(this.props.formulaId + 1);
-      const prevHref = this.props.getFormulaUrl(this.props.formulaId - 1);
-      const showAllButton = (
+      const isExpanded = this.state.sectionsExpanded === SectionState.Expanded;
+      const toggleButton = (
         <Button
-          handler={() => this.setState({ sectionsExpanded: SectionState.Expanded })}
-          text={t("Expand All Sections")}
-          className="btn-tertiary"
-        />
-      );
-      const hideAllButton = (
-        <Button
-          handler={() => this.setState({ sectionsExpanded: SectionState.Collapsed })}
-          text={t("Collapse All Sections")}
+          handler={() =>
+            this.setState({
+              sectionsExpanded: isExpanded ? SectionState.Collapsed : SectionState.Expanded,
+            })
+          }
+          text={isExpanded ? t("Collapse All Sections") : t("Expand All Sections")}
           className="btn-tertiary"
         />
       );
@@ -288,26 +284,6 @@ class FormulaForm extends Component<Props, State> {
             {messages}
             <div className="form-horizontal">
               <SectionToolbar>
-                <div className="btn-group">
-                  <button
-                    id="prev-btn"
-                    type="button"
-                    onClick={() => (window.location.href = prevHref)}
-                    disabled={this.props.formulaId === 0}
-                    className="btn btn-default"
-                  >
-                    <i className="fa fa-arrow-left" /> Prev
-                  </button>
-                  <button
-                    id="next-btn"
-                    type="button"
-                    onClick={() => (window.location.href = nextHref)}
-                    disabled={this.props.formulaId >= this.state.formulaList.length - 1}
-                    className="btn btn-default"
-                  >
-                    Next <i className="fa fa-arrow-right fa-right" />
-                  </button>
-                </div>
                 <div className="action-button-wrapper">
                   <FormulaFormContext.Consumer>
                     {({ validate, clearValues }: { validate: any; clearValues: any }) => (
@@ -334,20 +310,20 @@ class FormulaForm extends Component<Props, State> {
                 </div>
               </SectionToolbar>
               <BootstrapPanel
-                title={capitalize(get(this.state.formulaName, t("Unnamed")))}
-                buttons={
-                  <div>
-                    {showAllButton} | {hideAllButton}
+                // title={capitalize(get(this.state.formulaName, t("Unnamed")))}
+                header={
+                  <div className="ms-4">
+                    <SearchField
+                      placeholder={t("Search by formula's group name")}
+                      criteria={this.state.searchCriteria}
+                      onSearch={(v) => this.setState({ searchCriteria: v, sectionsExpanded: SectionState.Expanded })}
+                    />
                   </div>
                 }
+                buttons={<div>{toggleButton}</div>}
               >
                 <div className="formula-content">
-                  <SearchField
-                    placeholder={t("Search by formula's group name")}
-                    criteria={this.state.searchCriteria}
-                    onSearch={(v) => this.setState({ searchCriteria: v, sectionsExpanded: SectionState.Expanded })}
-                  />
-                  <hr />
+                  <h2>{capitalize(get(this.state.formulaName, t("Unnamed")))}</h2>
                   <p>{text(this.state.formulaMetadata.description)}</p>
                   <hr />
                   <FormulaFormRenderer />
