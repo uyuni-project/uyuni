@@ -12,7 +12,6 @@
 package com.suse.coco.attestation;
 
 import com.suse.coco.module.AttestationModuleLoader;
-import com.suse.coco.module.AttestationWorker;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
