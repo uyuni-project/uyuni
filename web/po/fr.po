@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-14 11:17+0200\n"
-"PO-Revision-Date: 2026-04-30 14:04+0000\n"
+"PO-Revision-Date: 2026-05-04 09:04+0000\n"
 "Last-Translator: sorau <sorau@proton.me>\n"
 "Language-Team: French <https://l10n.opensuse.org/projects/uyuni/web/fr/>\n"
 "Language: fr\n"
@@ -686,7 +686,7 @@ msgstr "Trois"
 #: ../html/src/components/formik/Form.example.tsx:62
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:307
 msgid "Select"
-msgstr "Sélection"
+msgstr "Sélectionner"
 
 #: ../html/src/components/formik/Form.example.tsx:65
 msgid "Foo"
@@ -1171,7 +1171,7 @@ msgstr ""
 #: ../html/src/manager/login/susemanager/login.tsx:88
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:164
 msgid "Username"
-msgstr ""
+msgstr "Nom d'utilisateur"
 
 #: ../html/src/components/hub/RegisterPeripheralForm.tsx:197
 msgid "The username of {productName} Administrator of the remote server."
@@ -1384,7 +1384,7 @@ msgstr ""
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:271
 #: ../html/src/manager/admin/setup/products/products.tsx:605
 msgid "Arch"
-msgstr ""
+msgstr "Arch"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:247
 msgid "Some custom channels do not have a sync organization selected. Please select organizations before confirming."
@@ -1435,7 +1435,7 @@ msgstr ""
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:336
 #: ../html/src/manager/appstreams/actions-appstreams.tsx:14
 msgid "Apply Changes"
-msgstr ""
+msgstr "Appliquer les changements"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:344
 msgid "Sync Channels from Hub to Peripheral"
@@ -2460,7 +2460,7 @@ msgstr ""
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:281
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:143
 msgid "Filter by name"
-msgstr ""
+msgstr "Filtrer par nom"
 
 #: ../html/src/manager/admin/access-control/access-group-review.tsx:160
 #: ../html/src/manager/admin/access-control/access-group-user.tsx:134
@@ -3007,28 +3007,28 @@ msgstr "Le catalogue de produits est cours de rafraîchissement, s'il vous plaî
 
 #: ../html/src/manager/admin/setup/products/products.tsx:303
 msgid "Select some product first."
-msgstr ""
+msgstr "Sélectionnez un produit d'abord."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:312
 #: ../html/src/manager/admin/setup/products/products.tsx:321
 msgid "Add products"
-msgstr ""
+msgstr "Ajouter des produits"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:340
 msgid "Clear products selection"
-msgstr ""
+msgstr "Supprimer la sélection des résultats"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:384
 msgid "Why aren't all products displayed in the list?"
-msgstr ""
+msgstr "Pourquoi tous les produits ne figurent-ils pas dans la liste ?"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:387
 msgid "The products displayed on this list are directly linked to your Organization credentials (Mirror credentials) as well as your SUSE subscriptions."
-msgstr ""
+msgstr "Les produits affichés dans cette liste sont directement liés à vos identifiants d'organisation (identifiants miroir) ainsi qu'à vos abonnements SUSE."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:392
 msgid "If you believe there are products missing, make sure you have added the correct Organization credentials in the previous wizard step."
-msgstr ""
+msgstr "Si vous pensez qu'il manque des produits, assurez-vous d'avoir ajouté les informations d'identification d'organisation correctes dans l'étape précédente de l'assistant."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:402
 msgid "This server is configured as a Peripheral server in a Hub configuration. Products can only be managed on the Hub server."
@@ -3036,50 +3036,44 @@ msgstr ""
 
 #: ../html/src/manager/admin/setup/products/products.tsx:521
 msgid "Filter by product Description"
-msgstr ""
+msgstr "Filtre par produit Description"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:597
 msgid "Product Description"
-msgstr ""
+msgstr "Description du produit"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:612
 #: ../html/src/manager/packages/list.tsx:158
 msgid "Channels"
-msgstr ""
+msgstr "Canaux"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:619
 msgid "Recommended"
-msgstr ""
+msgstr "Recommandé"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:800
-#, fuzzy
-#| msgid "Channel name"
 msgid " channels sync failed"
-msgstr "Nom canal"
+msgstr " Synchronisation des canaux échouée"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:808
-#, fuzzy
-#| msgid "Channel name"
 msgid " channels sync in progress"
-msgstr "Nom canal"
+msgstr " Synchronisation des chaînes en cours"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:816
-#, fuzzy
-#| msgid "Channel name"
 msgid " channels synced"
-msgstr "Nom canal"
+msgstr " chaînes synchronisées"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:841
 msgid "To enable this product, the parent product should be selected first"
-msgstr ""
+msgstr "Pour activer ce produit, le produit parent doit être sélectionné en premier"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:842
 msgid "Select this product"
-msgstr ""
+msgstr "Sélectionnez ce produit"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:854
 msgid "This product is mirrored."
-msgstr ""
+msgstr "Ce produit est en miroir."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:886
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:78
@@ -3087,226 +3081,226 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:494
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:558
 msgid "recommended"
-msgstr ""
+msgstr "recommandé"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:942
 msgid "SCC product catalog refresh in progress"
-msgstr ""
+msgstr "Actualisation en cours du catalogue de produits du CCN"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:945
 msgid "Scheduling channels product resync"
-msgstr ""
+msgstr "Resynchronisation des canaux de programmation des produits"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:948
 msgid "Channels product resync scheduled"
-msgstr ""
+msgstr "Resynchronisation produit des chaînes programmée"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:951
 msgid "Schedule channels product resync"
-msgstr ""
+msgstr "Resynchronisation des produits des canaux de programmation"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1011
 msgid "Show product's channels"
-msgstr ""
+msgstr "Afficher les chaînes du produit"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1084
 msgid "Product Channels - "
-msgstr ""
+msgstr "Chaînes de produits "
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1089
 msgid "Select the optional channels you wish to add and confirm."
-msgstr ""
+msgstr "Sélectionnez les canaux optionnels que vous souhaitez ajouter et confirmez."
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1093
 msgid "Mandatory Channels"
-msgstr ""
+msgstr "Chaînes obligatoires"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1095
 msgid "Optional Channels"
-msgstr ""
+msgstr "Chaînes optionnelles"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1130
 msgid "not synced"
-msgstr ""
+msgstr "non synchronisé"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1133
 msgid "sync in progress"
-msgstr ""
+msgstr "Sync en cours"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1136
 msgid "synced"
-msgstr ""
+msgstr "synchronisé"
 
 #: ../html/src/manager/admin/setup/products/products.tsx:1139
 msgid "sync failed"
-msgstr ""
+msgstr "Synchronisation échouée"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:67
 msgid "Save and Verify"
-msgstr ""
+msgstr "Enregistrer et vérifier"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:86
 msgid "HTTP Proxy Hostname"
-msgstr ""
+msgstr "Nom de l'hôte du proxy HTTP"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:87
 msgid "hostname:port"
-msgstr ""
+msgstr "Nom d'hôte : port"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:88
 msgid "For example: <code>example.com:8080</code> or <code>192.0.2.0:8080</code>"
-msgstr ""
+msgstr "Par exemple: <code>exemple.com:8080</code> ou <code>192.0.2.0:8080</code>"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:105
 msgid "HTTP Proxy Username"
-msgstr ""
+msgstr "Nom d' utilisateur du serveur HTTP"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:114
 msgid "HTTP Proxy Password"
-msgstr ""
+msgstr "Mot de passe du serveur proxy"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:128
 msgid "Illustration of a proxy server"
-msgstr ""
+msgstr "Illustration d'un serveur proxy"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:129
 #: ../html/src/manager/admin/setup/setup-header.tsx:7
 msgid "HTTP Proxy"
-msgstr ""
+msgstr "Proxy HTTP dédié"
 
 #: ../html/src/manager/admin/setup/proxy/proxy.tsx:132
 msgid "If this server uses an HTTP proxy to access the outside network, you can use this form to configure it. If that is not the case, move on to <link>Organization Credentials</link>."
-msgstr ""
+msgstr "Si ce serveur utilise un proxy HTTP pour accéder au réseau externe, vous pouvez utiliser ce formulaire pour le configurer. Si ce n'est pas le cas, passez aux <link>Certifications de l'Organisation</link>."
 
 #: ../html/src/manager/admin/setup/proxy/verification.tsx:59
 msgid "Verifying proxy settings"
-msgstr ""
+msgstr "Vérification des paramètres du proxy"
 
 #: ../html/src/manager/admin/setup/proxy/verification.tsx:62
 msgid "Successfully verified proxy settings"
-msgstr ""
+msgstr "Paramètres de proxy vérifiés avec succès"
 
 #: ../html/src/manager/admin/setup/proxy/verification.tsx:65
 msgid "Proxy settings are not valid"
-msgstr ""
+msgstr "Les paramètres du serveur proxy ne sont pas valides"
 
 #: ../html/src/manager/admin/setup/setup-header.tsx:12
 msgid "Organization Credentials"
-msgstr ""
+msgstr "Autorisations de l'organisation"
 
 #: ../html/src/manager/admin/setup/setup-header.tsx:17
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:297
 msgid "Products"
-msgstr ""
+msgstr "Produits"
 
 #: ../html/src/manager/admin/setup/setup-header.tsx:22
 msgid "PAYG Connections"
-msgstr ""
+msgstr "Connexions PAYG"
 
 #: ../html/src/manager/admin/setup/setup-header.tsx:31
 msgid "Setup Wizard"
-msgstr ""
+msgstr "Assistant de configuration"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:96
 msgid " running"
-msgstr ""
+msgstr " en cours d' exécution"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:104
 msgid " finished"
-msgstr ""
+msgstr " terminé"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:112
 msgid " failed"
-msgstr ""
+msgstr " en échec"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:120
 msgid " interrupted"
-msgstr ""
+msgstr " interrompu"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:128
 msgid " ready to run"
-msgstr ""
+msgstr " prêt à être lancé"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:136
 msgid " skipped"
-msgstr ""
+msgstr " passer"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:156
 msgid "Task Engine Status"
-msgstr ""
+msgstr "Statut du moteur de tâche"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:166
 msgid "Last Execution Times"
-msgstr ""
+msgstr "Temps de la dernière exécution"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:170
 msgid "Runtime Status"
-msgstr ""
+msgstr "État de l'exécution"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:184
 msgid "The server is running or has finished executing the following tasks during the latest 5 minutes."
-msgstr ""
+msgstr "Le serveur est en cours d'exécution ou a terminé d'exécuter les tâches suivantes au cours des 5 dernières minutes."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:187
 msgid "Data is refreshed every "
-msgstr ""
+msgstr "Les données sont actualisées à chaque fois "
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:189
 msgid " seconds"
-msgstr ""
+msgstr " secondes"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:197
 msgid "Task Id"
-msgstr ""
+msgstr "Identifiant de la tâche"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:201
 msgid "Task Name"
-msgstr ""
+msgstr "Nom de la tâche"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:207
 msgid "Start Time"
-msgstr ""
+msgstr "Heure de début"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:213
 msgid "End Time"
-msgstr ""
+msgstr "Heure de fin"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:223
 msgid "Elapsed Time"
-msgstr ""
+msgstr "Temps écoulé"
 
 #. comparator={this.sortByText}
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:236
 msgid "Data"
-msgstr ""
+msgstr "Données"
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:247
 msgid "There are no tasks running on the server at the moment."
-msgstr ""
+msgstr "Il n'y a pas de tâches en cours sur le serveur pour le moment."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:266
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:113
 msgid "Session expired, please reload the page to see up-to-date data."
-msgstr ""
+msgstr "Session expirée, veuillez recharger la page pour voir les données à jour."
 
 #: ../html/src/manager/admin/task-engine-status/taskotop.tsx:268
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:115
 #: ../html/src/utils/network.ts:104
 msgid "Server error, please check log files."
-msgstr ""
+msgstr "Erreur serveur, veuillez vérifier les fichiers journaux."
 
 #: ../html/src/manager/appstreams/appstream-packages.tsx:36
 msgid "An error occurred while displaying the list of packages."
-msgstr ""
+msgstr "Une erreur s'est produite lors de l'affichage de la liste des paquets."
 
 #: ../html/src/manager/appstreams/appstream-packages.tsx:39
 msgid "AppStream {stream} has {count} packages:"
-msgstr ""
+msgstr "AppStream {stream} est composé de {count} paquets :"
 
 #: ../html/src/manager/appstreams/appstreams.tsx:68
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure.tsx:67
 msgid "Updating the selection of AppStream modules has been <link>scheduled</link>."
-msgstr ""
+msgstr "La mise à jour de la sélection des modules AppStream a été <link>programmée</link>."
 
 #: ../html/src/manager/appstreams/appstreams.tsx:118
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:137
@@ -3314,7 +3308,7 @@ msgstr ""
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:92
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure.tsx:129
 msgid "AppStreams"
-msgstr ""
+msgstr "AppStreams"
 
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:59
 msgid "Please review the changes below before scheduling an action to apply the changes."
@@ -3322,174 +3316,174 @@ msgstr ""
 
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:77
 msgid "Streams to be enabled:"
-msgstr ""
+msgstr "Flux à activer :"
 
 #: ../html/src/manager/appstreams/changes-confirm-appstreams.tsx:88
 msgid "Streams to be disabled:"
-msgstr ""
+msgstr "Flux à désactiver :"
 
 #: ../html/src/manager/appstreams/list-appstreams.tsx:35
 msgid "The following AppStream modules are currently available to the system."
-msgstr ""
+msgstr "Les modules AppStream suivants sont actuellement disponibles pour le système."
 
 #: ../html/src/manager/appstreams/list-appstreams.tsx:55
 msgid "Packages in {stream}"
-msgstr ""
+msgstr "Paquets dans {stream}"
 
 #: ../html/src/manager/appstreams/panel-appstream.tsx:20
 msgid "Modules"
-msgstr ""
+msgstr "Modules"
 
 #: ../html/src/manager/appstreams/panel-appstream.tsx:21
 msgid "Streams"
-msgstr ""
+msgstr "Flux"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:43
 msgid "Affected, patches available in channels which are not assigned"
-msgstr ""
+msgstr "Affectés, les correctifs disponibles sur les canaux non attribués"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:45
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:53
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:89
 msgid "The client is affected by a vulnerability and we have a patch for it,"
-msgstr ""
+msgstr "Le client est affecté par une vulnérabilité et nous avons un correctif pour cela,"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:51
 msgid "Affected, patches available in a Product Migration target"
-msgstr ""
+msgstr "Les correctifs concernés sont disponibles dans une cible de migration de produit"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:59
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:60
 msgid "Affected, at least one patch available in an assigned channel"
-msgstr ""
+msgstr "Affecté, au moins un patch disponible dans un canal assigné"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:64
 msgid "Not affected"
-msgstr ""
+msgstr "Pas affecté"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:65
 msgid "The client is not affected because none of the known CVE vulnerable packages are installed."
-msgstr ""
+msgstr "Le client n'est pas affecté car aucun des paquets vulnérables CVE connus n'est installé."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:69
 msgid "Patched"
-msgstr ""
+msgstr "Patché"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:70
 msgid "A patch has been successfully installed on the client."
-msgstr ""
+msgstr "Un correctif a été installé avec succès sur le client."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:74
 msgid "Affected, patch is unavailable"
-msgstr ""
+msgstr "Affecté, le patch n'est pas disponible"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:75
 msgid "The client is affected by a vulnerability for which a patch has not yet been released."
-msgstr ""
+msgstr "Le client est affecté par une vulnérabilité pour laquelle aucun correctif n'a encore été publié."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:79
 msgid "Affected, patch is unavailable in relevant channels"
-msgstr ""
+msgstr "Affecté, le correctif n'est pas disponible dans les canaux concernés"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:81
 msgid "The client is affected by a vulnerability for which a patch has been released,"
-msgstr ""
+msgstr "Le client est affecté par une vulnérabilité pour laquelle un correctif a été publié,"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:87
 msgid "Affected, partial patch available in assigned channel"
-msgstr ""
+msgstr "Affecté, patch partiel disponible dans le canal assigné"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:95
 msgid "Unknown, CVE metadata not available"
-msgstr ""
+msgstr "Inconnu, les métadonnées CVE non disponibles"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:97
 msgid "It is not possible to scan the client server for CVE vulnerabilities without channels or OVAL metadata."
-msgstr ""
+msgstr "Il n'est pas possible de scanner le serveur client à la recherche de vulnérabilités CVE sans canaux ou métadonnées OVAL."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:235
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:248
 msgid "Error, see console"
-msgstr ""
+msgstr "Erreur, voir la console"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:239
 msgid "Unknown patch status"
-msgstr ""
+msgstr "Statut du patch inconnu"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:241
 msgid "OVAL data out of sync. Potential missed vulnerabilities"
-msgstr ""
+msgstr "Les données OVAL ne sont pas synchronisées. Vulnérabilités éventuellement négligées"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:243
 msgid "Server product channels out of sync; no patch information available"
-msgstr ""
+msgstr "Les canaux de produits serveur désynchronisés ; Aucune information sur les patchs disponible"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:254
 msgid "CVE Audit"
-msgstr ""
+msgstr "CVE Audit"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:261
 msgid "CVE"
-msgstr ""
+msgstr "CVE"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:318
 msgid "Audit Servers"
-msgstr ""
+msgstr "Auditer les serveurs"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:325
 msgid "Audit Images"
-msgstr ""
+msgstr "Auditer les images"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:345
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:7
 #: ../html/src/manager/systems/all-list.tsx:34
 #: ../html/src/manager/systems/virtual-list.tsx:68
 msgid "Download CSV"
-msgstr ""
+msgstr "Télécharger le CSV"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:361
 msgid "MITRE CVE link"
-msgstr ""
+msgstr "Lien CVE MITRE"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:372
 msgid "SUSE Security CVE link"
-msgstr ""
+msgstr "Lien de sécurité SUSE CVE"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:438
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:506
 msgid "No action required"
-msgstr ""
+msgstr "Aucune action n'est requise"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:444
 msgid "Install a new patch on this system."
-msgstr ""
+msgstr "Installez un nouveau correctif sur ce système."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:461
 msgid "Patch available, but system needs to be migrated to a newer Product."
-msgstr ""
+msgstr "Un correctif disponible, mais le système doit être migré vers un produit plus récent."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:473
 msgid "Patch available, but needs to be cloned into Channel."
-msgstr ""
+msgstr "Patch disponible, mais doit être cloné dans Channel."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:485
 msgid "Install a new partial patch on this system."
-msgstr ""
+msgstr "Installez un nouveau patch partiel sur ce système."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:498
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:529
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:532
 msgid "If you see this report a bug."
-msgstr ""
+msgstr "Si vous voyez cela, signalez un bug."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:513
 #: ../html/src/manager/images/image-view-overview.tsx:645
 msgid "Rebuild"
-msgstr ""
+msgstr "Reconstruction"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:521
 msgid "Patch available but needs to be cloned into Channel."
-msgstr ""
+msgstr "Patch disponible mais doit être cloné dans Channel."
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:524
 #: ../html/src/manager/content-management/list-filters/appstreams/select-input.tsx:33
@@ -3497,11 +3491,11 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:40
 #: ../html/src/manager/packages/list.tsx:102
 msgid "Channel"
-msgstr ""
+msgstr "Chaîne"
 
 #: ../html/src/manager/audit/cveaudit/cveaudit.tsx:525
 msgid "Errata"
-msgstr ""
+msgstr "Errata"
 
 #: ../html/src/manager/audit/scap/create-scap-content.tsx:80
 msgid "An error occurred while uploading the SCAP content."
@@ -3784,7 +3778,7 @@ msgstr "Détails"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:64
 msgid "Match data status"
-msgstr ""
+msgstr "État des données du match"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:96
 msgid "Could not start a matching run. Please contact your administrator to make sure the task scheduler is running."
@@ -3792,290 +3786,290 @@ msgstr ""
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:105
 msgid "No match data is currently available."
-msgstr ""
+msgstr "Aucune donnée de correspondance n'est actuellement disponible."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:107
 msgid "You can also trigger a first run now by clicking the button below."
-msgstr ""
+msgstr "Vous pouvez également déclencher une première exécution maintenant en cliquant sur le bouton ci-dessous."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:115
 msgid "Matching data is currently being recomputed, it was started {timeFromNow}."
-msgstr ""
+msgstr "Les données correspondantes sont actuellement recalculées, elles ont été lancées {timeFromNow}."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:125
 msgid "Latest successful match data was computed {timeFromNow}, you can trigger a new run by clicking the button below."
-msgstr ""
+msgstr "Les données de la dernière correspondance réussie ont été calculées {timeFromNow}, vous pouvez déclencher une nouvelle exécution en cliquant sur le bouton ci-dessous."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:134
 msgid "Match data is computed via a task schedule, nightly by default (you can "
-msgstr ""
+msgstr "Les données de correspondance sont calculées via un planning de tâches, par défaut chaque soir (vous pouvez "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:136
 msgid "change the task schedule from the administration page"
-msgstr ""
+msgstr "Modifier le planning des tâches depuis la page d'administration"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:138
 msgid "). "
-msgstr ""
+msgstr "). "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-matcher-run-panel.tsx:160
 msgid "Refresh matching data"
-msgstr ""
+msgstr "Données de correspondance de rafraîchissement"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:34
 msgid "Unsupported part number detected"
-msgstr ""
+msgstr "Numéro de pièce non supporté détecté"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:38
 msgid "Physical system is reported as virtual guest, please check hardware data"
-msgstr ""
+msgstr "Le système physique est signalé comme invité virtuel, veuillez vérifier les données matérielles"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:42
 msgid "Virtual guest has unknown host, assuming it is a physical system"
-msgstr ""
+msgstr "L'invité virtuel a un hôte inconnu, en supposant qu'il s'agit d'un système physique"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:46
 msgid "System has an unknown number of sockets, assuming 16"
-msgstr ""
+msgstr "Le système a un nombre inconnu de sockets, supposant 16"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:50
 msgid "Two subscriptions with the same part number are in a bundle - merged into a single one"
-msgstr ""
+msgstr "Deux abonnements avec le même numéro de pièce sont regroupés dans un ensemble – fusionnés en un seul"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:55
 msgid "Two subscriptions with the same part number (and other properties) have been merged together - start/end dates might be indicative"
-msgstr ""
+msgstr "Deux abonnements avec le même numéro de pièce (et d'autres propriétés) ont été fusionnés – les dates de début/fin peuvent être indicatives"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:60
 msgid "Pinned match adjusted due to merged subscriptions"
-msgstr ""
+msgstr "Correspondance épinglée ajustée en raison de souscriptions fusionnées"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:62
 msgid "Subscription IDs"
-msgstr ""
+msgstr "Identifiants d'abonnement"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:73
 msgid "Subscription with unsupported part number and no associated product has been ignored."
-msgstr ""
+msgstr "Un abonnement avec un numéro de pièce non pris en charge et aucun produit associé."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:94
 msgid "Please review warning and information messages below."
-msgstr ""
+msgstr "Veuillez consulter les messages d'avertissement et d'information ci-dessous."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:108
 msgid "Message"
-msgstr ""
+msgstr "Message"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:114
 msgid "Additional information"
-msgstr ""
+msgstr "Informations complémentaires"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:121
 msgid "No messages from the last match run."
-msgstr ""
+msgstr "Aucun message depuis le dernier lancement."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-messages.tsx:126
 msgid "Messages"
-msgstr ""
+msgstr "Messages"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:94
 msgid "Pins"
-msgstr ""
+msgstr "Épingles"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:96
 msgid "You can pin a subscription to a system to suggest a certain association to the matching algorithm. "
-msgstr ""
+msgstr "Vous pouvez épingler un abonnement à un système pour suggérer une certaine association à l'algorithme de correspondance. "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:99
 msgid "Next time a matching is attempted, the algorithm will try to produce a result that applies the subscription to the system you specified. "
-msgstr ""
+msgstr "La prochaine fois qu'une correspondance est tentée, l'algorithme tentera de produire un résultat qui applique l'abonnement au système que vous avez spécifié. "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:102
 msgid "Note that the algorithm might determine that a certain pin cannot be respected, "
-msgstr ""
+msgstr "Notez que l'algorithme pourrait déterminer qu'une certaine broche ne peut pas être respectée, "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:104
 msgid "depending on a subscription's availablility and applicability rules, in that case it will be shown as not satisfied. "
-msgstr ""
+msgstr "selon les règles d'accessibilité et d'applicabilité d'un abonnement, dans ce cas, il sera indiqué comme non satisfait. "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:118
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:145
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:370
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:74
 msgid "Part number"
-msgstr ""
+msgstr "Numéro de pièce"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:124
 msgid "Subscription"
-msgstr ""
+msgstr "Abonnement"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:130
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:372
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:86
 msgid "Policy"
-msgstr ""
+msgstr "Politique"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:136
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:375
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:107
 msgid "End date"
-msgstr ""
+msgstr "Date de fin"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:162
 msgid "Delete Pin"
-msgstr ""
+msgstr "Supprimer le code PIN"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:170
 msgid "No pins defined. You can create one with the button below."
-msgstr ""
+msgstr "Aucun épingle défini. Vous pouvez en créer un avec le bouton ci-dessous."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:175
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:176
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:182
 msgid "Add a Pin"
-msgstr ""
+msgstr "Ajouter une épingle"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:198
 msgid "pending next run"
-msgstr ""
+msgstr "En attente de la prochaine sortie"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:206
 msgid "satisfied"
-msgstr ""
+msgstr "satisfait"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:213
 msgid "not satisfied"
-msgstr ""
+msgstr "Non satisfait"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:273
 msgid "Available Systems"
-msgstr ""
+msgstr "Systèmes disponibles"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:274
 msgid "Step 1/2: select the system to pin from the table below."
-msgstr ""
+msgstr "Étape 1/2 : sélectionnez le système à épingler dans le tableau ci-dessous."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:292
 msgid "Socket/IFL count"
-msgstr ""
+msgstr "Nombre de sockets/IFL"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:320
 msgid "Available Subscriptions for the Selected System"
-msgstr ""
+msgstr "Abonnements disponibles pour le système sélectionné"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:322
 msgid "Step 2/2: pick a subscription for system "
-msgstr ""
+msgstr "Étape 2/2 : choisissez un abonnement pour le système "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:332
 msgid "Back to sytem selection"
-msgstr ""
+msgstr "Retour à la sélection du système"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:389
 msgid "Save Pin"
-msgstr ""
+msgstr "Épingle de sauvegarde"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-pins.tsx:401
 msgid "No subscriptions have been found to match this system, considering all products installed, either directly or in virtual guests."
-msgstr ""
+msgstr "Aucun abonnement n'a été trouvé correspondant à ce système, en tenant compte de tous les produits installés, que ce soit directement ou en invités virtuels."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:69
 msgid "Filter by description"
-msgstr ""
+msgstr "Filtrer par description"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:92
 msgid "Matched/Total"
-msgstr ""
+msgstr "Apparié/Total"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:98
 msgid "Start date"
-msgstr ""
+msgstr "Date de début"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:124
 msgid "No subscriptions found."
-msgstr ""
+msgstr "Aucun abonnement trouvé"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-subscriptions.tsx:129
 msgid "Your subscriptions"
-msgstr ""
+msgstr "Vos abonnements"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:64
 msgid "Product name"
-msgstr ""
+msgstr "Nom du produit"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:70
 msgid "Unmatched system count"
-msgstr ""
+msgstr "Nombre de systèmes non appariés"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:78
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:79
 msgid "Show system list"
-msgstr ""
+msgstr "Liste du système de spectacles"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:95
 msgid "No unmatching products are found."
-msgstr ""
+msgstr "Aucun produit non assorti n'est trouvé."
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:100
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:158
 msgid "Unmatched Products"
-msgstr ""
+msgstr "Des produits inégalés"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:148
 msgid "System name"
-msgstr ""
+msgstr "Nom du système"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-unmatched-products.tsx:156
 msgid "Unmatched systems"
-msgstr ""
+msgstr "Systèmes inégalés"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:35
 msgid "Physical deployment only"
-msgstr ""
+msgstr "Déploiement physique uniquement"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:38
 msgid "Unlimited Virtual Machines"
-msgstr ""
+msgstr "Machines virtuelles illimitées"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:41
 msgid "1-2 Sockets or 1-2 Virtual Machines"
-msgstr ""
+msgstr "1 ou 2 sockets ou 1 ou 2 machines virtuelles"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching-util.tsx:44
 msgid "Per-instance"
-msgstr ""
+msgstr "Par instance"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:88
 msgid "Edit Virtual Host Managers"
-msgstr ""
+msgstr "Modifier les gestionnaires d'hôtes virtuels"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:92
 msgid "Subscription Matching"
-msgstr ""
+msgstr "Correspondance par abonnement"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:157
 msgid "Subscriptions"
-msgstr ""
+msgstr "Abonnements"
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:160
 msgid "Pins "
-msgstr ""
+msgstr "Épingles "
 
 #: ../html/src/manager/audit/subscription-matching/subscription-matching.tsx:164
 msgid "Messages "
-msgstr ""
+msgstr "Messages "
 
 #: ../html/src/manager/content-management/create-project/create-project.tsx:29
 msgid "You do not have permissions to perform this action"
-msgstr ""
+msgstr "Vous ne disposez pas de suffisamment de permissions pour effectuer cette action."
 
 #: ../html/src/manager/content-management/create-project/create-project.tsx:33
 msgid "Create a new Content Lifecycle Project"
-msgstr ""
+msgstr "Créer un nouveau projet de cycle de vie de contenu"
 
 #: ../html/src/manager/content-management/create-project/top-panel-buttons.tsx:13
 msgid "Create project"
-msgstr ""
+msgstr "Créer un projet"
 
 #: ../html/src/manager/content-management/list-filters/appstreams/appstreams.tsx:38
 msgid "Browse available modules"
@@ -4085,94 +4079,94 @@ msgstr ""
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:35
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:84
 msgid "Module"
-msgstr ""
+msgstr "Module"
 
 #: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:33
 msgid "Select a module..."
-msgstr ""
+msgstr "Sélectionnez un module..."
 
 #: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:34
 msgid "No modules available"
-msgstr ""
+msgstr "Aucun module disponible"
 
 #: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:42
 #: ../html/src/manager/content-management/list-filters/appstreams/text-input.tsx:7
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:223
 msgid "Stream"
-msgstr ""
+msgstr "Flux"
 
 #: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:47
 msgid "Select a stream..."
-msgstr ""
+msgstr "Sélectionner un flux..."
 
 #: ../html/src/manager/content-management/list-filters/appstreams/module-selector.tsx:48
 msgid "No streams available"
-msgstr ""
+msgstr "Aucun flux disponible"
 
 #: ../html/src/manager/content-management/list-filters/appstreams/text-input.tsx:6
 msgid "Module Name"
-msgstr ""
+msgstr "Nom du module"
 
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:34
 msgid "Updating the filter..."
-msgstr ""
+msgstr "Mise à jour du filtre..."
 
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:87
 msgid "Check the required fields below"
-msgstr ""
+msgstr "Vérifiez les champs requis ci-dessous"
 
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:96
 msgid "Filter updated successfully"
-msgstr ""
+msgstr "Mise à jour du filtre avec succès"
 
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:111
 msgid "Filter created successfully"
-msgstr ""
+msgstr "Filtre créé avec succès"
 
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:122
 msgid "Filter Details"
-msgstr ""
+msgstr "Détails du filtre"
 
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:122
 msgid "Create a new filter"
-msgstr ""
+msgstr "Créer un nouveau filtre"
 
 #: ../html/src/manager/content-management/list-filters/filter-edit.tsx:168
 msgid "Filter deleted successfully"
-msgstr ""
+msgstr "Filtre supprimé avec succès"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:73
 msgid "Bear in mind that all the associated projects need to be rebuilt after a filter update"
-msgstr ""
+msgstr "Gardez à l'esprit que tous les projets associés doivent être reconstruits après une mise à jour du filtre"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:80
 msgid "Filter Name"
-msgstr ""
+msgstr "Nom du filtre"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:90
 msgid "Prefix"
-msgstr ""
+msgstr "Préfixe"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:93
 msgid "The prefix will be prepended to the name of every individual filter created by the template"
-msgstr ""
+msgstr "Le préfixe sera ajouté au nom de chaque filtre individuel créé par le modèle"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:107
 msgid "Use a template"
-msgstr ""
+msgstr "Utiliser un modèle"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:114
 msgid "Use a manual filter"
-msgstr ""
+msgstr "Utilisez un filtre manuel"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:125
 msgid "Filter Type"
-msgstr ""
+msgstr "Type de filtre"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:162
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:172
 msgid "Epoch"
-msgstr ""
+msgstr "Heure UNIX"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:163
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:173
@@ -4184,33 +4178,33 @@ msgstr ""
 #: ../html/src/manager/images/image-view.tsx:649
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:87
 msgid "Version"
-msgstr ""
+msgstr "Version"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:164
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:174
 msgid "Release"
-msgstr ""
+msgstr "Version"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:181
 msgid "Advisory name"
-msgstr ""
+msgstr "Nom consultatif"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:194
 msgid "Bug Fix Advisory"
-msgstr ""
+msgstr "Alerte de correction de bogue"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:195
 msgid "Product Enhancement Advisory"
-msgstr ""
+msgstr "Alerte d'amélioration de produit"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:197
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:175
 msgid "Advisory Type"
-msgstr ""
+msgstr "Type d'alerte"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:206
 msgid "Issued"
-msgstr ""
+msgstr "Publié"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:216
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:69
@@ -4221,53 +4215,53 @@ msgstr ""
 #: ../html/src/manager/images/image-view-overview.tsx:737
 #: ../html/src/manager/images/image-view.tsx:676
 msgid "Build"
-msgstr ""
+msgstr "Construit"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:226
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:181
 #: ../html/src/manager/images/image-view-patches.tsx:95
 msgid "Synopsis"
-msgstr ""
+msgstr "Synopsis"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:238
 msgid "Reboot Required"
-msgstr ""
+msgstr "Redémarrage requis"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:239
 msgid "Package Manager Restart Required"
-msgstr ""
+msgstr "Redémarrage du gestionnaire de paquets nécessaire"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:242
 msgid "Advisory Keywords"
-msgstr ""
+msgstr "Mots-clés de conseil"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:261
 msgid "Package Provides Name"
-msgstr ""
+msgstr "Le paquet fournit son nom"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:271
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:157
 msgid "Provides Name"
-msgstr ""
+msgstr "Fournit le nom"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:283
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:235
 msgid "Number"
-msgstr ""
+msgstr "Nombre"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:305
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:159
 msgid "Deny"
-msgstr ""
+msgstr "Refuser"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:306
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:179
 msgid "Allow"
-msgstr ""
+msgstr "Autoriser"
 
 #: ../html/src/manager/content-management/list-filters/filter-form.tsx:308
 msgid "Rule"
-msgstr ""
+msgstr "Règle"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:77
 msgid "Filter has been deleted."
@@ -4275,7 +4269,7 @@ msgstr ""
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:93
 msgid "Some of the selected filters are used in projects and can not be deleted."
-msgstr ""
+msgstr "Certains des filtres sélectionnés sont utilisés dans des projets et ne peuvent pas être supprimés."
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:102
 msgid "Filter have been deleted."
@@ -4287,19 +4281,19 @@ msgstr "Créer filtre"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:149
 msgid "Select unused"
-msgstr ""
+msgstr "Sélectionner les inutilisés"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:161
 msgid "Content Lifecycle Filters"
-msgstr ""
+msgstr "Filtres du cycle de vie du contenu"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:170
 msgid "Filter by name or project"
-msgstr ""
+msgstr "Filtrer par nom ou projet"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:184
 msgid "Projects in use"
-msgstr ""
+msgstr "Projets en cours"
 
 #: ../html/src/manager/content-management/list-filters/list-filters.tsx:217
 msgid "Edit Filter"
@@ -4335,19 +4329,19 @@ msgstr "Êtes-vous sûr de vouloir supprimer le projet "
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:32
 msgid "Live patching based on a specific system"
-msgstr ""
+msgstr "Patcher en direct basé sur un système spécifique"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:36
 msgid "Live patching based on a SUSE product"
-msgstr ""
+msgstr "Patcher en direct basé sur un produit SUSE"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:40
 msgid "AppStream modules with defaults"
-msgstr ""
+msgstr "Modules AppStream avec paramètres par défaut"
 
 #: ../html/src/manager/content-management/list-filters/templates/index.tsx:47
 msgid "Template"
-msgstr ""
+msgstr "Modèle"
 
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:105
 msgid "Product"
@@ -4355,15 +4349,15 @@ msgstr "Produit"
 
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:127
 msgid "Kernel"
-msgstr ""
+msgstr "Noyau"
 
 #: ../html/src/manager/content-management/list-filters/templates/live-patching.tsx:134
 msgid "latest"
-msgstr ""
+msgstr "dernière"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:73
 msgid "Create a new content lifecycle project"
-msgstr ""
+msgstr "Créer un nouveau projet de cycle de vie de contenu"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:74
 msgid "Create Project"
@@ -4371,24 +4365,24 @@ msgstr "Créer projet"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:83
 msgid "Content Lifecycle Projects"
-msgstr ""
+msgstr "Projets de cycle de vie de contenu"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:113
 msgid "Last Build"
-msgstr ""
+msgstr "Dernière construction"
 
 #: ../html/src/manager/content-management/list-projects/list-projects.tsx:118
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:40
 msgid "Environment Lifecycle"
-msgstr ""
+msgstr "Cycle de vie de l'environnement"
 
 #: ../html/src/manager/content-management/project/project.tsx:65
 msgid "The project you are looking for does not exist or has been deleted"
-msgstr ""
+msgstr "Le projet que vous recherchez n'existe pas ou a été supprimé"
 
 #: ../html/src/manager/content-management/project/project.tsx:101
 msgid "Content Lifecycle Project - {name}"
-msgstr ""
+msgstr "Projet de cycle de vie du contenu - {name}"
 
 #: ../html/src/manager/content-management/project/project.tsx:113
 msgid "Delete Project"
@@ -4401,73 +4395,73 @@ msgstr "Êtes-vous sûr de vouloir supprimer le projet"
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:27
 #: ../html/src/manager/packages/list.tsx:152
 msgid "Package"
-msgstr ""
+msgstr "Paquet"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:31
 msgid "Patch"
-msgstr ""
+msgstr "Errata"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:39
 msgid "Product Temporary Fix"
-msgstr ""
+msgstr "Solution temporaire du produit"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:46
 msgid "contains"
-msgstr ""
+msgstr "contient"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:47
 msgid "containing"
-msgstr ""
+msgstr "contenant"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:51
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:116
 msgid "matches"
-msgstr ""
+msgstr "Correspondances"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:52
 msgid "regular expression matches package name"
-msgstr ""
+msgstr "expression régulière correspond au nom du paquet"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:56
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:101
 msgid "equals"
-msgstr ""
+msgstr "égaux"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:57
 msgid "contains package name equals"
-msgstr ""
+msgstr "contient le nom du paquet égal à"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:61
 msgid "version lower than"
-msgstr ""
+msgstr "version inférieure à"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:62
 msgid "contains package with epoch/version/release lower than"
-msgstr ""
+msgstr "contient un package avec epoch/version/sortie inférieure à"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:66
 msgid "version lower or equal than"
-msgstr ""
+msgstr "version inférieure ou égale à"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:67
 msgid "contains package with epoch/version/release lower or equal than"
-msgstr ""
+msgstr "contient un paquet avec epoch/version/sortie inférieure ou égale à"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:71
 msgid "version equal"
-msgstr ""
+msgstr "version égale"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:72
 msgid "contains package with epoch/version/release equal than"
-msgstr ""
+msgstr "contient le package avec epoch/version/sortie égale à"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:76
 msgid "version greater or equal than"
-msgstr ""
+msgstr "version supérieure ou égale à"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:77
 msgid "contains package with epoch/version/release greater or equal than"
-msgstr ""
+msgstr "contient un paquet avec epoch/version/sortie supérieure ou égale à"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:82
 msgid "contains package with epoch/version/release greater than"
@@ -5502,7 +5496,7 @@ msgstr ""
 
 #: ../html/src/manager/images/image-view.tsx:357
 msgid "Delete selected"
-msgstr ""
+msgstr "Effacer ce qui est sélectionné"
 
 #: ../html/src/manager/images/image-view.tsx:390
 msgid "Images"
