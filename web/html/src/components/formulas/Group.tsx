@@ -40,28 +40,29 @@ const Group = (props: Props) => {
   return props.isVisibleByCriteria?.() ? (
     <div
       className={
-        visible
-          ? `level-${level} formula-content-section-open group-heading`
-          : `level-${level} formula-content-section-closed group-heading`
+        visible ? `level-${level} formula-content-section-open` : `level-${level} formula-content-section-closed`
       }
     >
-      <SectionToggle setVisible={setVisibility} isVisible={isVisible}>
-        <h4 id={props.id} key={props.id}>
-          {isFiltered(props.criteria) ? (
-            <Highlight
-              enabled={isFiltered(props.criteria)}
-              text={props.header ? props.header.toString() : ""}
-              highlight={props.criteria}
-            />
-          ) : (
-            props.header
-          )}
-        </h4>
-      </SectionToggle>
+      <div className="group-heading">
+        <SectionToggle setVisible={setVisibility} isVisible={isVisible}>
+          <h4 id={props.id} key={props.id}>
+            {isFiltered(props.criteria) ? (
+              <Highlight
+                enabled={isFiltered(props.criteria)}
+                text={props.header ? props.header.toString() : ""}
+                highlight={props.criteria}
+              />
+            ) : (
+              props.header
+            )}
+          </h4>
+        </SectionToggle>
+      </div>
+
       <div>
         {visible ? (
           <Fragment>
-            {props.help ? <p>{props.help}</p> : null}
+            {props.help !== props.header ? <p>{props.help}</p> : null}
             {props.children}
           </Fragment>
         ) : null}
