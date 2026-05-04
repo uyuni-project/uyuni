@@ -1,0 +1,88 @@
+.group-heading {
+  position: relative;
+
+  h4 {
+    display: inline-block;
+  }
+
+  h3 {
+    display: inline-block;
+  }
+
+  > .btn {
+    position: absolute;
+    right: 0;
+    top: 6px;
+    cursor: pointer;
+
+    &[disabled] {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+    .fa-angle-down,
+    .fa-angle-up {
+      cursor: pointer;
+      font-weight: 600;
+    }
+  }
+}
+
+.formula-content h2 {
+  margin-top: 0;
+}
+
+.formula-primitive-group-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.formula-primitive-group-item-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.formula-content-section-closed,
+.formula-content-section-open {
+  margin-left: 3px;
+  border-left: 2px solid $eos-bc-gray-100;
+  border-top: 1px solid $eos-bc-gray-100;
+  padding-left: 8px;
+  margin-top: 10px;
+}
+
+.form-add-button {
+  margin-left: 4px !important;
+  border-top: 1px solid $eos-bc-gray-300;
+  padding-top: 15px;
+  margin-top: 11px !important;
+}
+
+.level-5,
+.level-6,
+.level-7 {
+  h4 {
+    font-size: 14px;
+
+    span {
+      font-size: 14px;
+    }
+  }
+}
+
+.help-icon-checkbox {
+  margin-left: 15px;
+}
+.required-form-field {
+  font-weight: 600;
+}
+
+.level-7,
+.level-6,
+.level-5 {
+  border-left: 0;
+}
