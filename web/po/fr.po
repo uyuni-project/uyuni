@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-14 11:17+0200\n"
-"PO-Revision-Date: 2026-05-04 12:04+0000\n"
+"PO-Revision-Date: 2026-05-04 15:04+0000\n"
 "Last-Translator: sorau <sorau@proton.me>\n"
 "Language-Team: French <https://l10n.opensuse.org/projects/uyuni/web/fr/>\n"
 "Language: fr\n"
@@ -1228,7 +1228,7 @@ msgstr ""
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:418
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:178
 msgid "Clear fields"
-msgstr ""
+msgstr "Vider les champs"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:15
 msgid "Hub server FQDN:"
@@ -1488,7 +1488,7 @@ msgstr ""
 #: ../html/src/components/hub/TokenTable.tsx:96
 #: ../html/src/manager/images/image-view.tsx:680
 msgid "Last Modified"
-msgstr ""
+msgstr "Dernière modification"
 
 #: ../html/src/components/hub/TokenTable.tsx:114
 msgid "No, never expires"
@@ -1519,7 +1519,7 @@ msgstr ""
 #: ../html/src/components/hub/TokenTable.tsx:156
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:189
 msgid "Confirm if you want to proceed."
-msgstr ""
+msgstr "Confirmez si vous souhaitez continuer."
 
 #: ../html/src/components/hub/TokenTable.tsx:180
 msgid "Confirm access token deletion"
@@ -3543,7 +3543,7 @@ msgstr ""
 #: ../html/src/manager/images/image-store-edit.tsx:212
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:199
 msgid "Update"
-msgstr ""
+msgstr "Mise à jour"
 
 #: ../html/src/manager/audit/scap/create-scap-policy.tsx:123
 msgid "SCAP Content is required"
@@ -4979,120 +4979,120 @@ msgstr "Image de construction"
 
 #: ../html/src/manager/images/image-build.tsx:371
 msgid "Image Profile"
-msgstr ""
+msgstr "Profil d'image"
 
 #: ../html/src/manager/images/image-build.tsx:401
 #: ../html/src/manager/images/image-import.tsx:290
 msgid "Build Host"
-msgstr ""
+msgstr "Construire l'hôte"
 
 #: ../html/src/manager/images/image-import.tsx:16
 msgid "Image store not found"
-msgstr ""
+msgstr "Magasin d'images non trouvé"
 
 #: ../html/src/manager/images/image-import.tsx:17
 msgid "The image import has been scheduled."
-msgstr ""
+msgstr "L'importation de l'image est prévue."
 
 #: ../html/src/manager/images/image-import.tsx:223
 #: ../html/src/manager/images/image-profile-edit.tsx:390
 msgid "There are no channels assigned to this key."
-msgstr ""
+msgstr "Aucun canal n'est attribué à cette clé."
 
 #: ../html/src/manager/images/image-import.tsx:243
 msgid "Import Image"
-msgstr ""
+msgstr "Importer une image"
 
 #: ../html/src/manager/images/image-import.tsx:245
 msgid "You can import Container images only using this feature."
-msgstr ""
+msgstr "Vous pouvez uniquement importer des images du conteneur en utilisant cette fonctionnalité."
 
 #: ../html/src/manager/images/image-import.tsx:271
 msgid "Image name"
-msgstr ""
+msgstr "Nom de l'image"
 
 #: ../html/src/manager/images/image-import.tsx:273
 msgid "Image name is required."
-msgstr ""
+msgstr "Le nom de l'image est obligatoire."
 
 #: ../html/src/manager/images/image-import.tsx:280
 msgid "Image version"
-msgstr ""
+msgstr "Version d'image"
 
 #: ../html/src/manager/images/image-import.tsx:282
 msgid "Image version is required."
-msgstr ""
+msgstr "Une version d'image est requise."
 
 #: ../html/src/manager/images/image-import.tsx:306
 #: ../html/src/manager/images/image-view.tsx:375
 msgid "Import"
-msgstr ""
+msgstr "Importer"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:282
 msgid "Target Image Store"
-msgstr ""
+msgstr "Magasin d'images cible"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:306
 msgid "Dockerfile URL"
-msgstr ""
+msgstr "URL du Dockerfile"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:332
 msgid "Config URL"
-msgstr ""
+msgstr "URL de configuration"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:355
 msgid "Kiwi options"
-msgstr ""
+msgstr "Options de kiwi"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:399
 msgid "Activation key is required for kiwi images."
-msgstr ""
+msgstr "La clé d'activation est requise pour les images kiwi."
 
 #: ../html/src/manager/images/image-profile-edit.tsx:440
 msgid "Remove entry"
-msgstr ""
+msgstr "Suppression de l'entrée"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:455
 msgid "Custom Info Values"
-msgstr ""
+msgstr "Valeurs d'information personnalisées"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:469
 msgid "Create additional custom info keys"
-msgstr ""
+msgstr "Créez des clés d'information personnalisées supplémentaires"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:517
 msgid "Edit Image Profile: '"
-msgstr ""
+msgstr "Modifier le profil d'image : '"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:517
 #: ../html/src/manager/images/image-profiles.tsx:147
 #: ../html/src/manager/images/image-profiles.tsx:148
 msgid "Create Image Profile"
-msgstr ""
+msgstr "Créer un profil d'image"
 
 #: ../html/src/manager/images/image-profile-edit.tsx:533
 msgid "Label is required and must be a unique string and it cannot include any colons (:)."
-msgstr ""
+msgstr "Une étiquette est requise et doit être une chaîne unique et ne peut pas inclure de deux-points (:)."
 
 #: ../html/src/manager/images/image-profiles.tsx:26
 msgid "Dockerfile"
-msgstr ""
+msgstr "Dockerfile"
 
 #: ../html/src/manager/images/image-profiles.tsx:27
 msgid "Kiwi"
-msgstr ""
+msgstr "Kiwi"
 
 #: ../html/src/manager/images/image-profiles.tsx:31
 msgid "Image profile cannot be found."
-msgstr ""
+msgstr "Le profil image est introuvable."
 
 #: ../html/src/manager/images/image-profiles.tsx:32
 msgid "Image profile has been deleted."
-msgstr ""
+msgstr "Le profil image a été supprimé."
 
 #: ../html/src/manager/images/image-profiles.tsx:33
 msgid "Image profiles have been deleted."
-msgstr ""
+msgstr "Les profils d'images ont été supprimés."
 
 #: ../html/src/manager/images/image-profiles.tsx:137
 msgid "Delete Image Profile"
@@ -5100,68 +5100,68 @@ msgstr ""
 
 #: ../html/src/manager/images/image-profiles.tsx:158
 msgid "Image Profiles"
-msgstr ""
+msgstr "Profils d'images"
 
 #: ../html/src/manager/images/image-profiles.tsx:184
 msgid "Build Type"
-msgstr ""
+msgstr "Type de construction"
 
 #: ../html/src/manager/images/image-profiles.tsx:227
 #: ../html/src/manager/systems/delete-system-confirm.tsx:19
 msgid "Delete Profile"
-msgstr ""
+msgstr "Supprimer le profil"
 
 #: ../html/src/manager/images/image-profiles.tsx:230
 msgid "Are you sure you want to delete profile"
-msgstr ""
+msgstr "Voulez-vous vraiment supprimer le profil"
 
 #: ../html/src/manager/images/image-profiles.tsx:240
 msgid "Delete Selected Profile(s)"
-msgstr ""
+msgstr "Supprimer les profils sélectionnés"
 
 #: ../html/src/manager/images/image-profiles.tsx:244
 msgid "Are you sure you want to delete the selected profile?"
-msgstr ""
+msgstr "Êtes-vous sûr de vouloir supprimer le profil sélectionné ?"
 
 #: ../html/src/manager/images/image-profiles.tsx:245
 msgid "Are you sure you want to delete selected profiles? ({count} profiles selected)"
-msgstr ""
+msgstr "Êtes-vous sûr de vouloir supprimer certains profils ? ({count} profils sélectionnés)"
 
 #: ../html/src/manager/images/image-store-edit.tsx:165
 msgid "Use credentials"
-msgstr ""
+msgstr "Utiliser les identifiants"
 
 #: ../html/src/manager/images/image-store-edit.tsx:234
 msgid "Edit Image Store: '"
-msgstr ""
+msgstr "Modifier le magasin d'images : '"
 
 #: ../html/src/manager/images/image-store-edit.tsx:234
 msgid "Create Image Store"
-msgstr ""
+msgstr "Créer un magasin d'images"
 
 #: ../html/src/manager/images/image-store-edit.tsx:248
 msgid "Store Type"
-msgstr ""
+msgstr "Type de magasin"
 
 #: ../html/src/manager/images/image-store-edit.tsx:259
 msgid "Label is required and must be unique."
-msgstr ""
+msgstr "Un label est obligatoire et doit être unique."
 
 #: ../html/src/manager/images/image-store-edit.tsx:265
 msgid "Store URI"
-msgstr ""
+msgstr "URI du magasin"
 
 #: ../html/src/manager/images/image-stores.tsx:26
 msgid "Image store cannot be found."
-msgstr ""
+msgstr "Le magasin d'images est introuvable."
 
 #: ../html/src/manager/images/image-stores.tsx:27
 msgid "Image store has been deleted."
-msgstr ""
+msgstr "Le magasin d'images a été supprimé."
 
 #: ../html/src/manager/images/image-stores.tsx:28
 msgid "Image stores have been deleted."
-msgstr ""
+msgstr "Les magasins d'images ont été supprimés."
 
 #: ../html/src/manager/images/image-stores.tsx:137
 msgid "Delete Store Profile"
@@ -5174,76 +5174,72 @@ msgstr ""
 
 #: ../html/src/manager/images/image-stores.tsx:158
 msgid "Image Stores"
-msgstr ""
+msgstr "Magasins d'images"
 
 #: ../html/src/manager/images/image-stores.tsx:220
 msgid "Delete Store"
-msgstr ""
+msgstr "Supprimer le magasin"
 
 #: ../html/src/manager/images/image-stores.tsx:223
 msgid "Are you sure you want to delete store"
-msgstr ""
+msgstr "Êtes-vous sûr de vouloir supprimer le store"
 
 #: ../html/src/manager/images/image-stores.tsx:233
 msgid "Delete Selected Store(s)"
-msgstr ""
+msgstr "Supprimer les magasins sélectionnés"
 
 #: ../html/src/manager/images/image-stores.tsx:237
 msgid "Are you sure you want to delete the selected store?"
-msgstr ""
+msgstr "Êtes-vous sûr de vouloir supprimer le magasin sélectionné ?"
 
 #: ../html/src/manager/images/image-stores.tsx:238
 msgid "Are you sure you want to delete selected stores? ({count} stores selected)"
-msgstr ""
+msgstr "Êtes-vous sûr de vouloir supprimer certains magasins ? ({count} stores sélectionnés)"
 
 #: ../html/src/manager/images/image-view-buildlog.tsx:5
 #: ../html/src/manager/images/image-view.tsx:798
 msgid "Build Log"
-msgstr ""
+msgstr "Journal de construction"
 
 #: ../html/src/manager/images/image-view-buildlog.tsx:10
 msgid "Build log is not available."
-msgstr ""
+msgstr "Le journal de compilation n'est pas disponible."
 
 #: ../html/src/manager/images/image-view-overview.tsx:51
 #: ../html/src/manager/images/image-view.tsx:508
 msgid "Queued"
-msgstr ""
+msgstr "En attente"
 
 #: ../html/src/manager/images/image-view-overview.tsx:53
 #: ../html/src/manager/images/image-view-overview.tsx:65
 #: ../html/src/manager/images/image-view-overview.tsx:77
 #: ../html/src/manager/images/image-view-overview.tsx:89
 msgid "Go to event"
-msgstr ""
+msgstr "Rendez-vous à l'événement"
 
 #: ../html/src/manager/images/image-view-overview.tsx:56
 msgid " is queued"
-msgstr ""
+msgstr " est en file d'attente"
 
 #: ../html/src/manager/images/image-view-overview.tsx:63
 msgid "In progress"
-msgstr ""
+msgstr "En cours"
 
 #: ../html/src/manager/images/image-view-overview.tsx:68
-#, fuzzy
-#| msgid "Channel name"
 msgid " in progress"
-msgstr "Nom canal"
+msgstr " En cours"
 
 #: ../html/src/manager/images/image-view-overview.tsx:75
 msgid "Successful"
-msgstr ""
+msgstr "Succès"
 
 #: ../html/src/manager/images/image-view-overview.tsx:80
 msgid " is successful"
-msgstr ""
+msgstr " est réussi"
 
 #: ../html/src/manager/images/image-view-overview.tsx:92
-#, fuzzy
-#| msgid "Channel name"
 msgid " has failed"
-msgstr "Nom canal"
+msgstr " a échoué"
 
 #: ../html/src/manager/images/image-view-overview.tsx:99
 #: ../html/src/manager/images/image-view-overview.tsx:100
@@ -5256,13 +5252,13 @@ msgstr "Nom canal"
 #: ../html/src/manager/images/image-view.tsx:487
 #: ../html/src/manager/images/image-view.tsx:536
 msgid "No information"
-msgstr ""
+msgstr "Aucune information"
 
 #: ../html/src/manager/images/image-view-overview.tsx:111
 #: ../html/src/manager/images/image-view-overview.tsx:112
 #: ../html/src/manager/images/image-view.tsx:506
 msgid "Built externally"
-msgstr ""
+msgstr "Construit à l'extérieur"
 
 #: ../html/src/manager/images/image-view-overview.tsx:134
 msgid " Status"
@@ -5270,30 +5266,30 @@ msgstr " Statut"
 
 #: ../html/src/manager/images/image-view-overview.tsx:139
 msgid "Picked Up"
-msgstr ""
+msgstr "Capté(e)(s)"
 
 #: ../html/src/manager/images/image-view-overview.tsx:192
 #: ../html/src/manager/images/image-view.tsx:562
 msgid "Cluster"
-msgstr ""
+msgstr "Grappe"
 
 #: ../html/src/manager/images/image-view-overview.tsx:193
 #: ../html/src/manager/images/image-view.tsx:563
 #: ../html/src/manager/images/image-view.tsx:615
 msgid "Instances"
-msgstr ""
+msgstr "Instances"
 
 #: ../html/src/manager/images/image-view-overview.tsx:203
 #: ../html/src/manager/images/image-view-overview.tsx:240
 #: ../html/src/manager/images/image-view.tsx:524
 #: ../html/src/manager/images/image-view.tsx:573
 msgid "Waiting for update ..."
-msgstr ""
+msgstr "En attente de mise à jour..."
 
 #: ../html/src/manager/images/image-view-overview.tsx:220
 #: ../html/src/manager/images/image-view.tsx:590
 msgid "View cluster summary"
-msgstr ""
+msgstr "Voir le résumé du groupe"
 
 #: ../html/src/manager/images/image-view-overview.tsx:251
 #: ../html/src/manager/images/image-view-overview.tsx:253
@@ -5305,158 +5301,158 @@ msgstr ""
 #: ../html/src/manager/images/image-view-overview.tsx:267
 #: ../html/src/manager/images/image-view.tsx:538
 msgid "Outdated instances found"
-msgstr ""
+msgstr "Cas obsolètes trouvés"
 
 #: ../html/src/manager/images/image-view-overview.tsx:330
 msgid "Edit profile"
-msgstr ""
+msgstr "Modifier le profil"
 
 #: ../html/src/manager/images/image-view-overview.tsx:354
 msgid "Edit store"
-msgstr ""
+msgstr "Mémoire de l'édition"
 
 #: ../html/src/manager/images/image-view-overview.tsx:524
 #: ../html/src/manager/images/image-view-overview.tsx:525
 #: ../html/src/manager/images/image-view.tsx:489
 #: ../html/src/manager/systems/list-filter.tsx:28
 msgid "Critical updates available"
-msgstr ""
+msgstr "Mises à jour critiques disponibles"
 
 #: ../html/src/manager/images/image-view-overview.tsx:531
 #: ../html/src/manager/images/image-view-overview.tsx:532
 #: ../html/src/manager/images/image-view.tsx:492
 msgid "Non-critical updates available"
-msgstr ""
+msgstr "Mises à jour non critiques disponibles"
 
 #: ../html/src/manager/images/image-view-overview.tsx:538
 #: ../html/src/manager/images/image-view-overview.tsx:539
 #: ../html/src/manager/images/image-view.tsx:495
 msgid "Package updates available"
-msgstr ""
+msgstr "Mises à jour du paquet disponibles"
 
 #: ../html/src/manager/images/image-view-overview.tsx:545
 #: ../html/src/manager/images/image-view-overview.tsx:546
 #: ../html/src/manager/images/image-view.tsx:497
 msgid "Image is up to date"
-msgstr ""
+msgstr "L'image est à jour"
 
 #: ../html/src/manager/images/image-view-overview.tsx:614
 msgid "Image Status"
-msgstr ""
+msgstr "Statut de l'image"
 
 #: ../html/src/manager/images/image-view-overview.tsx:617
 msgid "Image Info"
-msgstr ""
+msgstr "Informations sur l'image"
 
 #: ../html/src/manager/images/image-view-overview.tsx:628
 msgid "Build Status"
-msgstr ""
+msgstr "Statut de la construction"
 
 #: ../html/src/manager/images/image-view-overview.tsx:636
 #: ../html/src/manager/images/image-view-overview.tsx:814
 msgid "Inspect"
-msgstr ""
+msgstr "Inspecter"
 
 #: ../html/src/manager/images/image-view-overview.tsx:646
 msgid "Reschedule the build"
-msgstr ""
+msgstr "Reprogrammer la construction"
 
 #: ../html/src/manager/images/image-view-overview.tsx:654
 msgid "Reinspect"
-msgstr ""
+msgstr "Réinspecter"
 
 #: ../html/src/manager/images/image-view-overview.tsx:655
 msgid "Reschedule the inspect"
-msgstr ""
+msgstr "Reprogrammez l'inspection"
 
 #: ../html/src/manager/images/image-view-overview.tsx:668
 msgid "Custom Image Information"
-msgstr ""
+msgstr "Informations sur les images personnalisées"
 
 #: ../html/src/manager/images/image-view-overview.tsx:682
 #: ../html/src/manager/images/image-view.tsx:367
 #: ../html/src/manager/images/image-view.tsx:726
 msgid "Delete Image"
-msgstr ""
+msgstr "Supprimer l'image"
 
 #: ../html/src/manager/images/image-view-overview.tsx:685
 #: ../html/src/manager/images/image-view.tsx:729
 msgid "Are you sure you want to delete image"
-msgstr ""
+msgstr "Êtes-vous sûr de vouloir supprimer l'image ?"
 
 #: ../html/src/manager/images/image-view-overview.tsx:738
 msgid "Schedule build"
-msgstr ""
+msgstr "Organisation du calendrier"
 
 #: ../html/src/manager/images/image-view-overview.tsx:770
 msgid "Rebuild Image"
-msgstr ""
+msgstr "Reconstruire une image"
 
 #: ../html/src/manager/images/image-view-overview.tsx:815
 msgid "Schedule inspect"
-msgstr ""
+msgstr "Inspection programmée"
 
 #: ../html/src/manager/images/image-view-overview.tsx:841
 msgid "Reinspect Image"
-msgstr ""
+msgstr "Réinspecter l'image"
 
 #: ../html/src/manager/images/image-view-packages.tsx:54
 #: ../html/src/manager/minion/packages/package-states.tsx:322
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:26
 msgid "Installed"
-msgstr ""
+msgstr "Installé"
 
 #: ../html/src/manager/images/image-view-patches.tsx:22
 msgid "fa fa-shield fa-1-5x"
-msgstr ""
+msgstr "fa fa-shield fa-1-5x"
 
 #: ../html/src/manager/images/image-view-patches.tsx:23
 msgid "fa fa-bug fa-1-5x"
-msgstr ""
+msgstr "fa fa-bug fa-1-5x"
 
 #: ../html/src/manager/images/image-view-patches.tsx:24
 msgid "fa spacewalk-icon-enhancement fa-1-5x"
-msgstr ""
+msgstr "Amélioration de l'icône fa de spacewalk fa-1-5x"
 
 #: ../html/src/manager/images/image-view-patches.tsx:25
 msgid "fa fa-refresh fa-1-5x"
-msgstr ""
+msgstr "Rafraîchissement de fa fa-1-5x"
 
 #: ../html/src/manager/images/image-view-patches.tsx:26
 msgid "fa fa-archive fa-1-5"
-msgstr ""
+msgstr "Archive fa fa-1-5"
 
 #: ../html/src/manager/images/image-view-patches.tsx:30
 msgid "Security advisory"
-msgstr ""
+msgstr "Avis de sécurité"
 
 #: ../html/src/manager/images/image-view-patches.tsx:31
 msgid "Bug fix advisory"
-msgstr ""
+msgstr "Avis de correction de bugs"
 
 #: ../html/src/manager/images/image-view-patches.tsx:32
 msgid "Product enhancement advisory"
-msgstr ""
+msgstr "Conseil en amélioration des produits"
 
 #: ../html/src/manager/images/image-view-patches.tsx:33
 msgid "Reboot required"
-msgstr ""
+msgstr "Redémarrage nécessaire"
 
 #: ../html/src/manager/images/image-view-patches.tsx:34
 msgid "Affects package management stack"
-msgstr ""
+msgstr "Affecte la pile de gestion de paquets"
 
 #: ../html/src/manager/images/image-view-patches.tsx:85
 msgid "Advisory"
-msgstr ""
+msgstr "Alerte"
 
 #: ../html/src/manager/images/image-view-patches.tsx:101
 msgid "Updated"
-msgstr ""
+msgstr "Mis à jour"
 
 #: ../html/src/manager/images/image-view-runtime.tsx:34
 msgid "Loading runtime information..."
-msgstr ""
+msgstr "Chargement des informations d'exécution..."
 
 #: ../html/src/manager/images/image-view-runtime.tsx:70
 msgid "Instance is consistent with {productName}"
@@ -5464,7 +5460,7 @@ msgstr ""
 
 #: ../html/src/manager/images/image-view-runtime.tsx:76
 msgid "Instance is outdated"
-msgstr ""
+msgstr "L'instance est obsolète"
 
 #: ../html/src/manager/images/image-view-runtime.tsx:110
 msgid "Cluster is consistent with {productName"
@@ -5472,27 +5468,27 @@ msgstr ""
 
 #: ../html/src/manager/images/image-view-runtime.tsx:116
 msgid "Cluster is outdated"
-msgstr ""
+msgstr "Le cluster est obsolète"
 
 #: ../html/src/manager/images/image-view-runtime.tsx:136
 msgid "Pod"
-msgstr ""
+msgstr "Pod"
 
 #: ../html/src/manager/images/image-view-runtime.tsx:137
 msgid "Namespace"
-msgstr ""
+msgstr "espace de nom"
 
 #: ../html/src/manager/images/image-view.tsx:314
 msgid "Deleted successfully."
-msgstr ""
+msgstr "Supprimé avec succès."
 
 #: ../html/src/manager/images/image-view.tsx:326
 msgid "Image inspect has been scheduled."
-msgstr ""
+msgstr "L'inspection de l'image a été programmée."
 
 #: ../html/src/manager/images/image-view.tsx:342
 msgid "Image build has been scheduled."
-msgstr ""
+msgstr "La construction de l'image a été programmée."
 
 #: ../html/src/manager/images/image-view.tsx:357
 msgid "Delete selected"
@@ -5500,55 +5496,55 @@ msgstr "Effacer ce qui est sélectionné"
 
 #: ../html/src/manager/images/image-view.tsx:390
 msgid "Images"
-msgstr ""
+msgstr "Images"
 
 #: ../html/src/manager/images/image-view.tsx:510
 msgid "Building"
-msgstr ""
+msgstr "Compilation"
 
 #: ../html/src/manager/images/image-view.tsx:516
 msgid "Unknown"
-msgstr ""
+msgstr "Inconnu(e)"
 
 #: ../html/src/manager/images/image-view.tsx:610
 #: ../html/src/manager/images/image-view.tsx:799
 msgid "Runtime"
-msgstr ""
+msgstr "Durée d'exécution"
 
 #: ../html/src/manager/images/image-view.tsx:630
 msgid "Show obsolete"
-msgstr ""
+msgstr "Série obsolète"
 
 #: ../html/src/manager/images/image-view.tsx:652
 msgid "Revision"
-msgstr ""
+msgstr "Révision"
 
 #: ../html/src/manager/images/image-view.tsx:654
 msgid "(obsolete)"
-msgstr ""
+msgstr "(obsolète)"
 
 #: ../html/src/manager/images/image-view.tsx:656
 #: ../html/src/manager/systems/all-list.tsx:96
 #: ../html/src/manager/systems/list-filter.tsx:45
 #: ../html/src/manager/systems/virtual-list.tsx:100
 msgid "Updates"
-msgstr ""
+msgstr "Mises à jour"
 
 #: ../html/src/manager/images/image-view.tsx:742
 msgid "Delete Selected Image(s)"
-msgstr ""
+msgstr "Supprimer l'image sélectionnée"
 
 #: ../html/src/manager/images/image-view.tsx:746
 msgid "Are you sure you want to delete the selected image?"
-msgstr ""
+msgstr "Êtes-vous sûr de vouloir supprimer l'image sélectionnée ?"
 
 #: ../html/src/manager/images/image-view.tsx:747
 msgid "Are you sure you want to delete selected images? ({count} images selected)"
-msgstr ""
+msgstr "Êtes-vous sûr de vouloir supprimer certaines images ? ({count} images sélectionnées)"
 
 #: ../html/src/manager/login/messages.tsx:18
 msgid "A schema upgrade is required. Please upgrade your schema at your earliest convenience to receive latest bug fixes and avoid potential problems."
-msgstr ""
+msgstr "Une mise à jour du schéma est nécessaire. Veuillez mettre à jour votre schéma dès que possible pour recevoir les dernières corrections de bugs et éviter d'éventuels problèmes."
 
 #: ../html/src/manager/login/messages.tsx:27
 msgid "Unable to validate the disk space availability on Server. Please contact your system administrator if this problem persists."
@@ -5556,7 +5552,7 @@ msgstr ""
 
 #: ../html/src/manager/login/messages.tsx:32
 msgid "Some important directories are missing. Please contact your system administrator to review the configuration."
-msgstr ""
+msgstr "Certains répertoires importants manquent. Veuillez contacter votre administrateur système pour examiner la configuration."
 
 #: ../html/src/manager/login/messages.tsx:37
 msgid "The available disk space for the server is low. To prevent an automatic shutdown via health check, please contact your system administrator immediately to allocate additional space."
@@ -5588,85 +5584,85 @@ msgstr ""
 
 #: ../html/src/manager/login/messages.tsx:99
 msgid "Signing in ..."
-msgstr ""
+msgstr "Connexion..."
 
 #: ../html/src/manager/login/susemanager/login.tsx:41
 #: ../html/src/manager/login/uyuni/login.tsx:47
 msgid "Discover a new way of managing your servers, packages, patches and more via one interface."
-msgstr ""
+msgstr "Découvrez une nouvelle façon de gérer vos serveurs, paquets, correctifs et bien plus encore via une seule interface."
 
 #: ../html/src/manager/login/susemanager/login.tsx:44
 msgid "<link>Learn more</link> about {productName}."
-msgstr ""
+msgstr "<link>En savoir plus</link> sur {productName}."
 
 #: ../html/src/manager/login/susemanager/login.tsx:87
 #: ../html/src/manager/login/susemanager/login.tsx:113
 #: ../html/src/manager/login/uyuni/login.tsx:59
 #: ../html/src/manager/login/uyuni/login.tsx:105
 msgid "Sign In"
-msgstr ""
+msgstr "Connexion"
 
 #: ../html/src/manager/login/susemanager/login.tsx:120
 #: ../html/src/manager/login/uyuni/login.tsx:121
 msgid "{productName} release {versionNumber}"
-msgstr ""
+msgstr "{productName} sortie {versionNumber}"
 
 #: ../html/src/manager/login/use-login-api.ts:14
 msgid "Either the password or username is incorrect."
-msgstr ""
+msgstr "Mot de passe ou nom d'utilisateur incorrect."
 
 #: ../html/src/manager/login/use-login-api.ts:15
 msgid "Your account has been deactivated."
-msgstr ""
+msgstr "Votre compte a été désactivé."
 
 #: ../html/src/manager/login/use-login-api.ts:16
 msgid "This user has read only API access. WebUI login is denied."
-msgstr ""
+msgstr "Cet utilisateur a un accès API en lecture seule. La connexion WebUI est refusée."
 
 #: ../html/src/manager/login/use-login-api.ts:30
 msgid "Are you sure you want to close this page while login is in progress?"
-msgstr ""
+msgstr "Êtes-vous sûr de vouloir fermer cette page pendant la connexion ?"
 
 #: ../html/src/manager/login/uyuni/login.tsx:49
 msgid "Learn more about {productName}:"
-msgstr ""
+msgstr "En savoir plus sur {productName} :"
 
 #: ../html/src/manager/login/uyuni/login.tsx:53
 msgid "View website"
-msgstr ""
+msgstr "Voir le site web"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:75
 msgid "Skip to the last maintenance window"
-msgstr ""
+msgstr "Passez à la dernière fenêtre d'entretien"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:79
 msgid "Skip to the next maintenance window"
-msgstr ""
+msgstr "Passer à la prochaine fenêtre de maintenance"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:119
 msgid "There are no more past maintenance windows"
-msgstr ""
+msgstr "Il n'y a plus de fenêtres d'entretien après la maintenance"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:153
 msgid "There are no more future maintenance windows"
-msgstr ""
+msgstr "Il n'y a plus de fenêtres d'entretien futures"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:325
 msgid "Today"
-msgstr ""
+msgstr "Aujourd'hui"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:335
 msgid "Month"
-msgstr ""
+msgstr "Mois"
 
 #: ../html/src/manager/maintenance/calendar/web-calendar.tsx:339
 msgid "Day"
-msgstr ""
+msgstr "Jour"
 
 #: ../html/src/manager/maintenance/details/calendar-details.tsx:40
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:104
 msgid "Delete maintenance calendar"
-msgstr ""
+msgstr "Supprimer le calendrier de maintenance"
 
 #: ../html/src/manager/maintenance/details/calendar-details.tsx:43
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:45
@@ -5675,78 +5671,78 @@ msgstr ""
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:236
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:107
 msgid "Are you sure you want to delete the selected item?"
-msgstr ""
+msgstr "Êtes-vous sûr de vouloir supprimer l'élément sélectionné ?"
 
 #: ../html/src/manager/maintenance/details/calendar-details.tsx:44
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:46
 msgid "This will remove the current schedule from all the systems assigned to it."
-msgstr ""
+msgstr "Cela supprimera le planning actuel de tous les systèmes qui lui sont assignés."
 
 #: ../html/src/manager/maintenance/details/calendar-details.tsx:45
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:192
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:109
 msgid "Cancel affected actions?"
-msgstr ""
+msgstr "Annuler les actions affectées ?"
 
 #: ../html/src/manager/maintenance/details/calendar-details.tsx:82
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:128
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:47
 msgid "Calendar Name"
-msgstr ""
+msgstr "Nom du calendrier"
 
 #: ../html/src/manager/maintenance/details/calendar-details.tsx:83
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:52
 msgid "Used by Schedule"
-msgstr ""
+msgstr "Utilisation par horaire"
 
 #: ../html/src/manager/maintenance/details/calendar-details.tsx:86
 msgid "Url"
-msgstr ""
+msgstr "Url"
 
 #: ../html/src/manager/maintenance/details/calendar-details.tsx:91
 msgid "Calendar Details"
-msgstr ""
+msgstr "Détails du calendrier"
 
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:42
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:84
 msgid "Delete maintenance schedule"
-msgstr ""
+msgstr "Supprimer le planning de maintenance"
 
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:56
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:169
 msgid "Assigned Systems"
-msgstr ""
+msgstr "Systèmes assignés"
 
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:93
 msgid "Schedule name"
-msgstr ""
+msgstr "Nom du calendrier"
 
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:94
 msgid "Assigned calendar"
-msgstr ""
+msgstr "Calendrier assigné"
 
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:95
 msgid "Schedule type"
-msgstr ""
+msgstr "Type de calendrier"
 
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:95
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:109
 msgid "Single"
-msgstr ""
+msgstr "Unique"
 
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:95
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:110
 msgid "Multi"
-msgstr ""
+msgstr "Multi"
 
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:100
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:158
 msgid "Schedule Details"
-msgstr ""
+msgstr "Détails du calendrier"
 
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:152
 msgid "Maintenance schedule has been assigned to {count} system(s)"
-msgstr ""
+msgstr "Le planning de maintenance a été attribué au ou aux systèmes {count}"
 
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:175
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:136
@@ -5754,43 +5750,43 @@ msgstr ""
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:12
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:136
 msgid "Cancel affected actions"
-msgstr ""
+msgstr "Annuler les actions affectées"
 
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:204
 msgid "Search systems"
-msgstr ""
+msgstr "Systèmes de recherche"
 
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:223
 msgid "Current Schedule"
-msgstr ""
+msgstr "Programme actuel"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:142
 msgid "Calendar data"
-msgstr ""
+msgstr "Données du calendrier"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:150
 msgid "Enter Url to ical file"
-msgstr ""
+msgstr "Entrer l'URL dans le fichier ical"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:164
 msgid "Attach file"
-msgstr ""
+msgstr "Joindre un fichier"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:170
 msgid "Remove file"
-msgstr ""
+msgstr "Supprimer le fichier"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:180
 msgid "Refresh data from url"
-msgstr ""
+msgstr "Rafraîchissement des données à partir de l'URL"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:185
 msgid "Confirm calendar refresh"
-msgstr ""
+msgstr "Confirmer la mise à jour du calendrier"
 
 #: ../html/src/manager/maintenance/edit/calendar-edit.tsx:188
 msgid "Refreshing the calendar will reschedule all affected actions."
-msgstr ""
+msgstr "Rafraîchir le calendrier reprogrammera toutes les actions concernées."
 
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:250
@@ -5807,24 +5803,24 @@ msgstr ""
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:141
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:36
 msgid "Calendar"
-msgstr ""
+msgstr "Agenda"
 
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:60
 msgid "Maintenance"
-msgstr ""
+msgstr "Maintenance"
 
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:125
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:133
 msgid "Add Calendar"
-msgstr ""
+msgstr "Ajouter un calendrier"
 
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:45
 msgid "No calendars created. Use Create to add a calendar."
-msgstr ""
+msgstr "Aucun calendrier créé. Utilisez Créer pour ajouter un calendrier."
 
 #: ../html/src/manager/maintenance/list/calendar-list.tsx:108
 msgid "This will unassign all schedules from this calendar."
-msgstr ""
+msgstr "Cela enlèvera toutes les tâches planifiées de ce calendrier."
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:29
 msgid "Create a new Maintenance Schedule"
@@ -5837,11 +5833,11 @@ msgstr ""
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:39
 #: ../html/src/manager/maintenance/ssm/system-assignment.tsx:16
 msgid "Maintenance Schedules"
-msgstr ""
+msgstr "Calendriers de maintenance"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:39
 msgid "Maintenance Calendars"
-msgstr ""
+msgstr "Calendriers de maintenance"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:44
 msgid "Below is a list of Maintenance Schedules available to the current user."
