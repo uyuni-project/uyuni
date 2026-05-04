@@ -82,6 +82,10 @@ public class AttestationReport {
         return EpycGeneration.fromValue(getEnvType());
     }
 
+    /**
+     * Sets cpu generation as an environment type
+     * @param generationIn the EPYC cpu generation
+     */
     public void setCpuGeneration(EpycGeneration generationIn) {
         setEnvType(generationIn.getValue());
     }
