@@ -975,7 +975,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Se connecter</target>
+        <target state="translated">Connexion</target>
       </trans-unit>
       <trans-unit id="Create First User" xml:space="preserve">
         <source>Create First User</source>
@@ -1432,14 +1432,14 @@ utilisateur avant de supprimer son compte.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/Login</context>
         </context-group>
-        <target>Soit le mot de passe, soit le nom d'utilisateur est incorrect.</target>
+        <target state="translated">Mot de passe ou nom d'utilisateur incorrect.</target>
       </trans-unit>
       <trans-unit id="error.user_readonly" xml:space="preserve">
         <source>This user has read only API access. WebUI login is denied.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/Login</context>
         </context-group>
-        <target>Cet utilisateur a lu l'accès API uniquement. La connexion WebUI a été refusée.</target>
+        <target state="translated">Cet utilisateur a un accès API en lecture seule. La connexion WebUI est refusée.</target>
       </trans-unit>
       <trans-unit id="error.org_already_taken" xml:space="preserve">
         <source>That organization name is already taken; please choose another.</source>
