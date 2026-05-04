@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-14 11:17+0200\n"
-"PO-Revision-Date: 2026-05-04 09:04+0000\n"
+"PO-Revision-Date: 2026-05-04 12:04+0000\n"
 "Last-Translator: sorau <sorau@proton.me>\n"
 "Language-Team: French <https://l10n.opensuse.org/projects/uyuni/web/fr/>\n"
 "Language: fr\n"
@@ -1378,7 +1378,7 @@ msgstr ""
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:318
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:46
 msgid "Label"
-msgstr ""
+msgstr "Etiquette"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:235
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:271
@@ -1927,7 +1927,7 @@ msgstr ""
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure-list.tsx:103
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:182
 msgid "Systems"
-msgstr ""
+msgstr "Systèmes"
 
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:63
 msgid "Product after migration"
@@ -3760,7 +3760,7 @@ msgstr "Mot de passe"
 #: ../html/src/manager/images/image-view-overview.tsx:87
 #: ../html/src/manager/images/image-view.tsx:514
 msgid "Failed"
-msgstr ""
+msgstr "Échec"
 
 #: ../html/src/manager/audit/scap/scap-policy-details.tsx:244
 msgid "Other"
@@ -4465,355 +4465,355 @@ msgstr "contient un paquet avec epoch/version/sortie supérieure ou égale à"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:82
 msgid "contains package with epoch/version/release greater than"
-msgstr ""
+msgstr "contient le paquet avec epoch/version/release supérieur à"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:87
 msgid "contains package which provides name equal"
-msgstr ""
+msgstr "contient un paquet qui fournit le nom égal"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:91
 msgid "lower"
-msgstr ""
+msgstr "inférieur"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:92
 msgid "lower than"
-msgstr ""
+msgstr "inférieur à"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:96
 msgid "lower or equal"
-msgstr ""
+msgstr "inférieur ou égal"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:97
 msgid "lower or equal than"
-msgstr ""
+msgstr "inférieur ou égal à"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:102
 msgid "equal"
-msgstr ""
+msgstr "égal"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:106
 msgid "greater or equal"
-msgstr ""
+msgstr "plus grand ou égal"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:107
 msgid "greater or equal than"
-msgstr ""
+msgstr "plus grand ou égal que"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:111
 msgid "greater"
-msgstr ""
+msgstr "plus grand"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:117
 msgid "matches regular expression"
-msgstr ""
+msgstr "Expression régulière correspond"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:121
 msgid "provides name"
-msgstr ""
+msgstr "Fournit le nom"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:122
 msgid "provides name equal"
-msgstr ""
+msgstr "fournit le nom égal"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:126
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:127
 msgid "none (disable modularity)"
-msgstr ""
+msgstr "fournit le nom égal"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:131
 msgid "all"
-msgstr ""
+msgstr "tout"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:132
 msgid "all program temporary fixes"
-msgstr ""
+msgstr "toutes les corrections temporaires du programme"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:145
 msgid "NEVRA"
-msgstr ""
+msgstr "NEVRA"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:163
 msgid "Build date"
-msgstr ""
+msgstr "Date de création"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:169
 msgid "Advisory Name"
-msgstr ""
+msgstr "Nom consultatif"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:187
 msgid "Keyword"
-msgstr ""
+msgstr "Mot clé"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:193
 msgid "Issue date"
-msgstr ""
+msgstr "Date d'émission"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:199
 msgid "Contains Package Name"
-msgstr ""
+msgstr "Contient le nom du paquet"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:205
 msgid "Contains Package Provides Name"
-msgstr ""
+msgstr "Contient le package fournit le nom"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:211
 msgid "Contains Package"
-msgstr ""
+msgstr "Contient le paquet"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:247
 msgid "Fixes Package Name"
-msgstr ""
+msgstr "Corrige le nom du paquet"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:268
 msgid "enable module"
-msgstr ""
+msgstr "Activer le module"
 
 #: ../html/src/manager/content-management/shared/business/filters.enum.ts:269
 msgid "disable all modules"
-msgstr ""
+msgstr "désactiver tous les modules"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:62
 msgid "Build ({count})"
-msgstr ""
+msgstr "Construire ({count})"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:81
 msgid "Build Project"
-msgstr ""
+msgstr "Projet de construction"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:87
 msgid "Building project"
-msgstr ""
+msgstr "Projet en cours de construction"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:95
 msgid "The project contains channels with unsynchronized patches. They will be synchronized depending on your Organization settings."
-msgstr ""
+msgstr "Le projet contient des canaux avec des patches non synchronisés. Ils seront synchronisés selon les paramètres de votre organisation."
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:107
 msgid "Version Message"
-msgstr ""
+msgstr "Version Message"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:111
 msgid "Version {version} history"
-msgstr ""
+msgstr "Historique des versions {version}"
 
 #: ../html/src/manager/content-management/shared/components/panels/build/build.tsx:146
 msgid "Version {version} successfully built into {environmentName}"
-msgstr ""
+msgstr "Version {version} intégrée avec succès dans {environmentName}"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-form.tsx:51
 msgid "Insert before"
-msgstr ""
+msgstr "Insérer avant"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:41
 msgid "Add Environment"
-msgstr ""
+msgstr "Ajouter l'environnement"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:52
 msgid "Environment created successfully"
-msgstr ""
+msgstr "Environnement créé avec succès"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:68
 msgid "Creating the environment..."
-msgstr ""
+msgstr "Créer l'environnement..."
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:83
 msgid "No environments created"
-msgstr ""
+msgstr "Aucun environnement créé"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:99
 msgid "Environment updated successfully"
-msgstr ""
+msgstr "Mise à jour de l'environnement avec succès"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:115
 msgid "Environment {name} deleted successfully"
-msgstr ""
+msgstr "Environnement {name} supprimé avec succès"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-lifecycle.tsx:137
 msgid "This environment cannot be deleted since it is being used in an <link>autoinstallation distribution</link>."
-msgstr ""
+msgstr "Cet environnement ne peut pas être supprimé puisqu'il est utilisé dans une <link>distribution d'autoinstallation</link>."
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:24
 msgid "New"
-msgstr ""
+msgstr "Nouveau"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:25
 msgid "Cloning channels"
-msgstr ""
+msgstr "Canaux de clonage"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:28
 msgid "Waiting for repositories data to be generated"
-msgstr ""
+msgstr "Attendre la génération des données des dépôts"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:31
 #: ../html/src/manager/images/image-view.tsx:512
 msgid "Built"
-msgstr ""
+msgstr "Construction"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:51
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:85
 msgid "not built"
-msgstr ""
+msgstr "non construit"
 
 #: ../html/src/manager/content-management/shared/components/panels/environment-lifecycle/environment-view.tsx:69
 msgid "Built time"
-msgstr ""
+msgstr "Temps de construction"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.tsx:31
 msgid "Loading global filters..."
-msgstr ""
+msgstr "Chargement des filtres globaux..."
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.tsx:35
 msgid "Updating project filters..."
-msgstr ""
+msgstr "Mise à jour des filtres de projet..."
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project-selection.tsx:44
 msgid "Create New Filter"
-msgstr ""
+msgstr "Créer un nouveau filtre"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:32
 msgid "Edit Filter {name}"
-msgstr ""
+msgstr "Modifier le filtre {name}"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:91
 msgid "Filters"
-msgstr ""
+msgstr "Filtres"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:92
 msgid "Attach/Detach Filters"
-msgstr ""
+msgstr "Filtres à attacher/détacher"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:109
 msgid "Filter edited successfully"
-msgstr ""
+msgstr "Filtre édité avec succès"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:137
 msgid "enabled module streams"
-msgstr ""
+msgstr "Flux de modules activés"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:159
 msgid "filter out"
-msgstr ""
+msgstr "filtre"
 
 #: ../html/src/manager/content-management/shared/components/panels/filters-project/filters-project.tsx:180
 msgid "select from the full source even if you have excluded them before with deny"
-msgstr ""
+msgstr "sélectionnez à partir de la source complète même si vous les avez déjà exclus avec le refus"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:53
 msgid "No version to promote or colliding environment build in progress"
-msgstr ""
+msgstr "Aucune version à promouvoir ni construction d'environnement collision en cours"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:59
 msgid "Promote"
-msgstr ""
+msgstr "Promotion"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:75
 msgid "Promoting project.."
-msgstr ""
+msgstr "Promotion du projet..."
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:91
 msgid "Target environment"
-msgstr ""
+msgstr "Environnement cible"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:97
 msgid "Promote version {version} into {environmentName}"
-msgstr ""
+msgstr "Promote version {version} en {environmentName}"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:113
 msgid "Promote environment"
-msgstr ""
+msgstr "Promouvoir l'environnement"
 
 #: ../html/src/manager/content-management/shared/components/panels/promote/promote.tsx:126
 msgid "Version {version} successfully promoted into {environmentName}"
-msgstr ""
+msgstr "Version {version} promue avec succès en {environmentName}"
 
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-create.tsx:14
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.tsx:55
 msgid "Project Properties"
-msgstr ""
+msgstr "Propriétés du projet"
 
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.tsx:37
 msgid "(draft - not built) - Check the changes below"
-msgstr ""
+msgstr "(brouillon - non construit) - Vérifiez les modifications ci-dessous"
 
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.tsx:51
 msgid "Edit Properties"
-msgstr ""
+msgstr "Modifier les propriétés"
 
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-edit.tsx:68
 msgid "Project properties updated successfully"
-msgstr ""
+msgstr "Propriétés du projet mises à jour avec succès"
 
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:41
 msgid "Label:"
-msgstr ""
+msgstr "Étiquette :"
 
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:49
 msgid "Versions history:"
-msgstr ""
+msgstr "Historique des versions :"
 
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:60
 msgid "show more"
-msgstr ""
+msgstr "Afficher la suite"
 
 #: ../html/src/manager/content-management/shared/components/panels/properties/properties-view.tsx:66
 msgid "Versions history"
-msgstr ""
+msgstr "Historique des versions"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/base-channel.tsx:59
 msgid "New base channel"
-msgstr ""
+msgstr "Nouveau canal de base"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:179
 msgid "New Base Channel"
-msgstr ""
+msgstr "Nouveau canal de base"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:182
 msgid "Choose the channel to be elected as the new base channel"
-msgstr ""
+msgstr "Choisir le canal à élire comme nouveau canal de base"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:198
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:543
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:616
 msgid "Child Channels"
-msgstr ""
+msgstr "Chaînes pour enfants"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:221
 msgid "Clear Search"
-msgstr ""
+msgstr "Recherche claire"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:28
 msgid "This channel requires:"
-msgstr ""
+msgstr "Ce canal nécessite :"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:35
 msgid "This channel is required by:"
-msgstr ""
+msgstr "Ce canal nécessite :"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:77
 msgid "This channel is recommended"
-msgstr ""
+msgstr "Cette chaîne est recommandée"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:82
 msgid "This channel is mandatory"
-msgstr ""
+msgstr "Ce canal est obligatoire"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/child-channel.tsx:83
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:149
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:563
 msgid "mandatory"
-msgstr ""
+msgstr "obligatoire"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/empty-child.tsx:6
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:99
 msgid "no child channels"
-msgstr ""
+msgstr "pas de chaînes enfants"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/recommended-toggle.tsx:26
 #: ../html/src/manager/systems/activation-key/child-channels.tsx:173
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:434
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:605
 msgid "include recommended"
-msgstr ""
+msgstr "inclure recommandé"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:36
 #: ../html/src/manager/images/image-stores.tsx:184
@@ -4823,69 +4823,69 @@ msgstr ""
 #: ../html/src/manager/notifications/notifications-list.tsx:139
 #: ../html/src/manager/state/highstate-summary.tsx:76
 msgid "Type"
-msgstr ""
+msgstr "Type"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:61
 msgid "has unsynchronized patches"
-msgstr ""
+msgstr "a des patchs désynchronisés"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:105
 msgid "Sources"
-msgstr ""
+msgstr "Sources"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:123
 msgid "Sources edited successfully"
-msgstr ""
+msgstr "Sources modifiées avec succès"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/sources.tsx:145
 #: ../html/src/manager/images/image-build.tsx:312
 msgid "Software Channels"
-msgstr ""
+msgstr "Les canaux logiciels"
 
 #: ../html/src/manager/errors/not-found.tsx:5
 msgid "Page Not Found"
-msgstr ""
+msgstr "Page non trouvée"
 
 #: ../html/src/manager/errors/not-found.tsx:6
 msgid "The page you requested, {currentUrl}, was not found."
-msgstr ""
+msgstr "La page que vous avez demandée, {currentUrl}, n'a pas été trouvée."
 
 #: ../html/src/manager/errors/not-found.tsx:10
 msgid "If you typed this address into your browser, double-check the spelling and capitalization."
-msgstr ""
+msgstr "Si vous avez tapé cette adresse dans votre navigateur, vérifiez l'orthographe et les majuscules."
 
 #: ../html/src/manager/errors/not-found.tsx:16
 msgid "If you followed a link, the link may be incorrect or outdated. Click on the back button in your "
-msgstr ""
+msgstr "Si vous avez suivi un lien, il peut être incorrect ou obsolète. Cliquez sur le bouton retour dans votre "
 
 #: ../html/src/manager/errors/not-found.tsx:23
 msgid "If you used a bookmark, the page may have moved to a different location since the bookmark was "
-msgstr ""
+msgstr "Si vous avez utilisé un signet, la page a peut-être été déplacée à un autre endroit puisque le signet était "
 
 #: ../html/src/manager/errors/not-found.tsx:30
 msgid "If you feel you've reached this page in error, please contact us with details of how you received "
-msgstr ""
+msgstr "Si vous pensez être arrivé à cette page par erreur, veuillez nous contacter pour nous donner les détails de votre réception "
 
 #: ../html/src/manager/groups/config-channels/group-config-channels.tsx:27
 msgid "Applying the config channels has been scheduled for each minion server in this group"
-msgstr ""
+msgstr "L'application des canaux de configuration a été programmée pour chaque serveur minion de ce groupe"
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:13
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:13
 msgid "Formula saved. Edit configuration options in the enabled formulas and apply the <link>Highstate</link> for the changes to take effect."
-msgstr ""
+msgstr "Formules sauvegardées. Modifiez les options de configuration dans les formules activées et appliquez l'état <link>Highstate</link> pour que les modifications prennent effet."
 
 #: ../html/src/manager/groups/formula/group-formula-selection.renderer.tsx:22
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:19
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:22
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:19
 msgid "Invalid target type."
-msgstr ""
+msgstr "Type de cible invalide."
 
 #: ../html/src/manager/groups/formula/group-formula.renderer.tsx:12
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:12
 msgid "Formula saved. Apply the <link>Highstate</link> for the changes to take effect."
-msgstr ""
+msgstr "Formules sauvegardées. Appliquez le <link>Highstate</link> pour que les changements entrent en vigueur."
 
 #: ../html/src/manager/header/search/search.tsx:14
 #: ../html/src/manager/images/image-view.tsx:672
@@ -4893,7 +4893,7 @@ msgstr ""
 #: ../html/src/manager/systems/all-list.tsx:120
 #: ../html/src/manager/systems/list-filter.tsx:47
 msgid "Packages"
-msgstr ""
+msgstr "Paquets"
 
 #: ../html/src/manager/header/search/search.tsx:18
 #: ../html/src/manager/images/image-view.tsx:659
@@ -4901,34 +4901,34 @@ msgstr ""
 #: ../html/src/manager/systems/all-list.tsx:107
 #: ../html/src/manager/systems/list-filter.tsx:46
 msgid "Patches"
-msgstr ""
+msgstr "Correctifs"
 
 #: ../html/src/manager/header/search/search.tsx:56
 msgid "Open search"
-msgstr ""
+msgstr "Recherche ouverte"
 
 #: ../html/src/manager/images/image-build.tsx:37
 msgid "An unknown error has occurred."
-msgstr ""
+msgstr "Une erreur inconnue s'est produite."
 
 #: ../html/src/manager/images/image-build.tsx:38
 msgid "The image build has been scheduled."
-msgstr ""
+msgstr "La construction de l'image est programmée."
 
 #: ../html/src/manager/images/image-build.tsx:40
 #: ../html/src/manager/images/image-import.tsx:19
 msgid "There was an error while scheduling a task. Please make sure that the task scheduler is running."
-msgstr ""
+msgstr "Il y a eu une erreur lors de la planification d'une tâche. Veuillez vous assurer que le planificateur de tâches fonctionne."
 
 #: ../html/src/manager/images/image-build.tsx:213
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1046
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:384
 msgid "Action has been successfully added to the Action Chain "
-msgstr ""
+msgstr "Action a été ajoutée avec succès à la chaîne d'actions. "
 
 #: ../html/src/manager/images/image-build.tsx:218
 msgid "Building the image has been "
-msgstr ""
+msgstr "La construction de l'image a été "
 
 #: ../html/src/manager/images/image-build.tsx:219
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:273
@@ -4938,11 +4938,11 @@ msgstr ""
 #: ../html/src/manager/systems/proxy.tsx:73
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:393
 msgid "scheduled"
-msgstr ""
+msgstr "programmé"
 
 #: ../html/src/manager/images/image-build.tsx:250
 msgid "Profile Summary"
-msgstr ""
+msgstr "Résumé du profil"
 
 #: ../html/src/manager/images/image-build.tsx:256
 msgid "Edit Profile Summary"
@@ -4950,32 +4950,32 @@ msgstr ""
 
 #: ../html/src/manager/images/image-build.tsx:276
 msgid "No profile selected"
-msgstr ""
+msgstr "Aucun profil sélectionné"
 
 #: ../html/src/manager/images/image-build.tsx:287
 #: ../html/src/manager/images/image-profile-edit.tsx:539
 msgid "Image Type"
-msgstr ""
+msgstr "Type d'image"
 
 #: ../html/src/manager/images/image-build.tsx:291
 #: ../html/src/manager/images/image-import.tsx:255
 msgid "Image Store"
-msgstr ""
+msgstr "Magasin d'images"
 
 #: ../html/src/manager/images/image-build.tsx:295
 msgid "Path"
-msgstr ""
+msgstr "Chemin d'accès"
 
 #: ../html/src/manager/images/image-build.tsx:299
 #: ../html/src/manager/images/image-import.tsx:230
 #: ../html/src/manager/images/image-profile-edit.tsx:398
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:584
 msgid "Activation Key"
-msgstr ""
+msgstr "Clé d'activation"
 
 #: ../html/src/manager/images/image-build.tsx:355
 msgid "Build Image"
-msgstr ""
+msgstr "Image de construction"
 
 #: ../html/src/manager/images/image-build.tsx:371
 msgid "Image Profile"
@@ -7903,7 +7903,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:786
 msgid "Scheduled"
-msgstr "Planifier"
+msgstr "Programmé"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:794
 msgid "Unknown error. Could not schedule channel change"
