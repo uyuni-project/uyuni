@@ -116,7 +116,7 @@ public class AttestationResultService {
     private static AttestationResult lockAttestationResult(SqlSession session, long id) {
         try {
             return session.selectOne("AttestationResult.selectForUpdate",
-                    Map.of("statusToListenList", AttestationStatus.statusToListenList(),"id", id));
+                    Map.of("statusToListenList", AttestationStatus.statusToListenList(), "id", id));
         }
         catch (PersistenceException ex) {
             // If the error was due to the row being lock, just return null no need
