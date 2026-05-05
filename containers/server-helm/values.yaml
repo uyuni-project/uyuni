@@ -213,6 +213,9 @@ db:
 
 # Configuration of the persistent volume claims.
 volumes:
+  # Default storage class name to use for all the claims
+  storageClass:
+
   # var-pgsql is the volume for the database,
   # a fast and big enough persistent volume will be needed.
   var-pgsql:
