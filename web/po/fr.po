@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-04-14 11:17+0200\n"
-"PO-Revision-Date: 2026-05-04 15:04+0000\n"
+"PO-Revision-Date: 2026-05-05 09:04+0000\n"
 "Last-Translator: sorau <sorau@proton.me>\n"
 "Language-Team: French <https://l10n.opensuse.org/projects/uyuni/web/fr/>\n"
 "Language: fr\n"
@@ -254,7 +254,7 @@ msgstr ""
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:357
 #: ../html/src/manager/state/highstate.tsx:142
 msgid "Create Recurring"
-msgstr ""
+msgstr "Créer une tâche récurrente"
 
 #: ../html/src/components/buttons/index.example.tsx:228
 #: ../html/src/components/input/form-multi-input/multiple-fields.example.tsx:50
@@ -916,7 +916,7 @@ msgstr "Désinscrire du hub"
 #: ../html/src/components/hub/DeregisterServer.tsx:68
 #: ../html/src/manager/systems/delete-system.tsx:11
 msgid "Cleanup timed out. Please check if the machine is reachable."
-msgstr ""
+msgstr "Le délai d'attente de la purge a expiré. Veuillez vérifier si la machine est accessible."
 
 #: ../html/src/components/hub/DeregisterServer.tsx:79
 msgid "Are you sure you want to deregister from hub {fqdn}? If you do, you will no longer receive data from it."
@@ -1228,7 +1228,7 @@ msgstr ""
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:418
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:178
 msgid "Clear fields"
-msgstr "Vider les champs"
+msgstr "Effacer les champs"
 
 #: ../html/src/components/hub/ServerDetailsForm.tsx:15
 msgid "Hub server FQDN:"
@@ -1703,7 +1703,7 @@ msgstr ""
 
 #: ../html/src/components/large-text-attachment.tsx:162
 msgid "File"
-msgstr ""
+msgstr "Fichier"
 
 #: ../html/src/components/large-text-attachment.tsx:172
 msgid "New value"
@@ -1712,7 +1712,7 @@ msgstr ""
 #: ../html/src/components/large-text-attachment.tsx:216
 #: ../html/src/manager/systems/duplicate-systems-compare-delete.tsx:31
 msgid "Confirm Deletion"
-msgstr ""
+msgstr "Confirmer la suppression"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:105
 msgid "Unable to clear selection"
@@ -1988,7 +1988,7 @@ msgstr ""
 #: ../html/src/components/product-migration/MigrationConfirmScheduleForm.tsx:153
 #: ../html/src/manager/admin/hub/peripherals.tsx:37
 msgid "Migrate"
-msgstr ""
+msgstr "Migrer"
 
 #: ../html/src/components/product-migration/MigrationTargetSelectorForm.tsx:43
 msgid ""
@@ -2352,7 +2352,7 @@ msgstr ""
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:175
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:63
 msgid "Organization"
-msgstr ""
+msgstr "Organisation"
 
 #: ../html/src/manager/admin/access-control/access-group-details.tsx:134
 #, fuzzy
@@ -2471,7 +2471,7 @@ msgstr ""
 #: ../html/src/manager/admin/access-control/access-group-user.tsx:137
 #: ../html/src/manager/proxy/container-config.tsx:324
 msgid "Email"
-msgstr ""
+msgstr "Courriel"
 
 #: ../html/src/manager/admin/access-control/access-group-review.tsx:164
 #: ../html/src/manager/admin/access-control/access-group-user.tsx:138
@@ -4775,7 +4775,7 @@ msgstr "Choisir le canal à élire comme nouveau canal de base"
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:543
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:616
 msgid "Child Channels"
-msgstr "Chaînes pour enfants"
+msgstr "Chaînes enfants"
 
 #: ../html/src/manager/content-management/shared/components/panels/sources/channels/channels-selection.tsx:221
 msgid "Clear Search"
@@ -5796,7 +5796,7 @@ msgstr "Mise à jour "
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:250
 msgid "Create "
-msgstr ""
+msgstr "Créer "
 
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:40
 #: ../html/src/manager/maintenance/edit/maintenance-windows-edit.tsx:60
@@ -5841,154 +5841,154 @@ msgstr "Calendriers de maintenance"
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:44
 msgid "Below is a list of Maintenance Schedules available to the current user."
-msgstr ""
+msgstr "Vous trouverez ci-dessous une liste des plannings de maintenance disponibles pour l'utilisateur actuel."
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:45
 msgid "Below is a list of Maintenance Calendars available to the current user."
-msgstr ""
+msgstr "Voici une liste des calendriers de maintenance disponibles pour l'utilisateur actuel."
 
 #: ../html/src/manager/maintenance/list/maintenance-windows-list.tsx:48
 msgid "schedule"
-msgstr ""
+msgstr "planifier"
 
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:29
 msgid "No schedules created. Use Create to add a schedule."
-msgstr ""
+msgstr "Aucun planning n'a été créé. Utilisez Create pour ajouter un planning."
 
 #: ../html/src/manager/maintenance/list/schedule-list.tsx:88
 msgid "This will remove the schedule from all the systems assigned to it."
-msgstr ""
+msgstr "Cela supprimera le planning de tous les systèmes qui lui sont assignés."
 
 #: ../html/src/manager/maintenance/maintenance-windows.tsx:116
 msgid "successfully"
-msgstr ""
+msgstr "avec succès"
 
 #: ../html/src/manager/maintenance/maintenance-windows.tsx:141
 msgid "Error when deleting the "
-msgstr ""
+msgstr "Erreur lors de la suppression du "
 
 #: ../html/src/manager/maintenance/maintenance-windows.tsx:150
 msgid "Calendar successfully refreshed"
-msgstr ""
+msgstr "Calendrier rafraîchi avec succès"
 
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:20
 msgid "Any pending maintenance-only actions for these systems will be cancelled unless they are inside the new maintenance windows."
-msgstr ""
+msgstr "Toute action en attente uniquement pour la maintenance de ces systèmes sera annulée, sauf si elle se déroule dans les nouvelles fenêtres de maintenance."
 
 #: ../html/src/manager/maintenance/shared/cancel-actions-dialog.tsx:23
 msgid "Are you sure you want to proceed?"
-msgstr ""
+msgstr "Êtes-vous sûr de vouloir continuer ?"
 
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:37
 msgid "Maintenance schedule has been cleared"
-msgstr ""
+msgstr "Le calendrier de maintenance a été validé"
 
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:41
 msgid "Maintenance schedule has been assigned"
-msgstr ""
+msgstr "Le planning de maintenance a été attribué"
 
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:80
 msgid "Clear All"
-msgstr ""
+msgstr "Effacer tout"
 
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:81
 msgid "fa-times"
-msgstr ""
+msgstr "fa-times"
 
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:91
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:99
 msgid "Assign All"
-msgstr ""
+msgstr "Attribuer tout"
 
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:92
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:100
 msgid "fa-edit"
-msgstr ""
+msgstr "fa-edit"
 
 #: ../html/src/manager/maintenance/ssm/schedule-picker.tsx:121
 msgid "None - clear schedule"
-msgstr ""
+msgstr "Aucun - vider le calendrier"
 
 #: ../html/src/manager/maintenance/ssm/system-assignment.tsx:20
 msgid "Assign a maintenance schedule to {count} system(s)"
-msgstr ""
+msgstr "Attribuer un planning de maintenance au ou aux systèmes {count}"
 
 #: ../html/src/manager/maintenance/ssm/system-assignment.tsx:21
 msgid "Assigning a schedule will replace any prior assignments in all of the systems in the set."
-msgstr ""
+msgstr "Attribuer un planning remplacera toutes les affectations antérieures dans tous les systèmes de l'ensemble."
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:123
 msgid "No Playbook found."
-msgstr ""
+msgstr "Aucun Playbook trouvé."
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:130
 msgid "Playbook File Name"
-msgstr ""
+msgstr "Nom du fichier Playbook"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:141
 msgid "Full Path"
-msgstr ""
+msgstr "Chemin complet"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:145
 msgid "Custom Inventory"
-msgstr ""
+msgstr "Inventaire personnalisé"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:159
 msgid "Inventory file empty."
-msgstr ""
+msgstr "Fichier d'inventaire vide."
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:166
 msgid "Registered Systems"
-msgstr ""
+msgstr "Systèmes enregistrés"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:178
 msgid "Unknown Hostnames"
-msgstr ""
+msgstr "Noms d'hôtes inconnus"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:190
 msgid "bootstrap"
-msgstr ""
+msgstr "bootstrap"
 
 #: ../html/src/manager/minion/ansible/accordion-path-content.tsx:217
 msgid "Loading content.."
-msgstr ""
+msgstr "Chargement du contenu..."
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:58
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:51
 msgid "An error occurred while loading data. Please check server logs."
-msgstr ""
+msgstr "Une erreur s'est produite lors du chargement des données. Veuillez vérifier les journaux du serveur."
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:168
 msgid "Ansible Control Node Configuration: add paths for Playbook discovery and Inventory files introspection."
-msgstr ""
+msgstr "Configuration du nœud de contrôle Ansible : ajout de chemins pour la découverte de Playbook et l'introspection des fichiers d'inventaire."
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:175
 msgid "Playbook Directories"
-msgstr ""
+msgstr "Annuaires de playbooks"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:198
 msgid "Add a Playbook directory"
-msgstr ""
+msgstr "Ajouter un répertoire Playbook"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:201
 msgid "e.g., /srv/playbooks"
-msgstr ""
+msgstr "par exemple, /srv/playbooks"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:208
 msgid "Inventory Files"
-msgstr ""
+msgstr "Fichiers d'inventaire"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:231
 msgid "Add an Inventory file"
-msgstr ""
+msgstr "Ajouter un fichier Inventaire"
 
 #: ../html/src/manager/minion/ansible/ansible-control-node.tsx:234
 msgid "e.g., /etc/ansible/testing/hosts"
-msgstr ""
+msgstr "par exemple, /etc/ansible/testing/hosts"
 
 #: ../html/src/manager/minion/ansible/ansible-path-content.tsx:87
 msgid "Nothing configured. Please add paths in the "
-msgstr ""
+msgstr "Rien de configuré. Veuillez ajouter des chemins dans le "
 
 #: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:197
 msgid "Add Variable"
@@ -5998,7 +5998,7 @@ msgstr ""
 #: ../html/src/manager/minion/ansible/variables/boolean-editor.tsx:48
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:169
 msgid "True"
-msgstr ""
+msgstr "Vrai"
 
 #: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:226
 #: ../html/src/manager/minion/ansible/variables/boolean-editor.tsx:51
@@ -6017,21 +6017,21 @@ msgstr ""
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:139
 msgid "Loading playbook contents.."
-msgstr ""
+msgstr "Chargement du contenu du playbook..."
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:145
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:242
 #: ../html/src/manager/state/highstate.tsx:121
 msgid "Test mode"
-msgstr ""
+msgstr "Mode test"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:150
 msgid "Back to playbook list"
-msgstr ""
+msgstr "Retour à la liste des playbooks"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:156
 msgid "Schedule playbook execution"
-msgstr ""
+msgstr "Calendrier des exécution des playbooks"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:166
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:80
@@ -6048,31 +6048,31 @@ msgstr ""
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:192
 msgid "Schedule Playbook Execution"
-msgstr ""
+msgstr "Planifié l'exécution des playbooks"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:211
 msgid "Inventory Path"
-msgstr ""
+msgstr "Chemin d'inventaire"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:225
 msgid "Flush Ansible fact cache"
-msgstr ""
+msgstr "Flush de la cache de faits d'Ansible"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:226
 msgid "Clear the fact cache for every host in inventory"
-msgstr ""
+msgstr "Videz le cache de faits pour chaque hôte de l'inventaire"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:235
 msgid "Playbook Content"
-msgstr ""
+msgstr "Contenu de playbook"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:265
 msgid "Action has been successfully added to action chain"
-msgstr ""
+msgstr "L'action a été ajoutée avec succès à la chaîne d'actions"
 
 #: ../html/src/manager/minion/ansible/schedule-playbook.tsx:272
 msgid "Playbook execution has been"
-msgstr ""
+msgstr "L'exécution du playbook a été"
 
 #: ../html/src/manager/minion/ansible/variables/boolean-editor.tsx:27
 #: ../html/src/manager/minion/ansible/variables/boolean-editor.tsx:56
@@ -6172,11 +6172,11 @@ msgstr ""
 
 #: ../html/src/manager/minion/coco/coco-settings.tsx:66
 msgid "Settings"
-msgstr ""
+msgstr "Paramètres"
 
 #: ../html/src/manager/minion/config-channels/minion-config-channels.tsx:28
 msgid "Applying the config channels has been "
-msgstr ""
+msgstr "L'application des canaux de configuration a été "
 
 #: ../html/src/manager/minion/details/support-data.tsx:50
 msgid "The OS of this system does not support the collection of support data."
@@ -6229,74 +6229,74 @@ msgstr ""
 #: ../html/src/manager/minion/formula/minion-formula-selection.renderer.tsx:63
 #: ../html/src/manager/minion/formula/minion-formula.renderer.tsx:30
 msgid "Configuration"
-msgstr ""
+msgstr "Configuration"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:194
 msgid "Please save all your changes before applying!"
-msgstr ""
+msgstr "Merci de sauvegarder toutes vos modifications avant d'appliquer !"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:195
 msgid "Apply changes"
-msgstr ""
+msgstr "Appliquer les changements"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:201
 #: ../html/src/manager/minion/packages/package-states.tsx:205
 msgid "Changes"
-msgstr ""
+msgstr "modifications"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:203
 msgid "1 Change"
-msgstr ""
+msgstr "1 Changement"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:240
 msgid "Search package"
-msgstr ""
+msgstr "Chercher un paquet"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:277
 msgid "No current changes."
-msgstr ""
+msgstr "Aucun changement actuel."
 
 #: ../html/src/manager/minion/packages/package-states.tsx:277
 msgid "No package states."
-msgstr ""
+msgstr "Aucun état pour les paquets."
 
 #: ../html/src/manager/minion/packages/package-states.tsx:296
 msgid "Latest"
-msgstr ""
+msgstr "Dernière"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:297
 msgid "Any"
-msgstr ""
+msgstr "N'importe lequel"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:306
 msgid "Undo"
-msgstr ""
+msgstr "Annuler"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:321
 msgid "Unmanaged"
-msgstr ""
+msgstr "Non géré"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:323
 msgid "Removed"
-msgstr ""
+msgstr "Supprimé"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:335
 msgid "Package States"
-msgstr ""
+msgstr "États des paquets"
 
 #: ../html/src/manager/minion/packages/package-states.tsx:343
 #: ../html/src/manager/proxy/container-config.tsx:320
 #: ../html/src/manager/salt/keys/key-management.tsx:188
 msgid "State"
-msgstr ""
+msgstr "État"
 
 #: ../html/src/manager/minion/packages/use-package-states.api.tsx:36
 msgid "Package states have been saved."
-msgstr ""
+msgstr "Les états du paquet ont été sauvegardés."
 
 #: ../html/src/manager/minion/packages/use-package-states.api.tsx:48
 msgid "Applying the packages states has been "
-msgstr ""
+msgstr "L'application des paquets a été "
 
 #: ../html/src/manager/minion/proxy/proxy-config-messages.tsx:18
 msgid "Proxy configuration action has been scheduled."
@@ -6309,7 +6309,7 @@ msgstr ""
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:88
 #: ../html/src/manager/proxy/container-config.tsx:139
 msgid "Request interrupted or invalid response received from the server."
-msgstr ""
+msgstr "La requête a été interrompue ou une réponse non valide a été reçue du serveur."
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:137
 msgid "Proxy Configuration"
@@ -6331,28 +6331,28 @@ msgstr "Parent FQDN"
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:156
 #: ../html/src/manager/proxy/container-config.tsx:210
 msgid "The FQDN of the parent (server or proxy) to connect to."
-msgstr ""
+msgstr "Le nom de domaine complet (FQDN) du serveur parent (serveur ou proxy) auquel se connecter."
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:158
 #: ../html/src/manager/proxy/container-config.tsx:209
 msgid "e.g., server.domain.com"
-msgstr ""
+msgstr "par exemple, serveur.domaine.com"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:166
 #: ../html/src/manager/proxy/container-config.tsx:218
 msgid "Proxy SSH port"
-msgstr ""
+msgstr "Port SSH du proxy"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:167
 #: ../html/src/manager/proxy/container-config.tsx:219
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:510
 msgid "Port range: 1 - 65535"
-msgstr ""
+msgstr "Plage de ports : 1 - 65535"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:176
 #: ../html/src/manager/proxy/container-config.tsx:228
 msgid "Max Squid cache size"
-msgstr ""
+msgstr "Taille maximale du cache de Squid"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:177
 msgid "The maximum value of the Squid cache in Gigabytes"
@@ -6365,17 +6365,17 @@ msgstr ""
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:187
 #: ../html/src/manager/proxy/container-config.tsx:239
 msgid "Proxy admin email"
-msgstr ""
+msgstr "Adresse e-mail de l'administrateur du proxy"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:188
 #: ../html/src/manager/proxy/container-config.tsx:240
 msgid "The container-based proxy administrator email address"
-msgstr ""
+msgstr "L'adresse e-mail de l'administrateur du proxy basé sur des conteneurs"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:189
 #: ../html/src/manager/proxy/container-config.tsx:241
 msgid "e.g., proxy.admin@mycompany.com"
-msgstr ""
+msgstr "par exemple, proxy.admin@mycompany.com"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:198
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:199
@@ -6405,7 +6405,7 @@ msgstr ""
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:240
 #: ../html/src/manager/proxy/container-config.tsx:342
 msgid "Intermediate CAs"
-msgstr ""
+msgstr "Autorités de certification intermédiaires CA"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:250
 msgid "An intermediate CA certificate (PEM format)"
@@ -6414,7 +6414,7 @@ msgstr ""
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:262
 #: ../html/src/manager/proxy/container-config.tsx:363
 msgid "Proxy certificate"
-msgstr ""
+msgstr "Certificat du proxy"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:263
 msgid "SSL certificate issued for the proxy system (PEM format)"
@@ -6423,7 +6423,7 @@ msgstr ""
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:271
 #: ../html/src/manager/proxy/container-config.tsx:372
 msgid "Proxy SSL private key"
-msgstr ""
+msgstr "Clé privée SSL du proxy"
 
 #: ../html/src/manager/minion/proxy/proxy-config.tsx:272
 msgid "SSL private key for the proxy system (PEM format)"
@@ -6547,63 +6547,63 @@ msgstr ""
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:18
 #: ../html/src/manager/notifications/notifications-list.tsx:145
 msgid "Summary"
-msgstr ""
+msgstr "Récapitulatif"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:25
 msgid "Install Program Temporary Fixes (PTFs)"
-msgstr ""
+msgstr "Corrections temporaires du programme d'installation (PTF)"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:27
 msgid "The following Program Temporary Fixes (PTFs) are available for installation on this system. "
-msgstr ""
+msgstr "Les correctifs temporaires de programme (PTF) suivants sont disponibles pour installation sur ce système. "
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:31
 msgid "No Program Temporary Fixes (PTFs) available."
-msgstr ""
+msgstr "Aucune solution temporaire de programme (PTF) n'est disponible."
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:32
 msgid "Install PTFs"
-msgstr ""
+msgstr "Installer des PTF"
 
 #: ../html/src/manager/minion/ptf/ptf-install.renderer.tsx:34
 msgid "Confirm Program Temporary Fixes (PTFs) Installation"
-msgstr ""
+msgstr "Confirmer l'installation des correctifs temporaires du programme (PTF)"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:25
 msgid "Remove Program Temporary Fixes (PTFs)"
-msgstr ""
+msgstr "Supprimer les correctifs temporaires de programme (PTF)"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:27
 msgid "The following Program Temporary Fixes (PTFs) are currently installed on this system. "
-msgstr ""
+msgstr "Les correctifs temporaires de programme (PTF) suivants sont actuellement installés sur ce système. "
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:32
 msgid "No Program Temporary Fixes (PTFs) installed."
-msgstr ""
+msgstr "Aucune solution temporaire de programme (PTF) n'est installée."
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:33
 msgid "Remove PTFs"
-msgstr ""
+msgstr "Supprimer les PTF"
 
 #: ../html/src/manager/minion/ptf/ptf-list-remove.renderer.tsx:35
 msgid "Confirm Program Temporary Fixes (PTFs) Removal"
-msgstr ""
+msgstr "Confirmation de la suppression des correctifs temporaires du programme (PTF)"
 
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:54
 msgid "Program Temporary Fixes (PTFs)"
-msgstr ""
+msgstr "Corrections temporaires de programme (PTF)"
 
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:58
 msgid "There are no relevant actions that can be executed on this system."
-msgstr ""
+msgstr "Aucune action pertinente ne peut être exécutée sur ce système."
 
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:64
 msgid "List / Remove Installed PTFs"
-msgstr ""
+msgstr "Lister / Supprimer les PTF installés"
 
 #: ../html/src/manager/minion/ptf/ptf-overview.renderer.tsx:71
 msgid "Install PTF"
-msgstr ""
+msgstr "Installer PTF"
 
 #: ../html/src/manager/notifications/notifications-list.tsx:77
 msgid "Notification Messages"
@@ -6611,11 +6611,11 @@ msgstr "Messages de notification"
 
 #: ../html/src/manager/notifications/notifications-list.tsx:82
 msgid "The server has collected the following notification messages."
-msgstr ""
+msgstr "Le serveur a collecté les messages de notification suivants."
 
 #: ../html/src/manager/notifications/notifications-list.tsx:98
 msgid "Filter by summary"
-msgstr ""
+msgstr "Filtrer par résumé"
 
 #: ../html/src/manager/notifications/notifications-list.tsx:123
 msgid "Mark as Read"
@@ -6627,7 +6627,7 @@ msgstr "Gravité"
 
 #: ../html/src/manager/notifications/notifications-list.tsx:158
 msgid "Read|Delete"
-msgstr ""
+msgstr "Lire|Supprimer"
 
 #: ../html/src/manager/notifications/notifications-list.tsx:184
 msgid "Filter by type"
@@ -6648,15 +6648,15 @@ msgstr "Montrer les détails"
 
 #: ../html/src/manager/notifications/notifications-list.tsx:239
 msgid "Retry"
-msgstr ""
+msgstr "Réessayer"
 
 #: ../html/src/manager/notifications/notifications-list.tsx:251
 msgid "Flag as Unread"
-msgstr ""
+msgstr "Marquer comme non lu"
 
 #: ../html/src/manager/notifications/notifications-list.tsx:251
 msgid "Flag as Read"
-msgstr ""
+msgstr "Marquer comme lu"
 
 #: ../html/src/manager/notifications/notifications-list.tsx:257
 msgid "Delete Notification"
@@ -6682,25 +6682,25 @@ msgstr ""
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:344
 #: ../html/src/manager/shared/websocket/useWebSocket.ts:29
 msgid "Websocket connection closed. Refresh the page to try again."
-msgstr ""
+msgstr "La connexion WebSocket a été interrompue. Actualisez la page pour réessayer."
 
 #: ../html/src/manager/notifications/notifications.tsx:59
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:365
 #: ../html/src/manager/shared/websocket/useWebSocket.ts:35
 msgid "Error connecting to server. Refresh the page to try again."
-msgstr ""
+msgstr "Erreur de connexion au serveur. Actualisez la page pour réessayer."
 
 #: ../html/src/manager/organizations/config-channels/org-config-channels.tsx:27
 msgid "Applying the config channels has been scheduled for each minion server in this organization"
-msgstr ""
+msgstr "L'application des canaux de configuration a été planifiée pour chaque serveur Minion de cette organisation"
 
 #: ../html/src/manager/packages/list.tsx:80
 msgid "Packages in no channel"
-msgstr ""
+msgstr "Paquets n'appartenant à aucun canal"
 
 #: ../html/src/manager/packages/list.tsx:81
 msgid "All managed packages"
-msgstr ""
+msgstr "Tous les packages gérés"
 
 #: ../html/src/manager/packages/list.tsx:89
 msgid " Package Management "
@@ -6708,60 +6708,60 @@ msgstr " Gestion des paquets "
 
 #: ../html/src/manager/packages/list.tsx:117
 msgid "Binary packages"
-msgstr ""
+msgstr "Paquets binaires"
 
 #: ../html/src/manager/packages/list.tsx:118
 msgid "Source packages"
-msgstr ""
+msgstr "Paquets source"
 
 #: ../html/src/manager/packages/list.tsx:126
 msgid "package"
-msgstr ""
+msgstr "paquet"
 
 #: ../html/src/manager/packages/list.tsx:146
 msgid "No Packages."
-msgstr ""
+msgstr "Aucun paquets."
 
 #: ../html/src/manager/packages/list.tsx:172
 msgid "Content Provider"
-msgstr ""
+msgstr "Fournisseur de contenu"
 
 #: ../html/src/manager/proxy/container-config-messages.tsx:8
 msgid "The container based proxy configuration has been generated correctly."
-msgstr ""
+msgstr "La configuration du proxy basé sur un conteneur a été générée correctement."
 
 #: ../html/src/manager/proxy/container-config-messages.tsx:19
 msgid "Generation of the proxy configuration in progress: waiting for a response..."
-msgstr ""
+msgstr "Génération de la configuration du proxy en cours : en attente d'une réponse..."
 
 #: ../html/src/manager/proxy/container-config.tsx:176
 #: ../html/src/manager/proxy/container-config.tsx:192
 msgid "Container Based Proxy Configuration"
-msgstr ""
+msgstr "Configuration d'un proxy basé sur des conteneurs"
 
 #: ../html/src/manager/proxy/container-config.tsx:182
 msgid "You can generate a set of configuration files and certificates in order to register and run a container-based proxy. Once the following form is filled out and submitted you will get a .tar.gz archive to download."
-msgstr ""
+msgstr "Vous pouvez générer un ensemble de fichiers de configuration et de certificats afin d'enregistrer et d'exécuter un proxy basé sur des conteneurs. Une fois le formulaire ci-dessous rempli et envoyé, vous recevrez une archive .tar.gz à télécharger."
 
 #: ../html/src/manager/proxy/container-config.tsx:196
 msgid "Proxy FQDN"
-msgstr ""
+msgstr "Nom de domaine complet du serveur proxy"
 
 #: ../html/src/manager/proxy/container-config.tsx:197
 msgid "The unique, DNS-resolvable FQDN of this proxy."
-msgstr ""
+msgstr "Le nom de domaine complet (FQDN) unique de ce proxy, pouvant faire l'objet d'une résolution DNS."
 
 #: ../html/src/manager/proxy/container-config.tsx:199
 msgid "e.g., proxy.domain.com"
-msgstr ""
+msgstr "par exemple, proxy.domaine.com"
 
 #: ../html/src/manager/proxy/container-config.tsx:229
 msgid "The maximum value of the Squid cache in Megabytes"
-msgstr ""
+msgstr "La taille maximale du cache Squid en mégaoctets"
 
 #: ../html/src/manager/proxy/container-config.tsx:232
 msgid "e.g., 2048"
-msgstr ""
+msgstr "par exemple, 2048"
 
 #: ../html/src/manager/proxy/container-config.tsx:248
 #: ../html/src/manager/proxy/container-config.tsx:249
@@ -6775,49 +6775,49 @@ msgstr ""
 #: ../html/src/manager/proxy/container-config.tsx:258
 #: ../html/src/manager/proxy/container-config.tsx:383
 msgid "Generate"
-msgstr ""
+msgstr "Générer"
 
 #: ../html/src/manager/proxy/container-config.tsx:259
 msgid "Use existing"
-msgstr ""
+msgstr "Utiliser ce qui existe déjà"
 
 #: ../html/src/manager/proxy/container-config.tsx:266
 msgid "CA certificate"
-msgstr ""
+msgstr "Certificat CA"
 
 #: ../html/src/manager/proxy/container-config.tsx:267
 #: ../html/src/manager/proxy/container-config.tsx:276
 #: ../html/src/manager/proxy/container-config.tsx:333
 msgid "To sign the SSL certificate in PEM format"
-msgstr ""
+msgstr "Pour signer le certificat SSL au format PEM"
 
 #: ../html/src/manager/proxy/container-config.tsx:275
 msgid "CA private key"
-msgstr ""
+msgstr "Clé privée CA"
 
 #: ../html/src/manager/proxy/container-config.tsx:284
 msgid "CA password"
-msgstr ""
+msgstr "Mot de passe CA"
 
 #: ../html/src/manager/proxy/container-config.tsx:285
 msgid "The CA private key password"
-msgstr ""
+msgstr "Le mot de passe de la clé privée CA"
 
 #: ../html/src/manager/proxy/container-config.tsx:293
 msgid "SSL Certificate data"
-msgstr ""
+msgstr "Données du certificat SSL"
 
 #: ../html/src/manager/proxy/container-config.tsx:300
 msgid "Alternate CNAMEs"
-msgstr ""
+msgstr "Autres noms CNAME"
 
 #: ../html/src/manager/proxy/container-config.tsx:308
 msgid "CNAME"
-msgstr ""
+msgstr "CNAME"
 
 #: ../html/src/manager/proxy/container-config.tsx:314
 msgid "2-letter country code"
-msgstr ""
+msgstr "2-code pays (lettre)"
 
 #: ../html/src/manager/proxy/container-config.tsx:321
 msgid "City"
@@ -6825,37 +6825,37 @@ msgstr "Ville"
 
 #: ../html/src/manager/proxy/container-config.tsx:323
 msgid "Organization Unit"
-msgstr ""
+msgstr "Unité organisationnelle"
 
 #: ../html/src/manager/proxy/container-config.tsx:332
 msgid "The root CA"
-msgstr ""
+msgstr "L'autorité de certification racine CA"
 
 #: ../html/src/manager/proxy/container-config.tsx:352
 msgid "CA file in PEM format"
-msgstr ""
+msgstr "Fichier CA au format PEM"
 
 #: ../html/src/manager/proxy/container-config.tsx:364
 #: ../html/src/manager/proxy/container-config.tsx:373
 msgid "In PEM format"
-msgstr ""
+msgstr "Au format PEM"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:97
 msgid "Execution time"
-msgstr ""
+msgstr "Temps d'exécution"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:163
 msgid "State:"
-msgstr ""
+msgstr "État :"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:164
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:149
 msgid "Active"
-msgstr ""
+msgstr "Actif"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:164
 msgid "Inactive"
-msgstr ""
+msgstr "Inactif"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:168
 msgid "Test"
@@ -6863,27 +6863,27 @@ msgstr "Test"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:173
 msgid "Action type"
-msgstr ""
+msgstr "Type d'action"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:177
 msgid "Target type"
-msgstr ""
+msgstr "Type de cible"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:181
 msgid "Target name"
-msgstr ""
+msgstr "Nom de la cible"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:185
 msgid "Created by"
-msgstr ""
+msgstr "Créé par"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:190
 msgid "Created at"
-msgstr ""
+msgstr "Crée à"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:196
 msgid "Quartz format string"
-msgstr ""
+msgstr "Chaîne au format Quartz"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:208
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:101
@@ -6915,19 +6915,19 @@ msgstr ""
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:266
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:235
 msgid "Delete Recurring Action Schedule"
-msgstr ""
+msgstr "Supprimer un calendrier d'actions récurrentes"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:267
 msgid "Are you sure you want to delete this schedule?"
-msgstr ""
+msgstr "Êtes-vous sûr de vouloir supprimer ce planning ?"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:275
 msgid "State configuration for {name}"
-msgstr ""
+msgstr "Configuration de l'état pour {name}"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:282
 msgid "Order"
-msgstr ""
+msgstr "Ordre"
 
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:310
 msgid "SCAP Policy for {name}"
@@ -6942,29 +6942,29 @@ msgstr "Description :"
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:81
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:84
 msgid "Schedule successfully updated."
-msgstr ""
+msgstr "Le calendrier a été mis à jour avec succès."
 
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:81
 msgid "Schedule successfully created."
-msgstr ""
+msgstr "Le calendrier a été créé avec succès."
 
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:92
 msgid "Action scheduled on selected minions"
-msgstr ""
+msgstr "Action programmée sur des minions sélectionnés"
 
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:268
 msgid "Schedule Recurring Action"
-msgstr ""
+msgstr "Planifier une action récurrente"
 
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:277
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:193
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:35
 msgid "Action Type"
-msgstr ""
+msgstr "Type d'action"
 
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:300
 msgid "Configure states to execute"
-msgstr ""
+msgstr "Configurer les états à exécuter"
 
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:314
 msgid "SCAP Policies"
@@ -6976,47 +6976,47 @@ msgstr ""
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:116
 msgid " Recurring Actions "
-msgstr ""
+msgstr " Actions Récurrentes "
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:122
 msgid "The following recurring actions have been created."
-msgstr ""
+msgstr "Les actions récurrentes suivantes ont été créées."
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:126
 msgid "To create new recurring actions head to the system, group or organization you want to create the action for."
-msgstr ""
+msgstr "Pour créer de nouvelles actions récurrentes, accédez au système, au groupe ou à l'organisation pour lequel vous souhaitez créer l'action."
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:169
 msgid "Frequency"
-msgstr ""
+msgstr "Fréquence"
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:177
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:29
 msgid "Target Type"
-msgstr ""
+msgstr "Type de cible"
 
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:185
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:23
 msgid "Target Name"
-msgstr ""
+msgstr "Nom de la cible"
 
 #: ../html/src/manager/recurring/recurring-actions-utils.tsx:4
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:6
 msgid "Minion"
-msgstr ""
+msgstr "Minion"
 
 #: ../html/src/manager/recurring/recurring-actions-utils.tsx:6
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:5
 msgid "Group"
-msgstr ""
+msgstr "Groupe"
 
 #: ../html/src/manager/recurring/recurring-actions.tsx:134
 msgid "Error when deleting the action. Check if Taskomatic is running"
-msgstr ""
+msgstr "Erreur lors de la suppression de l'action. Vérifiez si Taskomatic est en cours d'exécution"
 
 #: ../html/src/manager/recurring/recurring-actions.tsx:149
 msgid "The below times are displayed in the server time zone {timeZone}. The scheduled time will be the server time."
-msgstr ""
+msgstr "Les heures indiquées ci-dessous sont affichées dans le fuseau horaire du serveur {timeZone}. L'heure prévue correspondra à l'heure du serveur."
 
 #: ../html/src/manager/recurring/recurring-playbook-picker.tsx:87
 msgid "Select a Playbook"
@@ -7046,57 +7046,57 @@ msgstr "Highstate"
 
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:11
 msgid "Custom State"
-msgstr ""
+msgstr "État personnalisé"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:54
 #: ../html/src/manager/salt/keys/key-management.tsx:74
 msgid "pending"
-msgstr ""
+msgstr "en attente"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:58
 msgid "timed out"
-msgstr ""
+msgstr "délai expiré"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:67
 msgid "- hide error -"
-msgstr ""
+msgstr "- masquer l'erreur -"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:67
 msgid "- show error -"
-msgstr ""
+msgstr "- afficher l'erreur -"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:74
 msgid "- hide response -"
-msgstr ""
+msgstr "- masquer la réponse -"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:74
 msgid "- show response -"
-msgstr ""
+msgstr "- afficher la réponse -"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:177
 msgid "Stop waiting"
-msgstr ""
+msgstr "Cessez d'attendre"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:180
 msgid "Stop waiting for all the minions to respond"
-msgstr ""
+msgstr "Arrête d'attendre que tous les minions répondent"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:188
 msgid "Find targets"
-msgstr ""
+msgstr "Trouver des cibles"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:191
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:201
 msgid "Check which minions match the target expression"
-msgstr ""
+msgstr "Vérifiez quels minions correspondent à l'expression cible"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:207
 msgid "Run command"
-msgstr ""
+msgstr "Exécuter la commande"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:210
 msgid "Run the command on the target minions"
-msgstr ""
+msgstr "Exécutez la commande sur les minions cibles"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:219
 msgid "Remote Commands"
@@ -7104,44 +7104,44 @@ msgstr "Commandes à distance"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:232
 msgid "Type the command here"
-msgstr ""
+msgstr "Saisissez la commande ici"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:242
 msgid "Type the minion_id pattern to target here"
-msgstr ""
+msgstr "Saisissez ici le modèle minion_id à cibler"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:253
 msgid "Target systems"
-msgstr ""
+msgstr "Systèmes ciblés"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:263
 msgid "No target systems previewed"
-msgstr ""
+msgstr "Aucun système cible n'est présenté"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:264
 msgid "No target systems found"
-msgstr ""
+msgstr "Aucun système cible trouvé"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:476
 msgid "Not all minions responded on time."
-msgstr ""
+msgstr "Tous les minions n'ont pas répondu à temps."
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:504
 msgid "No minions matched the target expression."
-msgstr ""
+msgstr "Aucun minions ne correspond à l'expression recherchée."
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:506
 msgid "Server returned an error: {message}"
-msgstr ""
+msgstr "Le serveur a renvoyé une erreur : {message}"
 
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:575
 #: ../html/src/manager/salt/cmd/remote-commands.tsx:584
 msgid "Matching ssh-push minions..."
-msgstr ""
+msgstr "Recherche de minions ssh-push..."
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:60
 msgid "The formula catalog page enables viewing of currently installed <link>Salt Formulas</link>. Apply these formulas to individual systems or server groups. Formulas allow automatic installation and configuration of software and may be installed via RPM packages."
-msgstr ""
+msgstr "La page du catalogue des formulas permet de consulter les <link>formules Salt</link> actuellement installées. Vous pouvez appliquer ces formulas à des systèmes individuels ou à des groupes de serveurs. Les formulas permettent l'installation et la configuration automatiques de logiciels et peuvent être installées via des paquets RPM."
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:93
 msgid "Formula Catalog"
@@ -7154,7 +7154,7 @@ msgstr "Filtrer par nom de formule"
 #: ../html/src/manager/salt/formula-catalog/org-formula-catalog.tsx:108
 #: ../html/src/manager/state/highstate-summary.tsx:25
 msgid "Formula"
-msgstr ""
+msgstr "Formula"
 
 #: ../html/src/manager/salt/formula-catalog/org-formula-details.tsx:73
 msgid "Name:"
@@ -7186,7 +7186,7 @@ msgstr "Clés"
 
 #: ../html/src/manager/salt/keys/key-management.tsx:154
 msgid "Search by name or fingerprint"
-msgstr ""
+msgstr "Rechercher par nom ou par empreinte numérique"
 
 #: ../html/src/manager/salt/keys/key-management.tsx:177
 msgid "Fingerprint"
@@ -7194,11 +7194,11 @@ msgstr "Empreinte numérique"
 
 #: ../html/src/manager/shared/menu/menu.tsx:235
 msgid "Clear Menu"
-msgstr ""
+msgstr "Effacer le menu"
 
 #: ../html/src/manager/shared/menu/menu.tsx:238
 msgid "Filter menu"
-msgstr ""
+msgstr "Menu de filtrage"
 
 #: ../html/src/manager/shared/menu/menu.tsx:273
 msgid "Uyuni"
@@ -7214,7 +7214,7 @@ msgstr ""
 
 #: ../html/src/manager/state/display-highstate.tsx:10
 msgid "State Summary for {name}"
-msgstr ""
+msgstr "Résumé par État pour {name}"
 
 #: ../html/src/manager/state/display-highstate.tsx:80
 msgid "There are no applicable systems."
@@ -7222,11 +7222,11 @@ msgstr "Il n'existe pas de systèmes applicables."
 
 #: ../html/src/manager/state/highstate-summary.tsx:23
 msgid "State channel"
-msgstr ""
+msgstr "Chaîne d'état"
 
 #: ../html/src/manager/state/highstate-summary.tsx:24
 msgid "Config channel"
-msgstr ""
+msgstr "Canal de configuration"
 
 #: ../html/src/manager/state/highstate-summary.tsx:26
 msgid "{productName} internal"
@@ -7234,31 +7234,31 @@ msgstr ""
 
 #: ../html/src/manager/state/highstate-summary.tsx:36
 msgid "Internal states"
-msgstr ""
+msgstr "États internes"
 
 #: ../html/src/manager/state/highstate-summary.tsx:53
 msgid "Retrieving highstate summary..."
-msgstr ""
+msgstr "Récupération du résumé de l'état avancé..."
 
 #: ../html/src/manager/state/highstate-summary.tsx:70
 msgid "State Source"
-msgstr ""
+msgstr "Source officielle"
 
 #: ../html/src/manager/state/highstate-summary.tsx:82
 msgid "Inherited From"
-msgstr ""
+msgstr "Hérité de"
 
 #: ../html/src/manager/state/highstate-summary.tsx:105
 msgid "Show full highstate output"
-msgstr ""
+msgstr "Afficher la sortie complète de highstate"
 
 #: ../html/src/manager/state/highstate-summary.tsx:156
 msgid "System Group"
-msgstr ""
+msgstr "Groupe système"
 
 #: ../html/src/manager/state/highstate.tsx:70
 msgid "Applying the highstate has been <link>scheduled</link>."
-msgstr ""
+msgstr "La mise en œuvre de Highstate a été <link>programmée</link>."
 
 #: ../html/src/manager/state/highstate.tsx:129
 msgid "Apply Highstate"
@@ -7266,11 +7266,11 @@ msgstr "Appliquer Highstate"
 
 #: ../html/src/manager/storybook/storybook.tsx:49
 msgid "Development debugging page"
-msgstr ""
+msgstr "Page de débogage du développement"
 
 #: ../html/src/manager/storybook/storybook.tsx:51
 msgid "This is a hidden page used by developers, if you found it by accident, good job!"
-msgstr ""
+msgstr "Il s'agit d'une page cachée réservée aux développeurs. Si vous êtes tombé dessus par hasard, bravo !"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:33
 msgid "{productName} Default"
@@ -7278,11 +7278,11 @@ msgstr ""
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:63
 msgid "Loading child channels.."
-msgstr ""
+msgstr "Chargement des chaînes secondaires..."
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:112
 msgid "Base Channel:"
-msgstr ""
+msgstr "Chaîne de base :"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:133
 msgid "${defaultChannelName}"
@@ -7290,19 +7290,19 @@ msgstr "${defaultChannelName}"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:143
 msgid "${this.getDefaultBase().name}"
-msgstr ""
+msgstr "${this.getDefaultBase().name}"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:153
 msgid "Child Channels:"
-msgstr ""
+msgstr "Canaux enfants :"
 
 #: ../html/src/manager/systems/activation-key/activation-key-channels.tsx:158
 msgid "Any system registered using this activation key will be subscribed to the selected child channels."
-msgstr ""
+msgstr "Tout système enregistré à l'aide de cette clé d'activation sera abonné aux chaînes secondaires sélectionnées."
 
 #: ../html/src/manager/systems/activation-key/activation-keys-appstreams.tsx:37
 msgid "Error updating activation key."
-msgstr ""
+msgstr "Erreur lors de la mise à jour de la clé d'activation."
 
 #: ../html/src/manager/systems/activation-key/activation-keys-appstreams.tsx:42
 msgid "Activation key has been modified."
@@ -7339,7 +7339,7 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:145
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:590
 msgid "Base Channel"
-msgstr ""
+msgstr "Chaîne de base"
 
 #: ../html/src/manager/systems/all-list.tsx:180
 #: ../html/src/manager/systems/list-filter.tsx:53
@@ -7412,23 +7412,23 @@ msgstr "Type de résultat :"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:340
 msgid "Request interrupted or invalid response received from the server. Please check if your minion was bootstrapped correctly."
-msgstr ""
+msgstr "La requête a été interrompue ou une réponse non valide a été reçue du serveur. Veuillez vérifier si votre minion a été correctement initialisé."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:368
 msgid "Bootstrap process initiated. Your system should be visible at the following location shortly: <link>systems</link>. If any issues arise, you'll receive an error notification. In case you're working with a transactional system, please perform a system reboot to complete the registration process."
-msgstr ""
+msgstr "Le processus de démarrage a été lancé. Votre système devrait être accessible sous peu à l'adresse suivante : <link>systems</link>. En cas de problème, vous recevrez une notification d'erreur. Si vous utilisez un système transactionnel, veuillez redémarrer le système pour finaliser le processus d'enregistrement."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:388
 msgid "Show additional details about this error"
-msgstr ""
+msgstr "Afficher plus de détails sur cette erreur"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:397
 msgid "Unable to bootstrap host. The following errors have happened:"
-msgstr ""
+msgstr "Impossible de démarrer l'hôte. Les erreurs suivantes se sont produites :"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:400
 msgid "Your system is bootstrapping: waiting for a response.."
-msgstr ""
+msgstr "Votre système est en cours de démarrage : en attente d'une réponse..."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:402
 msgid "Loading SSH Private Key.."
@@ -7441,11 +7441,11 @@ msgstr "Bootstrap"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:434
 msgid "e.g., ••••••••••••"
-msgstr ""
+msgstr "par exemple, ••••••••••••"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:450
 msgid "The file will be stored in a temporary file on the server and will be deleted after the bootstrapping procedure"
-msgstr ""
+msgstr "Le fichier sera enregistré dans un fichier temporaire sur le serveur et sera supprimé à l'issue de la procédure de démarrage"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:463
 msgid "Leave empty for no passphrase"
@@ -7457,7 +7457,7 @@ msgstr "Bootstrap Minions"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:478
 msgid "You can add systems to be managed by providing SSH credentials only. {productName} will prepare the system remotely and will perform the registration."
-msgstr ""
+msgstr "Vous pouvez ajouter des systèmes à gérer en fournissant uniquement vos identifiants SSH. {productName} préparera le système à distance et procédera à son enregistrement."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:492
 msgid "e.g., host.domain.com"
@@ -7465,7 +7465,7 @@ msgstr "par exemple, hôte.domaine.com"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:529
 msgid "The user will have an effect only during the bootstrap process. Further connections will be made by the user specified in rhn.conf. The default user for the key 'ssh_push_sudo_user' is 'root'. This user is set after {productName}'s SSH key is deployed during the bootstrap procedure."
-msgstr ""
+msgstr "Cet utilisateur n'aura d'effet que pendant la procédure de démarrage. Les connexions suivantes seront établies par l'utilisateur spécifié dans le fichier rhn.conf. L'utilisateur par défaut pour la clé « ssh_push_sudo_user » est « root ». Cet utilisateur est défini après le déploiement de la clé SSH de {productName} au cours de la procédure de démarrage."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:538
 msgid "Authentication Method"
@@ -7473,7 +7473,7 @@ msgstr "Méthode d'authentification"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:575
 msgid "Ansible control node"
-msgstr ""
+msgstr "Nœud de contrôle Ansible"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:593
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:623
@@ -7491,41 +7491,41 @@ msgstr "Laissez le vide quand aucune réactivation n'est souhaitée"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:641
 msgid "The hostname of the proxy is not fully qualified. This may cause problems when accessing the channels."
-msgstr ""
+msgstr "Le nom d'hôte du proxy n'est pas complet. Cela peut entraîner des problèmes lors de l'accès aux canaux."
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:658
 msgid "Disable SSH strict host key checking during bootstrap process"
-msgstr ""
+msgstr "Désactiver la vérification stricte des clés hôte SSH pendant le processus de démarrage"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:674
 msgid "Manage system completely via SSH (will not install an agent)"
-msgstr ""
+msgstr "Gérer entièrement le système via SSH (sans installation d'agent)"
 
 #: ../html/src/manager/systems/bootstrap/bootstrap-minions.tsx:690
 msgid "Are you sure you want to close this page while bootstrapping is in progress ?"
-msgstr ""
+msgstr "Êtes-vous sûr de vouloir fermer cette page alors que le démarrage est en cours ?"
 
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:115
 #: ../html/src/manager/systems/coco/ssm-settings.tsx:73
 msgid "Confidential Computing Capability"
-msgstr ""
+msgstr "Capacité de calcul confidentiel"
 
 #: ../html/src/manager/systems/delete-system.tsx:12
 msgid "No result found in state apply response."
-msgstr ""
+msgstr "Aucun résultat trouvé dans la réponse « apply » de l'état."
 
 #: ../html/src/manager/systems/delete-system.tsx:71
 #: ../html/src/manager/systems/delete-system.tsx:72
 msgid "Delete Profile Without Cleanup"
-msgstr ""
+msgstr "Supprimer le profil sans nettoyage"
 
 #: ../html/src/manager/systems/delete-system.tsx:92
 msgid "An error occurred during cleanup"
-msgstr ""
+msgstr "Une erreur s'est produite lors du nettoyage"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:29
 msgid "Not a system id"
-msgstr ""
+msgstr "Ce n'est pas un identifiant système"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:30
 msgid "Unknown System"
@@ -7533,7 +7533,7 @@ msgstr "Système inconnu"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:31
 msgid "System is not a peripheral server"
-msgstr ""
+msgstr "Le système n'est pas un serveur périphérique"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:32
 msgid "Setting new credentials for the report database failed"
@@ -7545,24 +7545,24 @@ msgstr ""
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:91
 msgid "Report Database Name"
-msgstr ""
+msgstr "Nom de la base de données des rapports"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:95
 msgid "Report Database Host"
-msgstr ""
+msgstr "Hôte de la base de données de rapport"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:101
 msgid "Report Database User"
-msgstr ""
+msgstr "Signaler un utilisateur de la base de données"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:105
 msgid "Report Database Last Synced"
-msgstr ""
+msgstr "Dernière synchronisation de la base de données des rapports"
 
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:112
 #: ../html/src/manager/systems/details/mgr-server-info.tsx:113
 msgid "Regenerate Reporting Database Password"
-msgstr ""
+msgstr "Réinitialiser le mot de passe de la base de données de rapports"
 
 #: ../html/src/manager/systems/list-filter.tsx:4
 msgid "Manager Server"
@@ -7574,7 +7574,7 @@ msgstr "Physique"
 
 #: ../html/src/manager/systems/list-filter.tsx:12
 msgid "Ansible Control Node"
-msgstr ""
+msgstr "Nœud de contrôle Ansible"
 
 #: ../html/src/manager/systems/list-filter.tsx:13
 msgid "Ansible Managed"
@@ -7582,7 +7582,7 @@ msgstr ""
 
 #: ../html/src/manager/systems/list-filter.tsx:15
 msgid "Container Build Host"
-msgstr ""
+msgstr "Hôte de compilation de conteneurs"
 
 #: ../html/src/manager/systems/list-filter.tsx:16
 msgid "Foreign"
@@ -7590,15 +7590,15 @@ msgstr "Étranger"
 
 #: ../html/src/manager/systems/list-filter.tsx:17
 msgid "Management"
-msgstr ""
+msgstr "Gestion"
 
 #: ../html/src/manager/systems/list-filter.tsx:18
 msgid "Monitored Host"
-msgstr ""
+msgstr "Hôte surveillé"
 
 #: ../html/src/manager/systems/list-filter.tsx:19
 msgid "OS Image Build Host"
-msgstr ""
+msgstr "Hôte de création d'images du système d'exploitation"
 
 #: ../html/src/manager/systems/list-filter.tsx:20
 msgid "Salt"
@@ -7606,55 +7606,55 @@ msgstr "Salt"
 
 #: ../html/src/manager/systems/list-filter.tsx:21
 msgid "Virtualization Host"
-msgstr ""
+msgstr "Hôte de virtualisation"
 
 #: ../html/src/manager/systems/list-filter.tsx:26
 msgid "Actions scheduled"
-msgstr ""
+msgstr "Actions programmées"
 
 #: ../html/src/manager/systems/list-filter.tsx:27
 msgid "All updates scheduled"
-msgstr ""
+msgstr "Toutes les mises à jour sont programmées"
 
 #: ../html/src/manager/systems/list-filter.tsx:29
 msgid "Kickstart in progress"
-msgstr ""
+msgstr "Kickstart en cours"
 
 #: ../html/src/manager/systems/list-filter.tsx:30
 msgid "System is up to date"
-msgstr ""
+msgstr "Le système est à jour"
 
 #: ../html/src/manager/systems/list-filter.tsx:31
 msgid "System not checking in"
-msgstr ""
+msgstr "Le système ne se connecte pas"
 
 #: ../html/src/manager/systems/list-filter.tsx:32
 msgid "System not entitled"
-msgstr ""
+msgstr "Système non autorisé"
 
 #: ../html/src/manager/systems/list-filter.tsx:33
 msgid "System requires reboot"
-msgstr ""
+msgstr "Le système doit être redémarré"
 
 #: ../html/src/manager/systems/list-filter.tsx:34
 msgid "Updates available"
-msgstr ""
+msgstr "Mises à jour disponibles"
 
 #: ../html/src/manager/systems/list-filter.tsx:44
 msgid "System Kind"
-msgstr ""
+msgstr "Type de système"
 
 #: ../html/src/manager/systems/list-filter.tsx:59
 msgid "Requires Reboot"
-msgstr ""
+msgstr "Redémarrage requis"
 
 #: ../html/src/manager/systems/list-filter.tsx:63
 msgid "Registered Days"
-msgstr ""
+msgstr "Jours enregistrés"
 
 #: ../html/src/manager/systems/list-filter.tsx:64
 msgid "Groups"
-msgstr ""
+msgstr "Groupes"
 
 #: ../html/src/manager/systems/list-filter.tsx:69
 #: ../html/src/manager/systems/virtual-list.tsx:83
@@ -7728,61 +7728,61 @@ msgstr ""
 
 #: ../html/src/manager/systems/proxy.tsx:43
 msgid "Please select a list of minions (not proxies or traditional clients)."
-msgstr ""
+msgstr "Veuillez sélectionner une liste de « minions » (et non de proxys ou de clients traditionnels)."
 
 #: ../html/src/manager/systems/proxy.tsx:66
 msgid "Change of proxy server has been "
-msgstr ""
+msgstr "Le changement de serveur proxy a été "
 
 #: ../html/src/manager/systems/proxy.tsx:100
 #: ../html/src/manager/systems/proxy.tsx:117
 msgid "Change Proxy"
-msgstr ""
+msgstr "Modifier le proxy"
 
 #: ../html/src/manager/systems/proxy.tsx:117
 msgid "Connect minion(s) to another proxy server."
-msgstr ""
+msgstr "Connectez le ou les agents à un autre serveur proxy."
 
 #: ../html/src/manager/systems/proxy.tsx:120
 msgid "New Proxy"
-msgstr ""
+msgstr "Nouveau proxy"
 
 #: ../html/src/manager/systems/ssm/ssm-counter.tsx:25
 msgid "Manage selected system set"
-msgstr ""
+msgstr "Gérer le jeu de paramètres système sélectionné"
 
 #: ../html/src/manager/systems/ssm/ssm-counter.tsx:31
 msgid "system selected"
-msgstr ""
+msgstr "système sélectionné"
 
 #: ../html/src/manager/systems/ssm/ssm-counter.tsx:31
 msgid "systems selected"
-msgstr ""
+msgstr "systèmes sélectionnés"
 
 #: ../html/src/manager/systems/ssm/ssm-counter.tsx:38
 msgid "Clear selected system set"
-msgstr ""
+msgstr "Effacer l'ensemble de paramètres système sélectionné"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:29
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:21
 msgid "Error scheduling job in Taskomatic. Please check the logs."
-msgstr ""
+msgstr "Erreur lors de la planification d'une tâche dans Taskomatic. Veuillez consulter les journaux."
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:30
 msgid "Could not determine system default channel."
-msgstr ""
+msgstr "Impossible de déterminer le canal par défaut du système."
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:31
 msgid "Channel change is invalid."
-msgstr ""
+msgstr "Le changement de chaîne n'est pas autorisé."
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:32
 msgid "Selected base is not compatible with system."
-msgstr ""
+msgstr "La base sélectionnée n'est pas compatible avec le système."
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:33
 msgid "No base channel change found."
-msgstr ""
+msgstr "Aucun changement de canal de base n'a été détecté."
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:37
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:223
@@ -7796,52 +7796,52 @@ msgstr "Abonnez-vous"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:39
 msgid "Unsubsribe"
-msgstr ""
+msgstr "Se désabonner"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:141
 msgid "System Default Base Channel"
-msgstr ""
+msgstr "Canal de base par défaut du système"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:150
 msgid "As a Channel Administrator, you may change the base channels your systems are subscribed to. Valid channels are either channels created by your organization, or the default SUSE base channel for your operating system version and processor type. Systems will be unsubscribed from all channels, and subscribed to their new base channels. "
-msgstr ""
+msgstr "En tant qu'administrateur de canaux, vous pouvez modifier les canaux de base auxquels vos systèmes sont abonnés. Les canaux valides sont soit ceux créés par votre organisation, soit le canal de base SUSE par défaut correspondant à la version de votre système d'exploitation et au type de processeur. Les systèmes seront désabonnés de tous les canaux et abonnés à leurs nouveaux canaux de base. "
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:155
 msgid "This operation can have a dramatic effect on the packages and patches available to the systems, and should be used with caution."
-msgstr ""
+msgstr "Cette opération peut avoir des conséquences importantes sur les paquets et les correctifs disponibles pour les systèmes ; il convient donc de l'utiliser avec prudence."
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:172
 msgid "Current base Channel"
-msgstr ""
+msgstr "Canal de base actuel"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:196
 msgid "Desired base Channel"
-msgstr ""
+msgstr "Canal de base désiré"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:225
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:474
 msgid "SUSE Channels"
-msgstr ""
+msgstr "Canaux SUSE"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:230
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:500
 msgid "Custom Channels"
-msgstr ""
+msgstr "Canaux personnalisés"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:241
 msgid "Systems subscribed to"
-msgstr ""
+msgstr "Systèmes abonnés à"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:428
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:640
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:660
 msgid "(Couldn't determine new base channel)"
-msgstr ""
+msgstr "(Impossible de déterminer le nouveau canal de base)"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:452
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:674
 msgid "system(s) to subscribe"
-msgstr ""
+msgstr "système(s) auquel/auxquels s'abonner"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:462
 msgid "(none)"
@@ -7850,11 +7850,11 @@ msgstr "(aucun)"
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:468
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:685
 msgid "system(s) incompatible"
-msgstr ""
+msgstr "système(s) incompatible(s)"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:509
 msgid "No change"
-msgstr ""
+msgstr "Pas de changement"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:531
 msgid "Unsubscribe"
@@ -7862,40 +7862,40 @@ msgstr "Désabonnement"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:547
 msgid "Below is a list of channels in your organization. "
-msgstr ""
+msgstr "Vous trouverez ci-dessous la liste des canaux de votre organisation. "
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:549
 msgid "To make no changes for a channel, check Do Nothing for that channel."
-msgstr ""
+msgstr "Pour ne pas apporter de modifications à une chaîne, cochez la case « Ne rien faire » pour cette chaîne."
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:550
 msgid "To subscribe selected systems to a channel, check Subscribed for that channel."
-msgstr ""
+msgstr "Pour abonner certains systèmes à une chaîne, cochez la case « Abonné » pour cette chaîne."
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:551
 msgid "To unsubscribe selected systems from a channel, check Unsubscribed for that channel."
-msgstr ""
+msgstr "Pour désabonner les systèmes sélectionnés d'une chaîne, cochez la case « Désabonné » pour cette chaîne."
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:561
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:728
 msgid "Systems to subscribe to"
-msgstr ""
+msgstr "Services auxquels s'abonner"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:652
 msgid "(None)"
-msgstr ""
+msgstr "(Aucun)"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:662
 msgid " (system default)"
-msgstr ""
+msgstr " (paramètre par défaut du système)"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:710
 msgid "Channel Changes Overview"
-msgstr ""
+msgstr "Présentation des changements de chaîne"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:757
 msgid "Channel Changes Actions"
-msgstr ""
+msgstr "Actions liées au changement de chaîne"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:786
 msgid "Scheduled"
@@ -7903,19 +7903,19 @@ msgstr "Programmé"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:794
 msgid "Unknown error. Could not schedule channel change"
-msgstr ""
+msgstr "Erreur inconnue. Impossible de programmer le changement de chaîne"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:868
 msgid "of"
-msgstr ""
+msgstr "de"
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:917
 msgid "Some changes scheduled successfully."
-msgstr ""
+msgstr "Certaines modifications ont été enregistrées avec succès."
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1053
 msgid "Channel changes scheduled."
-msgstr ""
+msgstr "Changements de chaîne prévus."
 
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1081
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1107
@@ -7932,46 +7932,46 @@ msgstr "Précédent"
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:247
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:463
 msgid "(none, disable service)"
-msgstr ""
+msgstr "(aucun, désactiver le service)"
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:392
 msgid "Changing the channels has been "
-msgstr ""
+msgstr "Changer de chaîne a été "
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:595
 msgid "You can change the base software channel your system is subscribed to. The system will be unsubscribed from all software channels, and subscribed to the new base software channel."
-msgstr ""
+msgstr "Vous pouvez modifier le canal logiciel de base auquel votre système est abonné. Le système sera désabonné de tous les canaux logiciels et abonné au nouveau canal logiciel de base."
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:621
 msgid "This system is subscribed to the checked channels beneath, if any. Disabled checkboxes indicate channels that can't be manually subscribed or unsubscribed from."
-msgstr ""
+msgstr "Ce système est abonné aux chaînes cochées ci-dessous, le cas échéant. Les cases décochées indiquent les chaînes auxquelles il n'est pas possible de s'abonner ou de se désabonner manuellement."
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:640
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:641
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:719
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:720
 msgid "No child channels available."
-msgstr ""
+msgstr "Aucune chaîne enfants disponible."
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:673
 msgid "Confirm Software Channel Change"
-msgstr ""
+msgstr "Confirmer le changement du canal logiciel de base"
 
 #: ../html/src/manager/systems/virtual-list.tsx:39
 msgid "Virtual Systems"
-msgstr ""
+msgstr "Systèmes virtuels"
 
 #: ../html/src/manager/systems/virtual-list.tsx:58
 msgid "No Virtual Systems."
-msgstr ""
+msgstr "Pas de systèmes virtuels."
 
 #: ../html/src/manager/systems/virtual-list.tsx:111
 msgid "Base Software Channel"
-msgstr ""
+msgstr "Canal logiciel de base"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:53
 msgid "Refreshing the data for this Virtual Host Manager has been triggered."
-msgstr ""
+msgstr "La mise à jour des données pour ce gestionnaire d'hôtes virtuels a été lancée."
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:68
 msgid "Properties"
@@ -7979,7 +7979,7 @@ msgstr "Propriétés"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:72
 msgid "Nodes"
-msgstr ""
+msgstr "Nœuds"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:86
 msgid "OS"
@@ -7987,50 +7987,50 @@ msgstr "Système d'exploitation"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:87
 msgid "CPU Arch"
-msgstr ""
+msgstr "Architecture du processeur"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:91
 msgid "CPU Sockets"
-msgstr ""
+msgstr "Sockets pour processeurs"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:97
 msgid "RAM (Mb)"
-msgstr ""
+msgstr "Mémoire vive (mégaoctets)"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:112
 msgid "Refresh Data"
-msgstr ""
+msgstr "Actualiser les données"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:114
 msgid "Refresh data from this Virtual Host Manager"
-msgstr ""
+msgstr "Actualiser les données de ce gestionnaire d'hôtes virtuels"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:135
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:106
 msgid "Delete Virtual Host Manager"
-msgstr ""
+msgstr "Supprimer le gestionnaire d'hôtes virtuels"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:136
 msgid "Are you sure you want to delete this virtual host manager?"
-msgstr ""
+msgstr "Êtes-vous sûr de vouloir supprimer ce gestionnaire d'hôtes virtuels ?"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:179
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:265
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:57
 msgid "Gatherer module"
-msgstr ""
+msgstr "Module Gatherer"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:306
 msgid "Current Context"
-msgstr ""
+msgstr "Contexte actuel"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-edit.tsx:320
 msgid "Kubeconfig file"
-msgstr ""
+msgstr "Fichier Kubeconfig"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:41
 msgid "No Virtual Host Managers."
-msgstr ""
+msgstr "Pas de gestionnaires d'hôtes virtuels."
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:18
 msgid "File-based"
@@ -8066,15 +8066,15 @@ msgstr "Libvirt API"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:150
 msgid "Add a {type} Virtual Host Manager"
-msgstr ""
+msgstr "Ajouter un gestionnaire d'hôtes virtuels {type}"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:152
 msgid "Virtual Host Managers"
-msgstr ""
+msgstr "Gestionnaires d'hôtes virtuels"
 
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager.tsx:173
 msgid "Add a virtual host manager"
-msgstr ""
+msgstr "Ajouter un gestionnaire d'hôtes virtuels"
 
 #: ../html/src/utils/network.ts:98
 msgid "Session expired, please reload the page."
