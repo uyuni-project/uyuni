@@ -66,6 +66,9 @@ cp -pR %{proxy_dir_name}/sources/img/* %{buildroot}%{htmldir}/sources/img/
 cp -pR %{proxy_dir_name}/*.html %{buildroot}%{htmldir}/
 
 %files
+%if 0%{?suse_version}
+%dir %attr(755,root,root) /srv/www
+%endif
 %dir %{htmldir}
 %{htmldir}/index.html
 %{htmldir}/sources

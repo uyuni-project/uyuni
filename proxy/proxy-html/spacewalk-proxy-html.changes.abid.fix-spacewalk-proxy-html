@@ -1,0 +1,2 @@
+- Own /srv/www in %files as the filesystem package on
+  Leap 16.0 no longer includes this directory
