@@ -1599,7 +1599,7 @@ utilisateur avant de supprimer son compte.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin/CreateUserSubmit</context>
         </context-group>
-        <target>Adresse électronique</target>
+        <target state="translated">Courriel</target>
       </trans-unit>
       <trans-unit id="company" xml:space="preserve">
         <source>Company</source>
