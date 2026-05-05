@@ -222,7 +222,7 @@ require {
     
     class dir { search write add_name create remove_name rmdir setattr getattr mounton search };
     class file { create open write append read unlink setattr getattr watch };
-    class filesystem { mount getattr relabelfrom relabelto };
+    class filesystem { mount getattr relabelfrom relabelto remount unmount };
 }
 
 #============= container_t ==============
