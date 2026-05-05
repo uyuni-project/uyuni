@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue May 05 11:17:56 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.8
+  * Fix query to identify collation version mismatch
+
+-------------------------------------------------------------------
 Fri Apr 17 11:29:46 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.7
