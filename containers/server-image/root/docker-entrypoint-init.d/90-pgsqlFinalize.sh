@@ -14,7 +14,7 @@ fi
 
 query="\set QUIET 1
 \pset tuples_only
-SELECT c.collversion <> pg_collation_actual_version(c.oid) reindex
+SELECT d.datcollversion IS DISTINCT FROM pg_collation_actual_version(c.oid) reindex
 FROM pg_collation as c, pg_database as d
 WHERE c.collname = d.datcollate AND d.datname = '$productdb';"
 if [ "$(printf '%s' "$query" | spacewalk-sql --select-mode - | xargs)" != "f" ]; then
