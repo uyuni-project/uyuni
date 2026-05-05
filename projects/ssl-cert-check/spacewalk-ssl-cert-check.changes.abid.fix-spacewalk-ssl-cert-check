@@ -1,0 +1,5 @@
+- Update rpmlintrc for Leap 16.0 to add
+  filelist-forbidden-sysconfig filter
+  (renamed from suse-filelist-forbidden-sysconfig) and suppress
+  systemd-service-without-service_add_post for timer-invoked
+  service

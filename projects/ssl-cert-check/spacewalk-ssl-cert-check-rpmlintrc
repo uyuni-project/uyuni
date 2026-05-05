@@ -1,1 +1,3 @@
 addFilter("suse-filelist-forbidden-sysconfig .*/sysconfig")
+addFilter("filelist-forbidden-sysconfig .*/sysconfig")
+addFilter("systemd-service-without-service_add_post")
