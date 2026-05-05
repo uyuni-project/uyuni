@@ -43,7 +43,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/profiles/PackageList</context>
         </context-group>
-        <target>Paquetage</target>
+        <target state="translated">Paquet</target>
       </trans-unit>
       <trans-unit id="column.current-version" xml:space="preserve">
         <source>Current Version</source>
@@ -1170,7 +1170,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target>Adresse électronique :</target>
+        <target state="translated">Courriel :</target>
       </trans-unit>
       <trans-unit id="prefix.displayname" xml:space="preserve">
         <source>Prefix:</source>
@@ -3083,14 +3083,14 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/systems/details/packages/PackageList</context>
           <context context-type="sourcefile">/rhn/profiles/PackageList</context>
         </context-group>
-        <target>Aucun paquetage.</target>
+        <target state="translated">Aucun paquets.</target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.name.packages" xml:space="preserve">
         <source>Package Name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/PackageList</context>
         </context-group>
-        <target>Nom du paquetage</target>
+        <target state="translated">Nom du paquet</target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.packagename" xml:space="preserve">
         <source>Package Name</source>
@@ -3100,7 +3100,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/systems/details/packages/RemoveConfirm.do</context>
           <context context-type="sourcefile">/rhn/errata/manage/AddPackagesConfirm.do</context>
         </context-group>
-        <target>Nom du paquetage</target>
+        <target state="translated">Nom du paquet</target>
       </trans-unit>
       <trans-unit id="packagelist.jsp.packagearch" xml:space="preserve">
         <source>Architecture</source>
@@ -4070,7 +4070,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/PackagesAdd.do
             </context>
         </context-group>
-        <target>Aucun paquetage.</target>
+        <target state="translated">Aucun paquet.</target>
       </trans-unit>
       <trans-unit id="errata.edit.packages.add.success.plural" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; packages added to patch &lt;strong&gt;{1}&lt;/strong&gt;</source>
@@ -4079,7 +4079,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/manage/AddPackagesConfirm.do
             </context>
         </context-group>
-        <target>&lt;strong&gt;{0}&lt;/strong&gt; paquetages ajoutés à l'errata 	    &lt;strong&gt;{1}&lt;/strong&gt;</target>
+        <target state="translated">&lt;strong&gt;{0}&lt;/strong&gt; paquets ajoutés au patch 	    &lt;strong&gt;{1}&lt;/strong&gt;</target>
       </trans-unit>
       <trans-unit id="errata.edit.packages.add.success.singular" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; package added to patch &lt;strong&gt;{1}&lt;/strong&gt;</source>
@@ -4097,7 +4097,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/manage/RemovePackages.do
             </context>
         </context-group>
-        <target>&lt;strong&gt;{0}&lt;/strong&gt; paquetages supprimés de l'errata 	    &lt;strong&gt;{1}&lt;/strong&gt;</target>
+        <target state="translated">&lt;strong&gt;{0}&lt;/strong&gt; paquets supprimés de l'errata 	    &lt;strong&gt;{1}&lt;/strong&gt;</target>
       </trans-unit>
       <trans-unit id="errata.edit.packages.remove.success.singular" xml:space="preserve">
         <source>&lt;strong&gt;{0}&lt;/strong&gt; package removed from patch &lt;strong&gt;{1}&lt;/strong&gt;</source>
@@ -4106,7 +4106,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
                 /rhn/errata/manage/RemovePackages.do
             </context>
         </context-group>
-        <target>&lt;strong&gt;{0}&lt;/strong&gt; paquetage supprimé de l'errata 	    &lt;strong&gt;{1}&lt;/strong&gt;</target>
+        <target state="translated">&lt;strong&gt;{0}&lt;/strong&gt; paquet supprimé de l'errata 	    &lt;strong&gt;{1}&lt;/strong&gt;</target>
       </trans-unit>
       <trans-unit id="errata.overview.jsp.summary" xml:space="preserve">
         <source>The following patches apply to at least one system to which you have administrative access.</source>
@@ -5051,7 +5051,7 @@ organisation. Vous pouvez accorder ou retirer le rôle d'administrateur d'organi
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/software/Search</context>
         </context-group>
-        <target>Aucun paquetage.</target>
+        <target state="translated">Aucun paquets.</target>
       </trans-unit>
       <trans-unit id="packagesearch.jsp.name" xml:space="preserve">
         <source>Package Name</source>
@@ -6538,7 +6538,7 @@ organisation. Vous pouvez accorder ou retirer le rôle d'administrateur d'organi
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
         </context-group>
-        <target>Mises à jour d'errata disponibles</target>
+        <target state="translated">Mises à jour disponibles</target>
       </trans-unit>
       <trans-unit id="grouplist.jsp.noerrata" xml:space="preserve">
         <source>No applicable updates</source>
@@ -6546,7 +6546,7 @@ organisation. Vous pouvez accorder ou retirer le rôle d'administrateur d'organi
           <context context-type="sourcefile">/rhn/systems/SystemGroupList</context>
           <context context-type="sourcefile">/rhn/frontend/dto/SystemGroupOverview</context>
         </context-group>
-        <target>Aucun errata applicable</target>
+        <target state="translated">Aucune mise à jour disponible</target>
       </trans-unit>
       <trans-unit id="grouplist.jsp.intersection" xml:space="preserve">
         <source>Work With Intersection</source>
@@ -22371,7 +22371,7 @@ Le chemin d'arborescence, le RPM Kickstart, le canal de base, et la génération
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/VirtualGuestsList.do</context>
         </context-group>
-        <target>Aucun système virtuel.</target>
+        <target state="translated">Pas de systèmes virtuels.</target>
       </trans-unit>
       <trans-unit id="virtualguestslist.jsp.disabled_checkbox_title" xml:space="preserve">
         <source>Cannot select system</source>
@@ -22413,7 +22413,7 @@ Le chemin d'arborescence, le RPM Kickstart, le canal de base, et la génération
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/virtualization/VirtualGuestsList.do</context>
         </context-group>
-        <target>Mémoire courante</target>
+        <target state="translated">Mémoire actuelle</target>
       </trans-unit>
       <trans-unit id="virtualguestslist.jsp.vcpus" xml:space="preserve">
         <source>vCPUs</source>
@@ -25781,7 +25781,7 @@ fois pour un canal donné.</target>
       </trans-unit>
       <trans-unit id="package.jsp.alt" xml:space="preserve">
         <source>package</source>
-        <target>paquetage</target>
+        <target state="translated">paquet</target>
       </trans-unit>
       <trans-unit id="package.jsp.description" xml:space="preserve">
         <source>Description</source>
