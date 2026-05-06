@@ -90,15 +90,15 @@ public class AttestationResultService {
             boolean success = false;
             LOGGER.info("AttestationResult with id {} selected for processing", id);
 
-            if (result.getStatus().isProcessingAttestationRequest()) {
-                success = worker.processAttestationRequest(session, result);
+            if (result.getStatus() == AttestationStatus.REQUESTED) {
+                success = worker.processRequest(session, result);
             }
-            if (result.getStatus().isProcessingAttestationVerification()) {
-                success = worker.processAttestationVerification(session, result);
+            if (result.getStatus() == AttestationStatus.PENDING) {
+                success = worker.processVerification(session, result);
                 result.setAttested(success ? OffsetDateTime.now() : null);
             }
 
-            result.setStatus(result.getStatus().getProcessingResultStatus(success));
+            result.setStatus(result.getStatus().nextStatus(success));
 
             session.update("AttestationResult.update", result);
             session.commit();
