@@ -16,35 +16,26 @@
 
 import os
 
-try:
-    import hashlib
-    import inspect
+import hashlib
 
-    hashlib_has_usedforsecurity = (
-        "usedforsecurity" in inspect.getargspec(hashlib.new)[0]
-    )
-except ImportError:
-    import md5
-    import sha
 
-    # pylint: disable=F0401
-    # pylint can't find Crypto.Hash here, but it is present on older systems.
-    from Crypto.Hash import SHA256 as sha256
+def _detect_usedforsecurity_support():
+    """Return True iff ``hashlib.new`` accepts the ``usedforsecurity`` kwarg.
 
-    hashlib_has_usedforsecurity = False
+    ``inspect.signature(hashlib.new)`` is unreliable: on some Python builds
+    ``hashlib.new`` is a built-in whose signature doesn't list the keyword
+    even though the implementation accepts it. The only robust check is to
+    actually invoke it (EAFP) — if the call succeeds the kwarg is real,
+    otherwise Python raises ``TypeError``.
+    """
+    try:
+        hashlib.new("sha256", usedforsecurity=False)
+    except (TypeError, ValueError):
+        return False
+    return True
 
-    # pylint: disable-next=invalid-name
-    class hashlib(object):
-        @staticmethod
-        def new(checksum):
-            if checksum == "md5":
-                return md5.new()
-            elif checksum == "sha1":
-                return sha.new()
-            elif checksum == "sha256":
-                return sha256.new()
-            else:
-                raise ValueError("Incompatible checksum type")
+
+hashlib_has_usedforsecurity = _detect_usedforsecurity_support()
 
 
 # pylint: disable-next=invalid-name

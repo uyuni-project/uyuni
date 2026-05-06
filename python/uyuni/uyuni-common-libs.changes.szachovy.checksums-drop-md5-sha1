@@ -1,0 +1,2 @@
+- Remove legacy md5/sha1 fallback imports from checksum
+  module; use hashlib directly
