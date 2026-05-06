@@ -9,7 +9,7 @@
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  */
 
-package com.suse.common.utilities;
+package com.suse.common.io.process;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,59 +25,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ShellCommandExecutor {
-    public record ProcessOutput(int exitCode, String standardOutput, String standardError) {
-        /**
-         * Checks if process output is succeeded
-         * @return true if process output is succeeded
-         */
-        public boolean succeeded() {
-            return 0 == exitCode;
-        }
-
-        /**
-         * Checks if process output is failed
-         * @return true if process output is failed
-         */
-        public boolean failed() {
-            return 0 != exitCode;
-        }
-
-        /**
-         * Retrieves the error message, if any
-         * @return the error message
-         */
-        public String getErrorMessage() {
-            int maxMessageLength = 2300;
-            String msg = standardError;
-            if (msg.isBlank()) {
-                msg = standardOutput;
-            }
-
-            if (msg.length() > maxMessageLength) {
-                return "... " + msg.substring(standardError.length() - maxMessageLength);
-            }
-            else {
-                return msg;
-            }
-        }
-
-        /**
-         * Checks if there is a meaningful standard output
-         * @return true if there is a meaningful standard output
-         */
-        public boolean hasStandardOutput() {
-            return standardOutput != null && !standardOutput.isBlank();
-        }
-
-        /**
-         * Checks if there is a meaningful standard error
-         * @return true if there is a meaningful standard error
-         */
-        public boolean hasStandardError() {
-            return standardError != null && !standardError.isBlank();
-        }
-    }
-
     private static final Logger LOGGER = LogManager.getLogger(ShellCommandExecutor.class);
     private final Runtime runtime;
     protected String lastExecutedCommand;
