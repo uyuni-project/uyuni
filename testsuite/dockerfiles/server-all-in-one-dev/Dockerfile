@@ -41,6 +41,11 @@ COPY minima.yaml /etc/minima.yaml
 
 RUN mkdir /tmp/minima && \
     curl -L -o /tmp/minima/minima-linux-${TARGETARCH}.tar.gz https://github.com/uyuni-project/minima/releases/download/v0.25/minima_0.25_linux_${TARGETARCH}.tar.gz && \
+    case "${TARGETARCH}" in \
+      amd64) echo "c263ab0a4212e8b25f7ad70ca817c501042b05b9eb8e8870dcc63654826055ee  /tmp/minima/minima-linux-${TARGETARCH}.tar.gz" | sha256sum -c - ;; \
+      arm64) echo "132b9e87b6e6abe7db82e4a85aa6dd52b679550e671f3dacc4e5d27b1678d169  /tmp/minima/minima-linux-${TARGETARCH}.tar.gz" | sha256sum -c - ;; \
+      *) echo "Unsupported TARGETARCH: ${TARGETARCH}" && exit 1 ;; \
+    esac && \
     tar -zxvf /tmp/minima/minima-linux-${TARGETARCH}.tar.gz -C /tmp/minima && \
     cp /tmp/minima/minima /usr/bin/minima && \
     rm -rf /tmp/minima

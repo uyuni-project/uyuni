@@ -1,3 +1,3 @@
-FROM opensuse/leap:15.5
+FROM opensuse/leap:15.5@sha256:9bd49bd34edb6cc81a47133201f5e7720db3e95ad86eccc4b05afcd83e49dd89
 RUN zypper --non-interactive in avahi
 

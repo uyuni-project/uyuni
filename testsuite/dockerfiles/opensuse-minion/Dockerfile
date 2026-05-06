@@ -1,4 +1,4 @@
-FROM opensuse/tumbleweed
+FROM opensuse/tumbleweed@sha256:d2eb76d90e469ac3378ff9ded5ed817c1eb9f3e05a170e21c0a281b63bda3f4b
 RUN zypper -n ar --no-gpgcheck https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Stable/images/repo/Uyuni-Server-POOL-x86_64-Media1/ Uyuni-Server-POOL-x86_64 && \
     zypper -n ar --no-gpgcheck https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Pool/rpm/ test_repo_rpm_pool && \
     zypper -n ar --no-gpgcheck https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Stable:/Tumbleweed-Uyuni-Client-Tools/openSUSE_Tumbleweed/ tools_pool_repo && \

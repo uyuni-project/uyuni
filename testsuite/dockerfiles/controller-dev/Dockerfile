@@ -1,4 +1,4 @@
-FROM opensuse/leap:15.6
+FROM opensuse/leap:15.6@sha256:b084d6e29d975ce9123fd52bd201ac020628797f2772e9171ef76f33cc92d591
 # Ruby 3 devel repos
 RUN zypper -n ar -f --no-gpgcheck http://download.opensuse.org/repositories/devel:/languages:/ruby/15.6/ ruby_devel
 RUN zypper -n ar -f --no-gpgcheck http://download.opensuse.org/repositories/devel:/languages:/ruby:/extensions/15.6/ rubey_devel_extensions
