@@ -61,6 +61,10 @@
         "15": {
           "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.server.15-affected.xml.gz",
           "patch": ""
+        },
+        "16": {
+          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.16-affected.xml",
+          "patch": ""
         }
       }
     },
