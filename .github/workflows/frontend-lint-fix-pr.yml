@@ -8,6 +8,10 @@ on:
       - 'web/html/src/**'
       - '.github/workflows/frontend-lint-fix-pr.yml'
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   frontend_lint_fix_pr:
     runs-on: ubuntu-latest

@@ -22,6 +22,9 @@ on:
       - 'java/**.xml'
       - '.github/workflows/java-checkstyle.yml'
 
+permissions:
+  contents: read
+
 jobs:
   checkstyle:
     runs-on: ubuntu-latest

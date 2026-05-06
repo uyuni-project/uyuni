@@ -6,6 +6,10 @@ on:
       - 'schema/reportdb/**/*'
       - 'schema/spacewalk/spacewalk-schema-upgrade'
 
+permissions:
+  contents: read
+  pull-requests: read
+
 jobs:
   schema_migration_reportdb_test_pgsql:
     runs-on: ubuntu-latest

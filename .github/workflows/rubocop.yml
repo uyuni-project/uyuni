@@ -10,6 +10,9 @@ on:
       - 'testsuite/Gemfile'
       - 'testsuite/Rakefile'
 
+permissions:
+  contents: read
+
 jobs:
   rubocop:
 

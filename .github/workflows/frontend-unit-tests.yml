@@ -12,6 +12,9 @@ on:
       - 'web/html/src/**'
       - '.github/workflows/frontend-unit-tests.yml'
 
+permissions:
+  contents: read
+
 jobs:
   frontend_unit_tests:
     runs-on: ubuntu-latest

@@ -5,6 +5,9 @@ on:
     - cron: '0 */12 * * *'  # Every 12 hours
   workflow_dispatch: # Allow manual triggering
 
+permissions:
+  contents: read
+
 jobs:
   scheduled-acceptance-tests:
     name: Acceptance

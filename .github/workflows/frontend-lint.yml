@@ -12,6 +12,9 @@ on:
       - 'web/html/src/**'
       - '.github/workflows/frontend-lint.yml'
 
+permissions:
+  contents: read
+
 jobs:
   frontend_lint:
     runs-on: ubuntu-latest

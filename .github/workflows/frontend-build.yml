@@ -12,6 +12,9 @@ on:
       - 'web/html/src/**'
       - '.github/workflows/frontend-build.yml'
 
+permissions:
+  contents: read
+
 jobs:
   frontend_build:
     runs-on: ubuntu-latest

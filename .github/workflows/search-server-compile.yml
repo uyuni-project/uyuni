@@ -18,6 +18,9 @@ on:
       - 'search-server/spacewalk-search/**.xml'
       - '.github/workflows/search-server-compile.yml'
 
+permissions:
+  contents: read
+
 jobs:
   compile:
     runs-on: ubuntu-latest
