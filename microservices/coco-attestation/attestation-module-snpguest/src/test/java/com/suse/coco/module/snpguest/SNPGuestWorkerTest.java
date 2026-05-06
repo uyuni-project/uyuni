@@ -115,7 +115,7 @@ class SNPGuestWorkerTest {
         when(session.selectOne("SNPGuestModule.retrieveReport", 5L))
             .thenThrow(PersistenceException.class);
 
-        assertFalse(worker.processAttestationVerification(session, result));
+        assertFalse(worker.processVerification(session, result));
         assertEquals("""
                 - Unable to process attestation result: org.apache.ibatis.exceptions.PersistenceException
                 """,
@@ -137,7 +137,7 @@ class SNPGuestWorkerTest {
         when(session.selectOne("SNPGuestModule.retrieveReport", 5L))
             .thenReturn(null);
 
-        assertFalse(worker.processAttestationVerification(session, result));
+        assertFalse(worker.processVerification(session, result));
         assertEquals("""
                 - Unable to retrieve attestation report for result
                 """,
@@ -158,7 +158,7 @@ class SNPGuestWorkerTest {
         // Set the model as UNKNOWN
         report.setCpuGeneration(EpycGeneration.UNKNOWN);
 
-        assertFalse(worker.processAttestationVerification(session, result));
+        assertFalse(worker.processVerification(session, result));
         assertEquals("""
                 - Unable to identify Epyc processor generation for attestation report
                 """,
@@ -179,7 +179,7 @@ class SNPGuestWorkerTest {
         report.setRandomNonce(null);
         report.setReport("REPORT".getBytes(StandardCharsets.UTF_8));
 
-        assertFalse(worker.processAttestationVerification(session, result));
+        assertFalse(worker.processVerification(session, result));
         assertEquals("""
                 - Unable to verify: randomized nonce not found
                 """,
@@ -200,7 +200,7 @@ class SNPGuestWorkerTest {
         report.setRandomNonce(new byte[0]);
         report.setReport("REPORT".getBytes(StandardCharsets.UTF_8));
 
-        assertFalse(worker.processAttestationVerification(session, result));
+        assertFalse(worker.processVerification(session, result));
         assertEquals("""
                 - Unable to verify: randomized nonce not found
                 """,
@@ -221,7 +221,7 @@ class SNPGuestWorkerTest {
         report.setReport(null);
         report.setRandomNonce("NONCE".getBytes(StandardCharsets.UTF_8));
 
-        assertFalse(worker.processAttestationVerification(session, result));
+        assertFalse(worker.processVerification(session, result));
         assertEquals("""
                 - Unable to verify: attestation report not found
                 """,
@@ -242,7 +242,7 @@ class SNPGuestWorkerTest {
         report.setReport(new byte[0]);
         report.setRandomNonce("NONCE".getBytes(StandardCharsets.UTF_8));
 
-        assertFalse(worker.processAttestationVerification(session, result));
+        assertFalse(worker.processVerification(session, result));
         assertEquals("""
                 - Unable to verify: attestation report not found
                 """,
@@ -269,7 +269,7 @@ class SNPGuestWorkerTest {
         // Nonce verification fails
         when(sequenceFinder.search(report.getReport())).thenReturn(-1);
 
-        assertFalse(worker.processAttestationVerification(session, result));
+        assertFalse(worker.processVerification(session, result));
         assertEquals("""
                 - The report does not contain the expected random nonce
                 """,
@@ -307,7 +307,7 @@ class SNPGuestWorkerTest {
         when(snpWrapper.fetchVCEK(EpycGeneration.MILAN, MOCK_CERTS_DIR, MOCK_REPORT_FILE))
             .thenReturn(new ProcessOutput(-1, "", "Fetch FAILED"));
 
-        assertFalse(worker.processAttestationVerification(session, result));
+        assertFalse(worker.processVerification(session, result));
         assertEquals("""
                 - The report contains the expected random nonce
                 - Unable to retrieve VCEK file:
@@ -353,7 +353,7 @@ class SNPGuestWorkerTest {
             .thenReturn(new ProcessOutput(0, "Fetch ok", ""));
         when(directory.isVCEKAvailable()).thenReturn(false);
 
-        assertFalse(worker.processAttestationVerification(session, result));
+        assertFalse(worker.processVerification(session, result));
         assertEquals("""
                 - The report contains the expected random nonce
                 - Unable to retrieve VCEK file:
@@ -413,7 +413,7 @@ class SNPGuestWorkerTest {
         when(snpWrapper.verifyCertificates(MOCK_CERTS_DIR))
             .thenReturn(new ProcessOutput(-1, "", "Certificate verify FAILED"));
 
-        assertFalse(worker.processAttestationVerification(session, result));
+        assertFalse(worker.processVerification(session, result));
         assertEquals("""
                         - The report contains the expected random nonce
                         """ +
@@ -489,7 +489,7 @@ class SNPGuestWorkerTest {
         when(snpWrapper.verifyAttestation(cpuGeneration, MOCK_CERTS_DIR, MOCK_REPORT_FILE))
             .thenReturn(new ProcessOutput(-1, "", "Attestation verify FAILED"));
 
-        assertFalse(worker.processAttestationVerification(session, result));
+        assertFalse(worker.processVerification(session, result));
         assertEquals("""
             - The report contains the expected random nonce
             """ +
@@ -578,7 +578,7 @@ class SNPGuestWorkerTest {
         // Retrieve the report
         when(snpWrapper.displayReport(MOCK_REPORT_FILE)).thenReturn(new ProcessOutput(0, "dummy-report", ""));
 
-        assertTrue(worker.processAttestationVerification(session, result));
+        assertTrue(worker.processVerification(session, result));
         assertEquals("dummy-report", result.getDetails());
         assertEquals("""
                         - The report contains the expected random nonce
