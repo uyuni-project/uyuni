@@ -53,29 +53,27 @@ public abstract class CoCoAbstractAttestationResponseData {
 
     protected void insertItemInMap(String tagKey, StateApplyResult<CmdResult> responseItem,
                                    Map<String, Object> outMap) {
-        if (null == responseItem) {
+        if (responseItem == null || (responseItem.getChanges() == null)) {
             return;
         }
 
-        Optional.ofNullable(responseItem.getChanges())
-                .ifPresent(cmdResult -> {
-                    if (hasBase64Stdout(responseItem)) {
-                        if (StringUtils.isNotEmpty(cmdResult.getStdout())) {
-                            outMap.put(tagKey, cmdResult.getStdout().replace("\n", ""));
-                        }
-                        else {
-                            outMap.put(tagKey, "");
-                        }
-                    }
-                    else if (StringUtils.isNotEmpty(cmdResult.getStdout())) {
-                        outMap.put(tagKey, cmdResult.getStdout());
-                    }
-                    else if (StringUtils.isNotEmpty(cmdResult.getStderr())) {
-                        outMap.put(tagKey, cmdResult.getStderr());
-                    }
-                    else if (StringUtils.isNotEmpty(responseItem.getComment())) {
-                        outMap.put(tagKey, responseItem.getComment());
-                    }
-                });
+        CmdResult cmdResult = responseItem.getChanges();
+        if (hasBase64Stdout(responseItem)) {
+            if (StringUtils.isNotEmpty(cmdResult.getStdout())) {
+                outMap.put(tagKey, cmdResult.getStdout().replace("\n", ""));
+            }
+            else {
+                outMap.put(tagKey, "");
+            }
+        }
+        else if (StringUtils.isNotEmpty(cmdResult.getStdout())) {
+            outMap.put(tagKey, cmdResult.getStdout());
+        }
+        else if (StringUtils.isNotEmpty(cmdResult.getStderr())) {
+            outMap.put(tagKey, cmdResult.getStderr());
+        }
+        else if (StringUtils.isNotEmpty(responseItem.getComment())) {
+            outMap.put(tagKey, responseItem.getComment());
+        }
     }
 }
