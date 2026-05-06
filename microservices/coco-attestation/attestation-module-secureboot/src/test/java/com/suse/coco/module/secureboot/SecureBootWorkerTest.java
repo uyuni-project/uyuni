@@ -60,7 +60,7 @@ class SecureBootWorkerTest {
             .thenReturn(message);
 
         // Ensure the result is correct
-        assertEquals(expectedOutcome, worker.processAttestationVerification(session, result));
+        assertEquals(expectedOutcome, worker.processVerification(session, result));
     }
 
     static Stream<Arguments> messagesProvider() {

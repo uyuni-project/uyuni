@@ -75,7 +75,7 @@ public class SNPGuestWorker implements AttestationWorker {
     public static final String NONCE_TAG = "nonce";
 
     @Override
-    public boolean processAttestationRequest(SqlSession session, AttestationResult result) {
+    public boolean processRequest(SqlSession session, AttestationResult result) {
         try {
             LOGGER.debug("Processing attestation request {}", result.getId());
 
@@ -98,7 +98,7 @@ public class SNPGuestWorker implements AttestationWorker {
     }
 
     @Override
-    public boolean processAttestationVerification(SqlSession session, AttestationResult result) {
+    public boolean processVerification(SqlSession session, AttestationResult result) {
         // Reset the output string builder
         outputBuilder.setLength(0);
 

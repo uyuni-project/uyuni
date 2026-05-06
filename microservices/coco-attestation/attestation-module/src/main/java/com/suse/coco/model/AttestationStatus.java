@@ -31,38 +31,20 @@ public enum AttestationStatus {
     }
 
     /**
-     * Checks if status is REQUESTED
-     *
-     * @return true if status is REQUESTED
-     */
-    public boolean isProcessingAttestationRequest() {
-        return (this == REQUESTED);
-    }
-
-    /**
-     * Checks if status is PENDING
-     *
-     * @return true if status is PENDING
-     */
-    public boolean isProcessingAttestationVerification() {
-        return (this == PENDING);
-    }
-
-    /**
      * Gets next status, depending on success and current status
      *
      * @param success true if current operation succeeded
      * @return next status
      */
-    public AttestationStatus getProcessingResultStatus(boolean success) {
-        if (success && isProcessingAttestationRequest()) {
-            return AttestationStatus.QUEUED;
-        }
-        if (success && isProcessingAttestationVerification()) {
-            return AttestationStatus.SUCCEEDED;
+    public AttestationStatus nextStatus(boolean success) {
+        if (!success) {
+            return FAILED;
         }
 
-        return AttestationStatus.FAILED;
+        return switch (this) {
+            case REQUESTED -> QUEUED;
+            case PENDING   -> SUCCEEDED;
+            default        -> FAILED;
+        };
     }
-
 }
