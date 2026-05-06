@@ -1638,7 +1638,7 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
-    WHERE ns.namespace = 'salt.keys' AND ns.access_mode = 'W'
+    WHERE ns.namespace = 'salt.remote_commands' AND ns.access_mode = 'W'
     AND ep.endpoint = '/manager/systems/cmd' AND ep.http_method = 'GET'
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)

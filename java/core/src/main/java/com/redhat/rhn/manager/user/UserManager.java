@@ -168,7 +168,8 @@ public class UserManager extends BaseManager {
      * @param mode the access mode (view/modify)
      * @throws PermissionException if the user is not permitted to access the specified namespace
      */
-    public static void ensureRoleBasedAccess(User user, String namespace, Namespace.AccessMode mode) {
+    public static void ensureRoleBasedAccess(User user, String namespace, Namespace.AccessMode mode)
+            throws PermissionException {
         if (!verifyRoleBasedAccess(user, namespace, mode)) {
             if (user == null) {
                 log.debug("Access restricted for unauthenticated user to namespace '{}' [{}]", namespace, mode);
