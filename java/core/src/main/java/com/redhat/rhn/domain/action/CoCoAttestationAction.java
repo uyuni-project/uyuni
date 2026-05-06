@@ -62,7 +62,7 @@ public class CoCoAttestationAction extends Action {
             return false;
         }
 
-        return actionReportList.stream().allMatch(ServerCoCoAttestationReport::hasAllInputDataFromResults);
+        return actionReportList.stream().allMatch(attestationManager::hasAllInputDataFromResults);
     }
 
     @Override
@@ -81,7 +81,7 @@ public class CoCoAttestationAction extends Action {
         List<ServerCoCoAttestationReport> actionReportList =
                 attestationManager.listCoCoAttestationReportsForAction(this);
         if (actionReportList.isEmpty()) {
-            LOG.debug("Failed to find any report entry while creating the pillar data");
+            LOG.warn("Failed to find any report entry while creating the pillar data");
             return Map.of();
         }
 
@@ -96,7 +96,7 @@ public class CoCoAttestationAction extends Action {
             Optional<Map<String, Object>> pillarData = Optional.empty();
             if (optReport.isPresent()) {
                 ServerCoCoAttestationReport report = optReport.get();
-                report.mergeInputDataFromResults();
+                attestationManager.mergeInputDataFromResults(report);
 
                 //pillar data sent to minion during coco attestation is cryptographically safe by design!
                 pillarData = createPillarData(report);
@@ -136,7 +136,7 @@ public class CoCoAttestationAction extends Action {
         Optional<ServerCoCoAttestationReport> optReport =
                 attestationManager.lookupReportByServerAndAction(serverAction.getServer(), this);
         if (optReport.isEmpty()) {
-            LOG.debug("Failed to find a report entry while parsing salt state apply result");
+            LOG.warn("Failed to find a report entry while parsing salt state apply result");
             serverAction.fail("Failed to find a report entry");
             return;
         }
@@ -147,7 +147,7 @@ public class CoCoAttestationAction extends Action {
             if (StringUtils.isBlank(msg)) {
                 msg = "Error while request attestation data from target system:\nGot no result from system";
             }
-            setFailure(msg, serverAction, report);
+            setFailure(msg, serverAction, attestationManager, report);
             return;
         }
 
@@ -156,7 +156,7 @@ public class CoCoAttestationAction extends Action {
             responseDataParser.parse(jsonResult);
 
             report.setOutData(responseDataParser.asMap());
-            report.setPendingResults();
+            attestationManager.setPendingResults(report);
             attestationManager.saveReport(report);
         }
         catch (JsonSyntaxException e) {
@@ -165,7 +165,7 @@ public class CoCoAttestationAction extends Action {
                     .map(JsonElement::toString)
                     .orElse("Got no result");
 
-            setFailure(msg, serverAction, report);
+            setFailure(msg, serverAction, attestationManager, report);
             return;
         }
         if (serverAction.isStatusFailed()) {
@@ -178,10 +178,11 @@ public class CoCoAttestationAction extends Action {
         }
     }
 
-    private void setFailure(String message, ServerAction serverAction, ServerCoCoAttestationReport report) {
+    private void setFailure(String message, ServerAction serverAction,
+                            AttestationManager attestationManager, ServerCoCoAttestationReport report) {
         LOG.error(message);
         serverAction.fail(message);
-        report.setFailed();
+        attestationManager.setFailed(report);
         report.getResults().forEach(result -> result.setStatus(CoCoResultStatus.FAILED));
     }
 

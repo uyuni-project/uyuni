@@ -33,6 +33,8 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 import com.suse.manager.model.attestation.AttestationFactory;
 import com.suse.manager.model.attestation.CoCoAttestationResult;
 import com.suse.manager.model.attestation.CoCoEnvironmentType;
+import com.suse.manager.model.attestation.CoCoReportStatus;
+import com.suse.manager.model.attestation.CoCoResultStatus;
 import com.suse.manager.model.attestation.ServerCoCoAttestationConfig;
 import com.suse.manager.model.attestation.ServerCoCoAttestationReport;
 
@@ -42,6 +44,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -421,6 +424,59 @@ public class AttestationManager {
             LOG.error("Attestation disabled");
             throw new AttestationDisabledException();
         }
+    }
+
+    /**
+     * Checks if all results have their input data already computed
+     * @param report the report
+     * @return true if all results have their input data already computed
+     */
+    public boolean hasAllInputDataFromResults(ServerCoCoAttestationReport report) {
+        return report.getResults().stream()
+                .allMatch(result -> result.getStatus().hasInputData());
+    }
+
+    /**
+     * Sets failure in report and inputs not yet computed
+     * @param report the report
+     */
+    public void setFailed(ServerCoCoAttestationReport report) {
+        report.setStatus(CoCoReportStatus.FAILED);
+
+        report.getResults().stream()
+                .filter(result -> !result.getStatus().hasInputData())
+                .forEach(result -> {
+                    result.setStatus(CoCoResultStatus.FAILED);
+                    result.setDetails("No input data");
+                });
+    }
+
+    /**
+     * Collects and merges input data from results, stores it in report input data member
+     * @param report the report
+     */
+    public void mergeInputDataFromResults(ServerCoCoAttestationReport report) {
+        Map<String, Object> mergedInputData = report.getResults().stream()
+                .map(CoCoAttestationResult::getInData)
+                .flatMap(map -> map.entrySet().stream())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+        report.setInData(mergedInputData);
+        report.getResults().forEach(result -> result.setStatus(CoCoResultStatus.SUBMITTED));
+    }
+
+    /**
+     * Sets pending status in report and in all results
+     * @param report the report
+     */
+    public void setPendingResults(ServerCoCoAttestationReport report) {
+        report.setStatus(CoCoReportStatus.PENDING);
+
+        report.getResults().stream()
+                .filter(result -> result.getStatus().hasInputData())
+                .forEach(result -> {
+                    result.setStatus(CoCoResultStatus.PENDING);
+                });
     }
 
 }
