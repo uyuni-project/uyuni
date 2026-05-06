@@ -70,6 +70,8 @@ public class ConfigDefaults {
     public static final String WEB_SMTP_TIMEOUT = "java.smtp_timeout";
     public static final String WEB_SMTP_CONNECTION_TIMEOUT = "java.smtp_connection_timeout";
     public static final String WEB_SMTP_WRITE_TIMEOUT = "java.smtp_write_timeout";
+    public static final String WEB_SMTP_TLS_PROTOCOLS = "java.smtp_tls_protocols";
+    public static final String JAVA_HTTP_CLIENT_TLS_PROTOCOLS = "java.http_client_tls_protocols";
     public static final String WEB_DISABLE_UPDATE_STATUS = "java.disable_update_status";
     public static final String WEB_DISABLE_REMOTE_COMMANDS_FROM_UI = "java.disable_remote_commands_from_ui";
     public static final String WEB_DISABLE_SUPPORTDATA_UPLOAD = "java.disable_supportdata_upload";
