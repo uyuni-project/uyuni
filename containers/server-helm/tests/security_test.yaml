@@ -9,6 +9,8 @@ tests:
       - isSubset:
           path: spec.template.spec.containers[?(@.name=="uyuni")].securityContext
           content:
+            seLinuxOptions:
+              level: s0
             capabilities:
               add:
               - SYS_ADMIN
@@ -35,6 +37,7 @@ tests:
             appArmorProfile:
               type: Unconfined
             seLinuxOptions:
+              level: s0
               type: "spc_t"
 
   - it: should render the AppArmor profile
@@ -56,4 +59,5 @@ tests:
           path: spec.template.spec.containers[?(@.name=="uyuni")].securityContext
           content:
             seLinuxOptions:
+              level: s0
               type: "spc_t"
