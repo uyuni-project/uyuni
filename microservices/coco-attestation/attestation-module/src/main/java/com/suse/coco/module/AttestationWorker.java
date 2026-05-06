@@ -26,7 +26,7 @@ public interface AttestationWorker {
      * @param attestationResult the attestation result to process.
      * @return <code>true</code> if the processing succeeded, <code>false</code> otherwise.
      */
-    boolean processAttestationRequest(SqlSession session, AttestationResult attestationResult);
+    boolean processRequest(SqlSession session, AttestationResult attestationResult);
 
     /**
      * Process the attestation verification of a given attestation result.
@@ -34,5 +34,5 @@ public interface AttestationWorker {
      * @param attestationResult the attestation result to process.
      * @return <code>true</code> if the processing succeeded, <code>false</code> otherwise.
      */
-    boolean processAttestationVerification(SqlSession session, AttestationResult attestationResult);
+    boolean processVerification(SqlSession session, AttestationResult attestationResult);
 }
