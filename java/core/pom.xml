@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2025 SUSE LLC
+  ~ Copyright (c) 2025-2026 SUSE LLC
   ~
   ~ This software is licensed to you under the GNU General Public License,
   ~ version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -116,10 +116,6 @@
         <dependency>
             <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-jcache</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.hypersistence</groupId>
-            <artifactId>hypersistence-utils-hibernate-71</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>

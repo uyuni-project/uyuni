@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021--2025 SUSE LLC
+ * Copyright (c) 2021--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -15,7 +15,8 @@ import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.domain.Identifiable;
 import com.redhat.rhn.domain.org.Org;
 
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.io.Serializable;
 import java.util.List;
@@ -23,7 +24,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 
-import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -70,7 +70,7 @@ public class Pillar implements Identifiable, Serializable {
     @Column(name = "category")
     private String category;
 
-    @Type(JsonType.class)
+    @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "jsonb")
     private Map<String, Object> pillar = new TreeMap<>();
 

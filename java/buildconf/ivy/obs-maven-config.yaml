@@ -92,9 +92,6 @@ artifacts:
     package: hibernate-c3p0
     jar: hibernate-c3p0
     repository: Uyuni
-  - artifact: hypersistence-utils-hibernate-71
-    package: hypersistence-utils-hibernate-71
-    repository: Uyuni
   - artifact: jackson-annotations
     repository: Leap_sle
   - artifact: jackson-core
