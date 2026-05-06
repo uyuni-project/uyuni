@@ -7,6 +7,9 @@
 ## Finishing Secondary features  BEGIN ##
 
 # these features are disruptive for other features, so they are better at the end
-- features/secondary/srv_rename_hostname.feature
+- features/finishing/srv_rename_hostname.feature
+- features/finishing/srv_selinux.feature
+- features/finishing/srv_debug.feature
+- features/finishing/srv_count_scc_access.feature
 
 ## Finishing Secondary features END ##
