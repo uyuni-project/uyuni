@@ -10,11 +10,15 @@
  */
 package com.redhat.rhn.domain.notification.types;
 
-import static com.redhat.rhn.common.hibernate.HibernateFactory.getSession;
-
 import com.redhat.rhn.common.localization.LocalizationService;
-import com.redhat.rhn.domain.scc.SCCSubscription;
 
+import com.suse.manager.matcher.MatcherJsonIO;
+import com.suse.matcher.json.OutputJson;
+
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
+import java.util.Optional;
 
 public class SubscriptionWarning implements NotificationData {
 
@@ -25,21 +29,30 @@ public class SubscriptionWarning implements NotificationData {
      * @return boolean
      **/
     public boolean expiresSoon() {
-        return getSession()
-                .createNativeQuery("""
-                        SELECT EXISTS
-                         (
-                            SELECT name, expires_at, status, subtype
-                              FROM suseSCCSubscription
-                              WHERE subtype != 'internal' AND subtype != 'test' AND (
-                                        (status = 'ACTIVE' AND expires_at < now() + interval '90 DAY')
-                                            OR (status = 'EXPIRED' AND expires_at > now() - interval '30 day')
-                                    )
-                        )
-                        """, Boolean.class)
-                .addSynchronizedEntityClass(SCCSubscription.class)
-                .uniqueResultOptional()
-                .orElse(false);
+        Optional<OutputJson> output = new MatcherJsonIO().getLastMatcherOutput();
+        if (output.isPresent()) {
+            Instant now = Instant.now();
+            Instant ninetyDaysFuture = now.plus(90, ChronoUnit.DAYS);
+            Instant thirtyDaysPast = now.minus(30, ChronoUnit.DAYS);
+
+            return output.get().getSubscriptions().stream()
+                    .anyMatch(s -> {
+                        Date endDate = s.getEndDate();
+                        if (endDate == null) {
+                            return false;
+                        }
+                        Instant end = endDate.toInstant();
+
+                        // Active and expiring soon (within 90 days)
+                        boolean isActiveAndExpiresSoon = end.isAfter(now) && end.isBefore(ninetyDaysFuture);
+
+                        // Expired recently (within 30 days)
+                        boolean isExpiredRecently = end.isBefore(now) && end.isAfter(thirtyDaysPast);
+
+                        return (isActiveAndExpiresSoon || isExpiredRecently);
+                    });
+        }
+        return false;
     }
 
     @Override
