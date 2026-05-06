@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2026 SUSE LCC
+ * Copyright (c) 2026 SUSE LLC
  * Copyright (c) 2009--2016 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
