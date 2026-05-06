@@ -9,13 +9,16 @@
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
  */
 
-package com.suse.common.utilities;
+package com.suse.common.security;
 
-import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.security.cert.CRLException;
 import java.security.cert.CertificateEncodingException;
@@ -24,12 +27,14 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.CertificateParsingException;
 import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
+import java.time.Duration;
 import java.util.Base64;
 
 public class CertificateHelper {
 
     private static final String PEM_BEGIN_CERT_TAG = "-----BEGIN CERTIFICATE-----";
     private static final String PEM_END_CERT_TAG = "-----END CERTIFICATE-----";
+    private static final long DEFAULT_DOWNLOAD_TIMEOUT_SECONDS = 20;
 
     private CertificateHelper() {
         // Prevent instantiation
@@ -41,11 +46,21 @@ public class CertificateHelper {
      * @throws IOException if something goes wrong
      */
     public static X509Certificate downloadCertificate(String certificateUrl) throws IOException {
+        return downloadCertificate(certificateUrl, DEFAULT_DOWNLOAD_TIMEOUT_SECONDS);
+    }
+
+    /**
+     * @param certificateUrl url of the certificate to download
+     * @param timeoutSeconds download timeout in seconds
+     * @return the certificate
+     * @throws IOException if something goes wrong
+     */
+    public static X509Certificate downloadCertificate(String certificateUrl, long timeoutSeconds) throws IOException {
         try {
-            return CertificateHelper.parse(downloadStringContent(certificateUrl));
+            return CertificateHelper.parse(downloadStringContent(certificateUrl, timeoutSeconds));
         }
         catch (CertificateException ex) {
-            String errorString = "Unable to parse certificate: {%s} {%s}".formatted(certificateUrl, ex.getMessage());
+            String errorString = "Unable to parse certificate: [%s]: %s".formatted(certificateUrl, ex.getMessage());
             throw new IOException(errorString);
         }
     }
@@ -75,11 +90,21 @@ public class CertificateHelper {
      * @throws IOException if something goes wrong
      */
     public static X509CRL downloadCertificateRevocationList(String crlUrl) throws IOException {
+        return downloadCertificateRevocationList(crlUrl, DEFAULT_DOWNLOAD_TIMEOUT_SECONDS);
+    }
+
+    /**
+     * @param crlUrl         url of the certificate revocation list to download
+     * @param timeoutSeconds download timeout in seconds
+     * @return the certificate revocation list
+     * @throws IOException if something goes wrong
+     */
+    public static X509CRL downloadCertificateRevocationList(String crlUrl, long timeoutSeconds) throws IOException {
         try {
-            return CertificateHelper.parseCertificateRevocationList(downloadStringContent(crlUrl));
+            return CertificateHelper.parseCertificateRevocationList(downloadStringContent(crlUrl, timeoutSeconds));
         }
         catch (CertificateException ex) {
-            String errorString = "Unable to parse certificate: {%s} {%s}".formatted(crlUrl, ex.getMessage());
+            String errorString = "Unable to parse certificate [%s]: %s".formatted(crlUrl, ex.getMessage());
             throw new IOException(errorString);
         }
     }
@@ -99,8 +124,40 @@ public class CertificateHelper {
      * @throws IOException if something goes wrong
      */
     private static String downloadStringContent(String urlIn) throws IOException {
-        try (BufferedInputStream in = new BufferedInputStream(new URL(urlIn).openStream())) {
-            return new String(in.readAllBytes(), StandardCharsets.UTF_8);
+        return downloadStringContent(urlIn, DEFAULT_DOWNLOAD_TIMEOUT_SECONDS);
+    }
+
+    /**
+     * @param urlIn url of the file to download
+     * @param timeoutSeconds download timeout in seconds
+     * @return downloaded file as string content
+     * @throws IOException if something goes wrong
+     */
+    private static String downloadStringContent(String urlIn, long timeoutSeconds) throws IOException {
+        HttpClient client = HttpClient.newBuilder()
+                .followRedirects(HttpClient.Redirect.NORMAL)
+                .connectTimeout(Duration.ofSeconds(timeoutSeconds))
+                .build();
+
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(urlIn)).build();
+
+        try {
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == HttpURLConnection.HTTP_OK) {
+                return response.body();
+            }
+            else {
+                // Request was not successful
+                String errorString = "Unable to download [%s]: status code: %d".formatted(urlIn, response.statusCode());
+                throw new IOException(errorString);
+            }
+
+        }
+        catch (Exception ex) {
+            String exMessage = (ex.getMessage() == null) ? "" : " : " + ex.getMessage();
+            String errorString = "Unable to download [%s]: %s%s".formatted(urlIn, ex.getClass().getName(), exMessage);
+            throw new IOException(errorString);
         }
     }
 
