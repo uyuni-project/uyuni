@@ -93,19 +93,28 @@
         </div>
         <div class="panel-body">
             <div class="form-group">
-              <label class="col-sm-3 control-label" for="firstNames"><rhn:required-field key="usercreate.names"/>:</label>
+              <label class="col-sm-3 control-label" for="firstNames"><rhn:required-field key="usercreate.prefix"/>:</label>
               <div class="col-sm-6">
                 <html:select styleClass="form-control margin-bottom-xs box-small" property="prefix">
                   <html:options collection="availablePrefixes"
                     property="value"
                     labelProperty="label" />
                 </html:select>
-
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label" for="firstNames"><rhn:required-field key="usercreate.firstName"/>:</label>
+              <div class="col-sm-6"> 
                 <html:text property="firstNames" size="15" styleClass="form-control margin-bottom-xs box-large" maxlength="${firstNameLength}" styleId="firstNames"/>
-                <html:text property="lastName" size="15" styleClass="form-control margin-bottom-xs box-large" maxlength="${lastNameLength}"/>
               </div>
             </div>
 
+            <div class="form-group">
+              <label class="col-sm-3 control-label" for="lastName"><rhn:required-field key="usercreate.lastName"/>:</label>
+              <div class="col-sm-6">
+                <html:text property="lastName" size="15" styleClass="form-control margin-bottom-xs box-large" maxlength="${lastNameLength}"/>
+              </div>
+            </div>
             <div class="form-group">
                <label class="col-sm-3 control-label" for="email"><rhn:required-field key="email"/>:</label>
                <div class="col-sm-6">
