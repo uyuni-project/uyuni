@@ -22,26 +22,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.ServiceLoader;
 
 public class CoCoAttestationResponseDataParser {
 
+    private final ServiceLoader<CoCoAbstractAttestationResponseData> loader;
     protected final List<CoCoAbstractAttestationResponseData> chunks = new ArrayList<>();
 
     /**
      * Constructor
      */
     public CoCoAttestationResponseDataParser() {
-        //empty constructor
+        loader = ServiceLoader.load(CoCoAbstractAttestationResponseData.class);
     }
 
     /**
      * @param jsonResult dummy
      */
     public void parse(JsonElement jsonResult) {
-        chunks.clear();
-        chunks.add(Json.GSON.fromJson(jsonResult, CoCoAmdEpycAttestationResponseData.class));
-        chunks.add(Json.GSON.fromJson(jsonResult, CoCoSecureBootAttestationResponseData.class));
-        //add here further children of CoCoAbstractAttestationResponseData
+        loader.forEach(responseData ->
+            chunks.add(Json.GSON.fromJson(jsonResult, responseData.getClass())));
     }
 
     /**
