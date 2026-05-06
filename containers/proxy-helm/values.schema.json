@@ -57,7 +57,7 @@
         },
         "class": {
           "type": "string",
-          "default": "",
+          "default": "traefik",
           "description": "The ingress class name."
         },
         "annotations": {
