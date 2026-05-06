@@ -623,4 +623,16 @@ class SNPGuestWorkerTest {
         // Verify the report display have happened
         verify(snpWrapper).displayReport(MOCK_REPORT_FILE);
     }
+
+    @Test
+    @DisplayName("Correctly creates input json file while processing request")
+    void testProcessRequest() {
+        //do common mocking to avoid UnnecessaryStubbingException
+        session.selectOne("SNPGuestModule.retrieveReport", 5L);
+
+        worker.processRequest(null, result);
+
+        assertTrue(result.getInData().startsWith("{\"nonce\": \""));
+        assertTrue(result.getInData().endsWith("\"}"));
+    }
 }
