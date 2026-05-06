@@ -18,9 +18,11 @@
 
 
 %if 0%{?suse_version}
-%global htmldir /srv/www/htdocs
+%global htmlroot /srv/www
+%global htmldir %{htmlroot}/htdocs
 %else
-%global htmldir %{_var}/www/html
+%global htmlroot %{_var}/www
+%global htmldir %{htmlroot}/html
 %endif
 
 Name:           spacewalk-proxy-html
@@ -66,6 +68,7 @@ cp -pR %{proxy_dir_name}/sources/img/* %{buildroot}%{htmldir}/sources/img/
 cp -pR %{proxy_dir_name}/*.html %{buildroot}%{htmldir}/
 
 %files
+%dir %{htmlroot}
 %dir %{htmldir}
 %{htmldir}/index.html
 %{htmldir}/sources
