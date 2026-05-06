@@ -9,7 +9,7 @@ Feature: Migrate a SLES 15 SP6 Salt SSH minion to 15 SP7
     Given I am authorized for the "Admin" section
 
   Scenario: Prerequisite: update OS zypper to the latest version
-    When I upgrade "sle15sp6_ssh_minion" with the last "zypper" version
+    When I upgrade "zypper" on "sle15sp6_ssh_minion" using the API
 
   Scenario: Migrate this SSH minion to SLE 15 SP7
     Given I am on the Systems overview page of this "sle15sp6_ssh_minion"

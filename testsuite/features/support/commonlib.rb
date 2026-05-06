@@ -956,7 +956,7 @@ end
 
 # Function to get the highest event ID (latest event)
 #
-# @param host String The hostname of the system from requested
+# @param host String The hostname of the requested system
 def get_last_event(host)
   node = get_target(host)
   system_id = get_system_id(node)
@@ -965,10 +965,26 @@ end
 
 # Function to trigger the upgrade command
 #
-# @param hostname String The hostname of the system from requested
+# @param hostname String The hostname of the requested system
 # @param package String The package name where it will trigger an upgrade
 def trigger_upgrade(hostname, package)
   get_target('server').run("spacecmd -u admin -p admin system_upgradepackage #{hostname} #{package} -y", check_errors: true)
+end
+
+# Function to trigger the install command
+#
+# @param hostname String The hostname of the requested system
+# @param package String The package name to install
+def trigger_install(hostname, package)
+  get_target('server').run("spacecmd -u admin -p admin system_installpackage #{hostname} #{package} -y", check_errors: true)
+end
+
+# Function to trigger the remove command
+#
+# @param hostname String The hostname of the requested system
+# @param package String The package name to remove
+def trigger_remove(hostname, package)
+  get_target('server').run("spacecmd -u admin -p admin system_removepackage #{hostname} #{package} -y", check_errors: true)
 end
 
 # Function to select the latest package from a list based on version and release

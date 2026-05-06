@@ -9,7 +9,7 @@ Feature: Migrate a SLE Micro 5.5 Salt minion to SL Micro 6.2
     Given I am authorized for the "Admin" section
 
   Scenario: Prerequisite: update OS zypper to the latest version
-    When I upgrade "slemicro55_minion" with the last "zypper" version
+    When I upgrade "zypper" on "slemicro55_minion" using the API
 
   Scenario: Prerequisite: Reboot the slemicro 5.5 after updating zypper
     When I reboot the "slemicro55_minion" host through SSH, waiting until it comes back
