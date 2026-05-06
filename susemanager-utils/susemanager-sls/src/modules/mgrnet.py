@@ -10,6 +10,7 @@ import logging
 import re
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from salt.exceptions import CommandExecutionError
 
 import salt.utils.network
 
@@ -79,13 +80,22 @@ def dns_fqdns():
 
     start = time.time()
 
+    interfaces = _get_interfaces()
+    if interfaces is not None and _which("podman"):
+        try:
+            # pylint: disable-next=undefined-variable
+            podman_ifaces = __salt__["cmd.run"](
+                ["podman", "network", "ls", "--format", "{{.NetworkInterface}}"]
+            ).splitlines()
+            interfaces = {k: v for k, v in interfaces.items() if k not in podman_ifaces}
+        except CommandExecutionError as e:
+            log.error("Error trying to find the podman interfaces names: %s", e)
+
     addresses = salt.utils.network.ip_addrs(
-        include_loopback=False, interface_data=_get_interfaces()
+        include_loopback=False, interface_data=interfaces
     )
     addresses.extend(
-        salt.utils.network.ip_addrs6(
-            include_loopback=False, interface_data=_get_interfaces()
-        )
+        salt.utils.network.ip_addrs6(include_loopback=False, interface_data=interfaces)
     )
 
     results = []

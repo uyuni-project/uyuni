@@ -1,0 +1,1 @@
+- Ignore podman interfaces when resolving FQDNs (bsc#1262720)
