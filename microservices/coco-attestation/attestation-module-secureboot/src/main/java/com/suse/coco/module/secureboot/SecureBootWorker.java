@@ -12,7 +12,6 @@ package com.suse.coco.module.secureboot;
 
 import com.suse.coco.model.AttestationResult;
 import com.suse.coco.module.AttestationWorker;
-import com.suse.common.utilities.JsonUtilities;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.logging.log4j.LogManager;
@@ -26,7 +25,7 @@ public class SecureBootWorker implements AttestationWorker {
         LOGGER.debug("Processing attestation request {}", result.getId());
 
         //no input data
-        result.setInData(JsonUtilities.createEmptyJson());
+        result.setInData("{}");
         return true;
     }
 

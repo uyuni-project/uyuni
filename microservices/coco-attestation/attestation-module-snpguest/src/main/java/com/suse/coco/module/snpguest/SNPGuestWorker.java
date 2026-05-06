@@ -20,7 +20,6 @@ import com.suse.coco.module.snpguest.io.VerificationDirectoryProvider;
 import com.suse.coco.module.snpguest.model.AttestationReport;
 import com.suse.coco.module.snpguest.model.EpycGeneration;
 import com.suse.common.io.ByteSequenceFinder;
-import com.suse.common.utilities.JsonUtilities;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.logging.log4j.LogManager;
@@ -85,7 +84,7 @@ public class SNPGuestWorker implements AttestationWorker {
             secureRandom.nextBytes(bytes);
             String nonceString = Base64.getEncoder().encodeToString(bytes);
 
-            String attestationRequest = JsonUtilities.createJson(NONCE_TAG, nonceString);
+            String attestationRequest = "{\"%s\": \"%s\"}".formatted(NONCE_TAG, nonceString);
             result.setInData(attestationRequest);
             return true;
         }
