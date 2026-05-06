@@ -7370,16 +7370,6 @@
         "description": "SUSE-PackageHub-12-SP5-Pool for sle-12-x86_64"
     },
     {
-        "autorefresh": true,
-        "url": "https://updates.suse.com/SUSE/Updates/Ubuntu/16.04-CLIENT-TOOLS/x86_64/update/?my-fake-token",
-        "installer_updates": false,
-        "name": "Ubuntu-16.04-SUSE-Manager-Tools",
-        "id": 3869,
-        "enabled": true,
-        "description": "Ubuntu-16.04-SUSE-Manager-Tools for amd64",
-        "distro_target": "amd64"
-    },
-    {
         "url": "https://updates.suse.com/SUSE/Updates/Ubuntu/18.04-CLIENT-TOOLS/x86_64/update/?my-fake-token",
         "installer_updates": false,
         "autorefresh": true,
@@ -8558,16 +8548,6 @@
         "autorefresh": false,
         "installer_updates": false,
         "url": "https://updates.suse.com/SUSE/Products/SLE-Module-SUSE-Manager-Server/4.1/x86_64/product_source/?my-fake-token"
-    },
-    {
-        "enabled": true,
-        "distro_target": "amd64",
-        "description": "Ubuntu-16.04-SUSE-Manager-Tools-Beta for amd64",
-        "autorefresh": true,
-        "installer_updates": false,
-        "url": "https://updates.suse.com/SUSE/Updates/Ubuntu/16.04-CLIENT-TOOLS-BETA/x86_64/update/?my-fake-token",
-        "name": "Ubuntu-16.04-SUSE-Manager-Tools-Beta",
-        "id": 4406
     },
     {
         "name": "Ubuntu-18.04-SUSE-Manager-Tools-Beta",

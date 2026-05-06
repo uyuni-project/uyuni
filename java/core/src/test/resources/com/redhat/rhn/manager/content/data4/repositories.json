@@ -31836,19 +31836,6 @@
             "amd64"
         ],
         "autorefresh": true,
-        "description": "Ubuntu-16.04-SUSE-Manager-Tools for amd64",
-        "distro_target": "amd64",
-        "enabled": true,
-        "id": 3869,
-        "installer_updates": false,
-        "name": "Ubuntu-16.04-SUSE-Manager-Tools",
-        "url": "https://updates.suse.com/SUSE/Updates/Ubuntu/16.04-CLIENT-TOOLS/x86_64/update/?my-fake-token"
-    },
-    {
-        "arch": [
-            "amd64"
-        ],
-        "autorefresh": true,
         "description": "Ubuntu-18.04-SUSE-Manager-Tools for amd64",
         "distro_target": "amd64",
         "enabled": true,
@@ -38213,19 +38200,6 @@
         "installer_updates": false,
         "name": "SLE-Product-HPC-ESPOS15-Source-Pool",
         "url": "https://updates.suse.com/SUSE/Products/SLE-Product-HPC/15-ESPOS/x86_64/product_source/?my-fake-token"
-    },
-    {
-        "arch": [
-            "amd64"
-        ],
-        "autorefresh": true,
-        "description": "Ubuntu-16.04-SUSE-Manager-Tools-Beta for amd64",
-        "distro_target": "amd64",
-        "enabled": true,
-        "id": 4406,
-        "installer_updates": false,
-        "name": "Ubuntu-16.04-SUSE-Manager-Tools-Beta",
-        "url": "https://updates.suse.com/SUSE/Updates/Ubuntu/16.04-CLIENT-TOOLS-BETA/x86_64/update/?my-fake-token"
     },
     {
         "arch": [

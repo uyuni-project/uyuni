@@ -2,8 +2,7 @@
 
 parent_project="systemsmanagement:Uyuni:Master"
 parent_repo_name="openSUSE_Leap_15.3"
-clients="Ubuntu1604-Uyuni-Client-Tools;xUbuntu_16.04 \
-    Ubuntu1804-Uyuni-Client-Tools;xUbuntu_18.04 \
+clients="Ubuntu1804-Uyuni-Client-Tools;xUbuntu_18.04 \
     Ubuntu2004-Uyuni-Client-Tools;xUbuntu_20.04 \
     Ubuntu2204-Uyuni-Client-Tools;xUbuntu_22.04 \
     Ubuntu2404-Uyuni-Client-Tools;xUbuntu_24.04 \
@@ -17,10 +16,8 @@ clients="Ubuntu1604-Uyuni-Client-Tools;xUbuntu_16.04 \
     Debian11-Uyuni-Client-Tools;Debian_11 \
     Debian12-Uyuni-Client-Tools;Debian_12 \
     Debian13-Uyuni-Client-Tools;Debian_13\
-    CentOS8-Uyuni-Client-Tools;CentOS_8 \
     CentOS7-Uyuni-Client-Tools;CentOS_7 \
     CentOS6-Uyuni-Client-Tools;CentOS_6 \
-    Fedora30-Uyuni-Client-Tools;Fedora_30 \
     Fedora31-Uyuni-Client-Tools;Fedora_31"
 
 usage_and_exit() {

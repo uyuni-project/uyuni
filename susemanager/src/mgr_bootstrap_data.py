@@ -1162,18 +1162,6 @@ DATA = {
         "PKGLIST": RES7 + RES7REQ,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/centos/7/bootstrap/",
     },
-    "centos-8-x86_64": {
-        "PDID": [-13, 3037],
-        "BETAPDID": [3039],
-        "PKGLIST": RES8 + RES8_X86,
-        "DEST": DOCUMENT_ROOT + "/pub/repositories/centos/8/bootstrap/",
-    },
-    "centos-8-aarch64": {
-        "PDID": [-30, 3036],
-        "BETAPDID": [3038],
-        "PKGLIST": RES8,
-        "DEST": DOCUMENT_ROOT + "/pub/repositories/centos/8/bootstrap/",
-    },
     "centos-7-x86_64-uyuni": {
         "BASECHANNEL": "centos7-x86_64",
         "PKGLIST": RES7 + RES7_X86 + RES7REQ,
@@ -1188,21 +1176,6 @@ DATA = {
         "BASECHANNEL": "centos7-aarch64",
         "PKGLIST": RES7 + RES7REQ,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/centos/7/bootstrap/",
-    },
-    "centos-8-x86_64-uyuni": {
-        "BASECHANNEL": "centos8-x86_64",
-        "PKGLIST": RES8 + RES8_X86,
-        "DEST": DOCUMENT_ROOT + "/pub/repositories/centos/8/bootstrap/",
-    },
-    "centos-8-ppc64le-uyuni": {
-        "BASECHANNEL": "centos8-ppc64le",
-        "PKGLIST": RES8,
-        "DEST": DOCUMENT_ROOT + "/pub/repositories/centos/8/bootstrap/",
-    },
-    "centos-8-aarch64-uyuni": {
-        "BASECHANNEL": "centos8-aarch64",
-        "PKGLIST": RES8,
-        "DEST": DOCUMENT_ROOT + "/pub/repositories/centos/8/bootstrap/",
     },
     "oracle-7-x86_64": {
         "PDID": [-14, 3033],
