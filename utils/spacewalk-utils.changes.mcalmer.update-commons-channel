@@ -4,3 +4,5 @@
   * SDL 7 and 8
   * Debian 11
   * Ubuntu 16.04 and 18.04
+- Introduce spacewalk-common-channels-legacy ini file and
+  add all the removed channel definitions into it
