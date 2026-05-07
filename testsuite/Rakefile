@@ -280,8 +280,35 @@ namespace :utils do
     sh 'rm -rf ./cucumber_report && mkdir cucumber_report', verbose: false
     sh "timeout 180 bash -c -- \"while find #{result_folder}/output*.json -type f -size 0 | grep json; do sleep 10;done\" ; exit 0", verbose: false
     sh 'find . -size 0 -delete', verbose: false
+
+    # Strip before/after hooks into a separate folder for the Jenkins Cucumber
+    # plugin — originals are preserved intact so index.cjs can rescue
+    # screenshot embeddings from hooks before stripping them for the report.
+    # Only passed/skipped hooks are stripped — failed hooks are kept so they
+    # remain visible in both reports (a missing result status is also kept).
+    stripped_folder = "#{result_folder}/stripped"
+    sh "rm -rf #{stripped_folder} && mkdir -p #{stripped_folder}", verbose: false
+    safe_statuses = %w[passed skipped]
+    Dir.glob("#{result_folder}/output_*.json").each do |json_file|
+      begin
+        features = JSON.parse(File.read(json_file))
+        features.each do |feature|
+          (feature['elements'] || []).each do |scenario|
+            scenario['before'] = (scenario['before'] || []).reject { |h| safe_statuses.include?(h.dig('result', 'status')) }
+            scenario['after']  = (scenario['after']  || []).reject { |h| safe_statuses.include?(h.dig('result', 'status')) }
+            (scenario['steps'] || []).each do |step|
+              step['after'] = (step['after'] || []).reject { |h| safe_statuses.include?(h.dig('result', 'status')) }
+            end
+          end
+        end
+        File.write("#{stripped_folder}/#{File.basename(json_file)}", JSON.generate(features))
+      rescue => e
+        warn "WARNING: Could not strip hooks from #{json_file}: #{e.message}"
+      end
+    end
+
     sh "node index.cjs #{result_folder} &> cucumber_reporter.log", verbose: false
-    sh "cp cucumber_report/cucumber_report.html #{result_folder}"
+    sh "cp -r cucumber_report/. #{result_folder}/cucumber_report/"
   end
 
   desc 'Collect and tag flaky tests'
