@@ -31,6 +31,10 @@
   .nesting-3 {
     padding-left: 56px;
   }
+
+  > tbody > tr.parent-row > * {
+    font-weight: 700;
+  }
 }
 
 .table > thead > tr.active > th {
