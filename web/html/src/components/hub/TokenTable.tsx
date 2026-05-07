@@ -136,15 +136,14 @@ export class TokenTable extends Component<Props, State> {
             <Button
               icon={row.valid ? "fa-ban" : "fa-check"}
               className="btn-default"
+              title={row.valid ? t("Invalidate") : t("Validate")}
               handler={() =>
                 // If the token is used, ask for confirmation. Otherwise, directly toggle the validity
                 row.hubId !== null || row.peripheralId !== null
                   ? this.setState({ confirmValidityDialog: true, selectedRow: row })
                   : this.onToggleValidity(row)
               }
-            >
-              {row.valid ? t("Invalidate") : t("Validate")}
-            </Button>
+            ></Button>
             {this.state.selectedRow && (
               <DangerDialog
                 id="confirm-validity-modal"
@@ -172,7 +171,6 @@ export class TokenTable extends Component<Props, State> {
             icon="fa-trash"
             handler={() => this.setState({ confirmDeleteDialog: true, selectedRow: row })}
           >
-            {t("Delete")}
             {this.state.selectedRow && (
               <DangerDialog
                 id="confirm-deletion-modal"

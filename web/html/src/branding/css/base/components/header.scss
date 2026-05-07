@@ -127,15 +127,16 @@
 
   #clear-ssm {
     padding: 4px 6px 4px 4px !important;
-    color: $gray-light;
-    background-color: transparent;
+    color: $body-color;
+    background-color: $eos-bc-gray-100;
     cursor: pointer;
     border-radius: 2px;
     border-width: 0;
 
     &:hover {
       background-color: $red;
-      color: $gray-light;
+      color: $white;
+      background-image: none;
     }
 
     i {
