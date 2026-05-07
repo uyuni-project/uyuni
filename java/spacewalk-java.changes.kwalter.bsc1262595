@@ -1,0 +1,2 @@
+- Fix Python SyntaxWarning for invalid escape sequence '\s' in
+  RHUI extract repo data script (bsc#1262595)

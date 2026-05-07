@@ -161,8 +161,7 @@ def _parse_repositories():
         elif line.startswith("Repo-mirrors"):
             repo_url = get_rhui_url(line.split(":", 1)[1])
         elif repo_url == "" and line.startswith("Repo-baseurl"):
-            # pylint: disable-next=anomalous-backslash-in-string
-            repo_url = get_rhui_url(re.split("\s+", line)[2])
+            repo_url = get_rhui_url(re.split(r"\s+", line)[2])
         elif line.strip() == "":
             if repo_id != "" and repo_url != "":
                 repo_dict[repo_id] = {"url": repo_url}
