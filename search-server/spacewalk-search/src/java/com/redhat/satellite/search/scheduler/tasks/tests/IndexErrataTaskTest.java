@@ -209,6 +209,7 @@ public class IndexErrataTaskTest extends BaseTestCase {
         @Override
         public void triggerComplete(Trigger arg0, JobExecutionContext arg1,
                 CompletedExecutionInstruction arg2) {
+            //empty method
         }
 
     }

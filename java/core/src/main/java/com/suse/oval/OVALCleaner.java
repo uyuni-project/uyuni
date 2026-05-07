@@ -86,13 +86,10 @@ public class OVALCleaner {
 
     private static void fillCves(DefinitionType definition, OsFamily osFamily) {
         switch (osFamily) {
-            case REDHAT_ENTERPRISE_LINUX:
-            case LEAP:
-            case LEAP_MICRO:
-            case SUSE_LINUX_ENTERPRISE_SERVER:
-            case SUSE_LINUX_ENTERPRISE_DESKTOP:
-            case SUSE_LINUX_ENTERPRISE_MICRO:
-            case UBUNTU:
+            case REDHAT_ENTERPRISE_LINUX,
+                 LEAP, LEAP_MICRO,
+                 SUSE_LINUX_ENTERPRISE_SERVER, SUSE_LINUX_ENTERPRISE_DESKTOP, SUSE_LINUX_ENTERPRISE_MICRO,
+                 UBUNTU:
                 List<String> cves =
                         definition.getMetadata().getAdvisory().map(Advisory::getCveList)
                                 .orElse(Collections.emptyList())

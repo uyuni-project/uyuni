@@ -186,10 +186,7 @@ public class SystemHardwareAction extends RhnAction {
         switch (d.getDeviceClass()) {
             case "HD":
                 break;
-            case "VIDEO":
-            case "USB":
-            case "AUDIO":
-            case "CAPTURE":
+            case "VIDEO", "USB", "AUDIO", "CAPTURE":
                 return d.getDeviceClass();
             default:
                 if (!d.getBus().equals("MISC")) {

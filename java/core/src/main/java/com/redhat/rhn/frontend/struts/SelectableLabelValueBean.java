@@ -43,7 +43,7 @@ public class SelectableLabelValueBean extends SelectableAdapter {
      */
     @Override
     public String getSelectionKey() {
-        return label;
+        return getLabel();
     }
 
 

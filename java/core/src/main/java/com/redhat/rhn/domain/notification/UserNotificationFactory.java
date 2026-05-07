@@ -422,7 +422,7 @@ public class UserNotificationFactory extends HibernateFactory {
         CriteriaDelete<NotificationMessage> delete = builder.createCriteriaDelete(NotificationMessage.class);
         Root<NotificationMessage> root = delete.from(NotificationMessage.class);
         delete.where(builder.lessThan(root.get("created"), before));
-        return getSession().createQuery(delete).executeUpdate();
+        return getSession().createMutationQuery(delete).executeUpdate();
     }
 
     /**

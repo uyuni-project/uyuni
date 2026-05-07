@@ -35,6 +35,7 @@ import com.redhat.rhn.manager.kickstart.cobbler.CobblerXMLRPCHelper;
 import com.redhat.rhn.manager.system.SystemManager;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.cobbler.Profile;
@@ -416,7 +417,7 @@ public class KickstartFactory extends HibernateFactory {
             Map<String, Object> ksmeta = p.getKsMeta().orElse(new HashMap<>());
             for (String name : ksmeta.keySet()) {
                 log.debug("fixing ksmeta: {}", name);
-                fileData = StringUtils.replace(fileData, "\\$" + name, "$" + name);
+                fileData =  Strings.CS.replace(fileData, "\\$" + name, "$" + name);
             }
         }
         else {

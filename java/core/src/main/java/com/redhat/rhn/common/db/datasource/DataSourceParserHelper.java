@@ -129,9 +129,7 @@ class DataSourceParserHelper implements ContentHandler, Serializable {
         logger.debug("endElement({})", localName);
 
         switch (localName) {
-            case "mode":
-            case "callable-mode":
-            case "write-mode":
+            case "mode", "callable-mode", "write-mode":
                 modes.put(m.getName(), m);
                 m = null;
                 break;

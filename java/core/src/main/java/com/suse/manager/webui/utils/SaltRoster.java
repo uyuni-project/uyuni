@@ -18,7 +18,7 @@ import com.redhat.rhn.common.util.FileUtils;
 
 import com.suse.manager.webui.services.SaltConstants;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -115,7 +115,7 @@ public class SaltRoster {
         // that might be present in the password field
         StringBuilder contentBuilder = new StringBuilder();
         contentBuilder.append("{% raw %}").append('\n');
-        contentBuilder.append(StringUtils.appendIfMissing(YamlHelper.INSTANCE.dump(data), "\n"));
+        contentBuilder.append(Strings.CS.appendIfMissing(YamlHelper.INSTANCE.dump(data), "\n"));
         contentBuilder.append("{% endraw %}").append('\n');
 
         FileUtils.writeStringToFile(contentBuilder.toString(), filePath.toString());

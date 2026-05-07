@@ -23,7 +23,7 @@ import com.redhat.rhn.common.util.validation.password.PasswordValidationUtils;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.user.User;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -181,7 +181,7 @@ public class UpdateUserCommand {
      * @param passwordIn The password to set
      */
     public void setPassword(String passwordIn) {
-        if (!StringUtils.equals(passwordIn, user.getPassword())) {
+        if (!Strings.CS.equals(passwordIn, user.getPassword())) {
             unencryptedPasswordChanged = true;
             needsUpdate = true;
             unencryptedPassword = passwordIn;
@@ -192,7 +192,7 @@ public class UpdateUserCommand {
      * @param emailIn The email to set
      */
     public void setEmail(String emailIn) {
-        if (!StringUtils.equals(emailIn, user.getEmail())) {
+        if (!Strings.CS.equals(emailIn, user.getEmail())) {
             emailChanged = true;
             needsUpdate = true;
             email = emailIn;
@@ -203,7 +203,7 @@ public class UpdateUserCommand {
      * @param prefixIn The prefix to set
      */
     public void setPrefix(String prefixIn) {
-        if (!StringUtils.equals(prefixIn, user.getPrefix())) {
+        if (!Strings.CS.equals(prefixIn, user.getPrefix())) {
             prefixChanged = true;
             needsUpdate = true;
             prefix = prefixIn;
@@ -214,7 +214,7 @@ public class UpdateUserCommand {
      * @param firstNamesIn The first names to set
      */
     public void setFirstNames(String firstNamesIn) {
-        if (!StringUtils.equals(firstNamesIn, user.getFirstNames())) {
+        if (!Strings.CS.equals(firstNamesIn, user.getFirstNames())) {
             firstNamesChanged = true;
             needsUpdate = true;
             firstNames = firstNamesIn;
@@ -225,7 +225,7 @@ public class UpdateUserCommand {
      * @param lastNameIn The last name to set
      */
     public void setLastName(String lastNameIn) {
-        if (!StringUtils.equals(lastNameIn, user.getLastName())) {
+        if (!Strings.CS.equals(lastNameIn, user.getLastName())) {
             lastNameChanged = true;
             needsUpdate = true;
             lastName = lastNameIn;

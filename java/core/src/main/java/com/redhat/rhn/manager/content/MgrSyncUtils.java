@@ -124,10 +124,7 @@ public class MgrSyncUtils {
             arch = PRODUCT_ARCHS.stream().filter(channelLabel::contains).findFirst().orElse(arch);
         }
         switch (arch) {
-            case "i686":
-            case "i586":
-            case "i486":
-            case "i386":
+            case "i686", "i586", "i486", "i386":
                 arch = "ia32";
                 break;
             case "ppc64":

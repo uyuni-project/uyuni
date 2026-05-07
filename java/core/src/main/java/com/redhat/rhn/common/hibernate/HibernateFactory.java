@@ -214,7 +214,7 @@ public abstract class HibernateFactory {
         CriteriaDelete<T> delete = builder.createCriteriaDelete(clazz);
         Root<T> root = delete.from(clazz);
         delete.where(root.in(objects));
-        return getSession().createQuery(delete).executeUpdate();
+        return getSession().createMutationQuery(delete).executeUpdate();
     }
 
     /**

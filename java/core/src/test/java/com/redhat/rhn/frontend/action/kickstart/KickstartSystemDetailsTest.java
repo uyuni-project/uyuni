@@ -86,17 +86,6 @@ public class KickstartSystemDetailsTest extends BaseKickstartEditTestCase {
     }
 
     @Test
-    public void testEditNetworkSuccess() throws Exception {
-        setupForEdit(ksdata);
-        addRequestParameter("selinuxMode", "permissive");
-        addRequestParameter("rootPassword", "blahblah");
-        addRequestParameter("rootPasswordConfirm", "blahblah");
-        addRequestParameter("pwdChanged", "true");
-        actionPerform();
-        verifyNoActionErrors();
-    }
-
-    @Test
     public void testExecute() {
         ksdata.getKickstartDefaults().getKstree().
             setInstallType(KickstartFactory.

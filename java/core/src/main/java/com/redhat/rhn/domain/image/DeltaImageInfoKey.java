@@ -75,8 +75,7 @@ public class DeltaImageInfoKey implements Serializable {
     @Override
     public boolean equals(Object other) {
 
-        if (other instanceof DeltaImageInfoKey) {
-            DeltaImageInfoKey otherInfo = (DeltaImageInfoKey) other;
+        if (other instanceof DeltaImageInfoKey otherInfo) {
             return new EqualsBuilder()
                     .append(this.getSourceImageInfo(), otherInfo.getSourceImageInfo())
                     .append(this.getTargetImageInfo(), otherInfo.getTargetImageInfo())

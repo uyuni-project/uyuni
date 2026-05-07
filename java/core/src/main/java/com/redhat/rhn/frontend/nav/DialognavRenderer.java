@@ -182,6 +182,7 @@ public class DialognavRenderer extends Renderable {
     /** {@inheritDoc} */
     @Override
     public void postNavNode(StringBuilder sb, int depth) {
+        //empty method
     }
 
     /** {@inheritDoc} */

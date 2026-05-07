@@ -40,11 +40,8 @@ public class VulnerablePackagesExtractors {
     public static VulnerablePackagesExtractor create(DefinitionType definition, OsFamily osFamily,
                                                      OVALResourcesCache ovalResourcesCache) {
         switch (osFamily) {
-            case LEAP:
-            case LEAP_MICRO:
-            case SUSE_LINUX_ENTERPRISE_SERVER:
-            case SUSE_LINUX_ENTERPRISE_DESKTOP:
-            case SUSE_LINUX_ENTERPRISE_MICRO:
+            case LEAP, LEAP_MICRO,
+                 SUSE_LINUX_ENTERPRISE_SERVER, SUSE_LINUX_ENTERPRISE_DESKTOP, SUSE_LINUX_ENTERPRISE_MICRO:
                 return new SUSEVulnerablePackageExtractor(definition, ovalResourcesCache);
             case DEBIAN:
                 return new DebianVulnerablePackagesExtractor(definition);

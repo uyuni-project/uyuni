@@ -334,8 +334,8 @@ public class VirtualHostManagerController {
                 }
 
                 String currentContext = null;
-                if (map.get("current-context") instanceof String) {
-                    currentContext = (String)map.get("current-context");
+                if (map.get("current-context") instanceof String currentContextString) {
+                    currentContext = currentContextString;
                 }
 
                 Map<String, Object> json = new HashMap<>();

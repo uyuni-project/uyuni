@@ -17,10 +17,10 @@ package com.redhat.rhn.domain.kickstart;
 
 import com.redhat.rhn.domain.BaseDomainHelper;
 
-import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.SQLSelect;
 
 import java.util.Date;
+import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -153,8 +153,8 @@ public class KickstartCommand extends BaseDomainHelper implements Comparable<Kic
         }
 
         if (order == 0) {
-            String ourArgs = StringUtils.defaultString(getArguments(), "");
-            String theirArgs = StringUtils.defaultString(k.getArguments(), "");
+            String ourArgs = Objects.toString(getArguments(), "");
+            String theirArgs = Objects.toString(k.getArguments(), "");
             order = ourArgs.compareTo(theirArgs);
         }
 

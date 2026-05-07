@@ -433,9 +433,9 @@ public class SystemHandler extends BaseHandler {
         // must contain all ids or labels (i.e. not a combination of both)
         boolean receivedLabels = false;
         if (!channelIdsOrLabels.isEmpty()) {
-            if (channelIdsOrLabels.get(0) instanceof String) {
+            if (channelIdsOrLabels.get(0) instanceof String channelIdsOrLabelsString) {
                 receivedLabels = true;
-                Channel channel = ChannelFactory.lookupByLabel((String) channelIdsOrLabels.get(0));
+                Channel channel = ChannelFactory.lookupByLabel(channelIdsOrLabelsString);
                 if (channel == null) {
                     throw new InvalidChannelLabelException();
                 }

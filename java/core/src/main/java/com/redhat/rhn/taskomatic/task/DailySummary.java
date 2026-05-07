@@ -40,6 +40,7 @@ import com.suse.manager.maintenance.BaseProductManager;
 import com.suse.manager.utils.MailHelper;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.apache.commons.lang3.time.StopWatch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -513,8 +514,8 @@ public class DailySummary extends RhnJavaJob {
 
         // wow, what an ugly @$$ hack, but this requires rewriting
         // the email templating engine which kinda sucks.
-        msg = StringUtils.replace(msg, "<login />", login);
-        return StringUtils.replace(msg, "<email-address />", email);
+        msg = Strings.CS.replace(msg, "<login />", login);
+        return Strings.CS.replace(msg, "<email-address />", email);
     }
 
     private String getHostname() {
