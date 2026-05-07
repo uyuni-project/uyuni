@@ -13,7 +13,7 @@ Feature: Push a package with unset vendor
     Given I am authorized
 
   Scenario: Pre-requisite: mgr-push package must be installed on the SLES minion
-    Then I install "mgr-push" on "sle_minion" using the API
+    When I install "mgr-push" on "sle_minion" using the API
 
   Scenario: Push a package with unset vendor through the SLES minion
     When I copy unset package file on "sle_minion"
@@ -29,4 +29,4 @@ Feature: Push a package with unset vendor
     And I should see a "Not defined" text
 
   Scenario: Cleanup: remove mgr-push from the SLES minion
-    Then I remove "mgr-push" on "sle_minion" using the API
+    When I remove "mgr-push" on "sle_minion" using the API
