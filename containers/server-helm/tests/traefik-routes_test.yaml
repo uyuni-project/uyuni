@@ -2,30 +2,71 @@ suite: test ingress providers
 templates:
   - traefik-routes.yaml
 tests:
-  - it: should route database exporters port with traefik ingress and monitoring enabled
+  - it: should route db and salt ports with traefik ingress
     set:
       global.fqdn: uyuni.example.com
       ingress:
         type: "traefik"
-      enableMonitoring: true
     asserts:
       - equal:
           path: spec.routes[0].services[0].port
-          value: 9187
+          value: 4506
         documentSelector:
           path: metadata.name
-          value: db-xport-route
-  
-  - it: should not route database exporters port with traefik ingress and monitoring disabled
-    set:
-      global.fqdn: uyuni.example.com
-      ingress:
-        type: "traefik"
-      enableMonitoring: false
-    asserts:
+          value: salt-request-route
+      - equal:
+          path: spec.routes[0].services[0].port
+          value: 4505
+        documentSelector:
+          path: metadata.name
+          value: salt-publish-route
+      - equal:
+          path: spec.routes[0].services[0].port
+          value: 5432
+        documentSelector:
+          path: metadata.name
+          value: reportdb-pgsql-route
       - hasDocuments:
           count: 0
         documentSelector:
           path: metadata.name
-          value: db-xport-route
+          value: tomcat-debug-route
           skipEmptyTemplates: true
+      - hasDocuments:
+          count: 0
+        documentSelector:
+          path: metadata.name
+          value: search-debug-route
+          skipEmptyTemplates: true
+      - hasDocuments:
+          count: 0
+        documentSelector:
+          path: metadata.name
+          value: tasko-debug-route
+          skipEmptyTemplates: true
+  
+  - it: should route debug ports with traefik ingress and java debugging
+    set:
+      global.fqdn: uyuni.example.com
+      ingress:
+        type: "traefik"
+      exposeJavaDebug: true
+    asserts:
+      - equal:
+          path: spec.routes[0].services[0].port
+          value: 8003
+        documentSelector:
+          path: metadata.name
+          value: tomcat-debug-route
+      - equal:
+          path: spec.routes[0].services[0].port
+          value: 8002
+        documentSelector:
+          path: metadata.name
+          value: search-debug-route
+      - equal:
+          path: spec.routes[0].services[0].port
+          value: 8001
+        documentSelector:
+          path: metadata.name
+          value: tasko-debug-route
