@@ -111,6 +111,7 @@ BuildRequires:  istack-commons-runtime
 BuildRequires:  jade4j
 BuildRequires:  java-%{java_version}-openjdk-devel
 BuildRequires:  java-saml
+BuildRequires:  jctools
 BuildRequires:  jakarta-mail
 BuildRequires:  angus-mail-core
 BuildRequires:  javapackages-tools
@@ -124,9 +125,7 @@ BuildRequires:  libxml2
 BuildRequires:  log4j
 BuildRequires:  log4j-jcl
 BuildRequires:  log4j-slf4j
-BuildRequires:  netty
 BuildRequires:  perl
-BuildRequires:  pgjdbc-ng
 BuildRequires:  postgresql-jdbc
 BuildRequires:  prometheus-metrics-java-core
 BuildRequires:  prometheus-metrics-java-config
@@ -205,6 +204,7 @@ Requires:       jakarta-mail
 Requires:       angus-mail-core
 Requires:       javapackages-tools
 Requires:       jboss-logging >= 3.6.1
+Requires:       jctools
 Requires:       jdom
 Requires:       joda-time
 Requires:       jose4j
@@ -215,8 +215,6 @@ Requires:       log4j
 Requires:       log4j-jcl
 Requires:       log4j-slf4j
 Requires:       mgr-libmod
-Requires:       netty
-Requires:       pgjdbc-ng
 Requires:       prometheus-metrics-java-core
 Requires:       prometheus-metrics-java-config
 Requires:       prometheus-metrics-java-model

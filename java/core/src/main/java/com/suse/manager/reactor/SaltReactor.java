@@ -69,6 +69,7 @@ import com.suse.salt.netapi.event.MinionStartEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -155,6 +156,12 @@ public class SaltReactor {
         isStopped = true;
         if (eventStream != null) {
             eventStream.removeEventListener(listener);
+            try {
+                eventStream.close();
+            }
+            catch (IOException e) {
+                LOG.error("Error closing event stream", e);
+            }
         }
     }
 
