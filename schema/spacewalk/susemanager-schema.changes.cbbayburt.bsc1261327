@@ -1,0 +1,2 @@
+- Sync package removal permissions in packages API with the Web UI
+  (bsc#1261327)
