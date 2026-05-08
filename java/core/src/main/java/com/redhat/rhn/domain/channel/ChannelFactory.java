@@ -2317,19 +2317,29 @@ public class ChannelFactory extends HibernateFactory {
         String hostname = ConfigDefaults.get().getJavaHostname();
         String channelLabel = channel.getLabel();
 
-        Optional<String> tokenString = SCCEndpoints.buildHubRepositoryToken(channel);
-        if (tokenString.isPresent()) {
-            SCCRepositoryJson repositoryInfo;
-            if (channel.getOrg() != null) {
-                repositoryInfo = SCCEndpoints.buildCustomRepoJson(channelLabel, hostname, tokenString.get());
-            }
-            else {
-                repositoryInfo = SUSEProductFactory.lookupByChannelLabelFirst(channelLabel)
-                        .map(ct -> SCCEndpoints.buildVendorRepoJson(ct, hostname, tokenString.get()))
-                        .orElse(SCCEndpoints.buildCustomRepoJson(channelLabel, hostname, tokenString.get()));
-            }
-            channelInfo.setRepositoryInfo(repositoryInfo);
+        Long oid = Optional.ofNullable(channel.getOrg()).map(Org::getId).orElse(0L);
+        SCCRepositoryJson repositoryInfo;
+        if (channel.getOrg() != null) {
+            String tokenString = SCCEndpoints.buildHubRepositoryToken(Set.of(channel.getLabel()), oid)
+                    .orElse("");
+            repositoryInfo = SCCEndpoints.buildCustomRepoJson(channelLabel, hostname, tokenString);
         }
+        else {
+            repositoryInfo = SUSEProductFactory.lookupByChannelLabelFirst(channelLabel)
+                    .map(ct -> {
+                        Set<String> vendorChannelLabels = new HashSet<>(ct.getRepository().getChannelTemplates()
+                                .stream().map(ChannelTemplate::getChannelLabel).toList());
+                        String tokenString = SCCEndpoints.buildHubRepositoryToken(vendorChannelLabels, 0L)
+                                .orElse("");
+                        return SCCEndpoints.buildVendorRepoJson(ct, hostname, tokenString);
+                    })
+                    .orElseGet(() -> {
+                        String tokenString = SCCEndpoints.buildHubRepositoryToken(Set.of(channel.getLabel()), oid)
+                                .orElse("");
+                        return SCCEndpoints.buildCustomRepoJson(channelLabel, hostname, tokenString);
+                    });
+        }
+        channelInfo.setRepositoryInfo(repositoryInfo);
 
         return channelInfo;
     }
