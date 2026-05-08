@@ -19,10 +19,9 @@
 #
 
 import re
-import hmac
-import hashlib
-import os as _os
-import base64 as _base64
+
+# pylint: disable-next=deprecated-module
+import crypt
 
 # Global Modules
 from rhn.UserDictCase import UserDictCase
@@ -101,11 +100,13 @@ class User:
             # so I'll use a query for now
             # - misa
             #
-            h = rhnSQL.prepare("""
+            h = rhnSQL.prepare(
+                """
                 select ui.use_pam_authentication
                 from web_contact w, rhnUserInfo ui
                 where w.login_uc = UPPER(:login)
-                and w.id = ui.user_id""")
+                and w.id = ui.user_id"""
+            )
             h.execute(login=self.contact["login"])
             data = h.fetchone_dict()
             if not data:
@@ -125,10 +126,10 @@ class User:
         if (
             ret
             and CFG.encrypted_passwords
-            and not self.contact["password"].startswith(_PBKDF2_PREFIX)
+            and self.contact["password"].find("$1$") == 0
         ):
-            # If successfully authenticated and the stored password is not yet
-            # using PBKDF2-SHA256, upgrade it transparently on next login.
+            # If successfully authenticated and the current password is
+            # MD5 encoded, convert the password to SHA-256 and save it in the DB.
             self.contact["password"] = encrypt_password(password)
             self.contact.save()
             rhnSQL.commit()
@@ -267,7 +268,8 @@ class User:
     def get_roles(self):
         user_id = self.getid()
 
-        h = rhnSQL.prepare("""
+        h = rhnSQL.prepare(
+            """
             select ugt.label as role
               from rhnUserGroup ug,
                    rhnUserGroupType ugt,
@@ -275,7 +277,8 @@ class User:
              where ugm.user_id = :user_id
                and ugm.user_group_id = ug.id
                and ug.group_type = ugt.id
-        """)
+        """
+        )
         h.execute(user_id=user_id)
         return [x["role"] for x in h.fetchall_dict() or []]
 
@@ -347,10 +350,12 @@ def session_reload(session_string):
 def get_user_id(username):
     """search for an userid"""
     username = str(username)
-    h = rhnSQL.prepare("""
+    h = rhnSQL.prepare(
+        """
     select w.id from web_contact w
     where w.login_uc = upper(:username)
-    """)
+    """
+    )
     h.execute(username=username)
     data = h.fetchone_dict()
     if data:
@@ -376,10 +381,12 @@ def search(user):
 def is_user_disabled(user):
     log_debug(3, user)
     username = str(user)
-    h = rhnSQL.prepare("""
+    h = rhnSQL.prepare(
+        """
     select 1 from rhnWebContactDisabled
     where login_uc = upper(:username)
-    """)
+    """
+    )
     h.execute(username=username)
     row = h.fetchone_dict()
     if row:
@@ -390,11 +397,13 @@ def is_user_disabled(user):
 def is_user_read_only(user):
     log_debug(3, user)
     username = str(user)
-    h = rhnSQL.prepare("""
+    h = rhnSQL.prepare(
+        """
     select 1 from web_contact
     where login_uc = upper(:username)
     and read_only = 'Y'
-    """)
+    """
+    )
     h.execute(username=username)
     row = h.fetchone_dict()
     if row:
@@ -413,12 +422,14 @@ def __reserve_user_db(user, password):
         3, user, CFG.disallow_user_creation, encrypted_password, CFG.pam_auth_service
     )
     user = str(user)
-    h = rhnSQL.prepare("""
+    h = rhnSQL.prepare(
+        """
     select w.id, w.password, w.org_id, ui.use_pam_authentication
     from web_contact w, rhnUserInfo ui
     where w.login_uc = upper(:p1)
     and w.id = ui.user_id
-    """)
+    """
+    )
     h.execute(p1=user)
     data = h.fetchone_dict()
     if data and data["id"]:
@@ -442,10 +453,12 @@ def __reserve_user_db(user, password):
     user, password = check_user_password(user, password)
 
     # now check the reserved table
-    h = rhnSQL.prepare("""
+    h = rhnSQL.prepare(
+        """
     select r.login, r.password from rhnUserReserved r
     where r.login_uc = upper(:p1)
-    """)
+    """
+    )
     h.execute(p1=user)
     data = h.fetchone_dict()
     if data and data["login"]:
@@ -463,10 +476,12 @@ def __reserve_user_db(user, password):
         # Encrypt the password, let the function pick the salt
         password = encrypt_password(password)
 
-    h = rhnSQL.prepare("""
+    h = rhnSQL.prepare(
+        """
     insert into rhnUserReserved (login, password)
     values (:username, :password)
-    """)
+    """
+    )
     h.execute(username=user, password=password)
     rhnSQL.commit()
 
@@ -485,12 +500,14 @@ def __new_user_db(username, password, email, org_id, org_password):
     log_debug(3, username, email, encrypted_password)
 
     # now search it in the database
-    h = rhnSQL.prepare("""
+    h = rhnSQL.prepare(
+        """
     select w.id, w.password, ui.use_pam_authentication
     from web_contact w, rhnUserInfo ui
     where w.login_uc = upper(:username)
     and w.id = ui.user_id
-    """)
+    """
+    )
     h.execute(username=username)
     data = h.fetchone_dict()
 
@@ -498,10 +515,12 @@ def __new_user_db(username, password, email, org_id, org_password):
 
     if not data:
         # the username is not there, check the reserved user table
-        h = rhnSQL.prepare("""
+        h = rhnSQL.prepare(
+            """
         select login, password from rhnUserReserved
         where login_uc = upper(:username)
-        """)
+        """
+        )
         h.execute(username=username)
         data = h.fetchone_dict()
         if not data:  # nope, not reserved either
@@ -598,16 +617,6 @@ def check_email(email):
     return email
 
 
-_PBKDF2_ITERATIONS = 600000
-_PBKDF2_MIN_ITERATIONS = _PBKDF2_ITERATIONS
-_PBKDF2_MAX_ITERATIONS = 2_000_000
-_PBKDF2_PREFIX = "$pbkdf2-sha256$"
-
-
-def _b64_pad(s):
-    return s + "=" * (-len(s) % 4)
-
-
 def check_password(key, pwd1):
     """Validates the given key against the current or old password
     If encrypted_password is false, it compares key with pwd1.
@@ -633,45 +642,47 @@ def check_password(key, pwd1):
         return 0  # Invalid
 
     # Crypted passwords in the database
-    if pwd1.startswith(_PBKDF2_PREFIX):  # PBKDF2-SHA256 password
-        # format: $pbkdf2-sha256$<iterations>$<b64salt>$<b64hash>
-        try:
-            _, _, iter_s, b64salt, b64hash = pwd1.split("$")
-            iterations = int(iter_s)
-            if not _PBKDF2_MIN_ITERATIONS <= iterations <= _PBKDF2_MAX_ITERATIONS:
-                raise ValueError("iteration count out of range")
-            raw_salt = _base64.b64decode(_b64_pad(b64salt))
-            dk = hashlib.pbkdf2_hmac("sha256", key.encode(), raw_salt, iterations)
-            stored = _base64.b64decode(_b64_pad(b64hash))
-            if hmac.compare_digest(dk, stored):
-                return 1
-        except (ValueError, TypeError):
-            log_debug(4, "PBKDF2 password verification failed")
-            return 0
-    elif pwd1.find("$5") == 0:  # legacy SHA-256 crypt(3) password
-        if pwd1 == encrypt_password(key, pwd1):
+    if pwd1.find("$5") == 0:  # SHA-256 encrypted password
+        if pwd1 == encrypt_password(key, pwd1, "SHA-256"):
+            return 1
+    elif pwd1.find("$1$") == 0:  # MD5 encrypted password
+        if pwd1 == encrypt_password(key, pwd1, "MD5"):
             return 1
 
     log_debug(4, "Encrypted password doesn't match")
     return 0  # invalid
 
 
-def encrypt_password(key, salt=None):
-    """Hash key with PBKDF2-SHA256. The salt param is kept only for legacy crypt(3) verification."""
-    if salt and str(salt).find("$5$") == 0:
-        # Legacy read-side path for existing SHA-256 crypt(3) hashes ($5$…).
-        import crypt as _crypt  # pylint: disable=import-outside-toplevel,deprecated-module
+def encrypt_password(key, salt=None, method="SHA-256"):
+    """Encrypt the key
+    If no salt is supplied, generates one (md5-crypt salt)
+    """
 
-        return _crypt.crypt(key, str(salt))
+    pw_params = {
+        "MD5": [8, "$1$"],  # method: [salt length, prefix]
+        "SHA-256": [16, "$5$"],
+    }
 
-    # Stored format: $pbkdf2-sha256$<iterations>$<b64salt>$<b64hash>
-    # 32-byte salt + 32-byte key → 43 base64 chars each (padding stripped).
-    # Total length ≤ 109 chars, fits in the 110-char web_contact.password column.
-    raw_salt = _os.urandom(32)
-    dk = hashlib.pbkdf2_hmac("sha256", key.encode(), raw_salt, _PBKDF2_ITERATIONS)
-    b64salt = _base64.b64encode(raw_salt).decode().rstrip("=")
-    b64hash = _base64.b64encode(dk).decode().rstrip("=")
-    return f"{_PBKDF2_PREFIX}{_PBKDF2_ITERATIONS}${b64salt}${b64hash}"
+    if not salt:
+        # No salt supplied, generate it ourselves
+        # pylint: disable-next=import-outside-toplevel
+        import base64
+
+        # pylint: disable-next=import-outside-toplevel
+        import time
+
+        # pylint: disable-next=import-outside-toplevel
+        import os
+
+        # Get the first 15 digits after the decimal point from time.time(), and
+        # add the pid too
+        salt = (time.time() % 1) * 1e15 + os.getpid()
+        # base64 it and keep only the first n chars
+        salt = base64.encodestring(str(salt).encode()).decode()[: pw_params[method][0]]
+        # slap the magic in front of the salt
+        salt = pw_params[method][1] + salt + "$"
+    salt = str(salt)
+    return crypt.crypt(key, salt)
 
 
 def validate_new_password(password):
