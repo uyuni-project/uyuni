@@ -59,7 +59,7 @@ import java.util.stream.Stream;
 /**
  * Processes Salt events from the PostgreSQL database (suseSaltEvent) using the LISTEN/NOTIFY mechanism.
  *
- * The following sections describe this class’s scope, relevant concepts, and the design for which it is responsible.
+ * The following sections describe this class's scope, relevant concepts, and the design for which it is responsible.
  *
  * Salt events flow through the system as follows:
  *   1) Salt Master generates events (minion starts, job returns, etc.)
