@@ -1,2 +1,0 @@
-- Remove validation of packages in kickstart profiles which are
-  not supported anymore (bsc#1259474)

@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Apr 17 11:36:54 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.3
+  * Image rebuilt to the newest version with updated dependencies
+
+-------------------------------------------------------------------
 Mon Mar 02 13:21:38 CET 2026 - michael.calmer@suse.com
 
 - version 5.2.2

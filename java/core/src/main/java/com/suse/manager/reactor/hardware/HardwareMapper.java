@@ -714,8 +714,7 @@ public class HardwareMapper {
                     virtTypeLabel = "fully_virtualized";
                 }
                 break;
-            case "qemu":
-            case "kvm":
+            case "qemu", "kvm":
                 virtTypeLabel = "qemu";
                 break;
             case "nitro":
@@ -730,9 +729,7 @@ public class HardwareMapper {
                 case "xen":
                     virtTypeLabel = "aws_xen";
                     break;
-                case "qemu":
-                case "kvm":
-                case "nitro":
+                case "qemu", "kvm", "nitro":
                     virtTypeLabel = "aws_nitro";
                     break;
                 default:

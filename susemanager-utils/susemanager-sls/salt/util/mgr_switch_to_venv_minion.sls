@@ -36,15 +36,15 @@ mgr_purge_non_venv_salt_packages:
 {%- if salt['pillar.get']('mgr_purge_non_venv_salt_files') %}
 mgr_purge_non_venv_salt_pki_dir:
   cmd.run:
-    - name: command -p rm -rf /etc/salt/minion* /etc/salt/pki/minion
+    - name: /usr/bin/rm -rf /etc/salt/minion* /etc/salt/pki/minion
     - onlyif:
-      - command -p test -d /etc/salt/pki/minion
+      - /usr/bin/test -d /etc/salt/pki/minion
 
 mgr_purge_non_venv_salt_conf_dir:
   file.absent:
     - name: /etc/salt
     - unless:
-      - command -p find /etc/salt -type f -print -quit | command -p grep -q .
+      - /usr/bin/find /etc/salt -type f -print -quit | /usr/bin/grep -q .
     - require:
       - cmd: mgr_purge_non_venv_salt_pki_dir
 {%- endif %}
@@ -68,11 +68,11 @@ mgr_copy_salt_minion_id:
     - require:
       - pkg: mgr_venv_salt_minion_pkg
     - onlyif:
-      - command -p test -f /etc/salt/minion_id
+      - /usr/bin/test -f /etc/salt/minion_id
 
 mgr_copy_salt_minion_configs:
   cmd.run:
-    - name: command -p cp -r /etc/salt/minion.d /etc/venv-salt-minion/
+    - name: /usr/bin/cp -r /etc/salt/minion.d /etc/venv-salt-minion/
     - require:
       - pkg: mgr_venv_salt_minion_pkg
 
@@ -85,15 +85,15 @@ mgr_copy_salt_minion_grains:
     - require:
       - pkg: mgr_venv_salt_minion_pkg
     - onlyif:
-      - command -p test -f /etc/salt/grains
+      - /usr/bin/test -f /etc/salt/grains
 
 mgr_copy_salt_minion_keys:
   cmd.run:
-    - name: command -p rm -f /etc/venv-salt-minion/pki/minion/minion*; command -p cp -r /etc/salt/pki/minion/minion* /etc/venv-salt-minion/pki/minion/
+    - name: /usr/bin/rm -f /etc/venv-salt-minion/pki/minion/minion*; /usr/bin/cp -r /etc/salt/pki/minion/minion* /etc/venv-salt-minion/pki/minion/
     - require:
       - cmd: mgr_copy_salt_minion_configs
     - onlyif:
-      - command -p test -f /etc/salt/pki/minion/minion.pem
+      - /usr/bin/test -f /etc/salt/pki/minion/minion.pem
 
 mgr_enable_venv_salt_minion:
   service.running:

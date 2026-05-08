@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2026 SUSE LCC
+ * Copyright (c) 2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -214,7 +214,7 @@ public abstract class HibernateFactory {
         CriteriaDelete<T> delete = builder.createCriteriaDelete(clazz);
         Root<T> root = delete.from(clazz);
         delete.where(root.in(objects));
-        return getSession().createQuery(delete).executeUpdate();
+        return getSession().createMutationQuery(delete).executeUpdate();
     }
 
     /**

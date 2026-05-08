@@ -30,14 +30,14 @@ import java.util.Optional;
  */
 public class SystemInfo {
 
-    @SerializedName("mgrcompat_|-status_uptime_|-status.uptime_|-module_run")
+    @SerializedName("module_|-status_uptime_|-status.uptime_|-run")
     private StateApplyResult<Ret<Map<String, Object>>> upTime;
     // support both grains.item and grains.items
-    @SerializedName("mgrcompat_|-grains_update_|-grains.item_|-module_run")
+    @SerializedName("module_|-grains_update_|-grains.item_|-run")
     private StateApplyResult<Ret<Map<String, Object>>> grains;
-    @SerializedName("mgrcompat_|-grains_update_|-grains.items_|-module_run")
+    @SerializedName("module_|-grains_update_|-grains.items_|-run")
     private StateApplyResult<Ret<Map<String, Object>>> grainsFull;
-    @SerializedName("mgrcompat_|-kernel_live_version_|-sumautil.get_kernel_live_version_|-module_run")
+    @SerializedName("module_|-kernel_live_version_|-sumautil.get_kernel_live_version_|-run")
     private StateApplyResult<Ret<KernelLiveVersionInfo>> kernelLiveVersion;
 
     /**

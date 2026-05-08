@@ -42,6 +42,7 @@ public class KickstartInstallType extends BaseDomainHelper {
     public static final String RHEL_7 = "rhel_7";
     public static final String RHEL_8 = "rhel_8";
     public static final String RHEL_9 = "rhel_9";
+    public static final String RHEL_10 = "rhel_10";
     public static final String GENERIC_RPM = "generic_rpm";
 
     // Spacewalk's install type prefixes for some multi-version
@@ -100,6 +101,12 @@ public class KickstartInstallType extends BaseDomainHelper {
     }
 
     /**
+     * @return true if the installer type is rhel 10
+     */
+    public boolean isRhel10() {
+        return RHEL_10.equals(getLabel());
+    }
+    /**
      * @return true if the installer type is rhel 8
      */
     public boolean isRhel8() {
@@ -124,7 +131,7 @@ public class KickstartInstallType extends BaseDomainHelper {
      * @return true if the installer type is rhel
      */
     public boolean isRhel() {
-        return isRhel6() || isRhel7() || isRhel8() || isRhel9();
+        return isRhel6() || isRhel7() || isRhel8() || isRhel9() || isRhel10();
     }
 
     /**

@@ -1,0 +1,18 @@
+{
+    "@odata.type": "#RoleCollection.RoleCollection",
+    "Name": "Roles Collection",
+    "Members@odata.count": 3,
+    "Members": [
+        {
+            "@odata.id": "/redfish/v1/AccountService/Roles/Administrator"
+        },
+        {
+            "@odata.id": "/redfish/v1/AccountService/Roles/Operator"
+        },
+        {
+            "@odata.id": "/redfish/v1/AccountService/Roles/ReadOnly"
+        }
+    ],
+    "@odata.id": "/redfish/v1/AccountService/Roles",
+    "@Redfish.Copyright": "Copyright 2014-2019 DMTF. For the full DMTF copyright policy, see http://www.dmtf.org/about/policies/copyright."
+}

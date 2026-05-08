@@ -66,4 +66,9 @@ insert into rhnKSInstallType (id, label, name)
                 'rhel_9','Red Hat Enterprise Linux 9'
         );
 
+insert into rhnKSInstallType (id, label, name)
+        values (sequence_nextval('rhn_ksinstalltype_id_seq'),
+                'rhel_10','Red Hat Enterprise Linux 10'
+        );
+
 commit;

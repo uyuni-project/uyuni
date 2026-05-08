@@ -1381,6 +1381,23 @@ DATA = {
         "PKGLIST": RES9,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/res/9/bootstrap/",
     },
+    "SUSE-LibertyLinux10-x86_64": {
+        "PDID": [-58, 3141, 3339],
+        "BETAPDID": [3370],
+        "PKGLIST": RES10,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/res/10/bootstrap/",
+    },
+    "RHEL10-x86_64": {
+        "PDID": [-58, 3339],
+        "BETAPDID": [3370],
+        "PKGLIST": RES10,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/res/10/bootstrap/",
+    },
+    "RHEL10-x86_64-uyuni": {
+        "BASECHANNEL": "rhel10-pool-uyuni-x86_64",
+        "PKGLIST": RES10,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/res/10/bootstrap/",
+    },
     "alibaba-2-x86_64-uyuni": {
         "BASECHANNEL": "alibaba-2-x86_64",
         "PKGLIST": RES7 + RES7_X86 + RES7REQ,

@@ -1,0 +1,69 @@
+{
+    "@odata.type": "#ComputerSystem.v1_10_0.ComputerSystem",
+    "Id": "1",
+    "Name": "Catfish System",
+    "SystemType": "Physical",
+    "AssetTag": "CATFISHASSETTAG",
+    "Manufacturer": "CatfishManufacturer",
+    "Model": "YellowCat1000",
+    "SerialNumber": "2M220100SL",
+    "SKU": "",
+    "PartNumber": "",
+    "Description": "Catfish Implementation Recipe of simple scale-out monolithic server",
+    "UUID": "00000000-0000-0000-0000-000000000000",
+    "HostName": "catfishHostname",
+    "PowerState": "On",
+    "BiosVersion": "X00.1.2.3.4(build-23)",
+    "Status": {
+        "State": "Enabled",
+        "Health": "OK"
+    },
+    "IndicatorLED": "Off",
+    "Boot": {
+        "BootSourceOverrideEnabled": "Once",
+        "BootSourceOverrideMode": "UEFI",
+        "UefiTargetBootSourceOverride": "uefiDevicePath",
+        "BootSourceOverrideTarget": "Pxe",
+        "BootSourceOverrideTarget@Redfish.AllowableValues": [
+            "None",
+            "Pxe",
+            "Usb",
+            "Hdd",
+            "BiosSetup",
+            "UefiTarget",
+            "UefiHttp"
+        ]
+    },
+    "LogServices": {
+        "@odata.id": "/redfish/v1/Systems/1/LogServices"
+    },
+    "Links": {
+        "Chassis": [
+            {
+                "@odata.id": "/redfish/v1/Chassis/1"
+            }
+        ],
+        "ManagedBy": [
+            {
+                "@odata.id": "/redfish/v1/Managers/bmc"
+            }
+        ],
+        "Oem": {}
+    },
+    "Actions": {
+        "#ComputerSystem.Reset": {
+            "target": "/redfish/v1/Systems/1/Actions/ComputerSystem.Reset",
+            "ResetType@Redfish.AllowableValues": [
+                "On",
+                "ForceOff",
+                "GracefulShutdown",
+                "ForceRestart",
+                "Nmi",
+                "GracefulRestart",
+                "ForceOn"
+            ]
+        }
+    },
+    "@odata.id": "/redfish/v1/Systems/1",
+    "@Redfish.Copyright": "Copyright 2014-2019 DMTF. For the full DMTF copyright policy, see http://www.dmtf.org/about/policies/copyright."
+}

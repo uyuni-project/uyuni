@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Apr 16 14:34:19 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.4-0
+  * Build uyuni-common-libs noarch
+
+-------------------------------------------------------------------
 Mon Mar 02 13:24:56 CET 2026 - michael.calmer@suse.com
 
 - version 5.2.3-0

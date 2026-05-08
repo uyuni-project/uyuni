@@ -28,7 +28,6 @@ import com.suse.manager.api.SerializedApiResponse;
  *   #prop_desc("int", "id", "Tailoring file ID")
  *   #prop_desc("string", "name", "Tailoring file name")
  *   #prop_desc("string", "fileName", "File name on disk")
- *   #prop_desc("string", "displayFileName", "Display file name")
  *   #prop_desc("int", "orgId", "Organization ID")
  * #struct_end()
  */
@@ -45,7 +44,6 @@ public class TailoringFileSerializer extends ApiResponseSerializer<TailoringFile
                 .add("id", src.getId())
                 .add("name", src.getName())
                 .add("fileName", src.getFileName())
-                .add("displayFileName", src.getDisplayFileName())
                 .add("orgId", src.getOrg().getId())
                 .build();
     }

@@ -24,7 +24,7 @@ import java.util.Map;
  */
 public class DistUpgradeOldSlsResult {
 
-   @SerializedName("mgrcompat_|-spmigration_|-pkg.upgrade_|-module_run")
+   @SerializedName("module_|-spmigration_|-pkg.upgrade_|-run")
    private StateApplyResult<RetOpt<ModuleRun<Map<String, Change<String>>>>> spmigration;
 
    /**

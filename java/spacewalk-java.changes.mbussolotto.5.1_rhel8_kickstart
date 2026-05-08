@@ -1,2 +1,0 @@
-- Kickstart profile for RHEL 8 requires venv-salt-minion
-  instead of salt-minion (bsc#1259474)

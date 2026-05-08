@@ -23,7 +23,7 @@ const ENDPOINTS = {
 
 interface ScapContent {
   id: number;
-  dataStreamFileName: string;
+  name: string;
 }
 
 interface TailoringFile {
@@ -85,10 +85,12 @@ const ScapPolicy = (): JSX.Element => {
     label: file.name,
   }));
 
-  const dataStreams: SelectOption[] = (pageData?.scapContentList || []).map((content) => ({
-    value: content.id,
-    label: content.dataStreamFileName.replace("-ds.xml", "").toUpperCase(),
-  }));
+  const dataStreams: SelectOption[] = (pageData?.scapContentList || [])
+    .sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
+    .map((content) => ({
+      value: content.id,
+      label: content.name,
+    }));
 
   // Load profiles on mount in edit mode
   useEffect(() => {

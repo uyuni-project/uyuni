@@ -1,0 +1,12 @@
+{
+    "@odata.type": "#ComputerSystemCollection.ComputerSystemCollection",
+    "Name": "Computer System Collection",
+    "Members@odata.count": 1,
+    "Members": [
+        {
+            "@odata.id": "/redfish/v1/Systems/1"
+        }
+    ],
+    "@odata.id": "/redfish/v1/Systems",
+    "@Redfish.Copyright": "Copyright 2014-2019 DMTF. For the full DMTF copyright policy, see http://www.dmtf.org/about/policies/copyright."
+}

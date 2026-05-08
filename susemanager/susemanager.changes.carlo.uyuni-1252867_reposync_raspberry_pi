@@ -1,2 +1,0 @@
-- Fix wrong Raspberry Pi OS 12 bootstrap repo creation
-  (bsc#1252867)

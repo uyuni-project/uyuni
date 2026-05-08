@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Apr 17 11:27:01 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.4-0
+  * Proxy the exporters using Apache
+
+-------------------------------------------------------------------
 Tue Jan 27 09:31:39 WET 2026 - psuarezhernandez@suse.com
 
 - version 5.2.3-0

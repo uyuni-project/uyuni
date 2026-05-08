@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Apr 16 14:39:37 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.5-0
+  * Adding bootstrap repo definition and spacewalk-common-channels
+    for RHEL10 clones
+
+-------------------------------------------------------------------
 Mon Mar 02 13:23:04 CET 2026 - michael.calmer@suse.com
 
 - version 5.2.4-0

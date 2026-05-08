@@ -43,7 +43,7 @@ ingress:
   # --providers.kubernetescrd.ingressclass parameter's value.
   # On rke2 this is likely to be "traefik". On K3S it is likely to be ""
   #
-  class: ""
+  class: "traefik"
   
   # annotations can be used to set custom annotations on the created ingress rules.
   # This can be used to configure another ingress than the ones already wired with the ingress.type.

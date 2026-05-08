@@ -12,10 +12,10 @@
 -- Migration: Add scap_policy_id to rhnActionScap
 -- This links SCAP scans back to policies for compliance reporting
 
-ALTER TABLE rhnActionScap 
-ADD COLUMN IF NOT EXISTS scap_policy_id  BIGINT 
-CONSTRAINT fk_scap_policy 
-REFERENCES suseScapPolicy(id) 
+ALTER TABLE rhnActionScap
+ADD COLUMN IF NOT EXISTS scap_policy_id  BIGINT
+CONSTRAINT rhn_act_scap_policy_fk
+REFERENCES suseScapPolicy(id)
 ON DELETE SET NULL;
 
 CREATE INDEX IF NOT EXISTS rhn_act_scap_policy_idx 

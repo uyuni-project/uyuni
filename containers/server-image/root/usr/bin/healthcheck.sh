@@ -1,48 +1,16 @@
-#!/bin/bash
-set -o pipefail
-MANAGER_COMPLETE="/var/spacewalk/.MANAGER_SETUP_COMPLETE"
+#!/usr/bin/env bash
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-Only
 
-check_manager_login() {
-    local attempts=2
-    local attempt=1
-
-    while [ "$attempt" -le "$attempts" ]; do
-        if curl --noproxy localhost --fail --silent --show-error --connect-timeout 10 --max-time 20 \
-            http://localhost/rhn/manager/login > /dev/null; then
-            return 0
-        fi
-
-        sleep 0.5
-        attempt=$((attempt + 1))
-    done
-
-    return 1
-}
-
-set +e
-/usr/bin/spacewalk-diskcheck
-DISK_EXIT_CODE=$?
 set -e
 
-RESTART_MARKER="/var/run/uyuni-restart-pending"
-if [ -f "${RESTART_MARKER}" ]; then
-    echo "Restart pending – reporting unhealthy"
-    exit 1
-fi
+# This script is used on podman as is doesn't make a difference between liveness and readiness checks.
 
-if [ $DISK_EXIT_CODE -eq 3 ]; then
-    echo "Healthcheck failed: spacewalk-diskcheck returned critical error (3)"
-    exit 1
-fi
+/usr/bin/liveness-check.sh
 
-if [ -f "$MANAGER_COMPLETE" ]; then
-    /usr/bin/systemctl is-active multi-user.target
-    salt-call --local --no-color status.ping_master localhost |grep -q True
-    if ! check_manager_login; then
-        echo "Healthcheck failed: manager login endpoint is not reachable after retries."
-        exit 1
-    fi
-else
-    echo "Healthcheck failed: setup file not found. Skipping app checks, disk is healthy."
-    exit 1
-fi
+# Check that the login page shows up
+curl --noproxy localhost --fail --silent --show-error --connect-timeout 10 --max-time 20 \
+        --retry 2 --retry-all-errors --retry-delay 1 \
+        http://localhost/rhn/manager/login > /dev/null
+exit $?

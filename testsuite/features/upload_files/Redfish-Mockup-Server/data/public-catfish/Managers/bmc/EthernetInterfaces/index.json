@@ -1,0 +1,14 @@
+{
+    "@odata.type": "#EthernetInterfaceCollection.EthernetInterfaceCollection",
+    "Name": "Ethernet Network Interface Collection",
+    "Description": "Collection of EthernetInterfaces for this Manager",
+    "Members@odata.count": 1,
+    "Members": [
+        {
+            "@odata.id": "/redfish/v1/Managers/bmc/EthernetInterfaces/eth0"
+        }
+    ],
+    "Oem": {},
+    "@odata.id": "/redfish/v1/Managers/bmc/EthernetInterfaces",
+    "@Redfish.Copyright": "Copyright 2014-2019 DMTF. For the full DMTF copyright policy, see http://www.dmtf.org/about/policies/copyright."
+}

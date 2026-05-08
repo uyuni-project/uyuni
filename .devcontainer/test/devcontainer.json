@@ -19,7 +19,6 @@
     "IS_USING_BUILD_IMAGE": "False",
     "IS_USING_PAYGO_SERVER": "False",
     "IS_USING_SCC_REPOSITORIES": "False",
-    "CATCH_TIMEOUT_MESSAGE": "False",
     "SERVER_INSTANCE_ID": "None",
   }
 }

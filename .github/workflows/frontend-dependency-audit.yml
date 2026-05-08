@@ -9,6 +9,9 @@ on:
       - 'web/html/src/package.json'
       - '.github/workflows/frontend-dependency-audit.yml'
 
+permissions:
+  contents: read
+
 jobs:
   frontend_dependency_audit:
     runs-on: ubuntu-latest

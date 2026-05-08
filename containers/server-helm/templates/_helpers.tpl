@@ -15,6 +15,7 @@
 {{- end -}}
 
 {{/* uyuni.pvc writes the manifest for a PVC. */}}
+{{/*   "root", the top context, */}}
 {{/*   "name", the volume name, */}}
 {{/*   "volume", the volume config data dictionary of the volume, */}}
 {{/*   "defaultSize", the default size of the volume in case the user messes it up in the values, */}}
@@ -35,11 +36,15 @@ metadata:
 {{ toYaml .volume.annotations | nindent 4 }}
 {{- end }}
 spec:
+{{- $storageClass := .root.Values.volumes.storageClass }}
 {{- if .volume.storageClass }}
-  {{- if eq "-" .volume.storageClass }}
+  {{ $storageClass = .volume.storageClass }}
+{{- end }}
+{{- if $storageClass }}
+  {{- if eq "-" $storageClass }}
   storageClassName: ""
   {{- else }}
-  storageClassName: {{ .volume.storageClass | quote }}
+  storageClassName: {{ $storageClass | quote }}
   {{- end }}
 {{- end }}
   accessModes:

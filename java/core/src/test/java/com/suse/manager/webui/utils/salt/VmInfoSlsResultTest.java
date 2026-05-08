@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2026 SUSE LCC
+ * Copyright (c) 2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -39,7 +39,7 @@ class VmInfoSlsResultTest extends MockObjectTestCase {
     /**
      * Test the scenario where state result is false (virt.vm_info module not available, e.g., libvirtd not installed)
      * This reflects as the following example:
-     * mgrcompat_|-mgr_virt_profile_|-virt.vm_info_|-module_run": {
+     * module_|-mgr_virt_profile_|-virt.vm_info_|-run": {
      * "id": "mgr_virt_profile",
      * "run_num": ...,
      * "sls": "hardware.virtprofile",

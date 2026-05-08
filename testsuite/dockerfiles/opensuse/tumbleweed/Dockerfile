@@ -1,4 +1,4 @@
-FROM opensuse/tumbleweed
+FROM opensuse/tumbleweed@sha256:d2eb76d90e469ac3378ff9ded5ed817c1eb9f3e05a170e21c0a281b63bda3f4b
 RUN zypper --non-interactive in avahi
 
 RUN groupadd -r --gid 10551 tomcat && \

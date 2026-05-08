@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Fri Apr 17 11:29:16 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.5
+  * Ensure the symlinks are removed before creating them
+  * Allow configuring the ingress class on the traefik routes
+  * Add experimental Gateway API support
+  * Add node placement controls properties
+
+-------------------------------------------------------------------
 Mon Mar 02 13:42:41 CET 2026 - michael.calmer@suse.com
 
 - version 5.2.4

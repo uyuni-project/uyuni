@@ -70,7 +70,7 @@ public class PasswordValidationUtils {
             checks.add(PasswordValidationUtils::digitCharCheck);
         }
     // Check for consecutive characters
-        if (policy.isLowerCharFlag()) {
+        if (policy.isConsecutiveCharsFlag()) {
             checks.add(PasswordValidationUtils::consecutiveCharCheck);
         }
     // Check for maximum occurrences of any character

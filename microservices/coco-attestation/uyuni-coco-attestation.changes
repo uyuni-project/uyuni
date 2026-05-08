@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Apr 17 11:07:46 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.5-0
+  * Declare runtime dependencies in maven definition
+
+-------------------------------------------------------------------
 Mon Mar 02 13:26:34 CET 2026 - michael.calmer@suse.com
 
 - version 5.2.4-0

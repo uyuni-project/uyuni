@@ -1,1 +1,0 @@
-- Fix ServerFactory lookupProxiesByOrg query (bsc#1259991)

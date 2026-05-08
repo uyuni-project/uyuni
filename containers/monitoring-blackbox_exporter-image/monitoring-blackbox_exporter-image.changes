@@ -1,1 +1,5 @@
-- Initial image definition for Blackbox Exporter
+-------------------------------------------------------------------
+Thu Apr 16 14:44:31 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.1
+  * Initial image definition for Blackbox Exporter

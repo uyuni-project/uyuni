@@ -47,7 +47,7 @@
 %endif
 
 Name:           uyuni-common-libs
-Version:        5.2.3
+Version:        5.2.4
 Release:        0
 Summary:        Uyuni server and client libs
 License:        GPL-2.0-only

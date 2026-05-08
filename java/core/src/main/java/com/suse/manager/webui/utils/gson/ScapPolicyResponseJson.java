@@ -68,7 +68,7 @@ public class ScapPolicyResponseJson {
         // Tailoring File & Profile Title
         if (policyIn.getTailoringFile() != null) {
             this.tailoringFileId = policyIn.getTailoringFile().getId();
-            this.tailoringFileName = policyIn.getTailoringFile().getDisplayFileName();
+            this.tailoringFileName = policyIn.getTailoringFile().getFileName();
             this.tailoringProfileTitle = tailoringTitleIn;
         }
     }

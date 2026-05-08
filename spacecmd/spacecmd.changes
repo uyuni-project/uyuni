@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Apr 16 14:27:32 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.7-0
+  * Add proxy_container_config_nossl command
+
+-------------------------------------------------------------------
 Mon Mar 02 13:24:19 CET 2026 - michael.calmer@suse.com
 
 - version 5.2.6-0

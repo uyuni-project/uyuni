@@ -200,13 +200,13 @@ public class MonitoringService {
     public static Optional<MonitoringStatus> getStatus() {
         Optional<Map<String, Boolean>> res = invokeMonitoringCtl("status", Optional.empty(),
                 new Tuple2<>("node",
-                        "mgrcompat_|-node_exporter_service_|-service.status_|-module_run"),
+                        "module_|-node_exporter_service_|-service.status_|-run"),
                 new Tuple2<>("postgres",
-                        "mgrcompat_|-postgres_exporter_service_|-service.status_|-module_run"),
+                        "module_|-postgres_exporter_service_|-service.status_|-run"),
                 new Tuple2<>("tomcat",
-                        "mgrcompat_|-jmx_tomcat_java_config_|-file.search_|-module_run"),
+                        "module_|-jmx_tomcat_java_config_|-file.search_|-run"),
                 new Tuple2<>("taskomatic",
-                        "mgrcompat_|-jmx_taskomatic_java_config_|-file.search_|-module_run"),
+                        "module_|-jmx_taskomatic_java_config_|-file.search_|-run"),
                 new Tuple2<>("self_monitoring",
                         "cmd_|-mgr_is_prometheus_self_monitoring_enabled_|-/usr/bin/grep*")
                 );

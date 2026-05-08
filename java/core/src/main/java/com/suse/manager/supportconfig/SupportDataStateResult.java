@@ -69,7 +69,7 @@ public class SupportDataStateResult {
         }
     }
 
-    @SerializedName("mgrcompat_|-gather-supportdata_|-supportdata.get_|-module_run")
+    @SerializedName("module_|-gather-supportdata_|-supportdata.get_|-run")
     private Optional<StateApplyResult<Ret<SupportDataResult>>> supportData = Optional.empty();
 
     public Optional<StateApplyResult<Ret<SupportDataResult>>> getSupportData() {

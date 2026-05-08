@@ -1,4 +1,21 @@
 -------------------------------------------------------------------
+Mon Apr 27 10:41:32 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.7-0
+  * Add missing RHEL10 / SUSE Liberty Linux 10 (bsc#1262760)
+
+-------------------------------------------------------------------
+Thu Apr 16 14:35:14 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.6-0
+  * Fix wrong Raspberry Pi OS 12 bootstrap repo creation
+    (bsc#1252867)
+  * Adding bootstrap repo definition and spacewalk-common-channels
+    for RHEL10 clones
+  * Add OES 25.4 support (bsc#1249675)
+  * Drop all pg-migrate scripts as this is now done in the containers
+
+-------------------------------------------------------------------
 Mon Mar 02 13:22:36 CET 2026 - michael.calmer@suse.com
 
 - version 5.2.5-0

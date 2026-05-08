@@ -128,6 +128,35 @@ public class PasswordValidationUtilsTest {
     }
 
     @Test
+    public void testConsecutiveCharsEnforcedOnly() {
+        PasswordPolicy noLowerConsecutivePolicy = new PasswordPolicy(
+                false,      // upperCharFlagIn
+                false,      // lowerCharFlagIn  -- disabled intentionally
+                false,      // digitFlagIn
+                false,      // specialCharFlagIn
+                "",         // specialCharsIn
+                true,       // consecutiveCharsFlagIn
+                false,      // restrictedOccurrenceFlagIn
+                0,          // maxCharacterOccurrenceIn
+                1,          // minLengthIn
+                64          // maxLengthIn
+        );
+
+        List<PasswordPolicyCheckFail> errorsConsecutive =
+                PasswordValidationUtils.validatePasswordFromPolicy("AAbb", noLowerConsecutivePolicy);
+        assertFalse(errorsConsecutive.isEmpty(),
+                "Password with consecutive characters should fail when consecutiveCharsFlag=true");
+        assertTrue(errorsConsecutive.stream().anyMatch(
+                e -> e.getLocalizedMessageId().contains("consecutive_characters_presents")),
+                "Expected a consecutive-characters error");
+
+        List<PasswordPolicyCheckFail> errorsNonConsecutive =
+                PasswordValidationUtils.validatePasswordFromPolicy("AbCd", noLowerConsecutivePolicy);
+        assertTrue(errorsNonConsecutive.isEmpty(),
+                "Password without consecutive characters should pass when only consecutiveCharsFlag=true");
+    }
+
+    @Test
     public void testPasswordExceedingMaxCharOccurrences() {
         String password = "Ab1!b!!Ab";
         List<PasswordPolicyCheckFail> errors =

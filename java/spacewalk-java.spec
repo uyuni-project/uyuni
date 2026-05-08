@@ -58,7 +58,7 @@
 %endif
 
 Name:           spacewalk-java
-Version:        5.2.9
+Version:        5.2.12
 Release:        0
 Summary:        Java web application files for %{productprettyname}
 License:        GPL-2.0-only
@@ -103,7 +103,6 @@ BuildRequires:  jakarta-websocket
 BuildRequires:  jakarta-transactions
 BuildRequires:  jakarta-jstl
 BuildRequires:  hibernate-models
-BuildRequires:  hypersistence-utils-hibernate-71
 BuildRequires:  jakarta-persistence-api
 BuildRequires:  httpcomponents-asyncclient
 BuildRequires:  httpcomponents-client
@@ -112,6 +111,7 @@ BuildRequires:  istack-commons-runtime
 BuildRequires:  jade4j
 BuildRequires:  java-%{java_version}-openjdk-devel
 BuildRequires:  java-saml
+BuildRequires:  jctools
 BuildRequires:  jakarta-mail
 BuildRequires:  angus-mail-core
 BuildRequires:  javapackages-tools
@@ -125,9 +125,7 @@ BuildRequires:  libxml2
 BuildRequires:  log4j
 BuildRequires:  log4j-jcl
 BuildRequires:  log4j-slf4j
-BuildRequires:  netty
 BuildRequires:  perl
-BuildRequires:  pgjdbc-ng
 BuildRequires:  postgresql-jdbc
 BuildRequires:  prometheus-metrics-java-core
 BuildRequires:  prometheus-metrics-java-config
@@ -155,6 +153,9 @@ BuildRequires:  mvn(org.apache.velocity:velocity-engine-core) >= 2.2
 BuildRequires:  mvn(org.hibernate.orm:hibernate-c3p0) >= 7
 BuildRequires:  mvn(org.hibernate.orm:hibernate-core) >= 7
 BuildRequires:  mvn(org.hibernate.orm:hibernate-jcache) >= 7
+BuildRequires:  jackson-annotations
+BuildRequires:  jackson-core
+BuildRequires:  jackson-databind
 BuildRequires:  tomcat11-servlet-6_1-api
 %if 0%{?suse_version}
 BuildRequires:  ant-nodeps
@@ -193,7 +194,6 @@ Requires:       jakarta-websocket
 Requires:       jakarta-transactions
 Requires:       jakarta-jstl
 Requires:       hibernate-models
-Requires:       hypersistence-utils-hibernate-71
 Requires:       httpcomponents-client
 Requires:       ical4j
 Requires:       istack-commons-runtime
@@ -204,6 +204,7 @@ Requires:       jakarta-mail
 Requires:       angus-mail-core
 Requires:       javapackages-tools
 Requires:       jboss-logging >= 3.6.1
+Requires:       jctools
 Requires:       jdom
 Requires:       joda-time
 Requires:       jose4j
@@ -214,8 +215,6 @@ Requires:       log4j
 Requires:       log4j-jcl
 Requires:       log4j-slf4j
 Requires:       mgr-libmod
-Requires:       netty
-Requires:       pgjdbc-ng
 Requires:       prometheus-metrics-java-core
 Requires:       prometheus-metrics-java-config
 Requires:       prometheus-metrics-java-model
@@ -248,6 +247,9 @@ Requires:       mvn(org.apache.tomcat:tomcat-servlet-api) > 11
 Requires:       mvn(org.hibernate.orm:hibernate-c3p0) >= 7
 Requires:       mvn(org.hibernate.orm:hibernate-core) >= 7
 Requires:       mvn(org.hibernate.orm:hibernate-jcache) >= 7
+Requires:       jackson-annotations
+Requires:       jackson-core
+Requires:       jackson-databind
 Requires:       openssl
 # libtcnative-1-0 is only recommended in tomcat.
 # We want it always to prevent warnings about openssl cannot be used

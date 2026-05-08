@@ -1,10 +1,16 @@
 {%- set scap_cache_dir = '/var/cache/salt/minion/scap' -%}
 
+{%- if "content_id" not in pillar.get('mgr_scap_params') %}
+scap_scan_error:
+  test.fail_without_changes:
+    - name: "ERROR: content_id missing from pillar. Cannot resolve SCAP content file path."
+{%- else %}
+
 # Transfer SCAP content file from master to minion
 transfer_xccdf_file:
   file.managed:
     - name: {{ scap_cache_dir }}/{{ pillar['mgr_scap_params']['xccdf_filename'] }}
-    - source: salt://ssg/content/{{ pillar['mgr_scap_params']['xccdf_filename'] }}
+    - source: salt://ssg/content/{{ pillar['mgr_scap_params']['content_id'] }}/{{ pillar['mgr_scap_params']['xccdf_filename'] }}
     - makedirs: True
     - skip_verify: False
     - mode: '0644'
@@ -14,7 +20,7 @@ transfer_xccdf_file:
 transfer_tailoring_file:
   file.managed:
     - name: {{ scap_cache_dir }}/{{ pillar['mgr_scap_params']['tailoring_filename'] }}
-    - source: salt://tailoring-files/{{ pillar['mgr_scap_params']['tailoring_filename'] }}
+    - source: salt://tailoring-files/{{ pillar['mgr_scap_params']['tailoring_id'] }}/{{ pillar['mgr_scap_params']['tailoring_filename'] }}
     - makedirs: True
     - skip_verify: False
     - mode: '0644'
@@ -60,3 +66,4 @@ mgr_scap:
       - file: transfer_tailoring_file
       {%- endif %}
 {% endif %}
+{%- endif %}

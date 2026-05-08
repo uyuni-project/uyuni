@@ -175,7 +175,7 @@ public class SaltUtils {
                 () -> false,
                 results -> results.entrySet().stream()
                     .anyMatch(result -> extractFunction(result.getKey())
-                        .map(fn -> fn.equals("mgrcompat.module_run") ?
+                        .map(fn -> fn.equals("module.run") ?
                             result.getValue().getName()
                                     .map(x -> x.fold(Arrays::asList, List::of))
                                     .orElseGet(ArrayList::new)
@@ -349,7 +349,7 @@ public class SaltUtils {
         List<StateApplyResult<JsonElement>> collect =
                 apply.entrySet().stream()
                         .flatMap(e -> extractFunction(e.getKey()).<Stream<StateApplyResult<JsonElement>>>map(fn -> {
-                    if (fn.equals("mgrcompat.module_run")) {
+                    if (fn.equals("module.run")) {
                         StateApplyResult<JsonElement> ap = Json.GSON.fromJson(
                                 e.getValue(),
                                 new TypeToken<StateApplyResult<JsonElement>>() {

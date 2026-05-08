@@ -145,12 +145,10 @@ Feature: Maintenance windows
     Then I should see a "Delete maintenance schedule" text
     When I click on the red confirmation button
     And I wait until I see "Schedule 'Core Server Window' has been deleted." text
-    And I wait until I do not see "Core Server Window" text
     And I click the "SAP Maintenance Window" item delete button
     Then I should see a "Delete maintenance schedule" text
     When I click on the red confirmation button
     And I wait until I see "Schedule 'SAP Maintenance Window' has been deleted." text
-    And I wait until I do not see "SAP Maintenance Window" text
     And I click the "singleschedule" item delete button
     Then I should see a "Delete maintenance schedule" text
     When I click on the red confirmation button

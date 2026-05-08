@@ -1689,7 +1689,8 @@ public class ActionManager extends BaseManager {
                                                String path, String parameters, String ovalFiles, Date earliestAction,
                                                Integer policyId)
             throws TaskomaticApiException {
-        return scheduleXccdfEval(scheduler, serverIds, path, parameters, ovalFiles, earliestAction, policyId, false);
+        return scheduleXccdfEval(scheduler, serverIds, path, parameters, ovalFiles, earliestAction,
+                                policyId, null, null, false);
     }
 
     /**
@@ -1702,13 +1703,15 @@ public class ActionManager extends BaseManager {
      * @param ovalFiles      OVAL files to include.
      * @param earliestAction Date of earliest action to be executed.
      * @param policyId       Optional SCAP policy ID to link this scan to.
+     * @param contentId      optional SCAP content ID for per-ID directory resolution.
+     * @param tailoringId    optional tailoring file ID for per-ID directory resolution.
      * @param recurring      Whether this is a recurring action.
      * @return scheduled Scap Action
      * @throws TaskomaticApiException if there was a Taskomatic error (typically: Taskomatic is down)
      */
     public static ScapAction scheduleXccdfEval(User scheduler, Set<Long> serverIds,
                                                String path, String parameters, String ovalFiles, Date earliestAction,
-                                               Integer policyId, boolean recurring)
+                                               Integer policyId, Long contentId, Long tailoringId, boolean recurring)
             throws TaskomaticApiException {
         if (serverIds.isEmpty()) {
             return null;
@@ -1734,6 +1737,12 @@ public class ActionManager extends BaseManager {
         ScapActionDetails scapDetails = new ScapActionDetails(path, parameters, ovalFiles);
         if (policyId != null) {
             scapDetails.setScapPolicyId(policyId);
+        }
+        if (contentId != null) {
+            scapDetails.setScapContentId(contentId);
+        }
+        if (tailoringId != null) {
+            scapDetails.setTailoringFileId(tailoringId);
         }
 
         // Use helper method to define action name based on recurring flag

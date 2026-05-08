@@ -26,7 +26,7 @@ import java.util.Set;
 
 public class AppStreamsChangeSlsResult {
 
-    @SerializedName("mgrcompat_|-enabled_appstreams_|-appstreams.get_enabled_modules_|-module_run")
+    @SerializedName("module_|-enabled_appstreams_|-appstreams.get_enabled_modules_|-run")
     private Optional<StateApplyResult<Ret<Set<Map<String, String>>>>> currentlyEnabled = Optional.empty();
 
     public Optional<StateApplyResult<Ret<Set<Map<String, String>>>>> getChanges() {

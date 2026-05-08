@@ -1,4 +1,50 @@
 -------------------------------------------------------------------
+Mon May 04 15:16:54 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.8-0
+  * Fix RBAC oidcLogin endpoint
+
+-------------------------------------------------------------------
+Tue Apr 28 11:27:11 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.7-0
+  * Add the RHEL10 installer generation type (bsc#1263007)
+
+-------------------------------------------------------------------
+Mon Apr 27 10:42:27 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.6-0
+  * Added columns for content and tailoring file ids (bsc#1262721)
+
+-------------------------------------------------------------------
+Fri Apr 17 11:04:42 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.5-0
+  * Add index on rhnPackage (checksum_id) (bsc#1258041)
+    (gh#uyuni-project/uyuni#11585)
+  * Add RBAC endpoint mappings (bsc#1257760)
+  * Remove hub register API method
+  * Endpoint table cleanup
+  * Add missing SSM-related RBAC endpoints (bsc#1259519)
+  * Added beta feature flag support for experimental functionality
+  * Redesigned SCAP integration to centralize content on the server
+  * Add indexes to improve schedule queries performance
+    (bsc#1257621, bsc#1259127)
+  * Healthcheck on disk usage based on taskomatic.
+  * Remove truncated invalid errata (bsc#1259057)
+  * Added `os_product` column to `suseOVALPlatformVulnerablePackage`
+    table to map vulnerabilities to operating system products found
+    in OVAL config.
+  * Add hubsync endpoints to repo-sync debian repos in peripheral
+    (bsc#1257647)
+  * Add missing indexes for channels and tokens (bsc#1259590)
+  * Restrict software management access only to channel admin
+    (bsc#1259416)
+  * Added the rbac mapping for listMigrationTargetsWithChannels
+    end point (jsc#SUMA-320)
+  * Add API endpoint to delete Salt known_hosts entries
+
+-------------------------------------------------------------------
 Mon Mar 02 13:19:42 CET 2026 - michael.calmer@suse.com
 
 - version 5.2.4-0

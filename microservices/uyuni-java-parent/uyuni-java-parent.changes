@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Apr 17 11:06:02 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.5-0
+  * Add common dependencies declaration
+
+-------------------------------------------------------------------
 Mon Mar 02 13:16:41 CET 2026 - michael.calmer@suse.com
 
 - version 5.2.4-0

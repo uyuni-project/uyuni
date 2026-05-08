@@ -24,7 +24,7 @@ import com.google.gson.annotations.SerializedName;
  */
 public class DistUpgradeDryRunSlsResult {
 
-   @SerializedName("mgrcompat_|-spmigration_|-pkg.upgrade_|-module_run")
+   @SerializedName("module_|-spmigration_|-pkg.upgrade_|-run")
    private StateApplyResult<RetOpt<String>> spmigration;
 
    /**

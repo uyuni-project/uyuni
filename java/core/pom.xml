@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2025 SUSE LLC
+  ~ Copyright (c) 2025-2026 SUSE LLC
   ~
   ~ This software is licensed to you under the GNU General Public License,
   ~ version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -16,7 +16,7 @@
     <parent>
         <groupId>org.uyuni-project</groupId>
         <artifactId>spacewalk-java</artifactId>
-        <version>5.2.9</version>
+        <version>5.2.12</version>
     </parent>
 
     <groupId>org.uyuni-project.spacewalk-java</groupId>
@@ -116,10 +116,6 @@
         <dependency>
             <groupId>org.hibernate.orm</groupId>
             <artifactId>hibernate-jcache</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.hypersistence</groupId>
-            <artifactId>hypersistence-utils-hibernate-71</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
@@ -269,10 +265,6 @@
             <artifactId>oro</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.impossibl.pgjdbc-ng</groupId>
-            <artifactId>pgjdbc-ng</artifactId>
-        </dependency>
-        <dependency>
             <groupId>suse</groupId>
             <artifactId>simple-core</artifactId>
         </dependency>
@@ -420,45 +412,6 @@
         <dependency>
             <groupId>com.mchange</groupId>
             <artifactId>mchange-commons-java</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-buffer</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-codec</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-common</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-handler</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-resolver</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-transport</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>io.netty</groupId>
-            <artifactId>netty-transport-native-unix-common</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.impossibl.pgjdbc-ng</groupId>
-            <artifactId>spy</artifactId>
             <scope>runtime</scope>
         </dependency>
         <dependency>

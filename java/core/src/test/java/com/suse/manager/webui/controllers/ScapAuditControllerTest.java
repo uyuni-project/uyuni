@@ -45,6 +45,7 @@ import com.suse.utils.Json;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -58,6 +59,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+
 import spark.ModelAndView;
 import spark.Request;
 
@@ -69,6 +71,33 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
     private ScapAuditController controller;
     private static final Gson GSON = Json.GSON;
     private static final String TEST_SCAP_FILE = "test-xccdf.xml";
+
+    /**
+     * Helper method to clean up temporary test directory
+     * @param tempDir the directory to delete
+     */
+    private void cleanupTempDir(File tempDir) {
+        if (tempDir != null && tempDir.exists()) {
+            try {
+                FileUtils.deleteDirectory(tempDir);
+            }
+            catch (Exception e) {
+                tempDir.delete();
+            }
+        }
+    }
+
+    /**
+     * Helper method to create content-specific directory structure
+     * @param baseDir the base directory
+     * @param contentId the content ID
+     * @return the created directory
+     */
+    private File createContentDirectory(File baseDir, Long contentId) {
+        File dir = new File(baseDir, String.valueOf(contentId));
+        dir.mkdirs();
+        return dir;
+    }
 
 
     @Override
@@ -253,8 +282,10 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
         Config.get().setString(ConfigDefaults.SCAP_XCCDF_PROFILES_XSL, profileXslt.getPath());
         controller.setDirectories(testXccdfSource.getParent(), testXccdfSource.getParent());
 
-        // 3. COPY the test file to the name the DB expects
-        File expectedFile = new File(testXccdfSource.getParent(), content.getXccdfFileName());
+        // 3. Create per-ID directory and copy the test file
+        File contentDir = new File(testXccdfSource.getParent(), content.getId().toString());
+        contentDir.mkdirs();
+        File expectedFile = new File(contentDir, content.getXccdfFileName());
         if (!expectedFile.exists()) {
             Files.copy(testXccdfSource.toPath(), expectedFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
         }
@@ -697,5 +728,168 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
     public void testGetRequiredDebianPackageDebianLegacy() {
         String pkg = ScapAuditController.getRequiredDebianPackage(ServerConstants.DEBIAN, "11");
         assertEquals("libopenscap8", pkg);
+    }
+
+    /**
+     * Test that SCAP content files are isolated using per-ID directories.
+     * Verifies that multiple content entries with the same filename don't conflict.
+     */
+    @Test
+    public void testScapContentFileIsolation() throws Exception {
+        File tempDir = Files.createTempDirectory("scap-test-").toFile();
+        controller.setDirectories(tempDir.getAbsolutePath(), tempDir.getAbsolutePath());
+
+        try {
+            String contentADataStream =
+                    "<?xml version=\"1.0\"?>\n<datastream id=\"content-a\">Content A DataStream</datastream>";
+            String contentAXccdf = "<?xml version=\"1.0\"?>\n<xccdf id=\"content-a\">Content A XCCDF</xccdf>";
+            String contentBDataStream =
+                    "<?xml version=\"1.0\"?>\n<datastream id=\"content-b\">Content B DataStream</datastream>";
+            String contentBXccdf = "<?xml version=\"1.0\"?>\n<xccdf id=\"content-b\">Content B XCCDF</xccdf>";
+
+            // Create Content A
+            ScapContent contentA = new ScapContent();
+            contentA.setName("Content A");
+            contentA.setDescription("First content with shared filenames");
+            contentA.setDataStreamFileName("shared-profile-ds.xml");
+            contentA.setXccdfFileName("shared-profile-xccdf.xml");
+            ScapFactory.saveScapContent(contentA);
+
+            // Write Content A's files to per-ID directory
+            File dirA = createContentDirectory(tempDir, contentA.getId());
+            File dsFileA = new File(dirA, "shared-profile-ds.xml");
+            File xccdfFileA = new File(dirA, "shared-profile-xccdf.xml");
+            Files.writeString(dsFileA.toPath(), contentADataStream);
+            Files.writeString(xccdfFileA.toPath(), contentAXccdf);
+
+            // Verify Content A's files exist
+            assertTrue(dsFileA.exists(), "Content A DataStream file should exist in per-ID directory");
+            assertTrue(xccdfFileA.exists(), "Content A XCCDF file should exist in per-ID directory");
+            assertEquals(contentADataStream, Files.readString(dsFileA.toPath()),
+                    "Content A DataStream should have original content");
+
+            // Create Content B with same filenames
+            ScapContent contentB = new ScapContent();
+            contentB.setName("Content B");
+            contentB.setDescription("Second content using same filenames");
+            contentB.setDataStreamFileName("shared-profile-ds.xml");
+            contentB.setXccdfFileName("shared-profile-xccdf.xml");
+            ScapFactory.saveScapContent(contentB);
+
+            // Write Content B's files to its own directory
+            File dirB = createContentDirectory(tempDir, contentB.getId());
+            File dsFileB = new File(dirB, "shared-profile-ds.xml");
+            File xccdfFileB = new File(dirB, "shared-profile-xccdf.xml");
+            Files.writeString(dsFileB.toPath(), contentBDataStream);
+            Files.writeString(xccdfFileB.toPath(), contentBXccdf);
+
+            // Verify both contents have isolated files
+            assertEquals(contentADataStream, Files.readString(dsFileA.toPath()),
+                    "Content A DataStream should remain unchanged");
+            assertEquals(contentBDataStream, Files.readString(dsFileB.toPath()),
+                    "Content B DataStream should have its own content");
+
+            // Delete Content A directory
+            FileUtils.deleteDirectory(dirA);
+
+            // Verify Content B's files are NOT affected
+            assertTrue(dsFileB.exists(), "Content B DataStream file should still exist");
+            assertTrue(xccdfFileB.exists(), "Content B XCCDF file should still exist");
+            assertEquals(contentBDataStream, Files.readString(dsFileB.toPath()),
+                    "Content B DataStream should be intact");
+            // Cleanup
+            ScapFactory.deleteScapContentAndFlush(contentA);
+            ScapFactory.deleteScapContentAndFlush(contentB);
+        }
+        finally {
+            cleanupTempDir(tempDir);
+        }
+    }
+
+    /**
+     * Test that policies correctly reference isolated content files.
+     * Verifies that multiple policies can use different content with the same filenames.
+     */
+    @Test
+    public void testPolicyContentIsolation() throws Exception {
+        File tempDir = Files.createTempDirectory("scap-test-policies-").toFile();
+        controller.setDirectories(tempDir.getAbsolutePath(), tempDir.getAbsolutePath());
+
+        try {
+            String contentADs = "<?xml version=\"1.0\"?>\n<ds id=\"a\">Profile A - PCI DSS</ds>";
+            String contentBDs = "<?xml version=\"1.0\"?>\n<ds id=\"b\">Profile B - HIPAA</ds>";
+
+            // Create Content A with policy
+            ScapContent contentA = new ScapContent();
+            contentA.setName("PCI DSS Profile");
+            contentA.setDataStreamFileName("compliance-profile-ds.xml");
+            contentA.setXccdfFileName("compliance-profile-xccdf.xml");
+            ScapFactory.saveScapContent(contentA);
+
+            // Write Content A files to per-ID directory
+            File dirA = createContentDirectory(tempDir, contentA.getId());
+            File dsFileA = new File(dirA, "compliance-profile-ds.xml");
+            File xccdfFileA = new File(dirA, "compliance-profile-xccdf.xml");
+            Files.writeString(dsFileA.toPath(), contentADs);
+            Files.writeString(xccdfFileA.toPath(), "<?xml version=\"1.0\"?><xccdf/>");
+
+            // Create policy using Content A
+            ScapPolicy policyA = new ScapPolicy();
+            policyA.setPolicyName("PCI Compliance Policy");
+            policyA.setScapContent(contentA);
+            policyA.setXccdfProfileId("xccdf_pci_profile");
+            policyA.setOrg(user.getOrg());
+            ScapFactory.saveScapPolicy(policyA);
+
+            // Create Content B with SAME filenames
+            ScapContent contentB = new ScapContent();
+            contentB.setName("HIPAA Profile");
+            contentB.setDataStreamFileName("compliance-profile-ds.xml");  // Same filename
+            contentB.setXccdfFileName("compliance-profile-xccdf.xml");    // Same filename
+            ScapFactory.saveScapContent(contentB);
+
+            // Write Content B files to ITS OWN per-ID directory
+            File dirB = createContentDirectory(tempDir, contentB.getId());
+            File dsFileB = new File(dirB, "compliance-profile-ds.xml");
+            File xccdfFileB = new File(dirB, "compliance-profile-xccdf.xml");
+            Files.writeString(dsFileB.toPath(), contentBDs);
+            Files.writeString(xccdfFileB.toPath(), "<?xml version=\"1.0\"?><xccdf/>");
+
+            // Create policy using Content B
+            ScapPolicy policyB = new ScapPolicy();
+            policyB.setPolicyName("HIPAA Compliance Policy");
+            policyB.setScapContent(contentB);
+            policyB.setXccdfProfileId("xccdf_hipaa_profile");
+            policyB.setOrg(user.getOrg());
+            ScapFactory.saveScapPolicy(policyB);
+
+            // Verify both policies reference correct content
+            assertEquals(contentA.getId(), policyA.getScapContent().getId());
+            assertEquals(contentB.getId(), policyB.getScapContent().getId());
+
+            // Verify Content A still has PCI data
+            String actualContentA = Files.readString(dsFileA.toPath());
+            assertTrue(actualContentA.contains("PCI DSS"),
+                    "Policy A should reference PCI DSS profile");
+            assertFalse(actualContentA.contains("HIPAA"),
+                    "Policy A should not have HIPAA data");
+
+            // Verify Content B has HIPAA data
+            String actualContentB = Files.readString(dsFileB.toPath());
+            assertTrue(actualContentB.contains("HIPAA"),
+                    "Policy B should reference HIPAA profile");
+            assertFalse(actualContentB.contains("PCI DSS"),
+                    "Policy B should not have PCI DSS data");
+
+            // Cleanup
+            ScapFactory.deleteScapPolicy(policyA);
+            ScapFactory.deleteScapPolicy(policyB);
+            ScapFactory.deleteScapContentAndFlush(contentA);
+            ScapFactory.deleteScapContentAndFlush(contentB);
+
+        }
+        finally {
+            cleanupTempDir(tempDir);
+        }
     }
 }

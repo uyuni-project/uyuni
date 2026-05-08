@@ -1,4 +1,21 @@
 -------------------------------------------------------------------
+Thu Apr 16 14:28:48 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.6-0
+  * Consider GPG signature check successful if one signature by a
+    known key is good (bsc#1248085)
+  * Kickstart profile for RHEL 8 requires venv-salt-minion
+    instead of salt-minion (bsc#1259474)
+  * Avoid package duplicates with reposync on synchronization
+    the same package with custom and vendored repositories
+    (bsc#1251821, bsc#1252793)
+  * Healthcheck on disk usage based on taskomatic (bsc#1238890).
+  * Optimize reposync memory requirements (bsc#1256512)
+  * Prevent accidental errata deletion from custom channels,
+    including the cases of using Hub online synchronization
+    (bsc#1259287)
+
+-------------------------------------------------------------------
 Mon Mar 02 13:11:08 CET 2026 - michael.calmer@suse.com
 
 - version 5.2.5-0

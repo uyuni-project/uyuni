@@ -34,13 +34,16 @@ class RemoteNode
 
     $named_nodes[host] = @hostname
     if @host == 'server'
-      _out, _err, code = ssh('which mgrctl', host: @target)
-      @has_mgrctl = code.zero?
+      @has_mgrctl = ssh('which mgrctl', host: @target).last.zero?
+      @has_kubectl = ssh('which kubectl', host: @target).last.zero?
+    end
+
+    if @host == 'server' && !@has_kubectl
       # Remove /etc/motd inside the container, or any output from run will contain the content of /etc/motd
       run('rm -f /etc/motd && touch /etc/motd')
-      out, _code = run('sed -n \'s/^java.hostname *= *\(.\+\)$/\1/p\' /etc/rhn/rhn.conf')
+      out, code = run('sed -n \'s/^java.hostname *= *\(.\+\)$/\1/p\' /etc/rhn/rhn.conf')
     else
-      out, _err, _code = ssh('hostname -f', host: @target)
+      out, _err, code = ssh('hostname -f', host: @target)
     end
     @full_hostname = out.strip
     raise StandardError, "No FQDN for '#{@hostname}'. Response code: #{code}" if @full_hostname.empty?

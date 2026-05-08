@@ -2129,7 +2129,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         }
 
         Map<String, Object> applyResult = (Map<String, Object>)infoMap.get(
-                "mgrcompat_|-grains_update_|-grains.items_|-module_run");
+                "module_|-grains_update_|-grains.items_|-run");
         Map<String, Object> changes = (Map<String, Object>)applyResult.get("changes");
         Map<String, Object> grains = (Map<String, Object>)changes.get("ret");
         grains.put("susemanager", susemanager);

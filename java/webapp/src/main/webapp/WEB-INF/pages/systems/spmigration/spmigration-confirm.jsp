@@ -99,7 +99,7 @@
               </html:submit>
             </c:when>
             <c:otherwise>
-              <html:submit styleClass="btn btn-default" property="dispatch" disabled="true" title="${dryRunTooltip}">
+              <html:submit styleClass="btn btn-default" property="dispatch" disabled="true" data-bs-toggle="tooltip" title="${dryRunTooltip}">
                 <bean:message key="spmigration.jsp.confirm.submit.dry-run" />
               </html:submit>
             </c:otherwise>

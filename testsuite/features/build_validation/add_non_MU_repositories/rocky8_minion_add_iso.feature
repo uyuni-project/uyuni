@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2024 SUSE LLC
+# Copyright (c) 2021-2026 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @rocky8_minion
@@ -8,7 +8,7 @@ Feature: Add the Rocky 8 distribution custom repositories
   I want to filter them out to remove the modules information
 
   Scenario: Download the iso of Rocky 8 DVD and mount it on the server
-    When I mount as "rocky-8-iso" the ISO from "http://mirror.chpc.utah.edu/pub/rocky/8/isos/x86_64/Rocky-x86_64-dvd.iso" in the server, validating its checksum
+    When I mount as "rocky-8-iso" the ISO from "http://mirror.chpc.utah.edu/pub/rocky/8/isos/x86_64/Rocky-8-latest-x86_64-dvd.iso" in the server, validating its checksum
 
   Scenario: Log in as admin user
     Given I am authorized for the "Admin" section

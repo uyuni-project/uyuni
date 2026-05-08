@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) 2025 SUSE LLC
+  ~ Copyright (c) 2025-2026 SUSE LLC
   ~
   ~ This software is licensed to you under the GNU General Public License,
   ~ version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -15,12 +15,12 @@
     <parent>
         <groupId>org.uyuni-project</groupId>
         <artifactId>uyuni-java-parent</artifactId>
-        <version>5.2.4</version>
+        <version>5.2.5</version>
         <relativePath>../microservices/uyuni-java-parent</relativePath>
     </parent>
 
     <artifactId>spacewalk-java</artifactId>
-    <version>5.2.9</version>
+    <version>5.2.12</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -173,7 +173,7 @@
             <dependency>
                 <groupId>org.uyuni-project</groupId>
                 <artifactId>branding</artifactId>
-                <version>5.2.4</version>
+                <version>5.2.5</version>
             </dependency>
 
             <dependency>
@@ -356,17 +356,6 @@
                 <version>7.1.6.Final</version>
             </dependency>
             <dependency>
-                <groupId>io.hypersistence</groupId>
-                <artifactId>hypersistence-utils-hibernate-71</artifactId>
-                <version>3.11.0</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>com.fasterxml.jackson.module</groupId>
-                        <artifactId>jackson-module-jaxb-annotations</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <dependency>
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpasyncclient</artifactId>
                 <version>4.1.4</version>
@@ -419,6 +408,11 @@
                 <version>2.17.3</version>
             </dependency>
             <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>2.17.3</version>
+            </dependency>
+            <dependency>
                 <groupId>org.eclipse.angus</groupId>
                 <artifactId>angus-activation</artifactId>
                 <version>2.0.3</version>
@@ -427,11 +421,6 @@
                 <groupId>jakarta.activation</groupId>
                 <artifactId>jakarta.activation-api</artifactId>
                 <version>2.1.3</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-databind</artifactId>
-                <version>2.17.3</version>
             </dependency>
             <dependency>
                 <groupId>de.neuland-bfi</groupId>
@@ -490,60 +479,9 @@
                 <version>4.0.5</version>
             </dependency>
             <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-buffer</artifactId>
-                <version>4.1.130.Final</version>
-            </dependency>
-            <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-codec</artifactId>
-                <version>4.1.130.Final</version>
-            </dependency>
-            <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-common</artifactId>
-                <version>4.1.130.Final</version>
-            </dependency>
-            <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-handler</artifactId>
-                <version>4.1.130.Final</version>
-            </dependency>
-            <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-resolver</artifactId>
-                <version>4.1.130.Final</version>
-            </dependency>
-            <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-transport</artifactId>
-                <version>4.1.130.Final</version>
-            </dependency>
-            <dependency>
-                <groupId>io.netty</groupId>
-                <artifactId>netty-transport-native-unix-common</artifactId>
-                <version>4.1.130.Final</version>
-            </dependency>
-            <dependency>
                 <groupId>oro</groupId>
                 <artifactId>oro</artifactId>
                 <version>2.0.8</version>
-            </dependency>
-            <dependency>
-                <groupId>com.impossibl.pgjdbc-ng</groupId>
-                <artifactId>pgjdbc-ng</artifactId>
-                <version>0.8.7</version>
-                <exclusions>
-                    <!-- We do not provide these at runtime -->
-                    <exclusion>
-                        <groupId>io.netty</groupId>
-                        <artifactId>netty-transport-native-kqueue</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>io.netty</groupId>
-                        <artifactId>netty-transport-native-epoll</artifactId>
-                    </exclusion>
-                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.quartz-scheduler</groupId>
@@ -622,11 +560,6 @@
                 <groupId>com.sparkjava</groupId>
                 <artifactId>spark-template-jade</artifactId>
                 <version>2.7.1</version>
-            </dependency>
-            <dependency>
-                <groupId>com.impossibl.pgjdbc-ng</groupId>
-                <artifactId>spy</artifactId>
-                <version>0.8.7</version>
             </dependency>
             <dependency>
                 <groupId>org.codehaus.woodstox</groupId>

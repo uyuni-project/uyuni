@@ -35,8 +35,8 @@ legacy_taskomatic_systemd_dropin_jmx_cleanup:
 
 mgr_enable_prometheus_self_monitoring:
   cmd.run:
-    - name: command -p grep -q '^prometheus_monitoring_enabled.*=.*' /etc/rhn/rhn.conf && command -p sed -i 's/^prometheus_monitoring_enabled.*/prometheus_monitoring_enabled = 0/' /etc/rhn/rhn.conf || command -p echo 'prometheus_monitoring_enabled = 0' >> /etc/rhn/rhn.conf
+    - name: /usr/bin/grep -q '^prometheus_monitoring_enabled.*=.*' /etc/rhn/rhn.conf && /usr/bin/sed -i 's/^prometheus_monitoring_enabled.*/prometheus_monitoring_enabled = 0/' /etc/rhn/rhn.conf || /usr/bin/echo 'prometheus_monitoring_enabled = 0' >> /etc/rhn/rhn.conf
 
 mgr_is_prometheus_self_monitoring_disabled:
   cmd.run:
-    - name: command -p grep -qF 'prometheus_monitoring_enabled = 0' /etc/rhn/rhn.conf
+    - name: /usr/bin/grep -qF 'prometheus_monitoring_enabled = 0' /etc/rhn/rhn.conf

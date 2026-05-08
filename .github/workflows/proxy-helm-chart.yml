@@ -6,6 +6,9 @@ on:
     paths:
       - 'containers/proxy-helm/**'
 
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest

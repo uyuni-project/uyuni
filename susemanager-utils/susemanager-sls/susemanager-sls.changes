@@ -1,4 +1,29 @@
 -------------------------------------------------------------------
+Mon Apr 27 13:02:47 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.9-0
+  * Include directory for scap-content in path (bsc#1262721)
+
+-------------------------------------------------------------------
+Wed Apr 22 09:07:49 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.8-0
+  * Fixed the baseurl of installation repos
+
+-------------------------------------------------------------------
+Thu Apr 16 14:25:56 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.7-0
+  * Added salt states to support migration from sles 15 to sles 16
+  * Salt states for centralized SCAP auditing and remediation
+  * Adjust the postgresql exporter to OpenMetrics spec
+  * Replace Tomcat and Taskomatic metrics systemd conf file with
+    shell files.
+  * Use primary FQDN to contact Build Host (bsc#1247004)
+  * Remove usage of module_run compatibility function from mgrcompat
+    in the default salt states as not needed anymore.
+
+-------------------------------------------------------------------
 Mon Mar 02 13:07:10 CET 2026 - michael.calmer@suse.com
 
 - version 5.2.6-0

@@ -133,11 +133,11 @@ LABEL org.opencontainers.image.description="All-in-one ${PRODUCT} server image"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opencontainers.image.version=5.2.6
+LABEL org.opencontainers.image.version=5.2.8
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix
 LABEL org.uyuni.version="${PRODUCT_VERSION}"
 
 CMD ["/docker-entrypoint-init"]
-HEALTHCHECK --interval=10s --start-period=180s --timeout=120s --retries=1 CMD ["/usr/bin/healthcheck.sh"]
+HEALTHCHECK --interval=10s --start-period=180s --timeout=120s --retries=1 CMD ["/usr/bin/liveness-check.sh"]

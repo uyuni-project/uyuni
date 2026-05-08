@@ -1,0 +1,18 @@
+{
+    "@odata.type": "#ManagerAccount.v1_5_0.ManagerAccount",
+    "Id": "jane",
+    "Name": "UserAccount",
+    "Description": "User Account",
+    "Enabled": true,
+    "Password": null,
+    "UserName": "jane",
+    "RoleId": "Operator",
+    "Locked": false,
+    "Links": {
+        "Role": {
+            "@odata.id": "/redfish/v1/AccountService/Roles/Operator"
+        }
+    },
+    "@odata.id": "/redfish/v1/AccountService/Accounts/jane",
+    "@Redfish.Copyright": "Copyright 2014-2019 DMTF. For the full DMTF copyright policy, see http://www.dmtf.org/about/policies/copyright."
+}

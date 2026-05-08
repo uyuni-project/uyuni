@@ -29,7 +29,7 @@ import com.redhat.rhn.domain.org.OrgFactory;
 
 import com.suse.manager.utils.MailHelper;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.quartz.JobExecutionContext;
 
 import java.io.PrintWriter;
@@ -271,10 +271,10 @@ public class ErrataMailer extends RhnJavaJob {
         //This is so ugly! For some reason we support these 'macros' for
         //account info only. But we made them look like XML tags as if spaces
         //didn't matter. However, spaces do matter. <sigh />
-        args[2] = StringUtils.replace(args[2].toString(),
+        args[2] = Strings.CS.replace(args[2].toString(),
                 "<login />",
                 login);
-        args[2] = StringUtils.replace(args[2].toString(),
+        args[2] = Strings.CS.replace(args[2].toString(),
                 "<email-address />",
                 email);
 

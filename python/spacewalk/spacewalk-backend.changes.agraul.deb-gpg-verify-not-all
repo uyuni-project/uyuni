@@ -1,2 +1,0 @@
-- Consider GPG signature check successful if one signature by a
-  known key is good (bsc#1248085)

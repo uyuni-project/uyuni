@@ -1,3 +1,0 @@
-- Prevent accidental errata deletion from custom channels,
-  including the cases of using Hub online synchronization
-  (bsc#1259287)

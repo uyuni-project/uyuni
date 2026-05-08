@@ -1,2 +1,0 @@
-- Add indexes to improve schedule queries performance
-  (bsc#1257621, bsc#1259127)

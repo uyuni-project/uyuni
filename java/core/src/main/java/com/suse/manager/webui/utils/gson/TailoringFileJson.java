@@ -22,7 +22,6 @@ public class TailoringFileJson {
     private Long id;
     private String name;
     private String fileName;
-    private String displayFileName;
     private String description;
 
     /**
@@ -36,15 +35,12 @@ public class TailoringFileJson {
      * @param idIn the id
      * @param nameIn the name
      * @param fileNameIn the filename
-     * @param displayFileNameIn the display filename
      * @param descriptionIn the description
      */
-    public TailoringFileJson(Long idIn, String nameIn, String fileNameIn, String displayFileNameIn,
-                             String descriptionIn) {
+    public TailoringFileJson(Long idIn, String nameIn, String fileNameIn, String descriptionIn) {
         this.id = idIn;
         this.name = nameIn;
         this.fileName = fileNameIn;
-        this.displayFileName = displayFileNameIn;
         this.description = descriptionIn;
     }
 
@@ -88,20 +84,6 @@ public class TailoringFileJson {
      */
     public void setFileName(String fileNameIn) {
         this.fileName = fileNameIn;
-    }
-
-    /**
-     * @return the displayFileName
-     */
-    public String getDisplayFileName() {
-        return displayFileName;
-    }
-
-    /**
-     * @param displayFileNameIn the displayFileName to set
-     */
-    public void setDisplayFileName(String displayFileNameIn) {
-        this.displayFileName = displayFileNameIn;
     }
 
     /**

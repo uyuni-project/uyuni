@@ -1,2 +1,0 @@
-- Route the exporters over HTTP using ingress rules
-- Fix traefik setup and add experimental Gateway API support

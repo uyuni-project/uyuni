@@ -19,7 +19,7 @@ sles16_migration_target_repos:
         name={{ chan['name'] }}
         enabled=1
         autorefresh=1
-        baseurl=https://{{ salt['pillar.get']('pkg_download_point_host', 'uyuni.local') }}/rhn/manager/download/{{ chan['label'] }}?{{ chan['token'] }}
+        baseurl=https://{{ salt['pillar.get']('mgr_server') }}/rhn/manager/download/{{ chan['label'] }}?{{ chan['token'] }}
         gpgcheck=0
         type=rpm-md
 

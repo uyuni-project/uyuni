@@ -82,8 +82,7 @@
 
   <property name="hibernatedeps"
             value="${jpa} ${hibernate-core} ${hibernate-models} slf4j/api ${byte-buddy} jboss-logging ${jcache}
-              ${ehcache} classmate/classmate hypersistence-utils/hypersistence-utils-hibernate-71 jackson-databind
-              jackson-core jackson-annotations"/>
+              ${ehcache} classmate/classmate jackson-databind jackson-core jackson-annotations"/>
 
   <property name="c3p0" value="mchange-commons/mchange-commons-java c3p0"/>
 
@@ -120,7 +119,7 @@
   <!-- =================== RPM build, use jpackage syntax ======================= -->
 
   <!-- SUSE extra dependencies: build and runtime -->
-  <property name="suse-common-jars" value="jade4j jose4j salt-netapi-client spark-core spark-template-jade httpasyncclient prometheus-metrics-java/prometheus-metrics-exporter-common prometheus-metrics-java/prometheus-metrics-core prometheus-metrics-java/prometheus-metrics-config prometheus-metrics-java/prometheus-metrics-model prometheus-metrics-java/prometheus-metrics-exporter-servlet-jakarta prometheus-metrics-java/prometheus-metrics-exporter-httpserver prometheus-metrics-java/prometheus-metrics-exposition-textformats pgjdbc-ng/pgjdbc-ng pgjdbc-ng/spy netty/netty-common netty/netty-buffer netty/netty-resolver netty/netty-transport netty/netty-codec netty/netty-handler netty/netty-transport-native-unix-common java-saml java-saml-core joda-time woodstox-core-asl xmlsec stax2-api stax-api ${commons-jexl} ical4j ${product-common-jars} ${jaxb} ${jstl}" />
+  <property name="suse-common-jars" value="jade4j jose4j salt-netapi-client spark-core spark-template-jade httpasyncclient prometheus-metrics-java/prometheus-metrics-exporter-common prometheus-metrics-java/prometheus-metrics-core prometheus-metrics-java/prometheus-metrics-config prometheus-metrics-java/prometheus-metrics-model prometheus-metrics-java/prometheus-metrics-exporter-servlet-jakarta prometheus-metrics-java/prometheus-metrics-exporter-httpserver prometheus-metrics-java/prometheus-metrics-exposition-textformats java-saml java-saml-core joda-time woodstox-core-asl xmlsec stax2-api stax-api ${commons-jexl} ical4j ${product-common-jars} ${jaxb} ${jstl}" />
 
   <!-- SUSE extra dependencies: runtime only -->
   <property name="suse-runtime-jars" value="${commons-lang} apache-commons-text/commons-text concurrentlinkedhashmap-lru slf4j/api ${product-runtime-jars} jctools/jctools-core" />

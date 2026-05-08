@@ -182,7 +182,7 @@ public class CVEAuditSystemBuilder {
 
     /** {@inheritDoc} */
     public Long getId() {
-        return systemID;
+        return getSystemID();
     }
 
     /**

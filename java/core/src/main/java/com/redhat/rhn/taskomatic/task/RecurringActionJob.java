@@ -140,6 +140,8 @@ public class RecurringActionJob extends RhnJavaJob {
                             null, // ovalFiles
                             context.getFireTime(),
                             scapPolicyType.getScapPolicy().getId(),
+                            null, // contentId - will be looked up from policy
+                            null, // tailoringId - will be looked up from policy
                             true // recurring=true
                     );
                 }

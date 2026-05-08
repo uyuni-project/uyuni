@@ -132,6 +132,10 @@
     "name" : "SUSE Linux Enterprise RedHat Expanded Support LTSS"
   },
   {
+    "label" : "RES-EMS",
+    "name" : "SUSE Linux Enterprise RedHat Expanded Support - Extended Minor Version Support"
+  },
+  {
     "label" : "RES-HA",
     "name" : "SUSE Linux Enterprise RedHat Expanded Support HA"
   },

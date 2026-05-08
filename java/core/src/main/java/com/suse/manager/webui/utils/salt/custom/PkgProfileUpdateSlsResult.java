@@ -50,25 +50,25 @@ public class PkgProfileUpdateSlsResult {
     public static final String PKG_PROFILE_WHATPROVIDES_SLL_RELEASE =
             "cmd_|-sllpkgquery_|-/usr/bin/rpm -q --whatprovides 'sll-release'_|-run";
 
-    @SerializedName("mgrcompat_|-status_uptime_|-status.uptime_|-module_run")
+    @SerializedName("module_|-status_uptime_|-status.uptime_|-run")
     private Optional<StateApplyResult<Ret<Map<String, Object>>>> upTime = Optional.empty();
 
-    @SerializedName("mgrcompat_|-reboot_required_|-reboot_info.reboot_required_|-module_run")
+    @SerializedName("module_|-reboot_required_|-reboot_info.reboot_required_|-run")
     private Optional<StateApplyResult<Ret<Map<String, Object>>>> rebootRequired = Optional.empty();
 
-    @SerializedName("mgrcompat_|-kernel_live_version_|-sumautil.get_kernel_live_version_|-module_run")
+    @SerializedName("module_|-kernel_live_version_|-sumautil.get_kernel_live_version_|-run")
     private Optional<StateApplyResult<Ret<KernelLiveVersionInfo>>> kernelLiveVersionInfo = Optional.empty();
 
-    @SerializedName("mgrcompat_|-grains_update_|-grains.items_|-module_run")
+    @SerializedName("module_|-grains_update_|-grains.items_|-run")
     private StateApplyResult<Ret<Map<String, Object>>> grains;
 
-    @SerializedName("mgrcompat_|-products_|-pkg.list_products_|-module_run")
+    @SerializedName("module_|-products_|-pkg.list_products_|-run")
     private StateApplyResult<Ret<List<Zypper.ProductInfo>>> listProducts;
 
-    @SerializedName("mgrcompat_|-modules_|-appstreams.get_enabled_modules_|-module_run")
+    @SerializedName("module_|-modules_|-appstreams.get_enabled_modules_|-run")
     private Optional<StateApplyResult<Ret<Set<Map<String, String>>>>> enabledAppstreamModules = Optional.empty();
 
-    @SerializedName("mgrcompat_|-packages_|-pkg.info_installed_|-module_run")
+    @SerializedName("module_|-packages_|-pkg.info_installed_|-run")
     private StateApplyResult<Ret<Map<String, Xor<Pkg.Info, List<Pkg.Info>>>>> infoInstalled;
 
     @SerializedName(PKG_PROFILE_REDHAT_RELEASE)

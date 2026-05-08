@@ -1,4 +1,32 @@
 -------------------------------------------------------------------
+Mon May 04 15:17:59 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.8
+  * Reload database after changing pg_hba conf file
+
+-------------------------------------------------------------------
+Thu Apr 30 22:12:34 CEST 2026 - marina.latini@suse.com
+
+- version 5.2.7
+  * Product db name is susemanager or uyuni
+
+-------------------------------------------------------------------
+Thu Apr 30 10:22:04 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.6
+  * Use sed instead of grep in postgres container
+
+-------------------------------------------------------------------
+Fri Apr 17 11:30:19 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.5
+  * Healthcheck on disk usage based on taskomatic (bsc#1238890).
+  * Set smdba archiver executable
+  * Make sure pg_hba configuration is updated on upgrade
+    (bsc#1259705)
+  * Do not use awk in smdba-pgarchive
+
+-------------------------------------------------------------------
 Mon Mar 02 13:19:13 CET 2026 - michael.calmer@suse.com
 
 - version 5.2.4

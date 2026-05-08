@@ -60,6 +60,12 @@ They all are using the `ReadWriteOnce` access mode and can be configured in the 
 Changing the default volume sizes according to the distributions you plan to synchronize and manage is recommended.
 See the [requirements documentation](https://www.uyuni-project.org/uyuni-docs/en/uyuni/installation-and-upgrade/uyuni-install-requirements.html) for more information.
 
+The `volumes.storageClass` can be used to change the storage class of all the persistent volume claims.
+This would be overridden by each claim's `volumes.<claim>.storageClass` value.
+
+The storage class supports a special `"-"` value to force the storage class to the empty string.
+This is different from the `""` value representing the default storage class by not setting any storage class at all.
+
 ### Node Tuning
 
 For each of the components it is possible to tune the node where the pod will be scheduled.
@@ -112,9 +118,6 @@ Here is a list of the ports to map:
 | TCP      | 5432  | reportdb     | 5432         |                                                  |
 | TCP      | 4505  | salt         | 4505         |                                                  |
 | TCP      | 4506  | salt         | 4506         |                                                  |
-| TCP      | 25151 | cobbler      | 25151        |                                                  |
-| TCP      | 9100  | tomcat       | 9100         |                                                  |
-| TCP      | 9187  | db           | 9187         | Not if installed with `enableMonitoring = false` |
 | TCP      | 8001  | taskomatic   | 8001         | Only if installed with `exposeJavaDebug = true`  |
 | TCP      | 8002  | search       | 8002         | Only if installed with `exposeJavaDebug = true`  |
 | TCP      | 8003  | tomcat       | 8003         | Only if installed with `exposeJavaDebug = true`  |
@@ -219,7 +222,7 @@ require {
     
     class dir { search write add_name create remove_name rmdir setattr getattr mounton search };
     class file { create open write append read unlink setattr getattr watch };
-    class filesystem { mount getattr relabelfrom relabelto };
+    class filesystem { mount getattr relabelfrom relabelto remount unmount };
 }
 
 #============= container_t ==============

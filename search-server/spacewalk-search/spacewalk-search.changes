@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Apr 16 14:30:17 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.3-0
+  * Update build dependencies
+  * Use etc/rhn based search customization config
+
+-------------------------------------------------------------------
 Mon Mar 02 13:18:44 CET 2026 - michael.calmer@suse.com
 
 - version 5.2.2-0

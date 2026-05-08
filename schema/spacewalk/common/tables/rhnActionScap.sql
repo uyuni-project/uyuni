@@ -30,6 +30,14 @@ CREATE TABLE rhnActionScap
                          CONSTRAINT rhn_act_scap_policy_fk
                              REFERENCES suseScapPolicy (id)
                              ON DELETE SET NULL,
+    scap_content_id  BIGINT
+                         CONSTRAINT rhn_act_scap_content_fk
+                             REFERENCES suseScapContent (id)
+                             ON DELETE SET NULL,
+    tailoring_file_id BIGINT
+                         CONSTRAINT rhn_act_scap_tailoring_fk
+                             REFERENCES suseScapTailoringFile (id)
+                             ON DELETE SET NULL,
 
     created             TIMESTAMPTZ
                             DEFAULT (current_timestamp) NOT NULL,
@@ -52,5 +60,11 @@ CREATE INDEX rhn_act_scap_path_idx
 
 CREATE INDEX rhn_act_scap_policy_idx
     ON rhnActionScap (scap_policy_id);
+
+CREATE INDEX rhn_act_scap_content_idx
+    ON rhnActionScap (scap_content_id);
+
+CREATE INDEX rhn_act_scap_tailoring_idx
+    ON rhnActionScap (tailoring_file_id);
 
 CREATE SEQUENCE rhn_act_scap_id_seq;

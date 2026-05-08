@@ -9,21 +9,13 @@ Feature: Sanity checks
     Then "server" should have a FQDN
     And reverse resolution should work for "server"
     And the clock from "server" should be exact
-    And service "apache2" is enabled on "server"
     And service "apache2" is active on "server"
-    And service "cobblerd" is enabled on "server"
     And service "cobblerd" is active on "server"
-    And service "rhn-search" is enabled on "server"
     And service "rhn-search" is active on "server"
-    And service "salt-api" is enabled on "server"
     And service "salt-api" is active on "server"
-    And service "salt-master" is enabled on "server"
     And service "salt-master" is active on "server"
-    And service "taskomatic" is enabled on "server"
     And service "taskomatic" is active on "server"
-    And socket "tftp" is enabled on "server"
     And socket "tftp" is active on "server"
-    And service "tomcat" is enabled on "server"
     And service "tomcat" is active on "server"
 
 @proxy
@@ -117,6 +109,20 @@ Feature: Sanity checks
     And "sle15sp7_ssh_minion" should communicate with the server using public interface
     And the clock from "sle15sp7_ssh_minion" should be exact
 
+@sle160_minion
+  Scenario: The SLES 16.0 minion is healthy
+    Then "sle160_minion" should have a FQDN
+    And reverse resolution should work for "sle160_minion"
+    And "sle160_minion" should communicate with the server using public interface
+    And the clock from "sle160_minion" should be exact
+
+@sle160_ssh_minion
+  Scenario: The SLES 16.0 Salt SSH minion is healthy
+    Then "sle160_ssh_minion" should have a FQDN
+    And reverse resolution should work for "sle160_ssh_minion"
+    And "sle160_ssh_minion" should communicate with the server using public interface
+    And the clock from "sle160_ssh_minion" should be exact
+
 @slemicro52_minion
   Scenario: The SLE Micro 5.2 minion is healthy
     Then "slemicro52_minion" should have a FQDN
@@ -200,6 +206,20 @@ Feature: Sanity checks
     And reverse resolution should work for "slmicro61_ssh_minion"
     And "slmicro61_ssh_minion" should communicate with the server using public interface
     And the clock from "slmicro61_ssh_minion" should be exact
+
+@slmicro62_minion
+  Scenario: The SL Micro 6.2 minion is healthy
+    Then "slmicro62_minion" should have a FQDN
+    And reverse resolution should work for "slmicro62_minion"
+    And "slmicro62_minion" should communicate with the server using public interface
+    And the clock from "slmicro62_minion" should be exact
+
+@slmicro62_ssh_minion
+  Scenario: The SL Micro 6.2 SSH minion is healthy
+    Then "slmicro62_ssh_minion" should have a FQDN
+    And reverse resolution should work for "slmicro62_ssh_minion"
+    And "slmicro62_ssh_minion" should communicate with the server using public interface
+    And the clock from "slmicro62_ssh_minion" should be exact
 
 @alma8_minion
   Scenario: The Alma 8 Salt minion is healthy
@@ -382,6 +402,20 @@ Feature: Sanity checks
     And reverse resolution should work for "opensuse156arm_ssh_minion"
     And "opensuse156arm_ssh_minion" should communicate with the server using public interface
     And the clock from "opensuse156arm_ssh_minion" should be exact
+
+@opensuse160arm_minion
+  Scenario: The openSUSE 16.0 ARM minion is healthy
+    Then "opensuse160arm_minion" should have a FQDN
+    And reverse resolution should work for "opensuse160arm_minion"
+    And "opensuse160arm_minion" should communicate with the server using public interface
+    And the clock from "opensuse160arm_minion" should be exact
+
+@opensuse160arm_ssh_minion
+  Scenario: The openSUSE 16.0 ARM SSH minion is healthy
+    Then "opensuse160arm_ssh_minion" should have a FQDN
+    And reverse resolution should work for "opensuse160arm_ssh_minion"
+    And "opensuse160arm_ssh_minion" should communicate with the server using public interface
+    And the clock from "opensuse160arm_ssh_minion" should be exact
 
 @sle15sp5s390_minion
   Scenario: The SLES 15 SP5 s390x minion is healthy

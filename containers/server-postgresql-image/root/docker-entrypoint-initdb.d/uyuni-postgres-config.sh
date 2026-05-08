@@ -106,8 +106,9 @@ postgres_reconfig "include_dir" "'postgresql.conf.d'"
 
 echo "postgresql.conf updated"
 
-cat "$HBA_FILE" <<EOT
-local replication,postgres all trust
+cat > "$HBA_FILE" <<EOT
+local all all peer
+local replication all peer
 host all all all scram-sha-256
 EOT
 

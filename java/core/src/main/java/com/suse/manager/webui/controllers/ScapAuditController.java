@@ -84,6 +84,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -219,7 +220,6 @@ public class ScapAuditController {
                         file.getId(),
                         file.getName(),
                         file.getFileName(),
-                        file.getDisplayFileName(),
                         file.getDescription()
                     ))
                     .collect(Collectors.toList());
@@ -256,28 +256,38 @@ public class ScapAuditController {
      * @return the json response
      */
   public String createTailoringFile(Request request, Response response, User user) {
-        File writtenFile = null;
+        TailoringFile tailoringFile = null;
+        Path tailoringDir = null;
 
         try {
             List<DiskFileItem> items = MultipartRequestUtil.parseMultipartRequest(request);
             String rawName = MultipartRequestUtil.getRequiredString(items, "name");
             DiskFileItem fileItem = MultipartRequestUtil.getRequiredFileItem(items, "tailoring_file");
             Optional<String> description = MultipartRequestUtil.findStringParam(items, "description");
-            // We do this FIRST. If it fails, the DB is never touched, so no "zombie" records.
-            writtenFile = writeNewTailoringFile(user, rawName, fileItem);
 
-            TailoringFile tailoringFile = new TailoringFile(rawName, writtenFile.getName());
+            // Step 1: Create DB entry first to get ID
+            tailoringFile = new TailoringFile(rawName, fileItem.getName());
             tailoringFile.setOrg(user.getOrg());
             description.ifPresent(tailoringFile::setDescription);
             ScapFactory.saveTailoringFile(tailoringFile);
 
+            // Step 2: Create ID-based directory and write file
+            tailoringDir = createEntityDirectory(tailoringFilesDir, tailoringFile.getId());
+            writeFileToDirectory(tailoringDir, fileItem.getName(), fileItem.getInputStream());
             return result(response, ResultJson.success());
-
         }
         catch (Exception e) {
-            // Rollback using FileUtils
-            if (writtenFile != null) {
-                FileUtils.deleteFile(writtenFile.toPath());
+            // Rollback: Delete DB entry and directory if file write failed
+            if (tailoringFile != null && tailoringFile.getId() != null) {
+                try {
+                    ScapFactory.deleteTailoringFile(tailoringFile);
+                    if (tailoringDir != null && Files.exists(tailoringDir)) {
+                        deleteDirectoryRecursively(tailoringDir);
+                    }
+                }
+                catch (Exception rollbackEx) {
+                    LOG.error("Failed to rollback tailoring file creation", rollbackEx);
+                }
             }
             return handleTailoringFileException(response, e, "creating");
         }
@@ -305,7 +315,7 @@ public class ScapAuditController {
         jsData.put("name", tailoringFile.getName());
         jsData.put("id", tailoringFileId);
         jsData.put("description", tailoringFile.getDescription());
-        jsData.put("tailoringFileName", tailoringFile.getDisplayFileName());
+        jsData.put("tailoringFileName", tailoringFile.getFileName());
         jsData.put("isUpdate", true);
 
         Map<String, Object> model = new HashMap<>();
@@ -326,41 +336,43 @@ public class ScapAuditController {
      * @return the json response
      */
     public String updateTailoringFile(Request request, Response response, User user) {
-        File newWrittenFile = null;
-        File oldFileToDelete = null;
-
+        Path newFilePath = null;
+        Path oldFilePath = null;
         try {
-            // 1. Parse
             List<DiskFileItem> items = MultipartRequestUtil.parseMultipartRequest(request);
             Integer id = MultipartRequestUtil.getRequiredInt(items, "id");
             String name = MultipartRequestUtil.getRequiredString(items, "name");
             Optional<String> description = MultipartRequestUtil.findStringParam(items, "description");
             TailoringFile tailoringFile = ScapFactory.lookupTailoringFileByIdAndOrg(id, user.getOrg())
                     .orElseThrow(() -> new IllegalArgumentException("Tailoring file not found"));
-
-            oldFileToDelete = new File(tailoringFilesDir, tailoringFile.getFileName());
-
+            // Handle file replacement if new file uploaded
             Optional<DiskFileItem> fileItem = MultipartRequestUtil.findFileItem(items, "tailoring_file");
             if (fileItem.isPresent()) {
-                 newWrittenFile = writeNewTailoringFile(user, name, fileItem.get());
-                 tailoringFile.setFileName(newWrittenFile.getName());
+                Path tailoringDir = Paths.get(tailoringFilesDir, tailoringFile.getId().toString());
+                oldFilePath = Paths.get(tailoringDir.toString(), tailoringFile.getFileName());
+                writeFileToDirectory(tailoringDir, fileItem.get().getName(), fileItem.get().getInputStream());
+                newFilePath = Paths.get(tailoringDir.toString(), fileItem.get().getName());
+                if (!oldFilePath.equals(newFilePath) && Files.exists(oldFilePath)) {
+                    FileUtils.deleteFile(oldFilePath);
+                }
+                tailoringFile.setFileName(fileItem.get().getName());
             }
-
             tailoringFile.setName(name);
             description.ifPresent(tailoringFile::setDescription);
             ScapFactory.saveTailoringFile(tailoringFile);
-
-            if (newWrittenFile != null) {
-                FileUtils.deleteFile(oldFileToDelete.toPath());
-            }
-
             return result(response, ResultJson.success());
-
         }
         catch (Exception e) {
-            // Rollback: Delete the new file if it was created
-            if (newWrittenFile != null) {
-                FileUtils.deleteFile(newWrittenFile.toPath());
+            // Rollback: Delete new file if it was created
+            if (newFilePath != null) {
+                try {
+                    if (Files.exists(newFilePath)) {
+                        FileUtils.deleteFile(newFilePath);
+                    }
+                }
+                catch (Exception rollbackEx) {
+                    LOG.error("Failed to rollback tailoring file update", rollbackEx);
+                }
             }
             return handleTailoringFileException(response, e, "updating");
         }
@@ -384,15 +396,17 @@ public class ScapAuditController {
                 return json(res, HttpStatus.SC_NOT_FOUND,
                         ResultJson.error("One or more tailoring files not found"), new TypeToken<>() { });
             }
-
             int deletedCount = 0;
             for (TailoringFile file : tailoringFiles) {
+                // Delete from database
                 ScapFactory.deleteTailoringFile(file);
-                Path filePath = Paths.get(tailoringFilesDir, file.getFileName());
-                FileUtils.deleteFile(filePath);
+                // Delete entire ID-based directory
+                Path tailoringDir = Paths.get(tailoringFilesDir, file.getId().toString());
+                if (Files.exists(tailoringDir)) {
+                    deleteDirectoryRecursively(tailoringDir);
+                }
                 deletedCount++;
             }
-
             return result(res, ResultJson.success(deletedCount));
         }
         catch (JsonParseException e) {
@@ -407,29 +421,6 @@ public class ScapAuditController {
         }
     }
 
-    /**
-     * Write a new tailoring file to disk
-     * @param user the user
-     * @param rawName the raw name of the file
-     * @param item the file item
-     * @return the file
-     * @throws Exception if the file cannot be written
-     */
-    private File writeNewTailoringFile(User user, String rawName, DiskFileItem item) throws Exception {
-        Files.createDirectories(Paths.get(tailoringFilesDir));
-        String safeName = sanitizeFileName(rawName);
-        String uniqueFilename = generateUniqueFileName(
-                user.getOrg().getId(),
-                safeName,
-                item.getName()
-        );
-
-        Path safePath = FileUtils.validateCanonicalPath(tailoringFilesDir, uniqueFilename);
-        try (var in = item.getInputStream()) {
-            Files.copy(in, safePath, StandardCopyOption.REPLACE_EXISTING);
-        }
-        return safePath.toFile();
-    }
 
     /**
      * Handles exceptions for tailoring file operations
@@ -600,7 +591,7 @@ public class ScapAuditController {
             policyData.put("fetchRemoteResources", policy.isFetchRemoteResources());
             if (policy.getTailoringFile() != null) {
                 policyData.put("tailoringFile", policy.getTailoringFile().getId());
-                policyData.put("tailoringFileName", policy.getTailoringFile().getDisplayFileName());
+                policyData.put("tailoringFileName", policy.getTailoringFile().getFileName());
             }
             pageData.put("policyData", policyData);
             pageData.put("policyId", policy.getId()); // Convenient top-level ID
@@ -810,10 +801,22 @@ public class ScapAuditController {
      * @return the ScapPolicyResponseJson
      */
     private ScapPolicyResponseJson convertPolicyToResponseDto(ScapPolicy policy) {
-        String xccdfFile = (policy.getScapContent() != null) ? policy.getScapContent().getXccdfFileName() : null;
-        String xccdfTitle = resolveProfileTitle(scapContentDir, xccdfFile, policy.getXccdfProfileId());
-        String tailoringFile = (policy.getTailoringFile() != null) ? policy.getTailoringFile().getFileName() : null;
-        String tailoringTitle = resolveProfileTitle(tailoringFilesDir, tailoringFile, policy.getTailoringProfileId());
+        // Resolve XCCDF Title
+        String xccdfTitle = Optional.ofNullable(policy.getScapContent())
+            .map(content -> {
+                String dir = Path.of(scapContentDir, content.getId().toString()).toString();
+                return resolveProfileTitle(dir, content.getXccdfFileName(), policy.getXccdfProfileId());
+            })
+            .orElseGet(() -> resolveProfileTitle(scapContentDir, null, policy.getXccdfProfileId()));
+
+        // Resolve Tailoring Title
+        String tailoringTitle = Optional.ofNullable(policy.getTailoringFile())
+            .map(file -> {
+                String dir = Path.of(tailoringFilesDir, file.getId().toString()).toString();
+                return resolveProfileTitle(dir, file.getFileName(), policy.getTailoringProfileId());
+            })
+            .orElseGet(() -> resolveProfileTitle(tailoringFilesDir, null, policy.getTailoringProfileId()));
+
         return new ScapPolicyResponseJson(policy, xccdfTitle, tailoringTitle);
     }
     /**
@@ -890,6 +893,11 @@ public class ScapAuditController {
                 tailoringFileName = tf.getFileName();
             }
 
+            // Only pass content/tailoring IDs for one-off scans (no policy)
+            // For policy-based scans, IDs will be looked up from the policy
+            Long contentIdToStore = reqData.getPolicyId() == null ? reqData.getScapContentId() : null;
+            Long tailoringIdToStore = reqData.getPolicyId() == null ? reqData.getTailoringFileId() : null;
+
             ScapAction action = ActionManager.scheduleXccdfEval(
                     user,
                     reqData.getIds(),
@@ -897,7 +905,10 @@ public class ScapAuditController {
                     reqData.buildOscapParameters(tailoringFileName),
                     reqData.getOvalFiles(),
                     earliest,
-                    reqData.getPolicyId()
+                    reqData.getPolicyId(),
+                    contentIdToStore,
+                    tailoringIdToStore,
+                    false
             );
 
             return json(res, action.getId(), new TypeToken<>() { });
@@ -1044,12 +1055,9 @@ public class ScapAuditController {
                     // 1. Attempt Database Deletion First
                     ScapFactory.deleteScapContentAndFlush(content);
                     successfullyDeleted.add(content);
-
-                    // 2. Delete physical files
-                    Path dsFilePath = Paths.get(scapContentDir, content.getDataStreamFileName());
-                    Files.deleteIfExists(dsFilePath);
-                    Path xccdfFilePath = Paths.get(scapContentDir, content.getXccdfFileName());
-                    Files.deleteIfExists(xccdfFilePath);
+                    // 2. Delete entire content directory
+                    Path contentDir = Paths.get(scapContentDir, content.getId().toString());
+                    deleteDirectoryRecursively(contentDir);
                 }
                 catch (Exception e) {
                     LOG.error("Failed to delete SCAP content: {}", content.getName(), e);
@@ -1085,8 +1093,11 @@ public class ScapAuditController {
      * @return the result as JSON
      */
     private String handleScapContentUpload(List<DiskFileItem> items, Response res, ScapContent existingContent) {
-        File writtenDsFile = null;
-        File writtenXccdfFile = null;
+        ScapContent scapContent = null;
+        Path contentDir = null;
+        Path oldDsPath = null;
+        Path oldXccdfPath = null;
+        boolean isCreate = (existingContent == null);
 
         try {
             String name = MultipartRequestUtil.getRequiredString(items, "name");
@@ -1094,75 +1105,132 @@ public class ScapAuditController {
             Optional<DiskFileItem> scapItemOpt = MultipartRequestUtil.findFileItem(items, "scapFile");
             Optional<DiskFileItem> xccdfItemOpt = MultipartRequestUtil.findFileItem(items, "xccdfFile");
 
-            if (existingContent == null) {
-                if (scapItemOpt.isEmpty()) {
-                    return result(res, ResultJson.error("DataStream file is required"));
-                }
-                if (xccdfItemOpt.isEmpty()) {
-                    return result(res, ResultJson.error("XCCDF file is required"));
-                }
+            // Validate files
+            String validationError = validateScapContentFiles(scapItemOpt, xccdfItemOpt, existingContent, isCreate);
+            if (validationError != null) {
+                return result(res, ResultJson.error(validationError));
             }
 
-            if (scapItemOpt.isPresent() && !scapItemOpt.get().getName().toLowerCase().endsWith("-ds.xml")) {
-                return result(res, ResultJson.error("DataStream file must end with '-ds.xml'"));
-            }
-            if (xccdfItemOpt.isPresent() && !xccdfItemOpt.get().getName().toLowerCase().endsWith("-xccdf.xml")) {
-                return result(res, ResultJson.error("XCCDF file must end with '-xccdf.xml'"));
-            }
-
+            // Get file names
             String dsName = scapItemOpt.map(DiskFileItem::getName)
                     .orElse(existingContent != null ? existingContent.getDataStreamFileName() : "");
             String xccdfName = xccdfItemOpt.map(DiskFileItem::getName)
                     .orElse(existingContent != null ? existingContent.getXccdfFileName() : "");
-            if (!dsName.isEmpty() && !xccdfName.isEmpty()) {
-                String dsBase = dsName.replace("-ds.xml", "");
-                String xccdfBase = xccdfName.replace("-xccdf.xml", "");
-                if (!dsBase.equals(xccdfBase)) {
-                    return result(res, ResultJson.error(
-                        "DataStream and XCCDF files must share the same base name. " +
-                        "DataStream: '" + dsBase + "', XCCDF: '" + xccdfBase + "'"
-                    ));
-                }
-            }
 
-            ScapContent scapContent = existingContent != null ? existingContent : new ScapContent();
+            //Create or update DB entry first to get ID
+            scapContent = existingContent != null ? existingContent : new ScapContent();
             scapContent.setName(name.trim());
             description.ifPresent(scapContent::setDescription);
-
-            Files.createDirectories(Paths.get(scapContentDir));
-
-            if (scapItemOpt.isPresent()) {
-                Path targetPath = FileUtils.validateCanonicalPath(scapContentDir, dsName);
-                Files.copy(scapItemOpt.get().getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
-
-                writtenDsFile = targetPath.toFile();
+            if (isCreate) {
                 scapContent.setDataStreamFileName(dsName);
-            }
-
-            if (xccdfItemOpt.isPresent()) {
-                Path targetPath = FileUtils.validateCanonicalPath(scapContentDir, xccdfName);
-                Files.copy(xccdfItemOpt.get().getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
-
-                writtenXccdfFile = targetPath.toFile();
                 scapContent.setXccdfFileName(xccdfName);
             }
+            ScapFactory.saveScapContent(scapContent);
+
+            //Create ID-based directory and write files
+            contentDir = createEntityDirectory(scapContentDir, scapContent.getId());
+            oldDsPath = writeScapContentFile(scapItemOpt, dsName, scapContent.getDataStreamFileName(),
+                    contentDir, isCreate, true, scapContent);
+            oldXccdfPath = writeScapContentFile(xccdfItemOpt, xccdfName, scapContent.getXccdfFileName(),
+                    contentDir, isCreate, false, scapContent);
 
             ScapFactory.saveScapContent(scapContent);
+
+            // Delete old files if filenames changed
+            deleteFileIfExists(oldDsPath);
+            deleteFileIfExists(oldXccdfPath);
 
             return result(res, ResultJson.success());
 
         }
         catch (Exception e) {
             LOG.error("Error handling SCAP content upload", e);
+            rollbackScapContentCreation(isCreate, scapContent, contentDir);
+            return handleTailoringFileException(res, e, isCreate ? "creating" : "updating");
+        }
+    }
 
-            if (writtenDsFile != null) {
-                FileUtils.deleteFile(writtenDsFile.toPath());
+    private String validateScapContentFiles(Optional<DiskFileItem> scapItemOpt, Optional<DiskFileItem> xccdfItemOpt,
+                                             ScapContent existingContent, boolean isCreate) {
+        // Validate required files for new content
+        if (isCreate) {
+            if (scapItemOpt.isEmpty()) {
+                return "DataStream file is required";
             }
-            if (writtenXccdfFile != null) {
-                FileUtils.deleteFile(writtenXccdfFile.toPath());
+            if (xccdfItemOpt.isEmpty()) {
+                return "XCCDF file is required";
             }
+        }
+        // Validate file extensions
+        if (scapItemOpt.isPresent() && !scapItemOpt.get().getName().toLowerCase().endsWith("-ds.xml")) {
+            return "DataStream file must end with '-ds.xml'";
+        }
+        if (xccdfItemOpt.isPresent() && !xccdfItemOpt.get().getName().toLowerCase().endsWith("-xccdf.xml")) {
+            return "XCCDF file must end with '-xccdf.xml'";
+        }
+        // Validate base names match
+        String dsName = scapItemOpt.map(DiskFileItem::getName)
+                .orElse(existingContent != null ? existingContent.getDataStreamFileName() : "");
+        String xccdfName = xccdfItemOpt.map(DiskFileItem::getName)
+                .orElse(existingContent != null ? existingContent.getXccdfFileName() : "");
+        if (!dsName.isEmpty() && !xccdfName.isEmpty()) {
+            String dsBase = dsName.replace("-ds.xml", "");
+            String xccdfBase = xccdfName.replace("-xccdf.xml", "");
+            if (!dsBase.equals(xccdfBase)) {
+                return "DataStream and XCCDF files must share the same base name. " +
+                        "DataStream: '" + dsBase + "', XCCDF: '" + xccdfBase + "'";
+            }
+        }
+        return null;
+    }
 
-            return handleTailoringFileException(res, e, existingContent == null ? "creating" : "updating");
+    private Path writeScapContentFile(Optional<DiskFileItem> fileItem, String newFileName, String currentFileName,
+                                       Path contentDir, boolean isCreate, boolean isDataStream,
+                                       ScapContent scapContent) throws Exception {
+        if (fileItem.isEmpty()) {
+            return null;
+        }
+
+        // Track old file for deletion if updating and filename changed
+        Path oldFilePath = null;
+        if (!isCreate && !currentFileName.equals(newFileName)) {
+            oldFilePath = Paths.get(contentDir.toString(), currentFileName);
+        }
+
+        writeFileToDirectory(contentDir, newFileName, fileItem.get().getInputStream());
+
+        if (isDataStream) {
+            scapContent.setDataStreamFileName(newFileName);
+        }
+        else {
+            scapContent.setXccdfFileName(newFileName);
+        }
+
+        return oldFilePath;
+    }
+
+    private void deleteFileIfExists(Path filePath) {
+        if (filePath != null && Files.exists(filePath)) {
+            try {
+                FileUtils.deleteFile(filePath);
+            }
+            catch (Exception e) {
+                LOG.warn("Failed to delete old file: {}", filePath, e);
+            }
+        }
+    }
+
+    private void rollbackScapContentCreation(boolean isCreate, ScapContent scapContent, Path contentDir) {
+        if (isCreate && scapContent != null && scapContent.getId() != null) {
+            try {
+                ScapFactory.deleteScapContentAndFlush(scapContent);
+                if (contentDir != null && Files.exists(contentDir)) {
+                    deleteDirectoryRecursively(contentDir);
+                }
+            }
+            catch (Exception rollbackEx) {
+                LOG.error("Failed to rollback SCAP content creation", rollbackEx);
+            }
         }
     }
 
@@ -1288,28 +1356,56 @@ public class ScapAuditController {
     }
 
     /**
-     * Generates a unique filename using org ID, tailoring file name, and original filename
-     * Format: {orgId}_{sanitizedName}_{originalFilename}
-     * This approach is more portable for migration/replication scenarios than using database IDs
+     * Helper method to delete a directory and all its contents recursively.
      *
-     * @param orgId the organization ID
-     * @param tailoringFileName the name of the tailoring file (user-provided)
-     * @param originalFilename the original filename
-     * @return the unique filename
+     * @param directory the directory path to delete
+     * @throws IOException if deletion fails
      */
-    private static String generateUniqueFileName(Long orgId, String tailoringFileName, String originalFilename) {
-        // Sanitize the tailoring file name to make it filesystem-safe
-        // Underscores are reserved as delimiters, so they're converted to hyphens
-        String sanitizedName = tailoringFileName
-            .replaceAll("[^a-zA-Z0-9-]", "-")  // Replace non-alphanumeric chars (including _) with hyphen
-            .replaceAll("-{2,}", "-")           // Replace multiple hyphens with single hyphen
-            .toLowerCase();
-
-        return orgId + "_" + sanitizedName + "_" + originalFilename;
+    private void deleteDirectoryRecursively(Path directory) throws IOException {
+        if (Files.exists(directory)) {
+            try (var stream = Files.walk(directory)) {
+                stream.sorted(java.util.Comparator.reverseOrder())
+                      .forEach(path -> {
+                          try {
+                              Files.delete(path);
+                          }
+                          catch (IOException e) {
+                              LOG.warn("Failed to delete: {}", path, e);
+                          }
+                      });
+            }
+        }
     }
 
+    /**
+     * Creates a per-ID directory for storing entity files.
+     * Directory structure: {baseDir}/{entityId}/
+     *
+     * @param baseDir the base directory path
+     * @param entityId the entity ID
+     * @return the created directory path
+     * @throws IOException if directory creation fails
+     */
+    private Path createEntityDirectory(String baseDir, Long entityId) throws IOException {
+        Path directory = Paths.get(baseDir, entityId.toString());
+        Files.createDirectories(directory);
+        return directory;
+    }
 
-
+    /**
+     * Writes a file to a directory with path validation.
+     *
+     * @param directory the target directory
+     * @param filename the filename to write
+     * @param inputStream the file content
+     * @throws IOException if file writing fails
+     */
+    private void writeFileToDirectory(Path directory, String filename, InputStream inputStream) throws IOException {
+        Path safePath = FileUtils.validateCanonicalPath(directory.toString(), filename);
+        try (var in = inputStream) {
+            Files.copy(in, safePath, StandardCopyOption.REPLACE_EXISTING);
+        }
+    }
     /**
      * Returns a list of available SCAP content from the database
      * @return List of SCAP content DTOs
@@ -1340,7 +1436,6 @@ public class ScapAuditController {
                     file.getId(),
                     file.getName(),
                     file.getFileName(),
-                    file.getDisplayFileName(),
                     file.getDescription()
                 ))
                 .collect(Collectors.toList());
@@ -1368,7 +1463,7 @@ public class ScapAuditController {
                         .orElseThrow(() -> new IllegalArgumentException("SCAP content not found"));
 
                 fileName = content.getXccdfFileName();
-                baseDirectory = scapContentDir;
+                baseDirectory = scapContentDir + "/" + content.getId();
 
             }
             else if ("tailoringFile".equalsIgnoreCase(type)) {
@@ -1377,7 +1472,7 @@ public class ScapAuditController {
                         .orElseThrow(() -> new IllegalArgumentException("Tailoring file not found"));
 
                 fileName = tailoring.getFileName();
-                baseDirectory = tailoringFilesDir;
+                baseDirectory = tailoringFilesDir + "/" + tailoring.getId();
 
             }
             else {
@@ -1677,10 +1772,6 @@ public class ScapAuditController {
      * @param input the file name to sanitize
      * @return the sanitized file name
      */
-    private String sanitizeFileName(String input) {
-        return input.replaceAll("[^a-zA-Z0-9._-]", "_");
-    }
-
     /**
      * Check if OpenSCAP is enabled on the given server by verifying the required package is installed.
      * Mirrors the logic from {@link com.redhat.rhn.frontend.action.systems.audit.ScapSetupAction}.

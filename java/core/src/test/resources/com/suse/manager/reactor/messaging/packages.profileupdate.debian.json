@@ -38,7 +38,7 @@
                 "duration": 130.836,
                 "__id__": "sync_modules"
             },
-            "mgrcompat_|-packages_|-pkg.info_installed_|-module_run": {
+            "module_|-packages_|-pkg.info_installed_|-run": {
                 "name": "pkg.info_installed",
                 "changes": {
                     "ret": {
@@ -89,7 +89,7 @@
                 "duration": 10.782,
                 "__id__": "debianrelease"
             },
-            "mgrcompat_|-grains_update_|-grains.items_|-module_run": {
+            "module_|-grains_update_|-grains.items_|-run": {
                 "name": "grains.items",
                 "changes": {
                     "ret": {
@@ -349,7 +349,7 @@
                 "duration": 2.428,
                 "__id__": "grains_update"
             },
-            "mgrcompat_|-kernel_live_version_|-sumautil.get_kernel_live_version_|-module_run": {
+            "module_|-kernel_live_version_|-sumautil.get_kernel_live_version_|-run": {
                 "name": "sumautil.get_kernel_live_version",
                 "changes": {
                     "ret": null

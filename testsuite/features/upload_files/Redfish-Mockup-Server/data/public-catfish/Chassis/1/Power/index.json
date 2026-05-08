@@ -1,0 +1,27 @@
+{
+    "@odata.type": "#Power.v1_6_0.Power",
+    "Id": "Power",
+    "Name": "Power",
+    "PowerControl": [
+        {
+            "@odata.id": "/redfish/v1/Chassis/1/Power#/PowerControl/0",
+            "MemberId": "0",
+            "Name": "System Power Control",
+            "PowerConsumedWatts": 224,
+            "PowerCapacityWatts": 600,
+            "PowerLimit": {
+                "LimitInWatts": 450,
+                "LimitException": "LogEventOnly",
+                "CorrectionInMs": 1000
+            },
+            "Status": {
+                "State": "Enabled",
+                "Health": "OK"
+            },
+            "Oem": {}
+        }
+    ],
+    "Oem": {},
+    "@odata.id": "/redfish/v1/Chassis/1/Power",
+    "@Redfish.Copyright": "Copyright 2014-2019 DMTF. For the full DMTF copyright policy, see http://www.dmtf.org/about/policies/copyright."
+}

@@ -30,7 +30,7 @@
 %endif
 
 Name:           spacewalk-config
-Version:        5.2.3
+Version:        5.2.4
 Release:        0
 Summary:        %{productprettyname} Configuration
 License:        GPL-2.0-only

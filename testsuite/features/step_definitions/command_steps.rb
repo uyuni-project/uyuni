@@ -162,6 +162,12 @@ end
 When(/^I use spacewalk-common-channel to add channel "([^"]*)" with arch "([^"]*)"$/) do |child_channel, arch|
   command = "spacewalk-common-channels -u admin -p admin -a #{arch} #{child_channel}"
   $command_output, _code = get_target('server').run(command)
+  if product_version_full == 'uyuni-main' && bypass_channel_repo_if_needed("#{child_channel}-#{arch}")
+    # The URL of the repo has been bypassed. We must kill running reposync and trigger it again
+    channel_label = "#{child_channel}-#{arch}"
+    kill_reposync_for_channel(channel_label)
+    get_target('server').run("spacecmd -u admin -p admin softwarechannel_syncrepos #{channel_label}", check_errors: false, verbose: true)
+  end
 end
 
 When(/^I use spacewalk-common-channel to add all "([^"]*)" channels with arch "([^"]*)"$/) do |channel, architecture|
@@ -174,6 +180,10 @@ When(/^I use spacewalk-common-channel to add all "([^"]*)" channels with arch "(
     command = "spacewalk-common-channels -u admin -p admin -a #{architecture} #{os_product_version_channel.gsub("-#{architecture}", '')}"
     get_target('server').run(command, verbose: true)
     log "Channel #{os_product_version_channel} added"
+    next unless product_version_full == 'uyuni-main' && bypass_channel_repo_if_needed(os_product_version_channel)
+    # The URL of the repo has been bypassed. We must kill running reposync and trigger it again
+    kill_reposync_for_channel(os_product_version_channel)
+    get_target('server').run("spacecmd -u admin -p admin softwarechannel_syncrepos #{os_product_version_channel}", check_errors: false, verbose: true)
   end
 end
 
@@ -380,25 +390,7 @@ When(/^I kill running spacewalk-repo-sync for "([^"]*)"$/) do |os_product_versio
 end
 
 When(/^I kill running spacewalk-repo-sync for "([^"]*)" channel$/) do |channel|
-  time_spent = 0
-  checking_rate = 5
-  repeat_until_timeout(timeout: 60, message: 'Some reposync processes were not killed properly', dont_raise: true) do
-    command_output, _code = get_target('server').run('ps axo pid,cmd | grep spacewalk-repo-sync | grep -v grep', verbose: true, check_errors: false)
-    process = command_output.split("\n")[0]
-    channel_synchronizing = process.split[5].strip
-    if process.nil?
-      log "#{time_spent / 60} minutes waiting for '#{channel}' channel to start its repo-sync processes." if ((time_spent += checking_rate) % 60).zero?
-      sleep checking_rate
-      next
-    elsif channel_synchronizing == channel
-      pid = process.split[0]
-      get_target('server').run("kill #{pid}", verbose: true, check_errors: false)
-      log "Reposync of channel #{channel} killed"
-      break
-    else
-      log "Warning: Repo-sync process for channel '#{channel_synchronizing}' running."
-    end
-  end
+  kill_reposync_for_channel(channel)
 end
 
 Then(/^the reposync logs should not report errors$/) do
@@ -442,21 +434,44 @@ When(/^I wait until all synchronized channels for "([^"]*)" have finished$/) do 
 end
 
 When(/^I wait until all synchronized channels have solved their dependencies$/) do
-  # Initialize the failure tracker here since this is the only step that uses it
   add_context('channels_failed_without_solv_file', [])
-  channels_to_wait_solv_file = get_context('channels_to_wait_solv_file')
+  channels_to_wait_solv_file = get_context('channels_to_wait_solv_file').uniq
+  accumulated_timeout = get_context('channels_timeout')
   checking_rate = 10
+
+  if channels_to_wait_solv_file.empty?
+    log 'No channels pending dependency solving, skipping wait'
+    next
+  end
+
+  remaining_channels_timeout = calculate_remaining_channels_timeout(channels_to_wait_solv_file)
+  optimized_timeout = [accumulated_timeout, remaining_channels_timeout].min
+
+  log "Waiting for #{channels_to_wait_solv_file.count} channel(s) to solve dependencies (timeout: #{optimized_timeout}s)"
+
   begin
-    repeat_until_timeout(timeout: get_context('channels_timeout'), message: 'Product not fully initialized') do
-      channels_to_wait_solv_file.reject! do |channel|
-        channel_is_synced?(channel)
-      end
+    start = Time.now
+    deadline_elapsed = optimized_timeout
+    repeat_until_timeout(timeout: optimized_timeout, message: 'Product not fully initialized') do
+      prev_count = channels_to_wait_solv_file.count
+      channels_to_wait_solv_file.reject! { |channel| channel_is_synced?(channel) }
       break if channels_to_wait_solv_file.empty?
+
+      if channels_to_wait_solv_file.count < prev_count
+        elapsed = Time.now - start
+        recalc_timeout = calculate_remaining_channels_timeout(channels_to_wait_solv_file)
+        deadline_elapsed = [deadline_elapsed, elapsed + recalc_timeout].min
+      end
+
+      if Time.now - start >= deadline_elapsed
+        raise Timeout::Error,
+              "Metadata generation timed out for: #{channels_to_wait_solv_file.join(', ')}"
+      end
 
       sleep checking_rate
     end
   rescue StandardError => e
-    log "These channels were not initialized:\n #{channels_to_wait_solv_file}. \n#{e.message}"
+    log "These channels were not initialized: #{channels_to_wait_solv_file}. #{e.message}"
     add_context('channels_failed_without_solv_file', get_context('channels_failed_without_solv_file') + channels_to_wait_solv_file)
     # It might be that the MU repository is wrong, but on BV we want to continue in any case
     raise unless $build_validation
@@ -615,19 +630,22 @@ When(/^the controller starts mocking a Redfish host$/) do
   file_extract(get_target('server'), key_path.strip, '/root/controller.key')
   file_extract(get_target('server'), crt_path.strip, '/root/controller.crt')
 
-  `curl --output /root/DSP2043_2019.1.zip https://www.dmtf.org/sites/default/files/standards/documents/DSP2043_2019.1.zip`
-  `unzip /root/DSP2043_2019.1.zip -d /root/`
+  data_dir = "#{File.dirname(__FILE__)}/../upload_files/Redfish-Mockup-Server/data/public-catfish"
   cmd = "/usr/bin/python3 #{File.dirname(__FILE__)}/../upload_files/Redfish-Mockup-Server/redfishMockupServer.py " \
         "-H #{hostname} -p 8443 " \
-        '-S -D /root/DSP2043_2019.1/public-catfish/ ' \
+        "-S -D #{data_dir} " \
         '--ssl --cert /root/controller.crt --key /root/controller.key ' \
         '< /dev/null > /dev/null 2>&1 &'
   `#{cmd}`
+  repeat_until_timeout(timeout: 30, message: 'Redfish mock server did not start on port 8443') do
+    result = `curl -sk --connect-timeout 2 --max-time 3 https://#{hostname}:8443/redfish/v1 2>/dev/null`
+    break unless result.empty?
+    sleep 1
+  end
 end
 
 When(/^the controller stops mocking a Redfish host$/) do
   `pkill -e -f #{File.dirname(__FILE__)}/../upload_files/Redfish-Mockup-Server/redfishMockupServer.py`
-  `rm -rf /root/DSP2043_2019.1*`
 end
 
 When(/^I install a user-defined state for "([^"]*)" on the server$/) do |host|
@@ -1064,12 +1082,15 @@ end
 When(/I obtain and extract the supportconfig from the server$/) do
   supportconfig_path = '/root/server-supportconfig.tar.gz'
   test_runner_file = '/root/server-supportconfig.tar.gz'
+  localhost = get_target('localhost')
   get_target('server').scp_download(supportconfig_path, test_runner_file)
-  `rm -rf /root/server-supportconfig`
-  `mkdir /root/server-supportconfig && tar xzvf /root/server-supportconfig.tar.gz -C /root/server-supportconfig`
-  `mv /root/server-supportconfig/scc_* /root/server-supportconfig/test-server`
-  `tar xJvf /root/server-supportconfig/test-server/*supportconfig.txz -C /root/server-supportconfig`
-  `mv /root/server-supportconfig/scc_suse_*/ /root/server-supportconfig/uyuni-server-supportconfig/`
+  localhost.run('rm -rf /root/server-supportconfig')
+  localhost.run('mkdir /root/server-supportconfig && tar xzvf /root/server-supportconfig.tar.gz -C /root/server-supportconfig')
+  localhost.run('mv /root/server-supportconfig/scc_*/uyuni-server-container-*/ /root/server-supportconfig/uyuni-server-supportconfig')
+  file_count, _code = localhost.run('ls /root/server-supportconfig/uyuni-server-supportconfig/ | wc -l', check_errors: false)
+  raise 'Extracted supportconfig is empty or inaccessible' unless file_count.strip.to_i.positive?
+
+  add_context(:supportconfig_path, '/root/server-supportconfig/uyuni-server-supportconfig')
 end
 
 When(/I remove the autoinstallation files from the server$/) do
@@ -1804,9 +1825,19 @@ When(/^I start the health check tool with supportconfig "([^"]*)" on "([^"]*)"$/
   node.run("mgr-health-check -v -s #{supportconfig} start", check_errors: true, verbose: true)
 end
 
-When(/^I stop health check tool on "([^"]*)"$/) do |host|
+When(/^I start the health check tool with the extracted supportconfig on "([^"]*)"$/) do |host|
+  supportconfig_path = get_context(:supportconfig_path)
+  raise 'No supportconfig path in context - did the extraction step succeed?' if supportconfig_path.nil? || supportconfig_path.empty?
+
   node = get_target(host)
-  node.run('mgr-health-check stop', check_errors: true, verbose: true)
+  node.run("mgr-health-check -v -s #{supportconfig_path} start", check_errors: true, verbose: true)
+end
+
+When(/^I stop the health check tool on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  node.run('mgr-health-check stop', check_errors: false, verbose: true)
+  node.run('podman rm -f health_check_loki health_check_promtail health_check_supportconfig_exporter health-check-grafana', check_errors: false)
+  node.run('podman network rm -f health-check-network', check_errors: false)
 end
 
 Then(/^the word "([^']*)" does not occur more than (\d+) times in "(.*)" on "([^"]*)"$/) do |word, threshold, path, host|
@@ -1832,12 +1863,29 @@ Then(/^I check that the health check tool exposes metrics on "([^"]*)"$/) do |ho
   node.run("curl -s localhost:9000/metrics.json | python3 -c 'import sys, json; print(json.load(sys.stdin).keys())'", check_errors: true, verbose: true)
 end
 
-Then(/^I check that the health check tool (is|is not) running on "([^"]*)"$/) do |action, host|
+Then(/^the health check tool should expose the expected metrics on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  expected_keys = %w[java_config config apache postgresql hw memory disk salt_configuration salt_keys salt_jobs misc]
+  output, _code = node.run("curl -s localhost:9000/metrics.json | python3 -c 'import sys, json; [print(k) for k in json.load(sys.stdin).keys()]'", check_errors: true, verbose: true)
+  actual_keys = output.strip.split("\n")
+  missing_keys = expected_keys - actual_keys
+  raise "Health check metrics missing expected keys: #{missing_keys.join(', ')}" unless missing_keys.empty?
+end
+
+Then(/^the health check Grafana dashboard should be accessible on "([^"]*)"$/) do |host|
+  node = get_target(host)
+  http_code, code = node.run("curl -s -o /dev/null -w '%{http_code}' localhost:3000", check_errors: false)
+  raise "Grafana dashboard not accessible: curl failed with exit code #{code}" unless code.zero?
+  raise "Grafana dashboard not accessible: expected HTTP 200, got #{http_code.strip}" unless http_code.strip == '200'
+end
+
+Then(/^the health check tool (should be|should not be) running on "([^"]*)"$/) do |action, host|
   node = get_target(host)
   node.run("test $(podman ps | grep health-check | wc -l) == #{action == 'is' ? '4' : '0'}", check_errors: true, verbose: true)
 end
 
-Then(/^I remove test supportconfig on "([^"]*)"$/) do |host|
+When(/^I remove test supportconfig on "([^"]*)"$/) do |host|
   node = get_target(host)
-  node.run('rm /root/server-supportconfig -rf')
+  node.run('rm -rf /root/server-supportconfig')
+  node.run('rm -rf /root/server-supportconfig.tar.gz')
 end

@@ -20,6 +20,6 @@ mgr_inspect_kiwi_image:
 
 mgr_kiwi_cleanup:
   cmd.run:
-    - name: "command -p rm -rf '{{ root_dir }}'"
+    - name: "/usr/bin/rm -rf '{{ root_dir }}'"
     - require:
       - module: mgr_inspect_kiwi_image

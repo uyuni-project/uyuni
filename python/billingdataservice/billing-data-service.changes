@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Apr 16 14:29:42 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.3-0
+  * Fix billing-data-service crashing (bsc#1252927)
+
+-------------------------------------------------------------------
 Mon Mar 02 13:12:54 CET 2026 - michael.calmer@suse.com
 
 - version 5.2.2-0

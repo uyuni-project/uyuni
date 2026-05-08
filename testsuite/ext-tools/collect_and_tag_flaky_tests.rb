@@ -1,4 +1,4 @@
-# Copyright (c) 2023 SUSE LLC.
+# Copyright (c) 2026 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 # Collect all the issues from a GitHub project board column
@@ -33,6 +33,7 @@ def fetch_github_issues(organization, project_number, column, headers)
                     content {
                       ... on Issue {
                         title
+                        url
                       }
                     }
                   }
@@ -45,7 +46,7 @@ def fetch_github_issues(organization, project_number, column, headers)
     }
   GRAPHQL
 
-  gh_card_titles = []
+  gh_cards = []
 
   loop do
     request_body = {
@@ -71,7 +72,10 @@ def fetch_github_issues(organization, project_number, column, headers)
 
           if status_field && status_field['item'] && status_field['item']['content']
             issue_title = status_field['item']['content']['title']
-            gh_card_titles.push(issue_title)
+            issue_url = status_field['item']['content']['url']
+            next if issue_title.to_s.empty? || issue_url.to_s.empty?
+
+            gh_cards.push({ title: issue_title, url: issue_url })
             puts "\e[36mCard found\e[0m => #{issue_title}"
           else
             puts "No data found in the GraphQL response for this item.: #{item}"
@@ -91,18 +95,20 @@ def fetch_github_issues(organization, project_number, column, headers)
     end
   end
 
-  gh_card_titles
+  gh_cards
 end
 
 # Function to tag Cucumber feature files
-def tag_cucumber_feature_files(directory_path, gh_card_titles, tag, regex_on_gh_card_title)
+def tag_cucumber_feature_files(directory_path, gh_cards, tag, regex_on_gh_card_title)
   features_tagged = 0
   scenarios_tagged = 0
 
   Find.find(directory_path) do |cucumber_file_path|
     next unless File.extname(cucumber_file_path) == '.feature'
 
-    gh_card_titles.each do |title|
+    gh_cards.each do |card|
+      title = card[:title]
+      url = card[:url]
       feature_matched = false
       matches = regex_on_gh_card_title.match(title)
       next if matches.nil?
@@ -112,9 +118,18 @@ def tag_cucumber_feature_files(directory_path, gh_card_titles, tag, regex_on_gh_
 
       temp_file_path = 'temp_file'
       previous_line = ''
+      lines = File.readlines(cucumber_file_path)
+      skip_next_line = false
       File.open(temp_file_path, 'w') do |temp_file|
-        File.foreach(cucumber_file_path).with_index do |line, _index|
-          feature_match = line.include?(match_feature) && !previous_line.include?("@#{tag}")
+        lines.each_with_index do |line, index|
+          if skip_next_line
+            skip_next_line = false
+            previous_line = line
+            next
+          end
+
+          feature_line_match = line.include?(match_feature)
+          feature_match = feature_line_match && !previous_line.include?("@#{tag}")
           scenario_match = line.include?(match_scenario) && !previous_line.include?("@#{tag}")
 
           if feature_match
@@ -131,6 +146,18 @@ def tag_cucumber_feature_files(directory_path, gh_card_titles, tag, regex_on_gh_
             # Do nothing
           end
           temp_file.puts(line)
+          if feature_line_match
+            related_card_line = "  * Related GitHub Card: #{url}\n"
+            next_line = lines[index + 1]
+            if next_line&.match?(/^\s*\* Related GitHub Card:/)
+              skip_next_line = true
+              if next_line != related_card_line
+                temp_file.puts(related_card_line)
+              end
+            else
+              temp_file.puts(related_card_line)
+            end
+          end
           previous_line = line
         end
       end
@@ -163,7 +190,10 @@ def main
     token = github_credentials.password unless github_credentials.nil?
   end
 
-  exit(1) if token.nil?
+  if token.nil?
+    puts 'GitHub token not found. Please set the GITHUB_TOKEN environment variable or add your credentials to the .netrc file.'
+    exit(1)
+  end
 
   organization = 'SUSE'
   project_number = 23
@@ -182,10 +212,10 @@ def main
   }
 
   columns.each do |column, tag|
-    gh_card_titles = fetch_github_issues(organization, project_number, column, headers)
-    puts ">> Found #{gh_card_titles.length} issues in the '#{column}' column of the GitHub project board."
-    unless gh_card_titles.empty?
-      features_tagged, scenarios_tagged = tag_cucumber_feature_files(directory_path, gh_card_titles, tag, regex_on_gh_card_title)
+    gh_cards = fetch_github_issues(organization, project_number, column, headers)
+    puts ">> Found #{gh_cards.length} issues in the '#{column}' column of the GitHub project board."
+    unless gh_cards.empty?
+      features_tagged, scenarios_tagged = tag_cucumber_feature_files(directory_path, gh_cards, tag, regex_on_gh_card_title)
       puts ">> Tagged #{features_tagged} feature and #{scenarios_tagged} scenarios with the '#{tag}' tag."
     end
   end

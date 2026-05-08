@@ -138,7 +138,7 @@ public class HttpClientAdapter {
         try {
             SSLContext sslContext = buildSslSocketContext(additionalCertificates);
             List<String> supportedProtocols = Arrays.asList(sslContext.getSupportedSSLParameters().getProtocols());
-            List<String> wantedProtocols = Arrays.asList("TLSv1", "TLSv1.1", "TLSv1.2", "TLSv1.3");
+            List<String> wantedProtocols = Config.get().getList(ConfigDefaults.JAVA_HTTP_CLIENT_TLS_PROTOCOLS);
             wantedProtocols.retainAll(supportedProtocols);
             sslSocketFactory = Optional.of(new SSLConnectionSocketFactory(
                     sslContext,

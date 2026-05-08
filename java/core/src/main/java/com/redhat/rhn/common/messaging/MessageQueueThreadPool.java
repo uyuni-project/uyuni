@@ -46,7 +46,7 @@ public class MessageQueueThreadPool extends ThreadPoolExecutor {
      */
     public MessageQueueThreadPool(int size) {
         super(size, size, 0, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
-        setThreadFactory(new BasicThreadFactory.Builder().namingPattern("message-queue-thread-%d").build());
+        setThreadFactory(BasicThreadFactory.builder().namingPattern("message-queue-thread-%d").build());
         log.info("Started message queue thread pool (size: {})", size);
     }
 

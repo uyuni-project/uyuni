@@ -54,6 +54,12 @@ public class ScapActionDetails extends BaseDomainHelper {
     @Column(name = "scap_policy_id")
     private Integer scapPolicyId;
 
+    @Column(name = "scap_content_id")
+    private Long scapContentId;
+
+    @Column(name = "tailoring_file_id")
+    private Long tailoringFileId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "action_id", updatable = false, nullable = false, insertable = true)
     private Action parentAction;
@@ -186,5 +192,37 @@ public class ScapActionDetails extends BaseDomainHelper {
      */
     public void setScapPolicyId(Integer scapPolicyIdIn) {
         this.scapPolicyId = scapPolicyIdIn;
+    }
+
+    /**
+     * Gets the SCAP content ID associated with this action
+     * @return Returns the scapContentId.
+     */
+    public Long getScapContentId() {
+        return scapContentId;
+    }
+
+    /**
+     * Sets the SCAP content ID associated with this action
+     * @param scapContentIdIn The scapContentId to set.
+     */
+    public void setScapContentId(Long scapContentIdIn) {
+        this.scapContentId = scapContentIdIn;
+    }
+
+    /**
+     * Gets the tailoring file ID associated with this action
+     * @return Returns the tailoringFileId.
+     */
+    public Long getTailoringFileId() {
+        return tailoringFileId;
+    }
+
+    /**
+     * Sets the tailoring file ID associated with this action
+     * @param tailoringFileIdIn The tailoringFileId to set.
+     */
+    public void setTailoringFileId(Long tailoringFileIdIn) {
+        this.tailoringFileId = tailoringFileIdIn;
     }
 }

@@ -22,7 +22,6 @@ interface TailoringFileData {
   id: number;
   name: string;
   fileName: string;
-  displayFileName: string;
 }
 
 declare global {
@@ -126,7 +125,7 @@ const TailoringFiles = (): JSX.Element => {
             width="45%"
             comparator={Utils.sortByText}
             header={t("Tailoring File Name")}
-            cell={(row: TailoringFileData) => row.displayFileName}
+            cell={(row: TailoringFileData) => row.fileName}
           />
           <Column
             columnKey="actions"

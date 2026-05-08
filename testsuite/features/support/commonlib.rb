@@ -6,6 +6,7 @@ require 'yaml'
 require 'nokogiri'
 require 'timeout'
 require 'rubygems'
+require_relative 'kubernetes'
 require_relative 'constants'
 require_relative 'api_test'
 
@@ -33,16 +34,24 @@ end
 def product
   return $product unless $product.nil?
 
-  _product_raw, code = get_target('server').run('rpm -q patterns-uyuni_server', check_errors: false)
-  if code.zero?
-    $product = 'Uyuni'
-    return 'Uyuni'
+  patterns = { 'patterns-uyuni_server' => 'Uyuni', 'patterns-suma_server' => 'SUSE Manager' }
+  server = get_target('server')
+
+  # If running RKE2, first check inside the pod
+  if running_rke2?
+    pod = get_pod_name('server', 'server')
+    patterns.each do |pattern, name|
+      _out, code = server.run_local("kubectl exec -n uyuni #{pod} -- rpm -q #{pattern}", check_errors: false)
+      return $product = name if code.zero?
+    end
   end
-  _product_raw, code = get_target('server').run('rpm -q patterns-suma_server', check_errors: false)
-  if code.zero?
-    $product = 'SUSE Manager'
-    return 'SUSE Manager'
+
+  # Check on the host or using traditional containerization (mgrctl)
+  patterns.each do |pattern, name|
+    _out, code = server.run("rpm -q #{pattern}", check_errors: false)
+    return $product = name if code.zero?
   end
+
   raise NotImplementedError, 'Could not determine product'
 end
 
@@ -106,35 +115,14 @@ def repeat_until_timeout(timeout: DEFAULT_TIMEOUT, retries: nil, message: nil, r
 end
 
 #
-# Checks if the specified text is visible on the page and catches a request timeout popup if it appears.
+# Checks if the specified text is visible on the page.
 #
 # @param text1 [String] The first text to check for visibility.
 # @param text2 [String, nil] The second text to check for visibility (optional).
 # @param timeout [Integer] The maximum time to wait for the text to become visible (default: Capybara.default_max_wait_time).
-# @return [Boolean] Returns true if the text is visible or the request timeout popup is caught, false otherwise.
-def check_text_and_catch_request_timeout_popup?(text1, text2: nil, timeout: Capybara.default_max_wait_time)
-  return has_text?(text1, wait: timeout) || (!text2.nil? && has_text?(text2, wait: timeout)) unless $catch_timeout_message
-
-  start_time = Time.now
-  repeat_until_timeout(message: "'#{text1}' still not visible", timeout: DEFAULT_TIMEOUT) do
-    while Time.now - start_time <= timeout
-      begin
-        return true if has_text?(text1, wait: 4)
-        return true if !text2.nil? && has_text?(text2, wait: 4)
-      rescue Selenium::WebDriver::Error::UnknownError, Selenium::WebDriver::Error::StaleElementReferenceError => e
-        warn "Selenium::WebDriver::Error caught: #{e.message}"
-        next
-      end
-      next unless has_text?('Request has timed out', wait: 0)
-
-      log 'Request timeout found, performing reload'
-      click_button('reload the page')
-      start_time = Time.now
-      raise "Request timeout message still present after #{Capybara.default_max_wait_time} seconds." unless has_no_text?('Request has timed out')
-
-    end
-    return false
-  end
+# @return [Boolean] Returns true if the text is visible, false otherwise.
+def check_text?(text1, text2: nil, timeout: Capybara.default_max_wait_time)
+  has_text?(text1, wait: timeout) || (!text2.nil? && has_text?(text2, wait: timeout))
 end
 
 # Formats the detail message with optional last result and report result.
@@ -338,6 +326,56 @@ def generate_repository_name(repo_url)
   repo_name.gsub!('/', '_')
   repo_name.gsub!(':', '_')
   repo_name[0...64] # HACK: Due to the 64 characters size limit of a repository label
+end
+
+# Kill spacewalk-repo-sync execution for a given channel
+#
+# @param channel [String] The channel label of the channel to kill reposync execution
+def kill_reposync_for_channel(channel)
+  time_spent = 0
+  checking_rate = 5
+  repeat_until_timeout(timeout: 60, message: 'Some reposync processes were not killed properly', dont_raise: true) do
+    command_output, _code = get_target('server').run('ps axo pid,cmd | grep spacewalk-repo-sync | grep -v grep', verbose: true, check_errors: false)
+    process = command_output.split("\n")[0]
+    channel_synchronizing = process.split[5].strip
+    if process.nil?
+      log "#{time_spent / 60} minutes waiting for '#{channel}' channel to start its repo-sync processes." if ((time_spent += checking_rate) % 60).zero?
+      sleep checking_rate
+      next
+    elsif channel_synchronizing == channel
+      pid = process.split[0]
+      get_target('server').run("kill #{pid}", verbose: true, check_errors: false)
+      log "Reposync of channel #{channel} killed"
+      break
+    else
+      log "Warning: Repo-sync process for channel '#{channel_synchronizing}' running."
+    end
+  end
+end
+
+# Update the URL for a given repository
+#
+# @param repo [String] The name of the repository to update
+# @param url [String] The new URL to set for this repository
+def update_repository_url(repo, url)
+  get_target('server').run("spacecmd -u admin -p admin repo_updateurl \"#{repo}\" #{url}", check_errors: false)
+end
+
+# Check whether a bypass of the repository URL is needed for the given channel
+# in case of running tests for uyuni-main
+#
+# @param channel_label [String] The label of the channel to check
+# @return [Boolean, nil] Return true if repo has been updated
+def bypass_channel_repo_if_needed(channel_label)
+  return unless UYUNI_MAIN_REPO_URL_BYPASS.key?(channel_label)
+  return unless product_version_full == 'uyuni-main'
+
+  log "The repo URL for channel #{channel_label} must be bypassed for Uyuni:Main"
+  repo, _code = get_target('server').run("spacecmd -q -u admin -p admin softwarechannel_listrepos #{channel_label}", check_errors: true)
+  bypass_url = UYUNI_MAIN_REPO_URL_BYPASS[channel_label]
+  update_repository_url(repo.strip, bypass_url)
+  log "Bypassed repo URL for channel #{channel_label} to #{bypass_url}"
+  true
 end
 
 #
@@ -599,6 +637,14 @@ def channel_timeout(channel)
   timeout
 end
 
+# This method calculates the timeout needed for channels still waiting to solve dependencies
+#
+# @param channels [Array<String>] List of channel names that still need solving
+# @return [Integer] Total timeout in seconds for these channels
+def calculate_remaining_channels_timeout(channels)
+  channels.reduce(0) { |acc, elem| acc + channel_timeout(elem) }
+end
+
 # @param channel_label [String] the label of the channel to check
 # @return [Boolean] true if the synchronization is completed, false otherwise
 def channel_sync_completed?(channel_label)
@@ -673,7 +719,18 @@ def channel_packages_are_downloaded?(channel_name)
     return true if $custom_repositories[client].nil? && client != 'monitoring_server'
   end
   log_tmp_file = '/tmp/reposync.log'
-  get_target('server').extract('/var/log/rhn/reposync.log', log_tmp_file)
+  # Copy reposync logs to /tmp/ to prevent race condition and error when calling .extract()
+  # if the reposync log file is being updated during the underlying "mgrctl cp" call:
+  #
+  # https://github.com/uyuni-project/uyuni-tools/issues/772
+  #
+  # INF Starting mgrctl cp server:/var/log/rhn/reposync.log /tmp/reposync.log
+  # INF Error: 1 error occurred:
+  #  * copying from container: copier: get: "/var/log/rhn/reposync.log": copying /var/log/rhn/reposync.log: archive/tar: write too long
+  # (ScriptError)
+  #
+  get_target('server').run('cp /var/log/rhn/reposync.log /tmp/testsuite_reposync_check.log')
+  get_target('server').extract('/tmp/testsuite_reposync_check.log', log_tmp_file)
   unless File.exist?(log_tmp_file) && !File.empty?(log_tmp_file)
     log "DEBUG: Log file #{log_tmp_file} is missing or empty."
     return false

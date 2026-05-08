@@ -142,8 +142,7 @@ public class MockConnection extends CobblerConnection {
         }
 
         switch (name) {
-            case "token_check":
-            case "update":
+            case "token_check", "update":
                 return true;
             // login
             case "login":

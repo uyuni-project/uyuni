@@ -1,0 +1,22 @@
+{
+    "@odata.type": "#LogEntry.v1_5_1.LogEntry",
+    "Id": "2",
+    "Name": "Log Entry 2",
+    "EntryType": "SEL",
+    "Severity": "Critical",
+    "Created": "2012-03-07T14:45:00Z",
+    "EntryCode": "Upper Critical - going high",
+    "SensorType": "Temperature",
+    "SensorNumber": 2,
+    "Message": "Temperature threshold exceeded",
+    "MessageId": "0x592E28",
+    "Links": {
+        "OriginOfCondition": {
+            "@odata.id": "/redfish/v1/Chassis/1/Thermal"
+        },
+        "Oem": {}
+    },
+    "Oem": {},
+    "@odata.id": "/redfish/v1/Systems/1/LogServices/SEL/Entries/2",
+    "@Redfish.Copyright": "Copyright 2014-2019 DMTF. For the full DMTF copyright policy, see http://www.dmtf.org/about/policies/copyright."
+}

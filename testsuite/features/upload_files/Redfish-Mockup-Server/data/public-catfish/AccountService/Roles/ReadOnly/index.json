@@ -1,0 +1,13 @@
+{
+    "@odata.type": "#Role.v1_2_4.Role",
+    "Id": "ReadOnly",
+    "Name": "User Role",
+    "Description": "ReadOnly User Role",
+    "IsPredefined": true,
+    "AssignedPrivileges": [
+        "Login",
+        "ConfigureSelf"
+    ],
+    "@odata.id": "/redfish/v1/AccountService/Roles/ReadOnly",
+    "@Redfish.Copyright": "Copyright 2014-2019 DMTF. For the full DMTF copyright policy, see http://www.dmtf.org/about/policies/copyright."
+}

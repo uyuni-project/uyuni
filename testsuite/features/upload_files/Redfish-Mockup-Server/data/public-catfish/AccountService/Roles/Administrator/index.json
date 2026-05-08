@@ -1,0 +1,16 @@
+{
+    "@odata.type": "#Role.v1_2_4.Role",
+    "Id": "Administrator",
+    "Name": "User Role",
+    "Description": "Admin User Role",
+    "IsPredefined": true,
+    "AssignedPrivileges": [
+        "Login",
+        "ConfigureManager",
+        "ConfigureUsers",
+        "ConfigureSelf",
+        "ConfigureComponents"
+    ],
+    "@odata.id": "/redfish/v1/AccountService/Roles/Administrator",
+    "@Redfish.Copyright": "Copyright 2014-2019 DMTF. For the full DMTF copyright policy, see http://www.dmtf.org/about/policies/copyright."
+}

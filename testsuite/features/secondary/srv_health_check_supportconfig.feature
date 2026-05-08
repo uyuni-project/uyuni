@@ -1,4 +1,4 @@
-# Copyright (c) 2025 SUSE LLC
+# Copyright (c) 2025-2026 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_salt
@@ -12,8 +12,8 @@ Feature: Health Check tool based on a supportconfig
     Then I obtain and extract the supportconfig from the server
 
   Scenario: Execute Health Check tool with server supportconfig
-    When I start the health check tool with supportconfig "/root/server-supportconfig/uyuni-server-supportconfig/" on "localhost"
-    Then I check that the health check tool is running on "localhost"
+    When I start the health check tool with the extracted supportconfig on "localhost"
+    Then the health check tool should be running on "localhost"
 
   Scenario: Health Check containers are healthy and running
     When I wait until port "9000" is listening on "localhost" host
@@ -21,10 +21,13 @@ Feature: Health Check tool based on a supportconfig
     And I wait until port "9081" is listening on "localhost" host
     And I wait until port "3000" is listening on "localhost" host
 
-  Scenario: Health Check containers are exposing metrics
-    Then I check that the health check tool exposes metrics on "localhost"
+  Scenario: Health Check containers are exposing expected metrics
+    Then the health check tool should expose the expected metrics on "localhost"
+
+  Scenario: Health Check Grafana dashboard is accessible
+    Then the health check Grafana dashboard should be accessible on "localhost"
 
   Scenario: I can stop the Health Check tool
-    When I stop health check tool on "localhost"
-    Then I check that the health check tool is not running on "localhost"
-    And I remove test supportconfig on "localhost"
+    When I stop the health check tool on "localhost"
+    Then the health check tool should not be running on "localhost"
+    When I remove test supportconfig on "localhost"

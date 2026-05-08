@@ -1,0 +1,45 @@
+{
+    "@odata.type": "#Chassis.v1_11_0.Chassis",
+    "Id": "1",
+    "Name": "Catfish System Chassis",
+    "ChassisType": "RackMount",
+    "Manufacturer": "CatfishManufacturer",
+    "Model": "YellowCat1000",
+    "SerialNumber": "2M220100SL",
+    "SKU": "",
+    "PartNumber": "",
+    "AssetTag": "CATFISHASSETTAG",
+    "IndicatorLED": "Lit",
+    "PowerState": "On",
+    "Status": {
+        "State": "Enabled",
+        "Health": "OK"
+    },
+    "Thermal": {
+        "@odata.id": "/redfish/v1/Chassis/1/Thermal"
+    },
+    "Power": {
+        "@odata.id": "/redfish/v1/Chassis/1/Power"
+    },
+    "Links": {
+        "ComputerSystems": [
+            {
+                "@odata.id": "/redfish/v1/Systems/1"
+            }
+        ],
+        "ManagedBy": [
+            {
+                "@odata.id": "/redfish/v1/Managers/bmc"
+            }
+        ],
+        "ManagersInChassis": [
+            {
+                "@odata.id": "/redfish/v1/Managers/bmc"
+            }
+        ],
+        "Oem": {}
+    },
+    "Oem": {},
+    "@odata.id": "/redfish/v1/Chassis/1",
+    "@Redfish.Copyright": "Copyright 2014-2019 DMTF. For the full DMTF copyright policy, see http://www.dmtf.org/about/policies/copyright."
+}

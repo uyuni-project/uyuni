@@ -112,6 +112,10 @@
       "type": "object",
       "description": "Defines the volume claims for the server components",
       "properties": {
+        "storageClass": {
+          "type": ["string", "null"],
+          "description": "default storage class to use for the volume claims"
+        },
         "var-pgsql": { "$ref": "#/definitions/volumeConfig" },
         "var-spacewalk": { "$ref": "#/definitions/volumeConfig" },
         "var-cache": { "$ref": "#/definitions/volumeConfig" },

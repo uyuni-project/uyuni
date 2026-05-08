@@ -78,7 +78,7 @@ public class SaltModuleRun extends AbstractSaltRequisites implements Identifiabl
         addRequisites(arguments);
 
         return singletonMap(id,
-                singletonMap("mgrcompat.module_run", arguments)
+                singletonMap("module.run", arguments)
         );
     }
 

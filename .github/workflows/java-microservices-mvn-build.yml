@@ -16,6 +16,8 @@ on:
       - 'microservices/**'
       - '.github/workflows/java-microservices-mvn-build.yml'
 
+permissions:
+  contents: read
 
 jobs:
   build:

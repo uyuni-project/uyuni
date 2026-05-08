@@ -1,4 +1,23 @@
 -------------------------------------------------------------------
+Tue May 05 11:17:56 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.8
+  * Fix query to identify collation version mismatch
+
+-------------------------------------------------------------------
+Fri Apr 17 11:29:46 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.7
+  * Healthcheck on disk usage based on taskomatic (bsc#1238890).
+  * Healthcheck fails if server should be restarted.
+  * Allow LDAP users that are not visible to pam_unix (bsc#1256791)
+  * Use correct CA for Report DB (bsc#1260806)
+  * Move server setup to the server container image
+  * Remove duplicate zypper excludedocs=yes
+  * Separate the cgroup mount from the host one on Kubernetes
+  * Add rpm-ndb to the server-image (bsc#1259557)
+
+-------------------------------------------------------------------
 Mon Mar 02 13:11:54 CET 2026 - michael.calmer@suse.com
 
 - version 5.2.6

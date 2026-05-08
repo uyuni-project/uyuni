@@ -70,6 +70,8 @@ public class ConfigDefaults {
     public static final String WEB_SMTP_TIMEOUT = "java.smtp_timeout";
     public static final String WEB_SMTP_CONNECTION_TIMEOUT = "java.smtp_connection_timeout";
     public static final String WEB_SMTP_WRITE_TIMEOUT = "java.smtp_write_timeout";
+    public static final String WEB_SMTP_TLS_PROTOCOLS = "java.smtp_tls_protocols";
+    public static final String JAVA_HTTP_CLIENT_TLS_PROTOCOLS = "java.http_client_tls_protocols";
     public static final String WEB_DISABLE_UPDATE_STATUS = "java.disable_update_status";
     public static final String WEB_DISABLE_REMOTE_COMMANDS_FROM_UI = "java.disable_remote_commands_from_ui";
     public static final String WEB_DISABLE_SUPPORTDATA_UPLOAD = "java.disable_supportdata_upload";
@@ -355,6 +357,19 @@ public class ConfigDefaults {
      * high-scale scenarios.
      */
     public static final String SALT_EVENTS_PER_COMMIT = "java.salt_events_per_commit";
+
+    /**
+     * Polling interval in milliseconds for checking PostgreSQL LISTEN/NOTIFY notifications.
+     */
+    public static final String SALT_EVENT_NOTIFICATION_POLL_INTERVAL_MS =
+            "java.salt_event_notification_poll_interval_ms";
+
+    /**
+     * Connection watchdog interval in seconds for checking database connection health and
+     * recovering orphaned events.
+     */
+    public static final String SALT_EVENT_CONNECTION_WATCHDOG_INTERVAL_SECONDS =
+            "java.salt_event_connection_watchdog_interval_seconds";
 
     /**
      * Single Sign-On associated config option name in rhn.conf
@@ -1186,6 +1201,23 @@ public class ConfigDefaults {
      */
     public int getSaltEventsPerCommit() {
         return Config.get().getInt(SALT_EVENTS_PER_COMMIT, 1);
+    }
+
+    /**
+     * Returns the polling interval in milliseconds for checking PostgreSQL LISTEN/NOTIFY notifications.
+     * @return the polling interval in milliseconds
+     */
+    public int getSaltEventNotificationPollIntervalMs() {
+        return Config.get().getInt(SALT_EVENT_NOTIFICATION_POLL_INTERVAL_MS, 100);
+    }
+
+    /**
+     * Returns the connection watchdog interval in seconds for checking database connection health
+     * and recovering orphaned events.
+     * @return the watchdog interval in seconds
+     */
+    public int getSaltEventConnectionWatchdogIntervalSeconds() {
+        return Config.get().getInt(SALT_EVENT_CONNECTION_WATCHDOG_INTERVAL_SECONDS, 5);
     }
 
 

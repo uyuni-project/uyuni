@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Thu Apr 16 14:26:47 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.5
+  * Add node placement controls properties
+  * Move server setup to the server container image
+  * Expose the exporters via HTTPS
+  * Server chart: handle apparmor nodes
+  * Separate the cgroup mount from the host one
+  * Route the exporters over HTTP using ingress rules
+  * Fix traefik setup and add experimental Gateway API support
+
+-------------------------------------------------------------------
 Mon Mar 02 13:07:56 CET 2026 - michael.calmer@suse.com
 
 - version 5.2.4

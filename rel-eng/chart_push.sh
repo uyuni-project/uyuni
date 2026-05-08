@@ -10,15 +10,17 @@
 # [buildconfig]
 # builder = custom.ChartBuilder
 
-OSCAPI=$1
+PRODUCT=$1
 GIT_DIR=$2
 PKG_NAME=$3
 
 SRPM_PKG_DIR=$(dirname "$0")
 
+# convert legacy value
+test "${PRODUCT}" == "https://api.suse.de" && PRODUCT="MLM"
 
 # check which endpoint we are using to match the product
-if [ "${OSCAPI}" == "https://api.suse.de" ]; then
+if [ "${PRODUCT}" == "MLM" ]; then
   PRODUCT_VERSION="$(sed -n 's/.*web.version\s*=\s*\(.*\)$/\1/p' ${GIT_DIR}/web/conf/rhn_web.conf)"
 else
   # Uyuni settings
@@ -30,7 +32,7 @@ PRODUCT_VERSION=$(echo ${PRODUCT_VERSION,,} | sed -r 's/ /-/g')
 
 if [ -f "${SRPM_PKG_DIR}/Chart.yaml" ]; then
     NAME="${PKG_NAME}"
-    if [ "${OSCAPI}" == "https://api.suse.de" ]; then
+    if [ "${PRODUCT}" == "MLM" ]; then
         # SUSE Manager settings
         VERSION=$(echo ${PRODUCT_VERSION} | sed 's/^\([0-9]\+\.[0-9]\+\).*$/\1/')
         sed "/^#\!BuildTag:/s/uyuni/suse\/multi-linux-manager\/${VERSION}/g" -i ${SRPM_PKG_DIR}/Chart.yaml

@@ -1,9 +1,10 @@
-# Copyright (c) 2013-2024 SUSE LLC.
+# Copyright (c) 2013-2026 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 require 'rake'
 require 'rubygems'
 require 'yaml'
+require 'json'
 require 'cucumber/rake/task'
 require 'rake/task'
 require 'parallel'
@@ -49,8 +50,17 @@ namespace :cucumber do
     # This block executes when the task runs and uses the exact same `html_results` path.
     # This file is used to expose the cucumber html report in Jenkins
     Rake::Task[task_name].enhance do
-      # Write the final HTML path (without the option flag) to the file
-      # This uses the CONSISTENT, PRE-CALCULATED 'html_results' variable
+      if File.exist?(html_results)
+        html_content = File.read(html_results)
+        sort_call = 'i.sort(((e,t)=>(e.uri||"").localeCompare(t.uri||"")))'
+        if html_content.include?(sort_call)
+          patched = html_content.gsub(sort_call, 'i' + (' ' * (sort_call.length - 1)))
+          File.write(html_results, patched)
+        else
+          raise "Could not find sort patch target in #{html_results} — report ordering will be broken. Update sort_call if the formatter was upgraded."
+        end
+      end
+
       sh "echo '#{html_results}' > #{path_export_file}", verbose: false
     end
   end
@@ -73,10 +83,45 @@ namespace :parallel do
       include_profiles = profiles.nil? ? '--profile default' : "--profile #{profiles.gsub(',', ' --profile ')}"
       tags = ENV.fetch('TAGS', nil)
       include_tags = tags.nil? ? '' : "--tags #{tags}"
+      # Create a per-build screenshots folder and pass it to Cucumber workers via env var.
+      screenshot_dir = "#{result_folder}/screenshots"
+      sh "mkdir -p #{screenshot_dir}", verbose: false
+      old_screenshot_dir = ENV['SCREENSHOT_DIR']
+      ENV['SCREENSHOT_DIR'] = screenshot_dir
       cucumber_opts = "#{include_profiles} #{include_tags} #{html_results} #{json_results} #{junit_results} -f CustomFormatter::PrettyFormatter -r features "
       # Publish the results in reports.cucumber.io if the environment variable PUBLISH_CUCUMBER_REPORT is set
       cucumber_opts << ' --publish' if ENV['PUBLISH_CUCUMBER_REPORT'] == 'true'
-      sh "bundle exec parallel_cucumber -n 6 -o '#{cucumber_opts}' #{features}"
+      # Capture test failures so the rename step always runs before re-raising.
+      cucumber_error = nil
+      begin
+        sh "bundle exec parallel_cucumber -n 6 -o '#{cucumber_opts}' #{features}"
+      rescue RuntimeError => e
+        cucumber_error = e
+      ensure
+        ENV['SCREENSHOT_DIR'] = old_screenshot_dir
+      end
+      Dir.glob("#{result_folder}/output_#{timestamp}-#{run_set}-*.json").each do |json_file|
+        next unless File.size?(json_file)
+
+        begin
+          data = JSON.parse(File.read(json_file))
+          next if data.empty? || data.first['uri'].nil? || data.length != 1
+
+          client_name = File.basename(data.first['uri'], '.feature')
+          # Use \d* (zero or more digits) to handle both the empty TEST_ENV_NUMBER case
+          # (produces "-.json") and the standard numeric case (produces "-2.json", etc.).
+          new_json = json_file.sub(/-\d*\.json$/, "-#{client_name}.json")
+          next if json_file == new_json
+
+          File.rename(json_file, new_json)
+          html_file = json_file.sub(/\.json$/, '.html')
+          new_html = new_json.sub(/\.json$/, '.html')
+          File.rename(html_file, new_html) if File.exist?(html_file)
+        rescue JSON::ParserError, SystemCallError => e
+          warn "Failed to rename result files for #{json_file}: #{e.class}: #{e.message}"
+        end
+      end
+      raise cucumber_error if cucumber_error
     end
   end
 end
@@ -235,8 +280,49 @@ namespace :utils do
     sh 'rm -rf ./cucumber_report && mkdir cucumber_report', verbose: false
     sh "timeout 180 bash -c -- \"while find #{result_folder}/output*.json -type f -size 0 | grep json; do sleep 10;done\" ; exit 0", verbose: false
     sh 'find . -size 0 -delete', verbose: false
+
+    # Strip before/after hooks into a separate folder for the Jenkins Cucumber
+    # plugin — originals are preserved intact so index.cjs can rescue
+    # screenshot embeddings from hooks before stripping them for the report.
+    # Only passed/skipped hooks are stripped — failed hooks are kept so they
+    # remain visible in both reports (a missing result status is also kept).
+    stripped_folder = "#{result_folder}/stripped"
+    sh "rm -rf #{stripped_folder} && mkdir -p #{stripped_folder}", verbose: false
+    safe_statuses = %w[passed skipped]
+    Dir.glob("#{result_folder}/output_*.json").each do |json_file|
+      begin
+        features = JSON.parse(File.read(json_file))
+        features.each do |feature|
+          (feature['elements'] || []).each do |scenario|
+            scenario['before'] = (scenario['before'] || []).reject { |h| safe_statuses.include?(h.dig('result', 'status')) }
+            scenario['after']  = (scenario['after']  || []).reject { |h| safe_statuses.include?(h.dig('result', 'status')) }
+            (scenario['steps'] || []).each do |step|
+              step['after'] = (step['after'] || []).reject { |h| safe_statuses.include?(h.dig('result', 'status')) }
+            end
+          end
+        end
+        File.write("#{stripped_folder}/#{File.basename(json_file)}", JSON.generate(features))
+      rescue => e
+        warn "WARNING: Could not strip hooks from #{json_file}: #{e.message}"
+      end
+    end
+
+    # Produce a consolidated cucumber_report.html.json for RRTG ingestion and
+    # test_review_summary.py. Merges all output_*.json files in chronological
+    # order (filenames are timestamped so lexicographic == execution order).
+    # Done before index.cjs so it is produced even if HTML report generation fails.
+    all_features = []
+    Dir.glob("#{result_folder}/output_*.json").sort.each do |json_file|
+      begin
+        all_features.concat(JSON.parse(File.read(json_file)))
+      rescue JSON::ParserError, SystemCallError => e
+        warn "WARNING: Could not merge #{json_file} into consolidated report: #{e.message}"
+      end
+    end
+    File.write('cucumber_report/cucumber_report.html.json', JSON.generate(all_features))
+
     sh "node index.cjs #{result_folder} &> cucumber_reporter.log", verbose: false
-    sh "cp cucumber_report/cucumber_report.html #{result_folder}"
+    sh "cp -r cucumber_report/. #{result_folder}/cucumber_report/"
   end
 
   desc 'Collect and tag flaky tests'

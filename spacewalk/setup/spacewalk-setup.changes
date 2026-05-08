@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Thu Apr 16 14:31:13 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.5-0
+  * Added new file root for scap content
+  * Removed SAX driver property no longer needed
+  * Replace Tomcat and Taskomatic metrics systemd conf file with
+    shell files.
+
+-------------------------------------------------------------------
 Mon Mar 02 13:13:51 CET 2026 - michael.calmer@suse.com
 
 - version 5.2.4-0

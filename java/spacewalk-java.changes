@@ -1,4 +1,73 @@
 -------------------------------------------------------------------
+Tue Apr 28 11:26:28 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.12-0
+  * Add the RHEL10 installer generation type (bsc#1263007)
+
+-------------------------------------------------------------------
+Mon Apr 27 10:40:23 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.11-0
+  * Move to per-ID based storage for scap content (bsc#1262721)
+
+-------------------------------------------------------------------
+Fri Apr 17 11:10:11 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.10-0
+  * Allow @ for user name on bootstrapping with web UI (bsc#1254629)
+  * Added beta feature flag support for experimental functionality
+  * Redesigned SCAP integration to centralize content on the server
+  * Fix ServerFactory lookupProxiesByOrg query (bsc#1259991)
+  * Correct deprecated createQuery usages
+  * Add api endpoint to generate proxy configuration without
+    SSL certificate
+  * Removed xalan and xerces dependency
+  * Replace Tomcat and Taskomatic metrics systemd conf file with
+    shell files.
+  * Add API endpoint to delete Salt known_hosts entries
+  * Update supported servers convertible to a proxy
+  * Replace using mgrcompat.module_run with module.run salt calls
+    as mgrcompat.module_run is not required anymore.
+  * Added listMigrationTargetsWithChannels endpoint to return
+    the valid migration targets channels (jsc#SUMA-320)
+  * Fix debian repo sync in peripheral (bsc#1257647)
+  * Fix hub SCC forwarding registration credential filter
+    (bsc#1260031)
+  * Fix API docs for several hub endpoints (bsc#1256493)
+  * Add RBAC endpoint mappings (bsc#1257760)
+  * Allow read-only users to call logout (bsc#1259471)
+  * Kickstart profile for RHEL 8 requires venv-salt-minion
+    instead of salt-minion (bsc#1259474)
+  * Remove validation of packages in kickstart profiles which are
+    not supported anymore (bsc#1259474)
+  * Improve performance by using lazy fetch for ImageDetails
+    and related classes (bsc#1252548)
+  * Optimized memory usage by replacing DOM-based XML parsing with
+    a streaming StaX parser for OVAL metadata files.
+  * Improved resilience of OVAL metadata synchronization to handle
+    invalid Criterion elements.
+  * Added support for migration from sles 15 to sles 16
+  * Fix missing translations (bsc#1259787)
+  * Sanitize inputs to avoid injection in rhn_conf
+    of http proxy settings inputs (bsc#1245107)
+  * Optimize schedule queries for performance (bsc#1257621,
+    bsc#1259127)
+  * Move common dependencies declaration to uyuni-java-parent
+  * Fixed multiple issues with repository persistence (bsc#1259499,
+    gh#uyuni-project/uyuni#11451)
+  * Upgrade to prometheus metrics 1.5.0
+  * Fix migration of peripheral servers to ISSv3
+  * Add listPeripheralServers API method
+  * Fix ErrorReportingStrategies logger retrieval
+  * Add support for RHEL 10 and clones
+  * Removed simple-xml dependency
+  * Healthcheck on disk usage based on taskomatic (bsc#1238890).
+  * Bump to prometheus-metrics-java 1.5.1.
+  * Add primary FQDN to pillar (bsc#1247004)
+  * Generate service user for Grafana reporting datasource
+  * Fix User x Address relationship (bsc#1259951)
+
+-------------------------------------------------------------------
 Mon Mar 02 13:27:35 CET 2026 - michael.calmer@suse.com
 
 - version 5.2.9-0

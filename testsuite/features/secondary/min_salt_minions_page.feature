@@ -1,4 +1,4 @@
-# Copyright (c) 2015-2024 SUSE LLC
+# Copyright (c) 2015-2026 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature can cause failures in the following features:
@@ -77,7 +77,8 @@ Feature: Management of minion keys
     Then "sle_minion" should not be registered
 
   Scenario: Cleanup: bootstrap again the minion
-    When I follow the left menu "Systems > Bootstrapping"
+    When I perform a full salt minion cleanup on "sle_minion"
+    And I follow the left menu "Systems > Bootstrapping"
     Then I should see a "Bootstrap Minions" text
     When I enter the hostname of "sle_minion" as "hostname"
     And I enter "22" as "port"

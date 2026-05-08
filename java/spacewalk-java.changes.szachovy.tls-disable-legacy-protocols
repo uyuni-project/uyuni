@@ -1,0 +1,1 @@
+- Disable legacy TLSv1/TLSv1.1 and allow TLSv1.3 for SMTP

@@ -24,6 +24,10 @@ import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.server.ServerAction;
+import com.redhat.rhn.domain.audit.ScapContent;
+import com.redhat.rhn.domain.audit.ScapFactory;
+import com.redhat.rhn.domain.audit.ScapPolicy;
+import com.redhat.rhn.domain.audit.TailoringFile;
 import com.redhat.rhn.domain.server.MinionSummary;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.user.User;
@@ -164,6 +168,27 @@ public class ScapAction extends Action {
         // Beta mode: pass filenames for file transfer from master
         String xccdfFilename = new File(scapActionDetails.getPath()).getName();
         pillar.put("xccdf_filename", xccdfFilename);
+
+        // Add content_id and tailoring_id for per-ID directory paths
+        Long contentId = scapActionDetails.getScapContentId();
+        Long tailoringId = scapActionDetails.getTailoringFileId();
+
+        // If IDs not stored directly, retrieve from policy (policy-based scan)
+        if (contentId == null && scapActionDetails.getScapPolicyId() != null && getSchedulerUser() != null) {
+            var policyOpt = ScapFactory.lookupScapPolicyByIdAndOrg(
+                scapActionDetails.getScapPolicyId(),
+                getSchedulerUser().getOrg()
+            );
+            contentId = policyOpt.map(ScapPolicy::getScapContent)
+                                 .map(ScapContent::getId)
+                                 .orElse(null);
+            tailoringId = policyOpt.map(ScapPolicy::getTailoringFile)
+                                   .map(TailoringFile::getId)
+                                   .orElse(null);
+        }
+        // Add IDs to pillar if available
+        Optional.ofNullable(contentId).ifPresent(id -> pillar.put("content_id", id));
+        Optional.ofNullable(tailoringId).ifPresent(id -> pillar.put("tailoring_id", id));
 
         if (scapActionDetails.getOvalfiles() != null) {
             pillar.put("ovalfiles", Arrays.stream(scapActionDetails.getOvalfiles().split(","))

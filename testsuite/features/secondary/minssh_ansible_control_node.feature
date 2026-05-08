@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2025 SUSE LLC
+# Copyright (c) 2021-2026 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 @scope_ansible
@@ -57,7 +57,7 @@ Feature: Operate an Ansible control node in SSH minion
     When I follow "Ansible" in the content area
     And I follow "Inventories" in the content area
     And I wait until I see "/srv/playbooks/orion_dummy/hosts" text
-    And I click on "/srv/playbooks/orion_dummy/hosts"
+    And I click on the inventory accordion for "/srv/playbooks/orion_dummy/hosts"
     Then I wait until I see "myself" text
 
   Scenario: Discover playbooks and display them

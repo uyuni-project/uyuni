@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2026 SUSE LCC
+ * Copyright (c) 2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -12,23 +12,37 @@ package com.redhat.rhn.common.hibernate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.TestEntity;
 import com.redhat.rhn.domain.TestFactory;
 import com.redhat.rhn.domain.TestInterface;
 
+import com.fasterxml.jackson.databind.exc.InvalidDefinitionException;
+
 import org.hibernate.Session;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import jakarta.persistence.FlushModeType;
+import jakarta.persistence.Tuple;
 
 /**
  * This test class is NOT intended to test Hibernate itself.
@@ -556,4 +570,109 @@ public class HibernateTest extends HibernateBaseTest {
         assertTrue(session.isEmpty(), "Session should be closed");
     }
 
+    // ========== DATA TYPE HANDLING ==========
+
+    @Test
+    public void canDeserializeFromJson() {
+        TestInterface entity = TestFactory.lookupByFoobar("json");
+        assertNotNull(entity);
+
+        Map<String, Object> additionalData = entity.getAdditionalData();
+        assertNotNull(additionalData);
+
+        assertTrue(additionalData.containsKey("foo"));
+        assertEquals("bar", additionalData.get("foo"));
+
+        assertTrue(additionalData.containsKey("number"));
+        assertEquals(42, additionalData.get("number"));
+
+        assertTrue(additionalData.containsKey("array"));
+        assertEquals(List.of(1, 2, 3), additionalData.get("array"));
+
+        assertTrue(additionalData.containsKey("tag"));
+        assertNull(additionalData.get("tag"));
+
+        assertTrue(additionalData.containsKey("updated"));
+        assertEquals("2024-06-01T12:00:00Z", additionalData.get("updated"));
+    }
+
+    @Test
+    public void canSerializeToJson() {
+        Session session = HibernateFactory.getSession();
+
+        TestEntity entity = new TestEntity();
+        session.persist(entity);
+
+        Map<String, Object> additionalData = new HashMap<>();
+        additionalData.put("text", "lorem ipsum");
+        additionalData.put("number", 12345);
+        additionalData.put("array", List.of(4, 6, 3));
+        additionalData.put("tag", null);
+
+        entity.setFoobar("jsonNew");
+        entity.setAdditionalData(additionalData);
+
+        Tuple result = session.createNativeQuery("""
+            SELECT id
+                        , foobar
+                        , additional_data AS data
+                        , additional_data->>'text' AS text
+                        , (additional_data->'number')::int AS number
+                        , additional_data->>'array' AS array
+                        , additional_data->>'tag' AS tag
+              FROM persist_test
+             WHERE foobar = :foobar
+            """, Tuple.class)
+                .addSynchronizedEntityClass(TestEntity.class)
+                .setParameter("foobar", "jsonNew")
+                .getSingleResultOrNull();
+
+        assertNotNull(result);
+        assertEquals("jsonNew", result.get("foobar"));
+        assertEquals("lorem ipsum", result.get("text"));
+        assertEquals(12345, result.get("number"));
+        assertEquals("[4, 6, 3]", result.get("array"));
+        assertNull(result.get("tag"));
+    }
+
+    @ParameterizedTest
+    @MethodSource("possibleDateTypes")
+    public void datesSerialization(Object date, String json) {
+        Session session = HibernateFactory.getSession();
+
+        TestEntity entity = new TestEntity();
+        session.persist(entity);
+
+        Map<String, Object> additionalData = new HashMap<>();
+        additionalData.put("updated", date);
+
+        entity.setFoobar("dateTypes");
+        entity.setAdditionalData(additionalData);
+
+        if (json == null) {
+            IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> session.flush());
+            assertInstanceOf(InvalidDefinitionException.class, ex.getCause());
+            return;
+        }
+
+        String updated = session.createNativeQuery("""
+            SELECT additional_data->>'updated' AS updated
+              FROM persist_test
+             WHERE foobar = :foobar
+            """, String.class)
+                .addSynchronizedEntityClass(TestEntity.class)
+                .setParameter("foobar", "dateTypes")
+                .getSingleResultOrNull();
+
+        assertEquals(json, updated);
+    }
+
+    static Stream<Arguments> possibleDateTypes() {
+        LocalDateTime localDateTime = LocalDateTime.of(2020, 7, 22, 16, 30);
+        return Stream.of(
+                Arguments.of(Date.from(localDateTime.toInstant(ZoneOffset.UTC)), "1595435400000"),
+                Arguments.of(localDateTime.toInstant(ZoneOffset.UTC), null),
+                Arguments.of(localDateTime, null)
+        );
+    }
 }

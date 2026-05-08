@@ -10,7 +10,7 @@
 
 Then(/^I should see a "(.*)" text in the content area$/) do |text|
   within('#spacewalk-content') do
-    raise ScriptError, "Text '#{text}' not found" unless check_text_and_catch_request_timeout_popup?(text)
+    raise ScriptError, "Text '#{text}' not found" unless check_text?(text)
   end
 end
 
@@ -37,7 +37,7 @@ Then(/^the current path is "([^"]*)"$/) do |arg1|
 end
 
 When(/^I wait until I see "([^"]*)" text$/) do |text|
-  raise ScriptError, "Text '#{text}' not found" unless check_text_and_catch_request_timeout_popup?(text, timeout: DEFAULT_TIMEOUT)
+  raise ScriptError, "Text '#{text}' not found" unless check_text?(text, timeout: DEFAULT_TIMEOUT)
 end
 
 When(/^I wait until I do not see "([^"]*)" text$/) do |text|
@@ -45,7 +45,7 @@ When(/^I wait until I do not see "([^"]*)" text$/) do |text|
 end
 
 When(/^I wait at most (\d+) seconds until I see "([^"]*)" text$/) do |seconds, text|
-  raise ScriptError, "Text '#{text}' not found" unless check_text_and_catch_request_timeout_popup?(text, timeout: seconds.to_i)
+  raise ScriptError, "Text '#{text}' not found" unless check_text?(text, timeout: seconds.to_i)
 end
 
 When(/^I wait until I see "([^"]*)" text or "([^"]*)" text(?:, (refreshing the page))?$/) do |text1, text2, refresh_option|
@@ -58,7 +58,7 @@ When(/^I wait until I see "([^"]*)" text or "([^"]*)" text(?:, (refreshing the p
       refresh_page
     end
   else
-    raise ScriptError, "Text '#{text}' not found" unless check_text_and_catch_request_timeout_popup?(text, timeout: DEFAULT_TIMEOUT)
+    raise ScriptError, "Text '#{text1}' and '#{text2}' not found" unless check_text?(text1, text2: text2, timeout: DEFAULT_TIMEOUT)
 
   end
 end
@@ -316,6 +316,18 @@ When(/^I click on "([^"]*)"$/) do |text|
 end
 
 #
+# Click on an accordion panel-heading button containing the given text.
+# Waits for the full button structure (including the chevron icon) to be present,
+# which confirms the React component is fully mounted with its onClick handler bound.
+#
+When(/^I click on the inventory accordion for "([^"]*)"$/) do |text|
+  xpath = "//button[contains(@class, 'panel-heading') " \
+          "and .//i[contains(@class, 'fa-chevron-right')] " \
+          "and contains(., '#{text}')]"
+  find(:xpath, xpath, wait: DEFAULT_TIMEOUT).click
+end
+
+#
 # Click on a button which appears inside of <div> with
 # the given "id"
 When(/^I click on "([^"]*)" in element "([^"]*)"$/) do |text, element_id|
@@ -428,6 +440,8 @@ When(/^I follow the left menu "([^"]*)"$/) do |menu_path|
     begin
       unless find(:xpath, target_link_path + parent_wrapper_path + parent_level_path)[:class].include?('open')
         find(:xpath, target_link_path + parent_wrapper_path).click
+        # wait for the 'open' class to be applied before navigating into the submenu
+        find(:xpath, "#{target_link_path}#{parent_wrapper_path}#{parent_level_path}[contains(@class,'open')]")
       end
     rescue NoMethodError
       warn 'The browser session seems broken. See debug details below:'
@@ -465,7 +479,7 @@ end
 
 Given(/^I access the host the first time$/) do
   visit Capybara.app_host
-  raise ScriptError, "Text 'Create #{product} Administrator' not found" unless check_text_and_catch_request_timeout_popup?("Create #{product} Administrator")
+  raise ScriptError, "Text 'Create #{product} Administrator' not found" unless check_text?("Create #{product} Administrator")
 end
 
 # Menu permission check
@@ -549,7 +563,7 @@ end
 Then(/^I wait until table row for "([^"]*)" contains "([^"]*)"$/) do |arg1, arg2|
   xpath_query = "//tr[.//*[contains(.,'#{arg1}')]]"
   within(:xpath, xpath_query) do
-    raise ScriptError, "xpath: #{xpath_query} has no content #{arg2}" unless check_text_and_catch_request_timeout_popup?(arg2, timeout: DEFAULT_TIMEOUT)
+    raise ScriptError, "xpath: #{xpath_query} has no content #{arg2}" unless check_text?(arg2, timeout: DEFAULT_TIMEOUT)
   end
 end
 
@@ -666,7 +680,7 @@ end
 
 Then(/^I should see "([^"]*)" systems selected for SSM$/) do |arg|
   within(:xpath, '//span[@id="spacewalk-set-system_list-counter"]') do
-    raise ScriptError, "There are not #{arg} systems selected" unless check_text_and_catch_request_timeout_popup?(arg)
+    raise ScriptError, "There are not #{arg} systems selected" unless check_text?(arg)
   end
 end
 
@@ -674,26 +688,26 @@ end
 # Test for a text in the whole page
 #
 Then(/^I should see a "([^"]*)" text$/) do |text|
-  raise ScriptError, "Text '#{text}' not found" unless check_text_and_catch_request_timeout_popup?(text)
+  raise ScriptError, "Text '#{text}' not found" unless check_text?(text)
 end
 
 Then(/^I should see a "([^"]*)" text or "([^"]*)" text$/) do |text1, text2|
-  raise ScriptError, "Text '#{text1}' and '#{text2}' not found" unless check_text_and_catch_request_timeout_popup?(text1, text2: text2)
+  raise ScriptError, "Text '#{text1}' and '#{text2}' not found" unless check_text?(text1, text2: text2)
 end
 
 Then(/^I should see "([^"]*)" short hostname$/) do |host|
   system_name = get_system_name(host).partition('.').first
-  raise ScriptError, "Hostname #{system_name} is not present" unless check_text_and_catch_request_timeout_popup?(system_name)
+  raise ScriptError, "Hostname #{system_name} is not present" unless check_text?(system_name)
 end
 
 Then(/^I should see "([^"]*)" hostname$/) do |host|
   system_name = get_system_name(host)
-  raise ScriptError, "Hostname #{system_name} is not present" unless check_text_and_catch_request_timeout_popup?(system_name)
+  raise ScriptError, "Hostname #{system_name} is not present" unless check_text?(system_name)
 end
 
 Then(/^I should not see "([^"]*)" hostname$/) do |host|
   system_name = get_system_name(host)
-  raise ScriptError, "Hostname #{system_name} is present" if check_text_and_catch_request_timeout_popup?(system_name)
+  raise ScriptError, "Hostname #{system_name} is present" unless has_no_text?(system_name)
 end
 
 #
@@ -701,25 +715,25 @@ end
 #
 Then(/^I should see "([^"]*)" in the textarea$/) do |text|
   within('textarea') do
-    raise ScriptError, "Text '#{text}' not found" unless check_text_and_catch_request_timeout_popup?(text)
+    raise ScriptError, "Text '#{text}' not found" unless check_text?(text)
   end
 end
 
 Then(/^I should see "([^"]*)" or "([^"]*)" in the textarea$/) do |text1, text2|
   within('textarea') do
-    raise ScriptError, "Text '#{text1}' and '#{text2}' not found" unless check_text_and_catch_request_timeout_popup?(text1, text2: text2)
+    raise ScriptError, "Text '#{text1}' and '#{text2}' not found" unless check_text?(text1, text2: text2)
   end
 end
 
 Then(/^I should see "([^"]*)" in the ([^ ]+) textarea$/) do |text, id|
   within(:xpath, ".//textarea[@data-testid='#{id}']") do
-    raise ScriptError, "Text '#{text}' not found" unless check_text_and_catch_request_timeout_popup?(text)
+    raise ScriptError, "Text '#{text}' not found" unless check_text?(text)
   end
 end
 
 Then(/^I should see "([^"]*)" or "([^"]*)" in the ([^ ]+) textarea$/) do |text1, text2, id|
   within(:xpath, ".//textarea[@data-testid='#{id}']") do
-    raise ScriptError, "Text '#{text1}' and '#{text2}' not found" unless check_text_and_catch_request_timeout_popup?(text1, text2: text2)
+    raise ScriptError, "Text '#{text1}' and '#{text2}' not found" unless check_text?(text1, text2: text2)
   end
 end
 
@@ -763,19 +777,19 @@ end
 
 Then(/^I should see a "([^"]*)" text in element "([^"]*)"$/) do |text, element|
   within(:xpath, "//div[@id=\"#{element}\" or @class=\"#{element}\"]") do
-    raise ScriptError, "Text '#{text}' not found in #{element}" unless check_text_and_catch_request_timeout_popup?(text)
+    raise ScriptError, "Text '#{text}' not found in #{element}" unless check_text?(text)
   end
 end
 
 Then(/^I should not see a "([^"]*)" text in element "([^"]*)"$/) do |text, element|
   within(:xpath, "//div[@id=\"#{element}\" or @class=\"#{element}\"]") do
-    raise ScriptError, "Text '#{text}' found in #{element}" if check_text_and_catch_request_timeout_popup?(text)
+    raise ScriptError, "Text '#{text}' found in #{element}" unless has_no_text?(text)
   end
 end
 
 Then(/^I should see a "([^"]*)" or "([^"]*)" text in element "([^"]*)"$/) do |text1, text2, element|
   within(:xpath, "//div[@id=\"#{element}\" or @class=\"#{element}\"]") do
-    raise ScriptError, "Texts #{text1} and #{text2} not found in #{element}" unless check_text_and_catch_request_timeout_popup?(text1, text2: text2)
+    raise ScriptError, "Texts #{text1} and #{text2} not found in #{element}" unless check_text?(text1, text2: text2)
   end
 end
 
@@ -919,7 +933,7 @@ end
 
 Then(/^I click on the filter button until page does not contain "([^"]*)" text$/) do |text|
   repeat_until_timeout(message: "'#{text}' still found") do
-    break unless check_text_and_catch_request_timeout_popup?(text)
+    break unless check_text?(text)
 
     find('button.spacewalk-button-filter').click
     has_text?('is filtered', wait: 10)
@@ -928,7 +942,7 @@ end
 
 Then(/^I click on the filter button until page does contain "([^"]*)" text$/) do |text|
   repeat_until_timeout(message: "'#{text}' was not found") do
-    break if check_text_and_catch_request_timeout_popup?(text)
+    break if check_text?(text)
 
     find('button.spacewalk-button-filter').click
     has_text?('is filtered', wait: 10)
@@ -1290,7 +1304,7 @@ Then(/^I should see "([^"]*)" hostname as first search result$/) do |host|
   within(:xpath, '//section') do
     row = find(:xpath, '//div[@class=\'table-responsive\']//tr[.//td]', match: :first)
     within(row) do
-      raise ScriptError, "Text '#{system_name}' not found" unless check_text_and_catch_request_timeout_popup?(system_name)
+      raise ScriptError, "Text '#{system_name}' not found" unless check_text?(system_name)
     end
   end
 end

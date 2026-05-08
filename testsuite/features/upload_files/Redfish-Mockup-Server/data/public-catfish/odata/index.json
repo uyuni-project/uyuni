@@ -1,0 +1,41 @@
+{
+    "value": [
+        {
+            "name": "Service",
+            "kind": "Singleton",
+            "url": "/redfish/v1/"
+        },
+        {
+            "name": "Systems",
+            "kind": "Singleton",
+            "url": "/redfish/v1/Systems"
+        },
+        {
+            "name": "Chassis",
+            "kind": "Singleton",
+            "url": "/redfish/v1/Chassis"
+        },
+        {
+            "name": "Managers",
+            "kind": "Singleton",
+            "url": "/redfish/v1/Managers"
+        },
+        {
+            "name": "AccountService",
+            "kind": "Singleton",
+            "url": "/redfish/v1/AccountService"
+        },
+        {
+            "name": "SessionService",
+            "kind": "Singleton",
+            "url": "/redfish/v1/SessionService"
+        },
+        {
+            "name": "Sessions",
+            "kind": "Singleton",
+            "url": "/redfish/v1/SessionService/Sessions"
+        }
+    ],
+    "@odata.context": "/redfish/v1/$metadata",
+    "@Redfish.Copyright": "Copyright 2014-2019 DMTF. For the full DMTF copyright policy, see http://www.dmtf.org/about/policies/copyright."
+}

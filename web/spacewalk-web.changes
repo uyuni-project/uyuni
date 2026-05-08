@@ -1,4 +1,24 @@
 -------------------------------------------------------------------
+Mon Apr 27 10:40:46 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.8-0
+  * Show content name instead of actual file (bsc#1262721)
+
+-------------------------------------------------------------------
+Thu Apr 16 14:38:02 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.7-0
+  * UI changes to support migration from sles 15 to sles 16
+  * Added beta feature flag support for experimental functionality
+  * Redesigned SCAP integration to centralize content on the server
+  * CLM filter page UI improvement (bsc#1253034)
+  * Fix inconsistent YAML HTML rendering and
+    add ID to generated textarea (bsc#1258168)
+  * Enable editing of null variables in Ansible WebUI
+    (bsc#1258017)
+  * Healthcheck on disk usage based on taskomatic (bsc#1238890).
+
+-------------------------------------------------------------------
 Mon Mar 02 13:20:31 CET 2026 - michael.calmer@suse.com
 
 - version 5.2.6-0

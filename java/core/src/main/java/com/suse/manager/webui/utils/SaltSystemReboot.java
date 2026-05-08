@@ -62,7 +62,7 @@ public class SaltSystemReboot extends AbstractSaltRequisites implements Identifi
         addRequisites(args);
 
         return singletonMap(id,
-                singletonMap("mgrcompat.module_run", args)
+                singletonMap("module.run", args)
         );
     }
 

@@ -28,7 +28,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 /**
  * TailoringFile entity representing a SCAP tailoring file.
@@ -104,32 +103,6 @@ public class TailoringFile extends BaseDomainHelper {
      */
     public void setFileName(String fileNameIn) {
         this.fileName = fileNameIn;
-    }
-
-    /**
-     * Gets the display filename (original filename without org ID and name prefix).
-     * This method extracts the original filename from the unique filename format:
-     * {orgId}_{sanitizedName}_{originalFilename} to {originalFilename}
-     *
-     * @return the original filename for display purposes
-     */
-    @Transient
-    public String getDisplayFileName() {
-        if (fileName == null) {
-            return null;
-        }
-        // Find the second underscore (after orgId_sanitizedName_)
-        int firstUnderscore = fileName.indexOf('_');
-        if (firstUnderscore == -1) {
-            return fileName; // Fallback: return as-is if format doesn't match
-        }
-
-        int secondUnderscore = fileName.indexOf('_', firstUnderscore + 1);
-        if (secondUnderscore == -1) {
-            return fileName; // Fallback: return as-is if format doesn't match
-        }
-        // Return everything after the second underscore
-        return fileName.substring(secondUnderscore + 1);
     }
 
     /**

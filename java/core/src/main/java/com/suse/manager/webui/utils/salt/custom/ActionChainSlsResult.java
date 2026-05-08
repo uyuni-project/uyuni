@@ -28,7 +28,7 @@ import java.util.Map;
  */
 public class ActionChainSlsResult {
 
-    @SerializedName("mgrcompat_|-start_action_chain_|-mgractionchains.start_|-module_run")
+    @SerializedName("module_|-start_action_chain_|-mgractionchains.start_|-run")
     private StateApplyResult<Ret<Map<String, StateApplyResult<Ret<JsonObject>>>>> actionChainsStart;
 
     /**

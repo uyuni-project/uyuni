@@ -1,4 +1,4 @@
-# Copyright (c) 2025 SUSE LLC
+# Copyright (c) 2025-2026 SUSE LLC
 # Licensed under the terms of the MIT license.
 
 # This is a known bug: https://bugzilla.suse.com/show_bug.cgi?id=1209231
@@ -52,6 +52,7 @@ Feature: Correct timezone display
       ls
       """
     And I click on "Schedule"
+    And I wait until I see "Remote Command has been scheduled successfully" text
     And I follow "Events" in the content area
     And I follow "Pending" in the content area
     And I wait at most 180 seconds until I do not see "Remote Command on" text, refreshing the page

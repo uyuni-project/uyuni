@@ -137,26 +137,17 @@ spec:
               - /bin/sh
               - -c
               - spacewalk-service stop
-        livenessProbe:
-          failureThreshold: 5
-          httpGet:
-            path: /rhn/manager/api/api/getVersion
-            port: 80
-            scheme: HTTP
-          initialDelaySeconds: 180
-          periodSeconds: 30
-          successThreshold: 1
-          timeoutSeconds: 20
         name: uyuni
         securityContext:
           capabilities:
             add:
             - SYS_ADMIN
+          seLinuxOptions:
+            level: "s0"
   {{- if .Values.server.superPrivileged }}
+            type: "spc_t"
           appArmorProfile:
             type: Unconfined
-          seLinuxOptions:
-            type: "spc_t"
   {{- else if .Values.server.apparmorProfile }}
           appArmorProfile:
             type: Localhost
@@ -179,13 +170,26 @@ spec:
         - containerPort: 9187
         - containerPort: 9800
 {{- end }}
+        startupProbe:
+          exec:
+            command:
+            - /usr/bin/startup-check.sh
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3600 # Max 10h
+        livenessProbe:
+          exec:
+            command:
+            - /usr/bin/liveness-check.sh
+          timeoutSeconds: 5
+          failureThreshold: 5
+          periodSeconds: 60
         readinessProbe:
-          failureThreshold: 10
           httpGet:
             path: /rhn/manager/api/api/getVersion
             port: 80
             scheme: HTTP
-          periodSeconds: 30
+          periodSeconds: 10
           successThreshold: 1
           initialDelaySeconds: 120
         volumeMounts:
@@ -308,6 +312,9 @@ spec:
         image: {{ include "uyuni.image" (dict "name" "server" "global" . "local" .Values.server) }}
         imagePullPolicy: {{ .Values.pullPolicy }}
         name: init-volumes
+        securityContext:
+          seLinuxOptions:
+            level: "s0"
         volumeMounts:
           - mountPath: /mnt/var/lib/cobbler
             name: var-cobbler

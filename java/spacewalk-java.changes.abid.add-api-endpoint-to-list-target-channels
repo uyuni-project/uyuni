@@ -1,2 +1,0 @@
-- Added listMigrationTargetsWithChannels endpoint to return
-  the valid migration targets channels (jsc#SUMA-320)

@@ -25,7 +25,7 @@ import java.util.Optional;
  */
 public class DistUpgradeSlsResult {
 
-   @SerializedName("mgrcompat_|-spmigration_|-pkg.upgrade_|-module_run")
+   @SerializedName("module_|-spmigration_|-pkg.upgrade_|-run")
    private StateApplyResult<RetOpt<Map<String, Change<String>>>> spmigration;
 
    @SerializedName("cmd_|-spmigration_|-/usr/bin/cat /var/log/yum_sles_es_migration.log_|-run")

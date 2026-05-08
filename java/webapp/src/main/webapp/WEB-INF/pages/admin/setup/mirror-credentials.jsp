@@ -114,7 +114,9 @@
                 <c:when test='${issMaster}'>
                     <div class="row" id="mirror-credentials">
                         <div class="col-sm-9" id="listset-container">
-                            <rhn:icon type="spinner"></rhn:icon>
+                            <div class="credentials-screen-spinner">
+                                <div class="position-absolute"><rhn:icon type="spinner"></rhn:icon></div>
+                            </div>
                             <script>ajax("render-mirror-credentials", "", makeRendererHandler("listset-container", false).callback, "text/html");</script>
                         </div>
                         <div class="col-sm-3 hidden-xs" id="wizard-faq">

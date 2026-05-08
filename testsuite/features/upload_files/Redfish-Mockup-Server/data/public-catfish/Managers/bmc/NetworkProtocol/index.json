@@ -1,0 +1,46 @@
+{
+    "@odata.type": "#ManagerNetworkProtocol.v1_5_0.ManagerNetworkProtocol",
+    "Id": "NetworkProtocol",
+    "Name": "Manager Network Protocol",
+    "Description": "Manager Network Service Status",
+    "Status": {
+        "State": "Enabled",
+        "Health": "OK"
+    },
+    "HostName": "myBmcHostname",
+    "FQDN": "mymanager.mydomain.com",
+    "HTTP": {
+        "ProtocolEnabled": true,
+        "Port": 80
+    },
+    "HTTPS": {
+        "ProtocolEnabled": true,
+        "Port": 443
+    },
+    "IPMI": {
+        "ProtocolEnabled": true,
+        "Port": 623
+    },
+    "SSH": {
+        "ProtocolEnabled": true,
+        "Port": 22
+    },
+    "SNMP": {
+        "ProtocolEnabled": true,
+        "Port": 161
+    },
+    "SSDP": {
+        "ProtocolEnabled": true,
+        "Port": 1900,
+        "NotifyMulticastIntervalSeconds": 600,
+        "NotifyTTL": 5,
+        "NotifyIPv6Scope": "Site"
+    },
+    "Telnet": {
+        "ProtocolEnabled": true,
+        "Port": 23
+    },
+    "Oem": {},
+    "@odata.id": "/redfish/v1/Managers/bmc/NetworkProtocol",
+    "@Redfish.Copyright": "Copyright 2014-2019 DMTF. For the full DMTF copyright policy, see http://www.dmtf.org/about/policies/copyright."
+}

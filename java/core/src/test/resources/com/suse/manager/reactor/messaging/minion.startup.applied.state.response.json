@@ -20,7 +20,7 @@
     "out": "highstate",
     "retcode": 0,
     "return": {
-      "mgrcompat_|-grains_update_|-grains.item_|-module_run": {
+      "module_|-grains_update_|-grains.item_|-run": {
         "comment": "Module function grains.item executed",
         "name": "grains.item",
         "start_time": "15:10:28.919644",
@@ -35,7 +35,7 @@
         },
         "__id__": "grains_update"
       },
-      "mgrcompat_|-kernel_live_version_|-sumautil.get_kernel_live_version_|-module_run": {
+      "module_|-kernel_live_version_|-sumautil.get_kernel_live_version_|-run": {
         "comment": "Module function sumautil.get_kernel_live_version executed",
         "name": "sumautil.get_kernel_live_version",
         "start_time": "15:10:28.950000",
@@ -50,7 +50,7 @@
         },
         "__id__": "grains_update"
       },
-      "mgrcompat_|-status_uptime_|-status.uptime_|-module_run": {
+      "module_|-status_uptime_|-status.uptime_|-run": {
         "__id__": "status_uptime",
         "__run_num__": 3,
         "__sls__": "util.systeminfo",
@@ -70,7 +70,7 @@
         "result": true,
         "start_time": "11:16:39.361079"
       },
-      "mgrcompat_|-sync_beacons_|-saltutil.sync_beacons_|-module_run": {
+      "module_|-sync_beacons_|-saltutil.sync_beacons_|-run": {
         "__id__": "sync_beacons",
         "__run_num__": 2,
         "__sls__": "util.syncbeacons",
@@ -83,7 +83,7 @@
         "result": true,
         "start_time": "11:16:39.294494"
       },
-      "mgrcompat_|-sync_grains_|-saltutil.sync_grains_|-module_run": {
+      "module_|-sync_grains_|-saltutil.sync_grains_|-run": {
         "__id__": "sync_grains",
         "__run_num__": 1,
         "__sls__": "util.syncgrains",
@@ -96,7 +96,7 @@
         "result": true,
         "start_time": "11:16:38.302558"
       },
-      "mgrcompat_|-sync_modules_|-saltutil.sync_modules_|-module_run": {
+      "module_|-sync_modules_|-saltutil.sync_modules_|-run": {
         "__id__": "sync_modules",
         "__run_num__": 0,
         "__sls__": "util.syncmodules",

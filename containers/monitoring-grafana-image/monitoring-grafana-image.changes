@@ -1,1 +1,5 @@
-- Initial image definition for Grafana
+-------------------------------------------------------------------
+Thu Apr 16 14:41:43 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.1
+  * Initial image definition for Grafana

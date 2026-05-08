@@ -1,0 +1,48 @@
+{
+    "name": "Proposed OCP Redfish Profile",
+    "description": "This draft example, for ongoing development, represents a proposed minimal Redfish data model \"profile\" that meets the needs of the Open Compute Project's Hardware Management requirements. This draft profile is intended to help define a list of required properties so that essential management-related tasks, as defined by OCP, can be performed on any Redfish implementation.",
+    "navlinks": [
+        {
+            "text": "Main",
+            "target": "main"
+        },
+        {
+            "text": "Systems",
+            "target": "Systems",
+            "navlinks": [
+                {
+                    "text": "1",
+                    "target": "1"
+                }
+            ]
+        },
+        {
+            "text": "Chassis",
+            "target": "Chassis",
+            "navlinks": [
+                {
+                    "text": "1",
+                    "target": "1"
+                }
+            ]
+        },
+        {
+            "text": "Managers",
+            "target": "Managers",
+            "navlinks": [
+                {
+                    "text": "BMC",
+                    "target": "bmc"
+                }
+            ]
+        },
+        {
+            "text": "Session Service",
+            "target": "SessionService"
+        },
+        {
+            "target": "AccountService",
+            "text": "Account Service"
+        }
+    ]
+}
