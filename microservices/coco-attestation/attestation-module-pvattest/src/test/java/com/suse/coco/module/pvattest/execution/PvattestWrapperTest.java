@@ -33,9 +33,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509CRL;
@@ -174,14 +176,20 @@ public class PvattestWrapperTest {
 
     @Test
     @DisplayName("command check: pvattest create (and verify) with certificate downloading")
-    public void testCreateVerifyDownloadCertificates() throws ExecutionException, CertificateException, IOException {
+    public void testCreateVerifyDownloadCertificates() throws ExecutionException, CertificateException,
+            IOException, URISyntaxException {
         mockCommandExecutor.forceOutput("""
                 Host-key document verification is disabled. The attestation request may not be protected.\n
                 Use host-key document at 'input/host_key_document.crt'\n
                 Successfully generated the request\n""");
         mockCommandExecutor.doFillFilesForCreate = true;
-        checkCreateVerifyDownloadCertificatesOK(testPvattestWrapper);
-        checkCreateVerifyDownloadCertificatesCommand(testPvattestWrapper);
+
+        Path digiCertCaPath = Paths.get(PvattestTestHelper.class.
+                getResource("test_digi_cert_ca_2036_04_29.crt").toURI());
+        PvattestWrapper localPvattestWrapper = new PvattestWrapper(mockCommandExecutor, digiCertCaPath);
+
+        checkCreateVerifyDownloadCertificatesOK(localPvattestWrapper);
+        checkCreateVerifyDownloadCertificatesCommand(localPvattestWrapper);
     }
 
     private void checkCreateVerifyDownloadCertificatesOK(PvattestWrapper pvaw)
@@ -273,13 +281,18 @@ public class PvattestWrapperTest {
     }
 
     @Test
-    @Disabled("disabled: run only in local to test certificates download")
-    public void testDownloadingCertificates() throws IOException, CertificateEncodingException {
-        X509Certificate digiCert = testPvattestWrapper.downloadDigiCertCACertificate();
+    @Disabled("disabled: run only in local to test digiCert certificates loading")
+    public void testGettingDigiCertCertificate() throws IOException, CertificateEncodingException {
+        //must have file /usr/share/coco-attestation/certs/pvattest/DigiCertCA.pem present
+        X509Certificate digiCert = testPvattestWrapper.getDigiCertCACertificate();
         assertNotNull(digiCert);
         assertEquals(PvattestTestHelper.testDigiCertCa20360429().replace("\n", ""),
                 CertificateHelper.getPemCertificate(digiCert).replace("\n", ""));
+    }
 
+    @Test
+    @Disabled("disabled: run only in local to test certificates download")
+    public void testDownloadingIbmCertificates() throws IOException, CertificateEncodingException {
         X509Certificate ibmCert = testPvattestWrapper.downloadIbmZHostKeySigningCertificate();
         assertNotNull(ibmCert);
 

@@ -20,6 +20,7 @@ import com.suse.common.security.CertificateHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -41,9 +42,10 @@ public class PvattestWrapper {
     private static final Logger LOGGER = LogManager.getLogger(PvattestWrapper.class);
     private static final String PVATTEST_PACKAGE = "s390-tools";
 
-    //The CA certificate, here from DigiCert, in DigiCertCA.crt
-    public static final String DIGICERT_CA_CERTIFICATE =
-            "https://www.ibm.com/support/resourcelink/api/content/public/DigiCertCA.crt";
+    //the root CA certificate
+    private static final Path DEFAULT_DIGI_CERT_CA_FILE =
+            Path.of("/usr/share/coco-attestation/certs/pvattest/DigiCertCA.pem");
+
     //The IBM Z signing-key certificate in SigningKey.crt
     public static final String IBM_Z_HOST_KEY_SIGNING_CERTIFICATE =
             "https://www.ibm.com/support/resourcelink/api/content/public/ibm-z-host-key-signing-gen2.crt";
@@ -62,11 +64,13 @@ public class PvattestWrapper {
 
     private final ShellCommandExecutor commandExecutor;
 
+    private final Path sourceDigiCertCaCertificateFile;
+
     /**
      * default constructor
      */
     public PvattestWrapper() {
-        this(new ShellCommandExecutor());
+        this(new ShellCommandExecutor(), DEFAULT_DIGI_CERT_CA_FILE);
     }
 
     /**
@@ -74,7 +78,16 @@ public class PvattestWrapper {
      *  @param commandExecutorIn the command executor object
      */
     public PvattestWrapper(ShellCommandExecutor commandExecutorIn) {
+        this(commandExecutorIn, DEFAULT_DIGI_CERT_CA_FILE);
+    }
+
+    /**
+     * @param commandExecutorIn dummy
+     * @param sourceDigiCertCaCertificateFileIn dummy
+     */
+    public PvattestWrapper(ShellCommandExecutor commandExecutorIn, Path sourceDigiCertCaCertificateFileIn) {
         commandExecutor = commandExecutorIn;
+        sourceDigiCertCaCertificateFile = sourceDigiCertCaCertificateFileIn;
     }
 
     //package private
@@ -141,7 +154,7 @@ public class PvattestWrapper {
     public AttestationRequest createVerifyDownloadCertificates(String hostKeyDocumentContent)
             throws ExecutionException, CertificateException, IOException {
         X509Certificate hostKeyDocument = CertificateHelper.parse(hostKeyDocumentContent);
-        X509Certificate digiCertCACertificate = downloadDigiCertCACertificate();
+        X509Certificate digiCertCACertificate = getDigiCertCACertificate();
         X509Certificate ibmZHostKeySigningCertificate = downloadIbmZHostKeySigningCertificate();
         return createCore(hostKeyDocument, true, digiCertCACertificate, ibmZHostKeySigningCertificate);
     }
@@ -262,11 +275,26 @@ public class PvattestWrapper {
     }
 
     /**
+     * Gets the root CA certificate from the local resources
      * @return the root CA certificate
      * @throws IOException if something goes wrong
      */
-    public X509Certificate downloadDigiCertCACertificate() throws IOException {
-        return CertificateHelper.downloadCertificate(DIGICERT_CA_CERTIFICATE);
+    public X509Certificate getDigiCertCACertificate() throws IOException {
+        if (!Files.isReadable(sourceDigiCertCaCertificateFile) ||
+                !Files.isRegularFile(sourceDigiCertCaCertificateFile)) {
+            throw new FileNotFoundException("Cannot find certificate %s"
+                    .formatted(sourceDigiCertCaCertificateFile.toString()));
+        }
+
+        try {
+            String digiCertCaCertificateContent = Files.readString(sourceDigiCertCaCertificateFile);
+            return CertificateHelper.parse(digiCertCaCertificateContent);
+        }
+        catch (CertificateException ex) {
+            String errorString = "Unable to parse certificate: [%s]: %s"
+                    .formatted(sourceDigiCertCaCertificateFile.toString(), ex.getMessage());
+            throw new IOException(errorString);
+        }
     }
 
     /**
