@@ -123,10 +123,10 @@ ln -s -f -r %{buildroot}%{_javadir}/uyuni-coco-attestation/*.jar %{buildroot}%{_
 
 %ifarch x86_64
 # Install snpguest certificates
-cd attestation-module-snpguest/src/package/certs/
+cd attestation-module-snpguest/src/package/certs/snpguest
 for FILE in $(find -name *.pem -type f -printf '%%P\n'); do
     echo $FILE
-    install -D -p -m 644 $FILE %{buildroot}%{_datadir}/coco-attestation/certs/$FILE
+    install -D -p -m 644 $FILE %{buildroot}%{_datadir}/coco-attestation/certs/snpguest/$FILE
 done
 cd -
 %endif
@@ -147,9 +147,9 @@ cd -
 
 %ifarch x86_64
 %files module-snpguest -f .mfiles-module-snpguest
-%dir %{_datadir}/coco-attestation/certs/
+%dir %{_datadir}/coco-attestation/certs/snpguest/
 %{_datadir}/coco-attestation/lib/attestation-module-snpguest.jar
-%{_datadir}/coco-attestation/certs/*
+%{_datadir}/coco-attestation/certs/snpguest/*
 %license LICENSE
 %endif
 
