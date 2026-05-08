@@ -12125,41 +12125,43 @@ Per a esmenar aquesta situació, afegiu credencials SCC lt;a href""/rhn/admin/se
         <source>You are running out of space on your @@PRODUCT_NAME@@ {0}. This is {1}. If you run out of disk space, @@PRODUCT_NAME@@ will stop running, and this could lead to a loss of data. @@PRODUCT_NAME@@ will shutdown automatically.</source>
         <target state="translated">Us quedeu sense espai a @@PRODUCT_NAME@@ {0}. Això és {1}. Si us quedeu sense espai al disc, @@PRODUCT_NAME@@ deixarà de funcionar i això podria provocar una pèrdua de dades. @@PRODUCT_NAME@@ s'apagarà automàticament.</target>
       </trans-unit>
-    <trans-unit id="SCAP Policies" xml:space="preserve">
+      <trans-unit id="SCAP Policies" xml:space="preserve">
         <source>SCAP Policies</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Polítiques d'SCAP</target>
+      </trans-unit>
       <trans-unit id="SCAP Content" xml:space="preserve">
         <source>SCAP Content</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Contingut d'SCAP</target>
+      </trans-unit>
       <trans-unit id="Tailoring Files" xml:space="preserve">
         <source>Tailoring Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Fitxers de personalització</target>
+      </trans-unit>
       <trans-unit id="distupgrade.sles16.migration.success" xml:space="preserve">
         <source>SLES 16 migration completed successfully.{0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Migració a SLES 16 completada correctament.{0}</target>
+      </trans-unit>
       <trans-unit id="distupgrade.sles16.migration.success.post_steps" xml:space="preserve">
         <source>Recommended post-migration steps:
 - Check for orphaned/unneeded packages: zypper packages --orphaned --unneeded
 - Check for updated config files: find /etc/ -name '*.rpmnew' -o -name '*.rpmsave'</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Passos recomanats després de la migració:
+- Comprovació de paquets orfes / no necessaris: zypper packages --orphaned --unneeded
+- Comprovació de fitxers de configuració actualitzats: find /etc/ -name '*.rpmnew' -o -name '*.rpmsave'</target>
+      </trans-unit>
       <trans-unit id="distupgrade.sles16.migration.failed" xml:space="preserve">
         <source>SLES 16 migration failed or result not found.{0}</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="translated">La migració de SLES 16 ha fallat o no s'ha trobat el resultat.{0}</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

@@ -1776,14 +1776,14 @@
       </trans-unit>
       <trans-unit approved="yes" id="first" xml:space="preserve">
         <source>First Scan Id</source>
-        <target>첫 번째 스캔 ID</target>
+        <target state="final">첫 번째 스캔 ID</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/audit/scap/Diff.do</context>
         </context-group>
       </trans-unit>
       <trans-unit approved="yes" id="second" xml:space="preserve">
         <source>Second Scan Id</source>
-        <target>두 번째 스캔 ID</target>
+        <target state="final">두 번째 스캔 ID</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/audit/scap/Diff.do</context>
         </context-group>
@@ -2493,7 +2493,7 @@ appstream 채널에 대한 cdn-sync를 요청한 후 다시 시도하십시오.
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/kickstart/KickstartIpRangeEdit</context>
         </context-group>
-        <target>자동 설치를 위해 커널 변수에 &lt;code&gt;{0}&lt;/code&gt;를 첨가하면 새로운 시스템의 IP 주소에 기반하여 자동 설치를 실행할 수 있습니다.</target>
+        <target state="final">자동 설치를 위해 커널 변수에 &lt;code&gt;{0}&lt;/code&gt;를 추가하면 새로운 시스템이 IP 주소에 기반하여 자동으로 설치될 수 있습니다.</target>
       </trans-unit>
       <trans-unit id="kickstart.partition.success" xml:space="preserve">
         <source>Kickstart profile options updated successfully.</source>
@@ -7055,14 +7055,14 @@ Follow this url to see the full list of inactive systems:
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
-        <target state="final">사용자명 또는 ID</target>
+        <target state="final">사용자 이름 또는 ID</target>
       </trans-unit>
       <trans-unit id="cffGid" xml:space="preserve" approved="yes">
         <source>Group name or id</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/configuration/file/FileDetails.do</context>
         </context-group>
-        <target state="final">그룹명 또는 ID</target>
+        <target state="final">그룹 이름 또는 ID</target>
       </trans-unit>
       <trans-unit id="cffPermissions" xml:space="preserve">
         <source>File permissions setting</source>
@@ -8608,7 +8608,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit approved="yes" id="api.org.migrationtosameorg" xml:space="preserve">
         <source>User cannot migrate a system where the origination and destination organizations are the same.  Org Id: {0}, System Id: {1}.</source>
-        <target>기존 조직과 대상 조직이 동일한 경우 사용자는 시스템을 이전할 수 없습니다. 조직 ID: {0}, 시스템 ID: {1}.</target>
+        <target state="final">기존 조직과 대상 조직이 동일한 경우 사용자는 시스템을 마이그레이션할 수 없습니다. 조직 ID: {0}, 시스템 ID: {1}.</target>
       </trans-unit>
       <trans-unit approved="yes" id="api.org.nosuchorg" xml:space="preserve">
         <source>No such organization: {0}</source>
@@ -8720,7 +8720,7 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit approved="yes" id="api.channel.invalidchannellist" xml:space="preserve">
         <source>The channel list provided is invalid.  It must contain a list of channel labels or ids, but not a mixture of both.</source>
-        <target>채널 목록이 잘못되어 있습니다. 채널 목록에는 채널 레이블이나 ID가 들어 있어야 하며 이 두가지 모두가 혼합되어서는 안됩니다.</target>
+        <target state="final">채널 목록이 잘못되었습니다. 채널 목록에는 채널 레이블이나 ID가 포함되어야 하며 두 가지를 혼용해서는 안 됩니다.</target>
       </trans-unit>
       <trans-unit approved="yes" id="channel.invalidchannelarch" xml:space="preserve">
         <source>The channel arch specified ({0}) is invalid.</source>
@@ -9300,11 +9300,11 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit approved="yes" id="api.kickstart.iprange.duplicate" xml:space="preserve">
         <source>The Ip Range specified, {0}, conflicts with an existing Ip Range.</source>
-        <target>지정된 IP 범위 {0}는 기존 IP 범위와 충돌합니다.</target>
+        <target state="final">지정된 IP 범위 {0}이(가) 기존 IP 범위와 충돌합니다.</target>
       </trans-unit>
       <trans-unit approved="yes" id="api.kickstart.ip.invalid" xml:space="preserve">
         <source>The Ip Address specified, {0}, is not valid..</source>
-        <target>지정된 IP 주소 {0}이(가) 잘못되었습니다.</target>
+        <target state="final">지정된 IP 주소 {0}이(가) 잘못되었습니다.</target>
       </trans-unit>
       <trans-unit approved="yes" id="api.kickstart.filelist.exists" xml:space="preserve">
         <source>A file list with label {0} already exists.</source>
@@ -9653,11 +9653,11 @@ Follow this url to see the full list of inactive systems:
       </trans-unit>
       <trans-unit approved="yes" id="edit.channel.repo.invalidrepotype" xml:space="preserve">
         <source>The repository type '{0}' is invalid or already in use with given url, please choose a different type</source>
-        <target>'{0}' 리포지토리 유형이 잘못되었거나 지정된 URL에서 이미 사용 중입니다. 다른 유형을 선택하십시오.</target>
+        <target state="final">'{0}' 리포지토리 유형이 잘못되었거나 지정된 URL에서 이미 사용 중입니다. 다른 유형을 선택하십시오.</target>
       </trans-unit>
       <trans-unit approved="yes" id="edit.channel.repo.repourlinuse" xml:space="preserve">
         <source>There's already a defined repository with given url, please reuse it.</source>
-        <target>특정 URL을 갖는 정의된 리포지토리가 이미 존재합니다. 이를 다시 사용하십시오.</target>
+        <target state="final">지정된 URL을 가진 정의된 리포지토리가 이미 존재합니다. 이를 다시 사용하십시오.</target>
       </trans-unit>
       <trans-unit id="edit.channel.repo.repourlinvalid" xml:space="preserve" approved="yes">
         <source>The given url is invalid. Please enter an url with valid syntax (e.g. specify the protocol).</source>
@@ -11026,11 +11026,11 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit approved="yes" id="bootstrap.minion.error.generatekey" xml:space="preserve">
         <source>Could not generate salt-ssh public key.</source>
-        <target state="final">Salt-SSH 공개 키를 생성하지 못했습니다.</target>
+        <target state="final">salt-ssh 공개 키를 생성하지 못했습니다.</target>
       </trans-unit>
       <trans-unit approved="yes" id="bootstrap.minion.error.generatekey.failed" xml:space="preserve">
         <source>Generating salt-ssh public key failed: {0}.</source>
-        <target state="final">Salt-SSH 공개 키 생성에 실패했습니다: {0}.</target>
+        <target state="final">salt-ssh 공개 키를 생성하지 못함: {0}.</target>
       </trans-unit>
       <trans-unit approved="yes" id="notification.endoflife.expired.summary" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ {0} has reached end of life</source>
@@ -12106,58 +12106,58 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>PXE Event Failed</source>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="ARMHF Debian" xml:space="preserve">
+      <trans-unit id="ARMHF Debian" xml:space="preserve">
         <source>ARMHF Debian</source>
         <target>ARMHF Debian</target>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="diskcheckwarning" xml:space="preserve">
         <source>Disk Check</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.diskcheck.summary" xml:space="preserve">
         <source>You are running out of space on your @@PRODUCT_NAME@@ {0}. This is {1}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.diskcheck.details" xml:space="preserve">
         <source>You are running out of space on your @@PRODUCT_NAME@@ {0}. This is {1}. If you run out of disk space, @@PRODUCT_NAME@@ will stop running, and this could lead to a loss of data. @@PRODUCT_NAME@@ will shutdown automatically.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="SCAP Policies" xml:space="preserve">
         <source>SCAP Policies</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="SCAP Content" xml:space="preserve">
         <source>SCAP Content</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="Tailoring Files" xml:space="preserve">
         <source>Tailoring Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="distupgrade.sles16.migration.success" xml:space="preserve">
         <source>SLES 16 migration completed successfully.{0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="distupgrade.sles16.migration.success.post_steps" xml:space="preserve">
         <source>Recommended post-migration steps:
 - Check for orphaned/unneeded packages: zypper packages --orphaned --unneeded
 - Check for updated config files: find /etc/ -name '*.rpmnew' -o -name '*.rpmsave'</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="distupgrade.sles16.migration.failed" xml:space="preserve">
         <source>SLES 16 migration failed or result not found.{0}</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

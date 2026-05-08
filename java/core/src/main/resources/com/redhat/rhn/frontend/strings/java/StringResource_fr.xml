@@ -206,75 +206,75 @@
         <target>9</target>
       </trans-unit>
       <trans-unit id="yes" xml:space="preserve">
-          <source>Yes</source>
-          <target>Oui</target>
+        <source>Yes</source>
+        <target>Oui</target>
         <context-group name="ctx">
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="no" xml:space="preserve">
-          <source>No</source>
-          <target>Non</target>
+      </trans-unit>
+      <trans-unit id="no" xml:space="preserve">
+        <source>No</source>
+        <target>Non</target>
         <context-group name="ctx">
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="Enabled" xml:space="preserve">
-          <source>Enabled</source>
-          <target>Activé</target>
+      </trans-unit>
+      <trans-unit id="Enabled" xml:space="preserve">
+        <source>Enabled</source>
+        <target>Activé</target>
         <context-group name="ctx">
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="Disabled" xml:space="preserve">
-          <source>Disabled</source>
-          <target>Désactivé</target>
+      </trans-unit>
+      <trans-unit id="Disabled" xml:space="preserve">
+        <source>Disabled</source>
+        <target>Désactivé</target>
         <context-group name="ctx">
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="Tip" xml:space="preserve">
-          <source>Tip</source>
-          <target>Astuce</target>
+      </trans-unit>
+      <trans-unit id="Tip" xml:space="preserve">
+        <source>Tip</source>
+        <target>Astuce</target>
         <context-group name="ctx">
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="Note" xml:space="preserve">
-          <source>Note</source>
-          <target>Remarque</target>
+      </trans-unit>
+      <trans-unit id="Note" xml:space="preserve">
+        <source>Note</source>
+        <target>Remarque</target>
         <context-group name="ctx">
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="Warning" xml:space="preserve">
-          <source>Warning</source>
-          <target>Avertissement</target>
+      </trans-unit>
+      <trans-unit id="Warning" xml:space="preserve">
+        <source>Warning</source>
+        <target>Avertissement</target>
         <context-group name="ctx">
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="Custom" xml:space="preserve">
-          <source>Custom</source>
-          <target>Personnalisation</target>
+      </trans-unit>
+      <trans-unit id="Custom" xml:space="preserve">
+        <source>Custom</source>
+        <target>Personnalisation</target>
         <context-group name="ctx">
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="Examples" xml:space="preserve">
-          <source>Examples</source>
-          <target>Exemples</target>
+      </trans-unit>
+      <trans-unit id="Examples" xml:space="preserve">
+        <source>Examples</source>
+        <target>Exemples</target>
         <context-group name="ctx">
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="none specified" xml:space="preserve">
-          <source>none specified</source>
-          <target>aucune spécifiée</target>
+      </trans-unit>
+      <trans-unit id="none specified" xml:space="preserve">
+        <source>none specified</source>
+        <target>aucune spécifiée</target>
         <context-group name="ctx">
           <context context-type="sourcefile">General Stuff</context>
         </context-group>
-        </trans-unit>
+      </trans-unit>
       <trans-unit id="About Spacewalk" xml:space="preserve">
         <source>About</source>
         <context-group name="ctx">
@@ -601,7 +601,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Errata</target>
+        <target state="translated">Correctifs</target>
       </trans-unit>
       <trans-unit id="exception" xml:space="preserve">
         <source>Exception</source>
@@ -975,7 +975,7 @@
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-        <target>Se connecter</target>
+        <target state="translated">Connexion</target>
       </trans-unit>
       <trans-unit id="Create First User" xml:space="preserve">
         <source>Create First User</source>
@@ -1432,14 +1432,14 @@ utilisateur avant de supprimer son compte.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/Login</context>
         </context-group>
-        <target>Soit le mot de passe, soit le nom d'utilisateur est incorrect.</target>
+        <target state="translated">Mot de passe ou nom d'utilisateur incorrect.</target>
       </trans-unit>
       <trans-unit id="error.user_readonly" xml:space="preserve">
         <source>This user has read only API access. WebUI login is denied.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/Login</context>
         </context-group>
-        <target>Cet utilisateur a lu l'accès API uniquement. La connexion WebUI a été refusée.</target>
+        <target state="translated">Cet utilisateur a un accès API en lecture seule. La connexion WebUI est refusée.</target>
       </trans-unit>
       <trans-unit id="error.org_already_taken" xml:space="preserve">
         <source>That organization name is already taken; please choose another.</source>
@@ -1599,7 +1599,7 @@ utilisateur avant de supprimer son compte.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/newlogin/CreateUserSubmit</context>
         </context-group>
-        <target>Adresse électronique</target>
+        <target state="translated">Courriel</target>
       </trans-unit>
       <trans-unit id="company" xml:space="preserve">
         <source>Company</source>
@@ -1760,19 +1760,19 @@ utilisateur avant de supprimer son compte.</target>
         <target>Chemin vers le document XCCDF</target>
       </trans-unit>
       <trans-unit id="first" xml:space="preserve">
-          <source>First Scan Id</source>
-          <target>Premier ID de scan</target>
+        <source>First Scan Id</source>
+        <target>Premier ID de scan</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/audit/scap/Diff.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="second" xml:space="preserve">
-          <source>Second Scan Id</source>
-          <target>Second ID de scan</target>
+      </trans-unit>
+      <trans-unit id="second" xml:space="preserve">
+        <source>Second Scan Id</source>
+        <target>Second ID de scan</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/audit/scap/Diff.do</context>
         </context-group>
-        </trans-unit>
+      </trans-unit>
       <trans-unit id="message.perms_updated" xml:space="preserve">
         <source>Permissions Updated</source>
         <context-group name="ctx">
@@ -2272,7 +2272,7 @@ and try again.
         <context-group name="ctx">
           <context context-type="sourcefile">Kickstart Profile Details pages.</context>
         </context-group>
-      <target state="needs-adaptation"/>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="kickstart.initiate" xml:space="preserve">
         <source>Initiate an autoinstallation</source>
@@ -4056,19 +4056,19 @@ utilisateur avant de désactiver son compte.</target>
         <target>Groupe de systèmes &lt;strong&gt;{0}&lt;/strong&gt; créé.</target>
       </trans-unit>
       <trans-unit id="daterangepicker.error.invalid" xml:space="preserve">
-          <source>The date "{0}" is not valid and has been reset to its default. Check to make sure selected month has that many days.</source>
-          <target>La date "{0}" n'est pas valide et a été réinitialisée à sa valeur par défaut. Vérifiez que le mois sélectionné a bien autant de jours.</target>
+        <source>The date "{0}" is not valid and has been reset to its default. Check to make sure selected month has that many days.</source>
+        <target>La date "{0}" n'est pas valide et a été réinitialisée à sa valeur par défaut. Vérifiez que le mois sélectionné a bien autant de jours.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.frontend.action.common.DateRangePicker</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="daterangepicker.error.start.before.end" xml:space="preserve">
-          <source>The start date "{0}" must be before the end date "{1}"</source>
-          <target>La date de début "{0}" doit être avant la date de fin "{1}"</target>
+      </trans-unit>
+      <trans-unit id="daterangepicker.error.start.before.end" xml:space="preserve">
+        <source>The start date "{0}" must be before the end date "{1}"</source>
+        <target>La date de début "{0}" doit être avant la date de fin "{1}"</target>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.frontend.action.common.DateRangePicker</context>
         </context-group>
-        </trans-unit>
+      </trans-unit>
       <trans-unit id="monitoring.services.restarted" xml:space="preserve">
         <source>Configuration updated, Monitoring services restarted.</source>
         <context-group name="ctx">
@@ -6617,102 +6617,102 @@ Suivez cet url pour obtenir la liste complète des systèmes inactifs :
       </trans-unit>
       <!-- Activation Keys -->
       <trans-unit id="activation-key.java.invalid_chars" xml:space="preserve">
-          <source>Activation key label &lt;strong&gt;{0}&lt;/strong&gt; has one or more of the following invalid characters &lt;strong&gt;{1}&lt;/strong&gt;. Please remove these characters from the label.</source>
-          <target>Au moins un des caractères invalides suivants &lt;strong&gt;{1}&lt;/strong&gt;  se trouve dans l'étiquette clé d'activation &lt;strong&gt;{0}&lt;/strong&gt;. Veuillez supprimer ces caractères de l'étiquette.</target>
+        <source>Activation key label &lt;strong&gt;{0}&lt;/strong&gt; has one or more of the following invalid characters &lt;strong&gt;{1}&lt;/strong&gt;. Please remove these characters from the label.</source>
+        <target>Au moins un des caractères invalides suivants &lt;strong&gt;{1}&lt;/strong&gt;  se trouve dans l'étiquette clé d'activation &lt;strong&gt;{0}&lt;/strong&gt;. Veuillez supprimer ces caractères de l'étiquette.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="activation-key.java.exists" xml:space="preserve">
-          <source>An activation key with label '{0}' is already taken. Please choose a different label.</source>
-          <target>Une clé d'activation avec l'étiquette « {0} » est déjà utilisée. Veuillez choisir une étiquette différente.</target>
+      </trans-unit>
+      <trans-unit id="activation-key.java.exists" xml:space="preserve">
+        <source>An activation key with label '{0}' is already taken. Please choose a different label.</source>
+        <target>Une clé d'activation avec l'étiquette « {0} » est déjà utilisée. Veuillez choisir une étiquette différente.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="activation-key.java.created" xml:space="preserve">
-          <source>Activation key &lt;strong&gt;{0}&lt;/strong&gt; has been created.</source>
-          <target>La clé d'activation &lt;strong&gt;{0}&lt;/strong&gt; a été créée.</target>
+      </trans-unit>
+      <trans-unit id="activation-key.java.created" xml:space="preserve">
+        <source>Activation key &lt;strong&gt;{0}&lt;/strong&gt; has been created.</source>
+        <target>La clé d'activation &lt;strong&gt;{0}&lt;/strong&gt; a été créée.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="activation-key.java.deleted" xml:space="preserve">
-          <source>Activation key &lt;strong&gt;{0}&lt;/strong&gt; has been deleted.</source>
-          <target>La clé d'activation &lt;strong&gt;{0}&lt;/strong&gt; a été suprimée.</target>
+      </trans-unit>
+      <trans-unit id="activation-key.java.deleted" xml:space="preserve">
+        <source>Activation key &lt;strong&gt;{0}&lt;/strong&gt; has been deleted.</source>
+        <target>La clé d'activation &lt;strong&gt;{0}&lt;/strong&gt; a été suprimée.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="activation-key.java.cloned" xml:space="preserve">
-          <source>Activation key &lt;strong&gt;{0}&lt;/strong&gt; has been cloned.</source>
-          <target>La clé d'activation &lt;strong&gt;{0}&lt;/strong&gt; a été clonée.</target>
+      </trans-unit>
+      <trans-unit id="activation-key.java.cloned" xml:space="preserve">
+        <source>Activation key &lt;strong&gt;{0}&lt;/strong&gt; has been cloned.</source>
+        <target>La clé d'activation &lt;strong&gt;{0}&lt;/strong&gt; a été clonée.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="activation-key.java.modified" xml:space="preserve">
-          <source>Activation key &lt;strong&gt;{0}&lt;/strong&gt; has been modified.</source>
-          <target>La clé d'activation &lt;strong&gt;{0}&lt;/strong&gt; a été modifiée.</target>
+      </trans-unit>
+      <trans-unit id="activation-key.java.modified" xml:space="preserve">
+        <source>Activation key &lt;strong&gt;{0}&lt;/strong&gt; has been modified.</source>
+        <target>La clé d'activation &lt;strong&gt;{0}&lt;/strong&gt; a été modifiée.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="activation-key.java.org_prefixed" xml:space="preserve">
-          <source>The name of the key &lt;strong&gt;{0}&lt;/strong&gt; has been modified to &lt;strong&gt;{1}&lt;/strong&gt;.</source>
-          <target>Veuillez noter que &lt;strong&gt;{0}&lt;/strong&gt; a été modifiée par &lt;strong&gt;{1}&lt;/strong&gt;.</target>
+      </trans-unit>
+      <trans-unit id="activation-key.java.org_prefixed" xml:space="preserve">
+        <source>The name of the key &lt;strong&gt;{0}&lt;/strong&gt; has been modified to &lt;strong&gt;{1}&lt;/strong&gt;.</source>
+        <target>Veuillez noter que &lt;strong&gt;{0}&lt;/strong&gt; a été modifiée par &lt;strong&gt;{1}&lt;/strong&gt;.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="activation-key.java.allowed-values" xml:space="preserve">
-          <source>The activation key cannot be saved: the key can contains only numbers [0-9], letters [a-z A-Z], '-', '_' and '.'</source>
+      </trans-unit>
+      <trans-unit id="activation-key.java.allowed-values" xml:space="preserve">
+        <source>The activation key cannot be saved: the key can contains only numbers [0-9], letters [a-z A-Z], '-', '_' and '.'</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="system.sdc.missing.config_deploy1" xml:space="preserve">
-          <source>This system does not yet have configuration deployment capability. Configuration deployment requires that particular software is installed and enabled on your system.</source>
-          <target>Ce système n'a pas encore la capacité de déploiement de configuration. Le déploiement de configuration requiert qu'un logiciel particulier soit installé et activé sur votre système.</target>
+      </trans-unit>
+      <trans-unit id="system.sdc.missing.config_deploy1" xml:space="preserve">
+        <source>This system does not yet have configuration deployment capability. Configuration deployment requires that particular software is installed and enabled on your system.</source>
+        <target>Ce système n'a pas encore la capacité de déploiement de configuration. Le déploiement de configuration requiert qu'un logiciel particulier soit installé et activé sur votre système.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="system.sdc.missing.config_deploy2" xml:space="preserve">
-          <source>You may ensure that configuration deployment capability will be enabled on this system by selecting this system in the  &lt;a href={0}&gt;{1}&lt;/a&gt; screen and then clicking "{2}"</source>
-          <target>Vous pourrez vous assurer que le déploiement de configuration est bien activé sur ce système, en le sélectionnant dans l'écran &lt;a href={0}&gt;{1}&lt;/a&gt; puis en cliquant sur "{2}".</target>
+      </trans-unit>
+      <trans-unit id="system.sdc.missing.config_deploy2" xml:space="preserve">
+        <source>You may ensure that configuration deployment capability will be enabled on this system by selecting this system in the  &lt;a href={0}&gt;{1}&lt;/a&gt; screen and then clicking "{2}"</source>
+        <target>Vous pourrez vous assurer que le déploiement de configuration est bien activé sur ce système, en le sélectionnant dans l'écran &lt;a href={0}&gt;{1}&lt;/a&gt; puis en cliquant sur "{2}".</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="system.sdc.addtossm" xml:space="preserve">
-          <source>System added to the System Set Manager.</source>
-          <target>Système ajouté dans le gestionnaire d'ensembles de systèmes</target>
+      </trans-unit>
+      <trans-unit id="system.sdc.addtossm" xml:space="preserve">
+        <source>System added to the System Set Manager.</source>
+        <target>Système ajouté dans le gestionnaire d'ensembles de systèmes</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="system.sdc.removefromssm" xml:space="preserve">
-          <source>System removed from the System Set Manager.</source>
-          <target>Système supprimé du gestionnaire d'ensembles de systèmes</target>
+      </trans-unit>
+      <trans-unit id="system.sdc.removefromssm" xml:space="preserve">
+        <source>System removed from the System Set Manager.</source>
+        <target>Système supprimé du gestionnaire d'ensembles de systèmes</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="usageLimit" xml:space="preserve">
-          <source>Usage Limit</source>
-          <target>Limite d'utilisation</target>
+      </trans-unit>
+      <trans-unit id="usageLimit" xml:space="preserve">
+        <source>Usage Limit</source>
+        <target>Limite d'utilisation</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="key" xml:space="preserve">
-          <source>Key</source>
-          <target>Clé</target>
+      </trans-unit>
+      <trans-unit id="key" xml:space="preserve">
+        <source>Key</source>
+        <target>Clé</target>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
-        </trans-unit>
+      </trans-unit>
       <trans-unit id="file_size.b" xml:space="preserve">
         <source>{0} B</source>
         <context-group name="ctx">
@@ -7213,476 +7213,476 @@ Suivez cet url pour obtenir la liste complète des systèmes inactifs :
         <target>Les propriétés système ont changé pour &lt;strong&gt;{0}&lt;/strong&gt;. &lt;br/&gt; &lt;strong&gt;{0}&lt;/strong&gt; sera &lt;strong&gt;complètement mis à jour&lt;/strong&gt; en conformité avec les préférences de mise à jour d'errata automatique.</target>
       </trans-unit>
       <trans-unit id="sdc.config.deploy.noaction" xml:space="preserve">
-          <source>No deploy action completed.</source>
-          <target>Aucune action de déploiement terminée.</target>
+        <source>No deploy action completed.</source>
+        <target>Aucune action de déploiement terminée.</target>
         <context-group name="sdc_action_deploy_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="sdc.config.deploy.failure" xml:space="preserve">
-          <source>All file and/or directory ({0}) deployments failed. [&lt;a href="{1}"&gt;View Details&lt;/a&gt;]</source>
-          <target>Tous les déploiements de fichiers et/ou répertoires ({0}) ont échoué. [&lt;a href="{1}"&gt;Voir les détails&lt;/a&gt;]</target>
+      </trans-unit>
+      <trans-unit id="sdc.config.deploy.failure" xml:space="preserve">
+        <source>All file and/or directory ({0}) deployments failed. [&lt;a href="{1}"&gt;View Details&lt;/a&gt;]</source>
+        <target>Tous les déploiements de fichiers et/ou répertoires ({0}) ont échoué. [&lt;a href="{1}"&gt;Voir les détails&lt;/a&gt;]</target>
         <context-group name="sdc_action_deploy_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="sdc.config.deploy.success" xml:space="preserve">
-          <source>All files and/or directories ({0}) were successfully deployed. [&lt;a href="{1}"&gt;View Details&lt;/a&gt;]</source>
-          <target>Tous les fichiers et/ou répertoires ont bien été déployés. [&lt;a href="{1}"&gt;Voir les détails&lt;/a&gt;]</target>
+      </trans-unit>
+      <trans-unit id="sdc.config.deploy.success" xml:space="preserve">
+        <source>All files and/or directories ({0}) were successfully deployed. [&lt;a href="{1}"&gt;View Details&lt;/a&gt;]</source>
+        <target>Tous les fichiers et/ou répertoires ont bien été déployés. [&lt;a href="{1}"&gt;Voir les détails&lt;/a&gt;]</target>
         <context-group name="sdc_action_deploy_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
+      </trans-unit>
       <trans-unit id="sdc.config.diff.noaction" xml:space="preserve">
-          <source>No system comparisons completed.</source>
-          <target>Aucune comparaison de systèmes n'est terminée.</target>
+        <source>No system comparisons completed.</source>
+        <target>Aucune comparaison de systèmes n'est terminée.</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="sdc.config.diff.files_0_dirs_0_symlinks_0" xml:space="preserve">
-          <source>No files, directories or symlinks were selected for comparison. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>Aucun fichier, répertoire ou lien symbolique n'a été sélectionné en comparaison. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_0_dirs_0_symlinks_0" xml:space="preserve">
+        <source>No files, directories or symlinks were selected for comparison. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
+        <target>Aucun fichier, répertoire ou lien symbolique n'a été sélectionné en comparaison. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="sdc.config.diff.files_0_dirs_0_symlinks_1" xml:space="preserve">
-          <source>{4} of 1 symlink on the system was successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>{4} du lien symbolique 1 du système ont été comparés avec succès avec les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;voir détails&lt;/a&gt;]</target>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_0_dirs_0_symlinks_1" xml:space="preserve">
+        <source>{4} of 1 symlink on the system was successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
+        <target>{4} du lien symbolique 1 du système ont été comparés avec succès avec les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;voir détails&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="sdc.config.diff.files_0_dirs_0_symlinks_2" xml:space="preserve">
-          <source>{4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>{4} sur {5} liens symboliques du système ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_0_dirs_0_symlinks_2" xml:space="preserve">
+        <source>{4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
+        <target>{4} sur {5} liens symboliques du système ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="sdc.config.diff.files_0_dirs_1_symlinks_0" xml:space="preserve">
-          <source>{2} of 1 directory on the system was successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>{4} sur {5} liens symboliques du système ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed . [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_0_dirs_1_symlinks_0" xml:space="preserve">
+        <source>{2} of 1 directory on the system was successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
+        <target>{4} sur {5} liens symboliques du système ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed . [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="sdc.config.diff.files_0_dirs_1_symlinks_1" xml:space="preserve">
-          <source>{2} of 1 directory and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>{2} de 1 répertoire et {2} de 1 lien symbolique du système ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_0_dirs_1_symlinks_1" xml:space="preserve">
+        <source>{2} of 1 directory and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
+        <target>{2} de 1 répertoire et {2} de 1 lien symbolique du système ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="sdc.config.diff.files_0_dirs_1_symlinks_2" xml:space="preserve">
-          <source>{2} of 1 directory and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>{2} de 1 répertoire et {4} de {5} liens symboliques du système ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;] </target>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_0_dirs_1_symlinks_2" xml:space="preserve">
+        <source>{2} of 1 directory and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
+        <target>{2} de 1 répertoire et {4} de {5} liens symboliques du système ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;] </target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="sdc.config.diff.files_0_dirs_2_symlinks_0" xml:space="preserve">
-          <source>{2} of {3} directories on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>{2} de {3} répertoires du système ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_0_dirs_2_symlinks_0" xml:space="preserve">
+        <source>{2} of {3} directories on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
+        <target>{2} de {3} répertoires du système ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="sdc.config.diff.files_0_dirs_2_symlinks_1" xml:space="preserve">
-          <source>{2} of {3} directories and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>{2} de {3} répertoires et {4} de 1 lien symbolique du système ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_0_dirs_2_symlinks_1" xml:space="preserve">
+        <source>{2} of {3} directories and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
+        <target>{2} de {3} répertoires et {4} de 1 lien symbolique du système ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="sdc.config.diff.files_0_dirs_2_symlinks_2" xml:space="preserve">
-          <source>{2} of {3} directories and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>{2} de {3} répertoires et {4} de {5} liens symboliques du système ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_0_dirs_2_symlinks_2" xml:space="preserve">
+        <source>{2} of {3} directories and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
+        <target>{2} de {3} répertoires et {4} de {5} liens symboliques du système ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="sdc.config.diff.files_1_dirs_0_symlinks_0" xml:space="preserve">
-          <source>{0} of 1 file on the system was successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>{0} parmi 1 lien symbolique du système a été comparé avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_1_dirs_0_symlinks_0" xml:space="preserve">
+        <source>{0} of 1 file on the system was successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
+        <target>{0} parmi 1 lien symbolique du système a été comparé avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="sdc.config.diff.files_1_dirs_0_symlinks_1" xml:space="preserve">
-          <source>{0} of 1 file and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>{0} de 1 fichier et {4} de 1 lien symbolique du système ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_1_dirs_0_symlinks_1" xml:space="preserve">
+        <source>{0} of 1 file and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
+        <target>{0} de 1 fichier et {4} de 1 lien symbolique du système ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="sdc.config.diff.files_1_dirs_0_symlinks_2" xml:space="preserve">
-          <source>{0} of 1 file and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>{0} de 1 fichier et {4} de {5} liens symboliques du système ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_1_dirs_0_symlinks_2" xml:space="preserve">
+        <source>{0} of 1 file and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
+        <target>{0} de 1 fichier et {4} de {5} liens symboliques du système ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="sdc.config.diff.files_1_dirs_1_symlinks_0" xml:space="preserve">
-          <source>{0} of 1 file and {2} of 1 directory on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>{0} de 1 fichier et {2} de 1 répertoire du système ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_1_dirs_1_symlinks_0" xml:space="preserve">
+        <source>{0} of 1 file and {2} of 1 directory on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
+        <target>{0} de 1 fichier et {2} de 1 répertoire du système ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="sdc.config.diff.files_1_dirs_1_symlinks_1" xml:space="preserve">
-          <source>{0} of 1 file and {2} of 1 directory and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>{0} de 1 fichier et {2} de 1 répertoire et {4} of 1 lien symbolique du systéme ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_1_dirs_1_symlinks_1" xml:space="preserve">
+        <source>{0} of 1 file and {2} of 1 directory and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
+        <target>{0} de 1 fichier et {2} de 1 répertoire et {4} of 1 lien symbolique du systéme ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="sdc.config.diff.files_1_dirs_1_symlinks_2" xml:space="preserve">
-          <source>{0} of 1 file and {2} of 1 directory and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>{0} de 1 fichier et {2} de 1 répertoire et {4} of {5} liens symboliques du systéme ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_1_dirs_1_symlinks_2" xml:space="preserve">
+        <source>{0} of 1 file and {2} of 1 directory and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
+        <target>{0} de 1 fichier et {2} de 1 répertoire et {4} of {5} liens symboliques du systéme ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="sdc.config.diff.files_1_dirs_2_symlinks_0" xml:space="preserve">
-          <source>{0} of 1 file and {2} of {3} directories on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>{0} de 1 fichier et {2} de {3} répertoires du systéme ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_1_dirs_2_symlinks_0" xml:space="preserve">
+        <source>{0} of 1 file and {2} of {3} directories on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
+        <target>{0} de 1 fichier et {2} de {3} répertoires du systéme ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="sdc.config.diff.files_1_dirs_2_symlinks_1" xml:space="preserve">
-          <source>{0} of 1 file and {2} of {3} directories and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>{0} de 1 fichier et {2} de {3} répertoires et {4} of 1 lien symbolique du systéme ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_1_dirs_2_symlinks_1" xml:space="preserve">
+        <source>{0} of 1 file and {2} of {3} directories and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
+        <target>{0} de 1 fichier et {2} de {3} répertoires et {4} of 1 lien symbolique du systéme ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="sdc.config.diff.files_1_dirs_2_symlinks_2" xml:space="preserve">
-          <source>{0} of 1 file and {2} of {3} directories and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>{0} de 1 fichier et {2} de {3} répertoires et {4} de {5} liens symboliques du systéme ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_1_dirs_2_symlinks_2" xml:space="preserve">
+        <source>{0} of 1 file and {2} of {3} directories and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
+        <target>{0} de 1 fichier et {2} de {3} répertoires et {4} de {5} liens symboliques du systéme ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="sdc.config.diff.files_2_dirs_0_symlinks_0" xml:space="preserve">
-          <source>{0} of {1} files on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>{0} de {1} fichiers du systéme ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_2_dirs_0_symlinks_0" xml:space="preserve">
+        <source>{0} of {1} files on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
+        <target>{0} de {1} fichiers du systéme ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="sdc.config.diff.files_2_dirs_0_symlinks_1" xml:space="preserve">
-          <source>{0} of {1} files and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>{0} de {1} fichiers et {4} of 1 lien symbolique du systéme ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_2_dirs_0_symlinks_1" xml:space="preserve">
+        <source>{0} of {1} files and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
+        <target>{0} de {1} fichiers et {4} of 1 lien symbolique du systéme ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="sdc.config.diff.files_2_dirs_0_symlinks_2" xml:space="preserve">
-          <source>{0} of {1} files and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>{0} de 1 fichier et {4} de {5} liens symboliques du systéme ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_2_dirs_0_symlinks_2" xml:space="preserve">
+        <source>{0} of {1} files and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
+        <target>{0} de 1 fichier et {4} de {5} liens symboliques du systéme ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="sdc.config.diff.files_2_dirs_1_symlinks_0" xml:space="preserve">
-          <source>{0} of {1} files and {2} of 1 directory on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>{0} de 1 fichier et {2} de 1 répertoire du systéme ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_2_dirs_1_symlinks_0" xml:space="preserve">
+        <source>{0} of {1} files and {2} of 1 directory on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
+        <target>{0} de 1 fichier et {2} de 1 répertoire du systéme ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="sdc.config.diff.files_2_dirs_1_symlinks_1" xml:space="preserve">
-          <source>{0} of {1} files and {2} of 1 directory and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>{0} de {1} fichier et {2} de 1 répertoire et {4} de 1 lien symbolique du systéme ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_2_dirs_1_symlinks_1" xml:space="preserve">
+        <source>{0} of {1} files and {2} of 1 directory and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
+        <target>{0} de {1} fichier et {2} de 1 répertoire et {4} de 1 lien symbolique du systéme ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="sdc.config.diff.files_2_dirs_1_symlinks_2" xml:space="preserve">
-          <source>{0} of {1} files and {2} of 1 directory and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>{0} de {1} fichier et {2} de 1 répertoire et {4} de {5} liens symboliques du systéme ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_2_dirs_1_symlinks_2" xml:space="preserve">
+        <source>{0} of {1} files and {2} of 1 directory and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
+        <target>{0} de {1} fichier et {2} de 1 répertoire et {4} de {5} liens symboliques du systéme ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="sdc.config.diff.files_2_dirs_2_symlinks_0" xml:space="preserve">
-          <source>{0} of {1} files and {2} of {3} directories on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>{0} de {1} fichier et {2} de {3} répertoires du systéme ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_2_dirs_2_symlinks_0" xml:space="preserve">
+        <source>{0} of {1} files and {2} of {3} directories on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
+        <target>{0} de {1} fichier et {2} de {3} répertoires du systéme ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="sdc.config.diff.files_2_dirs_2_symlinks_1" xml:space="preserve">
-          <source>{0} of {1} files and {2} of {3} directories and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>{0} de {1} fichier et {2} de {3} répertoires et {4} de 1 lien symbolique du systéme ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_2_dirs_2_symlinks_1" xml:space="preserve">
+        <source>{0} of {1} files and {2} of {3} directories and {4} of 1 symlink on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
+        <target>{0} de {1} fichier et {2} de {3} répertoires et {4} de 1 lien symbolique du systéme ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="sdc.config.diff.files_2_dirs_2_symlinks_2" xml:space="preserve">
-          <source>{0} of {1} files and {2} of {3} directories and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
-          <target>{0} de {1} fichier et {2} de {3} répertoires et {4} de {5} liens symboliques du systéme ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
+      </trans-unit>
+      <trans-unit id="sdc.config.diff.files_2_dirs_2_symlinks_2" xml:space="preserve">
+        <source>{0} of {1} files and {2} of {3} directories and {4} of {5} symlinks on the system were successfully compared with @@PRODUCT_NAME@@-Managed files. [&lt;a href="{6}"&gt;View Details&lt;/a&gt;]</source>
+        <target>{0} de {1} fichier et {2} de {3} répertoires et {4} de {5} liens symboliques du systéme ont été comparés avec succès pour les fichiers @@PRODUCT_NAME@@-Managed. [&lt;a href="{6}"&gt;Voir détails&lt;/a&gt;]</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="sdc.config.differing.files_0" xml:space="preserve">
-          <source>No existing files in the existing system differed from the @@PRODUCT_NAME@@-Managed files.</source>
-          <target>Aucun fichier dans le système existant diffère des fichiers gérés par @@PRODUCT_NAME@@.</target>
+      </trans-unit>
+      <trans-unit id="sdc.config.differing.files_0" xml:space="preserve">
+        <source>No existing files in the existing system differed from the @@PRODUCT_NAME@@-Managed files.</source>
+        <target>Aucun fichier dans le système existant diffère des fichiers gérés par @@PRODUCT_NAME@@.</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="sdc.config.differing.files_1" xml:space="preserve">
-          <source>1 of 1 file on the system differed from the @@PRODUCT_NAME@@-Managed files</source>
-          <target>1 de 1 fichier sur le système diffère des fichiers gérés par @@PRODUCT_NAME@@</target>
+      </trans-unit>
+      <trans-unit id="sdc.config.differing.files_1" xml:space="preserve">
+        <source>1 of 1 file on the system differed from the @@PRODUCT_NAME@@-Managed files</source>
+        <target>1 de 1 fichier sur le système diffère des fichiers gérés par @@PRODUCT_NAME@@</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="sdc.config.differing.files_2" xml:space="preserve">
-          <source>{0} of {1} files on the system differed from the @@PRODUCT_NAME@@-Managed files.</source>
-          <target>{0} de {1} fichiers sur le système diffèrent des fichiers gérés par @@PRODUCT_NAME@@.</target>
+      </trans-unit>
+      <trans-unit id="sdc.config.differing.files_2" xml:space="preserve">
+        <source>{0} of {1} files on the system differed from the @@PRODUCT_NAME@@-Managed files.</source>
+        <target>{0} de {1} fichiers sur le système diffèrent des fichiers gérés par @@PRODUCT_NAME@@.</target>
         <context-group name="sdc_action_diff_counts">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
+      </trans-unit>
       <trans-unit id="sdc.config.time.message" xml:space="preserve">
-          <source>{0} by {1}</source>
-          <target>{0} par {1}</target>
+        <source>{0} by {1}</source>
+        <target>{0} par {1}</target>
         <context-group name="sdc_actions_time_messages">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="sdc.config.time.message_url" xml:space="preserve">
-          <source>{0} by &lt;a href="{1}"&gt;{2}&lt;/a&gt;</source>
-          <target>{0} par &lt;a href="{1}"&gt;{2}&lt;/a&gt;</target>
+      </trans-unit>
+      <trans-unit id="sdc.config.time.message_url" xml:space="preserve">
+        <source>{0} by &lt;a href="{1}"&gt;{2}&lt;/a&gt;</source>
+        <target>{0} par &lt;a href="{1}"&gt;{2}&lt;/a&gt;</target>
         <context-group name="sdc_actions_time_messages">
           <context context-type="sourcefile">/rhn/systems/details/configuration/Overview.do</context>
         </context-group>
-        </trans-unit>
+      </trans-unit>
       <trans-unit id="config.sls_0_files_0_dirs_0_symlinks_0_url" xml:space="preserve">
-          <source>No files, directories or symlinks. &lt;a href="{0}"&gt; Add&lt;/a&gt;</source>
+        <source>No files, directories or symlinks. &lt;a href="{0}"&gt; Add&lt;/a&gt;</source>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="config.sls_0_files_0_dirs_0_symlinks_0" xml:space="preserve">
-          <source>No files, directories or symlinks.</source>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_0_dirs_0_symlinks_0" xml:space="preserve">
+        <source>No files, directories or symlinks.</source>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="config.sls_0_files_0_dirs_0_symlinks_1" xml:space="preserve">
-          <source>{3} symlink</source>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_0_dirs_0_symlinks_1" xml:space="preserve">
+        <source>{3} symlink</source>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="config.sls_0_files_0_dirs_0_symlinks_2" xml:space="preserve">
-          <source>{3} symlinks</source>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_0_dirs_0_symlinks_2" xml:space="preserve">
+        <source>{3} symlinks</source>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="config.sls_0_files_0_dirs_1_symlinks_0" xml:space="preserve">
-          <source>{2} directory</source>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_0_dirs_1_symlinks_0" xml:space="preserve">
+        <source>{2} directory</source>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="config.sls_0_files_0_dirs_1_symlinks_1" xml:space="preserve">
-          <source>{2} directory and {3} symlink</source>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_0_dirs_1_symlinks_1" xml:space="preserve">
+        <source>{2} directory and {3} symlink</source>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="config.sls_0_files_0_dirs_1_symlinks_2" xml:space="preserve">
-          <source>{2} directory and {3} symlinks</source>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_0_dirs_1_symlinks_2" xml:space="preserve">
+        <source>{2} directory and {3} symlinks</source>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="config.sls_0_files_0_dirs_2_symlinks_0" xml:space="preserve">
-          <source>{2} directories</source>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_0_dirs_2_symlinks_0" xml:space="preserve">
+        <source>{2} directories</source>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="config.sls_0_files_0_dirs_2_symlinks_1" xml:space="preserve">
-          <source>{2} directories and {3} symlink</source>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_0_dirs_2_symlinks_1" xml:space="preserve">
+        <source>{2} directories and {3} symlink</source>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="config.sls_0_files_0_dirs_2_symlinks_2" xml:space="preserve">
-          <source>{2} directories and {3} symlinks</source>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_0_dirs_2_symlinks_2" xml:space="preserve">
+        <source>{2} directories and {3} symlinks</source>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="config.sls_0_files_1_dirs_0_symlinks_0" xml:space="preserve">
-          <source>{1} file</source>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_1_dirs_0_symlinks_0" xml:space="preserve">
+        <source>{1} file</source>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="config.sls_0_files_1_dirs_0_symlinks_1" xml:space="preserve">
-          <source>{1} file and {3} symlink</source>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_1_dirs_0_symlinks_1" xml:space="preserve">
+        <source>{1} file and {3} symlink</source>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="config.sls_0_files_1_dirs_0_symlinks_2" xml:space="preserve">
-          <source>{1} file and {3} symlinks</source>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_1_dirs_0_symlinks_2" xml:space="preserve">
+        <source>{1} file and {3} symlinks</source>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="config.sls_0_files_1_dirs_1_symlinks_0" xml:space="preserve">
-          <source>{1} file and {2} directory</source>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_1_dirs_1_symlinks_0" xml:space="preserve">
+        <source>{1} file and {2} directory</source>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="config.sls_0_files_1_dirs_1_symlinks_1" xml:space="preserve">
-          <source>{1} file, {2} directory and {3} symlink</source>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_1_dirs_1_symlinks_1" xml:space="preserve">
+        <source>{1} file, {2} directory and {3} symlink</source>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="config.sls_0_files_1_dirs_1_symlinks_2" xml:space="preserve">
-          <source>{1} file, {2} directory and {3} symlinks</source>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_1_dirs_1_symlinks_2" xml:space="preserve">
+        <source>{1} file, {2} directory and {3} symlinks</source>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="config.sls_0_files_1_dirs_2_symlinks_0" xml:space="preserve">
-          <source>{1} file and {2} directories</source>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_1_dirs_2_symlinks_0" xml:space="preserve">
+        <source>{1} file and {2} directories</source>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="config.sls_0_files_1_dirs_2_symlinks_1" xml:space="preserve">
-          <source>{1} file, {2} directories and {3} symlink</source>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_1_dirs_2_symlinks_1" xml:space="preserve">
+        <source>{1} file, {2} directories and {3} symlink</source>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="config.sls_0_files_1_dirs_2_symlinks_2" xml:space="preserve">
-          <source>{1} file, {2} directories and {3} symlinks</source>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_1_dirs_2_symlinks_2" xml:space="preserve">
+        <source>{1} file, {2} directories and {3} symlinks</source>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="config.sls_0_files_2_dirs_0_symlinks_0" xml:space="preserve">
-          <source>{1} files</source>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_2_dirs_0_symlinks_0" xml:space="preserve">
+        <source>{1} files</source>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="config.sls_0_files_2_dirs_0_symlinks_1" xml:space="preserve">
-          <source>{1} files and {3} symlink</source>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_2_dirs_0_symlinks_1" xml:space="preserve">
+        <source>{1} files and {3} symlink</source>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="config.sls_0_files_2_dirs_0_symlinks_2" xml:space="preserve">
-          <source>{1} files and {3} symlinks</source>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_2_dirs_0_symlinks_2" xml:space="preserve">
+        <source>{1} files and {3} symlinks</source>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="config.sls_0_files_2_dirs_1_symlinks_0" xml:space="preserve">
-          <source>{1} files and {2} directory</source>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_2_dirs_1_symlinks_0" xml:space="preserve">
+        <source>{1} files and {2} directory</source>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="config.sls_0_files_2_dirs_1_symlinks_1" xml:space="preserve">
-          <source>{1} files, {2} directory and {3} symlink</source>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_2_dirs_1_symlinks_1" xml:space="preserve">
+        <source>{1} files, {2} directory and {3} symlink</source>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="config.sls_0_files_2_dirs_1_symlinks_2" xml:space="preserve">
-          <source>{1} files, {2} directory and {3} symlinks</source>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_2_dirs_1_symlinks_2" xml:space="preserve">
+        <source>{1} files, {2} directory and {3} symlinks</source>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="config.sls_0_files_2_dirs_2_symlinks_0" xml:space="preserve">
-          <source>{1} files and {2} directories</source>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_2_dirs_2_symlinks_0" xml:space="preserve">
+        <source>{1} files and {2} directories</source>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="config.sls_0_files_2_dirs_2_symlinks_1" xml:space="preserve">
-          <source>{1} files, {2} directories and {3} symlink</source>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_2_dirs_2_symlinks_1" xml:space="preserve">
+        <source>{1} files, {2} directories and {3} symlink</source>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="config.sls_0_files_2_dirs_2_symlinks_2" xml:space="preserve">
-          <source>{1} files, {2} directories and {3} symlinks</source>
+      </trans-unit>
+      <trans-unit id="config.sls_0_files_2_dirs_2_symlinks_2" xml:space="preserve">
+        <source>{1} files, {2} directories and {3} symlinks</source>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="config.sls_2_files_1_dirs_2_symlinks_2" xml:space="preserve">
-          <source>{0} states, {1} file, {2} directories and {3} symlinks</source>
+      </trans-unit>
+      <trans-unit id="config.sls_2_files_1_dirs_2_symlinks_2" xml:space="preserve">
+        <source>{0} states, {1} file, {2} directories and {3} symlinks</source>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="config.sls_2_files_2_dirs_2_symlinks_2" xml:space="preserve">
-          <source>{0} states, {1} files, {2} directories and {3} symlinks</source>
+      </trans-unit>
+      <trans-unit id="config.sls_2_files_2_dirs_2_symlinks_2" xml:space="preserve">
+        <source>{0} states, {1} files, {2} directories and {3} symlinks</source>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="config.sls_1_files_0_dirs_0_symlinks_0" xml:space="preserve">
-          <source>{0} state</source>
+      </trans-unit>
+      <trans-unit id="config.sls_1_files_0_dirs_0_symlinks_0" xml:space="preserve">
+        <source>{0} state</source>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="config.sls_1_files_1_dirs_0_symlinks_0" xml:space="preserve">
-          <source>{0} state and {1} file</source>
+      </trans-unit>
+      <trans-unit id="config.sls_1_files_1_dirs_0_symlinks_0" xml:space="preserve">
+        <source>{0} state and {1} file</source>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="config.sls_1_files_2_dirs_0_symlinks_0" xml:space="preserve">
-          <source>{0} state and {1} files</source>
+      </trans-unit>
+      <trans-unit id="config.sls_1_files_2_dirs_0_symlinks_0" xml:space="preserve">
+        <source>{0} state and {1} files</source>
         <context-group name="config_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeFileCountsMessage</context>
         </context-group>
-        </trans-unit>
+      </trans-unit>
       <trans-unit id="config.channels_0" xml:space="preserve">
-          <source>No configuration channels</source>
-          <target>Aucun canal de configuration</target>
+        <source>No configuration channels</source>
+        <target>Aucun canal de configuration</target>
         <context-group name="config_channel_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeChannelCountsMessage</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="config.channels_1" xml:space="preserve">
-          <source>1 configuration channel</source>
-          <target>1 canal de configuration</target>
+      </trans-unit>
+      <trans-unit id="config.channels_1" xml:space="preserve">
+        <source>1 configuration channel</source>
+        <target>1 canal de configuration</target>
         <context-group name="config_channel_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeChannelCountsMessage</context>
         </context-group>
-        </trans-unit>
-        <trans-unit id="config.channels_2" xml:space="preserve">
-          <source>{0} configuration channels</source>
-          <target>{0} canaux de configuration</target>
+      </trans-unit>
+      <trans-unit id="config.channels_2" xml:space="preserve">
+        <source>{0} configuration channels</source>
+        <target>{0} canaux de configuration</target>
         <context-group name="config_channel_counts">
           <context context-type="sourcefile">Every Caller of ConfigActionHelper.makeChannelCountsMessage</context>
         </context-group>
-        </trans-unit>
+      </trans-unit>
       <trans-unit id="channel.unavailable" xml:space="preserve">
         <source>(no access to parent channel)</source>
         <context-group name="ctx">
@@ -8295,7 +8295,7 @@ Suivez cet url pour obtenir la liste complète des systèmes inactifs :
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Activation.do</context>
         </context-group>
-      <target state="needs-adaptation"/>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="sdc.channels.edit.base_channel_updated" xml:space="preserve">
         <source>System's Base Channel has been updated.</source>
@@ -9616,7 +9616,7 @@ Please check:
 
 for more detailed errors. If you don't resolve the errors the autoinstallable
 tree will not be usable for autoinstalling.</source>
-      <target state="needs-adaptation"/>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="errata.delete.msg" xml:space="preserve">
         <source>Successfully deleted {0} patches.</source>
@@ -9655,7 +9655,7 @@ tree will not be usable for autoinstalling.</source>
       </trans-unit>
       <trans-unit id="help.credentials.passwordsent" xml:space="preserve">
         <source>Password reset information sent to {0}. If you don't receive it, please make sure you have a registered account with the login and email provided.</source>
-      <target state="needs-adaptation"/>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="help.credentials.invalidemail" xml:space="preserve">
         <source>Supplied email address and login do not match.</source>
@@ -9757,7 +9757,7 @@ Below are all the channel content ISOs available for use with channel {0}. If an
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Edit.do</context>
         </context-group>
-      <target state="needs-adaptation"/>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="isodownload.channel-dump-descr2" xml:space="preserve">
         <source>
@@ -9818,14 +9818,14 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/multiorg/SystemEntitlementDetails</context>
         </context-group>
-      <target state="needs-adaptation"/>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.satcert-check-bunch" xml:space="preserve">
         <source>Checks whether the @@PRODUCT_NAME@@ certificate has not expired</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="needs-adaptation"/>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="image_admin" xml:space="preserve">
         <source>Image Administrator</source>
@@ -9835,33 +9835,33 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="satellite.expired" xml:space="preserve">
         <source>Your @@PRODUCT_NAME@@ certificate has expired. Please contact @@VENDOR_NAME@@ for a new certificate.</source>
-      <target state="needs-adaptation"/>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="satellite.expired.restricted" xml:space="preserve">
         <source>Your @@PRODUCT_NAME@@ Certificate has expired. Your @@PRODUCT_NAME@@ is on day {0} of {1} day restricted period and will soon stop functioning. Please contact @@VENDOR_NAME@@ for a new certificate.</source>
-      <target state="needs-adaptation"/>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="satellite.graceperiod" xml:space="preserve">
         <source>Your @@PRODUCT_NAME@@ certificate has expired. Please contact @@VENDOR_NAME@@ for a new certificate.  Your @@PRODUCT_NAME@@ will become inactive in {0} day(s).</source>
-      <target state="needs-adaptation"/>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="restricted.forbidden" xml:space="preserve">
         <source>You are not allowed to perform this action until your @@PRODUCT_NAME@@ Certificate is renewed. Your @@PRODUCT_NAME@@ is on day {0} of the {1} restricted period and will soon stop functioning. Please contact @@VENDOR_NAME@@ for a new certificate.</source>
-      <target state="needs-adaptation"/>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="org.entitlements.system.defaultorg" xml:space="preserve">
         <source>You are not allowed to update entitlements in the Default Org.  These entitlements are determined by your @@PRODUCT_NAME@@ certificate file.</source>
       </trans-unit>
       <trans-unit id="distupgrade.upgrade" xml:space="preserve">
         <source>Product Migration</source>
-      <target state="needs-adaptation"/>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="spmigration.message.scheduled" xml:space="preserve">
         <source>This system is &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;scheduled&lt;/a&gt; to be migrated to &lt;strong&gt;{2}&lt;/strong&gt;.</source>
       </trans-unit>
       <trans-unit id="spmigration.message.scheduled.dry-run" xml:space="preserve">
         <source>This system is scheduled for a dry run of the migration to &lt;strong&gt;{2}&lt;/strong&gt;. Once the action completed successfully you can schedule the full migration &lt;a href="/rhn/systems/details/history/Event.do?sid={0}&amp;aid={1}"&gt;here&lt;/a&gt;</source>
-      <target state="needs-adaptation"/>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="task.status.mgr-register" xml:space="preserve">
         <source>Run mgr-register</source>
@@ -9895,11 +9895,11 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="bunch.jsp.description.mgr-register-bunch" xml:space="preserve">
         <source>Registers @@PRODUCT_NAME@@ clients</source>
-      <target state="needs-adaptation"/>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.repo-sync-bunch" xml:space="preserve">
         <source>Synchronizes @@PRODUCT_NAME@@ repositories</source>
-      <target state="needs-adaptation"/>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="bunch.jsp.description.cve-server-channels-bunch" xml:space="preserve">
         <source>Generates data required for performing CVE audit queries</source>
@@ -9997,7 +9997,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-      <target state="needs-adaptation"/>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="system.entitle.formula_error" xml:space="preserve">
         <source>There was a problem assigning the Prometheus Exporters formula.</source>
@@ -10100,7 +10100,7 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
       </trans-unit>
       <trans-unit id="help.jsp.bestpractices" xml:space="preserve">
         <source>This document describes @@VENDOR_NAME@@ recommended best practices for @@PRODUCT_NAME@@</source>
-      <target state="needs-adaptation"/>
+        <target state="needs-adaptation"/>
       </trans-unit>
       <trans-unit id="help.jsp.advancedtopics" xml:space="preserve">
         <source>Advanced Topics on @@PRODUCT_NAME@@</source>
@@ -10164,1665 +10164,1665 @@ Alternatively, you will want to download &lt;strong&gt;Incremental Channel Conte
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="virt.pool_refresh" xml:space="preserve">
         <source>Virtual storage pool refresh</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="virt.pool_start" xml:space="preserve">
         <source>Virtual storage pool start</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="virt.pool_stop" xml:space="preserve">
         <source>Virtual storage pool stop</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="virt.pool_delete" xml:space="preserve">
         <source>Virtual storage pool delete</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="virt.pool_create" xml:space="preserve">
         <source>Virtual storage pool creation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="virt.pool_update" xml:space="preserve">
         <source>Virtual storage pool update</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.suse.manager.webui.controllers.VirtualPoolsController</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="virt.volume_delete" xml:space="preserve">
         <source>Virtual storage volume deletion</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.suse.manager.webui.controllers.VirtualPoolsController</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="virt.network_start" xml:space="preserve">
         <source>Virtual network start</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.suse.manager.webui.controllers.virtualization.VirtualNetsController.netStateChangeAction</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="virt.network_stop" xml:space="preserve">
         <source>Virtual network stop</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.suse.manager.webui.controllers.virtualization.VirtualNetsController.netStateChangeAction</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="virt.network_delete" xml:space="preserve">
         <source>Virtual network deletion</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.suse.manager.webui.controllers.virtualization.VirtualNetsController.netStateChangeAction</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="contentmanagement.validation.modulenotfound" xml:space="preserve">
         <source>Module '{0}' not found.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="contentmanagement.validation.moduleconflict" xml:space="preserve">
         <source>Module '{0}' conflicts with module '{1}'. Resolution not possible.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="contentmanagement.validation.dependencyerror.formodule" xml:space="preserve">
         <source>Some of the modular dependencies cannot be resolved for module '{0}'.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="contentmanagement.validation.dependencyerror" xml:space="preserve">
         <source>Some of the modular dependencies cannot be resolved.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="contentmanagement.validation.nomodulefilters" xml:space="preserve">
         <source>No module filters attached. Module metadata will be cloned to target.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularSourcesValidator</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="contentmanagement.validation.nomodularsources" xml:space="preserve">
         <source>No modular source attached. Module filters will be ignored.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularSourcesValidator</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="maintenance.calendar.name.empty" xml:space="preserve">
         <source>Calendar name required</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="maintenance.schedule.name.empty" xml:space="preserve">
         <source>Schedule name required</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="maintenance.calendar.data.empty" xml:space="preserve">
         <source>Calendar data required</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="maintenance.calendar.exists" xml:space="preserve">
         <source>Calendar '{0}' already exists</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="maintenance.calendar.fetch.error" xml:space="preserve">
         <source>Error fetching calendar data from '{0}'</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="maintenance.calendar.not.exists" xml:space="preserve">
         <source>Calendar '{0}' does not exist</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="maintenance.schedule.id.not.exists" xml:space="preserve">
         <source>Schedule with id '{0}' does not exist</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="maintenance.calendar.id.not.exists" xml:space="preserve">
         <source>Calendar with id '{0}' does not exist</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="maintenance.action.reschedule.error.cancel" xml:space="preserve">
         <source>An error occured trying to cancel affected actions for schedule '{0}'</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="maintenance.action.reschedule.error.fail" xml:space="preserve">
         <source>Operation could not be performed. There are scheduled actions on systems</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="maintenance.action.assign.error.fail" xml:space="preserve">
         <source>Operation could not be performed. There are scheduled actions on systems</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="maintenance.action.assign.error.systemnotfound" xml:space="preserve">
         <source>Some of the specified servers cannot be found</source>
-      <target state="new"/>
-  </trans-unit>
-    <trans-unit id="cobbler.powermanagement.redfish" xml:space="preserve">
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="cobbler.powermanagement.redfish" xml:space="preserve">
         <source>Redfish</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/kickstart/PowerManagement.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="task.status.ssh-minion-action-executor" xml:space="preserve">
         <source>Execute actions on ssh minions</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="task.status.minion-action-chain-executor" xml:space="preserve">
         <source>Execute action chains on minions</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="contentmanagement.validation.selectedmodules" xml:space="preserve">
         <source>The following module streams will be enabled: {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="contentmanagement.project_created" xml:space="preserve">
         <source>Project {0} created successfully</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="contentmanagement.project_deleted" xml:space="preserve">
         <source>Project {0} deleted successfully</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="contentmanagement.project_exists" xml:space="preserve">
         <source>Project already exists</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="contentmanagement.label_required" xml:space="preserve">
         <source>Label is required</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="contentmanagement.label_invalid" xml:space="preserve">
         <source>Label must begin with a letter and must contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), and numerals</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="contentmanagement.project_label_too_long" xml:space="preserve">
         <source>Label must not exceed 24 characters</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="contentmanagement.name_required" xml:space="preserve">
         <source>Name is required</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="contentmanagement.project_name_too_long" xml:space="preserve">
         <source>Name must not exceed 128 characters</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="contentmanagement.name_already_exists" xml:space="preserve">
         <source>Name already exists</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="contentmanagement.environment_lbl_too_long" xml:space="preserve">
         <source>Label must not exceed 16 characters</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="contentmanagement.environment_name_too_long" xml:space="preserve">
         <source>Name must not exceed 128 characters</source>
-      <target state="needs-adaptation"/>
-  </trans-unit>
+        <target state="needs-adaptation"/>
+      </trans-unit>
       <trans-unit id="contentmanagement.filter_exists" xml:space="preserve">
         <source>Filter name already exists</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="contentmanagement.filter_created" xml:space="preserve">
         <source>Filter {0} created successfully</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="contentmanagement.filter_updated" xml:space="preserve">
         <source>Filter {0} updated successfully</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="contentmanagement.filter_name_too_long" xml:space="preserve">
         <source>Name must not exceed 128 characters</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="edit.channel.repo.invalidrepolabel" xml:space="preserve">
         <source>The repository label '{0}' is invalid. Repository label must begin with a letter and may contain only lowercase letters, hyphens ('-'), periods ('.'), underscores ('_'), numerals, spaces, parentheses and forward slashes ('/').</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="virt.network_create" xml:space="preserve">
         <source>Virtual network creation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="api.system.nosuchfqdn" xml:space="preserve">
         <source>No such FQDN: {0}.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.noperm" xml:space="preserve">
         <source>Cannot read/write '{0}'. Please check permissions.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.permcmdexec" xml:space="preserve">
         <source>Error when checking permissions on '{0}'. Please check server logs for more information.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt" xml:space="preserve">
         <source>Error during applying the bootstrap state, message: {0}</source>
-      <target state="new"/>
-  </trans-unit>
-    <trans-unit id="api.package.retractedpackage" xml:space="preserve">
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="api.package.retractedpackage" xml:space="preserve">
         <source>Retracted packages: {0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="api.errata.retractederrata" xml:space="preserve">
         <source>Retracted patches: {0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="Transfer" xml:space="preserve">
         <source>Transfer</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="virt.network_update" xml:space="preserve">
         <source>Virtual network update</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.suse.manager.webui.controllers.virtualization.VirtualNetsController.edit</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="system.entitle.added.ansible_control_node" xml:space="preserve">
         <source>&lt;strong&gt;Ansible Control Node&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-      <target state="needs-adaptation"/>
-  </trans-unit>
+        <target state="needs-adaptation"/>
+      </trans-unit>
       <trans-unit id="ansible.invalid_path" xml:space="preserve">
         <source>Invalid path (must be a valid absolute path)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="ansible.duplicate_path" xml:space="preserve">
         <source>Path already exists</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="ansible.control_node_not_responding" xml:space="preserve">
         <source>Control node is not responding</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="ansible.invalid_path_type" xml:space="preserve">
         <source>Invalid path type</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="ansible.salt_error" xml:space="preserve">
         <source>Error when executing salt state: {0}</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="ansible.entity_not_found" xml:space="preserve">
         <source>The requested entity not found or inaccessible</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/ansible</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="ansible.playbook" xml:space="preserve">
         <source>Execute Ansible playbook</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="contentmanagement.filter_created_template" xml:space="preserve">
         <source>{0} filter(s) from template created successfully</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="virt.guest_migrate" xml:space="preserve">
         <source>Migrate a virtual domain</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="contentmanagement.invalid_template" xml:space="preserve">
         <source>Invalid filter template</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="contentmanagement.modules_error" xml:space="preserve">
         <source>Cannot get channel modules. Please check the server logs for detailed information.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="ovalfiles" xml:space="preserve">
         <source>Optional OVAL Files (comma separated)</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/audit/ScheduleXccdf.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="taskomatic.payg.success" xml:space="preserve">
         <source>Credentials successfully updated</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="taskomatic.payg.pending" xml:space="preserve">
         <source>Waiting to be processed.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="taskomatic.payg.error_instance" xml:space="preserve">
         <source>Error getting instance data: {0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="taskomatic.payg.error_unknown" xml:space="preserve">
         <source>Unknown error when extracting authentication data. Please verify the logs at /var/log/rhn/</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="payg.description_required" xml:space="preserve">
         <source>Description is required.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="payg.description_to_long" xml:space="preserve">
         <source>Description must not exceed 255 characters.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="payg.host_required" xml:space="preserve">
         <source>Host is required.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="payg.host_to_long" xml:space="preserve">
         <source>Host must not exceed 255 characters.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="payg.port_invalid" xml:space="preserve">
         <source>Invalid value for the port</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="payg.username_required" xml:space="preserve">
         <source>Username is required.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="payg.username_to_long" xml:space="preserve">
         <source>Username must not exceed 32 characters.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="payg.password_to_long" xml:space="preserve">
         <source>Password must not exceed 32 characters.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="payg.key_password_to_long" xml:space="preserve">
         <source>SSH Private Key Passphrase must not exceed 32 characters.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="payg.bastion_host_to_long" xml:space="preserve">
         <source>Bastion host must not exceed 255 characters.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="payg.bastion_host_required" xml:space="preserve">
         <source>Bastion host is required if any other bastion property is set.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="payg.bastion_port_invalid" xml:space="preserve">
         <source>Invalid value for the bastion port</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="payg.bastion_username_required" xml:space="preserve">
         <source>Username is required.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="payg.bastion_username_to_long" xml:space="preserve">
         <source>Username must not exceed 32 characters.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="payg.bastion_password_to_long" xml:space="preserve">
         <source>Password must not exceed 32 characters.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="payg.bastion_key_password_to_long" xml:space="preserve">
         <source>Bastion SSH Private Key Passphrase must not exceed 32 characters.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="payg.ssh_data_created" xml:space="preserve">
         <source>PAYG {0} created successfully</source>
-      <target state="needs-adaptation"/>
-  </trans-unit>
+        <target state="needs-adaptation"/>
+      </trans-unit>
       <trans-unit id="payg.host_exists" xml:space="preserve">
         <source>PAYG host already exists</source>
-      <target state="needs-adaptation"/>
-  </trans-unit>
+        <target state="needs-adaptation"/>
+      </trans-unit>
       <trans-unit id="payg.ssh_data_deleted" xml:space="preserve">
         <source>PAYG {0} deleted successfully</source>
-      <target state="needs-adaptation"/>
-  </trans-unit>
+        <target state="needs-adaptation"/>
+      </trans-unit>
       <trans-unit id="notification.paygauthenticationupdatefailed" xml:space="preserve">
         <source>Error when updating authentication data from: &lt;a href="/rhn/manager/admin/setup/payg/{0}"&gt;{1}&lt;/a&gt;</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="task.status.update-payg-auth" xml:space="preserve">
         <source>PAYG authentication update</source>
-      <target state="needs-adaptation"/>
-  </trans-unit>
+        <target state="needs-adaptation"/>
+      </trans-unit>
       <trans-unit id="task.status.update-payg-hosts" xml:space="preserve">
         <source>PAYG update RMT hosts</source>
-      <target state="needs-adaptation"/>
-  </trans-unit>
+        <target state="needs-adaptation"/>
+      </trans-unit>
       <trans-unit id="setup.product.error.dataneedsrefresh" xml:space="preserve">
         <source>Product data needs refresh.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="setup.product.error.notfound" xml:space="preserve">
         <source>Product cannot be found: missing identifier {0}.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="setup.product.error.labelconflict" xml:space="preserve">
         <source>There are conflicting channel labels {0}.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="setup.product.error.parentconflict" xml:space="preserve">
         <source>A parent product conflicts with existing channels.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="setup.product.error.unknown" xml:space="preserve">
         <source>Unexpected error while adding the product.</source>
-      <target state="new"/>
-  </trans-unit>
-    <trans-unit id="cveaudit.notfound" xml:space="preserve">
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="cveaudit.notfound" xml:space="preserve">
         <source>The specified CVE number was not found in our database.</source>
-      <target state="needs-adaptation"/>
-  </trans-unit>
+        <target state="needs-adaptation"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt.unexpected" xml:space="preserve">
         <source>Error during applying the bootstrap state. Check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="container.based.proxy.config" xml:space="preserve">
         <source>Proxy Configuration</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="Peripheral Server" xml:space="preserve">
         <source>Peripheral Server</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="Report Database Schema" xml:space="preserve">
         <source>Report Database Schema</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error" xml:space="preserve">
         <source>An unexpected error has occurred during bootstrap.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt.applystates" xml:space="preserve">
         <source>Apply States failed during bootstrap (retcode={0}).</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt.execution" xml:space="preserve">
         <source>An error has occurred during salt execution: {0}.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt.functionnotavailable" xml:space="preserve">
         <source>function {0} not available</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt.modulenotsupported" xml:space="preserve">
         <source>module {0} is not supported</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt.jsonparsingerror" xml:space="preserve">
         <source>unable to parse json</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.salt.saltssherror" xml:space="preserve">
         <source>unable to establish ssh connection</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.generatekey" xml:space="preserve">
         <source>Could not generate salt-ssh public key.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.generatekey.failed" xml:space="preserve">
         <source>Generating salt-ssh public key failed: {0}.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.endoflife.expired.summary" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ {0} has reached end of life</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.endoflife.expired.detail" xml:space="preserve">
         <source>&lt;p&gt;@@PRODUCT_NAME@@ {0} has reached the end of its lifecycle. General support has ended on &lt;strong&gt;{1}&lt;/strong&gt;. To continue receiving support, this @@PRODUCT_NAME@@ server instance &lt;strong&gt;must be&lt;/strong&gt; upgraded.&lt;/p&gt;
           &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the section &lt;em&gt;Upgrade&lt;/em&gt; of the &lt;em&gt;Installation/Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.endoflife.expiring.summary" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ {0} is approaching end of life</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.endoflife.expiring.detail" xml:space="preserve">
         <source>&lt;p&gt;@@PRODUCT_NAME@@ {0} is approaching the end of its lifecycle. Please consider upgrading this server instance before general support ends on &lt;strong&gt;{1}&lt;/strong&gt;.&lt;/p&gt;
           &lt;p&gt;For Additional information on how to upgrade @@PRODUCT_NAME@@, please review the section &lt;em&gt;Upgrade&lt;/em&gt; of the &lt;em&gt;Installation/Upgrade Guide&lt;/em&gt; in the official documentation.&lt;/p&gt;</source>
-      <target state="new"/>
-  </trans-unit>
-    <trans-unit id="help.credentials.invalidemailvalue" xml:space="preserve">
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="help.credentials.invalidemailvalue" xml:space="preserve">
         <source>Please fill in a valid email.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="help.credentials.emptylogin" xml:space="preserve">
         <source>Please fill in login.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="cobbler.powermanagement.ipmilanplus" xml:space="preserve">
         <source>IPMI lanplus</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bunch.jsp.description.update-system-overview-bunch" xml:space="preserve">
         <source>Regularly ensure the systems overview data are up to date</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bunch.jsp.description.system-overview-update-queue-bunch" xml:space="preserve">
         <source>Update the systems overview data</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="api.schedule.cannotcancelpickedup" xml:space="preserve">
         <source>Cannot cancel an action in PICKED UP state.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="api.schedule.cannotcancelchild" xml:space="preserve">
         <source>Cannot cancel an action with a pending prerequisite.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="java|hostname" xml:space="preserve">
         <source>Hostname</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/errata/manage/CloneErrata.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.subscriptionwarning.summary" xml:space="preserve">
         <source>You have subscriptions that need attention.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.subscriptionwarning.detail" xml:space="preserve">
         <source>You have subscriptions that are expiring soon or already expired. Please check the &lt;a href="/rhn/manager/subscription-matching"&gt;Subscription Matching&lt;/a&gt; page.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="api.package.ptfpackage" xml:space="preserve">
         <source>Packages part of a Program Temporary Fix (PTF): {0}</source>
-      <target state="needs-adaptation"/>
-  </trans-unit>
+        <target state="needs-adaptation"/>
+      </trans-unit>
       <trans-unit id="api.package.ptfmaster" xml:space="preserve">
         <source>Program Temporary Fixes (PTFs) packages: {0}</source>
-      <target state="needs-adaptation"/>
-  </trans-unit>
+        <target state="needs-adaptation"/>
+      </trans-unit>
       <trans-unit id="activation-key.java.nochannel" xml:space="preserve">
-          <source>No Base Channel selected.</source>
+        <source>No Base Channel selected.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Activation Key Pages</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="contentmanagement.validation.modularitydisabled" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="contentmanagement.validation.modularitydisabled" xml:space="preserve">
         <source>Modularity is currently disabled. To enable modules, please remove the 'disable all modules' filter.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="contentmanagement.validation.nomodules" xml:space="preserve">
         <source>Modularity is disabled. No modules will be included in the target repositories.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.contentmgmt.validation.ModularDependencyValidator</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="PTF" xml:space="preserve">
         <source>PTFs</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Program Temporary Fixes (PTFs) Navigation Tabs</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="contentmanagement.non_environment_channels_found" xml:space="preserve">
         <source>Cannot remove. There are custom channels that are not part of the channels built by the environment. Please remove these channels first: {0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="contentmanagement.used_in_autoinstallation_profile" xml:space="preserve">
         <source>The target is being used in an autoinstallation profile. Cannot remove.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="task.action.rejection.reason" xml:space="preserve">
         <source>This action was not executed because its earliest execution date was too old. When more than {0} hours pass between the scheduling and the picking up, the action is discarded because it is considered no longer relevant.
           Please reschedule this action if you really want it to be executed.</source>
-      <target state="new"/>
-  </trans-unit>
-    <trans-unit id="recurring_action.empty_action_type" xml:space="preserve">
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="recurring_action.empty_action_type" xml:space="preserve">
         <source>Recurring Action type must be provided</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="recurring_action.empty_states_config" xml:space="preserve">
         <source>States configuration must be provided</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="recurring_action.invalid_action_type" xml:space="preserve">
         <source>Recurring action has invalid type.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="internal_state.certs" xml:space="preserve">
         <source>Install the server's SSL certificate and trust it on the target system</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="internal_state.channels" xml:space="preserve">
         <source>Make sure that channel subscriptions are in sync with the server side configuration</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="internal_state.hardware_profileupdate" xml:space="preserve">
         <source>Update information about installed hardware</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="internal_state.packages" xml:space="preserve">
         <source>Apply package states as configured for the target system</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="internal_state.packages_profileupdate" xml:space="preserve">
         <source>Update information about installed software (packages and products)</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="internal_state.uptodate" xml:space="preserve">
         <source>Update the system</source>
-      <target state="needs-adaptation"/>
-  </trans-unit>
+        <target state="needs-adaptation"/>
+      </trans-unit>
       <trans-unit id="internal_state.util_syncbeacons" xml:space="preserve">
         <source>Sync Salt beacons to the target system</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="internal_state.util_syncall" xml:space="preserve">
         <source>Sync all Salt artifacts (modules, states, grains and beacons) to the target system</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="internal_state.util_syncgrains" xml:space="preserve">
         <source>Sync Salt grains to the target system</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="internal_state.util_syncmodules" xml:space="preserve">
         <source>Sync Salt modules to the target system</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="internal_state.util_syncstates" xml:space="preserve">
         <source>Sync Salt states to the target system</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="edit.channel.forbiddenclonechannelpayg" xml:space="preserve">
         <source>Cloning of channels under different product channels on PAYG instances is forbidden</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/channels/manage/Edit</context>
         </context-group>
-      <target state="needs-adaptation"/>
-  </trans-unit>
+        <target state="needs-adaptation"/>
+      </trans-unit>
       <trans-unit id="spmigration.message.payg.error" xml:space="preserve">
         <source>PAYG ALERT: Cross product migration attempt detected. Please note, migration from openSUSE to SLES or similar is not permitted under your current PAYG plan. Operation has been aborted.</source>
-      <target state="needs-adaptation"/>
-  </trans-unit>
+        <target state="needs-adaptation"/>
+      </trans-unit>
       <trans-unit id="notification.channelsyncforbidden" xml:space="preserve">
         <source>Syncing channels forbidden</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.channelsyncfailed.notcompliant" xml:space="preserve">
         <source>Synchronization of repositories is forbidden as @@PRODUCT_NAME@@ PAYG is unable to send accounting data to the cloud provider.
 For a detailed analysis, please refer to the log files.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="task.action.rejection.notcompliant" xml:space="preserve">
         <source>
 The action you attempted could not be executed because the @@PRODUCT_NAME@@ PAYG system is unable to send accounting data to the cloud provider.
 For a detailed analysis, please refer to the log files.
 	</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.conflicting.minionid" xml:space="preserve">
         <source>Systems with conflicting minion ID and machine ID were found ({0}, {1}). Onboarding aborted. Please remove conflicting systems first ({2}, {3})</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.payg.dcregistered" xml:space="preserve">
         <source>Registration of '{0}' on @@PRODUCT_NAME@@ Server rejected. \nTo manage Datacenter clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials.</source>
-      <target state="needs-adaptation"/>
-  </trans-unit>
+        <target state="needs-adaptation"/>
+      </trans-unit>
       <trans-unit id="bootstrap.minion.error.payg.byosregistered" xml:space="preserve">
         <source>Registration of '{0}' on @@PRODUCT_NAME@@ Server rejected. \nTo manage BYOS (Bring-your-own-Subscription) clients you have to configure SCC Credentials at Admin =&gt; Setup Wizard =&gt; Organization Credentials. \n\nIf the instance being onboarded is PAYG, ensure the `python-instance-billing-flavor-check` package is installed and try again.</source>
-      <target state="needs-adaptation"/>
-  </trans-unit>
-    <trans-unit id="notification.updateavailable.summary" xml:space="preserve">
+        <target state="needs-adaptation"/>
+      </trans-unit>
+      <trans-unit id="notification.updateavailable.summary" xml:space="preserve">
         <source>Updates are available.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.updateavailable.detail" xml:space="preserve">
         <source>A new update for @@PRODUCT_NAME@@ is now available. For further details, please refer to the &lt;a href="{0}"&gt;release notes&lt;a&gt;.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="message.payg.errorbyosnoscc" xml:space="preserve">
         <source>
           @@PRODUCT_NAME@@ is not able to manage this instance since it is Bring-your-own-subscription and no SCC credentials are set.
           To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup/MirrorCredentials.do"&gt;here&lt;/a&gt;.
         </source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="message.payg.errornotcompliant" xml:space="preserve">
         <source>
           This @@PRODUCT_NAME@@ PAYG is not compliant and some of its functions will be disabled. Please contact your administrator to
           amend the situation before continuing using the product.
         </source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="message.payg.errorbyosnosccssm" xml:space="preserve">
         <source>
 @@PRODUCT_NAME@@ is not able to manage these instances since there are one or more Bring-your-own-subscription and no SCC credentials are set.
 To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup/MirrorCredentials.do"&gt;here&lt;/a&gt; or select in SSM just Pay-as-you-go-instances.
         </source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bunch.jsp.description.ssh-service-bunch" xml:space="preserve">
         <source>Manages checkins and action chain resumes for SSH Push Clients</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.paygnotcompliantwarning.summary" xml:space="preserve">
         <source>@@PRODUCT_NAME@@ PAYG instance is not compliant.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.paygnotcompliantwarning.detail" xml:space="preserve">
         <source>This @@PRODUCT_NAME@@ PAYG instance is not compliant. Some @@PRODUCT_NAME@@ functions will be disabled. Please check with your system administrator.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="task.action.rejection.notcompliantPaygByos" xml:space="preserve">
         <source>
           The action you attempted could not be executed because @@PRODUCT_NAME@@ is PAYG, there are BYOS servers in the current action and currently no SCC credentials are set.
           To amend this situation, please set SCC credentials for this @@PRODUCT_NAME@@ instance and try again. You can also execute the action only on Pay-as-you-go instances.
           Bring-your-own-subscription servers detected: {0}.
         </source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="task.action.rejection.notcompliantPaygByosActionChain" xml:space="preserve">
         <source>
           The action chain you attempted could not be executed because @@PRODUCT_NAME@@ is PAYG, there are BYOS servers in the current action chain and currently no SCC credentials are set.
           To amend this situation, please set SCC credentials for this @@PRODUCT_NAME@@ instance and try again. You can also execute the action chain only on Pay-as-you-go instances.
           Bring-your-own-subscription servers detected: {0}.
         </source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="recurring_action.not_in_maint_mode" xml:space="preserve">
         <source>One or more selected systems don't have a maintenance window assigned at the current time. Please limit your selection to systems that are in maintenance mode.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="internal_state.update-salt" xml:space="preserve">
         <source>Perform a standalone Salt update</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="riscv64-deb" xml:space="preserve">
         <source>RISCV64 Debian</source>
         <target>RISCV64 Debian</target>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="ARM64 Debian" xml:space="preserve">
         <source>ARM64 Debian</source>
         <target>ARM64 Debian</target>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="armel-deb" xml:space="preserve">
         <source>ARMEL Debian</source>
         <target>ARMEL Debian</target>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="s390x-deb" xml:space="preserve">
         <source>PPC64EL Debian</source>
         <target>PPC64EL Debian</target>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="message.savereposyncflags" xml:space="preserve">
         <source>Saved repository settings for {0}.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.attestation" xml:space="preserve">
         <source>Confidential Computing Attestation</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="appstreams.configure" xml:space="preserve">
         <source>Configure AppStreams</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="api.channel.modulespresent" xml:space="preserve">
         <source>Operation not allowed for systems that have modular channels assigned. Please consider setting 'allowModules=true'.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="confidentialcomputing.nav.title" xml:space="preserve">
         <source>Confidential Computing</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.environment.none.description" xml:space="preserve">
         <source>None</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.environment.none.label" xml:space="preserve">
         <source>None</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_milan.description" xml:space="preserve">
         <source>KVM on AMD Epyc Processor, third generation (milan)</source>
-      <target state="needs-adaptation"/>
-  </trans-unit>
+        <target state="needs-adaptation"/>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_milan.label" xml:space="preserve">
         <source>KVM on AMD Epyc - Milan</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_genoa.description" xml:space="preserve">
         <source>KVM on AMD Epyc Processor, fourth generation (genoa)</source>
-      <target state="needs-adaptation"/>
-  </trans-unit>
+        <target state="needs-adaptation"/>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_genoa.label" xml:space="preserve">
         <source>KVM on AMD Epyc - Genoa</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.resultType.none.description" xml:space="preserve">
         <source>Result Type not found</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.resultType.sev_snp.description" xml:space="preserve">
         <source>AMD Secure Encrypted Virtualization-Secure Nested Paging (SEV-SNP)</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.resultType.sev_snp.label" xml:space="preserve">
         <source>AMD SEV-SNP</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.resultType.secure_boot.description" xml:space="preserve">
         <source>Secure Boot enabled</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.resultType.secure_boot.label" xml:space="preserve">
         <source>Secure Boot</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.status.pending.description" xml:space="preserve">
         <source>Pending</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.status.succeeded.description" xml:space="preserve">
         <source>Succeeded</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.status.failed.description" xml:space="preserve">
         <source>Failed</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="system.audit.coco.unsupported" xml:space="preserve">
         <source>This system does not have any Confidential Computing capability.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="system.audit.coco.configUpdated" xml:space="preserve">
         <source>The Confidential Computing configuration has been updated successfully.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="system.audit.coco.configNotUpdated" xml:space="preserve">
         <source>An error occurred while updating the Confidential Computing configuration. Please check the server logs for detailed information.</source>
-      <target state="new"/>
-  </trans-unit>
-    <trans-unit id="internal_state.reboot" xml:space="preserve">
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="internal_state.reboot" xml:space="preserve">
         <source>Perform a reboot</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="internal_state.rebootifneeded" xml:space="preserve">
         <source>Perform a reboot, only if required</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="task.status.oval-data-sync" xml:space="preserve">
         <source>Sync OVAL Data</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bunch.jsp.description.oval-data-sync-bunch" xml:space="preserve">
         <source>Generate OVAL data required to increase the accuracy of CVE audit queries</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="scc-data-forwarding.enabled" xml:space="preserve">
         <source>SCC Data Forwarding enabled successfully.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="scc-data-forwarding.not-changed" xml:space="preserve">
         <source>SCC Data Forwarding is already enabled.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.sccoptoutwarning.summary" xml:space="preserve">
         <source>Data is not being synchronized with SCC</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.sccoptoutwarning.detail" xml:space="preserve">
         <source>
           &lt;p&gt;Disabling data synchronizing with SCC will lead to reduced visibility of your managed clients between RMT, SMT, @@PRODUCT_NAME@@ and SCC-directly registered clients.
           By synchronizing data, you ensure a uniform view of all registered clients. &lt;a href="/rhn/manager/admin/enable-scc-data-forwarding"&gt;Click here to enable data forwarding&lt;/a&gt;.&lt;/p&gt;
           &lt;a href="https://suselinux.fra1.qualtrics.com/jfe/form/SV_0ooNnrY0rYuQScS" target="_blank"&gt;Help us improve our services by sharing your reason for opting out&lt;/a&gt;
         </source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="Password Policy" xml:space="preserve">
         <source>Password Policy</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="error.field_equal_or_less_than_zero" xml:space="preserve">
         <source>Field {0} can't be equal or less than zero.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
           <context context-type="paramnotes">Field Field Name can't be equal or less than zero.</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="error.illegal_min_max_fields" xml:space="preserve">
         <source>Field {0} can't be can't be greater or equal than field {1}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
           <context context-type="paramnotes">Field One can't be can't be greater or equal than Field Two.</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="error.illegal_max_occurrences" xml:space="preserve">
         <source>Password maximum allowed character occurrences can't be less or equal than 0.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
           <context context-type="paramnotes">Passwords maximum allowed character occurrences can't be less or equal than 0.</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="error.spacesinpassword" xml:space="preserve">
         <source>Password contains tab or newline characters.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="error.consecutivecharactersinpassword" xml:space="preserve">
         <source>Password contains consecutive characters.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="error.nodigitspassword" xml:space="preserve">
         <source>Passwords must contain at least one digit.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="error.nouppercasepassword" xml:space="preserve">
         <source>Passwords must contain at least one upper case character.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="error.nolowercasepassword" xml:space="preserve">
         <source>Passwords must contain at least one lower case character.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="error.nospecialcharacterspassword" xml:space="preserve">
         <source>Passwords must contain at least one special character, allowed special characters are: {0}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="error.occurrencecharacterspassword" xml:space="preserve">
         <source>Password characters occurrences exceeded maximum allowed {0}.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/common/UserPasswordUtils</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="api.iss.serverinvocationexception" xml:space="preserve">
         <source>Unable to invoke the remote server {0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.tokenType.issued" xml:space="preserve">
         <source>Issued</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.tokenType.consumed" xml:space="preserve">
         <source>Consumed</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.register_peripheral_success" xml:space="preserve">
         <source>Server {0} has been successfully registered as peripheral</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.invalid_request" xml:space="preserve">
         <source>The request to perform the operation was rejected. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.invalid_root_ca" xml:space="preserve">
         <source>The provided certificate is not in valid PEM format.&lt;br/&gt;Please ensure the certificate is correctly encoded as a Base64-encoded ASCII file and enclosed within &lt;code&gt;-----BEGIN CERTIFICATE-----&lt;/code&gt; and &lt;code&gt;-----END CERTIFICATE-----&lt;/code&gt; tags.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.unexpected_error_root_ca" xml:space="preserve">
         <source>Unexpected error while processing the root certificate. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.unable_issue_token" xml:space="preserve">
         <source>Unable to issue a token for the remote server. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.unable_parse_token" xml:space="preserve">
         <source>The token received from the remote server is not valid. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.unable_establish_secure_connection" xml:space="preserve">
         <source>Unable to establish a secure connection with the remote server. Please ensure you are providing the correct root certificate.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.invalid_remote_response" xml:space="preserve">
         <source>Invalid response received from the remote server. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.error_connecting_remote" xml:space="preserve">
         <source>An error has occurred while attempting the registration with the remote server. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.unexpected_error" xml:space="preserve">
         <source>Registration of the remote server failed due to an unexpected error. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.invalid_token_id" xml:space="preserve">
         <source>The specified access token does not exist.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.invalid_token_state" xml:space="preserve">
         <source>The specified access token is in an invalid state.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.unable_delete_token" xml:space="preserve">
         <source>Unable to delete a token with the specified id</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.unable_to_issue_token" xml:space="preserve">
         <source>Unable to issue a new token for the specified server. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.unable_to_parse_token" xml:space="preserve">
         <source>Unable to parse the provided token. Please, ensure the token is correct and was generated for this server.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.unable_to_store_token" xml:space="preserve">
         <source>Unable to store the token. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.cannot_find_server" xml:space="preserve">
         <source>Cannot find a remote server with the specified id.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.unable_to_deregister" xml:space="preserve">
         <source>Unable to deregister: an unexpected error is occurred while contacting the remote server. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="toolbar.convert.proxy" xml:space="preserve">
         <source>Convert to Proxy</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Details Convert to Proxy</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="system.entitle.added.proxy_entitled" xml:space="preserve">
         <source>&lt;strong&gt;Proxy&lt;/strong&gt; type has been applied.&lt;br/&gt;&lt;strong&gt;Note:&lt;/strong&gt; This action will &lt;em&gt;not&lt;/em&gt; result in state application. To apply the state, either use the &lt;a href="/rhn/manager/systems/details/highstate?sid={0}"&gt;states page&lt;/a&gt; or run &lt;code class="text-info"&gt;state.highstate&lt;/code&gt; from the command line.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/Overview.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="ansible.inventory" xml:space="preserve">
         <source>Refresh Ansible inventories</source>
         <context-group name="ctx">
           <context context-type="sourcefile">com.redhat.rhn.domain.action.ActionFormatter.getActionType</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="recurring_action.empty_playbook_path" xml:space="preserve">
         <source>No Playbook selected</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.cannot_refresh_certificate" xml:space="preserve">
         <source>An error occurred while attempting to refresh the root certificate authorities. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.migration_success" xml:space="preserve">
         <source>The migration from ISSv{0} was completed successfully.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.unexpected_error_migrating" xml:space="preserve">
         <source>An expected error happened during the migration process: {0}. Please check the server logs.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.migration.no_slaves" xml:space="preserve">
         <source>This server does not have any ISSv1 slave</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.migration.slave_not_exit" xml:space="preserve">
         <source>Slave {0} does not exist</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.migration.no_migration_data" xml:space="preserve">
         <source>Slave {0} has no migration data and will not be migrated</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.migration.slave_disabled" xml:space="preserve">
         <source>Slave {0} is currently disabled and will not be migrated</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.migration.unable_to_migrate" xml:space="preserve">
         <source>Unable to migrate server {0}: {1}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.migration.fail_channel_config" xml:space="preserve">
         <source>Unable to configure channels for peripheral {0}: {1}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.migration.removal_slave" xml:space="preserve">
         <source>Unable remove ISSv1 data for slave {0}: {1}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.migration.removal_peripheral" xml:space="preserve">
         <source>Unable to remove partially migrated peripheral {0}: {1}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.invalid_id" xml:space="preserve">
         <source>The specified peripheral id is invalid.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="onboardingfailed" xml:space="preserve">
         <source>Onboarding failed</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="channelsyncfailed" xml:space="preserve">
         <source>Channel sync failed</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="channelsyncfinished" xml:space="preserve">
         <source>Channel sync finished</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="createbootstraprepofailed" xml:space="preserve">
         <source>Creating Bootstrap Repository failed</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="stateapplyfailed" xml:space="preserve">
         <source>State apply failed</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="paygauthenticationupdatefailed" xml:space="preserve">
         <source>PAYG refresh failed</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="endoflifeperiod" xml:space="preserve">
         <source>End of Life Period</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="subscriptionwarning" xml:space="preserve">
         <source>Subscription Warning</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="updateavailable" xml:space="preserve">
         <source>Updates are Available</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="paygnotcompliantwarning" xml:space="preserve">
         <source>PAYG instance is not compliant</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="sccoptoutwarning" xml:space="preserve">
         <source>SCC Data Sync Disabled</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hubregistrationchanged" xml:space="preserve">
         <source>Hub Registration Changed</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.not_found" xml:space="preserve">
         <source>Cannot retry: a notification with id '{0}' does not exist.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.type_not_actionable" xml:space="preserve">
         <source>Cannot retry: the notification type '{0}' is not actionable.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.channelsyncfailed.action.not_found" xml:space="preserve">
         <source>Failed to restart reposync. A channel with id {0} does not exist.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.channelsyncfailed.action.failed" xml:space="preserve">
         <source>Failed to restart reposync for the channel '{0}': {1}.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.channelsyncfailed.action.success" xml:space="preserve">
         <source>Reposync restarted for the channel '{0}'</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.onboardingfailed.action.success" xml:space="preserve">
         <source>Onboarding restarted for the minion with id '{0}'</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.hub.registered.summary" xml:space="preserve">
         <source>This server is now a peripheral of {0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.hub.registered.details" xml:space="preserve">
         <source>&lt;p&gt;This server has been registered as a peripheral of hub {0} and will start to receive data from it.&lt;/p&gt; &lt;p&gt;Check the &lt;a href="/rhn/manager/admin/hub/hub-details"&gt;Hub details page&lt;/a&gt; for more information.&lt;/p&gt;</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.hub.hub_deregistered.summary" xml:space="preserve">
         <source>This server is no longer a peripheral of {0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.hub.hub_deregistered.details" xml:space="preserve">
         <source>&lt;p&gt;The hub {0} has de-registered this server, which means it is no longer acting as its peripheral.&lt;/p&gt; &lt;p&gt;Review your configuration, as all the channels that were previously synced from the hub will no loger be updated.&lt;/p&gt;</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.hub.peripheral_deregistered.summary" xml:space="preserve">
         <source>Server {0} is no longer a peripheral.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.hub.peripheral_deregistered.details" xml:space="preserve">
         <source>&lt;p&gt;The peripheral {0} has de-registered from this hub, and it is no longer manageable as a peripheral..&lt;/p&gt; &lt;p&gt;Any existing synchronization configuration has been removed.&lt;/p&gt;</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.error_peripheral_not_registrable" xml:space="preserve">
         <source>The server {0} cannot be registered as a peripheral of this hub</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="hub.sync_bunch_error" xml:space="preserve">
         <source>Error when triggering the channels sync.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="supportdata.get" xml:space="preserve">
         <source>Get and Upload Support data</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="message.scheduleactivated" xml:space="preserve">
         <source>Schedule &lt;strong&gt;{0}&lt;/strong&gt; activated.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="task.status.errata-advisory-map-sync" xml:space="preserve">
         <source>Update SUSE errata advisory map</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="bunch.jsp.description.errata-advisory-map-sync-bunch" xml:space="preserve">
         <source>Update SUSE errata advisory map to retrieve announcement ids and advisor URLs</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="supportdata.uploadGeoType.eu" xml:space="preserve">
         <source>EU</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="supportdata.uploadGeoType.us" xml:space="preserve">
         <source>US</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_bergamo.description" xml:space="preserve">
         <source>KVM on AMD Epyc Processor, fourth generation (bergamo)</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_bergamo.label" xml:space="preserve">
         <source>KVM on AMD Epyc - Bergamo</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_siena.description" xml:space="preserve">
         <source>KVM on AMD Epyc Processor, fourth generation (siena)</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_siena.label" xml:space="preserve">
         <source>KVM on AMD Epyc - Siena</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_turin.description" xml:space="preserve">
         <source>KVM on AMD Epyc Processor, fifth generation (turin)</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="coco.environment.kvm_amd_epyc_turin.label" xml:space="preserve">
         <source>KVM on AMD Epyc - Turin</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="system.details.support.invalid_case_number" xml:space="preserve">
         <source>The case number {0} is not valid.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="system.details.support.invalid_region" xml:space="preserve">
         <source>The region {0] is not valid.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="system.details.support.unable_to_schedule" xml:space="preserve">
         <source>Unexpected error while scheduling the generation of the support data. Please check the server logs for detailed information.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="system.details.support.unable_to_upload" xml:space="preserve">
         <source>Unable to gather and upload the support data. Please check the server logs for detailed information.</source>
-      <target state="new"/>
-  </trans-unit>
-    <trans-unit id="Add address" xml:space="preserve">
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="Add address" xml:space="preserve">
         <source>Add address</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="Edit" xml:space="preserve">
         <source>Edit</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="reportdbupdatefailed" xml:space="preserve">
-          <source>Report Database Update Failed</source>
-      <target state="new"/>
-  </trans-unit>
+        <source>Report Database Update Failed</source>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.reportdbupdatefailed" xml:space="preserve">
         <source>The update of the reporting database has failed and the data is out of sync.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.reportdbupdatefailed.details.local" xml:space="preserve">
         <source>The following error was generated while trying to update the local reporting database:</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.reportdbupdatefailed.details.hub" xml:space="preserve">
         <source>The following error was generated while trying to fetch the data from the peripheral server {0}:</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="system.migration.noServersSelected" xml:space="preserve">
-          <source>Unable to identify the selected systems for the migration.</source>
-      <target state="new"/>
-  </trans-unit>
+        <source>Unable to identify the selected systems for the migration.</source>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="system.migration.noCommonProduct" xml:space="preserve">
-          <source>The selected systems do not have a common base product.</source>
-      <target state="new"/>
-  </trans-unit>
+        <source>The selected systems do not have a common base product.</source>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="product_migration.os_not_supported" xml:space="preserve">
         <source>Product Migrations are not supported for the OS of this system.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="product_migration.source_unknown" xml:space="preserve">
         <source>The base product of this system is unknown.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="product_migration.source_mismatch" xml:space="preserve">
         <source>The base product of this system does not match.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="product_migration.salt_needs_update" xml:space="preserve">
         <source>Salt installed on this system is out of date.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="product_migration.salt_needs_update.details" xml:space="preserve">
         <source>The installed &lt;pre&gt;{0}&lt;/pre&gt; package version on this system is out of date. Please update the package to the latest version before you start a Product migration.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="product_migration.addons_affected" xml:space="preserve">
         <source>Some installed addons are going to be affect, depending on chosen target.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="product_migration.single.addons_affected" xml:space="preserve">
         <source>Some installed addons are going to be affect.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="product_migration.addons_affected.missing_successors" xml:space="preserve">
         <source>&lt;p&gt;Depending on chosen target, some or all of these products will be removed because no successor could be found, so proceed with caution:&lt;/p&gt;{0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="product_migration.single.addons_affected.missing_successors" xml:space="preserve">
         <source>&lt;p&gt;These products will be removed because no successor could be found, so proceed with caution:&lt;/p&gt;{0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="product_migration.addons_affected.installed_addons" xml:space="preserve">
         <source>&lt;p&gt;Depending on chosen target, some or all of these products will be installed:&lt;/p&gt;{0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="product_migration.single.addons_affected.installed_addons" xml:space="preserve">
         <source>&lt;p&gt;These products will be installed:&lt;/p&gt;{0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="product_migration.addon_or_higher" xml:space="preserve">
         <source>{0} or higher</source>
-      <target state="new"/>
-  </trans-unit>
-    <trans-unit id="system.migration.noTarget" xml:space="preserve">
-          <source>Unable to identify a valid migration target for the selected systems.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="system.migration.noTarget" xml:space="preserve">
+        <source>Unable to identify a valid migration target for the selected systems.</source>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="virt.refresh_list" xml:space="preserve">
         <source>Virtualization List Refresh</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionDetails.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.proxybackupfailed" xml:space="preserve">
         <source>Failed to process proxy backup event</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.proxybackupnominion" xml:space="preserve">
         <source>No system with {0} name</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.pxeeventfailed" xml:space="preserve">
         <source>Processing of a PXE event for the minion {0} failed</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="event.proxymigrationstarted" xml:space="preserve">
         <source>Proxy migration: started</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="event.proxymigrationstarteddetails" xml:space="preserve">
         <source>Received event with client side data, starting data migration</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="event.proxymigrationfailed" xml:space="preserve">
         <source>Proxy migration: failed</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="event.proxymigrationfailedincomplete" xml:space="preserve">
         <source>Received incomplete backup data. Try retrying the migration.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="event.proxymigrationfailedparsing" xml:space="preserve">
         <source>Unable to parse uploaded data. See log file for details</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="event.proxymigrationcreated" xml:space="preserve">
         <source>Proxy migration: new configuration created</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="event.proxymigrationcreateddetails" xml:space="preserve">
         <source>Reinstallation of the proxy will now autoconfigure it on the first boot</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="event.rbsmigrationstarted" xml:space="preserve">
         <source>Retail Branch Server migration: started</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="event.rbsmigrationstarteddetails" xml:space="preserve">
         <source>Proxy detected as a Retail Branch Server, migration started</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="event.rbsmigrationfinishedok" xml:space="preserve">
         <source>Retail Branch Server migration: finished successfully</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="event.rbsmigrationfinishederror" xml:space="preserve">
         <source>Retail Branch Server migration: finished with errors</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="event.rbsmigrationfinisheddetails" xml:space="preserve">
         <source>Proxy was detected to be a Retail Branch Server, branch migration was performed.<ul>{0}</ul></source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="event.rbsmigrationfailed" xml:space="preserve">
         <source>Retail Branch Server migration: failed</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="event.rbsmigrationfaileddetails" xml:space="preserve">
         <source>Failed to migrate the branch server. See log files for details.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="event.proxymigrationfinished" xml:space="preserve">
         <source>Proxy migration: finished</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="event.proxymigrationfinisheddetails" xml:space="preserve">
         <source>All data were migrated. Proceed with reinstallation of the proxy host.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="event.pxemigrationnoentries" xml:space="preserve">
         <source>No PXE entries found in a backup configuration for branch {0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="event.pxemigrationlost" xml:space="preserve">
         <source>Lost and found: system with HW address {0} in branch {1} was not found as registered system.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="event.pxemigrationduplicate" xml:space="preserve">
         <source>Multiple minions found with the same MAC address {0}. Cannot choose one, ignoring</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="event.pxemigrationnogroup" xml:space="preserve">
         <source>Not processing minion '{0}' as it is not part of a branch group.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="event.pxemigrationnoimage" xml:space="preserve">
         <source>Image not found: system '{0}' is using unknown image '{1}'. Using default boot image.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="event.pxemigrationsaltboot" xml:space="preserve">
         <source>Failed to create Saltboot system: {0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="rbsmigration.lostfounddescription" xml:space="preserve">
         <source>Collection of systems not registered, but present in branch {0} pxe entries.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="Access Control" xml:space="preserve">
         <source>Access Control</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="pxeeventfailed" xml:space="preserve">
         <source>PXE Event Failed</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="ARMHF Debian" xml:space="preserve">
         <source>ARMHF Debian</source>
         <target>ARMHF Debian</target>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="diskcheckwarning" xml:space="preserve">
         <source>Disk Check</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.diskcheck.summary" xml:space="preserve">
         <source>You are running out of space on your @@PRODUCT_NAME@@ {0}. This is {1}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="notification.diskcheck.details" xml:space="preserve">
         <source>You are running out of space on your @@PRODUCT_NAME@@ {0}. This is {1}. If you run out of disk space, @@PRODUCT_NAME@@ will stop running, and this could lead to a loss of data. @@PRODUCT_NAME@@ will shutdown automatically.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="SCAP Policies" xml:space="preserve">
         <source>SCAP Policies</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="SCAP Content" xml:space="preserve">
         <source>SCAP Content</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="Tailoring Files" xml:space="preserve">
         <source>Tailoring Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="distupgrade.sles16.migration.success" xml:space="preserve">
         <source>SLES 16 migration completed successfully.{0}</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="distupgrade.sles16.migration.success.post_steps" xml:space="preserve">
         <source>Recommended post-migration steps:
 - Check for orphaned/unneeded packages: zypper packages --orphaned --unneeded
 - Check for updated config files: find /etc/ -name '*.rpmnew' -o -name '*.rpmsave'</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="distupgrade.sles16.migration.failed" xml:space="preserve">
         <source>SLES 16 migration failed or result not found.{0}</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

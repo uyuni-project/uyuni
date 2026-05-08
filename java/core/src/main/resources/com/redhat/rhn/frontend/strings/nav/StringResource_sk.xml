@@ -1311,13 +1311,13 @@
         </context-group>
         <target state="translated">Podpora</target>
       </trans-unit>
-    <trans-unit id="nav.system.audit.schedule.beta" xml:space="preserve">
-          <source>Schedule</source>
+      <trans-unit id="nav.system.audit.schedule.beta" xml:space="preserve">
+        <source>Schedule</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/manager/systems/details/schedule-scap-scan</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="translated">Plán</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
