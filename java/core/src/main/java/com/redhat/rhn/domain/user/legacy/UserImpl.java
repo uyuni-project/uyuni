@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2026 SUSE LLC
+ * Copyright (c) 2025--2026 SUSE LLC
  * Copyright (c) 2009--2015 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -20,7 +20,6 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.CryptHelper;
-import com.redhat.rhn.common.util.Pbkdf2Sha256Crypt;
 import com.redhat.rhn.common.util.SHA256Crypt;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.access.AccessGroup;
@@ -268,8 +267,7 @@ public class UserImpl extends BaseDomainHelper implements User {
          * set it.
          */
         if (Config.get().getBoolean(ConfigDefaults.WEB_ENCRYPTED_PASSWORDS)) {
-            String hashed = Pbkdf2Sha256Crypt.crypt(passwordIn);
-            this.password = (hashed != null ? hashed : SHA256Crypt.crypt(passwordIn));
+            this.password = SHA256Crypt.crypt(passwordIn);
         }
         else {
             this.password = passwordIn;
@@ -471,7 +469,7 @@ public class UserImpl extends BaseDomainHelper implements User {
          * authenticate via pam, otherwise, use the db.
          */
         if (!StringUtils.isBlank(pamAuthService) && this.getUsePamAuthentication()) {
-            if (password.startsWith(CryptHelper.MD5_PREFIX)) {
+            if (password.startsWith(CryptHelper.getMD5Prefix())) {
                 // password field in DB is NOT NULL, so we set a random password
                 // when using PAM authentication. Here the password is still MD5
                 // based. Just set a new one with SHA256crypt
@@ -493,12 +491,8 @@ public class UserImpl extends BaseDomainHelper implements User {
              */
             boolean useEncrPasswds = Config.get().getBoolean(ConfigDefaults.WEB_ENCRYPTED_PASSWORDS);
             if (useEncrPasswds) {
-                if (password.startsWith(Pbkdf2Sha256Crypt.PREFIX)) {
-                    // user has been migrated to PBKDF2-SHA256 by the Python auth path
-                    result = Pbkdf2Sha256Crypt.verify(thePassword, password);
-                }
-                else if (password.startsWith(CryptHelper.getSHA256Prefix())) {
-                    // legacy SHA-256 crypt(3) password
+                // user uses SHA-256 encrypted password
+                if (password.startsWith(CryptHelper.getSHA256Prefix())) {
                     result = SHA256Crypt.crypt(thePassword, password).equals(password);
                 }
             }
@@ -1189,8 +1183,7 @@ public class UserImpl extends BaseDomainHelper implements User {
             * set it.
             */
             if (Config.get().getBoolean(ConfigDefaults.WEB_ENCRYPTED_PASSWORDS)) {
-                String hashed = Pbkdf2Sha256Crypt.crypt(passwordIn);
-                password = (hashed != null ? hashed : SHA256Crypt.crypt(passwordIn));
+                password = SHA256Crypt.crypt(passwordIn);
             }
             else {
                 password = passwordIn;

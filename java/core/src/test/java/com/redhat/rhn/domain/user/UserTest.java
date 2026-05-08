@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.util.Pbkdf2Sha256Crypt;
+import com.redhat.rhn.common.util.SHA256Crypt;
 import com.redhat.rhn.domain.role.Role;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.testing.RhnJmockBaseTestCase;
@@ -141,8 +141,7 @@ public class UserTest extends RhnJmockBaseTestCase {
         usr.setPassword(foo);
         boolean encrypt = Config.get().getBoolean(ConfigDefaults.WEB_ENCRYPTED_PASSWORDS);
         if (encrypt) {
-            assertTrue(usr.getPassword().startsWith(Pbkdf2Sha256Crypt.PREFIX));
-            assertTrue(Pbkdf2Sha256Crypt.verify(foo, usr.getPassword()));
+            assertEquals(SHA256Crypt.crypt("foo", usr.getPassword()), usr.getPassword());
         }
         else {
             assertEquals(foo, usr.getPassword());

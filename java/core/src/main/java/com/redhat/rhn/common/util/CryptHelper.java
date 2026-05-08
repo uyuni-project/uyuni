@@ -21,17 +21,17 @@ import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import java.security.SecureRandom;
+import java.util.Random;
 
 /**
  * CryptHelper - utility class for crypto routines
  */
 public class CryptHelper {
-    public static final String MD5_PREFIX = "$1$";
-    public static final String SHA256_PREFIX = "$5$";
-
-    private static final String B64T = // a string containing acceptable salt chars
+    private static String b64t = // a string containing acceptable salt chars
         "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    private static final SecureRandom SECURE_RANDOM = new SecureRandom();
+    private static String md5prefix = "$1$";
+    private static String sha256prefix = "$5$";
+    private static Random secureRandom = new SecureRandom();
 
     /**
      * CryptHelper
@@ -40,11 +40,19 @@ public class CryptHelper {
     }
 
     /**
+     * getMD5Prefix
+     * @return MD5 prefix string
+     */
+    public static String getMD5Prefix() {
+        return md5prefix;
+    }
+
+    /**
      * getSHA256Prefix
      * @return SHA-256 prefix string
      */
     public static String getSHA256Prefix() {
-        return SHA256_PREFIX;
+        return sha256prefix;
     }
 
     /**
@@ -83,7 +91,7 @@ public class CryptHelper {
         StringBuilder out = new StringBuilder();
 
         while (length > 0) {
-            out.append(B64T.substring((value & 0x3f), (value & 0x3f) + 1));
+            out.append(b64t.substring((value & 0x3f), (value & 0x3f) + 1));
             --length;
             value >>= 6;
         }
@@ -99,8 +107,8 @@ public class CryptHelper {
         StringBuilder salt = new StringBuilder();
 
         for (int i = 0; i < saltLength; i++) {
-            int rand = SECURE_RANDOM.nextInt(B64T.length());
-            salt.append(B64T.charAt(rand));
+            int rand = secureRandom.nextInt(b64t.length());
+            salt.append(b64t.charAt(rand));
         }
 
         return salt.toString();
