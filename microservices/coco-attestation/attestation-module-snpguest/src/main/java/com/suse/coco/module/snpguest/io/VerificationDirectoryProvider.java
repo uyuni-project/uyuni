@@ -36,7 +36,7 @@ import java.util.stream.Stream;
  * @see AbstractSNPGuestWrapper
  */
 public class VerificationDirectoryProvider {
-    public static final Path DEFAULT_CERTIFICATION_PATH = Path.of("/usr/share/coco-attestation/certs");
+    public static final Path DEFAULT_CERTIFICATION_PATH = Path.of("/usr/share/coco-attestation/certs/snpguest");
 
     private static final Logger LOGGER = LogManager.getLogger(VerificationDirectoryProvider.class);
 
