@@ -307,6 +307,20 @@ namespace :utils do
       end
     end
 
+    # Produce a consolidated cucumber_report.html.json for RRTG ingestion and
+    # test_review_summary.py. Merges all output_*.json files in chronological
+    # order (filenames are timestamped so lexicographic == execution order).
+    # Done before index.cjs so it is produced even if HTML report generation fails.
+    all_features = []
+    Dir.glob("#{result_folder}/output_*.json").sort.each do |json_file|
+      begin
+        all_features.concat(JSON.parse(File.read(json_file)))
+      rescue JSON::ParserError, SystemCallError => e
+        warn "WARNING: Could not merge #{json_file} into consolidated report: #{e.message}"
+      end
+    end
+    File.write('cucumber_report/cucumber_report.html.json', JSON.generate(all_features))
+
     sh "node index.cjs #{result_folder} &> cucumber_reporter.log", verbose: false
     sh "cp -r cucumber_report/. #{result_folder}/cucumber_report/"
   end
