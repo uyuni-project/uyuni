@@ -107,7 +107,7 @@ BuildRequires:  jakarta-persistence-api
 BuildRequires:  httpcomponents-asyncclient
 BuildRequires:  httpcomponents-client
 BuildRequires:  ical4j
-BuildRequires:  istack-commons-runtime
+BuildRequires:  mvn(com.sun.istack:istack-commons-runtime) >= 4.2.0
 BuildRequires:  jade4j
 BuildRequires:  java-%{java_version}-openjdk-devel
 BuildRequires:  java-saml
@@ -195,7 +195,7 @@ Requires:       jakarta-jstl
 Requires:       hibernate-models
 Requires:       httpcomponents-client
 Requires:       ical4j
-Requires:       istack-commons-runtime
+Requires:       mvn(com.sun.istack:istack-commons-runtime) >= 4.2.0
 Requires:       jade4j
 Requires:       java-%{java_version}-openjdk
 Requires:       java-saml
