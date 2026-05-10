@@ -21,11 +21,9 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.util.CSVWriter;
 import com.redhat.rhn.common.util.download.ByteArrayStreamInfo;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.frontend.dto.BaseDto;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.taglibs.list.TagHelper;
 
-import org.apache.commons.collections.ListUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
@@ -115,7 +113,7 @@ public class CSVDownloadAction extends DownloadAction {
      * @param session HTTP session
      * @return page data
      */
-    protected List<BaseDto> getPageData(HttpServletRequest request, HttpSession session) {
+    protected List<?> getPageData(HttpServletRequest request, HttpSession session) {
         String paramQuery = request.getParameter(QUERY_DATA);
         if (paramQuery != null) {
             CachedStatement query = (CachedStatement) session.getAttribute(paramQuery);
@@ -130,7 +128,11 @@ public class CSVDownloadAction extends DownloadAction {
             throw new IllegalArgumentException("Missing request parameter, " + EXPORT_COLUMNS);
         }
 
-        return ListUtils.typedList((List<?>) session.getAttribute(paramPageData), BaseDto.class);
+        List<?> pageData = (List<?>) session.getAttribute(paramPageData);
+        if (pageData == null) {
+            throw new IllegalArgumentException("Missing value for session attribute, " + paramPageData);
+        }
+        return pageData;
     }
 
     /**
@@ -181,7 +183,7 @@ public class CSVDownloadAction extends DownloadAction {
         }
 
         String exportColumns = getExportColumns(request, session);
-        List<BaseDto> pageData = getPageData(request, session);
+        List<?> pageData = getPageData(request, session);
 
         // Read the CSV separator from user preferences
         User user = new RequestContext(request).getCurrentUser();
