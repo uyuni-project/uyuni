@@ -120,7 +120,6 @@ BuildRequires:  jdom
 BuildRequires:  joda-time
 BuildRequires:  jose4j
 BuildRequires:  jsch
-BuildRequires:  jta
 BuildRequires:  libxml2
 BuildRequires:  log4j
 BuildRequires:  log4j-jcl
@@ -209,7 +208,6 @@ Requires:       jdom
 Requires:       joda-time
 Requires:       jose4j
 Requires:       jakarta-persistence-api
-Requires:       jta
 Requires:       libsolv-tools
 Requires:       log4j
 Requires:       log4j-jcl
