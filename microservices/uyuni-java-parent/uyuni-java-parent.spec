@@ -38,6 +38,11 @@ Package that contains the parent POM used by all %{productprettyname} Maven comp
 
 %prep
 %setup -q
+%if 0%{?suse_version} >= 1600
+mv pom-16.xml pom.xml
+%else
+rm -f pom-16.xml
+%endif
 
 %build
 %{mvn_build} -j -- --non-recursive
