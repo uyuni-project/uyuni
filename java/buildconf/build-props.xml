@@ -68,7 +68,7 @@
   <property name="jaf" value="jakarta-activation/jakarta.activation-api angus-activation/angus-activation" />
 
   <property name="jaxb-api" value="jaxb-api/jakarta.xml.bind-api" />
-  <property name="jaxb-impl" value="jaxb/jaxb-core jaxb/jaxb-runtime jaxb/txw2 istack-commons/istack-commons-runtime" />
+  <property name="jaxb-impl" value="jaxb/jaxb-core jaxb/jaxb-runtime jaxb/txw2 jaxb-istack-commons/istack-commons-runtime" />
   <property name="jaxb" value="${jaxb-api} ${jaxb-impl}"/>
 
   <property name="jstl" value="jakarta-jstl/jakarta.servlet.jsp.jstl-api jakarta-jstl/jakarta.servlet.jsp.jstl" />
