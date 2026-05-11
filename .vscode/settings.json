@@ -21,7 +21,7 @@
   "java.test.config": {
     "vmArgs": ["-Drhn.config.dir=${workspaceFolder}/java/buildconf/test"]
   },
-  "java.completion.importOrder": ["com.redhat.rhn", "com.suse", "com", "org", "java", "javax", "#"],
+  "java.completion.importOrder": ["#", "com.redhat.rhn", "com.suse", "com", "org", "java", "javax"],
   "java.project.referencedLibraries": ["java/lib/*.jar", "java/buildconf/ivy/repository/suse/*jar"],
   "ant.home": "/usr/share/ant",
   "ant.executable": "/usr/bin/ant",
