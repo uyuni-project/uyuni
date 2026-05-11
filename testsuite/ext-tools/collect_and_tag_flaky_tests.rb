@@ -180,7 +180,7 @@ def main
     directory_path = ARGV[0]
     ci_label = ARGV[1].to_s.strip
   else
-    puts '\e[31mUsage: ruby collect_and_tag_flaky_tests.rb <directory_path> [ci_label]\e[0m'
+    puts "\e[31mUsage: ruby collect_and_tag_flaky_tests.rb <directory_path> [ci_label]\e[0m"
     exit(1)
   end
 
@@ -191,7 +191,7 @@ def main
   end
 
   unless File.directory?(directory_path)
-    puts '\e[31mThe specified path is not a directory.\e[0m'
+    puts "\e[31mThe specified path is not a directory.\e[0m"
     exit(1)
   end
 

@@ -329,7 +329,7 @@ namespace :utils do
   task :collect_and_tag_flaky_tests, [:ci_label] do |_t, args|
     ci_label = args[:ci_label].to_s.strip
     warn 'WARNING: No ci_label provided to collect_and_tag_flaky_tests — board issues will not be filtered by version' if ci_label.empty?
-    `ruby ext-tools/collect_and_tag_flaky_tests.rb features #{ci_label}`
+    sh "ruby ext-tools/collect_and_tag_flaky_tests.rb features #{ci_label}"
   end
 end
 
