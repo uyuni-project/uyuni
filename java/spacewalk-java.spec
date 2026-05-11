@@ -107,7 +107,7 @@ BuildRequires:  jakarta-persistence-api
 BuildRequires:  httpcomponents-asyncclient
 BuildRequires:  httpcomponents-client
 BuildRequires:  ical4j
-BuildRequires:  istack-commons-runtime
+BuildRequires:  mvn(com.sun.istack:istack-commons-runtime) >= 4.2.0
 BuildRequires:  jade4j
 BuildRequires:  java-%{java_version}-openjdk-devel
 BuildRequires:  java-saml
@@ -120,7 +120,6 @@ BuildRequires:  jdom
 BuildRequires:  joda-time
 BuildRequires:  jose4j
 BuildRequires:  jsch
-BuildRequires:  jta
 BuildRequires:  libxml2
 BuildRequires:  log4j
 BuildRequires:  log4j-jcl
@@ -196,7 +195,7 @@ Requires:       jakarta-jstl
 Requires:       hibernate-models
 Requires:       httpcomponents-client
 Requires:       ical4j
-Requires:       istack-commons-runtime
+Requires:       mvn(com.sun.istack:istack-commons-runtime) >= 4.2.0
 Requires:       jade4j
 Requires:       java-%{java_version}-openjdk
 Requires:       java-saml
@@ -209,7 +208,6 @@ Requires:       jdom
 Requires:       joda-time
 Requires:       jose4j
 Requires:       jakarta-persistence-api
-Requires:       jta
 Requires:       libsolv-tools
 Requires:       log4j
 Requires:       log4j-jcl
