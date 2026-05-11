@@ -75,7 +75,8 @@
     "editor.defaultFormatter": "redhat.vscode-yaml"
   },
   "[xml]": {
-    "editor.defaultFormatter": "redhat.vscode-xml"
+    "editor.defaultFormatter": "redhat.vscode-xml",
+    "editor.formatOnSave": false
   },
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
