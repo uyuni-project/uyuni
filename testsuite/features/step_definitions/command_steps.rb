@@ -1846,14 +1846,31 @@ Then(/^the word "([^']*)" does not occur more than (\d+) times in "(.*)" on "([^
   raise "The word #{word} occured #{occurences} times, which is more more than #{threshold} times in file #{path}" if occurences > threshold
 end
 
-Then(/^I upgrade "([^"]*)" with the last "([^"]*)" version$/) do |host, package|
+When(/^I (upgrade|install) "([^"]*)" on "([^"]*)" using the API$/) do |action, package, host|
   system_name = get_system_name(host)
-  last_event_before_upgrade = get_last_event(host)
-  last_event = last_event_before_upgrade
-  trigger_upgrade(system_name, package)
+  last_event_before_action = get_last_event(host)
+  last_event = last_event_before_action
+  case action
+  when 'upgrade'
+    trigger_upgrade(system_name, package)
+  when 'install'
+    trigger_install(system_name, package)
+  end
   repeat_until_timeout(timeout: DEFAULT_TIMEOUT, message: 'Waiting for the new event to be created') do
     last_event = get_last_event(host)
-    break if last_event['id'] > last_event_before_upgrade['id'] && (last_event['summary'].include? 'Package Install/Upgrade')
+    break if last_event['id'] > last_event_before_action['id'] && (last_event['summary'].include? 'Package Install/Upgrade')
+  end
+  wait_action_complete(last_event['id'])
+end
+
+When(/^I remove "([^"]*)" on "([^"]*)" using the API$/) do |package, host|
+  system_name = get_system_name(host)
+  last_event_before_action = get_last_event(host)
+  last_event = last_event_before_action
+  trigger_remove(system_name, package)
+  repeat_until_timeout(timeout: DEFAULT_TIMEOUT, message: 'Waiting for the new event to be created') do
+    last_event = get_last_event(host)
+    break if last_event['id'] > last_event_before_action['id'] && (last_event['summary'].include? 'Package Removal')
   end
   wait_action_complete(last_event['id'])
 end

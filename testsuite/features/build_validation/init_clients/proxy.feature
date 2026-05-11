@@ -1,4 +1,4 @@
-# Copyright (c) 2024-2025 SUSE LLC
+# Copyright (c) 2024-2026 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # The scenarios in this feature are skipped if:
@@ -44,7 +44,7 @@ Feature: Setup containerized proxy
     When I wait until onboarding is completed for "proxy"
 
   Scenario: Upgrade mgrpxy tool
-    When I upgrade "proxy" with the last "mgrpxy" version
+    When I upgrade "mgrpxy" on "proxy" using the API
 
 @transactional_server
   Scenario: Reboot after mgrpxy upgrade
