@@ -15,6 +15,7 @@
  */
 package com.redhat.rhn.domain.action;
 
+import static com.suse.manager.reactor.hardware.HardwareConstants.HARDWARE_REFRESH_ERROR;
 import static com.suse.proxy.ProxyConfigUtils.USE_CERTS_MODE_REPLACE;
 
 import com.redhat.rhn.GlobalInstanceHolder;
@@ -32,6 +33,7 @@ import com.redhat.rhn.manager.system.SystemManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitler;
 
 import com.suse.manager.reactor.hardware.CpuArchUtil;
+import com.suse.manager.reactor.hardware.HardwareConstants;
 import com.suse.manager.reactor.hardware.HardwareMapper;
 import com.suse.manager.reactor.messaging.ApplyStatesEventMessage;
 import com.suse.manager.reactor.utils.ValueMap;
@@ -130,71 +132,96 @@ public class HardwareRefreshAction extends Action {
      * @param result the result of the call as parsed from event data
      * @param serverAction the server action
      */
-    private void handleHardwareProfileUpdate(MinionServer server, HwProfileUpdateSlsResult result,
-                                             ServerAction serverAction) {
+    private void handleHardwareProfileUpdate(
+            MinionServer server,
+            HwProfileUpdateSlsResult result,
+            ServerAction serverAction
+    ) {
         Instant start = Instant.now();
+        try {
+            HardwareMapper hwMapper = new HardwareMapper(server, new ValueMap(result.getGrains()));
 
-        HardwareMapper hwMapper = new HardwareMapper(server,
-                new ValueMap(result.getGrains()));
-        hwMapper.mapCpuInfo(new ValueMap(result.getCpuInfo()));
-        server.setRam(hwMapper.getTotalMemory());
-        server.setSwap(hwMapper.getTotalSwapMemory());
-        if (CpuArchUtil.isDmiCapable(hwMapper.getCpuArch())) {
-            hwMapper.mapDmiInfo(
-                    result.getSmbiosRecordsBios().orElse(Collections.emptyMap()),
-                    result.getSmbiosRecordsSystem().orElse(Collections.emptyMap()),
-                    result.getSmbiosRecordsBaseboard().orElse(Collections.emptyMap()),
-                    result.getSmbiosRecordsChassis().orElse(Collections.emptyMap()));
+            // Map CPU info
+            hwMapper.mapCpuInfo(new ValueMap(result.getCpuInfo()));
+            server.setRam(hwMapper.getTotalMemory());
+            server.setSwap(hwMapper.getTotalSwapMemory());
+
+            // Map DMI info
+            if (CpuArchUtil.isDmiCapable(hwMapper.getCpuArch())) {
+                hwMapper.mapDmiInfo(
+                        result.getSmbiosRecordsBios().orElse(Collections.emptyMap()),
+                        result.getSmbiosRecordsSystem().orElse(Collections.emptyMap()),
+                        result.getSmbiosRecordsBaseboard().orElse(Collections.emptyMap()),
+                        result.getSmbiosRecordsChassis().orElse(Collections.emptyMap()));
+            }
+
+            // Map devices
+            hwMapper.mapDevices(result.getUdevdb());
+
+            // Map S390 mainframe
+            if (CpuArchUtil.isS390(hwMapper.getCpuArch())) {
+                hwMapper.mapSysinfo(result.getMainframeSysinfo());
+            }
+
+            // Map virtualization info
+            hwMapper.mapVirtualizationInfo(result.getSmbiosRecordsSystem());
+
+            // Map network info
+            hwMapper.mapNetworkInfo(result.getNetworkInterfaces(), Optional.of(result.getNetworkIPs()),
+                    result.getNetworkModules(),
+                    Stream.concat(
+                            Stream.concat(
+                                    result.getFqdns().stream(),
+                                    result.getDnsFqdns().stream()
+                            ),
+                            result.getCustomFqdns().stream()
+                    ).distinct().collect(Collectors.toList())
+            );
+
+            // Map other info
+            server.setPayg(result.getInstanceFlavor().map("PAYG"::equals).orElse(false));
+            server.setContainerRuntime(result.getContainerRuntime());
+            server.setUname(result.getUname());
+
+            // Handle SAP workloads
+            var sapWorkloads = result.getSAPWorkloads()
+                    .map(m -> m.getChanges().getRet())
+                    .orElse(Collections.emptySet())
+                    .stream()
+                    .map(workload -> new SAPWorkload(
+                            server, workload.get("system_id"), workload.get("instance_type")
+                    ))
+                    .collect(Collectors.toSet());
+
+            server.getSapWorkloads().retainAll(sapWorkloads);
+
+            // Handle missing proxy configuration
+            if (result.missesProxyConfig()) {
+                server.getPillarByCategory(ProxyConfigUtils.PROXY_PILLAR_CATEGORY)
+                        .ifPresent(pillar -> handleMissingProxyConfig(pillar, server));
+            }
+
+            // Let the action fail in case there is error messages
+            if (!hwMapper.getErrors().isEmpty()) {
+                serverAction.setStatusFailed();
+                serverAction.setResultMsg(HardwareConstants.HARDWARE_REFRESH_INCOMPLETE +
+                        String.join("\n", hwMapper.getErrors()));
+                serverAction.setResultCode(HardwareConstants.ERROR_RESULT_CODE);
+            }
+
+            MinionPillarManager.INSTANCE.generatePillar(server, false,
+                    MinionPillarManager.PillarSubset.GENERAL);
+
+            if (LOG.isDebugEnabled()) {
+                long duration = Duration.between(start, Instant.now()).getSeconds();
+                LOG.debug("Hardware profile updated for minion: {} ({} seconds)", server.getMinionId(), duration);
+            }
         }
-        hwMapper.mapDevices(result.getUdevdb());
-        if (CpuArchUtil.isS390(hwMapper.getCpuArch())) {
-            hwMapper.mapSysinfo(result.getMainframeSysinfo());
-        }
-        hwMapper.mapVirtualizationInfo(result.getSmbiosRecordsSystem());
-        hwMapper.mapNetworkInfo(result.getNetworkInterfaces(), Optional.of(result.getNetworkIPs()),
-                result.getNetworkModules(),
-                Stream.concat(
-                        Stream.concat(
-                                result.getFqdns().stream(),
-                                result.getDnsFqdns().stream()
-                        ),
-                        result.getCustomFqdns().stream()
-                ).distinct().collect(Collectors.toList())
-        );
-        server.setPayg(result.getInstanceFlavor().map(o -> o.equals("PAYG")).orElse(false));
-        server.setContainerRuntime(result.getContainerRuntime());
-        server.setUname(result.getUname());
-
-        var sapWorkloads = result.getSAPWorkloads()
-                .map(m -> m.getChanges().getRet())
-                .orElse(Collections.emptySet())
-                .stream()
-                .map(workload -> new SAPWorkload(
-                        server, workload.get("system_id"), workload.get("instance_type")
-                ))
-                .collect(Collectors.toSet());
-
-        server.getSapWorkloads().retainAll(sapWorkloads);
-
-        if (result.missesProxyConfig()) {
-            server.getPillarByCategory(ProxyConfigUtils.PROXY_PILLAR_CATEGORY)
-                    .ifPresent(pillar -> handleMissingProxyConfig(pillar, server));
-        }
-
-        // Let the action fail in case there is error messages
-        if (!hwMapper.getErrors().isEmpty()) {
+        catch (Exception e) {
+            LOG.error("Unexpected error during hardware profile update for minion {}: {}", server.getMinionId(), e);
             serverAction.setStatusFailed();
-            serverAction.setResultMsg("Hardware list could not be refreshed completely:\n" +
-                    hwMapper.getErrors().stream().collect(Collectors.joining("\n")));
-            serverAction.setResultCode(-1L);
-        }
-
-        MinionPillarManager.INSTANCE.generatePillar(server, false,
-                MinionPillarManager.PillarSubset.GENERAL);
-
-        if (LOG.isDebugEnabled()) {
-            long duration = Duration.between(start, Instant.now()).getSeconds();
-            LOG.debug("Hardware profile updated for minion: {} ({} seconds)", server.getMinionId(), duration);
+            serverAction.setResultMsg(HARDWARE_REFRESH_ERROR);
+            serverAction.setResultCode(HardwareConstants.ERROR_RESULT_CODE);
         }
     }
 
