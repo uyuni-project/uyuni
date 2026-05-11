@@ -393,6 +393,11 @@ This package contains the Java version of taskomatic.
 %prep
 %setup -q
 
+%if 0%{?suse_version} >= 1600
+%pom_xpath_set 'pom:project/pom:dependencies/pom:dependency/pom:artifactId[text()="client"]' 'scram-client' core/pom.xml
+%pom_xpath_set 'pom:project/pom:dependencies/pom:dependency/pom:artifactId[text()="common"]' 'scram-common' core/pom.xml
+%endif
+
 %if 0%{?fedora}
 %define skip_xliff  1
 %endif
