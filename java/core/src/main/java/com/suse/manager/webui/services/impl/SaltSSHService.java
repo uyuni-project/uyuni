@@ -394,7 +394,11 @@ public class SaltSSHService {
                 .map(ProxyInfo::getSshPort)
                 .map(p -> ":" + p)
                 .orElse("");
-        return proxyPathToHostnames(proxy.getServerPaths(), Optional.of(proxy.getHostname() + port));
+        String proxyFQDN = proxy.findPrimaryFqdn().getName();
+        if (proxyFQDN == null) {
+            proxyFQDN = proxy.getHostname();
+        }
+        return proxyPathToHostnames(proxy.getServerPaths(), Optional.of(proxyFQDN + port));
     }
 
     /**

@@ -24,6 +24,7 @@ import com.redhat.rhn.common.util.FileUtils;
 import com.redhat.rhn.domain.server.ContactMethod;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerFQDN;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ansible.InventoryPath;
 import com.redhat.rhn.domain.token.ActivationKey;
@@ -320,7 +321,8 @@ public abstract class AbstractMinionBootstrapper {
         Map<String, Object> pillarData = new HashMap<>();
         String mgrServer = input.getProxyId()
                 .map(ServerFactory::lookupById)
-                .map(Server::getHostname)
+                .map(Server::findPrimaryFqdn)
+                .map(ServerFQDN::getName)
                 .orElse(ConfigDefaults.get().getJavaHostname());
 
         pillarData.put("mgr_server", mgrServer);
