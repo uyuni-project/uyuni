@@ -92,7 +92,6 @@ Recommends:     susemanager-branding
 BuildRequires:  uyuni-base-server
 Requires(pre):  uyuni-base-server
 # yast module dependency
-Requires:       firewalld
 Requires:       postfix
 Requires:       reprepro >= 5.4
 %define python_sitelib %(%{pythonX} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")
@@ -177,9 +176,6 @@ cp -r pub/empty %{buildroot}%{reporoot}/repositories/
 # empty repo for Ubuntu base fake channel
 cp -r pub/empty-deb %{buildroot}%{reporoot}/repositories/
 
-mkdir -p %{buildroot}/%{_prefix}/lib/firewalld/services
-install -m 0644 etc/firewalld/services/suse-manager-server.xml %{buildroot}/%{_prefix}/lib/firewalld/services
-
 make -C po install PREFIX=%{buildroot}
 
 %find_lang susemanager
@@ -215,7 +211,6 @@ sed -i '/You can access .* via https:\/\//d' /tmp/motd 2> /dev/null ||:
 %dir %{_prefix}/lib/susemanager/hooks/
 %{_prefix}/lib/susemanager/bin/*
 %attr(775,%{salt_user},susemanager) %dir %{wwwroot}/os-images/
-%{_prefix}/lib/firewalld/services/suse-manager-server.xml
 
 %files tools
 %defattr(-,root,root,-)
