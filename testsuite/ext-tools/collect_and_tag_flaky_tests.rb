@@ -13,7 +13,7 @@ require 'netrc'
 require 'find'
 
 # Function to fetch issues from a GitHub project board column
-def fetch_github_issues(organization, project_number, column, headers)
+def fetch_github_issues(organization, project_number, column, headers, ci_label)
   after = ''
   graphql_endpoint = URI('https://api.github.com/graphql')
   graphql_query = <<~GRAPHQL
@@ -34,6 +34,7 @@ def fetch_github_issues(organization, project_number, column, headers)
                       ... on Issue {
                         title
                         url
+                        labels(first: 10) { nodes { name } }
                       }
                     }
                   }
@@ -74,6 +75,11 @@ def fetch_github_issues(organization, project_number, column, headers)
             issue_title = status_field['item']['content']['title']
             issue_url = status_field['item']['content']['url']
             next if issue_title.to_s.empty? || issue_url.to_s.empty?
+
+            unless ci_label.to_s.empty?
+              label_names = (status_field['item']['content'].dig('labels', 'nodes') || []).map { |l| l['name'] }
+              next unless label_names.include?(ci_label)
+            end
 
             gh_cards.push({ title: issue_title, url: issue_url })
             puts "\e[36mCard found\e[0m => #{issue_title}"
@@ -170,11 +176,18 @@ end
 
 # Main function
 def main
-  if ARGV.length == 1
+  if ARGV.length >= 1
     directory_path = ARGV[0]
+    ci_label = ARGV[1].to_s.strip
   else
-    puts '\e[31mUsage: ruby collect_and_tag_flaky_tests.rb <directory_path>\e[0m'
+    puts '\e[31mUsage: ruby collect_and_tag_flaky_tests.rb <directory_path> [ci_label]\e[0m'
     exit(1)
+  end
+
+  if ci_label.empty?
+    puts "\e[33mWARNING: No ci_label provided — board issues will NOT be filtered by version. All versions will be tagged.\e[0m"
+  else
+    puts "\e[36mFiltering board issues by CI label: #{ci_label}\e[0m"
   end
 
   unless File.directory?(directory_path)
@@ -212,7 +225,7 @@ def main
   }
 
   columns.each do |column, tag|
-    gh_cards = fetch_github_issues(organization, project_number, column, headers)
+    gh_cards = fetch_github_issues(organization, project_number, column, headers, ci_label)
     puts ">> Found #{gh_cards.length} issues in the '#{column}' column of the GitHub project board."
     unless gh_cards.empty?
       features_tagged, scenarios_tagged = tag_cucumber_feature_files(directory_path, gh_cards, tag, regex_on_gh_card_title)
