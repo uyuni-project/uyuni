@@ -1,0 +1,2 @@
+- Do not add non-FQDN hostnames to the proxy fqdn list
+  (bsc#1263841)
