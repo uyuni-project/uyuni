@@ -21,15 +21,15 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-10-03 11:04+0200\n"
-"PO-Revision-Date: 2026-04-07 15:32+0000\n"
-"Last-Translator: Michele Bussolotto <michele.bussolotto@suse.com>\n"
+"PO-Revision-Date: 2026-05-12 13:04+0000\n"
+"Last-Translator: Lorenzo Proietti <lorenzoproietti110706@gmail.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/spacewalk-client-tools/it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.16.2\n"
+"X-Generator: Weblate 5.17.1\n"
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/up2date_client/config.py:166
@@ -43,9 +43,8 @@ msgstr "Errore: Server Non disponibile. Riprovare più tardi."
 
 #. pylint: disable-next=consider-using-f-string
 #: ../src/up2date_client/rpcServer.py:221
-#, fuzzy
 msgid "ERROR: can not find server CA file"
-msgstr "ERROR: impossibile trovare il file RHNS CA"
+msgstr "ERRORE: impossibile trovare il file CA del server"
 
 #: ../src/up2date_client/up2dateErrors.py:62
 #: ../src/up2date_client/up2dateErrors.py:101
@@ -101,7 +100,6 @@ msgid "Network error: "
 msgstr "Errore di rete: "
 
 #: ../src/up2date_client/up2dateErrors.py:385
-#, fuzzy
 msgid ""
 "\n"
 "    Your organization does not have enough Management entitlements to register this\n"
@@ -116,16 +114,16 @@ msgid ""
 "    requiring a Management entitlement."
 msgstr ""
 "\n"
-"    L'organizzazione non ha un numero sufficiente di entitlement di Gestione per registrare questo sistema\n"
-"    con il Red Hat Network. Notificare questo errore all'amministratore dell'organizzazione.\n"
-"    Sarà possibile registrare questo sistema solo se l'organizzazione rende disponibile o acquista entitlement aggiuntivi\n"
-"    Gli entitlement aggiuntivi possono essere acquistati dall'amministratore dell'organizzazione eseguendo un log in nel Red Hat Network\n"
-"visitando la pagina 'Gestione sottoscrizioni' nella sezione 'Il tuo RHN di RHN.\n"
-"    \n"
-"    Una causa comune per questo codice d'errore è l'impostazione errata di una\n"
-"    chiave di attivazione la quale viene impostata come default universale. Se una chiave di attivazione è stata\n"
-"    impostata per un account come default universale, sarà possibile disabilitare la suddetta chiave\n"
-"    evitando cosi la necessità di acquisire un entitlement di Gestione."
+"    La tua organizzazione non ha abbastanza diritti di gestione per registrarlo\n"
+"    sistema. Si prega di avvisare l'amministratore della propria organizzazione di questo errore.\n"
+"    Dovresti essere in grado di registrare questo sistema dopo che la tua organizzazione avrà liberato quello esistente\n"
+"    o acquista diritti aggiuntivi. Ulteriori diritti possono essere acquistati dal tuo\n"
+"    amministratore dell'organizzazione nel Centro Clienti SUSE.\n"
+"\n"
+"    Una causa comune di questo codice di errore è dovuta all'errata configurazione di un\n"
+"    Chiave di attivazione impostata come predefinita universale.  Se è impostata una chiave di attivazione\n"
+"    sull'account come impostazione predefinita universale, puoi disabilitare questa chiave e riprovare per evitare\n"
+"    che richiede un diritto di gestione."
 
 #, python-format
 #~ msgid "This client requires the server to support %s, which the current server does not support"
