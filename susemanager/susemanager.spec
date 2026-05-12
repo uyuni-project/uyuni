@@ -67,12 +67,11 @@ BuildRequires:  python3-pycurl
 BuildRequires:  spacewalk-backend >= 1.7.38.20
 BuildRequires:  spacewalk-backend-server
 BuildRequires:  spacewalk-backend-sql-postgresql
+BuildRequires:  fdupes
+BuildRequires:  sed
 
-BuildRequires:  %fillup_prereq
-BuildRequires:  %insserv_prereq
-BuildRequires:  tftp
-Requires(pre):  %fillup_prereq %insserv_prereq tftp
-Requires(preun): %fillup_prereq %insserv_prereq tftp
+Requires(postun): sed
+Requires(pre):  tftp
 Requires(post): user(%{apache_user})
 Requires(pre):  salt
 Requires:       cobbler
@@ -94,8 +93,8 @@ Requires(pre):  uyuni-base-server
 # yast module dependency
 Requires:       postfix
 Requires:       reprepro >= 5.4
-%define python_sitelib %(%{pythonX} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")
-%global pythonsmroot %{python_sitelib}/spacewalk
+%{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "import sysconfig; print(sysconfig.get_path('purelib'))")}
+%global pythonsmroot %{python3_sitelib}/spacewalk
 
 %description
 A collection of scripts for managing %{productprettyname}'s initial
@@ -183,12 +182,15 @@ make -C po install PREFIX=%{buildroot}
 # Bash completion
 %make_install -C bash-completion
 
+%fdupes %{buildroot}%{python3_sitelib}
+%fdupes %{buildroot}/usr/share
+
 %check
 # we need to build a fake python dir. python did not work with
 # two site-package/spacewalk dirs having different content
 mkdir -p %{_localstatedir}/tmp/fakepython/spacewalk
-cp -a %{python_sitelib}/spacewalk/* %{_localstatedir}/tmp/fakepython/spacewalk/
-cp -a %{buildroot}%{python_sitelib}/spacewalk/* %{_localstatedir}/tmp/fakepython/spacewalk/
+cp -a %{python3_sitelib}/spacewalk/* %{_localstatedir}/tmp/fakepython/spacewalk/
+cp -a %{buildroot}%{python3_sitelib}/spacewalk/* %{_localstatedir}/tmp/fakepython/spacewalk/
 export PYTHONPATH=%{_localstatedir}/tmp/fakepython/:%{_datadir}/rhn
 make -f Makefile.susemanager PYTHON_BIN=%{pythonX} unittest
 unset PYTHONPATH
@@ -199,7 +201,6 @@ rm -rf %{_localstatedir}/tmp/fakepython
 %posttrans
 
 %postun
-%insserv_cleanup
 # Cleanup
 sed -i '/You can access .* via https:\/\//d' /tmp/motd 2> /dev/null ||:
 
