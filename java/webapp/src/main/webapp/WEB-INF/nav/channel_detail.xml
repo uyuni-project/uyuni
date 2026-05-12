@@ -19,7 +19,7 @@
   <rhn-tab name="Subscribed Systems">
     <rhn-tab-url>/rhn/channels/ChannelSubscribers.do</rhn-tab-url>
   </rhn-tab>
-  <rhn-tab name="Target Systems" acl="channel_subscribable()">
+  <rhn-tab name="channeltarget.jsp.header1" acl="channel_subscribable()">
     <rhn-tab-url>/rhn/channels/TargetSystems.do</rhn-tab-url>
     <rhn-tab-url>/rhn/channels/TargetSystemsConfirm.do</rhn-tab-url>
   </rhn-tab>
