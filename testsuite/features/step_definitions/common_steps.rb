@@ -174,6 +174,27 @@ When(/^I wait at most (\d+) seconds until event "([^"]*)" is completed$/) do |fi
   step %(I wait 180 seconds until the event is picked up and #{final_timeout} seconds until the event "#{event}" is completed)
 end
 
+When(/^I save the ID of the last event for "(.*?)"$/) do |host|
+  add_context('last_event_before_action', get_last_event(host)['id'])
+end
+
+When(/^I wait until the new "([^"]*)" event is completed for "(.*?)"$/) do |event_text, host|
+  checkpoint_id = get_context('last_event_before_action')
+  raise ScriptError, "Checkpoint event ID not found — run 'I save the ID of the last event for \"#{host}\"' before this step" if checkpoint_id.nil?
+
+  node = get_target(host)
+  system_id = get_system_id(node)
+  new_event = nil
+  repeat_until_timeout(message: "New '#{event_text}' event not found for #{host}") do
+    events = $api_test.system.get_event_history(system_id, 0, 10)
+    new_event = events.find { |e| e['id'] > checkpoint_id && e['summary'].include?(event_text) }
+    break if new_event
+
+    sleep 2
+  end
+  wait_action_complete(new_event['id'])
+end
+
 When(/^I wait until I see the event "([^"]*)" completed during last minute, refreshing the page$/) do |event|
   repeat_until_timeout(message: "Couldn't find the event #{event}") do
     now = Time.now
