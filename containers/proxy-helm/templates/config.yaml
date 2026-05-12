@@ -23,6 +23,13 @@ data:
   apache_tuning: |
     # Add your Apache tuning configuration here
 {{ .Values.httpd.tuning | indent 4 }}
+  salt_tuning: |
+    # Add your Salt Broker tuning configuration here
+{{- if .Values.salt.tuning }}
+{{ .Values.salt.tuning | indent 4 }}
+{{- else }}
+    {}
+{{- end }}
 ---
 apiVersion: v1
 kind: Secret

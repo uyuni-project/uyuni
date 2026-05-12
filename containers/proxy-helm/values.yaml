@@ -191,3 +191,6 @@ salt:
   # tag overrides the default tag in the tag property
   # Leave undefined to use the default
   tag:
+
+  # Salt broker configuration tuning to use
+  tuning: ""
