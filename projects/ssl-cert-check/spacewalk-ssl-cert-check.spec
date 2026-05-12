@@ -98,6 +98,8 @@ install -m644 ssl-cert-check.8 %{buildroot}%{_mandir}/man8/
 
 %files
 %defattr(-,root,root,-)
+%dir /srv/www
+%dir /srv/www/htdocs
 %dir %{_sysconfdir}/sysconfig/rhn
 %{_unitdir}/%{name}.service
 %{_unitdir}/%{name}.timer
