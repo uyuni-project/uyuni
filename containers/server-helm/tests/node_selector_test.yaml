@@ -132,6 +132,7 @@ tests:
       global:
         fqdn: "test.example.com"
       tftp:
+        enable: true
         nodeName: "tftp-node"
         nodeSelector:
           "node": "tftp"
@@ -366,6 +367,8 @@ tests:
     set:
       global:
         fqdn: "test.example.com"
+      tftp:
+        enable: true
       placement:
         nodeName: "global-fallback-node"
         nodeSelector:
