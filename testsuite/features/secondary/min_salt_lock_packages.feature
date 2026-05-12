@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2024 SUSE LLC
+# Copyright (c) 2021-2026 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature can cause failures in the following features:
@@ -29,7 +29,7 @@ Feature: Lock packages on SLES salt minion
     And I click on "Lock"
     Then I should see a "Packages has been requested for being locked." text
     When I wait until event "Lock packages scheduled" is completed
-    Then "hoag-dummy-1.1-1.1" is locked on "sle_minion"
+    Then "hoag-dummy-1.1-1.1" should be locked on "sle_minion"
     When I follow "Software" in the content area
     And I follow "Lock / Unlock"
     Then package "hoag-dummy-1.1-1.1" is reported as locked
@@ -64,7 +64,7 @@ Feature: Lock packages on SLES salt minion
     And I click on "Unlock"
     Then I should see a "Packages has been requested for being unlocked." text
     When I wait until event "Lock packages scheduled" is completed
-    Then "hoag-dummy-1.1-1.1" is unlocked on "sle_minion"
+    Then "hoag-dummy-1.1-1.1" should be unlocked on "sle_minion"
     When I follow "Software" in the content area
     And I follow "Lock / Unlock"
     And I enter "hoag-dummy-1.1-1.1" as the filtered package name
@@ -88,13 +88,14 @@ Feature: Lock packages on SLES salt minion
     And I follow "Lock / Unlock"
     And I enter "milkyway-dummy-2.0-1.1" as the filtered package name
     And I click on the filter button
+    And I save the ID of the last event for "sle_minion"
     When I check row with "milkyway-dummy-2.0-1.1" and arch of "sle_minion"
     And I click on "Lock"
     Then I should see a "Packages has been requested for being locked." text
     And package "milkyway-dummy-2.0-1.1" is reported as pending to be locked
-    When I wait until event "Lock packages scheduled" is completed
-    Then "hoag-dummy-1.1-1.1" is locked on "sle_minion"
-    And "milkyway-dummy-2.0-1.1" is locked on "sle_minion"
+    When I wait until the new "Lock packages scheduled" event is completed for "sle_minion"
+    Then "hoag-dummy-1.1-1.1" should be locked on "sle_minion"
+    And "milkyway-dummy-2.0-1.1" should be locked on "sle_minion"
     When I follow "Software" in the content area
     And I follow "Lock / Unlock"
     Then package "hoag-dummy-1.1-1.1" is reported as locked
@@ -123,9 +124,9 @@ Feature: Lock packages on SLES salt minion
     Then I should see a "Packages has been requested for being unlocked." text
     And package "milkyway-dummy-2.0-1.1" is reported as pending to be unlocked
     When I wait until event "Lock packages scheduled" is completed
-    Then "hoag-dummy-1.1-1.1" is locked on "sle_minion"
-    And "milkyway-dummy-2.0-1.1" is unlocked on "sle_minion"
-    And "orion-dummy-1.1-1.1" is locked on "sle_minion"
+    Then "hoag-dummy-1.1-1.1" should be locked on "sle_minion"
+    And "milkyway-dummy-2.0-1.1" should be unlocked on "sle_minion"
+    And "orion-dummy-1.1-1.1" should be locked on "sle_minion"
     When I follow "Software" in the content area
     And I follow "Lock / Unlock"
     Then package "hoag-dummy-1.1-1.1" is reported as locked
@@ -143,8 +144,8 @@ Feature: Lock packages on SLES salt minion
     Then I should see a "Packages has been requested for being unlocked." text
     And only packages "hoag-dummy-1.1-1.1, orion-dummy-1.1-1.1" are reported as pending to be unlocked
     When I wait until event "Lock packages scheduled" is completed
-    Then "hoag-dummy-1.1-1.1" is unlocked on "sle_minion"
-    And "orion-dummy-1.1-1.1" is unlocked on "sle_minion"
+    Then "hoag-dummy-1.1-1.1" should be unlocked on "sle_minion"
+    And "orion-dummy-1.1-1.1" should be unlocked on "sle_minion"
     When I follow "Software" in the content area
     And I follow "Lock / Unlock"
     And I enter "hoag-dummy-1.1-1.1" as the filtered package name
