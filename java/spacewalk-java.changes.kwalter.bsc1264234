@@ -1,0 +1,2 @@
+- Add 'unpushed' to AdvisoryStatus enum to handle EPEL errata
+  with unpushed status (bsc#1264234)

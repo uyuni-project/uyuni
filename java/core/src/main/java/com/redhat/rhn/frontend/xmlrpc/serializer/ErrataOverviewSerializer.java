@@ -31,7 +31,8 @@ import com.suse.manager.api.SerializedApiResponse;
  *          #prop_desc("string", "update_date", "the date erratum was updated (deprecated)")
  *          #prop_desc("string", "advisory_synopsis", "summary of the erratum")
  *          #prop_desc("string", "advisory_type", "type label such as 'Security', 'Bug Fix'")
- *          #prop_desc("string", "advisory_status", "status label such as 'final', 'testing', 'retracted'")
+ *          #prop_desc("string", "advisory_status", "status label such as 'final', 'testing', 'stable', 'pending',"
+ *          "'retracted' or 'unpushed'")
  *          #prop_desc("string", "advisory_name", "name such as 'RHSA', etc.")
  *          #prop_desc("boolean", "reboot_suggested", "A boolean flag signaling whether a system reboot is
  *          advisable following the application of the errata. Typical example is upon kernel update.")
