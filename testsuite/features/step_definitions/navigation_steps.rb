@@ -438,7 +438,7 @@ When(/^I follow the left menu "([^"]*)"$/) do |menu_path|
 
     # open the submenu if needed
     begin
-      unless find(:xpath, target_link_path + parent_wrapper_path + parent_level_path)[:class].include?('open')
+      unless find(:xpath, target_link_path + parent_wrapper_path + parent_level_path)[:class]&.include?('open')
         find(:xpath, target_link_path + parent_wrapper_path).click
         # wait for the 'open' class to be applied before navigating into the submenu
         find(:xpath, "#{target_link_path}#{parent_wrapper_path}#{parent_level_path}[contains(@class,'open')]")
