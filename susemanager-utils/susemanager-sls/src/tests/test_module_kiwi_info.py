@@ -167,7 +167,7 @@ def test_inspect_bundles():
                 "/test/dest/path/",
                 "SLES12-SP5-EXAMPLE.x86_64-1.0.20",
             )
-            assert get_file_str_mock.called_once_with(
+            get_file_str_mock.assert_called_once_with(
                 "/test/dest/path/SLES12-SP5-EXAMPLE.x86_64-1.0.20-EXAMPLE-Build.raw.xz.sha256"
             )
             assert ret is not None
