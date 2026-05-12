@@ -3,7 +3,7 @@
 
 ### This file contains the definitions for all steps used to lock packages on a system.
 
-Then(/^"(.*?)" is (locked|unlocked) on "(.*?)"$/) do |pkg, action, system|
+Then(/^"(.*?)" should be (locked|unlocked) on "(.*?)"$/) do |pkg, action, system|
   node = get_target(system)
   command = "zypper locks --solvables | grep #{pkg}"
   if action == 'locked'
