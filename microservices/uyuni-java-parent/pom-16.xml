@@ -64,12 +64,12 @@
             </dependency>
             <dependency>
                 <groupId>com.ongres.scram</groupId>
-                <artifactId>client</artifactId>
+                <artifactId>scram-client</artifactId>
                 <version>3.1</version>
             </dependency>
             <dependency>
                 <groupId>com.ongres.scram</groupId>
-                <artifactId>common</artifactId>
+                <artifactId>scram-common</artifactId>
                 <version>3.1</version>
             </dependency>
             <dependency>
