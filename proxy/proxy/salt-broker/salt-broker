@@ -14,6 +14,13 @@ Also acts like a supervisor for the child process, respawning them if they die.
 :depends:   python-PyYAML
 :depends:   python-pyzmq
 
+The configuration files are read in order from:
+- /etc/salt/broker (or SALT_BROKER_CONF env)
+- *.conf files in a folder designated by the SALT_BROKER_EXTRA_CONF environment variable.
+- /etc/salt/broker.d/*.conf (or SALT_BROKER_CONF_DIR env)
+
+The files from each directory are sorted by name.
+
 Copyright (c) 2016--2025 SUSE LLC
 
 All modifications and additions to the file contributed by third parties
@@ -53,6 +60,7 @@ from zmq.utils.monitor import recv_monitor_message
 
 UYUNI_CONFIG_FILE = os.environ.get("UYUNI_CONFIG_FILE", "/etc/uyuni/config.yaml")
 SALT_BROKER_CONF_FILE = os.environ.get("SALT_BROKER_CONF_FILE", "/etc/salt/broker")
+SALT_BROKER_CONF_DIR = os.environ.get("SALT_BROKER_CONF_DIR", "/etc/salt/broker.d")
 SALT_BROKER_LOGFILE = os.environ.get("SALT_BROKER_LOGFILE", "/var/log/salt/broker")
 SUPERVISOR_TIMEOUT = 5
 
@@ -67,6 +75,24 @@ def ip_bracket(addr, strip=False):
     addr = addr.rstrip("]")
     addr = ipaddress.ip_address(addr)
     return ("[{}]" if addr.version == 6 and not strip else "{}").format(addr)
+
+
+def config_files():
+    files = [SALT_BROKER_CONF_FILE]
+    env_path = os.environ.get("SALT_BROKER_EXTRA_CONF")
+    for path in [env_path, SALT_BROKER_CONF_DIR]:
+        if not path:
+            continue
+        files.extend(
+            sorted(
+                [
+                    os.path.join(path, f)
+                    for f in os.listdir(path)
+                    if os.path.isfile(os.path.join(path, f)) and f.endswith(".conf")
+                ]
+            )
+        )
+    return files
 
 
 class AbstractChannelProxy(multiprocessing.Process):
@@ -297,7 +323,7 @@ class PubChannelProxy(AbstractChannelProxy):
         # pylint: disable-next=consider-using-f-string
         self._frontend_uri = "tcp://{}:{}".format(
             ip_bracket(self.opts["interface"]),
-            self.opts["publish_port"],
+            self.opts["publish_front_port"],
         )
 
 
@@ -328,7 +354,7 @@ class RetChannelProxy(AbstractChannelProxy):
         # pylint: disable-next=consider-using-f-string
         self._frontend_uri = "tcp://{}:{}".format(
             ip_bracket(self.opts["interface"]),
-            self.opts["ret_port"],
+            self.opts["ret_front_port"],
         )
 
 
@@ -340,7 +366,7 @@ class SaltBroker(object):
     """
 
     def __init__(self, opts):
-        log.debug("Readed config: %s", opts)
+        log.debug("Read config: %s", opts)
         self.opts = opts
         self.exit = False
         self.default_sigterm = signal.getsignal(signal.SIGTERM)
@@ -455,6 +481,8 @@ if __name__ == "__main__":
     _DEFAULT_OPTS = {
         "publish_port": "4505",
         "ret_port": "4506",
+        "publish_front_port": "4505",
+        "ret_front_port": "4506",
         "interface": "0.0.0.0",
         "ipv6": False,
         "tcp_keepalive": True,
@@ -471,13 +499,14 @@ if __name__ == "__main__":
     }
 
     try:
-        # pylint: disable-next=unspecified-encoding
-        config = yaml.load(open(SALT_BROKER_CONF_FILE), Loader=yaml.SafeLoader)
-        if not config:
-            config = {}
-        if not isinstance(config, dict):
-            # pylint: disable-next=consider-using-f-string
-            sys.exit("Bad format in config file: {0}".format(SALT_BROKER_CONF_FILE))
+        config = {}
+        for file in config_files():
+            # pylint: disable-next=unspecified-encoding
+            config_fragment = yaml.load(open(file), Loader=yaml.SafeLoader)
+            if not isinstance(config_fragment, dict):
+                # pylint: disable-next=consider-using-f-string
+                sys.exit("Bad format in config file: {0}".format(file))
+            config.update(config_fragment)
 
         saltbroker_opts = _DEFAULT_OPTS.copy()
 
