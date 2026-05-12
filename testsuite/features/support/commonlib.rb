@@ -715,8 +715,16 @@ end
 def channel_packages_are_downloaded?(channel_name)
   if channel_name.include?('custom_channel')
     client = channel_name.delete_prefix('custom_channel_')
-    # Monitoring server doesn't have an entry in the custom repository JSON file.
-    return true if $custom_repositories[client].nil? && client != 'monitoring_server'
+    if client == 'monitoring_server'
+      # Monitoring server doesn't have an entry in the custom repository JSON file.
+      # Its custom channel uses MU repositories from minions sharing the same base channel.
+      # Skip the sync wait only when none of those minions have custom repos configured.
+      monitoring_base_channel = BASE_CHANNEL_BY_CLIENT[product][client]
+      matching_minions = BASE_CHANNEL_BY_CLIENT[product].select { |k, v| k.end_with?('_minion') && v == monitoring_base_channel }.keys
+      return true if matching_minions.none? { |c| $custom_repositories[c] }
+    elsif $custom_repositories[client].nil?
+      return true
+    end
   end
   log_tmp_file = '/tmp/reposync.log'
   # Copy reposync logs to /tmp/ to prevent race condition and error when calling .extract()
