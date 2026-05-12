@@ -1,0 +1,1 @@
+- Tomcat's AJP connector didn't declare secure https connection
