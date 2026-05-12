@@ -42,6 +42,7 @@ import org.jose4j.keys.resolvers.VerificationKeyResolver;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Handles OpenID Connect (OIDC) authorization.
@@ -54,12 +55,13 @@ public class OidcAuthHandler {
 
     private boolean oidcEnabled;
     private String issuer;
-    private String jwksUri;
+    private volatile String jwksUri;
     private String audience;
     private String usernameClaim;
 
-    private JwtConsumer jwtConsumer;
-    private HttpClientAdapter httpClient;
+    private final AtomicReference<JwtConsumer> jwtConsumer = new AtomicReference<>();
+    private final VerificationKeyResolver keyResolver;
+    private final HttpClientAdapter httpClient;
 
     /**
      * Constructs an OidcAuthHandler and loads configuration.
@@ -71,11 +73,12 @@ public class OidcAuthHandler {
     /**
      * Constructs an OidcAuthHandler with a custom {@link VerificationKeyResolver}.
      *
-     * @param keyResolver the verification key resolver, if {@code null} a default one is created
+     * @param keyResolverIn the verification key resolver, if {@code null} a default one is created
      * @param httpClientIn the HTTP client to use when fetching from the discovery endpoint
      */
-    public OidcAuthHandler(VerificationKeyResolver keyResolver, HttpClientAdapter httpClientIn) {
-        httpClient = httpClientIn;
+    public OidcAuthHandler(VerificationKeyResolver keyResolverIn, HttpClientAdapter httpClientIn) {
+        this.httpClient = httpClientIn;
+        this.keyResolver = keyResolverIn;
 
         try {
             loadConfiguration();
@@ -86,14 +89,17 @@ public class OidcAuthHandler {
         catch (URISyntaxException eIn) {
             throw new ConfigException("Malformed URI in the OIDC configuration.");
         }
-        VerificationKeyResolver resolver = keyResolver;
-        if (resolver == null) {
-            HttpsJwks httpsJwks = new HttpsJwks(jwksUri);
 
-            // No proxy support in jose4j
-            // HttpsJwks can be subclassed for proxy support
-            resolver = new HttpsJwksVerificationKeyResolver(httpsJwks);
+        try {
+            initJwtConsumer();
         }
+        catch (OidcAuthException e) {
+            LOG.warn("OIDC JWT consumer initialization failed during startup. " +
+                    "Will retry on subsequent login attempts.", e);
+        }
+    }
+
+    private JwtConsumer buildJwtConsumer(VerificationKeyResolver resolver) {
 
         AlgorithmConstraints jwsAlgConstraints = new AlgorithmConstraints(
                 AlgorithmConstraints.ConstraintType.PERMIT,
@@ -107,7 +113,7 @@ public class OidcAuthHandler {
                 AlgorithmIdentifiers.ECDSA_USING_P384_CURVE_AND_SHA384
         );
 
-        jwtConsumer = new JwtConsumerBuilder()
+        return new JwtConsumerBuilder()
                 .setVerificationKeyResolver(resolver)
                 .setJweAlgorithmConstraints(jwsAlgConstraints)
                 .setRequireExpirationTime()
@@ -116,7 +122,32 @@ public class OidcAuthHandler {
                 .setExpectedIssuer(true, issuer)
                 .setSkipDefaultAudienceValidation()
                 .build();
+    }
 
+    private synchronized void initJwtConsumer() throws OidcAuthException {
+        if (!isOidcEnabled() || this.jwtConsumer.get() != null) {
+            return;
+        }
+
+        VerificationKeyResolver resolver = keyResolver;
+        if (resolver == null) {
+            if (StringUtils.isEmpty(jwksUri)) {
+                try {
+                    this.jwksUri = fetchJwksUri(new URI(issuer));
+                }
+                catch (URISyntaxException | ConfigException e) {
+                    throw new OidcAuthException("JWKS URI is not available from the OIDC discovery endpoint.", e);
+                }
+            }
+
+            HttpsJwks httpsJwks = new HttpsJwks(jwksUri);
+
+            // No proxy support in jose4j
+            // HttpsJwks can be subclassed for proxy support
+            resolver = new HttpsJwksVerificationKeyResolver(httpsJwks);
+        }
+
+        this.jwtConsumer.set(buildJwtConsumer(resolver));
         LOG.info("OIDC authorization is enabled. Issuer: {}, Audience: {}, Username attribute: {}",
                 issuer, audience, usernameClaim);
     }
@@ -152,11 +183,10 @@ public class OidcAuthHandler {
 
         String jwksPath = ConfigDefaults.get().getOidcJwksPath();
         if (StringUtils.isEmpty(jwksPath)) {
-            LOG.info("JWKS path not provided. Trying to fetch from the OIDC discovery endpoint.");
-            jwksUri = fetchJwksUri(issuerUri);
+            LOG.info("JWKS path not provided. Will fetch from the OIDC discovery endpoint.");
         }
         else {
-            jwksUri = appendUriPath(issuerUri, jwksPath).toString();
+            this.jwksUri = appendUriPath(issuerUri, jwksPath).toString();
         }
     }
 
@@ -168,7 +198,7 @@ public class OidcAuthHandler {
      */
     private String fetchJwksUri(URI issuerIn) throws URISyntaxException {
         URI discoveryEndpoint = appendUriPath(issuerIn, OIDC_DISCOVERY_PATH);
-        LOG.warn("Fetching JWKS path from OIDC discovery endpoint: {}", discoveryEndpoint);
+        LOG.info("Fetching JWKS path from OIDC discovery endpoint: {}", discoveryEndpoint);
 
         HttpGet request = new HttpGet(discoveryEndpoint);
         HttpResponse response;
@@ -185,6 +215,12 @@ public class OidcAuthHandler {
 
             String jsonResponse = EntityUtils.toString(response.getEntity());
             JsonObject jsonObject = new Gson().fromJson(jsonResponse, JsonObject.class);
+
+            if (jsonObject == null || !jsonObject.has("jwks_uri") || jsonObject.get("jwks_uri").isJsonNull()) {
+                throw new ConfigException("JWKS URI not found in the OIDC discovery document from " +
+                        discoveryEndpoint);
+            }
+
             uri = jsonObject.get("jwks_uri").getAsString();
 
             if (StringUtils.isEmpty(uri)) {
@@ -253,8 +289,10 @@ public class OidcAuthHandler {
             throw new OidcAuthException("OIDC authorization is not enabled.");
         }
 
+        initJwtConsumer();
+
         try {
-            JwtClaims claims = jwtConsumer.processToClaims(token);
+            JwtClaims claims = jwtConsumer.get().processToClaims(token);
             if (!claims.getAudience().contains(audience)) {
                 throw new OidcAuthException("Token verification failed. Missing '" + audience +
                         "' in the audience claim.");
