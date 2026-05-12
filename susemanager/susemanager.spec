@@ -67,13 +67,11 @@ BuildRequires:  python3-pycurl
 BuildRequires:  spacewalk-backend >= 1.7.38.20
 BuildRequires:  spacewalk-backend-server
 BuildRequires:  spacewalk-backend-sql-postgresql
-
-BuildRequires:  systemd-rpm-macros
 BuildRequires:  fdupes
-BuildRequires:  tftp
-%{?systemd_ordering}
+BuildRequires:  sed
+
+Requires(postun): sed
 Requires(pre):  tftp
-Requires(post): %fillup_prereq
 Requires(post): user(%{apache_user})
 Requires(pre):  salt
 Requires:       cobbler
