@@ -68,12 +68,12 @@ BuildRequires:  spacewalk-backend >= 1.7.38.20
 BuildRequires:  spacewalk-backend-server
 BuildRequires:  spacewalk-backend-sql-postgresql
 
-BuildRequires:  %fillup_prereq
-BuildRequires:  %insserv_prereq
+BuildRequires:  systemd-rpm-macros
 BuildRequires:  fdupes
 BuildRequires:  tftp
-Requires(pre):  %fillup_prereq %insserv_prereq tftp
-Requires(preun): %fillup_prereq %insserv_prereq tftp
+%{?systemd_ordering}
+Requires(pre):  tftp
+Requires(post): %fillup_prereq
 Requires(post): user(%{apache_user})
 Requires(pre):  salt
 Requires:       cobbler
@@ -203,7 +203,6 @@ rm -rf %{_localstatedir}/tmp/fakepython
 %posttrans
 
 %postun
-%insserv_cleanup
 # Cleanup
 sed -i '/You can access .* via https:\/\//d' /tmp/motd 2> /dev/null ||:
 
