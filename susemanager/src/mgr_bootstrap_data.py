@@ -1381,6 +1381,12 @@ DATA = {
         "PKGLIST": RES9,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/res/9/bootstrap/",
     },
+    "SUSE-LibertyLinux9.6-x86_64": {
+        "PDID": [-62, 3214, 3041],
+        "BETAPDID": [3043],
+        "PKGLIST": RES9,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/res/9/bootstrap/",
+    },
     "SUSE-LibertyLinux10-x86_64": {
         "PDID": [-58, 3141, 3339],
         "BETAPDID": [3370],
