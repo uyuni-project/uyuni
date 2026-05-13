@@ -1,0 +1,4 @@
+<multibuild>
+  <package>sles15sp7</package>
+  <package>leap160</package>
+</multibuild>
