@@ -1898,7 +1898,7 @@ end
 
 Then(/^the health check tool (should be|should not be) running on "([^"]*)"$/) do |action, host|
   node = get_target(host)
-  node.run("test $(podman ps | grep health-check | wc -l) == #{action == 'is' ? '4' : '0'}", check_errors: true, verbose: true)
+  node.run("test $(podman ps | grep health-check | wc -l) == #{action == 'should be' ? '4' : '0'}", check_errors: true, verbose: true)
 end
 
 When(/^I remove test supportconfig on "([^"]*)"$/) do |host|
