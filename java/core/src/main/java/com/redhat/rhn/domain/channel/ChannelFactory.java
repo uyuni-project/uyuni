@@ -2057,6 +2057,17 @@ public class ChannelFactory extends HibernateFactory {
     }
 
     /**
+     * List all vendor channels (org is null) that should be synchronized automatically
+     * @return list of vendor channels
+     */
+    public static List<Channel> listVendorChannelsForAutoSync() {
+        return getSession().createQuery("""
+                 FROM Channel AS c
+                 WHERE c.org IS NULL AND c.autoSync IS TRUE
+                """, Channel.class).getResultList();
+    }
+
+    /**
      * List all custom channels (org is not null) with at least one repository
      *
      * @return list of vendor channels
@@ -2065,6 +2076,20 @@ public class ChannelFactory extends HibernateFactory {
         return getSession()
                 .createQuery("FROM Channel AS c WHERE c.org IS NOT NULL AND c.sources IS NOT EMPTY", Channel.class)
                 .list();
+    }
+
+    /**
+     * List all custom channels (org is not null) with at least one repository
+     * and that is configured for auto-sync
+     * @return list of vendor channels
+     */
+    public static List<Channel> listCustomChannelsWithRepositoriesForAutoSync() {
+        return getSession().createQuery("""
+                FROM Channel AS c
+                WHERE c.org IS NOT NULL
+                AND   c.sources IS NOT EMPTY
+                AND   c.autoSync IS TRUE
+                """, Channel.class).getResultList();
     }
 
     /**

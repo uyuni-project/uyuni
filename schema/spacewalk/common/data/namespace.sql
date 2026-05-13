@@ -3105,6 +3105,16 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.proxy.backup_configuration', 'W', 'Saves the configuration of a proxy to the server for later conversion')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.channel.software.setAutoSync', 'W', 'Change channel automatic synchronization flag.')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.channel.software.isAutoSync', 'R', 'Get channel automatic synchronization flag status.')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.channel.listSoftwareChannelsByAutoSync', 'R', 'Get the list of channels automatic synchronization by flag status.')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+
+INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.system.list_migration_targets_with_channels', 'R', 'Lists the valid migration targets for a given server, including channel details')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 

@@ -9761,3 +9761,19 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
         '/manager/api/audit/scap/custom-remediation/:identifier/:benchmarkId/:scriptType',
         '/manager/api/audit/scap/scan/rule-apply-remediation'
       );
+
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.channel.software.setAutoSync' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/channel/software/setAutoSync' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.channel.software.isAutoSync' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/manager/api/channel/software/isAutoSync' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.channel.listSoftwareChannelsByAutoSync' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/manager/api/channel/listSoftwareChannelsByAutoSync' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
