@@ -121,8 +121,9 @@ export class AddTokenButton extends Component<Props, State> {
             <Form
               model={this.state.createRequest}
               onChange={(model) =>
-                this.state.createRequest &&
-                this.setState({ createRequest: { type: this.state.createRequest.type, ...model } })
+                this.setState((prevState) =>
+                  prevState.createRequest ? { createRequest: { type: prevState.createRequest.type, ...model } } : null
+                )
               }
               onValidate={(valid) => this.setState({ createRequestValid: valid })}
             >
