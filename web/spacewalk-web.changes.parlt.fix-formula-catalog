@@ -1,0 +1,1 @@
+- Check for type object before calling 'in' (bsc#1264967)
