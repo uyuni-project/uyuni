@@ -43,11 +43,7 @@ Feature: Verify that Salt mgrcompat state works when the new module.run syntax i
     And I wait until there is no Salt job calling the module "hardware.profileupdate" on "sle_minion"
 
   Scenario: Delete SLES minion system profile before mgrcompat test
-    Given I am on the Systems overview page of this "sle_minion"
-    When I follow "Delete System"
-    Then I should see a "Confirm System Profile Deletion" text
-    When I click on "Delete Profile"
-    And I wait until I see "has been deleted" text
+    When I delete "sle_minion" system using the api
     And I wait until Salt client is inactive on "sle_minion"
     Then "sle_minion" should not be registered
 
@@ -84,13 +80,9 @@ Feature: Verify that Salt mgrcompat state works when the new module.run syntax i
     And I wait until there is no Salt job calling the module "hardware.profileupdate" on "sle_minion"
 
   Scenario: Cleanup: Delete profile of the minion and disable new module.run syntax
-    Given I am on the Systems overview page of this "sle_minion"
-    And I remove "custom_modulerun.conf" from salt minion config directory on "sle_minion"
+    When I remove "custom_modulerun.conf" from salt minion config directory on "sle_minion"
     And I remove "custom_grains.conf" from salt minion config directory on "sle_minion"
-    When I follow "Delete System"
-    Then I should see a "Confirm System Profile Deletion" text
-    When I click on "Delete Profile"
-    And I wait until I see "has been deleted" text
+    And I delete "sle_minion" system using the api
     And I wait until Salt client is inactive on "sle_minion"
     Then "sle_minion" should not be registered
 
