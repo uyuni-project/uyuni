@@ -108,74 +108,73 @@ export class AddTokenButton extends Component<Props, State> {
   }
 
   private renderCreationForm(): ReactNode {
-    if (this.state.createRequest === undefined) {
-      return <></>;
-    }
-
     return (
       <Dialog
         id="creation-modal"
         title={
-          this.state.createRequest.type === TokenType.ISSUED ? t("Issue a new token") : t("Store an external token")
+          this.state.createRequest?.type === TokenType.ISSUED ? t("Issue a new token") : t("Store an external token")
         }
         isOpen={this.state.createRequest !== undefined}
         onClose={() => this.setState({ createRequest: undefined })}
         content={
-          <Form
-            model={this.state.createRequest}
-            onChange={(model) => this.setState({ createRequest: { ...model } })}
-            onValidate={(valid) => this.setState({ createRequestValid: valid })}
-          >
-            <Text
-              name="fqdn"
-              label={t("Server FQDN")}
-              required
-              placeholder={t("e.g. server.domain.com")}
-              labelClass="col-md-3"
-              divClass="col-md-6"
-              validators={[Validation.matches(/^[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*$/)]}
-              invalidHint={t("Has to be a valid FQDN address")}
-            />
-            {this.state.createRequest.type === TokenType.CONSUMED && (
+          this.state.createRequest ? (
+            <Form
+              model={this.state.createRequest}
+              onChange={(model) =>
+                this.state.createRequest &&
+                this.setState({ createRequest: { type: this.state.createRequest.type, ...model } })
+              }
+              onValidate={(valid) => this.setState({ createRequestValid: valid })}
+            >
               <Text
-                name="token"
-                label={t("Token")}
+                name="fqdn"
+                label={t("Server FQDN")}
                 required
+                placeholder={t("e.g. server.domain.com")}
                 labelClass="col-md-3"
                 divClass="col-md-6"
-                placeholder="eyJhbGci..."
+                validators={[Validation.matches(/^[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)*$/)]}
+                invalidHint={t("Has to be a valid FQDN address")}
               />
-            )}
-          </Form>
+              {this.state.createRequest.type === TokenType.CONSUMED && (
+                <Text
+                  name="token"
+                  label={t("Token")}
+                  required
+                  labelClass="col-md-3"
+                  divClass="col-md-6"
+                  placeholder="eyJhbGci..."
+                />
+              )}
+            </Form>
+          ) : null
         }
         footer={
-          <div className="col-lg-6">
-            <div className="pull-right btn-group">
-              <Button
-                id="creation-modal-cancel-button"
-                className="btn-default"
-                text={t("Cancel")}
-                handler={() => this.setState({ createRequest: undefined })}
-              />
-              <Button
-                id="creation-modal-submit-button"
-                className="btn-primary"
-                disabled={!this.state.createRequestValid}
-                text={this.state.createRequest.type === TokenType.ISSUED ? t("Issue") : t("Store")}
-                handler={() => this.onCreateToken()}
-              />
+          this.state.createRequest ? (
+            <div className="col-lg-6">
+              <div className="pull-right btn-group">
+                <Button
+                  id="creation-modal-cancel-button"
+                  className="btn-default"
+                  text={t("Cancel")}
+                  handler={() => this.setState({ createRequest: undefined })}
+                />
+                <Button
+                  id="creation-modal-submit-button"
+                  className="btn-primary"
+                  disabled={!this.state.createRequestValid}
+                  text={this.state.createRequest.type === TokenType.ISSUED ? t("Issue") : t("Store")}
+                  handler={() => this.onCreateToken()}
+                />
+              </div>
             </div>
-          </div>
+          ) : null
         }
       />
     );
   }
 
   private renderTokenModal(): ReactNode {
-    if (this.state.generatedToken === undefined) {
-      return <></>;
-    }
-
     return (
       <Dialog
         id="show-token-modal"
@@ -183,48 +182,52 @@ export class AddTokenButton extends Component<Props, State> {
         isOpen={this.state.generatedToken !== undefined}
         closableModal={false}
         content={
-          <>
-            <p>
-              {t(
-                "The new token was generated successfully. Make sure to copy it now as you will not be able to see this again."
-              )}
-            </p>
-            <Form className="panel-default" divClass="panel-body">
-              <div className="row justify-content-md-center margin-top-sm">
-                <TextField
-                  type="text"
-                  id="generated-token"
-                  className="col-md-7"
-                  value={this.state.generatedToken}
-                  disabled={true}
-                />
-                <LinkButton
-                  icon="fa-copy"
-                  text={t("Copy")}
-                  className="btn-default col-md-1"
-                  handler={() => this.onCopyToClipboard()}
-                />
-              </div>
-              <div className="row justify-content-md-center">
-                <div className="col-md-8">
-                  <MessagesContainer containerId="show-token-container" />
+          this.state.generatedToken ? (
+            <>
+              <p>
+                {t(
+                  "The new token was generated successfully. Make sure to copy it now as you will not be able to see this again."
+                )}
+              </p>
+              <Form className="panel-default" divClass="panel-body">
+                <div className="row justify-content-md-center margin-top-sm">
+                  <TextField
+                    type="text"
+                    id="generated-token"
+                    className="col-md-7"
+                    value={this.state.generatedToken}
+                    disabled={true}
+                  />
+                  <LinkButton
+                    icon="fa-copy"
+                    text={t("Copy")}
+                    className="btn-default col-md-1"
+                    handler={() => this.onCopyToClipboard()}
+                  />
                 </div>
-              </div>
-            </Form>
-          </>
+                <div className="row justify-content-md-center">
+                  <div className="col-md-8">
+                    <MessagesContainer containerId="show-token-container" />
+                  </div>
+                </div>
+              </Form>
+            </>
+          ) : null
         }
         footer={
-          <div className="col-lg-6">
-            <div className="btn-group">
-              <Button
-                id="show-token-modal-close-button"
-                className="btn-default"
-                handler={() => this.onCloseTokenModal()}
-                text={t("Close")}
-                icon="fa-close"
-              />
+          this.state.generatedToken ? (
+            <div className="col-lg-6">
+              <div className="btn-group">
+                <Button
+                  id="show-token-modal-close-button"
+                  className="btn-default"
+                  handler={() => this.onCloseTokenModal()}
+                  text={t("Close")}
+                  icon="fa-close"
+                />
+              </div>
             </div>
-          </div>
+          ) : null
         }
       />
     );
