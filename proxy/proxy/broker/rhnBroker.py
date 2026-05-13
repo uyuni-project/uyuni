@@ -217,8 +217,7 @@ class BrokerHandler(SharedHandler):
 
         if req.method == "GET":
             # pylint: disable-next=consider-using-f-string
-            self.fullRequestURL = "%s://%s%s" % (
-                self.req.headers_in["REQUEST_SCHEME"],
+            self.fullRequestURL = "https://%s%s" % (
                 self.rhnParent,
                 effectiveURI,
             )
