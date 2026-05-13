@@ -1,4 +1,4 @@
-# Copyright (c) 2021-2026 SUSE LLC
+# Copyright (c) 2021-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 #
@@ -14,7 +14,11 @@ Feature: Bootstrap a Salt minion via the GUI using SSH key
     Given I am authorized
 
   Scenario: Delete SLES minion system profile before bootstrap with SSH key test
-    When I delete "sle_minion" system using the api
+    Given I am on the Systems overview page of this "sle_minion"
+    When I follow "Delete System"
+    Then I should see a "Confirm System Profile Deletion" text
+    When I click on "Delete Profile"
+    And I wait until I see "has been deleted" text
     And I wait until Salt client is inactive on "sle_minion"
     Then "sle_minion" should not be registered
 

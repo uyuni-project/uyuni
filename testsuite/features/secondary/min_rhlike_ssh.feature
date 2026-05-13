@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2026 SUSE LLC
+# Copyright (c) 2017-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # 1) delete Red Hat-like minion and register as SSH minion
@@ -92,7 +92,11 @@ Feature: Bootstrap a SSH-managed Red Hat-like minion and do some basic operation
     Then I check for failed events on history event page
 
   Scenario: Cleanup: delete the SSH-managed Red Hat-like minion
-    When I delete "rhlike_minion" system using the api
+    When I am on the Systems overview page of this "rhlike_minion"
+    And I follow "Delete System"
+    Then I should see a "Confirm System Profile Deletion" text
+    When I click on "Delete Profile"
+    And I wait until I see "has been deleted" text
     Then "rhlike_minion" should not be registered
 
   Scenario: Cleanup: bootstrap a Red Hat-like minion after SSH minion tests

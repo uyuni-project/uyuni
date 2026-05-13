@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2026 SUSE LLC
+# Copyright (c) 2020-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature can cause failures in the following features:
@@ -84,7 +84,11 @@ Feature: Register a Salt system to be managed via SSH tunnel
     Then I should see "My remote command output" in the command output for "ssh_minion"
 
   Scenario: Cleanup: delete the SSH tunnel minion
-    When I delete "ssh_minion" system using the api
+    Given I am on the Systems overview page of this "ssh_minion"
+    When I follow "Delete System"
+    Then I should see a "Confirm System Profile Deletion" text
+    When I click on "Delete Profile"
+    And I wait until I see "has been deleted" text
     Then "ssh_minion" should not be registered
 
   Scenario: Cleanup: register a SSH minion after SSH tunnel tests

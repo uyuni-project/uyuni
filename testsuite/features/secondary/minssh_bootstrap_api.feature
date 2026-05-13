@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2026 SUSE LLC
+# Copyright (c) 2017-2024 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # This feature can cause failures in the following features:
@@ -19,7 +19,11 @@ Feature: Register a salt-ssh system via API
     Given I am authorized
 
   Scenario: Delete SSH minion system profile before API bootstrap test
-    When I delete "ssh_minion" system using the api
+    Given I am on the Systems overview page of this "ssh_minion"
+    When I follow "Delete System"
+    Then I should see a "Confirm System Profile Deletion" text
+    When I click on "Delete Profile"
+    And I wait until I see "has been deleted" text
     Then "ssh_minion" should not be registered
 
 @proxy

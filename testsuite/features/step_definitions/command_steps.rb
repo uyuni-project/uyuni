@@ -1635,9 +1635,16 @@ end
 
 When(/^I reboot the "([^"]*)" host through SSH, waiting until it comes back$/) do |host|
   node = get_target(host)
+  old_boot_id, _err, _rc = node.run('cat /proc/sys/kernel/random/boot_id', check_errors: false)
+  old_boot_id = old_boot_id.strip
   node.run('reboot', check_errors: false, verbose: true, runs_in_container: false)
-  node.wait_until_offline
   node.wait_until_online
+  repeat_until_timeout(timeout: DEFAULT_TIMEOUT, message: "#{node.hostname} did not complete reboot") do
+    new_boot_id, _err, rc = node.run('cat /proc/sys/kernel/random/boot_id', check_errors: false)
+    break if rc.zero? && new_boot_id.strip != old_boot_id
+
+    sleep 1
+  end
 end
 
 When(/^I reboot the "([^"]*)" minion through the web UI$/) do |host|
