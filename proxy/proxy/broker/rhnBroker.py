@@ -46,7 +46,6 @@ from proxy.rhnConstants import URI_PREFIX_KS_CHECKSUM
 import proxy.rhnProxyAuth
 from . import rhnRepository
 
-
 # the version should not be never decreased, never mind that spacewalk has different versioning
 _PROXY_VERSION = "5.5.0"
 # HISTORY: '0.9.7', '3.2.0', '3.5.0', '3.6.0', '4.1.0',
@@ -565,7 +564,7 @@ class BrokerHandler(SharedHandler):
             self.cachedClientInfo = UserDictCase()
         else:
             # Some other type of request
-            (req_type, reqident, reqaction, reqparams) = self._split_url(req)
+            req_type, reqident, reqaction, reqparams = self._split_url(req)
             if reqaction == "getPackage":
                 reqparams = tuple([os.path.join(*reqparams)])
 
