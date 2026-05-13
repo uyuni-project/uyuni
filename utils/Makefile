@@ -9,7 +9,7 @@ FILES	= __init__ depsolver cloneByDate
 SCRIPTS = spacewalk-common-channels  \
 	  spacewalk-clone-by-date spacewalk-manage-channel-lifecycle \
 	  taskotop spacewalk-watch-channel-sync.sh
-CONFIGS = spacewalk-common-channels.ini
+CONFIGS = spacewalk-common-channels.ini spacewalk-common-channels-legacy.ini
 
 DOCBOOK = $(wildcard /usr/bin/docbook2man)
 
