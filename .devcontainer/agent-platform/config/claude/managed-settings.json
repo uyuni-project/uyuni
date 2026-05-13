@@ -1,0 +1,81 @@
+{
+  "hooks": {
+    "SessionStart": [],
+    "PreToolUse": [],
+    "PermissionRequest": [],
+    "PostToolUse": [],
+    "Notification": [],
+    "UserPromptSubmit": [],
+    "Stop": [],
+    "SubagentStop": [],
+    "PreCompact": [],
+    "SessionEnd": []
+  },
+  "permissions": {
+    "deny": [
+      "Read(**/.env*)",
+      "Edit(**/.env*)",
+      "Write(**/.env*)",
+      "Read(**/*.pem)",
+      "Edit(**/*.pem)",
+      "Write(**/*.pem)",
+      "Read(**/*.key)",
+      "Edit(**/*.key)",
+      "Write(**/*.key)",
+      "Read(**/*.crt)",
+      "Edit(**/*.crt)",
+      "Write(**/*.crt)",
+      "Read(**/.ssh/**)",
+      "Edit(**/.ssh/**)",
+      "Write(**/.ssh/**)",
+      "Read(**/.aws/**)",
+      "Edit(**/.aws/**)",
+      "Write(**/.aws/**)",
+      "Read(**/.azure/**)",
+      "Edit(**/.azure/**)",
+      "Write(**/.azure/**)",
+      "Read(**/.config/gcloud/**)",
+      "Edit(**/.config/gcloud/**)",
+      "Write(**/.config/gcloud/**)",
+      "Read(**/.gnupg/**)",
+      "Edit(**/.gnupg/**)",
+      "Write(**/.gnupg/**)",
+      "Read(**/.kube/**)",
+      "Edit(**/.kube/**)",
+      "Write(**/.kube/**)",
+      "Read(**/.docker/**)",
+      "Edit(**/.docker/**)",
+      "Write(**/.docker/**)"
+    ],
+    "allow": [
+      "WebFetch",
+      "WebSearch"
+    ],
+    "defaultMode": "bypassPermissions"
+  },
+  "forceLoginMethod": "claudeai",
+  "enabledPlugins": {
+    "frontend-design@claude-plugins-official": true,
+    "playwright@claude-plugins-official": true,
+    "feature-dev@claude-plugins-official": true,
+    "ralph-loop@claude-plugins-official": true,
+    "context7@claude-plugins-official": true
+  },
+  "enableAllProjectMcpServers": false,
+  "allowManagedPermissionRulesOnly": true,
+  "allowManagedHooksOnly": true,
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
+  "env": {
+    "CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS": "1",
+    "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1",
+    "CLAUDE_CODE_SHELL": "zsh",
+    "MAX_THINKING_TOKENS": "32000",
+    "CLAUDE_CONFIG_DIR": "/home/node/.claude/",
+    "CLAUDE_CODE_USE_VERTEX": "1",
+    "CLOUD_ML_REGION": "global",
+    "ANTHROPIC_VERTEX_PROJECT_ID": "vertex-ai-206179"
+  }
+}
