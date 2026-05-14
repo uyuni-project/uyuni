@@ -825,6 +825,34 @@ def channel_is_synced?(channel)
   sync_status
 end
 
+# Determines whether a channel's metadata generation has failed on the server.
+#
+# Checks the published metadata directory (/pub/rhn/repodata/) used by the WebUI
+# to mark a channel as FINISHED. If no metadata generation is in progress (no solv.new)
+# and no published metadata exists, the channel has failed or will never complete.
+#
+# @param channel [String] The name of the channel to check.
+# @return [Boolean] Returns true if the channel has failed, false if still in progress or finished.
+def channel_metadata_failed?(channel)
+  server = get_target('server')
+  pub_path = "/pub/rhn/repodata/#{channel}"
+  cache_path = "/var/cache/rhn/repodata/#{channel}"
+
+  # Still generating - solv.new present means metadata generation is in progress
+  _, new_file_code = server.run("test -f #{cache_path}/solv.new", check_errors: false)
+  return false if new_file_code.zero?
+
+  # Published metadata exists - channel is finished (RPM or Debian)
+  _, rpm_pub_code = server.run("test -f #{pub_path}/repomd.xml", check_errors: false)
+  return false if rpm_pub_code.zero?
+
+  _, deb_pub_code = server.run("test -f #{pub_path}/Release", check_errors: false)
+  return false if deb_pub_code.zero?
+
+  log "WARN: Channel #{channel} has no published metadata and no generation in progress - detected as failed."
+  true
+end
+
 # This function initializes the API client
 #
 # The API client is determined based on the `$debug_mode` and `product` variables.

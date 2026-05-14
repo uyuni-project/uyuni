@@ -454,6 +454,14 @@ When(/^I wait until all synchronized channels have solved their dependencies$/) 
     deadline_elapsed = optimized_timeout
     repeat_until_timeout(timeout: optimized_timeout, message: 'Product not fully initialized') do
       prev_count = channels_to_wait_solv_file.count
+
+      failed_channels = channels_to_wait_solv_file.select { |channel| channel_metadata_failed?(channel) }
+      if failed_channels.any?
+        log "WARN: Channels detected as failed (no published metadata): #{failed_channels.join(', ')}"
+        add_context('channels_failed_without_solv_file', get_context('channels_failed_without_solv_file') + failed_channels)
+        channels_to_wait_solv_file -= failed_channels
+      end
+
       channels_to_wait_solv_file.reject! { |channel| channel_is_synced?(channel) }
       break if channels_to_wait_solv_file.empty?
 
