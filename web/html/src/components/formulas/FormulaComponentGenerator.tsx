@@ -448,7 +448,7 @@ function wrapCheckboxFormGroup(
   id: string,
   required?: boolean,
   input?: ReactNode,
-  help?: ReactNode
+  help?: string | null
 ) {
   return (
     <div className="form-group" key={elementName}>
