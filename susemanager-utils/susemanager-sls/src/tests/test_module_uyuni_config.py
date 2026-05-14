@@ -167,6 +167,28 @@ class TestRPCClient:
                 "generic error when processing",
             )
 
+    def test_call_rpc_preserves_transport_errors(self):
+        """
+        Preserve non-Fault RPC transport errors.
+
+        :return:
+        """
+        self.rpc_client.token = "the_token"
+        exc = OSError("connection refused")
+        setattr(self.rpc_client.conn, "uyuni.some_method", MagicMock(side_effect=exc))
+
+        with patch("src.modules.uyuni_config.log") as logger:
+            with pytest.raises(OSError) as err:
+                self.rpc_client("uyuni.some_method")
+            assert err.value is exc
+            mo = getattr(self.rpc_client.conn, "uyuni.some_method")
+            assert mo.called
+            mo.assert_called_with("the_token")
+            assert logger.error.call_args[0] == (
+                "Unable to call RPC function: %s",
+                "connection refused",
+            )
+
     def test_call_rpc_crash_handle_reauthenticate_error(self):
         """
         Handle XML-RPC method crash whit reauthenticate error
