@@ -310,7 +310,6 @@ class FormulaForm extends Component<Props, State> {
                 </div>
               </SectionToolbar>
               <BootstrapPanel
-                // title={capitalize(get(this.state.formulaName, t("Unnamed")))}
                 header={
                   <div className="ms-4">
                     <SearchField
