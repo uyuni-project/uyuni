@@ -34,6 +34,7 @@ SELECT E.id, E.update_date, E.advisory_name, E.synopsis AS ADVISORY_SYNOPSIS, E.
  WHERE E.id = X.errata_id
 ORDER BY  E.update_date DESC, E.id
   </query>
+  <elaborator name="errata_cves_elab" />
   <elaborator name="errata_overview" />
   <elaborator name="errata_flags" />
 </mode>
@@ -51,6 +52,7 @@ SELECT E.id, E.update_date, E.advisory_name, E.synopsis as advisory_synopsis, E.
  AND E.advisory_type = :type
 ORDER BY  E.update_date DESC, E.id
   </query>
+  <elaborator name="errata_cves_elab" />
   <elaborator name="errata_overview" />
   <elaborator name="errata_flags" />
 </mode>
