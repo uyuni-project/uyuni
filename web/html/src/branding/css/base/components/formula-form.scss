@@ -65,6 +65,8 @@
 .level-5,
 .level-6,
 .level-7 {
+  border-left: 0;
+
   h4 {
     font-size: 14px;
 
@@ -79,10 +81,4 @@
 }
 .required-form-field {
   font-weight: 600;
-}
-
-.level-7,
-.level-6,
-.level-5 {
-  border-left: 0;
 }

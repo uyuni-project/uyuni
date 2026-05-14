@@ -16,7 +16,6 @@ import {
   isFiltered,
 } from "./FormulaComponentGenerator";
 import SectionToggle from "./SectionToggle";
-import { element } from "prop-types";
 
 const EditGroupSubtype = Formulas.EditGroupSubtype;
 const getEditGroupSubtype = Formulas.getEditGroupSubtype;
@@ -172,9 +171,8 @@ class EditGroup extends Component<EditGroupProps, EditGroupState> {
                         title={
                           this.props.element.$maxItems! <= this.props.value.length
                             ? "Max number of items reached"
-                            : null
+                            : undefined
                         }
-                        /* @ts-expect-error: The property `disabled` doesn't exist on the `<i>` tag, but this was here historically */
                         disabled={this.props.element.$maxItems! <= this.props.value.length || this.props.disabled}
                         {...DEPRECATED_onClick(this.handleAddItem)}
                       >
@@ -183,7 +181,7 @@ class EditGroup extends Component<EditGroupProps, EditGroupState> {
                     </div>
                   </div>
                 )}
-              {getEditGroupSubtype(element) == EditGroupSubtype.PRIMITIVE_DICTIONARY && (
+              {getEditGroupSubtype(element) === EditGroupSubtype.PRIMITIVE_DICTIONARY && (
                 <div className="form-group">
                   <div className="col-lg-3 "></div>
                   <div className="col-lg-9 ">
@@ -194,9 +192,10 @@ class EditGroup extends Component<EditGroupProps, EditGroupState> {
                       id={this.props.id + "#add_item"}
                       data-bs-toggle="tooltip"
                       title={
-                        this.props.element.$maxItems! <= this.props.value.length ? "Max number of items reached" : null
+                        this.props.element.$maxItems! <= this.props.value.length
+                          ? "Max number of items reached"
+                          : undefined
                       }
-                      /* @ts-expect-error: The property `disabled` doesn't exist on the `<i>` tag, but this was here historically */
                       disabled={this.props.element.$maxItems! <= this.props.value.length || this.props.disabled}
                       {...DEPRECATED_onClick(this.handleAddItem)}
                     >
@@ -218,6 +217,7 @@ type EditPrimitiveGroupProps = {
   value: any;
   element: ElementDefinition;
   formulaForm: any;
+  level?: number;
   isDisabled?: boolean;
   handleRemoveItem: (...args: any[]) => any;
   handleAddItem?: (...args: any[]) => any;
@@ -230,7 +230,6 @@ type EditPrimitiveGroupProps = {
 class EditPrimitiveGroup extends Component<EditPrimitiveGroupProps> {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   simpleWrapper = (name, required, element, i, help = null, isLastItem = false) => {
-    const itemIndex = parseInt(i);
     return (
       <Fragment>
         <div className="col-lg-4 offset-lg-3">{element}</div>
@@ -283,7 +282,7 @@ class EditPrimitiveGroup extends Component<EditPrimitiveGroupProps> {
 
     for (const idx in itemIndices) {
       const i = itemIndices[idx];
-      const isLastItem = parseInt(idx) === lastIndex;
+      const isLastItem = parseInt(idx, 10) === lastIndex;
       const id = this.props.id + "#" + i;
 
       // Create a wrapper that passes isLastItem information
@@ -316,6 +315,7 @@ type EditPrimitiveDictionaryGroupProps = {
   value: any;
   element: ElementDefinition;
   formulaForm: any;
+  level?: number;
   isDisabled?: boolean;
   handleRemoveItem: (...args: any[]) => any;
 };
