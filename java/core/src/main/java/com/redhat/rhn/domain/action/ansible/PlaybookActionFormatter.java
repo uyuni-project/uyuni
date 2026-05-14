@@ -27,6 +27,9 @@ import com.redhat.rhn.manager.system.SystemManager;
 
 import com.suse.manager.webui.utils.YamlHelper;
 
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.yaml.snakeyaml.error.YAMLException;
 
 import java.util.Comparator;
@@ -49,6 +52,29 @@ public class PlaybookActionFormatter extends ActionFormatter {
      */
     public PlaybookActionFormatter(Action actionIn) {
         super(actionIn);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * Returns the playbook file name so the Action Chain UI can show what each
+     * "Execute Ansible playbook" step actually runs. The path is reduced to its
+     * basename and HTML-escaped because the value is interpolated into the
+     * already-localized message via {@code <bean:message ... arg0=...>} and is
+     * rendered as raw HTML by the JSP, like the other action formatters
+     * (errata, package).
+     */
+    @Override
+    public String getRelatedObjectDescription() {
+        PlaybookActionDetails actionDetails = ((PlaybookAction) this.getAction()).getDetails();
+        if (actionDetails == null) {
+            return "";
+        }
+        String playbookPath = actionDetails.getPlaybookPath();
+        if (StringUtils.isBlank(playbookPath)) {
+            return "";
+        }
+        return StringEscapeUtils.escapeHtml4(FilenameUtils.getName(playbookPath));
     }
 
     /**

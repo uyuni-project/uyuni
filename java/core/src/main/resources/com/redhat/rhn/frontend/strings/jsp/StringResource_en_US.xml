@@ -2802,7 +2802,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         </context-group>
       </trans-unit>
       <trans-unit id="actionchain.jsp.ansible.playbook" xml:space="preserve">
-        <source>Execute Ansible playbook</source>
+        <source>Execute Ansible playbook {0} on</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/schedule/ActionChain</context>
         </context-group>
