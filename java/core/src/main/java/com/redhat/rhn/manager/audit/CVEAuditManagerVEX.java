@@ -12,20 +12,7 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-
 package com.redhat.rhn.manager.audit;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
 
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
 import com.redhat.rhn.domain.server.Server;
@@ -35,6 +22,17 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.suse.oval.ShallowSystemPackage;
 import com.suse.oval.vulnerablepkgextractor.VulnerablePackage;
 import com.suse.vex.VEXCachingFactory;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * CVE auditing using VEX data.
@@ -48,23 +46,21 @@ public class CVEAuditManagerVEX {
     }
 
     /**
-    * Lists the patch status of systems for a given CVE using VEX data.
-    *
-    * @param user          the user performing the audit
-    * @param cveIdentifier the CVE to audit
-    * @param patchStatuses statuses to include
-    * @return list of matching systems
-    * @throws UnknownCVEIdentifierException if CVE is unknown
-    */
+     * Lists the patch status of systems for a given CVE using VEX data.
+     *
+     * @param user the user performing the audit
+     * @param cveIdentifier the CVE to audit
+     * @param patchStatuses statuses to include
+     * @return list of matching systems
+     * @throws UnknownCVEIdentifierException if CVE is unknown
+     */
     public static List<CVEAuditServer> listSystemsByPatchStatus(User user, String cveIdentifier,
-                                                                EnumSet<PatchStatus> patchStatuses)
-
-            throws UnknownCVEIdentifierException {
+            EnumSet<PatchStatus> patchStatuses) throws UnknownCVEIdentifierException {
         if (!VEXCachingFactory.canAuditCVE(cveIdentifier)) {
             throw new UnknownCVEIdentifierException();
         }
 
-        // If patchStatuses is null, it doesnt apply any filter
+        // If patchStatuses is null, it does not apply any filter
         if (patchStatuses == null) {
             patchStatuses = EnumSet.allOf(PatchStatus.class);
         }
@@ -77,9 +73,7 @@ public class CVEAuditManagerVEX {
                 continue;
             }
 
-            CVEAuditSystemBuilder auditResult =
-                    doAuditSystem(cveIdentifier, clientServer);
-
+            CVEAuditSystemBuilder auditResult = doAuditSystem(cveIdentifier, clientServer);
             if (patchStatuses.contains(auditResult.getPatchStatus())) {
                 result.add(new CVEAuditServer(
                         auditResult.getId(),
@@ -98,18 +92,16 @@ public class CVEAuditManagerVEX {
      * Audits a system for a given CVE using VEX data.
      *
      * @param cveIdentifier the CVE identifier
-     * @param clientServer  the system to audit
+     * @param clientServer the system to audit
      * @return audit result builder
      */
     public static CVEAuditSystemBuilder doAuditSystem(String cveIdentifier, Server clientServer) {
         CVEAuditSystemBuilder builder = new CVEAuditSystemBuilder(clientServer.getId());
         builder.setSystemName(clientServer.getName());
 
-        List<ShallowSystemPackage> installedPackages =
-                PackageManager.shallowSystemPackageList(clientServer.getId());
-
-        Set<VulnerablePackage> vulnerablePackages =
-                new HashSet<>(VEXCachingFactory.getVulnerablePackagesByProductAndCve(clientServer.getCpe(), cveIdentifier));
+        List<ShallowSystemPackage> installedPackages = PackageManager.shallowSystemPackageList(clientServer.getId());
+        Set<VulnerablePackage> vulnerablePackages = new HashSet<>(
+                VEXCachingFactory.getVulnerablePackagesByProductAndCve(clientServer.getCpe(), cveIdentifier));
 
         LOG.debug("Vulnerable packages before filtering: {}", vulnerablePackages);
 
@@ -121,23 +113,25 @@ public class CVEAuditManagerVEX {
 
         if (installedVulnerablePackages.isEmpty()) {
             builder.setPatchStatus(PatchStatus.NOT_AFFECTED);
+            builder.setScanDataSources(ScanDataSource.VEX);
             return builder;
         }
 
         Set<VulnerablePackage> patched = installedVulnerablePackages.stream()
-                .filter(pkg -> pkg.getFixVersion().isPresent()).collect(Collectors.toSet());
+                .filter(pkg -> pkg.getFixVersion().isPresent())
+                .collect(Collectors.toSet());
 
         Set<VulnerablePackage> unpatched = installedVulnerablePackages.stream()
-                .filter(pkg -> pkg.getFixVersion().isEmpty()).collect(Collectors.toSet());
+                .filter(pkg -> pkg.getFixVersion().isEmpty())
+                .collect(Collectors.toSet());
 
         if (unpatched.size() == installedVulnerablePackages.size()) {
             builder.setPatchStatus(PatchStatus.AFFECTED_PATCH_UNAVAILABLE);
         }
         else {
-            boolean allPatched = patched.stream().allMatch(pkg ->
-                    getInstalledVersions(pkg, installedPackages).stream()
-                            .allMatch(installed -> installed.getPackageEVR()
-                                    .compareTo(PackageEvr.parseRpm(pkg.getFixVersion().get())) >= 0));
+            boolean allPatched = patched.stream().allMatch(pkg -> getInstalledVersions(pkg, installedPackages).stream()
+                    .allMatch(installed -> installed.getPackageEVR()
+                            .compareTo(PackageEvr.parseRpm(pkg.getFixVersion().get())) >= 0));
 
             if (allPatched) {
                 builder.setPatchStatus(PatchStatus.PATCHED);
@@ -156,12 +150,9 @@ public class CVEAuditManagerVEX {
     }
 
     private static List<ShallowSystemPackage> getInstalledVersions(VulnerablePackage pkg,
-                                                                   List<ShallowSystemPackage> installed) {
+            List<ShallowSystemPackage> installed) {
         return installed.stream()
                 .filter(p -> Objects.equals(p.getName(), pkg.getName()))
                 .collect(Collectors.toList());
     }
-
-
-
 }
