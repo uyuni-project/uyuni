@@ -12,10 +12,11 @@
  * granted to use or replicate Red Hat trademarks that are incorporated
  * in this software or its documentation.
  */
-
 package com.suse.vex;
 
-import com.redhat.rhn.common.db.datasource.*;
+import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.common.db.datasource.ModeFactory;
+import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 
 import com.suse.oval.vulnerablepkgextractor.VulnerablePackage;
@@ -23,13 +24,16 @@ import com.suse.oval.vulnerablepkgextractor.VulnerablePackage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
  * Provides access to VEX data stored in the database.
  */
 public class VEXCachingFactory extends HibernateFactory {
+
     private static final Logger LOG = LogManager.getLogger(VEXCachingFactory.class);
 
     private VEXCachingFactory() {
@@ -46,11 +50,11 @@ public class VEXCachingFactory extends HibernateFactory {
     public static List<VulnerablePackage> getVulnerablePackagesByProductAndCve(String productCpe, String cve) {
         SelectMode mode = ModeFactory.getMode("vex_queries", "get_vulnerable_packages");
 
-        Map<String, Object> params = new HashMap<>();
+        Map<String, String> params = new HashMap<>();
         params.put("product_cpe", productCpe);
         params.put("cve_name", cve);
 
-        DataResult<Row> result = mode.execute(params);
+        DataResult result = mode.execute(params);
 
         return result.stream().map(row -> {
             VulnerablePackage pkg = new VulnerablePackage();
@@ -67,10 +71,9 @@ public class VEXCachingFactory extends HibernateFactory {
      * @return true if we can audit
      */
     public static boolean canAuditCVE(String cve) {
-        SelectMode m = ModeFactory.getMode("vex_queries", "can_audit_cve");
-
-        Map<String, Object> params = Map.of("cve_name", cve);
-        DataResult<Row> result = m.execute(params);
+        SelectMode mode = ModeFactory.getMode("vex_queries", "can_audit_cve");
+        Map<String, String> params = Map.of("cve_name", cve);
+        DataResult result = mode.execute(params);
 
         return !result.isEmpty();
     }
@@ -82,10 +85,9 @@ public class VEXCachingFactory extends HibernateFactory {
      * @return true if data is available
      */
     public static boolean checkVEXAvailability(String cpe) {
-        SelectMode m = ModeFactory.getMode("vex_queries", "check_vex_availability");
-
-        Map<String, Object> params = Map.of("cpe", cpe);
-        DataResult<Row> result = m.execute(params);
+        SelectMode mode = ModeFactory.getMode("vex_queries", "check_vex_availability");
+        Map<String, String> params = Map.of("cpe", cpe);
+        DataResult result = mode.execute(params);
 
         return !result.isEmpty();
     }
