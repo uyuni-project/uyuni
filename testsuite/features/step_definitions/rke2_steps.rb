@@ -233,3 +233,55 @@ When(/^I update the uyuni-ca configmap on "(.*)" with the external CA$/) do |tar
   )
   raise SystemCallError, 'Failed to update uyuni-ca configmap on proxy' unless code.zero?
 end
+
+### TFTP container sanity check steps
+
+Then(/^the "(.*)" service on "(.*)" should have at least one active endpoint$/) do |svc, target|
+  out, code = get_target(target).run_local(
+    "kubectl get endpoints #{svc} -n uyuni -o jsonpath='{.subsets[0].addresses[0].ip}'"
+  )
+  raise "Service '#{svc}' has no active endpoints on '#{target}'" unless code.zero? && !out.strip.empty?
+end
+
+# File placed in /srv/tftpboot on the uyuni (server) pod.
+# The tftp pod fetches it via http://web.uyuni.svc/tftp/<filename> - it never reads local disk.
+Given(/^I create a sanity-check file in the TFTP boot root on "(.*)"$/) do |target|
+  server_pod = get_pod_name(target, 'server')
+  tftp_probe_filename = 'uyuni-tftp-sanity-probe.txt'
+  tftp_probe_content  = 'uyuni-tftp-sanity-ok'
+  add_context(:tftp_probe_filename, tftp_probe_filename)
+  add_context(:tftp_probe_content, tftp_probe_content)
+  get_target(target).run_local(
+    "kubectl exec -n uyuni #{server_pod} -- " \
+    "sh -c 'echo #{tftp_probe_content} > /srv/tftpboot/#{tftp_probe_filename}'"
+  )
+end
+
+# Uses curl with the tftp:// scheme
+# Tests the full path: server node -> NodePort -> tftp pod -> HTTP -> uyuni pod -> /srv/tftpboot.
+When(/^I download the sanity-check file via TFTP from "(.*)"$/) do |target|
+  node_port = get_tftp_node_port(target)
+  filename  = get_context(:tftp_probe_filename)
+  local     = "/tmp/#{filename}"
+  add_context(:tftp_probe_local_path, local)
+  get_target(target).run_local(
+    "curl --silent --show-error tftp://localhost:#{node_port}/#{filename} --output #{local}"
+  )
+end
+
+Then(/^the downloaded TFTP content should match the expected sanity-check content on "(.*)"$/) do |target|
+  local    = get_context(:tftp_probe_local_path)
+  expected = get_context(:tftp_probe_content)
+  out, _code = get_target(target).run_local("cat #{local}", check_errors: false)
+  raise "Content mismatch — expected: '#{expected}', got: '#{out.strip}'" unless out.strip == expected
+end
+
+And(/^I remove the sanity-check file from the TFTP boot root on "(.*)"$/) do |target|
+  server_pod = get_pod_name(target, 'server')
+  filename   = get_context(:tftp_probe_filename)
+  local      = get_context(:tftp_probe_local_path)
+  get_target(target).run_local(
+    "kubectl exec -n uyuni #{server_pod} -- rm -f /srv/tftpboot/#{filename}"
+  )
+  get_target(target).run_local("rm -f #{local}", check_errors: false)
+end

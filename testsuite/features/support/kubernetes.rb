@@ -81,6 +81,23 @@ def get_pod_name(target, component)
   out if code.zero?
 end
 
+# Returns the NodePort assigned to the TFTP service on the given target cluster.
+# Needed because the LoadBalancer EXTERNAL-IP is pending on bare-metal RKE2;
+# the NodePort is the only externally reachable entry point.
+#
+# @param target [String] The target host where kubectl commands will be executed.
+# @return [Integer] The NodePort number for the TFTP UDP service.
+def get_tftp_node_port(target)
+  cmd = "kubectl get svc tftp -n uyuni -o jsonpath='{.spec.ports[0].nodePort}'"
+  out, code = get_target(target).run_local(cmd)
+  raise 'Failed to query TFTP NodePort' unless code.zero?
+
+  port = out.strip.to_i
+  raise 'TFTP service has no NodePort assigned' if port.zero?
+
+  port
+end
+
 # Polls the Kubernetes Deployment status until all replicas are ready or a timeout is reached.
 #
 # @param target [String] The target host where the kubectl command will be run.
