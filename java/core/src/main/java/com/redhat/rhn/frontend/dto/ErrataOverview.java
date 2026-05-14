@@ -632,9 +632,7 @@ public class ErrataOverview extends BaseDto implements RowCallback {
      */
     @Override
     public List<String> getCallBackColumns() {
-        List<String> list = new ArrayList<>();
-        list.add("cve");
-        return list;
+        return List.of("cve");
     }
 
     /**
