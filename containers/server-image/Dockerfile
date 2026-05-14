@@ -39,7 +39,6 @@ RUN zypper ref && zypper --non-interactive up && \
         bind-utils \
         drbd-formula \
         ed \
-        golang-github-QubitProducts-exporter_exporter \
         golang-github-prometheus-node_exporter \
         grafana-formula \
         grub2-arm64-efi \
