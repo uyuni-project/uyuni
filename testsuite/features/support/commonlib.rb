@@ -827,29 +827,28 @@ end
 
 # Determines whether a channel's metadata generation has failed on the server.
 #
-# Checks the published metadata directory (/pub/rhn/repodata/) used by the WebUI
-# to mark a channel as FINISHED. If no metadata generation is in progress (no solv.new)
-# and no published metadata exists, the channel has failed or will never complete.
+# Checks the cache directory (/var/cache/rhn/repodata/) where the server writes
+# metadata during generation. Should only be called for channels where solv.new
+# was previously observed (i.e., generation is known to have started).
 #
 # @param channel [String] The name of the channel to check.
 # @return [Boolean] Returns true if the channel has failed, false if still in progress or finished.
 def channel_metadata_failed?(channel)
   server = get_target('server')
-  pub_path = "/pub/rhn/repodata/#{channel}"
   cache_path = "/var/cache/rhn/repodata/#{channel}"
 
   # Still generating - solv.new present means metadata generation is in progress
   _, new_file_code = server.run("test -f #{cache_path}/solv.new", check_errors: false)
   return false if new_file_code.zero?
 
-  # Published metadata exists - channel is finished (RPM or Debian)
-  _, rpm_pub_code = server.run("test -f #{pub_path}/repomd.xml", check_errors: false)
-  return false if rpm_pub_code.zero?
+  # RPM channel completed successfully - solv file exists in cache
+  _, solv_code = server.run("test -f #{cache_path}/solv", check_errors: false)
+  return false if solv_code.zero?
 
-  _, deb_pub_code = server.run("test -f #{pub_path}/Release", check_errors: false)
-  return false if deb_pub_code.zero?
+  # Debian channel completed successfully - Release and Packages exist in cache
+  _, deb_code = server.run("test -s #{cache_path}/Release && test -e #{cache_path}/Packages", check_errors: false)
+  return false if deb_code.zero?
 
-  log "WARN: Channel #{channel} has no published metadata and no generation in progress - detected as failed."
   true
 end
 

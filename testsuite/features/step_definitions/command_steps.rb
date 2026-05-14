@@ -452,14 +452,28 @@ When(/^I wait until all synchronized channels have solved their dependencies$/) 
   begin
     start = Time.now
     deadline_elapsed = optimized_timeout
+    # Tracks channels where solv.new was observed - generation is known to have started.
+    # We only check for failure on these channels to avoid false positives on queued
+    # channels that have not yet begun metadata generation.
+    channels_generation_started = Set.new
     repeat_until_timeout(timeout: optimized_timeout, message: 'Product not fully initialized') do
       prev_count = channels_to_wait_solv_file.count
 
-      failed_channels = channels_to_wait_solv_file.select { |channel| channel_metadata_failed?(channel) }
+      # Update which channels have started generation (solv.new present)
+      channels_to_wait_solv_file.each do |channel|
+        cache_path = "/var/cache/rhn/repodata/#{channel}"
+        _, code = get_target('server').run("test -f #{cache_path}/solv.new", check_errors: false)
+        channels_generation_started.add(channel) if code.zero?
+      end
+
+      # Only flag channels where we previously confirmed generation started
+      failed_channels = channels_to_wait_solv_file
+        .select { |channel| channels_generation_started.include?(channel) && channel_metadata_failed?(channel) }
       if failed_channels.any?
-        log "WARN: Channels detected as failed (no published metadata): #{failed_channels.join(', ')}"
+        log "WARN: Channels detected as failed (metadata generation started but produced no output): #{failed_channels.join(', ')}"
         add_context('channels_failed_without_solv_file', get_context('channels_failed_without_solv_file') + failed_channels)
         channels_to_wait_solv_file -= failed_channels
+        channels_generation_started -= failed_channels
       end
 
       channels_to_wait_solv_file.reject! { |channel| channel_is_synced?(channel) }
