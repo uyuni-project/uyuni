@@ -1,0 +1,49 @@
+
+model_provider = "openai"
+forced_login_method = "chatgpt"
+chatgpt_base_url = "https://chatgpt.com/backend-api/"
+
+approval_policy = "never"
+sandbox_mode = "danger-full-access"
+
+web_search = "disabled"
+
+[sandbox_workspace_write]
+network_access = false
+writable_roots = []
+
+[shell_environment_policy]
+ignore_default_excludes = false
+set = { CODEX_HOME = "/home/node/.codex" }
+
+[permissions.workspace-safe.filesystem]
+":project_roots" = {
+  "." = "write",
+  "**/.env*" = "none",
+  "**/*.env" = "none",
+  "**/*.pem" = "none",
+  "**/*.key" = "none",
+  "**/*.crt" = "none",
+  "**/.ssh/**" = "none",
+  "**/.aws/**" = "none",
+  "**/.azure/**" = "none",
+  "**/.config/gcloud/**" = "none",
+  "**/.gnupg/**" = "none",
+  "**/.kube/**" = "none",
+  "**/.docker/**" = "none"
+}
+
+[mcp_servers]
+
+[mcp_servers.context7]
+command = "context7-mcp"
+args = []
+
+[mcp_servers.backlog-md]
+command = "backlog-mcp"
+args = ["start"]
+
+[mcp_servers.playwright]
+command = "npx"
+args = ["@playwright/mcp@latest", "--browser", "chromium"]
+env = { PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = "1", DISPLAY = ":99" }

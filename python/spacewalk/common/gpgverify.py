@@ -181,7 +181,7 @@ def verify_file(
       unexpectedly.
     """
     # check for file object
-    if hasattr(signed_file, "name"):
+    if hasattr(signed_file, "name") and not isinstance(signed_file, (os.PathLike, str)):
         signed_fname = typing.cast(str, signed_file.name)
     else:
         signed_fname = signed_file

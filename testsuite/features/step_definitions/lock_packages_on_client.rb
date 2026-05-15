@@ -1,15 +1,21 @@
-# Copyright (c) 2010-2023 SUSE LLC.
+# Copyright (c) 2010-2026 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 ### This file contains the definitions for all steps used to lock packages on a system.
 
-Then(/^"(.*?)" is (locked|unlocked) on "(.*?)"$/) do |pkg, action, system|
+Then(/^"(.*?)" should be (locked|unlocked) on "(.*?)"$/) do |pkg, action, system|
   node = get_target(system)
-  command = "zypper locks  --solvables | grep #{pkg}"
+  command = "zypper locks --solvables | grep #{pkg}"
   if action == 'locked'
-    node.run(command, timeout: 600)
+    repeat_until_timeout(timeout: 30, message: "Package #{pkg} is not locked on #{system}") do
+      _out, code = node.run(command, check_errors: false, timeout: 10)
+      break if code.zero?
+
+      sleep 2
+    end
   else
-    node.run(command, check_errors: false, timeout: 600)
+    _out, code = node.run(command, check_errors: false, timeout: 600)
+    raise ScriptError, "Package #{pkg} is still locked on #{system}" if code.zero?
   end
 end
 

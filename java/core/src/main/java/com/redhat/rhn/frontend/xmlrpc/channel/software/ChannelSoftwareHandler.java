@@ -3143,6 +3143,50 @@ public class ChannelSoftwareHandler extends BaseHandler {
         }
     }
 
+    /**
+     * Returns whether the channel is synchronized automatically by taskomatic job
+     * @param loggedInUser The current user
+     * @param channelLabel The label for the channel in question
+     * @return whether the channel is synchronized automatically
+     *
+     * @apidoc.doc Returns whether is synchronized automatically
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "label of the channel")
+     * @apidoc.returntype #param_desc("boolean", "result", "true if the channel is synchronized automatically")
+     */
+    @ReadOnly
+    public boolean isAutoSync(User loggedInUser, String channelLabel) {
+        return lookupChannelByLabel(loggedInUser, channelLabel).isAutoSync();
+    }
+
+
+    /**
+     * Set whether the channel must be synchronized automatically by taskomatic job
+     * @param loggedInUser The current user
+     * @param channelLabel The label for the channel in question
+     * @param autoSync Boolean telling if the channel should be automatically synchronized
+     * @return The value set to the channel automatic synchronized option
+     *
+     * @apidoc.doc Sets whether the channel is synchronized automatically
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "channelLabel", "label of the channel")
+     * @apidoc.param #param_desc("Boolean", "autoSync", "Value to set on the channel automatic synchronization")
+     * @apidoc.returntype #param_desc("boolean", "result", "The value set to the channel automatic synchronized option")
+     */
+    public boolean setAutoSync(User loggedInUser, String channelLabel, Boolean autoSync) {
+        Channel channel = lookupChannelByLabel(loggedInUser, channelLabel);
+
+        // we also need to check for sat_admin so that users can change the flag for vendor channels
+        if (!UserManager.verifyChannelAdmin(loggedInUser, channel) &&
+                !loggedInUser.hasRole(RoleFactory.SAT_ADMIN)) {
+            throw new PermissionCheckFailureException();
+        }
+
+        channel.setAutoSync(autoSync);
+        ChannelFactory.save(channel);
+        return autoSync;
+    }
+
     private ContentSource lookupContentSourceById(Long repoId, Org org) {
         ContentSource cs = ChannelFactory.lookupContentSource(repoId, org);
         if (cs == null) {

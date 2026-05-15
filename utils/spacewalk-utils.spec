@@ -94,6 +94,7 @@ popd
 %attr(755,root,root) %{_bindir}/taskotop
 %attr(755,root,root) %{_bindir}/spacewalk-watch-channel-sync.sh
 %config %{_sysconfdir}/rhn/spacewalk-common-channels.ini
+%config %{_sysconfdir}/rhn/spacewalk-common-channels-legacy.ini
 %dir %{python3_sitelib}/utils
 %{python3_sitelib}/utils/__init__.py*
 %{python3_sitelib}/utils/cloneByDate.py*

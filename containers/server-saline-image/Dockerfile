@@ -8,23 +8,27 @@ ARG PRODUCT=Uyuni
 ARG VENDOR="Uyuni project"
 ARG URL="https://www.uyuni-project.org/"
 ARG REFERENCE_PREFIX="registry.opensuse.org/uyuni"
+ARG USEPYTHON="python311"
 
 RUN groupadd -r --gid 10554 salt && \
     useradd -r -s /usr/sbin/nologin -g salt -d /var/lib/salt --uid 10554 salt
 
 COPY run_saline.sh /run_saline.sh
 
+# We need to install find before we can run the installation of saline packages
+RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses --force-resolution findutils
+
 # Main packages
-RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses --force-resolution --download-only saline python311-saline && \
+RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses --force-resolution --download-only saline ${USEPYTHON}-saline && \
     rpm -ivh --nodeps $(find /var/cache/zypp/packages/ -type f \
       -name update-alternatives.rpm -o \
-      -name python311-base.rpm -o -name 'libpython3_11*.rpm' -o -name 'libopenssl*.rpm' -o -name libexpat1.rpm -o \
-      -name salt.rpm -o -name python311-salt.rpm -o -name python311-tornado.rpm -o \
-      -name python311-contextvars.rpm -o -name python311-immutables.rpm -o -name python311-looseversion.rpm -o \
-      -name python311-packaging.rpm -o -name python311-distro.rpm -o \
-      -name python311-PyYAML.rpm -o -name 'libyaml*.rpm' -o -name python311-Jinja2.rpm -o -name python311-MarkupSafe.rpm -o \
-      -name python311-msgpack.rpm -o -name python311-more-itertools.rpm -o \
-      -name saline.rpm -o -name python311-saline.rpm -o -name python311-python-dateutil.rpm -o -name python311-six.rpm) && \
+      -name ${USEPYTHON}-base.rpm -o -name 'lib${USEPYTHON/python3/python3_/}*.rpm' -o -name 'libopenssl*.rpm' -o -name libexpat1.rpm -o \
+      -name salt.rpm -o -name ${USEPYTHON}-salt.rpm -o -name ${USEPYTHON}-tornado.rpm -o \
+      -name ${USEPYTHON}-contextvars.rpm -o -name ${USEPYTHON}-immutables.rpm -o -name ${USEPYTHON}-looseversion.rpm -o \
+      -name ${USEPYTHON}-packaging.rpm -o -name ${USEPYTHON}-distro.rpm -o \
+      -name ${USEPYTHON}-PyYAML.rpm -o -name 'libyaml*.rpm' -o -name ${USEPYTHON}-Jinja2.rpm -o -name ${USEPYTHON}-MarkupSafe.rpm -o \
+      -name ${USEPYTHON}-msgpack.rpm -o -name ${USEPYTHON}-more-itertools.rpm -o \
+      -name saline.rpm -o -name ${USEPYTHON}-saline.rpm -o -name ${USEPYTHON}-python-dateutil.rpm -o -name ${USEPYTHON}-six.rpm) && \
     mkdir /etc/saline.defaults && cp -r /etc/salt/saline* /etc/saline.defaults/ && \
     chown -R salt:salt /etc/saline.defaults && \
     zypper --non-interactive clean --all && \

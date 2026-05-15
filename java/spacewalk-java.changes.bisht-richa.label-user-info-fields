@@ -1,0 +1,2 @@
+- Fixed missing field labels in the Create User form.
+  (bsc#1259591)

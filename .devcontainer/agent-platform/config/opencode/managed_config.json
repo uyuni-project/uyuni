@@ -1,0 +1,120 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "ollama/qwen3:14b-128k",
+  "enabled_providers": ["ollama"],
+  "provider": {
+    "ollama": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Ollama (SUSE)",
+      "options": {
+        "baseURL": "AGENT_PLATFORM_OLLAMA_BASE_URL_PLACEHOLDER"
+      }
+    }
+  },
+  "autoupdate": false,
+  "instructions": [
+    "/home/node/.opencode/AGENTS.md"
+  ],
+  "models": {
+    "qwen2.5-coder:7b": { "name": "qwen2.5-coder:7b" },
+    "qwen3:14b": { "name": "qwen3:14b" },
+    "qwen3-coder:30b": { "name": "qwen3-coder:30b" },
+    "gpt-oss:20b": { "name": "gpt-oss:20b" },
+    "qwen3:8b-ctx-16k": { "name": "qwen3:8b-ctx-16k" },
+    "qwen3:14b-128k": { "name": "qwen3:14b-128k" }
+  },
+  "mcp": {
+    "context7": {
+      "type": "local",
+      "command": ["context7-mcp"]
+    },
+    "backlog-md": {
+      "type": "local",
+      "command": ["backlog-mcp", "start"]
+    },
+    "playwright": {
+      "type": "local",
+      "command": ["npx", "@playwright/mcp@latest", "--browser", "chromium"],
+      "env": {
+        "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD": "1",
+        "DISPLAY": ":99"
+      }
+    }
+  },
+  "permission": {
+    "*": "allow",
+    "external_directory": "deny",
+    "webfetch": "allow",
+    "websearch": "allow",
+    "read": {
+      "*": "allow",
+      "**/.env*": "deny",
+      "**/*.pem": "deny",
+      "**/*.key": "deny",
+      "**/*.crt": "deny",
+      "**/.ssh/**": "deny",
+      "**/.aws/**": "deny",
+      "**/.azure/**": "deny",
+      "**/.config/gcloud/**": "deny",
+      "**/.gnupg/**": "deny",
+      "**/.kube/**": "deny",
+      "**/.docker/**": "deny"
+    },
+    "edit": {
+      "*": "allow",
+      "**/.env*": "deny",
+      "**/*.pem": "deny",
+      "**/*.key": "deny",
+      "**/*.crt": "deny",
+      "**/.ssh/**": "deny",
+      "**/.aws/**": "deny",
+      "**/.azure/**": "deny",
+      "**/.config/gcloud/**": "deny",
+      "**/.gnupg/**": "deny",
+      "**/.kube/**": "deny",
+      "**/.docker/**": "deny"
+    },
+    "glob": {
+      "*": "allow",
+      "**/.env*": "deny",
+      "**/*.pem": "deny",
+      "**/*.key": "deny",
+      "**/*.crt": "deny",
+      "**/.ssh/**": "deny",
+      "**/.aws/**": "deny",
+      "**/.azure/**": "deny",
+      "**/.config/gcloud/**": "deny",
+      "**/.gnupg/**": "deny",
+      "**/.kube/**": "deny",
+      "**/.docker/**": "deny"
+    },
+    "grep": {
+      "*": "allow",
+      "**/.env*": "deny",
+      "**/*.pem": "deny",
+      "**/*.key": "deny",
+      "**/*.crt": "deny",
+      "**/.ssh/**": "deny",
+      "**/.aws/**": "deny",
+      "**/.azure/**": "deny",
+      "**/.config/gcloud/**": "deny",
+      "**/.gnupg/**": "deny",
+      "**/.kube/**": "deny",
+      "**/.docker/**": "deny"
+    },
+    "list": {
+      "*": "allow",
+      "**/.env*": "deny",
+      "**/*.pem": "deny",
+      "**/*.key": "deny",
+      "**/*.crt": "deny",
+      "**/.ssh/**": "deny",
+      "**/.aws/**": "deny",
+      "**/.azure/**": "deny",
+      "**/.config/gcloud/**": "deny",
+      "**/.gnupg/**": "deny",
+      "**/.kube/**": "deny",
+      "**/.docker/**": "deny"
+    }
+  }
+}

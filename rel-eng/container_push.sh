@@ -35,7 +35,7 @@ EULA=beta
 # Possible values: alpha, beta, released
 RELEASE_STAGE=beta
 
-if [ -f "${SRPM_PKG_DIR}/Dockerfile" ]; then
+for DOCKERFILE in $(ls ${SRPM_PKG_DIR}/Dockerfile* 2>/dev/null); do
   NAME="${PKG_NAME%%-image}"
   # check which endpoint we are using to match the product
   if [ "${PRODUCT}" == "MLM" ]; then
@@ -48,25 +48,25 @@ if [ -f "${SRPM_PKG_DIR}/Dockerfile" ]; then
     if [ "${NAME}" != "init" ]; then
         ARCH="\/%ARCH%"
     fi
-    sed "/^#\!BuildTag:/s/uyuni/suse\/multi-linux-manager\/${VERSION}${ARCH}/g" -i ${SRPM_PKG_DIR}/Dockerfile
-    sed "s/^\(LABEL org.opensuse.reference=\)\"\([^:]\+:\)\([^%]\+\)%RELEASE%\"/\1\"\2${PRODUCT_VERSION}.%RELEASE%\"/" -i ${SRPM_PKG_DIR}/Dockerfile
-    sed "/^# labelprefix=/s/org\.opensuse\.uyuni/com.suse.multilinuxmanager/" -i ${SRPM_PKG_DIR}/Dockerfile
-    sed "s/^ARG VENDOR=.*$/ARG VENDOR=\"SUSE LLC\"/" -i ${SRPM_PKG_DIR}/Dockerfile
-    sed "s/^ARG PRODUCT=.*$/ARG PRODUCT=\"SUSE Multi-Linux Manager\"/" -i ${SRPM_PKG_DIR}/Dockerfile
-    sed "s/^LABEL org\.opensuse\.reference=\"\${REFERENCE_PREFIX}/LABEL org.opensuse.reference=\"\${REFERENCE_PREFIX}${ARCH}/" -i ${SRPM_PKG_DIR}/Dockerfile
-    sed "/^# labelprefix=.*$/aLABEL com.suse.eula=\"${EULA}\"" -i ${SRPM_PKG_DIR}/Dockerfile
-    sed "/^# labelprefix=.*$/aLABEL com.suse.release-stage=\"${RELEASE_STAGE}\"" -i ${SRPM_PKG_DIR}/Dockerfile
-    sed "/^# labelprefix=.*$/aLABEL com.suse.lifecycle-url=\"https://www.suse.com/lifecycle/\"" -i ${SRPM_PKG_DIR}/Dockerfile
-    sed "/^# labelprefix=.*$/aLABEL com.suse.supportlevel=\"l3\"" -i ${SRPM_PKG_DIR}/Dockerfile
+    sed "/^#\!BuildTag:/s/uyuni/suse\/multi-linux-manager\/${VERSION}${ARCH}/g" -i ${DOCKERFILE}
+    sed "s/^\(LABEL org.opensuse.reference=\)\"\([^:]\+:\)\([^%]\+\)%RELEASE%\"/\1\"\2${PRODUCT_VERSION}.%RELEASE%\"/" -i ${DOCKERFILE}
+    sed "/^# labelprefix=/s/org\.opensuse\.uyuni/com.suse.multilinuxmanager/" -i ${DOCKERFILE}
+    sed "s/^ARG VENDOR=.*$/ARG VENDOR=\"SUSE LLC\"/" -i ${DOCKERFILE}
+    sed "s/^ARG PRODUCT=.*$/ARG PRODUCT=\"SUSE Multi-Linux Manager\"/" -i ${DOCKERFILE}
+    sed "s/^LABEL org\.opensuse\.reference=\"\${REFERENCE_PREFIX}/LABEL org.opensuse.reference=\"\${REFERENCE_PREFIX}${ARCH}/" -i ${DOCKERFILE}
+    sed "/^# labelprefix=.*$/aLABEL com.suse.eula=\"${EULA}\"" -i ${DOCKERFILE}
+    sed "/^# labelprefix=.*$/aLABEL com.suse.release-stage=\"${RELEASE_STAGE}\"" -i ${DOCKERFILE}
+    sed "/^# labelprefix=.*$/aLABEL com.suse.lifecycle-url=\"https://www.suse.com/lifecycle/\"" -i ${DOCKERFILE}
+    sed "/^# labelprefix=.*$/aLABEL com.suse.supportlevel=\"l3\"" -i ${DOCKERFILE}
     NAME="suse\/multi-linux-manager\/${VERSION}${ARCH}\/${NAME}"
   else
     NAME="uyuni\/${NAME}"
   fi
 
-  sed "/^ARG REFERENCE_PREFIX=.*$/aARG PRODUCT_VERSION=\"${PRODUCT_VERSION}\"" -i ${SRPM_PKG_DIR}/Dockerfile
+  sed "/^ARG REFERENCE_PREFIX=.*$/aARG PRODUCT_VERSION=\"${PRODUCT_VERSION}\"" -i ${DOCKERFILE}
   # Add version from rhn_web on top of version from tito to have a continuity with already relased versions
-  sed "/^#\!BuildTag:/s/BuildTag:/BuildTag: ${NAME}:${PRODUCT_VERSION} ${NAME}:${PRODUCT_VERSION}.%RELEASE%/" -i ${SRPM_PKG_DIR}/Dockerfile
+  sed "/^#\!BuildTag:/s/BuildTag:/BuildTag: ${NAME}:${PRODUCT_VERSION} ${NAME}:${PRODUCT_VERSION}.%RELEASE%/" -i ${DOCKERFILE}
 
-  rm ${SRPM_PKG_DIR}/${PKG_NAME}.spec
-fi
+  rm -f ${SRPM_PKG_DIR}/${PKG_NAME}.spec
+done
 

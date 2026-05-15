@@ -715,8 +715,16 @@ end
 def channel_packages_are_downloaded?(channel_name)
   if channel_name.include?('custom_channel')
     client = channel_name.delete_prefix('custom_channel_')
-    # Monitoring server doesn't have an entry in the custom repository JSON file.
-    return true if $custom_repositories[client].nil? && client != 'monitoring_server'
+    if client == 'monitoring_server'
+      # Monitoring server doesn't have an entry in the custom repository JSON file.
+      # Its custom channel uses MU repositories from minions sharing the same base channel.
+      # Skip the sync wait only when none of those minions have custom repos configured.
+      monitoring_base_channel = BASE_CHANNEL_BY_CLIENT[product][client]
+      matching_minions = BASE_CHANNEL_BY_CLIENT[product].select { |k, v| k.end_with?('_minion') && v == monitoring_base_channel }.keys
+      return true if matching_minions.none? { |c| $custom_repositories[c] }
+    elsif $custom_repositories[client].nil?
+      return true
+    end
   end
   log_tmp_file = '/tmp/reposync.log'
   # Copy reposync logs to /tmp/ to prevent race condition and error when calling .extract()
@@ -956,7 +964,7 @@ end
 
 # Function to get the highest event ID (latest event)
 #
-# @param host String The hostname of the system from requested
+# @param host String The hostname of the requested system
 def get_last_event(host)
   node = get_target(host)
   system_id = get_system_id(node)
@@ -965,10 +973,26 @@ end
 
 # Function to trigger the upgrade command
 #
-# @param hostname String The hostname of the system from requested
+# @param hostname String The hostname of the requested system
 # @param package String The package name where it will trigger an upgrade
 def trigger_upgrade(hostname, package)
   get_target('server').run("spacecmd -u admin -p admin system_upgradepackage #{hostname} #{package} -y", check_errors: true)
+end
+
+# Function to trigger the install command
+#
+# @param hostname String The hostname of the requested system
+# @param package String The package name to install
+def trigger_install(hostname, package)
+  get_target('server').run("spacecmd -u admin -p admin system_installpackage #{hostname} #{package} -y", check_errors: true)
+end
+
+# Function to trigger the remove command
+#
+# @param hostname String The hostname of the requested system
+# @param package String The package name to remove
+def trigger_remove(hostname, package)
+  get_target('server').run("spacecmd -u admin -p admin system_removepackage #{hostname} #{package} -y", check_errors: true)
 end
 
 # Function to select the latest package from a list based on version and release

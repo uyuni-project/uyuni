@@ -2057,6 +2057,17 @@ public class ChannelFactory extends HibernateFactory {
     }
 
     /**
+     * List all vendor channels (org is null) that should be synchronized automatically
+     * @return list of vendor channels
+     */
+    public static List<Channel> listVendorChannelsForAutoSync() {
+        return getSession().createQuery("""
+                 FROM Channel AS c
+                 WHERE c.org IS NULL AND c.autoSync IS TRUE
+                """, Channel.class).getResultList();
+    }
+
+    /**
      * List all custom channels (org is not null) with at least one repository
      *
      * @return list of vendor channels
@@ -2065,6 +2076,20 @@ public class ChannelFactory extends HibernateFactory {
         return getSession()
                 .createQuery("FROM Channel AS c WHERE c.org IS NOT NULL AND c.sources IS NOT EMPTY", Channel.class)
                 .list();
+    }
+
+    /**
+     * List all custom channels (org is not null) with at least one repository
+     * and that is configured for auto-sync
+     * @return list of vendor channels
+     */
+    public static List<Channel> listCustomChannelsWithRepositoriesForAutoSync() {
+        return getSession().createQuery("""
+                FROM Channel AS c
+                WHERE c.org IS NOT NULL
+                AND   c.sources IS NOT EMPTY
+                AND   c.autoSync IS TRUE
+                """, Channel.class).getResultList();
     }
 
     /**
@@ -2317,19 +2342,29 @@ public class ChannelFactory extends HibernateFactory {
         String hostname = ConfigDefaults.get().getJavaHostname();
         String channelLabel = channel.getLabel();
 
-        Optional<String> tokenString = SCCEndpoints.buildHubRepositoryToken(channel);
-        if (tokenString.isPresent()) {
-            SCCRepositoryJson repositoryInfo;
-            if (channel.getOrg() != null) {
-                repositoryInfo = SCCEndpoints.buildCustomRepoJson(channelLabel, hostname, tokenString.get());
-            }
-            else {
-                repositoryInfo = SUSEProductFactory.lookupByChannelLabelFirst(channelLabel)
-                        .map(ct -> SCCEndpoints.buildVendorRepoJson(ct, hostname, tokenString.get()))
-                        .orElse(SCCEndpoints.buildCustomRepoJson(channelLabel, hostname, tokenString.get()));
-            }
-            channelInfo.setRepositoryInfo(repositoryInfo);
+        Long oid = Optional.ofNullable(channel.getOrg()).map(Org::getId).orElse(0L);
+        SCCRepositoryJson repositoryInfo;
+        if (channel.getOrg() != null) {
+            String tokenString = SCCEndpoints.buildHubRepositoryToken(Set.of(channel.getLabel()), oid)
+                    .orElse("");
+            repositoryInfo = SCCEndpoints.buildCustomRepoJson(channelLabel, hostname, tokenString);
         }
+        else {
+            repositoryInfo = SUSEProductFactory.lookupByChannelLabelFirst(channelLabel)
+                    .map(ct -> {
+                        Set<String> vendorChannelLabels = new HashSet<>(ct.getRepository().getChannelTemplates()
+                                .stream().map(ChannelTemplate::getChannelLabel).toList());
+                        String tokenString = SCCEndpoints.buildHubRepositoryToken(vendorChannelLabels, 0L)
+                                .orElse("");
+                        return SCCEndpoints.buildVendorRepoJson(ct, hostname, tokenString);
+                    })
+                    .orElseGet(() -> {
+                        String tokenString = SCCEndpoints.buildHubRepositoryToken(Set.of(channel.getLabel()), oid)
+                                .orElse("");
+                        return SCCEndpoints.buildCustomRepoJson(channelLabel, hostname, tokenString);
+                    });
+        }
+        channelInfo.setRepositoryInfo(repositoryInfo);
 
         return channelInfo;
     }

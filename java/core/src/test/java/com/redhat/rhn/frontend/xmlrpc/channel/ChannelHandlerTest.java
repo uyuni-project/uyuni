@@ -229,6 +229,34 @@ public class ChannelHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
+    public void testListSoftwareChannelsByAutoSync() throws Exception {
+        // setup: create two channels with different autoSync settings
+        Channel autoSyncEnabled = ChannelFactoryTest.createTestChannel(admin);
+        autoSyncEnabled.setAutoSync(true);
+        admin.getOrg().addOwnedChannel(autoSyncEnabled);
+        ChannelFactory.save(autoSyncEnabled);
+
+        Channel autoSyncDisabled = ChannelFactoryTest.createTestChannel(admin);
+        autoSyncDisabled.setAutoSync(false);
+        admin.getOrg().addOwnedChannel(autoSyncDisabled);
+        ChannelFactory.save(autoSyncDisabled);
+
+        OrgFactory.save(admin.getOrg());
+
+        // test filtering by autoSync=true
+        List<String> enabledResult = handler.listSoftwareChannelsByAutoSync(admin, true);
+        assertNotNull(enabledResult);
+        assertTrue(enabledResult.contains(autoSyncEnabled.getLabel()));
+        assertFalse(enabledResult.contains(autoSyncDisabled.getLabel()));
+
+        // test filtering by autoSync=false
+        List<String> disabledResult = handler.listSoftwareChannelsByAutoSync(admin, false);
+        assertNotNull(disabledResult);
+        assertTrue(disabledResult.contains(autoSyncDisabled.getLabel()));
+        assertFalse(disabledResult.contains(autoSyncEnabled.getLabel()));
+    }
+
+    @Test
     public void testListRetiredChannels() throws Exception {
         // setup
         Channel channel = ChannelFactoryTest.createTestChannel(admin);

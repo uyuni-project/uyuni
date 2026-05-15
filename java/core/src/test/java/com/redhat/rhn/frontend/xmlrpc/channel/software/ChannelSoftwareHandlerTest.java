@@ -1037,6 +1037,35 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
         assertEquals(1, list.size());
     }
 
+    @Test
+    public void testIsAutoSync() throws Exception {
+        Channel channel = ChannelFactoryTest.createTestChannel(admin);
+        channel.setAutoSync(true);
+        ChannelFactory.save(channel);
+
+        assertTrue(handler.isAutoSync(admin, channel.getLabel()));
+
+        channel.setAutoSync(false);
+        ChannelFactory.save(channel);
+
+        assertFalse(handler.isAutoSync(admin, channel.getLabel()));
+    }
+
+    @Test
+    public void testSetAutoSync() throws Exception {
+        Channel channel = ChannelFactoryTest.createTestChannel(admin);
+        channel.setAutoSync(false);
+        ChannelFactory.save(channel);
+
+        boolean result = handler.setAutoSync(admin, channel.getLabel(), true);
+        assertTrue(result);
+        assertTrue(handler.isAutoSync(admin, channel.getLabel()));
+
+        result = handler.setAutoSync(admin, channel.getLabel(), false);
+        assertFalse(result);
+        assertFalse(handler.isAutoSync(admin, channel.getLabel()));
+    }
+
     private ChannelSoftwareHandler getMockedHandler() throws Exception {
         TaskomaticApi taskomaticMock = mockContext.mock(TaskomaticApi.class);
         ChannelSoftwareHandler csh = new ChannelSoftwareHandler(taskomaticMock, xmlRpcSystemHelper);

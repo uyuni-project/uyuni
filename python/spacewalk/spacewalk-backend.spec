@@ -21,24 +21,13 @@
 
 %{!?_unitdir: %global _unitdir /lib/systemd/system}
 
-%{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "from distutils.sysconfig import get_python_lib; print(get_python_lib())")}
+%{!?python3_sitelib: %global python3_sitelib %(%{__python3} -c "import sysconfig; print(sysconfig.get_path('purelib'))")}
 %global rhnroot %{_datadir}/rhn
 %global rhnconfigdefaults %{rhnroot}/config-defaults
 %global rhnconf %{_sysconfdir}/rhn
 %global m2crypto m2crypto
 %global python3rhnroot %{python3_sitelib}/spacewalk
 
-%if 0%{?fedora} || 0%{?rhel}
-%global apacheconfd %{_sysconfdir}/httpd/conf.d
-%global apache_user root
-%global apache_group root
-%global apache_pkg httpd
-%global documentroot %{_localstatedir}/www/html
-%global m2crypto python3-m2crypto
-%global sslrootcert %{_sysconfdir}/pki/ca-trust/source/anchors/
-%endif
-
-%if 0%{?suse_version}
 %global apacheconfd %{_sysconfdir}/apache2/conf.d
 %global apache_user wwwrun
 %global apache_group www
@@ -46,7 +35,6 @@
 %global documentroot /srv/www/htdocs
 %global m2crypto python3-M2Crypto
 %global sslrootcert %{_sysconfdir}/pki/trust/anchors/
-%endif
 
 Name:           spacewalk-backend
 Version:        5.2.6
@@ -57,9 +45,7 @@ Group:          System/Management
 URL:            https://github.com/uyuni-project/uyuni
 #!CreateArchive: %{name}
 Source0:        %{name}-%{version}.tar.gz
-%if !0%{?suse_version} || 0%{?suse_version} >= 1120
 BuildArch:      noarch
-%endif
 
 Requires:       python3
 # /etc/rhn is provided by uyuni-base-common
@@ -169,16 +155,9 @@ Requires:       %{name}-app = %{version}-%{release}
 Requires:       %{name}-xmlrpc = %{version}-%{release}
 Requires:       systemd
 BuildRequires:  systemd
-%if 0%{?is_opensuse} || 0%{?sle_version} >= 150000
 # bsc#1234304
 Requires:       libzypp >= 17.35.16
-%endif
-%if 0%{?rhel}
-Requires:       python3-dnf
-BuildRequires:  systemd-rpm-macros
-%else
 %{?systemd_requires}
-%endif
 
 Requires:       python3-spacewalk-client-tools
 Requires:       python3-solv
@@ -187,14 +166,9 @@ Requires:       spacewalk-admin >= 0.1.1-0
 Requires:       spacewalk-certs-tools
 Requires:       susemanager-tools
 Requires:       (python3-dateutil or python3-python-dateutil)
-%if 0%{?suse_version}
 Requires(pre):  libzypp(plugin:system) >= 0
 Requires:       apache2-prefork
 Requires:       python3-zypp-plugin
-%endif
-%if 0%{?fedora} || 0%{?rhel}
-Requires:       mod_ssl
-%endif
 Requires:       %{m2crypto}
 Requires:       %{name}-xml-export-libs
 Requires:       cobbler
@@ -224,7 +198,7 @@ do
 	sed -i '1s=^#!/usr/bin/\(python\|env python\)[0-9.]*=#!/usr/bin/python3=' $i;
 done
 
-%if !0%{?is_opensuse} && 0%{?sle_version}
+%if !0%{?is_opensuse}
 sed -i "s/PRODUCT_NAME = \"Uyuni\"/PRODUCT_NAME = \"%{productprettyname}\"/" common/rhnConfig.py
 %endif
 
@@ -257,7 +231,7 @@ install -m 644 satellite_tools/ulnauth.py %{buildroot}/%{python3rhnroot}/satelli
 
 %find_lang %{name}-server
 
-%if 0%{?is_opensuse} || 0%{?fedora} || 0%{?rhel}
+%if 0%{?is_opensuse}
 sed -i 's/^product_name.*/product_name = Uyuni/' %{buildroot}%{rhnconfigdefaults}/rhn.conf
 %endif
 
@@ -271,10 +245,8 @@ sed -i 's/#LOGROTATE-3.8#//' %{buildroot}%{_sysconfdir}/logrotate.d/spacewalk-ba
 sed -i 's/@HTTPD_GROUP@/%{apache_group}/' %{buildroot}%{_sysconfdir}/logrotate.d/spacewalk-backend-*
 sed -i 's/@HTTPD_USER@/%{apache_user}/' %{buildroot}%{_sysconfdir}/logrotate.d/spacewalk-backend-*
 
-%if 0%{?suse_version}
 %py3_compile -O %{buildroot}/%{python3rhnroot}
 %fdupes %{buildroot}/%{python3rhnroot}
-%endif
 
 install -m 755 satellite_tools/mgr-update-pkg-extra-tags %{buildroot}%{_prefix}/lib/susemanager/bin/
 
@@ -284,9 +256,7 @@ install satellite_tools/spacewalk-uln-resolver %{buildroot}%{_prefix}/lib/zypp/p
 install satellite_tools/spacewalk-extra-http-headers %{buildroot}%{_prefix}/lib/zypp/plugins/urlresolver/spacewalk-extra-http-headers
 
 %post server
-%if 0%{?suse_version}
 sysconf_addword %{_sysconfdir}/sysconfig/apache2 APACHE_MODULES wsgi
-%endif
 if [ ! -e %{rhnconf}/rhn.conf ]; then
     exit 0
 fi
@@ -305,11 +275,7 @@ fi
 %dir %{_prefix}/lib/susemanager/bin
 %{python3rhnroot}/__init__.py*
 %{python3rhnroot}/common
-%if 0%{?rhel}
-%dir %{_var}/log/rhn
-%else
 %attr(770,root,%{apache_group}) %dir %{_var}/log/rhn
-%endif
 # Workaround for strict-whitespace-enforcement in httpd
 %attr(644,root,%{apache_group}) %config %{apacheconfd}/aa-spacewalk-server.conf
 # config files

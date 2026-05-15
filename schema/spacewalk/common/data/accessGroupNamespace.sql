@@ -784,7 +784,7 @@ INSERT INTO access.accessGroupNamespace
     )
     ON CONFLICT DO NOTHING;
 
--- Namespace: packages
+-- Namespace: packages (RO)
 -- Namespace: packages.search
 -- Permit to all
 INSERT INTO access.accessGroupNamespace
@@ -801,8 +801,6 @@ INSERT INTO access.accessGroupNamespace
         'api.packages.list_providing_channels',
         'api.packages.list_providing_errata',
         'api.packages.list_source_packages',
-        'api.packages.remove_package',
-        'api.packages.remove_source_package',
         'api.packages.search.advanced',
         'api.packages.search.advanced_with_act_key',
         'api.packages.search.advanced_with_channel',
@@ -810,6 +808,16 @@ INSERT INTO access.accessGroupNamespace
         'api.packages.search.name_and_description',
         'api.packages.search.name_and_summary'
     )
+    ON CONFLICT DO NOTHING;
+
+-- Namespace: packages (W)
+-- Permit to 'channel admin'
+INSERT INTO access.accessGroupNamespace
+    SELECT ag.id, ns.id
+    FROM access.accessGroup ag, access.namespace ns
+    WHERE ag.label = 'channel_admin'
+    AND (ns.namespace = 'api.packages.remove_package' OR
+        ns.namespace = 'api.packages.remove_source_package')
     ON CONFLICT DO NOTHING;
 
 -- Namespace: packages.provider
@@ -1260,6 +1268,18 @@ INSERT INTO access.accessGroupNamespace
     )
     ON CONFLICT DO NOTHING;
 
+-- Namespace: api.channel.software
+-- Permit to channel_admin
+INSERT INTO access.accessGroupNamespace
+    SELECT ag.id, ns.id
+    FROM access.accessGroup ag, access.namespace ns
+    WHERE ag.label = 'channel_admin'
+    AND ns.namespace IN (
+        'api.channel.software.setAutoSync',
+        'api.channel.software.isAutoSync',
+        'api.channel.listSoftwareChannelsByAutoSync'
+    )
+    ON CONFLICT DO NOTHING;
 -- Namespace: audit.scap.management and audit.scap.execution
 -- Permit to all
 INSERT INTO access.accessGroupNamespace (group_id, namespace_id)

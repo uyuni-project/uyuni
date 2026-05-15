@@ -114,6 +114,13 @@ ln -s rhn-sudo-ssl-tool %{buildroot}%{_bindir}/mgr-sudo-ssl-tool
 %files
 %defattr(-,root,root,-)
 %dir %{rhnroot}/certs
+%if 0%{?suse_version}
+%dir /srv/www
+%dir /srv/www/htdocs
+%else
+%dir %{_localstatedir}
+%dir %{_localstatedir}/www
+%endif
 %attr(755,root,root) %{rhnroot}/certs/sign.sh
 %attr(755,root,root) %{rhnroot}/certs/gen-rpm.sh
 %attr(755,root,root) %{rhnroot}/certs/update-ca-cert-trust.sh

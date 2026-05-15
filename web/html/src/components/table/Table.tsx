@@ -220,7 +220,8 @@ export const Table = forwardRef<TableRef, TableProps>((props, ref) => {
                 columnKey="expandable"
                 onClick={() => expanded.toggle(props.identifier(item))}
                 cell={() => {
-                  const hasChildren = "children" in item && item.children.length > 0;
+                  const hasChildren =
+                    item && typeof item === "object" && "children" in item && item.children.length > 0;
                   const isExpanded = expanded.has(props.identifier(item));
                   return (
                     <i
@@ -274,6 +275,8 @@ export const Table = forwardRef<TableRef, TableProps>((props, ref) => {
             <Fragment key={key}>
               <tr className={combinedRowClass}>{cells}</tr>
               {props.expandable &&
+                item &&
+                typeof item === "object" &&
                 "children" in item &&
                 expanded.has(props.identifier(item)) &&
                 item.children.map((childItem, childIndex) => renderRow(childItem, childIndex, nestingLevel + 1))}

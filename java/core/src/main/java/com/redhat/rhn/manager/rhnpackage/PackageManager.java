@@ -796,12 +796,12 @@ public class PackageManager extends BaseManager {
      * Deletes a package from the system
      * @param user calling user
      * @param pkg package to delete
-     * @throws PermissionCheckFailureException - caller is not an org admin,
+     * @throws PermissionCheckFailureException - caller is not a channel admin,
      * the package is in one of the RH owned channels, or is in different org
      */
     public static void schedulePackageRemoval(User user, Package pkg)
         throws PermissionCheckFailureException {
-        if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
+        if (!user.hasRole(RoleFactory.CHANNEL_ADMIN)) {
             throw new PermissionCheckFailureException();
         }
         DataResult<Row> channels = PackageManager.orgPackageChannels(
@@ -840,12 +840,12 @@ public class PackageManager extends BaseManager {
      * Deletes a source package from the system
      * @param user calling user
      * @param pkg source package to delete
-     * @throws PermissionCheckFailureException - caller is not an org admin,
+     * @throws PermissionCheckFailureException - caller is not a channel admin,
      * the package is in one of the RH owned channels, or is in different org
      */
     public static void schedulePackageSourceRemoval(User user, PackageSource pkg)
         throws PermissionCheckFailureException {
-        if (!user.hasRole(RoleFactory.ORG_ADMIN)) {
+        if (!user.hasRole(RoleFactory.CHANNEL_ADMIN)) {
             throw new PermissionCheckFailureException();
         }
         if (pkg.getOrg() == null || user.getOrg() != pkg.getOrg()) {

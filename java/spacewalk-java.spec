@@ -51,6 +51,14 @@
 %define apache_commons_validator   (apache-commons-validator or jakarta-commons-validator)
 %define apache_commons_compress    (apache-commons-compress or jakarta-commons-compress)
 
+%if 0%{?suse_version} >= 1600
+%define scram_client_jar scram-client
+%define scram_common_jar scram-common
+%else
+%define scram_client_jar client
+%define scram_common_jar common
+%endif
+
 %if 0%{?is_opensuse}
 %define supported_locales bn_IN,ca,de,en_US,es,fr,gu,hi,it,ja,ko,pa,pt,pt_BR,ru,ta,zh_CN,zh_TW
 %else
@@ -71,6 +79,7 @@ Source1:        https://raw.githubusercontent.com/uyuni-project/uyuni/%{name}-%{
 BuildArch:      noarch
 ExcludeArch:    ia64
 
+BuildRequires:  javapackages-local
 BuildRequires:  %{apache_commons_compress}
 BuildRequires:  %{apache_commons_discovery}
 BuildRequires:  apache-commons-fileupload2-core
@@ -107,7 +116,7 @@ BuildRequires:  jakarta-persistence-api
 BuildRequires:  httpcomponents-asyncclient
 BuildRequires:  httpcomponents-client
 BuildRequires:  ical4j
-BuildRequires:  istack-commons-runtime
+BuildRequires:  mvn(com.sun.istack:istack-commons-runtime) >= 4.2.0
 BuildRequires:  jade4j
 BuildRequires:  java-%{java_version}-openjdk-devel
 BuildRequires:  java-saml
@@ -120,7 +129,6 @@ BuildRequires:  jdom
 BuildRequires:  joda-time
 BuildRequires:  jose4j
 BuildRequires:  jsch
-BuildRequires:  jta
 BuildRequires:  libxml2
 BuildRequires:  log4j
 BuildRequires:  log4j-jcl
@@ -196,7 +204,7 @@ Requires:       jakarta-jstl
 Requires:       hibernate-models
 Requires:       httpcomponents-client
 Requires:       ical4j
-Requires:       istack-commons-runtime
+Requires:       mvn(com.sun.istack:istack-commons-runtime) >= 4.2.0
 Requires:       jade4j
 Requires:       java-%{java_version}-openjdk
 Requires:       java-saml
@@ -209,7 +217,6 @@ Requires:       jdom
 Requires:       joda-time
 Requires:       jose4j
 Requires:       jakarta-persistence-api
-Requires:       jta
 Requires:       libsolv-tools
 Requires:       log4j
 Requires:       log4j-jcl
@@ -394,6 +401,11 @@ This package contains the Java version of taskomatic.
 
 %prep
 %setup -q
+
+%if 0%{?suse_version} >= 1600
+%pom_xpath_set 'pom:project/pom:dependencies/pom:dependency/pom:artifactId[text()="client"]' 'scram-client' core/pom.xml
+%pom_xpath_set 'pom:project/pom:dependencies/pom:dependency/pom:artifactId[text()="common"]' 'scram-common' core/pom.xml
+%endif
 
 %if 0%{?fedora}
 %define skip_xliff  1
@@ -582,29 +594,29 @@ install -m 644 conf/cobbler/snippets/root_ca %{buildroot}%{spacewalksnippetsdir}
 # special links for rhn-search
 RHN_SEARCH_BUILD_DIR=%{_datadir}/rhn/search/lib
 ln -s -f %{_javadir}/postgresql-jdbc.jar $RPM_BUILD_ROOT$RHN_SEARCH_BUILD_DIR/postgresql-jdbc.jar
-ln -s -f %{_javadir}/ongres-scram/client.jar $RPM_BUILD_ROOT$RHN_SEARCH_BUILD_DIR/ongres-scram_client.jar
-ln -s -f %{_javadir}/ongres-scram/common.jar $RPM_BUILD_ROOT$RHN_SEARCH_BUILD_DIR/ongres-scram_common.jar
+ln -s -f %{_javadir}/ongres-scram/%{scram_client_jar}.jar $RPM_BUILD_ROOT$RHN_SEARCH_BUILD_DIR/ongres-scram_%{scram_client_jar}.jar
+ln -s -f %{_javadir}/ongres-scram/%{scram_common_jar}.jar $RPM_BUILD_ROOT$RHN_SEARCH_BUILD_DIR/ongres-scram_%{scram_common_jar}.jar
 
 # write an include file for the filelist
 if [ -e %{_javadir}/ongres-stringprep/stringprep.jar ]; then
     ln -s -f %{_javadir}/ongres-stringprep/stringprep.jar $RPM_BUILD_ROOT$RHN_SEARCH_BUILD_DIR/ongres-stringprep_stringprep.jar
     ln -s -f %{_javadir}/ongres-stringprep/saslprep.jar $RPM_BUILD_ROOT$RHN_SEARCH_BUILD_DIR/ongres-stringprep_saslprep.jar
     echo "
-%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/ongres-scram_client.jar
-%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/ongres-scram_common.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/ongres-scram_%{scram_client_jar}.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/ongres-scram_%{scram_common_jar}.jar
 %{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/ongres-stringprep_stringprep.jar
 %{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/ongres-stringprep_saslprep.jar
-%{_datadir}/rhn/search/lib/ongres-scram_client.jar
-%{_datadir}/rhn/search/lib/ongres-scram_common.jar
+%{_datadir}/rhn/search/lib/ongres-scram_%{scram_client_jar}.jar
+%{_datadir}/rhn/search/lib/ongres-scram_%{scram_common_jar}.jar
 %{_datadir}/rhn/search/lib/ongres-stringprep_stringprep.jar
 %{_datadir}/rhn/search/lib/ongres-stringprep_saslprep.jar
     " > .mfiles-postgresql
 else
     echo "
-%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/ongres-scram_client.jar
-%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/ongres-scram_common.jar
-%{_datadir}/rhn/search/lib/ongres-scram_client.jar
-%{_datadir}/rhn/search/lib/ongres-scram_common.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/ongres-scram_%{scram_client_jar}.jar
+%{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/ongres-scram_%{scram_common_jar}.jar
+%{_datadir}/rhn/search/lib/ongres-scram_%{scram_client_jar}.jar
+%{_datadir}/rhn/search/lib/ongres-scram_%{scram_common_jar}.jar
     " > .mfiles-postgresql
 fi
 

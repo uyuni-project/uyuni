@@ -136,7 +136,7 @@ tftp:
   # Leave undefined to use the default
   tag:
   # enable or disable the TFTP server.
-  enable: true
+  enable: false
 
   # Use the host network to bypass the Kubernetes network layers.
   # This may be needed if not using a LoadBalancer for the TFTP server.

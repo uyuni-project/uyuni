@@ -93,11 +93,12 @@ public class MgrSyncRefresh extends RhnJavaJob {
             if (!noRepoSync) {
                 final TaskomaticApi taskoApi = new TaskomaticApi();
 
-                log.info("Scheduling synchronization of all vendor channels");
-                taskoApi.scheduleSingleRepoSync(ChannelFactory.listVendorChannels());
+                log.info("Scheduling synchronization of all vendor channels with auto-sync enabled");
+                taskoApi.scheduleSingleRepoSync(ChannelFactory.listVendorChannelsForAutoSync());
 
                 if (ConfigDefaults.get().isCustomChannelManagementUnificationEnabled()) {
-                    List<Channel> customChannelsWithRepos = ChannelFactory.listCustomChannelsWithRepositories();
+                    List<Channel> customChannelsWithRepos = ChannelFactory
+                            .listCustomChannelsWithRepositoriesForAutoSync();
                     log.info("Scheduling synchronization of %d custom channels"
                             .formatted(customChannelsWithRepos.size()));
                     taskoApi.scheduleSingleRepoSync(customChannelsWithRepos);

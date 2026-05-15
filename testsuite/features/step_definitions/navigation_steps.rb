@@ -438,7 +438,7 @@ When(/^I follow the left menu "([^"]*)"$/) do |menu_path|
 
     # open the submenu if needed
     begin
-      unless find(:xpath, target_link_path + parent_wrapper_path + parent_level_path)[:class].include?('open')
+      unless find(:xpath, target_link_path + parent_wrapper_path + parent_level_path)[:class]&.include?('open')
         find(:xpath, target_link_path + parent_wrapper_path).click
         # wait for the 'open' class to be applied before navigating into the submenu
         find(:xpath, "#{target_link_path}#{parent_wrapper_path}#{parent_level_path}[contains(@class,'open')]")
@@ -812,12 +812,19 @@ When(/^I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINI
   # therefore we use a non-standard timeout
   repeat_until_timeout(timeout: 800, message: 'Task does not look FINISHED yet') do
     visit current_url
-    # get all texts in the table column under the "Status" header
-    status_tds = '//tr/td[count(//th[contains(*/text(), \'Status\')]/preceding-sibling::*) + 1]'
+
+    # Scope to the specific table containing both headers
+    base_table = "//table[.//th[contains(*/text(), 'Status')] and .//th[contains(*/text(), 'Start Time')]]"
+
+    # Dynamically find the column indexes within that specific table
+    status_col = "#{base_table}//th[contains(*/text(), 'Status')]/preceding-sibling::*"
+    start_time_col = "#{base_table}//th[contains(*/text(), 'Start Time')]/preceding-sibling::*"
+
+    # Extract only the first 10 data rows from the body of that specific table
+    status_tds = "#{base_table}//tbody/tr[position() <= 10]/td[count(#{status_col}) + 1]"
     statuses = all(:xpath, status_tds).map(&:text)
 
-    # get all texts in the table column under the "Start time" header
-    start_time_tds = '//tr/td[count(//th[contains(*/text(), \'Start Time\')]/preceding-sibling::*) + 1]'
+    start_time_tds = "#{base_table}//tbody/tr[position() <= 10]/td[count(#{start_time_col}) + 1]"
     start_times = all(:xpath, start_time_tds).map(&:text)
 
     # disregard any number of initial unimportant rows, that is:
@@ -827,15 +834,15 @@ When(/^I wait until the table contains "FINISHED" or "SKIPPED" followed by "FINI
       statuses.zip(start_times).drop_while do |status, start_time|
         (status == 'INTERRUPTED' && (start_time.empty? || start_time == 'Task never started')) || status == 'SKIPPED'
       end
-    first_non_skipped = result.first.first
 
-    # halt in case we are done, or if an error is detected
+    first_non_skipped = result.first&.first
+
     break if first_non_skipped == 'FINISHED'
     raise('Taskomatic task was INTERRUPTED') if first_non_skipped == 'INTERRUPTED'
 
-    # otherwise either no row is shown yet, or the task is still RUNNING
-    # continue waiting
-    sleep 1
+    # Wait 5 seconds instead of 1 second between full page reloads.
+    # A background task cache refresh takes a while, checking every second is unnecessary overhead.
+    sleep 5
   end
 end
 

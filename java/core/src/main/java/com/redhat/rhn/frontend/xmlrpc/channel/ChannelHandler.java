@@ -15,6 +15,8 @@
 package com.redhat.rhn.frontend.xmlrpc.channel;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
+import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ChannelTreeNode;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
@@ -90,6 +92,26 @@ public class ChannelHandler extends BaseHandler {
         }
 
         return returnList;
+    }
+
+    /**
+     * Lists the label of all visible software channels where auto-sync is enabled/disabled.
+     * @param loggedInUser The current user
+     * @param autoSync Boolean telling if should list channel to be automatically synchronized or not
+     * @return Returns array of channel labels with auto-sync enabled (true) or disabled (false)
+     *
+     * @apidoc.doc List all visible software channels.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("Boolean", "autoSync", "If should return channels with auto-sync
+     *                                                   enabled (true) or disabled (false)")
+     * @apidoc.returntype #array_single("string", "the list of channel labels")
+     */
+    @ReadOnly
+    public List<String> listSoftwareChannelsByAutoSync(User loggedInUser, Boolean autoSync) {
+        List<Channel> items = ChannelFactory.findAllByUserOrderByChild(loggedInUser);
+        return items.stream()
+                .filter(channel -> autoSync.equals(channel.isAutoSync()))
+                .map(Channel::getLabel).toList();
     }
 
     /**
