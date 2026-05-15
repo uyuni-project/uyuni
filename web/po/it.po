@@ -9,15 +9,15 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-08 11:21+0200\n"
-"PO-Revision-Date: 2024-04-25 20:43+0000\n"
-"Last-Translator: Marina Latini <marina.latini@suse.com>\n"
+"PO-Revision-Date: 2026-05-12 13:04+0000\n"
+"Last-Translator: Lorenzo Proietti <lorenzoproietti110706@gmail.com>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/web/it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 4.9.1\n"
+"X-Generator: Weblate 5.17.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:409
 msgid "remaining"
@@ -35,7 +35,7 @@ msgstr "Il browser Internet Explorer non è supportato. Utilizza Firefox, Chrome
 #: ../html/src/manager/systems/appstreams/ssm-appstreams-configure.tsx:60
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:67
 msgid "Action has been successfully added to the action chain <link>\"{name}\"</link>."
-msgstr ""
+msgstr "L'azione è stata aggiunta con successo alla catena di azioni <link>\"{name}\"</link>."
 
 #: ../html/src/components/CoCoScansList.tsx:75
 #: ../html/src/components/package/PackageListActionScheduler.tsx:91
@@ -43,16 +43,16 @@ msgstr ""
 #: ../html/src/manager/minion/details/support-data.tsx:74
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:74
 msgid "The action has been <link>scheduled</link>."
-msgstr ""
+msgstr "L'azione è stata <link>programmata</link>."
 
 #: ../html/src/components/CoCoScansList.tsx:90
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:86
 msgid "Unable to schedule action. Please check the server logs for detailed information."
-msgstr ""
+msgstr "Impossibile pianificare l'azione. Si prega di controllare i registri del server per informazioni dettagliate."
 
 #: ../html/src/components/CoCoScansList.tsx:122
 msgid "Confirm Attestation Execution"
-msgstr ""
+msgstr "Conferma l'esecuzione dell'attestazione"
 
 #: ../html/src/components/CoCoScansList.tsx:130
 #: ../html/src/components/audit/schedule-scap-scan-form.tsx:162
@@ -65,7 +65,7 @@ msgstr ""
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:250
 #: ../html/src/manager/systems/coco/ssm-schedule.tsx:108
 msgid "Schedule"
-msgstr ""
+msgstr "programma"
 
 #: ../html/src/components/CoCoScansList.tsx:137
 #: ../html/src/components/CoCoScansList.tsx:192
@@ -73,11 +73,11 @@ msgstr ""
 #: ../html/src/manager/admin/hub/peripheral-details.tsx:43
 #: ../html/src/manager/recurring/recurring-actions-edit.tsx:260
 msgid "Back to list"
-msgstr ""
+msgstr "torna alla lista"
 
 #: ../html/src/components/CoCoScansList.tsx:153
 msgid "Confidential Computing Attestations"
-msgstr ""
+msgstr "Attestazioni informatiche riservate"
 
 #: ../html/src/components/CoCoScansList.tsx:163
 msgid "Schedule Attestation"
@@ -100,14 +100,12 @@ msgid "Multiple Group formulas detected. Only one formula for \"{name}\" can be 
 msgstr ""
 
 #: ../html/src/components/FormulaForm.tsx:165
-#, fuzzy
 msgid "Please input required fields: {fields}"
-msgstr "Inserisci i campi obbligatori: {0}"
+msgstr "Inserisci i campi obbligatori: {fields}"
 
 #: ../html/src/components/FormulaForm.tsx:168
-#, fuzzy
 msgid "Invalid format of fields: {fields}"
-msgstr "Formato dei campi non valido: {0}"
+msgstr "Formato dei campi non valido: {fields}"
 
 #: ../html/src/components/FormulaForm.tsx:210
 msgid "On this page you can configure Salt Formulas to automatically install and configure software."
