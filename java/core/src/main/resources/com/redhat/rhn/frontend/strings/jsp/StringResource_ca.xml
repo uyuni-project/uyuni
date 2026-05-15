@@ -1893,13 +1893,6 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="usercreate.names" xml:space="preserve">
-        <source>First Name, Last Name</source>
-        <target state="translated">Nom, cognoms</target>
-        <context-group name="ctx">
-          <context context-type="sourcefile">/rhn/users/CreateUser</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="usercreate.requiredField" xml:space="preserve">
         <source>Required Field</source>
         <target state="translated">Camp requerit</target>
@@ -29776,6 +29769,39 @@ lt;/pgt;
         <source>AppArmor profiles will be migrated to SELinux</source>
         <target state="translated">Els perfils d'AppArmor es migraran a SELinux</target>
       </trans-unit>
-    </body>
+    <trans-unit id="usercreate.prefix" xml:space="preserve">
+        <source>Prefix</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/CreateUser</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="usercreate.firstName" xml:space="preserve">
+        <source>First Name</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/CreateUser</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="usercreate.lastName" xml:space="preserve">
+        <source>Last Name</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/CreateUser</context>
+        </context-group>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="channel.jsp.repoautosync" xml:space="preserve">
+        <source>Automatic Repository Synchronization</source>
+      <target state="new"/>
+  </trans-unit>
+      <trans-unit id="channel.jsp.repoautosync.true" xml:space="preserve">
+        <source> Enabled </source>
+      <target state="new"/>
+  </trans-unit>
+        <trans-unit id="channel.jsp.repoautosync.false" xml:space="preserve">
+        <source> Disabled </source>
+      <target state="new"/>
+  </trans-unit>
+      </body>
   </file>
 </xliff>
