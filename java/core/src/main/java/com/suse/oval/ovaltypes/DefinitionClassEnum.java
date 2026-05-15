@@ -45,7 +45,18 @@ public enum DefinitionClassEnum {
      * "the system is vulnerable if ...".
      */
     @XmlEnumValue("vulnerability")
-    VULNERABILITY("vulnerability");
+    VULNERABILITY("vulnerability"),
+
+    /**
+     * An inventory definition describes whether a specific piece of software is installed on the system.
+     * <p>
+     * A definition of this class will evaluate to true when the specified software is found on the system.
+     * Another way of thinking about this is that an inventory definition
+     * is stating "the software is installed if ...".
+     */
+    @XmlEnumValue("inventory")
+    INVENTORY("inventory");
+
     private final String value;
 
     DefinitionClassEnum(String v) {
