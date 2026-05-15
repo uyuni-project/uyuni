@@ -1,0 +1,28 @@
+# SPDX-FileCopyrightText: 2025 SUSE LLC
+#
+# SPDX-License-Identifier: Apache-2.0
+FROM registry.opensuse.org/opensuse/leap:16.0
+
+# Installing all packages
+RUN zypper -n addrepo --no-gpgcheck "https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Utils/openSUSE_Leap_16.0/" uyuni-utils && \
+    zypper -n addrepo --no-gpgcheck "https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Master:/ContainerUtils/openSUSE_Leap_16.0/" uyuni-tools && \
+    zypper -n refresh && \
+    zypper -n install gawk bash-completion curl expect git iputils make man neovim openssh rsync sudo tar vim wget \
+                intltool cpio java-17-openjdk-devel \
+                nodejs22 npm22 \
+                rpmlint ruby \
+                ant ant-junit ant-junit5 apache-ivy maven servletapi5 \
+                python3 python3-pip python3-PyYAML python3-setuptools \
+                obs-to-maven mgradm mgrctl && \
+    zypper -n clean -a
+
+# Creating regular user
+RUN useradd --create-home --shell /bin/bash uyuni && \
+    echo "uyuni:uyuni" | chpasswd && \
+    mkdir -p /etc/sudoers.d && \
+    echo 'uyuni ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/uyuni && \
+    chmod 440 /etc/sudoers.d/uyuni
+
+USER uyuni
+
+COPY initialize.sh /home/uyuni/initialize.sh

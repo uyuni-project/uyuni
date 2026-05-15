@@ -21,7 +21,7 @@
   "java.test.config": {
     "vmArgs": ["-Drhn.config.dir=${workspaceFolder}/java/buildconf/test"]
   },
-  "java.completion.importOrder": ["com.redhat.rhn", "com.suse", "com", "org", "java", "javax", "#"],
+  "java.completion.importOrder": ["#", "com.redhat.rhn", "com.suse", "com", "org", "java", "javax"],
   "java.project.referencedLibraries": ["java/lib/*.jar", "java/buildconf/ivy/repository/suse/*jar"],
   "ant.home": "/usr/share/ant",
   "ant.executable": "/usr/bin/ant",
@@ -58,15 +58,13 @@
   "java.format.settings.profile": "RHN",
   "vscode-postgres.virtualFolders": ["functions"],
   "prettier.configPath": "web/.prettierrc",
+  "cucumber.features": ["testsuite/features/**/*.feature"],
+  "cucumber.glue": ["testsuite/features/step_definitions/**/*.rb"],
   "[json]": {
     "editor.defaultFormatter": "prettier.prettier-vscode"
   },
   "[python]": {
     "editor.defaultFormatter": "ms-python.autopep8",
-    "editor.formatOnSave": true
-  },
-  "[ruby]": {
-    "editor.defaultFormatter": "Shopify.ruby-lsp",
     "editor.formatOnSave": true
   },
   "[perl]": {
@@ -77,7 +75,8 @@
     "editor.defaultFormatter": "redhat.vscode-yaml"
   },
   "[xml]": {
-    "editor.defaultFormatter": "redhat.vscode-xml"
+    "editor.defaultFormatter": "redhat.vscode-xml",
+    "editor.formatOnSave": false
   },
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"

@@ -3,7 +3,7 @@ services:
     hostname: uyuni.dev.local
     image: ghcr.io/uyuni-project/uyuni/devcontainer:latest
     entrypoint: []
-    command: /usr/sbin/init
+    command: /usr/lib/systemd/systemd
     stop_signal: SIGRTMIN+3
     privileged: true
     cgroup: host
@@ -15,7 +15,7 @@ services:
       - ../../:/workspaces/uyuni:cached
       - /sys/fs/cgroup:/sys/fs/cgroup:rw
     user: root
-    links: 
+    links:
       - db
     ports:
       - "443:443"   # UI HTTPS
