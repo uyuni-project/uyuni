@@ -19,8 +19,6 @@
 # The productprettyname macros is controlled in the prjconf. If not defined, we fallback here
 %{!?productprettyname: %global productprettyname Uyuni}
 
-%{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
-
 Name:           susemanager-schema
 Version:        5.2.8
 Release:        0
@@ -40,7 +38,7 @@ BuildRequires:  python3
 BuildRequires:  perl(Digest::SHA)
 BuildRequires:  perl(File::Find)
 Requires:       %{name}-utility
-Requires:       %{sbinpath}/restorecon
+Requires:       %{_sbindir}/restorecon
 Provides:       spacewalk-schema = %{version}
 Obsoletes:      rhn-satellite-schema <= 5.1.0
 BuildArch:      noarch
