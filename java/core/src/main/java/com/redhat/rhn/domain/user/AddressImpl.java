@@ -68,6 +68,16 @@ public class AddressImpl extends BaseDomainHelper implements Address {
      * Protect the constructor
      */
     protected AddressImpl() {
+        this.address1 = " ";
+        this.address2 = " ";
+        this.city = " ";
+        this.state = " ";
+        this.zip = " ";
+        this.country = " ";
+        this.phone = " ";
+        this.fax = " ";
+        this.isPoBox = "0";
+        this.privType = TYPE_MARKETING;
     }
 
     /**
