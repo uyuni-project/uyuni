@@ -25,7 +25,9 @@ public enum AdvisoryStatus {
     STABLE("stable"),
     TESTING("testing"),
     PENDING("pending"),
-    RETRACTED("retracted");
+    RETRACTED("retracted"),
+    // https://fedora-infra.github.io/bodhi/6.0/user/update_states.html#unpushed
+    UNPUSHED("unpushed");
 
     private final String metadataValue;
 
