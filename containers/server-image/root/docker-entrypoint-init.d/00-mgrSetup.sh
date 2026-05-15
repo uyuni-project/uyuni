@@ -20,6 +20,7 @@ check_current_installation
 : "${MANAGER_DB_PORT:=5432}"
 : "${MANAGER_DB_NAME:=susemanager}"
 : "${MANAGER_DB_CA_CERT:=/etc/pki/trust/anchors/DB-RHN-ORG-TRUSTED-SSL-CERT}"
+: "${MANAGER_DB_SSL_ENABLED:=}"
 : "${EXTERNALDB_PROVIDER:=}"
 
 : "${REPORT_DB_USER:=pythia_susemanager}"
@@ -27,6 +28,7 @@ check_current_installation
 : "${REPORT_DB_PORT:=5432}"
 : "${REPORT_DB_NAME:=reportdb}"
 : "${REPORT_DB_CA_CERT:=/etc/pki/trust/anchors/DB-RHN-ORG-TRUSTED-SSL-CERT}"
+: "${REPORT_DB_SSL_ENABLED:=}"
 
 : "${ORG_NAME:=SUSE Test}"
 : "${ADMIN_USER:=admin}"
@@ -77,7 +79,7 @@ report_db_port=${REPORT_DB_PORT}
 report_db_name=${REPORT_DB_NAME}
 report_db_user=${REPORT_DB_USER}
 report_db_password=${REPORT_DB_PASS}
-report_db_ssl_enabled=1
+report_db_ssl_enabled=${REPORT_DB_SSL_ENABLED}
 report_db_sslrootcert=${REPORT_DB_CA_CERT}
 EOF
 
@@ -89,7 +91,7 @@ report_db_port=${REPORT_DB_PORT}
 report_db_name=${REPORT_DB_NAME}
 report_db_user=${REPORT_DB_USER}
 report_db_password=${REPORT_DB_PASS}
-report_db_ssl_enabled=1
+report_db_ssl_enabled=${REPORT_DB_SSL_ENABLED}
 report_db_sslrootcert=${REPORT_DB_CA_CERT}
 EOF
 
@@ -118,7 +120,7 @@ db_port=${MANAGER_DB_PORT}
 db_name=${MANAGER_DB_NAME}
 db_user=${MANAGER_USER}
 db_password=${MANAGER_PASS}
-db_ssl_enabled=
+db_ssl_enabled=${MANAGER_DB_SSL_ENABLED}
 EOF
 
 }
@@ -144,6 +146,7 @@ db-password=${MANAGER_PASS}
 db-name=${MANAGER_DB_NAME}
 db-host=${MANAGER_DB_HOST}
 db-port=${MANAGER_DB_PORT}
+db-ssl-enabled=${MANAGER_DB_SSL_ENABLED}
 db-ca-cert=${MANAGER_DB_CA_CERT}
 report-db-ca-cert=${REPORT_DB_CA_CERT}
 externaldb-provider=${EXTERNALDB_PROVIDER}
@@ -153,6 +156,7 @@ report-db-host=${REPORT_DB_HOST}
 report-db-port=${REPORT_DB_PORT}
 report-db-user=${REPORT_DB_USER}
 report-db-password=${REPORT_DB_PASS}
+report-db-ssl-enabled=${REPORT_DB_SSL_ENABLED}
 enable-tftp=${MANAGER_ENABLE_TFTP}
 product_name=${PRODUCT_NAME}
 hostname=${UYUNI_HOSTNAME}
