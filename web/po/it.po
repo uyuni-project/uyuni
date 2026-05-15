@@ -101,11 +101,11 @@ msgstr ""
 
 #: ../html/src/components/FormulaForm.tsx:165
 msgid "Please input required fields: {fields}"
-msgstr "Inserisci i campi obbligatori: {campi}"
+msgstr "Inserisci i campi obbligatori: {fields}"
 
 #: ../html/src/components/FormulaForm.tsx:168
 msgid "Invalid format of fields: {fields}"
-msgstr "Formato dei campi non valido: {campi}"
+msgstr "Formato dei campi non valido: {fields}"
 
 #: ../html/src/components/FormulaForm.tsx:210
 msgid "On this page you can configure Salt Formulas to automatically install and configure software."

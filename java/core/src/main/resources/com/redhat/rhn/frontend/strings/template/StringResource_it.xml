@@ -265,9 +265,9 @@ package profile for that server is out of date.
 -------------------
 Elenco dei sistemi interessati
 -------------------
-Il presente avviso di patch potrebbe applicarsi ai sistemi elencati di seguito. Se lo sai
-questa patch non si applica a un sistema elencato, potrebbe essere possibile che il
-il profilo del pacchetto per quel server non è aggiornato.
+Il presente avviso di patch potrebbe applicarsi ai sistemi elencati di seguito. Se sai
+che questa patch non si applica a un sistema elencato, potrebbe essere possibile che il
+il profilo del pacchetto per quel server non sia aggiornato.
     </target>
         <context-group name="ctx">
           <context context-type="sourcefile">Taskomatic task: ErrataMailer.java</context>
