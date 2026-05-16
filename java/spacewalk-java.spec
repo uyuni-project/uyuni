@@ -248,8 +248,7 @@ Requires:       system-lock-formula
 Requires:       tomcat11-lib
 Requires:       woodstox
 Requires:       xmlsec
-# due to unix2_chkpwd require pam
-Requires:       pam
+Requires:       /sbin/unix2_chkpwd
 Requires:       (google-gson >= 2.2.4 with google-gson < 2.10.0)
 Requires:       mvn(org.apache.tomcat:tomcat-servlet-api) > 11
 Requires:       mvn(org.hibernate.orm:hibernate-c3p0) >= 7
@@ -390,8 +389,7 @@ Requires:       simple-core
 Requires:       spacewalk-java-config
 Requires:       spacewalk-java-jdbc
 Requires:       spacewalk-java-lib = %{version}
-# due to unix2_chkpwd require pam
-Requires:       pam
+Requires:       /sbin/unix2_chkpwd
 Requires:       mvn(org.hibernate.orm:hibernate-c3p0) >= 7
 Requires:       mvn(org.hibernate.orm:hibernate-core) >= 7
 Requires:       mvn(org.hibernate.orm:hibernate-jcache) >= 7
