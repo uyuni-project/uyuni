@@ -22,6 +22,8 @@ import com.suse.oval.ovaltypes.DefinitionType;
 import com.suse.oval.vulnerablepkgextractor.redhat.RedHatVulnerablePackageExtractorFromPatchDefinition;
 import com.suse.oval.vulnerablepkgextractor.redhat.RedHatVulnerablePackageExtractorFromVulnerabilityDefinition;
 
+import java.util.Optional;
+
 /**
  * A factory for {@link VulnerablePackagesExtractor}
  * */
@@ -37,27 +39,39 @@ public class VulnerablePackagesExtractors {
      * @param ovalResourcesCache a helper class to lookup OVAL resources efficiently
      * @return a vulnerable package extractor instance
      * */
-    public static VulnerablePackagesExtractor create(DefinitionType definition, OsFamily osFamily,
-                                                     OVALResourcesCache ovalResourcesCache) {
+    public static Optional<VulnerablePackagesExtractor> create(DefinitionType definition, OsFamily osFamily,
+                                                                 OVALResourcesCache ovalResourcesCache) {
         switch (osFamily) {
             case LEAP, LEAP_MICRO,
                  SUSE_LINUX_ENTERPRISE_SERVER, SUSE_LINUX_ENTERPRISE_DESKTOP, SUSE_LINUX_ENTERPRISE_MICRO:
-                return new SUSEVulnerablePackageExtractor(definition, ovalResourcesCache);
+                return Optional.of(new SUSEVulnerablePackageExtractor(definition, ovalResourcesCache));
             case DEBIAN:
-                return new DebianVulnerablePackagesExtractor(definition);
+                return Optional.of(new DebianVulnerablePackagesExtractor(definition));
             case REDHAT_ENTERPRISE_LINUX:
                 if (definition.getDefinitionClass() == DefinitionClassEnum.VULNERABILITY) {
-                    return new RedHatVulnerablePackageExtractorFromVulnerabilityDefinition(definition);
+                    return Optional.of(new RedHatVulnerablePackageExtractorFromVulnerabilityDefinition(definition));
                 }
                 else if (definition.getDefinitionClass() == DefinitionClassEnum.PATCH) {
-                    return new RedHatVulnerablePackageExtractorFromPatchDefinition(definition);
+                    return Optional.of(new RedHatVulnerablePackageExtractorFromPatchDefinition(definition));
                 }
                 else {
                     throw new IllegalArgumentException(
                             "Only VULNERABILITY and PATCH definitions are allowed for RedHat OVALs");
                 }
             case UBUNTU:
-                return new UbuntuVulnerablePackageExtractor(definition);
+                if (definition.getDefinitionClass() == DefinitionClassEnum.VULNERABILITY) {
+                    return Optional.of(new UbuntuVulnerablePackageExtractor(definition));
+                }
+                else if (definition.getDefinitionClass() == DefinitionClassEnum.INVENTORY) {
+                    // Inventory is a valid definition class for Ubuntu OVALs,
+                    // but it doesn't contain any vulnerable package information,
+                    // so we return an empty Optional here.
+                    return Optional.empty();
+                }
+                else {
+                    throw new IllegalArgumentException(
+                            "Only VULNERABILITY and INVENTORY definitions are allowed for Ubuntu OVALs");
+                }
             default:
                 throw new IllegalArgumentException(
                         "Cannot find any vulnerable packages extractor implementation for " + osFamily);
