@@ -4,7 +4,6 @@
 # SPDX-License-Identifier: GPL-2.0-Only
 
 if [ "${container:=unknown}" != "oci" ]; then
-    echo "Skipped"
     exit 0
 fi
 
