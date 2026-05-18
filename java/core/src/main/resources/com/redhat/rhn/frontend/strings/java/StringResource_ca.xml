@@ -12155,7 +12155,7 @@ Per a esmenar aquesta situació, afegiu credencials SCC lt;a href""/rhn/admin/se
 - Check for orphaned/unneeded packages: zypper packages --orphaned --unneeded
 - Check for updated config files: find /etc/ -name '*.rpmnew' -o -name '*.rpmsave'</source>
         <target state="translated">Passos recomanats després de la migració:
-- Comprovació de paquets orfes / no necessaris: zypper packages --orphaned --unneeded
+- Comprovació de paquets orfes/no necessaris: zypper packages --orphaned --unneeded
 - Comprovació de fitxers de configuració actualitzats: find /etc/ -name '*.rpmnew' -o -name '*.rpmsave'</target>
       </trans-unit>
       <trans-unit id="distupgrade.sles16.migration.failed" xml:space="preserve">
