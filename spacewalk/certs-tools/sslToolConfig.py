@@ -548,7 +548,7 @@ def figureSerial(caCertFilename, serialFilename, indexFilename):
         random.seed()
         # pylint: disable-next=eval-used
         max_serial = eval("0x" + "F" * 40)
-        serial = random.randrange(1, max_serial - caSerial / 2)
+        serial = random.randrange(1, int(max_serial - caSerial / 2))
     serial = fixSerial(hex(serial))
 
     # create the serial file if it doesn't exist
