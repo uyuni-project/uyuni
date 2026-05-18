@@ -38,13 +38,12 @@ BuildRequires:  python3
 BuildRequires:  perl(Digest::SHA)
 BuildRequires:  perl(File::Find)
 Requires:       %{name}-utility
-Requires:       %{_sbindir}/restorecon
+# restorecon is provided by policycoreutils
+Requires:       policycoreutils
 Provides:       spacewalk-schema = %{version}
 Obsoletes:      rhn-satellite-schema <= 5.1.0
 BuildArch:      noarch
-%if 0%{?suse_version}
 BuildRequires:  fdupes
-%endif
 
 %define rhnroot %{_datadir}/susemanager/db
 %define postgres %{rhnroot}/postgres

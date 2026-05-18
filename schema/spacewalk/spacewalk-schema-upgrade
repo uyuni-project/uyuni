@@ -236,7 +236,7 @@ mkdir $SCHEMA_UPGRADE_LOGDIR, 0755;
 if (not -e $SCHEMA_UPGRADE_LOGDIR) {
         die "Failed to create log directory [$SCHEMA_UPGRADE_LOGDIR]: $!\n";
 }
-system("/usr/sbin/restorecon $SCHEMA_UPGRADE_LOGDIR 2>&1 > /dev/null");
+system("restorecon $SCHEMA_UPGRADE_LOGDIR 2>&1 > /dev/null");
 
 my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = localtime(time);
 my $stamp = sprintf "%04d%02d%02d-%02d%02d%02d", $year + 1900, $mon + 1, $mday,
@@ -353,7 +353,7 @@ sub run_schema_upgrade
     my $log;
     open $log, '>>', $logfile or die "Error writing logfile [$logfile]: $!\n";
 
-    system("/usr/sbin/restorecon $logfile 2>&1 > /dev/null");
+    system("restorecon $logfile 2>&1 > /dev/null");
 
     my ($s, $m, $h, $md, $mo, $y, $wd, $yd, $isds) = localtime(time);
     my $now = sprintf "%04d-%02d-%02d %02d:%02d:%02d", $y + 1900, $mo + 1, $md,
