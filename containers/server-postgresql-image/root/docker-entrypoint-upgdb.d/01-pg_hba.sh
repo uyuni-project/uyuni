@@ -14,10 +14,20 @@ PG_HBA_CHANGED=""
 if [ -f "$NAMESPACE_FILE" ] ; then
     # kubernetes
     NAMESPACE=$(<"$NAMESPACE_FILE")
-    INTERNAL_ACCESS=."$NAMESPACE".svc.cluster.local
+
+    # reverse lookup does nor work during initialization, we must check also IP
+    POD_IP=$(getent hosts $(cat /etc/hostname) 2>/dev/null | sed 's/[[:space:]].*//')
+    POD_NETWORK=$(echo "${POD_IP:-10.42.0.0}" | cut -d. -f1,2).0.0/16
+    INTERNAL_ACCESS="$POD_NETWORK .$NAMESPACE.svc.cluster.local"
+
+    # handle external access via traefik
+    # it matches the IP so it must be rejected explicitly, by domain
+    EXTERNAL_RULES="hostssl reportdb all .kube-system.svc.cluster.local scram-sha-256
+host all all .kube-system.svc.cluster.local reject"
 else
     # podman
     INTERNAL_ACCESS=uyuni-server
+    EXTERNAL_RULES=""
 fi
 
 # Check if we already have the include directive
@@ -42,7 +52,8 @@ include_if_exists pg_hba_custom.conf
 local all all peer
 local replication all peer
 host all all 127.0.0.1/8 scram-sha-256
-host all all ::1/128 scram-sha-256"
+host all all ::1/128 scram-sha-256
+$EXTERNAL_RULES"
 
 for host in $INTERNAL_ACCESS; do
     NEW_CONFIG="$NEW_CONFIG
