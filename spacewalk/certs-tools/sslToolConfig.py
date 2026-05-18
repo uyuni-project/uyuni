@@ -692,8 +692,7 @@ class ConfigFile:
 dir                     = %s
 database                = $dir/index.txt
 serial                  = $dir/serial
-"""
-                                % newdir
+""" % newdir
                             )
                             # pylint: disable-next=invalid-name
                             dirSetYN = 1
