@@ -61,6 +61,22 @@ for (const file of jsonFiles) {
           }
         }
 
+        // Convert step.output (array of strings from Ruby `puts`) to embeddings
+        // so the library renders them for all step statuses (including passed).
+        // The library ignores step.output but renders step.embeddings with
+        // mime_type "text/plain" as "Log" attachments.
+        for (const step of (scenario.steps || [])) {
+          if (Array.isArray(step.output) && step.output.length > 0) {
+            const text = step.output.join('\n');
+            step.embeddings = step.embeddings || [];
+            step.embeddings.push({
+              data: Buffer.from(text).toString('base64'),
+              mime_type: 'text/plain',
+            });
+            delete step.output;
+          }
+        }
+
         // Strip passed/skipped hooks to remove visual noise and fix false failures
         // in the Jenkins Cucumber plugin. Failed hooks (and hooks with no result)
         // are kept so they remain visible in the report for debugging.
