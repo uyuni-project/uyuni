@@ -107,8 +107,15 @@ class Subscriptions extends Component<SubscriptionsProps> {
               header={t("End date")}
               cell={(row) => {
                 const endDate = localizedMoment(row.endDate);
-                const isWarning =
-                  endDate.isBefore(localizedMoment().add(6, "months")) && endDate.isAfter(localizedMoment());
+                const now = localizedMoment();
+
+                // Active and expiring soon (within 90 days)
+                const isActiveAndExpiresSoon = endDate.isAfter(now) && endDate.isBefore(now.clone().add(90, "days"));
+
+                // Expired recently (within 30 days)
+                const isExpiredRecently = endDate.isBefore(now) && endDate.isAfter(now.clone().subtract(30, "days"));
+                const isWarning = isActiveAndExpiresSoon || isExpiredRecently;
+
                 return (
                   <span>
                     <ToolTip content={endDate.fromNow()} title={endDate.toUserDateString()} />
