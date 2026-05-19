@@ -11,7 +11,7 @@ end
 
 Then('the setup marker file should exist on "server"') do
   server_pod = get_pod_name('server', 'server')
-  cmd = "kubectl exec -n uyuni #{server_pod} -- test -f /root/.MANAGER_SETUP_COMPLETE && echo 'EXISTS'"
+  cmd = "kubectl exec -n uyuni #{server_pod} -- test -f /var/spacewalk/.MANAGER_SETUP_COMPLETE && echo 'EXISTS'"
   status, code = get_target('server').run_local(cmd)
   raise 'Failed to check server setup marker file' unless code.zero?
   raise 'Server setup marker file does not exist' unless status.include? 'EXISTS'
