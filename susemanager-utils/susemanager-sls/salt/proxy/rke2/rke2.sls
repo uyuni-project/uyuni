@@ -7,7 +7,7 @@
 # If RKE2 is already present and wipe_k8s is true, does a full wipe + reinstall.
 # Otherwise, ensures RKE2 is installed and running (idempotent).
 
-{%- set wipe_k8s   = salt['pillar.get']('rke2-proxy:wipe_k8s', False) %}
+{%- set wipe_k8s   = salt['pillar.get']('proxy:rke2:wipe_k8s', False) %}
 {%- set kubectl     = '/usr/local/bin/kubectl --kubeconfig=/etc/rancher/rke2/rke2.yaml' %}
 {%- set k3s_present = salt['file.file_exists']('/usr/local/bin/k3s') or salt['file.file_exists']('/usr/bin/k3s') or salt['file.file_exists']('/etc/rancher/k3s/k3s.yaml') %}
 {%- set k3s_etcd    = salt['file.directory_exists']('/var/lib/rancher/k3s/server/db/etcd') %}
@@ -21,7 +21,7 @@ include:
 # ============================================================================
 {%- if k3s_present %}
 
-rke2_proxy_k3s_scale_down:
+proxy_rke2_k3s_scale_down:
   cmd.run:
     - name: |
         for ns in $(k3s kubectl get ns -o jsonpath='{.items[*].metadata.name}' 2>/dev/null); do
@@ -31,16 +31,16 @@ rke2_proxy_k3s_scale_down:
         echo "Scaled down workloads"
     - onlyif: test -f /etc/rancher/k3s/k3s.yaml
     - require:
-      - cmd: rke2_proxy_backup_config
+      - cmd: proxy_rke2_backup_config
 
 {%- if k3s_etcd %}
-rke2_proxy_k3s_snapshot:
+proxy_rke2_k3s_snapshot:
   cmd.run:
     - name: k3s etcd-snapshot save --name rke2-migration
     - require:
-      - cmd: rke2_proxy_k3s_scale_down
+      - cmd: proxy_rke2_k3s_scale_down
 
-rke2_proxy_k3s_snapshot_saved:
+proxy_rke2_k3s_snapshot_saved:
   cmd.run:
     - name: |
         mkdir -p /var/backups/k3s-migration
@@ -52,10 +52,10 @@ rke2_proxy_k3s_snapshot_saved:
         cp /var/lib/rancher/k3s/server/token /var/backups/k3s-migration/token
         echo "Snapshot and token saved to /var/backups/k3s-migration/"
     - require:
-      - cmd: rke2_proxy_k3s_snapshot
+      - cmd: proxy_rke2_k3s_snapshot
 {%- endif %}
 
-rke2_proxy_k3s_stop:
+proxy_rke2_k3s_stop:
   cmd.run:
     - name: |
         systemctl disable k3s 2>/dev/null || true
@@ -67,9 +67,9 @@ rke2_proxy_k3s_stop:
         done
     - require:
 {%- if k3s_etcd %}
-      - cmd: rke2_proxy_k3s_snapshot_saved
+      - cmd: proxy_rke2_k3s_snapshot_saved
 {%- else %}
-      - cmd: rke2_proxy_k3s_scale_down
+      - cmd: proxy_rke2_k3s_scale_down
 {%- endif %}
 
 # ============================================================================
@@ -77,7 +77,7 @@ rke2_proxy_k3s_stop:
 # ============================================================================
 {%- elif wipe_k8s %}
 
-rke2_proxy_rke2_wipe:
+proxy_rke2_rke2_wipe:
   cmd.run:
     - name: |
         if [ -x /usr/local/bin/rke2-uninstall.sh ]; then /usr/local/bin/rke2-uninstall.sh
@@ -92,7 +92,7 @@ rke2_proxy_rke2_wipe:
         systemctl daemon-reload || true
     - onlyif: test -x /usr/local/bin/rke2-uninstall.sh -o -x /usr/bin/rke2-uninstall.sh
     - require:
-      - cmd: rke2_proxy_backup_config
+      - cmd: proxy_rke2_backup_config
 
 {%- endif %}
 
@@ -194,7 +194,7 @@ rke2_proxy_rke2_wipe:
               - name: reload
               - name: loadbalance
 
-rke2_proxy_rke2_installed:
+proxy_rke2_rke2_installed:
   cmd.run:
     - name: |
         curl -sfL https://get.rke2.io | sh -
@@ -204,15 +204,15 @@ rke2_proxy_rke2_installed:
       - file: /etc/rancher/rke2/config.yaml
       - file: /var/lib/rancher/rke2/server/manifests/uyuni-traefik.yaml
       - file: /var/lib/rancher/rke2/server/manifests/rke2-coredns-config.yaml
-      - pkg: rke2_proxy_pkgs_installed
+      - pkg: proxy_rke2_pkgs_installed
 {%- if k3s_present %}
-      - cmd: rke2_proxy_k3s_stop
+      - cmd: proxy_rke2_k3s_stop
 {%- endif %}
 
 {%- if k3s_present and k3s_etcd %}
 # --- etcd mode: restore + credential cleanup after RKE2 install ------------
 
-rke2_proxy_k3s_restore:
+proxy_rke2_k3s_restore:
   cmd.run:
     - name: |
         SNAP=$(ls -1t /var/backups/k3s-migration/rke2-migration* 2>/dev/null | head -1)
@@ -222,27 +222,27 @@ rke2_proxy_k3s_restore:
             --cluster-reset-restore-path="$SNAP" \
             --token "$TOKEN" 2>&1 | tee /var/log/rke2-migration-restore.log
     - require:
-      - cmd: rke2_proxy_rke2_installed
+      - cmd: proxy_rke2_rke2_installed
 
-rke2_proxy_k3s_fix_creds:
+proxy_rke2_k3s_fix_creds:
   cmd.run:
     - name: rm -f /var/lib/rancher/rke2/server/cred/passwd
     - onlyif: test -f /var/lib/rancher/rke2/server/cred/passwd
     - require:
-      - cmd: rke2_proxy_k3s_restore
+      - cmd: proxy_rke2_k3s_restore
 
-rke2_proxy_k3s_reset_cleanup:
+proxy_rke2_k3s_reset_cleanup:
   cmd.run:
     - name: rm -f /var/lib/rancher/rke2/server/db/reset-flag
     - onlyif: test -f /var/lib/rancher/rke2/server/db/reset-flag
     - require:
-      - cmd: rke2_proxy_k3s_fix_creds
+      - cmd: proxy_rke2_k3s_fix_creds
 {%- endif %}
 
 {%- if k3s_present %}
 # Uninstall k3s BEFORE starting rke2-server.
 # CRITICAL: never run k3s-uninstall while RKE2 is running.
-rke2_proxy_k3s_uninstall:
+proxy_rke2_k3s_uninstall:
   cmd.run:
     - name: |
         for p in /usr/local/bin/k3s-uninstall.sh /usr/bin/k3s-uninstall.sh; do
@@ -251,23 +251,23 @@ rke2_proxy_k3s_uninstall:
     - onlyif: test -x /usr/local/bin/k3s-uninstall.sh -o -x /usr/bin/k3s-uninstall.sh
     - require:
 {%- if k3s_etcd %}
-      - cmd: rke2_proxy_k3s_reset_cleanup
+      - cmd: proxy_rke2_k3s_reset_cleanup
 {%- else %}
-      - cmd: rke2_proxy_rke2_installed
+      - cmd: proxy_rke2_rke2_installed
 {%- endif %}
 {%- endif %}
 
-rke2_proxy_rke2_server_running:
+proxy_rke2_rke2_server_running:
   service.running:
     - name: rke2-server
     - enable: True
     - require:
-      - cmd: rke2_proxy_rke2_installed
+      - cmd: proxy_rke2_rke2_installed
 {%- if k3s_present %}
-      - cmd: rke2_proxy_k3s_uninstall
+      - cmd: proxy_rke2_k3s_uninstall
 {%- endif %}
 
-rke2_proxy_kubectl_symlink:
+proxy_rke2_kubectl_symlink:
   cmd.run:
     - name: |
         for _ in $(seq 1 30); do
@@ -281,9 +281,9 @@ rke2_proxy_kubectl_symlink:
         exit 1
     - creates: /usr/local/bin/kubectl
     - require:
-      - service: rke2_proxy_rke2_server_running
+      - service: proxy_rke2_rke2_server_running
 
-rke2_proxy_rke2_node_ready:
+proxy_rke2_rke2_node_ready:
   cmd.run:
     - name: |
         for _ in $(seq 1 60); do
@@ -292,12 +292,12 @@ rke2_proxy_rke2_node_ready:
         done
         exit 1
     - require:
-      - cmd: rke2_proxy_kubectl_symlink
+      - cmd: proxy_rke2_kubectl_symlink
 
 # --- Post-migration cleanup (only after k3s migration) ---------------------
 {%- if k3s_present %}
 
-rke2_proxy_k3s_remove_taints:
+proxy_rke2_k3s_remove_taints:
   cmd.run:
     - name: |
         NODE=$({{ kubectl }} get nodes -o jsonpath='{.items[0].metadata.name}')
@@ -307,9 +307,9 @@ rke2_proxy_k3s_remove_taints:
         {{ kubectl }} label node "$NODE" node.kubernetes.io/instance-type- 2>/dev/null || true
         echo "Removed stale k3s taints and annotations"
     - require:
-      - cmd: rke2_proxy_rke2_node_ready
+      - cmd: proxy_rke2_rke2_node_ready
 
-rke2_proxy_k3s_cleanup_coredns:
+proxy_rke2_k3s_cleanup_coredns:
   cmd.run:
     - name: |
         {{ kubectl }} -n kube-system scale deploy coredns --replicas=0 2>/dev/null || true
@@ -319,20 +319,20 @@ rke2_proxy_k3s_cleanup_coredns:
         {{ kubectl }} -n kube-system get deploy coredns -o jsonpath='{.metadata.labels.app}' 2>/dev/null
         | grep -qv rke2
     - require:
-      - cmd: rke2_proxy_rke2_node_ready
+      - cmd: proxy_rke2_rke2_node_ready
 
-rke2_proxy_k3s_cleanup_metrics:
+proxy_rke2_k3s_cleanup_metrics:
   cmd.run:
     - name: |
         {{ kubectl }} delete apiservices.apiregistration.k8s.io v1beta1.metrics.k8s.io 2>/dev/null || true
         echo "Old metrics APIService removed"
     - onlyif: {{ kubectl }} get apiservices.apiregistration.k8s.io v1beta1.metrics.k8s.io 2>/dev/null
     - require:
-      - cmd: rke2_proxy_rke2_node_ready
+      - cmd: proxy_rke2_rke2_node_ready
 
 {%- endif %}
 
-rke2_proxy_rke2_traefik_installed:
+proxy_rke2_rke2_traefik_installed:
   cmd.run:
     - name: |
         for _ in $(seq 1 60); do
@@ -341,15 +341,15 @@ rke2_proxy_rke2_traefik_installed:
         done
         exit 1
     - require:
-      - cmd: rke2_proxy_rke2_node_ready
+      - cmd: proxy_rke2_rke2_node_ready
 
-rke2_proxy_rke2_traefik_ready:
+proxy_rke2_rke2_traefik_ready:
   cmd.run:
     - name: {{ kubectl }} -n kube-system rollout status ds/rke2-traefik --timeout=300s
     - require:
-      - cmd: rke2_proxy_rke2_traefik_installed
+      - cmd: proxy_rke2_rke2_traefik_installed
 
-rke2_proxy_bashrc_exists:
+proxy_rke2_bashrc_exists:
   file.managed:
     - name: /root/.bashrc
     - replace: False
@@ -357,7 +357,7 @@ rke2_proxy_bashrc_exists:
     - group: root
     - mode: '0644'
 
-rke2_proxy_bashrc_env:
+proxy_rke2_bashrc_env:
   file.blockreplace:
     - name: /root/.bashrc
     - marker_start: "# >>> rke2 env >>>"
@@ -371,5 +371,5 @@ rke2_proxy_bashrc_env:
     - append_newline: True
     - backup: '.bak'
     - require:
-      - file: rke2_proxy_bashrc_exists
-      - service: rke2_proxy_rke2_server_running
+      - file: proxy_rke2_bashrc_exists
+      - service: proxy_rke2_rke2_server_running

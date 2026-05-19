@@ -5,7 +5,7 @@
 # kubectl is symlinked from the RKE2-bundled binary in rke2.sls.
 
 {%- if grains['os_family'] != 'Suse' %}
-rke2_proxy_unsupported_os:
+proxy_rke2_unsupported_os:
   test.fail_without_changes:
     - name: |
         rke2-proxy state currently only supports the SUSE family
@@ -13,7 +13,7 @@ rke2_proxy_unsupported_os:
         for your distribution.
 {%- else %}
 
-rke2_proxy_pkgs_installed:
+proxy_rke2_pkgs_installed:
   pkg.installed:
     - pkgs:
       - curl
