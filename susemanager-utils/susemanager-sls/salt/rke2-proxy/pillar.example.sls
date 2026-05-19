@@ -8,11 +8,12 @@
 # Proxy config files (config.yaml, httpd.yaml, ssh.yaml) are backed up
 # automatically from the running environment before wipe.
 
-rke2_proxy:
+rke2-proxy:
   # Optional — derived from SUMA pillar if omitted
   # proxy_fqdn: mb-proxy52.mb-network-pub.lab
   # server_fqdn: mb-server.mb-network-pub.lab
 
+  # Namespace for the proxy deployment (must match the existing k3s/RKE2 namespace)
   namespace: uyuni-proxy
 
   # Chart + images (required)
@@ -26,5 +27,5 @@ rke2_proxy:
   # config_dir: /etc/uyuni/proxy
 
   # Toggles
-  wipe_rke2: true
+  wipe_k8s: true                 # wipes both k3s and RKE2 if present
   enable_tftp_hostnetwork: true
