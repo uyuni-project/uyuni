@@ -1,0 +1,2 @@
+- Fix user role selection when org admin
+  role is enabled (bsc#1259254)
