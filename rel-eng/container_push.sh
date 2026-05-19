@@ -30,10 +30,10 @@ fi
 PRODUCT_VERSION=$(echo ${PRODUCT_VERSION,,} | sed -r 's/ /-/g')
 
 # Possible values: beta, sle-eula
-EULA=beta
+EULA=sle-eula
 
 # Possible values: alpha, beta, released
-RELEASE_STAGE=beta
+RELEASE_STAGE=released
 
 for DOCKERFILE in $(ls ${SRPM_PKG_DIR}/Dockerfile* 2>/dev/null); do
   NAME="${PKG_NAME%%-image}"
