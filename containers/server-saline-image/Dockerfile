@@ -23,7 +23,7 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     rpm -ivh --nodeps $(find /var/cache/zypp/packages/ -type f \
       -name update-alternatives.rpm -o \
       -name ${USEPYTHON}-base.rpm -o -name 'lib${USEPYTHON/python3/python3_/}*.rpm' -o -name 'libopenssl*.rpm' -o -name libexpat1.rpm -o \
-      -name salt.rpm -o -name ${USEPYTHON}-salt.rpm -o -name ${USEPYTHON}-tornado.rpm -o \
+      -name salt.rpm -o -name ${USEPYTHON}-salt.rpm -o -name ${USEPYTHON}-tornado6.rpm -o \
       -name ${USEPYTHON}-contextvars.rpm -o -name ${USEPYTHON}-immutables.rpm -o -name ${USEPYTHON}-looseversion.rpm -o \
       -name ${USEPYTHON}-packaging.rpm -o -name ${USEPYTHON}-distro.rpm -o \
       -name ${USEPYTHON}-PyYAML.rpm -o -name 'libyaml*.rpm' -o -name ${USEPYTHON}-Jinja2.rpm -o -name ${USEPYTHON}-MarkupSafe.rpm -o \
