@@ -10,7 +10,7 @@
 
 {%- set cpu_flags = salt['grains.get']('cpu_flags', []) %}
 {%- if 'sse4_2' not in cpu_flags %}
-rke2_proxy_cpu_check:
+proxy_rke2_cpu_check:
   test.fail_without_changes:
     - name: |
         CPU does not support x86-64-v2 (missing sse4_2).
@@ -20,18 +20,18 @@ rke2_proxy_cpu_check:
 
 {%- set required_mlm = ['chart_oci', 'chart_version', 'image_repo', 'image_tag'] %}
 {%- set missing = [] %}
-{%- for k in required_mlm if not salt['pillar.get']('rke2-proxy:' ~ k) %}
-  {%- do missing.append('rke2-proxy:' ~ k) %}
+{%- for k in required_mlm if not salt['pillar.get']('proxy:rke2:' ~ k) %}
+  {%- do missing.append('proxy:rke2:' ~ k) %}
 {%- endfor %}
-{%- if not (salt['pillar.get']('rke2-proxy:proxy_fqdn') or salt['pillar.get']('primary_fqdn')) %}
-  {%- do missing.append('rke2-proxy:proxy_fqdn (or SUMA primary_fqdn)') %}
+{%- if not (salt['pillar.get']('proxy:rke2:proxy_fqdn') or salt['pillar.get']('primary_fqdn')) %}
+  {%- do missing.append('proxy:rke2:proxy_fqdn (or SUMA primary_fqdn)') %}
 {%- endif %}
-{%- if not (salt['pillar.get']('rke2-proxy:server_fqdn') or salt['pillar.get']('mgr_server')) %}
-  {%- do missing.append('rke2-proxy:server_fqdn (or SUMA mgr_server)') %}
+{%- if not (salt['pillar.get']('proxy:rke2:server_fqdn') or salt['pillar.get']('mgr_server')) %}
+  {%- do missing.append('proxy:rke2:server_fqdn (or SUMA mgr_server)') %}
 {%- endif %}
 
 {%- if missing %}
-rke2_proxy_missing_pillar:
+proxy_rke2_missing_pillar:
   test.fail_without_changes:
     - name: |
         Required pillar keys are missing or empty:

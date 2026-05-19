@@ -12,12 +12,12 @@
 # This state MUST run before rke2.sls wipes the cluster.
 
 {%- set work_dir   = salt['temp.dir']('', 'rke2-proxy-') %}
-{%- do salt['grains.set']('rke2-proxy:work_dir', work_dir) %}
+{%- do salt['grains.set']('proxy:rke2:work_dir', work_dir) %}
 
-{%- set persist    = salt['pillar.get']('rke2-proxy:config_dir', '/etc/uyuni/proxy') %}
-{%- set namespace  = salt['pillar.get']('rke2-proxy:namespace', 'uyuni-proxy') %}
+{%- set persist    = salt['pillar.get']('proxy:rke2:config_dir', '/etc/uyuni/proxy') %}
+{%- set namespace  = salt['pillar.get']('proxy:rke2:namespace', 'uyuni-proxy') %}
 
-rke2_proxy_backup_config:
+proxy_rke2_backup_config:
   cmd.run:
     - name: |
         mkdir -p {{ persist }}
@@ -95,7 +95,7 @@ rke2_proxy_backup_config:
         exit 1
     - creates: {{ work_dir }}/config.yaml
 
-rke2_proxy_config_extracted:
+proxy_rke2_config_extracted:
   cmd.run:
     - name: |
         cd {{ work_dir }}
@@ -117,4 +117,4 @@ rke2_proxy_config_extracted:
         "
     - creates: {{ work_dir }}/server.crt
     - require:
-      - cmd: rke2_proxy_backup_config
+      - cmd: proxy_rke2_backup_config
