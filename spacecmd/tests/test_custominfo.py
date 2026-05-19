@@ -3,7 +3,7 @@
 Test suite for custominfo source
 """
 # pylint: disable-next=unused-import
-from mock import MagicMock, patch, mock_open
+from unittest.mock import MagicMock, patch, mock_open
 from spacecmd import custominfo
 
 # pylint: disable-next=unused-import

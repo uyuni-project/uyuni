@@ -2,7 +2,7 @@
 """
 Unit test for the spacecmd.shell module.
 """
-from mock import MagicMock, patch
+from unittest.mock import MagicMock, patch
 import os
 import time
 import readline

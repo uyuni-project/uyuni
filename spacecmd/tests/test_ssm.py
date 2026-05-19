@@ -4,7 +4,7 @@ Test suite for the SSM module commands.
 """
 
 # pylint: disable-next=unused-import
-from mock import MagicMock, patch, mock_open
+from unittest.mock import MagicMock, patch, mock_open
 from spacecmd import ssm
 from helpers import shell, assert_expect
 

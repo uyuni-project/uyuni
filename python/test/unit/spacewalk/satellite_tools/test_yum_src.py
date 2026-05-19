@@ -39,7 +39,7 @@ except:
 
 from collections import namedtuple
 
-from mock import Mock, MagicMock, patch, mock_open
+from unittest.mock import Mock, MagicMock, patch, mock_open
 
 from spacewalk.satellite_tools.repo_plugins import yum_src, ContentPackage
 from spacewalk.satellite_tools.repo_plugins.yum_src import UpdateNotice
@@ -395,7 +395,7 @@ class YumSrcTest(unittest.TestCase):
             cs.get_file("foobar")
             self.assertEqual(urlgrabber_spy.urlread.call_args[0][0], "foobar")
             self.assertEqual(
-                urlgrabber_spy.urlread.call_args.kwargs["urls"], MIRROR_LIST
+                urlgrabber_spy.urlread.call_args[1]["urls"], MIRROR_LIST
             )
 
     @patch("spacewalk.satellite_tools.repo_plugins.yum_src.ZYPP_RAW_CACHE_PATH", "./")

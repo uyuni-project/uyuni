@@ -2,7 +2,7 @@
 """
 Test activation key methods.
 """
-from mock import MagicMock, patch
+from unittest.mock import MagicMock, patch
 import pytest
 
 # pylint: disable-next=unused-import

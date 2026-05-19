@@ -33,7 +33,7 @@ except ImportError:
     from StringIO import StringIO
 from datetime import datetime, timedelta
 
-from mock import MagicMock, Mock, patch, call
+from unittest.mock import MagicMock, Mock, patch, call
 
 import spacewalk.satellite_tools.reposync
 from spacewalk.satellite_tools.repo_plugins import ContentPackage

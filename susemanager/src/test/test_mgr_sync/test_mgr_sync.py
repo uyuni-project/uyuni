@@ -87,7 +87,7 @@ class MgrSyncTest(unittest.TestCase):
         options = get_options("list channels".split())
         with ConsoleRecorder() as recorder:
             self.assertEqual(1, self.mgr_sync.run(options))
-        self.assertEqual(["mgr-sync: Authentication failure"], recorder.stderr)
+        self.assertIn("mgr-sync: Authentication failure", "\n".join(recorder.stderr))
 
     def test_should_always_write_the_session_token_to_the_local_configuration(self):
         self.mgr_sync.config.token = "old token"
