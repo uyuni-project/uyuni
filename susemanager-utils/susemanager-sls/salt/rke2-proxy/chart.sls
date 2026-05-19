@@ -2,13 +2,13 @@
 # Create the proxy namespace, the TLS Secret + CA ConfigMap from the extracted certs,
 # helm-install the proxy-helm chart and wait for the pods to be ready.
 
-{%- set namespace     = salt['pillar.get']('rke2_proxy:namespace', 'uyuni-proxy') %}
-{%- set chart_oci     = salt['pillar.get']('rke2_proxy:chart_oci') %}
-{%- set chart_version = salt['pillar.get']('rke2_proxy:chart_version') %}
-{%- set image_repo    = salt['pillar.get']('rke2_proxy:image_repo') %}
-{%- set image_tag     = salt['pillar.get']('rke2_proxy:image_tag') %}
-{%- set work_dir      = salt['grains.get']('rke2_proxy:work_dir', '/tmp/rke2-proxy-config') %}
-{%- set tftp_hostnet  = salt['pillar.get']('rke2_proxy:enable_tftp_hostnetwork', True) %}
+{%- set namespace     = salt['pillar.get']('rke2-proxy:namespace', 'uyuni-proxy') %}
+{%- set chart_oci     = salt['pillar.get']('rke2-proxy:chart_oci') %}
+{%- set chart_version = salt['pillar.get']('rke2-proxy:chart_version') %}
+{%- set image_repo    = salt['pillar.get']('rke2-proxy:image_repo') %}
+{%- set image_tag     = salt['pillar.get']('rke2-proxy:image_tag') %}
+{%- set work_dir      = salt['grains.get']('rke2-proxy:work_dir', '/tmp/rke2-proxy-config') %}
+{%- set tftp_hostnet  = salt['pillar.get']('rke2-proxy:enable_tftp_hostnetwork', True) %}
 
 {%- set kubectl = '/usr/local/bin/kubectl --kubeconfig=/etc/rancher/rke2/rke2.yaml' %}
 {%- set helm    = '/usr/bin/helm --kubeconfig=/etc/rancher/rke2/rke2.yaml' %}
@@ -88,6 +88,6 @@ rke2_proxy_config_cleanup:
 rke2_proxy_grain_cleanup:
   module.run:
     - name: grains.delkey
-    - key: rke2_proxy:work_dir
+    - key: rke2-proxy:work_dir
     - require:
       - file: rke2_proxy_config_cleanup
