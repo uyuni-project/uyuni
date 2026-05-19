@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2025 SUSE LLC.
+# Copyright (c) 2020-2026 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 @<client>
@@ -182,6 +182,11 @@ Feature: Smoke tests for <client>
     Then I should see a "1 package install has been scheduled for" text
     And I wait until event "Package Install/Upgrade scheduled by <client>" is completed
 
+# WORKAROUND
+# We don't currently have any exporter in the client tools repo for RHEL 10 clones.
+# Only node exporters are expected in 5.1.4 release, no others like Apache or Postgres.
+# This workaround should be reverted when node exporters are available in 5.1.4.
+@skip_for_rhel10plus
   Scenario: Enable Prometheus Node exporter formula on the <client>
     Given I am on the Systems overview page of this "<client>"
     When I follow "Formulas" in the content area
@@ -199,6 +204,7 @@ Feature: Smoke tests for <client>
     Then I should see a "Formula saved" text
 
 @skip_for_transactional_minion
+@skip_for_rhel10plus
   Scenario: Enable Prometheus Apache and Postgres exporter formula on the <client>
     Given I am on the Systems overview page of this "<client>"
     When I follow "Formulas" in the content area
@@ -225,11 +231,13 @@ Feature: Smoke tests for <client>
     And I start the "prometheus-node_exporter.service" service on "<client>"
     And I enable the "prometheus-node_exporter.service" service on "<client>"
 
+@skip_for_rhel10plus
   Scenario: Visit Node monitoring endpoint on the <client>
     When I wait until "node" exporter service is active on "<client>"
     And I visit "Prometheus node exporter" endpoint of this "<client>"
 
 @skip_for_transactional_minion
+@skip_for_rhel10plus
   Scenario: Visit Apache and Postgres monitoring endpoint on the <client>
     When I wait until "apache" exporter service is active on "<client>"
     And I visit "Prometheus apache exporter" endpoint of this "<client>"
@@ -237,6 +245,7 @@ Feature: Smoke tests for <client>
     And I visit "Prometheus postgres exporter" endpoint of this "<client>"
 
 @monitoring_server
+@skip_for_rhel10plus
   Scenario: The data from <client> appear on Grafana dashboard
     When I visit the grafana dashboards of this "monitoring_server"
     And I wait until I do not see "Loading Grafana" text
