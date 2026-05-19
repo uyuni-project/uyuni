@@ -130,7 +130,7 @@ artifacts:
     package: jakarta-persistence-api
     repository: Uyuni
   - artifact: java-saml
-    jar: java-saml-[0-9.]+
+    jar: java-saml\.jar
     repository: Uyuni_Other
   - artifact: java-saml-core
     package: java-saml

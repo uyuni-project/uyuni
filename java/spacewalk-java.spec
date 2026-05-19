@@ -245,7 +245,7 @@ Requires:       sudo
 Requires:       susemanager-docs_en
 Requires:       system-lock-formula
 Requires:       tomcat11-lib
-Requires:       woodstox
+Requires:       woodstox-core
 Requires:       xmlsec
 Requires:       /sbin/unix2_chkpwd
 Requires:       (google-gson >= 2.2.4 with google-gson < 2.10.0)
