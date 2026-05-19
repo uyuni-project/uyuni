@@ -25,7 +25,7 @@ def postgres(request):
 
     def finalizer():
         subprocess.Popen(
-            shlex.split('su postgres -c "pg_ctl stop -D /var/lib/pgsql/data"')
+            shlex.split('su postgres -c "pg_ctl -D /var/lib/pgsql/data stop -D /var/lib/pgsql/data"')
         )
 
     request.addfinalizer(finalizer)

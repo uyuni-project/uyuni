@@ -14,8 +14,8 @@ echo $PERLLIB
 ./build-reportdb-schema.sh
 
 export SYSTEMD_NO_WRAP=1
-su - postgres -c "/usr/lib/postgresql/bin/pg_ctl stop" ||:
-su - postgres -c "/usr/lib/postgresql/bin/pg_ctl start"
+su - postgres -c "/usr/lib/postgresql/bin/pg_ctl -D /var/lib/pgsql/data stop" ||:
+su - postgres -c "/usr/lib/postgresql/bin/pg_ctl -D /var/lib/pgsql/data start"
 
 cat >>/etc/rhn/rhn.conf <<EOF
 db_backend=postgresql

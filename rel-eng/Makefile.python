@@ -12,7 +12,7 @@ endef
 
 
 define install_pytest
-	pip3 install pytest==4.4.0
+	pip3 install pytest
 endef
 
 

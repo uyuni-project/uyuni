@@ -49,10 +49,10 @@ fi
 # run the schema upgrade from git repo
 if ! /manager/schema/spacewalk/spacewalk-schema-upgrade -y --reportdb; then
     cat /var/log/spacewalk/reportdb-schema-upgrade/schema-from-*.log
-    su - postgres -c "/usr/lib/postgresql/bin/pg_ctl stop" ||:
+    su - postgres -c "/usr/lib/postgresql/bin/pg_ctl -D /var/lib/pgsql/data stop" ||:
     exit 1
 fi
 
-su - postgres -c "/usr/lib/postgresql/bin/pg_ctl stop" ||:
+su - postgres -c "/usr/lib/postgresql/bin/pg_ctl -D /var/lib/pgsql/data stop" ||:
 su - postgres -c '/usr/lib/postgresql/bin/postgres -D /var/lib/pgsql/data'
 
