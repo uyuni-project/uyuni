@@ -1,19 +1,17 @@
 #!jinja|yaml
-# Tooling required by the rke2-proxy install.
-#
-# Repo packages: curl, openssl, openssh, helm.
+# Tooling required by RKE2: curl, openssl, openssh, helm.
 # kubectl is symlinked from the RKE2-bundled binary in rke2.sls.
 
 {%- if grains['os_family'] != 'Suse' %}
-proxy_rke2_unsupported_os:
+rke2_unsupported_os:
   test.fail_without_changes:
     - name: |
-        rke2-proxy state currently only supports the SUSE family
+        rke2 state currently only supports the SUSE family
         (got os_family={{ grains['os_family'] }}). Adjust packages.sls
         for your distribution.
 {%- else %}
 
-proxy_rke2_pkgs_installed:
+rke2_pkgs_installed:
   pkg.installed:
     - pkgs:
       - curl
