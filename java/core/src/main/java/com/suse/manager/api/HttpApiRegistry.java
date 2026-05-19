@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 SUSE LLC
+ * Copyright (c) 2022--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.suse.manager.api;
 
@@ -48,12 +44,15 @@ public class HttpApiRegistry {
     private final HandlerFactory handlerFactory;
     private final RouteFactory routeFactory;
     private final SparkRegistrationHelper registrationHelper;
+    private final LoginController loginController;
 
     /**
      * Constructs a registry instance with the default {@link HandlerFactory}
+     * @param loginControllerIn the login controller instance for the auth routes
      */
-    public HttpApiRegistry() {
-        this(HandlerFactory.getDefaultHandlerFactory(), new RouteFactory(), new SparkRegistrationHelper());
+    public HttpApiRegistry(LoginController loginControllerIn) {
+        this(HandlerFactory.getDefaultHandlerFactory(), new RouteFactory(), new SparkRegistrationHelper(),
+                loginControllerIn);
     }
 
     /**
@@ -61,12 +60,15 @@ public class HttpApiRegistry {
      * @param handlerFactoryIn the handler factory
      * @param routeFactoryIn the route factory that generates the {@link Route}s
      * @param registrationHelperIn the helper that registers {@link Route}s to {@link spark.Spark}
+     * @param loginControllerIn the login controller instance for the auth routes
      */
     public HttpApiRegistry(HandlerFactory handlerFactoryIn, RouteFactory routeFactoryIn,
-                           SparkRegistrationHelper registrationHelperIn) {
+                           SparkRegistrationHelper registrationHelperIn,
+                           LoginController loginControllerIn) {
         this.handlerFactory = handlerFactoryIn;
         this.routeFactory = routeFactoryIn;
         this.registrationHelper = registrationHelperIn;
+        this.loginController = loginControllerIn;
     }
 
     /**
@@ -139,9 +141,9 @@ public class HttpApiRegistry {
      * Register login/logout endpoints from {@link LoginController} to 'auth' namespace
      */
     private void registerAuthEndpoints() {
-        registrationHelper.addPostRoute(HTTP_API_ROOT + "auth/login", LoginController::apiLogin);
-        registrationHelper.addPostRoute(HTTP_API_ROOT + "auth/logout", withUser(LoginController::logout));
-        registrationHelper.addGetRoute(HTTP_API_ROOT + "auth/logout", withUser(LoginController::logout));
+        registrationHelper.addPostRoute(HTTP_API_ROOT + "auth/login", loginController::apiLogin);
+        registrationHelper.addPostRoute(HTTP_API_ROOT + "auth/logout", withUser(loginController::logout));
+        registrationHelper.addGetRoute(HTTP_API_ROOT + "auth/logout", withUser(loginController::logout));
     }
 
     /**

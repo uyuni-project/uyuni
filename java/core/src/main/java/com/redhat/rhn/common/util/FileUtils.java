@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LLC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -22,6 +23,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.file.FileSystems;
@@ -106,6 +108,18 @@ public class FileUtils {
         view.setPermissions(permissions);
     }
 
+    /**
+     * Read a file off disk into a String and return it. This method DOES NOT validate the path, use it only to read
+     * files that cannot be modified by user input.
+     *
+     * Expect weird stuff if the file is not textual.
+     *
+     * @param url of file to read in
+     * @return String containing file.
+     */
+    public static String readStringFromFile(URL url) {
+        return readStringFromFile(Path.of(url.getPath()), false);
+    }
 
     /**
      * Read a file off disk into a String and return it. This method DOES NOT validate the path, use it only to read

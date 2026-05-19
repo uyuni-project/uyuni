@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022--2025 SUSE LLC
+ * Copyright (c) 2022--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -14,10 +14,15 @@ import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.HandlerFactory;
 import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 
+import com.suse.manager.webui.controllers.login.LoginController;
+import com.suse.manager.webui.services.OidcAuthHandler;
+
 import org.jmock.Expectations;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.Optional;
 
 import spark.Route;
 
@@ -62,8 +67,10 @@ public class HttpApiRegistryTest extends RhnJmockBaseTestCase {
         HandlerFactory handlerFactory = new HandlerFactory();
         handlerFactory.addHandler("test.path", new RegistryTestHandler());
 
+        LoginController loginController = new LoginController(new OidcAuthHandler(), Optional.empty());
+
         SparkRegistrationHelper helper = context().mock(SparkRegistrationHelper.class);
-        HttpApiRegistry registry = new HttpApiRegistry(handlerFactory, routeFactory, helper);
+        HttpApiRegistry registry = new HttpApiRegistry(handlerFactory, routeFactory, helper, loginController);
 
         context().checking(new Expectations() {{
             // Auth routes are added in all cases

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018 SUSE LLC
+ * Copyright (c) 2018--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.suse.manager.webui.controllers; import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
@@ -73,7 +69,20 @@ public class BaseControllerTestCase extends JMockBaseTestCaseWithUser {
      * @return the request with csrf
      */
     protected Request getRequestWithCsrfAndParams(String uri, Map<String, String> queryParams, Object... vars) {
-        Request request = SparkTestUtils.createMockRequestWithParams(baseUri + uri, queryParams, vars);
+        return getRequestWithCsrfAndParams(baseUri, uri, queryParams, vars);
+    }
+
+    /**
+     * Creates a request with csrf token and params.
+     * @param base the base uri
+     * @param uri the uri
+     * @param queryParams the params
+     * @param vars the vars
+     * @return the request with csrf
+     */
+    protected Request getRequestWithCsrfAndParams(String base, String uri, Map<String, String> queryParams,
+                                                  Object... vars) {
+        Request request = SparkTestUtils.createMockRequestWithParams(base + uri, queryParams, vars);
         request.session(true).attribute("csrf_token", "bleh");
         return request;
     }

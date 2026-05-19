@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<samlp:Response ID="{requestId}" Version="2.0" IssueInstant="2020-01-01T00:00:00Z" Destination="https://localhost/acs.jsp"
+            xmlns:samlp="urn:oasis:names:tc:SAML:2.0:protocol" xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion">
+    <saml:Issuer>https://idp</saml:Issuer>
+    <samlp:Status>
+        <samlp:StatusCode Value="urn:oasis:names:tc:SAML:2.0:status:Success"/>
+    </samlp:Status>
+    <saml:Assertion ID="assertion_id" IssueInstant="2020-01-01T00:00:00Z" Version="2.0">
+        <saml:Issuer>https://idp</saml:Issuer>
+        <saml:Subject>
+            <saml:NameID Format="urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified">{user}</saml:NameID>
+            <saml:SubjectConfirmation Method="urn:oasis:names:tc:SAML:2.0:cm:bearer">
+                <saml:SubjectConfirmationData NotOnOrAfter="2099-12-31T23:59:59Z" Recipient="https://localhost/acs.jsp"/>
+            </saml:SubjectConfirmation>
+        </saml:Subject>
+        <saml:Conditions NotBefore="2020-01-01T00:00:00Z" NotOnOrAfter="2099-12-31T23:59:59Z">
+            <saml:AudienceRestriction>
+                <saml:Audience>https://localhost/metadata.jsp</saml:Audience>
+            </saml:AudienceRestriction>
+        </saml:Conditions>
+        <saml:AuthnStatement AuthnInstant="2020-01-01T00:00:00Z" SessionIndex="session_index">
+            <saml:AuthnContext>
+                <saml:AuthnContextClassRef>urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport</saml:AuthnContextClassRef>
+            </saml:AuthnContext>
+        </saml:AuthnStatement>
+        <saml:AttributeStatement>
+            <saml:Attribute Name="uid">
+                <saml:AttributeValue>{user}</saml:AttributeValue>
+            </saml:Attribute>
+        </saml:AttributeStatement>
+    </saml:Assertion>
+</samlp:Response>

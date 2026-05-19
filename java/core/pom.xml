@@ -146,11 +146,11 @@
             <artifactId>jade4j</artifactId>
         </dependency>
         <dependency>
-            <groupId>suse</groupId>
+            <groupId>com.suse</groupId>
             <artifactId>java-saml</artifactId>
         </dependency>
         <dependency>
-            <groupId>suse</groupId>
+            <groupId>com.suse</groupId>
             <artifactId>java-saml-core</artifactId>
         </dependency>
         <dependency>
@@ -278,11 +278,6 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpcore-nio</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
             <scope>runtime</scope>
         </dependency>
         <dependency>
@@ -417,10 +412,11 @@
         <dependency>
             <groupId>org.codehaus.woodstox</groupId>
             <artifactId>stax2-api</artifactId>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
-            <groupId>org.codehaus.woodstox</groupId>
-            <artifactId>woodstox-core-asl</artifactId>
+            <groupId>com.fasterxml.woodstox</groupId>
+            <artifactId>woodstox-core</artifactId>
             <scope>runtime</scope>
         </dependency>
         <dependency>

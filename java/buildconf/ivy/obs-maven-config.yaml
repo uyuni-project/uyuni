@@ -142,8 +142,6 @@ artifacts:
     repository: Leap_sle
   - artifact: jdom
     repository: Leap
-  - artifact: joda-time
-    repository: Leap
   - artifact: jose4j
     repository: Uyuni_Other
   - artifact: log4j-core
@@ -226,13 +224,11 @@ artifacts:
   - artifact: spark-template-jade
     repository: Uyuni_Other
   - artifact: stax2-api
-    package: woodstox
-    repository: Uyuni_Other
+    repository: Leap
   - artifact: struts
     repository: Uyuni
-  - artifact: woodstox-core-asl
-    package: woodstox
-    repository: Uyuni_Other
+  - artifact: woodstox-core
+    repository: Leap
   - artifact: xmlsec
     repository: Uyuni_Other
   - artifact: velocity-engine-core
