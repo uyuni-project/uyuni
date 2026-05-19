@@ -6,7 +6,7 @@
 include:
   - .rke2
 
-proxy_rke2_local_path_provisioner_installed:
+rke2_local_path_provisioner_installed:
   cmd.run:
     - name: |
         {{ kubectl }} apply -f https://raw.githubusercontent.com/rancher/local-path-provisioner/v0.0.31/deploy/local-path-storage.yaml
@@ -16,4 +16,4 @@ proxy_rke2_local_path_provisioner_installed:
             -p '{"metadata":{"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
     - unless: {{ kubectl }} get sc local-path 2>/dev/null | grep -q '(default)'
     - require:
-      - cmd: proxy_rke2_rke2_traefik_ready
+      - cmd: rke2_traefik_ready

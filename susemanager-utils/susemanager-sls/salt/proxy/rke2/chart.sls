@@ -15,14 +15,14 @@
 
 include:
   - .proxy_config
-  - .storage
+  - rke2.storage
 
 proxy_rke2_namespace:
   cmd.run:
     - name: {{ kubectl }} create namespace {{ namespace }} --dry-run=client -o yaml | {{ kubectl }} apply -f -
     - unless: {{ kubectl }} get ns {{ namespace }}
     - require:
-      - cmd: proxy_rke2_rke2_traefik_ready
+      - cmd: rke2_traefik_ready
 
 proxy_rke2_cert_secret:
   cmd.run:
@@ -68,8 +68,8 @@ proxy_rke2_helm_release:
     - require:
       - cmd: proxy_rke2_cert_secret
       - cmd: proxy_rke2_ca_configmap
-      - cmd: proxy_rke2_local_path_provisioner_installed
-      - pkg: proxy_rke2_pkgs_installed
+      - cmd: rke2_local_path_provisioner_installed
+      - pkg: rke2_pkgs_installed
 
 proxy_rke2_pods_ready:
   cmd.run:

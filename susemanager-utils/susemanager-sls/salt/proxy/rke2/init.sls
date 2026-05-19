@@ -41,9 +41,8 @@ proxy_rke2_missing_pillar:
 {%- else %}
 
 include:
-  - .packages
   - .rke2
-  - .storage
+  - rke2.storage
   - .proxy_config
   - .chart
 
