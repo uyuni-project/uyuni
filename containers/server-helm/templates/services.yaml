@@ -6,16 +6,10 @@ metadata:
     app.kubernetes.io/part-of: uyuni
   name: cobbler
   namespace: "{{ .Release.Namespace }}"
-{{- if .Values.servicesAnnotations }}
-  annotations:
-{{ toYaml .Values.servicesAnnotations | indent 4 }}
-{{- end }}
 spec:
   ports:
     - name: cobbler
       port: 25151
-      protocol: TCP
-      targetPort: 25151
   selector:
     app.kubernetes.io/component: server
     app.kubernetes.io/part-of: uyuni
@@ -30,16 +24,10 @@ metadata:
     app.kubernetes.io/part-of: uyuni
   name: db
   namespace: "{{ .Release.Namespace }}"
-{{- if .Values.servicesAnnotations }}
-  annotations:
-{{ toYaml .Values.servicesAnnotations | indent 4 }}
-{{- end }}
 spec:
   ports:
     - name: pgsql
       port: 5432
-      protocol: TCP
-      targetPort: 5432
   selector:
     app.kubernetes.io/component: db
     app.kubernetes.io/part-of: uyuni
@@ -53,20 +41,21 @@ metadata:
     app.kubernetes.io/part-of: uyuni
   name: reportdb
   namespace: "{{ .Release.Namespace }}"
-{{- if .Values.servicesAnnotations }}
+{{- if or .Values.services.annotations .Values.services.reportdb.annotations }}
   annotations:
-{{ toYaml .Values.servicesAnnotations | indent 4 }}
+{{ toYaml ( mergeOverwrite (dict) (default (dict) .Values.services.annotations) (default (dict) .Values.services.reportdb.annotations) ) | indent 4 }}
 {{- end }}
 spec:
   ports:
     - name: pgsql
       port: 5432
-      protocol: TCP
-      targetPort: 5432
+{{- if eq (default .Values.services.type .Values.services.reportdb.type) "NodePort" }}
+      nodePort: {{ .Values.services.reportdb.ports.pgsql }}
+{{- end }}
   selector:
     app.kubernetes.io/component: db
     app.kubernetes.io/part-of: uyuni
-  type: ClusterIP
+  type: {{ .Values.services.reportdb.type | default .Values.services.type }}
 {{- end }}
 ---
 apiVersion: v1
@@ -77,24 +66,26 @@ metadata:
     app.kubernetes.io/part-of: uyuni
   name: salt
   namespace: "{{ .Release.Namespace }}"
-{{- if .Values.servicesAnnotations }}
+{{- if or .Values.services.annotations .Values.services.salt.annotations }}
   annotations:
-{{ toYaml .Values.servicesAnnotations | indent 4 }}
+{{ toYaml ( mergeOverwrite (dict) (default (dict) .Values.services.annotations) (default (dict) .Values.services.salt.annotations) ) | indent 4 }}
 {{- end }}
 spec:
   ports:
     - name: publish
       port: 4505
-      protocol: TCP
-      targetPort: 4505
+{{- if eq (default .Values.services.type .Values.services.salt.type) "NodePort" }}
+      nodePort: {{ .Values.services.salt.ports.publish }}
+{{- end }}
     - name: request
       port: 4506
-      protocol: TCP
-      targetPort: 4506
+{{- if eq (default .Values.services.type .Values.services.salt.type) "NodePort" }}
+      nodePort: {{ .Values.services.salt.ports.request }}
+{{- end }}
   selector:
     app.kubernetes.io/component: server
     app.kubernetes.io/part-of: uyuni
-  type: ClusterIP
+  type: {{ .Values.services.salt.type | default .Values.services.type }}
 ---
 {{- if .Values.exposeJavaDebug | default false }}
 apiVersion: v1
@@ -105,23 +96,22 @@ metadata:
     app.kubernetes.io/part-of: uyuni
   name: search
   namespace: "{{ .Release.Namespace }}"
-{{- if .Values.servicesAnnotations }}
+{{- if or .Values.services.annotations .Values.services.search.annotations }}
   annotations:
-{{ toYaml .Values.servicesAnnotations | indent 4 }}
+{{ toYaml ( mergeOverwrite (dict) (default (dict) .Values.services.annotations) (default (dict) .Values.services.search.annotations) ) | indent 4 }}
 {{- end }}
 spec:
   ports:
     - name: debug
       port: 8002
-      protocol: TCP
-      targetPort: 8002
+{{- if eq (default .Values.services.type .Values.services.search.type) "NodePort" }}
+      nodePort: {{ .Values.services.search.ports.debug }}
+{{- end }}
   selector:
     app.kubernetes.io/component: server
     app.kubernetes.io/part-of: uyuni
-  type: ClusterIP
+  type: {{ .Values.services.search.type | default .Values.services.type }}
 ---
-{{- end }}
-{{- if or (ne .Values.enableMonitoring false) (.Values.exposeJavaDebug | default false)  }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -130,28 +120,62 @@ metadata:
     app.kubernetes.io/part-of: uyuni
   name: taskomatic
   namespace: "{{ .Release.Namespace }}"
-{{- if .Values.servicesAnnotations }}
+{{- if or .Values.services.annotations .Values.services.taskomatic.annotations }}
   annotations:
-{{ toYaml .Values.servicesAnnotations | indent 4 }}
+{{ toYaml ( mergeOverwrite (dict) (default (dict) .Values.services.annotations) (default (dict) .Values.services.taskomatic.annotations) ) | indent 4 }}
 {{- end }}
 spec:
   ports:
-{{- if ne .Values.enableMonitoring false }}
-    - name: jmx
-      port: 5557
-      protocol: TCP
-      targetPort: 5557
-    - name: mtrx
-      port: 9800
-      protocol: TCP
-      targetPort: 9800
-{{- end }}
-{{- if .Values.exposeJavaDebug | default false }}
     - name: debug
       port: 8001
-      protocol: TCP
-      targetPort: 8001
+{{- if eq (default .Values.services.type .Values.services.taskomatic.type) "NodePort" }}
+      nodePort: {{ .Values.services.taskomatic.ports.debug }}
 {{- end }}
+  selector:
+    app.kubernetes.io/component: server
+    app.kubernetes.io/part-of: uyuni
+  type: {{ .Values.services.taskomatic.type | default .Values.services.type }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/component: server
+    app.kubernetes.io/part-of: uyuni
+  name: tomcat
+  namespace: "{{ .Release.Namespace }}"
+{{- if or .Values.services.annotations .Values.services.tomcat.annotations }}
+  annotations:
+{{ toYaml ( mergeOverwrite (dict) (default (dict) .Values.services.annotations) (default (dict) .Values.services.tomcat.annotations) ) | indent 4 }}
+{{- end }}
+spec:
+  ports:
+    - name: debug
+      port: 8003
+{{- if eq (default .Values.services.type .Values.services.tomcat.type) "NodePort" }}
+      nodePort: {{ .Values.services.tomcat.ports.debug }}
+{{- end }}
+  selector:
+    app.kubernetes.io/component: server
+    app.kubernetes.io/part-of: uyuni
+  type: {{ .Values.services.tomcat.type | default .Values.services.type }}
+---
+{{- end }}
+{{- if ne .Values.enableMonitoring false }}
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/component: server
+    app.kubernetes.io/part-of: uyuni
+  name: taskomatic-internal
+  namespace: "{{ .Release.Namespace }}"
+spec:
+  ports:
+    - name: jmx
+      port: 5557
+    - name: mtrx
+      port: 9800
   selector:
     app.kubernetes.io/component: server
     app.kubernetes.io/part-of: uyuni
@@ -167,9 +191,9 @@ metadata:
     app.kubernetes.io/part-of: uyuni
   name: tftp
   namespace: "{{ .Release.Namespace }}"
-{{- if .Values.servicesAnnotations }}
+{{- if or .Values.services.annotations .Values.services.tftp.annotations }}
   annotations:
-{{ toYaml .Values.servicesAnnotations | indent 4 }}
+{{ toYaml ( mergeOverwrite (dict) (default (dict) .Values.services.annotations) (default (dict) .Values.services.tftp.annotations) ) | indent 4 }}
 {{- end }}
 spec:
   ports:
@@ -194,33 +218,17 @@ metadata:
   labels:
     app.kubernetes.io/component: server
     app.kubernetes.io/part-of: uyuni
-  name: tomcat
+  name: tomcat-internal
   namespace: "{{ .Release.Namespace }}"
-{{- if .Values.servicesAnnotations }}
-  annotations:
-{{ toYaml .Values.servicesAnnotations | indent 4 }}
-{{- end }}
 spec:
   ports:
     - name: node-exporter
       port: 9100
-      protocol: TCP
-      targetPort: 9100
 {{- if ne .Values.enableMonitoring false }}
     - name: jmx
       port: 5556
-      protocol: TCP
-      targetPort: 5556
     - name: pgsql-exporter
       port: 9187
-      protocol: TCP
-      targetPort: 9187
-{{- end }}
-{{- if .Values.exposeJavaDebug | default false }}
-    - name: debug
-      port: 8003
-      protocol: TCP
-      targetPort: 8003
 {{- end }}
   selector:
     app.kubernetes.io/component: server
@@ -235,10 +243,6 @@ metadata:
     app.kubernetes.io/part-of: uyuni
   name: web
   namespace: "{{ .Release.Namespace }}"
-{{- if .Values.servicesAnnotations }}
-  annotations:
-{{ toYaml .Values.servicesAnnotations | indent 4 }}
-{{- end }}
 spec:
   ports:
     - name: http
@@ -259,16 +263,10 @@ metadata:
     app.kubernetes.io/part-of: uyuni
   name: hub-xmlrpc
   namespace: "{{ .Release.Namespace }}"
-{{- if .Values.servicesAnnotations }}
-  annotations:
-{{ toYaml .Values.servicesAnnotations | indent 4 }}
-{{- end }}
 spec:
   ports:
     - name: hub
       port: 2830
-      protocol: TCP
-      targetPort: 2830
   selector:
     app.kubernetes.io/component: hub-xmlrpc
     app.kubernetes.io/part-of: uyuni
@@ -284,16 +282,10 @@ metadata:
     app.kubernetes.io/part-of: uyuni
   name: saline
   namespace: "{{ .Release.Namespace }}"
-{{- if .Values.servicesAnnotations }}
-  annotations:
-{{ toYaml .Values.servicesAnnotations | indent 4 }}
-{{- end }}
 spec:
   ports:
     - name: saline
       port: 8216
-      protocol: TCP
-      targetPort: 8216
   selector:
     app.kubernetes.io/component: saline
     app.kubernetes.io/part-of: uyuni

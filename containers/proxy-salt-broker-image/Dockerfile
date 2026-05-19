@@ -14,6 +14,9 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
     rpm -e zypper libzypp container-suseconnect && \
     rm -rf /var/log/{alternatives.log,lastlog,tallylog,suseconnect.log,zypper.log,zypp/history,YaST2}
 
+# Additional material
+COPY --chmod=555 uyuni-configure.py /usr/bin/uyuni-configure.py
+
 # LABELs
 ARG PRODUCT=Uyuni
 ARG VENDOR="Uyuni project"
@@ -40,4 +43,4 @@ EXPOSE 4506/tcp
 
 VOLUME "/etc/uyuni"
 
-CMD salt-broker
+CMD uyuni-configure.py && salt-broker

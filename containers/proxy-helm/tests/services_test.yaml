@@ -90,7 +90,7 @@ tests:
       - contains:
           path: spec.ports
           content:
-            name: salt-publish
+            name: publish
             port: 4505
           any: true
         documentSelector:
@@ -100,7 +100,7 @@ tests:
       - contains:
           path: spec.ports
           content:
-            name: salt-request
+            name: request
             port: 4506
           any: true
         documentSelector:
@@ -193,92 +193,47 @@ tests:
       services:
         type: NodePort
     asserts:
-      # web service checks
-      - equal:
-          path: spec.type
-          value: NodePort
-        documentSelector:
-          path: metadata.name
-          value: web
-
-      - contains:
-          path: spec.ports
-          content:
-            name: http
-            port: 80
-            nodePort: 30080
-          any: true
-        documentSelector:
-          path: metadata.name
-          value: web
-
-      - contains:
-          path: spec.ports
-          content:
-            name: https
-            port: 443
-            nodePort: 30443
-          any: true
-        documentSelector:
-          path: metadata.name
-          value: web
-
-      # salt service checks
-      - equal:
-          path: spec.type
-          value: NodePort
-        documentSelector:
-          path: metadata.name
-          value: salt
-
-      - contains:
-          path: spec.ports
-          content:
-            name: salt-publish
-            port: 4505
-            nodePort: 34505
-          any: true
-        documentSelector:
-          path: metadata.name
-          value: salt
-
-      - contains:
-          path: spec.ports
-          content:
-            name: salt-request
-            port: 4506
-            nodePort: 34506
-          any: true
-        documentSelector:
-          path: metadata.name
-          value: salt
-
-      # ssh service checks
       - equal:
           path: spec.type
           value: NodePort
         documentSelector:
           path: metadata.name
           value: ssh
-
       - contains:
           path: spec.ports
           content:
             name: ssh
             port: 8022
-            nodePort: 38022
-          any: true
+            nodePort: 30022
+            targetPort: 22
         documentSelector:
           path: metadata.name
           value: ssh
 
-      # tftp service checks
       - equal:
           path: spec.type
-          value: LoadBalancer
+          value: NodePort
         documentSelector:
           path: metadata.name
-          value: tftp
+          value: salt
+      - contains:
+          path: spec.ports
+          content:
+            name: publish
+            port: 4505
+            nodePort: 30005
+        documentSelector:
+          path: metadata.name
+          value: salt
+      - contains:
+          path: spec.ports
+          content:
+            name: request
+            port: 4506
+            nodePort: 30006
+        documentSelector:
+          path: metadata.name
+          value: salt
 
   - it: should create services with custom nodeports
     set:
@@ -291,100 +246,57 @@ tests:
       global.httpd: "httpd_content: test httpd"
       global.ssh: "ssh_content: test ssh"
       services:
-        type: NodePort
-      httpd:
-        ports:
-          http: 10080
-          https: 10443
-      ssh:
-        ports:
-          ssh: 18022
-      salt:
-        ports:
-          publish: 14505
-          request: 14506
-      tftpd:
-        ports:
-          tftp: 10069
+        ssh:
+          type: NodePort
+          ports:
+            ssh: 30001
+        salt:
+          type: NodePort
+          ports:
+            publish: 30002
+            request: 30003
     asserts:
-      # web service checks
-      - equal:
-          path: spec.type
-          value: NodePort
-        documentSelector:
-          path: metadata.name
-          value: web
-
-      - contains:
-          path: spec.ports
-          content:
-            name: http
-            port: 80
-            nodePort: 10080
-          any: true
-        documentSelector:
-          path: metadata.name
-          value: web
-
-      - contains:
-          path: spec.ports
-          content:
-            name: https
-            port: 443
-            nodePort: 10443
-          any: true
-        documentSelector:
-          path: metadata.name
-          value: web
-
-      # salt service checks
-      - equal:
-          path: spec.type
-          value: NodePort
-        documentSelector:
-          path: metadata.name
-          value: salt
-
-      - contains:
-          path: spec.ports
-          content:
-            name: salt-publish
-            port: 4505
-            nodePort: 14505
-          any: true
-        documentSelector:
-          path: metadata.name
-          value: salt
-
-      - contains:
-          path: spec.ports
-          content:
-            name: salt-request
-            port: 4506
-            nodePort: 14506
-          any: true
-        documentSelector:
-          path: metadata.name
-          value: salt
-
-      # ssh service checks
       - equal:
           path: spec.type
           value: NodePort
         documentSelector:
           path: metadata.name
           value: ssh
-
       - contains:
           path: spec.ports
           content:
             name: ssh
             port: 8022
-            nodePort: 18022
-          any: true
+            nodePort: 30001
+            targetPort: 22
         documentSelector:
           path: metadata.name
           value: ssh
+
+      - equal:
+          path: spec.type
+          value: NodePort
+        documentSelector:
+          path: metadata.name
+          value: salt
+      - contains:
+          path: spec.ports
+          content:
+            name: publish
+            port: 4505
+            nodePort: 30002
+        documentSelector:
+          path: metadata.name
+          value: salt
+      - contains:
+          path: spec.ports
+          content:
+            name: request
+            port: 4506
+            nodePort: 30003
+        documentSelector:
+          path: metadata.name
+          value: salt
 
   - it: should create services with custom annotations
     set:
@@ -401,16 +313,6 @@ tests:
           testAnnotation1: value1
           testAnnotation2: value2
     asserts:
-      # web service checks
-      - equal:
-          path: metadata.annotations
-          value:
-            testAnnotation1: value1
-            testAnnotation2: value2
-        documentSelector:
-          path: metadata.name
-          value: web
-
       # salt service checks
       - equal:
           path: metadata.annotations

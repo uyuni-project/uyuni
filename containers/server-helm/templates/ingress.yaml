@@ -75,35 +75,35 @@ spec:
       - path: /postgresql-exporter
         backend:
           service:
-            name: tomcat
+            name: tomcat-internal
             port:
               number: 9187
         pathType: Prefix
       - path: /node-exporter
         backend:
           service:
-            name: tomcat
+            name: tomcat-internal
             port:
               number: 9100
         pathType: Prefix
       - path: /tasko-exporter
         backend:
           service:
-            name: taskomatic
+            name: taskomatic-internal
             port:
               number: 9800
         pathType: Prefix
       - path: /tasko-jmx
         backend:
           service:
-            name: taskomatic
+            name: taskomatic-internal
             port:
               number: 5557
         pathType: Prefix
       - path: /tomcat-jmx
         backend:
           service:
-            name: tomcat
+            name: tomcat-internal
             port:
               number: 5556
         pathType: Prefix
@@ -386,35 +386,35 @@ spec:
       - path: /postgresql-exporter
         backend:
           service:
-            name: tomcat
+            name: tomcat-internal
             port:
               number: 9187
         pathType: Prefix
       - path: /node-exporter
         backend:
           service:
-            name: tomcat
+            name: tomcat-internal
             port:
               number: 9100
         pathType: Prefix
       - path: /tasko-exporter
         backend:
           service:
-            name: taskomatic
+            name: taskomatic-internal
             port:
               number: 9800
         pathType: Prefix
       - path: /tasko-jmx
         backend:
           service:
-            name: taskomatic
+            name: taskomatic-internal
             port:
               number: 5557
         pathType: Prefix
       - path: /tomcat-jmx
         backend:
           service:
-            name: tomcat
+            name: tomcat-internal
             port:
               number: 5556
         pathType: Prefix

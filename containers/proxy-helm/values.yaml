@@ -37,14 +37,14 @@ ingress:
   # It can be either "nginx", "traefik" or any other value.
   #
   type: "traefik"
-  
+
   # Specify the ingress class name to use. Empty, means that the default one will be used.
   # If using the traefik end points and TCP routers, this value needs to match Traefik's
   # --providers.kubernetescrd.ingressclass parameter's value.
   # On rke2 this is likely to be "traefik". On K3S it is likely to be ""
   #
   class: "traefik"
-  
+
   # annotations can be used to set custom annotations on the created ingress rules.
   # This can be used to configure another ingress than the ones already wired with the ingress.type.
   annotations:
@@ -98,11 +98,44 @@ volumes:
     selector:
 
 services:
-    # Select service type
-    # Ref: https://kubernetes.io/docs/concepts/services-networking/service/
-    type: ClusterIP
+  # type of all the externally-facing services. Can be overridden on each service.
+  # Ref: https://kubernetes.io/docs/concepts/services-networking/service/
+  type: ClusterIP
 
-    # Annotations sets annotations to all services.
+  # annotations to set to all the services. Merged with the service ones.
+  annotations:
+
+  # Values setting up the ssh service
+  ssh:
+    # Type of service to define, overriding the global setting
+    type: ""
+    # Ports to expose by the service when using the NodePort type.
+    ports:
+      # SSH port, usually known as port 22 (or 8022 in containerized SSH server)
+      ssh: 30022
+
+    # Annotations to set on the service.
+    # This can be useful to configure a load balancer for example.
+    annotations:
+
+  # Values setting up the salt service.
+  salt:
+    # Type of service to define, overriding the global setting
+    type: ""
+    # Ports to expose by the service when using the NodePort type.
+    ports:
+      # Salt publish port, usually known as port 4505
+      publish: 30005
+      # Salt request port, usually known as port 4506
+      request: 30006
+    # Annotations to set on the service.
+    # This can be useful to configure a load balancer for example.
+    annotations:
+
+  # Values setting up the tftp service.
+  tftp:
+    # Annotations to set on the service.
+    # This can be useful to configure a load balancer for example.
     annotations:
 
 httpd:
@@ -115,11 +148,6 @@ httpd:
 
   # Apache configuration tuning to use
   tuning: ""
-  
-  # Service ports to use if the type is NodePort
-  ports:
-    http: 30080
-    https: 30443
 
 squid:
   # image overrides the default image computed using the repository property
@@ -142,10 +170,6 @@ ssh:
 
   # SSHD configuration tuning to use
   tuning: ""
-  
-  # Service ports to use if the type is NodePort
-  ports:
-    ssh: 38022
 
 tftp:
   # image overrides the default image computed using the repository property
@@ -167,9 +191,6 @@ salt:
   # tag overrides the default tag in the tag property
   # Leave undefined to use the default
   tag:
-  
-  # Service ports to use if the type is NodePort
-  ports:
-    publish: 34505
-    request: 34506
 
+  # Salt broker configuration tuning to use
+  tuning: ""

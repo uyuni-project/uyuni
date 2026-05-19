@@ -21,6 +21,7 @@ jobs:
         with:
           install-mode: if-not-present
           charts: containers/server-helm
+          unittest-version: 1.0.3
 
       - name: Helm Lint
         # Validates Chart.yaml and values.yaml against your schema

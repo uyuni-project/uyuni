@@ -16,7 +16,7 @@ spec:
       allowedRoutes:
         namespaces:
           from: Same
-    
+
     - name: {{ default .Values.gateway.listeners.http.name "websecure" }}
       protocol: HTTPS
       port: {{ default .Values.gateway.listeners.https.port 8443 }}
@@ -29,6 +29,7 @@ spec:
           from: Same
 
     # TCP Listeners
+  {{- if ne (default .Values.services.type .Values.services.salt.type) "NodePort" }}
     - name: salt-publish
       protocol: TCP
       port: 4505
@@ -42,12 +43,15 @@ spec:
       allowedRoutes:
         namespaces:
           from: Same
+  {{- end }}
 
+  {{- if ne (default .Values.services.type .Values.services.ssh.type) "NodePort" }}
     - name: ssh
       protocol: TCP
       port: 8022
       allowedRoutes:
         namespaces:
           from: Same
+  {{- end }}
 {{- end }}
 

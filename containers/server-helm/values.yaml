@@ -61,9 +61,87 @@ global:
   # This value is required.
   fqdn:
 
-# servicesAnnotations are annotations to set on all services.
-# This can be useful to share the same IP when using metallb
-servicesAnnotations:
+# Services tuning properties.
+services:
+
+  # type of all the externally-facing services. Can be overridden on each service.
+  # Ref: https://kubernetes.io/docs/concepts/services-networking/service/
+  type: ClusterIP
+
+  # annotations to set to all the services. Merged with the service ones.
+  annotations:
+
+  # Values setting up the reportdb service.
+  reportdb:
+    # Type of service to define, overriding the global setting
+    type: ""
+    # Ports to expose by the service when using the NodePort type.
+    ports:
+      # postgresql port to expose, usually known as port 5432.
+      pgsql: 30032
+    # Annotations to set on the service.
+    # This can be useful to configure a load balancer for example.
+    annotations:
+
+  # Values setting up the salt service.
+  salt:
+    # Type of service to define, overriding the global setting
+    type: ""
+    # Ports to expose by the service when using the NodePort type.
+    ports:
+      # Salt publish port, usually known as port 4505
+      publish: 30005
+      # Salt request port, usually known as port 4506
+      request: 30006
+    # Annotations to set on the service.
+    # This can be useful to configure a load balancer for example.
+    annotations:
+
+  # Values setting up the search server service.
+  # This is only for debugging purpose.
+  search:
+    # Type of service to define, overriding the global setting
+    type: ""
+    # Ports to expose by the service when using the NodePort type.
+    ports:
+      # Java debug port, usually known as port 8002
+      debug: 30002
+    # Annotations to set on the service.
+    # This can be useful to configure a load balancer for example.
+    annotations:
+
+  # Values setting up the taskomatic service.
+  # This is only for debugging purpose.
+  taskomatic:
+    # Type of service to define, overriding the global setting
+    type: ""
+    # Ports to expose by the service when using the NodePort type.
+    ports:
+      # Java debug port, usually known as port 8001
+      debug: 30001
+    # Annotations to set on the service.
+    # This can be useful to configure a load balancer for example.
+    annotations:
+
+  # Values setting up the tomcat service.
+  # This is only for debugging purpose.
+  tomcat:
+    # Type of service to define, overriding the global setting
+    type: ""
+    # Ports to expose by the service when using the NodePort type.
+    ports:
+      # Java debug port, usually known as port 8003
+      debug: 30003
+    # Annotations to set on the service.
+    # This can be useful to configure a load balancer for example.
+    annotations:
+
+  # Values setting up the tftp service.
+  # This service can only set annotations: changing the type doesn't make sense.
+  tftp:
+    # Annotations to set on the service.
+    # This can be useful to configure a load balancer for example.
+    annotations:
 
 # exposeJavaDebug will expose the 8001, 8002 and 8003 ports to connect a Java debugger
 # to taskomatic, search server and tomcat respectively

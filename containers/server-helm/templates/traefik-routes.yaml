@@ -27,6 +27,7 @@ spec:
       - /tasko-jmx
       - /tomcat-jmx
       - /saline
+{{- if ne (default .Values.services.type .Values.services.reportdb.type) "NodePort" }}
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRouteTCP
@@ -45,6 +46,8 @@ spec:
       services:
       - name: reportdb
         port: 5432
+{{- end }}
+{{- if ne (default .Values.services.type .Values.services.salt.type) "NodePort" }}
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRouteTCP
@@ -81,7 +84,9 @@ spec:
       services:
       - name: salt
         port: 4506
+{{- end }}
 {{- if .Values.exposeJavaDebug }}
+{{- if ne (default .Values.services.type .Values.services.taskomatic.type) "NodePort" }}
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRouteTCP
@@ -100,6 +105,8 @@ spec:
       services:
       - name: tomcat
         port: 8003
+{{- end }}
+{{- if ne (default .Values.services.type .Values.services.search.type) "NodePort" }}
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRouteTCP
@@ -118,6 +125,8 @@ spec:
       services:
       - name: search
         port: 8002
+{{- end }}
+{{- if ne (default .Values.services.type .Values.services.tomcat.type) "NodePort" }}
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRouteTCP
@@ -136,5 +145,6 @@ spec:
       services:
       - name: taskomatic
         port: 8001
+{{- end }}
 {{- end }}
 {{- end }}
