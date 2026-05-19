@@ -17,11 +17,8 @@ Feature: Management of minion keys
     Given I am authorized
 
   Scenario: Delete SLES minion system profile before exploring the onboarding page
-    Given I am on the Systems overview page of this "sle_minion"
-    When I follow "Delete System"
-    Then I should see a "Confirm System Profile Deletion" text
-    When I click on "Delete Profile"
-    And I wait until I see "has been deleted" text
+    When I delete "sle_minion" system using the api
+    And I perform a full salt minion cleanup on "sle_minion"
     And I wait until Salt client is inactive on "sle_minion"
     Then "sle_minion" should not be registered
 
