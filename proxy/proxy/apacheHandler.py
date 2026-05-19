@@ -655,7 +655,7 @@ class apacheHandler(rhnApache):
         req.headers_out["X-RHN-Fault-Code"] = str(response.faultCode)
         # pylint: disable-next=invalid-name
         faultString = (
-            base64.encodestring(response.faultString.encode()).decode().strip()
+            base64.b64encode(response.faultString.encode()).decode().strip()
         )  # pylint: disable=deprecated-method
         # Split the faultString into multiple lines
         for line in faultString.split("\n"):

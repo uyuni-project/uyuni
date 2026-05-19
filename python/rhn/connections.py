@@ -188,7 +188,7 @@ class HTTPProxyConnection(HTTPConnection):
         # Authenticated proxy
         # pylint: disable-next=consider-using-f-string
         userpass = "%s:%s" % (self.__username, self.__password)
-        enc_userpass = base64.encodestring(bstr(userpass)).replace(bstr("\n"), bstr(""))
+        enc_userpass = base64.b64encode(bstr(userpass)).replace(bstr("\n"), bstr(""))
         # pylint: disable-next=consider-using-f-string
         self.putheader("Proxy-Authorization", "Basic %s" % sstr(enc_userpass))
 

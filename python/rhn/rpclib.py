@@ -843,6 +843,6 @@ def reportError(headers):
             import base64
 
             # pylint: disable-next=consider-using-f-string
-            errmsg = "%s" % base64.decodestring(_s)
+            errmsg = "%s" % base64.b64decode(_s)
 
     return errcode, errmsg

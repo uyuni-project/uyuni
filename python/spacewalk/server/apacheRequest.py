@@ -703,7 +703,7 @@ class GetHandler(apacheRequest):
 
             self.req.headers_out["X-RHN-Fault-Code"] = str(response.faultCode)
             faultString = (
-                base64.encodestring(response.faultString.encode()).decode().strip()
+                base64.b64encode(response.faultString.encode()).decode().strip()
             )
             # Split the faultString into multiple lines
             for line in faultString.split("\n"):

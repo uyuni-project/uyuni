@@ -141,7 +141,7 @@ class UploadHandler:
         # pylint: disable-next=import-outside-toplevel
         import base64
 
-        error_string = base64.encodestring(error_string.encode()).decode().strip()
+        error_string = base64.b64encode(error_string.encode()).decode().strip()
         for line in error_string.split("\n"):
             headers.add(self.server.error_header_prefix + "-String", line.strip())
         headers[self.server.error_header_prefix + "-Code"] = str(error_code)
