@@ -235,7 +235,11 @@ case "$ACTION" in
       TEMP_PASSWORD=$(dd status=none bs=18 count=1 < /dev/random | base64)
       echo "ALTER USER ${DBUSER} PASSWORD '${TEMP_PASSWORD}';" | spacewalk-sql --reportdb --select-mode -
       echo "DROP OWNED BY current_user;" | (PGPASSWORD=${TEMP_PASSWORD} psql -U ${DBUSER} -h ${DBHOST} -p ${DBPORT} -d ${DBNAME})
-      QUERY="REVOKE ALL PRIVILEGES ON ALL TABLES IN SCHEMA public FROM ${DBUSER}; DROP ROLE ${DBUSER};"
+      QUERY="REVOKE SELECT ON ALL SEQUENCES IN SCHEMA public FROM ${DBUSER};
+        REVOKE ALL ON ALL TABLES IN SCHEMA public FROM ${DBUSER};
+        REVOKE ALL ON SCHEMA public FROM ${DBUSER};
+        REVOKE CONNECT ON DATABASE ${DBNAME} FROM ${DBUSER};
+        DROP ROLE ${DBUSER};"
     fi
   ;;
 esac
