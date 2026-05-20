@@ -16661,11 +16661,11 @@ uno o varios archivos, copiar la última versión en un grupo de sobrescritura l
         <target>Sistemas suscritos</target>
       </trans-unit>
       <trans-unit id="channeltarget.jsp.header1" xml:space="preserve">
-        <source>Target Systems</source>
+        <source>Eligible Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/TargetSystems.do</context>
         </context-group>
-        <target>Sistemas destino</target>
+        <target state="needs-adaptation">Sistemas destino</target>
       </trans-unit>
       <trans-unit id="channeltarget.jsp.header2" xml:space="preserve">
         <source>The following systems can be subscribed to this channel:</source>

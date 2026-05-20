@@ -16808,11 +16808,11 @@ a file or files, or copy the latest version into a set of local overrides or int
         <target state="final">サブスクライブしているシステム</target>
       </trans-unit>
       <trans-unit approved="yes" id="channeltarget.jsp.header1" xml:space="preserve">
-        <source>Target Systems</source>
+        <source>Eligible Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/TargetSystems.do</context>
         </context-group>
-        <target state="final">ターゲットシステム</target>
+        <target state="needs-adaptation">ターゲットシステム</target>
       </trans-unit>
       <trans-unit approved="yes" id="channeltarget.jsp.header2" xml:space="preserve">
         <source>The following systems can be subscribed to this channel:</source>

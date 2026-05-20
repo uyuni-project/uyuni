@@ -16700,11 +16700,11 @@ file desiderati, copiare l'ultimissima versione all'interno di un set di overrid
         <target>Sistemi sottoscritti</target>
       </trans-unit>
       <trans-unit id="channeltarget.jsp.header1" xml:space="preserve">
-        <source>Target Systems</source>
+        <source>Eligible Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/TargetSystems.do</context>
         </context-group>
-        <target>Sistemi di destinazione</target>
+        <target state="needs-adaptation">Sistemi di destinazione</target>
       </trans-unit>
       <trans-unit id="channeltarget.jsp.header2" xml:space="preserve">
         <source>The following systems can be subscribed to this channel:</source>

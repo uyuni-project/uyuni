@@ -16627,11 +16627,11 @@ un ou plusieurs fichiers, ou copier la dernière version dans un ensemble de sur
         <target>Systèmes abonnés</target>
       </trans-unit>
       <trans-unit id="channeltarget.jsp.header1" xml:space="preserve">
-        <source>Target Systems</source>
+        <source>Eligible Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/TargetSystems.do</context>
         </context-group>
-        <target>Systèmes ciblés</target>
+        <target state="needs-adaptation">Systèmes ciblés</target>
       </trans-unit>
       <trans-unit id="channeltarget.jsp.header2" xml:space="preserve">
         <source>The following systems can be subscribed to this channel:</source>

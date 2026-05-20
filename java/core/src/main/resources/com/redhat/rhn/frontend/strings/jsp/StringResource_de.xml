@@ -16619,11 +16619,11 @@ oder alle Dateien entfernen, oder die neueste Version in ein lokales Ersatz-Set 
         <target>Subskribierende Systeme</target>
       </trans-unit>
       <trans-unit id="channeltarget.jsp.header1" xml:space="preserve">
-        <source>Target Systems</source>
+        <source>Eligible Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/TargetSystems.do</context>
         </context-group>
-        <target>Zielsysteme</target>
+        <target state="needs-adaptation">Zielsysteme</target>
       </trans-unit>
       <trans-unit id="channeltarget.jsp.header2" xml:space="preserve">
         <source>The following systems can be subscribed to this channel:</source>

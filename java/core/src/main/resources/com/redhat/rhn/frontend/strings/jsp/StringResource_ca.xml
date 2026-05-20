@@ -16809,8 +16809,8 @@ un fitxer o fitxers, o copieu l'última versió en un conjunt de sobreescripture
         </context-group>
       </trans-unit>
       <trans-unit id="channeltarget.jsp.header1" xml:space="preserve">
-        <source>Target Systems</source>
-        <target state="translated">Sistemes d'objectiu</target>
+        <source>Eligible Systems</source>
+        <target state="needs-adaptation">Sistemes d'objectiu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/TargetSystems.do</context>
         </context-group>
@@ -29743,65 +29743,65 @@ lt;/pgt;
       </trans-unit>
       <trans-unit id="spmigration.sles16.preflight.title" xml:space="preserve">
         <source>Before Migrating to SLES 16 — Please ensure</source>
-        <target state="translated">Abans de migrar a SLES 16, assegureu-vos del següent:</target>
+        <target state="translated">Abans de migrar a l'SLES 16, assegureu-vos del següent:</target>
       </trans-unit>
       <trans-unit id="spmigration.sles16.preflight.patch.title" xml:space="preserve">
         <source>System is fully up to date</source>
-        <target state="translated">El sistema està completament actualitzat</target>
+        <target state="translated">El sistema estigui completament actualitzat.</target>
       </trans-unit>
       <trans-unit id="spmigration.sles16.preflight.diskspace.title" xml:space="preserve">
         <source>Sufficient disk space is available</source>
-        <target state="translated">Hi ha prou espai de disc disponible</target>
+        <target state="translated">Hi hagi prou espai de disc disponible.</target>
       </trans-unit>
       <trans-unit id="spmigration.sles16.preflight.ssh.title" xml:space="preserve">
         <source>Ensure SSH key-based access is available for at least one user. If root login is required, create /etc/ssh/sshd_config.d/50-permit-root-login.conf with: PermitRootLogin yes</source>
-        <target state="translated">Assegureu-vos que l'accés basat en clau SSH estigui disponible per a almenys un usuari. Si cal iniciar sessió com a arrel, creeu /etc/ssh/sshd_config.d/50-permit-root-login.conf amb: PermitRootLogin yes</target>
+        <target state="translated">Assegureu-vos que l'accés basat en clau SSH estigui disponible per a almenys un usuari. Si cal iniciar sessió com a arrel, creeu /etc/ssh/sshd_config.d/50-permit-root-login.conf amb PermitRootLogin yes</target>
       </trans-unit>
       <trans-unit id="spmigration.sles16.preflight.kvmguests.title" xml:space="preserve">
         <source>KVM guests are shut down (if applicable)</source>
-        <target state="translated">Els convidats de KVM estan apagats (si escau)</target>
+        <target state="translated">Els convidats de KVM estiguin apagats (si escau)</target>
       </trans-unit>
       <trans-unit id="spmigration.sles16.preflight.network.title" xml:space="preserve">
         <source>Network configuration will be migrated from wicked to NetworkManager</source>
-        <target state="translated">La configuració de xarxa es migrarà de Wicked a NetworkManager</target>
+        <target state="translated">La configuració de xarxa es migrarà de Wicked a NetworkManager.</target>
       </trans-unit>
       <trans-unit id="spmigration.sles16.preflight.selinux.title" xml:space="preserve">
         <source>AppArmor profiles will be migrated to SELinux</source>
-        <target state="translated">Els perfils d'AppArmor es migraran a SELinux</target>
+        <target state="translated">Els perfils d'AppArmor es migraran a SELinux.</target>
       </trans-unit>
-    <trans-unit id="usercreate.prefix" xml:space="preserve">
+      <trans-unit id="usercreate.prefix" xml:space="preserve">
         <source>Prefix</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Prefix</target>
+      </trans-unit>
       <trans-unit id="usercreate.firstName" xml:space="preserve">
         <source>First Name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Nom</target>
+      </trans-unit>
       <trans-unit id="usercreate.lastName" xml:space="preserve">
         <source>Last Name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Cognom</target>
+      </trans-unit>
       <trans-unit id="channel.jsp.repoautosync" xml:space="preserve">
         <source>Automatic Repository Synchronization</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="translated">Sincronització automàtica del repositori</target>
+      </trans-unit>
       <trans-unit id="channel.jsp.repoautosync.true" xml:space="preserve">
         <source> Enabled </source>
-      <target state="new"/>
-  </trans-unit>
-        <trans-unit id="channel.jsp.repoautosync.false" xml:space="preserve">
+        <target state="translated"> Habilitada </target>
+      </trans-unit>
+      <trans-unit id="channel.jsp.repoautosync.false" xml:space="preserve">
         <source> Disabled </source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="translated"> Inhabilitada </target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
