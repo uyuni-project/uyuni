@@ -28,5 +28,5 @@ proxy:
     # config_dir: /etc/uyuni/proxy
 
     # Toggles
-    wipe_k8s: true                 # wipes both k3s and RKE2 if present
+    wipe_k8s: false                 # wipes both k3s and RKE2 if present
     enable_tftp_hostnetwork: true
