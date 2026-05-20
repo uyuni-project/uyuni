@@ -16809,8 +16809,8 @@ un fitxer o fitxers, o copieu l'última versió en un conjunt de sobreescripture
         </context-group>
       </trans-unit>
       <trans-unit id="channeltarget.jsp.header1" xml:space="preserve">
-        <source>Target Systems</source>
-        <target state="translated">Sistemes d'objectiu</target>
+        <source>Eligible Systems</source>
+        <target state="needs-adaptation">Sistemes d'objectiu</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/TargetSystems.do</context>
         </context-group>

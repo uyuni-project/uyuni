@@ -16794,8 +16794,8 @@ a file or files, or copy the latest version into a set of local overrides or int
         </context-group>
       </trans-unit>
       <trans-unit id="channeltarget.jsp.header1" xml:space="preserve">
-        <source>Target Systems</source>
-        <target/>
+        <source>Eligible Systems</source>
+        <target state="needs-adaptation"/>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/TargetSystems.do</context>
         </context-group>
