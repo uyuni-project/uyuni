@@ -277,6 +277,7 @@ class Transport(xmlrpclib.Transport):
         return parser, unmarshaller
 
     # Rewrite parse_response to provide refresh callbacks
+    # pylint: disable-next=arguments-renamed
     def parse_response(self, f):
         # read response from input file, and parse it
 

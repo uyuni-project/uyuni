@@ -278,8 +278,7 @@ class YumSrcTest(unittest.TestCase):
     def test_get_updates_suse_patches(self):
         cs = self._make_dummy_cs()
 
-        patches_xml = StringIO(
-            """<?xml version="1.0" encoding="UTF-8"?>
+        patches_xml = StringIO("""<?xml version="1.0" encoding="UTF-8"?>
                 <patches xmlns="http://novell.com/package/metadata/suse/patches">
                   <patch id="smcl3-cobbler-7778">
                     <checksum type="sha">ec34048ebda707a83190056d832d43c9fbb55ca6</checksum>
@@ -291,8 +290,7 @@ class YumSrcTest(unittest.TestCase):
                     <location href="/patch-smcl3-code11-update-stack-7779.xml"/>
                   </patch>
                 </patches>
-                """
-        )
+                """)
         # pylint: disable-next=protected-access
         cs._md_exists = Mock(side_effect=[False, True, True])
         # pylint: disable-next=protected-access
@@ -394,9 +392,7 @@ class YumSrcTest(unittest.TestCase):
             cs.setup_repo(repo)
             cs.get_file("foobar")
             self.assertEqual(urlgrabber_spy.urlread.call_args[0][0], "foobar")
-            self.assertEqual(
-                urlgrabber_spy.urlread.call_args[1]["urls"], MIRROR_LIST
-            )
+            self.assertEqual(urlgrabber_spy.urlread.call_args[1]["urls"], MIRROR_LIST)
 
     @patch("spacewalk.satellite_tools.repo_plugins.yum_src.ZYPP_RAW_CACHE_PATH", "./")
     def test_get_comps_and_modules(self):
@@ -675,8 +671,7 @@ class YumSrcTest(unittest.TestCase):
                 assert expected_url == comp_url
 
     def test_update_notice_parse(self):
-        update_notice_xml = StringIO(
-            """<?xml version="1.0" encoding="UTF-8"?>
+        update_notice_xml = StringIO("""<?xml version="1.0" encoding="UTF-8"?>
 <updates>
     <update from="exampleProvider" type="security" status="stable" version="1">
         <id>exampleProvider-test-1</id>
@@ -717,8 +712,7 @@ class YumSrcTest(unittest.TestCase):
         </pkglist>
     </update>
 </updates>
-            """
-        )
+            """)
         expected_list = [
             {"update_id": "exampleProvider-test-1", "version": "1"},
             {"update_id": "exampleProvider-test-0", "version": "0"},

@@ -193,7 +193,7 @@ class HTTPProxyConnection(HTTPConnection):
         self.putheader("Proxy-Authorization", "Basic %s" % sstr(enc_userpass))
 
     def _set_hostport(self, host, port):
-        (self.host, self.port) = self._get_hostport(host, port)
+        self.host, self.port = self._get_hostport(host, port)
 
 
 # pylint: disable-next=missing-class-docstring

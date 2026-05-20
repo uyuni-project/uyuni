@@ -2,6 +2,7 @@
 """
 Test suite for cryptokey.
 """
+
 from unittest.mock import MagicMock, patch
 
 # pylint: disable-next=unused-import

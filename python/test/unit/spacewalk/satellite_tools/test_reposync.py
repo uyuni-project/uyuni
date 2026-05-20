@@ -1106,13 +1106,17 @@ class RunScriptTest(unittest.TestCase):
         satellite_tools_dir = os.path.dirname(
             inspect.getfile(spacewalk.satellite_tools)
         )
+
         def load_source(modname, file_path):
             loader = importlib.machinery.SourceFileLoader(modname, file_path)
-            spec = importlib.util.spec_from_file_location(modname, file_path, loader=loader)
+            spec = importlib.util.spec_from_file_location(
+                modname, file_path, loader=loader
+            )
             module = importlib.util.module_from_spec(spec)
             sys.modules[modname] = module
             loader.exec_module(module)
             return module
+
         cls.repo_sync = load_source(
             "repo_sync", os.path.join(satellite_tools_dir, "spacewalk-repo-sync")
         )
