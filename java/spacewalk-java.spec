@@ -126,7 +126,6 @@ BuildRequires:  angus-mail-core
 BuildRequires:  javapackages-tools
 BuildRequires:  jboss-logging >= 3.6.1
 BuildRequires:  jdom
-BuildRequires:  joda-time
 BuildRequires:  jose4j
 BuildRequires:  jsch
 BuildRequires:  libxml2
@@ -154,7 +153,8 @@ BuildRequires:  struts >= 1.2.9
 BuildRequires:  tomcat11
 BuildRequires:  tomcat11-lib
 BuildRequires:  uyuni-base-server
-BuildRequires:  woodstox
+BuildRequires:  woodstox-core
+BuildRequires:  stax2-api
 BuildRequires:  xmlsec
 BuildRequires:  (google-gson >= 2.2.4 with google-gson < 2.10.0)
 BuildRequires:  mvn(org.apache.velocity:velocity-engine-core) >= 2.2
@@ -214,7 +214,6 @@ Requires:       javapackages-tools
 Requires:       jboss-logging >= 3.6.1
 Requires:       jctools
 Requires:       jdom
-Requires:       joda-time
 Requires:       jose4j
 Requires:       jakarta-persistence-api
 Requires:       libsolv-tools
@@ -246,9 +245,9 @@ Requires:       sudo
 Requires:       susemanager-docs_en
 Requires:       system-lock-formula
 Requires:       tomcat11-lib
-Requires:       woodstox
+Requires:       woodstox-core
 Requires:       xmlsec
-Requires:       (/sbin/unix2_chkpwd or /usr/sbin/unix2_chkpwd)
+Requires:       /sbin/unix2_chkpwd
 Requires:       (google-gson >= 2.2.4 with google-gson < 2.10.0)
 Requires:       mvn(org.apache.tomcat:tomcat-servlet-api) > 11
 Requires:       mvn(org.hibernate.orm:hibernate-c3p0) >= 7
@@ -389,7 +388,7 @@ Requires:       simple-core
 Requires:       spacewalk-java-config
 Requires:       spacewalk-java-jdbc
 Requires:       spacewalk-java-lib = %{version}
-Requires:       (/sbin/unix2_chkpwd or /usr/sbin/unix2_chkpwd)
+Requires:       /sbin/unix2_chkpwd
 Requires:       mvn(org.hibernate.orm:hibernate-c3p0) >= 7
 Requires:       mvn(org.hibernate.orm:hibernate-core) >= 7
 Requires:       mvn(org.hibernate.orm:hibernate-jcache) >= 7

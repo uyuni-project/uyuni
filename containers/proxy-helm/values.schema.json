@@ -107,16 +107,26 @@
       }
     },
     "services": {
-      "type": ["object", "null"],
+      "type": "object",
+      "description": "Services tuning properties",
       "properties": {
         "type": {
           "type": "string",
-          "default": "ClusterIP",
-          "description": "Kubernetes Service type (e.g., ClusterIP, NodePort)."
+          "description": "type of all the externally-facing services. Can be overridden on each service",
+          "enum": ["ClusterIP", "NodePort", "LoadBalancer"],
+          "default": "ClusterIP"
         },
         "annotations": {
           "type": ["object", "null"],
-          "description": "annotations to set to all the services"
+          "description": "annotations to set to all the services. Merged with the service config"
+        },
+        "ssh": {
+          "$ref": "#/definitions/serviceConfig",
+          "description": "values for the ssh service. The ports keys can only be ssh (22)"
+        },
+        "salt": {
+          "$ref": "#/definitions/serviceConfig",
+          "description": "values for the salt master service. The ports keys can be one of 'publish' (4505) or 'request' (4506)"
         }
       }
     },
@@ -166,12 +176,7 @@
       "properties": {
         "image": { "type": ["string", "null"], "description": "Override default image name" },
         "tag": { "type": ["string", "null"], "description": "Override default tag" },
-        "tuning": { "type": ["string", "null"], "description": "Configuration tuning parameters" },
-        "ports": {
-          "type": ["object", "null"],
-          "additionalProperties": { "type": "integer" },
-          "description": "NodePort values used if service type is NodePort"
-        }
+        "tuning": { "type": ["string", "null"], "description": "Configuration tuning parameters" }
       }
     },
     "volumeConfig": {
@@ -196,6 +201,25 @@
         "selector": {
           "type": ["object", "null"],
           "description": "selector to set on the volume claim"
+        }
+      }
+    },
+    "serviceConfig": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Type of service to define",
+          "enum": ["ClusterIP", "NodePort", "LoadBalancer", ""],
+          "default": ""
+        },
+        "ports": {
+          "type": "object",
+          "description": "Ports to expose by the service when using the NodePort type. Values need to match the port name of the service"
+        },
+        "annotations": {
+          "type": ["object", "null"],
+          "description": "annotations to set to the service. This can be helpful to configure a load balancer"
         }
       }
     },

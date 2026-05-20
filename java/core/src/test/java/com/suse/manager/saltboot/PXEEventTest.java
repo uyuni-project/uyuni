@@ -325,11 +325,12 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
     }
 
     /**
-     * Tests parsing {@link PXEEvent} when branch id is numeric
+     * Tests parsing {@link PXEEvent} when branch id is integer
      */
     @Test
-    public void testParseBranchIdIsNumeric() {
+    public void testParseBranchIdIsInteger() {
         Event event = mock(Event.class);
+        // see also assert for getSaltbootGroup below
         Integer branchId = 12345;
         Map<String, Object> data = createTestData(MINION_ID, branchId, "root=/dev/sda1",
                 "/dev/sda1", BOOT_IMAGE, "custom=option", true);
@@ -345,7 +346,73 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
         assertTrue(parsed.isPresent());
         parsed.ifPresent(e -> {
             assertEquals(MINION_ID, e.getMinionId());
-            assertEquals(String.valueOf(branchId), e.getSaltbootGroup());
+            assertEquals("12345", e.getSaltbootGroup());
+            assertEquals("root=/dev/sda1", e.getRoot());
+            assertEquals(Optional.of("/dev/sda1"), e.getSaltDevice());
+            assertEquals(Optional.of("custom=option"), e.getKernelParameters());
+            assertEquals(BOOT_IMAGE, e.getBootImage());
+            // Localhost device should be parsed out
+            assertEquals(1, e.getHwAddresses().size());
+            assertEquals(MAC_ADDRESS, e.getHwAddresses().get(0));
+        });
+    }
+
+    /**
+     * Tests parsing {@link PXEEvent} when branch id is double
+     */
+    @Test
+    public void testParseBranchIdIsDouble() {
+        Event event = mock(Event.class);
+        // see also assert for getSaltbootGroup below
+        Double branchId = 12345.0;
+        Map<String, Object> data = createTestData(MINION_ID, branchId, "root=/dev/sda1",
+                "/dev/sda1", BOOT_IMAGE, "custom=option", true);
+        context().checking(new Expectations() {{
+            allowing(event).getTag();
+            will(returnValue("suse/manager/pxe_update"));
+            allowing(event).getData();
+            will(returnValue(data));
+        }});
+
+        Optional<PXEEvent> parsed = PXEEvent.parse(event);
+
+        assertTrue(parsed.isPresent());
+        parsed.ifPresent(e -> {
+            assertEquals(MINION_ID, e.getMinionId());
+            assertEquals("12345", e.getSaltbootGroup());
+            assertEquals("root=/dev/sda1", e.getRoot());
+            assertEquals(Optional.of("/dev/sda1"), e.getSaltDevice());
+            assertEquals(Optional.of("custom=option"), e.getKernelParameters());
+            assertEquals(BOOT_IMAGE, e.getBootImage());
+            // Localhost device should be parsed out
+            assertEquals(1, e.getHwAddresses().size());
+            assertEquals(MAC_ADDRESS, e.getHwAddresses().get(0));
+        });
+    }
+
+    /**
+     * Tests parsing {@link PXEEvent} when branch id is numeric and we cannot lose precision
+     */
+    @Test
+    public void testParseBranchIdIsExplicitDouble() {
+        Event event = mock(Event.class);
+        // see also assert for getSaltbootGroup below
+        Double branchId = 12345.67;
+        Map<String, Object> data = createTestData(MINION_ID, branchId, "root=/dev/sda1",
+                "/dev/sda1", BOOT_IMAGE, "custom=option", true);
+        context().checking(new Expectations() {{
+            allowing(event).getTag();
+            will(returnValue("suse/manager/pxe_update"));
+            allowing(event).getData();
+            will(returnValue(data));
+        }});
+
+        Optional<PXEEvent> parsed = PXEEvent.parse(event);
+
+        assertTrue(parsed.isPresent());
+        parsed.ifPresent(e -> {
+            assertEquals(MINION_ID, e.getMinionId());
+            assertEquals("12345.67", e.getSaltbootGroup());
             assertEquals("root=/dev/sda1", e.getRoot());
             assertEquals(Optional.of("/dev/sda1"), e.getSaltDevice());
             assertEquals(Optional.of("custom=option"), e.getKernelParameters());

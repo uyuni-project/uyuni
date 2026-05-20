@@ -283,6 +283,51 @@ public class OidcAuthHandlerTest extends JMockBaseTestCaseWithUser {
         }
     }
 
+    @Test
+    public void testStartupDiscoveryFailureRecoversOnLogin() throws JoseException, OidcAuthException {
+        WireMockServer wireMockServer = new WireMockServer(WireMockConfiguration.wireMockConfig().dynamicPort());
+        wireMockServer.start();
+        try {
+            String issuer = wireMockServer.baseUrl();
+            String jwksUri = issuer + JWKS_URI;
+
+            Config.get().setString(ConfigDefaults.OIDC_IDP_ISSUER, issuer);
+            Config.get().setString(ConfigDefaults.OIDC_IDP_JWKS_PATH, "");
+
+            // No discovery stub yet: startup-time JWKS discovery fails but handler construction must succeed
+            OidcAuthHandler handler = new OidcAuthHandler(null, new HttpClientAdapter());
+            Assertions.assertNull(handler.getJwksUri());
+
+            // IdP becomes available later
+            String oidcConfig = String.format("{\"jwks_uri\":\"%s\"}", jwksUri);
+            PublicJsonWebKey jwk = PublicJsonWebKey.Factory.newPublicJwk(rsaKeyPair.getPublic());
+            jwk.setKeyId(TEST_KID);
+            String jwks = new JsonWebKeySet(jwk).toJson();
+
+            wireMockServer.stubFor(WireMock.get(OidcAuthHandler.OIDC_DISCOVERY_PATH)
+                    .willReturn(WireMock.aResponse()
+                            .withStatus(200)
+                            .withHeader("Content-Type", "application/json")
+                            .withBody(oidcConfig)));
+
+            wireMockServer.stubFor(WireMock.get(JWKS_URI)
+                    .willReturn(WireMock.aResponse()
+                            .withStatus(200)
+                            .withHeader("Content-Type", "application/json")
+                            .withBody(jwks)));
+
+            String token = issueToken(rsaKeyPair.getPrivate(), AlgorithmIdentifiers.RSA_USING_SHA256, issuer,
+                    List.of(MCP_AUDIENCE, MLM_AUDIENCE), Map.of(USERNAME_CLAIM, user.getLogin()));
+            String username = handler.handleOidcLogin(token);
+
+            assertEquals(user.getLogin(), username);
+            assertEquals(jwksUri, handler.getJwksUri());
+        }
+        finally {
+            wireMockServer.stop();
+        }
+    }
+
     private OidcAuthHandler getHandler() throws JoseException {
         return getHandler(rsaKeyPair.getPublic());
     }

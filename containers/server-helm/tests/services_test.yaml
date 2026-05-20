@@ -2,9 +2,12 @@ suite: test services
 templates:
   - services.yaml
 tests:
-  - it: should render db services with default values
+  - it: should render services with default values
     set:
       global.fqdn: uyuni.example.com
+      exposeJavaDebug: true
+      tftp:
+        enable: true
     asserts:
       - isKind:
           of: Service
@@ -16,6 +19,43 @@ tests:
         documentSelector:
           path: metadata.name
           value: reportdb
+      - equal:
+          path: spec.type
+          value: ClusterIP
+        documentSelector:
+          path: metadata.name
+          value: reportdb
+      - equal:
+          path: spec.type
+          value: ClusterIP
+        documentSelector:
+          path: metadata.name
+          value: salt
+      - equal:
+          path: spec.type
+          value: ClusterIP
+        documentSelector:
+          path: metadata.name
+          value: tomcat
+      - equal:
+          path: spec.type
+          value: ClusterIP
+        documentSelector:
+          path: metadata.name
+          value: taskomatic
+      - equal:
+          path: spec.type
+          value: ClusterIP
+        documentSelector:
+          path: metadata.name
+          value: search
+      - equal:
+          path: spec.type
+          value: LoadBalancer
+        documentSelector:
+          path: metadata.name
+          value: tftp
+
 
   - it: should not render db services when db is disabled
     set:
@@ -35,3 +75,222 @@ tests:
           path: metadata.name
           value: reportdb
           skipEmptyTemplates: true
+
+  - it: should render services types and annotations with global values
+    set:
+      global.fqdn: uyuni.example.com
+      exposeJavaDebug: true
+      services:
+        type: LoadBalancer
+        annotations:
+          annotation1: value1
+          annotation2: value2
+    asserts:
+      - equal:
+          path: spec.type
+          value: LoadBalancer
+        documentSelector:
+          path: metadata.name
+          value: reportdb
+      - equal:
+          path: spec.type
+          value: LoadBalancer
+        documentSelector:
+          path: metadata.name
+          value: salt
+      - equal:
+          path: spec.type
+          value: LoadBalancer
+        documentSelector:
+          path: metadata.name
+          value: tomcat
+      - equal:
+          path: spec.type
+          value: LoadBalancer
+        documentSelector:
+          path: metadata.name
+          value: taskomatic
+      - equal:
+          path: spec.type
+          value: LoadBalancer
+        documentSelector:
+          path: metadata.name
+          value: search
+
+      - equal:
+          path: metadata.annotations
+          value:
+            annotation1: value1
+            annotation2: value2
+        documentSelector:
+          path: metadata.name
+          value: reportdb
+      - equal:
+          path: metadata.annotations
+          value:
+            annotation1: value1
+            annotation2: value2
+        documentSelector:
+          path: metadata.name
+          value: salt
+      - equal:
+          path: metadata.annotations
+          value:
+            annotation1: value1
+            annotation2: value2
+        documentSelector:
+          path: metadata.name
+          value: tomcat
+      - equal:
+          path: metadata.annotations
+          value:
+            annotation1: value1
+            annotation2: value2
+        documentSelector:
+          path: metadata.name
+          value: taskomatic
+      - equal:
+          path: metadata.annotations
+          value:
+            annotation1: value1
+            annotation2: value2
+        documentSelector:
+          path: metadata.name
+          value: search
+
+  - it: should render services types and annotations with overridden values
+    set:
+      global.fqdn: uyuni.example.com
+      exposeJavaDebug: true
+      tftp:
+        enable: true
+      services:
+        type: NodePort
+        annotations:
+          global1: global1
+          annotation1: global1
+          annotation2: value2
+        reportdb:
+          type: LoadBalancer
+          annotations:
+            annotation1: reportdb1
+            annotation2: reportdb2
+        salt:
+          type: LoadBalancer
+          annotations:
+            annotation1: salt1
+            annotation2: salt2
+        tomcat:
+          type: LoadBalancer
+          annotations:
+            annotation1: tomcat1
+            annotation2: tomcat2
+        taskomatic:
+          type: LoadBalancer
+          annotations:
+            annotation1: tasko1
+            annotation2: tasko2
+        search:
+          type: LoadBalancer
+          annotations:
+            annotation1: search1
+            annotation2: search2
+        tftp:
+          type: ClusterIP
+          annotations:
+            annotation1: tftp1
+            annotation2: tftp2
+    asserts:
+      - equal:
+          path: spec.type
+          value: LoadBalancer
+        documentSelector:
+          path: metadata.name
+          value: reportdb
+      - equal:
+          path: spec.type
+          value: LoadBalancer
+        documentSelector:
+          path: metadata.name
+          value: salt
+      - equal:
+          path: spec.type
+          value: LoadBalancer
+        documentSelector:
+          path: metadata.name
+          value: tomcat
+      - equal:
+          path: spec.type
+          value: LoadBalancer
+        documentSelector:
+          path: metadata.name
+          value: taskomatic
+      - equal:
+          path: spec.type
+          value: LoadBalancer
+        documentSelector:
+          path: metadata.name
+          value: search
+
+      # Check that the TFTP type cannot be changed
+      - equal:
+          path: spec.type
+          value: LoadBalancer
+        documentSelector:
+          path: metadata.name
+          value: tftp
+
+      - equal:
+          path: metadata.annotations
+          value:
+            global1: global1
+            annotation1: reportdb1
+            annotation2: reportdb2
+        documentSelector:
+          path: metadata.name
+          value: reportdb
+      - equal:
+          path: metadata.annotations
+          value:
+            global1: global1
+            annotation1: salt1
+            annotation2: salt2
+        documentSelector:
+          path: metadata.name
+          value: salt
+      - equal:
+          path: metadata.annotations
+          value:
+            global1: global1
+            annotation1: tomcat1
+            annotation2: tomcat2
+        documentSelector:
+          path: metadata.name
+          value: tomcat
+      - equal:
+          path: metadata.annotations
+          value:
+            global1: global1
+            annotation1: tasko1
+            annotation2: tasko2
+        documentSelector:
+          path: metadata.name
+          value: taskomatic
+      - equal:
+          path: metadata.annotations
+          value:
+            global1: global1
+            annotation1: search1
+            annotation2: search2
+        documentSelector:
+          path: metadata.name
+          value: search
+      - equal:
+          path: metadata.annotations
+          value:
+            global1: global1
+            annotation1: tftp1
+            annotation2: tftp2
+        documentSelector:
+          path: metadata.name
+          value: tftp

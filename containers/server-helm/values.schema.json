@@ -144,9 +144,51 @@
         "var-search": { "$ref": "#/definitions/volumeConfig" }
       }
     },
-    "servicesAnnotations": {
-      "type": ["object", "null"],
-      "description": "Annotations to set on both TCP and UDP services"
+    "services": {
+      "type": ["object"],
+      "description": "Services tuning properties",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "type of all the externally-facing services. Can be overridden on each service",
+          "enum": ["ClusterIP", "NodePort", "LoadBalancer"],
+          "default": "ClusterIP"
+        },
+        "annotations": {
+          "type": ["object", "null"],
+          "description": "annotations to set to all the services. Merged with the service ones."
+        },
+        "reportdb": {
+          "$ref": "#/definitions/serviceConfig",
+          "description": "values for the reportdb service. The ports keys can only be pgsql (5432)"
+        },
+        "salt": {
+          "$ref": "#/definitions/serviceConfig",
+          "description": "values for the salt master service. The ports keys can be one of 'publish' (4505) or 'request' (4506)"
+        },
+        "search": {
+          "$ref": "#/definitions/serviceConfig",
+          "description": "values for the search server service. The ports keys can only be debug (8002)"
+        },
+        "taskomatic": {
+          "$ref": "#/definitions/serviceConfig",
+          "description": "values for the taskomatic service. The ports keys can only be debug (8001)"
+        },
+        "tomcat": {
+          "$ref": "#/definitions/serviceConfig",
+          "description": "values for the tomcat service. The ports keys can only be debug (8003)"
+        },
+        "tftp": {
+          "type": ["object", "null"],
+          "description": "values for the tomcat service. Changing the service type doesn't make sense for TFTP",
+          "properties": {
+            "annotations": {
+              "type": ["object", "null"],
+              "description": "annotations to set to the service. This can be helpful to configure a load balancer"
+            }
+          }
+        }
+      }
     },
     "exposeJavaDebug": {
       "type": "boolean",
@@ -346,6 +388,25 @@
         "selector": {
           "type": ["object", "null"],
           "description": "selector to set on the volume claim"
+        }
+      }
+    },
+    "serviceConfig": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Type of service to define",
+          "enum": ["ClusterIP", "NodePort", "LoadBalancer", ""],
+          "default": ""
+        },
+        "ports": {
+          "type": "object",
+          "description": "Ports to expose by the service when using the NodePort type. Values need to match the port name of the service"
+        },
+        "annotations": {
+          "type": ["object", "null"],
+          "description": "annotations to set to the service. This can be helpful to configure a load balancer"
         }
       }
     },

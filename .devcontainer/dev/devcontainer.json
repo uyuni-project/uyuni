@@ -7,7 +7,7 @@
   "containerEnv": {
     "JAVA_HOME": "/usr/lib64/jvm/java-17-openjdk",
     "ANT_HOME": "/usr/share/ant",
-    "DB_HOST": "db",
+    "DB_HOST": "db"
     //"CONTAINER_HOST": "unix:///run/podman/podman.sock",
     //"CONTAINER_CONNECTION_TYPE": "socket"
   },
@@ -40,7 +40,7 @@
       "onAutoForward": "notify",
       "protocol": "https"
     },
-    "9000": { 
+    "9000": {
       "label": "Test Reports",
       "onAutoForward": "notify"
     }

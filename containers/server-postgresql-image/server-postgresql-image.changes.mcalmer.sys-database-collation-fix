@@ -1,0 +1,1 @@
+- Fix collation version differences in system tables (bsc#1264178)

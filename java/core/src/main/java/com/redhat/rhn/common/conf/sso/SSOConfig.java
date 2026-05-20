@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 SUSE LLC
+ * Copyright (c) 2019--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.redhat.rhn.common.conf.sso;
 
@@ -36,21 +32,8 @@ public final class SSOConfig {
 
     private static final Logger LOG = LogManager.getLogger(SSOConfig.class);
 
-    private static Saml2Settings singletonConfig;
-
     private SSOConfig() {
-
-        final Map<String, Object> samlData = new HashMap<>();
-        Config.get().getNamespaceProperties(ConfigDefaults.SINGLE_SIGN_ON_ENABLED).forEach((k, v) -> {
-            if (k.toString().startsWith(ConfigDefaults.SINGLE_SIGN_ON_ENABLED + ".")) {
-                LOG.info("putting {} into SAML configuration", k);
-                samlData.put(k.toString().replace(
-                                ConfigDefaults.SINGLE_SIGN_ON_ENABLED + ".", ""),
-                        Config.get().getString((String) k));
-            }
-            final SettingsBuilder builder = new SettingsBuilder();
-            singletonConfig = builder.fromValues(samlData).build();
-        });
+        // Prevent instantiation
     }
 
     /**
@@ -58,9 +41,39 @@ public final class SSOConfig {
      * @return the configuration for SSO in Saml2Settings object format
      */
     public static Optional<Saml2Settings> getSSOSettings() {
-        if (ConfigDefaults.get().isSingleSignOnEnabled() && singletonConfig == null) {
-            new SSOConfig();
+        return Optional.ofNullable(Saml2SettingsHolder.INSTANCE);
+    }
+
+    // Using initialization-on-demand holder idiom to ensure thread safety
+    private static class Saml2SettingsHolder {
+
+        private static final Saml2Settings INSTANCE = getSingleSignOnConfiguration();
+
+        private static Saml2Settings getSingleSignOnConfiguration() {
+            if (!ConfigDefaults.get().isSingleSignOnEnabled()) {
+                return null;
+            }
+
+            Map<String, Object> samlData = new HashMap<>();
+
+            try {
+                Config.get().getNamespaceProperties(ConfigDefaults.SINGLE_SIGN_ON_ENABLED).forEach((k, v) -> {
+                    if (k.toString().startsWith(ConfigDefaults.SINGLE_SIGN_ON_ENABLED + ".")) {
+                        LOG.info("putting {} into SAML configuration", k);
+                        samlData.put(
+                                k.toString().replace(ConfigDefaults.SINGLE_SIGN_ON_ENABLED + ".", ""),
+                                Config.get().getString((String) k)
+                        );
+                    }
+                });
+
+                SettingsBuilder builder = new SettingsBuilder();
+                return builder.fromValues(samlData).build();
+            }
+            catch (RuntimeException ex) {
+                LOG.error("Unable to initialize SSO configuration", ex);
+                return null;
+            }
         }
-        return Optional.ofNullable(singletonConfig);
     }
 }

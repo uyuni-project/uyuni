@@ -137,6 +137,7 @@ mkdir -p %{buildroot}/%{_bindir}/
 install -m 0750 salt-broker/salt-broker %{buildroot}/%{_bindir}/
 mkdir -p %{buildroot}/%{_sysconfdir}/salt/
 install -m 0644 salt-broker/broker %{buildroot}/%{_sysconfdir}/salt/
+install -d -m 750 %{buildroot}/%{_sysconfdir}/salt/broker.d
 
 install -m 0755 mgr-proxy-ssh-push-init %{buildroot}/%{_sbindir}/mgr-proxy-ssh-push-init
 install -m 0755 mgr-proxy-ssh-force-cmd %{buildroot}/%{_sbindir}/mgr-proxy-ssh-force-cmd
@@ -175,6 +176,7 @@ fi
 %defattr(-,root,root)
 %{_bindir}/salt-broker
 %config(noreplace) %{_sysconfdir}/salt/broker
+%dir %{_sysconfdir}/salt/broker.d
 
 %files broker
 %defattr(-,root,root)

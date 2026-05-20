@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019 SUSE LLC
+ * Copyright (c) 2019--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.suse.manager.webui.controllers.login;
 
@@ -22,7 +18,6 @@ import static spark.Spark.post;
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.common.conf.sso.SSOConfig;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.common.RhnConfiguration;
 import com.redhat.rhn.domain.common.RhnConfigurationFactory;
@@ -41,6 +36,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.onelogin.saml2.Auth;
 import com.onelogin.saml2.exception.SettingsException;
+import com.onelogin.saml2.settings.Saml2Settings;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -65,23 +61,35 @@ import spark.template.jade.JadeTemplateEngine;
  */
 public class LoginController {
 
-    private static Logger log = LogManager.getLogger(LoginController.class);
+    private static final Logger LOGGER = LogManager.getLogger(LoginController.class);
     private static final Gson GSON = Json.GSON;
     private static final String URL_CREATE_FIRST_USER = "/rhn/newlogin/CreateFirstUser.do";
-    private static final OidcAuthHandler OIDC_AUTH_HANDLER = new OidcAuthHandler();
 
-    private LoginController() { }
+    private final OidcAuthHandler oidcAuthHandler;
+
+    private final Optional<Saml2Settings> ssoSettings;
+
+
+    /**
+     * Default constructor
+     * @param oidcAuthHandlerIn the OpenID Connect (OIDC) handler
+     * @param ssoSettingsIn the SSO settings
+     */
+    public LoginController(OidcAuthHandler oidcAuthHandlerIn, Optional<Saml2Settings> ssoSettingsIn) {
+        this.oidcAuthHandler = oidcAuthHandlerIn;
+        this.ssoSettings = ssoSettingsIn;
+    }
 
     /**
      * Init all the routes used by LoginController
      * @param jade the used jade template engine
      */
-    public static void initRoutes(JadeTemplateEngine jade) {
-        get("/manager/login", withCsrfToken(LoginController::loginView), jade);
-        post("/manager/api/login", LoginController::login);
-        post("/manager/api/oidcLogin", LoginController::performOidcLogin);
+    public void initRoutes(JadeTemplateEngine jade) {
+        get("/manager/login", withCsrfToken(this::loginView), jade);
+        post("/manager/api/login", this::login);
+        post("/manager/api/oidcLogin", this::performOidcLogin);
         // TODO: Use this endpoint with the "Logout" button
-        get("/manager/api/logout", withUser(LoginController::logout));
+        get("/manager/api/logout", withUser(this::logout));
     }
 
     /**
@@ -91,17 +99,17 @@ public class LoginController {
      * @param response the response object
      * @return the model and view
      */
-    public static ModelAndView loginView(Request request, Response response) {
+    public ModelAndView loginView(Request request, Response response) {
         Map<String, Object> model = new HashMap<>();
 
-        if (ConfigDefaults.get().isSingleSignOnEnabled() && SSOConfig.getSSOSettings().isPresent()) {
+        if (ConfigDefaults.get().isSingleSignOnEnabled() && ssoSettings.isPresent()) {
             /* Single Sign-On is enabled */
             try {
-                Auth auth = new Auth(SSOConfig.getSSOSettings().get(), request.raw(), response.raw());
+                Auth auth = new Auth(ssoSettings.get(), request.raw(), response.raw());
                 auth.login(LoginHelper.DEFAULT_URL_BOUNCE);
             }
             catch (SettingsException | IOException e) {
-                log.error(e.getMessage());
+                LOGGER.error(e.getMessage());
             }
             /*
                 The return at the end of the method is dummy: the login page will not be displayed as we will be
@@ -120,14 +128,16 @@ public class LoginController {
 
             // In case we are authenticated go directly to redirect target
             if (AclManager.hasAcl("user_authenticated()", request.raw(), null)) {
-                log.debug("Already authenticated, redirecting to: {}", urlBounce);
+                LOGGER.debug("Already authenticated, redirecting to: {}", urlBounce);
                 response.redirect(urlBounce);
             }
 
             model.put("url_bounce", urlBounce);
             model.put("request_method", reqMethod);
         }
+
         RhnConfigurationFactory conf = RhnConfigurationFactory.getSingleton();
+
         model.put("isUyuni", ConfigDefaults.get().isUyuni());
         model.put("title", ConfigDefaults.get().getProductName() + " - Sign In");
         model.put("validationErrors", Json.GSON.toJson(LoginHelper.validateDBVersion()));
@@ -162,7 +172,7 @@ public class LoginController {
      * @param response the response object
      * @return the JSON result of the login operation
      */
-    public static String login(Request request, Response response) {
+    public String login(Request request, Response response) {
         return performLogin(request, response, false);
     }
 
@@ -173,7 +183,7 @@ public class LoginController {
      * @param response the response object
      * @return the JSON result of the login operation
      */
-    public static String apiLogin(Request request, Response response) {
+    public String apiLogin(Request request, Response response) {
         return performLogin(request, response, true);
     }
 
@@ -184,7 +194,7 @@ public class LoginController {
      * @param response the response object
      * @return the JSON result of the login operation
      */
-    private static String performLogin(Request request, Response response, boolean allowReadOnly) {
+    private String performLogin(Request request, Response response, boolean allowReadOnly) {
         Optional<String> errorMsg = Optional.empty();
         LoginCredentials creds = GSON.fromJson(request.body(), LoginCredentials.class);
         User user = LoginHelper.checkExternalAuthentication(request.raw(), new ArrayList<>(), new ArrayList<>());
@@ -202,17 +212,17 @@ public class LoginController {
                     else {
                         user = UserManager.loginUser(creds.getLogin(), creds.getPassword());
                     }
-                    log.info("LOCAL AUTH SUCCESS: [{}]", user.getLogin());
+                    LOGGER.info("LOCAL AUTH SUCCESS: [{}]", user.getLogin());
                 }
                 catch (LoginException e) {
-                    log.error("LOCAL AUTH FAILURE: [{}]", creds.getLogin());
+                    LOGGER.error("LOCAL AUTH FAILURE: [{}]", creds.getLogin());
                     errorMsg = Optional.of(LocalizationService.getInstance().getMessage(e.getMessage()));
                 }
             }
         }
         // External-auth returned a user and no errors
         else {
-            log.info("EXTERNAL AUTH SUCCESS: [{}]", user.getLogin());
+            LOGGER.info("EXTERNAL AUTH SUCCESS: [{}]", user.getLogin());
         }
 
         if (errorMsg.isEmpty()) {
@@ -220,7 +230,7 @@ public class LoginController {
             return SparkApplicationHelper.json(response, new LoginResult(true, null), new TypeToken<>() { });
         }
         else {
-            log.error("LOCAL AUTH FAILURE: [{}]", creds.getLogin());
+            LOGGER.error("LOCAL AUTH FAILURE: [{}]", creds.getLogin());
             response.status(HttpServletResponse.SC_UNAUTHORIZED);
             return SparkApplicationHelper.json(response, new LoginResult(false, errorMsg.get()), new TypeToken<>() { });
         }
@@ -232,9 +242,9 @@ public class LoginController {
      * @param response the response object
      * @return the JSON result of the login operation
      */
-    private static String performOidcLogin(Request request, Response response) {
-        if (!OIDC_AUTH_HANDLER.isOidcEnabled()) {
-            log.error("OIDC AUTH FAILURE: OpenID Connect authorization is disabled.");
+    private String performOidcLogin(Request request, Response response) {
+        if (!oidcAuthHandler.isOidcEnabled()) {
+            LOGGER.error("OIDC AUTH FAILURE: OpenID Connect authorization is disabled.");
             response.status(HttpServletResponse.SC_UNAUTHORIZED);
             return SparkApplicationHelper.json(response, new LoginResult(false,
                     "OpenID Connect authorization is disabled."), new TypeToken<>() { });
@@ -243,7 +253,7 @@ public class LoginController {
         // Validate Authorization header
         String authHeader = request.headers("Authorization");
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            log.error("OIDC AUTH FAILURE: Missing or invalid Authorization header.");
+            LOGGER.error("OIDC AUTH FAILURE: Missing or invalid Authorization header.");
             response.status(HttpServletResponse.SC_UNAUTHORIZED);
             return SparkApplicationHelper.json(response, new LoginResult(false,
                     "Missing or invalid Authorization header."), new TypeToken<>() { });
@@ -255,11 +265,11 @@ public class LoginController {
 
         // Handle OIDC login and get username from the JWT
         try {
-            username = OIDC_AUTH_HANDLER.handleOidcLogin(token);
+            username = oidcAuthHandler.handleOidcLogin(token);
         }
         catch (OidcAuthException e) {
             // Log the full exception for debugging, but provide a generic message to the user/log
-            log.error("OIDC AUTH FAILURE: Error during OIDC token handling.", e);
+            LOGGER.error("OIDC AUTH FAILURE: Error during OIDC token handling.", e);
             response.status(HttpServletResponse.SC_UNAUTHORIZED);
             return SparkApplicationHelper.json(response, new LoginResult(false,
                     "OpenID Connect authorization failed."), new TypeToken<>() { });
@@ -268,10 +278,10 @@ public class LoginController {
         // Log in the user with username
         try {
             user = UserManager.loginUser(username);
-            log.info("OIDC AUTH SUCCESS: [{}]", user.getLogin());
+            LOGGER.info("OIDC AUTH SUCCESS: [{}]", user.getLogin());
         }
         catch (LoginException e) {
-            log.error("OIDC AUTH FAILURE: User login failed for user [{}].", username, e);
+            LOGGER.error("OIDC AUTH FAILURE: User login failed for user [{}].", username, e);
             response.status(HttpServletResponse.SC_UNAUTHORIZED);
             return SparkApplicationHelper.json(response, new LoginResult(false,
                     LocalizationService.getInstance().getMessage(e.getMessage())), new TypeToken<>() { });
@@ -288,9 +298,9 @@ public class LoginController {
      * @param user the user
      * @return the JSON result of the logout operation
      */
-    public static String logout(Request request, Response response, User user) {
+    public String logout(Request request, Response response, User user) {
         AuthenticationServiceFactory.getInstance().getAuthenticationService().invalidate(request.raw(), response.raw());
-        log.info("WEB LOGOUT: [{}]", user.getLogin());
+        LOGGER.info("WEB LOGOUT: [{}]", user.getLogin());
         return SparkApplicationHelper.json(response, new LoginResult(true, null), new TypeToken<>() { });
     }
 
@@ -298,9 +308,9 @@ public class LoginController {
      * Class to hold the login credentials.
      */
     public static class LoginCredentials {
-        private String login;
 
         // You can choose to use either login and username, both should work equally.
+        private String login;
         private String username;
         private String password;
 

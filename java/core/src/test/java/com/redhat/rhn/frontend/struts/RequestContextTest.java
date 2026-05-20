@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LLC
  * Copyright (c) 2009--2014 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -25,12 +26,14 @@ import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.webui.controllers.login.LoginController;
+import com.suse.manager.webui.services.OidcAuthHandler;
 import com.suse.manager.webui.utils.LoginHelper;
 
 import org.junit.jupiter.api.Test;
 
 import java.net.URI;
-import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 import spark.ModelAndView;
 import spark.RequestResponseFactory;
@@ -57,12 +60,16 @@ public class RequestContextTest extends MockObjectTestCase {
         mockRequest.addParameter("url_bounce", "/rhn/users/UserDetails.do?uid=1");
 
         Response response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
+
         // logging in
+        LoginController loginController = new LoginController(new OidcAuthHandler(), Optional.empty());
         LoginHelper.successfulLogin(mockRequest, response.raw(), UserTestUtils.createUser(this));
-        ModelAndView result = LoginController.loginView(RequestResponseFactory.create(match, mockRequest), response);
-        HashMap<String, String> model = (HashMap<String, String>) result.getModel();
+        ModelAndView result = loginController.loginView(RequestResponseFactory.create(match, mockRequest), response);
+        @SuppressWarnings("unchecked")
+        Map<String, String> model = (Map<String, String>) result.getModel();
         assertNotNull(mockRequest.getSession().getAttribute("webUserID"));
-        assertEquals(model.get("url_bounce"), "/rhn/users/UserDetails.do?uid=1");
+        assertEquals("/rhn/users/UserDetails.do?uid=1", model.get("url_bounce"));
+
         RequestContext requestContext = new RequestContext(RequestResponseFactory.create(match, mockRequest).raw());
         assertNotNull(requestContext.getCurrentUser());
     }

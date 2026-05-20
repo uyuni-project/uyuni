@@ -13,11 +13,11 @@ RUN $ZYPPER_CMD addrepo --refresh --no-gpgcheck \
     $ZYPPER_CMD refresh && \
     $ZYPPER_CMD install --no-recommends \
     # Core System & Network
-    docker systemd systemd-sysvinit shadow \
+    docker systemd shadow \
     glibc-locale iproute2 hostname \
     iputils sudo curl wget openssh \
     # Development Tools & Editors
-    vim neovim tar gzip awk git \
+    vim neovim tar gzip gawk git \
     make man rsync cpio expect \
     bash-completion intltool \
     # Java Stack
@@ -34,12 +34,6 @@ RUN $ZYPPER_CMD addrepo --refresh --no-gpgcheck \
     && $ZYPPER_CMD clean -a
 
 ADD --chown=root:root root /
-
-# Setting Java 17 as system default
-RUN /usr/sbin/alternatives --set javac /usr/lib64/jvm/java-17-openjdk/bin/javac && \
-        /usr/sbin/alternatives --set java /usr/lib64/jvm/jre-17-openjdk/bin/java && \
-        /usr/sbin/alternatives --set jre_openjdk /usr/lib64/jvm/jre-17-openjdk && \
-        /usr/sbin/alternatives --set java_sdk_openjdk /usr/lib64/jvm/java-17-openjdk
 
 RUN cd /usr/lib/systemd/system/sysinit.target.wants && \
     find . -mindepth 1 -not -name "systemd-tmpfiles-setup.service" -delete && \
@@ -62,4 +56,4 @@ RUN chmod +x /etc/update-motd.d/*
 RUN echo 'if [ -x /etc/update-motd.d/00-header ]; then /etc/update-motd.d/00-header; fi' >> /etc/bash.bashrc
 
 VOLUME [ "/sys/fs/cgroup" ]
-CMD ["/usr/sbin/init"]
+CMD ["/usr/lib/systemd/systemd"]

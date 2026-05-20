@@ -1,0 +1,67 @@
+suite: test configmap
+templates:
+  - templates/config.yaml
+tests:
+  - it: should include the tuning if provided
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+        log_level: 2
+      global.httpd: "httpd_content: test httpd"
+      global.ssh: "ssh_content: test ssh"
+      salt:
+        tuning: |
+          salt1: value1
+          salt2: value2
+      httpd:
+        tuning: |
+          httpd1: value1
+          httpd2: value2
+      squid:
+        tuning: |
+          squid1: value1
+          squid2: value2
+      ssh:
+        tuning: |
+          ssh1: value1
+          ssh2: value2
+    asserts:
+      - equal:
+          path: data.salt_tuning
+          value: |
+            # Add your Salt Broker tuning configuration here
+            salt1: value1
+            salt2: value2
+        documentSelector:
+          path: metadata.name
+          value: proxy-configmap
+      - equal:
+          path: data.apache_tuning
+          value: |
+            # Add your Apache tuning configuration here
+            httpd1: value1
+            httpd2: value2
+        documentSelector:
+          path: metadata.name
+          value: proxy-configmap
+      - equal:
+          path: data.squid_tuning
+          value: |
+            # Add your Squid tuning configuration here
+            squid1: value1
+            squid2: value2
+        documentSelector:
+          path: metadata.name
+          value: proxy-configmap
+      - equal:
+          path: data.ssh_tuning
+          value: |
+            # Add your SSHd tuning configuration here
+            ssh1: value1
+            ssh2: value2
+        documentSelector:
+          path: metadata.name
+          value: proxy-configmap

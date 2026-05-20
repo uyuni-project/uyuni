@@ -1,0 +1,1 @@
+- Fix pg_hba for kubernetes (bsc#1265352)

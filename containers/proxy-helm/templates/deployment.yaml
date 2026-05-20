@@ -75,10 +75,16 @@ spec:
 
         - name: salt-broker
           image: {{ include "uyuni.image" (dict "name" "proxy-salt-broker" "global" . "local" .Values.salt) }}
+          env:
+          - name: SALT_BROKER_EXTRA_CONF
+            value: /tmp/salt/broker.d
           imagePullPolicy: "{{ .Values.pullPolicy }}"
           volumeMounts:
           - name: config-volume
             mountPath: /etc/uyuni
+            readOnly: true
+          - name: salt-tuning
+            mountPath: /tmp/salt/broker.d/
             readOnly: true
           ports:
             - containerPort: 4505
@@ -194,6 +200,13 @@ spec:
         - name: squid-cache
           persistentVolumeClaim:
             claimName: squid-cache
+
+        - name: salt-tuning
+          configMap:
+            name: proxy-configmap
+            items:
+              - key: salt_tuning
+                path: 50-tuning.conf
 
         - name: ca-cert
           configMap:

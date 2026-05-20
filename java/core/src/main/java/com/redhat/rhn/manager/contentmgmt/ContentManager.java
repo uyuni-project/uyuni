@@ -68,6 +68,7 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.events.AlignSoftwareTargetAction;
 import com.redhat.rhn.frontend.events.AlignSoftwareTargetMsg;
+import com.redhat.rhn.frontend.events.AnalyzeAlignTablesMsg;
 import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.EntityNotExistsException;
 import com.redhat.rhn.manager.appstreams.AppStreamsManager;
@@ -1193,9 +1194,6 @@ public class ContentManager {
         // want them in the cache. For this we need the errata to be up-to-date in target
         alignPackageCache(tgt, oldTgtPackages);
 
-        // a lot was inserted into tables at this point. Make sure stats are up-to-date before continuing
-        analyzeAlignTables();
-
         // Also check if content of cloned errata needs alignment (advisory status etc.)
         if (user.getOrg().getOrgConfig().isClmSyncPatches()) {
             ChannelManager.listErrataNeedingResync(tgt, user).forEach(e -> {
@@ -1211,18 +1209,9 @@ public class ContentManager {
         tgt.setLastModified(new Date());
         tgt = HibernateFactory.getSession().merge(tgt);
         ChannelManager.queueChannelChange(tgt.getLabel(), "java::alignChannel", "Channel aligned");
-    }
 
-    /**
-     * Run database analyze in tables more affected by the CLM channel align
-     */
-    private void analyzeAlignTables() {
-        ChannelFactory.analyzeChannelPackages();
-        ChannelFactory.analyzeErrataPackages();
-        ChannelFactory.analyzeChannelErrata();
-        ChannelFactory.analyzeErrataCloned();
-        ChannelFactory.analyzeErrata();
-        ChannelFactory.analyzeServerNeededCache();
+        // Run ANALYZE once this transaction is complete to update stats after alignment.
+        MessageQueue.publish(new AnalyzeAlignTablesMsg(user));
     }
 
     private void alignPackageCache(Channel channel, Set<Package> oldChannelPackages) {

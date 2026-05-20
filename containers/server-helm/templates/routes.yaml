@@ -47,7 +47,7 @@ spec:
           urlRewrite:
             path: { type: ReplacePrefixMatch, replacePrefixMatch: / }
       backendRefs:
-        - name: tomcat
+        - name: tomcat-internal
           port: 9187
 
     # Node exporter
@@ -58,7 +58,7 @@ spec:
           urlRewrite:
             path: { type: ReplacePrefixMatch, replacePrefixMatch: / }
       backendRefs:
-        - name: tomcat
+        - name: tomcat-internal
           port: 9100
 
     # Tomcat Monitoring JMX
@@ -69,7 +69,7 @@ spec:
           urlRewrite:
             path: { type: ReplacePrefixMatch, replacePrefixMatch: / }
       backendRefs:
-        - name: tomcat
+        - name: tomcat-internal
           port: 5556
     
     # Taskomatic Monitoring Exporter
@@ -80,7 +80,7 @@ spec:
           urlRewrite:
             path: { type: ReplacePrefixMatch, replacePrefixMatch: / }
       backendRefs:
-        - name: taskomatic
+        - name: taskomatic-internal
           port: 9800
     
     # Taskomatic Monitoring JMX
@@ -91,7 +91,7 @@ spec:
           urlRewrite:
             path: { type: ReplacePrefixMatch, replacePrefixMatch: / }
       backendRefs:
-        - name: taskomatic
+        - name: taskomatic-internal
           port: 5557
     {{- end }}
     {{- if .Values.saline.enable }}
@@ -165,7 +165,7 @@ spec:
           urlRewrite:
             path: { type: ReplacePrefixMatch, replacePrefixMatch: / }
       backendRefs:
-        - name: tomcat
+        - name: tomcat-internal
           port: 9187
 
     # Node exporter
@@ -176,7 +176,7 @@ spec:
           urlRewrite:
             path: { type: ReplacePrefixMatch, replacePrefixMatch: / }
       backendRefs:
-        - name: tomcat
+        - name: tomcat-internal
           port: 9100
 
     # Tomcat Monitoring JMX
@@ -187,7 +187,7 @@ spec:
           urlRewrite:
             path: { type: ReplacePrefixMatch, replacePrefixMatch: / }
       backendRefs:
-        - name: tomcat
+        - name: tomcat-internal
           port: 5556
     
     # Taskomatic Monitoring Exporter
@@ -198,7 +198,7 @@ spec:
           urlRewrite:
             path: { type: ReplacePrefixMatch, replacePrefixMatch: / }
       backendRefs:
-        - name: taskomatic
+        - name: taskomatic-internal
           port: 9800
     
     # Taskomatic Monitoring JMX
@@ -209,7 +209,7 @@ spec:
           urlRewrite:
             path: { type: ReplacePrefixMatch, replacePrefixMatch: / }
       backendRefs:
-        - name: taskomatic
+        - name: taskomatic-internal
           port: 5557
     {{- end }}
     {{- if .Values.saline.enable }}

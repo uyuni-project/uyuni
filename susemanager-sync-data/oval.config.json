@@ -145,6 +145,10 @@
         "24.04": {
           "vulnerability": "https://security-metadata.canonical.com/oval/com.ubuntu.noble.cve.oval.xml.bz2",
           "patch": ""
+        },
+        "26.04": {
+          "vulnerability": "https://security-metadata.canonical.com/oval/com.ubuntu.resolute.cve.oval.xml.bz2",
+          "patch": ""
         }
       }
     },

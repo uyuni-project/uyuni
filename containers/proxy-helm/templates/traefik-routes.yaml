@@ -1,4 +1,5 @@
 {{- if and (not .Values.gateway.enable) (eq ((.Values.ingress).type) "traefik") }}
+  {{- if ne (default .Values.services.type .Values.services.ssh.type) "NodePort" }}
 apiVersion: traefik.io/v1alpha1
 kind: IngressRouteTCP
 metadata:
@@ -18,6 +19,8 @@ spec:
       - name: ssh
         port: 8022
 ---
+  {{- end }}
+  {{- if ne (default .Values.services.type .Values.services.salt.type) "NodePort" }}
 apiVersion: traefik.io/v1alpha1
 kind: IngressRouteTCP
 metadata:
@@ -55,5 +58,6 @@ spec:
       services:
       - name: salt
         port: 4506
+  {{- end }}
 {{- end }}
 

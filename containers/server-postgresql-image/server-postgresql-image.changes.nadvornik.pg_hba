@@ -1,0 +1,3 @@
+- Disable external connection to the main db
+- Enforce SSL on external connection to reportdb
+- Disable SSL on internal connections

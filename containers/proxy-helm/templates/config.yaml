@@ -9,11 +9,10 @@ metadata:
     app.kubernetes.io/part-of: uyuni
 data:
   config.yaml: |
-    server: {{ $config.server }}
-    proxy_fqdn: {{ $config.proxy_fqdn }}
-    email: {{ $config.email }}
-    max_cache_size_mb: {{ $config.max_cache_size_mb }}
-    log_level: {{ $config.log_level | default 1 }}
+{{ .Values.global.config | indent 4 }}
+{{- if not (hasKey $config "log_level") }}
+    log_level: 1
+{{- end }}
 
   squid_tuning: |
     # Add your Squid tuning configuration here
@@ -24,6 +23,13 @@ data:
   apache_tuning: |
     # Add your Apache tuning configuration here
 {{ .Values.httpd.tuning | indent 4 }}
+  salt_tuning: |
+    # Add your Salt Broker tuning configuration here
+{{- if .Values.salt.tuning }}
+{{ .Values.salt.tuning | indent 4 }}
+{{- else }}
+    {}
+{{- end }}
 ---
 apiVersion: v1
 kind: Secret

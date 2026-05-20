@@ -1,0 +1,2 @@
+- Fix delete of a reportdb user with uyuni-setup-reportdb-user
+  (bsc#1261841)

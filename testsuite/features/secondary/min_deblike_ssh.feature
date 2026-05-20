@@ -1,4 +1,4 @@
-# Copyright (c) 2017-2025 SUSE LLC
+# Copyright (c) 2017-2026 SUSE LLC
 # Licensed under the terms of the MIT license.
 #
 # 1) delete Debian-like minion and register as SSH minion
@@ -92,11 +92,9 @@ Feature: Bootstrap a SSH-managed Debian-like minion and do some basic operations
     Then I check for failed events on history event page
 
   Scenario: Cleanup: delete the SSH-managed Debian-like minion
-    When I am on the Systems overview page of this "deblike_minion"
-    And I follow "Delete System"
-    Then I should see a "Confirm System Profile Deletion" text
-    When I click on "Delete Profile"
-    And I wait until I see "has been deleted" text
+    When I delete "deblike_minion" system using the api
+    And I perform a full salt minion cleanup on "deblike_minion"
+    And I wait until Salt client is inactive on "deblike_minion"
     Then "deblike_minion" should not be registered
 
   Scenario: Cleanup: bootstrap a Debian-like minion

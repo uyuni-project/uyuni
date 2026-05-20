@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015--2025 SUSE LLC
+ * Copyright (c) 2015--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -23,6 +23,7 @@ import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.common.conf.sso.SSOConfig;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.manager.content.ContentSyncManager;
 import com.redhat.rhn.manager.system.ServerGroupManager;
@@ -88,10 +89,13 @@ import com.suse.manager.webui.controllers.maintenance.MaintenanceCalendarControl
 import com.suse.manager.webui.controllers.maintenance.MaintenanceController;
 import com.suse.manager.webui.controllers.maintenance.MaintenanceScheduleController;
 import com.suse.manager.webui.errors.NotFoundException;
+import com.suse.manager.webui.services.OidcAuthHandler;
 import com.suse.manager.webui.services.RbacRouteValidator;
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.scc.SCCEndpoints;
+
+import com.onelogin.saml2.settings.Saml2Settings;
 
 import org.apache.http.HttpStatus;
 
@@ -100,6 +104,7 @@ import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
+import java.util.Optional;
 
 import spark.ModelAndView;
 import spark.servlet.SparkApplication;
@@ -133,6 +138,8 @@ public class Router implements SparkApplication {
         CloudPaygManager paygManager = GlobalInstanceHolder.PAYG_MANAGER;
         AttestationManager attestationManager = GlobalInstanceHolder.ATTESTATION_MANAGER;
         MigrationDataFactory migrationDataFactory = new MigrationDataFactory();
+        OidcAuthHandler oidcAuthHandlerIn = new OidcAuthHandler();
+        Optional<Saml2Settings> ssoSettings = SSOConfig.getSSOSettings();
 
         SystemsController systemsController = new SystemsController(saltApi);
         ProxyController proxyController = new ProxyController(systemManager);
@@ -143,7 +150,6 @@ public class Router implements SparkApplication {
                 saltKeyUtils, attestationManager, taskomaticApi, paygManager, migrationDataFactory);
         StatesAPI statesAPI = new StatesAPI(saltApi, taskomaticApi, serverGroupManager);
         FormulaController formulaController = new FormulaController(saltApi);
-        HttpApiRegistry httpApiRegistry = new HttpApiRegistry();
         FrontendLogController frontendLogController = new FrontendLogController();
         DownloadController downloadController = new DownloadController(paygManager);
         ConfidentialComputingController confidentialComputingController =
@@ -162,7 +168,8 @@ public class Router implements SparkApplication {
         ScapAuditController scapAuditController = new ScapAuditController();
 
         // Login
-        LoginController.initRoutes(jade);
+        LoginController loginController = new LoginController(oidcAuthHandlerIn, ssoSettings);
+        loginController.initRoutes(jade);
 
         //CVEAudit
         CVEAuditController.initRoutes(jade);
@@ -248,7 +255,8 @@ public class Router implements SparkApplication {
         ProductsController.initRoutes(jade);
 
         // Single Sign-On (SSO) via SAML
-        SSOController.initRoutes();
+        SSOController ssoController = new SSOController(ssoSettings);
+        ssoController.initRoutes();
 
         // Maintenance windows
         MaintenanceController.initRoutes();
@@ -270,9 +278,6 @@ public class Router implements SparkApplication {
         // Frontend Logging
         frontendLogController.initRoutes();
 
-        // HTTP API
-        httpApiRegistry.initRoutes();
-
         // Saltboot
         SaltbootController.initRoutes();
 
@@ -284,6 +289,10 @@ public class Router implements SparkApplication {
 
         // RBAC
         AccessGroupController.initRoutes();
+
+        // HTTP API
+        HttpApiRegistry httpApiRegistry = new HttpApiRegistry(loginController);
+        httpApiRegistry.initRoutes();
 
         // Validate RBAC endpoints
         try {

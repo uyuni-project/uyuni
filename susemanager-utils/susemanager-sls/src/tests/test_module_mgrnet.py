@@ -9,7 +9,6 @@ mockery.setup_environment()
 # pylint: disable-next=wrong-import-position
 from ..modules import mgrnet
 
-
 mgrnet.__salt__ = {}
 
 
@@ -86,12 +85,17 @@ def test_mgrnet_dns_fqdns():
                 rc = 1
         return {"retcode": rc, "stdout": out}
 
+    # pylint: disable-next=unused-argument
+    def _cmd_run_podman(cmd):
+        return "podman0\npodman1\n"
+
     with patch.dict(
-        mgrnet.__salt__, {"cmd.run_all": _cmd_run_host_nslookup}
+        mgrnet.__salt__,
+        {"cmd.run_all": _cmd_run_host_nslookup, "cmd.run": _cmd_run_podman},
     ), patch.object(
         mgrnet,
         "_which",
-        MagicMock(side_effect=[True, False, True, False, False]),
+        MagicMock(side_effect=[True, True, False, True, True, False, False, True]),
     ), patch.object(
         mgrnet.salt.utils.network,
         "ip_addrs",

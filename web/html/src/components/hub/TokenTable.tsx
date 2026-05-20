@@ -45,67 +45,98 @@ export class TokenTable extends Component<Props, State> {
 
   public render(): ReactNode {
     return (
-      <Table
-        ref={this.tableRef}
-        selectable={false}
-        data="/rhn/manager/api/admin/hub/access-tokens"
-        identifier={(row: AccessToken) => row.id}
-        initialItemsPerPage={pageSize}
-        emptyText={t("No tokens available")}
-        initialSortColumnKey="executionTime"
-      >
-        <Column
-          columnClass="text-center"
-          headerClass="text-center"
-          columnKey="attestation"
-          header={t("Token type")}
-          cell={(row: AccessToken) => row.localizedType}
-        />
-        <Column
-          columnClass="text-center"
-          headerClass="text-center"
-          columnKey="attestation"
-          header={t("Server")}
-          cell={(row: AccessToken) => row.serverFqdn}
-        />
-        <Column
-          columnClass="text-center"
-          headerClass="text-center"
-          columnKey="valid"
-          header={t("Valid")}
-          cell={(row: AccessToken) => (row.valid ? t("Yes") : t("No"))}
-        />
-        <Column
-          columnClass="text-center"
-          headerClass="text-center"
-          columnKey="expirationTime"
-          header={t("Expired")}
-          cell={(row: AccessToken) => this.renderExpiration(row.expirationDate)}
-        />
-        <Column
-          columnClass="text-center"
-          headerClass="text-center"
-          columnKey="creationDate"
-          header={t("Created")}
-          cell={(row: AccessToken) => this.renderDate(row.creationDate)}
-        />
-        <Column
-          columnClass="text-center"
-          headerClass="text-center"
-          columnKey="modificationDate"
-          header={t("Last Modified")}
-          cell={(row: AccessToken) => this.renderDate(row.modificationDate)}
-        />
-        {(this.props.allowDeletion || this.props.allowToggleValidity) && (
+      <>
+        <Table
+          ref={this.tableRef}
+          selectable={false}
+          data="/rhn/manager/api/admin/hub/access-tokens"
+          identifier={(row: AccessToken) => row.id}
+          initialItemsPerPage={pageSize}
+          emptyText={t("No tokens available")}
+          initialSortColumnKey="executionTime"
+        >
           <Column
-            columnKey="actions"
             columnClass="text-center"
             headerClass="text-center"
-            header={t("Actions")}
-            cell={(row: AccessToken) => this.renderActions(row)}
+            columnKey="attestation"
+            header={t("Token type")}
+            cell={(row: AccessToken) => row.localizedType}
+          />
+          <Column
+            columnClass="text-center"
+            headerClass="text-center"
+            columnKey="serverFqdn"
+            header={t("Server")}
+            cell={(row: AccessToken) => row.serverFqdn}
+          />
+          <Column
+            columnClass="text-center"
+            headerClass="text-center"
+            columnKey="valid"
+            header={t("Valid")}
+            cell={(row: AccessToken) => (row.valid ? t("Yes") : t("No"))}
+          />
+          <Column
+            columnClass="text-center"
+            headerClass="text-center"
+            columnKey="expirationTime"
+            header={t("Expired")}
+            cell={(row: AccessToken) => this.renderExpiration(row.expirationDate)}
+          />
+          <Column
+            columnClass="text-center"
+            headerClass="text-center"
+            columnKey="creationDate"
+            header={t("Created")}
+            cell={(row: AccessToken) => this.renderDate(row.creationDate)}
+          />
+          <Column
+            columnClass="text-center"
+            headerClass="text-center"
+            columnKey="modificationDate"
+            header={t("Last Modified")}
+            cell={(row: AccessToken) => this.renderDate(row.modificationDate)}
+          />
+          {(this.props.allowDeletion || this.props.allowToggleValidity) && (
+            <Column
+              columnKey="actions"
+              columnClass="text-center"
+              headerClass="text-center"
+              header={t("Actions")}
+              cell={(row: AccessToken) => this.renderActions(row)}
+            />
+          )}
+        </Table>
+        {this.state.selectedRow && this.props.allowToggleValidity && (
+          <DangerDialog
+            id="confirm-validity-modal"
+            isOpen={this.state.confirmValidityDialog}
+            title={t("Confirm access token modification")}
+            content={
+              <div>
+                <div>{this.getValidityConfirmationMessage(this.state.selectedRow)}</div>
+                <div>{t("Confirm if you want to proceed.")}</div>
+              </div>
+            }
+            onConfirm={() => this.state.selectedRow && this.onToggleValidity(this.state.selectedRow)}
+            onClose={() => this.setState({ confirmValidityDialog: false, selectedRow: undefined })}
+            submitText={this.state.selectedRow.valid ? t("Invalidate") : t("Validate")}
+            submitIcon={this.state.selectedRow.valid ? "fa-ban" : "fa-check"}
           />
         )}
-      </Table>
+        {this.state.selectedRow && this.props.allowDeletion && (
+          <DangerDialog
+            id="confirm-deletion-modal"
+            isOpen={this.state.confirmDeleteDialog}
+            title={t("Confirm access token deletion")}
+            content={<div>{t("Are you sure you want to delete this token. It is currently not used.")}</div>}
+            onConfirm={() => this.state.selectedRow && this.onDelete(this.state.selectedRow)}
+            onClose={() => this.setState({ confirmDeleteDialog: false, selectedRow: undefined })}
+            submitText={t("Delete")}
+            submitIcon="fa-trash"
+          />
+        )}
+      </>
     );
   }
 
@@ -132,36 +163,17 @@ export class TokenTable extends Component<Props, State> {
     return (
       <div className="btn-group">
         {this.props.allowToggleValidity && (
-          <>
-            <Button
-              icon={row.valid ? "fa-ban" : "fa-check"}
-              className="btn-default"
-              title={row.valid ? t("Invalidate") : t("Validate")}
-              handler={() =>
-                // If the token is used, ask for confirmation. Otherwise, directly toggle the validity
-                row.hubId !== null || row.peripheralId !== null
-                  ? this.setState({ confirmValidityDialog: true, selectedRow: row })
-                  : this.onToggleValidity(row)
-              }
-            ></Button>
-            {this.state.selectedRow && (
-              <DangerDialog
-                id="confirm-validity-modal"
-                isOpen={this.state.confirmValidityDialog}
-                title={t("Confirm access token modification")}
-                content={
-                  <div>
-                    <div>{this.getValidityConfirmationMessage(this.state.selectedRow)}</div>
-                    <div>{t("Confirm if you want to proceed.")}</div>
-                  </div>
-                }
-                onConfirm={() => this.state.selectedRow && this.onToggleValidity(this.state.selectedRow)}
-                onClose={() => this.setState({ confirmValidityDialog: false, selectedRow: undefined })}
-                submitText={this.state.selectedRow.valid ? t("Invalidate") : t("Validate")}
-                submitIcon={this.state.selectedRow.valid ? "fa-ban" : "fa-check"}
-              />
-            )}
-          </>
+          <Button
+            icon={row.valid ? "fa-ban" : "fa-check"}
+            className="btn-default"
+            title={row.valid ? t("Invalidate") : t("Validate")}
+            handler={() =>
+              // If the token is used, ask for confirmation. Otherwise, directly toggle the validity
+              row.hubId !== null || row.peripheralId !== null
+                ? this.setState({ confirmValidityDialog: true, selectedRow: row })
+                : this.onToggleValidity(row)
+            }
+          />
         )}
         {this.props.allowDeletion && (
           <Button
@@ -170,20 +182,7 @@ export class TokenTable extends Component<Props, State> {
             className="btn-default"
             icon="fa-trash"
             handler={() => this.setState({ confirmDeleteDialog: true, selectedRow: row })}
-          >
-            {this.state.selectedRow && (
-              <DangerDialog
-                id="confirm-deletion-modal"
-                isOpen={this.state.confirmDeleteDialog}
-                title={t("Confirm access token deletion")}
-                content={<div>{t("Are you sure you want to delete this token. It is currently not used.")}</div>}
-                onConfirm={() => this.state.selectedRow && this.onDelete(this.state.selectedRow)}
-                onClose={() => this.setState({ confirmDeleteDialog: false, selectedRow: undefined })}
-                submitText={t("Delete")}
-                submitIcon="fa-trash"
-              />
-            )}
-          </Button>
+          />
         )}
       </div>
     );
@@ -207,7 +206,7 @@ export class TokenTable extends Component<Props, State> {
         row.valid = request.valid;
         row.expirationDate = response.data;
         this.tableRef.current?.refresh();
-        showInfoToastr("Access token validity successfully chande");
+        showInfoToastr("Access token validity successfully changed");
       });
   }
 

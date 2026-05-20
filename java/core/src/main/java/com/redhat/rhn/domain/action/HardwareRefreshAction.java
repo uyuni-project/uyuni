@@ -154,10 +154,7 @@ public class HardwareRefreshAction extends Action {
         hwMapper.mapNetworkInfo(result.getNetworkInterfaces(), Optional.of(result.getNetworkIPs()),
                 result.getNetworkModules(),
                 Stream.concat(
-                        Stream.concat(
-                                result.getFqdns().stream(),
-                                result.getDnsFqdns().stream()
-                        ),
+                        result.getDnsFqdns().isEmpty() ? result.getFqdns().stream() : result.getDnsFqdns().stream(),
                         result.getCustomFqdns().stream()
                 ).distinct().collect(Collectors.toList())
         );
