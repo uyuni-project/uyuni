@@ -555,7 +555,9 @@ install -m 644 conf/rhn_java_sso.conf %{buildroot}%{_datadir}/rhn/config-default
 %if 0%{?is_opensuse}
 sed -i -e 's/^java.product_tree_tag =.*$/java.product_tree_tag = Uyuni/' %{buildroot}%{_datadir}/rhn/config-defaults/rhn_java.conf
 %else
-sed -i -e 's/^java.product_tree_tag =.*$/java.product_tree_tag = Beta/' $RPM_BUILD_ROOT%{_prefix}/share/rhn/config-defaults/rhn_java.conf
+%if 0%{?beta_flag}
+sed -i -e 's/^java.product_tree_tag =.*$/java.product_tree_tag = Beta/' %{buildroot}%{_prefix}/share/rhn/config-defaults/rhn_java.conf
+%endif
 %endif
 # Adjust languages
 sed -i -e '/# NOTE: for the RPMs this is defined at the SPEC!/d' %{buildroot}%{_datadir}/rhn/config-defaults/rhn_java.conf
@@ -592,14 +594,14 @@ install -m 644 conf/cobbler/snippets/root_ca %{buildroot}%{spacewalksnippetsdir}
 
 # special links for rhn-search
 RHN_SEARCH_BUILD_DIR=%{_datadir}/rhn/search/lib
-ln -s -f %{_javadir}/postgresql-jdbc.jar $RPM_BUILD_ROOT$RHN_SEARCH_BUILD_DIR/postgresql-jdbc.jar
-ln -s -f %{_javadir}/ongres-scram/%{scram_client_jar}.jar $RPM_BUILD_ROOT$RHN_SEARCH_BUILD_DIR/ongres-scram_%{scram_client_jar}.jar
-ln -s -f %{_javadir}/ongres-scram/%{scram_common_jar}.jar $RPM_BUILD_ROOT$RHN_SEARCH_BUILD_DIR/ongres-scram_%{scram_common_jar}.jar
+ln -s -f %{_javadir}/postgresql-jdbc.jar %{buildroot}$RHN_SEARCH_BUILD_DIR/postgresql-jdbc.jar
+ln -s -f %{_javadir}/ongres-scram/%{scram_client_jar}.jar %{buildroot}$RHN_SEARCH_BUILD_DIR/ongres-scram_%{scram_client_jar}.jar
+ln -s -f %{_javadir}/ongres-scram/%{scram_common_jar}.jar %{buildroot}$RHN_SEARCH_BUILD_DIR/ongres-scram_%{scram_common_jar}.jar
 
 # write an include file for the filelist
 if [ -e %{_javadir}/ongres-stringprep/stringprep.jar ]; then
-    ln -s -f %{_javadir}/ongres-stringprep/stringprep.jar $RPM_BUILD_ROOT$RHN_SEARCH_BUILD_DIR/ongres-stringprep_stringprep.jar
-    ln -s -f %{_javadir}/ongres-stringprep/saslprep.jar $RPM_BUILD_ROOT$RHN_SEARCH_BUILD_DIR/ongres-stringprep_saslprep.jar
+    ln -s -f %{_javadir}/ongres-stringprep/stringprep.jar %{buildroot}$RHN_SEARCH_BUILD_DIR/ongres-stringprep_stringprep.jar
+    ln -s -f %{_javadir}/ongres-stringprep/saslprep.jar %{buildroot}$RHN_SEARCH_BUILD_DIR/ongres-stringprep_saslprep.jar
     echo "
 %{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/ongres-scram_%{scram_client_jar}.jar
 %{serverdir}/tomcat/webapps/rhn/WEB-INF/lib/ongres-scram_%{scram_common_jar}.jar
