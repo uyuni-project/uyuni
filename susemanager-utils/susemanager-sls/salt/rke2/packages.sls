@@ -15,6 +15,8 @@ rke2_pkgs_installed:
   pkg.installed:
     - pkgs:
       - curl
+      - iptables
+      - nftables
       - openssl
       - openssh
       - helm

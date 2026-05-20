@@ -51,7 +51,7 @@ proxy_rke2_ca_configmap:
 proxy_rke2_helm_release:
   cmd.run:
     - name: |
-        {{ helm }} install srke2-proxy {{ chart_oci }} \
+        {{ helm }} install rke2-proxy {{ chart_oci }} \
             --version {{ chart_version }} \
             -n {{ namespace }} \
             --description "Proxy installation" \
@@ -64,7 +64,7 @@ proxy_rke2_helm_release:
             --set-file global.config={{ work_dir }}/config.yaml \
             --set-file global.ssh={{ work_dir }}/ssh.yaml \
             --set-file global.httpd={{ work_dir }}/httpd.yaml
-    - unless: {{ helm }} -n {{ namespace }} list | grep -q srke2-proxy
+    - unless: {{ helm }} -n {{ namespace }} list | grep -q rke2-proxy
     - require:
       - cmd: proxy_rke2_cert_secret
       - cmd: proxy_rke2_ca_configmap
