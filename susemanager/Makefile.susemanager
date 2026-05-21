@@ -14,6 +14,9 @@ unittest ::
 	$(PYTHON_BIN) -m pytest -v src/ ; \
 	rm ../python/spacewalk/susemanager ; \
 
+__unittest_rpmbuild:
+	$(PYTHON_BIN) -m pytest -v src/ ; \
+
 unittest_inside_docker ::
 	ln -fs /manager/susemanager/src /manager/python/spacewalk/susemanager
 	pytest -v --junitxml src/reports/tests.xml src/test
