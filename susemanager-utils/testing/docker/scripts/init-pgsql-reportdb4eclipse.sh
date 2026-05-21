@@ -26,7 +26,7 @@ echo $PATH
 echo $PERLLIB
 
 export SYSTEMD_NO_WRAP=1
-su - postgres -c "/usr/lib/postgresql/bin/pg_ctl restart" ||:
+su - postgres -c "/usr/lib/postgresql/bin/pg_ctl -D /var/lib/pgsql/data restart" ||:
 
 # this copy the latest schema from the git into the system
 ./build-reportdb-schema.sh
