@@ -81,6 +81,7 @@ RUN zypper ref && zypper --non-interactive up && \
         virtual-host-gatherer-VMware \
         virtual-host-gatherer-libcloud \
         virtualization-formulas \
+        mozilla-nss-sysinit \
         zchunk && \
     zypper --non-interactive clean --all && \
     rpm -e container-suseconnect && \
