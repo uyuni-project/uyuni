@@ -8,6 +8,10 @@ metadata:
     app.kubernetes.io/part-of: uyuni
 spec:
   replicas: 1
+{{- if .Values.tftp.hostNetwork }}
+  strategy:
+    type: Recreate
+{{- end }}
   selector:
     matchLabels:
       app.kubernetes.io/component: proxy-tftp
