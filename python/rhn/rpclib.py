@@ -175,7 +175,7 @@ class Server:
         #
         # pylint: disable-next=singleton-comparison
         if proxy != None:
-            (ph, pp, pu, pw) = get_proxy_info(proxy)
+            ph, pp, pu, pw = get_proxy_info(proxy)
 
             if pp is not None:
                 # pylint: disable-next=consider-using-f-string
@@ -843,6 +843,6 @@ def reportError(headers):
             import base64
 
             # pylint: disable-next=consider-using-f-string
-            errmsg = "%s" % base64.decodestring(_s)
+            errmsg = "%s" % base64.b64decode(_s)
 
     return errcode, errmsg

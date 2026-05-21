@@ -2,7 +2,8 @@
 """
 Test activation key methods.
 """
-from mock import MagicMock, patch
+
+from unittest.mock import MagicMock, patch
 import pytest
 
 # pylint: disable-next=unused-import
@@ -716,7 +717,7 @@ class TestSCActivationKeyMethods:
         assert len(keys) == len(channels) == 1
         assert "key" in keys
         assert "rd2d-upgrade" in channels
-        assert bool == type(order)
+        assert isinstance(order, bool)
         assert not order
 
         shell.client.activationkey.addConfigChannels = MagicMock()
@@ -730,7 +731,7 @@ class TestSCActivationKeyMethods:
         assert len(keys) == len(channels) == 1
         assert "key" in keys
         assert "rd2d-upgrade" in channels
-        assert bool == type(order)
+        assert isinstance(order, bool)
         assert order
 
         shell.client.activationkey.addConfigChannels = MagicMock()
@@ -744,7 +745,7 @@ class TestSCActivationKeyMethods:
         assert len(keys) == len(channels) == 1
         assert "key" in keys
         assert "rd2d-upgrade" in channels
-        assert bool == type(order)
+        assert isinstance(order, bool)
         assert order
 
     # pylint: disable-next=redefined-outer-name

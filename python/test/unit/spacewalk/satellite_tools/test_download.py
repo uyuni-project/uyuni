@@ -10,7 +10,7 @@
 # along with this software; if not, see
 # http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 
-from mock import Mock, patch
+from unittest.mock import Mock, patch
 from queue import Queue
 
 from spacewalk.satellite_tools.download import (
@@ -148,11 +148,11 @@ def test_reposync_download_thread_fetch_url_proxy_pass():
         "spacewalk.satellite_tools.download.URLGrabberOptions", url_grabber_opts_mock
     ):
         DownloadThread(parent_mock, queue).run()
-        assert url_grabber_opts_mock.mock_calls[1].kwargs["proxies"] == proxies
-        assert url_grabber_opts_mock.mock_calls[1].kwargs["retrycodes"] == [-1, 14]
-        assert "proxy" not in url_grabber_opts_mock.mock_calls[1].kwargs
-        assert "username" not in url_grabber_opts_mock.mock_calls[1].kwargs
-        assert "password" not in url_grabber_opts_mock.mock_calls[1].kwargs
+        assert url_grabber_opts_mock.call_args[1]["proxies"] == proxies
+        assert url_grabber_opts_mock.call_args[1]["retrycodes"] == [-1, 14]
+        assert "proxy" not in url_grabber_opts_mock.call_args[1]
+        assert "username" not in url_grabber_opts_mock.call_args[1]
+        assert "password" not in url_grabber_opts_mock.call_args[1]
 
 
 def test_reposync_download_thread_sets_failed_pkg():

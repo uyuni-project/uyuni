@@ -2488,7 +2488,7 @@ class RepoSync(object):
                 sys.exit(1)
             if credentials["type"] != "rhui":
                 url.username = credentials["username"]
-                url.password = base64.decodestring(
+                url.password = base64.b64decode(
                     credentials["password"].encode()
                 ).decode()
             # remove query parameter from url

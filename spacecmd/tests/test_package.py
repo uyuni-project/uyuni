@@ -768,10 +768,8 @@ class TestSCPackage:
         mprint = MagicMock()
         logger = MagicMock()
         mocks_order = MagicMock()
-        mocks_order.mprint, mocks_order.removePackage = (
-            mprint,
-            shell.client.packages.removePackage,
-        )
+        mocks_order.attach_mock(mprint, "mprint")
+        mocks_order.attach_mock(shell.client.packages.removePackage, "removePackage")
 
         # pylint: disable-next=unused-variable
         with patch("spacecmd.package.print", mprint) as prn, patch(

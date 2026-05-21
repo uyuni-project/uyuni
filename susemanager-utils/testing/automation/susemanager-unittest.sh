@@ -34,7 +34,21 @@ INITIAL_CMD="/manager/susemanager-utils/testing/automation/initial-objects.sh"
 CMD="cd /manager/susemanager; make -f Makefile.susemanager unittest_inside_docker pylint_inside_docker"
 CHOWN_CMD="/manager/susemanager-utils/testing/automation/chown-objects.sh $(id -u) $(id -g)"
 
+echo
+echo "##################### RUNNING TESTS ON MAIN PYTHON VERSION ###########################"
 $EXECUTOR pull $REGISTRY/$PGSQL_CONTAINER
 echo "$EXECUTOR run --rm=true -e $DOCKER_RUN_EXPORT -v \"$GITROOT:/manager\" $REGISTRY/$PGSQL_CONTAINER /bin/bash -c \"${INITIAL_CMD}; ${CMD}; RET=\${?}; ${CHOWN_CMD} && exit \${RET}\""
 $EXECUTOR run --rm=true -e $DOCKER_RUN_EXPORT -v "$GITROOT:/manager" $REGISTRY/$PGSQL_CONTAINER /bin/bash -c "${INITIAL_CMD}; ${CMD}; RET=\${?}; ${CHOWN_CMD} && exit \${RET}"
-exit $?
+if [ $? -ne 0 ]; then
+    EXIT=1
+fi
+
+echo
+echo "##################### RUNNING TESTS WITH PYTHON 3.6 ###########################"
+$EXECUTOR pull $REGISTRY/$PGSQL_CONTAINER_PYTHON36
+echo "$EXECUTOR run --rm=true -e $DOCKER_RUN_EXPORT -v \"$GITROOT:/manager\" $REGISTRY/$PGSQL_CONTAINER_PYTHON36 /bin/bash -c \"${INITIAL_CMD}; ${CMD}; RET=\${?}; ${CHOWN_CMD} && exit \${RET}\""
+$EXECUTOR run --rm=true -e $DOCKER_RUN_EXPORT -v "$GITROOT:/manager" $REGISTRY/$PGSQL_CONTAINER_PYTHON36 /bin/bash -c "${INITIAL_CMD}; ${CMD}; RET=\${?}; ${CHOWN_CMD} && exit \${RET}"
+if [ $? -ne 0 ]; then
+    EXIT=2
+fi
+exit $EXIT

@@ -82,7 +82,7 @@ def getComponentType(req):
     # is it the same box?
     try:
         log_debug(4, "last_visited", last_visited, "; proxy server id", proxy_server_id)
-    # pylint: disable=W0702
+    # pylint: disable-next=W0702
     except:
         # pylint: disable=W0702
         # incase called prior to the log files being initialized
@@ -182,7 +182,7 @@ class apacheHandler(rhnApache):
 
         # Get the checksum for the requested resource from the satellite.
 
-        (status, checksum) = self._querySatelliteForChecksum(req)
+        status, checksum = self._querySatelliteForChecksum(req)
         if status != apache.OK or not checksum:
             return status
 
@@ -655,7 +655,7 @@ class apacheHandler(rhnApache):
         req.headers_out["X-RHN-Fault-Code"] = str(response.faultCode)
         # pylint: disable-next=invalid-name
         faultString = (
-            base64.encodestring(response.faultString.encode()).decode().strip()
+            base64.b64encode(response.faultString.encode()).decode().strip()
         )  # pylint: disable=deprecated-method
         # Split the faultString into multiple lines
         for line in faultString.split("\n"):
@@ -677,7 +677,7 @@ class apacheHandler(rhnApache):
         while 1:
             pid = status = -1
             try:
-                (pid, status) = os.waitpid(-1, 0)
+                pid, status = os.waitpid(-1, 0)
             except OSError:
                 break
             else:

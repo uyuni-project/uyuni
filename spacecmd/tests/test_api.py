@@ -2,8 +2,9 @@
 """
 Test suite for spacecmd.api
 """
+
 # pylint: disable-next=unused-import
-from mock import MagicMock, patch, mock_open
+from unittest.mock import MagicMock, patch, mock_open
 from spacecmd import api
 import helpers
 import datetime

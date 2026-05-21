@@ -55,7 +55,7 @@ class PackageUpload(connection.PackageUpload):
     # Encodes an array of variables into Base64 (column-separated)
     @staticmethod
     def encode_values(arr):
-        val = ":".join([x.strip() for x in map(base64.encodestring, arr)])
+        val = ":".join([x.strip() for x in map(base64.b64encode, arr)])
         # Get rid of the newlines
         val = val.replace("\n", "")
         # And split the result into lines of fixed size

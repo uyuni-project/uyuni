@@ -39,6 +39,8 @@ EXIT=0
 INITIAL_CMD="/manager/susemanager-utils/testing/automation/initial-objects.sh"
 CHOWN_CMD="/manager/susemanager-utils/testing/automation/chown-objects.sh $(id -u) $(id -g)"
 
+echo
+echo "##################### RUNNING TESTS ON MAIN PYTHON VERSION ###########################"
 $EXECUTOR pull $REGISTRY/$PGSQL_CONTAINER
 CMD="/manager/python/test/docker-backend-common-tests.sh"
 $EXECUTOR run --rm=true -e $DOCKER_RUN_EXPORT -v "$GITROOT:/manager" $REGISTRY/$PGSQL_CONTAINER /bin/bash -c "${INITIAL_CMD}; ${CMD}; RET=\${?}; ${CHOWN_CMD} && exit \${RET}"
@@ -59,6 +61,30 @@ CMD="/manager/python/test/docker-backend-server-tests.sh"
 $EXECUTOR run --rm=true -e $DOCKER_RUN_EXPORT -v "$GITROOT:/manager" $REGISTRY/$PGSQL_CONTAINER /bin/bash -c "${INITIAL_CMD}; ${CMD}; RET=\${?}; ${CHOWN_CMD} && exit \${RET}"
 if [ $? -ne 0 ]; then
     EXIT=4
+fi
+
+echo
+echo "##################### RUNNING TESTS ON PYTHON 3.6 ###########################"
+$EXECUTOR pull $REGISTRY/$PGSQL_CONTAINER_PYTHON36
+CMD="/manager/python/test/docker-backend-common-tests.sh"
+$EXECUTOR run --rm=true -e $DOCKER_RUN_EXPORT -v "$GITROOT:/manager" $REGISTRY/$PGSQL_CONTAINER_PYTHON36 /bin/bash -c "${INITIAL_CMD}; ${CMD}; RET=\${?}; ${CHOWN_CMD} && exit \${RET}"
+if [ $? -ne 0 ]; then
+    EXIT=5
+fi
+CMD="/manager/python/test/docker-backend-tools-tests.sh"
+$EXECUTOR run --rm=true -e $DOCKER_RUN_EXPORT -v "$GITROOT:/manager" $REGISTRY/$PGSQL_CONTAINER_PYTHON36 /bin/bash -c "${INITIAL_CMD}; ${CMD}; RET=\${?}; ${CHOWN_CMD} && exit \${RET}"
+if [ $? -ne 0 ]; then
+    EXIT=6
+fi
+CMD="/manager/python/test/docker-backend-pgsql-tests.sh"
+$EXECUTOR run --privileged --rm=true -e $DOCKER_RUN_EXPORT -v "$GITROOT:/manager" $REGISTRY/$PGSQL_CONTAINER_PYTHON36 /bin/bash -c "${INITIAL_CMD}; ${CMD}; RET=\${?}; ${CHOWN_CMD} && exit \${RET}"
+if [ $? -ne 0 ]; then
+    EXIT=7
+fi
+CMD="/manager/python/test/docker-backend-server-tests.sh"
+$EXECUTOR run --rm=true -e $DOCKER_RUN_EXPORT -v "$GITROOT:/manager" $REGISTRY/$PGSQL_CONTAINER_PYTHON36 /bin/bash -c "${INITIAL_CMD}; ${CMD}; RET=\${?}; ${CHOWN_CMD} && exit \${RET}"
+if [ $? -ne 0 ]; then
+    EXIT=8
 fi
 
 rm -f $GITROOT/python/spacewalk/common/usix.py*

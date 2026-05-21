@@ -3,7 +3,7 @@
 Test software channel module.
 """
 
-from mock import Mock, MagicMock, patch, call
+from unittest.mock import Mock, MagicMock, patch, call
 import spacecmd.softwarechannel
 
 # pylint: disable-next=unused-import
