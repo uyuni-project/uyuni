@@ -16,6 +16,24 @@ type Props = {
 
 export const Panel = (props: Props) => {
   const { headingLevel: HeadingLevel = "h1" } = props;
+  const CollapseWrapper = ({ children }: { children: React.ReactNode }) => {
+    if (!props.collapseId) {
+      return <>{children}</>;
+    }
+
+    return (
+      <div
+        data-bs-toggle="collapse"
+        data-bs-target={`#${props.collapseId}-panel-closable`}
+        className={`accordion-toggle ${props.collapsClose ? "collapsed" : ""} d-flex align-items-center`}
+        aria-expanded={!props.collapsClose}
+      >
+        <i className={`fa fa-chevron-down show-on-collapsed ${props.customIconClass ? props.customIconClass : ""}`} />
+        <i className={`fa fa-chevron-right hide-on-collapsed ${props.customIconClass ? props.customIconClass : ""}`} />
+        {children}
+      </div>
+    );
+  };
 
   // header takes precedence over title
   const headerContent =
