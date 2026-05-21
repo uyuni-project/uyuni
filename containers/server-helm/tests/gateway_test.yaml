@@ -290,3 +290,54 @@ tests:
         documentSelector:
           path: metadata.name
           value: uyuni-nossl-routes
+  
+  - it: should not create the paths for the hub API by default
+    set:
+      global.fqdn: uyuni.example.com
+      gateway:
+        enable: true
+    release:
+      namespace: myns
+    asserts:
+      - notContains:
+          path: spec.rules
+          content:
+            matches:
+              - path:
+                  type: PathPrefix
+                  value: /hub/rpc/api
+            backendRefs:
+              - name: hub-xmlrpc
+                port: 2830
+          any: true
+        template: routes.yaml
+        documentSelector:
+          path: metadata.name
+          value: uyuni-https-routes
+
+
+  - it: should create the paths for the hub API if enabled
+    set:
+      global.fqdn: uyuni.example.com
+      gateway:
+        enable: true
+      hubAPI:
+        enable: true
+    release:
+      namespace: myns
+    asserts:
+      - contains:
+          path: spec.rules
+          content:
+            matches:
+              - path:
+                  type: PathPrefix
+                  value: /hub/rpc/api
+            backendRefs:
+              - name: hub-xmlrpc
+                port: 2830
+          any: true
+        template: routes.yaml
+        documentSelector:
+          path: metadata.name
+          value: uyuni-https-routes
