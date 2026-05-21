@@ -765,7 +765,7 @@ i[class~="fa-right"] {
 
     .spacewalk-list-reflinks {
       display: flex;
-      justify-content: space-between
+      justify-content: space-between;
     }
   }
 }
@@ -1191,7 +1191,7 @@ i.fa.pointer {
   display: inline-block;
 }
 
-input:disabled+label,
+input:disabled + label,
 label:has(input:disabled) {
   cursor: not-allowed;
   color: $gray;
@@ -1229,6 +1229,12 @@ select.small-select {
 
   .accordion-toggle {
     cursor: pointer;
+
+    i {
+      width: 14px;
+      font-size: 14px;
+      text-align: center;
+    }
   }
 }
 
