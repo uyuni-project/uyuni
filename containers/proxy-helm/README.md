@@ -94,6 +94,23 @@ Exposing the `tftp` service has to be done differently due to the way TFTP proto
 Either use the host network using the `tftp.hostNetwork` value or configure a load balancer for the `tftp` service.
 Note that not all load balancers will work: `serviceLB` implementation is not compatible with TFTP protocol, while MetalLB works.
 
+### K3S installation
+
+The bundled Traefik on K3S runs with an empty `IngressClass` and picks up every Ingress regardless of class. Install the chart with `ingress.class` set to the empty string so the chart does not emit a `kubernetes.io/ingress.class` annotation that the API server would reject:
+
+```yaml
+ingress:
+  type: traefik
+  class: ""
+```
+
+K3S's built-in load balancer (`klipper-lb` / `serviceLB`) does not support the TFTP protocol. Expose TFTP via the host network instead:
+
+```yaml
+tftp:
+  hostNetwork: true
+```
+
 ## Usage
 
 Once installed, systems can be connected the to proxy.
