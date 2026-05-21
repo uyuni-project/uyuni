@@ -43,6 +43,7 @@ if [ $? -ne 0 ]; then
     EXIT=1
 fi
 
+if [ "${VPRODUCT}" = "VERSION.Uyuni" ]; then
 echo
 echo "##################### RUNNING TESTS WITH PYTHON 3.6 ###########################"
 $EXECUTOR pull $REGISTRY/$PGSQL_CONTAINER_PYTHON36
@@ -51,4 +52,6 @@ $EXECUTOR run --rm=true -e $DOCKER_RUN_EXPORT -v "$GITROOT:/manager" $REGISTRY/$
 if [ $? -ne 0 ]; then
     EXIT=2
 fi
+fi
+
 exit $EXIT

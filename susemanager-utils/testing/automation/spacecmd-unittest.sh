@@ -48,12 +48,14 @@ if [ $? -ne 0 ]; then
     EXIT=1
 fi
 
+if [ "${VPRODUCT}" = "VERSION.Uyuni" ]; then
 echo
 echo "##################### RUNNING TESTS ON PYTHON 3.6 ###########################"
 $EXECUTOR run --rm -e $DOCKER_RUN_EXPORT $DOCKER_RUN_VOLUMES ${REGISTRY}/${PGSQL_CONTAINER_PYTHON36} \
 	/bin/bash -c "${INITIAL_CMD}; ${CMD}; RET=\${?}; popd; ${CHOWN_CMD} && exit \${RET}"
 if [ $? -ne 0 ]; then
     EXIT=2
+fi
 fi
 
 exit $EXIT
