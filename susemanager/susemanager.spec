@@ -64,6 +64,7 @@ BuildRequires:  python3-devel
 
 # check section
 BuildRequires:  python3-pycurl
+BuildRequires:  python3-pytest
 BuildRequires:  spacewalk-backend >= 1.7.38.20
 BuildRequires:  spacewalk-backend-server
 BuildRequires:  spacewalk-backend-sql-postgresql
@@ -192,7 +193,7 @@ mkdir -p %{_localstatedir}/tmp/fakepython/spacewalk
 cp -a %{python3_sitelib}/spacewalk/* %{_localstatedir}/tmp/fakepython/spacewalk/
 cp -a %{buildroot}%{python3_sitelib}/spacewalk/* %{_localstatedir}/tmp/fakepython/spacewalk/
 export PYTHONPATH=%{_localstatedir}/tmp/fakepython/:%{_datadir}/rhn
-make -f Makefile.susemanager PYTHON_BIN=%{pythonX} unittest
+make -f Makefile.susemanager PYTHON_BIN=%{pythonX} __unittest_rpmbuild
 unset PYTHONPATH
 rm -rf %{_localstatedir}/tmp/fakepython
 
