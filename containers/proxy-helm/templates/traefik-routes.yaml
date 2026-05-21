@@ -8,11 +8,13 @@ metadata:
   labels:
     app.kubernetes.io/component: proxy
     app.kubernetes.io/part-of: uyuni
+  {{- if .Values.ingress.class }}
   annotations:
-    kubernetes.io/ingress.class: {{ .Values.ingress.class }}
+    kubernetes.io/ingress.class: {{ .Values.ingress.class | quote }}
+  {{- end }}
 spec:
   entryPoints:
-    - ssh 
+    - ssh
   routes:
     - match: HostSNI(`*`)
       services:
@@ -29,8 +31,10 @@ metadata:
   labels:
     app.kubernetes.io/component: proxy
     app.kubernetes.io/part-of: uyuni
+  {{- if .Values.ingress.class }}
   annotations:
-    kubernetes.io/ingress.class: {{ .Values.ingress.class }}
+    kubernetes.io/ingress.class: {{ .Values.ingress.class | quote }}
+  {{- end }}
 spec:
   entryPoints:
     - salt-publish
@@ -48,8 +52,10 @@ metadata:
   labels:
     app.kubernetes.io/component: proxy
     app.kubernetes.io/part-of: uyuni
+  {{- if .Values.ingress.class }}
   annotations:
-    kubernetes.io/ingress.class: {{ .Values.ingress.class }}
+    kubernetes.io/ingress.class: {{ .Values.ingress.class | quote }}
+  {{- end }}
 spec:
   entryPoints:
     - salt-request

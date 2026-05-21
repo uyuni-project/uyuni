@@ -144,3 +144,26 @@ tests:
         documentSelector:
           path: metadata.name
           value: salt-request-router
+
+      # ingress.class annotation propagates to every IngressRouteTCP
+      - equal:
+          path: metadata.annotations["kubernetes.io/ingress.class"]
+          value: testClass
+        template: traefik-routes.yaml
+        documentSelector:
+          path: metadata.name
+          value: ssh-router
+      - equal:
+          path: metadata.annotations["kubernetes.io/ingress.class"]
+          value: testClass
+        template: traefik-routes.yaml
+        documentSelector:
+          path: metadata.name
+          value: salt-publish-router
+      - equal:
+          path: metadata.annotations["kubernetes.io/ingress.class"]
+          value: testClass
+        template: traefik-routes.yaml
+        documentSelector:
+          path: metadata.name
+          value: salt-request-router
