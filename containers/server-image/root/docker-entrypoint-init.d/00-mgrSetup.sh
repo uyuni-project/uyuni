@@ -198,9 +198,17 @@ scc-pass = ${SCC_PASS}
 
 setup_admin_user() {
     if [ -n "${ADMIN_PASS}" ]; then
+        if [ -f /usr/libexec/tomcat/server ]; then
+            TOMCAT_INIT=/usr/libexec/tomcat/server
+        elif [ -f /usr/lib/tomcat/server ]; then
+            TOMCAT_INIT=/usr/lib/tomcat/server
+        else
+            echo "Error! Cannot find tomcat init command"
+            exit 1
+        fi
         echo "starting tomcat..."
         # Start in background
-        (su -s /usr/bin/sh -g tomcat -G www -G susemanager tomcat /usr/lib/tomcat/server start) &
+        (su -s /usr/bin/sh -g tomcat -G www -G susemanager tomcat ${TOMCAT_INIT} start) &
 
         echo "starting apache2..."
         /usr/sbin/start_apache2 -k start
@@ -245,7 +253,7 @@ setup_admin_user() {
         echo "Admin creation complete"
 
         /usr/sbin/start_apache2 -k stop
-        su -s /usr/bin/sh -g tomcat -G www -G susemanager tomcat /usr/lib/tomcat/server stop
+        su -s /usr/bin/sh -g tomcat -G www -G susemanager tomcat ${TOMCAT_INIT} stop
     fi
 }
 
