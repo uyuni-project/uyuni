@@ -26,6 +26,8 @@ spec:
       - env:
         - name: HUB_API_URL
           value: http://web/rpc/api
+        - name: HUB_CONNECT_USING_SSL
+          value: "true"
         image: {{ include "uyuni.image" (dict "name" "server-hub-xmlrpc-api" "global" . "local" .Values.hubAPI) }}
         imagePullPolicy: {{ .Values.pullPolicy }}
         name: hub-xmlrpc
