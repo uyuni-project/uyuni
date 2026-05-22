@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri May 22 08:28:37 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.5-0
+  * Enable build on openSUSE Leap 16
+  * Remove legacy md5/sha1 fallback imports from checksum
+    module; use hashlib directly
+
+-------------------------------------------------------------------
 Thu Apr 16 14:34:19 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.4-0
