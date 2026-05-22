@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Fri May 22 08:36:05 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.10-0
+  * Ignore podman interfaces when resolving FQDNs (bsc#1262720)
+  * Fix gpg key import on first key deploy (bsc#1259482)
+  * Fix refresh of virtual instance information (bsc#1261723)
+  * Fix test to run on new openSUSE Leap 16.0 image
+  * Use either ansible-core or ansible packages
+    for Ansible Control node, prefer ansible-core (bsc#1259087)
+  * Fix CPU reporting for ppc64le clients (bsc#1259521)
+
+-------------------------------------------------------------------
 Mon Apr 27 13:02:47 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.9-0
