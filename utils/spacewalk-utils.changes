@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Fri May 22 08:12:30 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.6-0
+  * Add Ubuntu 26.04 repositories
+  * Cleanup EOL products from repository list
+    * Fedora 29 and 30
+    * SDL 7 and 8
+    * Debian 11
+    * Ubuntu 16.04 and 18.04
+  * Introduce spacewalk-common-channels-legacy ini file and
+    add all the removed channel definitions into it
+
+-------------------------------------------------------------------
 Thu Apr 16 14:39:37 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.5-0
