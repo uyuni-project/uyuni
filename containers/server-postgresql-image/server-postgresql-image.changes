@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Fri May 22 11:53:19 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.9
+  * Fix collation version differences in system tables (bsc#1264178)
+  * Disable external connection to the main db
+  * Enforce SSL on external connection to reportdb
+  * Disable SSL on internal connections
+  * Fix pg_hba for kubernetes (bsc#1265352)
+
+-------------------------------------------------------------------
 Mon May 04 15:17:59 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.8
