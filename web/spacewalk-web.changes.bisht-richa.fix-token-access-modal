@@ -1,4 +1,0 @@
-- Fixed an issue where the “Create Token” modal could
-  become unresponsive when opened.
-- Fixed an issue causing all existing tokens to be
-  deleted in a loop.

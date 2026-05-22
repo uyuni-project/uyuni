@@ -1,4 +1,21 @@
 -------------------------------------------------------------------
+Fri May 22 08:48:51 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.9-0
+  * Improved visibility of all parent rows in permissions table.
+  * Fixed issue causing a blank tab to appear in the
+    Image Building Details page. (bsc#1253032)
+  * Fixed an issue where the “Create Token” modal could
+    become unresponsive when opened.
+  * Fixed an issue causing all existing tokens to be
+    deleted in a loop.
+  * Check for type object before calling 'in' (bsc#1264967)
+  * Minor UI improvements and fixed spinning icon glitch
+    in Admin → Setup Wizard.
+  * Align subscription matching page warning with dashboard
+    warning for expiring subscriptions (bsc#1257894)
+
+-------------------------------------------------------------------
 Mon Apr 27 10:40:46 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.8-0
