@@ -68,6 +68,27 @@
               "description": "Custom annotations for SSL ingress rules."
             }
           }
+        },
+        "entryPoints": {
+          "type": ["object", "null"],
+          "description": "Traefik entryPoint names the IngressRouteTCPs are bound to. Must match the entryPoints configured in the Traefik installation.",
+          "properties": {
+            "ssh": {
+              "type": "string",
+              "default": "ssh",
+              "description": "Name of the Traefik entryPoint for the SSH IngressRouteTCP."
+            },
+            "saltPublish": {
+              "type": "string",
+              "default": "salt-publish",
+              "description": "Name of the Traefik entryPoint for the Salt publish IngressRouteTCP."
+            },
+            "saltRequest": {
+              "type": "string",
+              "default": "salt-request",
+              "description": "Name of the Traefik entryPoint for the Salt request IngressRouteTCP."
+            }
+          }
         }
       }
     },

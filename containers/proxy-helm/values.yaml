@@ -50,6 +50,15 @@ ingress:
   annotations:
     ssl:
 
+  # Traefik entryPoint names the IngressRouteTCPs are bound to. Must match the
+  # entryPoints configured in the Traefik installation. Override when the
+  # surrounding Traefik uses custom names (e.g. mgrpxy-managed k3s installs
+  # use "uyuni-ssh", "uyuni-publish", "uyuni-request").
+  entryPoints:
+    ssh: "ssh"
+    saltPublish: "salt-publish"
+    saltRequest: "salt-request"
+
 # Gateway configures the Gateway API.
 gateway:
   # If enabled, Gateway API 1.4 resources will be deployed instead of the ingress ones.
