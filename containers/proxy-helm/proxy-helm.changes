@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri May 22 13:46:59 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.6
+  * Align ingress class to traefik default on rke2 (bsc#1264279)
+  * Add salt broker tuning support
+
+-------------------------------------------------------------------
 Fri Apr 17 11:29:16 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.5
