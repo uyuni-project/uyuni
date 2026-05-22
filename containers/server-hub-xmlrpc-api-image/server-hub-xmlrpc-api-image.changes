@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri May 22 13:54:14 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.7
+  * Image rebuilt to the newest version with updated dependencies
+    for SUSE Multi-Linux Manager 5.2 RC
+
+-------------------------------------------------------------------
 Fri Apr 17 11:34:38 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.6
