@@ -1,0 +1,1 @@
+- Add a guard so vm_info is tested before invoking (bsc#1261723)
