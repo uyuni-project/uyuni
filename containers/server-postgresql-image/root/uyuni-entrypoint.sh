@@ -152,6 +152,8 @@ main() {
     fi
 
     if [ "$(id -u)" = '0' ]; then
+        log "Running sanity ownership check"
+        /usr/bin/sanity_run.sh
         log "Running as root, dropping privileges to postgres..."
         exec setpriv --reuid=postgres --regid=postgres --clear-groups -- "$BASH_SOURCE" "$@"
     fi
