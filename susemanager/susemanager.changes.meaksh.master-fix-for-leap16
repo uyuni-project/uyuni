@@ -1,2 +1,0 @@
-- Fix issues building package for openSUSE Leap 16.0
-- Migrate away from mock and nose in favor of pytest

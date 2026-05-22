@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Fri May 22 08:35:01 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.8-0
+  * Add SUSE LibertyLinux 9.6 x86_64 bootstrap repository definition
+  * Drop firewalld dependency and service file as it is not
+    used anymore in the container
+  * Cleanup specfile from python2 and rhel macros
+  * Fix issues building package for openSUSE Leap 16.0
+  * Migrate away from mock and nose in favor of pytest
+
+-------------------------------------------------------------------
 Mon Apr 27 10:41:32 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.7-0
