@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri May 22 08:42:11 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.2-0
+  * Fix delete of a reportdb user with uyuni-setup-reportdb-user
+    (bsc#1261841)
+
+-------------------------------------------------------------------
 Mon Oct 27 15:08:21 CET 2025 - rosuna@suse.com
 
 - version 5.2.1-0
