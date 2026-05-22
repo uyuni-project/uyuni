@@ -32,7 +32,6 @@ type EditGroupProps = {
   id: string;
   key: any;
   disabled?: boolean;
-  level?: number;
   value: any;
   formulaForm: any;
   element: ElementDefinition;
@@ -194,7 +193,6 @@ type EditPrimitiveGroupProps = {
   value: any;
   element: ElementDefinition;
   formulaForm: any;
-  level?: number;
   isDisabled?: boolean;
   handleRemoveItem: (...args: any[]) => any;
   handleAddItem?: (...args: any[]) => any;
@@ -278,7 +276,6 @@ type EditPrimitiveDictionaryGroupProps = {
   value: any;
   element: ElementDefinition;
   formulaForm: any;
-  level?: number;
   isDisabled?: boolean;
   handleRemoveItem: (...args: any[]) => any;
 };
@@ -316,8 +313,7 @@ class EditPrimitiveDictionaryGroup extends Component<EditPrimitiveDictionaryGrou
             this.props.formulaForm,
             id + "#0",
             this.pairElementWrapper(this.props.element.$prototype.$key.$name),
-            this.props.isDisabled,
-            this.props.level
+            this.props.isDisabled
           )}
           {generateFormulaComponentForId(
             this.props.element.$prototype,
@@ -325,8 +321,7 @@ class EditPrimitiveDictionaryGroup extends Component<EditPrimitiveDictionaryGrou
             this.props.formulaForm,
             id + "#1",
             this.pairElementWrapper(get(this.props.element.$prototype.$name, "Value")),
-            this.props.isDisabled,
-            this.props.level
+            this.props.isDisabled
           )}
           <RemoveButton
             minItems={this.props.element.$minItems!}
@@ -373,7 +368,6 @@ class RemoveButton extends Component<RemoveButtonProps> {
 
 type EditDictionaryGroupProps = {
   id: string;
-  level?: number;
   element: ElementDefinition;
   value: any;
   isDisabled?: boolean;
@@ -461,7 +455,6 @@ class EditDictionaryGroup extends Component<EditDictionaryGroupProps, EditDictio
         continue;
       }
       const id = this.props.id + "#" + i;
-      const level = (this.props.level ?? 1) + 1;
 
       const item_elements: ReactNode[] = [];
       for (const element_name in this.props.element.$prototype) {
@@ -473,8 +466,7 @@ class EditDictionaryGroup extends Component<EditDictionaryGroupProps, EditDictio
             this.props.formulaForm,
             id,
             element_name === "$key" ? this.wrapKeyGroup : undefined,
-            this.props.isDisabled,
-            level + 1
+            this.props.isDisabled
           )
         );
       }
