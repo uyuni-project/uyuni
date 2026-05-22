@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri May 22 08:46:37 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.6-0
+  * Enable build on openSUSE Leap 16
+
+-------------------------------------------------------------------
 Thu Apr 16 14:40:29 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.5-0
