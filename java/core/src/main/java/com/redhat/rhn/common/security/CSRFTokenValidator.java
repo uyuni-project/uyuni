@@ -14,7 +14,9 @@
  */
 package com.redhat.rhn.common.security;
 
-import java.security.NoSuchAlgorithmException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.security.SecureRandom;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,30 +28,26 @@ import jakarta.servlet.http.HttpSession;
  */
 public final class CSRFTokenValidator {
 
+    private static final Logger LOG = LogManager.getLogger(CSRFTokenValidator.class);
     private static String tokenKey = "csrf_token";
-    private static String defaultAlgorithm = "SHA1PRNG";
+    private static final SecureRandom SECURE_RANDOM;
+
+    static {
+        SECURE_RANDOM = new SecureRandom();
+        LOG.warn("CSRF token SecureRandom algorithm: {}", SECURE_RANDOM.getAlgorithm());
+    }
 
     /* utility class, no public constructor  */
     private CSRFTokenValidator() {
     }
 
     /**
-     * Create a new CSRF token using the given algorithm, throws a runtime
-     * exception in case of an algorithm is used that is not available.
+     * Create a new CSRF token using the platform default SecureRandom.
      *
-     * @param alg
      * @return token as a String
-     * @throws CSRFTokenException
      */
-    private static String createNewToken(String alg) throws CSRFTokenException {
-        String tokenValue = null;
-        try {
-            tokenValue = String.valueOf(SecureRandom.getInstance(alg).nextLong());
-        }
-        catch (NoSuchAlgorithmException e) {
-            throw new CSRFTokenException(e.getMessage(), e);
-        }
-        return tokenValue;
+    private static String createNewToken() {
+        return String.valueOf(SECURE_RANDOM.nextLong());
     }
 
     /**
@@ -63,7 +61,7 @@ public final class CSRFTokenValidator {
         String tokenValue = (String) session.getAttribute(tokenKey);
         if (tokenValue == null) {
             // Create new token if necessary
-            tokenValue = createNewToken(defaultAlgorithm);
+            tokenValue = createNewToken();
             session.setAttribute(tokenKey, tokenValue);
         }
         return tokenValue;

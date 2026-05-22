@@ -1,0 +1,2 @@
+- Fix CSRFTokenValidator FIPS compatibility by using
+  platform-default SecureRandom (bsc#1247707)

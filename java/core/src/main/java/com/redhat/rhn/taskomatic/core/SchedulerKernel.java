@@ -106,6 +106,7 @@ public class SchedulerKernel {
             PrometheusExporter.INSTANCE.registerScheduler(SchedulerKernel.scheduler, "taskomatic");
         }
         catch (SchedulerException e) {
+            log.error("Failed to initialize Quartz scheduler", e);
             throw new InstantiationException("this.scheduler failed");
         }
     }
