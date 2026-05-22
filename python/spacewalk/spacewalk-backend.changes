@@ -1,4 +1,17 @@
 -------------------------------------------------------------------
+Fri May 22 08:29:32 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.7-0
+  * Cleanup specfile from rhel and fedora macros
+  * Fix gpgverify check for file object (bsc#1263886)
+  * Fix issues building package on Leap 16.0
+  * Add support for Python 3.13
+  * Use PBKDF2-SHA256 (600000 iterations) for new
+    password hashes; verify legacy SHA-256 crypt(3)
+    hashes transparently
+  * Drop md5 and sha1 from available checksum choices
+
+-------------------------------------------------------------------
 Thu Apr 16 14:28:48 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.6-0
