@@ -1,1 +1,0 @@
-- Fix the selinux label on server volumes (bsc#1263023)
