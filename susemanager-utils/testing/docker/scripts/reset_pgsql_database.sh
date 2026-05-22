@@ -51,3 +51,6 @@ echo "INSERT INTO  rhnChannelFamily (id, name, label, org_id)
       'private-channel-family-1', 1);" | spacewalk-sql --select-mode -
 echo "INSERT INTO  rhnPrivateChannelFamily (channel_family_id, org_id) VALUES  (1000, 1);" | spacewalk-sql --select-mode -
 
+echo "Increasing max_connections"
+su - postgres -c "psql -d postgres -c \"ALTER SYSTEM SET max_connections = 200;\""
+su - postgres -c "/usr/lib/postgresql/bin/pg_ctl -D /var/lib/pgsql/data restart"
