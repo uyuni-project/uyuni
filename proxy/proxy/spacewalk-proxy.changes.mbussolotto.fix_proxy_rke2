@@ -1,2 +1,0 @@
-- Don't derive upstream scheme from REQUEST_SCHEME.
-  Use always HTTPS
