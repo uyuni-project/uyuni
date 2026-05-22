@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Fri May 22 13:24:16 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.9
+  * Implement startup check script (bsc#1263157)
+  * Use different flavors for Dockerfile
+  * Drop golang-github-QubitProducts-exporter_exporter
+  * Disable SSL on internal db connection
+  * Do not depend on collation name when checking collation
+    version (bsc#1264178)
+
+-------------------------------------------------------------------
 Tue May 05 11:17:56 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.8
