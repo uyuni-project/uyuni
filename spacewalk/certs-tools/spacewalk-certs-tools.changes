@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri May 22 08:40:27 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.6-0
+  * Fix issues building package for Leap 16.0
+  * Fix error running with Python 3.13
+
+-------------------------------------------------------------------
 Thu Apr 16 14:33:01 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.5-0
