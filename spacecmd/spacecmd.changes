@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri May 22 08:34:27 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.8-0
+  * Update translation strings
+  * Make tests compatible with Python 3.13
+
+-------------------------------------------------------------------
 Thu Apr 16 14:27:32 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.7-0
