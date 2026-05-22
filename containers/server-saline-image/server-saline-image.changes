@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri May 22 11:52:51 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.7
+  * Allow building container based on Leap 16.0
+  * Use python3*-tornado6 package to make it working with Python 3.11
+
+-------------------------------------------------------------------
 Fri Apr 17 11:35:34 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.6
