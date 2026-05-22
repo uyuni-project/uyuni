@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri May 22 08:39:15 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.4-0
+  * Add Ubuntu 26.04 oval data
+  * Add SUSE LibertyLinux 9.6 x86_64 product entries
+
+-------------------------------------------------------------------
 Mon Apr 27 10:41:58 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.3-0
