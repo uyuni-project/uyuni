@@ -1,4 +1,48 @@
 -------------------------------------------------------------------
+Fri May 22 11:48:13 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.13-0
+  * Fix CSV export failure on system Details > Custom Info page
+  * Minor UI improvements and fixed spinning icon glitch
+    in Admin → Setup Wizard.
+  * Updated the tab label for eligible subscription
+    systems. (bsc#1249243)
+  * Fixed missing field labels in the Create User form.
+    (bsc#1259591)
+  * Move Salt > Remote Commands to its own RBAC namespace
+    (bsc#1261305)
+  * Make OIDC JWKS initialization startup-safe
+  * Run ANALYZE asynchronously after CLM alignment to avoid
+    deadlocks (bsc#1261753)
+  * Use salt's network module if host or nslookup are not installed
+    (bsc#1262720)
+  * Fix Python SyntaxWarning for invalid escape sequence '\s' in
+    RHUI extract repo data script (bsc#1262595)
+  * Update java dependencies
+  * Numeric branch names should not be stored in double format
+    (bsc#1258382)
+  * Add all vendor repo channels to hub access token(bsc#1259230)
+  * Recognize PBKDF2-SHA256 hashes alongside legacy
+    SHA-256 crypt(3) in the Java password check helpers
+  * Disable legacy TLSv1/TLSv1.1 and allow TLSv1.3 for SMTP
+  * Sync package removal permissions in packages API with the Web UI
+    (bsc#1261327)
+  * Fix enforcement of consecutive chars in password policy
+    (bsc#1262761)
+  * Fix Remote Commands hang on direct hostname (bsc#1226578)
+  * Add 'unpushed' to AdvisoryStatus enum to handle EPEL errata
+    with unpushed status (bsc#1264234)
+  * Fix user address list (bsc#1259951)
+  * Use supscription matcher output for subscription expiration
+    warning (bsc#1257894)
+  * Add the ability to disable automatic synchronization for
+    software channels
+  * Default SAML2 signature algorithm to rsa-sha256 on fresh installs
+  * Enable second level cache
+  * Add support for Ubuntu 26.04
+  * Fix Oval data sync for ubuntu 26.04(bsc#1265319)
+
+-------------------------------------------------------------------
 Tue Apr 28 11:26:28 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.12-0

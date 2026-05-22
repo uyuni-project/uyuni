@@ -1,2 +1,0 @@
-- Fix enforcement of consecutive chars in password policy
-  (bsc#1262761)
