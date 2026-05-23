@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Sat May 23 13:02:48 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.14-0
+  * Fix CSRFTokenValidator FIPS compatibility by using
+    platform-default SecureRandom (bsc#1247707)
+
+-------------------------------------------------------------------
 Fri May 22 11:48:13 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.13-0
