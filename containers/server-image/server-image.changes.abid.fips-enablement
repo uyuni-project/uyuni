@@ -1,2 +1,0 @@
-- Add mozilla-nss-sysinit to Dockerfile required for FIPS
-  (bsc#1247707)

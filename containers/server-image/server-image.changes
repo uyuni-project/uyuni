@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Sat May 23 13:03:22 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.10
+  * Add mozilla-nss-sysinit to Dockerfile required for FIPS
+    (bsc#1247707)
+
+-------------------------------------------------------------------
 Fri May 22 13:24:16 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.9
