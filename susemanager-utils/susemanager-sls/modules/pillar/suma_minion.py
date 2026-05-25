@@ -92,6 +92,7 @@ def _get_cursor(func):
             "pass": "",
             "db": "susemanager",
             "port": 5432,
+            "sslmode": "disable",
         }
         # pylint: disable-next=undefined-variable
         options.update(__opts__.get("__master_opts__", __opts__).get("postgres", {}))
@@ -101,6 +102,7 @@ def _get_cursor(func):
             password=options["pass"],
             dbname=options["db"],
             port=options["port"],
+            sslmode=options["sslmode"],
         )
 
     # pylint: disable-next=undefined-variable
@@ -217,12 +219,10 @@ def load_global_pillars(cursor, pillar):
     """
     log.debug("Loading global pillars from db")
     # Query for global pillar and extract the formula order
-    cursor.execute(
-        """
+    cursor.execute("""
             SELECT p.pillar
             FROM susesaltpillar AS p
-            WHERE p.server_id is NULL AND p.group_id is NULL AND p.org_id is NULL;"""
-    )
+            WHERE p.server_id is NULL AND p.group_id is NULL AND p.org_id is NULL;""")
     for row in cursor.fetchall():
         pillar = salt.utils.dictupdate.merge(pillar, row[0], strategy="recurse")
     return pillar

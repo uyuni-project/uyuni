@@ -87,15 +87,13 @@ def do_clone_using_id(cursor, table, columns, key, old, new, converter=None):
         SELECT {}
         FROM {}
         WHERE {} = %s;
-        """.format(
-            columns_str, table, key
-        ),
+        """.format(columns_str, table, key),
         (old,),
     )
     for row in cursor.fetchall():
         # Convert the row values if needed
         if converter:
-            (columns, row) = converter(row)
+            columns, row = converter(row)
 
         cursor.execute(
             # pylint: disable-next=consider-using-f-string
@@ -386,7 +384,7 @@ def clone_rhnvirtualinstance(cursor, name, clone_name, id, new_id):
     )
     columns = ["name", "instance_type", "memory_size", "vcpus", "state"]
     for row in cursor.fetchall():
-        (instance_id, host_id, virtual_id, uuid, confirmed) = row
+        instance_id, host_id, virtual_id, uuid, confirmed = row
         new_instance_id = get_sequence_next_value(cursor, "rhn_vi_id_seq")
         host_id = host_id if host_id != id else new_id
         virtual_id = virtual_id if virtual_id != id else new_id
@@ -506,6 +504,10 @@ def clone(conn, id, name, clone_name, secret_key):
             conn.rollback()
 
 
+def is_true(val):
+    return str(val).lower() in ("1", "y", "true", "yes", "on")
+
+
 @click.command()
 @click.option(
     "-n", "--name", required=True, type=str, help="Name of the system to clone"
@@ -533,8 +535,10 @@ def copy(name, count):
     user = rhn_conf["db_user"]
     password = rhn_conf["db_password"]
     db = rhn_conf["db_name"]
+    db_ssl_enabled = is_true(rhn_conf.get("db_ssl_enabled", "0"))
+    sslmode = "verify-full" if db_ssl_enabled else "disable"
 
-    with connect_db(host, port, user, password, db) as conn:
+    with connect_db(host, port, user, password, db, sslmode=sslmode) as conn:
         with conn:
             cursor = conn.cursor()
             system_id = get_system_id(cursor, name)

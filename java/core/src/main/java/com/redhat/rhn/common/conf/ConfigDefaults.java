@@ -1004,6 +1004,9 @@ public class ConfigDefaults {
         if (!"localhost".equals(host) && useSsl) {
             connectionUrl.append("?ssl=true&sslrootcert=" + sslrootcert + "&sslmode=" + sslmode);
         }
+        else {
+            connectionUrl.append("?ssl=false&sslmode=disable");
+        }
 
         return connectionUrl.toString();
     }

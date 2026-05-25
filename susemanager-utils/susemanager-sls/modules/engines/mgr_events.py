@@ -117,12 +117,12 @@ class Responder:
         db_config = self.config.get("postgres_db")
         if "port" in db_config:
             # pylint: disable-next=consider-using-f-string
-            conn_string = "dbname='{dbname}' user='{user}' host='{host}' port='{port}' password='{password}'".format(
+            conn_string = "dbname='{dbname}' user='{user}' host='{host}' port='{port}' password='{password}' sslmode='{sslmode}'".format(
                 **db_config
             )
         else:
             # pylint: disable-next=consider-using-f-string
-            conn_string = "dbname='{dbname}' user='{user}' host='{host}' password='{password}'".format(
+            conn_string = "dbname='{dbname}' user='{user}' host='{host}' password='{password}' sslmode='{sslmode}'".format(
                 **db_config
             )
         log.debug("connecting to database")
