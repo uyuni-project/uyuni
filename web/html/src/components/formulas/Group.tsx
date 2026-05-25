@@ -5,6 +5,7 @@ import { Panel } from "components/panels/Panel";
 import { Highlight } from "components/table/Highlight";
 
 import { isFiltered } from "./FormulaComponentGenerator";
+
 type Props = {
   id: string;
   sectionsExpanded: SectionState;
