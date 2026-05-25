@@ -4,11 +4,10 @@
 # feature files in testsuite/documentation/guidelines.md in "Rules for features" chapter,
 # as well as guidelines about idempotency in "Idempotency" chapter.
 
+## Secondary features BEGIN ##
 
-## Post run features BEGIN ##
+# IDEMPOTENT
 
-# IMMUTABLE ORDER
-# these features are needed for gathering log/debug info
-- features/finishing/allcli_debug.feature
-
-## Post run features END ##
+- features/kubernetes/srv_rke2_install.feature
+- features/kubernetes/proxy_rke2_install.feature
+- features/kubernetes/srv_rke2_tftpd_sanity.feature
