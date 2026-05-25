@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon May 25 10:23:00 WEST 2026 - psuarezhernandez@suse.com
+
+- version 5.2.11
+  * Do not get repositories from SCC in the server container
+    (bsc#1242916)
+
+-------------------------------------------------------------------
 Sat May 23 13:03:22 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.10
