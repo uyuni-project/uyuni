@@ -19,7 +19,6 @@ type Props = {
 
 const Group = (props: Props) => {
   const [visible, setVisible] = useState(props.sectionsExpanded !== SectionState.Collapsed);
-  // console.log("visible", props.sectionsExpanded !== SectionState.Collapsed);
   useEffect(() => {
     if (props.sectionsExpanded !== SectionState.Mixed) {
       setVisible(props.sectionsExpanded !== SectionState.Collapsed);
@@ -50,7 +49,7 @@ const Group = (props: Props) => {
       }
     >
       <Fragment>
-        {props.help !== props.header && <p>{props.help}</p>}
+        {props.help && props.help !== props.header ? <p>{props.help}</p> : null}
         {props.children}
       </Fragment>
     </Panel>

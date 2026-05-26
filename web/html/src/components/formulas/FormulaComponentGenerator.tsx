@@ -206,13 +206,12 @@ export function generateFormulaComponentForId(
         setSectionsExpanded={formulaForm.props.setSectionsExpanded}
         isVisibleByCriteria={() => isVisibleByCriteria(element, formulaForm.props.searchCriteria)}
         criteria={formulaForm.props.searchCriteria}
-        level={level}
       >
         {generateChildrenFormItems(element, value, formulaForm, id, isDisabled, level)}
       </Group>
     );
   } else if (element.$type === "namespace")
-    return generateChildrenFormItems(element, value, formulaForm, id, disabled, level);
+    return generateChildrenFormItems(element, value, formulaForm, id, isDisabled, level);
   else if (element.$type === "edit-group") {
     return (
       <EditGroup
@@ -226,7 +225,6 @@ export function generateFormulaComponentForId(
         setSectionsExpanded={formulaForm.props.setSectionsExpanded}
         isVisibleByCriteria={() => isVisibleByCriteria(element, formulaForm.props.searchCriteria)}
         criteria={formulaForm.props.searchCriteria}
-        level={level}
       />
     );
   } else if (element.$type === "select")
@@ -420,7 +418,7 @@ function defaultWrapper(elementName, required, element, help = null) {
     required,
     <Fragment>
       <div className="col-lg-6">{element}</div>
-      <div className="col-lg-3">{elementName !== help ? <HelpIcon text={help} /> : null}</div>
+      <div className="col-lg-3 d-flex align-items-center">{elementName !== help ? <HelpIcon text={help} /> : null}</div>
     </Fragment>
   );
 }
