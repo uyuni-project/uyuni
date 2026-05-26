@@ -245,7 +245,7 @@ end
 # Relog and visit the previous URL
 def relog_and_visit_previous_url
   begin
-    Timeout.timeout(30) do
+    Timeout.timeout(DEFAULT_TIMEOUT) do
       previous_url = current_url
       step %(I am authorized as "#{$current_user}" with password "#{$current_password}")
       visit previous_url
