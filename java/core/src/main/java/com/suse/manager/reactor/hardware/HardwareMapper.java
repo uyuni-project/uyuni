@@ -456,13 +456,8 @@ public class HardwareMapper {
         return true;
     }
 
-    /**
-     * Map mainframe sysinfo to the database.
-     *
-     * @param readValuesOutput mainframe sysinfo as returned by mainframesysinfo.read_values
-     */
-    public void mapSysinfo(String readValuesOutput) {
-        String cpuarch = getCpuArch();
+    //package-protected
+    Map<String, String> getSysValuesMap(String readValuesOutput) {
         Map<String, String> sysvalues = new HashMap<>();
         for (String line : readValuesOutput.split("\\r?\\n")) {
             if (!line.contains(":")) {
@@ -473,6 +468,27 @@ public class HardwareMapper {
                 sysvalues.put(StringUtils.trim(split[0]), StringUtils.trim(split[1]));
             }
         }
+        return sysvalues;
+    }
+
+    //package-protected
+    String computeOsStringForS390Arch(Map<String, String> sysvalues) {
+        String osString = sysvalues.entrySet().stream()
+                .filter(e -> e.getKey().toLowerCase().contains("control program"))
+                .map(Map.Entry::getValue)
+                .findFirst().orElse("z/VM");
+        int index = osString.indexOf(" ");
+        return index > 0 ? osString.substring(0, index) : osString;
+    }
+
+    /**
+     * Map mainframe sysinfo to the database.
+     *
+     * @param readValuesOutput mainframe sysinfo as returned by mainframesysinfo.read_values
+     */
+    public void mapSysinfo(String readValuesOutput) {
+        String cpuarch = getCpuArch();
+        Map<String, String> sysvalues = getSysValuesMap(readValuesOutput);
 
         // original code: hardware.py get_sysinfo()
         if (StringUtils.isNotBlank(sysvalues.get("Sequence Code")) &&
@@ -483,7 +499,8 @@ public class HardwareMapper {
             // where this system is running on
 
             String identifier = String.format("Z-%s", sysvalues.get("Sequence Code"));
-            String os = "z/OS";
+            String os = computeOsStringForS390Arch(sysvalues);
+
             String name = String.format("IBM Mainframe %s %s", sysvalues.get("Type"),
                     sysvalues.get("Sequence Code"));
             long totalIfls = 0L;
