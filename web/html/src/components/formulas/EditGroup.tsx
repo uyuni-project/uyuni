@@ -132,56 +132,37 @@ class EditGroup extends Component<EditGroupProps, EditGroupState> {
           />
         }
       >
-        <div>
-          <Fragment>
-            {"$help" in this.props.element && this.props.element.$help !== this.props.element.$name ? (
-              <p>{this.props.element.$help}</p>
-            ) : null}
-            <Component
-              handleRemoveItem={this.handleRemoveItem}
-              handleAddItem={this.handleAddItem}
-              isDisabled={this.isDisabled()}
-              id={this.props.id}
-              key={this.props.key}
-              element={this.props.element}
-              value={this.props.value}
-              sectionsExpanded={this.props.sectionsExpanded}
-              setSectionsExpanded={this.props.setSectionsExpanded}
-              formulaForm={this.props.formulaForm}
-            />
-            {getEditGroupSubtype(element) !== EditGroupSubtype.PRIMITIVE_LIST &&
-              getEditGroupSubtype(element) !== EditGroupSubtype.PRIMITIVE_DICTIONARY && (
-                <div className="form-group form-add-button">
-                  <div className="col-lg-3 "></div>
-                  <div className="col-lg-9 ">
-                    <button
-                      className="btn btn-default"
-                      type="button"
-                      id={this.props.id + "#add_item"}
-                      data-bs-toggle="tooltip"
-                      title={
-                        this.props.element.$maxItems! <= this.props.value.length
-                          ? "Max number of items reached"
-                          : undefined
-                      }
-                      disabled={this.props.element.$maxItems! <= this.props.value.length || this.props.disabled}
-                      {...DEPRECATED_onClick(this.handleAddItem)}
-                    >
-                      Add {this.props.element.$name}
-                    </button>
-                  </div>
-                </div>
-              )}
-            {getEditGroupSubtype(element) === EditGroupSubtype.PRIMITIVE_DICTIONARY && (
-              <div className="form-group">
+        <Fragment>
+          {"$help" in this.props.element && this.props.element.$help !== this.props.element.$name ? (
+            <p>{this.props.element.$help}</p>
+          ) : null}
+          <Component
+            handleRemoveItem={this.handleRemoveItem}
+            handleAddItem={this.handleAddItem}
+            isDisabled={this.isDisabled()}
+            id={this.props.id}
+            key={this.props.key}
+            element={this.props.element}
+            value={this.props.value}
+            sectionsExpanded={this.props.sectionsExpanded}
+            setSectionsExpanded={this.props.setSectionsExpanded}
+            formulaForm={this.props.formulaForm}
+          />
+          {getEditGroupSubtype(element) !== EditGroupSubtype.PRIMITIVE_LIST &&
+            getEditGroupSubtype(element) !== EditGroupSubtype.PRIMITIVE_DICTIONARY && (
+              <div className="form-group form-add-button">
                 <div className="col-lg-3 "></div>
                 <div className="col-lg-9 ">
-                  <hr className="mt-1 mb-3"></hr>
                   <button
                     className="btn btn-default"
                     type="button"
                     id={this.props.id + "#add_item"}
                     data-bs-toggle="tooltip"
+                    aria-label={
+                      this.props.element.$maxItems! <= this.props.value.length
+                        ? "Max number of items reached"
+                        : undefined
+                    }
                     title={
                       this.props.element.$maxItems! <= this.props.value.length
                         ? "Max number of items reached"
@@ -195,8 +176,28 @@ class EditGroup extends Component<EditGroupProps, EditGroupState> {
                 </div>
               </div>
             )}
-          </Fragment>
-        </div>
+          {getEditGroupSubtype(element) === EditGroupSubtype.PRIMITIVE_DICTIONARY && (
+            <div className="form-group">
+              <div className="col-lg-3 "></div>
+              <div className="col-lg-9 ">
+                <hr className="mt-1 mb-3"></hr>
+                <button
+                  className="btn btn-default"
+                  type="button"
+                  id={this.props.id + "#add_item"}
+                  data-bs-toggle="tooltip"
+                  title={
+                    this.props.element.$maxItems! <= this.props.value.length ? "Max number of items reached" : undefined
+                  }
+                  disabled={this.props.element.$maxItems! <= this.props.value.length || this.props.disabled}
+                  {...DEPRECATED_onClick(this.handleAddItem)}
+                >
+                  Add {this.props.element.$name}
+                </button>
+              </div>
+            </div>
+          )}
+        </Fragment>
       </Panel>
     ) : null;
   }
@@ -275,7 +276,7 @@ class EditPrimitiveGroup extends Component<EditPrimitiveGroupProps> {
       const id = this.props.id + "#" + i;
 
       // Create a wrapper that passes isLastItem information
-      const wrapperWithContext = (name, required, element, unused, help = null) => {
+      const wrapperWithContext = (name, required, element, help = null) => {
         return this.simpleWrapper(name, required, element, i, help, isLastItem);
       };
 
@@ -380,6 +381,7 @@ class RemoveButton extends Component<RemoveButtonProps> {
         type="button"
         data-bs-toggle="tooltip"
         title={this.props.minItems >= this.props.currentLength ? "Min number of items reached" : "Remove item"}
+        aria-label={this.props.minItems >= this.props.currentLength ? "Min number of items reached" : "Remove item"}
         onClick={() => this.props.handleRemoveItem()}
         disabled={this.props.minItems >= this.props.currentLength}
       >
