@@ -19,7 +19,7 @@ Feature: Create fake repositories for each fake child channel
     And I enter "fake-rpm-repo" as "label"
     And I enter "http://localhost/pub/TestRepoRpmUpdates/" as "url"
     And I click on "Create Repository"
-    Then I should see a "Repository created successfully" text
+    Then I wait until I see "Repository created successfully" text
     And I should see "metadataSigned" as checked
 
   Scenario: Disable metadata check for the fake RPM repository
@@ -27,7 +27,7 @@ Feature: Create fake repositories for each fake child channel
     And I follow "fake-rpm-repo"
     And I uncheck "metadataSigned"
     And I click on "Update Repository"
-    Then I should see a "Repository updated successfully" text
+    Then I wait until I see "Repository updated successfully" text
     And I should see "metadataSigned" as unchecked
 
 @rhlike_minion
@@ -37,7 +37,7 @@ Feature: Create fake repositories for each fake child channel
     And I enter "fake-appstream-repo" as "label"
     And I enter "http://localhost/pub/TestRepoAppStream/" as "url"
     And I click on "Create Repository"
-    Then I should see a "Repository created successfully" text
+    Then I wait until I see "Repository created successfully" text
     And I should see "metadataSigned" as checked
 
 @rhlike_minion
@@ -46,7 +46,7 @@ Feature: Create fake repositories for each fake child channel
     And I follow "fake-appstream-repo"
     And I uncheck "metadataSigned"
     And I click on "Update Repository"
-    Then I should see a "Repository updated successfully" text
+    Then I wait until I see "Repository updated successfully" text
     And I should see "metadataSigned" as unchecked
 
 @sle_minion
@@ -55,22 +55,22 @@ Feature: Create fake repositories for each fake child channel
     And I follow "Fake-RPM-SUSE-Channel"
     And I enter "file:///etc/pki/rpm-gpg/uyuni-tools-gpg-pubkey-0d20833e.key" as "GPG key URL"
     And I click on "Update Channel"
-    Then I should see a "Channel Fake-RPM-SUSE-Channel updated" text
+    Then I wait until I see "Channel Fake-RPM-SUSE-Channel updated" text
     When I follow "Repositories" in the content area
     And I select the "fake-rpm-repo" repo
     And I click on "Save Repositories"
-    Then I should see a "Fake-RPM-SUSE-Channel repository information was successfully updated" text
+    Then I wait until I see "Fake-RPM-SUSE-Channel repository information was successfully updated" text
 
   Scenario: Add the fake RPM repository to the Test child channel
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Test-Child-Channel-x86_64"
     And I enter "file:///etc/pki/rpm-gpg/uyuni-tools-gpg-pubkey-0d20833e.key" as "GPG key URL"
     And I click on "Update Channel"
-    Then I should see a "Channel Test-Child-Channel-x86_64 updated" text
+    Then I wait until I see "Channel Test-Child-Channel-x86_64 updated" text
     When I follow "Repositories" in the content area
     And I select the "fake-rpm-repo" repo
     And I click on "Save Repositories"
-    Then I should see a "Test-Child-Channel-x86_64 repository information was successfully updated" text
+    Then I wait until I see "Test-Child-Channel-x86_64 repository information was successfully updated" text
 
 @rhlike_minion
   Scenario: Add the fake RPM repository to the RedHat-like base channel
@@ -78,11 +78,11 @@ Feature: Create fake repositories for each fake child channel
     And I follow "Fake-Base-Channel-RH-like"
     And I enter "file:///etc/pki/rpm-gpg/uyuni-tools-gpg-pubkey-0d20833e.key" as "GPG key URL"
     And I click on "Update Channel"
-    Then I should see a "Channel Fake-Base-Channel-RH-like updated" text
+    Then I wait until I see "Channel Fake-Base-Channel-RH-like updated" text
     When I follow "Repositories" in the content area
     And I select the "fake-rpm-repo" repo
     And I click on "Save Repositories"
-    Then I should see a "Fake-Base-Channel-RH-like repository information was successfully updated" text
+    Then I wait until I see "Fake-Base-Channel-RH-like repository information was successfully updated" text
 
 @rhlike_minion
   Scenario: Add the fake AppStream repository to the AppStream base channel
@@ -90,11 +90,11 @@ Feature: Create fake repositories for each fake child channel
     And I follow "Fake-Base-Channel-AppStream"
     And I enter "file:///etc/pki/rpm-gpg/uyuni-tools-gpg-pubkey-0d20833e.key" as "GPG key URL"
     And I click on "Update Channel"
-    Then I should see a "Channel Fake-Base-Channel-AppStream updated" text
+    Then I wait until I see "Channel Fake-Base-Channel-AppStream updated" text
     When I follow "Repositories" in the content area
     And I select the "fake-appstream-repo" repo
     And I click on "Save Repositories"
-    Then I should see a "Fake-Base-Channel-AppStream repository information was successfully updated" text
+    Then I wait until I see "Fake-Base-Channel-AppStream repository information was successfully updated" text
 
   Scenario: Create a fake repository for i586
     When I follow the left menu "Software > Manage > Repositories"
@@ -103,18 +103,18 @@ Feature: Create fake repositories for each fake child channel
     And I enter "file:///srv/www/htdocs/pub/TestRepoRpmUpdates/" as "url"
     And I uncheck "metadataSigned"
     And I click on "Create Repository"
-    Then I should see a "Repository created successfully" text
+    Then I wait until I see "Repository created successfully" text
 
   Scenario: Add the repository to the i586 channel
     When I follow the left menu "Software > Manage > Channels"
     And I follow "Fake-Child-Channel-i586"
     And I enter "file:///etc/pki/rpm-gpg/uyuni-tools-gpg-pubkey-0d20833e.key" as "GPG key URL"
     And I click on "Update Channel"
-    Then I should see a "Channel Fake-Child-Channel-i586 updated" text
+    Then I wait until I see "Channel Fake-Child-Channel-i586 updated" text
     When I follow "Repositories" in the content area
     And I select the "fake-i586-repo" repo
     And I click on "Save Repositories"
-    Then I should see a "Fake-Child-Channel-i586 repository information was successfully updated" text
+    Then I wait until I see "Fake-Child-Channel-i586 repository information was successfully updated" text
 
 @sle_minion
   Scenario: Add the repository to the SUSE-like child channel
@@ -123,7 +123,7 @@ Feature: Create fake repositories for each fake child channel
     And I follow "Repositories" in the content area
     And I select the "fake-rpm-repo" repo
     And I click on "Save Repositories"
-    Then I should see a "Fake-Child-Channel-SUSE-like repository information was successfully updated" text
+    Then I wait until I see "Fake-Child-Channel-SUSE-like repository information was successfully updated" text
 
 @deblike_minion
   Scenario: Create a fake repository for Debian-like
@@ -133,7 +133,7 @@ Feature: Create fake repositories for each fake child channel
     And I select "deb" from "contenttype"
     And I enter "http://localhost/pub/TestRepoDebUpdates/" as "url"
     And I click on "Create Repository"
-    Then I should see a "Repository created successfully" text
+    Then I wait until I see "Repository created successfully" text
 
 @deblike_minion
   Scenario: Add the repository to the Debian-like base channel
@@ -142,7 +142,7 @@ Feature: Create fake repositories for each fake child channel
     And I follow "Repositories" in the content area
     And I select the "fake-debian-repo" repo
     And I click on "Save Repositories"
-    Then I should see a "Fake-Base-Channel-Debian-like repository information was successfully updated" text
+    Then I wait until I see "Fake-Base-Channel-Debian-like repository information was successfully updated" text
 
 @pxeboot_minion
 @uyuni
@@ -152,8 +152,8 @@ Feature: Create fake repositories for each fake child channel
     And I follow "Fake-RPM-Terminal-Channel"
     And I enter "file:///etc/pki/rpm-gpg/uyuni-tools-gpg-pubkey-0d20833e.key" as "GPG key URL"
     And I click on "Update Channel"
-    Then I should see a "Channel Fake-RPM-Terminal-Channel updated" text
+    Then I wait until I see "Channel Fake-RPM-Terminal-Channel updated" text
     When I follow "Repositories" in the content area
     And I select the "fake-rpm-repo" repo
     And I click on "Save Repositories"
-    Then I should see a "Fake-RPM-Terminal-Channel repository information was successfully updated" text
+    Then I wait until I see "Fake-RPM-Terminal-Channel repository information was successfully updated" text

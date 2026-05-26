@@ -38,7 +38,7 @@ Feature: Create fake channels
     And I enter "Base channel for testing" as "Channel Summary"
     And I enter "No more description for base channel." as "Channel Description"
     And I click on "Create Channel"
-    Then I should see a "Channel Fake-Base-Channel-SUSE-like created." text
+    Then I wait until I see "Channel Fake-Base-Channel-SUSE-like created." text
 
   Scenario: Add a fake child channel into the fake base channel x86_64
     When I follow the left menu "Software > Manage > Channels"
@@ -50,7 +50,7 @@ Feature: Create fake channels
     And I enter "Child channel for testing" as "Channel Summary"
     And I enter "Description for Fake Child Channel SUSE like." as "Channel Description"
     And I click on "Create Channel"
-    Then I should see a "Channel Fake-Child-Channel-SUSE-like created." text
+    Then I wait until I see "Channel Fake-Child-Channel-SUSE-like created." text
 
 @sle_minion
   Scenario: Add a SUSE fake child channel to the SUSE Product base channel
@@ -63,7 +63,7 @@ Feature: Create fake channels
     And I enter "Fake-RPM-SUSE-Channel for testing" as "Channel Summary"
     And I enter "Description for Fake-RPM-SUSE-Channel Child Channel." as "Channel Description"
     And I click on "Create Channel"
-    Then I should see a "Channel Fake-RPM-SUSE-Channel created." text
+    Then I wait until I see "Channel Fake-RPM-SUSE-Channel created." text
 
   Scenario: Add a fake base channel for i586
     When I follow the left menu "Software > Manage > Channels"
@@ -75,7 +75,7 @@ Feature: Create fake channels
     And I enter "Fake-Base-Channel-i586 channel for testing" as "Channel Summary"
     And I enter "No more description for base channel." as "Channel Description"
     And I click on "Create Channel"
-    Then I should see a "Channel Fake-Base-Channel-i586 created." text
+    Then I wait until I see "Channel Fake-Base-Channel-i586 created." text
 
   Scenario: Add a fake child channel into the fake base channel i586
     When I follow the left menu "Software > Manage > Channels"
@@ -87,7 +87,7 @@ Feature: Create fake channels
     And I enter "Fake Child Channel i586 for testing" as "Channel Summary"
     And I enter "Description for Fake Child Channel i586." as "Channel Description"
     And I click on "Create Channel"
-    Then I should see a "Channel Fake-Child-Channel-i586 created." text
+    Then I wait until I see "Channel Fake-Child-Channel-i586 created" text
 
   Scenario: Add a test base channel for x86_64
     When I follow the left menu "Software > Manage > Channels"
@@ -99,7 +99,7 @@ Feature: Create fake channels
     And I enter "Test-Base-Channel-x86_64 channel for testing" as "Channel Summary"
     And I enter "No more description for base channel." as "Channel Description"
     And I click on "Create Channel"
-    Then I should see a "Channel Test-Base-Channel-x86_64 created." text
+    Then I wait until I see "Channel Test-Base-Channel-x86_64 created." text
 
   Scenario: Add a child channel into the test base channel x86_64
     When I follow the left menu "Software > Manage > Channels"
@@ -111,7 +111,7 @@ Feature: Create fake channels
     And I enter "Test-Child-Channel-x86_64 channel for testing" as "Channel Summary"
     And I enter "Description for Test-Child-Channel-x86_64 Channel." as "Channel Description"
     And I click on "Create Channel"
-    Then I should see a "Channel Test-Child-Channel-x86_64 created." text
+    Then I wait until I see "Channel Test-Child-Channel-x86_64 created." text
 
 @pxeboot_minion
 @uyuni
@@ -126,7 +126,7 @@ Feature: Create fake channels
     And I enter "Fake-RPM-Terminal-Channel for testing" as "Channel Summary"
     And I enter "Description for Fake-RPM-Terminal-Channel Child Channel." as "Channel Description"
     And I click on "Create Channel"
-    Then I should see a "Channel Fake-RPM-Terminal-Channel created." text
+    Then I wait until I see "Channel Fake-RPM-Terminal-Channel created." text
 
 @deblike_minion
   Scenario: Add Debian-like AMD64 base channel
@@ -144,7 +144,7 @@ Feature: Create fake channels
     And I uncheck "gpg_check"
     # End of WORKAROUND
     And I click on "Create Channel"
-    Then I should see a "Channel Fake-Base-Channel-Debian-like created." text
+    Then I wait until I see "Channel Fake-Base-Channel-Debian-like created." text
 
 @rhlike_minion
   Scenario: Add a RedHat-like base channel
@@ -157,7 +157,7 @@ Feature: Create fake channels
     And I enter "Fake-Base-Channel-RH-like for testing" as "Channel Summary"
     And I enter "No more description for base channel." as "Channel Description"
     And I click on "Create Channel"
-    Then I should see a "Channel Fake-Base-Channel-RH-like created." text
+    Then I wait until I see "Channel Fake-Base-Channel-RH-like created." text
 
 @rhlike_minion
   Scenario: Add a fake AppStream base channel
@@ -170,4 +170,4 @@ Feature: Create fake channels
     And I enter "Fake-Base-Channel-AppStream for testing" as "Channel Summary"
     And I enter "Description for Fake-Base-Channel-AppStream." as "Channel Description"
     And I click on "Create Channel"
-    Then I should see a "Channel Fake-Base-Channel-AppStream created." text
+    Then I wait until I see "Channel Fake-Base-Channel-AppStream created." text
