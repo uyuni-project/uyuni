@@ -212,7 +212,6 @@ export function generateFormulaComponentForId(
         setSectionsExpanded={formulaForm.props.setSectionsExpanded}
         isVisibleByCriteria={() => isVisibleByCriteria(element, formulaForm.props.searchCriteria)}
         criteria={formulaForm.props.searchCriteria}
-        level={level}
       >
         {generateChildrenFormItems(element, value, formulaForm, id, isDisabled, level)}
       </Group>
@@ -232,7 +231,6 @@ export function generateFormulaComponentForId(
         setSectionsExpanded={formulaForm.props.setSectionsExpanded}
         isVisibleByCriteria={() => isVisibleByCriteria(element, formulaForm.props.searchCriteria)}
         criteria={formulaForm.props.searchCriteria}
-        level={level}
       />
     );
   } else if (element.$type === "select")
