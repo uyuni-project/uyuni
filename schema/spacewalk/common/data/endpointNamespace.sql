@@ -9061,6 +9061,11 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.system.list_systems_filtered' AND ns.access_mode = 'R'
+    AND ep.endpoint = '/manager/api/system/listSystemsFiltered' AND ep.http_method = 'GET'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'api.system.list_systems_with_entitlement' AND ns.access_mode = 'R'
     AND ep.endpoint = '/manager/api/system/listSystemsWithEntitlement' AND ep.http_method = 'GET'
     ON CONFLICT DO NOTHING;
