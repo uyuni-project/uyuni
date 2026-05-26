@@ -927,6 +927,13 @@ end
 # @param timeout [Integer] The maximum time to wait for the action to complete, in seconds. Defaults to `DEFAULT_TIMEOUT`.
 def wait_action_complete(actionid, timeout: DEFAULT_TIMEOUT)
   repeat_until_timeout(timeout: timeout, message: 'Action was not found among completed actions') do
+    failed = $api_test.schedule.list_failed_actions
+    if failed.any? { |a| a['id'] == actionid }
+      failed_systems = $api_test.schedule.list_failed_systems(actionid)
+      details = failed_systems.map { |s| "#{s['server_name']}: #{s['message']}" }.join('; ')
+      raise "Action #{actionid} failed: #{details}"
+    end
+
     list = $api_test.schedule.list_completed_actions
     break if list.any? { |a| a['id'] == actionid }
 
@@ -964,13 +971,15 @@ def api_unlock
   end
 end
 
-# Function to get the highest event ID (latest event)
+# Function to get the most recent events for a system
 #
-# @param host String The hostname of the requested system
-def get_last_event(host)
+# @param host [String] The hostname of the requested system
+# @param count [Integer] The number of recent events to return (default: 1)
+# @return [Array<Hash>] The most recent events, newest first
+def get_last_events(host, count = 1)
   node = get_target(host)
   system_id = get_system_id(node)
-  $api_test.system.get_event_history(system_id, 0, 1)[0]
+  $api_test.system.get_event_history(system_id, 0, count)
 end
 
 # Function to trigger the upgrade command
