@@ -2739,6 +2739,9 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.system.list_systems', 'R', 'Returns a list of all servers visible to the user.')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.system.list_systems_filtered', 'R', 'List systems using a filter.')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.system.list_systems_with_entitlement', 'R', 'Lists the systems that have the given entitlement')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
