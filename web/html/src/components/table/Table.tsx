@@ -223,7 +223,7 @@ export const Table = forwardRef<TableRef, TableProps>((props, ref) => {
                 onClick={() => expanded.toggle(props.identifier(item))}
                 cell={() => {
                   const hasChildren =
-                    item && typeof item === "object" && "children" in item && item.children.length > 0;
+                    !!item && typeof item === "object" && "children" in item && item.children.length > 0;
                   const isExpanded = expanded.has(props.identifier(item));
                   return (
                     <i
