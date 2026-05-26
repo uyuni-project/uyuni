@@ -410,12 +410,6 @@ public class SystemOverview extends BaseTupleDto implements Serializable {
         return lastCheckinDaysAgo;
     }
     /**
-     * @param lastCheckinDaysAgoIn The lastCheckinDaysAgo to set.
-     */
-    public void setLastCheckinDaysAgo(Long lastCheckinDaysAgoIn) {
-        this.lastCheckinDaysAgo = lastCheckinDaysAgoIn;
-    }
-    /**
      * @return Returns the locked.
      */
     public Long getLocked() {
@@ -594,35 +588,6 @@ public class SystemOverview extends BaseTupleDto implements Serializable {
     public void setStatus(List statusIn) {
         this.status = statusIn;
     }
-    /**
-     * Returns the most applicable status with its action id
-     * Completed supercedes Picked Up which supercedes Queued which supercedes Failed
-     * @return An array with the first index as status and second index as actionId
-     */
-    public Object[] getCurrentStatusAndActionId() {
-        Object[] results = new Object[2];
-        if (status == null) {
-            results[0] = null;
-            results[1] = null;
-        }
-        else if (status.contains("Completed")) {
-            results[0] = status.get(status.indexOf("Completed"));
-            results[1] = actionId.get(status.indexOf("Completed"));
-        }
-        else if (status.contains("Picked Up")) {
-            results[0] = status.get(status.indexOf("Picked Up"));
-            results[1] = actionId.get(status.indexOf("Picked Up"));
-        }
-        else if (status.contains("Queued")) {
-            results[0] = status.get(status.indexOf("Queued"));
-            results[1] = actionId.get(status.indexOf("Queued"));
-        }
-        else {
-            results[0] = status.get(status.indexOf("Failed"));
-            results[1] = actionId.get(status.indexOf("Failed"));
-        }
-        return results;
-    }
 
     /**
      * This is now for display only - the data goes into entitlement
@@ -796,31 +761,6 @@ public class SystemOverview extends BaseTupleDto implements Serializable {
     public String toString() {
         return new ToStringBuilder(this).append("id", id).append("serverName",
                 serverName).toString();
-    }
-
-    /**
-     * Creates a string to represent how long the system has been inactive.
-     * The unit it is in depends on how many hours is has been inactive
-     */
-    public void setInactivityString() {
-
-        LocalizationService ls = LocalizationService.getInstance();
-        StringBuilder buffer = new StringBuilder();
-
-        if (lastCheckinDaysAgo.compareTo(1L) < 0) {
-            buffer.append(lastCheckinDaysAgo * 24L);
-            ls.getMessage("filter-form.jspf.hours");
-        }
-        else if (lastCheckinDaysAgo.compareTo(7L) < 0) {
-            buffer.append(lastCheckinDaysAgo.longValue());
-            ls.getMessage("filter-form.jspf.days");
-        }
-        else if (lastCheckinDaysAgo.compareTo(7L) >= 0) {
-            buffer.append(lastCheckinDaysAgo / 7);
-            ls.getMessage("filter-form.jspf.weeks");
-        }
-
-        lastCheckinString = buffer.toString();
     }
 
     /**

@@ -32,26 +32,12 @@ public class SystemListHelper {
 
     /**
      * Sets up the HTML tags (image and link) by computing the status from the
-     * SystemOverview DTO. This method chains to {@link #setSystemStatusDisplay(User,
-     * SystemOverview, boolean)} and defaults to display links.
+     * SystemOverview DTO.
      *
      * @param user used in entitlement calculation
      * @param next row used to populate the HTML tags
      */
     public static void setSystemStatusDisplay(User user, SystemOverview next) {
-        setSystemStatusDisplay(user, next, true);
-    }
-
-    /**
-     * Sets up the HTML tags (image and potentially link) by computing the status from the
-     * SystemOverview DTO.
-     *
-     * @param user      used to calc some entitlement info
-     * @param next      row used to populate html tags
-     * @param makeLinks indicates if the icons should be rendered as links to other pages
-     */
-    public static void setSystemStatusDisplay(User user, SystemOverview next,
-                                              boolean makeLinks) {
         HtmlTag url = new HtmlTag("a");
         IconTag i = new IconTag();
 
@@ -118,13 +104,8 @@ public class SystemListHelper {
 
         String statusDisplay;
 
-        if (makeLinks) {
             url.addBody(i.render());
             statusDisplay = url.render();
-        }
-        else {
-            statusDisplay = i.render();
-        }
 
         if (next.getLocked().intValue() == 1) {
             IconTag lockedIcon = new IconTag("system-locked", "systemlist.jsp.locked");
@@ -132,7 +113,6 @@ public class SystemListHelper {
         }
 
         next.setStatusDisplay(statusDisplay);
-
     }
 
     /**

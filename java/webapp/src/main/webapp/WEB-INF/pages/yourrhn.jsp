@@ -13,10 +13,6 @@
   <bean:message key="yourrhn.jsp.toolbar"/>
 </rhn:toolbar>
 
-<rhn:require acl="is(yourrhn.debug.enabled);">
-<a href="/rhn/YourRhnClips.do"> YourRhn Clips Debug Link</a>
-</rhn:require>
-
 <c:choose>
   <c:when test="${requestScope.anyListsSelected == 'true'}">
     <div class="row">

@@ -4677,16 +4677,6 @@
                  path="/WEB-INF/pages/admin/catalina.jsp"/>
     </action>
 
-    <action path="/YourRhnClips"
-        scope="request"
-        input="/WEB-INF/pages/common/fragments/yourrhn/yourrhnclips.jsp"
-        type="com.redhat.rhn.frontend.action.renderers.YourRhnClipsRenderer"
-        className="com.redhat.rhn.frontend.struts.RhnActionMapping">
-        <set-property property="acls" value="is(yourrhn.debug.enabled);"/>
-        <forward name="default"
-                 path="/WEB-INF/pages/common/fragments/yourrhn/yourrhnclips.jsp"/>
-    </action>
-
 
     <action path="/admin/multiorg/Organizations"
         scope="request"
