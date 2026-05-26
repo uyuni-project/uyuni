@@ -114,6 +114,19 @@ ingress:
     saltRequest: "uyuni-request"
 ```
 
+### DNS configuration
+
+The `dnsConfig` value is a passthrough to the pod's [Kubernetes `PodDNSConfig`](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/#pod-dns-config). It is unset by default so the pod inherits the cluster's normal DNS behavior.
+
+If external FQDN lookups from the proxy hang for ~10s (the default `urlopen` timeout), the cluster's default `ndots:5` is likely expanding the name through several cluster search domains before falling back to the bare lookup. Override with:
+
+```yaml
+dnsConfig:
+  options:
+    - name: ndots
+      value: "1"
+```
+
 ### Configuration files
 
 The chart requires the `global.config`, `global.httpd` and `global.ssh` values to contain the YAML produced by the server. Generate them from the **Systems > Proxy Configuration** page on the Uyuni/MLM server (or via the `proxy.containerConfig` API). The server returns a `config.tar.gz` containing `config.yaml`, `httpd.yaml` and `ssh.yaml`. Extract it and pass the files to Helm with `--set-file`.

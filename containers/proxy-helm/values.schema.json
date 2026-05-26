@@ -29,6 +29,25 @@
       "$ref": "#/definitions/nodeSelectorConfig",
       "description": "Default node placement rules for all pods"
     },
+    "dnsConfig": {
+      "type": ["object", "null"],
+      "description": "Pod DNS configuration. See Kubernetes PodDNSConfig.",
+      "properties": {
+        "nameservers": { "type": ["array", "null"], "items": { "type": "string" } },
+        "searches":    { "type": ["array", "null"], "items": { "type": "string" } },
+        "options": {
+          "type": ["array", "null"],
+          "items": {
+            "type": "object",
+            "properties": {
+              "name":  { "type": "string" },
+              "value": { "type": "string" }
+            },
+            "required": ["name"]
+          }
+        }
+      }
+    },
     "global": {
       "type": "object",
       "required": ["config", "httpd", "ssh"],

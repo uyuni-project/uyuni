@@ -32,6 +32,16 @@ global:
   # This value is required
   ssh:
 
+# Pod DNS configuration (Kubernetes PodDNSConfig). Omitted by default
+# so the pod uses the cluster's normal DNS behavior.
+# Tip: if external FQDN lookups from the proxy time out (10s urlopen),
+# the cluster's default ndots:5 is likely the cause — override with:
+#   dnsConfig:
+#     options:
+#       - name: ndots
+#         value: "1"
+dnsConfig:
+
 ingress:
   # ingress.type defines the ingress that is used in the cluster.
   # It can be either "nginx", "traefik" or any other value.
