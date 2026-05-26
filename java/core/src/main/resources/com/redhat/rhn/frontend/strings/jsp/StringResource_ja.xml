@@ -29647,11 +29647,11 @@ given channel.</source>
       </trans-unit>
       <trans-unit approved="yes" id="channel.jsp.sync.status.ready" xml:space="preserve">
         <source> Completed </source>
-        <target state="final"> 完了 </target>
+        <target state="final"> 完了しました </target>
       </trans-unit>
       <trans-unit approved="yes" id="channel.jsp.sync.status.syncing" xml:space="preserve">
         <source> In Progress </source>
-        <target state="final"> 進行中 </target>
+        <target state="final"> 実行中 </target>
       </trans-unit>
       <trans-unit approved="yes" id="channel.jsp.sync.status.created" xml:space="preserve">
         <source> New Created </source>
@@ -29669,12 +29669,12 @@ given channel.</source>
         <source>CA Certificates Update</source>
         <target state="final">CA証明書の更新</target>
       </trans-unit>
-      <trans-unit id="system.event.actionId" xml:space="preserve">
+      <trans-unit id="system.event.actionId" xml:space="preserve" approved="yes">
         <source>Action ID</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">アクションID</target>
       </trans-unit>
       <trans-unit id="pkg.lock.message.lockerror" xml:space="preserve" approved="yes">
         <source>Failed to lock selected packages. Can't lock multiple versions of the same package.</source>
@@ -29683,34 +29683,34 @@ given channel.</source>
         </context-group>
         <target state="final">選択したパッケージをロックできませんでした。同じパッケージの複数のバージョンをロックできません。</target>
       </trans-unit>
-      <trans-unit id="preferences.disk-check-warning.name" xml:space="preserve">
+      <trans-unit id="preferences.disk-check-warning.name" xml:space="preserve" approved="yes">
         <source>Disk Check Warning</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">ディスクチェックの警告</target>
       </trans-unit>
-      <trans-unit id="preferences.disk-check-warning.description" xml:space="preserve">
+      <trans-unit id="preferences.disk-check-warning.description" xml:space="preserve" approved="yes">
         <source> Show disk space warning when running low.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-        <target state="new"/>
+        <target state="final"> ディスクの空き容量が少なくなったときに警告を表示します。</target>
       </trans-unit>
-      <trans-unit id="bunch.jsp.description.diskcheck-task-bunch" xml:space="preserve">
+      <trans-unit id="bunch.jsp.description.diskcheck-task-bunch" xml:space="preserve" approved="yes">
         <source>Schedule a disk check</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">ディスクチェックのスケジュール</target>
       </trans-unit>
-      <trans-unit id="task.status.clm-channel-diff" xml:space="preserve">
+      <trans-unit id="task.status.clm-channel-diff" xml:space="preserve" approved="yes">
         <source>CLM Channel Comparison</source>
-        <target state="new"/>
+        <target state="final">CLMチャンネルの比較</target>
       </trans-unit>
-      <trans-unit id="task.status.diskcheck-task" xml:space="preserve">
+      <trans-unit id="task.status.diskcheck-task" xml:space="preserve" approved="yes">
         <source>Disk Check Actions</source>
-        <target state="new"/>
+        <target state="final">ディスクチェックアクション</target>
       </trans-unit>
       <trans-unit id="preferences.jsp.betafeatures" xml:space="preserve">
         <source> Enable beta features</source>
@@ -29740,54 +29740,54 @@ given channel.</source>
         </context-group>
         <target state="new"/>
       </trans-unit>
-      <trans-unit id="spmigration.sles16.preflight.title" xml:space="preserve">
+      <trans-unit id="spmigration.sles16.preflight.title" xml:space="preserve" approved="yes">
         <source>Before Migrating to SLES 16 — Please ensure</source>
-        <target state="new"/>
+        <target state="final">SLES 16への移行前に — 以下の点をご確認ください</target>
       </trans-unit>
-      <trans-unit id="spmigration.sles16.preflight.patch.title" xml:space="preserve">
+      <trans-unit id="spmigration.sles16.preflight.patch.title" xml:space="preserve" approved="yes">
         <source>System is fully up to date</source>
-        <target state="new"/>
+        <target state="final">システムは完全に最新の状態です</target>
       </trans-unit>
-      <trans-unit id="spmigration.sles16.preflight.diskspace.title" xml:space="preserve">
+      <trans-unit id="spmigration.sles16.preflight.diskspace.title" xml:space="preserve" approved="yes">
         <source>Sufficient disk space is available</source>
-        <target state="new"/>
+        <target state="final">十分なディスク容量が利用可能です</target>
       </trans-unit>
-      <trans-unit id="spmigration.sles16.preflight.ssh.title" xml:space="preserve">
+      <trans-unit id="spmigration.sles16.preflight.ssh.title" xml:space="preserve" approved="yes">
         <source>Ensure SSH key-based access is available for at least one user. If root login is required, create /etc/ssh/sshd_config.d/50-permit-root-login.conf with: PermitRootLogin yes</source>
-        <target state="new"/>
+        <target state="final">少なくとも1人のユーザーに対してSSHキーベースのアクセスが利用できるようにしてください。rootログインが必要な場合は、/etc/ssh/sshd_config.d/50-permit-root-login.conf を作成し、PermitRootLogin yesを記述してください</target>
       </trans-unit>
-      <trans-unit id="spmigration.sles16.preflight.kvmguests.title" xml:space="preserve">
+      <trans-unit id="spmigration.sles16.preflight.kvmguests.title" xml:space="preserve" approved="yes">
         <source>KVM guests are shut down (if applicable)</source>
-        <target state="new"/>
+        <target state="final">KVMゲストがシャットダウンされます(該当する場合)</target>
       </trans-unit>
-      <trans-unit id="spmigration.sles16.preflight.network.title" xml:space="preserve">
+      <trans-unit id="spmigration.sles16.preflight.network.title" xml:space="preserve" approved="yes">
         <source>Network configuration will be migrated from wicked to NetworkManager</source>
-        <target state="new"/>
+        <target state="final">ネットワーク設定はwickedからNetworkManagerに移行されます</target>
       </trans-unit>
-      <trans-unit id="spmigration.sles16.preflight.selinux.title" xml:space="preserve">
+      <trans-unit id="spmigration.sles16.preflight.selinux.title" xml:space="preserve" approved="yes">
         <source>AppArmor profiles will be migrated to SELinux</source>
-        <target state="new"/>
+        <target state="final">AppArmorプロファイルはSELinuxに移行されます</target>
       </trans-unit>
-      <trans-unit id="usercreate.prefix" xml:space="preserve">
+      <trans-unit id="usercreate.prefix" xml:space="preserve" approved="yes">
         <source>Prefix</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">プレフィックス</target>
       </trans-unit>
-      <trans-unit id="usercreate.firstName" xml:space="preserve">
+      <trans-unit id="usercreate.firstName" xml:space="preserve" approved="yes">
         <source>First Name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">名</target>
       </trans-unit>
-      <trans-unit id="usercreate.lastName" xml:space="preserve">
+      <trans-unit id="usercreate.lastName" xml:space="preserve" approved="yes">
         <source>Last Name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">姓</target>
       </trans-unit>
       <trans-unit id="channel.jsp.repoautosync" xml:space="preserve">
         <source>Automatic Repository Synchronization</source>
