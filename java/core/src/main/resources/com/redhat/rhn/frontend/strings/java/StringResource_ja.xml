@@ -12103,58 +12103,60 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>PXE Event Failed</source>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="ARMHF Debian" xml:space="preserve">
+      <trans-unit id="ARMHF Debian" xml:space="preserve">
         <source>ARMHF Debian</source>
         <target>ARMHF Debian</target>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="diskcheckwarning" xml:space="preserve">
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="diskcheckwarning" xml:space="preserve" approved="yes">
         <source>Disk Check</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.diskcheck.summary" xml:space="preserve">
+        <target state="final">ディスクチェック</target>
+      </trans-unit>
+      <trans-unit id="notification.diskcheck.summary" xml:space="preserve" approved="yes">
         <source>You are running out of space on your @@PRODUCT_NAME@@ {0}. This is {1}</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.diskcheck.details" xml:space="preserve">
+        <target state="final">@@PRODUCT_NAME@@ {0} の空き容量が不足しています。これは {1} です</target>
+      </trans-unit>
+      <trans-unit id="notification.diskcheck.details" xml:space="preserve" approved="yes">
         <source>You are running out of space on your @@PRODUCT_NAME@@ {0}. This is {1}. If you run out of disk space, @@PRODUCT_NAME@@ will stop running, and this could lead to a loss of data. @@PRODUCT_NAME@@ will shutdown automatically.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="final">@@PRODUCT_NAME@@ {0} の空き容量が不足しています。これは {1} です。ディスク容量が不足すると、@@PRODUCT_NAME@@ は動作を停止し、データの損失につながる可能性があります。@@PRODUCT_NAME@@ は自動的にシャットダウンします。</target>
+      </trans-unit>
       <trans-unit id="SCAP Policies" xml:space="preserve">
         <source>SCAP Policies</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="SCAP Content" xml:space="preserve">
         <source>SCAP Content</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="Tailoring Files" xml:space="preserve">
         <source>Tailoring Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="distupgrade.sles16.migration.success" xml:space="preserve">
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="distupgrade.sles16.migration.success" xml:space="preserve" approved="yes">
         <source>SLES 16 migration completed successfully.{0}</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="distupgrade.sles16.migration.success.post_steps" xml:space="preserve">
+        <target state="final">SLES 16への移行が正常に完了しました。{0}</target>
+      </trans-unit>
+      <trans-unit id="distupgrade.sles16.migration.success.post_steps" xml:space="preserve" approved="yes">
         <source>Recommended post-migration steps:
 - Check for orphaned/unneeded packages: zypper packages --orphaned --unneeded
 - Check for updated config files: find /etc/ -name '*.rpmnew' -o -name '*.rpmsave'</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="distupgrade.sles16.migration.failed" xml:space="preserve">
+        <target state="final">推奨される移行後の手順:
+- 孤立したパッケージや不要なパッケージを確認する: zypper packages --orphaned --unneeded
+- 更新された設定ファイルを確認する: find /etc/ -name '*.rpmnew' -o -name '*.rpmsave'</target>
+      </trans-unit>
+      <trans-unit id="distupgrade.sles16.migration.failed" xml:space="preserve" approved="yes">
         <source>SLES 16 migration failed or result not found.{0}</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">SLES 16への移行が失敗したか、結果が見つかりませんでした。{0}</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>
