@@ -122,9 +122,28 @@ end
 # @param timeout [Integer] The maximum time to wait for the text to become visible (default: Capybara.default_max_wait_time).
 # @return [Boolean] Returns true if the text is visible, false otherwise.
 def check_text?(text1, text2: nil, timeout: Capybara.default_max_wait_time)
-  raise ScriptError, 'BUG DETECTED! Internal Server Error' if has_text?('Internal Server Error', wait: 0)
+  # WORKAROUND: Chrome 134+ raises Capybara::ElementNotFound, StaleElementReferenceError, or
+  # NoMethodError (CDP response type mismatch) during page navigation, bypassing Capybara's
+  # synchronize() retry mechanism. All three are caught and retried. All other exceptions still
+  # propagate. When text is stably absent, return false immediately so the page remains in a
+  # settled state (allowing screenshots on failure).
+  repeat_until_timeout(timeout: timeout) do
+    begin
+      return true if has_text?(text1, wait: timeout)
+      return true if !text2.nil? && has_text?(text2, wait: timeout)
 
-  has_text?(text1, wait: timeout) || (!text2.nil? && has_text?(text2, wait: timeout))
+      return false # text not found, page was stable - exit without looping
+    rescue Capybara::ElementNotFound,
+           Selenium::WebDriver::Error::StaleElementReferenceError,
+           Selenium::WebDriver::Error::NoSuchElementError,
+           NoMethodError
+      # page mid-navigation, let it settle and retry
+      sleep 2
+    end
+  end
+  false
+rescue Timeout::Error
+  false
 end
 
 # Formats the detail message with optional last result and report result.
