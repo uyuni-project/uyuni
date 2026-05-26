@@ -28,9 +28,21 @@ kubectl -n <namespace> create configmap uyuni-ca \
 
 #### Pre-existing manually-created objects
 
-If `proxy-cert` or `uyuni-ca` already exist in the namespace (e.g. created by hand on a previous install), the chart leaves them alone — it will not render over them, and `helm install`/`upgrade` will not fail. The proxy keeps using the values already present.
+If `proxy-cert` or `uyuni-ca` already exist in the namespace (e.g. created by hand on a previous install), the chart leaves them alone by default — it will not render over them, and `helm install`/`upgrade` will not fail. The proxy keeps using the values already present.
 
-To let helm take over and manage them from the tarball values, use `helm install --take-ownership` (helm 3.14+) once to adopt them. After adoption, the chart treats them as helm-managed: value changes are applied on upgrade, and they are removed on `helm uninstall` like any other chart resource.
+To let helm take over and manage them from the tarball values, the chart has to render the resources so helm has something to adopt. Set `cert.takeOwnership=true` and pass `helm install --take-ownership` (helm 3.14+) once:
+
+```bash
+helm upgrade --install uyuni-proxy <chart> \
+  --namespace <namespace> \
+  --take-ownership \
+  --set cert.takeOwnership=true \
+  --set-file global.config=config.yaml \
+  --set-file global.httpd=httpd.yaml \
+  --set-file global.ssh=ssh.yaml
+```
+
+After adoption the chart treats them as helm-managed: value changes are applied on upgrade, and they are removed on `helm uninstall` like any other chart resource. `cert.takeOwnership` can be left at `true` or dropped back to `false` on subsequent upgrades — once the objects carry the helm `managed-by` label the default render condition already covers them.
 
 ### Persistent Volumes
 

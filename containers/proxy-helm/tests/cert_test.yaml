@@ -124,6 +124,77 @@ tests:
             path: metadata.name
             value: uyuni-ca
 
+  - it: should render proxy-cert when it exists outside helm and takeOwnership is true
+    set:
+      cert.takeOwnership: true
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+      global.httpd: |
+        httpd:
+          server_crt: |
+            -----BEGIN CERTIFICATE-----
+            FAKE_PROXY_CERT==
+            -----END CERTIFICATE-----
+          server_key: |
+            -----BEGIN PRIVATE KEY-----
+            FAKE_KEY==
+            -----END PRIVATE KEY-----
+      global.ssh: "ssh:\n  foo: bar"
+    kubernetesProvider:
+      scheme:
+        "v1/Secret":
+          gvr:
+            version: "v1"
+            resource: "secrets"
+          namespaced: true
+      objects:
+        - kind: Secret
+          apiVersion: v1
+          metadata:
+            name: proxy-cert
+            namespace: NAMESPACE
+    asserts:
+      - containsDocument:
+          kind: Secret
+          apiVersion: v1
+          name: proxy-cert
+
+  - it: should render uyuni-ca when it exists outside helm and takeOwnership is true
+    set:
+      cert.takeOwnership: true
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+        ca_crt: |
+          -----BEGIN CERTIFICATE-----
+          FAKE_CA==
+          -----END CERTIFICATE-----
+      global.httpd: "httpd:\n  some_field: foo"
+      global.ssh: "ssh:\n  foo: bar"
+    kubernetesProvider:
+      scheme:
+        "v1/ConfigMap":
+          gvr:
+            version: "v1"
+            resource: "configmaps"
+          namespaced: true
+      objects:
+        - kind: ConfigMap
+          apiVersion: v1
+          metadata:
+            name: uyuni-ca
+            namespace: NAMESPACE
+    asserts:
+      - containsDocument:
+          kind: ConfigMap
+          apiVersion: v1
+          name: uyuni-ca
+
   - it: should render both proxy-cert and uyuni-ca when all source fields are present
     set:
       global.config: |

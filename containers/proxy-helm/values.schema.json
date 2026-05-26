@@ -48,6 +48,17 @@
         }
       }
     },
+    "cert": {
+      "type": ["object", "null"],
+      "description": "Controls handling of the proxy-cert TLS secret and uyuni-ca ConfigMap.",
+      "properties": {
+        "takeOwnership": {
+          "type": "boolean",
+          "default": false,
+          "description": "Render proxy-cert and uyuni-ca even when objects with those names already exist in the namespace and were not created by helm. Use together with `helm install --take-ownership` (helm 3.14+) to let helm adopt them."
+        }
+      }
+    },
     "global": {
       "type": "object",
       "required": ["config", "httpd", "ssh"],

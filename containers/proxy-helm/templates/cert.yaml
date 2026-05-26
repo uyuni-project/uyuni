@@ -1,9 +1,10 @@
 {{- $httpd := .Values.global.httpd | fromYaml }}
 {{- $crt := regexFind "(?s)-----BEGIN CERTIFICATE-----.*?-----END CERTIFICATE-----" (((($httpd).httpd).server_crt) | default "") }}
 {{- $key := regexFind "(?s)-----BEGIN [A-Z0-9 ]*PRIVATE KEY-----.*?-----END [A-Z0-9 ]*PRIVATE KEY-----" (((($httpd).httpd).server_key) | default "") }}
+{{- $takeOwnership := (((.Values).cert).takeOwnership) | default false }}
 {{- $existingCert := lookup "v1" "Secret" .Release.Namespace "proxy-cert" }}
 {{- $certManaged := and $existingCert (eq (index ($existingCert.metadata.labels | default dict) "app.kubernetes.io/managed-by" | default "") "Helm") }}
-{{- if and $crt $key (or (not $existingCert) $certManaged) }}
+{{- if and $crt $key (or (not $existingCert) $certManaged $takeOwnership) }}
 apiVersion: v1
 kind: Secret
 metadata:
@@ -23,7 +24,7 @@ stringData:
 {{- $ca := regexFind "(?s)-----BEGIN CERTIFICATE-----.*?-----END CERTIFICATE-----" ((($config).ca_crt) | default "") }}
 {{- $existingCa := lookup "v1" "ConfigMap" .Release.Namespace "uyuni-ca" }}
 {{- $caManaged := and $existingCa (eq (index ($existingCa.metadata.labels | default dict) "app.kubernetes.io/managed-by" | default "") "Helm") }}
-{{- if and $ca (or (not $existingCa) $caManaged) }}
+{{- if and $ca (or (not $existingCa) $caManaged $takeOwnership) }}
 ---
 apiVersion: v1
 kind: ConfigMap
