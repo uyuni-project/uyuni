@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed May 27 16:44:57 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.10-0
+  * Check type of object before calling 'in' (bsc#1264967)
+
+-------------------------------------------------------------------
 Fri May 22 08:48:51 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.9-0
