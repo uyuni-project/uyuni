@@ -1133,7 +1133,10 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
             assertNotNull(server.getVirtualInstance());
             assertNotNull(server.getVirtualInstance().getHostSystem());
             assertEquals("z/VM", server.getVirtualInstance().getHostSystem().getOs());
-            assertEquals("IBM Mainframe 2827 0000000000069A27", server.getVirtualInstance().getHostSystem().getName());
+
+            assertEquals("IBM Mainframe z12 2827 0000000000069A27",
+                    server.getVirtualInstance().getHostSystem().getName());
+
             assertEquals(Long.valueOf(45), server.getVirtualInstance().getHostSystem().getCpu().getNrCPU());
             assertEquals(Long.valueOf(45), server.getVirtualInstance().getHostSystem().getCpu().getNrsocket());
 
