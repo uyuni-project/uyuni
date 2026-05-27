@@ -15259,7 +15259,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
       </trans-unit>
       <trans-unit approved="yes" id="system.event.pending.headerPending" xml:space="preserve">
         <source>You may cancel events for this system by selecting them and clicking the &lt;strong&gt;Cancel Events&lt;/strong&gt; button.</source>
-        <target state="final">イベントを選択し、ページ下部にある &lt;strong&gt;イベントの取り消し&lt;/strong&gt; ボタンをクリックすると、このシステムのイベントを取り消すことができます。</target>
+        <target state="final">イベントを選択し、&lt;strong&gt;イベントの取り消し&lt;/strong&gt; ボタンをクリックすると、このシステムのイベントを取り消すことができます。</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
@@ -21288,7 +21288,7 @@ any of these revisions.  Are you sure you want to do this?</source>
           </source>
         <target state="final">以下に表示されるパッケージは 1 つまたは複数のシステムから削除できます。
 
-             1 つまたは複数のシステムを選択し、 &lt;b&gt;パッケージの削除&lt;/b&gt; ボタンをクリックしてパッケージ削除をスケジュールします。
+             1 つまたは複数のシステムを選択し、&lt;b&gt;パッケージの削除&lt;/b&gt;ボタンをクリックしてパッケージ削除をスケジュールします。
           </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/PackageRemove.do</context>
@@ -21428,7 +21428,7 @@ any of these revisions.  Are you sure you want to do this?</source>
          </source>
         <target state="final">以下に表示されるパッケージは 1 つまたは複数のシステムで検証できます。
 
-            1 つまたは複数のシステムを選択し、 &lt;b&gt;パッケージの検証&lt;/b&gt; ボタンをクリックしてパッケージ検証をスケジュールします。
+            1 つまたは複数のシステムを選択し、&lt;b&gt;パッケージの検証&lt;/b&gt;ボタンをクリックしてパッケージ検証をスケジュールします。
          </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/PackageVerify.do</context>
@@ -23637,7 +23637,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target state="final">システムのプロパティ</target>
+        <target state="final">システムプロパティ</target>
       </trans-unit>
       <trans-unit approved="yes" id="sdc.details.overview.entitlement" xml:space="preserve">
         <source>System Types:</source>
@@ -29754,7 +29754,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit id="spmigration.sles16.preflight.ssh.title" xml:space="preserve" approved="yes">
         <source>Ensure SSH key-based access is available for at least one user. If root login is required, create /etc/ssh/sshd_config.d/50-permit-root-login.conf with: PermitRootLogin yes</source>
-        <target state="final">少なくとも1人のユーザーに対してSSHキーベースのアクセスが利用できるようにしてください。rootログインが必要な場合は、/etc/ssh/sshd_config.d/50-permit-root-login.conf を作成し、PermitRootLogin yesを記述してください</target>
+        <target state="final">少なくとも1人のユーザに対してSSHキーベースのアクセスが利用できるようにしてください。rootログインが必要な場合は、PermitRootLogin yesを記述した/etc/ssh/sshd_config.d/50-permit-root-login.confを作成してください</target>
       </trans-unit>
       <trans-unit id="spmigration.sles16.preflight.kvmguests.title" xml:space="preserve" approved="yes">
         <source>KVM guests are shut down (if applicable)</source>
