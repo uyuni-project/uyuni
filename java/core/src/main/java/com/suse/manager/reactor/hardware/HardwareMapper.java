@@ -481,6 +481,25 @@ public class HardwareMapper {
         return index > 0 ? osString.substring(0, index) : osString;
     }
 
+    //package-protected
+    String getS390ServerFamily(String type) {
+        // z17, z16, z15: https://www.ibm.com/docs/en/zos/3.1.0?topic=system-identifying-server-requirements
+        // other codes: https://www.ibm.com/support/pages/processor-version-codes-and-srm-constants
+
+        return switch (type) {
+            case "9175" -> "z17";
+            case "3931", "3932" -> "z16";
+            case "8561", "8562" -> "z15";
+            case "3906", "3907" -> "z14";
+            case "2964", "2965" -> "z13";
+            case "2827", "2828" -> "z12";
+            case "2817", "2818" -> "zEnterprise 114";
+            case "2097", "2098" -> "z10";
+            case "2094", "2096" -> "z9";
+            default -> "";
+        };
+    }
+
     /**
      * Map mainframe sysinfo to the database.
      *
@@ -500,8 +519,11 @@ public class HardwareMapper {
 
             String identifier = String.format("Z-%s", sysvalues.get("Sequence Code"));
             String os = computeOsStringForS390Arch(sysvalues);
+            String type = sysvalues.get("Type");
 
-            String name = String.format("IBM Mainframe %s %s", sysvalues.get("Type"),
+            String name = String.format("IBM Mainframe %s %s %s",
+                    getS390ServerFamily(type),
+                    type,
                     sysvalues.get("Sequence Code"));
             long totalIfls = 0L;
             try {
@@ -510,7 +532,6 @@ public class HardwareMapper {
             catch (NumberFormatException e) {
                 LOG.warn("Invalid 'CPUs Total' value: {}", e.getMessage());
             }
-            String type = sysvalues.get("Type");
 
             // register the info about the S390 host in the db
 
@@ -533,7 +554,7 @@ public class HardwareMapper {
                         String.format("Initial Registration Parameters:\n" +
                                 "OS: %s\n" +
                                 "Release: %s\n" +
-                                "CPU Arch: %s", os, sysvalues.get("Type"), cpuarch));
+                                "CPU Arch: %s", os, type, cpuarch));
 
                 zhost.setDigitalServerId(identifier);
                 zhost.setOrg(OrgFactory.getSatelliteOrg()); // TODO clarify this
