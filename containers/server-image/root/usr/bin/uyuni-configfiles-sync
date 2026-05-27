@@ -219,32 +219,55 @@ sync() {
     cp $DEFAULTS_STORAGE/.buildhash $SYSCONFIG_FILE
 }
 
+execute_scriptslet_stage() {
+    PKG=$1
+    STAGE=$2
+    ARG=$3
+
+    # Query the script content and the requested interpreter
+    SCRIPT=$(rpm -q --qf "%{${STAGE}}" "$PKG")
+    PROG=$(rpm -q --qf "%{${STAGE}PROG}" "$PKG")
+
+    if [ "$SCRIPT" = "(none)" ] || [ -z "$SCRIPT" ]; then
+        # If there is no script, do nothing
+        return
+    fi
+
+    if [ "$PROG" = "(none)" ] || [ -z "$PROG" ]; then
+        # Fallback to /bin/sh if PROG is missing
+        PROG="/bin/sh"
+    fi
+
+    echo "    -> Executing $STAGE using $PROG"
+
+    # Write script to a temporary file to mimic native RPM behavior
+    TMPFILE=$(mktemp)
+    echo "$SCRIPT" > "$TMPFILE"
+    chmod +x "$TMPFILE"
+
+    if [ "$PROG" = "<lua>" ]; then
+        # For <lua> use the rpm %{lua: dofile() }
+        DISABLE_RESTART_ON_UPDATE=1 rpm --eval "%{lua: arg={'$ARG'}; dofile('$TMPFILE') }"
+    else
+        # Execute on standard interpreters (/bin/sh, bash, python, etc.)
+        DISABLE_RESTART_ON_UPDATE=1 $PROG "$TMPFILE" "$ARG"
+    fi
+
+    rm -f "$TMPFILE"
+}
+
 run_scripts() {
     PACKAGE_NAMES=$1
     for PKG in $PACKAGE_NAMES; do
         echo "  * Running scripts for $PKG ..."
+
         # RPM scriptlets ordering:
         # https://docs.fedoraproject.org/en-US/packaging-guidelines/Scriptlets/#ordering
-        PREIN_SCRIPT=$(rpm -q --qf "%{PREIN}" $PKG)
-        if [ ! "$PREIN_SCRIPT" = "(none)" ]; then
-            echo "$PREIN_SCRIPT" | DISABLE_RESTART_ON_UPDATE=1 sh -s -- 2
-        fi
-        POSTIN_SCRIPT=$(rpm -q --qf "%{POSTIN}" $PKG)
-        if [ ! "$POSTIN_SCRIPT" = "(none)" ]; then
-            echo "$POSTIN_SCRIPT" | DISABLE_RESTART_ON_UPDATE=1 sh -s -- 2
-        fi
-        PREUN_SCRIPT=$(rpm -q --qf "%{PREUN}" $PKG)
-        if [ ! "$PREUN_SCRIPT" = "(none)" ]; then
-            echo "$PREUN_SCRIPT" | DISABLE_RESTART_ON_UPDATE=1 sh -s -- 1
-        fi
-        POSTUN_SCRIPT=$(rpm -q --qf "%{POSTUN}" $PKG)
-        if [ ! "$POSTUN_SCRIPT" = "(none)" ]; then
-            echo "$POSTUN_SCRIPT" | DISABLE_RESTART_ON_UPDATE=1 sh -s -- 1
-        fi
-        POSTTRANS_SCRIPT=$(rpm -q --qf "%{POSTTRANS}" $PKG)
-        if [ ! "$POSTTRANS_SCRIPT" = "(none)" ]; then
-            echo "$POSTTRANS_SCRIPT" | DISABLE_RESTART_ON_UPDATE=1 sh -s -- 2
-        fi
+        execute_scriptslet_stage "$PKG" PREIN 2
+        execute_scriptslet_stage "$PKG" POSTIN 2
+        execute_scriptslet_stage "$PKG" PREUN 1
+        execute_scriptslet_stage "$PKG" POSTUN 1
+        execute_scriptslet_stage "$PKG" POSTTRANS 2
     done
 }
 
