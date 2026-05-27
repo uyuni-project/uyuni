@@ -20,6 +20,8 @@ import org.apache.commons.lang3.time.StopWatch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.time.Duration;
 import java.util.Map;
 import java.util.Optional;
@@ -90,7 +92,7 @@ public class LoggingInvocationProcessor {
         Optional<Map<String, String>> arguments,
         String ip,
         Optional<User> caller,
-        Duration duration
+        Optional<Duration> duration
     ) {
         Optional<Map<String, String>> argumentsAfterRedaction = arguments.map(args ->
                 args.entrySet().stream()
@@ -120,10 +122,14 @@ public class LoggingInvocationProcessor {
         buf.append(")");
         buf.append(" CALLER: (");
         buf.append(caller.map(User::getLogin).orElse("none"));
-        buf.append(") TIME: ");
+        buf.append(")");
 
-        buf.append(duration.toMillis() / 1000.0);
-        buf.append(" seconds");
+        duration.ifPresent(durationIn -> {
+            buf.append(" TIME: ");
+            buf.append(durationIn.toMillis() / 1000.0);
+            buf.append(" seconds");
+        });
+
         return buf;
     }
 
@@ -147,9 +153,11 @@ public class LoggingInvocationProcessor {
             Throwable exception) {
         try {
             StringBuilder buf = logMessage(handlerName, methodName, arguments, ip,
-                    caller, Duration.ofMillis(stopTimer()));
+                    caller, stopTimer().map(d -> Duration.ofMillis(d)));
             buf.append(System.lineSeparator());
-            buf.append(exception);
+            StringWriter stackTrace = new StringWriter();
+            exception.printStackTrace(new PrintWriter(stackTrace));
+            buf.append(stackTrace);
 
             LOGGER.info(buf);
         }
@@ -177,7 +185,7 @@ public class LoggingInvocationProcessor {
     ) {
         try {
             LOGGER.info(logMessage(handlerName, methodName, arguments, ip,
-                    caller, Duration.ofMillis(stopTimer())));
+                    caller, stopTimer().map(d -> Duration.ofMillis(d))));
         }
         catch (RuntimeException e) {
             LOGGER.error("postProcess error CALL: {} {}", handlerName, methodName, e);
@@ -188,9 +196,14 @@ public class LoggingInvocationProcessor {
      * Stop the timer
      * @return the time registered in this timer.
      */
-    private long stopTimer() {
-        getStopWatch().stop();
-        return getStopWatch().getTime();
+    private Optional<Long> stopTimer() {
+        try {
+            getStopWatch().stop();
+            return Optional.of(getStopWatch().getTime());
+        }
+        catch (IllegalStateException e) {
+            return Optional.empty();
+        }
     }
 
     /**
