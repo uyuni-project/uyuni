@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: Spacewalk\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-08-22 09:58+0200\n"
-"PO-Revision-Date: 2025-06-17 07:59+0000\n"
+"PO-Revision-Date: 2026-05-27 09:12+0000\n"
 "Last-Translator: Seeun Lee <selee@e4net.net>\n"
 "Language-Team: Korean <https://l10n.opensuse.org/projects/uyuni/backend/ko/>\n"
 "Language: ko\n"
@@ -20,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Weblate 5.12.1\n"
+"X-Generator: Weblate 2026.5\n"
 
 #: ../server/apacheAuth.py:72
 #, python-format
@@ -207,12 +207,12 @@ msgstr "패키지를 찾을 수 없음"
 #: ../server/rhnServer/server_class.py:103
 #, python-format
 msgid "Architecture `%s' is not supported"
-msgstr "`%s' 아키텍처는 지원되지 않습니다."
+msgstr "`%s' 아키텍처는 지원되지 않음"
 
 #: ../server/rhnServer/server_token.py:86
 #, python-format
 msgid "Token `%s' has more than one base channel assigned"
-msgstr "`%s' 토큰에 기본 채널이 1개 이상 할당되었습니다."
+msgstr "`%s' 토큰에 기본 채널이 1개 이상 할당됨"
 
 #: ../server/rhnServer/server_token.py:89
 msgid "Conflicting base channels"
@@ -221,16 +221,16 @@ msgstr "기본 채널 충돌"
 #: ../server/rhnServer/server_token.py:223
 #, python-format
 msgid "Failed to add server to group %s"
-msgstr "%s 그룹에 서버를 추가하지 못했습니다."
+msgstr "%s 그룹에 서버를 추가하지 못함"
 
 #: ../server/rhnServer/server_token.py:574
 #, python-format
 msgid "Maximum usage count of %s reached"
-msgstr "%s의 최대 사용 횟수에 도달했습니다."
+msgstr "%s의 최대 사용 횟수에 도달"
 
 #: ../server/rhnServer/server_token.py:869
 msgid "Stacking of re-registration tokens with different base entitlements is not supported"
-msgstr "기본 권리 유형이 다른 토큰 재등록 토큰 스택은 지원되지 않습니다."
+msgstr "기본 권리 유형이 다른 토큰 재등록 토큰 스택은 지원되지 않음"
 
 #: ../server/rhnServer/server_token.py:946
 #, python-format
@@ -249,7 +249,7 @@ msgstr "킥스타트 세션 불일치"
 
 #: ../server/rhnServer/server_token.py:1013
 msgid "Stacking of re-registration tokens is not supported"
-msgstr "재등록 토큰 스택은 지원되지 않습니다."
+msgstr "재등록 토큰 스택은 지원되지 않음"
 
 #: ../server/rhnUser.py:327 ../server/rhnUser.py:330
 msgid "Invalid username/password combination"
@@ -259,22 +259,22 @@ msgstr "잘못된 사용자 이름/비밀번호 조합"
 #: ../server/rhnUser.py:527
 #, python-format
 msgid "Username `%s' has not been reserved"
-msgstr "'%s' 사용자 이름은 예약되지 않았습니다."
+msgstr "'%s' 사용자 이름이 예약되지 않음"
 
 #. New accounts have to specify an e-mail address
 #: ../server/rhnUser.py:533
 msgid "E-mail address not specified"
-msgstr "이메일 주소가 지정되지 않았습니다."
+msgstr "이메일 주소가 지정되지 않음"
 
 #: ../server/rhnUser.py:575
 #, python-format
 msgid "username should be at least %d characters"
-msgstr "사용자 이름은 %d자 이상이어야 합니다."
+msgstr "사용자 이름은 %d자 이상이어야 함"
 
 #: ../server/rhnUser.py:579
 #, python-format
 msgid "username should be less than %d characters"
-msgstr "사용자 이름은 %d자 미만이어야 합니다."
+msgstr "사용자 이름은 %d자 미만이어야 함"
 
 #: ../server/rhnUser.py:593
 #, python-format
@@ -284,32 +284,32 @@ msgstr "사용자 이름 = `%s', 유효하지 않은 문자 `%s'"
 #: ../server/rhnUser.py:614
 #, python-format
 msgid "Please limit your e-mail address to %s chars"
-msgstr "이메일 주소는 %s자 이하여야 합니다."
+msgstr "이메일 주소는 %s자 이하여야 함"
 
 #: ../server/rhnUser.py:704
 #, python-format
 msgid "password must be at least %d characters"
-msgstr "비밀번호는 %d자 이상이어야 합니다."
+msgstr "비밀번호는 %d자 이상이어야 함"
 
 #: ../server/rhnUser.py:708
 #, python-format
 msgid "Password must be shorter than %d characters"
-msgstr "비밀번호는 %d자 미만이어야 합니다."
+msgstr "비밀번호는 %d자 미만이어야 함"
 
 #: ../server/rhnUser.py:724
 #, python-format
 msgid "password contains character `%s'"
-msgstr "비밀번호에 '%s' 문자가 포함되었습니다."
+msgstr "비밀번호에 '%s' 문자가 포함됨"
 
 #: ../server/rhnUser.py:733
 #, python-format
 msgid "username should be at least %d characters long"
-msgstr "사용자 이름의 길이는 %d자 이상이어야 합니다."
+msgstr "사용자 이름의 길이는 %d자 이상이어야 함"
 
 #: ../server/rhnUser.py:744
 #, python-format
 msgid "Cannot register usernames ending with %s"
-msgstr "%s(으)로 끝나는 사용자 이름을 등록할 수 없습니다."
+msgstr "%s(으)로 끝나는 사용자 이름을 등록할 수 없음"
 
 #. 0-999: Red Hat client/client-like interaction errors:
 #: ../common/rhnException.py:55
@@ -595,11 +595,11 @@ msgstr ""
 
 #: ../common/rhnException.py:166
 msgid "Too many systems registered using this registration token"
-msgstr "이 등록 토큰을 사용하여 등록한 시스템이 너무 많습니다."
+msgstr "이 등록 토큰을 사용하여 등록한 시스템이 너무 많음"
 
 #: ../common/rhnException.py:167
 msgid "Token contains invalid, obsoleted or insufficient settings"
-msgstr "토큰에 유효하지 않거나 더 이상 사용되지 않거나 충분하지 않는 설정이 포함되어 있습니다."
+msgstr "토큰에 유효하지 않거나 더 이상 사용되지 않거나 충분하지 않는 설정이 포함되어 있음"
 
 #: ../common/rhnException.py:168
 msgid "Conflicting activation tokens"
@@ -640,7 +640,7 @@ msgstr "SUSE Multi-Linux Manager 또는 프록시 채널을 구독할 수 없습
 #. 80-90: server group errors
 #: ../common/rhnException.py:185
 msgid "There was an error while trying to join the system to its groups"
-msgstr "시스템이 그룹에 참여할 때 오류가 발생했습니다."
+msgstr "시스템이 그룹에 참여할 때 오류 발생"
 
 #. 90-100: entitlement errors
 #: ../common/rhnException.py:187
@@ -677,7 +677,7 @@ msgstr "권한 유형 정보가 하드웨어에 연결되지 않음"
 
 #: ../common/rhnException.py:198
 msgid "Installation number is not entitling"
-msgstr "설치 번호가 유효하지 않습니다."
+msgstr "설치 번호가 유효하지 않음"
 
 #. 700-799: Additional user input verification errors.
 #: ../common/rhnException.py:200
@@ -694,7 +694,7 @@ msgstr "이 사용자에는 API 읽기 전용 액세스 권한이 있습니다. 
 
 #: ../common/rhnException.py:203
 msgid "System Name cannot be less than 1 character"
-msgstr "시스템 이름은 1자 미만이 아니어야 합니다."
+msgstr "시스템 이름은 1자 미만이 아니어야 함"
 
 #. 1000-1999: Proxy specific errors:
 #. issued by a Proxy to the client
@@ -866,7 +866,7 @@ msgstr "파일 크기가 남은 공간 한도를 초과함"
 
 #: ../common/rhnException.py:263
 msgid "Full path of file must be specified"
-msgstr "파일의 전체 경로를 지정해야 합니다."
+msgstr "파일의 전체 경로를 지정해야 함"
 
 #: ../common/rhnException.py:264
 msgid "Invalid revision number"
@@ -874,20 +874,20 @@ msgstr "유효하지 않은 수정 버전 번호"
 
 #: ../common/rhnException.py:265
 msgid "Cannot compare files of different file type"
-msgstr "파일 형식이 다른 파일을 비교할 수 없습니다."
+msgstr "파일 형식이 다른 파일을 비교할 수 없음"
 
 #. 5100 - 5199: scap results reporting error
 #: ../common/rhnException.py:267
 msgid "SCAP results file transfer is invalid or incomplete"
-msgstr "SCAP 결과 파일 전달이 잘못되거나 완전하지 않습니다."
+msgstr "SCAP 결과 파일 전달이 잘못되거나 완전하지 않음"
 
 #: ../common/rhnException.py:268
 msgid "Error composing directory path for detailed SCAP results"
-msgstr "자세한 SCAP 결과에 대한 디렉토리 경로를 구성하는 동안 오류가 발생했습니다."
+msgstr "자세한 SCAP 결과에 대한 디렉토리 경로를 구성하는 동안 오류 발생"
 
 #: ../common/rhnException.py:269
 msgid "Error composing file path for detailed SCAP results"
-msgstr "자세한 SCAP 결과에 대한 파일 경로를 구성하는 동안 오류가 발생했습니다."
+msgstr "자세한 SCAP 결과에 대한 파일 경로를 구성하는 동안 오류 발생"
 
 #: ../common/rhnException.py:270
 msgid "Invalid content encoding"
