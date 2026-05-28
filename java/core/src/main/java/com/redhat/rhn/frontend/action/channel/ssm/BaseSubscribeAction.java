@@ -267,19 +267,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
                         oldBase, newBase, user);
 
                 matched.addAll(collectMatched(preservations, user));
-
-                for (Channel c : oldBase.getAccessibleChildrenFor(user)) {
-                    if (!preservations.containsKey(c)) {
-                        List<Map<String, Object>> serversAffected =
-                            SystemManager.getSsmSystemsSubscribedToChannel(user, c.getId());
-                        log.debug("found {} servers in set with channel: {}", serversAffected.size(), c.getId());
-                        if (!serversAffected.isEmpty()) {
-                            unmatched.add(new ChildChannelPreservationDto(c.getId(),
-                                    c.getName(), c.getParentChannel().getId(),
-                                    c.getParentChannel().getName(), serversAffected));
-                        }
-                    }
-                }
+                unmatched.addAll(collectUnmatched(oldBase, preservations, user));
             }
         }
 
@@ -376,6 +364,23 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
             }
         }
         return matched;
+    }
+
+    private List<ChildChannelPreservationDto> collectUnmatched(Channel oldBase, Map<Channel, Channel> preservations, User user) {
+        List<ChildChannelPreservationDto> unmatched = new LinkedList<>();
+        for (Channel c : oldBase.getAccessibleChildrenFor(user)) {
+            if (!preservations.containsKey(c)) {
+                List<Map<String, Object>> serversAffected =
+                        SystemManager.getSsmSystemsSubscribedToChannel(user, c.getId());
+                log.debug("found {} servers in set with channel: {}", serversAffected.size(), c.getId());
+                if (!serversAffected.isEmpty()) {
+                    unmatched.add(new ChildChannelPreservationDto(c.getId(),
+                            c.getName(), c.getParentChannel().getId(),
+                            c.getParentChannel().getName(), serversAffected));
+                }
+            }
+        }
+        return unmatched;
     }
 
     /**
