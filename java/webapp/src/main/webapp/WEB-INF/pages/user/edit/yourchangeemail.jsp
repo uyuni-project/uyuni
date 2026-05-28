@@ -19,7 +19,7 @@
                 <html:form action="/account/ChangeEmailSubmit"
                            styleClass="form-horizontal">
                     <rhn:csrf />
-                    <div class="form-group">
+                    <div class="row">
                         <label class="col-sm-3 control-label">
                             <bean:message key="channel.edit.jsp.emailaddress" />:
                         </label>
@@ -29,7 +29,7 @@
                                        maxlength="${emailLength}" />
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <div class="col-sm-offset-3 offset-sm-3 col-sm-6">
                             <button type="submit" class="btn btn-primary">
                                 ${button_label}

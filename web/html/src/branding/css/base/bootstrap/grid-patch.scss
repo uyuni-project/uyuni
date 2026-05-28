@@ -6,7 +6,7 @@
  * TODO: After we finish the migration, we should be able to remove these classes and just use `row` everywhere
  */
 .form-group,
-.row-0 {
+.row {
   @include make-row();
 
   > * {

@@ -1,7 +1,7 @@
 <html:hidden property="submitted" value="true"/>
 <html:hidden property="filetype"/>
 
-<div class="form-group">
+<div class="row">
     <label for="manageJspUploadTab" class="col-lg-3 control-label">
         <bean:message key="manage.jsp.uploadtab" />
     </label>
@@ -13,7 +13,7 @@
     </div>
 </div>
 
-<div class="form-group">
+<div class="row">
     <label for="addfilesJspTypeName" class="col-lg-3 control-label">
         <bean:message key="addfiles.jsp.type-name" />
     </label>
@@ -33,7 +33,7 @@
     </div>
 </div>
 
-<div class="form-group">
+<div class="row">
     <label for="filedetailsPropertiesJspfPath" class="col-lg-3 control-label">
         <bean:message key="filedetails.properties.jspf.path" />
     </label>
@@ -49,7 +49,7 @@
 <html:hidden property="cffMacroStart"/>
 <html:hidden property="cffMacroEnd"/>
 
-<div class="form-group">
+<div class="row">
     <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
         <html:submit styleClass="btn btn-primary">
             <bean:message key="addfiles.jsp.upload.jspf.submit" />

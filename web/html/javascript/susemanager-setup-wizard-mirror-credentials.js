@@ -1,4 +1,3 @@
-
 // Temporarily store credential IDs
 // XXX: One variable should be enough?
 var editId;
@@ -7,23 +6,23 @@ var subscriptionsId;
 
 // Init modal to edit credentials
 function initEdit(element) {
-  var id = jQuery(element).data('id');
-  var user = jQuery(element).data('user');
+  var id = jQuery(element).data("id");
+  var user = jQuery(element).data("user");
   console.log("initEdit(): " + id);
   editId = id;
-  jQuery('#edit-user').val(user);
-  jQuery('#edit-password').val("");
-  jQuery('#mirror-credentials-error-container').hide(); // Hide the error container
-  jQuery('.mirror-credentials-error').hide(); // Make sure all error elements are hidden
+  jQuery("#edit-user").val(user);
+  jQuery("#edit-password").val("");
+  jQuery("#mirror-credentials-error-container").hide(); // Hide the error container
+  jQuery(".mirror-credentials-error").hide(); // Make sure all error elements are hidden
 }
 
 // Init modal to delete credentials
 function initDelete(element) {
-  var id = jQuery(element).data('id');
-  var user = jQuery(element).data('user');
+  var id = jQuery(element).data("id");
+  var user = jQuery(element).data("user");
   console.log("initDelete(): " + id);
   deleteId = id;
-  jQuery('#delete-user').text(user);
+  jQuery("#delete-user").text(user);
 }
 
 // Init the modal to list subscriptions
@@ -31,49 +30,51 @@ function initSubscriptions(id) {
   console.log("initSubscriptions(): " + id);
   subscriptionsId = id;
   showSpinner("modal-list-subscriptions-body");
-  ajax("list-mirror-subscriptions", { subscriptionsId }, makeRendererHandler("modal-list-subscriptions-body", false).callback)
+  ajax(
+    "list-mirror-subscriptions",
+    { subscriptionsId },
+    makeRendererHandler("modal-list-subscriptions-body", false).callback
+  );
 }
 
 // Hide any modal dialogs
 function hideModal() {
   console.log("hideModal()");
   jQuery("#edit-credentials-spinner").html("");
-  jQuery("#modal-edit-credentials").modal('hide');
+  jQuery("#modal-edit-credentials").modal("hide");
   jQuery("#delete-credentials-spinner").html("");
-  jQuery("#modal-delete-credentials").modal('hide');
+  jQuery("#modal-delete-credentials").modal("hide");
 }
 
 // Save credentials from edit dialog
 function saveCredentials() {
   var validated = true;
-  jQuery('#add-credentials-form .form-control[required]').each(function() {
+  jQuery("#add-credentials-form .form-control[required]").each(function () {
     var field = jQuery(this);
     if (field.val().length == 0) {
-      field.closest('.form-group').addClass('has-error');
+      field.closest(".row").addClass("has-error");
       validated = false;
-    }
-    else {
-      field.closest('.form-group').removeClass('has-error');
+    } else {
+      field.closest(".row").removeClass("has-error");
     }
   });
 
   if (validated) {
     console.log("Saving credentials: " + editId);
-    var user = escapeHtml(jQuery('#edit-user').val());
-    var password = jQuery('#edit-password').val();
+    var user = escapeHtml(jQuery("#edit-user").val());
+    var password = jQuery("#edit-password").val();
     showSpinner("edit-credentials-spinner");
 
-    var responseHandler = function(result) {
+    var responseHandler = function (result) {
       if (result == "ok") {
-        ajax("render-mirror-credentials", "", makeRendererHandler("listset-container", false).callback)
-      }
-      else {
+        ajax("render-mirror-credentials", "", makeRendererHandler("listset-container", false).callback);
+      } else {
         jQuery("#mirror-credentials-error-container").show(); // show the error container
         jQuery("#" + result).show(); //result contains the id of the error element to be shown
       }
     };
 
-    ajax("save-mirror-credentials", { id: editId, user, password }, responseHandler)
+    ajax("save-mirror-credentials", { id: editId, user, password }, responseHandler);
 
     jQuery("#edit-credentials-spinner").hide();
   }
@@ -82,25 +83,25 @@ function saveCredentials() {
 // Delete credentials from modal
 function deleteCredentials() {
   showSpinner("delete-credentials-spinner");
-  ajax('delete-mirror-credentials', { id: deleteId }, makeRendererHandler("listset-container", false).callback)
+  ajax("delete-mirror-credentials", { id: deleteId }, makeRendererHandler("listset-container", false).callback);
 }
 
 // Make primary credentials
 function makePrimaryCredentials(id) {
   showSpinner("primary-" + id);
-  ajax("make-primary-mirror-credentials", { id }, makeRendererHandler("listset-container", false).callback)
+  ajax("make-primary-mirror-credentials", { id }, makeRendererHandler("listset-container", false).callback);
 }
 
 function setDeleteAllowed(id, allowed) {
-  const linkElem = jQuery('#delete-' + id + ' a:first-child');
-  const iconElem = linkElem.children('i:first-child');
+  const linkElem = jQuery("#delete-" + id + " a:first-child");
+  const iconElem = linkElem.children("i:first-child");
 
-  let linkStyle = {'pointer-events': 'all'};
-  let iconStyle = {'cursor': 'pointer', 'color': ''};
+  let linkStyle = { "pointer-events": "all" };
+  let iconStyle = { cursor: "pointer", color: "" };
 
   if (!allowed) {
-    linkStyle = {'pointer-events': 'none'};
-    iconStyle = {'cursor': 'not-allowed', 'color': 'gray'};
+    linkStyle = { "pointer-events": "none" };
+    iconStyle = { cursor: "not-allowed", color: "gray" };
   }
 
   linkElem.css(linkStyle);
@@ -111,20 +112,20 @@ function setDeleteAllowed(id, allowed) {
 function verifyCredentials(id, refresh) {
   const elemId = "verify-" + id;
   const responseHandler = (result) => {
-    jQuery('#' + elemId).html(result);
-    jQuery('#' + elemId).fadeIn();
+    jQuery("#" + elemId).html(result);
+    jQuery("#" + elemId).fadeIn();
     setDeleteAllowed(id, true);
   };
 
   showSpinner(elemId);
   setDeleteAllowed(id, false);
-  ajax("verify-mirror-credentials", { id, refresh }, responseHandler, "application/json")
+  ajax("verify-mirror-credentials", { id, refresh }, responseHandler, "application/json");
 }
 
 // relevant for the mirror credentials page
-jQuery(document).ready(function() {
+jQuery(document).ready(function () {
   // Clear input fields whenever the edit modal is hidden
-  jQuery('#modal-edit-credentials').on('hidden.bs.modal', function() {
+  jQuery("#modal-edit-credentials").on("hidden.bs.modal", function () {
     initEdit("", "");
   });
 });

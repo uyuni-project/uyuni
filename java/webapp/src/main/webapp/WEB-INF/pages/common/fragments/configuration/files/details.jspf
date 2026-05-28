@@ -10,7 +10,7 @@
     </div>
     <div class="panel-body">
         <div class="form-horizontal">
-            <div class="form-group">
+            <div class="row">
                 <label class="control-label col-md-3">
                     <bean:message key="filedetails.details.jspf.channel-name" />
                 </label>
@@ -34,7 +34,7 @@
                     </p>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label class="control-label col-md-3">
                     <bean:message key="filedetails.details.jspf.revision-name" />
                 </label>
@@ -47,7 +47,7 @@
                     </p>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label class="control-label col-md-3">
                     <bean:message key="filedetails.details.jspf.creation-name" />
                 </label>
@@ -58,7 +58,7 @@
                     </p>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label class="control-label col-md-3">
                     <bean:message key="filedetails.details.jspf.modified-name" />
                 </label>
@@ -98,7 +98,7 @@
                     </p>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label class="control-label col-md-3">
                     <bean:message key="filedetails.details.jspf.filetype-name" />
                 </label>
@@ -141,7 +141,7 @@
             </div>
             <rhn:require acl="config_channel_editable(${channel.id})"
                          mixins="com.redhat.rhn.common.security.acl.ConfigAclHandler">
-            <div class="form-group">
+            <div class="row">
                 <label class="control-label col-md-3">
                     <bean:message key="filedetails.details.jspf.revnum"/>
                 </label>

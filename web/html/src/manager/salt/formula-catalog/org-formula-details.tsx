@@ -39,7 +39,7 @@ class FormulaDetail extends Component<Props, State> {
     const metadata: ReactNode[] = [];
     for (const item in this.state.metadata) {
       metadata.push(
-        <div className="form-group" key={item}>
+        <div className="row" key={item}>
           <label className="col-md-3 control-label">{item}:</label>
           <div className="col-md-6">{this.generateMetadataItem(item, this.state.metadata[item])}</div>
         </div>
@@ -68,7 +68,7 @@ class FormulaDetail extends Component<Props, State> {
     return (
       <TopPanel title={"View Formula: " + window.formulaName} icon="spacewalk-icon-salt-add">
         <form className="form-horizontal">
-          <div className="form-group">
+          <div className="row">
             <label className="col-md-3 control-label" htmlFor="name">
               {t("Name:")}
             </label>

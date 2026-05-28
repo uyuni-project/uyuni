@@ -20,7 +20,7 @@
                 <c:when test="${requestScope.has_script_run == true}">
                 <form name="remoteCommandForm" action="/rhn/systems/details/SystemRemoteCommand.do?sid=${system.id}" method="post" class="form-horizontal" role="form">
                     <rhn:csrf />
-                    <div class="form-group">
+                    <div class="row">
                         <label class="col-lg-3 control-label" for="fUidInput">
                             <bean:message key="ssm.operations.provisioning.remotecommand.form.uid.label"/>
                             <span class="required-form-field">*</span>:
@@ -30,7 +30,7 @@
                                    value="${formData.uid}" size="" id="fUidInput"/>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <label class="col-lg-3 control-label" for="fGidInput">
                             <bean:message key="ssm.operations.provisioning.remotecommand.form.gid.label"/>
                             <span class="required-form-field">*</span>:
@@ -40,7 +40,7 @@
                                    value="${formData.gid}" size="" id="fGidInput"/>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <label class="col-lg-3 control-label" for="fTmoInput">
                             <bean:message key="ssm.operations.provisioning.remotecommand.form.timeout.label"/>:
                         </label>
@@ -49,7 +49,7 @@
                                    value="${formData.timeout}" size="" id="fTmoInput"/>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <label class="col-lg-3 control-label" for="fLblInput">
                             <bean:message key="ssm.operations.provisioning.remotecommand.form.lbl.label"/>:
                         </label>
@@ -58,7 +58,7 @@
                                    value="${formData.label}" size="" id="fLblInput"/>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <label class="col-lg-3 control-label" for="fSptInput">
                             <bean:message key="ssm.operations.provisioning.remotecommand.form.script_body.label"/>
                             <span class="required-form-field">*</span>:
@@ -69,7 +69,7 @@
                         </div>
                     </div>
                     <jsp:include page="/WEB-INF/pages/common/fragments/schedule-options.jspf"/>
-                    <div class="form-group">
+                    <div class="row">
                         <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                             <button type="submit" name="schedule" class="btn btn-primary">
                                 <bean:message key="ssm.operations.provisioning.remotecommand.form.submit" />

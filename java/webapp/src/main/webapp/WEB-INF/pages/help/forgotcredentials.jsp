@@ -21,7 +21,7 @@
     <rhn:csrf />
     <div class="search-choices panel panel-default">
       <div class="search-choices-group panel-body">
-        <div class="form-group row">
+        <div class="row">
           <div class="col-md-2 text-right">
             <label for="searchform"><bean:message key="help.credentials.jsp.logininput"/></label>
           </div>
@@ -29,7 +29,7 @@
             <input type="text" name="username" accesskey="4" value="${username}" class="form-control">
           </div>
         </div>
-        <div class="form-group row">
+        <div class="row">
           <div class="col-md-2 text-right">
             <label><bean:message key="help.credentials.jsp.emailinput"/></label>
           </div>
@@ -37,7 +37,7 @@
             <input type="text" name="email" accesskey="4" value="${email}" class="form-control">
           </div>
         </div>
-        <div class="form-group">
+        <div class="row">
           <div class="col-md-offset-2 offset-md-2 col-md-10">
            <button type="submit" class="btn btn-pimary btn-sm" name="password_button">
              <bean:message key="help.credentials.jsp.passwordbutton"/>
@@ -58,7 +58,7 @@
     <rhn:csrf />
     <div class="search-choices panel panel-default">
       <div class="search-choices-group panel-body">
-        <div class="form-group row">
+        <div class="row row">
           <div class="col-md-2 text-right">
             <label><bean:message key="help.credentials.jsp.emailinput"/></label>
           </div>
@@ -66,7 +66,7 @@
             <input type="text" name="email" accesskey="4" value="${email}" class="form-control">
           </div>
         </div>
-        <div class="form-group">
+        <div class="row">
           <div class="col-md-offset-2 offset-md-2 col-md-10">
            <button type="submit" class="btn btn-primary btn-sm" name="login_button">
              <bean:message key="help.credentials.jsp.loginbutton"/>
