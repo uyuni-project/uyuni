@@ -485,8 +485,19 @@ When(/^I create the MU repositories for "([^"]*)"$/) do |client|
   repo_list = $custom_repositories[client]
   next if repo_list.nil?
 
-  repo_list.each do |_repo_name, repo_url|
+  repo_list.each do |repo_name, repo_url|
+    # Skip if repository URL is blank
+    if repo_url.nil? || repo_url.strip.empty?
+      log "Skipping repository '#{repo_name}' with empty URL"
+      next
+    end
+
     unique_repo_name = generate_repository_name(repo_url)
+    if unique_repo_name.empty?
+      log "Skipping repository with empty name (URL: #{repo_url})"
+      next
+    end
+
     if repository_exist? unique_repo_name
       log "The MU repository #{unique_repo_name} was already created, we will reuse it."
     else
@@ -524,8 +535,19 @@ When(/^I select the MU repositories for "([^"]*)" from the list$/) do |client|
   repo_list = $custom_repositories[client]
   next if repo_list.nil?
 
-  repo_list.each do |_repo_name, repo_url|
+  repo_list.each do |repo_name, repo_url|
+    # Skip if repository URL is blank
+    if repo_url.nil? || repo_url.strip.empty?
+      log "Skipping repository '#{repo_name}' with empty URL"
+      next
+    end
+
     unique_repo_name = generate_repository_name(repo_url)
+    if unique_repo_name.empty?
+      log "Skipping repository with empty name (URL: #{repo_url})"
+      next
+    end
+
     step %(I check "#{unique_repo_name}" in the list)
   end
 end
@@ -534,7 +556,11 @@ When(/^I prepare the development repositories of "([^"]*)" as part of "([^"]*)" 
   target = get_target(host)
   repo_urls = if deb_host?(host)
                 out, = target.run('grep -rh ^deb /etc/apt/sources.list.d/')
-                out.split("\n").map { |line| line.split[1].strip }
+                out.split("\n").map do |line|
+                  # Extract URL after 'deb' (or 'deb-src') and optional bracket options
+                  # Format: deb [options] url distribution components
+                  line[/^deb(?:-src)?\s+(?:\[.*?\]\s+)?(\S+)/, 1]
+                end
               elsif rh_host?(host)
                 out, = target.run('grep -rh "^\s*baseurl" /etc/yum.repos.d/')
                 out.split("\n").map { |line| line.split('=', 2).last.strip }
@@ -546,10 +572,17 @@ When(/^I prepare the development repositories of "([^"]*)" as part of "([^"]*)" 
               end.compact.uniq
 
   repo_urls.each do |repo_url|
-    next if repo_url.empty?
+    next if repo_url.nil? || repo_url.empty?
     next unless devel_repo?(repo_url)
 
     unique_repo_name = generate_repository_name(repo_url)
+
+    # Skip if repository name is empty (e.g., when running with empty repository configuration)
+    if unique_repo_name.nil? || unique_repo_name.empty?
+      log "Skipping repository with empty name (URL: #{repo_url})"
+      next
+    end
+
     unless repository_exist?(unique_repo_name)
       content_type = deb_host?(host) ? 'deb' : 'yum'
       $api_test.channel.software.create_repo(unique_repo_name, repo_url, content_type)
