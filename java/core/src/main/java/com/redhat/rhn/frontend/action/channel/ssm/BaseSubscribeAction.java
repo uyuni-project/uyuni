@@ -213,24 +213,8 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
                 }
 
                 if (!skippedServers.isEmpty()) {
-                    // Display the name list of not manageable to the user
-                    // and return empty handed.
-                    StrutsDelegate strutsDelegate = getStrutsDelegate();
-                    ActionMessages msgs = new ActionMessages();
-                    String oldBaseChannelMessage = oldBaseChannelId.intValue() == -1 ?
-                            localizationInstance.getMessage("basesub.jsp.noBaseChannel") :
-                                ChannelFactory.lookupByIdAndUser(oldBaseChannelId, user)
-                                    .getLabel();
-                    ActionMessage actionMessage = new ActionMessage(
-                            "basesub.jsp.unableToLookupSystemDefaultChannelWithParams",
-                            String.join(", ", skippedServers.stream()
-                                    .map(s -> "'" + s.getName() + "'")
-                                    .collect(Collectors.toList())), oldBaseChannelMessage);
-                    msgs.add(ActionMessages.GLOBAL_MESSAGE, actionMessage);
-                    strutsDelegate.saveMessages(request, msgs);
-
-                    return strutsDelegate.forwardParams(mapping.findForward("success"),
-                            new HashMap<>());
+                    // Display the name list of not manageable to the user and return empty-handed.
+                    return displayNameListReturnEmptyHanded(oldBaseChannelId, skippedServers, user, mapping, request);
                 }
 
                 List<DistChannelMap> dcms = ChannelFactory.listDistChannelMaps(oldBase);
@@ -349,6 +333,28 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
 
         log.debug("end confirmUpdateBaseChannels()");
         return mapping.findForward(RhnHelper.CONFIRM_FORWARD);
+    }
+
+    private ActionForward displayNameListReturnEmptyHanded(Long oldBaseChannelId, List<Server> skippedServers,
+                                                           User user, ActionMapping mapping,
+                                                           HttpServletRequest request) {
+        // Display the name list of not manageable to the user and return empty-handed.
+        StrutsDelegate strutsDelegate = getStrutsDelegate();
+        ActionMessages msgs = new ActionMessages();
+        String oldBaseChannelMessage = oldBaseChannelId.intValue() == -1 ?
+                localizationInstance.getMessage("basesub.jsp.noBaseChannel") :
+                ChannelFactory.lookupByIdAndUser(oldBaseChannelId, user)
+                        .getLabel();
+        ActionMessage actionMessage = new ActionMessage(
+                "basesub.jsp.unableToLookupSystemDefaultChannelWithParams",
+                String.join(", ", skippedServers.stream()
+                        .map(s -> "'" + s.getName() + "'")
+                        .collect(Collectors.toList())), oldBaseChannelMessage);
+        msgs.add(ActionMessages.GLOBAL_MESSAGE, actionMessage);
+        strutsDelegate.saveMessages(request, msgs);
+
+        return strutsDelegate.forwardParams(mapping.findForward("success"),
+                new HashMap<>());
     }
 
     /**
