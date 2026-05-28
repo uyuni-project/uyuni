@@ -23,14 +23,14 @@
                 <html:form action="/account/UserDetailsSubmit" styleClass="form-horizontal">
                     <rhn:csrf />
                     <%@ include file="/WEB-INF/pages/common/fragments/user/edit_user_table_rows.jspf"%>
-                    <div class="form-group">
+                    <div class="row">
                         <label class="col-sm-3 control-label"><bean:message key="created.displayname"/></label>
                         <div class="col-sm-6">
                             <rhn:formatDate humanStyle="calendar" value="${created}"
                                         type="both" dateStyle="short" timeStyle="long"/>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <label class="col-sm-3 control-label"><bean:message key="last_sign_in.displayname"/></label>
                         <div class="col-sm-6">
                             <c:choose>
@@ -44,7 +44,7 @@
                             </c:choose>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <div class="col-sm-offset-3 offset-sm-3 col-sm-6">
                             <button type="submit"
                                 <c:choose>

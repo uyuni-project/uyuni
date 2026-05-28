@@ -15,7 +15,7 @@
             <rhn:csrf />
             <html:hidden property="ksid" value="${ksdata.id}"/>
             <html:hidden property="submitted" value="true"/>
-                <div class="form-group">
+                <div class="row">
                     <label class="col-md-3 control-label">
                         <bean:message key="kickstart.locale.jsp.timezone" />
                     </label>
@@ -27,7 +27,7 @@
                         </html:select>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="row">
                     <div class="col-md-offset-3 offset-md-3 col-md-6">
                         <div class="checkbox">
                             <label>
@@ -37,7 +37,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="row">
                     <div class="col-md-offset-3 offset-md-3 col-md-6">
                         <html:submit styleClass="btn btn-primary">
                             <bean:message key="kickstart.locale.jsp.updatekickstart"/>

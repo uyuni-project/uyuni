@@ -35,7 +35,7 @@ const StringEditor = (props: FieldInputProps<PlainObject> & { onClose?: () => vo
         <div className="col-md-4 control-label">
           <label>{t("Name and value")}</label>
         </div>
-        <div className="col-md-8 form-group">
+        <div className="col-md-8 row">
           <MessagesContainer containerId="show-duplicate-key-string" />
           <div className="d-flex p-0 m-0 mb-3">
             <div className="w-50 me-2">

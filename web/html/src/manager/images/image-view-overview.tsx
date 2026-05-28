@@ -612,7 +612,7 @@ class ImageViewOverview extends Component<ImageViewOverviewProps> {
     return (
       <div>
         {this.hasBuilt() && <BootstrapPanel title={t("Image Status")}>{this.renderStatus(data)}</BootstrapPanel>}
-        <div className="row-0">
+        <div className="row">
           <div className="col-md-6">
             <BootstrapPanel title={t("Image Info")}>
               <div className="auto-overflow">
@@ -665,7 +665,7 @@ class ImageViewOverview extends Component<ImageViewOverviewProps> {
           </div>
         </div>
         {data.customData && Object.keys(data.customData).length > 0 && (
-          <div className="row-0">
+          <div className="row">
             <div className="col-md-12">
               <BootstrapPanel title={t("Custom Image Information")}>
                 <ImageCustomInfo data={data} />

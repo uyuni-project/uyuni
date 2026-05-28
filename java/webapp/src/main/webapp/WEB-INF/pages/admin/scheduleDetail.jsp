@@ -25,7 +25,7 @@
                 </c:if>
             </p>
 
-            <div class="form-group">
+            <div class="row">
                 <label for="joblabel" class="col-lg-3 control-label">
                     <rhn:required-field key="schedule.edit.jsp.name"/>:
                 </label>
@@ -44,7 +44,7 @@
                     </c:choose>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label for="bunch" class="col-lg-3 control-label">
                     <rhn:required-field key="schedule.edit.jsp.bunch"/>:
                 </label>
@@ -66,7 +66,7 @@
             </div>
 
             <c:if test="${empty param.schid or active}">
-                <div class="form-group">
+                <div class="row">
                     <label for="parent" class="col-lg-3 control-label">
                         <bean:message key="schedule.edit.jsp.frequency"/>:
                     </label>
@@ -79,7 +79,7 @@
             </c:if>
             <c:if test="${not active}">
                 <c:if test="${cron}">
-                    <div class="form-group">
+                    <div class="row">
                         <label class="col-lg-3 control-label">
                             <bean:message key="schedule.edit.jsp.frequency"/>
                         </label>
@@ -91,7 +91,7 @@
                     </div>
                 </c:if>
                 <c:if test='${not empty param.schid}'>
-                    <div class="form-group">
+                    <div class="row">
                         <label class="col-lg-3 control-label">
                             <bean:message key="schedule.edit.jsp.activetill"/>:
                         </label>
@@ -102,7 +102,7 @@
                 </c:if>
             </c:if>
 
-            <div class="form-group">
+            <div class="row">
                 <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <c:choose>
                         <c:when test='${empty param.schid}'>

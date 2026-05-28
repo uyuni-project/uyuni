@@ -116,7 +116,7 @@ class Proxy extends Component<Props, State> {
         {messages}
         <BootstrapPanel title={t("Change Proxy")} header={<p>{t("Connect minion(s) to another proxy server.")}</p>}>
           <div className="form-horizontal">
-            <div className="form-group">
+            <div className="row">
               <label className="col-md-3 control-label">{t("New Proxy")}:</label>
               <div className="col-md-6">
                 <select value={this.state.proxy} onChange={this.proxyChanged} className="form-control" name="proxies">
@@ -127,7 +127,7 @@ class Proxy extends Component<Props, State> {
                 </select>
               </div>
             </div>
-            <div className="form-group">
+            <div className="row">
               <div className="col-md-offset-3 offset-md-3 col-md-6">{buttons}</div>
             </div>
           </div>

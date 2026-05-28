@@ -295,7 +295,7 @@ const ScapPolicy = (): JSX.Element => {
 
         <hr />
 
-        <div className="form-group">
+        <div className="row">
           <div className="col-md-offset-3 col-md-6">
             {isEditMode && (
               <LinkButton

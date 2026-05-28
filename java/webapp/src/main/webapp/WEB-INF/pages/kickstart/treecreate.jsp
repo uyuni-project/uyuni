@@ -17,7 +17,7 @@
     <html:form method="post" action="/kickstart/TreeCreate.do" styleClass="form-horizontal">
         <rhn:csrf />
         <%@ include file="tree-form.jspf" %>
-        <div class="form-group">
+        <div class="row">
             <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                 <button type="submit" class="btn btn-primary"
                     <c:if test="${requestScope.hidesubmit == 'true'}">disabled="disabled"</c:if>>

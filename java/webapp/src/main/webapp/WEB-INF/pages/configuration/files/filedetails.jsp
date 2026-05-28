@@ -16,7 +16,7 @@
     <rhn:csrf />
         <html:hidden property="submitted" value="true"/>
 
-        <div class="row-0">
+        <div class="row">
             <div class="col-md-auto details-column-left">
               <%@ include file="/WEB-INF/pages/common/fragments/configuration/files/details.jspf"%>
             </div>
@@ -31,13 +31,13 @@
             </div>
         </div>
         <c:if test="${revision.file || revision.sls}">
-          <div class="row-0">
+          <div class="row">
               <div class="col-md-12">
                 <%@ include file="/WEB-INF/pages/common/fragments/configuration/files/add_details.jspf"%>
               </div>
           </div>
 
-          <div class="row-0">
+          <div class="row">
               <div class="col-md-12">
                 <%@ include file="/WEB-INF/pages/common/fragments/configuration/files/contents.jspf"%>
               </div>

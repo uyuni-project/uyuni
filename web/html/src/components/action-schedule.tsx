@@ -233,7 +233,7 @@ class ActionSchedule extends Component<ActionScheduleProps, ActionScheduleState>
     const renderRadioBtn = this.state.actionChains && this.state.actionChain;
 
     return (
-      <div className="form-group">
+      <div className="row">
         <div className="col-sm-3 control-label">
           {renderRadioBtn && (
             <input
@@ -264,7 +264,7 @@ class ActionSchedule extends Component<ActionScheduleProps, ActionScheduleState>
 
   renderActionChainPicker = () => {
     return (
-      <div className="form-group">
+      <div className="row">
         <div className="col-sm-3 control-label">
           <input
             type="radio"

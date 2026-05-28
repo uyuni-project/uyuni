@@ -57,13 +57,13 @@
             <form method="post" action="/rhn/admin/multiorg/ExtGroupDetails.do?gid=${gid}" class="form-horizontal" onSubmit="collect_regular_roles()">
                 <rhn:submitted/>
                 <rhn:csrf />
-                <div class="form-group">
+                <div class="row">
                     <label class="col-lg-3 control-label"><bean:message key="extgrouplist.jsp.name"/>:</label>
                        <div class="col-lg-6">
                           <input type="text" class="form-control" name="extGroupLabel" value="${group.label}" />
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="row">
                     <label class="col-lg-3 control-label"><bean:message key="userdetails.jsp.adminRoles"/>:</label>
                        <div class="col-lg-6">
                             <c:forEach items="${adminRoles}" var="role">
@@ -79,7 +79,7 @@
                             </c:forEach>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="row">
                     <label class="col-lg-3 control-label">
                         <bean:message key="userdetails.jsp.roles"/>:
                     </label>
@@ -99,7 +99,7 @@
                 </div>
                 <rhn:hidden id="selected_regular_roles" name="selected_regular_roles"/>
 
-                <div class="form-group">
+                <div class="row">
                     <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                         <button type="submit" class="btn btn-primary">
                             <c:choose>

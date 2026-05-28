@@ -47,7 +47,7 @@ const renderSearchField = (props: SearchFieldProps) => {
   }
 
   return (
-    <div className="form-group">
+    <div className="row">
       <input
         className="form-control"
         value={criteria || ""}

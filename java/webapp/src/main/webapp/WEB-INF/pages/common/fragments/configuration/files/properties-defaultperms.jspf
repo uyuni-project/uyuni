@@ -5,7 +5,7 @@
     </div>
     <div class="panel-body">
         <div class="form-horizontal">
-            <div class="form-group">
+            <div class="row">
                 <label class="control-label col-md-3">
                     <bean:message key="filedetails.properties.jspf.path" />
                 </label>
@@ -13,7 +13,7 @@
                     <p class="form-control-static"><bean:write name="configFileForm" property="cffPath"/></p>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label class="control-label col-md-3">
                     <bean:message key="filedetails.properties.jspf.saltpath" />:
                 </label>
@@ -23,7 +23,7 @@
             </div>
             <c:choose>
             <c:when test="${revision.symlink}">
-            <div class="form-group">
+            <div class="row">
                 <label class="control-label col-md-3">
                     <bean:message key="filedetails.properties.jspf.targetpath" />
                 </label>

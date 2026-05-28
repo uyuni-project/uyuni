@@ -85,7 +85,7 @@
                 </tbody>
             </table></div></div>
 
-            <div id="action-chain-save-input" class="form-group">
+            <div id="action-chain-save-input" class="row">
                 <div class="col-md-offset-3 offset-md-3 col-md-6">
                     <button class="btn btn-primary" id="save"><bean:message key="actionchain.jsp.save"/></button>
                     <button class="btn btn-default" id="cancel"><bean:message key="actionchain.jsp.cancel"/></button>
@@ -120,7 +120,7 @@
                     </c:when>
 
                     <c:otherwise>
-                        <div class="form-group">
+                        <div class="row">
                             <div class="col-sm-12">
                                 <p>
                                     <bean:message key="actionchain.jsp.schedulesummary"/>
@@ -131,7 +131,7 @@
                             <%-- When there are no maintenance windows, display the usual date picker --%>
                             <c:when test="${maintenanceWindows == null}">
                                 <rhn:hidden name="schedule_type" value="date"/>
-                                <div class="form-group">
+                                <div class="row">
                                     <div class="col-md-offset-3 offset-md-3 col-md-6">
                                         <jsp:include page="/WEB-INF/pages/common/fragments/date-picker.jsp">
                                             <jsp:param name="widget" value="date"/>
@@ -146,7 +146,7 @@
                                 <jsp:include page="/WEB-INF/pages/common/fragments/maintenance-window-picker.jsp" />
                             </c:otherwise>
                         </c:choose>
-                        <div class="form-group">
+                        <div class="row">
                             <div class="col-md-offset-3 offset-md-3 col-md-6">
                                 <button type="button" class="btn btn-primary" id="save-and-schedule">
                                     <bean:message key="actionchain.jsp.saveandschedule"/>

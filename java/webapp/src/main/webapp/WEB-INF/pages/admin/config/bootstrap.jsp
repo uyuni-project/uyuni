@@ -20,7 +20,7 @@
                            styleClass="form-horizontal"
                            enctype="multipart/form-data">
                     <rhn:csrf />
-                    <div class="form-group">
+                    <div class="row">
                         <label for="hostname" class="col-lg-3 control-label">
                             <rhn:required-field key="bootstrap.jsp.hostname"/>
                         </label>
@@ -28,7 +28,7 @@
                             <html:text size="32" property="hostname" styleId="hostname" styleClass="form-control" />
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <label class="col-lg-3 control-label" for="ssl-cert">
                             <rhn:required-field key="bootstrap.jsp.ssl-cert"/>
                         </label>
@@ -36,7 +36,7 @@
                             <html:text size="32" property="ssl-cert" styleId="ssl-cert" styleClass="form-control" />
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <label class="col-lg-3 control-label" for="gpg">
                             <bean:message key="bootstrap.jsp.gpg"/>
                         </label>
@@ -46,7 +46,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <label class="col-lg-3 control-label" for="http-proxy">
                             <bean:message key="bootstrap.jsp.http-proxy"/>
                         </label>
@@ -54,7 +54,7 @@
                             <html:text size="32" property="http-proxy" styleId="http-proxy" styleClass="form-control" />
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <label for="http-proxy-username" class="col-lg-3 control-label">
                             <bean:message key="bootstrap.jsp.http-proxy-username"/>
                         </label>
@@ -62,7 +62,7 @@
                             <html:text size="32" property="http-proxy-username" styleClass="form-control" styleId="http-proxy-username" />
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                             <html:submit styleClass="btn btn-primary">
                                 <bean:message key="config.update"/>

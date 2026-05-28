@@ -1,7 +1,7 @@
 <html:hidden property="submitted" value="true"/>
 <html:hidden property="filetype"/>
 
-<div class="form-group">
+<div class="row">
     <label for="manageJspUploadTab" class="col-lg-3 control-label">
         <bean:message key="manage.jsp.uploadtab" />
     </label>
@@ -13,7 +13,7 @@
     </div>
 </div>
 
-<div class="form-group">
+<div class="row">
     <label for="addfilesJspTypeName" class="col-lg-3 control-label">
         <bean:message key="addfiles.jsp.type-name" />
     </label>
@@ -33,7 +33,7 @@
     </div>
 </div>
 
-<div class="form-group">
+<div class="row">
     <label for="filedetailsPropertiesJspfPath" class="col-lg-3 control-label">
         <bean:message key="filedetails.properties.jspf.path" />
     </label>
@@ -42,7 +42,7 @@
     </div>
 </div>
 
-<div class="form-group">
+<div class="row">
     <label for="filedetailsPropertiesJspfOwnership" class="col-lg-3 control-label">
         <bean:message key="filedetails.properties.jspf.ownership" />
     </label>
@@ -54,7 +54,7 @@
     </div>
 </div>
 
-<div class="form-group">
+<div class="row">
     <label class="col-lg-5 control-label">
         <bean:message key="filedetails.properties.jspf.gid" />
     </label>
@@ -64,7 +64,7 @@
     </div>
 </div>
 
-<div class="form-group">
+<div class="row">
     <label class="col-lg-3 control-label">
         <bean:message key="filedetails.properties.jspf.permissions" />
     </label>
@@ -76,7 +76,7 @@
     </div>
 </div>
 
-<div class="form-group">
+<div class="row">
     <label class="col-lg-3 control-label">
         SELinux context:
     </label>
@@ -86,7 +86,7 @@
     </div>
 </div>
 
-<div class="form-group">
+<div class="row">
     <label class="col-lg-3 control-label">
         <bean:message key="filedetails.add_details.jspf.macro" />
     </label>
@@ -97,7 +97,7 @@
         <html:text property="cffMacroStart" styleClass="form-control" />
     </div>
 </div>
-<div class="form-group">
+<div class="row">
     <label class="col-lg-5 control-label">
         <bean:message key="filedetails.add_details.jspf.macro.end" />
     </label>
@@ -106,7 +106,7 @@
     </div>
 </div>
 
-<div class="form-group">
+<div class="row">
    <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
        <small>
            <bean:message key="filedetails.jsp.note.macrosalt" />
@@ -114,7 +114,7 @@
    </div>
 </div>
 
-<div class="form-group">
+<div class="row">
     <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
         <html:submit styleClass="btn btn-primary">
             <bean:message key="addfiles.jsp.upload.jspf.submit" />

@@ -423,7 +423,7 @@ function defaultWrapper(elementName, required, element, help = null) {
 
 function wrapFormGroupWithLabel(element_name: string, required?: boolean, innerHTML?: ReactNode) {
   return (
-    <div className="form-group" key={element_name}>
+    <div className="row" key={element_name}>
       {wrapLabel(element_name, required)}
       {innerHTML}
     </div>

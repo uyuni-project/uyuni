@@ -72,7 +72,7 @@ export function SchedulePickerForm(props: SchedulePickerFormProps) {
     <>
       <Form model={model} onChange={onChange} onValidate={setIsValid}>
         <SchedulePicker schedules={props.schedules} />
-        <div className="form-group">
+        <div className="row">
           <div className="col-md-offset-3 offset-md-3 col-md-6">
             {model.scheduleId === "0" ? (
               <AsyncButton

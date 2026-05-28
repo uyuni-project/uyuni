@@ -60,7 +60,7 @@ export class HeaderSearch extends PureComponent<HeaderSearchProps, HeaderSearchS
         />
         {this.state.isOpen ? (
           <form id="search-form" name="form1" className="box-wrapper form-inline" onSubmit={this.onSubmit}>
-            <div className="form-group">
+            <div className="row">
               <input
                 name="searchString"
                 value={this.state.searchString}

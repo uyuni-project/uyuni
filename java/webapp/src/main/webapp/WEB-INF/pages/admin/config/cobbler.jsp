@@ -26,7 +26,7 @@
         </div>
         <div class="panel-body">
             <form action="/rhn/admin/config/Cobbler.do" method="POST">
-                <div class="form-group">
+                <div class="row">
                     <label class="col-lg-3 control-label">
                         <bean:message key="cobbler.jsp.sync"/>
                     </label>

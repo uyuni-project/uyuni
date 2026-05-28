@@ -316,7 +316,7 @@ class FormulaSelection extends Component<Props, State> {
                 e.preventDefault();
               }}
             >
-              <div className="form-group">
+              <div className="row">
                 <label htmlFor="chooseFormulas" className="col-lg-3 control-label">
                   Choose formulas:
                 </label>

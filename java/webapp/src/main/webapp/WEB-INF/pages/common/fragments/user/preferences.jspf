@@ -68,7 +68,7 @@
   </div>
   <div class="panel-body">
     <p><bean:message key="preferences.jsp.datestimes"/></p>
-    <div class="form-group">
+    <div class="row">
       <div class="col-md-2">
         <bean:message key="preferences.jsp.displaytimesas"/>
       </div>
@@ -91,7 +91,7 @@
     <div class="panel-body">
       <p><bean:message key="preferences.jsp.langs" /></p>
       <div class="well well-sm">
-        <div class="form-group">
+        <div class="row">
           <div class="col-sm-6">
             <input type="radio" name="preferredLocale" value="<c:out value="${defaultLocale.languageCode}" />"
                     <c:if test="${defaultLocale.languageCode == currentLocale}">
@@ -103,7 +103,7 @@
         <c:set var="counter" value="0"/>
         <c:forEach var="item" items="${supportedLocales}">
           <c:if test="${counter == 0}">
-            <div class="form-group">
+            <div class="row">
           </c:if>
           <div class="col-sm-6">
             <input type="radio" name="preferredLocale" value="<c:out value="${item.key}" />"
@@ -136,7 +136,7 @@
     <div class="panel-body">
       <p><bean:message key="preferences.jsp.docs.langs" /></p>
       <div class="well well-sm">
-        <div class="form-group">
+        <div class="row">
           <div class="col-sm-6">
             <input type="radio" name="preferredDocsLocale" value="<c:out value="${defaultDocsLocale.languageCode}" />"
                     <c:if test="${defaultDocsLocale.languageCode == currentDocsLocale}">
@@ -148,7 +148,7 @@
         <c:set var="counter" value="0"/>
         <c:forEach var="item" items="${supportedDocsLocales}">
           <c:if test="${counter == 0}">
-            <div class="form-group">
+            <div class="row">
           </c:if>
           <div class="col-sm-6">
             <input type="radio" name="preferredDocsLocale" value="<c:out value="${item.key}" />"
@@ -179,7 +179,7 @@
   </div>
   <div class="panel-body">
     <p><bean:message key="preferences.jsp.text.theme"/></p>
-    <div class="form-group">
+    <div class="row">
       <div class="col-md-6">
         <select name="theme" value="${theme}" class="form-control">
           <c:forEach var="item" items="${themes}">

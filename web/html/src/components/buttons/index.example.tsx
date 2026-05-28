@@ -6,7 +6,7 @@ import { Text } from "../input/text/Text";
 import { BootstrapPanel } from "../panels/BootstrapPanel";
 export default () => {
   const listButtons = [
-    <div className="form-group btn-group" key="modal-buttons-eg1">
+    <div className="row btn-group" key="modal-buttons-eg1">
       <div className="col-lg-offset-3 offset-lg-3 col-lg-6">
         <Button className="btn-primary bt-sm" text="Submit" />
         <Button className="btn-default bt-sm" text="Clear" />
@@ -227,7 +227,7 @@ export default () => {
           <BootstrapPanel title="Forms" footer={listButtons}>
             <Text name="firstname" label={t("First Name")} labelClass="col-md-3 text-right" divClass="col-md-6" />
             <Text name="lastname" label={t("Last Name")} labelClass="col-md-3 text-right" divClass="col-md-6" />
-            <div className="form-group">
+            <div className="row">
               <label className="control-label col-md-3 text-right" htmlFor="email-id">
                 Email ID:
               </label>
@@ -269,7 +269,7 @@ export default () => {
           <BootstrapPanel
             title="Forms"
             footer={
-              <div className="form-group btn-group">
+              <div className="row btn-group">
                 <div className="col-lg-offset-3 offset-lg-3 col-lg-6">
                   <Button className="btn-primary bt-sm" text="Submit" />
                 </div>
@@ -277,7 +277,7 @@ export default () => {
             }
           >
             <Text name="firstname" label={t("Name")} labelClass="col-md-3 text-right" divClass="col-md-6" />
-            <div className="form-group ">
+            <div className="row ">
               <label className="control-label col-md-3 text-right" htmlFor="firstname">
                 Name:
               </label>
@@ -288,7 +288,7 @@ export default () => {
                 <Button className="btn-tertiary" title="Delete" icon="fa-trash"></Button>
               </div>
             </div>
-            <div className="form-group ">
+            <div className="row ">
               <div className="control-label col-md-3" />
               <div className="col-md-6">
                 <Button className="btn-tertiary" icon="fa-plus">

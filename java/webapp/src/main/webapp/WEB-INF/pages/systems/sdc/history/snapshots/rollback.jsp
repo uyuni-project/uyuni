@@ -69,7 +69,7 @@ and
     <html:hidden property="sid" value="${param.sid}" />
     <html:hidden property="ss_id" value="${param.ss_id}" />
 
-    <div class="form-group">
+    <div class="row">
         <label class="col-lg-3 control-label">
             <bean:message key="system.history.snapshot.group-membership" />
         </label>
@@ -79,7 +79,7 @@ and
             </p>
         </div>
     </div>
-    <div class="form-group">
+    <div class="row">
         <label class="col-lg-3 control-label">
             <bean:message key="system.history.snapshot.channel-subscription" />
         </label>
@@ -89,7 +89,7 @@ and
             </p>
         </div>
     </div>
-    <div class="form-group">
+    <div class="row">
         <label class="col-lg-3 control-label">
             <bean:message key="system.history.snapshot.package-manifest" />
         </label>
@@ -99,7 +99,7 @@ and
             </p>
         </div>
     </div>
-    <div class="form-group">
+    <div class="row">
         <label class="col-lg-3 control-label">
             <bean:message key="system.history.snapshot.config-channel-membership" />
         </label>
@@ -109,7 +109,7 @@ and
             </p>
         </div>
     </div>
-    <div class="form-group">
+    <div class="row">
         <label class="col-lg-3 control-label">
             <bean:message key="system.history.snapshot.config-files" />
         </label>
@@ -119,7 +119,7 @@ and
             </p>
         </div>
     </div>
-    <div class="form-group">
+    <div class="row">
         <div class="col-sm-6">
             <rhn:icon type="nav-up" />
             <a href="/rhn/systems/details/history/snapshots/Index.do?sid=${param.sid}">
