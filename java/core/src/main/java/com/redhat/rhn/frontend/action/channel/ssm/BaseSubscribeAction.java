@@ -201,16 +201,9 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
                 log.debug("Default system base channel was selected.");
 
                 List<Long> servers = serversInSSMWithBase(user, oldBaseChannelId);
-                List<Server> skippedServers = new LinkedList<>();
 
-                // Check if for all servers in the set we can guess base channel
-                // if not add them to the skipped list
-                for (Long sId : servers) {
-                    Server server = SystemManager.lookupByIdAndUser(sId, user);
-                    if (!ChannelManager.guessServerBaseChannel(user, server).isPresent()) {
-                        skippedServers.add(server);
-                    }
-                }
+                // Check if for all servers in the set we can guess base channel. If not add them to the skipped list
+                List<Server> skippedServers = getSkippedServers(servers, user);
 
                 if (!skippedServers.isEmpty()) {
                     // Display the name list of not manageable to the user and return empty-handed.
@@ -385,6 +378,20 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
                 log.debug("   {} {} {}", dto.getOldChannelName(), dto.getOtherChannelName(), dto.getSystemsAffected());
             }
         }
+    }
+
+    private List<Server> getSkippedServers(List<Long> servers, User user) {
+        // Check if for all servers in the set we can guess base channel. If not add them to the skipped list
+        List<Server> skippedServers = new LinkedList<>();
+
+        for (Long sId : servers) {
+            Server server = SystemManager.lookupByIdAndUser(sId, user);
+            if (!ChannelManager.guessServerBaseChannel(user, server).isPresent()) {
+                skippedServers.add(server);
+            }
+        }
+
+        return skippedServers;
     }
 
     /**
