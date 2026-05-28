@@ -210,9 +210,9 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
                     return displayNameListReturnEmptyHanded(oldBaseChannelId, skippedServers, user, mapping, request);
                 }
 
-                Optional<Channel> optNewBase = findDefaultBaseChannel(oldBase, user);
-                if (optNewBase.isPresent()) {
-                    newBase = optNewBase.get();
+                Optional<Channel> optDefaultBase = findDefaultBaseChannel(oldBase, user);
+                if (optDefaultBase.isPresent()) {
+                    newBase = optDefaultBase.get();
                 }
 
                 // no "default base channel" found so far
@@ -222,19 +222,10 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
                     // we need a server object to call the stored procedure and guess a
                     // default base channel:
 
-                    // take the first system of the list, guess its base channel and use it
-                    Server s = SystemManager.lookupByIdAndUser(servers.get(0), user);
-                    newBase = ChannelManager.guessServerBaseChannel(user, s).orElse(null);
+                    Optional<Channel> optOtherBase = findOtherBaseChannel(servers, user);
 
-                    // no "default base channel" found so far
-                    if (newBase == null) {
-                        // lets search for suse channels
-                        List<EssentialChannelDto> dr = ChannelManager.
-                                listPossibleSuseBaseChannelsForServer(s).orElse(null);
-                        if (dr != null && dr.get(0) != null) {
-                            newBase = ChannelFactory.lookupByIdAndUser(
-                                    dr.get(0).getId(), user);
-                        }
+                    if (optOtherBase.isPresent()) {
+                        newBase = optOtherBase.get();
                     }
                 }
             }
@@ -392,6 +383,30 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
         }
 
         return skippedServers;
+    }
+
+    private Optional<Channel> findOtherBaseChannel(List<Long> servers, User user) {
+        // Looks like an EUS or custom channel, need to get a little crazy :(
+        // Should be safe to assume there's at least one result returned here,
+        // we need a server object to call the stored procedure and guess a
+        // default base channel:
+
+        // take the first system of the list, guess its base channel and use it
+        Server s = SystemManager.lookupByIdAndUser(servers.get(0), user);
+        Channel newBase = ChannelManager.guessServerBaseChannel(user, s).orElse(null);
+
+        // no "default base channel" found so far
+        if (newBase == null) {
+            // lets search for suse channels
+            List<EssentialChannelDto> dr = ChannelManager.
+                    listPossibleSuseBaseChannelsForServer(s).orElse(null);
+            if (dr != null && dr.get(0) != null) {
+                newBase = ChannelFactory.lookupByIdAndUser(
+                        dr.get(0).getId(), user);
+            }
+        }
+
+        return Optional.ofNullable(newBase);
     }
 
     /**
