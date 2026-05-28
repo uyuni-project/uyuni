@@ -16,7 +16,7 @@
             </div>
             <div class="panel-body">
                 <div class="row">
-                    <label class="col-lg-3 control-label">
+                    <label class="col-lg-3 text-end">
                         <bean:message key="channel.edit.jsp.name"/>
                     </label>
                     <div class="col-lg-6">
@@ -24,7 +24,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <label class="col-lg-3 control-label">
+                    <label class="col-lg-3 text-end">
                         <bean:message key="channel.edit.jsp.label"/>
                     </label>
                     <div class="col-lg-6">
@@ -32,7 +32,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <label class="col-lg-3 control-label">
+                    <label class="col-lg-3 text-end">
                         <bean:message key="channel.jsp.parentchannel"/>
                     </label>
                     <div class="col-lg-6">
@@ -47,7 +47,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <label class="col-lg-3 control-label">
+                    <label class="col-lg-3 text-end">
                         <bean:message key="channel.edit.jsp.checksum"/>
                     </label>
                     <div class="col-lg-6">
@@ -60,7 +60,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <label class="col-lg-3 control-label">
+                    <label class="col-lg-3 text-end">
                         <bean:message key="packagelist.jsp.packagearch"/>
                     </label>
                     <div class="col-lg-6">
@@ -68,7 +68,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <label class="col-lg-3 control-label">
+                    <label class="col-lg-3 text-end">
                         <bean:message key="channel.jsp.summary"/>
                     </label>
                     <div class="col-lg-6">
@@ -76,7 +76,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <label class="col-lg-3 control-label">
+                    <label class="col-lg-3 text-end">
                         <bean:message key="details.jsp.description"/>
                     </label>
                     <div class="col-lg-6">
@@ -89,7 +89,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <label class="col-lg-3 control-label">
+                    <label class="col-lg-3 text-end">
                         <bean:message key="channel.jsp.chanent"/>
                     </label>
                     <div class="col-lg-6">
@@ -97,7 +97,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <label class="col-lg-3 control-label">
+                    <label class="col-lg-3 text-end">
                         <bean:message key="channelfiles.jsp.lastmod"/>
                     </label>
                     <div class="col-lg-6">
@@ -105,7 +105,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <label class="col-lg-3 control-label">
+                    <label class="col-lg-3 text-end">
                         <bean:message key="channel.jsp.repolastbuild"/>
                     </label>
                     <div class="col-lg-6">
@@ -120,7 +120,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <label class="col-lg-3 control-label">
+                    <label class="col-lg-3 text-end">
                         <bean:message key="channel.jsp.repoautosync"/>
                     </label>
                     <div class="col-lg-6">
@@ -138,7 +138,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <label class="col-lg-3 control-label">
+                    <label class="col-lg-3 text-end">
                         <bean:message key="channel.jsp.repodata"/>
                     </label>
                     <div class="col-lg-6">
@@ -146,7 +146,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <label class="col-lg-3 control-label">
+                    <label class="col-lg-3 text-end">
                         <bean:message key="header.jsp.packages"/>
                     </label>
                     <div class="col-lg-6">
@@ -156,7 +156,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <label class="col-lg-3 control-label">
+                    <label class="col-lg-3 text-end">
                         <bean:message key="channel.edit.jsp.perusersub"/>
                     </label>
                     <div class="col-lg-6">
@@ -193,7 +193,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <label class="col-lg-3 control-label">
+                    <label class="col-lg-3 text-end">
                         <bean:message key="channel.jsp.systemssubsribed"/>
                     </label>
                     <div class="col-lg-6">
@@ -203,7 +203,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <label class="col-lg-3 control-label">
+                    <label class="col-lg-3 text-end">
                         <bean:message key="channel.jsp.appstreams"/>
                     </label>
                     <div class="col-lg-6">
@@ -220,7 +220,7 @@
             </div>
             <div class="panel-body">
                 <div class="row">
-                    <label class="col-lg-3 control-label">
+                    <label class="col-lg-3 text-end">
                             <bean:message key="channel.edit.jsp.maintainername"/>
                     </label>
                     <div class="col-lg-6">
@@ -228,7 +228,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <label class="col-lg-3 control-label">
+                    <label class="col-lg-3 text-end">
                         <bean:message key="channel.edit.jsp.maintainercontactinfo"/>
                     </label>
                     <div class="col-lg-6">
@@ -255,7 +255,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <label class="col-lg-3 control-label">
+                    <label class="col-lg-3 text-end">
                         <bean:message key="channel.edit.jsp.supportpolicy"/>
                     </label>
                     <div class="col-lg-6">
@@ -271,7 +271,7 @@
             </div>
             <div class="panel-body">
                 <div class="row">
-                    <label class="col-lg-3 control-label">
+                    <label class="col-lg-3 text-end">
                         <bean:message key="channel.edit.jsp.gpgkeyurl"/>
                     </label>
                     <div class="col-lg-6">
@@ -286,7 +286,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <label class="col-lg-3 control-label">
+                    <label class="col-lg-3 text-end">
                         <bean:message key="channel.edit.jsp.gpgkeyid"/>
                     </label>
                     <div class="col-lg-6">
@@ -301,7 +301,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <label class="col-lg-3 control-label">
+                    <label class="col-lg-3 text-end">
                         <bean:message key="channel.edit.jsp.gpgkeyfingerprint"/>
                     </label>
                     <div class="col-lg-6">
@@ -316,7 +316,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <label class="col-lg-3 control-label">
+                    <label class="col-lg-3 text-end">
                         <bean:message key="channel.jsp.gpgcheck"/>
                     </label>
                     <div class="col-lg-6">
