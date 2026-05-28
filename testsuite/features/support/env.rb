@@ -386,6 +386,14 @@ Before('@alma9_ssh_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['alma9_ssh_minion']
 end
 
+Before('@alma10_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['alma10_minion']
+end
+
+Before('@alma10_ssh_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['alma10_ssh_minion']
+end
+
 Before('@amazon2023_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['amazon2023_minion']
 end
@@ -418,6 +426,14 @@ Before('@oracle9_ssh_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['oracle9_ssh_minion']
 end
 
+Before('@oracle10_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['oracle10_minion']
+end
+
+Before('@oracle10_ssh_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['oracle10_ssh_minion']
+end
+
 Before('@rhel9_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['rhel9_minion']
 end
@@ -440,6 +456,14 @@ end
 
 Before('@rocky9_ssh_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['rocky9_ssh_minion']
+end
+
+Before('@rocky10_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['rocky10_minion']
+end
+
+Before('@rocky10_ssh_minion') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['rocky10_ssh_minion']
 end
 
 Before('@ubuntu2204_minion') do
@@ -666,6 +690,11 @@ end
 
 Before('@skip_for_transactional_minion') do |scenario|
   skip_this_scenario if scenario.location.file.include?('slemicro') || scenario.location.file.include?('slmicro')
+end
+
+Before('@skip_for_rhel10plus') do |scenario|
+  rhel10_minion_tags = %w[@alma10_minion @alma10_ssh_minion @oracle10_minion @oracle10_ssh_minion @rocky10_minion @rocky10_ssh_minion]
+  skip_this_scenario if rhel10_minion_tags.any? { |tag| scenario.source_tag_names.include?(tag) }
 end
 
 # do some tests only if we have SCC credentials

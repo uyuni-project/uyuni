@@ -987,6 +987,7 @@ end
 # @param hostname String The hostname of the requested system
 # @param package String The package name where it will trigger an upgrade
 def trigger_upgrade(hostname, package)
+  get_target('server').run('spacecmd -u admin -p admin clear_caches', check_errors: false)
   get_target('server').run("spacecmd -u admin -p admin system_upgradepackage #{hostname} #{package} -y", check_errors: true)
 end
 
@@ -995,6 +996,7 @@ end
 # @param hostname String The hostname of the requested system
 # @param package String The package name to install
 def trigger_install(hostname, package)
+  get_target('server').run('spacecmd -u admin -p admin clear_caches', check_errors: false)
   get_target('server').run("spacecmd -u admin -p admin system_installpackage #{hostname} #{package} -y", check_errors: true)
 end
 
@@ -1003,6 +1005,7 @@ end
 # @param hostname String The hostname of the requested system
 # @param package String The package name to remove
 def trigger_remove(hostname, package)
+  get_target('server').run('spacecmd -u admin -p admin clear_caches', check_errors: false)
   get_target('server').run("spacecmd -u admin -p admin system_removepackage #{hostname} #{package} -y", check_errors: true)
 end
 
