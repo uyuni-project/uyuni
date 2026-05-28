@@ -265,16 +265,8 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
                 // case 1 --> see comments above
                 // (can happen in the case of solaris systems)
                 if (newBaseChannelId.intValue() == -1) {
-                    // Display a warning to the user and return empty handed.
-                    StrutsDelegate strutsDelegate = getStrutsDelegate();
-                    ActionMessages msgs = new ActionMessages();
-                    msgs.add(ActionMessages.GLOBAL_MESSAGE,
-                            new ActionMessage(
-                                    "basesub.jsp.unableToLookupSystemDefaultChannel"));
-                    strutsDelegate.saveMessages(request, msgs);
-
-                    return strutsDelegate.forwardParams(mapping.findForward("success"),
-                            new HashMap<>());
+                    // Display a warning to the user and return empty-handed.
+                    return displayWarningReturnEmptyHanded(mapping, request);
                 }
                 //case 2 --> evaluate the new base channel selected and use it
                 newBase = ChannelManager.lookupByIdAndUser(newBaseChannelId, user);
@@ -351,6 +343,19 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
                         .map(s -> "'" + s.getName() + "'")
                         .collect(Collectors.toList())), oldBaseChannelMessage);
         msgs.add(ActionMessages.GLOBAL_MESSAGE, actionMessage);
+        strutsDelegate.saveMessages(request, msgs);
+
+        return strutsDelegate.forwardParams(mapping.findForward("success"),
+                new HashMap<>());
+    }
+
+    private ActionForward displayWarningReturnEmptyHanded(ActionMapping mapping, HttpServletRequest request) {
+        // Display a warning to the user and return empty-handed.
+        StrutsDelegate strutsDelegate = getStrutsDelegate();
+        ActionMessages msgs = new ActionMessages();
+        msgs.add(ActionMessages.GLOBAL_MESSAGE,
+                new ActionMessage(
+                        "basesub.jsp.unableToLookupSystemDefaultChannel"));
         strutsDelegate.saveMessages(request, msgs);
 
         return strutsDelegate.forwardParams(mapping.findForward("success"),
