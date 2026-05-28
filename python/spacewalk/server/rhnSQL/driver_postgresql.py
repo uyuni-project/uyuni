@@ -212,11 +212,17 @@ class Database(sql_base.Database):
             ):
                 dsndata["sslmode"] = self.sslmode
                 dsndata["sslrootcert"] = self.sslrootcert
+            elif self.sslmode == "disable":
+                dsndata["sslmode"] = self.sslmode
             elif self.sslmode is not None:
                 raise AttributeError(
-                    'Only sslmode="verify-full" (or None) is supported.'
+                    'Only sslmode="verify-full" or "disable" (or None) is supported.'
                 )
-            if self.sslmode is not None and self.sslrootcert is None:
+            if (
+                self.sslmode is not None
+                and self.sslmode != "disable"
+                and self.sslrootcert is None
+            ):
                 raise AttributeError(
                     "Attribute sslrootcert needs to be set if sslmode is set."
                 )

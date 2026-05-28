@@ -20,7 +20,7 @@ import sys
 
 from uyuni.common.usix import raise_with_tb
 from spacewalk.common.rhnLog import log_debug
-from spacewalk.common.rhnConfig import CFG, initCFG
+from spacewalk.common.rhnConfig import CFG, initCFG, is_true
 from spacewalk.common.rhnException import rhnException
 from spacewalk.common.rhnTB import add_to_seclist
 
@@ -32,6 +32,7 @@ from . import dbi
 from . import sql_types
 
 types = sql_types
+
 
 # pylint: disable-next=wrong-import-position
 from .const import POSTGRESQL, SUPPORTED_BACKENDS
@@ -130,11 +131,11 @@ def initDB(
             database = CFG.DB_NAME
             username = CFG.DB_USER
             password = CFG.DB_PASSWORD
-            if CFG.DB_SSL_ENABLED:
-                sslmode = "verify-full"
+            if is_true(CFG.DB_SSL_ENABLED) and CFG.DB_HOST != "localhost":
+                sslmode = CFG.DB_SSLMODE or "verify-full"
                 sslrootcert = CFG.DB_SSLROOTCERT
             else:
-                sslmode = None
+                sslmode = "disable"
                 sslrootcert = None
 
     if backend not in SUPPORTED_BACKENDS:

@@ -28,11 +28,18 @@ WHERE T.channel_id = CT.parent_or_self_id
     return result
 
 
+def is_true(val):
+    return str(val).lower() in ("1", "y", "true", "yes", "on")
+
+
 def _connect_db():
     config = configparser.ConfigParser()
     with open("/etc/rhn/rhn.conf", "r", encoding="utf-8") as fd:
         content = "[default]\n" + fd.read()
         config.read_string(content)
+
+    db_ssl_enabled = is_true(config.get("default", "db_ssl_enabled", fallback="0"))
+    sslmode = "verify-full" if db_ssl_enabled else "disable"
 
     # pylint: disable-next=undefined-variable
     return psycopg2.connect(
@@ -41,6 +48,7 @@ def _connect_db():
         password=config.get("default", "db_password"),
         dbname=config.get("default", "db_name"),
         port=int(config.get("default", "db_port")),
+        sslmode=sslmode,
     )
 
 

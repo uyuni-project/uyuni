@@ -36,6 +36,13 @@ _CONFIG_DEFAULTS_ROOT = os.environ.get(
 )
 
 
+def is_true(val):
+    """
+    Returns True if the value is a string that represents a truthy value.
+    """
+    return str(val).lower() in ("1", "y", "true", "yes", "on")
+
+
 def warn(*args):
     """
     Function used for debugging purposes
@@ -416,7 +423,7 @@ def parse_line(line):
 
     # now split it into keys and values. We allow for max one
     # split/cut (the first one)
-    (keys, vals) = [c.strip() for c in line.split("=", 1)]
+    keys, vals = [c.strip() for c in line.split("=", 1)]
 
     # extract the keys, convert to lowercase
     keys = keys.lower()
@@ -456,7 +463,7 @@ def parse_file(filename, single_key=0):
         # lineno is 1-based
         lineno = lineno + 1
         try:
-            (keys, values) = parse_line(line)
+            keys, values = parse_line(line)
         except:
             raise_with_tb(
                 ConfigParserError(

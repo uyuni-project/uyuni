@@ -28,7 +28,6 @@ except ImportError:
 
 from yaml import dump
 
-
 __virtualname__ = "uyuni"
 
 log = logging.getLogger(__name__)
@@ -89,13 +88,13 @@ class UyuniRoster:
 
         if "port" in db_config:
             # pylint: disable-next=consider-using-f-string
-            self.db_connect_str = "dbname='{db}' user='{user}' host='{host}' port='{port}' password='{pass}'".format(
+            self.db_connect_str = "dbname='{db}' user='{user}' host='{host}' port='{port}' password='{pass}' sslmode='{sslmode}'".format(
                 **db_config
             )
         else:
             self.db_connect_str = (
                 # pylint: disable-next=consider-using-f-string
-                "dbname='{db}' user='{user}' host='{host}' password='{pass}'".format(
+                "dbname='{db}' user='{user}' host='{host}' password='{pass}' sslmode='{sslmode}'".format(
                     **db_config
                 )
             )
