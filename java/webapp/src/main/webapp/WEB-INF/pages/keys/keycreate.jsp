@@ -17,7 +17,7 @@
             <html:hidden property="submitted" value="true"/>
             <html:hidden property="key_id" value="${cryptoKey.id}"/>
             <%@ include file="key-form.jspf" %>
-            <div class="form-group">
+            <div class="row">
                 <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <html:submit styleClass="btn btn-primary">
                         <bean:message key="keycreate.jsp.submit"/>

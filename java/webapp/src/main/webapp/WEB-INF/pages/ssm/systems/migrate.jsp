@@ -26,12 +26,12 @@
   <html:form styleClass="form-inline" method="post" action="/systems/ssm/MigrateSystems.do">
     <rhn:csrf />
     <rhn:submitted />
-    <div class="form-group">
+    <div class="row">
       <label>
         <bean:message key="ssm.migrate.systems.org"/>
       </label>
     </div>
-    <div class="form-group">
+    <div class="row">
       <html:select styleClass="form-control" property="org">
         <html:option value="">-- None --</html:option>
         <c:forEach var="o" items="${orgs}">
@@ -39,7 +39,7 @@
         </c:forEach>
       </html:select>
     </div>
-    <div class="form-group">
+    <div class="row">
       <button class="btn btn-default" type="submit" name="dispatch"
         value="${rhn:localize('ssm.migrate.systems.confirmbutton')}">
         ${rhn:localize('ssm.migrate.systems.confirmbutton')}

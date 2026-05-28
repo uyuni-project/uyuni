@@ -73,7 +73,7 @@ class CoCoSettingsForm extends Component<Props, State> {
       <>
         <BootstrapPanel>
           <div className="form-horizontal">
-            <div className="form-group">
+            <div className="row">
               <div className="col-md-offset-3 offset-md-3 col-md-6">
                 <Toggler
                   className="checkbox"
@@ -83,7 +83,7 @@ class CoCoSettingsForm extends Component<Props, State> {
                 />
               </div>
             </div>
-            <div className="form-group">
+            <div className="row">
               <label className="col-md-3 control-label">{t("Environment Type")}:</label>
               <div className="col-md-6">
                 <select
@@ -101,7 +101,7 @@ class CoCoSettingsForm extends Component<Props, State> {
                 </select>
               </div>
             </div>
-            <div className="form-group">
+            <div className="row">
               <label className="col-md-3 control-label">{t("Executions")}:</label>
               <div className="col-md-6">
                 <Toggler
@@ -114,7 +114,7 @@ class CoCoSettingsForm extends Component<Props, State> {
               </div>
             </div>
             {this.props.showOnScheduleOption && (
-              <div className="form-group">
+              <div className="row">
                 <div className="col-md-offset-3 offset-md-3 col-md-6">
                   <Toggler
                     className="checkbox"

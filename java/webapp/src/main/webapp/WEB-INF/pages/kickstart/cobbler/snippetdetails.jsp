@@ -39,7 +39,7 @@
     <rhn:csrf />
     <rhn:submitted/>
 
-    <div class="form-group">
+    <div class="row">
         <label class="col-lg-3 control-label">
             <rhn:required-field key = "cobbler.snippet.name"/>
         </label>
@@ -54,7 +54,7 @@
      </div>
 
      <c:if  test = "${empty requestScope.create_mode}">
-         <div class="form-group">
+         <div class="row">
              <label class="col-lg-3 control-label">
                  <bean:message key="cobbler.snippet.path"/>:
              </label>
@@ -64,7 +64,7 @@
              </div>
          </div>
 
-         <div class="form-group">
+         <div class="row">
              <label class="col-lg-3 control-label">
                  <bean:message key="cobbler.snippet.macro"/>:
              </label>
@@ -75,7 +75,7 @@
          </div>
      </c:if>
 
-     <div class="form-group">
+     <div class="row">
         <label class="col-lg-3 control-label">
             <bean:message key="cobbler.snippet.type"/>:
         </label>
@@ -92,7 +92,7 @@
 
      <h2><bean:message key="snippetcreate.jsp.contents.header"/></h2>
 
-     <div class="form-group">
+     <div class="row">
          <label class="col-lg-3 control-label">
              <rhn:required-field key="snippetcreate.jsp.contents"/>
          </label>
@@ -102,7 +102,7 @@
          </div>
      </div>
 
-     <div class="form-group">
+     <div class="row">
          <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
              <html:submit styleClass="btn btn-primary">
                  <c:choose>

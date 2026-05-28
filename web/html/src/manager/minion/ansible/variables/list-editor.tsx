@@ -35,7 +35,7 @@ const ListEditor = (props: FieldInputProps<PlainObject> & { onClose?: () => void
         <div className="col-md-4 control-label">
           <label>{t("Name")}</label>
         </div>
-        <div className="col-md-8 form-group">
+        <div className="col-md-8 row">
           <input
             className="form-control"
             placeholder="List key"
@@ -48,7 +48,7 @@ const ListEditor = (props: FieldInputProps<PlainObject> & { onClose?: () => void
         <div className="col-md-4 control-label">
           <label>{t("Items")}</label>
         </div>
-        <div className="col-md-8 form-group">
+        <div className="col-md-8 row">
           {pendingListItems.map((item, idx) => (
             <div className="d-flex p-0 gap-2 mb-2" key={`items-${idx}`}>
               <input
@@ -83,7 +83,7 @@ const ListEditor = (props: FieldInputProps<PlainObject> & { onClose?: () => void
       </div>
       <div className="row">
         <div className="col-md-4"></div>
-        <div className="col-md-8 form-group">
+        <div className="col-md-8 row">
           <Button className="btn btn-sm btn-primary" text={t("Add List")} handler={handleAddList} />
         </div>
       </div>

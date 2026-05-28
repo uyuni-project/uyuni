@@ -61,7 +61,7 @@
                styleClass="form-horizontal"
                action="/kickstart/KickstartSoftwareEdit.do">
         <rhn:csrf />
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label">
                     <rhn:required-field key="softwareedit.jsp.basechannel"/>:
                 </label>
@@ -74,7 +74,7 @@
                     </span>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label">
                     <bean:message key="softwareedit.jsp.child_channels"/>:
                 </label>
@@ -101,7 +101,7 @@
                     </span>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label">
                     <rhn:required-field key="softwareedit.jsp.avail_trees"/>:
                 </label>
@@ -120,7 +120,7 @@
                                 </html:select>
                             </c:if>
                             <c:if test="${not (usingNewest == true or usingNewestRH == true)}">
-                                <div class="form-group">
+                                <div class="row">
                                     <div class="col-lg-6">
                                         <html:select styleClass="form-control"
                                                      property="tree"
@@ -134,7 +134,7 @@
                                 </div>
                             </c:if>
                             <c:if test="${redHatTreesAvailable != null}">
-                                <div class="form-group">
+                                <div class="row">
                                     <div class="col-lg-6">
                                         <div class="checkbox">
                                             <label>
@@ -171,7 +171,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label">
                     <bean:message key="softwareedit.jsp.url" />:
                 </label>
@@ -187,7 +187,7 @@
                 </div>
             </div>
             <c:if test = "${not empty kickstartSoftwareForm.map.possibleRepos}">
-                <div class="form-group">
+                <div class="row">
                     <label class="col-lg-3 control-label">
                         <bean:message key="softwareedit.jsp.repos" />:
                     </label>
@@ -205,7 +205,7 @@
                     </div>
                 </div>
             </c:if>
-            <div class="form-group">
+            <div class="row">
                 <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <html:submit styleClass="btn btn-primary">
                         <bean:message key="kickstartdetails.jsp.updatekickstart"/>

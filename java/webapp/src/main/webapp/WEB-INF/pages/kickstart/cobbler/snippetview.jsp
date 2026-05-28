@@ -17,7 +17,7 @@
 <form role="form" class="form-horizontal">
     <fieldset>
         <legend><h2><bean:message key="snippetdetails.jsp.header2"/></h2></legend>
-            <div class="form-group">
+            <div class="row">
             <label class="col-sm-2 control-label">
                 <bean:message key="cobbler.snippet.path"/>:
             </label>
@@ -26,7 +26,7 @@
                 <p class="help-block"><rhn:tooltip key="cobbler.snippet.path.tip"/></p>
             </div>
             </div>
-            <div class="form-group">
+            <div class="row">
             <label class="col-sm-2 control-label">
                 <bean:message key="cobbler.snippet.macro"/>:
             </label>
@@ -35,7 +35,7 @@
                 <p class="help-block"><rhn:tooltip key="cobbler.snippet.copy-paste-snippet-tip"/></p>
             </div>
             </div>
-            <div class="form-group">
+            <div class="row">
             <label class="col-sm-2 control-label">
                 <bean:message key="cobbler.snippet.type"/>:
             </label>
@@ -50,7 +50,7 @@
     <fieldset>
         <legend><h2><bean:message key="snippetcreate.jsp.contents.header"/></h2></legend>
 
-        <div class="form-group">
+        <div class="row">
             <label class="col-sm-2 control-label">
                 <bean:message key="snippetcreate.jsp.contents"/>:
             </label>

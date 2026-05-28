@@ -21,7 +21,7 @@
     <html:hidden property="token" value="${param.token}" />
     <div class="search-choices panel panel-default">
       <div class="search-choices-group panel-body">
-        <div class="form-group row">
+        <div class="row">
           <div class="col-md-2 text-right">
             <label for="searchform"><bean:message key="password.displayname"/></label>
           </div>
@@ -29,7 +29,7 @@
             <html:password property="password" styleClass="form-control" maxlength="${passwordLength}"/>
           </div>
         </div>
-        <div class="form-group row">
+        <div class="row">
           <div class="col-md-2 text-right">
             <label><bean:message key="confirmpass.displayname"/></label>
           </div>
@@ -37,7 +37,7 @@
             <html:password property="passwordConfirm" styleClass="form-control" maxlength="${passwordLength}"/>
           </div>
         </div>
-        <div class="form-group">
+        <div class="row">
           <div class="col-md-offset-2 offset-md-2 col-md-10">
            <html:submit styleClass="btn btn-primary btn-sm">
              <bean:message key="passwordreset.jsp.update"/>

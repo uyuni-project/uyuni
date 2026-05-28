@@ -13,11 +13,11 @@
 
       <form action="/rhn/systems/customdata/DeleteCustomKey.do?cikid=${cikid}" name="edit_token" method="post">
           <rhn:csrf />
-        <div class="form-group">
+        <div class="row">
             <label for="customkey-label"><bean:message key="system.jsp.customkey.keylabel"/>:</label>
             <input class="form-control" disabled="true" type="text" id="customkey-label" name="label" length="64" value="<c:out value='${label}' />"/>
         </div>
-        <div class="form-group">
+        <div class="row">
           <label for="customkey-desc"><bean:message key="system.jsp.customkey.description"/>:</label>
           <textarea class="form-control" id="customkey-desc" disabled="true" wrap="virtual" rows="6" name="description"><c:out value="${description}" /></textarea>
         </div>

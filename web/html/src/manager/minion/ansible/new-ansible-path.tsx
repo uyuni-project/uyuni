@@ -14,7 +14,7 @@ const NewAnsiblePath = (props: Props) => {
   return (
     <>
       <h4>{props.title}</h4>
-      <div className="form-group">
+      <div className="row">
         <div>
           <TextField
             id={"new_" + props.pathType + "_path_input"}

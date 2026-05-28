@@ -31,7 +31,7 @@ const BooleanEditor = (props: FieldInputProps<PlainObject> & { onClose?: () => v
             <div className="col-md-4 control-label">
               <label>{t("Name")}</label>
             </div>
-            <div className="col-md-8 form-group">
+            <div className="col-md-8 row">
               <input
                 className="form-control"
                 placeholder="Key"
@@ -43,7 +43,7 @@ const BooleanEditor = (props: FieldInputProps<PlainObject> & { onClose?: () => v
 
           <div className="row">
             <div className="col-md-4"></div>
-            <div className="col-md-8 form-group">
+            <div className="col-md-8 row">
               <label className="d-flex gap-3 p-0">
                 <input type="radio" checked={newValue === true} onChange={() => setNewValue(true)} /> {t("True")}
               </label>

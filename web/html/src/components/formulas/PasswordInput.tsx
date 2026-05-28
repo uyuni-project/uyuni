@@ -45,7 +45,7 @@ class PasswordInput extends Component<Props, State> {
   render() {
     // empty password is always rendered as text to prevent problems with browser autocompletion
     return (
-      <div className="form-group">
+      <div className="row">
         <label className="col-lg-3 control-label">
           {this.props.element.$name}
           {this.props.required ? <span className="required-form-field"> *</span> : null}:

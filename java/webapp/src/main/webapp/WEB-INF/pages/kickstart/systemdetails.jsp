@@ -23,7 +23,7 @@
     <h2><bean:message key="kickstart.systemdetails.jsp.header1"/></h2>
 
     <h3><bean:message key="kickstart.systemdetails.jsp.header2"/></h3>
-    <div class="form-group">
+    <div class="row">
         <label class="col-lg-3 control-label">
             <bean:message key="kickstart.selinux.jsp.label" />:
         </label>
@@ -36,7 +36,7 @@
             </div>
         </div>
     </div>
-    <div class="form-group">
+    <div class="row">
         <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
             <div class="radio">
                 <label>
@@ -46,7 +46,7 @@
             </div>
         </div>
     </div>
-    <div class="form-group">
+    <div class="row">
         <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
             <div class="radio">
                 <label>
@@ -58,7 +58,7 @@
     </div>
 
     <h3><bean:message key="kickstart.systemdetails.jsp.header3"/></h3>
-        <div class="form-group">
+        <div class="row">
             <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                 <div class="checkbox">
                     <label class="control-label">
@@ -71,7 +71,7 @@
                 </span>
             </div>
         </div>
-        <div class="form-group">
+        <div class="row">
             <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                 <div class="checkbox">
                     <label class="control-label">
@@ -84,7 +84,7 @@
                 </span>
             </div>
         </div>
-        <div class="form-group">
+        <div class="row">
             <div class="col-lg-3 control-label">
                 <bean:message key="kickstart.registration.type.jsp.label" />
             </div>
@@ -94,7 +94,7 @@
                 </p>
             </div>
         </div>
-        <div class="form-group">
+        <div class="row">
             <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                 <div class="radio">
                     <label>
@@ -104,7 +104,7 @@
                 </div>
             </div>
         </div>
-        <div class="form-group">
+        <div class="row">
             <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                 <div class="radio">
                     <label>
@@ -114,7 +114,7 @@
                 </div>
             </div>
         </div>
-        <div class="form-group">
+        <div class="row">
             <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                 <div class="radio">
                     <label>
@@ -126,7 +126,7 @@
         </div>
 
     <h3><bean:message key="kickstart.systemdetails.jsp.header4"/></h3>
-    <div class="form-group">
+    <div class="row">
             <label class="col-lg-3 control-label">
                 <bean:message key="kickstart.root.password.jsp.label" />:
             </label>
@@ -135,7 +135,7 @@
                                property="rootPassword" maxlength="32" size="32" redisplay="false"/>
             </div>
     </div>
-    <div class="form-group">
+    <div class="row">
             <label class="col-lg-3 control-label">
                 <bean:message key="kickstart.root.password.verify.jsp.label" />:
             </label>
@@ -145,7 +145,7 @@
                                maxlength="32" size="32" redisplay="false"/>
             </div>
     </div>
-    <div class="form-group">
+    <div class="row">
         <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
             <button type="submit" class="btn btn-primary">
                 <bean:message key='kickstart.systemdetails.edit.submit.jsp.label'/>

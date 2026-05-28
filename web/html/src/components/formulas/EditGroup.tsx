@@ -205,7 +205,7 @@ class EditPrimitiveGroup extends Component<EditPrimitiveGroupProps> {
       }
       const id = this.props.id + "#" + i;
       elements.push(
-        <div className="form-group" id={id} key={id}>
+        <div className="row" id={id} key={id}>
           {generateFormulaComponentForId(
             this.props.element.$prototype,
             this.props.value[i],
@@ -261,7 +261,7 @@ class EditPrimitiveDictionaryGroup extends Component<EditPrimitiveDictionaryGrou
       }
       const id = this.props.id + "#" + i;
       elements.push(
-        <div className="form-group" id={id} key={id}>
+        <div className="row" id={id} key={id}>
           {generateFormulaComponentForId(
             this.props.element.$prototype.$key,
             this.props.value[i][0],
@@ -350,7 +350,7 @@ class EditDictionaryGroup extends Component<EditDictionaryGroupProps, EditDictio
 
   wrapKeyGroup(element_name, required, innerHTML) {
     return (
-      <div className="form-group" key={element_name}>
+      <div className="row" key={element_name}>
         <label className="col-lg-3 control-label">
           {element_name}
           <span className="required-form-field"> *</span>:

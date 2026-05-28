@@ -14,7 +14,8 @@
   .mac {
     padding-right: 2em;
   }
-  .state-up, .state-down {
+  .state-up,
+  .state-down {
     display: block;
     margin-right: 8px;
     height: 10px;
@@ -22,7 +23,7 @@
   }
 
   .state-down {
-   color: #c90813;
+    color: #c90813;
   }
 
   .state-up {
@@ -31,7 +32,7 @@
 }
 
 .vlanEntry {
-  .form-group {
+  .row {
     display: flex;
     width: 50%;
   }
