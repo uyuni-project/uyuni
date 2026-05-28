@@ -266,18 +266,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
                 Map<Channel, Channel> preservations = ChannelManager.findCompatibleChildren(
                         oldBase, newBase, user);
 
-                for (Map.Entry<Channel, Channel> preservationsEntry : preservations.entrySet()) {
-                    Channel c = preservationsEntry.getKey();
-                    Channel match = preservationsEntry.getValue();
-                    List<Map<String, Object>> serversAffected =
-                            SystemManager.
-                        getSsmSystemsSubscribedToChannel(user, c.getId());
-                    log.debug("found {} servers in set with channel: {}", serversAffected.size(), c.getId());
-                    if (!serversAffected.isEmpty()) {
-                        matched.add(new ChildChannelPreservationDto(c.getId(), c.getName(),
-                                match.getId(), match.getName(), serversAffected));
-                    }
-                }
+                matched.addAll(collectMatched(preservations, user));
 
                 for (Channel c : oldBase.getAccessibleChildrenFor(user)) {
                     if (!preservations.containsKey(c)) {
@@ -370,6 +359,23 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
         }
 
         return Optional.empty();
+    }
+
+    private List<ChildChannelPreservationDto> collectMatched(Map<Channel, Channel> preservations, User user) {
+        List<ChildChannelPreservationDto> matched = new LinkedList<>();
+        for (Map.Entry<Channel, Channel> preservationsEntry : preservations.entrySet()) {
+            Channel c = preservationsEntry.getKey();
+            Channel match = preservationsEntry.getValue();
+            List<Map<String, Object>> serversAffected =
+                    SystemManager.
+                            getSsmSystemsSubscribedToChannel(user, c.getId());
+            log.debug("found {} servers in set with channel: {}", serversAffected.size(), c.getId());
+            if (!serversAffected.isEmpty()) {
+                matched.add(new ChildChannelPreservationDto(c.getId(), c.getName(),
+                        match.getId(), match.getName(), serversAffected));
+            }
+        }
+        return matched;
     }
 
     /**
