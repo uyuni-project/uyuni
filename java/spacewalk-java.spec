@@ -296,6 +296,7 @@ Summary:        Jar files for Spacewalk Java
 # FIXME: use correct group or remove it, see "https://en.opensuse.org/openSUSE:Package_group_guidelines"
 Group:          Applications/Internet
 Requires:       /usr/bin/sudo
+Requires:       xorriso
 
 %description lib
 This package contains the jar files for the %{productprettyname} Java web application
