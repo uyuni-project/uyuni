@@ -271,17 +271,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
             }
         }
 
-        if (log.isDebugEnabled()) {
-            log.debug("Matches:");
-            for (ChildChannelPreservationDto dto : matched) {
-                log.debug("   {} {} {}", dto.getOldChannelName(), dto.getOtherChannelName(), dto.getSystemsAffected());
-            }
-
-            log.debug("Unmatches:");
-            for (ChildChannelPreservationDto dto : unmatched) {
-                log.debug("   {} {} {}", dto.getOldChannelName(), dto.getOtherChannelName(), dto.getSystemsAffected());
-            }
-        }
+        logMatchesUnmatches(matched, unmatched);
 
         request.setAttribute(ListTagHelper.PARENT_URL, request.getRequestURI());
         request.setAttribute(MATCHED_CHILD_CHANNELS, matched);
@@ -381,6 +371,20 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
             }
         }
         return unmatched;
+    }
+
+    private void logMatchesUnmatches(List<ChildChannelPreservationDto> matched, List<ChildChannelPreservationDto> unmatched) {
+        if (log.isDebugEnabled()) {
+            log.debug("Matches:");
+            for (ChildChannelPreservationDto dto : matched) {
+                log.debug("   {} {} {}", dto.getOldChannelName(), dto.getOtherChannelName(), dto.getSystemsAffected());
+            }
+
+            log.debug("Unmatches:");
+            for (ChildChannelPreservationDto dto : unmatched) {
+                log.debug("   {} {} {}", dto.getOldChannelName(), dto.getOtherChannelName(), dto.getSystemsAffected());
+            }
+        }
     }
 
     /**
