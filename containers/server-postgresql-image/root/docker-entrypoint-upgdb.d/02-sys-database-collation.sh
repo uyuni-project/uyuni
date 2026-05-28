@@ -6,7 +6,7 @@
 function run_sql() {
     PGHOST='' PGHOSTADDR='' psql -v ON_ERROR_STOP=1 \
         -p "${PGPORT:-5432}" \
-        -U "${POSTGRES_USER:-postgres}" \
+        -U postgres \
         --no-password --no-psqlrc --tuples-only --no-align "$@"
 }
 
