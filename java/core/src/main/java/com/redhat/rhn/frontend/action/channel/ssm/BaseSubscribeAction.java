@@ -217,23 +217,11 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
                     return displayNameListReturnEmptyHanded(oldBaseChannelId, skippedServers, user, mapping, request);
                 }
 
-                List<DistChannelMap> dcms = ChannelFactory.listDistChannelMaps(oldBase);
-                if (!dcms.isEmpty() && oldBase != null) {
-                    for (DistChannelMap dcm : dcms) {
-                        String version = dcm.getRelease();
-                        DistChannelMap defaultDcm =
-                            ChannelManager.lookupDistChannelMapByPnReleaseArch(
-                                user.getOrg(),
-                                ChannelManager.RHEL_PRODUCT_NAME, version,
-                                oldBase.getChannelArch());
-                        // Default base channel FOUND
-                        if (defaultDcm != null) {
-                            newBase = defaultDcm.getChannel();
-                            log.debug("Determined default base channel will be: {}", newBase.getLabel());
-                                break;
-                        }
-                    }
+                Optional<Channel> optNewBase = findDefaultBaseChannel(oldBase, user);
+                if (optNewBase.isPresent()) {
+                    newBase = optNewBase.get();
                 }
+
                 // no "default base channel" found so far
                 if (newBase == null) {
                     // Looks like an EUS or custom channel, need to get a little crazy :(
@@ -360,6 +348,28 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
 
         return strutsDelegate.forwardParams(mapping.findForward("success"),
                 new HashMap<>());
+    }
+
+    private Optional<Channel> findDefaultBaseChannel(Channel oldBase, User user) {
+        List<DistChannelMap> dcms = ChannelFactory.listDistChannelMaps(oldBase);
+        if (!dcms.isEmpty() && oldBase != null) {
+            for (DistChannelMap dcm : dcms) {
+                String version = dcm.getRelease();
+                DistChannelMap defaultDcm =
+                        ChannelManager.lookupDistChannelMapByPnReleaseArch(
+                                user.getOrg(),
+                                ChannelManager.RHEL_PRODUCT_NAME, version,
+                                oldBase.getChannelArch());
+                // Default base channel FOUND
+                if (defaultDcm != null) {
+                    Channel newBase = defaultDcm.getChannel();
+                    log.debug("Determined default base channel will be: {}", newBase.getLabel());
+                    return Optional.of(newBase);
+                }
+            }
+        }
+
+        return Optional.empty();
     }
 
     /**
