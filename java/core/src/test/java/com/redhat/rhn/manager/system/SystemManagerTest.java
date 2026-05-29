@@ -2126,7 +2126,7 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
 
         systemEntitlementManager.setBaseEntitlement(proxy, EntitlementManager.FOREIGN);
         ServerFactory.save(proxy);
-        proxy = TestUtils.saveAndFlush(proxy);
+        TestUtils.saveAndFlush(proxy); //reassign variable if still needed
     }
 
     private Map<String, String> readTarData(byte[] data) throws IOException {

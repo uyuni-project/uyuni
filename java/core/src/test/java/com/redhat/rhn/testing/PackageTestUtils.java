@@ -222,8 +222,8 @@ public class PackageTestUtils {
         addRequiresHeader(ptfPackage, findOrCreateCapability(masterPtfPackage.getPackageName().getName(),
             masterPtfPackage.getPackageEvr().getVersion() + "-0"), 8L);
 
-        masterPtfPackage = TestUtils.saveAndFlush(masterPtfPackage);
-        ptfPackage = TestUtils.saveAndFlush(ptfPackage);
+        TestUtils.saveAndFlush(masterPtfPackage); //reassign variable if still needed
+        TestUtils.saveAndFlush(ptfPackage); //reassign variable if still needed
     }
 
     /**
@@ -237,7 +237,7 @@ public class PackageTestUtils {
         packageProvides.setCapability(capability);
         packageProvides.setPack(pack);
         packageProvides.setSense(sense);
-        packageProvides = TestUtils.saveAndFlush(packageProvides);
+        TestUtils.saveAndFlush(packageProvides); //reassign variable if still needed
     }
 
     /**
@@ -251,7 +251,7 @@ public class PackageTestUtils {
         packageProvides.setCapability(capability);
         packageProvides.setPack(pack);
         packageProvides.setSense(sense);
-        packageProvides = TestUtils.saveAndFlush(packageProvides);
+        TestUtils.saveAndFlush(packageProvides); //reassign variable if still needed
     }
 
     /**
