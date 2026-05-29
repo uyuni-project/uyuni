@@ -28,7 +28,7 @@ type RecurringEventPickerProps = {
   cron: string;
   cronTimes: CronTimes;
   onScheduleNameChanged: (scheduleName: string) => void;
-  onTypeChanged: (type: string) => void;
+  onTypeChanged: (type: RecurringType) => void;
   onCronTimesChanged: (cronTimes: CronTimes) => void;
   onCronChanged: (cron: string) => void;
 };
