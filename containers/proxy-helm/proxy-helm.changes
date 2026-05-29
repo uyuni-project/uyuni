@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Fri May 29 18:49:24 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.7
+  * Support empty ingress class for k3s
+  * Add ingress entryPoints to override traefik entrypoints
+  * Add dnsConfig passthrough for pod dns options
+  * Auto-create proxy-cert secret from httpd yaml fields
+  * Auto-create uyuni-ca from config yaml ca_crt
+
+-------------------------------------------------------------------
 Fri May 22 13:46:59 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.6
