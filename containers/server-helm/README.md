@@ -15,10 +15,15 @@ They need to contain a `username` and a `password` key.
 - `reportdb-credentials`: credentials for the report database user
 - `admin-credentials`: credentials for the server administrator
 
+SCC organization mirroring credentials can be automatically set if the name of secret of `kubernetes.io/basic-auth` type with those credentials is set as `server.sccSecret` value.
+
 The following TLS secrets are expected:
 
 - `db-cert`: is the TLS certificate for the report database and needs to have the `db` and `reportdb` Subject Alternate Names as well as the FQDN exposed to the outside world
 - `uyuni-cert`: is the TLS certificate for the ingress rule and needs to have the public FQDN as Subject Alternate Name.
+
+Pulling images from a registry requiring authentication requires a secret of `kubernetes.io/dockerconfigjson` type.
+Its name needs to be passed as the `registrySecret` value.
 
 ### ConfigMaps
 

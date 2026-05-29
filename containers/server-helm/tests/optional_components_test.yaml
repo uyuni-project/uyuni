@@ -139,7 +139,7 @@ tests:
         documentSelector:
           path: metadata.name
           value: hub-xmlrpc
-  
+
   - it: should override the images and tags when set
     set:
       global.fqdn: uyuni.example.com
@@ -177,3 +177,19 @@ tests:
         documentSelector:
           path: metadata.name
           value: hub-xmlrpc
+
+  - it: should use the registry credentials if set
+    set:
+      global.fqdn: uyuni.example.com
+      registrySecret: mycreds
+      hubAPI:
+        enable: true
+      saline:
+        enable: true
+      coco:
+        replicas: 3
+    asserts:
+      - contains:
+          path: spec.template.spec.imagePullSecrets
+          content:
+            name: mycreds

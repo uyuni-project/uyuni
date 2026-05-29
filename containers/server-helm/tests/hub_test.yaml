@@ -47,3 +47,14 @@ tests:
           path: spec.template.spec.containers[?(@.name=="hub-xmlrpc")].image
           value: my-custom-registry/uyuni-server-api:1.2.3
 
+  - it: should use the registry credentials if set
+    set:
+      global.fqdn: uyuni.example.com
+      registrySecret: mycreds
+      hubAPI:
+        enable: true
+    asserts:
+      - contains:
+          path: spec.template.spec.imagePullSecrets
+          content:
+            name: mycreds
