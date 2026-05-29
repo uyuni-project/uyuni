@@ -33,8 +33,6 @@ wait_for_server_ready() {
 
 src_dir=$(cd $(dirname "$0")/../.. && pwd -P)
 
-setup_pm_path=`$PODMAN_CMD run -ti ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-server-all-in-one-dev:$UYUNI_VERSION sh -c 'rpm -ql spacewalk-setup | grep Setup.pm' | tr -d '\r'`
-
 $PODMAN_CMD run --cap-add AUDIT_CONTROL \
     --tmpfs /run \
     -v var-cobbler:/var/lib/cobbler \
@@ -100,9 +98,9 @@ $PODMAN_CMD run --cap-add AUDIT_CONTROL \
     -p 9090:9090 \
     -p 4505:4505 \
     -p 4506:4506 \
-    -d --name=server \
+    -d --name=uyuni-server \
     --network network \
-    ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-server-all-in-one-dev:$UYUNI_VERSION
+    uyuni-server-built:$UYUNI_VERSION
 wait_for_server_ready || exit 1
 $PODMAN_CMD exec -d server prometheus
 
