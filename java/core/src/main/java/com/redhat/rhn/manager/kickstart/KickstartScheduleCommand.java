@@ -701,11 +701,9 @@ public class KickstartScheduleCommand extends BaseSystemOperation {
 
         if (regType.equals(RegistrationType.REACTIVATION)) {
             // Create a new activation key for the target system.
-            boolean reactivation = RegistrationType.REACTIVATION
-                    .equals(regType);
             createKickstartActivationKey(this.user, this.ksdata,
-                    reactivation ? getTargetServer() : null,
-                            this.kickstartSession, 1L, note);
+                    getTargetServer(),
+                    this.kickstartSession, 1L, note);
         }
         this.createdProfile = processProfileType(this.profileType);
         log.debug("** profile created: {}", createdProfile);
