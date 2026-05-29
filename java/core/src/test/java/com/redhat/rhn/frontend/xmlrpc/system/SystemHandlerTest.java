@@ -657,7 +657,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
         // Try setting base channel to child
         try {
-            result = handler.setBaseChannel(admin, sid, child1.getLabel());
+            handler.setBaseChannel(admin, sid, child1.getLabel());
             fail("SystemHandler.setBaseChannel allowed invalid base channel to be set.");
         }
         catch (InvalidChannelException e) {
@@ -674,7 +674,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
             ServerFactory.save(server);
 
 
-            result = handler.setBaseChannel(admin, sid, base1.getLabel());
+            handler.setBaseChannel(admin, sid, base1.getLabel());
             fail("allowed channel with incompatible arch to be set");
         }
         catch (InvalidChannelException e) {
@@ -1367,7 +1367,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertNull(val);
 
         try {
-            pillar = readCustomInfoPillar(server);
+            readCustomInfoPillar(server);
             fail("Custom info pillar was not deleted.");
         }
         catch (java.util.NoSuchElementException e) {
@@ -2638,7 +2638,7 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         assertEquals(0, keys.size());
 
         key.getToken().getActivatedServers().add(server);
-        key = TestUtils.saveAndFlush(key);
+        TestUtils.saveAndFlush(key); //reassign variable if still needed
 
         keys = handler.listActivationKeys(admin, server.getId().intValue());
         assertEquals(1, keys.size());

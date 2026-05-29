@@ -1572,12 +1572,12 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         if (SUSEProductFactory.lookupByProductId(10012345) == null) {
             p = SUSEProductTestUtils.createTestSUSEProduct(family);
             p.setProductId(10012345);
-            p = TestUtils.saveAndFlush(p);
+            TestUtils.saveAndFlush(p); //reassign variable if still needed
         }
         if (SUSEProductFactory.lookupByProductId(10012346) == null) {
             p = SUSEProductTestUtils.createTestSUSEProduct(family);
             p.setProductId(10012346);
-            p = TestUtils.saveAndFlush(p);
+            TestUtils.saveAndFlush(p); //reassign variable if still needed
         }
 
         // Update the upgrade paths
@@ -2288,12 +2288,12 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         for (Channel c : ChannelFactory.listVendorChannels()) {
             c.setLabel(TestUtils.randomString());
             c.setName(TestUtils.randomString());
-            c = TestUtils.saveAndFlush(c);
+            TestUtils.saveAndFlush(c); //reassign variable if still needed
         }
         for (ContentSource cs : ChannelFactory.listVendorContentSources()) {
             cs.setLabel(TestUtils.randomString());
             cs.setSourceUrl(TestUtils.randomString());
-            cs = TestUtils.saveAndFlush(cs);
+            TestUtils.saveAndFlush(cs); //reassign variable if still needed
         }
     }
 
