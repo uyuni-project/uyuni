@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri May 29 20:56:46 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.11-0
+  * Fix schema migration directory structure
+
+-------------------------------------------------------------------
 Fri May 29 18:42:07 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.10-0
