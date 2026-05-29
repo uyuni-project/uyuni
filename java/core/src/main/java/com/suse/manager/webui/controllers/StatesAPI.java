@@ -317,8 +317,8 @@ public class StatesAPI {
             return SparkApplicationHelper.json(response, ConfigChannelJson.listOrdered(revision.getConfigChannels()),
                     new TypeToken<>() { });
         }
-        catch (Throwable t) {
-            LOG.error(t.getMessage(), t);
+        catch (Exception e) {
+            LOG.error(e.getMessage(), e);
             response.status(500);
             return "{}";
         }
@@ -406,7 +406,7 @@ public class StatesAPI {
             generateServerPackageState(server);
             return GSON.toJson(convertToJSON(state.getPackageStates()));
         }
-        catch (Throwable t) {
+        catch (Exception e) {
             response.status(HttpStatus.SC_INTERNAL_SERVER_ERROR);
             return "{}";
         }

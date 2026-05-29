@@ -102,8 +102,8 @@ public class GathererJob extends RhnJavaJob {
                         .processMapping();
             }
         }
-        catch (Throwable t) {
-            log.error(t.getMessage(), t);
+        catch (Exception e) {
+            log.error(e.getMessage(), e);
             HibernateFactory.rollbackTransaction();
         }
         finally {
