@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { CoCoSettingsForm } from "components/coco-attestation/CoCoSettingsForm";
 import { Settings } from "components/coco-attestation/Utils";
@@ -19,26 +19,26 @@ export const CoCoSettings: React.FC<Props> = ({
   availableEnvironmentTypes,
   showOnScheduleOption = true,
 }: Props): JSX.Element => {
+  const emptySettings: Settings = useMemo(
+    () => ({
+      enabled: false,
+      environmentType: Object.values(availableEnvironmentTypes)[0],
+      attestOnBoot: false,
+      attestOnSchedule: false,
+      inputData: {},
+    }),
+    [availableEnvironmentTypes]
+  );
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [supported, setSupported] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [settings, setSettings] = useState<Settings>({
-    enabled: false,
-    environmentType: Object.values(availableEnvironmentTypes)[0],
-    attestOnBoot: false,
-    attestOnSchedule: false,
-  });
+  const [settings, setSettings] = useState<Settings>(emptySettings);
 
   function handleRequestError(err: Error | JQueryXHR): void {
     setMessages(Network.responseErrorMessage(err));
     setSupported(false);
     setLoading(false);
-    setSettings({
-      enabled: false,
-      environmentType: Object.values(availableEnvironmentTypes)[0],
-      attestOnBoot: false,
-      attestOnSchedule: false,
-    });
+    setSettings(emptySettings);
   }
 
   function handleResult(result: any): void {
@@ -48,11 +48,12 @@ export const CoCoSettings: React.FC<Props> = ({
     } else if (!result.data.supported) {
       setSupported(false);
       setMessages(MessagesUtils.warning(result.messages));
+      setSettings(emptySettings);
       setLoading(false);
     } else {
       setMessages(MessagesUtils.success(result.messages));
       setSupported(true);
-      setSettings(result.data);
+      setSettings(result.data.settings);
       setLoading(false);
     }
   }

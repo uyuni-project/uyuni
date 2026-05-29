@@ -55,12 +55,14 @@ export const CoCoSettingsForm: React.FC<Props> = ({
   function computeSettings(model: FormModel): Settings {
     const { enabled, environmentType, attestOnBoot } = model;
     const attestOnSchedule = showOnScheduleOption ? model.attestOnSchedule : false;
+    const inputData = {};
 
     return {
       enabled,
       environmentType,
       attestOnBoot,
       attestOnSchedule,
+      inputData,
     };
   }
 
