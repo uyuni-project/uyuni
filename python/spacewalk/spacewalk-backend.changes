@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri May 29 15:52:51 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.8-0
+  * Use db_ssl_enabled value consistently
+
+-------------------------------------------------------------------
 Fri May 22 08:29:32 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.7-0
