@@ -143,37 +143,33 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
     /**
      * Confirm the base channel changes.
      *
-     * @param mapping ActionMapping
-     * @param formIn ActionForm
-     * @param request ServletRequest
+     * @param mapping  ActionMapping
+     * @param formIn   ActionForm
+     * @param request  ServletRequest
      * @param response ServletResponse
      * @return The ActionForward to go to next.
      */
-    public ActionForward confirmUpdateBaseChannels(ActionMapping mapping,
-            ActionForm formIn, HttpServletRequest request, HttpServletResponse response) {
+    public ActionForward confirmUpdateBaseChannels(ActionMapping mapping, ActionForm formIn,
+                                                   HttpServletRequest request, HttpServletResponse response) {
 
         log.debug("confirmUpdateBaseChannels()");
-        RequestContext rctx = new RequestContext(request);
-        User user = rctx.getCurrentUser();
+        RequestContext requestContext = new RequestContext(request);
+        User user = requestContext.getCurrentUser();
 
-        List<ChildChannelPreservationDto> unmatched =
-                new LinkedList<>();
-        List<ChildChannelPreservationDto> matched =
-                new LinkedList<>();
+        List<ChildChannelPreservationDto> unmatched = new LinkedList<>();
+        List<ChildChannelPreservationDto> matched = new LinkedList<>();
 
         Map<Long, Long> changedChannels = copyChangedChannels(request);
 
-        // Technically speaking an inattentive user could submit this screen with all
-        // channels set to "No Change":
+        // Technically speaking an inattentive user could submit this screen with all channels set to "No Change"
         if (changedChannels.entrySet().isEmpty()) {
             return handleNoChanges(mapping, request);
         }
 
-        // As base channel assignments are made asynchnously and UI redirects to base
-        // channels page after changing assignments, it might happen that the user
-        // is using a non refreshed UI page which contains the old base assignments.
-        // That would produce an ISE error due those old base channels are not assigned
-        // to any system on the SSM. (bsc#1040420)
+        // As base channel assignments are made asynchronously and UI redirects to base channels page after changing
+        // assignments, it might happen that the user is using a non-refreshed UI page which contains the old base
+        // assignments. That would produce an ISE error due those old base channels are not assigned to any system
+        // on the SSM. (bsc#1040420)
         for (Long oldBaseChannelId : changedChannels.keySet()) {
             List<Long> servers = serversInSSMWithBase(user, oldBaseChannelId);
             if (servers.isEmpty()) {
@@ -184,19 +180,19 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
         // for each old to new base channel value in the form
         for (Map.Entry<Long, Long> entry : changedChannels.entrySet()) {
             Long oldBaseChannelId = entry.getKey();
+            Channel newBase = null;
+
             Channel oldBase = null;
             // if old channel was present, get it
             if (oldBaseChannelId.intValue() != -1) {
                 oldBase = ChannelFactory.lookupByIdAndUser(oldBaseChannelId, user);
             }
-            Channel newBase = null;
 
             // get new base channel from the key-value map from the form
             Long newBaseChannelId = entry.getValue();
             log.debug("newBaseChannelId = {}", newBaseChannelId);
 
-            // First add an entry for the default base channel:
-            // "Default system base channel" option was selected
+            // First add an entry for the default base channel: "Default system base channel" option was selected
             if (newBaseChannelId.intValue() == -1) {
                 log.debug("Default system base channel was selected.");
 
@@ -218,12 +214,10 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
                 // no "default base channel" found so far
                 if (newBase == null) {
                     // Looks like an EUS or custom channel, need to get a little crazy :(
-                    // Should be safe to assume there's at least one result returned here,
-                    // we need a server object to call the stored procedure and guess a
-                    // default base channel:
+                    // Should be safe to assume there's at least one result returned here, we need a server object
+                    // to call the stored procedure and guess a default base channel:
 
                     Optional<Channel> optOtherBase = findOtherBaseChannel(servers, user);
-
                     if (optOtherBase.isPresent()) {
                         newBase = optOtherBase.get();
                     }
@@ -231,11 +225,10 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
             }
 
             // we are here because:
-            // 1- system default base channel selected but we couldn't guess a channel
+            // 1- system default base channel has been selected, but we couldn't guess a channel
             // 2- option selected is a specific base channel not yet evaluated
             if (newBase == null) {
-                // case 1 --> see comments above
-                // (can happen in the case of solaris systems)
+                // case 1 --> see comments above (can happen in the case of Solaris systems)
                 if (newBaseChannelId.intValue() == -1) {
                     // Display a warning to the user and return empty-handed.
                     return displayWarningReturnEmptyHanded(mapping, request);
@@ -247,8 +240,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
             // an old base channel was present
             if (oldBase != null) {
                 log.debug("{} -> {}", oldBase.getName(), newBase.getName());
-                Map<Channel, Channel> preservations = ChannelManager.findCompatibleChildren(
-                        oldBase, newBase, user);
+                Map<Channel, Channel> preservations = ChannelManager.findCompatibleChildren(oldBase, newBase, user);
 
                 matched.addAll(collectMatched(preservations, user));
                 unmatched.addAll(collectUnmatched(oldBase, preservations, user));
@@ -265,8 +257,6 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
         log.debug("end confirmUpdateBaseChannels()");
         return mapping.findForward(RhnHelper.CONFIRM_FORWARD);
     }
-
-
 
     private List<Server> getSkippedServers(List<Long> servers, User user) {
         // Check if for all servers in the set we can guess base channel. If not add them to the skipped list
@@ -287,33 +277,30 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
                                                            HttpServletRequest request) {
         // Display the name list of not manageable to the user and return empty-handed.
         StrutsDelegate strutsDelegate = getStrutsDelegate();
-        ActionMessages msgs = new ActionMessages();
+        ActionMessages actionMessages = new ActionMessages();
         String oldBaseChannelMessage = oldBaseChannelId.intValue() == -1 ?
                 localizationInstance.getMessage("basesub.jsp.noBaseChannel") :
-                ChannelFactory.lookupByIdAndUser(oldBaseChannelId, user)
-                        .getLabel();
+                ChannelFactory.lookupByIdAndUser(oldBaseChannelId, user).getLabel();
+
         ActionMessage actionMessage = new ActionMessage(
                 "basesub.jsp.unableToLookupSystemDefaultChannelWithParams",
                 String.join(", ", skippedServers.stream()
                         .map(s -> "'" + s.getName() + "'")
                         .collect(Collectors.toList())), oldBaseChannelMessage);
-        msgs.add(ActionMessages.GLOBAL_MESSAGE, actionMessage);
-        strutsDelegate.saveMessages(request, msgs);
+        actionMessages.add(ActionMessages.GLOBAL_MESSAGE, actionMessage);
+        strutsDelegate.saveMessages(request, actionMessages);
 
-        return strutsDelegate.forwardParams(mapping.findForward("success"),
-                new HashMap<>());
+        return strutsDelegate.forwardParams(mapping.findForward("success"), new HashMap<>());
     }
 
     private Optional<Channel> findDefaultBaseChannel(Channel oldBase, User user) {
-        List<DistChannelMap> dcms = ChannelFactory.listDistChannelMaps(oldBase);
-        if (!dcms.isEmpty() && oldBase != null) {
-            for (DistChannelMap dcm : dcms) {
+        List<DistChannelMap> distChannelMapList = ChannelFactory.listDistChannelMaps(oldBase);
+        if (!distChannelMapList.isEmpty() && oldBase != null) {
+            for (DistChannelMap dcm : distChannelMapList) {
                 String version = dcm.getRelease();
-                DistChannelMap defaultDcm =
-                        ChannelManager.lookupDistChannelMapByPnReleaseArch(
-                                user.getOrg(),
-                                ChannelManager.RHEL_PRODUCT_NAME, version,
-                                oldBase.getChannelArch());
+                DistChannelMap defaultDcm = ChannelManager.lookupDistChannelMapByPnReleaseArch(user.getOrg(),
+                        ChannelManager.RHEL_PRODUCT_NAME, version, oldBase.getChannelArch());
+
                 // Default base channel FOUND
                 if (defaultDcm != null) {
                     Channel newBase = defaultDcm.getChannel();
@@ -326,12 +313,10 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
         return Optional.empty();
     }
 
-
     private Optional<Channel> findOtherBaseChannel(List<Long> servers, User user) {
         // Looks like an EUS or custom channel, need to get a little crazy :(
-        // Should be safe to assume there's at least one result returned here,
-        // we need a server object to call the stored procedure and guess a
-        // default base channel:
+        // Should be safe to assume there's at least one result returned here, we need a server object to call the
+        // stored procedure and guess a default base channel:
 
         // take the first system of the list, guess its base channel and use it
         Server s = SystemManager.lookupByIdAndUser(servers.get(0), user);
@@ -339,68 +324,65 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
 
         // no "default base channel" found so far
         if (newBase == null) {
-            // lets search for suse channels
-            List<EssentialChannelDto> dr = ChannelManager.
-                    listPossibleSuseBaseChannelsForServer(s).orElse(null);
+            // let's search for Suse channels
+            List<EssentialChannelDto> dr = ChannelManager.listPossibleSuseBaseChannelsForServer(s).orElse(null);
             if (dr != null && dr.get(0) != null) {
-                newBase = ChannelFactory.lookupByIdAndUser(
-                        dr.get(0).getId(), user);
+                newBase = ChannelFactory.lookupByIdAndUser(dr.get(0).getId(), user);
             }
         }
 
         return Optional.ofNullable(newBase);
     }
 
-
     private ActionForward displayWarningReturnEmptyHanded(ActionMapping mapping, HttpServletRequest request) {
         // Display a warning to the user and return empty-handed.
         StrutsDelegate strutsDelegate = getStrutsDelegate();
-        ActionMessages msgs = new ActionMessages();
-        msgs.add(ActionMessages.GLOBAL_MESSAGE,
-                new ActionMessage(
-                        "basesub.jsp.unableToLookupSystemDefaultChannel"));
-        strutsDelegate.saveMessages(request, msgs);
+        ActionMessages actionMessages = new ActionMessages();
+        actionMessages.add(ActionMessages.GLOBAL_MESSAGE,
+                new ActionMessage("basesub.jsp.unableToLookupSystemDefaultChannel"));
+        strutsDelegate.saveMessages(request, actionMessages);
 
-        return strutsDelegate.forwardParams(mapping.findForward("success"),
-                new HashMap<>());
+        return strutsDelegate.forwardParams(mapping.findForward("success"), new HashMap<>());
     }
-
 
     private List<ChildChannelPreservationDto> collectMatched(Map<Channel, Channel> preservations, User user) {
         List<ChildChannelPreservationDto> matched = new LinkedList<>();
+
         for (Map.Entry<Channel, Channel> preservationsEntry : preservations.entrySet()) {
             Channel c = preservationsEntry.getKey();
             Channel match = preservationsEntry.getValue();
-            List<Map<String, Object>> serversAffected =
-                    SystemManager.
-                            getSsmSystemsSubscribedToChannel(user, c.getId());
+            List<Map<String, Object>> serversAffected = SystemManager.getSsmSystemsSubscribedToChannel(user, c.getId());
             log.debug("found {} servers in set with channel: {}", serversAffected.size(), c.getId());
             if (!serversAffected.isEmpty()) {
-                matched.add(new ChildChannelPreservationDto(c.getId(), c.getName(),
-                        match.getId(), match.getName(), serversAffected));
+                matched.add(new ChildChannelPreservationDto(c.getId(), c.getName(), match.getId(), match.getName(),
+                        serversAffected));
             }
         }
+
         return matched;
     }
 
-    private List<ChildChannelPreservationDto> collectUnmatched(Channel oldBase, Map<Channel, Channel> preservations, User user) {
+    private List<ChildChannelPreservationDto> collectUnmatched(Channel oldBase, Map<Channel, Channel> preservations,
+                                                               User user) {
         List<ChildChannelPreservationDto> unmatched = new LinkedList<>();
+
         for (Channel c : oldBase.getAccessibleChildrenFor(user)) {
             if (!preservations.containsKey(c)) {
                 List<Map<String, Object>> serversAffected =
                         SystemManager.getSsmSystemsSubscribedToChannel(user, c.getId());
                 log.debug("found {} servers in set with channel: {}", serversAffected.size(), c.getId());
                 if (!serversAffected.isEmpty()) {
-                    unmatched.add(new ChildChannelPreservationDto(c.getId(),
-                            c.getName(), c.getParentChannel().getId(),
+                    unmatched.add(new ChildChannelPreservationDto(c.getId(), c.getName(), c.getParentChannel().getId(),
                             c.getParentChannel().getName(), serversAffected));
                 }
             }
         }
+
         return unmatched;
     }
 
-    private void logMatchesUnmatches(List<ChildChannelPreservationDto> matched, List<ChildChannelPreservationDto> unmatched) {
+    private void logMatchesUnmatches(List<ChildChannelPreservationDto> matched,
+                                     List<ChildChannelPreservationDto> unmatched) {
         if (log.isDebugEnabled()) {
             log.debug("Matches:");
             for (ChildChannelPreservationDto dto : matched) {
@@ -413,9 +395,6 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
             }
         }
     }
-
-
-
 
     /**
      * Change channels for the selected SSM systems.
