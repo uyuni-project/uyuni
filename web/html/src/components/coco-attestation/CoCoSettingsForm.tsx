@@ -1,170 +1,166 @@
-import { type ReactNode, Component } from "react";
+import { useState } from "react";
 
 import { AsyncButton, Button } from "../buttons";
 import { BootstrapPanel } from "../panels/BootstrapPanel";
-import { RecurringEventPicker } from "../picker/recurring-event-picker";
+import { CronTimes, RecurringEventPicker, RecurringType } from "../picker/recurring-event-picker";
 import { Toggler } from "../toggler";
 import { Settings } from "./Utils";
 
-type Props = {
+interface Props {
   initialData: Settings;
-  availableEnvironmentTypes: object;
+  availableEnvironmentTypes: Record<string, string>;
   showOnScheduleOption?: boolean;
   saveHandler: (data: Settings) => void;
-};
+}
 
-type State = Settings;
+interface FormModel {
+  enabled: boolean;
+  environmentType: string;
+  attestOnBoot: boolean;
+  attestOnSchedule: boolean;
+  // The following fields are set by the UI if showOnScheduleOption is true, but they are currently not
+  // supported by the backend and not included in the Settings object.
+  scheduleName?: string;
+  scheduleType?: RecurringType;
+  scheduleCron?: string;
+  scheduleCronTimes?: CronTimes;
+}
 
-class CoCoSettingsForm extends Component<Props, State> {
-  public static readonly defaultProps: Partial<Props> = {
-    showOnScheduleOption: true,
-  };
+export const CoCoSettingsForm: React.FC<Props> = ({
+  initialData,
+  availableEnvironmentTypes,
+  showOnScheduleOption = true,
+  saveHandler,
+}: Props): JSX.Element => {
+  const [model, setModel] = useState<FormModel>(computeFormModel(initialData));
 
-  constructor(props: Props) {
-    super(props);
+  function onResetChanges() {
+    setModel(initialData);
+  }
 
-    this.state = {
-      ...this.props.initialData,
+  // Convert the settings object to the form model, which includes additional fields for handling UI-specific data.
+  function computeFormModel(settings: Settings): FormModel {
+    const { enabled, environmentType, attestOnBoot, attestOnSchedule } = settings;
+
+    return {
+      enabled,
+      environmentType,
+      attestOnBoot,
+      attestOnSchedule,
     };
   }
 
-  toggleCocoAttestation = (value) => {
-    this.setState({
-      enabled: value,
-    });
-  };
+  // Convert from the form model to the settings object
+  function computeSettings(model: FormModel): Settings {
+    const { enabled, environmentType, attestOnBoot, attestOnSchedule } = model;
 
-  environmentTypeChanged = (event) => {
-    this.setState({ environmentType: event.target.value });
-  };
+    return {
+      enabled,
+      environmentType,
+      attestOnBoot,
+      attestOnSchedule,
+    };
+  }
 
-  toggleAttestOnBoot = (value) => {
-    this.setState({ attestOnBoot: value });
-  };
-
-  toggleAttestOnSchedule = (value) => {
-    this.setState({ attestOnSchedule: value });
-  };
-
-  onScheduleNameChanged = (scheduleName) => {
-    this.setState({ scheduleName: scheduleName });
-  };
-
-  onTypeChanged = (type) => {
-    this.setState({ scheduleType: type });
-  };
-
-  onCronTimesChanged = (cronTimes) => {
-    this.setState({ scheduleCronTimes: cronTimes });
-  };
-
-  onCustomCronChanged = (cron) => {
-    this.setState({ scheduleCron: cron });
-  };
-
-  onResetChanges = () => {
-    this.setState({
-      ...this.props.initialData,
-    });
-  };
-
-  render(): ReactNode {
-    return (
-      <>
-        <BootstrapPanel>
-          <div className="form-horizontal">
+  return (
+    <>
+      <BootstrapPanel>
+        <div className="form-horizontal">
+          <div className="form-group">
+            <div className="col-md-offset-3 offset-md-3 col-md-6">
+              <Toggler
+                className="checkbox"
+                text={t("Enable attestation")}
+                value={model.enabled}
+                handler={(enabled) => setModel((prev) => ({ ...prev, enabled }))}
+              />
+            </div>
+          </div>
+          <div className="form-group">
+            <label className="col-md-3 control-label" htmlFor="environmentTypes">
+              {t("Environment Type")}:
+            </label>
+            <div className="col-md-6">
+              <select
+                value={model.environmentType}
+                onChange={(event) => {
+                  const environmentType = event.target.value;
+                  setModel((prev) => ({ ...prev, environmentType }));
+                }}
+                className="form-control"
+                id="environmentTypes"
+                name="environmentTypes"
+                disabled={!model.enabled}
+              >
+                {Object.keys(availableEnvironmentTypes).map((k) => (
+                  <option key={k} value={k}>
+                    {availableEnvironmentTypes[k]}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+          <div className="form-group">
+            <label className="col-md-3 control-label">{t("Executions")}:</label>
+            <div className="col-md-6">
+              <Toggler
+                className="checkbox"
+                text={t("Perform attestation during the boot process")}
+                value={model.attestOnBoot}
+                handler={(attestOnBoot) => setModel((prev) => ({ ...prev, attestOnBoot }))}
+                disabled={!model.enabled}
+              />
+            </div>
+          </div>
+          {showOnScheduleOption && (
             <div className="form-group">
               <div className="col-md-offset-3 offset-md-3 col-md-6">
                 <Toggler
                   className="checkbox"
-                  text={t("Enable attestation")}
-                  value={this.state.enabled}
-                  handler={this.toggleCocoAttestation}
+                  text={t("Perform attestation on a schedule")}
+                  value={model.attestOnSchedule}
+                  handler={(attestOnSchedule) => setModel((prev) => ({ ...prev, attestOnSchedule }))}
+                  disabled={!model.enabled}
                 />
               </div>
             </div>
-            <div className="form-group">
-              <label className="col-md-3 control-label">{t("Environment Type")}:</label>
-              <div className="col-md-6">
-                <select
-                  value={this.state.environmentType ?? undefined}
-                  onChange={this.environmentTypeChanged}
-                  className="form-control"
-                  name="activationKeys"
-                  disabled={!this.state.enabled}
-                >
-                  {Object.keys(this.props.availableEnvironmentTypes).map((k) => (
-                    <option key={k} value={k}>
-                      {this.props.availableEnvironmentTypes[k]}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-            <div className="form-group">
-              <label className="col-md-3 control-label">{t("Executions")}:</label>
-              <div className="col-md-6">
-                <Toggler
-                  className="checkbox"
-                  text={t("Peform attestation during the boot process")}
-                  value={this.state.attestOnBoot}
-                  handler={this.toggleAttestOnBoot}
-                  disabled={!this.state.enabled}
-                />
-              </div>
-            </div>
-            {this.props.showOnScheduleOption && (
-              <div className="form-group">
-                <div className="col-md-offset-3 offset-md-3 col-md-6">
-                  <Toggler
-                    className="checkbox"
-                    text={t("Peform attestation on a schedule")}
-                    value={this.state.attestOnSchedule}
-                    handler={this.toggleAttestOnSchedule}
-                    disabled={!this.state.enabled}
-                  />
-                </div>
-              </div>
-            )}
-          </div>
-        </BootstrapPanel>
-        {this.state.attestOnSchedule && (
-          <BootstrapPanel title={t("Select a schedule")}>
-            <RecurringEventPicker
-              mode="Inline"
-              hideScheduleName
-              scheduleName={this.state.scheduleName}
-              type={this.state.scheduleType}
-              cron={this.state.scheduleCron}
-              cronTimes={this.state.scheduleCronTimes}
-              onScheduleNameChanged={this.onScheduleNameChanged}
-              onTypeChanged={this.onTypeChanged}
-              onCronTimesChanged={this.onCronTimesChanged}
-              onCronChanged={this.onCustomCronChanged}
-            />
-          </BootstrapPanel>
-        )}
-        <div className="row">
-          <div className="col-md-offset-3 offset-md-3 col-md-6">
-            <AsyncButton
-              id="save-btn"
-              icon="fa-floppy-o"
-              action={() => this.props.saveHandler(this.state as Settings)}
-              text={t("Save")}
-              className="btn-primary me-2"
-            />
-            <Button
-              id="reset-btn"
-              icon="fa-undo"
-              text={t("Reset Changes")}
-              className="btn-default"
-              handler={this.onResetChanges}
-            />
-          </div>
+          )}
         </div>
-      </>
-    );
-  }
-}
-
-export default CoCoSettingsForm;
+      </BootstrapPanel>
+      {model.attestOnSchedule && (
+        <BootstrapPanel title={t("Select a schedule")}>
+          <RecurringEventPicker
+            mode="Inline"
+            hideScheduleName
+            scheduleName={model.scheduleName}
+            type={model.scheduleType}
+            cron={model.scheduleCron}
+            cronTimes={model.scheduleCronTimes}
+            onScheduleNameChanged={(scheduleName) => setModel((prev) => ({ ...prev, scheduleName }))}
+            onTypeChanged={(scheduleType) => setModel((prev) => ({ ...prev, scheduleType }))}
+            onCronTimesChanged={(scheduleCronTimes) => setModel((prev) => ({ ...prev, scheduleCronTimes }))}
+            onCronChanged={(scheduleCron) => setModel((prev) => ({ ...prev, scheduleCron }))}
+          />
+        </BootstrapPanel>
+      )}
+      <div className="row">
+        <div className="col-md-offset-3 offset-md-3 col-md-6">
+          <AsyncButton
+            id="save-btn"
+            icon="fa-floppy-o"
+            action={() => saveHandler(computeSettings(model))}
+            text={t("Save")}
+            className="btn-primary me-2"
+          />
+          <Button
+            id="reset-btn"
+            icon="fa-undo"
+            text={t("Reset Changes")}
+            className="btn-default"
+            handler={onResetChanges}
+          />
+        </div>
+      </div>
+    </>
+  );
+};
