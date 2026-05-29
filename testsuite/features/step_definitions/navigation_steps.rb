@@ -714,27 +714,23 @@ end
 # Test for text in a snippet textarea
 #
 Then(/^I should see "([^"]*)" in the textarea$/) do |text|
-  within('textarea') do
-    raise ScriptError, "Text '#{text}' not found" unless check_text?(text)
-  end
+  content = find('textarea').value.to_s
+  raise ScriptError, "Text '#{text}' not found" unless content.include?(text)
 end
 
 Then(/^I should see "([^"]*)" or "([^"]*)" in the textarea$/) do |text1, text2|
-  within('textarea') do
-    raise ScriptError, "Text '#{text1}' and '#{text2}' not found" unless check_text?(text1, text2: text2)
-  end
+  content = find('textarea').value.to_s
+  raise ScriptError, "Text '#{text1}' and '#{text2}' not found" unless content.include?(text1) || content.include?(text2)
 end
 
 Then(/^I should see "([^"]*)" in the ([^ ]+) textarea$/) do |text, id|
-  within(:xpath, ".//textarea[@data-testid='#{id}']") do
-    raise ScriptError, "Text '#{text}' not found" unless check_text?(text)
-  end
+  content = find(:xpath, ".//textarea[@data-testid='#{id}']").value.to_s
+  raise ScriptError, "Text '#{text}' not found" unless content.include?(text)
 end
 
 Then(/^I should see "([^"]*)" or "([^"]*)" in the ([^ ]+) textarea$/) do |text1, text2, id|
-  within(:xpath, ".//textarea[@data-testid='#{id}']") do
-    raise ScriptError, "Text '#{text1}' and '#{text2}' not found" unless check_text?(text1, text2: text2)
-  end
+  content = find(:xpath, ".//textarea[@data-testid='#{id}']").value.to_s
+  raise ScriptError, "Text '#{text1}' and '#{text2}' not found" unless content.include?(text1) || content.include?(text2)
 end
 
 #
@@ -942,8 +938,16 @@ Then(/^I click on the filter button until page does not contain "([^"]*)" text$/
   repeat_until_timeout(message: "'#{text}' still found") do
     break unless check_text?(text)
 
-    find('button.spacewalk-button-filter').click
-    has_text?('is filtered', wait: 10)
+    begin
+      find('button.spacewalk-button-filter').click
+      check_text?('is filtered')
+    rescue Capybara::ElementNotFound,
+           Selenium::WebDriver::Error::StaleElementReferenceError,
+           Selenium::WebDriver::Error::NoSuchElementError,
+           NoMethodError
+
+      # page mid-navigation, retry
+    end
   end
 end
 
@@ -951,8 +955,16 @@ Then(/^I click on the filter button until page does contain "([^"]*)" text$/) do
   repeat_until_timeout(message: "'#{text}' was not found") do
     break if check_text?(text)
 
-    find('button.spacewalk-button-filter').click
-    has_text?('is filtered', wait: 10)
+    begin
+      find('button.spacewalk-button-filter').click
+      check_text?('is filtered')
+    rescue Capybara::ElementNotFound,
+           Selenium::WebDriver::Error::StaleElementReferenceError,
+           Selenium::WebDriver::Error::NoSuchElementError,
+           NoMethodError
+
+      # page mid-navigation, retry
+    end
   end
 end
 
