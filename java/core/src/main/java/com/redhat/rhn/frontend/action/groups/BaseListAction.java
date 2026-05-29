@@ -70,7 +70,7 @@ public abstract class BaseListAction<T> extends RhnAction implements Listable<T>
         setup(request);
         ListSessionSetHelper helper = new ListSessionSetHelper(this,
                                         request, getParamsMap(request));
-        processHelper(helper);
+        processHelper(helper, request);
         helper.execute();
         if (helper.isDispatched()) {
             ActionForward forward =
@@ -87,7 +87,7 @@ public abstract class BaseListAction<T> extends RhnAction implements Listable<T>
             ActionForm formIn, HttpServletRequest request,
             HttpServletResponse response);
 
-    protected void processHelper(ListSessionSetHelper helper) {
+    protected void processHelper(ListSessionSetHelper helper, HttpServletRequest request) {
         helper.setDataSetName(getDataSetName());
         helper.setListName(getListName());
     }
