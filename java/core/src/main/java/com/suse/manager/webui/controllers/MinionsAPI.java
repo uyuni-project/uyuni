@@ -81,6 +81,7 @@ import com.suse.manager.webui.utils.gson.ResultJson;
 import com.suse.manager.webui.utils.gson.SaltMinionJson;
 import com.suse.manager.webui.utils.gson.ScheduledRequestJson;
 import com.suse.manager.webui.utils.gson.ServerSetProxyJson;
+import com.suse.manager.webui.utils.gson.SingleCoCoSettingsJson;
 import com.suse.manager.webui.utils.gson.SupportDataRequest;
 import com.suse.manager.webui.utils.gson.SystemScheduledRequestJson;
 import com.suse.manager.webui.utils.gson.SystemsCoCoSettingsJson;
@@ -621,13 +622,13 @@ public class MinionsAPI {
      */
     public String getCoCoSettings(Request request, Response response, User user, Server server) {
         if (!server.doesOsSupportCoCoAttestation()) {
-            return json(GSON, response, ResultJson.success(new CoCoSettingsJson(false),
+            return json(GSON, response, ResultJson.success(new SingleCoCoSettingsJson(false),
                 LOCAL.getMessage("system.audit.coco.unsupported")), new TypeToken<>() { });
         }
 
-        CoCoSettingsJson jsonConfig = attestationManager.getConfig(user, server)
-            .map(cfg -> new CoCoSettingsJson(cfg))
-            .orElseGet(() -> new CoCoSettingsJson(true));
+        SingleCoCoSettingsJson jsonConfig = attestationManager.getConfig(user, server)
+            .map(cfg -> new SingleCoCoSettingsJson(cfg))
+            .orElseGet(() -> new SingleCoCoSettingsJson(true));
 
         return json(GSON, response, ResultJson.success(jsonConfig), new TypeToken<>() { });
     }
@@ -635,7 +636,7 @@ public class MinionsAPI {
 
     private String setCoCoSettings(Request request, Response response, User user, Server server) {
         if (!server.doesOsSupportCoCoAttestation()) {
-            return json(GSON, response, ResultJson.success(new CoCoSettingsJson(false),
+            return json(GSON, response, ResultJson.success(new SingleCoCoSettingsJson(false),
                     LOCAL.getMessage("system.audit.coco.unsupported")), new TypeToken<>() { });
         }
 
@@ -643,7 +644,7 @@ public class MinionsAPI {
         try {
             ServerCoCoAttestationConfig updatedConfig = updateServerCoCoConfiguration(user, server, jsonConfig);
 
-            return json(GSON, response, ResultJson.success(new CoCoSettingsJson(updatedConfig),
+            return json(GSON, response, ResultJson.success(new SingleCoCoSettingsJson(updatedConfig),
                 LOCAL.getMessage("system.audit.coco.configUpdated")), new TypeToken<>() { });
         }
         catch (RuntimeException ex) {
@@ -703,8 +704,8 @@ public class MinionsAPI {
         SystemsCoCoSettingsJson jsonConfig = GSON.fromJson(request.body(), SystemsCoCoSettingsJson.class);
 
         try {
-            MinionServerFactory.lookupByIds(jsonConfig.getServerIds())
-                .forEach(minionServer -> updateServerCoCoConfiguration(user, minionServer, jsonConfig));
+            MinionServerFactory.lookupByIds(jsonConfig.serverIds())
+                .forEach(minionServer -> updateServerCoCoConfiguration(user, minionServer, jsonConfig.settings()));
 
             return json(GSON, response, ResultJson.success(jsonConfig,
                 LOCAL.getMessage("system.audit.coco.configUpdated")), new TypeToken<>() { });
@@ -719,18 +720,18 @@ public class MinionsAPI {
                                                                       CoCoSettingsJson jsonConfig) {
         return attestationManager.getConfig(user, server)
             .map(cfg -> {
-                cfg.setEnabled(jsonConfig.isEnabled());
-                cfg.setEnvironmentType(jsonConfig.getEnvironmentType());
-                cfg.setAttestOnBoot(jsonConfig.isAttestOnBoot());
+                cfg.setEnabled(jsonConfig.enabled());
+                cfg.setEnvironmentType(jsonConfig.environmentType());
+                cfg.setAttestOnBoot(jsonConfig.attestOnBoot());
 
                 attestationManager.saveConfig(user, cfg);
 
                 return cfg;
             })
             .orElseGet(() -> attestationManager.createConfig(user, server,
-                jsonConfig.getEnvironmentType(),
-                jsonConfig.isEnabled(),
-                jsonConfig.isAttestOnBoot()
+                jsonConfig.environmentType(),
+                jsonConfig.enabled(),
+                jsonConfig.attestOnBoot()
             ));
     }
 

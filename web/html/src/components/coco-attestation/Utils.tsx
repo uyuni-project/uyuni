@@ -7,6 +7,7 @@ export type Settings = {
   environmentType: string;
   attestOnBoot: boolean;
   attestOnSchedule: boolean | undefined;
+  inputData: Record<string, any>;
 };
 
 export type AttestationResult = {
