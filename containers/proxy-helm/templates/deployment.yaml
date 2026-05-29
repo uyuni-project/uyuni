@@ -19,6 +19,10 @@ spec:
         app.kubernetes.io/part-of: uyuni
     spec:
 {{- include "uyuni.nodePlacement" (dict "global" .Values.placement "local" .Values.proxy) | nindent 6 }}
+{{- with .Values.dnsConfig }}
+      dnsConfig:
+        {{- toYaml . | nindent 8 }}
+{{- end }}
 {{- if .Values.registrySecret }}
       imagePullSecrets:
         - name: {{ .Values.registrySecret }}

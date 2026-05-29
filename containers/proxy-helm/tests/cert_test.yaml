@@ -1,0 +1,222 @@
+suite: test proxy-cert and uyuni-ca auto-render
+templates:
+  - templates/cert.yaml
+tests:
+  - it: should render neither when source fields are absent
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+      global.httpd: "httpd:\n  some_field: foo"
+      global.ssh: "ssh:\n  foo: bar"
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: should render proxy-cert when httpd.server_crt and server_key are present
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+      global.httpd: |
+        httpd:
+          server_crt: |
+            Certificate:
+                Data:
+                    Version: 3 (0x2)
+            -----BEGIN CERTIFICATE-----
+            MIIDazCCAlOgAwIBAgIUFAKE_PROXY_CERT==
+            -----END CERTIFICATE-----
+          server_key: |
+            -----BEGIN PRIVATE KEY-----
+            MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDFAKE==
+            -----END PRIVATE KEY-----
+      global.ssh: "ssh:\n  foo: bar"
+    release:
+      namespace: proxy1
+    asserts:
+      - containsDocument:
+          kind: Secret
+          apiVersion: v1
+          name: proxy-cert
+          namespace: proxy1
+      - equal:
+          path: type
+          value: kubernetes.io/tls
+          documentSelector:
+            path: metadata.name
+            value: proxy-cert
+      - matchRegex:
+          path: stringData["tls.crt"]
+          pattern: "^-----BEGIN CERTIFICATE-----"
+          documentSelector:
+            path: metadata.name
+            value: proxy-cert
+      - notMatchRegex:
+          path: stringData["tls.crt"]
+          pattern: "Certificate:"
+          documentSelector:
+            path: metadata.name
+            value: proxy-cert
+      - matchRegex:
+          path: stringData["tls.key"]
+          pattern: "^-----BEGIN PRIVATE KEY-----"
+          documentSelector:
+            path: metadata.name
+            value: proxy-cert
+
+  - it: should not render proxy-cert when server_key is missing
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+      global.httpd: |
+        httpd:
+          server_crt: |
+            -----BEGIN CERTIFICATE-----
+            ONLY_CERT==
+            -----END CERTIFICATE-----
+      global.ssh: "ssh:\n  foo: bar"
+    asserts:
+      - hasDocuments:
+          count: 0
+
+  - it: should render uyuni-ca when config.ca_crt is present
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+        ca_crt: |
+          Certificate:
+              Data:
+                  Version: 3 (0x2)
+          -----BEGIN CERTIFICATE-----
+          MIIDazCCAlOgAwIBAgIUFAKE_CA==
+          -----END CERTIFICATE-----
+      global.httpd: "httpd:\n  some_field: foo"
+      global.ssh: "ssh:\n  foo: bar"
+    release:
+      namespace: proxy1
+    asserts:
+      - containsDocument:
+          kind: ConfigMap
+          apiVersion: v1
+          name: uyuni-ca
+          namespace: proxy1
+      - matchRegex:
+          path: data["ca.crt"]
+          pattern: "^-----BEGIN CERTIFICATE-----"
+          documentSelector:
+            path: metadata.name
+            value: uyuni-ca
+      - notMatchRegex:
+          path: data["ca.crt"]
+          pattern: "Certificate:"
+          documentSelector:
+            path: metadata.name
+            value: uyuni-ca
+
+  - it: should render proxy-cert when it exists outside helm and takeOwnership is true
+    set:
+      cert.takeOwnership: true
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+      global.httpd: |
+        httpd:
+          server_crt: |
+            -----BEGIN CERTIFICATE-----
+            FAKE_PROXY_CERT==
+            -----END CERTIFICATE-----
+          server_key: |
+            -----BEGIN PRIVATE KEY-----
+            FAKE_KEY==
+            -----END PRIVATE KEY-----
+      global.ssh: "ssh:\n  foo: bar"
+    kubernetesProvider:
+      scheme:
+        "v1/Secret":
+          gvr:
+            version: "v1"
+            resource: "secrets"
+          namespaced: true
+      objects:
+        - kind: Secret
+          apiVersion: v1
+          metadata:
+            name: proxy-cert
+            namespace: NAMESPACE
+    asserts:
+      - containsDocument:
+          kind: Secret
+          apiVersion: v1
+          name: proxy-cert
+
+  - it: should render uyuni-ca when it exists outside helm and takeOwnership is true
+    set:
+      cert.takeOwnership: true
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+        ca_crt: |
+          -----BEGIN CERTIFICATE-----
+          FAKE_CA==
+          -----END CERTIFICATE-----
+      global.httpd: "httpd:\n  some_field: foo"
+      global.ssh: "ssh:\n  foo: bar"
+    kubernetesProvider:
+      scheme:
+        "v1/ConfigMap":
+          gvr:
+            version: "v1"
+            resource: "configmaps"
+          namespaced: true
+      objects:
+        - kind: ConfigMap
+          apiVersion: v1
+          metadata:
+            name: uyuni-ca
+            namespace: NAMESPACE
+    asserts:
+      - containsDocument:
+          kind: ConfigMap
+          apiVersion: v1
+          name: uyuni-ca
+
+  - it: should render both proxy-cert and uyuni-ca when all source fields are present
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+        ca_crt: |
+          -----BEGIN CERTIFICATE-----
+          FAKE_CA==
+          -----END CERTIFICATE-----
+      global.httpd: |
+        httpd:
+          server_crt: |
+            -----BEGIN CERTIFICATE-----
+            FAKE_PROXY_CERT==
+            -----END CERTIFICATE-----
+          server_key: |
+            -----BEGIN PRIVATE KEY-----
+            FAKE_KEY==
+            -----END PRIVATE KEY-----
+      global.ssh: "ssh:\n  foo: bar"
+    asserts:
+      - hasDocuments:
+          count: 2
