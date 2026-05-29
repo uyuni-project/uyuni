@@ -67,7 +67,7 @@ public class PendingActionsSetupActionTest extends RhnPostMockStrutsTestCase {
         Action act = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
         ServerAction sAction = ActionFactoryTest.createServerAction(server, act);
         sAction.setStatusQueued();
-        sAction = TestUtils.saveAndFlush(sAction);
+        TestUtils.saveAndFlush(sAction); //reassign variable if still needed
 
 
         RhnSet set = RhnSetDecl.ACTIONS_PENDING.get(user);
