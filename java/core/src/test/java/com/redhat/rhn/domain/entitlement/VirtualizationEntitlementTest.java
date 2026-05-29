@@ -28,9 +28,7 @@ import com.redhat.rhn.testing.ServerTestUtils;
 
 import com.suse.manager.reactor.utils.ValueMap;
 import com.suse.manager.webui.services.TestSaltApi;
-import com.suse.manager.webui.services.TestSystemQuery;
 import com.suse.manager.webui.services.iface.SaltApi;
-import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.salt.netapi.calls.LocalCall;
 
 import org.junit.jupiter.api.Test;
@@ -41,8 +39,8 @@ import java.util.Optional;
 
 public class VirtualizationEntitlementTest extends BaseEntitlementTestCase {
 
-    private final SystemQuery systemQuery = new TestSystemQuery();
     private final SaltApi saltApi = new TestSaltApi() {
+        @Override
         public <R> Optional<R> callSync(LocalCall<R> call, String minionId) {
             return Optional.empty();
         }
