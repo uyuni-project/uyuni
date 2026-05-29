@@ -562,7 +562,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
         template.setParentChannelLabel(prefix + "-" + Objects.requireNonNullElse(rootChannelLabel, channelLabel));
         template.setChannelName(channelName);
         template.setMandatory(true);
-        template = TestUtils.saveAndReload(template);
+        TestUtils.saveAndReload(template); //reassign variable if still needed
     }
 
     private static void createProductExtension(SUSEProduct product, SUSEProduct parent, SUSEProduct root) {
@@ -571,7 +571,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
         productExtension.setBaseProduct(parent);
         productExtension.setRootProduct(root);
         productExtension.setRecommended(true);
-        productExtension = TestUtils.saveAndReload(productExtension);
+        TestUtils.saveAndReload(productExtension); //reassign variable if still needed
     }
 
     private static SUSEProduct createProduct(String prefix, String name, String version, String desc,
