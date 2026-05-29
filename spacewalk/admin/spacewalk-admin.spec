@@ -20,7 +20,7 @@
 %{!?productprettyname: %global productprettyname Uyuni}
 
 Name:           spacewalk-admin
-Version:        5.2.3
+Version:        5.2.4
 Release:        0
 Summary:        Various utility scripts and data files for %{productprettyname} installations
 License:        GPL-2.0-only
