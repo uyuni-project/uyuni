@@ -1,6 +1,6 @@
-import { type ReactNode, Component } from "react";
+import { useEffect, useState } from "react";
 
-import CoCoSettingsForm from "components/coco-attestation/CoCoSettingsForm";
+import { CoCoSettingsForm } from "components/coco-attestation/CoCoSettingsForm";
 import { Settings } from "components/coco-attestation/Utils";
 import { Messages, MessageType, Utils as MessagesUtils } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
@@ -8,117 +8,86 @@ import { Loading } from "components/utils";
 
 import Network from "utils/network";
 
-type Props = {
+interface Props {
   serverId: number;
   availableEnvironmentTypes: Record<string, string>;
   showOnScheduleOption?: boolean;
-};
-
-type State = {
-  messages: MessageType[];
-  supported: boolean;
-  settings: Settings;
-  loading: boolean;
-};
-
-class CoCoSettings extends Component<Props, State> {
-  public static readonly defaultProps: Partial<Props> = {
-    showOnScheduleOption: true,
-  };
-
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      messages: [],
-      supported: false,
-      loading: true,
-      settings: {
-        enabled: false,
-        environmentType: Object.values(this.props.availableEnvironmentTypes)[0],
-        attestOnBoot: false,
-        attestOnSchedule: false,
-      },
-    };
-
-    this.init();
-  }
-
-  init(): void {
-    this.setState({ loading: true });
-
-    Network.get(`/rhn/manager/api/systems/${this.props.serverId}/details/coco/settings`).then(
-      this.handleResult,
-      this.handleRequestError
-    );
-  }
-
-  render(): ReactNode {
-    if (this.state.loading) {
-      return (
-        <div className="panel panel-default">
-          <Loading />
-        </div>
-      );
-    }
-
-    return (
-      <TopPanel title={t("Settings")} icon="fa fa-pencil-square-o">
-        <Messages items={this.state.messages} />
-        {this.state.supported && (
-          <CoCoSettingsForm
-            initialData={this.state.settings}
-            saveHandler={this.onSave}
-            availableEnvironmentTypes={this.props.availableEnvironmentTypes}
-            showOnScheduleOption={this.props.showOnScheduleOption}
-          />
-        )}
-      </TopPanel>
-    );
-  }
-
-  onSave = (data: Settings) => {
-    Network.post(`/rhn/manager/api/systems/${this.props.serverId}/details/coco/settings`, data).then(
-      this.handleResult,
-      this.handleRequestError
-    );
-  };
-
-  handleResult = (result) => {
-    if (!result.success) {
-      this.setState({
-        messages: MessagesUtils.error(result.messages),
-        loading: false,
-      });
-    } else if (!result.data.supported) {
-      this.setState({
-        supported: false,
-        messages: MessagesUtils.warning(result.messages),
-        loading: false,
-      });
-    } else {
-      this.setState({
-        messages: MessagesUtils.success(result.messages),
-        supported: true,
-        settings: result.data,
-        loading: false,
-      });
-    }
-  };
-
-  handleRequestError = (err) => {
-    this.setState({
-      messages: Network.responseErrorMessage(err),
-      supported: false,
-      loading: false,
-      settings: {
-        enabled: false,
-        environmentType: Object.values(this.props.availableEnvironmentTypes)[0],
-        attestOnBoot: false,
-        attestOnSchedule: false,
-      },
-    });
-  };
 }
 
-export default CoCoSettings;
+export const CoCoSettings: React.FC<Props> = ({
+  serverId,
+  availableEnvironmentTypes,
+  showOnScheduleOption = true,
+}: Props): JSX.Element => {
+  const [messages, setMessages] = useState<MessageType[]>([]);
+  const [supported, setSupported] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [settings, setSettings] = useState<Settings>({
+    enabled: false,
+    environmentType: Object.values(availableEnvironmentTypes)[0],
+    attestOnBoot: false,
+    attestOnSchedule: false,
+  });
+
+  function handleRequestError(err: Error | JQueryXHR): void {
+    setMessages(Network.responseErrorMessage(err));
+    setSupported(false);
+    setLoading(false);
+    setSettings({
+      enabled: false,
+      environmentType: Object.values(availableEnvironmentTypes)[0],
+      attestOnBoot: false,
+      attestOnSchedule: false,
+    });
+  }
+
+  function handleResult(result: any): void {
+    if (!result.success) {
+      setMessages(MessagesUtils.error(result.messages));
+      setLoading(false);
+    } else if (!result.data.supported) {
+      setSupported(false);
+      setMessages(MessagesUtils.warning(result.messages));
+      setLoading(false);
+    } else {
+      setMessages(MessagesUtils.success(result.messages));
+      setSupported(true);
+      setSettings(result.data);
+      setLoading(false);
+    }
+  }
+
+  function onSave(data: Settings): void {
+    Network.post(`/rhn/manager/api/systems/${serverId}/details/coco/settings`, data).then(
+      handleResult,
+      handleRequestError
+    );
+  }
+
+  useEffect(() => {
+    setLoading(true);
+    Network.get(`/rhn/manager/api/systems/${serverId}/details/coco/settings`).then(handleResult, handleRequestError);
+  }, [serverId]);
+
+  if (loading) {
+    return (
+      <div className="panel panel-default">
+        <Loading />
+      </div>
+    );
+  }
+
+  return (
+    <TopPanel title={t("Settings")} icon="fa fa-pencil-square-o">
+      <Messages items={messages} />
+      {supported && (
+        <CoCoSettingsForm
+          initialData={settings}
+          saveHandler={onSave}
+          availableEnvironmentTypes={availableEnvironmentTypes}
+          showOnScheduleOption={showOnScheduleOption}
+        />
+      )}
+    </TopPanel>
+  );
+};
