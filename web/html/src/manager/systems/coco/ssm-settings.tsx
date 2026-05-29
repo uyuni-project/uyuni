@@ -25,6 +25,7 @@ export const CoCoSSMSettings: React.FC<Props> = ({ systemSupport, availableEnvir
       environmentType: Object.values(availableEnvironmentTypes)[0],
       attestOnBoot: false,
       attestOnSchedule: false,
+      inputData: {},
     }),
     [availableEnvironmentTypes]
   );
@@ -32,7 +33,7 @@ export const CoCoSSMSettings: React.FC<Props> = ({ systemSupport, availableEnvir
   function onSave(data: Settings) {
     const request = {
       serverIds: systemSupport.filter((system) => system.cocoSupport).map((system) => system.id),
-      ...data,
+      settings: data,
     };
 
     Network.post(`/rhn/manager/api/systems/coco/settings`, request).then(
