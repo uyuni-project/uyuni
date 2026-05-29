@@ -46,18 +46,25 @@ import jakarta.servlet.http.HttpServletResponse;
  */
 public class AdminListAction extends BaseListAction<UserOverview> {
 
-    private ManagedServerGroup serverGroup;
-    private User user;
-
-    @Override
-    protected void setup(HttpServletRequest request) {
+    private ManagedServerGroup getServerGroup(HttpServletRequest request) {
         RequestContext requestContext = new RequestContext(request);
-        serverGroup = requestContext.lookupAndBindServerGroup();
-        user = requestContext.getCurrentUser();
+        return requestContext.lookupAndBindServerGroup();
+    }
+
+    private User getUser(HttpServletRequest request) {
+        RequestContext requestContext = new RequestContext(request);
+        return requestContext.getCurrentUser();
     }
 
     @Override
-    protected void processHelper(ListSessionSetHelper helper) {
+    protected void setup(HttpServletRequest request) {
+        // do nothing
+    }
+
+    @Override
+    protected void processHelper(ListSessionSetHelper helper, HttpServletRequest request) {
+        ManagedServerGroup serverGroup = getServerGroup(request);
+
         helper.ignoreEmptySelection();
 
         Set<String> preselected = new HashSet<>();
@@ -74,6 +81,9 @@ public class AdminListAction extends BaseListAction<UserOverview> {
             ActionMapping mapping,
             ActionForm formIn, HttpServletRequest request,
             HttpServletResponse response) {
+
+        ManagedServerGroup serverGroup = getServerGroup(request);
+        User user = getUser(request);
 
         // make sure the user has enough perms
         if (!UserManager.canAdministerSystemGroup(user, serverGroup)) {
@@ -111,6 +121,8 @@ public class AdminListAction extends BaseListAction<UserOverview> {
     /** {@inheritDoc} */
     @Override
     public List<UserOverview> getResult(RequestContext context) {
+        User user = context.getCurrentUser();
+
         List<UserOverview> userList = UserManager.activeInOrg2(user);
         for (UserOverview uo : userList) {
             uo.setSelectable(true);
