@@ -1210,7 +1210,7 @@ public class SaltServerActionService {
     public void handleActionChainResult(
             String minionId, String jobId,
             Map<String, StateApplyResult<Ret<JsonElement>>> actionChainResult,
-            Function<StateApplyResult<Ret<JsonElement>>, Boolean> skipFunction) {
+            Predicate<StateApplyResult<Ret<JsonElement>>> skipFunction) {
         int chunk = 1;
         long retActionChainId = 0L;
         boolean actionChainFailed = false;
@@ -1225,7 +1225,7 @@ public class SaltServerActionService {
                 retActionChainId = stateId.get().getActionChainId();
                 chunk = stateId.get().getChunk();
                 long actionId = stateId.get().getActionId();
-                if (Boolean.TRUE.equals(skipFunction.apply(actionStateApply))) {
+                if (skipFunction.test(actionStateApply)) {
                     continue; // skip this state from handling
                 }
 

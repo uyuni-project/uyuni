@@ -108,7 +108,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TimeZone;
-import java.util.function.Function;
+import java.util.function.LongFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -550,9 +550,9 @@ public class StatesAPI {
     }
 
     private <R> R handleTarget(StateTargetType targetType, long targetId,
-                                      Function<Long, R> serverHandler,
-                                      Function<Long, R> groupHandler,
-                                      Function<Long, R> orgHandler) {
+                               LongFunction<R> serverHandler,
+                               LongFunction<R> groupHandler,
+                               LongFunction<R> orgHandler) {
         switch (targetType) {
             case SERVER:
                 return serverHandler.apply(targetId);
