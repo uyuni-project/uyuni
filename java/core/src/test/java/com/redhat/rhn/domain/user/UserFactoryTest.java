@@ -355,7 +355,7 @@ public class UserFactoryTest extends BaseTestCase {
 
         UserServerPreference usp = new UserServerPreference(user, s, UserServerPreferenceId.RECEIVE_NOTIFICATIONS);
         usp.setValue("0");
-        usp = TestUtils.saveAndFlush(usp);
+        TestUtils.saveAndFlush(usp); //reassign variable if still needed
 
         usp = factory.lookupServerPreferenceByUserServerAndName(user, s,
                                       UserServerPreferenceId.RECEIVE_NOTIFICATIONS);
