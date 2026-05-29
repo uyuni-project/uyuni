@@ -199,8 +199,8 @@ $PODMAN_CMD run --cap-add AUDIT_CONTROL \
              /testsuite/podman_runner/run_db_migrations.sh uyuni-reportdb-schema && \
              /testsuite/podman_runner/setup_missing_folders.sh"
 
-$PODMAN_CMD commit --change CMD=/usr/lib/systemd/systemd server-setup uyuni-server-built:$UYUNI_VERSION
-$PODMAN_CMD rm server-setup
+$PODMAN_CMD commit --change CMD=/usr/lib/systemd/systemd uyuni-server uyuni-server-built:$UYUNI_VERSION
+$PODMAN_CMD rm uyuni-server
 
 ${src_dir}/testsuite/podman_runner/setup-nginx-proxy-for-docker-registries.sh
 
