@@ -1,6 +1,6 @@
 import { Button } from "components/buttons";
 
-type SearchPanelPropss = {
+type SelectedRowDetailsProps = {
   /** total number of filtered items */
   itemCount: number;
 
@@ -17,11 +17,13 @@ type SearchPanelPropss = {
   onSelectAll: () => void;
 };
 
-/** Panel containing the search fields for a table */
-export function SelectedRowDetails({ selectable = false, selectedCount = 0, ...props }: SearchPanelPropss) {
+/** Panel containing selected row details for a table */
+export function SelectedRowDetails({ selectable = false, selectedCount = 0, ...props }: SelectedRowDetailsProps) {
+  const isVisible = selectable && selectedCount > 0;
+  const allSelected = selectedCount === props.itemCount;
   return (
-    <div className={`selected-row-details ${selectable && selectedCount > 0 ? "show-details" : "hide-details"}`}>
-      {selectedCount === props.itemCount ? (
+    <div className={`selected-row-details ${isVisible ? "show-details" : "hide-details"}`}>
+      {allSelected ? (
         <>
           {t(
             `All {totalCount, plural,
@@ -30,7 +32,7 @@ export function SelectedRowDetails({ selectable = false, selectedCount = 0, ...p
                   } across all pages selected.` as string,
             { totalCount: props.itemCount }
           )}
-          <Button className="btn btn-tertiary ms-2" handler={props.onClear}>
+          <Button className="btn-tertiary ms-2" handler={props.onClear}>
             {t("Clear All")}
           </Button>
         </>
@@ -43,7 +45,7 @@ export function SelectedRowDetails({ selectable = false, selectedCount = 0, ...p
                   }` as string,
             { itemCount: selectedCount }
           )}
-          <Button className="btn btn-tertiary ms-2" handler={props.onSelectAll}>
+          <Button className="btn-tertiary ms-2" handler={props.onSelectAll}>
             {t(
               `Select all {totalCount, plural,
                     one {1 item}
@@ -53,7 +55,7 @@ export function SelectedRowDetails({ selectable = false, selectedCount = 0, ...p
             )}
           </Button>
           <span aria-hidden="true">&nbsp;|&nbsp;</span>
-          <Button className="btn btn-tertiary" handler={props.onClear}>
+          <Button className="btn-tertiary" handler={props.onClear}>
             {t("Clear All")}
           </Button>
         </>
