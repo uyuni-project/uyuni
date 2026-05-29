@@ -65,12 +65,6 @@ done
 NEW_CONFIG="$NEW_CONFIG
 hostssl reportdb all all scram-sha-256"
 
-# Allow injection of extra HBA rules via environment variable for CI/CD
-if [ -n "$POSTGRES_EXTRA_HBA_RULES" ]; then
-   NEW_CONFIG="$NEW_CONFIG
-$POSTGRES_EXTRA_HBA_RULES"
-fi
-
 if [[ "$(< "$HBA_FILE")" != "$NEW_CONFIG" ]]; then
     echo "$NEW_CONFIG" > "$HBA_FILE"
     PG_HBA_CHANGED=1

@@ -58,8 +58,6 @@ $PODMAN_CMD run \
     --secret uyuni-reportdb-user,type=env,target=REPORT_DB_USER \
     --secret uyuni-reportdb-pass,type=env,target=REPORT_DB_PASS \
     -v var-pgsql:/var/lib/pgsql/data \
-    -v ${src_dir}/containers/server-postgresql-image/root/docker-entrypoint-upgdb.d/01-pg_hba.sh:/docker-entrypoint-upgdb.d/01-pg_hba.sh:z \
-    -e POSTGRES_EXTRA_HBA_RULES="host all all all scram-sha-256" \
     --network network \
     ghcr.io/$UYUNI_PROJECT/uyuni/ci-postgresql:$UYUNI_VERSION
 
@@ -88,6 +86,8 @@ if [ "$iteration" -eq "$max_iterations" ]; then
   exit 1
 fi
 
+$PODMAN_CMD exec uyuni-db bash -c "echo host all all all scram-sha-256 > /var/lib/pgsql/data/pg_hba_custom.conf"
+$PODMAN_CMD exec uyuni-db su postgres -c "/usr/bin/pg_ctl reload"
 
 # Run the setup container
 setup_pm_path=`$PODMAN_CMD run -ti ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-server-all-in-one-dev:$UYUNI_VERSION sh -c 'rpm -ql spacewalk-setup | grep Setup.pm' | tr -d '\r'`
