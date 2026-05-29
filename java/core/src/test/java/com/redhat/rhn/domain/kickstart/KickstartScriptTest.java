@@ -81,7 +81,7 @@ public class KickstartScriptTest extends BaseTestCaseWithUser {
         ksdata.addScript(kss2);
         assertTrue(kss1.getPosition() < kss2.getPosition());
         KickstartFactory.saveKickstartData(ksdata);
-        ksdata = TestUtils.reload(ksdata);
+        TestUtils.reload(ksdata); //reassign variable if still needed
         assertTrue(kss1.getPosition() < kss2.getPosition());
     }
 
@@ -105,8 +105,8 @@ public class KickstartScriptTest extends BaseTestCaseWithUser {
         scriptEmpty.setPosition(2L);
         ksdata.addScript(script);
         ksdata.addScript(scriptEmpty);
-        script = TestUtils.saveAndFlush(script);
-        scriptEmpty = TestUtils.saveAndFlush(scriptEmpty);
+        TestUtils.saveAndFlush(script); //reassign variable if still needed
+        TestUtils.saveAndFlush(scriptEmpty); //reassign variable if still needed
 
         KickstartFactory.saveKickstartData(ksdata);
         ksdata = TestUtils.reload(ksdata);
