@@ -124,7 +124,7 @@ public class SnapshotHandlerTest extends BaseHandlerTestCase {
         generateSnapshot(server);
         generateSnapshot(server);
         generateSnapshot(server);
-        snap = TestUtils.saveAndFlush(snap);
+        TestUtils.saveAndFlush(snap); //reassign variable if still needed
 
         handler.deleteSnapshots(admin, server.getId().intValue(), new HashMap<>());
         List<ServerSnapshot> list = handler.listSnapshots(admin, server.getId().intValue(), new HashMap<>());
