@@ -79,7 +79,7 @@ public class ActionFormatterTest extends BaseTestCase {
                 ">1 system</a></strong> failed to complete this action.<br/><br/>"));
 
         sa.setStatusCompleted();
-        sa = TestUtils.saveAndReload(sa);
+        TestUtils.saveAndReload(sa); //reassign variable if still needed
         assertTrue(af.getNotes().startsWith(
                 "<a href=\"/rhn/schedule/CompletedSystems.do?aid="));
         assertTrue(af.getNotes().endsWith(
