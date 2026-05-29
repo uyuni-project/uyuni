@@ -266,6 +266,22 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
         return mapping.findForward(RhnHelper.CONFIRM_FORWARD);
     }
 
+
+
+    private List<Server> getSkippedServers(List<Long> servers, User user) {
+        // Check if for all servers in the set we can guess base channel. If not add them to the skipped list
+        List<Server> skippedServers = new LinkedList<>();
+
+        for (Long sId : servers) {
+            Server server = SystemManager.lookupByIdAndUser(sId, user);
+            if (!ChannelManager.guessServerBaseChannel(user, server).isPresent()) {
+                skippedServers.add(server);
+            }
+        }
+
+        return skippedServers;
+    }
+
     private ActionForward displayNameListReturnEmptyHanded(Long oldBaseChannelId, List<Server> skippedServers,
                                                            User user, ActionMapping mapping,
                                                            HttpServletRequest request) {
@@ -282,19 +298,6 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
                         .map(s -> "'" + s.getName() + "'")
                         .collect(Collectors.toList())), oldBaseChannelMessage);
         msgs.add(ActionMessages.GLOBAL_MESSAGE, actionMessage);
-        strutsDelegate.saveMessages(request, msgs);
-
-        return strutsDelegate.forwardParams(mapping.findForward("success"),
-                new HashMap<>());
-    }
-
-    private ActionForward displayWarningReturnEmptyHanded(ActionMapping mapping, HttpServletRequest request) {
-        // Display a warning to the user and return empty-handed.
-        StrutsDelegate strutsDelegate = getStrutsDelegate();
-        ActionMessages msgs = new ActionMessages();
-        msgs.add(ActionMessages.GLOBAL_MESSAGE,
-                new ActionMessage(
-                        "basesub.jsp.unableToLookupSystemDefaultChannel"));
         strutsDelegate.saveMessages(request, msgs);
 
         return strutsDelegate.forwardParams(mapping.findForward("success"),
@@ -322,6 +325,46 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
 
         return Optional.empty();
     }
+
+
+    private Optional<Channel> findOtherBaseChannel(List<Long> servers, User user) {
+        // Looks like an EUS or custom channel, need to get a little crazy :(
+        // Should be safe to assume there's at least one result returned here,
+        // we need a server object to call the stored procedure and guess a
+        // default base channel:
+
+        // take the first system of the list, guess its base channel and use it
+        Server s = SystemManager.lookupByIdAndUser(servers.get(0), user);
+        Channel newBase = ChannelManager.guessServerBaseChannel(user, s).orElse(null);
+
+        // no "default base channel" found so far
+        if (newBase == null) {
+            // lets search for suse channels
+            List<EssentialChannelDto> dr = ChannelManager.
+                    listPossibleSuseBaseChannelsForServer(s).orElse(null);
+            if (dr != null && dr.get(0) != null) {
+                newBase = ChannelFactory.lookupByIdAndUser(
+                        dr.get(0).getId(), user);
+            }
+        }
+
+        return Optional.ofNullable(newBase);
+    }
+
+
+    private ActionForward displayWarningReturnEmptyHanded(ActionMapping mapping, HttpServletRequest request) {
+        // Display a warning to the user and return empty-handed.
+        StrutsDelegate strutsDelegate = getStrutsDelegate();
+        ActionMessages msgs = new ActionMessages();
+        msgs.add(ActionMessages.GLOBAL_MESSAGE,
+                new ActionMessage(
+                        "basesub.jsp.unableToLookupSystemDefaultChannel"));
+        strutsDelegate.saveMessages(request, msgs);
+
+        return strutsDelegate.forwardParams(mapping.findForward("success"),
+                new HashMap<>());
+    }
+
 
     private List<ChildChannelPreservationDto> collectMatched(Map<Channel, Channel> preservations, User user) {
         List<ChildChannelPreservationDto> matched = new LinkedList<>();
@@ -371,43 +414,8 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
         }
     }
 
-    private List<Server> getSkippedServers(List<Long> servers, User user) {
-        // Check if for all servers in the set we can guess base channel. If not add them to the skipped list
-        List<Server> skippedServers = new LinkedList<>();
 
-        for (Long sId : servers) {
-            Server server = SystemManager.lookupByIdAndUser(sId, user);
-            if (!ChannelManager.guessServerBaseChannel(user, server).isPresent()) {
-                skippedServers.add(server);
-            }
-        }
 
-        return skippedServers;
-    }
-
-    private Optional<Channel> findOtherBaseChannel(List<Long> servers, User user) {
-        // Looks like an EUS or custom channel, need to get a little crazy :(
-        // Should be safe to assume there's at least one result returned here,
-        // we need a server object to call the stored procedure and guess a
-        // default base channel:
-
-        // take the first system of the list, guess its base channel and use it
-        Server s = SystemManager.lookupByIdAndUser(servers.get(0), user);
-        Channel newBase = ChannelManager.guessServerBaseChannel(user, s).orElse(null);
-
-        // no "default base channel" found so far
-        if (newBase == null) {
-            // lets search for suse channels
-            List<EssentialChannelDto> dr = ChannelManager.
-                    listPossibleSuseBaseChannelsForServer(s).orElse(null);
-            if (dr != null && dr.get(0) != null) {
-                newBase = ChannelFactory.lookupByIdAndUser(
-                        dr.get(0).getId(), user);
-            }
-        }
-
-        return Optional.ofNullable(newBase);
-    }
 
     /**
      * Change channels for the selected SSM systems.
