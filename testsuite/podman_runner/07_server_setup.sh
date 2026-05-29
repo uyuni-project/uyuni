@@ -58,6 +58,8 @@ $PODMAN_CMD run \
     --secret uyuni-reportdb-user,type=env,target=REPORT_DB_USER \
     --secret uyuni-reportdb-pass,type=env,target=REPORT_DB_PASS \
     -v var-pgsql:/var/lib/pgsql/data \
+    -v ${src_dir}/containers/server-postgresql-image/root/docker-entrypoint-upgdb.d/01-pg_hba.sh:/docker-entrypoint-upgdb.d/01-pg_hba.sh:z \
+    -e POSTGRES_EXTRA_HBA_RULES="host all all all scram-sha-256" \
     --network network \
     ghcr.io/$UYUNI_PROJECT/uyuni/ci-postgresql:$UYUNI_VERSION
 
