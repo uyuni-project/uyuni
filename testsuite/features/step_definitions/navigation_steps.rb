@@ -945,6 +945,7 @@ Then(/^I click on the filter button until page does not contain "([^"]*)" text$/
            Selenium::WebDriver::Error::StaleElementReferenceError,
            Selenium::WebDriver::Error::NoSuchElementError,
            NoMethodError
+
       # page mid-navigation, retry
     end
   end
@@ -961,6 +962,7 @@ Then(/^I click on the filter button until page does contain "([^"]*)" text$/) do
            Selenium::WebDriver::Error::StaleElementReferenceError,
            Selenium::WebDriver::Error::NoSuchElementError,
            NoMethodError
+
       # page mid-navigation, retry
     end
   end

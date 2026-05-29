@@ -137,6 +137,7 @@ def check_text?(text1, text2: nil, timeout: Capybara.default_max_wait_time)
            Selenium::WebDriver::Error::StaleElementReferenceError,
            Selenium::WebDriver::Error::NoSuchElementError,
            NoMethodError
+
       # page mid-navigation, let it settle and retry
       sleep 2
     end
