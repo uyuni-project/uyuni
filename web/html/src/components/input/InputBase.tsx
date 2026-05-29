@@ -174,6 +174,9 @@ export class InputBase<ValueType = string> extends Component<InputBaseProps<Valu
       } else {
         this.context.setModelValue(this.props.name, undefined);
       }
+
+      // Keep form-level validity in sync when required inputs are removed.
+      this.context.validateForm?.();
     }
   }
 
