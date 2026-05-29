@@ -53,12 +53,14 @@ export const CoCoSettingsForm: React.FC<Props> = ({
   // Convert from the form model to the settings object
   function computeSettings(model: FormModel): Settings {
     const { enabled, environmentType, attestOnBoot, attestOnSchedule } = model;
+    const inputData = {};
 
     return {
       enabled,
       environmentType,
       attestOnBoot,
       attestOnSchedule,
+      inputData,
     };
   }
 
