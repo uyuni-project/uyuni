@@ -154,9 +154,8 @@ public abstract class ListSetHelper extends ListHelper {
                 dispatched = true;
                 return;
             }
-            if (!ignoreEmptySelection) {
-                RhnHelper.handleEmptySelection(request);
-            }
+
+            RhnHelper.handleEmptySelection(request);
         }
 
         dataList = getDataSet();
