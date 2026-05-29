@@ -98,7 +98,7 @@ $PODMAN_CMD run --cap-add AUDIT_CONTROL \
     -p 9090:9090 \
     -p 4505:4505 \
     -p 4506:4506 \
-    -d --name=server \
+    -d --name=uyuni-server \
     --network network \
     uyuni-server-built:$UYUNI_VERSION
 wait_for_server_ready || exit 1
