@@ -162,7 +162,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
         Map<Long, Long> changedChannels = copyChangedChannels(request);
 
         // Technically speaking an inattentive user could submit this screen with all channels set to "No Change"
-        if (changedChannels.entrySet().isEmpty()) {
+        if (changedChannels.isEmpty()) {
             return handleNoChanges(mapping, request);
         }
 
@@ -264,7 +264,7 @@ public class BaseSubscribeAction extends RhnLookupDispatchAction {
 
         for (Long sId : servers) {
             Server server = SystemManager.lookupByIdAndUser(sId, user);
-            if (!ChannelManager.guessServerBaseChannel(user, server).isPresent()) {
+            if (ChannelManager.guessServerBaseChannel(user, server).isEmpty()) {
                 skippedServers.add(server);
             }
         }
