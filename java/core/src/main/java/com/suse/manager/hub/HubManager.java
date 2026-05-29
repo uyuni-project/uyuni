@@ -1208,7 +1208,9 @@ public class HubManager {
                 Map<String, Object> details = new HashMap<>();
                 details.put("fqdn", peripheral.getFqdn());
                 details.put("id", s.getId());
-                details.put("root_ca", peripheral.getRootCa());
+                if (peripheral.getRootCa() != null) {
+                    details.put("root_ca", peripheral.getRootCa());
+                }
                 result.add(details);
             });
         }
