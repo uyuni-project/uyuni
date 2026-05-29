@@ -232,7 +232,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         m.executeUpdate(params, list);
         HibernateFactory.getSession().refresh(debChannel);
 
-        debChannel = TestUtils.saveAndFlush(debChannel);
+        TestUtils.saveAndFlush(debChannel); //reassign variable if still needed
 
         final String debNvra = String.format("%s_%s-%s.%s",
                 dpkg.getPackageName().getName(), dpkg.getPackageEvr().getVersion(),

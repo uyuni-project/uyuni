@@ -453,7 +453,7 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
 
         suseProduct.getSuseProductChannels().add(spc);
 
-        spc = TestUtils.saveAndFlush(spc);
+        TestUtils.saveAndFlush(spc); //reassign variable if still needed
 
         ChannelFactory.save(c);
         return c;
