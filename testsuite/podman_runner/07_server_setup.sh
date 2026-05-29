@@ -86,6 +86,8 @@ if [ "$iteration" -eq "$max_iterations" ]; then
   exit 1
 fi
 
+$PODMAN_CMD exec uyuni-db bash -c "echo host all all all scram-sha-256 > /var/lib/pgsql/data/pg_hba_custom.conf"
+$PODMAN_CMD exec uyuni-db su postgres -c "/usr/bin/pg_ctl reload"
 
 # Run the setup container
 setup_pm_path=`$PODMAN_CMD run -ti ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-server-all-in-one-dev:$UYUNI_VERSION sh -c 'rpm -ql spacewalk-setup | grep Setup.pm' | tr -d '\r'`
