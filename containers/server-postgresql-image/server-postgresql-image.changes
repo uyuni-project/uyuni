@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri May 29 18:46:34 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.10
+  * Trust DB connections through local socket
+
+-------------------------------------------------------------------
 Fri May 22 11:53:19 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.9
