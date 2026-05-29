@@ -29,16 +29,13 @@ import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.testing.ServerTestUtils;
 
 import com.suse.manager.webui.services.TestSaltApi;
-import com.suse.manager.webui.services.TestSystemQuery;
 import com.suse.manager.webui.services.iface.SaltApi;
-import com.suse.manager.webui.services.iface.SystemQuery;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class OSImageBuildHostEntitlementTest extends BaseEntitlementTestCase {
 
-    private final SystemQuery systemQuery = new TestSystemQuery();
     private final SaltApi saltApi = new TestSaltApi();
     private final SystemEntitlementManager systemEntitlementManager = new SystemEntitlementManager(
             new SystemUnentitler(saltApi), new SystemEntitler(saltApi)

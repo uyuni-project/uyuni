@@ -73,8 +73,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import jakarta.servlet.http.HttpServletRequest;
-
 @ExtendWith(JUnit5Mockery.class)
 public class SystemHandlerProvisioningTest extends BaseHandlerTestCase {
 
@@ -100,7 +98,6 @@ public class SystemHandlerProvisioningTest extends BaseHandlerTestCase {
         private final SystemHandler handler =
                 new SystemHandler(taskomaticApi, xmlRpcSystemHelper, systemEntitlementManager, systemManager,
                         serverGroupManager, new TestCloudPaygManagerBuilder().build(), new AttestationManager());
-        private HttpServletRequest mockRequest;
 
         @RegisterExtension
         protected final JUnit5Mockery mockContext = new JUnit5Mockery() {{
@@ -112,7 +109,6 @@ public class SystemHandlerProvisioningTest extends BaseHandlerTestCase {
         @BeforeEach
         public void setUp() throws Exception {
                 super.setUp();
-                mockRequest = mockContext.mock(HttpServletRequest.class);
 
                 TaskomaticApi testApi = new TaskomaticApi() {
                         @Override

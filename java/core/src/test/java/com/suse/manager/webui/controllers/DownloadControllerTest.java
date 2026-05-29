@@ -104,8 +104,6 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
     private Response response;
     private Package pkg;
     private Package pkg2;
-    private Package debPkg;
-    private Package debPkg2;
 
     private static String originalMountPoint;
 
@@ -140,13 +138,11 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         this.uriFile2 = new URI(String.format("%s.rpm", nvra2.replace("^", "%5e"))).toString();
 
         Tuple3<Package, File, String> dpkg = createDebPkg(channel, "1", "1", "0", "all-deb");
-        this.debPkg = dpkg.getA();
         this.debPackageFile = dpkg.getB();
         this.debUriFile = dpkg.getC();
 
         Tuple3<Package, File, String> dpkg2 = createDebPkg(channel, null, "8-20180414",
                 "1ubuntu2", "all-deb");
-        this.debPkg2 = dpkg2.getA();
         this.debPackageFile2 = dpkg2.getB();
         this.debUriFile2 = dpkg2.getC();
 
