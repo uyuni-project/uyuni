@@ -88,10 +88,8 @@ public class FilelistsXmlWriter extends RepomdWriter {
         try {
             String xml = pkgDto.getFilelistXml();
             if (ConfigDefaults.get().useDBRepodata() && !StringUtils.isEmpty(xml)) {
-                if (xml != null) {
-                    handler.addCharacters(xml);
-                    return;
-                }
+                handler.addCharacters(xml);
+                return;
             }
 
             OutputStream st = new ByteArrayOutputStream();

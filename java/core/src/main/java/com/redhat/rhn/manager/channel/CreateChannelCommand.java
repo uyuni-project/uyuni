@@ -369,19 +369,18 @@ public class CreateChannelCommand {
 
         // ensure child channel arch is compatible
         ChannelArch ca = affected.getChannelArch();
-        if (parent != null) {
-            List<Map<String, String>> compatibleArches = ChannelManager
-                    .compatibleChildChannelArches(parent.getChannelArch().getLabel());
-            Set<String> compatibleArchLabels = new HashSet<>();
 
-            for (Map<String, String> arch : compatibleArches) {
-                compatibleArchLabels.add(arch.get("label"));
-            }
+        List<Map<String, String>> compatibleArches = ChannelManager
+                .compatibleChildChannelArches(parent.getChannelArch().getLabel());
+        Set<String> compatibleArchLabels = new HashSet<>();
 
-            if (!compatibleArchLabels.contains(ca.getLabel())) {
-                throw new IllegalArgumentException(
-                        "Incompatible parent and child channel architectures");
-            }
+        for (Map<String, String> arch : compatibleArches) {
+            compatibleArchLabels.add(arch.get("label"));
+        }
+
+        if (!compatibleArchLabels.contains(ca.getLabel())) {
+            throw new IllegalArgumentException(
+                    "Incompatible parent and child channel architectures");
         }
 
         // man that's a lot of conditionals :) finally we do what

@@ -88,10 +88,8 @@ public class OtherXmlWriter extends RepomdWriter {
         try {
             String xml = pkgDto.getOtherXml();
             if (ConfigDefaults.get().useDBRepodata() && !StringUtils.isEmpty(xml)) {
-                if (xml != null) {
                     handler.addCharacters(xml);
                     return;
-                }
             }
 
             OutputStream st = new ByteArrayOutputStream();
