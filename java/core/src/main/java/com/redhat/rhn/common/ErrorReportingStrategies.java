@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024--2025 SUSE LLC
+ * Copyright (c) 2024--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -17,10 +17,13 @@ package com.redhat.rhn.common;
 
 import static com.redhat.rhn.common.ExceptionMessage.NOT_INSTANTIABLE;
 
+import com.redhat.rhn.frontend.xmlrpc.ValidationException;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 /**
  * This class provides various strategies for error reporting and logging.
@@ -33,11 +36,20 @@ public class ErrorReportingStrategies {
     }
 
     private static final UyuniReportStrategy<UyuniError> VALIDATION_REPORT_STRATEGY;
+    private static final UyuniReportStrategy<UyuniError> RPC_VALIDATION_REPORT_STRATEGY;
 
     static {
         VALIDATION_REPORT_STRATEGY = errors -> {
             if (!errors.isEmpty()) {
                 throw new UyuniGeneralException(errors);
+            }
+        };
+
+        RPC_VALIDATION_REPORT_STRATEGY = errors -> {
+            if (!errors.isEmpty()) {
+                throw new ValidationException(
+                        errors.stream().map(UyuniError::getMessage).collect(Collectors.joining("\n"))
+                );
             }
         };
     }
@@ -48,6 +60,14 @@ public class ErrorReportingStrategies {
      */
     public static UyuniReportStrategy<UyuniError> validationReportingStrategy() {
         return VALIDATION_REPORT_STRATEGY;
+    }
+
+    /**
+     * Returns a validation reporting strategy for rpc xml services
+     * @return UyuniReportStrategy
+     */
+    public static UyuniReportStrategy<UyuniError> rpcValidationReportingStrategy() {
+        return RPC_VALIDATION_REPORT_STRATEGY;
     }
 
     /**
