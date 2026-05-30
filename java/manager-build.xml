@@ -280,7 +280,7 @@
                 <exclude name="**/tomcat*-servlet*"/>
                 <exclude name="**/jspapi*"/>
                 <exclude name="**/websocket-api*"/>
-                <exclude name="**/checkstyle*"/>
+                <exclude name="**/zz-checkstyle*"/>
                 <exclude name="**/jacocoant*"/>
             </fileset>
         </copy>
