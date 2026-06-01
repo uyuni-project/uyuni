@@ -33,7 +33,6 @@ import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFactoryTest;
 import com.redhat.rhn.domain.channel.ChannelTestUtility;
 import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.product.Tuple2;
 import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.domain.rhnpackage.PackageEvr;
@@ -60,21 +59,17 @@ import com.redhat.rhn.testing.PackageTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import com.suse.utils.Opt;
-
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -82,10 +77,8 @@ import java.util.stream.Collectors;
  */
 public class ErrataFactoryTest extends BaseTestCaseWithUser {
 
-    private static int advisorySeq = 1000;
-
     @Test
-    public void testAddToChannel()  throws Exception {
+    public void testAddToChannel() {
         Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         //add bugs, keywords, and packages so we have something to work with...
         e.addBug(ErrataManagerTest.createTestBug(42L, "test bug 1"));
@@ -132,7 +125,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testCreateAndLookupVendorAndUserErrata() throws Exception {
+    public void testCreateAndLookupVendorAndUserErrata() {
         Errata userErrata = createTestErrata(user.getOrg().getId());
         assertInstanceOf(Errata.class, userErrata);
         assertNotNull(userErrata.getId());
@@ -177,7 +170,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testCreateAndLookupErrata() throws Exception {
+    public void testCreateAndLookupErrata() {
         Errata testErrata = createTestErrata(user.getOrg().getId());
         assertInstanceOf(Errata.class, testErrata);
         assertNotNull(testErrata.getId());
@@ -194,7 +187,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testCreateAndLookupErrataNullOrg() throws Exception {
+    public void testCreateAndLookupErrataNullOrg() {
         //create an errata with null Org
         Errata testErrata = createTestErrata(null);
         assertInstanceOf(Errata.class, testErrata);
@@ -216,14 +209,14 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testLastModified() throws Exception {
+    public void testLastModified() {
         Errata testErrata = createTestErrata(user.getOrg().getId());
         testErrata = TestUtils.reload(testErrata);
         assertNotNull(testErrata.getLastModified());
     }
 
     @Test
-    public void testBugs() throws Exception {
+    public void testBugs() {
         var e = createTestErrata(user.getOrg().getId());
         assertTrue(e.getBugs() == null || e.getBugs().isEmpty());
         e.addBug(ErrataFactory.createBug(123L, "test bug",
@@ -235,9 +228,8 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
      * Create an Errata for testing and commit it to the DB.
      * @param orgId the Org who owns this Errata
      * @return Errata created
-     * @throws Exception something bad happened
      */
-    public static Errata createTestErrata(Long orgId) throws Exception {
+    public static Errata createTestErrata(Long orgId) {
         return createTestErrata(orgId, empty());
     }
 
@@ -246,66 +238,11 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
      * @param orgId the Org who owns this Errata
      * @param advisory if specified, the advisory name
      * @return the managed {@link Errata} instance
-     * @throws Exception something bad happened
      */
-    public static Errata createTestErrata(Long orgId, Optional<String> advisory) throws Exception {
-        Errata e = new Errata();
-        fillOutErrata(e, orgId, advisory);
-        return ErrataFactory.save(e);
-
-    }
-
-    /**
-     * Creates and persists an errata that will be flagged as critical.
-     *
-     * @param orgId the org under which the errata exists
-     * @return the managed {@link Errata} instance
-     * @throws Exception if the errata cannot be created
-     */
-    public static Errata createCriticalTestErrata(Long orgId) throws Exception {
-        Errata e = new Errata();
-        fillOutErrata(e, orgId, empty());
-        e.setAdvisoryType(ErrataFactory.ERRATA_TYPE_SECURITY);
-        return ErrataFactory.save(e);
-    }
-
-    private static void fillOutErrata(Errata e, Long orgId, Optional<String> advisory) {
-        String name = Opt.fold(advisory, () -> "JAVA-Test-" + advisorySeq++, Function.identity());
-        Org org = null;
-        if (orgId != null) {
-            org = OrgFactory.lookupById(orgId);
-            e.setOrg(org);
-        }
-        e.setAdvisory(name);
-        e.setAdvisoryType(ErrataFactory.ERRATA_TYPE_BUG);
-        e.setProduct("Red Hat Linux");
-        e.setDescription("Test desc ..");
-        e.setSynopsis("Test synopsis");
-        e.setSolution("Test solution");
-        e.setNotes("Test notes for test errata");
-        e.setRights("Copyright for test errata");
-        e.setTopic("test topic");
-        e.setRefersTo("rhn unit tests");
-        e.setUpdateDate(new Date());
-        e.setIssueDate(new Date());
-        e.setAdvisoryName(name);
-        e.setAdvisoryRel(2L);
-        e.setErrataFrom("maint-coord@suse.de");
-        e.setLocallyModified(Boolean.FALSE);
-        e.addKeyword("keyword");
-        Package testPackage = PackageTest.createTestPackage(org);
-
-        ErrataFile ef;
-        Set<Package> errataFilePackages = new HashSet<>();
-        errataFilePackages.add(testPackage);
-        e.addPackage(testPackage);
-        ef = ErrataFactory.createErrataFile(ErrataFactory.
-                lookupErrataFileType("RPM"),
-                    "SOME FAKE CHECKSUM: 123456789012",
-                    "test errata file" + TestUtils.randomString(), errataFilePackages);
-
-        e.addFile(ef);
-        e.setSeverity(Severity.getById(1));
+    public static Errata createTestErrata(Long orgId, Optional<String> advisory) {
+        ErrataTestBuilder builder = new ErrataTestBuilder().orgId(orgId).addDummyPackage(true);
+        advisory.ifPresent(builder::advisory);
+        return builder.buildAndSave();
     }
 
     public static void updateNeedsErrataCache(Long packageId, Long serverId,
@@ -321,7 +258,7 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void testLookupByOriginal() throws Exception {
+    public void testLookupByOriginal() {
         Org org = UserTestUtils.createOrg("testOrgLookupByOriginal");
         Errata testErrata = createTestErrata(org.getId());
 
@@ -378,10 +315,9 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
 
     /**
      * Tests that syncing errata details syncs advisoryStatus attribute.
-     * @throws Exception
      */
     @Test
-    public void testSyncErrataAdvisoryStatus() throws Exception {
+    public void testSyncErrataAdvisoryStatus() {
         Errata oe = ErrataFactoryTest.createTestErrata(null);
 
         Long ceid = ErrataHelper.cloneErrataFaster(oe.getId(), user.getOrg());
@@ -426,11 +362,8 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
     /**
      * Helper method for testing cache consistency when syncing vendor patch
      * into cloned patch when the vendor patch changes advisoryStatus over time.
-     *
-     * @throws Exception when anything goes wrong
      */
-    private void updatePatchAndCheckUpdateCacheConsistency(AdvisoryStatus oldStatus, AdvisoryStatus newStatus)
-            throws Exception {
+    private void updatePatchAndCheckUpdateCacheConsistency(AdvisoryStatus oldStatus, AdvisoryStatus newStatus) {
         Server server = ServerFactoryTest.createTestServer(user, true);
 
         Errata originalErratum = ErrataFactoryTest.createTestErrata(null);
