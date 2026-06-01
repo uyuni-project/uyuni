@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 SUSE LLC
+ * Copyright (c) 2020--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,12 +7,7 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
-
 package com.redhat.rhn.manager.rhnpackage;
 
 import static com.redhat.rhn.manager.channel.CloneChannelCommand.CloneBehavior.CURRENT_STATE;
@@ -91,7 +86,7 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
         // create a null-org patch with a package and add it to the channel
         Errata vendorPatch = ErrataFactoryTest.createTestErrata(null);
         vendorPatch.addPackage(oldPkg);
-        vendorPatch.addChannel(channel);
+        channel.addErrata(vendorPatch);
         ErrataFactory.save(vendorPatch);
 
         ChannelTestUtility.testAddPackage(channel, oldPkg);
@@ -132,7 +127,7 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
         // create a null-org patch with a newest package and add it to the channel
         Errata vendorPatch = ErrataFactoryTest.createTestErrata(null);
         vendorPatch.addPackage(newestPkg);
-        vendorPatch.addChannel(channel);
+        channel.addErrata(vendorPatch);
         ErrataFactory.save(vendorPatch);
 
         // channel has all 3 packages
@@ -169,7 +164,7 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
     public void testListPackagesInChannelForList() throws Exception {
         Errata vendorPatch = ErrataFactoryTest.createTestErrata(null);
         vendorPatch.addPackage(newerPkg);
-        vendorPatch.addChannel(channel);
+        channel.addErrata(vendorPatch);
         ErrataFactory.save(vendorPatch);
 
         // channel has all 3 packages
@@ -207,7 +202,7 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
     public void testChannelListAllPackages() throws Exception {
         Errata vendorPatch = ErrataFactoryTest.createTestErrata(null);
         vendorPatch.addPackage(newerPkg);
-        vendorPatch.addChannel(channel);
+        channel.addErrata(vendorPatch);
         ErrataFactory.save(vendorPatch);
 
         // channel has all 3 packages
@@ -245,7 +240,7 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
     public void testPotentialSystemsForPackage() throws Exception {
         Errata vendorPatch = ErrataFactoryTest.createTestErrata(null);
         vendorPatch.addPackage(newestPkg);
-        vendorPatch.addChannel(channel);
+        channel.addErrata(vendorPatch);
         ErrataFactory.save(vendorPatch);
 
         // channel has all 3 packages

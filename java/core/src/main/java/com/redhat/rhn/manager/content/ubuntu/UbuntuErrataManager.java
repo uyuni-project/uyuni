@@ -367,7 +367,7 @@ public class UbuntuErrataManager {
                                 org.orElseGet(OrgFactory::getSatelliteOrg)))
                         .collect(Collectors.toSet());
                 if (errata.getPackages() == null) {
-                    errata.setPackages(packages);
+                    errata.replacePackages(packages);
                     changedErrata.add(errata);
                 }
                 else if (errata.getPackages().addAll(packages)) {

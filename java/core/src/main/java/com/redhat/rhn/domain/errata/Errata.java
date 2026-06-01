@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2025--2026 SUSE LLC
  * Copyright (c) 2009--2020 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -26,11 +27,11 @@ import org.apache.commons.collections.IteratorUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.hibernate.annotations.Type;
 import org.hibernate.type.YesNoConverter;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -64,8 +65,6 @@ import jakarta.persistence.Table;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Errata extends BaseDomainHelper {
 
-    private static Logger log = LogManager.getLogger(Errata.class);
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "errata_seq")
     @SequenceGenerator(name = "errata_seq", sequenceName = "rhn_errata_id_seq", allocationSize = 1)
@@ -77,13 +76,9 @@ public class Errata extends BaseDomainHelper {
                 joinColumns = @JoinColumn(name = "errata_id"),
                 inverseJoinColumns = @JoinColumn(name = "package_id"))
     @OrderBy("id ASC")
-    private Set<Package> packages;
+    private Set<Package> packages = new HashSet<>();
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(
-                name = "rhnChannelErrata",
-                joinColumns = @JoinColumn(name = "errata_id"),
-                inverseJoinColumns = @JoinColumn(name = "channel_id"))
+    @ManyToMany(mappedBy = "erratas", fetch = FetchType.LAZY)
     private Set<Channel> channels = new HashSet<>();
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
@@ -182,18 +177,6 @@ public class Errata extends BaseDomainHelper {
      */
     public void setChannels(Set<Channel> channelsIn) {
         this.channels = channelsIn;
-    }
-
-    /**
-     * Adds a channel.
-     * @param channelIn the channel to add
-     */
-    public void addChannel(Channel channelIn) {
-        log.debug("addChannel called: {}", channelIn.getLabel());
-        if (this.channels == null) {
-            this.channels = new HashSet<>();
-        }
-        channels.add(channelIn);
     }
 
     /**
@@ -776,10 +759,9 @@ public class Errata extends BaseDomainHelper {
      * @param packageIn The package to add.
      */
     public void addPackage(Package packageIn) {
-        if (this.packages == null) {
-            this.packages = new HashSet<>();
+        if (packages.add(packageIn)) {
+            packageIn.getErrata().add(this);
         }
-        packages.add(packageIn);
     }
 
     /**
@@ -787,7 +769,29 @@ public class Errata extends BaseDomainHelper {
      * @param packageIn The package to remove.
      */
     public void removePackage(Package packageIn) {
-        packages.remove(packageIn);
+        if (packages.remove(packageIn)) {
+            packageIn.getErrata().remove(this);
+        }
+    }
+
+    /**
+     * Adds multiple packages to the errata
+     * @param packagesIn The collection of packages to add
+     */
+    public void addPackages(java.util.Collection<Package> packagesIn) {
+        for (Package pkg : packagesIn) {
+            addPackage(pkg);
+        }
+    }
+
+    /**
+     * Removes multiple packages from the errata
+     * @param packagesIn The collection of packages to remove
+     */
+    public void removePackages(java.util.Collection<Package> packagesIn) {
+        for (Package pkg : packagesIn) {
+            removePackage(pkg);
+        }
     }
 
     /**
@@ -802,6 +806,30 @@ public class Errata extends BaseDomainHelper {
      */
     public void setPackages(Set<Package> p) {
         this.packages = p;
+    }
+
+    /**
+     * Replace all packages with a new set, maintaining bidirectional sync
+     * @param packagesIn the new packages to set
+     */
+    public void replacePackages(Collection<Package> packagesIn) {
+        this.clearPackages();
+        for (Package pkg : packagesIn) {
+            addPackage(pkg);
+        }
+    }
+
+    /**
+     * Clears out the Packages associated with this errata.
+     */
+    public void clearPackages() {
+        if (this.getPackages() != null && !this.getPackages().isEmpty()) {
+            List<Package> packagesCopy = new ArrayList<>(this.getPackages());
+            for (Package pkg : packagesCopy) {
+                this.removePackage(pkg);
+            }
+            this.getPackages().clear();
+        }
     }
 
     /**
@@ -834,13 +862,19 @@ public class Errata extends BaseDomainHelper {
      * Clears out the Channels associated with this errata.
      */
     public void clearChannels() {
-        if (this.getChannels() != null) {
+        if (this.getChannels() != null && !this.getChannels().isEmpty()) {
+            List<Channel> channelsCopy = new ArrayList<>(this.getChannels());
+            for (Channel channel : channelsCopy) {
+                channel.removeErrata(this);
+            }
             this.getChannels().clear();
         }
         Iterator<ErrataFile> i = IteratorUtils.getIterator(this.getFiles());
         while (i.hasNext()) {
             ErrataFile pf = i.next();
-            pf.getChannels().clear();
+            if (pf.getChannels() != null) {
+                pf.getChannels().clear();
+            }
         }
     }
 
