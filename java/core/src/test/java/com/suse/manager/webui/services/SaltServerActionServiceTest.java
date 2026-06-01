@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017 SUSE LLC
+ * Copyright (c) 2017--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -7,10 +7,6 @@
  * FOR A PARTICULAR PURPOSE. You should have received a copy of GPLv2
  * along with this software; if not, see
  * http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
- *
- * Red Hat trademarks are not licensed under GPLv2. No permission is
- * granted to use or replicate Red Hat trademarks that are incorporated
- * in this software or its documentation.
  */
 package com.suse.manager.webui.services;
 
@@ -256,7 +252,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         SystemManager.subscribeServerToChannel(user, testMinionServer, channel);
         Package p64 = ErrataTestUtils.createTestPackage(user, channel, "x86_64");
         Errata retracted = ErrataFactoryTest.createTestErrata(null);
-        retracted.addChannel(channel);
+        channel.addErrata(retracted);
         retracted.setAdvisoryStatus(AdvisoryStatus.RETRACTED);
         Package p32 = ErrataTestUtils.createLaterTestPackage(user, retracted, channel, p64);
         p32.setPackageEvr(p64.getPackageEvr());

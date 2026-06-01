@@ -215,14 +215,15 @@ public class ErrataManager extends BaseManager {
             Collection<Long> channelIds, User user) {
         log.debug("addChannelsToErrata");
 
+        Set<Channel> channels = new HashSet<>();
         for (Long channelId : channelIds) {
-            ChannelManager.lookupByIdAndUser(channelId, user);
+            channels.add(ChannelManager.lookupByIdAndUser(channelId, user));
         }
 
         //if we're publishing the errata but not pushing packages
         //  We need to add cache entries for ones that are already in the channel
         //  and associated to the errata
-        ErrataCacheManager.addErrataRefreshing(channelIds, errata.getId());
+        ErrataCacheManager.addErrataRefreshing(channels, errata);
 
 
         //Save the errata
@@ -2162,6 +2163,7 @@ public class ErrataManager extends BaseManager {
         Channel channel = ChannelManager.lookupByIdAndUser(channelId, user);
 
         Collection<Long> list = errataToClone;
+        Set<Channel> channelSet = Set.of(channel);
         List<Long> cids = new ArrayList<>();
         cids.add(channel.getId());
         // let's avoid deadlocks please
@@ -2172,20 +2174,21 @@ public class ErrataManager extends BaseManager {
                 Errata errata = ErrataFactory.lookupById(eid);
                 // we merge custom errata directly (non Redhat and cloned)
                 if (errata.getOrg() != null) {
-                    ErrataCacheManager.addErrataRefreshing(cids, eid);
+                    ErrataCacheManager.addErrataRefreshing(channelSet, errata);
                 }
                 else {
                     List<Errata> clones = ErrataFactory.lookupErrataByOriginal(user.getOrg(), errata);
                     if (clones.isEmpty()) {
                         log.debug("Cloning errata");
                         var clonedId = ErrataHelper.cloneErrataFaster(eid, user.getOrg());
-                        ErrataCacheManager.addErrataRefreshing(cids, clonedId);
+                        Errata clonedErrata = ErrataFactory.lookupById(clonedId);
+                        ErrataCacheManager.addErrataRefreshing(channelSet, clonedErrata);
                     }
                     else {
                         log.debug("Re-publishing clone");
                         Errata firstClone = clones.get(0);
 
-                        ErrataCacheManager.addErrataRefreshing(cids, firstClone.getId());
+                        ErrataCacheManager.addErrataRefreshing(channelSet, firstClone);
                     }
                 }
             }
