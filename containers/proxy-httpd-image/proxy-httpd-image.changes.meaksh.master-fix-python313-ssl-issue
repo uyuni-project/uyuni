@@ -1,0 +1,2 @@
+- Fix CERTIFICATE_VERIFY_FAILED error when running
+  uyuni-configure.py on openSUSE Leap 16.0
