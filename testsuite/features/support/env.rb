@@ -209,6 +209,13 @@ def web_session_is_active?
   return false unless capybara_session_created?
 
   page.has_selector?('header', wait: 0) || page.has_selector?('#username-field', wait: 0)
+rescue Capybara::ElementNotFound,
+       Selenium::WebDriver::Error::StaleElementReferenceError,
+       Selenium::WebDriver::Error::NoSuchElementError,
+       NoMethodError
+
+  # Chrome 134+ CDP type mismatch during page navigation - page is not in a usable state
+  false
 end
 
 # Take a screenshot and try to log back at suse manager server
