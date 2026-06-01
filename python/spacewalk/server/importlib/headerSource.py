@@ -642,7 +642,8 @@ def createPackage(
 
     # bug #524231 - we need to call fullFilelist() for RPM v3 file list
     # to expand correctly
-    header.hdr.fullFilelist()
+    if hasattr(header.hdr, "fullFilelist"):
+        header.hdr.fullFilelist()
     p.populate(
         header,
         size,
