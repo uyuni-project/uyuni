@@ -2,6 +2,7 @@
 # Licensed under the terms of the MIT license.
 
 @scope_salt
+@skip_if_github_validation
 Feature: Verify the minion registration
   In order to validate the completeness of minion registration
   I want to see minion details and installed packages
