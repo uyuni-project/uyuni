@@ -406,7 +406,7 @@ x509_extensions         = req_ca_x509_extensions
 %s
 
 [ req_ca_x509_extensions ]
-basicConstraints = CA:true
+basicConstraints = critical, CA:TRUE
 keyUsage = digitalSignature, keyEncipherment, keyCertSign
 extendedKeyUsage = serverAuth, clientAuth
 # PKIX recommendations harmless if included in all certificates.
@@ -415,7 +415,7 @@ subjectKeyIdentifier    = hash
 authorityKeyIdentifier  = keyid, issuer:always
 
 [ req_server_x509_extensions ]
-basicConstraints = CA:false
+basicConstraints = CA:FALSE
 keyUsage = digitalSignature, keyEncipherment
 extendedKeyUsage = serverAuth, clientAuth
 nsCertType = server
@@ -443,7 +443,7 @@ req_extensions          = v3_req
 %s
 
 [ req_server_x509_extensions ]
-basicConstraints = CA:false
+basicConstraints = CA:FALSE
 keyUsage = digitalSignature, keyEncipherment
 extendedKeyUsage = serverAuth, clientAuth
 nsCertType = server
