@@ -54,7 +54,13 @@ with open(config_path + "ssh.yaml", encoding="utf-8") as sshSource:
         file.write(sshConfig.get("server_ssh_key_pub"))
 
     # append to existing config file
-    with open("/etc/ssh/sshd_config", "r+", encoding="utf-8") as config_file:
+    if os.path.exists("/etc/ssh/sshd_config"):
+        # openSUSE Leap 15.6
+        sshd_config_file = "/etc/ssh/sshd_config"
+    else:
+        # openSUSE Leap 16.0
+        sshd_config_file = "/usr/etc/ssh/sshd_config"
+    with open(sshd_config_file, "r+", encoding="utf-8") as config_file:
         file_content = config_file.read()
         file_content = re.sub(
             r"#HostKey .*",
@@ -66,16 +72,14 @@ with open(config_path + "ssh.yaml", encoding="utf-8") as sshSource:
         config_file.seek(0, 0)
         config_file.write(file_content)
         config_file.truncate()
-        config_file.write(
-            f"""Match user {SSH_PUSH_USER}
+        config_file.write(f"""Match user {SSH_PUSH_USER}
         ForceCommand /usr/sbin/mgr-proxy-ssh-force-cmd
         KbdInteractiveAuthentication no
         PasswordAuthentication no
         PubkeyAuthentication yes
         X11Forwarding no
         PermitTTY no
-        """
-        )
+        """)
 
 # Note: we don't need pam_loginuid.so module to be loaded. In the container's world users from the outside to the inside are different,
 # and they do not match with the pam_loginuid module's logic behavior. The module makes the sshd process to crash if it fails itself, but
@@ -88,7 +92,13 @@ with open(config_path + "ssh.yaml", encoding="utf-8") as sshSource:
 # So, we configure it to disable the module
 #
 # edit the existing config file
-with open("/etc/pam.d/sshd", "r+", encoding="utf-8") as config_file:
+if os.path.exists("/etc/pam.d/sshd"):
+    # openSUSE Leap 15.6
+    pamd_sshd_file = "/etc/pam.d/sshd"
+else:
+    # openSUSE Leap 16.0
+    pamd_sshd_file = "/usr/lib/pam.d/sshd"
+with open(pamd_sshd_file, "r+", encoding="utf-8") as config_file:
     file_content = config_file.read()
     file_content = re.sub(
         r"(session( *)required( *)pam_loginuid.so)", "#\0", file_content
