@@ -520,8 +520,8 @@ public class ErrataFactoryTest extends BaseTestCaseWithUser {
         Errata retracted = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         Errata notRetracted = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         retracted.setAdvisoryStatus(AdvisoryStatus.RETRACTED);
-        retracted.addChannel(channel);
-        notRetracted.addChannel(channel);
+        channel.addErrata(retracted);
+        channel.addErrata(notRetracted);
 
         List<Package> packages = new ArrayList<>();
         for (int i = 0; i < 10; i++) {

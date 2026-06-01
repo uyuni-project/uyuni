@@ -237,7 +237,8 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
 
         Errata e = ErrataFactoryTest.createTestErrata(admin.getOrg().getId());
         e.setAdvisoryType(ErrataFactory.ERRATA_TYPE_BUG);
-        e.setChannels(errataChannels);
+        // Use channel.addErrata() instead of setChannels() to maintain owning side
+        channel1.addErrata(e);
 
         ImageInfo inf1 = createImageInfo("myimage", "1.0.0", store, admin);
         UserFactory.save(admin);
