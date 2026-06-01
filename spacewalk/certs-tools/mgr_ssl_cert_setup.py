@@ -235,6 +235,8 @@ def prepareData(root_ca_content, server_cert_content, intermediate_ca_content):
 
 # pylint: disable-next=invalid-name
 def isCA(cert):
+    is_ca = False
+    is_critical = False
     # pylint: disable-next=subprocess-run-check
     out = subprocess.run(
         ["openssl", "x509", "-noout", "-ext", "basicConstraints"],
@@ -250,8 +252,13 @@ def isCA(cert):
         return False
     for line in out.stdout.decode("utf-8").splitlines():
         if "CA:TRUE" in line.upper():
-            return True
-    return False
+            is_ca = True
+        if "critical" in line.lower():
+            is_critical = True
+    if is_ca and not is_critical:
+        # print as warning and do not enforce it yet.
+        log_error("CA is not marked as 'critical'")
+    return is_ca
 
 
 # pylint: disable-next=invalid-name

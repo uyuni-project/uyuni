@@ -1,0 +1,2 @@
+- Set Basic Constraints extension as 'critical' according to
+  RFC 5280 for self signed CA certificates
