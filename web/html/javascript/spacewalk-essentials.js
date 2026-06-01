@@ -392,31 +392,56 @@ jQuery(document).on('keyup change', '.activationKey-check', function(e) {
   }
 });
 
+function getTextareaLengthNotificationId(textarea) {
+  let textareaId = textarea.attr('id');
+  if (!textareaId) {
+    const textareaIndex = jQuery('textarea.with-maxlength').index(textarea);
+    textareaId = 'textarea-with-maxlength-' + textareaIndex;
+    textarea.attr('id', textareaId);
+  }
+  return textareaId + '-remaining-length';
+}
+
+function updateTextareaLengthNotification(textarea) {
+  const notificationId = getTextareaLengthNotificationId(textarea);
+  const existingWrapper = textarea.nextAll('.remaining-length-wrapper')
+    .filter('[data-maxlength-for="' + notificationId + '"]');
+  const remainingLength = textarea.attr('maxlength') - textarea.val().length;
+
+  if (existingWrapper.length === 0) {
+    textarea.after(
+      jQuery('<div/>')
+        .attr('data-maxlength-for', notificationId)
+        .addClass('remaining-length-wrapper text-right')
+        .append(
+          jQuery('<span/>')
+            .append(
+              jQuery('<span/>')
+                .attr('id', notificationId)
+                .text(remainingLength)
+            )
+            .append(jQuery('<span/>').text(' ' + t('remaining')))
+        )
+    );
+    return;
+  }
+
+  existingWrapper.slice(1).remove();
+  jQuery('#' + notificationId).html(remainingLength);
+}
+
 function addTextareaLengthNotification() {
   // Add a notification text of the remaining length for a textarea
   jQuery('textarea.with-maxlength').each(function() {
-    const textareaId = jQuery(this).attr('id');
-    jQuery(this).after(
-      jQuery('<div/>')
-        .attr("id", "newDiv1")
-        .addClass("remaining-length-wrapper text-right")
-        .html(
-          jQuery('<span/>')
-            .html([
-              jQuery('<span/>')
-              .attr("id", textareaId + '-remaining-length')
-              .text(jQuery(this).attr('maxlength') - jQuery(this).val().length)
-              , jQuery('<span/>').text(' ' + t('remaining'))
-            ])
-        )
-    );
+    updateTextareaLengthNotification(jQuery(this));
   });
 
   // Update the remaining length text of the related textarea
-  jQuery(document).on('input', 'textarea.with-maxlength', function() {
-    jQuery('#' + jQuery(this).attr('id') + '-remaining-length')
-      .html(jQuery(this).attr('maxlength') - jQuery(this).val().length);
-  });
+  jQuery(document)
+    .off('input.spacewalk-maxlength change.spacewalk-maxlength', 'textarea.with-maxlength')
+    .on('input.spacewalk-maxlength change.spacewalk-maxlength', 'textarea.with-maxlength', function() {
+      updateTextareaLengthNotification(jQuery(this));
+    });
 }
 
 function initIEWarningUse() {
