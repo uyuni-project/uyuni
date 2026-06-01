@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2025 SUSE LLC
+ * Copyright (c) 2025--2026 SUSE LLC
  * Copyright (c) 2009--2018 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -36,6 +36,7 @@ import org.hibernate.type.YesNoConverter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -188,17 +189,17 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
             inverseJoinColumns = @JoinColumn(name = "org_trust_id"))
     private Set<Org> trustedOrgs;
 
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "rhnChannelErrata",
             joinColumns = @JoinColumn(name = "channel_id"),
             inverseJoinColumns = @JoinColumn(name = "errata_id"))
     private Set<Errata> erratas;
 
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "rhnChannelPackage",
             joinColumns = @JoinColumn(name = "channel_id"),
             inverseJoinColumns = @JoinColumn(name = "package_id"))
-    private Set<Package> packages;
+    private Set<Package> packages = new HashSet<>();
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     @JoinTable(name = "rhnChannelContentSource",
@@ -615,7 +616,71 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
      * @param errataIn The errata to add
      */
     public void addErrata(Errata errataIn) {
-        erratas.add(errataIn);
+        if (erratas.add(errataIn)) {
+            errataIn.getChannels().add(this);
+        }
+    }
+
+    /**
+     * Removes a single errata from the channel
+     * @param errataIn The errata to remove
+     */
+    public void removeErrata(Errata errataIn) {
+        if (erratas.remove(errataIn)) {
+            errataIn.getChannels().remove(this);
+        }
+    }
+
+    /**
+     * Adds a single package to the channel
+     * @param packageIn The package to add
+     */
+    public void addPackage(Package packageIn) {
+        if (packages.add(packageIn)) {
+            packageIn.getChannels().add(this);
+        }
+    }
+
+    /**
+     * Adds multiple erratas to the channel
+     * @param erratasIn The collection of erratas to add
+     */
+    public void addErratas(Collection<Errata> erratasIn) {
+        for (Errata errata : erratasIn) {
+            addErrata(errata);
+        }
+    }
+
+    /**
+     * Removes multiple erratas from the channel
+     * @param erratasIn The collection of erratas to remove
+     */
+    public void removeErratas(Collection<Errata> erratasIn) {
+        for (Errata errata : erratasIn) {
+            removeErrata(errata);
+        }
+    }
+
+    /**
+     * Adds multiple packages to the channel
+     * @param packagesIn The collection of packages to add
+     */
+    public void addPackages(Collection<Package> packagesIn) {
+        for (Package pkg : packagesIn) {
+            addPackage(pkg);
+        }
+    }
+
+    /**
+     * Removes multiple packages from the channel
+     * @param packagesIn The collection of packages to remove
+     */
+    public void removePackages(Collection<Package> packagesIn) {
+        for (Package pkg : packagesIn) {
+            if (packages.remove(pkg)) {
+                pkg.getChannels().remove(this);
+            }
+        }
     }
 
     /**
@@ -671,14 +736,12 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     }
 
     /**
-     * Removes a single package from the channel
-     * @param user the user doing the remove
-     * @param packageIn The package to remove
+     * Removes a package from the packages set.
+     * @param packageIn The package to remove.
      */
-    public void removePackage(Package packageIn, User user) {
-            List<Long> list = new ArrayList<>();
-            list.add(packageIn.getId());
-            ChannelManager.removePackages(this, list, user);
+    public void removePackage(Package packageIn) {
+        packages.remove(packageIn);
+        packageIn.getChannels().remove(this);
     }
 
     /**

@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LLC
  * Copyright (c) 2009--2013 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -57,7 +58,7 @@ public class ChannelTest extends BaseTestCaseWithUser {
         Package p = PackageTest.createTestPackage(user.getOrg());
         ChannelTestUtility.testAddPackage(c, p);
         ChannelFactory.save(c);
-        c.removePackage(p, user);
+        c.removePackage(p);
         assertEquals(0, c.getPackageCount());
         assertTrue(c.getPackages().isEmpty());
 
@@ -175,6 +176,62 @@ public class ChannelTest extends BaseTestCaseWithUser {
         assertFalse(c.isBaseChannel());
         c.setParentChannel(null);
         assertTrue(c.isBaseChannel());
+    }
+
+    @Test
+    void testAddAndRemoveErrata() throws Exception {
+        // Create a channel and an errata
+        Channel channel = ChannelFactoryTest.createTestChannel(user);
+        Errata errata = ErrataFactoryTest.createTestErrata(user.getId());
+
+        // By default, neither channel has erratas nor erratas have any channel
+        assertTrue(channel.getErratas().isEmpty());
+        assertTrue(errata.getChannels().isEmpty());
+
+        // Add the errata to the channel
+        channel.addErrata(errata);
+
+        // Assert channel has errata
+        assertEquals(1, channel.getErratas().size());
+        assertEquals(errata, channel.getErratas().iterator().next());
+
+        // Assert the errata also contains the channel
+        assertEquals(1, errata.getChannels().size());
+        assertEquals(channel, errata.getChannels().iterator().next());
+
+        // Remove the errata
+        channel.removeErrata(errata);
+
+        assertTrue(channel.getErratas().isEmpty());
+        assertTrue(errata.getChannels().isEmpty());
+    }
+
+    @Test
+    void testAddAndRemovePackage() throws Exception {
+        // Create a channel and a package
+        Channel channel = ChannelFactoryTest.createTestChannel(user);
+        Package pkg = PackageTest.createTestPackage(user.getOrg());
+
+        // By default, neither channel has packages nor packages have any channel
+        assertTrue(channel.getPackages().isEmpty());
+        assertTrue(pkg.getChannels().isEmpty());
+
+        // Add the package to the channel
+        channel.addPackage(pkg);
+
+        // Assert channel has package
+        assertEquals(1, channel.getPackages().size());
+        assertEquals(pkg, channel.getPackages().iterator().next());
+
+        // Assert the package also contains the channel
+        assertEquals(1, pkg.getChannels().size());
+        assertEquals(channel, pkg.getChannels().iterator().next());
+
+        // Remove the package
+        channel.removePackage(pkg);
+
+        assertTrue(channel.getPackages().isEmpty());
+        assertTrue(pkg.getChannels().isEmpty());
     }
 
     @Test

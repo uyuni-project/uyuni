@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LLC
  * Copyright (c) 2009--2012 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -47,7 +48,7 @@ public class ErrataTest extends BaseTestCaseWithUser {
     public void testNotificationQueue() throws Exception {
         Channel c = ChannelFactoryTest.createBaseChannel(user);
         Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        e.addChannel(c);
+        c.addErrata(e);
         ErrataFactory.save(e);
         Long id = e.getId(); //get id for later
         e.addNotification(new Date()); //add one
@@ -146,7 +147,7 @@ public class ErrataTest extends BaseTestCaseWithUser {
         e.addFile(ef);
 
         e.addPackage(p);
-        e.addChannel(c);
+        c.addErrata(e);
 
         ErrataFactory.save(e);
         e = TestUtils.reload(e);
@@ -286,9 +287,65 @@ public class ErrataTest extends BaseTestCaseWithUser {
 
         //createTestChannel calls flush, so previous errata fields with non-null constraint should not be left null
         Channel c1 = ChannelFactoryTest.createTestChannel(user.getOrg());
-        err.addChannel(c1);
+        c1.addErrata(err);
         assertEquals(1, err.getChannels().size());
         err.setChannels(null);
         assertNull(err.getChannels());
+    }
+
+    @Test
+    void testAddAndRemoveErrata() throws Exception {
+        // Create a channel and an errata
+        Channel channel = ChannelFactoryTest.createTestChannel(user);
+        Errata errata = ErrataFactoryTest.createTestErrata(user.getId());
+
+        // By default, neither channel has erratas nor erratas have any channel
+        assertTrue(channel.getErratas().isEmpty());
+        assertTrue(errata.getChannels().isEmpty());
+
+        // Add the errata to the channel
+        channel.addErrata(errata);
+
+        // Assert channel has errata
+        assertEquals(1, channel.getErratas().size());
+        assertEquals(errata, channel.getErratas().iterator().next());
+
+        // Assert the errata also contains the channel
+        assertEquals(1, errata.getChannels().size());
+        assertEquals(channel, errata.getChannels().iterator().next());
+
+        // Remove the errata
+        channel.removeErrata(errata);
+
+        assertTrue(channel.getErratas().isEmpty());
+        assertTrue(errata.getChannels().isEmpty());
+    }
+
+    @Test
+    void testAddAndRemovePackage() throws Exception {
+        // Create a channel and a package
+        Errata errata = new Errata();
+        Package pkg = PackageTest.createTestPackage(user.getOrg());
+
+        // By default, neither errata has packages nor errata has any channel
+        assertTrue(errata.getPackages().isEmpty());
+        assertTrue(pkg.getErrata().isEmpty());
+
+        // Add the package to the channel
+        errata.addPackage(pkg);
+
+        // Assert channel has package
+        assertEquals(1, errata.getPackages().size());
+        assertEquals(pkg, errata.getPackages().iterator().next());
+
+        // Assert the package also contains the channel
+        assertEquals(1, pkg.getErrata().size());
+        assertEquals(errata, pkg.getErrata().iterator().next());
+
+        // Remove the package
+        errata.removePackage(pkg);
+
+        assertTrue(errata.getPackages().isEmpty());
+        assertTrue(pkg.getErrata().isEmpty());
     }
 }
