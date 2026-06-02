@@ -67,7 +67,7 @@ except ImportError:
     HAS_PSYCOPG2 = False
 
 # Import salt libs
-import salt.ext.tornado
+import tornado
 import salt.utils.event
 
 log = logging.getLogger(__name__)
@@ -239,7 +239,7 @@ class Responder:
                 # Reset the counter if there was no exception
                 self._insert_exceptions = 0
 
-    @salt.ext.tornado.gen.coroutine
+    @tornado.gen.coroutine
     def add_event_to_queue(self, raw):
         try:
             tag, data = self.event_bus.unpack(raw)
@@ -289,7 +289,7 @@ def start(**config):
     """
     Listen to events and write them to the Postgres database
     """
-    io_loop = salt.ext.tornado.ioloop.IOLoop(make_current=False)
+    io_loop = tornado.ioloop.IOLoop(make_current=False)
     io_loop.make_current()
     event_bus = salt.utils.event.get_master_event(
         # pylint: disable-next=undefined-variable
