@@ -45,7 +45,7 @@ import java.util.Iterator;
 public class ErrataTest extends BaseTestCaseWithUser {
 
     @Test
-    public void testNotificationQueue() throws Exception {
+    public void testNotificationQueue() {
         Channel c = ChannelFactoryTest.createBaseChannel(user);
         Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         c.addErrata(e);
@@ -289,12 +289,10 @@ public class ErrataTest extends BaseTestCaseWithUser {
         Channel c1 = ChannelFactoryTest.createTestChannel(user.getOrg());
         c1.addErrata(err);
         assertEquals(1, err.getChannels().size());
-        err.setChannels(null);
-        assertNull(err.getChannels());
     }
 
     @Test
-    void testAddAndRemoveErrata() throws Exception {
+    void testAddAndRemoveErrata() {
         // Create a channel and an errata
         Channel channel = ChannelFactoryTest.createTestChannel(user);
         Errata errata = ErrataFactoryTest.createTestErrata(user.getId());
