@@ -264,13 +264,18 @@ public class ErrataCacheManager extends HibernateFactory {
     /**
      * Adds specified errata to a set of channels, inserting appropriate cache entries and replacing channel
      * notifications.
-     * @param channelToUpdate - channel IDs (Long) that need their errata
+     * @param channelToUpdate - channel that need their errata
      * caches updated
      * @param errata the errata to update the cache for. Assumes the errata is published
      */
     public static void addErrataRefreshing(Set<Channel> channelToUpdate, Errata errata) {
         for (Channel channel : channelToUpdate) {
             channel.addErrata(errata);
+            // Need to flush to persist the channel.addErrata(errata) change to the db.
+            // Without it, the underlying xml based query that listErrataChannelPackages
+            // will execute might not get the changes, and potentially result in missing or empty
+            // cache insertions and notifications.
+            HibernateFactory.getSession().flush();
             List<Long> pids = ErrataFactory.listErrataChannelPackages(channel.getId(), errata.getId());
             ErrataCacheManager.insertCacheForChannelPackages(channel.getId(), errata.getId(), pids);
             ErrataManager.replaceChannelNotifications(errata.getId(), channel.getId(), new Date());
