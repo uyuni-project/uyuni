@@ -24,6 +24,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 
+import jakarta.servlet.http.HttpServletRequest;
 import spark.Request;
 
 public class MultipartRequestUtil {
@@ -36,10 +37,20 @@ public class MultipartRequestUtil {
      * @throws FileUploadException if parsing fails
      */
     public static List<DiskFileItem> parseMultipartRequest(Request request) throws FileUploadException {
+        return parseMultipartRequest(request.raw());
+    }
+
+    /**
+     * Parse a multipart request
+     * @param request the HTTP servlet request
+     * @return list of DiskFileItem from the request
+     * @throws FileUploadException if parsing fails
+     */
+    public static List<DiskFileItem> parseMultipartRequest(HttpServletRequest request) throws FileUploadException {
         DiskFileItemFactory fileItemFactory = DiskFileItemFactory.builder()
                 .setPath(SALT_FILE_GENERATION_TEMP_PATH)
                 .get();
-        return new JakartaServletFileUpload<>(fileItemFactory).parseRequest(request.raw());
+        return new JakartaServletFileUpload<>(fileItemFactory).parseRequest(request);
     }
 
     /**

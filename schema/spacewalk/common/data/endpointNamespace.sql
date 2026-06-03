@@ -6046,6 +6046,11 @@ INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     ON CONFLICT DO NOTHING;
 INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
     SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
+    WHERE ns.namespace = 'api.admin.distro.upload_distro' AND ns.access_mode = 'W'
+    AND ep.endpoint = '/manager/api/admin/distro/uploadDistro' AND ep.http_method = 'POST'
+    ON CONFLICT DO NOTHING;
+INSERT INTO access.endpointNamespace (namespace_id, endpoint_id)
+    SELECT ns.id, ep.id FROM access.namespace ns, access.endpoint ep
     WHERE ns.namespace = 'api.admin.monitoring.disable' AND ns.access_mode = 'W'
     AND ep.endpoint = '/manager/api/admin/monitoring/disable' AND ep.http_method = 'POST'
     ON CONFLICT DO NOTHING;
