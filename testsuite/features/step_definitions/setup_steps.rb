@@ -548,7 +548,13 @@ When(/^I prepare the development repositories of "([^"]*)" as part of "([^"]*)" 
   target = get_target(host)
   repo_urls = if deb_host?(host)
                 out, = target.run('grep -rh ^deb /etc/apt/sources.list.d/')
-                out.split("\n").map { |line| line.split[1].strip }
+                out.split("\n").map do |line|
+                  parts = line.split
+                  # Skip 'deb' or 'deb-src', then skip options in brackets, then get the URL
+                  parts.shift # remove 'deb' or 'deb-src'
+                  parts.shift while parts.first&.start_with?('[') # skip options like [arch=amd64]
+                  parts.first&.strip # get the URL
+                end
               elsif rh_host?(host)
                 out, = target.run('grep -rh "^\s*baseurl" /etc/yum.repos.d/')
                 out.split("\n").map { |line| line.split('=', 2).last.strip }
@@ -560,7 +566,7 @@ When(/^I prepare the development repositories of "([^"]*)" as part of "([^"]*)" 
               end.compact.uniq
 
   repo_urls.each do |repo_url|
-    next if repo_url.empty?
+    next if repo_url.nil? || repo_url.empty?
     next unless devel_repo?(repo_url)
 
     unique_repo_name = generate_repository_name(repo_url)
