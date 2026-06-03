@@ -1,0 +1,4 @@
+#!/usr/bin/with-contenv bash
+
+# with-contenv ensures $TZ passed into the container is available to this script.
+timezone_alignment.sh
