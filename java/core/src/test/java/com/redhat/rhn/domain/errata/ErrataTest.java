@@ -23,9 +23,11 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.channel.Channel;
+import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.channel.ChannelFactoryTest;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.rhnpackage.Package;
+import com.redhat.rhn.domain.rhnpackage.PackageFactory;
 import com.redhat.rhn.domain.rhnpackage.PackageTest;
 import com.redhat.rhn.manager.errata.ErrataManager;
 import com.redhat.rhn.manager.rhnpackage.PackageManagerTest;
@@ -38,6 +40,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * ErrataTest
@@ -54,9 +57,9 @@ public class ErrataTest extends BaseTestCaseWithUser {
         e.addNotification(new Date()); //add one
         e.addNotification(new Date()); //add another
         assertEquals(1, e.getNotificationQueue().size()); //should be only 1
-        //save errata and evict
+        //save errata and clear session
         ErrataFactory.save(e);
-        TestUtils.flushAndEvict(e);
+        TestUtils.flushAndClearSession();
 
         Errata e2 = ErrataManager.lookupErrata(id, user); //lookup the errata
         assertEquals(1, e2.getNotificationQueue().size()); //should be only 1
@@ -292,58 +295,286 @@ public class ErrataTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    void testAddAndRemoveErrata() {
+    void testAddAndRemoveChannelErrata() {
         // Create a channel and an errata
         Channel channel = ChannelFactoryTest.createTestChannel(user);
         Errata errata = ErrataFactoryTest.createTestErrata(user.getId());
 
-        // By default, neither channel has erratas nor erratas have any channel
-        assertTrue(channel.getErratas().isEmpty());
-        assertTrue(errata.getChannels().isEmpty());
-
-        // Add the errata to the channel
         channel.addErrata(errata);
+        ErrataFactory.save(errata);
+
+        Long channelId = channel.getId();
+        Long errataId = errata.getId();
+
+        // Flush and clear session
+        TestUtils.flushAndClearSession();
+
+        // Reload from database
+        Channel reloadedChannel = ChannelFactory.lookupById(channelId);
+        Errata reloadedErrata = ErrataFactory.lookupById(errataId);
 
         // Assert channel has errata
-        assertEquals(1, channel.getErratas().size());
-        assertEquals(errata, channel.getErratas().iterator().next());
+        assertEquals(1, reloadedChannel.getErratas().size());
+        assertTrue(reloadedChannel.getErratas().contains(reloadedErrata));
 
         // Assert the errata also contains the channel
-        assertEquals(1, errata.getChannels().size());
-        assertEquals(channel, errata.getChannels().iterator().next());
+        assertEquals(1, reloadedErrata.getChannels().size());
+        assertTrue(reloadedErrata.getChannels().contains(reloadedChannel));
 
         // Remove the errata
-        channel.removeErrata(errata);
+        reloadedChannel.removeErrata(reloadedErrata);
+        ChannelFactory.save(reloadedChannel);
 
-        assertTrue(channel.getErratas().isEmpty());
-        assertTrue(errata.getChannels().isEmpty());
+        TestUtils.flushAndClearSession();
+
+        // Reload and verify channel does not contain the errata and vice versa
+        Channel finalChannel = ChannelFactory.lookupById(channelId);
+        Errata finalErrata = ErrataFactory.lookupById(errataId);
+
+        assertTrue(finalChannel.getErratas().isEmpty());
+        assertTrue(finalErrata.getChannels().isEmpty());
     }
 
     @Test
-    void testAddAndRemovePackage() throws Exception {
+    void testAddAndRemovePackage() {
         // Create a channel and a package
         Errata errata = new Errata();
         Package pkg = PackageTest.createTestPackage(user.getOrg());
-
-        // By default, neither errata has packages nor errata has any channel
-        assertTrue(errata.getPackages().isEmpty());
-        assertTrue(pkg.getErrata().isEmpty());
-
-        // Add the package to the channel
         errata.addPackage(pkg);
 
-        // Assert channel has package
-        assertEquals(1, errata.getPackages().size());
-        assertEquals(pkg, errata.getPackages().iterator().next());
+        ErrataFactory.save(errata);
 
-        // Assert the package also contains the channel
-        assertEquals(1, pkg.getErrata().size());
-        assertEquals(errata, pkg.getErrata().iterator().next());
+        Long errataId = errata.getId();
+        Long packageId = pkg.getId();
+
+        // Flush and clear session
+        TestUtils.flushAndClearSession();
+
+        // Reload from database
+        Errata reloadedErrata = ErrataFactory.lookupById(errataId);
+        Package reloadPackage = PackageFactory.lookupByIdAndOrg(packageId, user.getOrg());
+
+        // Assert channel has package
+        assertEquals(1, reloadedErrata.getPackages().size());
+        assertTrue(reloadedErrata.getPackages().contains(reloadPackage));
+
+        // Assert package has errata
+        assertEquals(1, reloadPackage.getErrata().size());
+        assertTrue(reloadPackage.getErrata().contains(reloadedErrata));
 
         // Remove the package
-        errata.removePackage(pkg);
+        reloadedErrata.removePackage(pkg);
+        ErrataFactory.save(errata);
+        TestUtils.flushAndClearSession();
 
-        assertTrue(errata.getPackages().isEmpty());
-        assertTrue(pkg.getErrata().isEmpty());
+        // Reload and verify errata does not contain the package and vice versa
+        Errata finalErrata = ErrataFactory.lookupById(errataId);
+        Package finalPackage = PackageFactory.lookupByIdAndOrg(packageId, user.getOrg());
+
+        // Assert channel had no package and vice verse
+        assertTrue(finalErrata.getPackages().isEmpty());
+        assertTrue(finalPackage.getErrata().isEmpty());
+    }
+
+    /**
+     * Test addPackages() maintains bidirectional relationships and persists correctly.
+     */
+    @Test
+    void testAddPackages() {
+        // Create and add packages
+        Errata errata = new ErrataTestBuilder().orgId(user.getOrg().getId()).buildAndSave();
+        Package pkg1 = PackageTest.createTestPackage(user.getOrg());
+        Package pkg2 = PackageTest.createTestPackage(user.getOrg());
+
+        errata.addPackage(pkg1);
+        errata.addPackage(pkg2);
+        ErrataFactory.save(errata);
+
+        Long errataId = errata.getId();
+        Long pkg1Id = pkg1.getId();
+        Long pkg2Id = pkg2.getId();
+
+        // Flush and clear session
+        TestUtils.flushAndClearSession();
+
+        // Reload from database
+        Errata reloadedErrata = ErrataFactory.lookupById(errataId);
+        assertNotNull(reloadedErrata);
+
+        // Verify forward relationship persisted
+        assertEquals(2, reloadedErrata.getPackages().size());
+
+        // Reload packages and verify reverse relationship persisted
+        Package reloadedPkg1 = PackageFactory.lookupByIdAndOrg(pkg1Id, user.getOrg());
+        Package reloadedPkg2 = PackageFactory.lookupByIdAndOrg(pkg2Id, user.getOrg());
+
+        assertEquals(1, reloadedPkg1.getErrata().size());
+        assertTrue(reloadedPkg1.getErrata().contains(reloadedErrata));
+        assertEquals(1, reloadedPkg2.getErrata().size());
+        assertTrue(reloadedPkg2.getErrata().contains(reloadedErrata));
+    }
+
+    @Test
+    void testRemovePackage() {
+        // Create errata with packages
+        Errata errata = new ErrataTestBuilder().orgId(user.getOrg().getId()).buildAndSave();
+        Package pkg1 = PackageTest.createTestPackage(user.getOrg());
+        Package pkg2 = PackageTest.createTestPackage(user.getOrg());
+
+        errata.addPackage(pkg1);
+        errata.addPackage(pkg2);
+        ErrataFactory.save(errata);
+
+        Long errataId = errata.getId();
+        Long pkg1Id = pkg1.getId();
+        Long pkg2Id = pkg2.getId();
+
+        TestUtils.flushAndClearSession();
+
+        // Reload and remove one package
+        Errata reloadedErrata = ErrataFactory.lookupById(errataId);
+        Package reloadedPkg1 = PackageFactory.lookupByIdAndOrg(pkg1Id, user.getOrg());
+
+        reloadedErrata.removePackage(reloadedPkg1);
+        ErrataFactory.save(reloadedErrata);
+
+        TestUtils.flushAndClearSession();
+
+        // Reload and verify only pkg2 remains
+        Errata finalErrata = ErrataFactory.lookupById(errataId);
+        assertEquals(1, finalErrata.getPackages().size());
+
+        Package finalPkg1 = PackageFactory.lookupByIdAndOrg(pkg1Id, user.getOrg());
+        Package finalPkg2 = PackageFactory.lookupByIdAndOrg(pkg2Id, user.getOrg());
+
+        assertFalse(finalPkg1.getErrata().contains(finalErrata));
+        assertTrue(finalPkg2.getErrata().contains(finalErrata));
+    }
+
+    /**
+     * Test clearPackages() removes all package relationships and persists correctly.
+     */
+    @Test
+    void testClearPackages() {
+        // Create errata with packages
+        Errata errata = new ErrataTestBuilder().orgId(user.getOrg().getId()).buildAndSave();
+        Package pkg1 = PackageTest.createTestPackage(user.getOrg());
+        Package pkg2 = PackageTest.createTestPackage(user.getOrg());
+
+        errata.addPackages(List.of(pkg1, pkg2));
+        ErrataFactory.save(errata);
+
+        Long errataId = errata.getId();
+        Long pkg1Id = pkg1.getId();
+        Long pkg2Id = pkg2.getId();
+
+        TestUtils.flushAndClearSession();
+
+        // Reload and clear all packages
+        Errata reloadedErrata = ErrataFactory.lookupById(errataId);
+        reloadedErrata.clearPackages();
+        ErrataFactory.save(reloadedErrata);
+
+        TestUtils.flushAndClearSession();
+
+        // Reload and verify errata has no packages
+        Errata finalErrata = ErrataFactory.lookupById(errataId);
+        assertTrue(finalErrata.getPackages().isEmpty());
+
+        // Verify packages no longer have the errata
+        Package finalPkg1 = PackageFactory.lookupByIdAndOrg(pkg1Id, user.getOrg());
+        Package finalPkg2 = PackageFactory.lookupByIdAndOrg(pkg2Id, user.getOrg());
+
+        assertFalse(finalPkg1.getErrata().contains(finalErrata));
+        assertFalse(finalPkg2.getErrata().contains(finalErrata));
+    }
+
+    /**
+     * Test replacePackages() atomically replaces all packages and persists correctly.
+     */
+    @Test
+    void testReplacePackages() {
+        // Create errata with old packages
+        Errata errata = new ErrataTestBuilder().orgId(user.getOrg().getId()).buildAndSave();
+        Package oldPkg1 = PackageTest.createTestPackage(user.getOrg());
+        Package oldPkg2 = PackageTest.createTestPackage(user.getOrg());
+
+        errata.addPackages(List.of(oldPkg1, oldPkg2));
+        ErrataFactory.save(errata);
+
+        Long errataId = errata.getId();
+        Long oldPkg1Id = oldPkg1.getId();
+        Long oldPkg2Id = oldPkg2.getId();
+
+        TestUtils.flushAndClearSession();
+
+        // Create new packages and replace
+        Package newPkg1 = PackageTest.createTestPackage(user.getOrg());
+        Package newPkg2 = PackageTest.createTestPackage(user.getOrg());
+        Long newPkg1Id = newPkg1.getId();
+        Long newPkg2Id = newPkg2.getId();
+
+        Errata reloadedErrata = ErrataFactory.lookupById(errataId);
+        reloadedErrata.replacePackages(List.of(newPkg1, newPkg2));
+        ErrataFactory.save(reloadedErrata);
+
+        TestUtils.flushAndClearSession();
+
+        // Reload and verify only new packages exist
+        Errata finalErrata = ErrataFactory.lookupById(errataId);
+        assertEquals(2, finalErrata.getPackages().size());
+
+        Package finalOldPkg1 = PackageFactory.lookupByIdAndOrg(oldPkg1Id, user.getOrg());
+        Package finalOldPkg2 = PackageFactory.lookupByIdAndOrg(oldPkg2Id, user.getOrg());
+        Package finalNewPkg1 = PackageFactory.lookupByIdAndOrg(newPkg1Id, user.getOrg());
+        Package finalNewPkg2 = PackageFactory.lookupByIdAndOrg(newPkg2Id, user.getOrg());
+
+        // Old packages should not have the errata
+        assertFalse(finalOldPkg1.getErrata().contains(finalErrata));
+        assertFalse(finalOldPkg2.getErrata().contains(finalErrata));
+
+        // New packages should have the errata
+        assertTrue(finalNewPkg1.getErrata().contains(finalErrata));
+        assertTrue(finalNewPkg2.getErrata().contains(finalErrata));
+    }
+
+    /**
+     * Test clearChannels() removes all channel relationships and persists correctly.
+     */
+    @Test
+    void testClearChannels() {
+        // Create errata with channels
+        Errata errata = ErrataFactoryTest.createTestErrata(user.getId());
+        Channel channel1 = ChannelFactoryTest.createTestChannel(user);
+        Channel channel2 = ChannelFactoryTest.createTestChannel(user);
+
+        channel1.addErrata(errata);
+        channel2.addErrata(errata);
+        ChannelFactory.save(channel1);
+        ChannelFactory.save(channel2);
+
+        Long errataId = errata.getId();
+        Long channel1Id = channel1.getId();
+        Long channel2Id = channel2.getId();
+
+        TestUtils.flushAndClearSession();
+
+        // Reload and clear all channels
+        Errata reloadedErrata = ErrataFactory.lookupById(errataId);
+        reloadedErrata.clearChannels();
+        ErrataFactory.save(reloadedErrata);
+
+        TestUtils.flushAndClearSession();
+
+        // Reload and verify errata has no channels
+        Errata finalErrata = ErrataFactory.lookupById(errataId);
+        assertTrue(finalErrata.getChannels().isEmpty());
+
+        // Verify channels no longer have the errata
+        Channel finalChannel1 = ChannelFactory.lookupById(channel1Id);
+        Channel finalChannel2 = ChannelFactory.lookupById(channel2Id);
+
+        assertFalse(finalChannel1.getErratas().contains(finalErrata));
+        assertFalse(finalChannel2.getErratas().contains(finalErrata));
     }
 }
