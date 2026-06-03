@@ -83,6 +83,7 @@ RUN set -euo pipefail; \
         virtual-host-gatherer-libcloud \
         virtualization-formulas \
         mozilla-nss-sysinit \
+        s6-overlay \
         zchunk && \
     zypper --non-interactive clean --all && \
     (rpm -e container-suseconnect || true) && \
