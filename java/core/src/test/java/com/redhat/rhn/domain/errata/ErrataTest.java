@@ -337,8 +337,8 @@ public class ErrataTest extends BaseTestCaseWithUser {
 
     @Test
     void testAddAndRemovePackage() {
-        // Create a channel and a package
-        Errata errata = new Errata();
+        // Create errata and a package
+        Errata errata = new ErrataTestBuilder().orgId(user.getOrg().getId()).buildAndSave();
         Package pkg = PackageTest.createTestPackage(user.getOrg());
         errata.addPackage(pkg);
 
@@ -363,8 +363,8 @@ public class ErrataTest extends BaseTestCaseWithUser {
         assertTrue(reloadPackage.getErrata().contains(reloadedErrata));
 
         // Remove the package
-        reloadedErrata.removePackage(pkg);
-        ErrataFactory.save(errata);
+        reloadedErrata.removePackage(reloadPackage);
+        ErrataFactory.save(reloadedErrata);
         TestUtils.flushAndClearSession();
 
         // Reload and verify errata does not contain the package and vice versa

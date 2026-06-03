@@ -30,6 +30,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.Serial;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Map;
@@ -756,14 +757,46 @@ public class Package extends BaseDomainHelper {
      * @return Returns the errata.
      */
     public Set<Errata> getErrata() {
-        return errata;
+        return Collections.unmodifiableSet(errata);
+    }
+
+    /**
+     * Internal helper for bidirectional relationship - adds an errata to this package
+     * @param errataIn The errata to add
+     */
+    public void addErrataInternal(Errata errataIn) {
+        errata.add(errataIn);
+    }
+
+    /**
+     * Internal helper for bidirectional relationship - removes errata from this package.
+     * @param errataIn The channel to remove
+     */
+    public void removeErrataInternal(Errata errataIn) {
+        errata.remove(errataIn);
     }
 
     /**
      * @return Returns the channels.
      */
     public Set<Channel> getChannels() {
-        return channels;
+        return Collections.unmodifiableSet(channels);
+    }
+
+    /**
+     * Internal helper for bidirectional relationship - adds a channel to this package
+     * @param channel The channel to add
+     */
+    public void addChannelInternal(Channel channel) {
+        channels.add(channel);
+    }
+
+    /**
+     * Internal helper for bidirectional relationship - removes channel from this package.
+     * @param channel The channel to remove
+     */
+    public void removeChannelInternal(Channel channel) {
+        channels.remove(channel);
     }
 
     /**
