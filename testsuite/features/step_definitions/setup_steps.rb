@@ -487,6 +487,13 @@ When(/^I create the MU repositories for "([^"]*)"$/) do |client|
 
   repo_list.each do |_repo_name, repo_url|
     unique_repo_name = generate_repository_name(repo_url)
+
+    # Skip if repository name is empty (e.g., when running with empty repository configuration)
+    if unique_repo_name.nil? || unique_repo_name.empty?
+      log "Skipping repository with empty name (URL: #{repo_url})"
+      next
+    end
+
     if repository_exist? unique_repo_name
       log "The MU repository #{unique_repo_name} was already created, we will reuse it."
     else
@@ -526,6 +533,13 @@ When(/^I select the MU repositories for "([^"]*)" from the list$/) do |client|
 
   repo_list.each do |_repo_name, repo_url|
     unique_repo_name = generate_repository_name(repo_url)
+
+    # Skip if repository name is empty (e.g., when running with empty repository configuration)
+    if unique_repo_name.nil? || unique_repo_name.empty?
+      log "Skipping repository with empty name (URL: #{repo_url})"
+      next
+    end
+
     step %(I check "#{unique_repo_name}" in the list)
   end
 end
@@ -550,6 +564,13 @@ When(/^I prepare the development repositories of "([^"]*)" as part of "([^"]*)" 
     next unless devel_repo?(repo_url)
 
     unique_repo_name = generate_repository_name(repo_url)
+
+    # Skip if repository name is empty (e.g., when running with empty repository configuration)
+    if unique_repo_name.nil? || unique_repo_name.empty?
+      log "Skipping repository with empty name (URL: #{repo_url})"
+      next
+    end
+
     unless repository_exist?(unique_repo_name)
       content_type = deb_host?(host) ? 'deb' : 'yum'
       $api_test.channel.software.create_repo(unique_repo_name, repo_url, content_type)
