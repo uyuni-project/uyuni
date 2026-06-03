@@ -151,11 +151,11 @@ public class Errata extends BaseDomainHelper {
 
     @OneToMany(mappedBy = "owningErrata", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @OrderBy("id ASC")
-    private Set<ErrataFile> files;
+    private Set<ErrataFile> files = new HashSet<>();
 
     @OneToMany(mappedBy = "errata", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @OrderBy("keyword ASC")
-    private Set<Keyword> keywords;
+    private Set<Keyword> keywords = new HashSet<>();
 
     @Column(name = "errata_from")
     private String errataFrom;
