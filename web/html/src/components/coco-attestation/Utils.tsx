@@ -2,6 +2,10 @@ import type { ReactNode } from "react";
 
 import { FromNow } from "components/datetime";
 
+// These values have to match those defined in com.suse.manager.attestation.IbmInputDataValidator.java
+export const HOST_KEY_DOCUMENT_FIELD = "host_key_document";
+export const SECURE_EXECUTION_HEADER_FIELD = "secure_execution_header";
+
 export type Settings = {
   enabled: boolean;
   environmentType: string;

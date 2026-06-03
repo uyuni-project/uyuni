@@ -31,17 +31,21 @@ export const CoCoSSMSettings: React.FC<Props> = ({ systemSupport, availableEnvir
     [availableEnvironmentTypes]
   );
 
-  function onSave(data: Settings) {
-    return saveSsmCoCoSettings(
-      systemSupport.filter((system) => system.cocoSupport).map((system) => system.id),
-      data
-    ).then(
-      (response) =>
-        setMessages(
-          response.success ? MessagesUtils.success(response.messages) : MessagesUtils.error(response.messages)
-        ),
-      (err) => setMessages(Network.responseErrorMessage(err))
-    );
+  function onSave(settingsPromise: Promise<Settings>): Promise<void> {
+    return settingsPromise
+      .then((data) =>
+        saveSsmCoCoSettings(
+          systemSupport.filter((system) => system.cocoSupport).map((system) => system.id),
+          data
+        )
+      )
+      .then(
+        (response) =>
+          setMessages(
+            response.success ? MessagesUtils.success(response.messages) : MessagesUtils.error(response.messages)
+          ),
+        (err) => setMessages(Network.responseErrorMessage(err))
+      );
   }
 
   return (
