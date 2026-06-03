@@ -1,6 +1,4 @@
-import { beforeEach, describe, expect, jest, test } from "@jest/globals";
-
-import { click, render, screen, selectOptions } from "utils/test-utils";
+import { click, render, screen, selectOptions, type, upload, waitFor } from "utils/test-utils";
 
 import { CoCoSettingsForm } from "./CoCoSettingsForm";
 import { Settings } from "./Utils";
@@ -13,10 +11,11 @@ describe("CoCoSettingsForm", () => {
   const availableEnvironmentTypes = {
     KVM_AMD: "KVM on AMD",
     KVM_INTEL: "KVM on INTEL",
+    KVM_IBM_Z: "KVM on IBM Z",
   };
 
   let initialData: Settings;
-  let saveHandler: jest.MockedFunction<(data: Settings) => void>;
+  let saveHandler: jest.MockedFunction<(data: Promise<Settings>) => Promise<void>>;
 
   beforeEach(() => {
     initialData = {
@@ -24,9 +23,13 @@ describe("CoCoSettingsForm", () => {
       environmentType: "KVM_AMD",
       attestOnBoot: false,
       attestOnSchedule: false,
+      inputData: {},
     };
 
-    saveHandler = jest.fn();
+    saveHandler = saveHandler = jest.fn<Promise<void>, [Promise<Settings>]>(() => Promise.resolve());
+
+    URL.createObjectURL = jest.fn(() => "blob:mock-url");
+    URL.revokeObjectURL = jest.fn();
   });
 
   test("renders correctly with initial data", () => {
@@ -80,11 +83,12 @@ describe("CoCoSettingsForm", () => {
     await click(screen.getByText("Save"));
 
     expect(saveHandler).toHaveBeenCalledTimes(1);
-    expect(saveHandler.mock.lastCall?.[0]).toEqual({
+    await expect(saveHandler.mock.calls[0][0]).resolves.toEqual({
       enabled: true,
       environmentType: "KVM_INTEL",
       attestOnBoot: true,
       attestOnSchedule: false,
+      inputData: {},
     });
   });
 
@@ -134,11 +138,12 @@ describe("CoCoSettingsForm", () => {
     await click(screen.getByText("Save"));
 
     expect(saveHandler).toHaveBeenCalledTimes(1);
-    expect(saveHandler.mock.calls[0][0]).toEqual({
+    await expect(saveHandler.mock.calls[0][0]).resolves.toEqual({
       enabled: false,
       environmentType: "KVM_AMD",
       attestOnBoot: false,
       attestOnSchedule: false,
+      inputData: {},
     });
   });
 
@@ -160,11 +165,12 @@ describe("CoCoSettingsForm", () => {
     await click(screen.getByText("Save"));
 
     expect(saveHandler).toHaveBeenCalledTimes(1);
-    expect(saveHandler.mock.calls[0][0]).toEqual({
+    await expect(saveHandler.mock.calls[0][0]).resolves.toEqual({
       enabled: false,
       environmentType: "KVM_AMD",
       attestOnBoot: false,
       attestOnSchedule: false,
+      inputData: {},
     });
   });
 
@@ -186,5 +192,136 @@ describe("CoCoSettingsForm", () => {
 
     expect(screen.getByText("Select a schedule")).not.toBeNull();
     expect(screen.getByTestId("recurring-event-picker")).not.toBeNull();
+  });
+
+  test("renders additional fields to handle environment specific input data", async () => {
+    render(
+      <CoCoSettingsForm
+        initialData={initialData}
+        availableEnvironmentTypes={availableEnvironmentTypes}
+        showOnScheduleOption={false}
+        saveHandler={saveHandler}
+      />
+    );
+
+    // Enable the attestation
+    await click(screen.getByRole("button", { name: "Enable attestation" }));
+
+    // Change the environment to IBM Z
+    selectOptions(screen.getByLabelText("Environment Type"), "KVM on IBM Z");
+
+    // Ensure the inputs for the additional data are present
+    expect(screen.getByLabelText("Secure execution header")).not.toBeNull();
+
+    expect(screen.getByRole("radio", { name: "Upload a file" })).not.toBeNull();
+    expect(screen.getByRole("radio", { name: "Paste the data" })).not.toBeNull();
+  });
+
+  test("preserves additional input data when they are not changed", async () => {
+    // Set the input data in the initial settings
+    initialData.enabled = true;
+    initialData.environmentType = "KVM_IBM_Z";
+    initialData.inputData = {
+      secure_execution_header: "ZHVtbXkgYmluYXJ5IGRhdGE=",
+      host_key_document: "dummy certificate data",
+    };
+
+    render(
+      <CoCoSettingsForm
+        initialData={initialData}
+        availableEnvironmentTypes={availableEnvironmentTypes}
+        showOnScheduleOption={false}
+        saveHandler={saveHandler}
+      />
+    );
+
+    // The download buttons should be present
+    expect(screen.getByLabelText("Download the current Secure execution header")).not.toBeNull();
+    expect(screen.getByLabelText("Download the current Host Key Document certificate")).not.toBeNull();
+
+    // Make an unrelated change and save
+    await click(screen.getByRole("button", { name: "Perform attestation during the boot process" }));
+    await click(screen.getByText("Save"));
+
+    // The inputData should be unchanged
+    expect(saveHandler).toHaveBeenCalledTimes(1);
+    await expect(saveHandler.mock.calls[0][0]).resolves.toEqual({
+      enabled: true,
+      environmentType: "KVM_IBM_Z",
+      attestOnBoot: true,
+      attestOnSchedule: false,
+      inputData: {
+        secure_execution_header: "ZHVtbXkgYmluYXJ5IGRhdGE=",
+        host_key_document: "dummy certificate data",
+      },
+    });
+  });
+
+  test("calls the save handler with the expected additional data", async () => {
+    render(
+      <CoCoSettingsForm
+        initialData={initialData}
+        availableEnvironmentTypes={availableEnvironmentTypes}
+        showOnScheduleOption={false}
+        saveHandler={saveHandler}
+      />
+    );
+
+    // Enable the attestation
+    await click(screen.getByRole("button", { name: "Enable attestation" }));
+
+    // Change the environment to IBM Z
+    selectOptions(screen.getByLabelText("Environment Type"), "KVM on IBM Z");
+
+    const secureExecutionHeaderInput = screen.getByLabelText("Secure execution header");
+    const file = new File(["dummy binary data"], "secure-extension-header.bin", { type: "application/octet-stream" });
+    upload(secureExecutionHeaderInput, file);
+
+    await click(screen.getByLabelText("Paste the data"));
+
+    const hostKeyDocumentText = screen.getByLabelText("PEM certificate");
+    await type(hostKeyDocumentText, "dummy certificate data");
+
+    // Click on save
+    await click(screen.getByText("Save"));
+
+    expect(saveHandler).toHaveBeenCalledTimes(1);
+    await expect(saveHandler.mock.calls[0][0]).resolves.toEqual({
+      enabled: true,
+      environmentType: "KVM_IBM_Z",
+      attestOnBoot: false,
+      attestOnSchedule: false,
+      inputData: {
+        secure_execution_header: "ZHVtbXkgYmluYXJ5IGRhdGE=",
+        host_key_document: "dummy certificate data",
+      },
+    });
+  });
+
+  test("keeps the save button waiting while the save handler promise is pending", async () => {
+    let resolveSave: () => void = () => undefined;
+    saveHandler = jest.fn<Promise<void>, [Promise<Settings>]>(
+      () =>
+        new Promise<void>((resolve) => {
+          resolveSave = resolve;
+        })
+    );
+
+    render(
+      <CoCoSettingsForm
+        initialData={initialData}
+        availableEnvironmentTypes={availableEnvironmentTypes}
+        showOnScheduleOption={false}
+        saveHandler={saveHandler}
+      />
+    );
+
+    const saveButton = screen.getByRole("button", { name: "Save" });
+    await click(saveButton);
+
+    expect((saveButton as HTMLButtonElement).disabled).toBe(true);
+
+    resolveSave();
+    await waitFor(() => expect((saveButton as HTMLButtonElement).disabled).toBe(false));
   });
 });
