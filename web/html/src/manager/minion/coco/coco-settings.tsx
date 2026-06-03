@@ -58,11 +58,10 @@ export const CoCoSettings: React.FC<Props> = ({
     }
   }
 
-  function onSave(data: Settings): void {
-    Network.post(`/rhn/manager/api/systems/${serverId}/details/coco/settings`, data).then(
-      handleResult,
-      handleRequestError
-    );
+  function onSave(settingsPromise: Promise<Settings>): void {
+    settingsPromise
+      .then((data) => Network.post(`/rhn/manager/api/systems/${serverId}/details/coco/settings`, data))
+      .then(handleResult, handleRequestError);
   }
 
   useEffect(() => {

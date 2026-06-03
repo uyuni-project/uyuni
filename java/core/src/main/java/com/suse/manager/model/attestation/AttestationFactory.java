@@ -25,7 +25,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 public class AttestationFactory extends HibernateFactory {
@@ -147,9 +150,25 @@ public class AttestationFactory extends HibernateFactory {
      */
     public ServerCoCoAttestationConfig createConfigForServer(Server serverIn, CoCoEnvironmentType typeIn,
                                                              boolean enabledIn, boolean attestOnBootIn) {
+        return createConfigForServer(serverIn, typeIn, enabledIn, null, attestOnBootIn);
+    }
+
+    /**
+     * Create a Confidential Compute Attestation Config for a given Server ID
+     * @param serverIn the server
+     * @param typeIn the environment type
+     * @param enabledIn enabled status
+     * @param inputDataIn the additional input data
+     * @param attestOnBootIn perform attestation on boot
+     * @return returns the Confidential Compute Attestation Config
+     */
+    public ServerCoCoAttestationConfig createConfigForServer(Server serverIn, CoCoEnvironmentType typeIn,
+                                                             boolean enabledIn, Map<String, Object> inputDataIn,
+                                                             boolean attestOnBootIn) {
         ServerCoCoAttestationConfig cnf = new ServerCoCoAttestationConfig(enabledIn, serverIn);
         cnf.setEnvironmentType(typeIn);
         cnf.setAttestOnBoot(attestOnBootIn);
+        cnf.setInData(Objects.requireNonNullElseGet(inputDataIn, HashMap::new));
         save(cnf);
         serverIn.setCocoAttestationConfig(cnf);
         return cnf;
