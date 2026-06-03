@@ -5402,12 +5402,53 @@ public class SystemHandler extends BaseHandler {
      *     #item("KVM_AMD_EPYC_BERGAMO")
      *     #item("KVM_AMD_EPYC_SIENA")
      *     #item("KVM_AMD_EPYC_TURIN")
+     *     #item("KVM_IBM_Z16")
+     *     #item("KVM_IBM_Z17")
      *   #options_end()
      * @apidoc.param #param_desc("boolean", "attestOnBoot", "set if the attestation should be performed on system boot")
      * @apidoc.returntype #return_int_success()
      */
     public Integer setCoCoAttestationConfig(User loggedInUser, Integer sid, Boolean enabled, String environmentType,
                                             Boolean attestOnBoot) {
+        return setCoCoAttestationConfig(loggedInUser, sid, enabled, environmentType, null, attestOnBoot);
+    }
+
+    /**
+     * Configure Confidential Compute Attestation for the given system
+     * @param loggedInUser the user
+     * @param sid the ID of the system
+     * @param enabled set the enabled state for Confidential Compute Attestation
+     * @param environmentType set the environment type of the system
+     * @param inputData the optional input data for the attestation
+     * @param attestOnBoot set if the attestation should be performed on system boot
+     * @return Returns 1 if successful, exception otherwise.
+     *
+     * @apidoc.doc Configure Confidential Compute Attestation for the given system
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("int", "sid", "ID of the server to get the config for.")
+     * @apidoc.param #param_desc("boolean", "enabled", "set the enabled state for Confidential Compute Attestation")
+     * @apidoc.param #param_desc("string", "environmentType", "set the environment type of the system:")
+     *   #options()
+     *     #item("KVM_AMD_EPYC_MILAN")
+     *     #item("KVM_AMD_EPYC_GENOA")
+     *     #item("KVM_AMD_EPYC_BERGAMO")
+     *     #item("KVM_AMD_EPYC_SIENA")
+     *     #item("KVM_AMD_EPYC_TURIN")
+     *     #item("KVM_IBM_Z16")
+     *     #item("KVM_IBM_Z17")
+     *   #options_end()
+     * @apidoc.param
+     *   #struct_begin("inputData")
+     *     #prop_desc("string", "secure_execution_header", "The Secure Execution Header file, encoded with Base64 (for
+     *          IBM_Z attestation only)")
+     *     #prop_desc("string", "host_key_document", "The Host Key Document certificate in PEM format (for IBM_Z
+     *          attestation only)")
+     *   #struct_end()
+     * @apidoc.param #param_desc("boolean", "attestOnBoot", "set if the attestation should be performed on system boot")
+     * @apidoc.returntype #return_int_success()
+     */
+    public Integer setCoCoAttestationConfig(User loggedInUser, Integer sid, Boolean enabled, String environmentType,
+                                            Map<String, Object> inputData, Boolean attestOnBoot) {
         MinionServer minionServer = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser).asMinionServer()
                 .orElseThrow(NoSuchSystemException::new);
 
@@ -5420,6 +5461,7 @@ public class SystemHandler extends BaseHandler {
                         c -> {
                             c.setEnabled(enabled);
                             c.setEnvironmentType(CoCoEnvironmentType.valueOf(environmentType));
+                            c.setInData(Objects.requireNonNullElseGet(inputData, HashMap::new));
                             c.setAttestOnBoot(attestOnBoot);
                         },
                         () -> attestationManager.createConfig(
@@ -5427,6 +5469,7 @@ public class SystemHandler extends BaseHandler {
                             minionServer,
                             CoCoEnvironmentType.valueOf(environmentType),
                             enabled,
+                            inputData,
                             attestOnBoot
                         )
                 );

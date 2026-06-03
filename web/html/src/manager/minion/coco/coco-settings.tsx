@@ -63,8 +63,10 @@ export const CoCoSettings: React.FC<Props> = ({
     }
   }
 
-  function onSave(data: Settings): void {
-    saveSystemCoCoSettings(serverId, data).then(handleResult, handleRequestError);
+  function onSave(settingsPromise: Promise<Settings>): Promise<void> {
+    return settingsPromise
+      .then((data) => saveSystemCoCoSettings(serverId, data))
+      .then(handleResult, handleRequestError);
   }
 
   useEffect(() => {
