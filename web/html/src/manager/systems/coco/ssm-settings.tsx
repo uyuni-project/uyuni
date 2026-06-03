@@ -30,19 +30,20 @@ export const CoCoSSMSettings: React.FC<Props> = ({ systemSupport, availableEnvir
     [availableEnvironmentTypes]
   );
 
-  function onSave(data: Settings) {
-    const request = {
-      serverIds: systemSupport.filter((system) => system.cocoSupport).map((system) => system.id),
-      settings: data,
-    };
-
-    Network.post(`/rhn/manager/api/systems/coco/settings`, request).then(
-      (response) =>
-        setMessages(
-          response.success ? MessagesUtils.success(response.messages) : MessagesUtils.error(response.messages)
-        ),
-      (err) => setMessages(Network.responseErrorMessage(err))
-    );
+  function onSave(settingsPromise: Promise<Settings>) {
+    settingsPromise
+      .then((data) => ({
+        serverIds: systemSupport.filter((system) => system.cocoSupport).map((system) => system.id),
+        settings: data,
+      }))
+      .then((request) => Network.post(`/rhn/manager/api/systems/coco/settings`, request))
+      .then(
+        (response) =>
+          setMessages(
+            response.success ? MessagesUtils.success(response.messages) : MessagesUtils.error(response.messages)
+          ),
+        (err) => setMessages(Network.responseErrorMessage(err))
+      );
   }
 
   return (

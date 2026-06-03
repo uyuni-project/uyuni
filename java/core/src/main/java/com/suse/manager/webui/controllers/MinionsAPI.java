@@ -723,6 +723,7 @@ public class MinionsAPI {
                 cfg.setEnabled(jsonConfig.enabled());
                 cfg.setEnvironmentType(jsonConfig.environmentType());
                 cfg.setAttestOnBoot(jsonConfig.attestOnBoot());
+                cfg.setInData(jsonConfig.inputData());
 
                 attestationManager.saveConfig(user, cfg);
 
@@ -731,6 +732,7 @@ public class MinionsAPI {
             .orElseGet(() -> attestationManager.createConfig(user, server,
                 jsonConfig.environmentType(),
                 jsonConfig.enabled(),
+                jsonConfig.inputData(),
                 jsonConfig.attestOnBoot()
             ));
     }
