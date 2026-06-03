@@ -1240,7 +1240,7 @@ public class ContentManager {
     }
 
     private void alignPackages(Channel srcChannel, Channel tgtChannel, Collection<PackageFilter> filters) {
-        tgtChannel.getPackages().clear();
+        tgtChannel.clearPackages();
         LOG.debug("Filtering {} entities through {} filter(s)", srcChannel.getPackages().size(), filters.size());
         Set<Package> newPackages = filterEntities(srcChannel.getPackages(), filters).getLeft();
         tgtChannel.addPackages(newPackages);
