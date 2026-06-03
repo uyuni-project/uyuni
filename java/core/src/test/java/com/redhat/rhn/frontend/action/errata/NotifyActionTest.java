@@ -64,7 +64,7 @@ public class NotifyActionTest extends RhnBaseTestCase {
         assertEquals(RhnHelper.DEFAULT_FORWARD, result.getName());
 
         Long id = published.getId();
-        TestUtils.flushAndEvict(published);
+        TestUtils.flushAndClearSession();
         Errata errata = ErrataManager.lookupErrata(id, user);
         assertEquals(1, errata.getNotificationQueue().size());
     }
