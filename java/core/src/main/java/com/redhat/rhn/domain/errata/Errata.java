@@ -32,6 +32,7 @@ import org.hibernate.type.YesNoConverter;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -172,9 +173,24 @@ public class Errata extends BaseDomainHelper {
      * @return channels to get
      */
     public Set<Channel> getChannels() {
-        return channels;
+        return Collections.unmodifiableSet(channels);
     }
 
+    /**
+     * Internal helper for bidirectional relationship - adds a channel to this errata
+     * @param channel The channel to add
+     */
+    public void addChannelInternal(Channel channel) {
+        channels.add(channel);
+    }
+
+    /**
+     * Internal helper for bidirectional relationship - removes a channel from this errata.
+     * @param channel The channel to remove
+     */
+    public void removeChannelInternal(Channel channel) {
+        channels.remove(channel);
+    }
 
     /**
      * Getter for cloned
@@ -756,8 +772,11 @@ public class Errata extends BaseDomainHelper {
      * @param packageIn The package to add.
      */
     public void addPackage(Package packageIn) {
+        if (packageIn == null) {
+            return;
+        }
         packages.add(packageIn);
-        packageIn.getErrata().add(this);
+        packageIn.addErrataInternal(this);
     }
 
     /**
@@ -765,6 +784,9 @@ public class Errata extends BaseDomainHelper {
      * @param packagesIn The collection of packages to add
      */
     public void addPackages(Collection<Package> packagesIn) {
+        if (packagesIn == null) {
+            return;
+        }
         for (Package pkg : packagesIn) {
             addPackage(pkg);
         }
@@ -775,8 +797,11 @@ public class Errata extends BaseDomainHelper {
      * @param packageIn The package to remove.
      */
     public void removePackage(Package packageIn) {
+        if (packageIn == null) {
+            return;
+        }
         packages.remove(packageIn);
-        packageIn.getErrata().remove(this);
+        packageIn.removeErrataInternal(this);
     }
 
 
@@ -785,6 +810,9 @@ public class Errata extends BaseDomainHelper {
      * @param packagesIn The collection of packages to remove
      */
     public void removePackages(Collection<Package> packagesIn) {
+        if (packagesIn == null) {
+            return;
+        }
         for (Package pkg : packagesIn) {
             removePackage(pkg);
         }
@@ -794,7 +822,7 @@ public class Errata extends BaseDomainHelper {
      * @return Returns the packages.
      */
     public Set<Package> getPackages() {
-        return packages;
+        return Collections.unmodifiableSet(packages);
     }
 
     /**
@@ -802,6 +830,9 @@ public class Errata extends BaseDomainHelper {
      * @param packagesIn the new packages to set
      */
     public void replacePackages(Collection<Package> packagesIn) {
+        if (packagesIn == null) {
+            return;
+        }
         clearPackages();
         addPackages(packagesIn);
     }
@@ -810,7 +841,7 @@ public class Errata extends BaseDomainHelper {
      * Clears out the Packages associated with this errata.
      */
     public void clearPackages() {
-        removePackages(new ArrayList<>(this.getPackages()));
+        removePackages(new ArrayList<>(this.packages));
     }
 
     /**

@@ -27,6 +27,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.manager.channel.ChannelManager;
 import com.redhat.rhn.manager.system.SystemManager;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -37,6 +38,7 @@ import org.hibernate.type.YesNoConverter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -193,13 +195,13 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
     @JoinTable(name = "rhnChannelErrata",
             joinColumns = @JoinColumn(name = "channel_id"),
             inverseJoinColumns = @JoinColumn(name = "errata_id"))
-    private Set<Errata> erratas = new HashSet<>();
+    private Set<Errata> erratas;
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     @JoinTable(name = "rhnChannelPackage",
             joinColumns = @JoinColumn(name = "channel_id"),
             inverseJoinColumns = @JoinColumn(name = "package_id"))
-    private Set<Package> packages = new HashSet<>();
+    private Set<Package> packages;
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.LAZY)
     @JoinTable(name = "rhnChannelContentSource",
@@ -600,7 +602,7 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
      * @return Returns the set of erratas for this channel.
      */
     public Set<Errata> getErratas() {
-        return erratas;
+        return Collections.unmodifiableSet(erratas);
     }
 
     /**
@@ -608,8 +610,11 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
      * @param errataIn The errata to add
      */
     public void addErrata(Errata errataIn) {
+        if (errataIn == null) {
+            return;
+        }
         erratas.add(errataIn);
-        errataIn.getChannels().add(this);
+        errataIn.addChannelInternal(this);
     }
 
     /**
@@ -617,9 +622,10 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
      * @param erratasIn The collection of erratas to add
      */
     public void addErratas(Collection<Errata> erratasIn) {
-        for (Errata errata : erratasIn) {
-            addErrata(errata);
+        if (CollectionUtils.isEmpty(erratasIn)) {
+            return;
         }
+        erratasIn.forEach(this::addErrata);
     }
 
     /**
@@ -627,8 +633,11 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
      * @param errataIn The errata to remove
      */
     public void removeErrata(Errata errataIn) {
+        if (errataIn == null) {
+            return;
+        }
         erratas.remove(errataIn);
-        errataIn.getChannels().remove(this);
+        errataIn.removeChannelInternal(this);
     }
 
 
@@ -637,9 +646,10 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
      * @param erratasIn The collection of erratas to remove
      */
     public void removeErratas(Collection<Errata> erratasIn) {
-        for (Errata errata : erratasIn) {
-            removeErrata(errata);
+        if (CollectionUtils.isEmpty(erratasIn)) {
+            return;
         }
+        erratasIn.forEach(this::removeErrata);
     }
 
     /**
@@ -654,8 +664,11 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
      * @param packageIn The package to add
      */
     public void addPackage(Package packageIn) {
+        if (packageIn == null) {
+            return;
+        }
         packages.add(packageIn);
-        packageIn.getChannels().add(this);
+        packageIn.addChannelInternal(this);
     }
 
     /**
@@ -663,9 +676,10 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
      * @param packagesIn The collection of packages to add
      */
     public void addPackages(Collection<Package> packagesIn) {
-        for (Package pkg : packagesIn) {
-            addPackage(pkg);
+        if (CollectionUtils.isEmpty(packagesIn)) {
+            return;
         }
+        packagesIn.forEach(this::addPackage);
     }
 
     /**
@@ -673,8 +687,11 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
      * @param packageIn The package to remove.
      */
     public void removePackage(Package packageIn) {
+        if (packageIn == null) {
+            return;
+        }
         packages.remove(packageIn);
-        packageIn.getChannels().remove(this);
+        packageIn.removeChannelInternal(this);
     }
 
 
@@ -683,9 +700,17 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
      * @param packagesIn The collection of packages to remove
      */
     public void removePackages(Collection<Package> packagesIn) {
-        for (Package pkg : packagesIn) {
-            removePackage(pkg);
+        if (CollectionUtils.isEmpty(packagesIn)) {
+            return;
         }
+        packagesIn.forEach(this::removePackage);
+    }
+
+    /**
+     * Clears out the packaged associated with this channel.
+     */
+    public void clearPackages() {
+        removePackages(new ArrayList<>(getPackages()));
     }
 
     /**
@@ -694,7 +719,7 @@ public class Channel extends BaseDomainHelper implements Comparable<Channel> {
      * @return Returns the set of packages for this channel.
      */
     public Set<Package> getPackages() {
-        return packages;
+        return Collections.unmodifiableSet(packages);
     }
 
     /**

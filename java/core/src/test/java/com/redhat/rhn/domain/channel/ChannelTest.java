@@ -20,9 +20,11 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactory;
 import com.redhat.rhn.domain.errata.ErrataFactoryTest;
@@ -45,6 +47,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import jakarta.persistence.EntityExistsException;
 
 /**
  * ChannelTest
@@ -975,6 +979,64 @@ public class ChannelTest extends BaseTestCaseWithUser {
         assertEquals(1, finalErrata2.getPackages().size());
         assertTrue(finalErrata2.getPackages().contains(finalPkg2));
     }
+    /**
+     * When Channel has CascadeType.PERSIST and you add a detached Errata to it,
+     * Hibernate will try to persist the detached entity, which throws an exception.
+     * persist() is only valid for new/transient entities.
+     * Correct options:
+     * 1. Merge the detached entity first: errata = session.merge(errata)
+     * 2. Reload the entity fresh: errata = ErrataFactory.lookupById(id)
+     * 3. Use flushAndClearSession() before creating new relationships
+     */
+    @Test
+    void testPassingDetachedEntityInCascadePersistThrowsException() {
+        // Create and persist an errata
+        Errata errata = new ErrataTestBuilder().orgId(user.getOrg().getId()).buildAndSave();
+        Long errataId = errata.getId();
 
+        // Detach the errata
+        TestUtils.flushAndEvict(errata);
 
+        // At this moment, errata is detached, ie, it has an id but is not managed
+        // Anti-pattern: Create a channel and add the detached errata to it
+        Channel newChannel = ChannelFactoryTest.createTestChannel(user);
+        newChannel.addErrata(errata);
+
+        // When saving the channel, CascadeType.PERSIST will try to persist the errata
+        // But errata is DETACHED, it already has an ID so Hibernate throws exception
+        assertThrows(EntityExistsException.class, () -> {
+            ChannelFactory.save(newChannel);
+            HibernateFactory.getSession().flush();
+        });
+
+        // Quick rollback
+        newChannel.removeErrata(errata);
+
+        // A correct approach would be:
+        Errata reloadedErrata = ErrataFactory.lookupById(errataId);
+        newChannel.addErrata(reloadedErrata);
+
+        // Create a NEW errata without saving it -> fits cascade persist
+        Errata newErrata = new ErrataTestBuilder().orgId(user.getOrg().getId()).build();
+        assertNull(newErrata.getId());
+        newChannel.addErrata(newErrata);
+
+        // Create a NEW errata, saving it, managed by hibernate -> fits cascade merge
+        Errata managedErrata = new ErrataTestBuilder().orgId(user.getOrg().getId()).buildAndSave();
+        newChannel.addErrata(managedErrata);
+
+        // Save and clear session
+        ChannelFactory.save(newChannel);
+        TestUtils.flushAndClearSession();
+
+        // Reload and verify all erratas have the channel and vice versa
+        Channel reloadedChannel = ChannelFactory.lookupById(newChannel.getId());
+        assertTrue(reloadedChannel.getErratas().contains(reloadedErrata));
+        assertTrue(reloadedChannel.getErratas().contains(newErrata));
+        assertTrue(reloadedChannel.getErratas().contains(managedErrata));
+
+        assertTrue(reloadedErrata.getChannels().contains(reloadedChannel));
+        assertTrue(newErrata.getChannels().contains(reloadedChannel));
+        assertTrue(managedErrata.getChannels().contains(reloadedChannel));
+    }
 }

@@ -144,8 +144,8 @@ public class SystemHandlerPtfTest extends BaseHandlerTestCase {
 
     @Test
     public void allInstallablePackagesDoesNotListPtfsPackages() {
-        channel.getPackages()
-               .addAll(List.of(standard, standardUpdated, ptfMaster, ptfMasterUpdated, ptfPackage, ptfPackageUpdated));
+        channel.addPackages(
+                List.of(standard, standardUpdated, ptfMaster, ptfMasterUpdated, ptfPackage, ptfPackageUpdated));
 
         List<Map<String, Object>> resultMap = handler.listAllInstallablePackages(admin, server.getId().intValue());
 
@@ -160,8 +160,8 @@ public class SystemHandlerPtfTest extends BaseHandlerTestCase {
 
     @Test
     public void latestInstallablePackagesDoesNotListPtfsPackages() {
-        channel.getPackages()
-               .addAll(List.of(standard, standardUpdated, ptfMaster, ptfMasterUpdated, ptfPackage, ptfPackageUpdated));
+        channel.addPackages(
+                List.of(standard, standardUpdated, ptfMaster, ptfMasterUpdated, ptfPackage, ptfPackageUpdated));
         ChannelFactory.refreshNewestPackageCache(channel, "java::test");
 
         List<Map<String, Object>> resultMap = handler.listLatestInstallablePackages(admin, server.getId().intValue());
