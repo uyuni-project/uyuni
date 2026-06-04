@@ -261,7 +261,7 @@ def isCA(cert):
             is_critical = True
     if is_ca and not is_critical:
         # print as warning and do not enforce it yet.
-        log_error("CA is not marked as 'critical'")
+        log_error("CA basicConstraints extension is not marked as 'critical'")
     return is_ca
 
 
