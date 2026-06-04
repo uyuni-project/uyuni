@@ -84,7 +84,7 @@ const FilterEdit = (props: FilterEditProps) => {
 
   const onSave = () => {
     if (!formValidInClient) {
-      showErrorToastr(t("Check the required fields below"), { autoHide: false });
+      showErrorToastr(t("Check the required fields below"), { autoHide: false, containerId: "filter-modal-errors" });
     } else {
       if (props.editing) {
         onAction(mapFilterFormToRequest(item, props.projectLabel), "update", itemId)
