@@ -42,10 +42,8 @@ public class BaseSessionTestCase extends RhnMockStrutsTestCase {
     /**
      * {@inheritDoc}
      */
-    @Override
     @BeforeEach
-    public void setUp() throws Exception {
-        super.setUp();
+    public void setUpBaseSessionTestCase() throws Exception {
         KickstartData k = KickstartDataTest.createKickstartWithOptions(user.getOrg());
 
         sess = KickstartSessionTest.createKickstartSession(k, user);

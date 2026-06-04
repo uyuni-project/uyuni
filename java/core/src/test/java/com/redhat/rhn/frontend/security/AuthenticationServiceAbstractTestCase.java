@@ -41,7 +41,7 @@ public abstract class AuthenticationServiceAbstractTestCase extends MockObjectTe
 
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUpAuthenticationServiceAbstractTestCase() throws Exception {
         mockRequest = mock(HttpServletRequest.class);
         mockResponse = mock(HttpServletResponse.class);
         mockPxtDelegate = mock(PxtSessionDelegate.class);

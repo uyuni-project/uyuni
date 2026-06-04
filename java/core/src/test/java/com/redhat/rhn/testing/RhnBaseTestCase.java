@@ -56,7 +56,7 @@ public abstract class RhnBaseTestCase implements SaltTestCaseUtils  {
      * @throws Exception if an error occurs during setup.
      */
     @BeforeEach
-    protected void setUp() throws Exception {
+    protected void setUpRhnBaseTestCase() throws Exception {
         tmpSaltRoot = setupSaltConfigurationForTests();
     }
 
@@ -65,7 +65,7 @@ public abstract class RhnBaseTestCase implements SaltTestCaseUtils  {
      * @see HibernateFactory#closeSession()
      */
     @AfterEach
-    public void tearDown() throws Exception {
+    public void tearDownRhnBaseTestCase() throws Exception {
         TestCaseHelper.tearDownHelper();
 
         cleanupSaltConfiguration(tmpSaltRoot);
