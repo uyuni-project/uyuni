@@ -303,7 +303,6 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
     }
 
 
-    @Override
     @BeforeEach
     public void setUp() {
         HibernateFactory.getSession().doWork(connection -> {
@@ -330,8 +329,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
         });
     }
 
-    @Override
-    @AfterEach
+        @AfterEach
     public void tearDown() {
         HibernateFactory.getSession().doWork(connection -> {
             Statement statement = null;

@@ -67,10 +67,8 @@ public class ScheduleKickstartWizardTest extends RhnMockStrutsTestCase {
     /**
      * {@inheritDoc}
      */
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         setRequestPathInfo("/systems/details/kickstart/ScheduleWizard");
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         s = ServerFactoryTest.createTestServer(user, true);

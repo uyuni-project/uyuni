@@ -45,10 +45,8 @@ public class MinionCheckinTest extends JMockBaseTestCaseWithUser {
 
     private int thresholdMax;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
         this.thresholdMax = factory.getLongConfiguration(RhnConfiguration.KEYS.SYSTEM_CHECKIN_THRESHOLD).getValue()
                 .intValue() * 86400;

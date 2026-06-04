@@ -2432,21 +2432,16 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
     /**
      * {@inheritDoc}
      */
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
-
         // Clear data for all tests
         clearCredentials();
         SCCCachingFactory.clearRepositories();
         renameVendorChannels();
     }
 
-    @Override
     @AfterEach
     public void tearDown() throws Exception {
         Config.clear();
-        super.tearDown();
     }
 }

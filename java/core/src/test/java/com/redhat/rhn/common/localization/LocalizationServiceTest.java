@@ -47,7 +47,6 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
     /**
      * sets up the test
      */
-    @Override
     @BeforeEach
     public void setUp() {
         ls = LocalizationService.getInstance();
@@ -66,11 +65,9 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
     /**
      * {@inheritDoc}
      */
-    @Override
     @AfterEach
     public void tearDown() throws Exception {
         TestUtils.enableLocalizationLogging();
-        super.tearDown();
     }
 
 

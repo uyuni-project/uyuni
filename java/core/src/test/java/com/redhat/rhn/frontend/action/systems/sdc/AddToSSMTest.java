@@ -38,10 +38,8 @@ public class AddToSSMTest extends RhnMockStrutsTestCase {
     /**
      * {@inheritDoc}
      */
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         server = ServerTestUtils.createTestSystem(user);
 
         addRequestParameter(RequestContext.SID, server.getId().toString());

@@ -66,10 +66,8 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
     /**
      * {@inheritDoc}
      */
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         setRequestPathInfo("/systems/details/Edit");
         user.setOrg(TestUtils.saveAndFlush(user.getOrg()));
 

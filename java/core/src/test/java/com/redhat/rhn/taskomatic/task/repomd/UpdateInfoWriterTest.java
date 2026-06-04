@@ -32,7 +32,6 @@ import com.redhat.rhn.frontend.dto.ErrataOverview;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.StringWriter;
@@ -43,12 +42,6 @@ import java.text.SimpleDateFormat;
  * Tests for the {@link com.redhat.rhn.taskomatic.task.repomd.UpdateInfoWriter} generator.
  */
 public class UpdateInfoWriterTest extends BaseTestCaseWithUser {
-
-    @Override
-    @BeforeEach
-    public void setUp() throws Exception {
-        super.setUp();
-    }
 
     @Test
     public void testSUSEPatchNames() throws Exception {

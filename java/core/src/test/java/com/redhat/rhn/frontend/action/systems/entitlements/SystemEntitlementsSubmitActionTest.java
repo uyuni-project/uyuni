@@ -73,10 +73,8 @@ public class SystemEntitlementsSubmitActionTest extends RhnPostMockStrutsTestCas
     /**
      * {@inheritDoc}
      */
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         setRequestPathInfo("/systems/SystemEntitlementsSubmit");
     }
 

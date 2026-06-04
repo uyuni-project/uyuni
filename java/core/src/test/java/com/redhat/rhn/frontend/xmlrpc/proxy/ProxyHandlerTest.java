@@ -89,7 +89,6 @@ public class ProxyHandlerTest extends RhnJmockBaseTestCase {
 
     @BeforeEach
     public void setup() throws Exception {
-        super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 

@@ -65,19 +65,15 @@ public class FormulaMonitoringManagerTest extends BaseTestCaseWithUser {
     private FormulaMonitoringManager manager = new FormulaMonitoringManager(saltApi);
     private Path metadataDir;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         metadataDir = Files.createTempDirectory("metadata");
         FormulaFactory.setMetadataDirOfficial(metadataDir.toString());
         createMetadataFiles();
     }
 
-    @Override
-    @AfterEach
+        @AfterEach
     public void tearDown() throws Exception {
-        super.tearDown();
         FileUtils.deleteDirectory(metadataDir.toFile());
     }
 

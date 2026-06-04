@@ -41,9 +41,8 @@ public class SSLCertManagerTest extends RhnJmockBaseTestCase {
     private SSLCertManager certManager;
 
     @BeforeEach
-    @Override
     public void setUp() throws Exception {
-        super.setUp();
+
 
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         runtime = mock(Runtime.class);
@@ -53,9 +52,7 @@ public class SSLCertManagerTest extends RhnJmockBaseTestCase {
     }
 
     @AfterEach
-    @Override
     public void tearDown() throws Exception {
-        super.tearDown();
         org.apache.commons.io.FileUtils.deleteDirectory(tempDir);
     }
 

@@ -72,10 +72,8 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
      * Sets up action path and mocked Cobbler connection.
      * @throws Exception if something goes wrong
      */
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         MockConnection.clear();
         setRequestPathInfo("/systems/details/kickstart/PowerManagement");
     }

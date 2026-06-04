@@ -66,17 +66,14 @@ public class ProxyConfigGetFormDefaultsTest extends BaseTestCaseWithUser {
         setThreadingPolicy(new Synchroniser());
     }};
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         context.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
         testMinionServer.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
     }
 
-    @Override
-    @AfterEach
+        @AfterEach
     public void tearDown() throws NoSuchFieldException, IllegalAccessException {
         setConfigDefaultsInstance(configDefaults);
     }

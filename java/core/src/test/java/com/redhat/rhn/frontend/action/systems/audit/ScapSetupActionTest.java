@@ -40,9 +40,8 @@ public class ScapSetupActionTest extends RhnMockStrutsTestCase {
     private Server server;
 
     @BeforeEach
-    @Override
     public void setUp() throws Exception {
-        super.setUp();
+
 
         action = new TestScapSetupAction();
 

@@ -74,10 +74,8 @@ class AnsibleHandlerTest extends BaseHandlerTestCase {
 
     private SaltApi saltApi;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         context.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         ActionChainManager.setTaskomaticApi(getTaskomaticApi());
 

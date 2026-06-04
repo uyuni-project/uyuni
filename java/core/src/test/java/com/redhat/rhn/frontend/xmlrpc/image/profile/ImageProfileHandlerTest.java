@@ -57,10 +57,8 @@ public class ImageProfileHandlerTest extends BaseHandlerTestCase {
 
     private ImageProfileHandler handler = new ImageProfileHandler();
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         Config.get().setBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED, "true");
     }
 

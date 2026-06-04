@@ -118,18 +118,14 @@ public class ContentSyncManagerPaygTest extends RhnBaseTestCase {
 
     private int portNumber;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
-
         portNumber = 7777;
     }
 
-    @Override
     @AfterEach
     public void tearDown() throws Exception {
-        super.tearDown();
+        super.tearDownRhnBaseTestCase();
         clearDb();
     }
 

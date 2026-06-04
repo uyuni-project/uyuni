@@ -42,10 +42,8 @@ public class ConfigTest extends RhnBaseTestCase {
     static final String TEST_CONF_LOCATION = "/usr/share/rhn/unit-tests/";
     private Config c;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
 
         // create test config path
         String confPath = "/tmp/" + TestUtils.randomString();

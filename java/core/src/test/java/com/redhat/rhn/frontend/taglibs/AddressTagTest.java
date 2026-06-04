@@ -41,7 +41,6 @@ public class AddressTagTest extends RhnBaseTestCase {
      * Called once per test method.
      * @throws Exception if an error occurs during setup.
      */
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
         sah = new ActionHelper();

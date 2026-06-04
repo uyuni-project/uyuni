@@ -37,10 +37,8 @@ import org.junit.jupiter.api.Test;
  */
 public class CloneErrataActionTest extends RhnMockStrutsTestCase {
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         setRequestPathInfo("/errata/manage/CloneErrata");
         user.getOrg().addRole(RoleFactory.CHANNEL_ADMIN);
     }

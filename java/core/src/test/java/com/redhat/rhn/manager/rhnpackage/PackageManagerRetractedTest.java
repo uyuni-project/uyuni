@@ -60,10 +60,8 @@ public class PackageManagerRetractedTest extends BaseTestCaseWithUser {
     private Package newestPkg;
     private Channel channel;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
 
         server = ServerFactoryTest.createTestServer(user, true);
 

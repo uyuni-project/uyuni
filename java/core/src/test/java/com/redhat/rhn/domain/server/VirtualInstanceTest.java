@@ -24,7 +24,6 @@ import com.redhat.rhn.testing.Sequence;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -42,16 +41,9 @@ public class VirtualInstanceTest extends RhnBaseTestCase {
 
     private Sequence idSequence;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         idSequence = new Sequence();
-    }
-
-    @AfterEach
-    public void tearDown() throws Exception {
-        super.tearDown();
     }
 
     @Test

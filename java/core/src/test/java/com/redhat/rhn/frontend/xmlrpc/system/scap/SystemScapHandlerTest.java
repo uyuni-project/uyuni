@@ -67,10 +67,8 @@ public class SystemScapHandlerTest extends BaseHandlerTestCase {
      * Setup the test environment
      * @throws Exception
      */
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         handler = new SystemScapHandler();
         taskomaticApi = mockContext.mock(TaskomaticApi.class);
         ActionManager.setTaskomaticApi(taskomaticApi);

@@ -92,10 +92,8 @@ public class ContentManagerChannelAlignmentTest extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         contentManager = new ContentManager();
         user.addPermanentRole(ORG_ADMIN);
 

@@ -60,10 +60,8 @@ public class RecurringActionHandlerTest extends JMockBaseTestCaseWithUser {
         context().setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
 
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         highstateHandler = new RecurringHighstateHandler();

@@ -40,10 +40,8 @@ import java.util.Optional;
  */
 public class ImageDeployedEventTest extends JMockBaseTestCaseWithUser {
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 

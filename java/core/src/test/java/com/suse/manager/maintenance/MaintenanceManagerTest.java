@@ -83,10 +83,8 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
     private static final String EXCHANGE_MULTI2_ICS = "maintenance-windows-multi-exchange-2.ics";
     private static final String EXCHANGE_MULTI3_ICS = "maintenance-windows-multi-exchange-3.ics";
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         user = TestUtils.saveAndFlush(user);
     }

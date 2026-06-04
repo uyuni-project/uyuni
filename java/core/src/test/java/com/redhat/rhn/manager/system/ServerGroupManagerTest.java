@@ -52,10 +52,8 @@ public class ServerGroupManagerTest extends BaseTestCaseWithUser {
 
     private ServerGroupManager manager;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         manager = new ServerGroupManager(new TestSaltApi());
     }
 

@@ -67,9 +67,8 @@ public class ProxyConfigUpdateInitializerTest extends JMockBaseTestCaseWithUser 
     private MinionServer mockMinionServer;
 
     @BeforeEach
-    @Override
     public void setUp() throws Exception {
-        super.setUp();
+
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         this.mockMinionServer = mock(MinionServer.class);
     }

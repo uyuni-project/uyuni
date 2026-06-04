@@ -46,22 +46,17 @@ public class SSOControllerTest extends BaseControllerTestCase {
 
     private boolean ssoEnabled;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
 
         ssoEnabled = Config.get().getBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED);
         ssoController = new SSOController(Optional.of(SSOTestUtils.getSaml2Settings()));
     }
 
-    @Override
     @AfterEach
     public void tearDown() throws Exception {
         // Restore the original SSO Enabled value
         Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, Boolean.toString(ssoEnabled));
-
-        super.tearDown();
     }
 
     @Test

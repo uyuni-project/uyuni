@@ -42,10 +42,8 @@ import java.util.Map;
 public class SystemAclHandlerTest extends BaseTestCaseWithUser {
     private Server srvr;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         srvr = ServerFactoryTest.createTestServer(user);
         Long version = 1L;
         SystemManagerTest.giveCapability(srvr.getId(),

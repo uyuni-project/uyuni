@@ -39,17 +39,14 @@ public class RequireTagTest extends RhnBaseTestCase {
     private RequireTag rt;
     private TagTestHelper tth;
 
-    @Override
     @BeforeEach
     public void setUp() {
         rt = new RequireTag();
         tth = TagTestUtils.setupTagTest(rt, null);
     }
 
-    @Override
-    @AfterEach
+        @AfterEach
     public void tearDown() throws Exception {
-        super.tearDown();
         rt = null;
         tth = null;
     }

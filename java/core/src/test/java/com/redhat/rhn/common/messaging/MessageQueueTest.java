@@ -33,7 +33,6 @@ public class MessageQueueTest extends RhnBaseTestCase {
     private static Logger logger = LogManager.getLogger(MessageQueueTest.class);
     protected User user;
 
-    @Override
     @BeforeEach
     public void setUp() {
         logger.debug("setUp - start");
@@ -45,10 +44,8 @@ public class MessageQueueTest extends RhnBaseTestCase {
         logger.debug("setUp - end");
     }
 
-    @Override
-    @AfterEach
+        @AfterEach
     public void tearDown() throws Exception {
-        super.tearDown();
         logger.debug("tearDown - start");
         TestAction.deRegisterAction();
         TestDBAction.deRegisterAction();

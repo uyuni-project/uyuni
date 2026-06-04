@@ -68,10 +68,8 @@ public class OrgHandlerTest extends BaseHandlerTestCase {
     private ChannelFamily channelFamily = null;
 
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         admin.addPermanentRole(RoleFactory.SAT_ADMIN);
         for (int i = 0; i < orgName.length; i++) {
             orgName[i] = "Test Org " + TestUtils.randomString();

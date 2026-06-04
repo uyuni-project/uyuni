@@ -39,10 +39,8 @@ public class CobblerDistroCreateCommandTest extends CobblerCommandTestBase {
      *
      * @throws Exception if anything goes wrong
      */
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         tree = ksdata.getTree();
     }
 

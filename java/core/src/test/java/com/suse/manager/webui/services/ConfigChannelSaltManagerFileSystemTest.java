@@ -36,10 +36,8 @@ public class ConfigChannelSaltManagerFileSystemTest extends BaseTestCaseWithUser
     /** the instance used for testing **/
     private ConfigChannelSaltManager manager;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         this.manager = ConfigChannelSaltManager.getInstance();
     }
 

@@ -35,10 +35,8 @@ import org.junit.jupiter.api.Test;
 public class KickstartPartitionActionTest extends RhnPostMockStrutsTestCase {
     private KickstartData ksdata;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
 
         this.ksdata = KickstartDataTest.createKickstartWithOptions(user.getOrg());
         ksdata = TestUtils.saveAndFlush(ksdata);

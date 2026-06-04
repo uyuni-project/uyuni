@@ -40,10 +40,8 @@ public class KickstartSoftwareEditActionTest extends BaseKickstartEditTestCase {
     /**
      * {@inheritDoc}
      */
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         setRequestPathInfo("/kickstart/KickstartSoftwareEdit");
     }
 

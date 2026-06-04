@@ -54,10 +54,8 @@ import java.util.Map;
  */
 public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         Config.get().setString("server.secret_key",
                 DigestUtils.sha256Hex(TestUtils.randomString()));
     }

@@ -30,10 +30,8 @@ public class ModularDependencyValidatorTest extends ContentValidatorTestBase {
 
     private static final String ENTITY_FILTERS = "filters";
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         validator = new ModularDependencyValidator(new MockModulemdApi());
     }
 

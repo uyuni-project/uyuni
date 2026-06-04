@@ -32,7 +32,6 @@ public class BaseHandlerTest extends RhnBaseTestCase {
 
     private TestHandler th;
 
-    @Override
     @BeforeEach
     public void setUp() {
         th = new TestHandler();

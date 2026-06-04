@@ -94,10 +94,8 @@ public class HubControllerTest extends JMockBaseTestCaseWithUser {
 
     private static final String TEST_ERROR_MESSAGE = "test error message";
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         context().checking(new Expectations() {{

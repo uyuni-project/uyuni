@@ -66,23 +66,18 @@ public class LoginControllerTest extends BaseControllerTestCase {
     private boolean ssoEnabled;
     private Saml2Settings saml2Settings;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
 
         ssoEnabled = Config.get().getBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED);
         saml2Settings = SSOTestUtils.getSaml2Settings();
         loginController = new LoginController(new OidcAuthHandler(), Optional.of(saml2Settings));
     }
 
-    @Override
     @AfterEach
     public void tearDown() throws Exception {
         // Restore the original SSO Enabled value
         Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, Boolean.toString(ssoEnabled));
-
-        super.tearDown();
     }
 
     @Test

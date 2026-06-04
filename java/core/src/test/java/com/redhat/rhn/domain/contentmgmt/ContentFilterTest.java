@@ -58,10 +58,8 @@ public class ContentFilterTest extends JMockBaseTestCaseWithUser {
 
     private ContentManager contentManager;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         contentManager = new ContentManager();
         UserTestUtils.addUserRole(user, ORG_ADMIN);
     }

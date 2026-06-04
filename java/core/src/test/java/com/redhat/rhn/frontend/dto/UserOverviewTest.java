@@ -30,7 +30,6 @@ public class UserOverviewTest extends RhnBaseTestCase {
     /*
      * @see RhnBaseTestCase#setUp()
      */
-    @Override
     @BeforeEach
     public void setUp() {
         uo = new UserOverview();

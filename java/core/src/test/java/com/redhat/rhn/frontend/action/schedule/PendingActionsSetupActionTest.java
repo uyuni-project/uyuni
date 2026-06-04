@@ -39,10 +39,8 @@ public class PendingActionsSetupActionTest extends RhnPostMockStrutsTestCase {
 
 
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         setRequestPathInfo("/schedule/PendingActions");
     }
 

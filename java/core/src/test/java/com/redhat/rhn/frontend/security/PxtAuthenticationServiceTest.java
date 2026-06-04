@@ -38,10 +38,8 @@ public class PxtAuthenticationServiceTest extends AuthenticationServiceAbstractT
 
     private PxtAuthenticationService service;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         service = new PxtAuthenticationServiceStub();
         service.setPxtSessionDelegate(getPxtDelegate());
     }

@@ -40,19 +40,16 @@ public class RhnSetManagerTest extends RhnBaseTestCase {
     private static final String TEST_USER_NAME = "automated_test_user_jesusr";
     private static final String TEST_ORG_NAME = "automated_test_org_jesusr";
 
-    @Override
     @BeforeEach
     public void setUp() {
         userId = UserTestUtils.createUser(TEST_USER_NAME, TEST_ORG_NAME).getId();
         cleanup = new TestSetCleanup();
     }
 
-    @Override
     @AfterEach
     public void tearDown() throws Exception {
         userId = null;
         cleanup = null;
-        super.tearDown();
     }
     /**
      * Looks for an RhnSet for a non-existent user.

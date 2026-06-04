@@ -55,10 +55,8 @@ public class BatchStartedEventMessageActionTest extends BaseTestCaseWithUser {
     private JsonParser<Event> eventParser;
     private BatchStartedEventMessageAction messageAction;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         this.messageAction = new BatchStartedEventMessageAction();
         this.eventParser = new JsonParser<>(new TypeToken<>() {
         });

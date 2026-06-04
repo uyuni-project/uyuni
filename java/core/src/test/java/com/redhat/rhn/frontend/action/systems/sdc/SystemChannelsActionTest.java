@@ -44,10 +44,8 @@ public class SystemChannelsActionTest extends RhnMockStrutsTestCase {
     /**
      * {@inheritDoc}
      */
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         server = ServerTestUtils.createTestSystem(user);
         // Create some child channels so we can subscribe to them
         Channel child1 = ChannelTestUtils.createChildChannel(user, server.getBaseChannel());

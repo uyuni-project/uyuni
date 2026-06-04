@@ -108,10 +108,8 @@ public class SystemHandlerProvisioningTest extends BaseHandlerTestCase {
                 setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         }};
 
-        @Override
         @BeforeEach
         public void setUp() throws Exception {
-                super.setUp();
                 mockRequest = mockContext.mock(HttpServletRequest.class);
 
                 TaskomaticApi testApi = new TaskomaticApi() {
@@ -123,10 +121,8 @@ public class SystemHandlerProvisioningTest extends BaseHandlerTestCase {
                 KickstartScheduleCommand.setTaskomaticApi(testApi);
         }
 
-        @Override
         @AfterEach
         public void tearDown() throws Exception {
-                super.tearDown();
                 KickstartScheduleCommand.setTaskomaticApi(new TaskomaticApi());
         }
 

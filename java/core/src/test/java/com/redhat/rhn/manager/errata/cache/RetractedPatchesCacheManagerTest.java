@@ -56,10 +56,8 @@ public class RetractedPatchesCacheManagerTest extends BaseTestCaseWithUser {
     private Package newerPkg;
     private Package newestPkg;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
 
         server = ServerFactoryTest.createTestServer(user);
 

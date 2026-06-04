@@ -38,10 +38,8 @@ import org.junit.jupiter.api.Test;
 public class FailedActionsSetupActionTest extends RhnPostMockStrutsTestCase {
 
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         setRequestPathInfo("/schedule/FailedActions");
     }
 

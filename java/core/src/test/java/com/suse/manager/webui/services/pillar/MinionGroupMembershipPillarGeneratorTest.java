@@ -43,10 +43,8 @@ public class MinionGroupMembershipPillarGeneratorTest extends BaseTestCaseWithUs
     protected MinionPillarGenerator minionGroupMembershipPillarGenerator =
             new MinionGroupMembershipPillarGenerator();
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         Config.get().setString("server.secret_key",
                 DigestUtils.sha256Hex(TestUtils.randomString()));
     }

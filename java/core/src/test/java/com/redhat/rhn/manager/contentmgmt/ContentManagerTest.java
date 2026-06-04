@@ -92,10 +92,8 @@ public class ContentManagerTest extends JMockBaseTestCaseWithUser {
 
     private ContentManager contentManager;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         contentManager = new ContentManager();
         contentManager.setModulemdApi(new MockModulemdApi());
         user.addPermanentRole(ORG_ADMIN);

@@ -104,10 +104,8 @@ public class ActionChainHandlerTest extends BaseHandlerTestCase {
      * {@inheritDoc}
      */
     @SuppressWarnings("deprecation")
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
 
         this.server = ServerFactoryTest.createTestServer(this.admin, true);
         this.server2 = ServerFactoryTest.createTestServer(this.admin, true);

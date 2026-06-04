@@ -193,10 +193,8 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     private SystemEntitlementManager systemEntitlementManager;
     private SystemManager systemManager;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         Config.get().setString(CobblerXMLRPCHelper.class.getName(),
                 MockXMLRPCInvoker.class.getName());
         MockConnection.clear();
@@ -223,10 +221,8 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         createMetadataFiles();
     }
 
-    @Override
     @AfterEach
     public void tearDown() throws Exception {
-        super.tearDown();
         try {
             FileUtils.deleteDirectory(tmpSaltRoot.toFile());
             FileUtils.deleteDirectory(metadataDirOfficial.toFile());

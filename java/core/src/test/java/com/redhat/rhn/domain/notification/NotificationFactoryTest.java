@@ -34,10 +34,8 @@ import java.util.Set;
 public class NotificationFactoryTest extends BaseTestCaseWithUser {
 
     private MockMail mailer;
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         mailer = new MockMail();
     }
 

@@ -38,10 +38,8 @@ public class DebReleaseWriterTest extends BaseTestCaseWithUser {
 
     private String prefix;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         prefix = Files.createTempDirectory("debreleasewriter").toAbsolutePath() + File.separator;
     }
 
@@ -95,10 +93,8 @@ public class DebReleaseWriterTest extends BaseTestCaseWithUser {
         assertEquals(rel, releaseContent.replaceAll(" [^ ]+ [^ ]+ Packages.gz\n", ""));
     }
 
-    @Override
-    @AfterEach
+        @AfterEach
     public void tearDown() throws Exception {
-        super.tearDown();
         org.apache.commons.io.FileUtils.deleteDirectory(new File(prefix));
     }
 }

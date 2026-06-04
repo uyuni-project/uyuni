@@ -63,16 +63,13 @@ public class MinionActionUtilsTest extends BaseTestCaseWithUser {
     private final SaltUtils saltUtils = new SaltUtils(systemQuery, saltApi);
 
     @BeforeEach
-    @Override
     public void setUp() throws Exception {
-        super.setUp();
+
         saltUtils.setScriptsDir(Files.createTempDirectory("scripts"));
     }
 
     @AfterEach
-    @Override
     public void tearDown() throws Exception {
-        super.tearDown();
         Files.delete(saltUtils.getScriptsDir());
     }
 

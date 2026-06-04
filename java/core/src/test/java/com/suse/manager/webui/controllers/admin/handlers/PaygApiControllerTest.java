@@ -61,10 +61,8 @@ public class PaygApiControllerTest extends BaseControllerTestCase {
     private PaygApiContoller paygApiContoller;
     private User satAdmin;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         clearDb();
 
         satAdmin = UserTestUtils.createUser(TestStatics.TEST_SAT_USER, user.getOrg().getId());
@@ -75,10 +73,8 @@ public class PaygApiControllerTest extends BaseControllerTestCase {
         paygApiContoller = new PaygApiContoller(new PaygAdminManager(taskomaticMock));
     }
 
-    @Override
-    @AfterEach
+        @AfterEach
     public void tearDown() throws Exception {
-        super.tearDown();
         clearDb();
     }
 

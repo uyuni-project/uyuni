@@ -44,10 +44,8 @@ public class AdminSshHandlerTest extends BaseHandlerTestCase {
     private SaltApi saltApi;
     private AdminSshHandler handler;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         saltApi = context.mock(SaltApi.class);
         handler = new AdminSshHandler(saltApi);
     }

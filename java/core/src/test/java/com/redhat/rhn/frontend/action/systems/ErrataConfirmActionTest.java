@@ -45,10 +45,8 @@ import java.util.TimeZone;
  */
 public class ErrataConfirmActionTest extends RhnPostMockStrutsTestCase {
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         setRequestPathInfo("/systems/details/ErrataConfirm");
 
         TaskomaticApi tapi = new TaskomaticApi() {

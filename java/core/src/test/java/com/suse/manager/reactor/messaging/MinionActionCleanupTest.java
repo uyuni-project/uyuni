@@ -71,10 +71,8 @@ import java.util.stream.Collectors;
  */
 public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 

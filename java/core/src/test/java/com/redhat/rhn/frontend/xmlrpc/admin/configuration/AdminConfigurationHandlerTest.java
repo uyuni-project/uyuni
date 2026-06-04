@@ -129,10 +129,8 @@ public class AdminConfigurationHandlerTest extends BaseHandlerTestCase {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }};
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         testSaltApi = context.mock(SaltApi.class);
         adminConfigurationHandler = new AdminConfigurationHandler(
                                   orgHandler, serverGroupHandler, userHandler, activationKeyHandler,

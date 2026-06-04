@@ -39,10 +39,8 @@ public class KickstartUrlHelperTest extends BaseKickstartCommandTestCase {
 
     private KickstartUrlHelper helper;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         helper = new KickstartUrlHelper(ksdata, "spacewalk.example.com");
     }
 

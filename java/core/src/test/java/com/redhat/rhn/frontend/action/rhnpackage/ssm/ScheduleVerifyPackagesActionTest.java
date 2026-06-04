@@ -29,10 +29,8 @@ public class ScheduleVerifyPackagesActionTest extends RhnMockStrutsTestCase {
 
     private SsmActionTestUtils utils;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         setRequestPathInfo("/ssm/PackageVerifySchedule");
 
         utils = new SsmActionTestUtils(user);

@@ -43,10 +43,8 @@ public class KickstartRawDataTest extends BaseTestCaseWithUser {
     private KickstartRawData ksdata;
     private final String fileContents = "test kickstart file\n";
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         tree = KickstartableTreeTest.createTestKickstartableTree();
         ksdata = createRawData(user, "boring" + TestUtils.randomString(), tree,
