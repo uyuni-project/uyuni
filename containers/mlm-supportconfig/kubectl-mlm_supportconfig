@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+# SPDX-FileCopyrightText: 2026 SUSE LLC
+#
+# SPDX-License-Identifier: GPL-2.0-Only
+#
+
 # kubectl-mlm_supportconfig — collect a support bundle for MLM 
 # workloads running on Kubernetes (server-helm or proxy-helm).
 #
