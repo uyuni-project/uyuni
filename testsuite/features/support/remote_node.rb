@@ -169,9 +169,10 @@ class RemoteNode
   def run_local(cmd, separated_results: false, check_errors: true, timeout: DEFAULT_TIMEOUT, successcodes: [0], buffer_size: 65_536, verbose: false)
     out, err, code = ssh_command(cmd, @target, timeout: timeout, buffer_size: buffer_size)
     out_nocolor = out.gsub(/\e\[([;\d]+)?m/, '')
-    raise ScriptError, "FAIL: #{cmd} returned status code = #{code}.\nOutput:\n#{out_nocolor}" if check_errors && !successcodes.include?(code)
+    err_nocolor = err.gsub(/\e\[([;\d]+)?m/, '')
+    raise ScriptError, "FAIL: #{cmd} returned status code = #{code}.\nOutput:\n#{out_nocolor}\nStderr:\n#{err_nocolor}" if check_errors && !successcodes.include?(code)
 
-    $stdout.puts "#{cmd} returned status code = #{code}.\nOutput:\n'#{out_nocolor}'" if verbose
+    $stdout.puts "#{cmd} returned status code = #{code}.\nOutput:\n'#{out_nocolor}'\nStderr:\n'#{err_nocolor}'" if verbose
     if separated_results
       [out, err, code]
     else
@@ -235,8 +236,7 @@ class RemoteNode
       tmp_file = File.join('/tmp/', File.basename(test_runner_file))
       success = get_target('localhost').scp_upload(test_runner_file, tmp_file, host: @full_hostname)
       if success
-        _out, code = run_local("mgrctl cp #{tmp_file} server:#{remote_node_file}")
-        raise ScriptError, "Failed to copy #{tmp_file} to container" unless code.zero?
+        run_local("mgrctl cp #{tmp_file} server:#{remote_node_file}")
       end
     else
       success = get_target('localhost').scp_upload(test_runner_file, remote_node_file, host: @full_hostname)
@@ -252,8 +252,7 @@ class RemoteNode
   def extract(remote_node_file, test_runner_file)
     if @has_mgrctl
       tmp_file = File.join('/tmp/', File.basename(remote_node_file))
-      _out, code = run_local("mgrctl cp server:#{remote_node_file} #{tmp_file}", verbose: false)
-      raise ScriptError, "Failed to extract #{remote_node_file} from container" unless code.zero?
+      run_local("mgrctl cp server:#{remote_node_file} #{tmp_file}", verbose: false)
 
       success = get_target('localhost').scp_download(tmp_file, test_runner_file, host: @full_hostname)
       raise ScriptError, "Failed to extract #{tmp_file} from host" unless success
