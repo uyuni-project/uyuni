@@ -263,6 +263,7 @@ const FilterForm = (props: Props) => {
                 label={t("Advisory Keywords")}
                 labelClass="col-md-3"
                 divClass="col-md-8"
+                inline={true}
               />
             )}
 
