@@ -38,11 +38,8 @@ const renderFilterEntry = (filter, projectId, symbol, last) => {
 
   let filterClassName;
   let filterIconName;
-
-  if (filter.state === statesEnum.enum.ATTACHED.key) {
-    filterClassName = `text-success`;
-    filterIconName = "fa-plus";
-  } else if (filter.state === statesEnum.enum.EDITED.key) {
+  console.log(filter.state);
+  if (filter.state === statesEnum.enum.EDITED.key) {
     filterClassName = `text-warning`;
     filterIconName = "fa-edit";
   } else if (filter.state === statesEnum.enum.DETACHED.key) {
