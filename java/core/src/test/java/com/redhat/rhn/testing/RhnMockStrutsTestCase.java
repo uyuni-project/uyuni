@@ -42,13 +42,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import jakarta.servlet.http.Cookie;
-
 /**
  * RhnMockStrutsTestCase - simple base class that adds a User to the test since all our
  * Struts Actions use a User.
  */
-public class RhnMockStrutsTestCase extends MockStrutsTestCase implements SaltTestCaseUtils {
+public class RhnMockStrutsTestCase extends BaseStrutsTestCase implements SaltTestCaseUtils {
 
     protected Path tmpSaltRoot;
     protected User user;
