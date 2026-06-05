@@ -1,22 +1,28 @@
 import { Button } from "components/buttons";
 
-export type ToggleButtonOption = {
-  value: string;
+export type ToggleButtonOption<T extends string> = {
+  value: T;
   label?: string;
   icon?: string;
   tooltip?: string;
   disabled?: boolean;
 };
 
-type ToggleButtonGroupProps = {
-  value: string;
-  options: ToggleButtonOption[];
-  onChange: (value: string) => void;
+type ToggleButtonGroupProps<T extends string> = {
+  value: T;
+  options: ToggleButtonOption<T>[];
+  onChange: (value: T) => void;
   className?: string;
   size?: "sm";
 };
 
-export function ToggleButtonGroup({ value, options, onChange, className = "", size }: ToggleButtonGroupProps) {
+export function ToggleButtonGroup<T extends string>({
+  value,
+  options,
+  onChange,
+  className = "",
+  size,
+}: ToggleButtonGroupProps<T>) {
   const sizeClass = size === "sm" ? "btn-sm" : "";
 
   return (
