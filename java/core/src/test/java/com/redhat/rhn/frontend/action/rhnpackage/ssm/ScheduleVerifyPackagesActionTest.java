@@ -47,7 +47,7 @@ public class ScheduleVerifyPackagesActionTest extends RhnMockStrutsTestCase {
         actionPerform();
 
         // Verify
-        verifyForward(RhnHelper.DEFAULT_FORWARD);
+        testForwardName(RhnHelper.DEFAULT_FORWARD);
 
         Object pageList = getRequest().getAttribute(RequestContext.PAGE_LIST);
         assertNotNull(pageList);

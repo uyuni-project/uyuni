@@ -27,7 +27,6 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.context.Context;
-import com.redhat.rhn.frontend.servlets.PxtCookieManager;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegate;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegateFactory;
 import com.redhat.rhn.frontend.struts.RequestContext;
@@ -44,9 +43,6 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import jakarta.servlet.http.Cookie;
-import servletunit.HttpServletRequestSimulator;
-import servletunit.ServletContextSimulator;
-import servletunit.struts.MockStrutsTestCase;
 
 /**
  * RhnMockStrutsTestCase - simple base class that adds a User to the test since all our
@@ -70,17 +66,13 @@ public class RhnMockStrutsTestCase extends MockStrutsTestCase implements SaltTes
         Context ctx = Context.getCurrentContext();
         ctx.setLocale(Locale.getDefault());
         ctx.setTimezone(TimeZone.getDefault());
-        PxtCookieManager pxtCookieManager = new PxtCookieManager();
 
         request.setServerName("localhost");
-        request.setMethod(HttpServletRequestSimulator.GET);
+        request.setMethod("GET");
         user = UserTestUtils.createUser(TestStatics.TEST_USER, TestStatics.TEST_ORG);
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         addRequestParameter(RequestContext.USER_ID, user.getId().toString());
         WebSession s = requestContext.getWebSession();
-        Cookie[] cookies = new Cookie[1];
-        cookies[0] = pxtCookieManager.createPxtCookie(s.getId(), request, 0);
-        request.setCookies(cookies);
         request.setAttribute("session", s);
         request.setRequestURI("http://localhost.redhat.com");
         request.setRequestURL("http://localhost.redhat.com/");
@@ -112,11 +104,6 @@ public class RhnMockStrutsTestCase extends MockStrutsTestCase implements SaltTes
         user = null;
 
         cleanupSaltConfiguration(tmpSaltRoot);
-    }
-
-
-    protected ServletContextSimulator getContext() {
-        return this.context;
     }
 
     /**
@@ -208,7 +195,7 @@ public class RhnMockStrutsTestCase extends MockStrutsTestCase implements SaltTes
     protected void verifyActionMessage(String key) {
         String[] messageNames = new String[1];
         messageNames[0] = key;
-        verifyActionMessages(messageNames);
+        testActionHasMessages(messageNames);
     }
 
     protected void addSubmitted() {

@@ -73,7 +73,7 @@ public class SystemSearchActionTest extends RhnMockStrutsTestCase {
         addRequestParameter(BaseSearchAction.VIEW_MODE,
         "systemsearch_name_and_description");
         actionPerform();
-        verifyForward(RhnHelper.DEFAULT_FORWARD);
+        testForwardName(RhnHelper.DEFAULT_FORWARD);
         DataResult dr = (DataResult) request.getAttribute(RequestContext.PAGE_LIST);
         assertNotNull(dr);
         assertFalse(dr.isEmpty());
@@ -100,10 +100,8 @@ public class SystemSearchActionTest extends RhnMockStrutsTestCase {
         addRequestParameter(BaseSearchAction.VIEW_MODE,
         "systemsearch_name_and_description");
         actionPerform();
-        System.err.println("getMockResponse() = " + getMockResponse());
-        System.err.println("getMockResponse().getStatusCode() = " +
-                getMockResponse().getStatusCode());
-        assertEquals(302, getMockResponse().getStatusCode());
+        System.err.println("getResponse().getStatusCode() = " + getResponse().getStatus());
+        assertEquals(302, getResponse().getStatus());
     }
 
     /**
@@ -138,7 +136,7 @@ public class SystemSearchActionTest extends RhnMockStrutsTestCase {
         addRequestParameter(BaseSearchAction.VIEW_MODE,
                             "systemsearch_cpu_mhz_lt");
         actionPerform();
-        verifyActionErrors(new String[] { "systemsearch.errors.numeric",
+        testActionHasErrors(new String[] { "systemsearch.errors.numeric",
                 "packages.search.connection_error" });
     }
 
@@ -150,7 +148,7 @@ public class SystemSearchActionTest extends RhnMockStrutsTestCase {
         addRequestParameter(BaseSearchAction.VIEW_MODE,
                             "systemsearch_cpu_mhz_lt");
         actionPerform();
-        verifyActionErrors(new String[] { "systemsearch.errors.numeric",
+        testActionHasErrors(new String[] { "systemsearch.errors.numeric",
                 "packages.search.connection_error" });
     }
 }

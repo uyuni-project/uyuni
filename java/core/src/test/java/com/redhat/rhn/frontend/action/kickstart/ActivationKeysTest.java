@@ -53,7 +53,7 @@ public class ActivationKeysTest extends BaseKickstartEditTestCase {
         actionPerform();
         String[] msgs = {"kickstart_activation_keys.added",
                 "kickstart_activation_keys.removed"};
-        verifyActionMessages(msgs);
+        testActionHasMessages(msgs);
     }
 
 

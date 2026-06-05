@@ -66,7 +66,7 @@ public class RhnMockHttpServletRequest implements HttpServletRequest {
     private int contentLength = -1;
     private Map<String, Object> attributes;
     private Map<String, String> headers;
-    private Map<String, String[]> parameters;
+    protected Map<String, String[]> parameters;
     private List<Locale> locales;
     private int port;
     private boolean secure;
@@ -606,6 +606,10 @@ public class RhnMockHttpServletRequest implements HttpServletRequest {
     @Override
     public String getContentType() {
         return contentType;
+    }
+
+    public void setContentType(String s) {
+        contentType = s;
     }
 
     @Override

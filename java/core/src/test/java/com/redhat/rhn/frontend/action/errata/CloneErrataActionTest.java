@@ -56,7 +56,7 @@ public class CloneErrataActionTest extends RhnMockStrutsTestCase {
 
         request.addParameter("dispatch", "Clone Errata");
         actionPerform();
-        verifyForwardPath("/WEB-INF/pages/errata/cloneerrata.jsp");
+        testForwardPath("/WEB-INF/pages/errata/cloneerrata.jsp");
         verifyActionMessage("emptyselectionerror");
     }
 
@@ -83,6 +83,6 @@ public class CloneErrataActionTest extends RhnMockStrutsTestCase {
         request.addParameter("dispatch", "Clone Errata");
 
         actionPerform();
-        verifyForward(RhnHelper.DEFAULT_FORWARD);
+        testForwardName(RhnHelper.DEFAULT_FORWARD);
     }
 }

@@ -85,7 +85,7 @@ public class CloneConfirmActionTest extends RhnPostMockStrutsTestCase {
         request.addParameter("dispatch", "Confirm");
 
         actionPerform();
-        verifyForward("success");
+        testForwardName("success");
         set = RhnSetDecl.ERRATA_CLONE.get(user);
         assertEquals(0, set.size());
 

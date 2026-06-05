@@ -62,6 +62,14 @@ public class RhnMockHttpServletResponse implements HttpServletResponse {
     }
 
     /**
+     * removes a header by name
+     * @param name of the header to remove
+     */
+    public void removeHeader(String name) {
+        headers.remove(name);
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override

@@ -32,8 +32,6 @@ import org.junit.jupiter.api.Test;
 import java.util.LinkedList;
 import java.util.List;
 
-import servletunit.HttpServletRequestSimulator;
-
 /**
  * Tests PowerManagementConfigurationAction
  * @author Silvio Moioli {@literal <smoioli@suse.de>}
@@ -79,7 +77,7 @@ public class PowerManagementConfigurationActionTest extends RhnMockStrutsTestCas
     @Test
     public void testExecute() {
         setRequestPathInfo("/systems/ssm/provisioning/PowerManagementConfiguration");
-        request.setMethod(HttpServletRequestSimulator.POST);
+        request.setMethod("POST");
 
         addSubmitted();
         addDispatchCall("ssm.provisioning.powermanagement.configuration.update");

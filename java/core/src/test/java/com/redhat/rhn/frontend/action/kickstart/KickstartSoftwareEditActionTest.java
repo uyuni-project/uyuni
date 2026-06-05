@@ -97,7 +97,7 @@ public class KickstartSoftwareEditActionTest extends BaseKickstartEditTestCase {
                 ksdata.getChildChannels().isEmpty());
         actionPerform();
         String[] keys = {"kickstart.software.success"};
-        verifyActionMessages(keys);
+        testActionHasMessages(keys);
         ksdata = TestUtils.reload(ksdata);
         assertFalse(ksdata.getChildChannels().isEmpty());
 

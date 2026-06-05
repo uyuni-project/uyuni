@@ -68,14 +68,14 @@ public class KickstartScriptActionTest extends BaseKickstartEditTestCase {
         setRequestPathInfo("/kickstart/KickstartScriptCreate");
         actionPerform();
         String[] keys = {"errors.maxlength"};
-        verifyActionErrors(keys);
+        testActionHasErrors(keys);
 
         contents = RandomStringUtils.randomAscii(50000);
         addRequestParameter(KickstartScriptCreateAction.CONTENTS,
                 contents);
         actionPerform();
         String[] successkeys = {"kickstart.script.success"};
-        verifyActionMessages(successkeys);
+        testActionHasMessages(successkeys);
     }
 
     @Test
@@ -100,13 +100,13 @@ public class KickstartScriptActionTest extends BaseKickstartEditTestCase {
         setRequestPathInfo("/kickstart/KickstartScriptCreate");
         actionPerform();
         String[] keys = {"kickstart.script.success"};
-        verifyActionMessages(keys);
+        testActionHasMessages(keys);
         assertNotNull(ksdata.getScripts());
         KickstartScript ks = ksdata.getScripts().iterator().next();
         assertEquals(contents, ks.getDataContents());
         assertEquals(language, ks.getInterpreter());
         assertEquals(KickstartScript.TYPE_POST, ks.getScriptType());
-        verifyForward("success");
+        testForwardName("success");
     }
 
     @Test
@@ -144,13 +144,13 @@ public class KickstartScriptActionTest extends BaseKickstartEditTestCase {
         setRequestPathInfo("/kickstart/KickstartScriptEdit");
         actionPerform();
         String[] keys = {"kickstart.script.success"};
-        verifyActionMessages(keys);
+        testActionHasMessages(keys);
         assertNotNull(ksdata.getScripts());
         KickstartScript ks = ksdata.getScripts().iterator().next();
         assertEquals(contents, ks.getDataContents());
         assertEquals(language, ks.getInterpreter());
         assertEquals(KickstartScript.TYPE_POST, ks.getScriptType());
-        verifyForward("success");
+        testForwardName("success");
     }
 
     private static KickstartData clearScripts(KickstartData ksdataIn) {

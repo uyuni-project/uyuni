@@ -44,7 +44,7 @@ public class PreservationListEditActionTest extends RhnPostMockStrutsTestCase {
         setRequestPathInfo("/systems/provisioning/preservation/PreservationListEdit");
         actionPerform();
         String[] msgs = {"preservation.key.success"};
-        verifyActionMessages(msgs);
+        testActionHasMessages(msgs);
         FileList lchanged = CommonFactory.lookupFileList(list.getId(), user.getOrg());
         assertEquals(testLabel, lchanged.getLabel());
         assertNotNull(getRequest().
@@ -55,7 +55,7 @@ public class PreservationListEditActionTest extends RhnPostMockStrutsTestCase {
     public void testCreateSubmit() throws Exception {
         executeCreate(Boolean.TRUE);
         String[] msgs = {"preservation.key.success"};
-        verifyActionMessages(msgs);
+        testActionHasMessages(msgs);
     }
 
     @Test

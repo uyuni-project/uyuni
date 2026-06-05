@@ -94,11 +94,11 @@ public class KickstartAdvancedOptionsActionTest extends RhnPostMockStrutsTestCas
         assertNotNull(request.getParameter("skipx"));
 
         String[] keys = {"kickstart.options.success"};
-        verifyActionMessages(keys);
+        testActionHasMessages(keys);
 
         // Verify we can submit twice
         actionPerform();
-        verifyActionMessages(keys);
+        testActionHasMessages(keys);
     }
 
     /*
@@ -139,7 +139,7 @@ public class KickstartAdvancedOptionsActionTest extends RhnPostMockStrutsTestCas
         assertNotNull(request.getAttribute(RequestContext.KICKSTART));
 
         String[] keys = {"kickstart.options.success"};
-        verifyActionMessages(keys);
+        testActionHasMessages(keys);
     }
 
 
