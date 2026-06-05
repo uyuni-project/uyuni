@@ -63,6 +63,12 @@ else
 fi
 SUMMARY="${WORK}/SUMMARY.txt"
 
+# Image used by the per-node Rancher logs collector (kubectl debug).
+# Override via env var to point at an internal mirror for air-gapped
+# clusters, e.g.
+#   export RANCHER_SUPPORT_IMAGE=registry.internal.example.com/rancherlabs/swiss-army-knife:v1.2.3
+RANCHER_SUPPORT_IMAGE="${RANCHER_SUPPORT_IMAGE:-rancherlabs/swiss-army-knife}"
+
 # Track every debug pod we create so cleanup can remove them all.
 DEBUG_PODS=()
 
@@ -107,7 +113,7 @@ collect_rancher_on_node() {
 
     # --profile=sysadmin gives SYS_ADMIN cap
     debug_out=$(kubectl debug -n "$NS" node/"$node" --attach=false --profile=sysadmin \
-        --image=rancherlabs/swiss-army-knife \
+        --image="$RANCHER_SUPPORT_IMAGE" \
         -- bash -c "rancher2_logs_collector.sh -D -d /tmp" 2>&1)
     rc=$?
 

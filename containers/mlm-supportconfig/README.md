@@ -112,3 +112,31 @@ A bundle lands in the current directory, named:
 The terminal output ends with a `Summary:` block listing every step and
 its outcome (`OK` / `SKIPPED` / `FAILED` / `TIMEOUT` / `PARTIAL`); the
 same content is shipped as `SUMMARY.txt` inside the tarball.
+
+### Air-gapped clusters
+
+The per-node Rancher collector uses the `rancherlabs/swiss-army-knife`
+image from Docker Hub. On a cluster without internet access, mirror
+that image to your internal registry once and point the plugin at the
+mirror via the `RANCHER_SUPPORT_IMAGE` env var:
+
+```bash
+# Mirror once (from a machine that can reach Docker Hub)
+skopeo copy --all \
+    docker://rancherlabs/swiss-army-knife:latest \
+    docker://registry.internal.example.com/rancherlabs/swiss-army-knife:v1.2.3
+
+# Then run the plugin pointing at the mirror
+export RANCHER_SUPPORT_IMAGE=registry.internal.example.com/rancherlabs/swiss-army-knife:v1.2.3
+kubectl mlm-supportconfig <namespace>
+```
+
+When unset, the plugin defaults to `rancherlabs/swiss-army-knife`. Pin
+to an explicit tag (not `:latest`) in air-gapped use so reproducibility
+isn't at the mercy of upstream updates.
+
+If the configured image can't be pulled (no network, missing tag,
+auth failure), the rancher step records
+`FAILED (ImagePullBackOff)` and the rest of the bundle is still
+produced — `supportconfig`, `kubectl logs`, namespace objects, and
+helm state need no extra image.
