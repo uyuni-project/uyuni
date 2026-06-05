@@ -13,10 +13,10 @@ kubectl mlm-supportconfig <pod> <namespace>      # just that one pod
 
 For each selected pod the plugin collects, best-effort:
 
-* `supportconfig` in every container of the pod that has the binary
-  (multi-container pods produce one tarball per container that has
-  `supportutils` installed; containers without it are silently
-  skipped);
+* `supportconfig` in every container of the pod that has the binary,
+  invoked with `-t <dir>`. Multi-container pods produce
+  one `supportconfig-<container>/` directory per container that has
+  `supportutils` installed; containers without it are silently skipped;
 * `kubectl logs --all-containers` with timestamps and per-container
   prefixes, both current and previous container instances;
 * `kubectl describe pod` and `kubectl get pod -o yaml`.
@@ -29,17 +29,22 @@ config) that no pod-side collection can see.
 Once per namespace, it dumps:
 
 * namespace events (sorted by `lastTimestamp`, text and YAML);
-* namespace objects beyond pods — Deployments, Services, ConfigMaps,
-  Secrets, Ingress, Traefik `IngressRoute`/`IngressRouteTCP`, PVCs,
-  cert-manager Certificates (each best-effort: CRDs that aren't
-  installed are silently skipped);
+* namespace objects beyond pods — Deployments, Services, Endpoints,
+  EndpointSlices, NetworkPolicies, ConfigMaps, Secrets, Ingress,
+  Traefik `IngressRoute`/`IngressRouteTCP`, PVCs, cert-manager
+  Certificates (each best-effort: CRDs that aren't installed are
+  silently skipped);
+* a resource-usage snapshot — `kubectl top pod --containers` and
+  `kubectl top node` (silently skipped if `metrics-server` isn't
+  installed in the cluster);
 * helm release state — `helm list`, then per release `helm get values`,
   `helm get manifest`, `helm history` (skipped entirely if `helm` is
   not on the workstation's `$PATH`).
 
 Once per run, it also captures cluster baseline — `kubectl version`,
-`kubectl get nodes -o wide`, and the full node spec — so the bundle
-is self-contained for the reviewer.
+`kubectl get nodes -o wide`, the full node spec, and cluster-scoped
+storage (`PersistentVolumes`, `StorageClasses`) so the bundle is
+self-contained for the reviewer.
 
 Everything ends up in a single tarball in the current directory, with
 a top-level `SUMMARY.txt` describing what was collected and what was
