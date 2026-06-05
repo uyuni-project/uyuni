@@ -20071,6 +20071,12 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
           <context context-type="sourcefile">/rhn/systems/details/configuration/ConfigChannelList.do</context>
         </context-group>
         </trans-unit>
+        <trans-unit id="exportcolumn.cveNames">
+          <source>CVEs</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/errata/RelevantErrata</context>
+        </context-group>
+        </trans-unit>
         <trans-unit id="exportcolumn.affectedSystemCount">
           <source>Systems Affected</source>
         <context-group name="ctx">
