@@ -1,0 +1,542 @@
+#!/usr/bin/env bash
+# kubectl-mlm_supportconfig — collect a support bundle for MLM 
+# workloads running on Kubernetes (server-helm or proxy-helm).
+#
+# Invocation (as a kubectl plugin):
+#
+#     kubectl mlm-supportconfig <namespace>            # all pods in the namespace
+#     kubectl mlm-supportconfig <pod> <namespace>      # just that pod
+#
+# For each selected pod the plugin collects, best-effort:
+#   - `supportconfig` from every container that has the binary
+#   - `kubectl logs --all-containers` (current + previous)
+#   - `kubectl describe pod` and `kubectl get pod -o yaml`
+#
+# Once per distinct node hosting a selected pod, it also runs:
+#   - The Rancher logs-collector via `kubectl debug node/...` (node-level
+#     journald, container runtime logs, kernel info, etc.)
+#
+# Once per namespace, it also collects:
+#   - All namespace events (text + yaml), sorted by lastTimestamp
+#   - Namespace objects beyond pods: Deployments, Services, ConfigMaps,
+#     Secrets, Ingress/IngressRoute(TCP), PVCs, Certificates
+#   - Cluster baseline: `kubectl version`, node list and full node spec
+#   - Helm release state (values, manifest, history) if `helm` is on PATH
+#
+# Every step is independent: a failure in one is recorded in SUMMARY.txt
+# and the script keeps going. Exit code is 0 whenever a bundle was
+# produced (even partial).
+
+set -u
+
+# ---------------------------------------------------------------------------
+# Bootstrap and argument parsing
+# ---------------------------------------------------------------------------
+if ! command -v kubectl >/dev/null 2>&1; then
+    echo "kubectl not found on PATH" >&2
+    exit 2
+fi
+
+usage() {
+    cat >&2 <<EOF
+usage:
+    kubectl mlm-supportconfig <namespace>            # all pods in the namespace
+    kubectl mlm-supportconfig <pod> <namespace>      # one specific pod
+EOF
+    exit 2
+}
+
+case $# in
+    1) POD=""    ; NS="$1" ;;
+    2) POD="$1"  ; NS="$2" ;;
+    *) usage ;;
+esac
+
+[[ -z "$NS" ]] && usage
+
+WORK=$(mktemp -d) || { echo "cannot create temp dir" >&2; exit 2; }
+STAMP=$(date +%Y%m%d-%H%M%S)
+if [[ -n "$POD" ]]; then
+    OUT="mlm-supportconfig-${NS}-${POD}-${STAMP}.tar.gz"
+else
+    OUT="mlm-supportconfig-${NS}-all-${STAMP}.tar.gz"
+fi
+SUMMARY="${WORK}/SUMMARY.txt"
+
+# Track every debug pod we create so cleanup can remove them all.
+DEBUG_PODS=()
+
+log()    { printf ">> %s\n"  "$*"; }
+warn()   { printf "!! %s\n"  "$*" >&2; }
+record() { printf "%-44s %s\n" "$1:" "$2" >> "$SUMMARY"; }
+
+cleanup() {
+    for p in "${DEBUG_PODS[@]:-}"; do
+        [[ -z "$p" ]] && continue
+        kubectl delete -n "$NS" "pod/$p" --wait=false --ignore-not-found >/dev/null 2>&1 || true
+    done
+    rm -rf "$WORK"
+}
+trap cleanup EXIT
+
+{
+    echo "Support bundle collection"
+    echo "  Date    : $(date)"
+    if [[ -n "$POD" ]]; then
+        echo "  Target  : pod=${POD} namespace=${NS}"
+    else
+        echo "  Target  : namespace=${NS} (all pods)"
+    fi
+    echo "  Context : $(kubectl config current-context 2>/dev/null || echo '?')"
+    echo
+    echo "Step results"
+    echo "------------"
+} > "$SUMMARY"
+
+# ---------------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------------
+
+# Per-node Rancher collector via kubectl debug.
+collect_rancher_on_node() {
+    local node="$1"
+    local label="rancher-collector:${node}"
+
+    log "Launching rancher collector via kubectl debug on ${node}"
+    local debug_out rc
+
+    # --profile=sysadmin gives SYS_ADMIN cap
+    debug_out=$(kubectl debug -n "$NS" node/"$node" --attach=false --profile=sysadmin \
+        --image=rancherlabs/swiss-army-knife \
+        -- bash -c "rancher2_logs_collector.sh -D -d /tmp" 2>&1)
+    rc=$?
+
+    if [[ $rc -ne 0 ]]; then
+        warn "kubectl debug failed on ${node} (exit $rc):"
+        printf "%s\n" "$debug_out" | sed 's/^/   /' >&2
+        warn "Common causes: missing RBAC (need create on pods + nodes/proxy),"
+        warn "or PodSecurity policy blocking privileged pods."
+        record "$label" "SKIPPED (kubectl debug failed)"
+        return
+    fi
+
+    local debug_pod
+    debug_pod=$(printf "%s\n" "$debug_out" | grep -oE 'node-debugger-[a-z0-9.-]+' | head -1)
+    if [[ -z "$debug_pod" ]]; then
+        warn "Could not parse debug pod name from kubectl debug output:"
+        printf "%s\n" "$debug_out" | sed 's/^/   /' >&2
+        record "$label" "SKIPPED (debug pod name not found)"
+        return
+    fi
+    DEBUG_PODS+=( "$debug_pod" )
+    log "Debug pod: ${debug_pod}"
+
+    # Wait for the pod to become Ready
+    local pod_timeout=$(( $(date +%s) + 120 ))
+    local phase reason ready=""
+    while [[ $(date +%s) -lt $pod_timeout ]]; do
+        phase=$(kubectl get -n "$NS" "pod/$debug_pod"  -o jsonpath='{.status.phase}' 2>/dev/null || true)
+        case "$phase" in
+            Running|Succeeded)
+                ready=1; break
+                ;;
+            Failed)
+                warn "Debug pod ${debug_pod} entered Failed phase. Pod logs:"
+                kubectl logs -n "$NS" "$debug_pod" --tail=50 2>&1 | sed 's/^/   /' >&2 || true
+                record "$label" "FAILED (debug pod Failed; see logs above)"
+                return
+                ;;
+        esac
+
+        reason=$(kubectl get -n "$NS" "pod/$debug_pod" -o jsonpath='{.status.containerStatuses[*].state.waiting.reason}' \
+            2>/dev/null || true)
+        case "$reason" in
+            *ImagePullBackOff*|*ErrImagePull*|*CrashLoopBackOff*|*CreateContainerError*|*CreateContainerConfigError*)
+                warn "Debug pod ${debug_pod} stuck in: ${reason}"
+                kubectl describe -n "$NS" "pod/$debug_pod" 2>/dev/null | sed -n '/Events:/,$p' | head -20 >&2 || true
+                record "$label" "FAILED (${reason})"
+                return
+                ;;
+        esac
+        sleep 3
+    done
+    if [[ -z "$ready" ]]; then
+        warn "Debug pod ${debug_pod} never became Ready within 120s"
+        record "$label" "SKIPPED (debug pod not Ready)"
+        return
+    fi
+
+    log "Waiting for collector tarball on ${node}..."
+    local tarball_timeout=$(( $(date +%s) + 900 ))   # 15 min cap
+    local is_tarball_ready=""
+    while [[ $(date +%s) -lt $tarball_timeout ]]; do
+        if kubectl exec -n "$NS" "$debug_pod" -- bash -c 'ls /host/tmp/*-*.tar.gz 2>/dev/null' \
+                >/dev/null 2>&1; then
+            is_tarball_ready=1; break
+        fi
+        sleep 10
+    done
+    if [[ -z "$is_tarball_ready" ]]; then
+        warn "Timed out after 15 min waiting for tarball on ${node}"
+        record "$label" "TIMEOUT"
+        return
+    fi
+
+    local debug_pod_tarball dst
+    debug_pod_tarball=$(kubectl exec -n "$NS" "$debug_pod" -- bash -c 'ls -t /host/tmp/*-*.tar.gz | head -1')
+    mkdir -p "${WORK}/nodes"
+
+    dst="${WORK}/nodes/$(basename "$debug_pod_tarball")"
+    if kubectl cp -n "$NS" "${debug_pod}:${debug_pod_tarball}" "$dst" 2>/dev/null; then
+        kubectl exec -n "$NS" "$debug_pod" -- rm -f "$debug_pod_tarball" >/dev/null 2>&1 || true
+        record "$label" "OK ($(basename "$dst"))"
+    else
+        warn "kubectl cp from ${debug_pod} failed"
+        record "$label" "PARTIAL (copy failed)"
+    fi
+}
+
+# Per-container supportconfig (best-effort). Writes the resulting tarball
+# into the given destination directory.
+run_supportconfig_in_container() {
+    local pod="$1" container="$2" dst_dir="$3"
+    local label="supportconfig:${pod}/${container}"
+    local bname="k8s-${pod}-${container}-${STAMP}"
+
+    if ! kubectl exec -n "$NS" -c "$container" "$pod" -- which supportconfig >/dev/null 2>&1; then
+        record "$label" "SKIPPED (no supportconfig in container)"
+        return
+    fi
+
+    log "supportconfig in ${pod}/${container} (detached)"
+
+    kubectl exec -n "$NS" -c "$container" "$pod" -- bash -c "
+      rm -f /tmp/${bname}.done /tmp/${bname}.failed
+      nohup bash -c '
+        export TERM=dumb
+        supportconfig -R /tmp -B ${bname} > /tmp/${bname}.log 2>&1
+        if ls /tmp/scc_*${bname}*.txz /tmp/nts_*${bname}*.tar.bz2 \
+                2>/dev/null | head -1 | grep -q .; then
+          touch /tmp/${bname}.done
+        else
+          touch /tmp/${bname}.failed
+        fi
+      ' </dev/null >/dev/null 2>&1 &
+    " 2>/dev/null
+    local launch_rc=$?
+    if [[ $launch_rc -ne 0 ]]; then
+        warn "Failed to launch supportconfig in ${pod}/${container} (exit $launch_rc)"
+        record "$label" "SKIPPED (launch failed)"
+        return
+    fi
+
+    local supportconfig_timeout=$(( $(date +%s) + 1800 ))   # 30 min cap
+    local outcome=""
+    while [[ $(date +%s) -lt $supportconfig_timeout ]]; do
+        if kubectl exec -n "$NS" -c "$container" "$pod" -- test -f "/tmp/${bname}.failed" 2>/dev/null; then
+            outcome="failed"; break
+        fi
+        if kubectl exec -n "$NS" -c "$container" "$pod" -- test -f "/tmp/${bname}.done" 2>/dev/null; then
+            outcome="done"; break
+        fi
+        sleep 20
+    done
+
+    case "$outcome" in
+      done)
+        local supportconfig_tarball
+        supportconfig_tarball=$(kubectl exec -n "$NS" -c "$container" "$pod" -- bash -c \
+          "ls -t /tmp/scc_*${bname}*.txz /tmp/nts_*${bname}*.tar.bz2 2>/dev/null | head -1")
+        if [[ -z "$supportconfig_tarball" ]]; then
+            warn "supportconfig in ${pod}/${container} finished but tarball missing"
+            record "$label" "PARTIAL (no tarball)"
+        elif kubectl cp -n "$NS" -c "$container" "${pod}:${supportconfig_tarball}" "${dst_dir}/$(basename "$supportconfig_tarball")" 2>/dev/null; then
+            kubectl exec -n "$NS" -c "$container" "$pod" -- rm -f "$supportconfig_tarball" "/tmp/${bname}.done" "/tmp/${bname}.log" >/dev/null 2>&1 || true
+            record "$label" "OK ($(basename "$supportconfig_tarball"))"
+        else
+            warn "kubectl cp from ${pod}/${container} failed"
+            record "$label" "PARTIAL (copy failed)"
+        fi
+        ;;
+      failed)
+        local log_dst="${dst_dir}/supportconfig-${container}-failed.log"
+        kubectl cp -n "$NS" -c "$container" "${pod}:/tmp/${bname}.log" "$log_dst" 2>/dev/null \
+            || warn "Could not copy supportconfig log out of ${pod}/${container}"
+
+        warn "supportconfig in ${pod}/${container} failed."
+        warn "Last 80 lines of supportconfig log (full log in bundle: $(basename "$log_dst")):"
+        kubectl exec -n "$NS" -c "$container" "$pod" -- tail -n 80 "/tmp/${bname}.log" 2>&1 | sed 's/^/   /' >&2 || true
+
+        kubectl exec -n "$NS" -c "$container" "$pod" -- rm -f "/tmp/${bname}.failed" "/tmp/${bname}.log" \
+            >/dev/null 2>&1 || true
+        record "$label" "FAILED (full log: $(basename "$log_dst"))"
+        ;;
+      *)
+        warn "supportconfig in ${pod}/${container} did not finish within 30 min"
+        record "$label" "TIMEOUT"
+        ;;
+    esac
+}
+
+# Per-pod collection: supportconfig (per container), logs, describe, yaml.
+collect_pod_data() {
+    local pod="$1"
+    local dst_dir="${WORK}/pods/${pod}"
+    mkdir -p "$dst_dir"
+
+    log "Collecting from pod ${NS}/${pod}"
+
+    # Container list (skip if pod went away between discovery and now)
+    local containers=( $(kubectl get pod -n "$NS" "$pod" -o jsonpath='{.spec.containers[*].name}' 2>/dev/null) )
+
+    if [[ ${#containers[@]} -eq 0 ]]; then
+        record "containers:${pod}" "NONE (pod gone or no read permission)"
+    else
+        for c in "${containers[@]}"; do
+            run_supportconfig_in_container "$pod" "$c" "$dst_dir"
+        done
+    fi
+
+    if kubectl logs -n "$NS" "$pod" --all-containers --timestamps --prefix=true > "${dst_dir}/logs.txt" 2>/dev/null; then
+        record "logs:${pod}" "OK"
+    else
+        rm -f "${dst_dir}/logs.txt"
+        record "logs:${pod}" "SKIPPED (no read permission or no logs)"
+    fi
+
+    # Logs (previous)
+    if kubectl logs -n "$NS" "$pod" --all-containers --timestamps --prefix=true --previous > "${dst_dir}/logs-previous.txt" 2>/dev/null \
+            && [[ -s "${dst_dir}/logs-previous.txt" ]]; then
+        record "logs-previous:${pod}" "OK"
+    else
+        rm -f "${dst_dir}/logs-previous.txt"
+        record "logs-previous:${pod}" "NONE (no prior container instance)"
+    fi
+
+    # Describe
+    if kubectl describe pod -n "$NS" "$pod" > "${dst_dir}/describe.txt" 2>/dev/null; then
+        record "describe:${pod}" "OK"
+    else
+        rm -f "${dst_dir}/describe.txt"
+        record "describe:${pod}" "SKIPPED (no read permission or pod gone)"
+    fi
+
+    # Live spec
+    if kubectl get pod -n "$NS" "$pod" -o yaml > "${dst_dir}/pod.yaml" 2>/dev/null; then
+        record "spec:${pod}" "OK"
+    else
+        rm -f "${dst_dir}/pod.yaml"
+        record "spec:${pod}" "SKIPPED (no read permission or pod gone)"
+    fi
+}
+
+# Namespace-wide non-pod objects.
+collect_namespace_objects() {
+    mkdir -p "${WORK}/namespace"
+
+    if kubectl get all,pvc,configmap,secret,ingress -n "$NS" -o yaml > "${WORK}/namespace/core.yaml" 2>/dev/null; then
+        record "namespace-objects:core" "OK"
+    else
+        rm -f "${WORK}/namespace/core.yaml"
+        record "namespace-objects:core" "SKIPPED (no read permission)"
+    fi
+
+    if kubectl get ingressroute,ingressroutetcp -n "$NS" -o yaml > "${WORK}/namespace/traefik.yaml" 2>/dev/null \
+            && [[ -s "${WORK}/namespace/traefik.yaml" ]]; then
+        record "namespace-objects:traefik" "OK"
+    else
+        rm -f "${WORK}/namespace/traefik.yaml"
+        record "namespace-objects:traefik" "SKIPPED (CRD absent or no read permission)"
+    fi
+
+    if kubectl get certificate -n "$NS" -o yaml > "${WORK}/namespace/certmanager.yaml" 2>/dev/null \
+            && [[ -s "${WORK}/namespace/certmanager.yaml" ]]; then
+        record "namespace-objects:certmanager" "OK"
+    else
+        rm -f "${WORK}/namespace/certmanager.yaml"
+        record "namespace-objects:certmanager" "SKIPPED (CRD absent or no read permission)"
+    fi
+}
+
+# Cluster baseline — kubectl version, node list and full spec.
+collect_cluster_baseline() {
+    mkdir -p "${WORK}/cluster"
+
+    if kubectl version > "${WORK}/cluster/version.txt" 2>/dev/null; then
+        record "cluster:version" "OK"
+    else
+        rm -f "${WORK}/cluster/version.txt"
+        record "cluster:version" "SKIPPED"
+    fi
+
+    if kubectl get nodes -o wide > "${WORK}/cluster/nodes-wide.txt" 2>/dev/null; then
+        record "cluster:nodes-wide" "OK"
+    else
+        rm -f "${WORK}/cluster/nodes-wide.txt"
+        record "cluster:nodes-wide" "SKIPPED (no node read permission)"
+    fi
+
+    if kubectl get nodes -o yaml > "${WORK}/cluster/nodes.yaml" 2>/dev/null; then
+        record "cluster:nodes-yaml" "OK"
+    else
+        rm -f "${WORK}/cluster/nodes.yaml"
+        record "cluster:nodes-yaml" "SKIPPED (no node read permission)"
+    fi
+}
+
+# Helm release state for everything installed in the target namespace.
+collect_helm_state() {
+    if ! command -v helm >/dev/null 2>&1; then
+        record "helm" "SKIPPED (helm not on PATH)"
+        return
+    fi
+
+    mkdir -p "${WORK}/helm"
+    if ! helm list -n "$NS" > "${WORK}/helm/list.txt" 2>/dev/null; then
+        rm -rf "${WORK}/helm"
+        record "helm:list" "SKIPPED (helm list failed)"
+        return
+    fi
+    record "helm:list" "OK"
+
+    local releases
+    releases=( $(helm list -n "$NS" -q 2>/dev/null) )
+    if [[ ${#releases[@]} -eq 0 ]]; then
+        record "helm:releases" "NONE in ${NS}"
+        return
+    fi
+
+    local r dst
+    for r in "${releases[@]}"; do
+        [[ -z "$r" ]] && continue
+        dst="${WORK}/helm/${r}"
+        mkdir -p "$dst"
+
+        if helm get values "$r" -n "$NS" -o yaml > "${dst}/values.yaml" 2>/dev/null; then
+            record "helm:${r}:values" "OK"
+        else
+            rm -f "${dst}/values.yaml"
+            record "helm:${r}:values" "SKIPPED"
+        fi
+
+        if helm get manifest "$r" -n "$NS" > "${dst}/manifest.yaml" 2>/dev/null; then
+            record "helm:${r}:manifest" "OK"
+        else
+            rm -f "${dst}/manifest.yaml"
+            record "helm:${r}:manifest" "SKIPPED"
+        fi
+
+        if helm history "$r" -n "$NS" > "${dst}/history.txt" 2>/dev/null; then
+            record "helm:${r}:history" "OK"
+        else
+            rm -f "${dst}/history.txt"
+            record "helm:${r}:history" "SKIPPED"
+        fi
+    done
+}
+
+# Discover pods and unique nodes
+log "[0/5] Discovering pods and nodes"
+
+if [[ -n "$POD" ]]; then
+    PODS=( "$POD" )
+else
+    PODS=( $(kubectl get pods -n "$NS" -o jsonpath='{.items[*].metadata.name}' 2>/dev/null) )
+    if [[ ${#PODS[@]} -eq 0 ]]; then
+        warn "No pods found in namespace ${NS} (or no list permission)."
+        record "namespace" "EMPTY or no list permission"
+    fi
+fi
+
+# Build unique node list from selected pods.
+declare -A NODES_SEEN
+NODES=()
+for p in "${PODS[@]:-}"; do
+    [[ -z "$p" ]] && continue
+    n=$(kubectl get pod -n "$NS" "$p" -o jsonpath='{.spec.nodeName}' 2>/dev/null || true)
+    if [[ -n "$n" && -z "${NODES_SEEN[$n]:-}" ]]; then
+        NODES_SEEN[$n]=1
+        NODES+=( "$n" )
+    fi
+done
+
+log "Selected ${#PODS[@]} pod(s); covering ${#NODES[@]} node(s): ${NODES[*]:-<none>}"
+record "selected" "${#PODS[@]} pod(s), ${#NODES[@]} node(s)"
+
+# ---------------------------------------------------------------------------
+# Rancher collection
+# ---------------------------------------------------------------------------
+if [[ ${#NODES[@]} -eq 0 ]]; then
+    record "rancher-collector" "SKIPPED (no nodes identified)"
+else
+    log "[1/5] Rancher collector on ${#NODES[@]} node(s)"
+    for n in "${NODES[@]}"; do
+        collect_rancher_on_node "$n"
+    done
+fi
+
+# ---------------------------------------------------------------------------
+# Per-pod loop
+# ---------------------------------------------------------------------------
+if [[ ${#PODS[@]} -gt 0 ]]; then
+    log "[2/5] Per-pod collection (supportconfig, logs, describe)"
+    for p in "${PODS[@]}"; do
+        [[ -z "$p" ]] && continue
+        collect_pod_data "$p"
+    done
+fi
+
+# ---------------------------------------------------------------------------
+# Namespace events
+# ---------------------------------------------------------------------------
+log "[3/5] Namespace events"
+
+if kubectl get events -n "$NS" --sort-by=.lastTimestamp -o wide > "${WORK}/${NS}-events.txt" 2>/dev/null \
+        && [[ -s "${WORK}/${NS}-events.txt" ]]; then
+    record "events-text" "OK"
+else
+    rm -f "${WORK}/${NS}-events.txt"
+    record "events-text" "SKIPPED (no read permission or no events)"
+fi
+
+if kubectl get events -n "$NS" -o yaml > "${WORK}/${NS}-events.yaml" 2>/dev/null \
+        && [[ -s "${WORK}/${NS}-events.yaml" ]]; then
+    record "events-yaml" "OK"
+else
+    rm -f "${WORK}/${NS}-events.yaml"
+    record "events-yaml" "SKIPPED (no read permission or no events)"
+fi
+
+# ---------------------------------------------------------------------------
+# Cluster + namespace + helm state
+# ---------------------------------------------------------------------------
+log "[4/5] Cluster, namespace objects, helm releases"
+collect_namespace_objects
+collect_cluster_baseline
+collect_helm_state
+
+# ---------------------------------------------------------------------------
+# Bundle and report
+# ---------------------------------------------------------------------------
+log "[5/5] Bundling"
+echo >> "$SUMMARY"
+echo "Bundle created $(date)" >> "$SUMMARY"
+
+BASE="${OUT%.tar.gz}"
+STAGE="$(dirname "$WORK")/$BASE"
+mv "$WORK" "$STAGE"
+WORK="$STAGE"
+SUMMARY="${WORK}/SUMMARY.txt"
+
+if ! tar czf "$OUT" -C "$(dirname "$WORK")" "$BASE" 2>&1; then
+    warn "tar failed: bundle was NOT produced."
+    warn "Per-step results that WERE collected:"
+    sed 's/^/   /' < "$SUMMARY" >&2 || true
+    exit 1
+fi
+
+echo
+log "Done: $OUT"
+echo
+echo "Summary:"
+sed 's/^/   /' < "$SUMMARY"
