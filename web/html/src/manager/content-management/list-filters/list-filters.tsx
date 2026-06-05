@@ -35,12 +35,18 @@ const ListFilters = (props: Props) => {
   const roles = useRoles();
   const hasEditingPermissions = isOrgAdmin(roles);
   const [filterToDelete, setFilterToDelete] = useState<FilterFormType | undefined>();
+  const [allFiltersData, setAllFiltersData] = useState<FilterFormType[]>(mapResponseToFilterForm(props.filters));
 
   useEffect(() => {
     if (props.flashMessage) {
       showSuccessToastr(props.flashMessage);
     }
   }, [props.flashMessage]);
+
+  // Keep track of all filters for finding by ID when openFilterId is provided
+  useEffect(() => {
+    setAllFiltersData(mapResponseToFilterForm(props.filters));
+  }, [props.filters]);
 
   const searchData = (row: FilterFormType, criteria?: string) => {
     const keysToSearch = ["filter_name", "projects.right"];
@@ -118,7 +124,11 @@ const ListFilters = (props: Props) => {
   const systemName = getUrlParam("systemName");
   const kernelName = getUrlParam("kernelName");
 
-  const initialFilterForm = {
+  // Find the filter to open by ID if it exists in all filters data
+  const filterToOpen = openFilterId && openFilterId !== -1 ? allFiltersData.find((f) => f.id === openFilterId) : null;
+
+  // For creating a new filter with initial parameters
+  const createFilterForm = {
     rule: "deny",
     labelPrefix: projectLabel,
     template: openTemplate,
@@ -126,6 +136,9 @@ const ListFilters = (props: Props) => {
     systemName,
     kernelName,
   };
+
+  // For editing an existing filter found by openFilterId, use its data
+  const initialFilterForm = filterToOpen || createFilterForm;
 
   const panelButtons = (
     <div className="pull-right btn-group">
