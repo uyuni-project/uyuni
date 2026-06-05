@@ -844,6 +844,33 @@ def channel_is_synced?(channel)
   sync_status
 end
 
+# Determines whether a channel's metadata generation has failed on the server.
+#
+# Checks the cache directory (/var/cache/rhn/repodata/) where the server writes
+# metadata during generation. Should only be called for channels where solv.new
+# was previously observed (i.e., generation is known to have started).
+#
+# @param channel [String] The name of the channel to check.
+# @return [Boolean] Returns true if the channel has failed, false if still in progress or finished.
+def channel_metadata_failed?(channel)
+  server = get_target('server')
+  cache_path = "/var/cache/rhn/repodata/#{channel}"
+
+  # Still generating - solv.new present means metadata generation is in progress
+  _, new_file_code = server.run("test -f #{cache_path}/solv.new", check_errors: false)
+  return false if new_file_code.zero?
+
+  # RPM channel completed successfully - solv file exists in cache
+  _, solv_code = server.run("test -f #{cache_path}/solv", check_errors: false)
+  return false if solv_code.zero?
+
+  # Debian channel completed successfully - Release and Packages exist in cache
+  _, deb_code = server.run("test -s #{cache_path}/Release && test -e #{cache_path}/Packages", check_errors: false)
+  return false if deb_code.zero?
+
+  true
+end
+
 # This function initializes the API client
 #
 # The API client is determined based on the `$debug_mode` and `product` variables.
