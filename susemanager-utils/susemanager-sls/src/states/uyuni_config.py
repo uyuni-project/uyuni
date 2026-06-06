@@ -23,6 +23,13 @@ __opts__: Dict[str, Any] = {}
 __virtualname__ = "uyuni"
 
 
+def _get_fault_code(exc: Exception):
+    """
+    Return the XML-RPC fault code for Fault exceptions.
+    """
+    return getattr(exc, "faultCode", None)
+
+
 class StateResult:
     @staticmethod
     def state_error(name: str, comment: str = None):
@@ -145,7 +152,7 @@ class UyuniUsers:
             # pylint: disable-next=broad-exception-caught
             except Exception as exc:
                 # check if it's an authentication error. If yes, password have changed
-                if exc.faultCode == AUTHENTICATION_ERROR:
+                if _get_fault_code(exc) == AUTHENTICATION_ERROR:
                     changes["password"] = {"new": "(hidden)", "old": "(hidden)"}
                 else:
                     error = exc
@@ -204,9 +211,17 @@ class UyuniUsers:
             ]
         # pylint: disable-next=broad-exception-caught
         except Exception as exc:
-            if exc.faultCode == AUTHENTICATION_ERROR:
+            fault_code = _get_fault_code(exc)
+            if fault_code == AUTHENTICATION_ERROR:
                 # pylint: disable-next=consider-using-f-string
                 error_message = "Error while retrieving user information (admin credentials error) '{}': {}".format(
+                    login, exc
+                )
+                log.warning(error_message)
+                return StateResult.state_error(login, comment=error_message)
+            if fault_code is None:
+                # pylint: disable-next=consider-using-f-string
+                error_message = "Error while retrieving user information '{}': {}".format(
                     login, exc
                 )
                 log.warning(error_message)
@@ -309,14 +324,15 @@ class UyuniUsers:
                 org_admin_password=org_admin_password,
             )
         except Exception as exc:
-            if exc.faultCode == NO_SUCH_USER_ERROR:
+            fault_code = _get_fault_code(exc)
+            if fault_code == NO_SUCH_USER_ERROR:
                 return StateResult.prepare_result(
                     login,
                     True,
                     # pylint: disable-next=consider-using-f-string
                     "{0} is already absent".format(login),
                 )
-            if exc.faultCode == AUTHENTICATION_ERROR:
+            if fault_code == AUTHENTICATION_ERROR:
                 return StateResult.state_error(
                     login,
                     # pylint: disable-next=consider-using-f-string
@@ -600,7 +616,7 @@ class UyuniGroups:
             )
         # pylint: disable-next=broad-exception-caught
         except Exception as exc:
-            if exc.faultCode != SERVER_GROUP_NOT_FOUND_ERROR:
+            if _get_fault_code(exc) != SERVER_GROUP_NOT_FOUND_ERROR:
                 return StateResult.state_error(
                     name,
                     # pylint: disable-next=consider-using-f-string
@@ -713,14 +729,15 @@ class UyuniGroups:
                 org_admin_password=org_admin_password,
             )
         except Exception as exc:
-            if exc.faultCode == SERVER_GROUP_NOT_FOUND_ERROR:
+            fault_code = _get_fault_code(exc)
+            if fault_code == SERVER_GROUP_NOT_FOUND_ERROR:
                 return StateResult.prepare_result(
                     name,
                     True,
                     # pylint: disable-next=consider-using-f-string
                     "{0} is already absent".format(name),
                 )
-            if exc.faultCode == AUTHENTICATION_ERROR:
+            if fault_code == AUTHENTICATION_ERROR:
                 return StateResult.state_error(
                     name,
                     # pylint: disable-next=consider-using-f-string
@@ -816,7 +833,7 @@ class UyuniOrgs:
             )
         # pylint: disable-next=broad-exception-caught
         except Exception as exc:
-            if exc.faultCode != ORG_NOT_FOUND_ERROR:
+            if _get_fault_code(exc) != ORG_NOT_FOUND_ERROR:
                 return StateResult.state_error(
                     name,
                     # pylint: disable-next=consider-using-f-string
@@ -905,14 +922,15 @@ class UyuniOrgs:
                 name, admin_user=admin_user, admin_password=admin_password
             )
         except Exception as exc:
-            if exc.faultCode == ORG_NOT_FOUND_ERROR:
+            fault_code = _get_fault_code(exc)
+            if fault_code == ORG_NOT_FOUND_ERROR:
                 return StateResult.prepare_result(
                     name,
                     True,
                     # pylint: disable-next=consider-using-f-string
                     "{0} is already absent".format(name),
                 )
-            if exc.faultCode == AUTHENTICATION_ERROR:
+            if fault_code == AUTHENTICATION_ERROR:
                 return StateResult.state_error(
                     name,
                     # pylint: disable-next=consider-using-f-string
@@ -1349,7 +1367,7 @@ class UyuniActivationKeys:
 
         # pylint: disable-next=broad-exception-caught
         except Exception as exc:
-            if exc.faultCode != ACTIVATION_KEY_NOT_FOUND_ERROR:
+            if _get_fault_code(exc) != ACTIVATION_KEY_NOT_FOUND_ERROR:
                 return StateResult.state_error(
                     key,
                     # pylint: disable-next=consider-using-f-string
@@ -1537,14 +1555,15 @@ class UyuniActivationKeys:
                 org_admin_password=org_admin_password,
             )
         except Exception as exc:
-            if exc.faultCode == ACTIVATION_KEY_NOT_FOUND_ERROR:
+            fault_code = _get_fault_code(exc)
+            if fault_code == ACTIVATION_KEY_NOT_FOUND_ERROR:
                 return StateResult.prepare_result(
                     name,
                     True,
                     # pylint: disable-next=consider-using-f-string
                     "{0} is already absent".format(key),
                 )
-            if exc.faultCode == AUTHENTICATION_ERROR:
+            if fault_code == AUTHENTICATION_ERROR:
                 return StateResult.state_error(
                     name,
                     # pylint: disable-next=consider-using-f-string

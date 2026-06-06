@@ -25,6 +25,13 @@ __context__: Dict[str, Any] = {}
 __virtualname__: str = "uyuni"
 
 
+def _get_fault_code(exc: Exception):
+    """
+    Return the XML-RPC fault code for Fault exceptions.
+    """
+    return getattr(exc, "faultCode", None)
+
+
 class UyuniUsersException(Exception):
     """
     Uyuni users Exception
@@ -112,7 +119,7 @@ class RPCClient:
                 return getattr(self.conn, method)(*((self.token,) + args))
             # pylint: disable-next=broad-exception-caught
             except Exception as exc:
-                if exc.faultCode != AUTHENTICATION_ERROR:
+                if _get_fault_code(exc) != AUTHENTICATION_ERROR:
                     log.error("Unable to call RPC function: %s", str(exc))
                     raise exc
                 # pylint: disable-next=pointless-string-statement

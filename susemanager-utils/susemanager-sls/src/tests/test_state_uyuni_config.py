@@ -181,6 +181,33 @@ class TestManageUser:
                 org_admin_password="org_admin_password",
             )
 
+    def test_user_present_retrieval_error_without_fault_code(self):
+        exc = OSError("connection refused")
+
+        with patch.dict(
+            uyuni_config.__salt__,
+            {
+                "uyuni.user_get_details": MagicMock(side_effect=exc),
+                "uyuni.user_create": MagicMock(return_value=True),
+            },
+        ):
+            result = uyuni_config.user_present(
+                "username", "password", "mail@mail.com", "first_name", "last_name"
+            )
+            assert result is not None
+            assert result["name"] == "username"
+            assert result["result"] is False
+            assert (
+                result["comment"]
+                == "Error while retrieving user information 'username': connection refused"
+            )
+            assert result["changes"] == {}
+
+            uyuni_config.__salt__["uyuni.user_get_details"].assert_called_once_with(
+                "username", org_admin_user=None, org_admin_password=None
+            )
+            uyuni_config.__salt__["uyuni.user_create"].assert_not_called()
+
     def test_user_present_update_user(self):
         exc = Exception("user not found")
         exc.faultCode = 2950
