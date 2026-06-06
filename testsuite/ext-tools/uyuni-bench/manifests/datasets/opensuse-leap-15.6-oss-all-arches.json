@@ -1,0 +1,10 @@
+{
+  "name": "opensuse-leap-15.6-oss-all-arches",
+  "description": "Stable large openSUSE Leap 15.6 OSS repository. Large download size; use --limit for development smoke runs.",
+  "repo_url": "https://download.opensuse.org/distribution/leap/15.6/repo/oss/",
+  "arches": [],
+  "expected": {
+    "package_count_observed_2026_06_06": 107253,
+    "package_size_gib_observed_2026_06_06": 172.61
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "uyuni-test-packages-smoke",
+  "description": "Tiny smoke-test dataset from Uyuni test packages. Useful to validate the tool, not useful for performance conclusions.",
+  "repo_url": "https://download.opensuse.org/repositories/systemsmanagement:/Uyuni:/Test-Packages:/Updates/rpm/",
+  "arches": ["x86_64", "noarch"],
+  "limit": 20,
+  "expected": {
+    "package_count_total_observed_2026_06": 36,
+    "selected_package_count_observed_2026_06": 11
+  }
+}
