@@ -392,7 +392,7 @@ jQuery(document).on('keyup change', '.activationKey-check', function(e) {
   }
 });
 
-var generatedTextareaLengthNotificationIndex = 0;
+let generatedTextareaLengthNotificationIndex = 0;
 
 function getTextareaLengthNotificationId(textarea) {
   let textareaId = textarea.attr('id');
@@ -434,6 +434,7 @@ function updateTextareaLengthNotification(textarea) {
           jQuery('<span/>')
             .append(
               jQuery('<span/>')
+                .addClass('remaining-length-value')
                 .attr('id', notificationId)
                 .text(remainingLength)
             )
@@ -444,7 +445,7 @@ function updateTextareaLengthNotification(textarea) {
   }
 
   existingWrapper.slice(1).remove();
-  jQuery('#' + notificationId).html(remainingLength);
+  existingWrapper.first().find('.remaining-length-value').text(remainingLength);
 }
 
 function addTextareaLengthNotification() {
