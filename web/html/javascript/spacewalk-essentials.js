@@ -392,21 +392,38 @@ jQuery(document).on('keyup change', '.activationKey-check', function(e) {
   }
 });
 
+var generatedTextareaLengthNotificationIndex = 0;
+
 function getTextareaLengthNotificationId(textarea) {
   let textareaId = textarea.attr('id');
   if (!textareaId) {
-    const textareaIndex = jQuery('textarea.with-maxlength').index(textarea);
-    textareaId = 'textarea-with-maxlength-' + textareaIndex;
+    do {
+      textareaId = 'textarea-with-maxlength-' + generatedTextareaLengthNotificationIndex;
+      generatedTextareaLengthNotificationIndex += 1;
+    } while (document.getElementById(textareaId));
     textarea.attr('id', textareaId);
   }
   return textareaId + '-remaining-length';
+}
+
+function getRemainingTextareaLength(textarea) {
+  const maxLength = parseInt(textarea.attr('maxlength'), 10);
+  if (isNaN(maxLength)) {
+    return null;
+  }
+  return maxLength - textarea.val().length;
 }
 
 function updateTextareaLengthNotification(textarea) {
   const notificationId = getTextareaLengthNotificationId(textarea);
   const existingWrapper = textarea.nextAll('.remaining-length-wrapper')
     .filter('[data-maxlength-for="' + notificationId + '"]');
-  const remainingLength = textarea.attr('maxlength') - textarea.val().length;
+  const remainingLength = getRemainingTextareaLength(textarea);
+
+  if (remainingLength === null) {
+    existingWrapper.remove();
+    return;
+  }
 
   if (existingWrapper.length === 0) {
     textarea.after(
