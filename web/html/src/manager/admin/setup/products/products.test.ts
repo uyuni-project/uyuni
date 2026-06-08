@@ -101,7 +101,6 @@ describe("getProductSelectionState", () => {
       {
         identifier: "recommended-child",
         status: "AVAILABLE",
-        recommended: true,
         extensions: [
           {
             identifier: "grandchild",
@@ -113,7 +112,6 @@ describe("getProductSelectionState", () => {
       {
         identifier: "optional-child",
         status: "AVAILABLE",
-        recommended: false,
         extensions: [],
       },
     ],
@@ -143,7 +141,7 @@ describe("getProductSelectionState", () => {
   test("returns checked for a child when all of its direct children are selected", () => {
     const selectedItems = [{ identifier: "recommended-child" }, { identifier: "grandchild" }];
 
-    expect(getProductSelectionState(productTree.extensions[0], selectedItems)).toBe("checked");
+    expect(getProductSelectionState(productTree.extensions![0], selectedItems)).toBe("checked");
   });
 
   test("keeps the parent partially selected when a direct child is only partially selected", () => {
@@ -159,7 +157,7 @@ describe("getProductSelectionState", () => {
   test("keeps a selected non-root parent partially selected when not all of its own children are selected", () => {
     const selectedItems = [{ identifier: "recommended-child" }];
 
-    expect(getProductSelectionState(productTree.extensions[0], selectedItems)).toBe("partially");
+    expect(getProductSelectionState(productTree.extensions![0], selectedItems)).toBe("partially");
   });
 
   test("returns partially when a direct child is selected but the parent is not", () => {
