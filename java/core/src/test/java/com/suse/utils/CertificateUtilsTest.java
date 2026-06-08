@@ -18,6 +18,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.List;
+
 public class CertificateUtilsTest {
 
     @Test
@@ -64,5 +66,22 @@ public class CertificateUtilsTest {
                 CertificateUtils.getCertificateSafePath("registration_server_2001:db8::.pem").toString());
         assertEquals("/etc/pki/trust/anchors/registration_server_::1234:5678.pem",
                 CertificateUtils.getCertificateSafePath("registration_server_::1234:5678.pem").toString());
+    }
+
+    @Test
+    public void parseGpgColonListingBuildsStructuredResult() {
+        String colonListing = String.join("\n",
+                "pub:-:3072:1:526C13361ED823F9:1746316800:::u:::sc::::::23::0:",
+                "fpr:::::::::7B687F79ECDA44792F28C684526C13361ED823F9:",
+                "uid:-::::1746316800::ABCDEF::Test Foo <test@foo.org>::::::::::0:");
+
+        List<CertificateUtils.GpgKeyListing> keys = CertificateUtils.parseGpgColonListing(colonListing);
+
+        assertEquals(1, keys.size());
+        assertEquals(1, keys.get(0).getKeyType());
+        assertEquals(3072, keys.get(0).getKeySize());
+        assertEquals("7B687F79ECDA44792F28C684526C13361ED823F9", keys.get(0).getFingerprint());
+        assertEquals(1, keys.get(0).getNames().size());
+        assertEquals("Test Foo <test@foo.org>", keys.get(0).getNames().get(0));
     }
 }

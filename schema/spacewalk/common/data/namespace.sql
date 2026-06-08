@@ -885,6 +885,15 @@ INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.admin.configuration.configure', 'W', 'Configure server.')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.admin.gpg.upload_gpg_key', 'W', 'Upload and add a GPG key to the customer keyring.')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.admin.gpg.list_gpg_keys', 'R', 'List all GPG keys from the customer keyring.')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
+    VALUES ('api.admin.gpg.remove_gpg_key', 'W', 'Remove a GPG key from the customer keyring.')
+    ON CONFLICT (namespace, access_mode) DO NOTHING;
+INSERT INTO access.namespace (namespace, access_mode, description)
     VALUES ('api.admin.monitoring.disable', 'W', 'Disable monitoring.')
     ON CONFLICT (namespace, access_mode) DO NOTHING;
 INSERT INTO access.namespace (namespace, access_mode, description)
