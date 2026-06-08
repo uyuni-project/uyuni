@@ -22,9 +22,10 @@ For each selected pod the plugin collects, best-effort:
 * `kubectl describe pod` and `kubectl get pod -o yaml`.
 
 Once per distinct node hosting any selected pod, it also runs the
-Rancher logs-collector via `kubectl debug node/...` — this captures
-node-level data (journald, container runtime logs, kernel info, network
-config) that no pod-side collection can see.
+[Rancher logs-collector](https://github.com/rancherlabs/support-tools/blob/master/collection/rancher/v2.x/logs-collector/README.md)
+via `kubectl debug node/...` — this captures node-level data (journald,
+container runtime logs, kernel info, network config) that no pod-side
+collection can see.
 
 It also dumps, for the target namespace:
 
