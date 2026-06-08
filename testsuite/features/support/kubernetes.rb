@@ -102,20 +102,71 @@ end
 #
 # @param target [String] The target host where the kubectl command will be run.
 # @param deploy_name [String] The name of the deployment to check.
+# @param namespace [String] The name of the namespace where to check the pods.
 # @param timeout_mins [Integer] The maximum time to wait in minutes. Defaults to 15.
 # @return [Boolean] Returns true if the deployment becomes ready.
 # @raise [RuntimeError] If the timeout is reached before the deployment is ready.
-def wait_for_deployment(target, deploy_name, timeout_mins = 15)
+def wait_for_deployment(target, deploy_name, namespace, timeout_mins = 15)
   start_time = Time.now
   loop do
     raise "Timeout: #{deploy_name} on #{target} not ready" if (Time.now - start_time) > (timeout_mins * 60)
 
-    out, _code = get_target(target).run_local("kubectl get deployment #{deploy_name} -n uyuni -o json")
+    out, _code = get_target(target).run_local("kubectl get deployment #{deploy_name} -n #{namespace} -o json")
     data = JSON.parse(out)
 
     return true if data.dig('status', 'readyReplicas') == data.dig('spec', 'replicas')
 
     puts "Waiting for #{deploy_name} on #{target}... (#{(Time.now - start_time).to_i}s)"
+    sleep 10
+  end
+end
+
+# Polls the Kubernetes Pods status until all pods are ready or a timeout is reached.
+#
+# @param target [String] The target host where the kubectl command will be run.
+# @param pod_name [String] The pod name or name prefix to check.
+# @param namespace [String] The name of the namespace where to check the pods.
+# @param timeout_mins [Integer] The maximum time to wait in minutes. Defaults to 15.
+# @return [Boolean] Returns true if the pod becomes ready.
+# @raise [RuntimeError] If the timeout is reached before the pod is ready.
+def wait_for_pods(target, pod_name, namespace, timeout_mins = 15)
+  start_time = Time.now
+  loop do
+    raise "Timeout: #{pod_name} on #{target} not ready" if (Time.now - start_time) > (timeout_mins * 60)
+
+    out, code = get_target(target).run_local("kubectl get pods -n #{namespace} -o json", check_errors: false)
+    unless code.zero?
+      puts "Waiting for #{pod_name} on #{target}... (pod not found yet)"
+      sleep 10
+      next
+    end
+
+    data = JSON.parse(out)
+    pods =
+      (data['items'] || []).select do |pod|
+        name = pod.dig('metadata', 'name').to_s
+        name == pod_name || name.start_with?("#{pod_name}-")
+      end
+
+    if pods.empty?
+      puts "Waiting for #{pod_name} on #{target}... (matching pod not found yet)"
+      sleep 10
+      next
+    end
+
+    # A pod is considered up when it is Running and has Ready=True.
+    all_ready = pods.any? && pods.all? do |pod|
+      phase_running = pod.dig('status', 'phase') == 'Running'
+      ready_condition =
+        pod.dig('status', 'conditions')&.any? do |cond|
+          cond['type'] == 'Ready' && cond['status'] == 'True'
+        end
+      phase_running && ready_condition
+    end
+
+    return true if all_ready
+
+    puts "Waiting for #{pod_name} on #{target}... (#{(Time.now - start_time).to_i}s)"
     sleep 10
   end
 end
