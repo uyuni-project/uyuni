@@ -368,4 +368,28 @@ describe("CheckListItem checkbox rendering", () => {
     expect(checkbox.checked).toBe(true);
     expect(checkbox.indeterminate).toBe(false);
   });
+
+  test("renders an installed product as a checked disabled checkbox", () => {
+    render(
+      createElement(CheckListItem, {
+        item: {
+          ...item,
+          identifier: "installed-base",
+          status: "INSTALLED",
+          extensions: [],
+        },
+        bypassProps: buildBypassProps([]),
+        handleSelectedItems: jest.fn(),
+        handleUnselectedItems: jest.fn(),
+        treeLevel: 1,
+        childrenDisabled: false,
+        index: 0,
+      })
+    );
+
+    const checkbox = screen.getByRole("checkbox") as HTMLInputElement;
+    expect(checkbox.checked).toBe(true);
+    expect(checkbox.indeterminate).toBe(false);
+    expect(checkbox.disabled).toBe(true);
+  });
 });
