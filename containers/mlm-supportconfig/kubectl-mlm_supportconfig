@@ -242,7 +242,7 @@ run_supportconfig_in_container() {
         return
     fi
 
-    local supportconfig_timeout=$(( $(date +%s) + 1800 ))   # 30 min cap
+    local supportconfig_timeout=$(( $(date +%s) + 2700 ))
     local outcome=""
     while [[ $(date +%s) -lt $supportconfig_timeout ]]; do
         if kubectl exec -n "$NS" -c "$container" "$pod" -- test -f "/tmp/${bname}.failed" 2>/dev/null; then
@@ -283,7 +283,7 @@ run_supportconfig_in_container() {
         record "$label" "FAILED (full log: $(basename "$log_dst"))"
         ;;
       *)
-        warn "supportconfig in ${pod}/${container} did not finish within 30 min"
+        warn "supportconfig in ${pod}/${container} timed out"
         record "$label" "TIMEOUT"
         ;;
     esac
@@ -484,7 +484,7 @@ collect_helm_state() {
 }
 
 # Discover pods and unique nodes
-log "[0/5] Discovering pods and nodes"
+log "Discovering pods and nodes"
 
 if [[ -n "$POD" ]]; then
     PODS=( "$POD" )
@@ -517,7 +517,7 @@ record "selected" "${#PODS[@]} pod(s), ${#NODES[@]} node(s)"
 if [[ ${#NODES[@]} -eq 0 ]]; then
     record "rancher-collector" "SKIPPED (no nodes identified)"
 else
-    log "[1/5] Rancher collector on ${#NODES[@]} node(s)"
+    log "Rancher collector on ${#NODES[@]} node(s)"
     for n in "${NODES[@]}"; do
         collect_rancher_on_node "$n"
     done
@@ -527,7 +527,7 @@ fi
 # Per-pod loop
 # ---------------------------------------------------------------------------
 if [[ ${#PODS[@]} -gt 0 ]]; then
-    log "[2/5] Per-pod collection (supportconfig, logs, describe)"
+    log "Per-pod collection (supportconfig, logs, describe)"
     for p in "${PODS[@]}"; do
         [[ -z "$p" ]] && continue
         collect_pod_data "$p"
@@ -537,7 +537,7 @@ fi
 # ---------------------------------------------------------------------------
 # Namespace events
 # ---------------------------------------------------------------------------
-log "[3/5] Namespace events"
+log "Namespace events"
 
 if kubectl get events -n "$NS" --sort-by=.lastTimestamp -o wide > "${WORK}/${NS}-events.txt" 2>/dev/null \
         && [[ -s "${WORK}/${NS}-events.txt" ]]; then
@@ -558,7 +558,7 @@ fi
 # ---------------------------------------------------------------------------
 # Cluster + namespace + helm state
 # ---------------------------------------------------------------------------
-log "[4/5] Cluster, namespace objects, metrics, helm releases"
+log "Cluster, namespace objects, metrics, helm releases"
 collect_namespace_objects
 collect_cluster_baseline
 collect_metrics_snapshot
@@ -567,7 +567,7 @@ collect_helm_state
 # ---------------------------------------------------------------------------
 # Bundle and report
 # ---------------------------------------------------------------------------
-log "[5/5] Bundling"
+log "Bundling"
 echo >> "$SUMMARY"
 echo "Bundle created $(date)" >> "$SUMMARY"
 

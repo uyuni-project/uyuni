@@ -1,7 +1,7 @@
 # kubectl mlm-supportconfig
 
-A `kubectl` plugin that collects a complete support bundle for MLM
-workloads running on Kubernetes — works against
+A `kubectl` plugin that collects a complete support bundle for SUSE
+Multi-Linux Manager workloads running on Kubernetes — works against
 any pod deployed by `server-helm` or `proxy-helm`.
 
 Two modes:
@@ -26,7 +26,7 @@ Rancher logs-collector via `kubectl debug node/...` — this captures
 node-level data (journald, container runtime logs, kernel info, network
 config) that no pod-side collection can see.
 
-Once per namespace, it dumps:
+It also dumps, for the target namespace:
 
 * namespace events (sorted by `lastTimestamp`, text and YAML);
 * namespace objects beyond pods — Deployments, Services, Endpoints,
@@ -58,7 +58,7 @@ whenever a bundle was produced.
 On the workstation:
 
 * `kubectl` on `$PATH`, configured for the target cluster.
-* `bash` 4 or newer.
+* `bash`
 
 In the target cluster, the caller's kubeconfig should have:
 
