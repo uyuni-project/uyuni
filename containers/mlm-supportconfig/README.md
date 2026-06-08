@@ -80,7 +80,12 @@ A `kubectl` plugin is just an executable on `$PATH` whose name starts
 with `kubectl-`. The underscore in the filename becomes a hyphen in
 the invocation.
 
+Download the plugin from the upstream repository and install it:
+
 ```bash
+# Download
+curl -sSLO https://raw.githubusercontent.com/uyuni-project/uyuni/refs/heads/master/containers/mlm-supportconfig/kubectl-mlm_supportconfig
+
 # system-wide
 sudo install -m 0755 kubectl-mlm_supportconfig /usr/local/bin/
 
