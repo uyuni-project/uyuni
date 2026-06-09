@@ -98,7 +98,7 @@ public class SyncFromVendorServiceImpl implements SyncFromVendorService {
         }
 
         if (request.operation().includesPackages()) {
-            packages = syncPackages(errataToClone, targetChannel, user);
+            packages = syncPackages(errataToClone, targetChannel, user, request.forceRefresh());
         }
 
         return new SyncResponse(erratas, packages);
@@ -109,12 +109,13 @@ public class SyncFromVendorServiceImpl implements SyncFromVendorService {
      * Uses lookupPacksFromErrataForChannel strategy (only packages that exist in target channel).
      * Handles the package ↔ channel relationship and creates ErrataFile records.
      *
-     * @param erratas Set of errata to process packages for
-     * @param channel Target channel
-     * @param user    User performing the operation
+     * @param erratas        Set of errata to process packages for
+     * @param channel        Target channel
+     * @param user           User performing the operation
+     * @param forceRefresh   Refresh the channel with newest packages
      * @return the Set of cloned packages
      */
-    private Set<Package> syncPackages(Set<Errata> erratas, Channel channel, User user) {
+    private Set<Package> syncPackages(Set<Errata> erratas, Channel channel, User user, boolean forceRefresh) {
         Set<Package> packagesToSync = new HashSet<>();
 
         for (Errata errata : erratas) {
@@ -131,7 +132,9 @@ public class SyncFromVendorServiceImpl implements SyncFromVendorService {
         }
 
         ChannelFactory.save(channel);
-        ChannelManager.refreshWithNewestPackages(channel, "java::syncErratasAndPackagesFromVendor");
+        if (forceRefresh) {
+            ChannelManager.refreshWithNewestPackages(channel, "java::syncErratasAndPackagesFromVendor");
+        }
         return packagesToSync;
     }
 }
