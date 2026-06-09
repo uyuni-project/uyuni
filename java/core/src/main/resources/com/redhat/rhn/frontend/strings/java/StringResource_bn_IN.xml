@@ -7457,10 +7457,10 @@ Follow this url to see the full list of inactive systems:
           <context context-type="sourcefile">/rhn/systems/provisioning/preservation/PreservationListDelete.do</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.poweron" xml:space="preserve">
+      <trans-unit id="cobbler.powermanagement.power_on" xml:space="preserve">
         <source>Power On</source>
       </trans-unit>
-      <trans-unit id="cobbler.powermanagement.poweroff" xml:space="preserve">
+      <trans-unit id="cobbler.powermanagement.power_off" xml:space="preserve">
         <source>Power Off</source>
       </trans-unit>
       <trans-unit id="cobbler.powermanagement.reboot" xml:space="preserve">
