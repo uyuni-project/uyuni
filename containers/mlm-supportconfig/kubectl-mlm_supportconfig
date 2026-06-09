@@ -484,12 +484,16 @@ collect_helm_state() {
             record "helm:${r}:history" "SKIPPED"
         fi
 
-        if helm get notes "$r" -n "$NS" > "${dst}/notes.txt" 2>/dev/null \
-                && [[ -s "${dst}/notes.txt" ]]; then
-            record "helm:${r}:notes" "OK"
+        if helm get notes "$r" -n "$NS" > "${dst}/notes.txt" 2>/dev/null; then
+            if [[ -s "${dst}/notes.txt" ]]; then
+                record "helm:${r}:notes" "OK"
+            else
+                rm -f "${dst}/notes.txt"
+                record "helm:${r}:notes" "NONE (no post-install notes)"
+            fi
         else
             rm -f "${dst}/notes.txt"
-            record "helm:${r}:notes" "NONE (no post-install notes)"
+            record "helm:${r}:notes" "SKIPPED (helm get notes failed)"
         fi
     done
 }
