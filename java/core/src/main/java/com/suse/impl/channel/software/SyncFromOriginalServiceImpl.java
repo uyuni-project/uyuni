@@ -103,7 +103,7 @@ public class SyncFromOriginalServiceImpl implements SyncFromOriginalService {
         }
 
         if (request.operation().includesPackages()) {
-            packages = syncPackages(errataToClone, targetChannel, originalChannel, user);
+            packages = syncPackages(errataToClone, targetChannel, originalChannel, user, request.forceRefresh());
         }
 
         return new SyncResponse(erratas, packages);
@@ -114,13 +114,16 @@ public class SyncFromOriginalServiceImpl implements SyncFromOriginalService {
      * Uses listErrataChannelPacks strategy (all packages from original channel).
      * Handles the package ↔ channel relationship and creates ErrataFile records.
      *
-     * @param erratas  Set of errata to process packages for
-     * @param channel  Target channel (must be a cloned channel)
-     * @param original Original channel to lookup packages from
-     * @param user     User performing the operation
+     * @param erratas        Set of errata to process packages for
+     * @param channel        Target channel (must be a cloned channel)
+     * @param original       Original channel to lookup packages from
+     * @param user           User performing the operation
+     * @param forceRefresh   Refresh the channel with newest packages
      * @return the Set of cloned packages
      */
-    private Set<Package> syncPackages(Set<Errata> erratas, Channel channel, Channel original, User user) {
+    private Set<Package> syncPackages(
+        Set<Errata> erratas, Channel channel, Channel original, User user, boolean forceRefresh
+    ) {
         Set<Package> packagesToSync = new HashSet<>();
 
         for (Errata errata : erratas) {
@@ -145,7 +148,9 @@ public class SyncFromOriginalServiceImpl implements SyncFromOriginalService {
         }
 
         ChannelFactory.save(channel);
-        ChannelManager.refreshWithNewestPackages(channel, "java::syncErratasAndPackagesFromOriginal");
+        if (forceRefresh) {
+            ChannelManager.refreshWithNewestPackages(channel, "java::syncErratasAndPackagesFromOriginal");
+        }
         return packagesToSync;
     }
 

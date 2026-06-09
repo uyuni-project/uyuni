@@ -143,7 +143,9 @@ public class SyncFromSourceServiceImpl implements SyncFromSourceService {
 
         targetChannel.addPackages(packagesToSync);
         ChannelFactory.save(targetChannel);
-        ChannelManager.refreshWithNewestPackages(targetChannel, "SyncFromSourceService");
+        if (request.forceRefresh()) {
+            ChannelManager.refreshWithNewestPackages(targetChannel, "java::syncErratasAndPackagesFromSource");
+        }
 
         if (request.alignModules() && sourceChannel.isModular()) {
             LOG.debug("Aligning modular metadata");
