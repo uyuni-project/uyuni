@@ -27,7 +27,7 @@ rhnContentSource
         type_id         NUMERIC NOT NULL
                         constraint rhn_cs_type_fk
                                 references rhnContentSourceType(id),
-        source_url      VARCHAR(2048) NOT NULL,
+        source_url      VARCHAR(4096) NOT NULL,
         label           VARCHAR(128) NOT NULL,
         metadata_signed CHAR(1)
                             DEFAULT ('Y') NOT NULL
