@@ -78,7 +78,6 @@ public class ErrataResolverTest extends BaseTestCaseWithUser {
         );
 
         assertNotNull(result);
-        // Should include at least the erratas we created (may have more from other tests)
         assertTrue(result.contains(errata1));
         assertTrue(result.contains(errata2));
         assertEquals(2, result.size());
