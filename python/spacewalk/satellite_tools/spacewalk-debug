@@ -287,7 +287,7 @@ if [ -d /var/lib/rhn/kickstarts ]; then
 fi
 
 # Remove passwords from cobbler settings
-find "$DIR/conf/cobbler" -type f -name 'settings*' -exec sed -i 's/^default_password_crypted.*/default_password_crypted <replaced_by_debug_tool>/' {} \;
+find $DIR/conf/cobbler -type f -name 'settings*' -exec sed -i 's/^\(default_password_crypted:\).*/\1 <replaced_by_debug_tool>/' {} \;
 
 # ssl-build
 if [ -d /root/ssl-build ] ; then
