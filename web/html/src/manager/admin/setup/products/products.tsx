@@ -22,7 +22,7 @@ import Network from "utils/network";
 
 import { SetupHeader } from "../setup-header";
 import { ProductCheck } from "./product-check/product-check";
-import { type ProductSelectionState, getProductSelectionState } from "./product-check/product-selection.utils";
+import { getProductSelectionState } from "./product-check/product-selection.utils";
 import { searchCriteriaInExtension } from "./products.utils";
 import { SCCDialog } from "./products-scc-dialog";
 
@@ -827,11 +827,6 @@ export class CheckListItem extends Component<CheckListItemProps, CheckListItemSt
   render() {
     const currentItem = this.props.item;
 
-    const selectionState: ProductSelectionState = getProductSelectionState(
-      currentItem,
-      this.props.bypassProps.selectedItems
-    );
-
     /** generate item selector content **/
     let selectorContent: ReactNode = null;
     if (this.props.bypassProps.isSelectable && currentItem.status === _PRODUCT_STATUS.available) {
@@ -840,7 +835,7 @@ export class CheckListItem extends Component<CheckListItemProps, CheckListItemSt
           id={"checkbox-for-" + currentItem.identifier}
           value={currentItem.identifier}
           onChange={this.handleSelectedItem}
-          selectionState={selectionState}
+          selectionState={getProductSelectionState(currentItem, this.props.bypassProps.selectedItems)}
           disabled={this.props.bypassProps.readOnlyMode || this.props.childrenDisabled}
           title={
             this.props.childrenDisabled
