@@ -66,16 +66,10 @@ public class SyncErrataWithPackagesResponseSerializer extends ApiResponseSeriali
     public SerializedApiResponse serialize(SyncErrataWithPackagesResponse src) {
         SerializationBuilder builder = new SerializationBuilder();
 
-        Set<Errata> erratas = new HashSet<>(src.erratas().size());
-        if (!src.erratas().isEmpty()) {
-            erratas.addAll(src.erratas());
-        }
+        Set<Errata> erratas = new HashSet<>(src.erratas());
         builder.add("errata", erratas);
 
-        Set<Package> packages = new HashSet<>(src.packages().size());
-        if (!src.packages().isEmpty()) {
-            packages.addAll(src.packages());
-        }
+        Set<Package> packages = new HashSet<>(src.packages());
         builder.add("package", packages);
 
         return builder.build();
