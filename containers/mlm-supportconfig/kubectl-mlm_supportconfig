@@ -4,8 +4,9 @@
 # SPDX-License-Identifier: GPL-2.0-Only
 #
 
-# kubectl-mlm_supportconfig — collect a support bundle for MLM 
-# workloads running on Kubernetes (server-helm or proxy-helm).
+# kubectl-mlm_supportconfig — collect a support bundle for SUSE
+# Multi-Linux Manager workloads running on Kubernetes (server-helm or
+# proxy-helm).
 #
 # Invocation (as a kubectl plugin):
 #
@@ -13,24 +14,38 @@
 #     kubectl mlm-supportconfig <pod> <namespace>      # just that pod
 #
 # For each selected pod the plugin collects, best-effort:
-#   - `supportconfig` from every container that has the binary
+#   - `supportconfig` (via `-t <dir>`) from every container that has the
+#     binary — output is a DIRECTORY tree, not a nested tarball, so
+#     automated supportconfig analyzers can walk the files directly
 #   - `kubectl logs --all-containers` (current + previous)
 #   - `kubectl describe pod` and `kubectl get pod -o yaml`
 #
 # Once per distinct node hosting a selected pod, it also runs:
 #   - The Rancher logs-collector via `kubectl debug node/...` (node-level
-#     journald, container runtime logs, kernel info, etc.)
+#     journald, container runtime logs, kernel info, etc.). The image
+#     defaults to `rancherlabs/swiss-army-knife`; override via the
+#     `RANCHER_SUPPORT_IMAGE` env var for air-gapped clusters.
 #
 # Once per namespace, it also collects:
 #   - All namespace events (text + yaml), sorted by lastTimestamp
-#   - Namespace objects beyond pods: Deployments, Services, ConfigMaps,
-#     Secrets, Ingress/IngressRoute(TCP), PVCs, Certificates
-#   - Cluster baseline: `kubectl version`, node list and full node spec
-#   - Helm release state (values, manifest, history) if `helm` is on PATH
+#   - Namespace objects beyond pods: Deployments, Services, Endpoints,
+#     EndpointSlices, NetworkPolicies, ConfigMaps, Secrets, Ingress,
+#     Traefik IngressRoute/IngressRouteTCP, PVCs, cert-manager
+#     Certificates (CRDs that aren't installed are silently skipped)
+#   - Cluster baseline: `kubectl version`, nodes (wide + yaml),
+#     PersistentVolumes and StorageClasses
+#   - Resource-usage snapshot: `kubectl top pod --containers` and
+#     `kubectl top node` (skipped if metrics-server is unavailable)
+#   - Helm release state if `helm` is on PATH: `helm list`, plus
+#     per-release `helm status`, `helm history` and `helm get notes`.
+#     `helm get values` and `helm get manifest` are deliberately NOT
+#     collected because they commonly contain install-time passwords
+#     and rendered Secret data.
 #
 # Every step is independent: a failure in one is recorded in SUMMARY.txt
 # and the script keeps going. Exit code is 0 whenever a bundle was
-# produced (even partial).
+# produced (even partial); 1 if tar itself failed; 2 for bootstrap
+# errors (kubectl missing, bad args, mktemp failure).
 
 set -u
 
