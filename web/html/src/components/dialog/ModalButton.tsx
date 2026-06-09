@@ -2,7 +2,7 @@ import { Button, ButtonProps } from "../buttons";
 import { showDialog } from "./util";
 
 type Props = ButtonProps & {
-  target: string;
+  target?: string;
   item?: any;
   onClick?: (...args: any[]) => any;
 };
@@ -21,7 +21,9 @@ export function ModalButton(props: Props) {
       disabled={props.disabled}
       handler={() => {
         props.onClick?.(props.item);
-        showDialog(props.target);
+        if (props.target) {
+          showDialog(props.target);
+        }
       }}
     />
   );
