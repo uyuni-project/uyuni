@@ -507,6 +507,26 @@ else
     fi
 fi
 
+# Sanity-check: does the namespace actually contain Uyuni/MLM workloads?
+if [[ ${#PODS[@]} -gt 0 ]]; then
+    images=$(kubectl get pods -n "$NS" \
+            -o jsonpath='{range .items[*].spec.containers[*]}{.image}{"\n"}{end}' \
+            2>/dev/null)
+    rc=$?
+
+    if [[ $rc -ne 0 ]]; then
+        warn "Could not list pods in namespace ${NS} to sanity-check images (exit $rc)."
+        record "namespace-check" "SKIPPED (cannot list pods for image check)"
+    elif printf "%s\n" "$images" | grep -qE '(uyuni|multi-linux-manager)'; then
+        record "namespace-check" "OK (Uyuni/MLM images detected)"
+    else
+        warn "Namespace ${NS} contains no pods running Uyuni or"
+        warn "Multi-Linux Manager images. Did you pass the right namespace?"
+        warn "Continuing — the bundle will reflect whatever pods are in ${NS}."
+        record "namespace-check" "WARNING (no Uyuni/MLM images found)"
+    fi
+fi
+
 # Build unique node list from selected pods.
 declare -A NODES_SEEN
 NODES=()
