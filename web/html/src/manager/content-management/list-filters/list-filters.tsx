@@ -35,18 +35,13 @@ const ListFilters = (props: Props) => {
   const roles = useRoles();
   const hasEditingPermissions = isOrgAdmin(roles);
   const [filterToDelete, setFilterToDelete] = useState<FilterFormType | undefined>();
-  const [allFiltersData, setAllFiltersData] = useState<FilterFormType[]>(mapResponseToFilterForm(props.filters));
+  const [editingFilter, setEditingFilter] = useState<FilterFormType | undefined>();
 
   useEffect(() => {
     if (props.flashMessage) {
       showSuccessToastr(props.flashMessage);
     }
   }, [props.flashMessage]);
-
-  // Keep track of all filters for finding by ID when openFilterId is provided
-  useEffect(() => {
-    setAllFiltersData(mapResponseToFilterForm(props.filters));
-  }, [props.filters]);
 
   const searchData = (row: FilterFormType, criteria?: string) => {
     const keysToSearch = ["filter_name", "projects.right"];
@@ -124,11 +119,7 @@ const ListFilters = (props: Props) => {
   const systemName = getUrlParam("systemName");
   const kernelName = getUrlParam("kernelName");
 
-  // Find the filter to open by ID if it exists in all filters data
-  const filterToOpen = openFilterId && openFilterId !== -1 ? allFiltersData.find((f) => f.id === openFilterId) : null;
-
-  // For creating a new filter with initial parameters
-  const createFilterForm = {
+  const initialFilterForm = {
     rule: "deny",
     labelPrefix: projectLabel,
     template: openTemplate,
@@ -136,9 +127,6 @@ const ListFilters = (props: Props) => {
     systemName,
     kernelName,
   };
-
-  // For editing an existing filter found by openFilterId, use its data
-  const initialFilterForm = filterToOpen || createFilterForm;
 
   const panelButtons = (
     <div className="pull-right btn-group">
@@ -168,6 +156,24 @@ const ListFilters = (props: Props) => {
       />
     </div>,
   ];
+
+  useEffect(() => {
+    if (openFilterId) {
+      const filter = displayedFilters.find((f) => f.id === openFilterId);
+
+      if (filter) {
+        setEditingFilter(filter);
+      }
+    }
+  }, [openFilterId, displayedFilters]);
+
+  const clearOpenFilterUrl = () => {
+    const url = new URL(window.location.href);
+
+    url.searchParams.delete("openFilterId");
+
+    window.history.replaceState({}, "", `${url.pathname}${url.search}`);
+  };
 
   return (
     <TopPanel
@@ -223,16 +229,11 @@ const ListFilters = (props: Props) => {
           cell={(row) => (
             <div className="btn-group">
               {hasEditingPermissions && (
-                <FilterEdit
-                  id={`edit-filter-button-${row.id}`}
-                  initialFilterForm={row}
-                  icon="fa-pencil"
-                  buttonTitle={t("Edit Filter")}
+                <ModalButton
                   className="btn-default btn-sm"
-                  onChange={(responseFilters) => setDisplayedFilters(mapResponseToFilterForm(responseFilters))}
-                  openFilterId={openFilterId}
-                  projectLabel={projectLabel}
-                  editing
+                  icon="fa-pencil"
+                  title={t("Edit Filter")}
+                  onClick={() => setEditingFilter(row)}
                 />
               )}
 
@@ -276,6 +277,22 @@ const ListFilters = (props: Props) => {
         }
         onConfirm={deleteSelectedRows}
       />
+
+      {editingFilter && (
+        <FilterEdit
+          id="edit-filter-modal"
+          initialFilterForm={editingFilter}
+          editing
+          autoOpen
+          hideButton
+          projectLabel={projectLabel}
+          onClose={() => {
+            setEditingFilter(undefined);
+            clearOpenFilterUrl();
+          }}
+          onChange={(responseFilters) => setDisplayedFilters(mapResponseToFilterForm(responseFilters))}
+        />
+      )}
     </TopPanel>
   );
 };

@@ -2,7 +2,6 @@ import { type ComponentProps, Fragment, useEffect, useState } from "react";
 
 import { Button } from "components/buttons";
 import { closeDialog, Dialog } from "components/dialog/LegacyDialog";
-import { DeleteDialog } from "components/dialog/DeleteDialog";
 import { ModalButton } from "components/dialog/ModalButton";
 import { showDialog } from "components/dialog/util";
 import { showErrorToastr, showSuccessToastr } from "components/toastr/toastr";
@@ -57,6 +56,9 @@ type FilterEditProps = {
   openFilterId?: number;
   projectLabel?: string;
   editing?: boolean;
+  autoOpen?: boolean;
+  onClose?: () => void;
+  hideButton?: boolean;
 };
 
 const redirectToProject = (projectLabel: string) => {
@@ -68,49 +70,37 @@ const FilterEdit = (props: FilterEditProps) => {
   const [item, setItem] = useState(props.initialFilterForm);
   const [errors, setErrors] = useState({});
   const [formValidInClient, setFormValidInClient] = useState(true);
-  const [fetchingFilter, setFetchingFilter] = useState(false);
-  const [filterToDelete, setFilterToDelete] = useState<FilterFormType | undefined>();
   const { onAction, cancelAction, isLoading } = useLifecycleActionsApi({ resource: "filters" });
+  // Determine if delete is allowed - disable if filter is in use
+  const isFilterInUse = !!(item.projects && item.projects.length > 0);
 
   const itemId = item.id?.toString() ?? undefined;
   const modalNameId = `${props.id}-modal`;
 
   useEffect(() => {
+    if (props.autoOpen) {
+      showDialog(modalNameId);
+      setOpen(true);
+      setItem(props.initialFilterForm);
+      return;
+    }
+
     const openWithInitial = props.initialFilterForm.id && props.initialFilterForm.id === props.openFilterId;
+
     const openCreateWithParams = props.openFilterId === -1 && !props.editing;
 
     if (openWithInitial || openCreateWithParams) {
       showDialog(modalNameId);
       setOpen(true);
       setItem(props.initialFilterForm);
-    } else if (props.openFilterId && props.openFilterId > 0 && !props.editing && !props.initialFilterForm.id) {
-      // Handle case where openFilterId is set but filter is not on current page
-      // Fetch the filter data
-      setFetchingFilter(true);
-      onAction(undefined, "get")
-        .then((filters: any) => {
-          const foundFilter = filters.find((f: any) => f.id === props.openFilterId);
-          if (foundFilter) {
-            setItem(foundFilter);
-            showDialog(modalNameId);
-            setOpen(true);
-          }
-          setFetchingFilter(false);
-        })
-        .catch(() => {
-          setFetchingFilter(false);
-        });
     }
-  }, [props.openFilterId, props.initialFilterForm.id, props.editing]);
+  }, []);
 
   const onSave = () => {
     if (!formValidInClient) {
       showErrorToastr(t("Check the required fields below"), { autoHide: false, containerId: "filter-modal-errors" });
     } else {
-      // Determine if we're editing or creating based on whether item has an id
-      const isEditing = !!(item.id || props.editing);
-
-      if (isEditing) {
+      if (props.editing) {
         onAction(mapFilterFormToRequest(item, props.projectLabel), "update", itemId)
           .then((updatedListOfFilters) => {
             if (props.projectLabel) {
@@ -143,59 +133,24 @@ const FilterEdit = (props: FilterEditProps) => {
     }
   };
 
-  // Determine if we're editing based on item having an id
-  const isEditingMode = !!(item.id || props.editing);
-  const modalTitle = isEditingMode ? t("Filter Details") : t("Create a new filter");
-
-  // Determine if delete is allowed - disable if filter is in use
-  const isFilterInUse = !!(item.projects && item.projects.length > 0);
-
-  const confirmDelete = async () => {
-    if (!filterToDelete) return;
-
-    if (isFilterInUse) {
-      showErrorToastr(t("This filter is in use by one or more projects and cannot be deleted."), {
-        autoHide: false,
-      });
-      closeDialog(modalNameId);
-      // setFilterToDelete(undefined);
-      return;
-    }
-
-    try {
-      const remainingFilters = await onAction(
-        mapFilterFormToRequest(filterToDelete),
-        "delete",
-        filterToDelete.id?.toString()
-      );
-      setFilterToDelete(undefined);
-      closeDialog(modalNameId);
-      showSuccessToastr(t("Filter deleted successfully"));
-      if (props.projectLabel) {
-        redirectToProject(props.projectLabel);
-      } else {
-        props.onChange(remainingFilters);
-      }
-    } catch (error: any) {
-      setFilterToDelete(undefined);
-      showErrorToastr(error?.messages ?? error, { autoHide: false });
-    }
-  };
+  const modalTitle = props.editing ? t("Filter Details") : t("Create a new filter");
 
   return (
     <Fragment>
-      <ModalButton
-        id={`${props.id}-modal-link`}
-        icon={props.icon}
-        text={props.buttonText}
-        title={props.buttonTitle}
-        target={modalNameId}
-        className={props.className}
-        onClick={() => {
-          setOpen(true);
-          setItem(props.initialFilterForm);
-        }}
-      />
+      {!props.hideButton && (
+        <ModalButton
+          id={`${props.id}-modal-link`}
+          icon={props.icon}
+          text={props.buttonText}
+          title={props.buttonTitle}
+          target={modalNameId}
+          className={props.className}
+          onClick={() => {
+            setOpen(true);
+            setItem(props.initialFilterForm);
+          }}
+        />
+      )}
       <Dialog
         id={modalNameId}
         title={modalTitle}
@@ -209,29 +164,37 @@ const FilterEdit = (props: FilterEditProps) => {
             open={open}
             onChange={setItem}
             onClientValidate={setFormValidInClient}
-            isLoading={isLoading || fetchingFilter}
-            editing={isEditingMode}
+            isLoading={isLoading}
+            editing={props.editing}
           />
         }
-        onClosePopUp={() => setOpen(false)}
+        onClosePopUp={() => {
+          setOpen(false);
+          props.onClose?.();
+        }}
         buttons={
           <div className="w-100">
-            {isEditingMode && (
+            {props.editing && (
               <Button
                 id={`${props.id}-modal-delete-button`}
                 className="btn-danger pull-left"
                 text={t("Delete")}
                 disabled={isLoading || isFilterInUse}
-                title={isFilterInUse ? t("This filter is in use and cannot be deleted") : ""}
+                title={
+                  isFilterInUse
+                    ? t("This filter cannot be deleted because it is currently in use by one or more projects")
+                    : undefined
+                }
                 handler={() => {
-                  if (isFilterInUse && props.projectLabel) {
-                    showErrorToastr(t("This filter is in use by one or more projects and cannot be deleted."), {
-                      autoHide: false,
+                  onAction(mapFilterFormToRequest(item, props.projectLabel), "delete", itemId)
+                    .then((updatedListOfFilters) => {
+                      closeDialog(modalNameId);
+                      showSuccessToastr(t("Filter deleted successfully"));
+                      props.onChange(updatedListOfFilters);
+                    })
+                    .catch((error) => {
+                      showErrorToastr(error.messages, { autoHide: false });
                     });
-                  } else {
-                    setFilterToDelete(item as FilterFormType);
-                    showDialog(`${props.id}-delete-filter-modal`);
-                  }
                 }}
               />
             )}
@@ -252,25 +215,13 @@ const FilterEdit = (props: FilterEditProps) => {
               <Button
                 id={`${props.id}-modal-save-button`}
                 className="btn-primary"
-                text={isEditingMode ? t("Update") : t("Create")}
+                text={t("Save")}
                 disabled={isLoading}
                 handler={onSave}
               />
             </div>
           </div>
         }
-      />
-      <DeleteDialog
-        id={`${props.id}-delete-filter-modal`}
-        title={t("Delete Filter")}
-        content={
-          <span>
-            {t("Are you sure you want to delete the filter")} <strong>{filterToDelete?.filter_name}</strong>?
-          </span>
-        }
-        item={filterToDelete}
-        onConfirm={confirmDelete}
-        onClosePopUp={() => setFilterToDelete(undefined)}
       />
     </Fragment>
   );
