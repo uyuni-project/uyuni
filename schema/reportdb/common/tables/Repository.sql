@@ -14,7 +14,7 @@ CREATE TABLE Repository
     mgm_id                    NUMERIC NOT NULL,
     repository_id             NUMERIC NOT NULL,
     label                     VARCHAR(128),
-    url                       VARCHAR(2048),
+    url                       VARCHAR(4096),
     type                      VARCHAR(32),
     metadata_signed           BOOLEAN,
     organization              VARCHAR(128),
