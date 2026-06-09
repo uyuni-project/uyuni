@@ -440,7 +440,7 @@ collect_helm_state() {
     fi
 
     mkdir -p "${WORK}/helm"
-    if ! helm list -n "$NS" > "${WORK}/helm/list.txt" 2>/dev/null; then
+    if ! helm list -n "$NS" -o yaml > "${WORK}/helm/list.yaml" 2>/dev/null; then
         rm -rf "${WORK}/helm"
         record "helm:list" "SKIPPED (helm list failed)"
         return
@@ -460,18 +460,11 @@ collect_helm_state() {
         dst="${WORK}/helm/${r}"
         mkdir -p "$dst"
 
-        if helm get values "$r" -n "$NS" -o yaml > "${dst}/values.yaml" 2>/dev/null; then
-            record "helm:${r}:values" "OK"
+        if helm status "$r" -n "$NS" > "${dst}/status.txt" 2>/dev/null; then
+            record "helm:${r}:status" "OK"
         else
-            rm -f "${dst}/values.yaml"
-            record "helm:${r}:values" "SKIPPED"
-        fi
-
-        if helm get manifest "$r" -n "$NS" > "${dst}/manifest.yaml" 2>/dev/null; then
-            record "helm:${r}:manifest" "OK"
-        else
-            rm -f "${dst}/manifest.yaml"
-            record "helm:${r}:manifest" "SKIPPED"
+            rm -f "${dst}/status.txt"
+            record "helm:${r}:status" "SKIPPED"
         fi
 
         if helm history "$r" -n "$NS" > "${dst}/history.txt" 2>/dev/null; then
@@ -479,6 +472,14 @@ collect_helm_state() {
         else
             rm -f "${dst}/history.txt"
             record "helm:${r}:history" "SKIPPED"
+        fi
+
+        if helm get notes "$r" -n "$NS" > "${dst}/notes.txt" 2>/dev/null \
+                && [[ -s "${dst}/notes.txt" ]]; then
+            record "helm:${r}:notes" "OK"
+        else
+            rm -f "${dst}/notes.txt"
+            record "helm:${r}:notes" "NONE (no post-install notes)"
         fi
     done
 }

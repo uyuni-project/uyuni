@@ -38,9 +38,12 @@ It also dumps, for the target namespace:
 * a resource-usage snapshot — `kubectl top pod --containers` and
   `kubectl top node` (silently skipped if `metrics-server` isn't
   installed in the cluster);
-* helm release state — `helm list`, then per release `helm get values`,
-  `helm get manifest`, `helm history` (skipped entirely if `helm` is
-  not on the workstation's `$PATH`).
+* helm release state — `helm list` plus per-release `helm status`,
+  `helm history`, and `helm get notes` (skipped entirely if `helm` is
+  not on the workstation's `$PATH`). The plugin intentionally does
+  **not** dump `helm get values` or `helm get manifest`: both commonly
+  contain install-time passwords (db, cert, admin) and rendered
+  `Secret` objects with base64-encoded data.
 
 Once per run, it also captures cluster baseline — `kubectl version`,
 `kubectl get nodes -o wide`, the full node spec, and cluster-scoped
