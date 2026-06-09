@@ -125,8 +125,18 @@ collect_rancher_on_node() {
     if [[ $rc -ne 0 ]]; then
         warn "kubectl debug failed on ${node} (exit $rc):"
         printf "%s\n" "$debug_out" | sed 's/^/   /' >&2
-        warn "Common causes: missing RBAC (need create on pods + nodes/proxy),"
-        warn "or PodSecurity policy blocking privileged pods."
+        warn ""
+        warn "Common causes:"
+        warn "  - missing RBAC (need create on pods + nodes/proxy)"
+        warn "  - PodSecurity policy blocking privileged pods"
+        warn ""
+        warn "Alternatives for collecting node-level data on ${node}:"
+        warn "  - SSH to the node and run rancher2_logs_collector.sh directly"
+        warn "  - Apply the pod-form collector:"
+        warn "      kubectl apply -f https://raw.githubusercontent.com/rancherlabs/support-tools/master/collection/rancher/v2.x/logs-collector/logs_collector.yaml"
+        warn "    (k8s-API view only, no node-level data — partial coverage)"
+        warn ""
+        warn "Docs: https://github.com/rancherlabs/support-tools/tree/master/collection/rancher/v2.x/logs-collector"
         record "$label" "SKIPPED (kubectl debug failed)"
         return
     fi
