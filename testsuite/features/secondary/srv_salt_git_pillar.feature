@@ -7,9 +7,14 @@
 Feature: Salt master integration with Git pillar
 
   # Workaround: Enabling repositories for installing git-core
+  @susemanager
   Scenario: Pre-requisite: Enabling repositories for installing git-core
     When I add repository "SLE-Module-Basesystem15-SP7-Updates" with url "http://minima-mirror-ci-bv.mgr.suse.de/SUSE/Updates/SLE-Module-Basesystem/15-SP7/x86_64/update/" on "server" without error control
     And I add repository "SLE-Module-Basesystem15-SP7-Pool" with url "http://minima-mirror-ci-bv.mgr.suse.de/SUSE/Products/SLE-Module-Basesystem/15-SP7/x86_64/product/" on "server" without error control
+
+  @uyuni
+  Scenario: Pre-requisite: Enabling repositories for installing git-core
+    When I add repository "repo-oss" with url "http://minima-mirror-ci-bv.mgr.suse.de/distribution/leap/16.0/repo/oss/" on "server" without error control
 
   Scenario: Preparing Git pillar configuration for Salt master
     When I setup a git_pillar environment on the Salt master
@@ -34,6 +39,11 @@ Feature: Salt master integration with Git pillar
     And the pillar data for "org_id" should be "1" on "sle_minion"
     And the pillar data for "git_pillar_foobar" should be empty on the Salt master
 
+  @susemanager
   Scenario: Pre-Cleanup: Disabling repositories for uninstalling git-core
     When I remove repository "SLE-Module-Basesystem15-SP7-Updates" on "server" without error control
     And I remove repository "SLE-Module-Basesystem15-SP7-Pool" on "server" without error control
+
+  @uyuni
+  Scenario: Pre-Cleanup: Disabling repositories for uninstalling git-core
+    When I remove repository "repo-oss" on "server" without error control
