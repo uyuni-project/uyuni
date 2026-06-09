@@ -23,7 +23,6 @@ import com.redhat.rhn.domain.rhnpackage.Package;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParameterException;
 import com.redhat.rhn.manager.errata.ErrataManager;
 
-import org.apache.commons.collections.IteratorUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -35,7 +34,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -876,11 +874,9 @@ public class Errata extends BaseDomainHelper {
             channel.removeErrata(this);
         }
 
-        Iterator<ErrataFile> i = IteratorUtils.getIterator(this.getFiles());
-        while (i.hasNext()) {
-            ErrataFile pf = i.next();
-            if (pf.getChannels() != null) {
-                pf.getChannels().clear();
+        for (ErrataFile errataFile : this.files) {
+            if (errataFile.getChannels() != null) {
+                errataFile.getChannels().clear();
             }
         }
     }
