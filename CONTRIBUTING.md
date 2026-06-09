@@ -23,7 +23,7 @@ Please follow these steps when creating a new Pull Request:
   - Provide a description for someone not familiar with your code changes to be still able to understand your changes in the context of the project.
   - Enable the reviewer with the provided information in the description to understand the PR without opening any external resources like bug reports.
   - Ensure that before hitting the "Create" button on GitHub you have read and understood the `CONTRIBUTING.md` and linked GitHub Wiki pages.
-  - Make sure to introduce appropriate tests for any new functionality. Keep in mind that different parts of the codebase has different test infrastructures (JUnit for Java, Jest for JS, etc).
+  - Make sure to introduce appropriate tests for any new functionality. Keep in mind that different parts of the codebase have different test infrastructures (JUnit for Java, Jest for JS, etc).
   - Ensure all automation on GitHub receives a positive result checkmark.
   - State in a comment why a negative result - if occurring - is incorrect or not your fault.
   - Use the GitHub functionality of re-requesting a review in case you haven't gotten a review after a reasonable time.
