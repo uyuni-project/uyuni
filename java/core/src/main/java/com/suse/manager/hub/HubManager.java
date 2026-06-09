@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2024--2025 SUSE LLC
+ * Copyright (c) 2024--2026 SUSE LLC
  *
  * This software is licensed to you under the GNU General Public License,
  * version 2 (GPLv2). There is NO WARRANTY for this software, express or
@@ -15,6 +15,7 @@ import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.security.PermissionException;
+import com.redhat.rhn.common.util.TimeUtils;
 import com.redhat.rhn.domain.channel.Channel;
 import com.redhat.rhn.domain.channel.ChannelFactory;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
@@ -45,6 +46,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.model.hub.AccessTokenDTO;
+import com.suse.manager.model.hub.ChannelInfoDTO;
 import com.suse.manager.model.hub.ChannelInfoDetailsJson;
 import com.suse.manager.model.hub.ChannelInfoJson;
 import com.suse.manager.model.hub.HubFactory;
@@ -84,7 +86,6 @@ import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1230,23 +1231,7 @@ public class HubManager {
         return getPeripheralOrgs(issPeripheral);
     }
 
-    /**
-     * Get the Peripheral Organizations
-     * @param user the SatAdmin
-     * @param peripheralId the Peripheral ID
-     * @return a List of Organization from the Peripheral
-     * @throws CertificateException Wrong CA
-     * @throws IOException Internal API Call has gone wrong
-     */
-    public List<OrgInfoJson> getPeripheralOrgs(User user, Long peripheralId)
-            throws CertificateException, IOException {
-        ensureSatAdmin(user);
-        IssPeripheral issPeripheral = hubFactory.findPeripheralById(peripheralId);
-        return getPeripheralOrgs(issPeripheral);
-    }
-
-    private List<OrgInfoJson> getPeripheralOrgs(IssPeripheral issPeripheral)
-            throws CertificateException, IOException {
+    private List<OrgInfoJson> getPeripheralOrgs(IssPeripheral issPeripheral) throws CertificateException, IOException {
         IssAccessToken accessToken = hubFactory.lookupAccessTokenFor(issPeripheral.getFqdn());
         var internalApi = clientFactory.newInternalClient(
                 issPeripheral.getFqdn(),
@@ -1295,78 +1280,112 @@ public class HubManager {
      */
     public ChannelSyncModel getChannelSyncModelForPeripheral(User user, Long peripheralId)
         throws CertificateException, IOException {
-        // Fetch all required data
-        List<OrgInfoJson> peripheralOrgs = getPeripheralOrgs(user, peripheralId);
+        ensureSatAdmin(user);
 
-        IssPeripheral issPeripheral = hubFactory.findPeripheralById(peripheralId);
-        Map<Long, IssPeripheralChannels> syncedChannelToIssChannelMap = issPeripheral.getPeripheralChannels().stream()
-            .collect(Collectors.toMap(pc -> pc.getChannel().getId(), pc -> pc));
+        IssPeripheral peripheral = hubFactory.findPeripheralById(peripheralId);
+        if (peripheral == null) {
+            throw new IllegalStateException("Cannot fid a registered peripheral with id " + peripheralId);
+        }
 
-        List<ChannelSyncDetail> channelDetails = ChannelFactory.listSubscribableBaseChannels(user).stream()
-            .map(channel -> buildChannelSyncDetail(channel, user, syncedChannelToIssChannelMap, peripheralOrgs))
-            .sorted(Comparator.comparing(ChannelSyncDetail::label))
-            .toList();
-
-        // Mandatory map, in Javascript compatible format
-        Map<Long, List<Long>>  mandatoryMap = channelDetails.stream()
-            .flatMap(channel -> Stream.concat(Stream.of(channel), channel.children().stream()))
-            .collect(Collectors.toMap(
-                ChannelSyncDetail::id, HubManager::getMandatoryChannelsFor
-            ));
-
-        return new ChannelSyncModel(
-            peripheralOrgs,
-            channelDetails,
-            Maps.mapToEntryList(mandatoryMap),
-            Maps.mapToEntryList(Maps.invertMultimap(mandatoryMap))
-        );
+        return getChannelSyncModelForPeripheral(user, peripheral);
     }
 
-    private ChannelSyncDetail buildChannelSyncDetail(Channel channel, User user,
-                                                     Map<Long, IssPeripheralChannels> syncedChannelToIssChannelMap,
+    /**
+     * Returns the available and synced channels and a list of organizations from the peripheral
+     * @param user the SatAdmin
+     * @param peripheral the Peripheral ID
+     * @return the Sync Channel operations model
+     */
+    public ChannelSyncModel getChannelSyncModelForPeripheral(User user, IssPeripheral peripheral)
+            throws CertificateException, IOException {
+        ensureSatAdmin(user);
+
+        // Fetch all required data
+        List<OrgInfoJson> peripheralOrgs = getPeripheralOrgs(peripheral);
+
+        List<ChannelSyncDetail> channelDetails = TimeUtils.logTime(LOG, "Building channel details", () -> {
+            Map<Long, IssPeripheralChannels> syncedMap = peripheral.getPeripheralChannels().stream()
+                    .collect(Collectors.toMap(pc -> pc.getChannel().getId(), pc -> pc));
+
+            // List all channels that are accessible for the user
+            List<ChannelInfoDTO> accessibleChannels = ChannelFactory.getAccessibleChannels(user);
+
+            // Compute the map parentId -> children
+            Map<Long, List<ChannelInfoDTO>> childrenMap = accessibleChannels.stream()
+                    .filter(dto -> dto.parentId() != null)
+                    .collect(Collectors.groupingBy(ChannelInfoDTO::parentId));
+
+            // Compute the map originalId -> clones
+            Map<Long, List<ChannelInfoDTO>> clonesMap = accessibleChannels.stream()
+                    .filter(dto -> dto.originalId() != null)
+                    .collect(Collectors.groupingBy(ChannelInfoDTO::originalId));
+
+            // Convert the base channels to channel details. Children and clones will be recursively added
+            return accessibleChannels.stream()
+                    .filter(dto -> dto.parentId() == null)
+                    .map(channel -> buildChannelSyncDetail(channel, childrenMap, clonesMap, syncedMap, peripheralOrgs))
+                    .sorted(Comparator.comparing(ChannelSyncDetail::label))
+                    .toList();
+        });
+
+        // Mandatory map, in JavaScript compatible format
+        var mandatoryMap = TimeUtils.logTime(LOG, "Building mandatory map", () -> channelDetails.stream()
+            .flatMap(channel -> Stream.concat(Stream.of(channel), channel.children().stream()))
+            .collect(Collectors.toMap(ChannelSyncDetail::id, HubManager::getMandatoryChannelsFor))
+        );
+
+        return TimeUtils.logTime(LOG, "Building final channel model", () -> new ChannelSyncModel(
+                peripheralOrgs,
+                channelDetails,
+                Maps.mapToEntryList(mandatoryMap),
+                Maps.mapToEntryList(Maps.invertMultimap(mandatoryMap))
+        ));
+    }
+
+    private ChannelSyncDetail buildChannelSyncDetail(ChannelInfoDTO channel,
+                                                     Map<Long, List<ChannelInfoDTO>> childrenMap,
+                                                     Map<Long, List<ChannelInfoDTO>> clonesMap,
+                                                     Map<Long, IssPeripheralChannels> syncedChannelsMap,
                                                      List<OrgInfoJson> peripheralOrgs) {
-        List<ChannelSyncDetail> children = ChannelFactory.getAccessibleChildChannels(channel, user).stream()
-            .map(child -> buildChannelSyncDetail(child, user, syncedChannelToIssChannelMap, peripheralOrgs))
+        List<ChannelSyncDetail> children = childrenMap.getOrDefault(channel.id(), List.of()).stream()
+            .map(child -> buildChannelSyncDetail(child, childrenMap, clonesMap, syncedChannelsMap, peripheralOrgs))
             .sorted(Comparator.comparing(ChannelSyncDetail::label))
             .toList();
 
-        List<ChannelSyncDetail> clones = Optional.ofNullable(channel.getClonedChannels()).stream()
-            .flatMap(Collection::stream)
-            .map(clone -> buildChannelSyncDetail(clone, user, syncedChannelToIssChannelMap, peripheralOrgs))
+        List<ChannelSyncDetail> clones = clonesMap.getOrDefault(channel.id(), List.of()).stream()
+            .map(clone -> buildChannelSyncDetail(clone, childrenMap, clonesMap, syncedChannelsMap, peripheralOrgs))
             .sorted(Comparator.comparing(ChannelSyncDetail::label))
             .toList();
-
-        Channel originalChannel = ChannelFactory.lookupOriginalChannel(channel);
 
         ChannelOrg selectedChannelOrg = null;
-        if (channel.getOrg() != null) {
+        if (channel.orgId() != null) {
             // Custom Channel
-            IssPeripheralChannels peripheralChannel = syncedChannelToIssChannelMap.get(channel.getId());
+            IssPeripheralChannels peripheralChannel = syncedChannelsMap.get(channel.id());
             selectedChannelOrg = peripheralOrgs.stream().filter(po ->
-                        //channel is synced
+                        // channel is synced
                         (peripheralChannel != null &&
                                 Objects.equals(peripheralChannel.getPeripheralOrgId(), po.getOrgId())) ||
                         // or channel exists on the peripheral side
                                 ((null != po.getOrgChannelLabels()) &&
-                                        (po.getOrgChannelLabels().contains(channel.getLabel()))))
+                                        (po.getOrgChannelLabels().contains(channel.label()))))
                     .map(po -> new ChannelOrg(po.getOrgId(), po.getOrgName()))
                     .findFirst()
                     .orElse(null);
         }
 
         return new ChannelSyncDetail(
-            channel.getId(),
-            channel.getName(),
-            channel.getLabel(),
-            channel.getChannelArch().getName(),
-            Optional.ofNullable(channel.getOrg()).map(ChannelOrg::new).orElse(null),
+            channel.id(),
+            channel.name(),
+            channel.label(),
+            channel.architecture(),
+            channel.orgId() != null ? new ChannelOrg(channel.orgId(), channel.orgName()) : null,
             selectedChannelOrg,
-            Optional.ofNullable(channel.getParentChannel()).map(Channel::getId).orElse(null),
-            Optional.ofNullable(originalChannel).map(Channel::getId).orElse(null),
+            channel.parentId(),
+            channel.originalId(),
             children,
             clones,
             selectedChannelOrg != null,
-            syncedChannelToIssChannelMap.containsKey(channel.getId())
+            syncedChannelsMap.containsKey(channel.id())
         );
     }
 

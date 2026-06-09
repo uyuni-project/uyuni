@@ -1,0 +1,2 @@
+- Optimized channel model generation logic to improve page load
+  performance during peripheral channel selection (bsc#1259225)
