@@ -827,11 +827,6 @@ export class CheckListItem extends Component<CheckListItemProps, CheckListItemSt
   render() {
     const currentItem = this.props.item;
 
-    const selectionState: ProductSelectionState = getProductSelectionState(
-      currentItem,
-      this.props.bypassProps.selectedItems
-    );
-
     /** generate item selector content **/
     let selectorContent: ReactNode = null;
     if (this.props.bypassProps.isSelectable && currentItem.status === _PRODUCT_STATUS.available) {
