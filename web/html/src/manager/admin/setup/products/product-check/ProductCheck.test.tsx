@@ -1,6 +1,6 @@
 import { render, screen } from "utils/test-utils";
 
-import { ProductCheck } from "./product-check";
+import { ProductCheck } from "./ProductCheck";
 
 describe("ProductCheck", () => {
   test("renders a checked checkbox", () => {

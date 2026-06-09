@@ -1,8 +1,8 @@
-import { type CheckProps, Check } from "components/input";
+import { type CheckInputProps, CheckInput } from "components/input";
 
 import { type ProductSelectionState } from "./product-selection.utils";
 
-type ProductCheckBaseProps = Omit<CheckProps, "checked" | "indeterminate">;
+type ProductCheckBaseProps = Omit<CheckInputProps, "checked" | "indeterminate">;
 
 type ProductCheckWithSelectionState = ProductCheckBaseProps & {
   selectionState: ProductSelectionState;
@@ -22,5 +22,5 @@ export const ProductCheck = ({ checked, indeterminate, selectionState, ...rest }
   const isChecked = selectionState ? selectionState === "checked" : checked;
   const isIndeterminate = selectionState ? selectionState === "partially" : indeterminate;
 
-  return <Check {...rest} noLabel inputClass="" checked={isChecked} indeterminate={isIndeterminate} />;
+  return <CheckInput {...rest} checked={isChecked} indeterminate={isIndeterminate} />;
 };

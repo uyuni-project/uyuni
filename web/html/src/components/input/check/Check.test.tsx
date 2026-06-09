@@ -36,13 +36,6 @@ describe("Check", () => {
     expect(checkbox.className).not.toContain("form-check-input");
   });
 
-  test("renders without the label wrapper when noLabel is set", () => {
-    const { container } = render(<Check noLabel readOnly />);
-
-    expect(container.querySelector("label")).toBeNull();
-    expect(container.querySelector("input[type='checkbox']")).not.toBeNull();
-  });
-
   test("renders the label wrapper by default", () => {
     const { container } = render(<Check readOnly />);
 

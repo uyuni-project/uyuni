@@ -523,13 +523,13 @@ export const core_intl_index_example_tsx = {
 };
 
 // @ts-ignore
-import manager_admin_setup_products_product_check_product_check_example_tsx_component from "manager/admin/setup/products/product-check/product-check.example.tsx";
-import manager_admin_setup_products_product_check_product_check_example_tsx_raw from "manager/admin/setup/products/product-check/product-check.example.tsx?raw";
+import manager_admin_setup_products_product_check_ProductCheck_example_tsx_component from "manager/admin/setup/products/product-check/ProductCheck.example.tsx";
+import manager_admin_setup_products_product_check_ProductCheck_example_tsx_raw from "manager/admin/setup/products/product-check/ProductCheck.example.tsx?raw";
 
-export const manager_admin_setup_products_product_check_product_check_example_tsx = {
-  path: "manager/admin/setup/products/product-check/product-check.example.tsx",
-  title: "product-check.example.tsx",
+export const manager_admin_setup_products_product_check_ProductCheck_example_tsx = {
+  path: "manager/admin/setup/products/product-check/ProductCheck.example.tsx",
+  title: "ProductCheck.example.tsx",
   groupName: "product-check",
-  component: manager_admin_setup_products_product_check_product_check_example_tsx_component,
-  raw: manager_admin_setup_products_product_check_product_check_example_tsx_raw,
+  component: manager_admin_setup_products_product_check_ProductCheck_example_tsx_component,
+  raw: manager_admin_setup_products_product_check_ProductCheck_example_tsx_raw,
 };
