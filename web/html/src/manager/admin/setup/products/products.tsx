@@ -21,8 +21,8 @@ import { DEPRECATED_unsafeEquals } from "utils/legacy";
 import Network from "utils/network";
 
 import { SetupHeader } from "../setup-header";
-import { ProductCheck } from "./product-check/ProductCheck";
 import { getProductSelectionState } from "./product-check/product-selection.utils";
+import { ProductCheck } from "./product-check/ProductCheck";
 import { searchCriteriaInExtension } from "./products.utils";
 import { SCCDialog } from "./products-scc-dialog";
 

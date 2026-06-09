@@ -2,8 +2,8 @@ import { useState } from "react";
 
 import { Button } from "components/buttons";
 
-import { ProductCheck } from "./ProductCheck";
 import { type ProductSelectionState } from "./product-selection.utils";
+import { ProductCheck } from "./ProductCheck";
 
 export default () => {
   const [selectionState, setSelectionState] = useState<ProductSelectionState>("partially");
