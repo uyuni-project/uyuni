@@ -55,9 +55,19 @@ public class InventoryPath extends AnsiblePath {
      * @param path the path
      */
     public InventoryPath(MinionServer minionServer, Path path) {
+        this(minionServer, path, Set.of());
+    }
+
+    /**
+     * Standard constructor
+     * @param minionServer the minion server
+     * @param path the path
+     * @param servers the inventory servers
+     */
+    public InventoryPath(MinionServer minionServer, Path path, Set<Server> servers) {
         super(minionServer, path);
 
-        inventoryServers = new HashSet<>();
+        inventoryServers = new HashSet<>(servers);
     }
 
     @Override

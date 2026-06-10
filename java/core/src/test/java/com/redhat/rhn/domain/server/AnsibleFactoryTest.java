@@ -22,14 +22,29 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.domain.server.ansible.AnsiblePath;
 import com.redhat.rhn.domain.server.ansible.InventoryPath;
 import com.redhat.rhn.domain.server.ansible.PlaybookPath;
-import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
+import com.suse.manager.webui.services.iface.SaltApi;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Stream;
 
-class AnsibleFactoryTest extends BaseTestCaseWithUser {
+class AnsibleFactoryTest extends JMockBaseTestCaseWithUser {
+
+    private SaltApi saltApi;
+
+    @BeforeEach
+    void setup() {
+        saltApi = context.mock(SaltApi.class);
+    }
 
     @Test
     void testSaveAndFindAnsiblePath() {
@@ -65,6 +80,63 @@ class AnsibleFactoryTest extends BaseTestCaseWithUser {
 
         AnsibleFactory.removeAnsiblePath(inventoryPath);
         assertTrue(AnsibleFactory.lookupAnsiblePathById(inventoryPath.getId()).isEmpty());
+    }
+
+    @Test
+    void correctlyListsAnsibleInventoryServersByControlNode() {
+        MinionServer controlMinion = ServerTestUtils.createAnsibleControlNode(user, saltApi, context);
+
+        MinionServer one = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer two = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer three = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer four = MinionServerFactoryTest.createTestMinionServer(user);
+
+        InventoryPath firstInventory = new InventoryPath(controlMinion, Path.of("/tmp/test/one"), Set.of(one, two));
+        AnsibleFactory.saveAnsiblePath(firstInventory);
+
+        InventoryPath secondInventory = new InventoryPath(controlMinion, Path.of("/tmp/test/two"), Set.of(three, four));
+        AnsibleFactory.saveAnsiblePath(secondInventory);
+
+        TestUtils.flushAndClearSession();
+
+        List<Server> allServers = AnsibleFactory.listAnsibleInventoryServersByControlNode(controlMinion.getId());
+        assertNotNull(allServers);
+        assertEquals(
+            Stream.of(one, two, three, four).sorted(Comparator.comparing(Server::getId)).toList(),
+            allServers.stream().sorted(Comparator.comparing(Server::getId)).toList()
+        );
+    }
+
+    @Test
+    void correctlyListsAnsibleInventoryServersExcludingControlNode() {
+        MinionServer controlOne = ServerTestUtils.createAnsibleControlNode(user, saltApi, context);
+        MinionServer controlTwo = ServerTestUtils.createAnsibleControlNode(user, saltApi, context);
+        MinionServer controlThree = ServerTestUtils.createAnsibleControlNode(user, saltApi, context);
+
+        MinionServer one = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer two = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer three = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer four = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer five = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer six = MinionServerFactoryTest.createTestMinionServer(user);
+
+        InventoryPath firstInventory = new InventoryPath(controlOne, Path.of("/tmp/test/one"), Set.of(one, two));
+        AnsibleFactory.saveAnsiblePath(firstInventory);
+
+        InventoryPath secondInventory = new InventoryPath(controlTwo, Path.of("/tmp/test/two"), Set.of(three, four));
+        AnsibleFactory.saveAnsiblePath(secondInventory);
+
+        InventoryPath thirdInventory = new InventoryPath(controlThree, Path.of("/tmp/test/three"), Set.of(five, six));
+        AnsibleFactory.saveAnsiblePath(thirdInventory);
+
+        TestUtils.flushAndClearSession();
+
+        List<Server> allServers = AnsibleFactory.listAnsibleInventoryServersExcludingControlNode(controlTwo.getId());
+        assertNotNull(allServers);
+        assertEquals(
+            Stream.of(one, two, five, six).sorted(Comparator.comparing(Server::getId)).toList(),
+            allServers.stream().sorted(Comparator.comparing(Server::getId)).toList()
+        );
     }
 
     @Test

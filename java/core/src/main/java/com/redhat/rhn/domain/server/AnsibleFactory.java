@@ -56,10 +56,11 @@ public class AnsibleFactory extends HibernateFactory {
      * @return optional of {@link AnsiblePath}
      */
     public static Optional<AnsiblePath> lookupAnsiblePathByPathAndMinion(Path path, long minionServerId) {
-        return HibernateFactory.getSession().createQuery("""
-                                                         FROM AnsiblePath p
-                                                         WHERE p.path = :path
-                                                         AND p.minionServer.id = :minionServerId""", AnsiblePath.class)
+        return HibernateFactory.getSession()
+                .createQuery("""
+                             FROM AnsiblePath p
+                             WHERE p.path = :path
+                             AND p.minionServer.id = :minionServerId""", AnsiblePath.class)
                 .setParameter("path", path)
                 .setParameter("minionServerId", minionServerId)
                 .uniqueResultOptional();
@@ -125,20 +126,17 @@ public class AnsibleFactory extends HibernateFactory {
     /**
      * List all ansible managed {@link Server}s linked to given {@link Server}
      *
-     * @param minionId the id of the contorl node
+     * @param minionId the id of the control node
      * @return the list of inventory servers
      */
     public static List<Server> listAnsibleInventoryServersByControlNode(long minionId) {
-        return HibernateFactory.getSession().createNativeQuery("""
-                 SELECT DISTINCT s.*, 0 as clazz_ FROM suseAnsiblePath ap
-                 JOIN suseAnsibleInventoryServers ais ON ap.id = ais.inventory_id
-                 JOIN rhnServer s ON ais.server_id = s.id
-                 WHERE ap.server_id = :server_id""", Server.class)
-                .addSynchronizedEntityClass(AnsiblePath.class)
-                .addSynchronizedEntityClass(InventoryPath.class)
-                .addSynchronizedEntityClass(Server.class)
-                .setParameter("server_id", minionId)
-                .getResultList();
+        return HibernateFactory.getSession()
+                .createQuery("""
+                             SELECT DISTINCT ip.inventoryServers
+                             FROM InventoryPath ip
+                             WHERE ip.minionServer.id = :serverId""", Server.class)
+                .setParameter("serverId", minionId)
+                .list();
     }
 
     /**
@@ -148,12 +146,13 @@ public class AnsibleFactory extends HibernateFactory {
      * @return the list of inventory servers
      */
     public static List<Server> listAnsibleInventoryServersExcludingPath(InventoryPath path) {
-        return HibernateFactory.getSession().createQuery("""
-                 SELECT DISTINCT p.inventoryServers
-                 FROM InventoryPath p
-                 WHERE p.id != :inventoryId""", Server.class)
+        return HibernateFactory.getSession()
+                .createQuery("""
+                             SELECT DISTINCT p.inventoryServers
+                             FROM InventoryPath p
+                             WHERE p.id != :inventoryId""", Server.class)
                 .setParameter("inventoryId", path.getId())
-                .getResultList();
+                .list();
     }
 
     /**
@@ -163,16 +162,13 @@ public class AnsibleFactory extends HibernateFactory {
      * @return the list of inventory servers
      */
     public static List<Server> listAnsibleInventoryServersExcludingControlNode(long minionId) {
-        return HibernateFactory.getSession().createNativeQuery("""
-                 SELECT DISTINCT s.*, 0 as clazz_ FROM suseAnsiblePath ap
-                 JOIN suseAnsibleInventoryServers ais ON ap.id = ais.inventory_id
-                 JOIN rhnServer s ON ais.server_id = s.id
-                 WHERE ap.server_id != :server_id""", Server.class)
-                .addSynchronizedEntityClass(AnsiblePath.class)
-                .addSynchronizedEntityClass(InventoryPath.class)
-                .addSynchronizedEntityClass(Server.class)
-                .setParameter("server_id", minionId)
-                .getResultList();
+        return HibernateFactory.getSession()
+                .createQuery("""
+                             SELECT DISTINCT ip.inventoryServers
+                             FROM InventoryPath ip
+                             WHERE ip.minionServer.id != :serverId""", Server.class)
+                .setParameter("serverId", minionId)
+                .list();
     }
 
     /**
@@ -198,5 +194,4 @@ public class AnsibleFactory extends HibernateFactory {
     protected Logger getLogger() {
         return log;
     }
-
 }
