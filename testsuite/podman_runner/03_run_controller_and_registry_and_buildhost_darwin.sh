@@ -10,8 +10,8 @@ fi
 
 echo buildhostproductuuid > /tmp/testing/buildhost_product_uuid
 
-AUTH_REGISTRY_USER=$(echo "$AUTH_REGISTRY_CREDENTIALS"| cut -d\| -f1)
-AUTH_REGISTRY_PASSWD=$(echo "$AUTH_REGISTRY_CREDENTIALS" | cut -d\| -f2)
+AUTH_REGISTRY_USER=cucutest
+AUTH_REGISTRY_PASSWD=cucutest
 
 # --- Registry Hostname/Port Definitions ---
 # Host push addresses (using ports mapped to the Podman host/VM)
@@ -33,6 +33,7 @@ export PROVIDER=podman
 export SERVER=server
 export HOSTNAME=controller
 export MINION=sle_minion
+export SSH_MINION=opensusessh
 export RHLIKE_MINION=rhlike_minion
 export DEBLIKE_MINION=deblike_minion
 export BUILD_SOURCES="downloadcontent.opensuse.org"
