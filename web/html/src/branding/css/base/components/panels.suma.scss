@@ -1,4 +1,4 @@
- // Used in table
+// Used in table
 .panel {
   background: $panel-gray-bg;
   box-shadow: none;
@@ -13,6 +13,7 @@
     }
 
     .list-group-item {
+      border: 0;
       border-bottom: 1px solid $list-item-border;
       text-align: left;
 

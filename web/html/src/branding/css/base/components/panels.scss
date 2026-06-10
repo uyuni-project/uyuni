@@ -5,7 +5,7 @@
   .panel {
     // TODO: Used panel inside panel -> Remove bg color and use border sor secondary panels
     background: $panel-white-bg;
-    
+
     > .panel-heading {
       border-color: $panel-white-border-color;
     }
@@ -61,10 +61,10 @@
 
     .panel-heading {
       padding: 10px 4px;
-      border-top: 1px solid $eos-bc-gray-100;
+      border-top: 1px solid $panel-border;
 
       &:hover {
-        background-color: $eos-bc-gray-50;
+        background-color: $panel-gray-bg;
       }
     }
 
