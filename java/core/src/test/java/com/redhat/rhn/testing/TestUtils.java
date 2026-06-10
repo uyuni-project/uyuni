@@ -25,6 +25,8 @@ import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.HibernateRuntimeException;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.util.MethodUtil;
+import com.redhat.rhn.domain.channel.AccessToken;
+import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.ChannelArch;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegate;
@@ -454,6 +456,15 @@ public class TestUtils {
                         .replaceAll("\\.", "/") + "/" + file).getPath()
         ));
     }
+
+    /**
+     * Deletes all the AccessTokens
+     */
+    public static void deleteAllAccessTokens() {
+        List<AccessToken> allAccessTokens = AccessTokenFactory.all();
+        allAccessTokens.forEach(AccessTokenFactory::delete);
+    }
+
 
     //=========================================================================
     // HIBERNATE METHODS
