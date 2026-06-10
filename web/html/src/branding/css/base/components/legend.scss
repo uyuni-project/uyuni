@@ -8,6 +8,5 @@ legend {
   line-height: inherit;
   color: inherit;
   border: 0;
-  // TODO: Here and elsewhere, standardize border colors after the Bootstrap migration is complete
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid $eos-bc-gray-100;
 }

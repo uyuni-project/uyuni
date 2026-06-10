@@ -1,37 +1,49 @@
 // These are all leftovers from the old theme, hopefully we can drop most of this over time
 .text-muted {
-  &, &:hover, &:focus {
-    color: $eos-bc-gray-100!important;
+  &,
+  &:hover,
+  &:focus {
+    color: $eos-bc-gray-300 !important;
   }
 }
 
 .text-primary {
-  &, &:hover, &:focus {
+  &,
+  &:hover,
+  &:focus {
     color: $link-color !important;
   }
 }
 
 .text-success {
-  &, &:hover, &:focus {
+  &,
+  &:hover,
+  &:focus {
     color: $text-success-color !important;
   }
 }
 
 .text-info {
-  &, &:hover, &:focus {
-    color: $link-color !important;
+  &,
+  &:hover,
+  &:focus {
+    color: $text-info-color !important;
   }
 }
 
 .text-warning {
-  &, &:hover, &:focus {
-    color: $eos-bc-yellow-600 !important;
+  &,
+  &:hover,
+  &:focus {
+    color: $text-warning-color !important;
   }
 }
 
 .text-danger {
-  &, &:hover, &:focus {
-    color: $eos-bc-red-900 !important;
+  &,
+  &:hover,
+  &:focus {
+    color: $text-danger-color !important;
   }
 }
 
