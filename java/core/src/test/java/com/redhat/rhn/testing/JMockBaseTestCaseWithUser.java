@@ -48,6 +48,7 @@ public abstract class JMockBaseTestCaseWithUser extends RhnJmockBaseTestCase {
         // clean up our mess
         if (committed) {
             OrgFactory.deleteOrg(user.getOrg().getId(), user);
+            TestUtils.deleteAllAccessTokens();
             TestUtils.commitAndCloseSession();
         }
         committed = false;
