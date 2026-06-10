@@ -3,22 +3,18 @@ import { click, render, screen } from "utils/test-utils";
 import { CheckInput } from "./CheckInput";
 
 describe("CheckInput", () => {
-  test("syncs the indeterminate DOM property to true", () => {
-    render(<CheckInput indeterminate readOnly />);
-
-    expect((screen.getByRole("checkbox") as HTMLInputElement).indeterminate).toBe(true);
-  });
-
-  test("clears the indeterminate DOM property when the prop becomes undefined", () => {
+  test("syncs the indeterminate DOM property when the prop changes", () => {
     const { rerender } = render(<CheckInput indeterminate readOnly />);
-    expect((screen.getByRole("checkbox") as HTMLInputElement).indeterminate).toBe(true);
+    const checkbox = screen.getByRole("checkbox") as HTMLInputElement;
+
+    expect(checkbox.indeterminate).toBe(true);
 
     rerender(<CheckInput readOnly />);
 
-    expect((screen.getByRole("checkbox") as HTMLInputElement).indeterminate).toBe(false);
+    expect(checkbox.indeterminate).toBe(false);
   });
 
-  test("invokes onChange with the new boolean value when toggled", async () => {
+  test("maps the native change event to a boolean onChange value", async () => {
     const onChange = jest.fn();
     render(<CheckInput checked={false} onChange={onChange} />);
 

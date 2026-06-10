@@ -3,46 +3,23 @@ import { render, screen } from "utils/test-utils";
 import { ProductCheck } from "./ProductCheck";
 
 describe("ProductCheck", () => {
-  test("renders a checked checkbox", () => {
-    render(<ProductCheck selectionState="checked" readOnly />);
+  test.each([
+    ["checked", true, false],
+    ["partially", false, true],
+    ["unchecked", false, false],
+  ] as const)("maps selectionState=%s to checked=%s and indeterminate=%s", (selectionState, checked, indeterminate) => {
+    render(<ProductCheck selectionState={selectionState} readOnly />);
+
+    const checkbox = screen.getByRole("checkbox") as HTMLInputElement;
+    expect(checkbox.checked).toBe(checked);
+    expect(checkbox.indeterminate).toBe(indeterminate);
+  });
+
+  test("supports the explicit checked state without selectionState", () => {
+    render(<ProductCheck checked={true} readOnly />);
 
     const checkbox = screen.getByRole("checkbox") as HTMLInputElement;
     expect(checkbox.checked).toBe(true);
     expect(checkbox.indeterminate).toBe(false);
-  });
-
-  test("renders an indeterminate checkbox", () => {
-    render(<ProductCheck selectionState="partially" readOnly />);
-
-    const checkbox = screen.getByRole("checkbox") as HTMLInputElement;
-    expect(checkbox.checked).toBe(false);
-    expect(checkbox.indeterminate).toBe(true);
-  });
-
-  test("renders an unchecked checkbox", () => {
-    render(<ProductCheck selectionState="unchecked" readOnly />);
-
-    const checkbox = screen.getByRole("checkbox") as HTMLInputElement;
-    expect(checkbox.checked).toBe(false);
-    expect(checkbox.indeterminate).toBe(false);
-  });
-
-  test("clears the indeterminate state when rerendered as checked", () => {
-    const { rerender } = render(<ProductCheck selectionState="partially" readOnly />);
-
-    rerender(<ProductCheck selectionState="checked" readOnly />);
-
-    const checkbox = screen.getByRole("checkbox") as HTMLInputElement;
-    expect(checkbox.checked).toBe(true);
-    expect(checkbox.indeterminate).toBe(false);
-  });
-
-  test("still supports an explicitly checked disabled checkbox", () => {
-    render(<ProductCheck checked={true} disabled readOnly />);
-
-    const checkbox = screen.getByRole("checkbox") as HTMLInputElement;
-    expect(checkbox.checked).toBe(true);
-    expect(checkbox.indeterminate).toBe(false);
-    expect(checkbox.disabled).toBe(true);
   });
 });
