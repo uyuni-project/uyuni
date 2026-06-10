@@ -9,8 +9,8 @@ samp {
 code {
   padding: 2px 4px;
   font-size: 90%;
-  color: #c7254e;
-  background-color: $code-bg; //#f9f2f4;
+  color: $pre-code-color;
+  background-color: $code-bg;
   border-radius: 0;
 }
 

@@ -30,7 +30,6 @@
 thead tr {
   background: $tb-thead-tr-bg !important;
   color: $tb-orderBy-text !important;
-  
 
   .btn-link {
     padding: 0 !important;
@@ -54,7 +53,7 @@ tbody tr td,
 
 tbody tr td .modal-link {
   border: 0;
-  color: $eos-bc-blue-500;
+  color: $link-color;
   font-weight: 600;
   background: transparent;
 }
@@ -72,7 +71,7 @@ tbody tr td .modal-link {
 }
 
 .selected-row-details {
-  background-color: rgba(179, 232, 246, 0.5);
+  background-color: $selected-row-details-bg;
   padding: 0px 15px;
 
   .btn {
@@ -115,12 +114,12 @@ tbody tr td .modal-link {
 .panel-default > .panel-heading {
   &.sticky-panel-heading {
     position: sticky;
-    background: #f2f2f2;
+    background: $panel-gray-bg;
     top: 0;
     z-index: 11;
   }
 }
 
-.table-hover>tbody>tr:hover {
+.table-hover > tbody > tr:hover {
   background-color: rgba($eos-bc-gray-100, 50%) !important;
 }

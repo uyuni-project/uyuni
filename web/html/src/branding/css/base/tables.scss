@@ -67,14 +67,14 @@ th {
 
 // colour to the head, except for when it is the last TR in the thead (it will be white)
 thead tr {
-  background: #e7e7e7;
+  background: $tb-thead-tr-bg;
   &:last-of-type {
-    background: #ffffff;
+    background: $body-background;
   }
 }
 // Colour to the tfoot
 tfoot {
-  background: #f3f3f3;
+  background: $tb-thead-tr-bg;
 }
 .panel .table {
   margin-bottom: 0;
@@ -102,7 +102,7 @@ th button.btn-link {
 }
 
 .compare-list {
-  border: 1px solid #dddddd;
+  border: 1px solid $tb-border-color;
   width: 100%;
 }
 
@@ -115,8 +115,8 @@ th button.btn-link {
 }
 
 .compare-list td:first-child {
-  background-color: #e2e2e2 !important;
-  border-right: 1px solid #dddddd;
+  background-color: $tb-border-color !important;
+  border-right: 1px solid $tb-border-color;
 }
 
 .span-ssm-marg {

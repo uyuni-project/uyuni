@@ -19,7 +19,6 @@ div.form-control,
   line-height: 1em !important;
   appearance: auto !important;
 
-
   &,
   &:focus,
   &:active {
@@ -80,7 +79,6 @@ div.form-control,
     color: $input-placeholder;
     opacity: 1;
   }
-
 }
 
 .form-control-static {
@@ -184,8 +182,13 @@ select[size] {
   font-size: 1em;
 }
 
-.ace-xcode .ace_gutter {
-  background: $ace-gutter-bg;
-  color: #8F908A;
-}
+.ace-xcode {
+  .ace_gutter {
+    background: $ace-gutter-bg;
+    color: $ace-gutter-color;
+  }
 
+  .ace_print-margin {
+    background: inherit;
+  }
+}

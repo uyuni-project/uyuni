@@ -7,7 +7,12 @@ $link-color: $eos-bc-blue-500;
 $box-shadow: $gray-light;
 $content-area-padding-side: 4em;
 $content-area-padding-bottom: 4em;
+
+// Status Text color
 $text-success-color: $eos-bc-green-900;
+$text-info-color: $eos-bc-cerulean-900;
+$text-warning-color: $eos-bc-yellow-900;
+$text-danger-color: $eos-bc-red-900;
 
 //Tabs
 $tabs-border-color: $eos-bc-gray-100;
@@ -29,7 +34,8 @@ $panel-white-border-color: $eos-bc-gray-100;
 $tb-thead-tr-bg: $eos-bc-gray-100;
 $tb-orderBy-text: $eos-bc-gray-1000;
 $tb-border-color: $eos-bc-gray-100;
-$table-row-hover-bg: $gray-light;
+$table-row-hover-bg: $eos-bc-gray-100;
+$selected-row-details-bg: rgba(179, 232, 246, 0.5);
 
 //buttons
 $btn-default-color: $eos-bc-pine-500;
@@ -51,7 +57,8 @@ $input-group-addon-color: $eos-bc-gray-900;
 $input-disabled-bg: $gray-lighter;
 
 // Input AceEditor
-$ace-gutter-bg: #e8e8e8;
+$ace-gutter-bg: $eos-bc-gray-100;
+$ace-gutter-color: $eos-bc-gray-1000;
 
 /* Select Dropdown Menu */
 $select-dropdown-bg: $eos-bc-white;
@@ -75,8 +82,16 @@ $pre-border: $eos-bc-gray-100;
 
 // Code
 $code-bg: rgba($eos-bc-gray-100, 0.5);
+$pre-code-color: $eos-bc-crimson;
 
 /* Modals */
 $modal-backdrop-color: rgba($eos-bc-gray-1000, 50%);
 $modal-bg: $eos-bc-white;
 $modal-border: $eos-bc-gray-100;
+
+/* storybook */
+$sb-striped-bg: $eos-bc-white;
+$sb-striped-border: $eos-bc-gray-300;
+
+/* Product Page */
+$product-installed-color: $eos-bc-green-900;
