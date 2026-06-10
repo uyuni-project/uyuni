@@ -17,19 +17,16 @@ export const PRODUCT_STATUS = {
 const hasVisibleCheckbox = (item: ProductLike) =>
   item.status === PRODUCT_STATUS.available || item.status === PRODUCT_STATUS.installed;
 
-const isProductSelected = (item: ProductLike, selectedItems: ProductLike[]) =>
-  selectedItems.some((selectedItem) => selectedItem.identifier === item.identifier);
-
-export function getProductSelectionState(item: ProductLike, selectedItems: ProductLike[]): ProductSelectionState {
+function computeState(item: ProductLike, selectedIds: Set<string>): ProductSelectionState {
   const { status, extensions = [] } = item;
-  const isSelected = status === PRODUCT_STATUS.installed || isProductSelected(item, selectedItems);
+  const isSelected = status === PRODUCT_STATUS.installed || selectedIds.has(item.identifier);
   const selectableChildren = extensions.filter(hasVisibleCheckbox);
 
   if (selectableChildren.length === 0) {
     return isSelected ? "checked" : "unchecked";
   }
 
-  const childStates = selectableChildren.map((child) => getProductSelectionState(child, selectedItems));
+  const childStates = selectableChildren.map((child) => computeState(child, selectedIds));
 
   if (isSelected && childStates.every((state) => state === "checked")) {
     return "checked";
@@ -40,4 +37,10 @@ export function getProductSelectionState(item: ProductLike, selectedItems: Produ
   }
 
   return "partially";
+}
+
+export function getProductSelectionState(item: ProductLike, selectedItems: ProductLike[]): ProductSelectionState {
+  const selectedIds = new Set(selectedItems.map((selectedItem) => selectedItem.identifier));
+
+  return computeState(item, selectedIds);
 }
