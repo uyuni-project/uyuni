@@ -36,10 +36,8 @@ class AnsibleFactoryTest extends BaseTestCaseWithUser {
         MinionServer minionServer1 = MinionServerFactoryTest.createTestMinionServer(user);
         MinionServer minionServer2 = MinionServerFactoryTest.createTestMinionServer(user);
 
-        AnsiblePath inventoryPath = new InventoryPath(minionServer1);
-        inventoryPath.setPath(Path.of("/tmp/test1"));
-        AnsiblePath playbookPath = new PlaybookPath(minionServer2);
-        playbookPath.setPath(Path.of("/tmp/test2"));
+        AnsiblePath inventoryPath = new InventoryPath(minionServer1, Path.of("/tmp/test1"));
+        AnsiblePath playbookPath = new PlaybookPath(minionServer2, Path.of("/tmp/test2"));
 
         inventoryPath = AnsibleFactory.saveAnsiblePath(inventoryPath);
         playbookPath = AnsibleFactory.saveAnsiblePath(playbookPath);
@@ -62,8 +60,7 @@ class AnsibleFactoryTest extends BaseTestCaseWithUser {
     @Test
     void testRemoveAnsiblePath() {
         MinionServer minionServer1 = MinionServerFactoryTest.createTestMinionServer(user);
-        AnsiblePath inventoryPath = new InventoryPath(minionServer1);
-        inventoryPath.setPath(Path.of("/tmp/test1"));
+        AnsiblePath inventoryPath = new InventoryPath(minionServer1, Path.of("/tmp/test1"));
         inventoryPath = AnsibleFactory.saveAnsiblePath(inventoryPath);
 
         AnsibleFactory.removeAnsiblePath(inventoryPath);

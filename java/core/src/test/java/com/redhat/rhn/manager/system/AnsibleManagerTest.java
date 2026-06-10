@@ -23,7 +23,6 @@ import com.redhat.rhn.common.validator.ValidatorException;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.ansible.AnsiblePath;
-import com.redhat.rhn.domain.server.ansible.InventoryPath;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
@@ -43,7 +42,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import java.nio.file.Path;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -71,9 +69,7 @@ class AnsibleManagerTest extends BaseTestCaseWithUser {
     @Test
     void testSaveAndLookupAnsiblePath() {
         MinionServer minion = createAnsibleControlNode(user);
-        AnsiblePath path = new InventoryPath(minion);
-        path.setPath(Path.of("/tmp/test1"));
-        path = ansibleManager.createAnsiblePath("inventory", minion.getId(), "/tmp/test", user);
+        AnsiblePath path = ansibleManager.createAnsiblePath("inventory", minion.getId(), "/tmp/test", user);
 
         TestUtils.flushSession();
         TestUtils.evict(path);
