@@ -1918,7 +1918,12 @@ end
 
 Then(/^the health check Grafana dashboard should be accessible on "([^"]*)"$/) do |host|
   node = get_target(host)
-  http_code, code = node.run("curl -s -o /dev/null -w '%{http_code}' localhost:3000", check_errors: false)
+  code = 0
+  http_code = ''
+  repeat_until_timeout(timeout: DEFAULT_TIMEOUT, message: 'Waiting for Grafana to be up and running') do
+    http_code, code = node.run("curl -s -o /dev/null -w '%{http_code}' localhost:3000", check_errors: false)
+    break if http_code.strip == '200'
+  end
   raise "Grafana dashboard not accessible: curl failed with exit code #{code}" unless code.zero?
   raise "Grafana dashboard not accessible: expected HTTP 200, got #{http_code.strip}" unless http_code.strip == '200'
 end
