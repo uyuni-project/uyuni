@@ -1,21 +1,25 @@
 @import "./suse-light-variables.scss";
 
-
 // This variable set controls the body color
 $body-background: $eos-dt-gray-1000;
 $body-color: $white;
 
-$link-color: $eos-bc-cerulean-500;
+$link-color: $eos-dt-blue-100;
 $box-shadow: $eos-bc-gray-1000;
+
+// Status Text color
 $text-success-color: $eos-bc-green-500;
+$text-info-color: $eos-bc-cerulean-500;
+$text-warning-color: $eos-bc-yellow-900;
+$text-danger-color: $eos-dt-red-500;
 
 //Side nav
 $aside-background: $eos-dt-gray-900;
 $aside-menu-text: $eos-bc-white;
 $aside-search-text-color: $eos-bc-white;
 $aside-footer-text: $eos-bc-white;
-$aside-footer-border: $eos-bc-dt-gray-700;
-$aside-search-border: $eos-bc-dt-gray-700;
+$aside-footer-border: $eos-dt-gray-400;
+$aside-search-border: $eos-dt-gray-400;
 
 //Tabs
 $tabs-border-color: $eos-dt-gray-400;
@@ -29,7 +33,6 @@ $panel-border: $eos-dt-gray-400;
 $list-item-border: $eos-dt-gray-600;
 $list-item-hover-bg: $eos-dt-gray-700;
 
-
 //Panel white
 $panel-white-bg: $eos-dt-gray-700;
 $panel-white-border-color: $eos-dt-gray-400;
@@ -39,6 +42,7 @@ $tb-thead-tr-bg: $eos-dt-gray-900;
 $tb-orderBy-text: $eos-bc-white;
 $tb-border-color: $eos-dt-gray-600;
 $table-row-hover-bg: $eos-dt-gray-700; //$gray-light;
+$selected-row-details-bg: $eos-dt-gray-700;
 
 //buttons
 $btn-default-color: $eos-bc-white;
@@ -61,6 +65,7 @@ $input-disabled-bg: $eos-dt-gray-700;
 
 // Input AceEditor
 $ace-gutter-bg: $eos-dt-gray-600;
+$ace-gutter-color: $eos-dt-gray-100;
 
 /* Select Dropdown Menu */
 $select-dropdown-bg: $eos-dt-gray-600;
@@ -84,8 +89,22 @@ $pre-border: $eos-dt-gray-600;
 
 // Code
 $code-bg: rgba($eos-dt-gray-400, 31%);
+$pre-code-color: $eos-dt-red-300;
 
 // Modal
 $modal-backdrop-color: rgba($eos-bc-gray-1000, 70%);
 $modal-bg: $eos-dt-gray-700;
 $modal-border: $eos-dt-gray-400;
+
+// progress-bar
+$progress-step-circle: $eos-bc-gray-500;
+$progress-step-line: $eos-bc-gray-500;
+$progress-step-circle-active: $eos-bc-gray-300;
+$progress-step-line-active: $eos-bc-green-500;
+
+/* storybook */
+$sb-striped-bg: $eos-bc-gray-1000;
+$sb-striped-border: $eos-dt-gray-700;
+
+/* Product Page */
+$product-installed-color: $eos-bc-green-500;
