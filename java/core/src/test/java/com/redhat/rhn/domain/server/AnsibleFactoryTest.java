@@ -29,17 +29,10 @@ import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
 
-/**
- * Tests for {@link AnsibleFactory}
- */
-public class AnsibleFactoryTest extends BaseTestCaseWithUser {
+class AnsibleFactoryTest extends BaseTestCaseWithUser {
 
-    /**
-     * Test basic save - read cycle of AnsiblePath implementations
-     * @throws Exception
-     */
     @Test
-    public void testSaveAndFindAnsiblePath() throws Exception {
+    void testSaveAndFindAnsiblePath() {
         MinionServer minionServer1 = MinionServerFactoryTest.createTestMinionServer(user);
         MinionServer minionServer2 = MinionServerFactoryTest.createTestMinionServer(user);
 
@@ -66,11 +59,8 @@ public class AnsibleFactoryTest extends BaseTestCaseWithUser {
         assertEquals(inventoryPath, AnsibleFactory.listAnsiblePaths(minionServer1.getId()).iterator().next());
     }
 
-    /**
-     * Test removing AnsiblePath
-     */
     @Test
-    public void testRemoveAnsiblePath() throws Exception {
+    void testRemoveAnsiblePath() {
         MinionServer minionServer1 = MinionServerFactoryTest.createTestMinionServer(user);
         AnsiblePath inventoryPath = new InventoryPath(minionServer1);
         inventoryPath.setPath(Path.of("/tmp/test1"));
@@ -81,7 +71,7 @@ public class AnsibleFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void generatedCoverageTestLookupAnsibleInventoryPath() {
+    void generatedCoverageTestLookupAnsibleInventoryPath() {
         // this test has been generated programmatically to test AnsibleFactory.lookupAnsibleInventoryPath
         // containing a hibernate query that is not covered by any test so far
         // feel free to modify and/or complete it
@@ -89,7 +79,7 @@ public class AnsibleFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void generatedCoverageTestListAnsiblePlaybookPaths() {
+    void generatedCoverageTestListAnsiblePlaybookPaths() {
         // this test has been generated programmatically to test AnsibleFactory.listAnsiblePlaybookPaths
         // containing a hibernate query that is not covered by any test so far
         // feel free to modify and/or complete it
