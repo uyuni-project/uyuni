@@ -225,6 +225,9 @@ When(/^I select "([^"]*)" from "([^"]*)"$/) do |option, field|
 end
 
 When(/^I select the parent channel for the "([^"]*)" from "([^"]*)"$/) do |client, from|
+  # ponytail: same $is_transactional_server bug as api_common.rb/command_steps.rb (fixed with
+  # host_transactional?(client)), left as-is because no caller passes client == 'proxy' today.
+  # Apply the same fix here if/when this branch becomes reachable.
   client = 'proxy_nontransactional' if client == 'proxy' && !$is_transactional_server
   select(BASE_CHANNEL_BY_CLIENT[product][client], from: from, exact: false)
 end
@@ -517,9 +520,10 @@ Given(/^I am authorized for the "([^"]*)" section$/) do |section|
 end
 
 # access the clients
-Given(/^I am on the Systems overview page of this "([^"]*)"$/) do |host|
+Given(/^I am on the Systems overview page of this "([^"]*)"(?: on (server|server2|server3|hub|peripheral1|peripheral2))?$/) do |host, mgr_server|
+  mgr_server ||= 'server'
   node = get_target(host)
-  system_id = get_system_id(node)
+  system_id = get_system_id(node, mgr_server: mgr_server)
   overview_page = "/rhn/systems/details/Overview.do?sid=#{system_id}"
   visit(overview_page)
   # An automated refresh from the software might return another page (race condition)
@@ -626,19 +630,22 @@ end
 # login, logout steps
 
 Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd|
-  # Save the user and password in global variables to be used by the API calls
-  $current_user = user
-  $current_password = passwd
+  # Record the identity for whichever host the web UI is currently pointed at, so
+  # API/spacecmd calls against that same host authenticate as the right user.
+  Credentials.login_as(user, passwd)
   begin
     page.reset!
   rescue NoMethodError => e
     log "The browser session could not be cleaned because there is no browser available: #{e.message}"
     capybara_register_driver
-    Capybara.reset_sessions!
+    # Reset only the current session's driver. Capybara.reset_sessions! would reset every
+    # named session in the pool, including peripheral servers parked via switch_to_server/
+    # using_server, silently logging them out and defeating session reuse across hosts.
+    Capybara.current_session.reset!
   rescue StandardError => e
     log "The browser session could not be cleaned for unknown issue: #{e.message}"
     capybara_register_driver
-    Capybara.reset_sessions!
+    Capybara.current_session.reset!
   ensure
     begin
       visit Capybara.app_host
@@ -648,10 +655,19 @@ Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd
       warn "Navigation to #{Capybara.app_host} aborted (#{e.message.lines.first.chomp}) — retrying once"
       sleep 1
       visit Capybara.app_host
+    rescue Playwright::Transport::AlreadyDisconnectedError => e
+      # BUG-024/BUG-025: unlike Playwright::Error above, this means the Node driver's pipe is
+      # already dead (browser process crashed or was killed, e.g. by the env.rb scenario
+      # watchdog) - retrying visit on the same transport would just raise the same error again.
+      # Rebuild the driver and session before retrying so the next scenario gets a live browser.
+      warn "Browser transport already disconnected (#{e.message}) — rebuilding driver and retrying"
+      capybara_register_driver
+      Capybara.current_session.reset!
+      visit Capybara.app_host
     end
   end
   begin
-    next if all(:xpath, "//header//span[text()='#{$current_user}']", wait: IMMEDIATE_WAIT).any?
+    next if all(:xpath, "//header//span[text()='#{user}']", wait: IMMEDIATE_WAIT).any?
   rescue NoMethodError, Capybara::NotSupportedByDriverError
     # driver is not ready yet after session reset, proceed to full login
   end
@@ -664,8 +680,8 @@ Given(/^I am authorized as "([^"]*)" with password "([^"]*)"$/) do |user, passwd
 
   raise ScriptError, 'Login page is not correctly loaded' unless has_field?('username')
 
-  fill_in('username', with: $current_user)
-  fill_in('password', with: $current_password)
+  fill_in('username', with: user)
+  fill_in('password', with: passwd)
   click_button_and_wait('Sign In', match: :first)
 
   step 'I should be logged in'

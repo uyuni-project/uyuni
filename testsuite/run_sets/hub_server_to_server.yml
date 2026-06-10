@@ -1,0 +1,35 @@
+# Hub server-to-server run set.
+# Requires: one hub (SERVER) and one peripheral (SERVER2).
+# No proxy or minion nodes needed.
+# Tag: @hub_server_to_server
+#
+# Run with:
+#   cucumber -r features features/hub/srv_hub_*.feature --tags @hub_server_to_server
+
+## Hub server-to-server features BEGIN ##
+
+# A-01/A-02: Hub deployment check and registration via admin credentials
+- features/hub/srv_hub_setup_registration.feature
+
+# A-03/A-04: Registration via access token (same CA and cross-CA)
+- features/hub/srv_hub_token_registration.feature
+
+# A-05: Access token lifecycle (issue/invalidate/reactivate/delete)
+- features/hub/srv_hub_token_lifecycle.feature
+
+# A-06: ISSv3 online channel synchronization hub -> peripheral
+- features/hub/srv_hub_channel_synchronization.feature
+
+# A-07/A-08: Hub XMLRPC API namespaces
+- features/hub/srv_hub_xmlrpc_operations.feature
+
+# A-09: ISSv2 CLI export/import
+- features/hub/srv_hub_issv2_export_import.feature
+
+# C-01: Hub reportdb aggregation from peripherals
+- features/hub/srv_hub_reporting.feature
+
+# A-10: Peripheral deregistration and state cleanup
+- features/hub/srv_hub_verification_cleanup.feature
+
+## Hub server-to-server features END ##
