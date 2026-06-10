@@ -204,6 +204,11 @@ import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.xmlrpc.NoSuchHistoryEventException;
 import com.suse.manager.xmlrpc.dto.SystemEventDetailsDto;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -9319,6 +9324,69 @@ public class SystemHandler extends BaseHandler {
 
     private static List<String> maybeActivationKeys(String activationKey) {
         return StringUtils.isEmpty(activationKey) ? Collections.emptyList() : List.of(activationKey);
+    }
+
+    /**
+     * Get Btrfs snapshot information for a transactional system.
+     * Returns the active (currently booted) snapshot number, the default (next-boot)
+     * snapshot number, and the full list of known snapshots with their details.
+     *
+     * @param loggedInUser the authenticated user
+     * @param sid          the system ID
+     * @return map with snapshot information
+     * @throws UnsupportedOperationException if the system is not a Salt minion or not a
+     *                                       transactional system
+     *
+     * @apidoc.doc Get Btrfs snapshot information for a transactional system.
+     * @apidoc.param #session_key()
+     * @apidoc.param #param("int", "sid")
+     * @apidoc.returntype
+     *   #struct_begin("snapshot info")
+     *     #prop_desc("int", "activeSnapshot", "Currently active (booted) snapshot number")
+     *     #prop_desc("int", "defaultSnapshot", "Default (next-boot) snapshot number")
+     *     #prop_desc("array", "snapshots", "All known snapshots")
+     *       #struct_begin("snapshot")
+     *         #prop_desc("int", "number", "Snapshot number")
+     *         #prop_desc("boolean", "active", "True if this is the currently booted snapshot")
+     *         #prop_desc("boolean", "default", "True if this is the next-boot snapshot")
+     *         #prop_desc("string", "description", "Snapshot description")
+     *         #prop_desc("string", "date", "Creation date")
+     *       #struct_end()
+     *     #prop_end()
+     *   #struct_end()
+     */
+    @ReadOnly
+    public Map<String, Object> getSnapshotInfo(User loggedInUser, Integer sid) {
+        MinionServer minion = SystemManager.lookupByIdAndUser(sid.longValue(), loggedInUser)
+                .asMinionServer()
+                .orElseThrow(() -> new UnsupportedOperationException(
+                        "System " + sid + " is not a Salt minion"));
+        if (!minion.doesOsSupportsTransactionalUpdate()) {
+            throw new UnsupportedOperationException(
+                    "System " + sid + " is not a transactional system");
+        }
+
+        List<Map<String, Object>> snapshotList = new ArrayList<>();
+        String detailsJson = minion.getSnapshotDetails();
+        if (detailsJson != null && !detailsJson.isBlank()) {
+            JsonArray arr = JsonParser.parseString(detailsJson).getAsJsonArray();
+            for (JsonElement el : arr) {
+                JsonObject snap = el.getAsJsonObject();
+                Map<String, Object> entry = new LinkedHashMap<>();
+                entry.put("number", snap.get("number").getAsLong());
+                entry.put("active", snap.get("active").getAsBoolean());
+                entry.put("default", snap.get("default").getAsBoolean());
+                entry.put("description", snap.get("description").getAsString());
+                entry.put("date", snap.get("date").getAsString());
+                snapshotList.add(entry);
+            }
+        }
+
+        Map<String, Object> result = new LinkedHashMap<>();
+        result.put("activeSnapshot", minion.getActiveSnapshot());
+        result.put("defaultSnapshot", minion.getDefaultSnapshot());
+        result.put("snapshots", snapshotList);
+        return result;
     }
 
 }
