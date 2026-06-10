@@ -253,6 +253,14 @@ public class AccessTokenFactory extends HibernateFactory {
     }
 
     /**
+     * Deletes all the AccessTokens
+     */
+    public static void deleteAll() {
+        List<AccessToken> allAccessTokens = all();
+        allAccessTokens.forEach(AccessTokenFactory::delete);
+    }
+
+    /**
      * Generates an AccessToken for the given MinionServer and set of channels.
      * @param minion minion
      * @param channels set of channels

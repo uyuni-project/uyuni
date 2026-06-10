@@ -15,6 +15,7 @@
  */
 package com.redhat.rhn.testing;
 
+import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.kickstart.KickstartDataTest;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.user.User;
@@ -48,6 +49,7 @@ public abstract class JMockBaseTestCaseWithUser extends RhnJmockBaseTestCase {
         // clean up our mess
         if (committed) {
             OrgFactory.deleteOrg(user.getOrg().getId(), user);
+            AccessTokenFactory.deleteAll();
             TestUtils.commitAndCloseSession();
         }
         committed = false;
