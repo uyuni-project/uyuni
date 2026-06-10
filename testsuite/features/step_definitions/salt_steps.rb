@@ -8,9 +8,10 @@ require 'timeout'
 require 'open-uri'
 require 'tempfile'
 
-Given(/^the Salt master can reach "(.*?)"$/) do |minion|
-  system_name = get_system_name(minion)
-  server = get_target('server')
+Given(/^the Salt master can reach "(.*?)"(?: on (server|server2|server3|hub|peripheral1|peripheral2))?$/) do |minion, host|
+  host ||= 'server'
+  system_name = get_system_name(minion, mgr_server: host)
+  server = get_target(host)
   start = Time.now
   # 700 seconds is the maximum time it takes the proxy to recover after being redefined for Retail
   # 300 seconds would be the default first keepalive interval for the minion before it realizes the connection is stuck
