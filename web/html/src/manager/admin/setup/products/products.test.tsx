@@ -56,7 +56,7 @@ describe("Testing searchCriteriaInExtension", () => {
   test("check criteria in first level extension label and channels", () => {
     const criteriaLabel = "extension 1 child 1";
     const criteriaChannel1 = "extension 1 child 1 channel 1";
-    const criteriaChannel2 = "extension 1 child 1 channel 1";
+    const criteriaChannel2 = "extension 1 child 1 channel 2";
     const criteriaWrong = "redhat";
 
     expect(searchCriteriaInExtension(extension, criteriaLabel)).toBeTruthy();
