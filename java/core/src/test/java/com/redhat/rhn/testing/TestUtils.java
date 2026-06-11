@@ -465,6 +465,12 @@ public class TestUtils {
         allAccessTokens.forEach(AccessTokenFactory::delete);
     }
 
+    /**
+     * delete last mgr-sync refresh entry in suseManagerInfo: used only in testing
+     */
+    public static void deleteLastMgrSyncRefresh() {
+        HibernateFactory.getSession().createNativeMutationQuery("DELETE FROM suseManagerInfo").executeUpdate();
+    }
 
     //=========================================================================
     // HIBERNATE METHODS
