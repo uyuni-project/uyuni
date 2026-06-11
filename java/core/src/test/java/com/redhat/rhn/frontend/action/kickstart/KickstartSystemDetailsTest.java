@@ -48,7 +48,7 @@ public class KickstartSystemDetailsTest extends BaseKickstartEditTestCase {
         // will return something.
         setupForDisplay(ksdata);
         actionPerform();
-        verifyNoActionErrors();
+        testActionHasNoErrors();
      }
 
     @Test
@@ -59,7 +59,7 @@ public class KickstartSystemDetailsTest extends BaseKickstartEditTestCase {
         addRequestParameter("rootPasswordConfirm", "blahblah");
         addRequestParameter("pwdChanged", "true");
         actionPerform();
-        verifyNoActionErrors();
+        testActionHasNoErrors();
         verifyFormValue("selinuxMode", "enforcing");
     }
 
@@ -71,7 +71,7 @@ public class KickstartSystemDetailsTest extends BaseKickstartEditTestCase {
         addRequestParameter("pwdChanged", "true");
         actionPerform();
         String[] errMessages = {"kickstart.systemdetails.root.password.jsp.error"};
-        verifyActionErrors(errMessages);
+        testActionHasErrors(errMessages);
     }
 
     @Test
@@ -82,7 +82,7 @@ public class KickstartSystemDetailsTest extends BaseKickstartEditTestCase {
         addRequestParameter("rootPasswordConfirm", "blahblah");
         addRequestParameter("pwdChanged", "true");
         actionPerform();
-        verifyNoActionErrors();
+        testActionHasNoErrors();
     }
 
     @Test
@@ -100,7 +100,7 @@ public class KickstartSystemDetailsTest extends BaseKickstartEditTestCase {
                 SELinuxMode.ENFORCING.getValue());
         actionPerform();
         assertEquals("--enforcing", ksdata.getCommand("selinux").getArguments());
-        verifyNoActionErrors();
+        testActionHasNoErrors();
     }
 
     private void setupForDisplay(KickstartData k) {

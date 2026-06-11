@@ -103,7 +103,7 @@ public class KickstartIpRangeActionTest extends RhnPostMockStrutsTestCase {
         actionPerform();
         assertNotNull(request.getAttribute(RequestContext.KICKSTART));
         String[] keys = {"kickstart.iprange_add.success"};
-        verifyActionMessages(keys);
+        testActionHasMessages(keys);
     }
 
     @Test
@@ -121,7 +121,7 @@ public class KickstartIpRangeActionTest extends RhnPostMockStrutsTestCase {
         actionPerform();
         assertNotNull(request.getAttribute(RequestContext.KICKSTART));
         String[] keys = {"kickstart.iprange_validate.failure"};
-        verifyActionErrors(keys);
+        testActionHasErrors(keys);
     }
 
     @Test
@@ -158,7 +158,7 @@ public class KickstartIpRangeActionTest extends RhnPostMockStrutsTestCase {
         actionPerform();
         assertNotNull(request.getAttribute(RequestContext.KICKSTART));
         String[] keys = {"kickstart.iprange_conflict.failure"};
-        verifyActionErrors(keys);
+        testActionHasErrors(keys);
     }
 
     @Test
@@ -187,7 +187,7 @@ public class KickstartIpRangeActionTest extends RhnPostMockStrutsTestCase {
         actionPerform();
         assertNotNull(request.getAttribute(RequestContext.KICKSTART));
         String[] keys = {"kickstart.iprange_delete.success"};
-        verifyActionMessages(keys);
+        testActionHasMessages(keys);
     }
 
     @Test
@@ -213,7 +213,7 @@ public class KickstartIpRangeActionTest extends RhnPostMockStrutsTestCase {
 
         actionPerform();
         String[] keys = {"kickstart.iprange_delete.failure"};
-        verifyActionErrors(keys);
+        testActionHasErrors(keys);
     }
 }
 

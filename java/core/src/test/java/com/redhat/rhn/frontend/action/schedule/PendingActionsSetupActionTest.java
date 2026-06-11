@@ -54,7 +54,7 @@ public class PendingActionsSetupActionTest extends RhnPostMockStrutsTestCase {
 
 
         actionPerform();
-        verifyForwardPath("/WEB-INF/pages/schedule/pendingactions.jsp");
+        testForwardPath("/WEB-INF/pages/schedule/pendingactions.jsp");
         Object test = request.getAttribute("dataset");
         assertNotNull(test);
 
@@ -79,7 +79,7 @@ public class PendingActionsSetupActionTest extends RhnPostMockStrutsTestCase {
         request.addParameter(RhnAction.SUBMITTED, "true");
         request.addParameter("dispatch", "Cancel Actions");
         actionPerform();
-        verifyForwardPath("/schedule/PendingActionsDeleteConfirm.do");
+        testForwardPath("/schedule/PendingActionsDeleteConfirm.do");
 
 
     }

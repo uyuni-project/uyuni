@@ -61,7 +61,7 @@ public class RestartActionTest extends RhnPostMockStrutsTestCase {
         addRequestParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
         addRequestParameter(RestartAction.RESTART, Boolean.TRUE.toString());
         actionPerform();
-        verifyActionMessages(new String[]{"restart.config.success"});
+        testActionHasMessages(new String[]{"restart.config.success"});
         assertEquals(request.getParameter(RestartAction.RESTART), Boolean.TRUE.toString());
     }
 
@@ -71,7 +71,7 @@ public class RestartActionTest extends RhnPostMockStrutsTestCase {
         addRequestParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
         addRequestParameter(RestartAction.RESTART, Boolean.FALSE.toString());
         actionPerform();
-        verifyActionMessages(new String[]{"restart.config.norestart"});
+        testActionHasMessages(new String[]{"restart.config.norestart"});
         assertEquals(request.getParameter(RestartAction.RESTART), Boolean.FALSE.toString());
     }
 
@@ -82,7 +82,7 @@ public class RestartActionTest extends RhnPostMockStrutsTestCase {
         addRequestParameter(RestartAction.RESTART, Boolean.FALSE.toString());
         addRequestParameter(RestartAction.RESTARTED, Boolean.TRUE.toString());
         actionPerform();
-        verifyActionMessages(new String[]{"restart.config.restarted"});
+        testActionHasMessages(new String[]{"restart.config.restarted"});
     }
 }
 

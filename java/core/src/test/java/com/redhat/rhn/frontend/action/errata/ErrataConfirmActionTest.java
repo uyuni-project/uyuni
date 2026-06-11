@@ -57,7 +57,7 @@ public class ErrataConfirmActionTest extends RhnPostMockStrutsTestCase {
         addRequestParameter("allowVendorChange", new String[]{"false"});
         // Execute the Action
         actionPerform();
-        verifyForward("confirmed");
+        testForwardName("confirmed");
     }
 
 }

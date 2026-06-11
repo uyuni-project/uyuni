@@ -39,7 +39,7 @@ public class ArchivedActionsSetupTest extends RhnMockStrutsTestCase {
 
 
         actionPerform();
-        verifyForwardPath("/WEB-INF/pages/schedule/archivedactions.jsp");
+        testForwardPath("/WEB-INF/pages/schedule/archivedactions.jsp");
         Object test = request.getAttribute("dataset");
         assertNotNull(test);
 

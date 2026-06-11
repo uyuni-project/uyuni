@@ -58,7 +58,7 @@ public class OrgCreateActionTest extends RhnPostMockStrutsTestCase {
         actionPerform();
         String[] errors =  {"errors.required", "errors.required",
                 "errors.required", "errors.required", "errors.required", "errors.required"};
-        verifyActionErrors(errors);
+        testActionHasErrors(errors);
     }
 
     @Test
@@ -77,7 +77,7 @@ public class OrgCreateActionTest extends RhnPostMockStrutsTestCase {
         addRequestParameter("prefix", "Mr.");
         setRequestPathInfo("/admin/multiorg/OrgCreate");
         actionPerform();
-        verifyActionErrors(new String[]{"error.login_already_taken"});
+        testActionHasErrors(new String[]{"error.login_already_taken"});
     }
 
     // This had better fail if there are any organizations already!

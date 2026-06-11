@@ -57,7 +57,7 @@ public class CryptoKeyCreateActionTest extends RhnPostMockStrutsTestCase {
         actionPerform();
         assertNotNull(request.getAttribute(CryptoKeyCreateAction.KEY));
         String[] keys = {"crypto.key.nokey"};
-        verifyActionErrors(keys);
+        testActionHasErrors(keys);
     }
 
     @Test
@@ -72,7 +72,7 @@ public class CryptoKeyCreateActionTest extends RhnPostMockStrutsTestCase {
         addRequestParameter(RequestContext.KEY_ID, key.getId().toString());
         addUploadedFile(CryptoKeyCreateAction.CONTENTS, "somekey", "test key content");
         actionPerform();
-        verifyNoActionErrors();
+        testActionHasNoErrors();
     }
 }
 

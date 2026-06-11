@@ -41,8 +41,6 @@ import org.junit.jupiter.api.Test;
 import java.util.Date;
 import java.util.Optional;
 
-import servletunit.HttpServletRequestSimulator;
-
 /**
  * Tests SsmKSScheduleAction.
  */
@@ -73,10 +71,10 @@ public class SsmKSScheduleActionTest extends RhnMockStrutsTestCase {
         addDispatchCall(SsmKSScheduleAction.CREATE_RECORDS_BUTTON);
 
         setRequestPathInfo("/systems/ssm/kickstart/ScheduleByProfile");
-        request.setMethod(HttpServletRequestSimulator.POST);
+        request.setMethod("POST");
         actionPerform();
 
-        assertEquals(302, getMockResponse().getStatusCode());
+        assertEquals(302, getResponse().getStatus());
 
         SystemRecord record1 = SystemRecord.lookupById(connection, server1.getCobblerId());
         assertNotNull(record1);
@@ -120,10 +118,10 @@ public class SsmKSScheduleActionTest extends RhnMockStrutsTestCase {
         addDispatchCall(SsmKSScheduleAction.CREATE_RECORDS_BUTTON);
 
         setRequestPathInfo("/systems/ssm/kickstart/ScheduleByIp");
-        request.setMethod(HttpServletRequestSimulator.POST);
+        request.setMethod("POST");
         actionPerform();
 
-        assertEquals(302, getMockResponse().getStatusCode());
+        assertEquals(302, getResponse().getStatus());
 
         SystemRecord record1 = SystemRecord.lookupById(connection, server1.getCobblerId());
         assertNotNull(record1);
@@ -149,10 +147,10 @@ public class SsmKSScheduleActionTest extends RhnMockStrutsTestCase {
         addDispatchCall(SsmKSScheduleAction.CREATE_RECORDS_BUTTON);
 
         setRequestPathInfo("/systems/ssm/kickstart/ScheduleByProfile");
-        request.setMethod(HttpServletRequestSimulator.POST);
+        request.setMethod("POST");
         actionPerform();
 
-        assertEquals(302, getMockResponse().getStatusCode());
+        assertEquals(302, getResponse().getStatus());
 
         SystemRecord record1 = SystemRecord.lookupById(connection, server.getCobblerId());
         assertNull(record1);
@@ -196,10 +194,10 @@ public class SsmKSScheduleActionTest extends RhnMockStrutsTestCase {
         addDispatchCall(SsmKSScheduleAction.CREATE_RECORDS_BUTTON);
 
         setRequestPathInfo("/systems/ssm/kickstart/ScheduleByIp");
-        request.setMethod(HttpServletRequestSimulator.POST);
+        request.setMethod("POST");
         actionPerform();
 
-        assertEquals(302, getMockResponse().getStatusCode());
+        assertEquals(302, getResponse().getStatus());
 
         SystemRecord systemRecord = SystemRecord.lookupById(connection, server.getCobblerId());
         assertNotNull(systemRecord);

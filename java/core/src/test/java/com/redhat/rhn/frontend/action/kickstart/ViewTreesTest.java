@@ -30,6 +30,6 @@ public class ViewTreesTest extends RhnMockStrutsTestCase {
         KickstartableTreeTest.createTestKickstartableTree();
         setRequestPathInfo("/kickstart/ViewTrees");
         actionPerform();
-        verifyNoActionErrors();
+        testActionHasNoErrors();
     }
 }

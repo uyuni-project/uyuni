@@ -52,7 +52,7 @@ public class SelectVerifyPackagesActionTest extends RhnMockStrutsTestCase {
         actionPerform();
 
         // Verify
-        verifyForward(RhnHelper.DEFAULT_FORWARD);
+        testForwardName(RhnHelper.DEFAULT_FORWARD);
 
         Object pageList = getRequest().getAttribute(RequestContext.PAGE_LIST);
         assertNotNull(pageList);
@@ -72,7 +72,7 @@ public class SelectVerifyPackagesActionTest extends RhnMockStrutsTestCase {
         actionPerform();
 
         // Verify
-        verifyForward("confirm");
+        testForwardName("confirm");
     }
 
     private void selectAllPackagesInUI() {

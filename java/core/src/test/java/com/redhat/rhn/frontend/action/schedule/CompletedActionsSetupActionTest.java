@@ -52,7 +52,7 @@ public class CompletedActionsSetupActionTest extends RhnPostMockStrutsTestCase {
 
 
         actionPerform();
-        verifyForwardPath("/WEB-INF/pages/schedule/completedactions.jsp");
+        testForwardPath("/WEB-INF/pages/schedule/completedactions.jsp");
         Object test = request.getAttribute("dataset");
         assertNotNull(test);
 
@@ -79,7 +79,7 @@ public class CompletedActionsSetupActionTest extends RhnPostMockStrutsTestCase {
         request.addParameter("dispatch", "Archive Errata");
         actionPerform();
         verifyActionMessage("message.actionArchived");
-        verifyForwardPath("/schedule/CompletedActions.do");
+        testForwardPath("/schedule/CompletedActions.do");
 
 
     }

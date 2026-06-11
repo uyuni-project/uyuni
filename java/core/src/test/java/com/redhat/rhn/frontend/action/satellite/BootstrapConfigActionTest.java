@@ -71,6 +71,6 @@ public class BootstrapConfigActionTest extends RhnPostMockStrutsTestCase {
         addRequestParameter(BootstrapConfigAction.HOSTNAME, "localhost");
         setRequestPathInfo("/admin/config/BootstrapConfig");
         actionPerform();
-        verifyActionMessages(new String[]{"bootstrap.config.success"});
+        testActionHasMessages(new String[]{"bootstrap.config.success"});
     }
 }

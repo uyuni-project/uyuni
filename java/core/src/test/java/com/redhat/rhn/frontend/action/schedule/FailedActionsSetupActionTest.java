@@ -53,7 +53,7 @@ public class FailedActionsSetupActionTest extends RhnPostMockStrutsTestCase {
 
 
         actionPerform();
-        verifyForwardPath("/WEB-INF/pages/schedule/failedactions.jsp");
+        testForwardPath("/WEB-INF/pages/schedule/failedactions.jsp");
         Object test = request.getAttribute("dataset");
         assertNotNull(test);
 
@@ -79,7 +79,7 @@ public class FailedActionsSetupActionTest extends RhnPostMockStrutsTestCase {
         request.addParameter("dispatch", "Archive Errata");
         actionPerform();
         verifyActionMessage("message.actionArchived");
-        verifyForwardPath("/schedule/FailedActions.do");
+        testForwardPath("/schedule/FailedActions.do");
 
 
     }

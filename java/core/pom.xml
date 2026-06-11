@@ -523,11 +523,6 @@
             <artifactId>wiremock-standalone</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>strutstest</groupId>
-            <artifactId>strutstest</artifactId>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
 
     <build>

@@ -116,9 +116,5 @@
            <artifact name="nodeps" type="jar" url="https://repo1.maven.org/maven2/org/jacoco/org.jacoco.ant/0.8.7/org.jacoco.ant-0.8.7-nodeps.jar"/>
         </dependency>
         <dependency org="com.github.tomakehurst" name="wiremock-standalone" rev="2.27.2" transitive="false"/>
-        <!-- todo move to our org -->
-        <dependency org="strutstest" name="strutstest" rev="1.0.0" transitive="false">
-            <artifact name="strutstestcase" type="jar" url="https://github.com/uyuni-project/strutstestcase/releases/download/v1.0.0-uyuni/strutstest-uyuni-1.0.0.jar"/>
-        </dependency>
     </dependencies>
 </ivy-module>

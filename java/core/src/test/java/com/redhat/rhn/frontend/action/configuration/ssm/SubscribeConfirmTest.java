@@ -47,7 +47,7 @@ public class SubscribeConfirmTest extends RhnMockStrutsTestCase {
         // Assert initial page request
         addRequestParameter(SubscribeConfirm.POSITION, SubscribeConfirm.LOWEST);
         actionPerform();
-        verifyForward(RhnHelper.DEFAULT_FORWARD);
+        testForwardName(RhnHelper.DEFAULT_FORWARD);
     }
 
     @Test
@@ -115,7 +115,7 @@ public class SubscribeConfirmTest extends RhnMockStrutsTestCase {
         addDispatchCall("ssm.config.subscribeconfirm.jsp.confirm");
         addRequestParameter(SubscribeConfirm.POSITION, SubscribeConfirm.LOWEST);
         actionPerform();
-        verifyForward("success");
+        testForwardName("success");
 
         TestUtils.flushAndClearSession();
 
@@ -204,7 +204,7 @@ public class SubscribeConfirmTest extends RhnMockStrutsTestCase {
         addDispatchCall("ssm.config.subscribeconfirm.jsp.confirm");
         addRequestParameter(SubscribeConfirm.POSITION, SubscribeConfirm.HIGHEST);
         actionPerform();
-        verifyForward("success");
+        testForwardName("success");
 
         // Ensure we get a new session and execute the query to extract  the server
         TestUtils.flushAndClearSession();
@@ -293,7 +293,7 @@ public class SubscribeConfirmTest extends RhnMockStrutsTestCase {
         addDispatchCall("ssm.config.subscribeconfirm.jsp.confirm");
         addRequestParameter(SubscribeConfirm.POSITION, SubscribeConfirm.REPLACE);
         actionPerform();
-        verifyForward("success");
+        testForwardName("success");
 
         // Ensure we get a new session and execute the query to extract  the server
         TestUtils.flushAndClearSession();
