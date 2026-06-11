@@ -235,6 +235,11 @@ public class ContentSyncManagerPaygTest extends RhnBaseTestCase {
             if (Objects.nonNull(tmpLogDir)) {
                 FileUtils.forceDelete(tmpLogDir.toFile());
             }
+
+            //clear committed entry in suseManagerInfo
+            TestUtils.clearSession();
+            TestUtils.deleteLastMgrSyncRefresh();
+            TestUtils.commitAndCloseSession();
         }
     }
 
