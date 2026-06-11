@@ -23,8 +23,6 @@ import com.redhat.rhn.taskomatic.domain.TaskoRun;
 
 import com.suse.manager.model.hub.HubFactory;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -36,16 +34,11 @@ import jakarta.servlet.http.HttpServletResponse;
  * This is for now just a generic RhnAction used for all pages of the wizard.
  */
 public class SetupWizardAction extends RhnAction {
-    /** Tab menu XML. */
-    private static final String NAVIGATION_XML_PATH = "/WEB-INF/nav/setup_wizard.xml";
 
     // page attributes
     private static final String REFRESH_NEEDED = "refreshNeeded";
     private static final String ISS_MASTER = "issMaster";
     private static final String REFRESH_RUNNING = "refreshRunning";
-
-    // Logger for this class
-    private static Logger logger = LogManager.getLogger(SetupWizardAction.class);
 
     /**
       * {@inheritDoc}

@@ -74,7 +74,7 @@ public class ChangeEmailAction extends RhnAction {
                     "uid", user.getId().toString());
            }
         }
-        else if (email.equals(newEmail)) {
+        else {
             errors.add(ActionMessages.GLOBAL_MESSAGE,
                        new ActionMessage("error.same_email"));
         }

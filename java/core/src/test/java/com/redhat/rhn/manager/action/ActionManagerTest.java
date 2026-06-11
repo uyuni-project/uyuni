@@ -100,9 +100,7 @@ import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.webui.services.TestSaltApi;
-import com.suse.manager.webui.services.TestSystemQuery;
 import com.suse.manager.webui.services.iface.SaltApi;
-import com.suse.manager.webui.services.iface.SystemQuery;
 import com.suse.salt.netapi.calls.modules.Schedule;
 import com.suse.salt.netapi.results.Result;
 import com.suse.salt.netapi.utils.Xor;
@@ -144,7 +142,6 @@ import java.util.stream.Collectors;
 public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     private static Logger log = LogManager.getLogger(ActionManagerTest.class);
     private static TaskomaticApi taskomaticApi;
-    private final SystemQuery systemQuery = new TestSystemQuery();
     private final SaltApi saltApi = new TestSaltApi() {
         @Override
         public void deleteKey(String minionId) {
