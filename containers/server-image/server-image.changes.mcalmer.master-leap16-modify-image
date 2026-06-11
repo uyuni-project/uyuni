@@ -1,1 +1,2 @@
-- Add openSUSE-build-key to Uyuni Leap 16 based image
+- Add grub2 loaders back to server container after the
+  migration to openSUSE Leap 16.0

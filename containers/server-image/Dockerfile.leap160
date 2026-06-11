@@ -35,8 +35,6 @@ RUN set -euo pipefail; \
         ${PRODUCT_PATTERN_PREFIX}_retail \
         ${USEPYTHON}-pygit2 \
         ${USEPYTHON}-ldap \
-        # required for testsuite when we have an openSUSE Leap based image
-        openSUSE-build-key \
         billing-data-service \
 #       required by mgrSetup.sh
         bind-utils \

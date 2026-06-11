@@ -20,6 +20,7 @@ GIT_REPO="/tmp/test_salt_git_pillar.git"
 
 if [ "$1" == "setup" ]; then
 	echo "Setting up git_pillar environment and restarting Salt master and Salt API"
+	zypper --gpg-auto-import-keys ref
 	zypper in -y git-core || zypper in -y git
 	rpm -q openssh-server || zypper install -y openssh-server
 	mkdir $GIT_REPO
