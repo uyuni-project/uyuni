@@ -35,6 +35,8 @@ RUN set -euo pipefail; \
         ${PRODUCT_PATTERN_PREFIX}_retail \
         ${USEPYTHON}-pygit2 \
         ${USEPYTHON}-ldap \
+        # required for testsuite when we have an openSUSE Leap based image
+        openSUSE-build-key \
         billing-data-service \
 #       required by mgrSetup.sh
         bind-utils \
@@ -42,10 +44,9 @@ RUN set -euo pipefail; \
         ed \
         golang-github-prometheus-node_exporter \
         grafana-formula \
-# temporarily disabled until the packages become available
-#       grub2-arm64-efi
-#       grub2-powerpc-ieee1275
-#       grub2-x86_64-efi
+        grub2-arm64-efi \
+        grub2-powerpc-ieee1275 \
+        grub2-x86_64-efi \
         habootstrap-formula \
         inter-server-sync \
         ipmitool \
