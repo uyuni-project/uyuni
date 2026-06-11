@@ -354,8 +354,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         prd.setBaseproduct(true);
         prd = TestUtils.saveAndReload(prd);
         info.setInstalledProducts(Collections.singleton(prd));
-        ImageInfoFactory.save(info);
-        info = TestUtils.saveAndFlush(info);
+        info = ImageInfoFactory.save(info);
 
         // Update values
         CustomDataKey cdk = CustomDataKeyTest.createTestCustomDataKey(user);
