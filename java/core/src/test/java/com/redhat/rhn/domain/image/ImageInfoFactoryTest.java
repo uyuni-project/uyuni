@@ -100,10 +100,8 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
             new SystemUnentitler(saltApi), new SystemEntitler(saltApi)
     );
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         context.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         saltApiMock = context.mock(TestSaltApi.class);
     }

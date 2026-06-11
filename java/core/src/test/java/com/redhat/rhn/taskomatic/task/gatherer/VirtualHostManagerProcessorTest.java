@@ -51,10 +51,8 @@ public class VirtualHostManagerProcessorTest extends BaseTestCaseWithUser {
     /**
      * {@inheritDoc}
      */
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
 
         virtualHostManager = new VirtualHostManager();
         virtualHostManager.setId(101L);

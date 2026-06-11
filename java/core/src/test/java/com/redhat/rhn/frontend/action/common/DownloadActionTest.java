@@ -44,10 +44,8 @@ public class DownloadActionTest extends RhnMockStrutsTestCase {
     private KickstartData ksdata;
     private KickstartableTree tree;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         ksdata = KickstartDataTest.createKickstartWithChannel(user.getOrg());
         tree = ksdata.getTree();
         tree.setBasePath("/tmp");

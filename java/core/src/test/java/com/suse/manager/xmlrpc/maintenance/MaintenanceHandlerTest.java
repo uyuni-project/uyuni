@@ -32,7 +32,6 @@ import com.suse.manager.model.maintenance.MaintenanceCalendar;
 import com.suse.manager.model.maintenance.MaintenanceSchedule;
 import com.suse.manager.xmlrpc.serializer.RescheduleResultSerializer;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -54,12 +53,6 @@ public class MaintenanceHandlerTest extends BaseHandlerTestCase {
     private static final String EXCHANGE_MULTI1_ICS = "maintenance-windows-multi-exchange-1.ics";
     private static final String EXCHANGE_MULTI2_ICS = "maintenance-windows-multi-exchange-2.ics";
     private static final String TESTDATAPATH = "/com/suse/manager/maintenance/testdata";
-
-    @Override
-    @BeforeEach
-    public void setUp() throws Exception {
-        super.setUp();
-    }
 
     @Test
     public void testMultiScheduleUpdate() throws Exception {

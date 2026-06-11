@@ -33,10 +33,8 @@ public class KickstartAdvancedOptionsActionTest extends RhnPostMockStrutsTestCas
     protected KickstartData ksdata;
     protected KickstartData ksdataOptions;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         this.ksdata = KickstartDataTest.createKickstartWithChannel(user.getOrg());
         this.ksdataOptions = KickstartDataTest.createKickstartWithOptions(user.getOrg());
 

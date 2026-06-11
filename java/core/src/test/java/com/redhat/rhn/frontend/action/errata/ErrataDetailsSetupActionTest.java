@@ -45,9 +45,8 @@ import java.util.Locale;
 public class ErrataDetailsSetupActionTest extends RhnBaseTestCase {
 
     @BeforeEach
-    @Override
     public void setUp() throws Exception {
-        super.setUp();
+
 
         // Set the locale explicitly to check the dates in an known format
         Context.getCurrentContext().setLocale(Locale.US);

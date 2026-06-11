@@ -29,10 +29,8 @@ public class ModularSourcesValidatorTest extends ContentValidatorTestBase {
     private final String msgNoModuleFilters = getLoc().getMessage("contentmanagement.validation.nomodulefilters");
     private final String msgNoModularSources = getLoc().getMessage("contentmanagement.validation.nomodularsources");
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         validator = new ModularSourcesValidator();
     }
 

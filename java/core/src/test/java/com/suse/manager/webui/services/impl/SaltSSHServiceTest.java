@@ -43,10 +43,8 @@ import java.util.Set;
  */
 public class SaltSSHServiceTest extends JMockBaseTestCaseWithUser {
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         Config.get().setString("ssh_push_port_https", "1233");
         Config.get().setString("ssh_push_sudo_user", "mgruser");

@@ -50,10 +50,8 @@ public class ImageSyncedEventMessageActionTest extends JMockBaseTestCaseWithUser
     private MinionServer testMinion;
     private ManagedServerGroup testGroup1, testGroup2;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
 
         // setup a minion
         testMinion = MinionServerFactoryTest.createTestMinionServer(user);

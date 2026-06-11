@@ -40,18 +40,14 @@ public class MgrSyncUtilsTest extends BaseTestCaseWithUser {
 
     private static Path fromdir;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         fromdir = Files.createTempDirectory("sumatest");
         Config.get().setString(ContentSyncManager.RESOURCE_PATH, fromdir.toString());
     }
 
-    @Override
-    @AfterEach
+        @AfterEach
     public void tearDown() throws Exception {
-        super.tearDown();
         Config.get().remove(ContentSyncManager.RESOURCE_PATH);
         FileUtils.deleteDirectory(fromdir.toFile());
         Config.get().setString(ConfigDefaults.SCC_UPDATE_HOST_DOMAIN, ".suse.com");

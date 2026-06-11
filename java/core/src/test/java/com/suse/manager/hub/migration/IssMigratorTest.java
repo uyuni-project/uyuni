@@ -110,9 +110,8 @@ public class IssMigratorTest extends JMockBaseTestCaseWithUser {
     }
 
     @BeforeEach
-    @Override
     public void setUp() throws Exception {
-        super.setUp();
+
 
         Config.get().setString(ConfigDefaults.SERVER_HOSTNAME, LOCAL_SERVER_FQDN);
 
@@ -143,9 +142,7 @@ public class IssMigratorTest extends JMockBaseTestCaseWithUser {
     }
 
     @AfterEach
-    @Override
     public void tearDown() throws Exception {
-        super.tearDown();
 
         Config.get().setString(ConfigDefaults.SERVER_HOSTNAME, originalFqdn);
     }

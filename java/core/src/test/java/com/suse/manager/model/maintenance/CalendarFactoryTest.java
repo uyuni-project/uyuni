@@ -36,10 +36,8 @@ public class CalendarFactoryTest extends JMockBaseTestCaseWithUser {
     private CalendarFactory calendarFactory;
     private ScheduleFactory scheduleFactory;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         this.calendarFactory = new CalendarFactory();
         this.scheduleFactory = new ScheduleFactory();
     }

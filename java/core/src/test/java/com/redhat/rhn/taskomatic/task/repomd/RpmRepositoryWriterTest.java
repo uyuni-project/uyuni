@@ -60,10 +60,8 @@ public class RpmRepositoryWriterTest extends JMockBaseTestCaseWithUser {
     private Path metadataPath;
     private Channel channel;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         mountPointDir = Files.createTempDirectory("rpmrepotest");
 
         channel = ChannelFactoryTest.createTestChannel(user);
@@ -277,10 +275,8 @@ public class RpmRepositoryWriterTest extends JMockBaseTestCaseWithUser {
         return ret;
     }
 
-    @Override
-    @AfterEach
+        @AfterEach
     public void tearDown() throws Exception {
-        super.tearDown();
         FileUtils.deleteDirectory(mountPointDir.toFile());
     }
 }

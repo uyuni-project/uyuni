@@ -44,10 +44,8 @@ public class OSImageBuildHostEntitlementTest extends BaseEntitlementTestCase {
             new SystemUnentitler(saltApi), new SystemEntitler(saltApi)
     );
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         Config.get().setBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED, "true");
     }
 

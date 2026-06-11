@@ -40,10 +40,8 @@ public class HighlightTagTest extends RhnBaseTestCase {
     private RhnMockJspWriter out;
 
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
 
         ht = new HighlightTag();
         tth = TagTestUtils.setupTagTest(ht, null);

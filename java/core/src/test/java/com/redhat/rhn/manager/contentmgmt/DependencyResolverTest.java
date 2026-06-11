@@ -57,10 +57,8 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
     private DependencyResolver resolver;
     private MockModulemdApi api;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
 
         user.addPermanentRole(ORG_ADMIN);
 

@@ -34,10 +34,8 @@ public class SelectVerifyPackagesActionTest extends RhnMockStrutsTestCase {
 
     private SsmActionTestUtils utils;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         setRequestPathInfo("/ssm/PackageVerify");
 
         utils = new SsmActionTestUtils(user);

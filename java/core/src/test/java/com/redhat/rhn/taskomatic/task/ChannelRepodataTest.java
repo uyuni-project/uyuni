@@ -56,9 +56,8 @@ public class ChannelRepodataTest extends JMockBaseTestCaseWithUser {
     private Path tmpMountPoint;
 
     @BeforeEach
-    @Override
     public void setUp() throws Exception {
-        super.setUp();
+
 
         channelRepodata = new ChannelRepodata();
         jobContext = mock(JobExecutionContext.class);
@@ -71,9 +70,7 @@ public class ChannelRepodataTest extends JMockBaseTestCaseWithUser {
     }
 
     @AfterEach
-    @Override
     public void tearDown() throws Exception {
-        super.tearDown();
 
         // Delete all the runs we created
         TaskoFactory.listRunsByBunch("channel-repodata-bunch")

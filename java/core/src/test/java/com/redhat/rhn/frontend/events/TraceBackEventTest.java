@@ -42,7 +42,6 @@ public class TraceBackEventTest extends RhnBaseTestCase {
 
     private MockMail mailer;
 
-    @Override
     @BeforeEach
     public void setUp() {
         mailer = new MockMail();

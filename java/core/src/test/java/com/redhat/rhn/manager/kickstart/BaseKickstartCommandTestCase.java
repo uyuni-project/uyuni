@@ -27,10 +27,8 @@ public class BaseKickstartCommandTestCase extends BaseTestCaseWithUser {
     /**
      * {@inheritDoc}
      */
-    @Override
     @BeforeEach
-    public void setUp() throws Exception {
-        super.setUp();
+    public void setUpBaseKickstartCommandTestCase() throws Exception {
         this.ksdata = KickstartDataTest.
             createKickstartWithChannel(user.getOrg());
 

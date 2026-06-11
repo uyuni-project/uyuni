@@ -42,10 +42,8 @@ public class ResponseMappersTest extends BaseTestCaseWithUser {
 
     private ContentManager manager;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         manager = new ContentManager();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
     }

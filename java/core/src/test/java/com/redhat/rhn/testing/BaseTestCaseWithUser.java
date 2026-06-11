@@ -30,10 +30,8 @@ public abstract class BaseTestCaseWithUser extends RhnBaseTestCase {
     protected User user;
     private boolean committed = false;
 
-    @Override
     @BeforeEach
-    public void setUp() throws Exception {
-        super.setUp();
+    public void setUpBaseTestCaseWithUser() throws Exception {
         user = UserTestUtils.createUser(this);
         KickstartDataTest.setupTestConfiguration(user);
     }
@@ -41,11 +39,9 @@ public abstract class BaseTestCaseWithUser extends RhnBaseTestCase {
     /**
      * {@inheritDoc}
      */
-    @Override
     @AfterEach
-    public void tearDown() throws Exception {
-        super.tearDown();
-
+    public void tearDownBaseTestCaseWithUser() throws Exception {
+        super.tearDownRhnBaseTestCase();
         // If at some point we created a user and committed the transaction, we need
         // clean up our mess
         if (committed) {

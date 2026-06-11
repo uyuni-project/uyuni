@@ -42,9 +42,8 @@ public abstract class BaseTestToolbarTag extends RhnBaseTestCase {
     protected ToolbarTag tt;
     protected RhnMockJspWriter out;
 
-    @Override
     @BeforeEach
-    public void setUp() {
+    public void setUpBaseTestToolbarTag() {
         tt = new ToolbarTag();
         tth = TagTestUtils.setupTagTest(tt, null);
         out = (RhnMockJspWriter) tth.getPageContext().getOut();
@@ -52,10 +51,8 @@ public abstract class BaseTestToolbarTag extends RhnBaseTestCase {
         req.setAttributes(new HashMap<>());
     }
 
-    @Override
     @AfterEach
-    public void tearDown() throws Exception {
-        super.tearDown();
+    public void tearDownBaseTestToolbarTag() throws Exception {
         tt = null;
         tth = null;
         out = null;

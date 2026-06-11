@@ -66,10 +66,8 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
     // tested object, initialized in subclasses
     protected AbstractMinionBootstrapper bootstrapper;
 
-    @Override
     @BeforeEach
-    public void setUp() throws Exception {
-        super.setUp();
+    public void setUpAbstractMinionBootstrapperTestBase() throws Exception {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         saltServiceMock = mock(SaltService.class);
         paygManager = new TestCloudPaygManagerBuilder().build();

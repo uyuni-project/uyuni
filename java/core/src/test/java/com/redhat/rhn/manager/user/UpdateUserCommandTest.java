@@ -40,7 +40,6 @@ public class UpdateUserCommandTest extends RhnBaseTestCase {
 
     private UpdateUserCommand command;
 
-    @Override
     @BeforeEach
     public void setUp() {
         User user = UserTestUtils.createUser();

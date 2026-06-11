@@ -34,10 +34,8 @@ public class RhnPostMockStrutsTestCase extends RhnMockStrutsTestCase {
      * override the setupUp method
      * {@inheritDoc}
      */
-    @Override
     @BeforeEach
-    public void setUp() throws Exception {
-        super.setUp();
+    public void setUpRhnPostMockStrutsTestCase() throws Exception {
         request.setMethod("POST");
         UploadsHandler.clear();
     }

@@ -44,10 +44,8 @@ public class VirtualHostManagerSerializerTest extends BaseTestCaseWithUser {
     /**
      * {@inheritDoc}
      */
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         manager = new VirtualHostManager();
         manager.setLabel("myLabel");
         manager.setGathererModule("myModule");

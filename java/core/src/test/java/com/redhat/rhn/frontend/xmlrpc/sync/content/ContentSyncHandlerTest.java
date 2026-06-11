@@ -26,10 +26,8 @@ public class ContentSyncHandlerTest extends BaseHandlerTestCase {
 
     private final ContentSyncHandler handler = new ContentSyncHandler();
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         admin.addPermanentRole(RoleFactory.SAT_ADMIN);
     }
 

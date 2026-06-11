@@ -52,10 +52,8 @@ public class ProxyConfigGetFormDataAcquisitorTest extends BaseTestCaseWithUser {
 
     private MinionServer testMinionServer;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
     }
 

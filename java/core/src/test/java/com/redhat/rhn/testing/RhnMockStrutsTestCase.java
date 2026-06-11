@@ -55,9 +55,9 @@ public class RhnMockStrutsTestCase extends BaseStrutsTestCase implements SaltTes
     /**
      * {@inheritDoc}
      */
-    @Override
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUpRhnMockStrutsTestCase() throws Exception {
+        // Warning: MockStrutsTestCase.setUp() is not automatically called.
         super.setUp();
 
         RequestContext requestContext = new RequestContext(request);
@@ -89,10 +89,8 @@ public class RhnMockStrutsTestCase extends BaseStrutsTestCase implements SaltTes
     /**
      * Tears down the fixture, and closes the HibernateSession.
      */
-    @Override
     @AfterEach
-    public void tearDown() throws Exception {
-        super.tearDown();
+    public void tearDownRhnMockStrutsTestCase() throws Exception {
         TestCaseHelper.tearDownHelper();
         if (committed) {
             OrgFactory.deleteOrg(user.getOrg().getId(), user);
@@ -102,6 +100,9 @@ public class RhnMockStrutsTestCase extends BaseStrutsTestCase implements SaltTes
         user = null;
 
         cleanupSaltConfiguration(tmpSaltRoot);
+
+        // Warning: MockStrutsTestCase.tearDown() is not automatically called.
+        super.tearDown();
     }
 
     /**

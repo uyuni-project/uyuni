@@ -26,7 +26,6 @@ import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -42,17 +41,9 @@ public class RhnSetDeclTest extends RhnBaseTestCase {
 
     private User user;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         user = UserTestUtils.createUser(this);
-    }
-
-    @Override
-    @AfterEach
-    public void tearDown() throws Exception {
-        super.tearDown();
     }
 
     @Test

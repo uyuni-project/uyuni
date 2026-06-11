@@ -55,7 +55,6 @@ public class RhnSetActionTest extends RhnBaseTestCase {
     private static Logger log = LogManager.getLogger(RhnSetActionTest.class);
     private TestAction action = null;
 
-    @Override
     @BeforeEach
     public void setUp() {
         action = new TestAction();

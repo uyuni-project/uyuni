@@ -34,14 +34,13 @@ import java.util.stream.Collectors;
 abstract class HibernateBaseTest extends RhnBaseTestCase {
     private static final Logger LOG = LogManager.getLogger(HibernateBaseTest.class);
 
-    @Override
     @BeforeEach
-    public void setUp() {
+    public void setUpHibernateBaseTest() {
         TestFactory.getSession();
     }
 
     @AfterEach
-    public void tearDown() {
+    public void tearDownHibernateBaseTest() {
         try {
             if (HibernateFactory.inTransaction()) {
                 HibernateFactory.commitTransaction();

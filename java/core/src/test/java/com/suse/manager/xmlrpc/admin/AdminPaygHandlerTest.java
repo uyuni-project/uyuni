@@ -62,19 +62,15 @@ public class AdminPaygHandlerTest extends BaseHandlerTestCase {
         setThreadingPolicy(new Synchroniser());
     }};
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         context.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         taskoApiMock = context.mock(TaskomaticApi.class);
         handler = new AdminPaygHandler(taskoApiMock);
     }
 
-    @Override
-    @AfterEach
+        @AfterEach
     public void tearDown() throws Exception {
-        super.tearDown();
         PaygSshDataFactory.lookupPaygSshData().forEach(PaygSshDataFactory::deletePaygSshData);
         HibernateFactory.commitTransaction();
     }

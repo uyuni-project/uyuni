@@ -208,9 +208,8 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
     private SystemEntitlementManager systemEntitlementManager;
 
     @BeforeEach
-    @Override
     public void setUp() throws Exception {
-        super.setUp();
+
 
         satAdmin = UserTestUtils.createUser(TestStatics.TEST_SAT_USER, user.getOrg().getId());
         satAdmin.addPermanentRole(RoleFactory.SAT_ADMIN);
@@ -246,9 +245,7 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @AfterEach
-    @Override
     public void tearDown() throws Exception {
-        super.tearDown();
 
         Config.get().setString(ConfigDefaults.SERVER_HOSTNAME, originalFqdn);
         Config.get().setString("server.secret_key", originalServerSecret);

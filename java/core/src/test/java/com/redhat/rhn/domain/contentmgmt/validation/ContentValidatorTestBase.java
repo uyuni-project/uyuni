@@ -55,10 +55,8 @@ public abstract class ContentValidatorTestBase extends BaseTestCaseWithUser {
         loc = LocalizationService.getInstance();
     }
 
-    @Override
     @BeforeEach
-    public void setUp() throws Exception {
-        super.setUp();
+    public void setUpContentValidatorTestBase() throws Exception {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
 
         manager = new ContentManager(new MockModulemdApi());

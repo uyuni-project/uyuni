@@ -50,10 +50,8 @@ public class PtfPackagesCacheManagerTest extends BaseTestCaseWithUser {
 
     private Package newerPackage;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
 
         server = ServerFactoryTest.createTestServer(user);
 

@@ -104,10 +104,8 @@ public class ResetPasswordSubmitActionTest extends BaseTestCaseWithUser {
         assertEquals(badpwd.getName(), rc.getName(), "whitespace");
     }
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         adminUser = new UserTestUtils.UserBuilder()
                 .userName("testAdminUser")
                 .orgAdmin(true)

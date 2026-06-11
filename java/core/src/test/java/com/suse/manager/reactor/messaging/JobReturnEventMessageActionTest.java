@@ -150,10 +150,8 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
     private SaltServerActionService saltServerActionService;
 
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         Config.get().setString("server.secret_key",
                 DigestUtils.sha256Hex(TestUtils.randomString()));

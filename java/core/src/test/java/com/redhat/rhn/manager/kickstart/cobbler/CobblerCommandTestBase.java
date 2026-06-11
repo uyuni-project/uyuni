@@ -57,11 +57,8 @@ public abstract class CobblerCommandTestBase extends BaseTestCaseWithUser {
      *
      * @throws Exception if anything goes wrong
      */
-    @Override
     @BeforeEach
-    public void setUp() throws Exception {
-        super.setUp();
-
+    public void setUpCobblerCommandTestBase() throws Exception {
         // Make the default user admin
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         UserFactory.save(user);

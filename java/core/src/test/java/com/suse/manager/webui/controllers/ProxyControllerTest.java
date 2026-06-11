@@ -46,9 +46,8 @@ public class ProxyControllerTest extends BaseControllerTestCase {
     private SystemManager systemManager;
 
     @BeforeEach
-    @Override
     public void setUp() throws Exception {
-        super.setUp();
+
         systemManager = context().mock(SystemManager.class);
         proxyController = new ProxyController(systemManager);
     }

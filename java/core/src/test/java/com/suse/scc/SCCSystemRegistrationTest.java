@@ -59,10 +59,8 @@ public class SCCSystemRegistrationTest extends BaseTestCaseWithUser {
 
     private SCCProxyFactory sccProxyFactory = new SCCProxyFactory();
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
 
         this.credentials = CredentialsFactory.createSCCCredentials("username", "password");
         this.credentials.setUrl("https://scc.suse.com");

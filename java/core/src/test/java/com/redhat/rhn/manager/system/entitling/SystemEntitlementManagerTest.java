@@ -50,10 +50,8 @@ public class SystemEntitlementManagerTest extends JMockBaseTestCaseWithUser {
     private SaltService saltServiceMock;
     private SystemEntitlementManager systemEntitlementManager;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         saltServiceMock = mock(SaltService.class);
         systemEntitlementManager = new SystemEntitlementManager(

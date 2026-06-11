@@ -56,10 +56,8 @@ import java.util.Optional;
  */
 public class RegularMinionBootstrapperTest extends AbstractMinionBootstrapperTestBase {
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         bootstrapper = new RegularMinionBootstrapper(saltServiceMock, saltServiceMock, paygManager, attestationManager);
     }
 

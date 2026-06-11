@@ -49,10 +49,8 @@ public class CloneErrataActionTest extends BaseTestCaseWithUser {
     /**
      * {@inheritDoc}
      */
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         admin = UserTestUtils.createUser("admin", user.getOrg().getId());
         admin.addPermanentRole(RoleFactory.ORG_ADMIN);
         admin = TestUtils.saveAndFlush(admin);

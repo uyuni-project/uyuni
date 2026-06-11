@@ -32,11 +32,8 @@ public class KickstartSystemDetailsTest extends BaseKickstartEditTestCase {
     /**
      * {@inheritDoc}
      */
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        // TODO Auto-generated method stub
-        super.setUp();
         KickstartWizardHelper cmd = new KickstartWizardHelper(user);
         cmd.createCommand("selinux", "--permissive", ksdata);
     }

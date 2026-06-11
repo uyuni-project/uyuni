@@ -91,10 +91,8 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
     private PaygInstanceInfo paygInstanceInfo;
     private ContentSyncManager contentSyncManagerMock;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         clearDb();
 
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
@@ -116,10 +114,8 @@ public class PaygUpdateAuthTaskTest extends JMockBaseTestCaseWithUser {
         HibernateFactory.closeSession();
     }
 
-    @Override
-    @AfterEach
+        @AfterEach
     public void tearDown() throws Exception {
-        super.tearDown();
         clearDb();
     }
 

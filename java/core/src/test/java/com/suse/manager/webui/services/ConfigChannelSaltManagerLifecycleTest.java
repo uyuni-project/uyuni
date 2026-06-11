@@ -56,10 +56,8 @@ import java.util.Random;
  */
 public class ConfigChannelSaltManagerLifecycleTest extends BaseTestCaseWithUser {
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         user.getOrg().addRole(RoleFactory.CONFIG_ADMIN);
         user.addToGroup(AccessGroupFactory.CONFIG_ADMIN);
         user = TestUtils.saveAndFlush(user);

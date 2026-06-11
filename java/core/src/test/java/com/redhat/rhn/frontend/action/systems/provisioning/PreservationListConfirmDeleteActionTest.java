@@ -43,7 +43,6 @@ import org.junit.jupiter.api.Test;
 public class PreservationListConfirmDeleteActionTest extends RhnBaseTestCase {
     private Action action = null;
 
-    @Override
     @BeforeEach
     public void setUp() {
         action = new PreservationListConfirmDeleteAction();

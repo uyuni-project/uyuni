@@ -53,10 +53,8 @@ import java.util.Optional;
  */
 public class SystemManagerMockTest extends JMockBaseTestCaseWithUser {
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         Config.get().setString(CobblerXMLRPCHelper.class.getName(),
                 MockXMLRPCInvoker.class.getName());
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);

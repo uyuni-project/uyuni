@@ -100,10 +100,8 @@ public class ImageInfoHandlerTest extends BaseHandlerTestCase {
     private SaltService saltServiceMock;
     private SystemEntitlementManager systemEntitlementManager;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         context.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         Config.get().setBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED, "true");
         saltServiceMock = context.mock(SaltService.class);

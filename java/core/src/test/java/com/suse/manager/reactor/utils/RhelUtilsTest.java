@@ -82,10 +82,8 @@ public class RhelUtilsTest extends JMockBaseTestCaseWithUser {
 
     }
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 

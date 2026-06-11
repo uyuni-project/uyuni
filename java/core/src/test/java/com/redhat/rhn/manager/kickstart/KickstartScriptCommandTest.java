@@ -22,24 +22,12 @@ import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartScript;
 import com.redhat.rhn.testing.TestUtils;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 /**
  * KickstartScriptTest
  */
 public class KickstartScriptCommandTest extends BaseKickstartCommandTestCase {
-
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @BeforeEach
-    public void setUp() throws Exception {
-        super.setUp();
-
-    }
 
     @Test
     public void testPreCreate() {

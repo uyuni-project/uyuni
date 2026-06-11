@@ -44,7 +44,6 @@ import java.util.List;
 @Disabled
 public class SsmOperationDataPopulatorTest extends RhnBaseTestCase {
 
-    @Override
     @AfterEach
     public void tearDown() {
         // Override so the base class' tearDown doesn't rollback the transaction

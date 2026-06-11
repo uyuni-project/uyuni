@@ -51,10 +51,8 @@ public class SetControllerTest extends BaseControllerTestCase {
                                                       .create();
 
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
 
         initializeSet(SetLabels.SYSTEM_LIST, user);
     }

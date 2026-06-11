@@ -31,7 +31,6 @@ public class BooleanWrapperTest extends RhnBaseTestCase {
 
     private BooleanWrapper bw;
 
-    @Override
     @BeforeEach
     public void setUp() {
         bw = new BooleanWrapper();

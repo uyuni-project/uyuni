@@ -52,8 +52,6 @@ public class UserTest extends RhnJmockBaseTestCase {
 
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
-
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         TestUtils.disableLocalizationLogging();
     }
@@ -61,11 +59,9 @@ public class UserTest extends RhnJmockBaseTestCase {
     /**
      * {@inheritDoc}
      */
-    @Override
     @AfterEach
     public void tearDown() throws Exception {
         TestUtils.enableLocalizationLogging();
-        super.tearDown();
     }
 
     /**

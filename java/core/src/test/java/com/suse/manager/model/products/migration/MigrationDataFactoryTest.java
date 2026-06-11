@@ -41,11 +41,8 @@ public class MigrationDataFactoryTest extends RhnBaseTestCase {
     private SUSEProduct serverApps;
     private SUSEProduct publicCloud;
 
-    @Override
     @BeforeEach
     protected void setUp() throws Exception {
-        super.setUp();
-
         ChannelFamily channelFamily = createTestChannelFamily();
 
         // Setup some products

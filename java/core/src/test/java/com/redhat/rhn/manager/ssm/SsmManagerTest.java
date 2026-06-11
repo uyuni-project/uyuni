@@ -75,10 +75,8 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
 
     private TaskomaticApi taskomaticMock;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         // Create a SUSE product and channel products
         ChannelFamily channelFamily = createTestChannelFamily();
 

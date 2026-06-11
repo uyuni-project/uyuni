@@ -35,10 +35,7 @@ public abstract class BaseFilterTest extends RhnJmockBaseTestCase {
     protected FilterChain chain;
 
     @BeforeEach
-    @Override
-    public void setUp() throws Exception {
-        super.setUp();
-
+    public void setUpBaseFilterTest() throws Exception {
         request = new RhnMockHttpServletRequest();
 
         PxtCookieManager pcm = new PxtCookieManager();

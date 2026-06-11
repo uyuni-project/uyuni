@@ -45,10 +45,8 @@ public class PowerManagementConfigurationActionTest extends RhnMockStrutsTestCas
      * @throws Exception if things go wrong
      * @see com.redhat.rhn.testing.RhnMockStrutsTestCase#setUp()
      */
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         connection = CobblerXMLRPCHelper.getConnection(user.getLogin());
         servers = setUpTestProvisionableSsmServers(user);
     }

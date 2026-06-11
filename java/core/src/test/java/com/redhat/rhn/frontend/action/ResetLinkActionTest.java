@@ -74,10 +74,8 @@ public class ResetLinkActionTest extends BaseTestCaseWithUser {
         assertEquals(valid, rc);
     }
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         action = new ResetLinkAction();
 
         mapping = new ActionMapping();

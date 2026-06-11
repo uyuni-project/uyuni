@@ -107,10 +107,8 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         setThreadingPolicy(new Synchroniser());
     }};
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         //Create a user and an org
         user = UserTestUtils.createUser("testyman", "orgman");
         pc = new PageControl();
@@ -120,13 +118,11 @@ public class ConfigurationManagerTest extends BaseTestCaseWithUser {
         context.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 
-    @Override
     @AfterEach
     public void tearDown() throws Exception {
         user = null;
         pc = null;
         cm = null;
-        super.tearDown();
     }
 
     @Test

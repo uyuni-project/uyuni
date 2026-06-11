@@ -59,10 +59,8 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
 
     private ContentManager contentManager;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         contentManager = new ContentManager();
     }
 

@@ -48,10 +48,8 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
     /**
      * {@inheritDoc}
      */
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         user.addPermanentRole(RoleFactory.SAT_ADMIN);
     }
 

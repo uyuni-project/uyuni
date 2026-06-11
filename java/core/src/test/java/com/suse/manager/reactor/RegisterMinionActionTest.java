@@ -264,10 +264,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     private Consumer<Void> cleanupFunction = (arg) -> MinionServerFactory.findByMachineId(MACHINE_ID)
             .ifPresent(ServerFactory::delete);
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         UserFactory.save(user);
 
@@ -291,10 +289,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
        }});
     }
 
-    @Override
-    @AfterEach
+        @AfterEach
     public void tearDown() throws Exception {
-        super.tearDown();
         FileUtils.deleteDirectory(metadataDirOfficial.toFile());
     }
 

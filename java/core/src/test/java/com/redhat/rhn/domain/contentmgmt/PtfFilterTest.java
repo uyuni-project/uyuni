@@ -42,10 +42,8 @@ public class PtfFilterTest extends BaseTestCaseWithUser {
     private Package testTwoPackage;
     private Package ptfTwoPackage;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
 
         UserTestUtils.addUserRole(user, ORG_ADMIN);
         contentManager = new ContentManager();

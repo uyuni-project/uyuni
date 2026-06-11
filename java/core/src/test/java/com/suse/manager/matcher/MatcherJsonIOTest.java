@@ -96,10 +96,8 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
     private SystemEntitlementManager systemEntitlementManager;
     private BaseProductManager baseProductManagerMock;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
 
         SaltApi saltApi = new TestSaltApi();

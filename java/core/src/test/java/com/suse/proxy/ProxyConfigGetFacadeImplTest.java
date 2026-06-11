@@ -65,15 +65,12 @@ public class ProxyConfigGetFacadeImplTest extends BaseTestCaseWithUser {
     }};
 
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         context.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 
-    @Override
-    @AfterEach
+        @AfterEach
     public void tearDown() throws NoSuchFieldException, IllegalAccessException {
         setConfigDefaultsInstance(configDefaults);
     }

@@ -90,10 +90,8 @@ public class VirtualHostManagerControllerTest extends BaseTestCaseWithUser {
     /**
      * {@inheritDoc}
      */
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
 
         response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
         factory = VirtualHostManagerFactory.getInstance();

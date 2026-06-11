@@ -89,10 +89,8 @@ public class ActivationKeyHandlerTest extends BaseHandlerTestCase {
     private Channel baseChannel;
     private String baseChannelLabel;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         baseChannel = ChannelTestUtils.createBaseChannel(admin);
         baseChannelLabel = baseChannel.getLabel();
     }

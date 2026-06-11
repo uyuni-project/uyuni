@@ -63,10 +63,8 @@ public class RouteFactoryTest extends BaseControllerTestCase {
     private RouteFactory routeFactory;
     private TestHandler handler;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         handler = new TestHandler();
         routeFactory = new RouteFactory(createTestSerializerFactory());
     }

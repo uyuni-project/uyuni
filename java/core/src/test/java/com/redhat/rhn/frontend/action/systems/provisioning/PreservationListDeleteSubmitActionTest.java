@@ -38,7 +38,6 @@ import java.util.List;
 public class PreservationListDeleteSubmitActionTest extends RhnBaseTestCase {
     private Action action = null;
 
-    @Override
     @BeforeEach
     public void setUp() {
         action = new PreservationListDeleteSubmitAction();

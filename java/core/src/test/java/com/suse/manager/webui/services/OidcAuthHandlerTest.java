@@ -74,10 +74,8 @@ public class OidcAuthHandlerTest extends JMockBaseTestCaseWithUser {
     private KeyPair rsaKeyPair;
 
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         enableOidcLogin();
         rsaKeyPair = KeyPairGenerator.getInstance("RSA").generateKeyPair();
     }

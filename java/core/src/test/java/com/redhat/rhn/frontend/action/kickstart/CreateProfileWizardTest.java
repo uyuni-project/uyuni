@@ -50,9 +50,8 @@ public class CreateProfileWizardTest extends RhnMockStrutsTestCase {
     private String label;
 
     @BeforeEach
-    @Override
     public void setUp() throws Exception {
-        super.setUp();
+
         label = TestUtils.randomString();
 
         // Create some crypto keys that should get associated

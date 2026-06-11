@@ -54,10 +54,8 @@ import jakarta.xml.bind.JAXBContext;
  */
 public class ScapManagerTest extends JMockBaseTestCaseWithUser {
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 

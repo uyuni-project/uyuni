@@ -82,10 +82,8 @@ public class MigrationManagerTest extends BaseTestCaseWithUser {
     );
     private final MigrationManager migrationManager = new MigrationManager(serverGroupManager);
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
 
         // Create 2 orgs, each with multiple org admins
         origOrgAdmins.add(

@@ -50,10 +50,8 @@ import java.util.List;
 public class KickstartBuilderTest extends BaseTestCaseWithUser {
 
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         UserTestUtils.addUserRole(user, RoleFactory.ORG_ADMIN);
     }
 

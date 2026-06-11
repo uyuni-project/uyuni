@@ -94,10 +94,8 @@ public class ProxyConfigUpdateSavePillarsTest extends BaseTestCaseWithUser {
 
     private MinionServer minion;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         this.minion = MinionServerFactoryTest.createTestMinionServer(user);
         minion.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
         minion.addFqdn(DUMMY_PROXY_FQDN);

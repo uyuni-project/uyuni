@@ -58,10 +58,8 @@ class AnsibleManagerTest extends BaseTestCaseWithUser {
         setThreadingPolicy(new Synchroniser());
     }};
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         saltApi = context.mock(SaltApi.class);
         ansibleManager = new AnsibleManager(saltApi);
     }

@@ -34,10 +34,8 @@ public class RestartActionTest extends RhnPostMockStrutsTestCase {
     /**
      * {@inheritDoc}
      */
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         user.getOrg().addRole(RoleFactory.SAT_ADMIN);
         user.addPermanentRole(RoleFactory.SAT_ADMIN);
         setRequestPathInfo("/admin/config/Restart");

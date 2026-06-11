@@ -48,10 +48,8 @@ public abstract class BaseEntitlementTestCase extends BaseTestCaseWithUser {
             new SystemUnentitler(saltApi), new SystemEntitler(saltApi)
     );
 
-    @Override
     @BeforeEach
-    public void setUp() throws Exception {
-        super.setUp();
+    public void setUpBaseEntitlementTestCase() throws Exception {
         createEntitlement();
     }
 

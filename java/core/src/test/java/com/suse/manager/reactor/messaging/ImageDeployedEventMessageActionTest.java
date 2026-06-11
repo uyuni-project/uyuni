@@ -80,10 +80,8 @@ public class ImageDeployedEventMessageActionTest extends JMockBaseTestCaseWithUs
     private SystemQuery systemQuery;
     private TaskomaticApi taskomaticMock;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
 
         saltMock = mock(SaltService.class);

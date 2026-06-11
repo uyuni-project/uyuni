@@ -73,10 +73,8 @@ public class RecurringActionControllerTest extends BaseControllerTestCase {
         context().setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
 
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
 

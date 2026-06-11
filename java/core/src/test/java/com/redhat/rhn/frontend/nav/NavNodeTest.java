@@ -37,7 +37,6 @@ public class NavNodeTest extends RhnBaseTestCase {
 
     private NavNode node;
 
-    @Override
     @BeforeEach
     public void setUp() {
         node = new NavNode();
@@ -163,10 +162,8 @@ public class NavNodeTest extends RhnBaseTestCase {
         assertTrue(rc);
     }
 
-    @Override
-    @AfterEach
+        @AfterEach
     public void tearDown() throws Exception {
-        super.tearDown();
         node = null;
     }
 }

@@ -38,7 +38,6 @@ public class RhnHiddenTagTest extends RhnBaseTestCase {
     private RhnHiddenTag ht;
     private RhnMockJspWriter out;
 
-    @Override
     @BeforeEach
     public void setUp() {
         ht = new RhnHiddenTag();
@@ -47,10 +46,8 @@ public class RhnHiddenTagTest extends RhnBaseTestCase {
         out = (RhnMockJspWriter) tth.getPageContext().getOut();
     }
 
-    @Override
-    @AfterEach
+        @AfterEach
     public void tearDown() throws Exception {
-        super.tearDown();
         ht = null;
         tth = null;
         out = null;

@@ -30,10 +30,8 @@ import org.junit.jupiter.api.Test;
  */
 public class EnvironmentFilterTest extends BaseFilterTest {
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         this.request.setRequestURL("https://rhn.webdev.redhat.com/rhn/manager/login");
 
         context.checking(new Expectations() {{

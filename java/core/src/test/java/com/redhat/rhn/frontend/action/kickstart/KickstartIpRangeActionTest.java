@@ -40,10 +40,8 @@ public class KickstartIpRangeActionTest extends RhnPostMockStrutsTestCase {
     protected KickstartIpRange ip1;
     protected KickstartIpRange ip2;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         this.ksdata = KickstartDataTest.createKickstartWithChannel(user.getOrg());
         this.ksdata.setOrg(user.getOrg());
         ksdata = TestUtils.saveAndFlush(ksdata);

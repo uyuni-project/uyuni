@@ -68,10 +68,8 @@ public class SystemsControllerTest extends BaseControllerTestCase {
     private Map<String, Server> serversByHostServerName;
     private SystemsController systemsController;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
 

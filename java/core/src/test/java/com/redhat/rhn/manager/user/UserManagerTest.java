@@ -87,10 +87,8 @@ public class UserManagerTest extends RhnBaseTestCase {
     /**
      * {@inheritDoc}
      */
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         this.users = new HashSet<>();
         SaltApi saltApi = new TestSaltApi();
         systemManager = new SystemManager(ServerFactory.SINGLETON, ServerGroupFactory.SINGLETON, saltApi);
@@ -99,10 +97,8 @@ public class UserManagerTest extends RhnBaseTestCase {
     /**
      * {@inheritDoc}
      */
-    @Override
-    @AfterEach
+        @AfterEach
     public void tearDown() throws Exception {
-        super.tearDown();
 
         this.users = null;
     }

@@ -24,7 +24,7 @@ public abstract class RhnJmockBaseTestCase extends MockObjectTestCase implements
     protected Path tmpSaltRoot;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUpRhnJmockBaseTestCase() throws Exception {
         tmpSaltRoot = setupSaltConfigurationForTests();
     }
 
@@ -34,7 +34,7 @@ public abstract class RhnJmockBaseTestCase extends MockObjectTestCase implements
      * @throws Exception if an error occurs during tear down
      */
     @AfterEach
-    public void tearDown() throws Exception {
+    public void tearDownRhnJmockBaseTestCase() throws Exception {
         TestCaseHelper.tearDownHelper();
 
         cleanupSaltConfiguration(tmpSaltRoot);
