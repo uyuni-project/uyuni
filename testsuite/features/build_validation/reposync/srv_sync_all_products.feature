@@ -797,6 +797,20 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I use spacewalk-common-channel to add all "debian-12" channels with arch "amd64-deb"
     And I wait until all synchronized channels for "debian-12" have finished
 
+@susemanager
+@debian13_minion
+  Scenario: Add Debian 13
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
+    And I wait until I do not see "Loading" text
+    And I enter "Debian 13" as the filtered product description
+    And I select "Debian 13" as a product
+    Then I should see the "Debian 13" selected
+    When I click the Add Product button
+    And I wait until I see "Debian 13" product has been added
+    And I wait until all synchronized channels for "debian-13" have finished
+
 @uyuni
 @proxy
   Scenario: Add Uyuni Proxy on Tumbleweed, including Uyuni Client Tools
