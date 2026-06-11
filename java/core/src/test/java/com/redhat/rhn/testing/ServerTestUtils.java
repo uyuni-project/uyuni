@@ -32,8 +32,10 @@ import com.redhat.rhn.domain.rhnset.RhnSet;
 import com.redhat.rhn.domain.rhnset.SetCleanup;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.InstalledPackage;
+import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.server.ServerArch;
 import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ServerFactoryTest;
@@ -48,8 +50,15 @@ import com.redhat.rhn.manager.rhnpackage.PackageManager;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
+import com.redhat.rhn.manager.system.entitling.SystemEntitler;
+import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
+
+import com.suse.manager.webui.services.iface.SaltApi;
+import com.suse.salt.netapi.datatypes.target.MinionList;
 
 import org.hibernate.Session;
+import org.jmock.Expectations;
+import org.jmock.junit5.JUnit5Mockery;
 
 import java.util.Set;
 
@@ -321,5 +330,29 @@ public class ServerTestUtils {
                 EntitlementManager.getByName("foreign_entitled"));
         ServerFactory.save(existingHost);
         return existingHost;
+    }
+
+    /**
+     * Create an ansible control node server
+     * @param user the user to own the server
+     * @param saltApi the salt api mock to use for the entitlement manager
+     * @param context the jmock context to set expectations on the salt api mock
+     * @return an ansible control node server
+     */
+    public static MinionServer createAnsibleControlNode(User user, SaltApi saltApi, JUnit5Mockery context) {
+        SystemEntitlementManager entitlementManager = new SystemEntitlementManager(
+                new SystemUnentitler(saltApi), new SystemEntitler(saltApi)
+        );
+
+        context.checking(new Expectations() {{
+            allowing(saltApi).refreshPillar(with(any(MinionList.class)));
+        }});
+
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        ServerArch arch = ServerFactory.lookupServerArchByName("x86_64");
+        server.setServerArch(arch);
+        server = TestUtils.saveAndFlush(server);
+        entitlementManager.addEntitlementToServer(server, EntitlementManager.ANSIBLE_CONTROL_NODE);
+        return server;
     }
 }

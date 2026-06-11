@@ -22,31 +22,37 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.domain.server.ansible.AnsiblePath;
 import com.redhat.rhn.domain.server.ansible.InventoryPath;
 import com.redhat.rhn.domain.server.ansible.PlaybookPath;
-import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
+import com.suse.manager.webui.services.iface.SaltApi;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Stream;
 
-/**
- * Tests for {@link AnsibleFactory}
- */
-public class AnsibleFactoryTest extends BaseTestCaseWithUser {
+class AnsibleFactoryTest extends JMockBaseTestCaseWithUser {
 
-    /**
-     * Test basic save - read cycle of AnsiblePath implementations
-     * @throws Exception
-     */
+    private SaltApi saltApi;
+
+    @BeforeEach
+    void setup() {
+        saltApi = context.mock(SaltApi.class);
+    }
+
     @Test
-    public void testSaveAndFindAnsiblePath() throws Exception {
+    void testSaveAndFindAnsiblePath() {
         MinionServer minionServer1 = MinionServerFactoryTest.createTestMinionServer(user);
         MinionServer minionServer2 = MinionServerFactoryTest.createTestMinionServer(user);
 
-        AnsiblePath inventoryPath = new InventoryPath(minionServer1);
-        inventoryPath.setPath(Path.of("/tmp/test1"));
-        AnsiblePath playbookPath = new PlaybookPath(minionServer2);
-        playbookPath.setPath(Path.of("/tmp/test2"));
+        AnsiblePath inventoryPath = new InventoryPath(minionServer1, Path.of("/tmp/test1"));
+        AnsiblePath playbookPath = new PlaybookPath(minionServer2, Path.of("/tmp/test2"));
 
         inventoryPath = AnsibleFactory.saveAnsiblePath(inventoryPath);
         playbookPath = AnsibleFactory.saveAnsiblePath(playbookPath);
@@ -66,14 +72,10 @@ public class AnsibleFactoryTest extends BaseTestCaseWithUser {
         assertEquals(inventoryPath, AnsibleFactory.listAnsiblePaths(minionServer1.getId()).iterator().next());
     }
 
-    /**
-     * Test removing AnsiblePath
-     */
     @Test
-    public void testRemoveAnsiblePath() throws Exception {
+    void testRemoveAnsiblePath() {
         MinionServer minionServer1 = MinionServerFactoryTest.createTestMinionServer(user);
-        AnsiblePath inventoryPath = new InventoryPath(minionServer1);
-        inventoryPath.setPath(Path.of("/tmp/test1"));
+        AnsiblePath inventoryPath = new InventoryPath(minionServer1, Path.of("/tmp/test1"));
         inventoryPath = AnsibleFactory.saveAnsiblePath(inventoryPath);
 
         AnsibleFactory.removeAnsiblePath(inventoryPath);
@@ -81,7 +83,64 @@ public class AnsibleFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void generatedCoverageTestLookupAnsibleInventoryPath() {
+    void correctlyListsAnsibleInventoryServersByControlNode() {
+        MinionServer controlMinion = ServerTestUtils.createAnsibleControlNode(user, saltApi, context);
+
+        MinionServer one = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer two = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer three = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer four = MinionServerFactoryTest.createTestMinionServer(user);
+
+        InventoryPath firstInventory = new InventoryPath(controlMinion, Path.of("/tmp/test/one"), Set.of(one, two));
+        AnsibleFactory.saveAnsiblePath(firstInventory);
+
+        InventoryPath secondInventory = new InventoryPath(controlMinion, Path.of("/tmp/test/two"), Set.of(three, four));
+        AnsibleFactory.saveAnsiblePath(secondInventory);
+
+        TestUtils.flushAndClearSession();
+
+        List<Server> allServers = AnsibleFactory.listAnsibleInventoryServersByControlNode(controlMinion.getId());
+        assertNotNull(allServers);
+        assertEquals(
+            Stream.of(one, two, three, four).sorted(Comparator.comparing(Server::getId)).toList(),
+            allServers.stream().sorted(Comparator.comparing(Server::getId)).toList()
+        );
+    }
+
+    @Test
+    void correctlyListsAnsibleInventoryServersExcludingControlNode() {
+        MinionServer controlOne = ServerTestUtils.createAnsibleControlNode(user, saltApi, context);
+        MinionServer controlTwo = ServerTestUtils.createAnsibleControlNode(user, saltApi, context);
+        MinionServer controlThree = ServerTestUtils.createAnsibleControlNode(user, saltApi, context);
+
+        MinionServer one = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer two = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer three = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer four = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer five = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer six = MinionServerFactoryTest.createTestMinionServer(user);
+
+        InventoryPath firstInventory = new InventoryPath(controlOne, Path.of("/tmp/test/one"), Set.of(one, two));
+        AnsibleFactory.saveAnsiblePath(firstInventory);
+
+        InventoryPath secondInventory = new InventoryPath(controlTwo, Path.of("/tmp/test/two"), Set.of(three, four));
+        AnsibleFactory.saveAnsiblePath(secondInventory);
+
+        InventoryPath thirdInventory = new InventoryPath(controlThree, Path.of("/tmp/test/three"), Set.of(five, six));
+        AnsibleFactory.saveAnsiblePath(thirdInventory);
+
+        TestUtils.flushAndClearSession();
+
+        List<Server> allServers = AnsibleFactory.listAnsibleInventoryServersExcludingControlNode(controlTwo.getId());
+        assertNotNull(allServers);
+        assertEquals(
+            Stream.of(one, two, five, six).sorted(Comparator.comparing(Server::getId)).toList(),
+            allServers.stream().sorted(Comparator.comparing(Server::getId)).toList()
+        );
+    }
+
+    @Test
+    void generatedCoverageTestLookupAnsibleInventoryPath() {
         // this test has been generated programmatically to test AnsibleFactory.lookupAnsibleInventoryPath
         // containing a hibernate query that is not covered by any test so far
         // feel free to modify and/or complete it
@@ -89,7 +148,7 @@ public class AnsibleFactoryTest extends BaseTestCaseWithUser {
     }
 
     @Test
-    public void generatedCoverageTestListAnsiblePlaybookPaths() {
+    void generatedCoverageTestListAnsiblePlaybookPaths() {
         // this test has been generated programmatically to test AnsibleFactory.listAnsiblePlaybookPaths
         // containing a hibernate query that is not covered by any test so far
         // feel free to modify and/or complete it

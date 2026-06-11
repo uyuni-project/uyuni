@@ -164,17 +164,15 @@ public class AnsibleManager extends BaseManager {
         AnsiblePath.Type type = AnsiblePath.Type.fromLabel(typeLabel);
         switch (type) {
             case INVENTORY:
-                ansiblePath = new InventoryPath();
+                ansiblePath = new InventoryPath(minionServer, Path.of(path));
                 break;
             case PLAYBOOK:
-                ansiblePath = new PlaybookPath();
+                ansiblePath = new PlaybookPath(minionServer, Path.of(path));
                 break;
             default:
                 throw new UnsupportedOperationException("Unsupported type " + type);
         }
 
-        ansiblePath.setMinionServer(minionServer);
-        ansiblePath.setPath(Path.of(path));
         ansiblePath = AnsibleFactory.saveAnsiblePath(ansiblePath);
 
         if (type == AnsiblePath.Type.INVENTORY) {
