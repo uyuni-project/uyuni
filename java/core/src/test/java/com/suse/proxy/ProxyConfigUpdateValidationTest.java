@@ -64,6 +64,7 @@ import org.jmock.Expectations;
 import org.jmock.api.Invocation;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.jmock.lib.action.CustomAction;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;
@@ -78,6 +79,12 @@ public class ProxyConfigUpdateValidationTest extends JMockBaseTestCaseWithUser {
 
     public static final String UNKNOWN = "unknown";
     private static final String JAVA_TEST = "java::test";
+    private final ConfigDefaults configDefaults = ConfigDefaults.get();
+
+    @AfterEach
+    public void tearDown() throws NoSuchFieldException, IllegalAccessException {
+        TestUtils.setConfigDefaultsInstance(configDefaults);
+    }
 
     /**
      * Test a scenario where ProxyConfigUpdateJson is resolved as being empty
@@ -382,7 +389,6 @@ public class ProxyConfigUpdateValidationTest extends JMockBaseTestCaseWithUser {
                 .keepCerts(null, null, null, null)
                 .build();
 
-        ConfigDefaults configDefaults = ConfigDefaults.get();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         ProxyConfigGetFormTestUtils.mockConfigDefaults(context, false);
         SystemEntitlementManager mockSystemEntitlementManager = mock(SystemEntitlementManager.class);
@@ -458,7 +464,6 @@ public class ProxyConfigUpdateValidationTest extends JMockBaseTestCaseWithUser {
                 .keepCerts(null, null, null, null)
                 .build();
 
-        ConfigDefaults configDefaults = ConfigDefaults.get();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         ProxyConfigGetFormTestUtils.mockConfigDefaults(context, false);
 
@@ -506,7 +511,6 @@ public class ProxyConfigUpdateValidationTest extends JMockBaseTestCaseWithUser {
                 .keepCerts(null, null, null, null)
                 .build();
 
-        ConfigDefaults configDefaults = ConfigDefaults.get();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         ProxyConfigGetFormTestUtils.mockConfigDefaults(context, false);
 
@@ -552,7 +556,6 @@ public class ProxyConfigUpdateValidationTest extends JMockBaseTestCaseWithUser {
                 .keepCerts(null, null, null, null)
                 .build();
 
-        ConfigDefaults configDefaults = ConfigDefaults.get();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         ProxyConfigGetFormTestUtils.mockConfigDefaults(context, false);
 
