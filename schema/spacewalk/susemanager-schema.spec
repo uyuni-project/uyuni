@@ -20,7 +20,7 @@
 %{!?productprettyname: %global productprettyname Uyuni}
 
 Name:           susemanager-schema
-Version:        5.2.11
+Version:        5.2.12
 Release:        0
 Summary:        SQL schema for %{productprettyname} server
 License:        GPL-2.0-only
