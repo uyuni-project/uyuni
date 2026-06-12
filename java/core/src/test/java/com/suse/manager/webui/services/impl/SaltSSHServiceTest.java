@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.domain.server.ProxyInfo;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactory;
@@ -28,7 +29,9 @@ import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -43,11 +46,26 @@ import java.util.Set;
  */
 public class SaltSSHServiceTest extends JMockBaseTestCaseWithUser {
 
+    private String oldPortHttps;
+    private String oldSudoUser;
+
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
+
+        oldPortHttps = Config.get().getString("ssh_push_port_https");
+        oldPortHttps = StringUtils.isEmpty(oldPortHttps) ? "" : oldPortHttps;
+        oldSudoUser = Config.get().getString(ConfigDefaults.CONFIG_KEY_SUDO_USER);
+        oldSudoUser = StringUtils.isEmpty(oldSudoUser) ? "" : oldSudoUser;
+
         Config.get().setString("ssh_push_port_https", "1233");
-        Config.get().setString("ssh_push_sudo_user", "mgruser");
+        Config.get().setString(ConfigDefaults.CONFIG_KEY_SUDO_USER, "mgruser");
+    }
+
+    @AfterEach
+    public void tearDown() {
+        Config.get().setString("ssh_push_port_https", oldPortHttps);
+        Config.get().setString(ConfigDefaults.CONFIG_KEY_SUDO_USER, oldSudoUser);
     }
 
     @Test
