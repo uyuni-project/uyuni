@@ -1,0 +1,2 @@
+- Pre-filter errata in system_applyerrata to avoid using
+  API calls for all existing errata (bsc#1267261)
