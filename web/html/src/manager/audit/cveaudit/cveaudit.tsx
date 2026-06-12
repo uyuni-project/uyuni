@@ -6,7 +6,6 @@ import { AsyncButton, LinkButton } from "components/buttons";
 import { IconTag } from "components/icontag";
 import { Messages } from "components/messages/messages";
 import { TopPanel } from "components/panels/TopPanel";
-import { Loading } from "components/utils/loading/Loading";
 import { Column } from "components/table/Column";
 import { Highlight } from "components/table/Highlight";
 import { SearchField } from "components/table/SearchField";
@@ -382,11 +381,12 @@ class CVEAudit extends Component<Props, State> {
               </p>
             </div>
           )}
-          {this.state.loading && <Loading text={t("Auditing in progress...")} />}
           <Table
             data={this.state.results}
             identifier={(row) => row.id}
             initialSortColumnKey="id"
+            loading={this.state.loading}
+            loadingText={t("Auditing in progress...")}
             selectable={this.state.resultType === TARGET_SERVER && this.state.results.length > 0}
             onSelect={this.handleSelectItems}
             selectedItems={this.state.selectedItems}
