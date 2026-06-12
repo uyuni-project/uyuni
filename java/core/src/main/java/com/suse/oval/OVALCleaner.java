@@ -185,6 +185,9 @@ public class OVALCleaner {
         else if ("12.0".equals(osVersion) || "12".equals(osVersion)) {
             codename = "bookworm";
         }
+        else if ("13.0".equals(osVersion) || "13".equals(osVersion)) {
+            codename = "trixie";
+        }
         else {
             throw new IllegalArgumentException("Invalid debian version: " + osVersion);
         }

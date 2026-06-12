@@ -93,6 +93,10 @@
         "12": {
           "vulnerability": "https://www.debian.org/security/oval/oval-definitions-bookworm.xml.bz2",
           "patch": ""
+        },
+        "13": {
+          "vulnerability": "https://www.debian.org/security/oval/oval-definitions-trixie.xml.bz2",
+          "patch": ""
         }
       }
     }
