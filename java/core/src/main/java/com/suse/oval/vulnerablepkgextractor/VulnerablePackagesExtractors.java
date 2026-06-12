@@ -43,7 +43,8 @@ public class VulnerablePackagesExtractors {
                                                                  OVALResourcesCache ovalResourcesCache) {
         switch (osFamily) {
             case LEAP,
-                 SUSE_LINUX_ENTERPRISE_SERVER, SUSE_LINUX_ENTERPRISE_DESKTOP, SUSE_LINUX_ENTERPRISE_MICRO:
+                 SUSE_LINUX_ENTERPRISE_SERVER, SUSE_LINUX_ENTERPRISE_DESKTOP, SUSE_LINUX_ENTERPRISE_MICRO,
+                 SUSE_LIBERTY_LINUX:
                 return Optional.of(new SUSEVulnerablePackageExtractor(definition, ovalResourcesCache));
             case DEBIAN:
                 return Optional.of(new DebianVulnerablePackagesExtractor(definition));

@@ -164,6 +164,7 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
                 .map(CriterionType::getComment)
                 .anyMatch(comment -> comment.startsWith("SUSE Linux Enterprise") ||
                         comment.startsWith("SUSE Linux Micro") ||
+                        comment.startsWith("SUSE Liberty Linux") ||
                         comment.startsWith("openSUSE Leap"));
     }
 
@@ -175,9 +176,20 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
         else if (osProduct == OsFamily.SUSE_LINUX_ENTERPRISE_MICRO) {
             return deriveSUSEMicroCpe();
         }
+        else if (osProduct == OsFamily.SUSE_LIBERTY_LINUX) {
+            return deriveSUSELibertyCpe();
+        }
         else {
             return deriveFromProductOVALTest(productTest);
         }
+    }
+
+    private Cpe deriveSUSELibertyCpe() {
+        return new CpeBuilder()
+                .withVendor("suse")
+                .withProduct("sll")
+                .withVersion(definition.getOsVersion())
+                .build();
     }
 
     private Cpe deriveSUSEMicroCpe() {
@@ -247,7 +259,8 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
         boolean definitionFromASupportedFamily = osFamily == OsFamily.LEAP ||
                 osFamily == OsFamily.SUSE_LINUX_ENTERPRISE_SERVER ||
                 osFamily == OsFamily.SUSE_LINUX_ENTERPRISE_DESKTOP ||
-                osFamily == OsFamily.SUSE_LINUX_ENTERPRISE_MICRO;
+                osFamily == OsFamily.SUSE_LINUX_ENTERPRISE_MICRO ||
+                osFamily == OsFamily.SUSE_LIBERTY_LINUX;
 
         return super.isValidDefinition(definitionTypeIn) && definitionFromASupportedFamily;
     }

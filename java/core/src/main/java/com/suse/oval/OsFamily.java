@@ -34,6 +34,8 @@ public enum OsFamily {
             oneOf("15")),
     SUSE_LINUX_ENTERPRISE_MICRO("SUSE Linux Enterprise Micro", "SLE Micro", "suse",
             oneOf("5.2", "5.3", "5.4", "5.5", "6.0", "6.1", "6.2")),
+    SUSE_LIBERTY_LINUX("SUSE Liberty Linux", "SLL", "SLL",
+            oneOf("7", "8", "9")),
     REDHAT_ENTERPRISE_LINUX("Red Hat Enterprise Linux", "Red Hat Enterprise Linux", "redhat",
             withPrefix("7.", "8.", "9.")),
     UBUNTU("Ubuntu", "ubuntu", "canonical", oneOf("20.04", "22.04", "24.04", "26.04")),

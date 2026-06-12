@@ -64,6 +64,22 @@
         }
       }
     },
+    "SUSE_LIBERTY_LINUX": {
+      "content": {
+        "7": {
+          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.liberty.linux.7-affected.xml.gz",
+          "patch": ""
+        },
+        "8": {
+          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.liberty.linux.8-affected.xml.gz",
+          "patch": ""
+        },
+        "9": {
+          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.liberty.linux.9-affected.xml.gz",
+          "patch": ""
+        }
+      }
+    },
     "REDHAT_ENTERPRISE_LINUX": {
       "content": {
         "7": {
