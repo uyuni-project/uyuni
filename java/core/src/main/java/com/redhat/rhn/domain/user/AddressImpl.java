@@ -18,9 +18,6 @@ package com.redhat.rhn.domain.user;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.user.legacy.UserImpl;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -227,52 +224,40 @@ public class AddressImpl extends BaseDomainHelper implements Address {
     }
 
     /**
-     * Compare two addresses by the canonical address fields and type.
-     *
-     * @param other other object
-     * @return {@code true} when equivalent
+     * {@inheritDoc}
      */
     @Override
-    public boolean equals(Object other) {
-        if (!(other instanceof AddressImpl otherAddr)) {
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof AddressImpl other)) {
             return false;
         }
-        return new EqualsBuilder()
-                .append(getAddress1(), otherAddr.getAddress1())
-                .append(getAddress2(), otherAddr.getAddress2())
-                .append(getCity(), otherAddr.getCity())
-                .append(getState(), otherAddr.getState())
-                .append(getZip(), otherAddr.getZip())
-                .append(getCountry(), otherAddr.getCountry())
-                .isEquals();
+        return id != null && id.equals(other.id);
     }
 
     /**
-     * Compute hash code based on canonical address fields and type.
-     *
-     * @return hash code
+     * {@inheritDoc}
      */
     @Override
     public int hashCode() {
-        return new HashCodeBuilder()
-                .append(getAddress1())
-                .append(getAddress2())
-                .append(getCity())
-                .append(getState())
-                .append(getZip())
-                .append(getCountry())
-                .toHashCode();
+        return getClass().hashCode();
     }
 
-    /**
-     * Output this object to a string
-     * @return String value of AddressImpl object
-     */
     @Override
     public String toString() {
-        return "{ID: " + getId() + ", created: " + getCreated() +
-                ", modified: " + getModified() + ", address1: " + getAddress1() +
-                ", city: " + getCity() + ", country: " + getCountry() + "}";
+        return "AddressImpl{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", address1='" + address1 + '\'' +
+                ", address2='" + address2 + '\'' +
+                ", city='" + city + '\'' +
+                ", state='" + state + '\'' +
+                ", zip='" + zip + '\'' +
+                ", country='" + country + '\'' +
+                ", phone='" + phone + '\'' +
+                ", fax='" + fax + '\'' +
+                '}';
     }
-
 }
