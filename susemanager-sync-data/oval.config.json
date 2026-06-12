@@ -51,15 +51,15 @@
           "patch": ""
         },
         "6.0": {
-          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.micro.6.0-affected.xml.gz",
+          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.linux.micro.6.0-affected.xml.gz",
           "patch": ""
         },
         "6.1": {
-          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.micro.6.1-affected.xml.gz",
+          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.linux.micro.6.1-affected.xml.gz",
           "patch": ""
         },
         "6.2": {
-          "vulnerability": "",
+          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.linux.micro.6.2-affected.xml.gz",
           "patch": ""
         }
       }
