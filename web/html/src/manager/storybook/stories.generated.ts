@@ -31,15 +31,51 @@ export const components_action_ActionStatus_example_tsx = {
 };
 
 // @ts-ignore
-import components_buttons_index_example_tsx_component from "components/buttons/index.example.tsx";
-import components_buttons_index_example_tsx_raw from "components/buttons/index.example.tsx?raw";
+import components_buttons_icons_example_tsx_component from "components/buttons/icons.example.tsx";
+import components_buttons_icons_example_tsx_raw from "components/buttons/icons.example.tsx?raw";
 
-export const components_buttons_index_example_tsx = {
-  path: "components/buttons/index.example.tsx",
-  title: "index.example.tsx",
+export const components_buttons_icons_example_tsx = {
+  path: "components/buttons/icons.example.tsx",
+  title: "icons.example.tsx",
   groupName: "buttons",
-  component: components_buttons_index_example_tsx_component,
-  raw: components_buttons_index_example_tsx_raw,
+  component: components_buttons_icons_example_tsx_component,
+  raw: components_buttons_icons_example_tsx_raw,
+};
+
+// @ts-ignore
+import components_buttons_placement_example_tsx_component from "components/buttons/placement.example.tsx";
+import components_buttons_placement_example_tsx_raw from "components/buttons/placement.example.tsx?raw";
+
+export const components_buttons_placement_example_tsx = {
+  path: "components/buttons/placement.example.tsx",
+  title: "placement.example.tsx",
+  groupName: "buttons",
+  component: components_buttons_placement_example_tsx_component,
+  raw: components_buttons_placement_example_tsx_raw,
+};
+
+// @ts-ignore
+import components_buttons_usage_guidelines_example_tsx_component from "components/buttons/usage-guidelines.example.tsx";
+import components_buttons_usage_guidelines_example_tsx_raw from "components/buttons/usage-guidelines.example.tsx?raw";
+
+export const components_buttons_usage_guidelines_example_tsx = {
+  path: "components/buttons/usage-guidelines.example.tsx",
+  title: "usage-guidelines.example.tsx",
+  groupName: "buttons",
+  component: components_buttons_usage_guidelines_example_tsx_component,
+  raw: components_buttons_usage_guidelines_example_tsx_raw,
+};
+
+// @ts-ignore
+import components_buttons_variants_example_tsx_component from "components/buttons/variants.example.tsx";
+import components_buttons_variants_example_tsx_raw from "components/buttons/variants.example.tsx?raw";
+
+export const components_buttons_variants_example_tsx = {
+  path: "components/buttons/variants.example.tsx",
+  title: "variants.example.tsx",
+  groupName: "buttons",
+  component: components_buttons_variants_example_tsx_component,
+  raw: components_buttons_variants_example_tsx_raw,
 };
 
 // @ts-ignore
