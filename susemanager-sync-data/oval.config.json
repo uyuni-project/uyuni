@@ -80,6 +80,22 @@
         }
       }
     },
+    "ALMA_LINUX": {
+      "content": {
+        "8": {
+          "vulnerability": "https://security.almalinux.org/oval/org.almalinux.alsa-8.xml.bz2",
+          "patch": ""
+        },
+        "9": {
+          "vulnerability": "https://security.almalinux.org/oval/org.almalinux.alsa-9.xml.bz2",
+          "patch": ""
+        },
+        "10": {
+          "vulnerability": "https://security.almalinux.org/oval/org.almalinux.alsa-10.xml.bz2",
+          "patch": ""
+        }
+      }
+    },
     "REDHAT_ENTERPRISE_LINUX": {
       "content": {
         "7": {

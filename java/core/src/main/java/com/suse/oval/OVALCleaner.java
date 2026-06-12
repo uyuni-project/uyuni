@@ -86,7 +86,7 @@ public class OVALCleaner {
 
     private static void fillCves(DefinitionType definition, OsFamily osFamily) {
         switch (osFamily) {
-            case REDHAT_ENTERPRISE_LINUX,
+            case REDHAT_ENTERPRISE_LINUX, ALMA_LINUX,
                  LEAP,
                  SUSE_LINUX_ENTERPRISE_SERVER, SUSE_LINUX_ENTERPRISE_DESKTOP, SUSE_LINUX_ENTERPRISE_MICRO, SUSE_LIBERTY_LINUX,
                  UBUNTU:

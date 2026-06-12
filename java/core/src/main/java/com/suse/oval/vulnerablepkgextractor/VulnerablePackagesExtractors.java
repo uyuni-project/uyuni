@@ -48,11 +48,16 @@ public class VulnerablePackagesExtractors {
                 return Optional.of(new SUSEVulnerablePackageExtractor(definition, ovalResourcesCache));
             case DEBIAN:
                 return Optional.of(new DebianVulnerablePackagesExtractor(definition));
-            case REDHAT_ENTERPRISE_LINUX:
+            case REDHAT_ENTERPRISE_LINUX, ALMA_LINUX:
                 if (definition.getDefinitionClass() == DefinitionClassEnum.VULNERABILITY) {
                     return Optional.of(new RedHatVulnerablePackageExtractorFromVulnerabilityDefinition(definition));
                 }
                 else if (definition.getDefinitionClass() == DefinitionClassEnum.PATCH) {
+                    if (definition.getCves().isEmpty()) {
+                        // If a patch definition has no CVEs (e.g. bugfix or enhancement errata),
+                        // it does not contain vulnerability mappings, so we cleanly return empty.
+                        return Optional.empty();
+                    }
                     return Optional.of(new RedHatVulnerablePackageExtractorFromPatchDefinition(definition));
                 }
                 else {
