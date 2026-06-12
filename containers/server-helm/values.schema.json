@@ -86,6 +86,20 @@
             }
           }
         },
+        "extraVolumes": {
+          "type": ["array", "null"],
+          "description": "Additional Kubernetes volumes for the server pod",
+          "items": {
+            "type": "object"
+          }
+        },
+        "extraVolumeMounts": {
+          "type": ["array", "null"],
+          "description": "Additional volume mounts for the server container",
+          "items": {
+            "type": "object"
+          }
+        },
         "sccSecret": {
             "type": "string",
             "description": "the name of a basic-auth secret with the organization mirroring credentials to set up on the server.",

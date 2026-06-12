@@ -269,6 +269,9 @@ spec:
         - name: mirror
           mountPath: /mirror
 {{- end }}
+{{- with .Values.server.extraVolumeMounts }}
+{{ toYaml . | nindent 8 }}
+{{- end }}
 {{- if .Values.registrySecret }}
       imagePullSecrets:
       - name: {{ .Values.registrySecret }}
@@ -539,4 +542,7 @@ spec:
         hostPath:
           path: {{ .Values.server.mirror.hostPath }}
   {{- end }}
+{{- end }}
+{{- with .Values.server.extraVolumes }}
+{{ toYaml . | nindent 6 }}
 {{- end }}
