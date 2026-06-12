@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  * */
 public enum OsFamily {
     LEAP("openSUSE Leap", "Leap", "opensuse",
-            oneOf("15.2", "15.3", "15.4", "15.5", "15.6")),
+            oneOf("16.0")),
     LEAP_MICRO("openSUSELeap Micro", "openSUE Leap Micro", "opensuse",
             oneOf("5.2", "5.3", "5.4", "5.5", "6.0")),
     SUSE_LINUX_ENTERPRISE_SERVER("SUSE Linux Enterprise Server", "SLES", "suse",

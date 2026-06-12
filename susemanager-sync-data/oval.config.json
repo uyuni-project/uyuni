@@ -2,24 +2,8 @@
   "sources": {
     "LEAP": {
       "content": {
-        "15.2": {
-          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/opensuse.leap.15.2-affected.xml.gz",
-          "patch": ""
-        },
-        "15.3": {
-          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/opensuse.leap.15.3-affected.xml.gz",
-          "patch": ""
-        },
-        "15.4": {
-          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/opensuse.leap.15.4-affected.xml.gz",
-          "patch": ""
-        },
-        "15.5": {
-          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/opensuse.leap.15.5-affected.xml.gz",
-          "patch": ""
-        },
-        "15.6": {
-          "vulnerability": "",
+        "16.0": {
+          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/opensuse.leap.16.0-affected.xml",
           "patch": ""
         }
       }
