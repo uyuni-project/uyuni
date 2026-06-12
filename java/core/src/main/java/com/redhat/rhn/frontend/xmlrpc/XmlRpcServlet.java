@@ -165,11 +165,11 @@ public class XmlRpcServlet extends HttpServlet {
              * -- this is a  good place to start looking.
              */
         }
-        // As bad as this is, we have no choice, Marquee-xmlrpc throws
-        // Throwable, so we have to catch it.
-        catch (Throwable t) {
+        // Catching Exception instead of Throwable since catching Error is not meaningful - the JVM would already be in an unstable state.
+        // The original Marquee-xmlrpc library throws Throwable, but in practice only Exception subclasses are thrown in application-level errors.
+        catch (Exception e) {
             // By the time we get here, it can't be a FaultException, so just log it
-            LOG.error("Unexpected XMLRPC error", t);
+            LOG.error("Unexpected XMLRPC error", e);
         }
     }
 }
