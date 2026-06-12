@@ -310,12 +310,26 @@
         </context-group>
         <target>Adressen</target>
       </trans-unit>
+      <trans-unit id="address type B" xml:space="preserve">
+        <source>Billing Address</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/Addresses</context>
+        </context-group>
+        <target>Rechnungsadresse</target>
+      </trans-unit>
       <trans-unit id="address type M" xml:space="preserve">
         <source>Mailing Address</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
         <target>Postadresse</target>
+      </trans-unit>
+      <trans-unit id="address type S" xml:space="preserve">
+        <source>Shipping Address</source>
+        <context-group name="ctx">
+          <context context-type="sourcefile">/rhn/users/Addresses</context>
+        </context-group>
+        <target>Lieferadresse</target>
       </trans-unit>
       <trans-unit id="address not filled in" xml:space="preserve">
         <source>Address not filled in</source>
