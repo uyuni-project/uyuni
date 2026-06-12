@@ -10,10 +10,6 @@
     },
     "SUSE_LINUX_ENTERPRISE_SERVER": {
       "content": {
-        "11": {
-          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.server.11-affected.xml.gz",
-          "patch": ""
-        },
         "12": {
           "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.server.12-affected.xml.gz",
           "patch": ""

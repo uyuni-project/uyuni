@@ -29,7 +29,7 @@ public enum OsFamily {
     LEAP("openSUSE Leap", "Leap", "opensuse",
             oneOf("16.0")),
     SUSE_LINUX_ENTERPRISE_SERVER("SUSE Linux Enterprise Server", "SLES", "suse",
-            oneOf("11", "12", "15", "16")),
+            oneOf("12", "15", "16")),
     SUSE_LINUX_ENTERPRISE_DESKTOP("SUSE Linux Enterprise Desktop", "SLED", "suse",
             oneOf("10", "11", "12", "15")),
     SUSE_LINUX_ENTERPRISE_MICRO("SUSE Linux Enterprise Micro", "SLE Micro", "suse",
