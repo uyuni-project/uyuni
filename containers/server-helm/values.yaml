@@ -43,6 +43,16 @@ server:
     # Using this is strongly discouraged as it is tied to where the server runs.
     hostPath: ""
 
+  # extraVolumes defines additional Kubernetes volumes for the server pod.
+  # This can be used to mount benchmark datasets, custom certificates or
+  # operator-managed volumes without modifying the chart templates.
+  extraVolumes: []
+
+  # extraVolumeMounts defines additional mounts for the server container.
+  # Every entry must reference a volume from server.extraVolumes or another
+  # volume already defined in the pod.
+  extraVolumeMounts: []
+
   # superPrivileged may need to be set to true to run on a cluster with selinux or AppArmor enforced.
   # This is only for the server pod, since it runs systemd.
   # Setting this to true opens a big security can of worms.

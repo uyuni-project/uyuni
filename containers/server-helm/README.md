@@ -71,6 +71,24 @@ This would be overridden by each claim's `volumes.<claim>.storageClass` value.
 The storage class supports a special `"-"` value to force the storage class to the empty string.
 This is different from the `""` value representing the default storage class by not setting any storage class at all.
 
+Additional volumes can be attached to the server pod with `server.extraVolumes` and mounted into the server container with `server.extraVolumeMounts`.
+This is useful for optional data sources such as benchmark repositories or externally managed content volumes without changing the chart templates.
+
+For example:
+
+```yaml
+server:
+  extraVolumes:
+    - name: uyuni-bench-source
+      persistentVolumeClaim:
+        claimName: uyuni-bench-source
+
+  extraVolumeMounts:
+    - name: uyuni-bench-source
+      mountPath: /uyuni-bench-source
+      readOnly: true
+```
+
 ### Node Tuning
 
 For each of the components it is possible to tune the node where the pod will be scheduled.
