@@ -96,6 +96,26 @@
         }
       }
     },
+    "ORACLE_LINUX": {
+      "content": {
+        "7": {
+          "vulnerability": "https://linux.oracle.com/security/oval/com.oracle.elsa-ol7.xml.bz2",
+          "patch": ""
+        },
+        "8": {
+          "vulnerability": "https://linux.oracle.com/security/oval/com.oracle.elsa-ol8.xml.bz2",
+          "patch": ""
+        },
+        "9": {
+          "vulnerability": "https://linux.oracle.com/security/oval/com.oracle.elsa-ol9.xml.bz2",
+          "patch": ""
+        },
+        "10": {
+          "vulnerability": "https://linux.oracle.com/security/oval/com.oracle.elsa-ol10.xml.bz2",
+          "patch": ""
+        }
+      }
+    },
     "REDHAT_ENTERPRISE_LINUX": {
       "content": {
         "7": {

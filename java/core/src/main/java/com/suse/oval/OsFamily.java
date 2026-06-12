@@ -38,6 +38,8 @@ public enum OsFamily {
             oneOf("7", "8", "9")),
     ALMA_LINUX("AlmaLinux", "AlmaLinux", "almalinux",
             oneOf("8", "9", "10")),
+    ORACLE_LINUX("Oracle Linux", "OEL", "oel",
+            oneOf("7", "8", "9", "10")),
     REDHAT_ENTERPRISE_LINUX("Red Hat Enterprise Linux", "Red Hat Enterprise Linux", "redhat",
             withPrefix("7.", "8.", "9.")),
     UBUNTU("Ubuntu", "ubuntu", "canonical", oneOf("20.04", "22.04", "24.04", "26.04")),

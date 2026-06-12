@@ -48,7 +48,7 @@ public class VulnerablePackagesExtractors {
                 return Optional.of(new SUSEVulnerablePackageExtractor(definition, ovalResourcesCache));
             case DEBIAN:
                 return Optional.of(new DebianVulnerablePackagesExtractor(definition));
-            case REDHAT_ENTERPRISE_LINUX, ALMA_LINUX:
+            case REDHAT_ENTERPRISE_LINUX, ALMA_LINUX, ORACLE_LINUX:
                 if (definition.getDefinitionClass() == DefinitionClassEnum.VULNERABILITY) {
                     return Optional.of(new RedHatVulnerablePackageExtractorFromVulnerabilityDefinition(definition));
                 }
