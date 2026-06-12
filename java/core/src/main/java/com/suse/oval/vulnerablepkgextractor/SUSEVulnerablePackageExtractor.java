@@ -180,9 +180,13 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
     }
 
     private Cpe deriveSUSEMicroCpe() {
+        String product = "sle-micro";
+        if (definition.getOsVersion() != null && definition.getOsVersion().startsWith("6.")) {
+            product = "sl-micro";
+        }
         return new CpeBuilder()
                 .withVendor("suse")
-                .withProduct("sle-micro")
+                .withProduct(product)
                 .withVersion(definition.getOsVersion())
                 .build();
     }
