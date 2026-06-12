@@ -19,13 +19,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.common.UyuniError;
 import com.redhat.rhn.common.UyuniErrorReport;
 import com.redhat.rhn.common.conf.ConfigDefaults;
+import com.redhat.rhn.testing.TestUtils;
 
 import org.jmock.Expectations;
 import org.jmock.api.Invocation;
 import org.jmock.junit5.JUnit5Mockery;
 import org.jmock.lib.action.CustomAction;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
@@ -40,7 +40,6 @@ public class ProxyConfigGetFormTestUtils {
      * @param context the JUnit5Mockery context
      * @param expectedIsUyuni return value for the isUyuni method
      */
-    @SuppressWarnings({"java:S1171", "java:S3599"})
     public static void mockConfigDefaults(JUnit5Mockery context, boolean expectedIsUyuni) {
         ConfigDefaults configDefaults = ConfigDefaults.get();
         ConfigDefaults mockConfigDefaults = context.mock(ConfigDefaults.class);
@@ -62,24 +61,11 @@ public class ProxyConfigGetFormTestUtils {
         }});
 
         try {
-            setConfigDefaultsInstance(mockConfigDefaults);
+            TestUtils.setConfigDefaultsInstance(mockConfigDefaults);
         }
         catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * Overrides the ConfigDefaults instance
-     * @param configDefaults the ConfigDefaults instance
-     * @throws NoSuchFieldException if a field with the specified name is not found.
-     * @throws IllegalAccessException if the field is not accessible.
-     */
-    public static void setConfigDefaultsInstance(ConfigDefaults configDefaults)
-            throws NoSuchFieldException, IllegalAccessException {
-        Field field = ConfigDefaults.class.getDeclaredField("instance");
-        field.setAccessible(true);
-        field.set(null, configDefaults);
     }
 
     /**
