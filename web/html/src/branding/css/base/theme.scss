@@ -1252,11 +1252,11 @@ select.small-select {
 
 // Represents bootstrap 4.0+ spacing / alignment
 .pl-4 {
-  padding-left: 1.5rem;
+  padding-left: 1.5rem !important;
 }
 
 .pl-0 {
-  padding-left: 0;
+  padding-left: 0 !important;
 }
 
 .align-middle {
