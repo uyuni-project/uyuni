@@ -34,14 +34,6 @@
     },
     "SUSE_LINUX_ENTERPRISE_MICRO": {
       "content": {
-        "5.0": {
-          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.micro.5.0-affected.xml.gz",
-          "patch": ""
-        },
-        "5.1": {
-          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.micro.5.1-affected.xml.gz",
-          "patch": ""
-        },
         "5.2": {
           "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.micro.5.2-affected.xml.gz",
           "patch": ""
@@ -59,7 +51,7 @@
           "patch": ""
         },
         "6.0": {
-          "vulnerability": "",
+          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.micro.6.0-affected.xml.gz",
           "patch": ""
         }
       }
