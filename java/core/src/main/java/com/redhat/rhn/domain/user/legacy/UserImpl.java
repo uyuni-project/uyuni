@@ -988,7 +988,7 @@ public class UserImpl extends BaseDomainHelper implements User {
      */
     @Override
     public String getState() {
-        return getAddress().getState();
+        return ofNullable(getAddress()).map(Address::getState).orElse(null);
     }
 
     /**
