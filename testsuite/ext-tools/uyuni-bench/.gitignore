@@ -1,0 +1,4 @@
+results/*
+!results/.gitkeep
+*.pyc
+__pycache__/

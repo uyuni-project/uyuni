@@ -1,0 +1,10 @@
+{
+  "name": "opensuse-tumbleweed-oss-current-x86_64-noarch",
+  "description": "Large openSUSE Tumbleweed OSS RPM repository. This URL is moving; for publication-quality benchmark runs, pin a snapshot or save the generated dataset manifest.",
+  "repo_url": "https://download.opensuse.org/tumbleweed/repo/oss/",
+  "arches": ["x86_64", "noarch"],
+  "expected": {
+    "package_count_observed_2026_06_06": 56096,
+    "package_size_gib_observed_2026_06_06": 121.59
+  }
+}
