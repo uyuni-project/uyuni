@@ -12,6 +12,7 @@
 package com.suse.manager.hub;
 
 import com.redhat.rhn.GlobalInstanceHolder;
+import com.redhat.rhn.common.RhnRuntimeException;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.security.PermissionException;
@@ -1037,7 +1038,12 @@ public class HubManager {
                 IssHub hub = new IssHub(serverFqdn, rootCA);
                 hub.setGpgKey(gpgKey);
                 hubFactory.save(hub);
-                taskomaticApi.scheduleSingleGpgKeyImport(gpgKey);
+                try {
+                    CertificateUtils.importGpgKey(gpgKey);
+                }
+                catch (IOException e) {
+                    throw new RhnRuntimeException("Failed to import the GPG key", e);
+                }
                 yield hub;
             }
             case PERIPHERAL -> {
