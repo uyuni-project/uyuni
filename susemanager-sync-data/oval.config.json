@@ -26,18 +26,6 @@
     },
     "SUSE_LINUX_ENTERPRISE_DESKTOP": {
       "content": {
-        "10": {
-          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.desktop.10.xml.gz",
-          "patch": ""
-        },
-        "11": {
-          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.desktop.11.xml.gz",
-          "patch": ""
-        },
-        "12": {
-          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.desktop.12-affected.xml.gz",
-          "patch": ""
-        },
         "15": {
           "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.linux.enterprise.desktop.15-affected.xml.gz",
           "patch": ""

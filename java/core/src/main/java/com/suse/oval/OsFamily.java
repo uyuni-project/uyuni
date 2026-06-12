@@ -31,7 +31,7 @@ public enum OsFamily {
     SUSE_LINUX_ENTERPRISE_SERVER("SUSE Linux Enterprise Server", "SLES", "suse",
             oneOf("12", "15", "16")),
     SUSE_LINUX_ENTERPRISE_DESKTOP("SUSE Linux Enterprise Desktop", "SLED", "suse",
-            oneOf("10", "11", "12", "15")),
+            oneOf("15")),
     SUSE_LINUX_ENTERPRISE_MICRO("SUSE Linux Enterprise Micro", "SLE Micro", "suse",
             oneOf("5.0", "5.1", "5.2", "5.3", "5.4", "5.5", "6.0")),
     REDHAT_ENTERPRISE_LINUX("Red Hat Enterprise Linux", "Red Hat Enterprise Linux", "redhat",
