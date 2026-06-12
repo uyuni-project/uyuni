@@ -40,31 +40,31 @@ public class AddressImpl extends BaseDomainHelper implements Address {
     @SequenceGenerator(name = "WEB_USER_SITE_INFO_SEQ", sequenceName = "WEB_USER_SITE_INFO_ID_SEQ", allocationSize = 1)
     private Long id;
 
-    @Column(length = 128)
+    @Column
     private String email;
 
-    @Column(name = "address1", length = 128, nullable = false)
+    @Column(nullable = false)
     private String address1;
 
-    @Column(name = "address2", length = 128)
+    @Column
     private String address2;
 
-    @Column(name = "city", length = 128, nullable = false)
+    @Column(nullable = false)
     private String city;
 
-    @Column(length = 64)
+    @Column
     private String state;
 
-    @Column(length = 64)
+    @Column
     private String zip;
 
-    @Column(name = "country", length = 2, nullable = false)
+    @Column(nullable = false)
     private String country;
 
-    @Column(length = 32)
+    @Column
     private String phone;
 
-    @Column(length = 32)
+    @Column
     private String fax;
 
     @ManyToOne
