@@ -583,6 +583,7 @@ public class ContentManager {
                 .orElseThrow(() -> new EntityNotExistsException(ContentFilter.class, filterId));
         project.attachFilter(filter);
         ContentProjectFactory.save(project);
+        HibernateFactory.getSession().flush();
         return filter;
     }
 
@@ -601,6 +602,7 @@ public class ContentManager {
                 .orElseThrow(() -> new EntityNotExistsException(ContentFilter.class, filterId));
         project.detachFilter(filter);
         ContentProjectFactory.save(project);
+        HibernateFactory.getSession().flush();
     }
 
     /**
