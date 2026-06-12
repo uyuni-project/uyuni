@@ -27,7 +27,7 @@ for error in errors:
         if not isinstance(j["return"], dict):
             continue
         for k, v in j["return"].items():
-            if isinstance(v, dict) and not v.get("result", True):
+            if isinstance(v, dict) and v.get("result", True) is False:
                 failure_count += 1
                 print(
                     "\n# Failure",
