@@ -18,7 +18,6 @@ package com.redhat.rhn.domain.user;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.user.legacy.UserImpl;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -48,13 +47,13 @@ public class AddressImpl extends BaseDomainHelper implements Address {
     private String email;
 
     @Column(name = "address1", length = 128, nullable = false)
-    private String address1 = StringUtils.SPACE;
+    private String address1;
 
     @Column(name = "address2", length = 128)
     private String address2;
 
     @Column(name = "city", length = 128, nullable = false)
-    private String city = StringUtils.SPACE;
+    private String city;
 
     @Column(length = 64)
     private String state;
@@ -63,7 +62,7 @@ public class AddressImpl extends BaseDomainHelper implements Address {
     private String zip;
 
     @Column(name = "country", length = 2, nullable = false)
-    private String country = StringUtils.SPACE;
+    private String country;
 
     @Column(length = 32)
     private String phone;
