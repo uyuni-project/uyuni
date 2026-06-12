@@ -42,7 +42,7 @@ public class VulnerablePackagesExtractors {
     public static Optional<VulnerablePackagesExtractor> create(DefinitionType definition, OsFamily osFamily,
                                                                  OVALResourcesCache ovalResourcesCache) {
         switch (osFamily) {
-            case LEAP, LEAP_MICRO,
+            case LEAP,
                  SUSE_LINUX_ENTERPRISE_SERVER, SUSE_LINUX_ENTERPRISE_DESKTOP, SUSE_LINUX_ENTERPRISE_MICRO:
                 return Optional.of(new SUSEVulnerablePackageExtractor(definition, ovalResourcesCache));
             case DEBIAN:
