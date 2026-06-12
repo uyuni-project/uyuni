@@ -71,6 +71,7 @@ public class PredicatesTest {
         if (nonNull(value) && Collection.class.isAssignableFrom(value.getClass())) {
             assertEquals(expectedNoneProvided, Predicates.noneProvided((Collection<?>) value));
             assertEquals(expectedAnyProvided, Predicates.anyProvided((Collection<?>) value));
+            assertEquals(expectedAnyProvided, Predicates.anyProvided(value));
         }
     }
 

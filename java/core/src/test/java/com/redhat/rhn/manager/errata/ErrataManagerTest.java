@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LLC
  * Copyright (c) 2009--2017 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -167,7 +168,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         e.addPackage(p);
         ErrataFactory.save(e);
 
-        channel.ifPresent(e::addChannel);
+        channel.ifPresent(c -> c.addErrata(e));
 
         WebSession session = WebSessionFactory.createSession();
         WebSessionFactory.save(session);
@@ -1656,12 +1657,12 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         Channel channel = ChannelTestUtils.createBaseChannel(user);
 
         Errata patch = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        patch.addChannel(channel);
+        channel.addErrata(patch);
         ErrataFactory.save(patch);
 
         Errata retractedPatch = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
         retractedPatch.setAdvisoryStatus(AdvisoryStatus.RETRACTED);
-        retractedPatch.addChannel(channel);
+        channel.addErrata(retractedPatch);
         ErrataFactory.save(retractedPatch);
 
         DataResult<ErrataOverview> patches = ErrataManager.allErrata(user);
