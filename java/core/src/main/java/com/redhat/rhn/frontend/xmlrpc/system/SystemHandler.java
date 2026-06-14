@@ -114,6 +114,7 @@ import com.redhat.rhn.frontend.dto.SystemEventDto;
 import com.redhat.rhn.frontend.dto.SystemOverview;
 import com.redhat.rhn.frontend.dto.VirtualSystemOverview;
 import com.redhat.rhn.frontend.events.SsmDeleteServersEvent;
+import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.DuplicateProfileNameException;
 import com.redhat.rhn.frontend.xmlrpc.EntityNotExistsFaultException;
@@ -199,6 +200,7 @@ import com.suse.manager.model.attestation.CoCoEnvironmentType;
 import com.suse.manager.model.attestation.ServerCoCoAttestationConfig;
 import com.suse.manager.model.attestation.ServerCoCoAttestationReport;
 import com.suse.manager.model.products.migration.MigrationDataFactory;
+import com.suse.manager.webui.controllers.SystemsController;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.xmlrpc.NoSuchHistoryEventException;
@@ -6511,6 +6513,54 @@ public class SystemHandler extends BaseHandler {
         DataResult<SystemOverview> dr = SystemManager.physicalList(loggedInUser);
         dr.elaborate();
         return dr.toArray();
+    }
+
+    /**
+     * Gets a list of all systems visible to user with a filter applied.
+     * @param loggedInUser The current user
+     * @param filterKey the column to filter on
+     * @param filterValue the filter value
+     * @param page the number of the page to get
+     * @param pageSize the number of items per page
+     * @return Returns an array of maps representing all systems visible to user
+     *
+     * @throws FaultException A FaultException is thrown if a valid user can not be found
+     * from the passed in session key
+     *
+     * @apidoc.doc Returns a list of all filtered servers visible to the user.
+     * The field value can start with an operator like > < >= <= !=.
+     * The field key can be one of:
+     *
+     * @apidoc.param #session_key()
+     * @apidoc.param #param_desc("string", "filterKey", "what field to filter on")
+     * @apidoc.param #param_desc("string", "filterValue", "the value to look for")
+     * @apidoc.param #param_desc("int", "page", "the number of the page to return")
+     * @apidoc.param #param_desc("int", "pageSize", "the number of items per page to return")
+     * @apidoc.returntype
+     *      #struct_begin("system details page")
+     *        #prop_desc("int", "total", "Total count of systems for all pages")
+     *        #prop_array_begin_desc("data", "the requested page of systems")
+     *          $SystemOverviewSerializer
+     *        #prop_array_end()
+     *      #struct_end()
+     */
+    @ReadOnly
+    public Map<String, Object> listSystemsFiltered(
+            User loggedInUser, String filterKey, String filterValue, int page, int pageSize
+    ) throws FaultException {
+        PageControl pc = new PageControl();
+        pc.setPageSize(page);
+        pc.setFilter(true);
+        pc.setStart(page * pageSize + 1);
+        pc.setFilterColumn(filterKey);
+        pc.setFilterData(filterValue);
+        DataResult<SystemOverview> dr = SystemManager.systemListNew(
+                loggedInUser, SystemsController.getFilterParser(pc), pc);
+        dr.elaborate();
+        Map<String, Object> result = new HashMap<>();
+        result.put("total", dr.getTotalSize());
+        result.put("data", dr.toArray());
+        return result;
     }
 
     /**
