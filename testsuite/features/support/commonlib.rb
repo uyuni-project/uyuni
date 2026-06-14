@@ -363,7 +363,14 @@ def kill_reposync_for_channel(channel)
       next
     elsif channel_synchronizing == channel
       pid = process.split[0]
-      get_target('server').run("kill #{pid}", verbose: true, check_errors: false)
+      node = get_target('server')
+      node.run("kill #{pid}", verbose: true, check_errors: false)
+      # Even if spacewalk-repo-sync is killed, it is possible that zypper
+      # is still running for some moments while refreshing metadata.
+      # If there is another execution of spacewalk-repo-sync again while
+      # zypper is still running, then the reposync will fail.
+      # We need to wait until zypper is finished
+      node.wait_while_process_running('zypper')
       log "Reposync of channel #{channel} killed"
       break
     else
