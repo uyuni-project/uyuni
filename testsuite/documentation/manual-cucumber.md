@@ -571,7 +571,7 @@ Note: in automation, we already test some parts of this page, but not all
 
 ### 6.5 System Set Manager
 * Priority: medium
-* Could be automated: yes (might be grouped with other existing SSM tests)
+* Automated: yes - `testsuite/features/secondary/allcli_system_group.feature` (includes SSM package install/remove/patch scenarios)
 1. Select on minion and one traditional client in System Set Manager
 1. Install a package
 1. Verify that the package was installed on the target systems
@@ -610,7 +610,7 @@ Note: in automation, we already test some parts of this page, but not all
 
 ### 6.9 Use a System Group
 * Priority: medium
-* Could be automated: yes - issue #3998
+* Automated: yes - `testsuite/features/secondary/allcli_system_group.feature`
 1. Create a group in "Systems => System Groups"
 1. Go to a system's details
 1. In "Groups => Join", make it join the group
@@ -631,7 +631,9 @@ Note: in automation, we already test some parts of this page, but not all
 
 ### 7.2 Openscap (RHEL8 with Expanded Support in AWS)
 * Priority: low
-* Could be automated: yes
+* Automated: yes - `testsuite/features/secondary/min_rhlike_openscap_audit.feature` (RHEL/Rocky), `min_salt_openscap_audit.feature` (SLES), `min_deblike_openscap_audit.feature` (Debian)
+* Manual test below describes AWS Expanded Support deployment which is not automated
+* Could be automated: yes (AWS deployment steps)
 1. Login into AWS using your credentials: https://eu-central-1.console.aws.amazon.com/
 1. Go to: https://github.com/SUSE-Enceladus/ec2imgutils
 1. Install: zypper in python3-ec2imgutils
@@ -698,7 +700,8 @@ AMI: https://aws.amazon.com/marketplace/pp/prodview-puvcki5kgypyy?qid=1622539284
 
 ### 7.5 Content Lifecycle Management Filters
 * Priority: low
-* Could be automated: yes
+* Automated: partially - `testsuite/features/secondary/srv_content_lifecycle.feature` (covers Deny filters)
+* Could be further automated: yes (Allow filters and feedback page functionality)
 1. Scenario: Deny filter
    - Create a "Deny" filter for a package contains name "ruby"
    - Check those packages containing ruby are not included in the channel
@@ -796,9 +799,9 @@ It should list all clients on all peripheral servers.
 
 ### 7.10 Test SLE-Micro
 * Priority: medium
+* Automated: yes - Multiple versions (5.2, 5.3, 5.4, 5.5, 6.0, 6.1, 6.2) automated in `testsuite/features/build_validation/init_clients/slemicro*.feature` and migration tests in `testsuite/features/build_validation/migration/migration_slemicro*.feature`
 * Only available as [tech preview](https://documentation.suse.com/suma/4.3/en/suse-manager/client-configuration/supported-features-sle-micro.html)
 * Manual test for SLE-Micro 5.2: https://github.com/SUSE/spacewalk/issues/17785
-* Could be automated: Yes
 1. Deploy a VM using the latest 5.2 [ISO](https://download.suse.de/download/install/SLE-Micro-5.2-GM/SUSE-MicroOS-5.2-DVD-x86_64-GM-Media1.iso)
 1. Install requirement for bootstrapping:
     - `transactional-update pkg install salt-transactional-update`
@@ -816,8 +819,9 @@ It should list all clients on all peripheral servers.
 
 ### 7.11 Test `spacewalk-hostname-rename`
 * Priority: low
-* Could be automated: Yes but risky to include in the testsuite.
-* Full procedure i described in https://documentation.suse.com/external-tree/en-us/suma/4.1/suse-manager/administration/tshoot-hostname-rename.html
+* Automated: yes - `testsuite/features/finishing/srv_rename_hostname.feature`
+* Note: Risky test that can affect following features if server fails to reboot properly or cleanup fails
+* Full procedure is described in https://documentation.suse.com/external-tree/en-us/suma/4.1/suse-manager/administration/tshoot-hostname-rename.html
 1. Have a SUSE Manager server deployment.
 1. Change the server's hostname in /etc/HOSTNAME .
 1. Reboot the server - as simply opening a new session does not seem to be sufficient to apply the new hostname for the script.
