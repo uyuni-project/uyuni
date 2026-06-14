@@ -17,7 +17,7 @@
                     <p><bean:message key="userdetails.jsp.summary"/></p>
                     <hr/>
                     <%@ include file="/WEB-INF/pages/common/fragments/user/edit_user_table_rows.jspf"%>
-                    <div class="form-group">
+                    <div class="row">
                         <label class="col-lg-3 control-label"><bean:message key="userdetails.jsp.adminRoles"/>:</label>
                         <div class="col-lg-6">
                             <c:forEach items="${adminRoles}" var="role">
@@ -32,7 +32,7 @@
                             </c:forEach>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <label class="col-lg-3 control-label">
                             <bean:message key="userdetails.jsp.roles"/>:
                         </label>
@@ -50,7 +50,7 @@
                         </div>
                     </div>
                     <c:if test="${not empty temporaryRoles}">
-                        <div class="form-group">
+                        <div class="row">
                             <label class="col-lg-3 control-label">
                                 <bean:message key="userdetails.jsp.temporaryroles"/>
                             </label>
@@ -61,7 +61,7 @@
                             </div>
                         </div>
                     </c:if>
-                    <div class="form-group">
+                    <div class="row">
                         <label class="col-lg-3 control-label">
                             <bean:message key="usercreate.jsp.api.readOnly"/>
                         </label>
@@ -75,7 +75,7 @@
                             <br/><small><bean:message key="usercreate.jsp.api.readOnlyHelp"/></small>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <label class="col-lg-3 control-label">
                             <bean:message key="created.displayname"/>
                         </label>
@@ -87,7 +87,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="row">
                         <label class="col-lg-3 control-label">
                             <bean:message key="last_sign_in.displayname"/>
                         </label>
@@ -108,7 +108,7 @@
 
                     <rhn:hidden name="disabledRoles" value="${disabledRoles}"/>
 
-                    <div class="form-group">
+                    <div class="row">
                         <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                             <c:choose>
                                 <c:when test="${!empty mailableAddress}">

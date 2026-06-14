@@ -3,7 +3,7 @@
 <%@ taglib uri="http://struts.apache.org/tags-bean" prefix="bean"%>
 <%@ taglib uri="http://struts.apache.org/tags-html" prefix="html"%>
 
-<div class="form-group">
+<div class="row">
     <label for="networkType" class="col-sm-3 control-label"><bean:message key="kickstart.netconn.jsp.label" /></label>
     <div class="col-sm-9">
         <div class="radio">
@@ -34,7 +34,7 @@
 </div>
 
 <c:if test="${empty noStatic}">
-    <div class="form-group">
+    <div class="row">
         <div class="col-sm-offset-3 offset-sm-3 col-sm-9">
             <div class="radio">
                 <label>
@@ -73,7 +73,7 @@
     </div>
 </c:if>
 
-<div class="form-group">
+<div class="row">
     <div class="col-sm-offset-3 offset-sm-3 col-sm-9">
         <div class="radio">
             <label>

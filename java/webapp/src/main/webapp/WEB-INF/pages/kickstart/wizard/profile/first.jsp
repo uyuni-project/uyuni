@@ -66,7 +66,7 @@
 
     <div class="panel panel-default">
       <div class="panel-body">
-        <div class="form-group">
+        <div class="row">
           <div class="col-sm-2">
             <rhn:required-field key="kickstart.jsp.create.wizard.kickstart.profile.label"/>:
           </div>
@@ -74,7 +74,7 @@
             <html:text property="kickstartLabel" size="40" maxlength="80" styleClass="form-control"/>
           </div>
         </div>
-       <div class="form-group">
+       <div class="row">
          <div class="col-sm-2">
            <rhn:required-field key="softwareedit.jsp.basechannel"/>:
          </div>
@@ -91,7 +91,7 @@
            </c:choose>
          </div>
         </div>
-        <div class="form-group">
+        <div class="row">
           <div class="col-sm-2">
             <rhn:required-field key="kickstart.jsp.create.wizard.kstree.label"/>:
           </div>
@@ -122,7 +122,7 @@
             </c:choose>
           </div>
         </div>
-        <div class="form-group">
+        <div class="row">
           <div class="col-sm-2">
             <bean:message key="kickstart.jsp.create.wizard.virtualization.label" />
           </div>

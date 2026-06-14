@@ -58,7 +58,7 @@ export function SearchField(props: SearchFieldProps) {
           }}
         />
       )}
-      <div className="form-group">
+      <div className="row">
         <input
           className="form-control table-input-search"
           data-testid="default-table-search"

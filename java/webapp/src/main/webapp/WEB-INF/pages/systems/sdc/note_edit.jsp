@@ -27,7 +27,7 @@
                    action="/systems/details/EditNote.do?${urlParam}">
             <rhn:csrf />
             <html:hidden property="submitted" value="true"/>
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label" for="subject">
                     <bean:message key="sdc.details.notes.subject"/>
                 </label>
@@ -35,7 +35,7 @@
                     <html:text property="subject" maxlength="128" size="40" styleId="subject" styleClass="form-control"/>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label" for="note">
                     <bean:message key="sdc.details.notes.details"/>
                 </label>
@@ -43,7 +43,7 @@
                     <html:textarea property="note" cols="40" rows="6" styleId="note" styleClass="form-control"/>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <c:choose>
                         <c:when test='${not empty n.id}'>

@@ -37,7 +37,7 @@
 
         <html:form method="post" styleClass="form-horizontal" action="${param.range_edit_url}">
             <c:forEach items="${ranges}" var="ip_range">
-                <div class="form-group">
+                <div class="row">
                     <label class="col-lg-2 control-label">
                         <bean:message key="kickstartips.jsp.label" />:
                     </label>
@@ -56,7 +56,7 @@
             </c:forEach>
 
             <rhn:csrf />
-            <div class="form-group">
+            <div class="row">
                 <div class="row">
                     <label class="col-lg-2 control-label">
                         <bean:message key="kickstartips.jsp.label" />:
@@ -81,7 +81,7 @@
                 </div>
             </div>
                 
-            <div class="form-group">
+            <div class="row">
                 <div class="col-lg-offset-2 offset-lg-2 col-lg-8">
                     <html:submit styleClass="btn btn-primary">
                         <bean:message key="kickstartips.jsp.addrange"/>

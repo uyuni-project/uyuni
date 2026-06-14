@@ -22,7 +22,7 @@
   <!-- TODO: fix these first two tables when the new list constructs come out. -->
 
   <!-- simple summary table -->
-  <div class="row-0">
+  <div class="row">
     <div class="col-md-6">
       <div class="panel panel-default">
         <%@ include file="/WEB-INF/pages/common/fragments/configuration/overview/summary.jspf" %>

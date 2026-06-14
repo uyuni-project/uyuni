@@ -14,7 +14,7 @@
         <html:form method="post" action="/systems/details/SystemMigrate.do?sid=${system.id}">
           <rhn:csrf />
           <html:hidden property="submitted" value="true"/>
-          <div class="row-0 form-group">
+          <div class="row">
             <div class="col-md-2">
               <bean:message key="sdc.details.migrate.org"/>
             </div>
