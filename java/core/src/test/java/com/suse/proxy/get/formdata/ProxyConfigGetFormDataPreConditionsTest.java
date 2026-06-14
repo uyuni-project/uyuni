@@ -17,7 +17,6 @@ import static com.suse.proxy.ProxyConfigUtils.isMgrpxyInstalled;
 import static com.suse.proxy.get.formdata.ProxyConfigGetFormTestUtils.SERVER_ID;
 import static com.suse.proxy.get.formdata.ProxyConfigGetFormTestUtils.assertErrors;
 import static com.suse.proxy.get.formdata.ProxyConfigGetFormTestUtils.assertNoErrors;
-import static com.suse.proxy.get.formdata.ProxyConfigGetFormTestUtils.setConfigDefaultsInstance;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -40,6 +39,7 @@ import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 import com.redhat.rhn.testing.ServerTestUtils;
+import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.manager.webui.services.TestSaltApi;
@@ -86,13 +86,7 @@ public class ProxyConfigGetFormDataPreConditionsTest extends RhnJmockBaseTestCas
 
     @AfterEach
     public void tearDown() throws Exception {
-
-        try {
-            setConfigDefaultsInstance(configDefaults);
-        }
-        catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException("Error resetting ConfigDefaults instance", e);
-        }
+        TestUtils.setConfigDefaultsInstance(configDefaults);
     }
 
     /**

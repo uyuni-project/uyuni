@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.access.AccessGroup;
+import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.kickstart.KickstartDataTest;
 import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.org.OrgFactory;
@@ -87,6 +88,7 @@ public class BaseHandlerTestCase extends RhnBaseTestCase {
             UserFactory.deleteUser(regular.getId());
             UserFactory.deleteUser(satAdmin.getId());
             OrgFactory.deleteOrg(admin.getOrg().getId(), admin);
+            AccessTokenFactory.deleteAll();
             TestUtils.commitAndCloseSession();
         }
         committed = false;

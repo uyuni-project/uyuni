@@ -76,9 +76,13 @@ public class ChannelFamilyTest extends BaseTestCaseWithUser {
             cf = ChannelFamilyFactoryTest.createTestChannelFamily(user, true, TestUtils.randomString());
             cf.setName(name);
             cf.setLabel(label);
-            ChannelFamilyFactory.save(cf);
         }
-        return cf;
+        else {
+            cf.setName(name);
+            //label is already set since we're coming from lookupByLabel
+        }
+        ChannelFamilyFactory.save(cf);
+        return TestUtils.reload(cf);
     }
 
     /**

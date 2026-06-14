@@ -18,6 +18,7 @@ package com.redhat.rhn.testing;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.redhat.rhn.common.conf.Config;
+import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
@@ -453,6 +454,19 @@ public class TestUtils {
                 "/" + object.getClass().getPackage().getName()
                         .replaceAll("\\.", "/") + "/" + file).getPath()
         ));
+    }
+
+    /**
+     * Overrides the ConfigDefaults instance
+     * @param configDefaultsIn the ConfigDefaults instance
+     * @throws NoSuchFieldException if a field with the specified name is not found.
+     * @throws IllegalAccessException if the field is not accessible.
+     */
+    public static void setConfigDefaultsInstance(ConfigDefaults configDefaultsIn)
+            throws NoSuchFieldException, IllegalAccessException {
+        Field field = ConfigDefaults.class.getDeclaredField("instance");
+        field.setAccessible(true);
+        field.set(null, configDefaultsIn);
     }
 
     //=========================================================================

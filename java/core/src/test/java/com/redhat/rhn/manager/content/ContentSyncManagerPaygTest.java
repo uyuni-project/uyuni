@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.channel.ChannelFamilyFactory;
 import com.redhat.rhn.domain.cloudpayg.CloudRmtHostFactory;
 import com.redhat.rhn.domain.cloudpayg.PaygSshData;
 import com.redhat.rhn.domain.cloudpayg.PaygSshDataFactory;
+import com.redhat.rhn.domain.common.ManagerInfoFactory;
 import com.redhat.rhn.domain.credentials.CloudRMTCredentials;
 import com.redhat.rhn.domain.credentials.CredentialsFactory;
 import com.redhat.rhn.domain.notification.UserNotificationFactory;
@@ -235,6 +236,11 @@ public class ContentSyncManagerPaygTest extends RhnBaseTestCase {
             if (Objects.nonNull(tmpLogDir)) {
                 FileUtils.forceDelete(tmpLogDir.toFile());
             }
+
+            //clear committed entry in suseManagerInfo
+            TestUtils.clearSession();
+            ManagerInfoFactory.testDeleteLastMgrSyncRefresh();
+            TestUtils.commitAndCloseSession();
         }
     }
 

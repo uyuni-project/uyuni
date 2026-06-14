@@ -83,4 +83,12 @@ public class ManagerInfoFactory extends HibernateFactory {
                 getLastMgrSyncRefresh().isEmpty() ? "set_last_mgr_sync_refresh" : "update_last_mgr_sync_refresh");
         m.executeUpdate(params);
     }
+
+    /**
+     * delete last mgr-sync refresh entry in suseManagerInfo: used only in testing
+     */
+    public static void testDeleteLastMgrSyncRefresh() {
+        getSession().createNativeMutationQuery("DELETE FROM suseManagerInfo").executeUpdate();
+    }
+
 }
