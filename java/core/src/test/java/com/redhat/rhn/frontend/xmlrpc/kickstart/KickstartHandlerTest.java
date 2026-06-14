@@ -283,7 +283,7 @@ public class KickstartHandlerTest extends BaseHandlerTestCase {
         KickstartData ks  = KickstartDataTest.createKickstartWithProfile(admin);
         String label = ks.getLabel();
         KickstartFactory.saveKickstartData(ks);
-        ks = TestUtils.reload(ks);
+        TestUtils.reload(ks); //reassign variable if still needed
 
         List<KickstartDto> list = handler.listKickstarts(admin);
         boolean foundKs = false;

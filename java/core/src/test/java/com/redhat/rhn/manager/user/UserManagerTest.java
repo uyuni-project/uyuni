@@ -608,7 +608,7 @@ public class UserManagerTest extends RhnBaseTestCase {
        UserServerPreference usp = new UserServerPreference(user, s, UserServerPreferenceId.RECEIVE_NOTIFICATIONS);
        usp.setValue("0");
 
-       usp = TestUtils.saveAndFlush(usp);
+       TestUtils.saveAndFlush(usp); //reassign variable if still needed
 
        assertFalse(UserManager.lookupUserServerPreferenceValue(user,
                                                                s,
