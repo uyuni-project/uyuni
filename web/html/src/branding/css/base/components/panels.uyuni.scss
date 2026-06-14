@@ -3,17 +3,18 @@
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
 
   &-default {
-    border: 1px solid $eos-bc-gray-100;
+    border: 1px solid $panel-border;
 
     > .panel-heading {
       padding: 1rem 1.5rem;
-      border-bottom: 1px solid $eos-bc-gray-100;
+      border-bottom: 1px solid $panel-border;
       // TODO: Make this $eos-bc-gray-50 after the whole Bootstrap migration is complete
-      background: #f5f5f5;
+      background: $panel-gray-bg;
     }
 
     .list-group-item {
-      border-bottom: 1px solid $eos-bc-gray-100;
+      border: 0;
+      border-bottom: 1px solid $panel-border;
       text-align: left;
 
       &:last-child {
@@ -22,10 +23,10 @@
     }
 
     > .panel-body .list-group {
-      border: 1px solid $eos-bc-gray-100;
+      border: 1px solid $panel-border;
 
       .list-group-item:hover {
-        background-color: $eos-bc-gray-50;
+        background-color: $panel-gray-bg;
         text-decoration: none;
       }
     }
@@ -36,7 +37,7 @@
   }
 
   .panel-footer {
-    border-top: 1px solid $eos-bc-gray-100;
-    background: #f5f5f5 !important;
+    border-top: 1px solid $panel-border;
+    background: $panel-gray-bg !important;
   }
 }
