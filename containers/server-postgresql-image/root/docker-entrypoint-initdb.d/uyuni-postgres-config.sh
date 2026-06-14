@@ -105,11 +105,3 @@ mkdir -p /var/lib/pgsql/data/postgresql.conf.d
 postgres_reconfig "include_dir" "'postgresql.conf.d'"
 
 echo "postgresql.conf updated"
-
-cat > "$HBA_FILE" <<EOT
-local all all trust
-local replication all trust
-host all all all scram-sha-256
-EOT
-
-echo "pg_hba.conf updated"
