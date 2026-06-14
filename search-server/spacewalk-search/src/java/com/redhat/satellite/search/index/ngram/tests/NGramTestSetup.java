@@ -129,8 +129,7 @@ public class NGramTestSetup extends TestCase {
         QueryParser parser = new QueryParser("name", alyz);
         IndexSearcher searcher = new IndexSearcher(dir);
         Query q = parser.parse(query);
-        Hits hits = searcher.search(q);
-        return hits;
+        return searcher.search(q);
     }
 
     protected int thresholdHits(Hits hits) throws IOException {
