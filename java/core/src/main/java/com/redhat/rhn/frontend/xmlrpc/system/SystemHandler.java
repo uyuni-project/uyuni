@@ -193,6 +193,7 @@ import com.suse.manager.api.ApiIgnore;
 import com.suse.manager.api.ApiType;
 import com.suse.manager.api.ReadOnly;
 import com.suse.manager.attestation.AttestationDisabledException;
+import com.suse.manager.attestation.AttestationInputDataValidatorFactory;
 import com.suse.manager.attestation.AttestationManager;
 import com.suse.manager.model.attestation.CoCoAttestationResult;
 import com.suse.manager.model.attestation.CoCoEnvironmentType;
@@ -204,6 +205,7 @@ import com.suse.manager.webui.utils.gson.BootstrapParameters;
 import com.suse.manager.xmlrpc.NoSuchHistoryEventException;
 import com.suse.manager.xmlrpc.dto.SystemEventDetailsDto;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -5456,18 +5458,27 @@ public class SystemHandler extends BaseHandler {
             throw new UnsupportedOperationException("System does not support Confidential Computing attestation");
         }
 
+        CoCoEnvironmentType environment = CoCoEnvironmentType.valueOf(environmentType);
+
+        // Validate the input data, if needed
+        var validator = AttestationInputDataValidatorFactory.forEnvironment(environment);
+        List<String> errors = validator.validate(inputData);
+        if (CollectionUtils.isNotEmpty(errors)) {
+            throw new InvalidParameterException(String.join("\n", errors));
+        }
+
         minionServer.getOptCocoAttestationConfig()
                 .ifPresentOrElse(
                         c -> {
                             c.setEnabled(enabled);
-                            c.setEnvironmentType(CoCoEnvironmentType.valueOf(environmentType));
+                            c.setEnvironmentType(environment);
                             c.setInData(Objects.requireNonNullElseGet(inputData, HashMap::new));
                             c.setAttestOnBoot(attestOnBoot);
                         },
                         () -> attestationManager.createConfig(
                             loggedInUser,
                             minionServer,
-                            CoCoEnvironmentType.valueOf(environmentType),
+                            environment,
                             enabled,
                             inputData,
                             attestOnBoot
