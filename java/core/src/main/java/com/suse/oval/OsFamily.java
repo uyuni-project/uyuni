@@ -35,7 +35,7 @@ public enum OsFamily {
     SUSE_LINUX_ENTERPRISE_MICRO("SUSE Linux Enterprise Micro", "SLE Micro", "suse",
             oneOf("5.2", "5.3", "5.4", "5.5", "6.0", "6.1", "6.2")),
     SUSE_LIBERTY_LINUX("SUSE Liberty Linux", "SLL", "SLL",
-            oneOf("7", "8", "9")),
+            oneOf("7", "8", "9", "10")),
     ALMA_LINUX("AlmaLinux", "AlmaLinux", "almalinux",
             oneOf("8", "9", "10")),
     ORACLE_LINUX("Oracle Linux", "OEL", "oel",

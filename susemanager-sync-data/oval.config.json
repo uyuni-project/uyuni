@@ -77,6 +77,10 @@
         "9": {
           "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.liberty.linux.9-affected.xml.gz",
           "patch": ""
+        },
+        "10": {
+          "vulnerability": "https://ftp.suse.com/pub/projects/security/oval/suse.liberty.linux.10-affected.xml.gz",
+          "patch": ""
         }
       }
     },
