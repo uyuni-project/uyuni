@@ -107,7 +107,8 @@ public class OVALCleaner {
         switch (osFamily) {
             case REDHAT_ENTERPRISE_LINUX, ALMA_LINUX, ORACLE_LINUX,
                  LEAP,
-                 SUSE_LINUX_ENTERPRISE_SERVER, SUSE_LINUX_ENTERPRISE_DESKTOP, SUSE_LINUX_ENTERPRISE_MICRO, SUSE_LIBERTY_LINUX,
+                 SUSE_LINUX_ENTERPRISE_SERVER, SUSE_LINUX_ENTERPRISE_DESKTOP,
+                 SUSE_LINUX_ENTERPRISE_MICRO, SUSE_LIBERTY_LINUX,
                  UBUNTU:
                 List<String> cves =
                         definition.getMetadata().getAdvisory().map(Advisory::getCveList)
