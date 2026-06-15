@@ -10061,6 +10061,39 @@ For a detailed analysis, please refer to the log files.
       <trans-unit id="coco.status.submitted.description">
         <source>Submitted</source>
       </trans-unit>
+      <trans-unit id="coco.attestation.ibm.missing_input_data">
+        <source>The mandatory input data is missing</source>
+      </trans-unit>
+      <trans-unit id="coco.attestation.ibm.secureExecutionHeader_missing">
+        <source>The secure execution header is missing.</source>
+      </trans-unit>
+      <trans-unit id="coco.attestation.ibm.secureExecutionHeader_wrong_format">
+        <source>The secure execution header is not a valid Base64 string.</source>
+      </trans-unit>
+      <trans-unit id="coco.attestation.ibm.secureExecutionHeader_empty">
+        <source>The secure execution header is empty.</source>
+      </trans-unit>
+      <trans-unit id="coco.attestation.ibm.secureExecutionHeader_too_short">
+        <source>The secure execution header is too short.</source>
+      </trans-unit>
+      <trans-unit id="coco.attestation.ibm.secureExecutionHeader_invalid_header">
+        <source>The secure execution header does not start with the expected byte sequence.</source>
+      </trans-unit>
+      <trans-unit id="coco.attestation.ibm.secureExecutionHeader_size_mismatch">
+        <source>The secure execution header size does not match the expected value.</source>
+      </trans-unit>
+      <trans-unit id="coco.attestation.ibm.hostKeyDocument_wrong_format">
+        <source>The host key document is not a valid string.</source>
+      </trans-unit>
+      <trans-unit id="coco.attestation.ibm.hostKeyDocument_not_valid_yet">
+        <source>The host key document is not valid yet.</source>
+      </trans-unit>
+      <trans-unit id="coco.attestation.ibm.hostKeyDocument_expired">
+        <source>The host key document has expired.</source>
+      </trans-unit>
+      <trans-unit id="coco.attestation.ibm.hostKeyDocument_failed">
+        <source>The host key document is not a valid PEM certificate.</source>
+      </trans-unit>
       <trans-unit id="system.audit.coco.unsupported">
         <source>This system does not have any Confidential Computing capability.</source>
       </trans-unit>
