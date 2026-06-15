@@ -23,7 +23,7 @@ Feature: Migrate a SLE Micro 5.5 Salt minion to SL Micro 6.2
     When I choose "SUSE Linux Micro 6.2 x86_64" radio button
     And I click on "Select Channels"
     When I select the channel "Custom Channel for slmicro62_minion"
-    And I select the channel "ManagerTools-SLE-16 for x86_64"
+    And I select the channel "Multi-Linux-ManagerTools-SLE-16 for x86_64 6.2"
     And I check "allowVendorChange"
     And I click on "Schedule Migration"
     Then I should see a "Product Migration - Confirm" text
@@ -46,7 +46,7 @@ Feature: Migrate a SLE Micro 5.5 Salt minion to SL Micro 6.2
     When I follow "Software" in the content area
     And I follow "Software Channels" in the content area
     And I wait until I do not see "Loading..." text
-    Then I should see the child channel "ManagerTools-SLE-16 for x86_64" "selected"
+    Then I should see the child channel "Multi-Linux-ManagerTools-SLE-16 for x86_64 6.2" "selected"
 
   Scenario: Detect latest Salt changes on the SLE Micro minion
     When I query latest Salt changes on "slemicro55_minion"
