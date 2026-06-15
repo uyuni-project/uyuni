@@ -379,6 +379,18 @@ export const components_panels_BootstrapPanel_example_tsx = {
 };
 
 // @ts-ignore
+import components_panels_Panel_example_tsx_component from "components/panels/Panel.example.tsx";
+import components_panels_Panel_example_tsx_raw from "components/panels/Panel.example.tsx?raw";
+
+export const components_panels_Panel_example_tsx = {
+  path: "components/panels/Panel.example.tsx",
+  title: "Panel.example.tsx",
+  groupName: "panels",
+  component: components_panels_Panel_example_tsx_component,
+  raw: components_panels_Panel_example_tsx_raw,
+};
+
+// @ts-ignore
 import components_panels_TopPanel_example_tsx_component from "components/panels/TopPanel.example.tsx";
 import components_panels_TopPanel_example_tsx_raw from "components/panels/TopPanel.example.tsx?raw";
 
