@@ -55,6 +55,7 @@ import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.cloud.CloudPaygManager;
+import com.suse.manager.attestation.AttestationInputDataValidatorFactory;
 import com.suse.manager.attestation.AttestationManager;
 import com.suse.manager.model.attestation.ServerCoCoAttestationConfig;
 import com.suse.manager.model.products.migration.MigrationChannelsRequest;
@@ -641,6 +642,14 @@ public class MinionsAPI {
         }
 
         CoCoSettingsJson jsonConfig = GSON.fromJson(request.body(), CoCoSettingsJson.class);
+
+        // Validate the input data, if needed
+        var validator = AttestationInputDataValidatorFactory.forEnvironment(jsonConfig.environmentType());
+        List<String> errors = validator.validate(jsonConfig.inputData());
+        if (CollectionUtils.isNotEmpty(errors)) {
+            return json(GSON, response, ResultJson.error(errors), new TypeToken<>() { });
+        }
+
         try {
             ServerCoCoAttestationConfig updatedConfig = updateServerCoCoConfiguration(user, server, jsonConfig);
 
@@ -702,6 +711,13 @@ public class MinionsAPI {
 
     private String setAllCoCoSettings(Request request, Response response, User user) {
         SystemsCoCoSettingsJson jsonConfig = GSON.fromJson(request.body(), SystemsCoCoSettingsJson.class);
+
+        // Validate the input data, if needed
+        var validator = AttestationInputDataValidatorFactory.forEnvironment(jsonConfig.settings().environmentType());
+        List<String> errors = validator.validate(jsonConfig.settings().inputData());
+        if (CollectionUtils.isNotEmpty(errors)) {
+            return json(GSON, response, ResultJson.error(errors), new TypeToken<>() { });
+        }
 
         try {
             MinionServerFactory.lookupByIds(jsonConfig.serverIds())
