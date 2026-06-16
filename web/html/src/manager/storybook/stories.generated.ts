@@ -1,7 +1,7 @@
 /**
  * NB! This is a generated file!
  * Any changes you make here will be lost.
- * See: web/html/src/build/plugins/generate-stories-plugin.js
+ * See: web/html/src/build/webpack/plugins/generate-stories-plugin.js
  */
 
 /* eslint-disable */
@@ -28,6 +28,18 @@ export const components_action_ActionStatus_example_tsx = {
   groupName: "action",
   component: components_action_ActionStatus_example_tsx_component,
   raw: components_action_ActionStatus_example_tsx_raw,
+};
+
+// @ts-ignore
+import components_buttons_index_example_tsx_component from "components/buttons/index.example.tsx";
+import components_buttons_index_example_tsx_raw from "components/buttons/index.example.tsx?raw";
+
+export const components_buttons_index_example_tsx = {
+  path: "components/buttons/index.example.tsx",
+  title: "index.example.tsx",
+  groupName: "buttons",
+  component: components_buttons_index_example_tsx_component,
+  raw: components_buttons_index_example_tsx_raw,
 };
 
 // @ts-ignore
