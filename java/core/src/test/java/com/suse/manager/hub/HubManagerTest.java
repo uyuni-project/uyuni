@@ -684,12 +684,50 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
             allowing(internalClient).deregister();
         }});
 
+        mockTaskomaticApi.resetTaskomaticCall();
+        mockTaskomaticApi.setExpectations(0, List.of(), List.of(), null, null, null);
+
         hubManager.deregister(satAdmin, fqdn, IssRole.HUB, false);
 
         assertNull(hubFactory.lookupAccessTokenFor(fqdn));
         assertNull(hubFactory.lookupIssuedToken(fqdn));
         assertTrue(hubFactory.lookupIssHub().isEmpty(), "Failed to remove Hub");
         assertEquals(0, CredentialsFactory.listSCCCredentials().size());
+
+        mockTaskomaticApi.verifyTaskoCall();
+    }
+
+    @Test
+    public void canDeregisterHubAndDeleteRootCA() throws Exception {
+        String fqdn = LOCAL_SERVER_FQDN;
+        IssAccessToken token = createHubRegistration(fqdn, "---- BEGIN ROOT CA ----", null);
+        HubInternalClient internalClient = mock(HubInternalClient.class);
+
+        context().checking(new Expectations() {{
+            allowing(clientFactoryMock).newInternalClient(fqdn, token.getToken(), "---- BEGIN ROOT CA ----");
+            will(returnValue(internalClient));
+
+            allowing(internalClient).deregister();
+        }});
+
+        mockTaskomaticApi.resetTaskomaticCall();
+        mockTaskomaticApi.setExpectations(
+            1,
+            List.of("tasko.scheduleSingleSatBunchRun"),
+            List.of("root-ca-cert-update-bunch"),
+            "hub_local-server.unit-test.local_root_ca.pem",
+            "",
+            null
+        );
+
+        hubManager.deregister(satAdmin, fqdn, IssRole.HUB, false);
+
+        assertNull(hubFactory.lookupAccessTokenFor(fqdn));
+        assertNull(hubFactory.lookupIssuedToken(fqdn));
+        assertTrue(hubFactory.lookupIssHub().isEmpty(), "Failed to remove Hub");
+        assertEquals(0, CredentialsFactory.listSCCCredentials().size());
+
+        mockTaskomaticApi.verifyTaskoCall();
     }
 
     @Test
@@ -716,12 +754,50 @@ public class HubManagerTest extends JMockBaseTestCaseWithUser {
             allowing(internalClient).deregister();
         }});
 
+        mockTaskomaticApi.resetTaskomaticCall();
+        mockTaskomaticApi.setExpectations(0, List.of(), List.of(), null, null, null);
+
         hubManager.deregister(satAdmin, fqdn, IssRole.PERIPHERAL, false);
 
         assertNull(hubFactory.lookupAccessTokenFor(fqdn));
         assertNull(hubFactory.lookupIssuedToken(fqdn));
         assertTrue(hubFactory.lookupIssPeripheralByFqdn(fqdn).isEmpty(), "Failed to remove Peripheral");
         assertEquals(0, CredentialsFactory.listCredentialsByType(HubSCCCredentials.class).size());
+
+        mockTaskomaticApi.verifyTaskoCall();
+    }
+
+    @Test
+    public void canDeregisterPeripheralAndDeleteRootCa() throws Exception {
+        String fqdn = LOCAL_SERVER_FQDN;
+        IssAccessToken token = createPeripheralRegistration(fqdn, "---- BEGIN ROOT CA ----");
+        HubInternalClient internalClient = mock(HubInternalClient.class);
+
+        context().checking(new Expectations() {{
+            allowing(clientFactoryMock).newInternalClient(fqdn, token.getToken(), "---- BEGIN ROOT CA ----");
+            will(returnValue(internalClient));
+
+            allowing(internalClient).deregister();
+        }});
+
+        mockTaskomaticApi.resetTaskomaticCall();
+        mockTaskomaticApi.setExpectations(
+            1,
+            List.of("tasko.scheduleSingleSatBunchRun"),
+            List.of("root-ca-cert-update-bunch"),
+            "peripheral_local-server.unit-test.local_root_ca.pem",
+            "",
+            null
+        );
+
+        hubManager.deregister(satAdmin, fqdn, IssRole.PERIPHERAL, false);
+
+        assertNull(hubFactory.lookupAccessTokenFor(fqdn));
+        assertNull(hubFactory.lookupIssuedToken(fqdn));
+        assertTrue(hubFactory.lookupIssPeripheralByFqdn(fqdn).isEmpty(), "Failed to remove Peripheral");
+        assertEquals(0, CredentialsFactory.listCredentialsByType(HubSCCCredentials.class).size());
+
+        mockTaskomaticApi.verifyTaskoCall();
     }
 
     @Test
