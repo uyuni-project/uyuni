@@ -163,7 +163,7 @@ public final class CertificateUtils {
 
             try {
                 if (rootCaCertContent.isEmpty()) {
-                    Files.delete(getCertificateSafePath(fileName));
+                    Files.deleteIfExists(getCertificateSafePath(fileName));
                     LOG.info("CA certificate file: {} successfully removed", fileName);
                 }
                 else {
