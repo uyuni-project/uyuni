@@ -13,11 +13,12 @@
     "lib.es5.d.ts",
     "object.d.ts"
   ],
-  "exclude": ["**/node_modules", "**/\\.*/"],
+  "exclude": ["**/node_modules", "**/\\.*/", "**/*.stories.ts", "**/*.stories.tsx"],
   "compilerOptions": {
     // See: https://github.com/microsoft/TypeScript/issues/25430
     "baseUrl": "./",
     "paths": {
+      "branding/*": ["./branding/*"],
       "components/*": ["./components/*"],
       "core/*": ["./core/*"],
       "manager/*": ["./manager/*"],
