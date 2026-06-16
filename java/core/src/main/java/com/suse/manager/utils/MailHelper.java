@@ -153,4 +153,23 @@ public class MailHelper {
                 new String[]{"root@localhost"} :
                 c.getStringArray("web.traceback_mail");
     }
+
+    /**
+     * Creates the mailer with the class specified in the config if present, a standard SMTP mailer otherwise
+     * @return the created mailer instance
+     */
+    public static Mail createMailFromConfig() {
+        String clazz = Config.get().getString("web.mailer_class");
+        if (clazz == null) {
+            return new SmtpMail();
+        }
+        try {
+            Class<? extends Mail> cobj = Class.forName(clazz).asSubclass(Mail.class);
+            return cobj.getDeclaredConstructor().newInstance();
+        }
+        catch (Exception | LinkageError e) {
+            LOG.error("An exception was thrown while initializing custom mailer class", e);
+            return new SmtpMail();
+        }
+    }
 }
