@@ -162,7 +162,7 @@ artifacts:
     package: ongres-stringprep
     repository: Leap
   - artifact: saslprep
-    package: ongres-stringprep-saslprep
+    package: ongres-stringprep
     repository: Leap
   - artifact: oro
     repository: Leap
@@ -241,9 +241,11 @@ artifacts:
     package: tomcat11-servlet-6_1-api
     repository: Leap
 
-  - artifact: hamcrest-core
+  - artifact: core
+    package: hamcrest
     repository: Leap
   - artifact: hamcrest
+    package: hamcrest
     repository: Leap
   - artifact: junit
     repository: Leap
