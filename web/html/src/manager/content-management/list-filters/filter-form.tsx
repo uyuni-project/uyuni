@@ -84,12 +84,12 @@ const FilterForm = (props: Props) => {
                 options={[
                   {
                     value: FilterBy.Type,
-                    label: "Manual Filter",
+                    label: t("Manual Filter"),
                     icon: "fa-filter",
                   },
                   {
                     value: FilterBy.Template,
-                    label: "Use Template",
+                    label: t("Use Template"),
                     icon: "fa-file-text-o",
                   },
                 ]}
