@@ -485,6 +485,24 @@ public class SaltUtils {
                 serverAction.setResultMsg(output);
                 return;
             }
+
+            // Log detailed error messages from failed Salt states
+            Map<String, String> failedStates = getFailedStateErrors(jsonResult);
+            if (!failedStates.isEmpty()) {
+                int total = failedStates.size();
+                int i = 1;
+
+                for (Map.Entry<String, String> entry : failedStates.entrySet()) {
+                    LOG.error("Salt action {} failed for server {} (jid: {}) - Failure {}/{} - State '{}': {}",
+                            serverAction.getParentAction().getId(),
+                            serverAction.getServer().getId(),
+                            jid,
+                            i++,
+                            total,
+                            entry.getKey(),
+                            entry.getValue());
+                }
+            }
         }
         else {
             serverAction.setStatusCompleted();
@@ -498,6 +516,28 @@ public class SaltUtils {
         action.handleUpdateServerAction(serverAction, jsonResult, auxArgs);
 
         LOG.debug("Finished update server action for action {}", action.getId());
+    }
+
+    /**
+     * Extract error messages from failed Salt states in a state.apply result.
+     * Returns a map of state IDs to their error messages (comment if available, or generic message).
+     *
+     * @param jsonResult the JSON result from Salt state.apply
+     * @return Map of state ID to error message for all failed states
+     */
+    public static Map<String, String> getFailedStateErrors(JsonElement jsonResult) {
+        return jsonEventToStateApplyResults(jsonResult)
+                .map(results -> results.entrySet().stream()
+                        .filter(entry -> !entry.getValue().isResult())
+                        .collect(Collectors.toMap(
+                                Map.Entry::getKey,
+                                entry ->
+                                    StringUtils.defaultIfEmpty(
+                                            entry.getValue().getComment(),
+                                            "State failed without error message")
+
+                        )))
+                .orElse(Collections.emptyMap());
     }
 
     /**
