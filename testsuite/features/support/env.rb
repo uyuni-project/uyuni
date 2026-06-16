@@ -699,6 +699,11 @@ Before('@skip_for_transactional_minion') do |scenario|
   skip_this_scenario if scenario.location.file.include?('slemicro') || scenario.location.file.include?('slmicro')
 end
 
+Before('@skip_for_rhel10_like') do |scenario|
+  rhel10_minion_tags = %w[@alma10_minion @alma10_ssh_minion @oracle10_minion @oracle10_ssh_minion @rocky10_minion @rocky10_ssh_minion]
+  skip_this_scenario if rhel10_minion_tags.any? { |tag| scenario.source_tag_names.include?(tag) }
+end
+
 # do some tests only if we have SCC credentials
 Before('@scc_credentials') do
   skip_this_scenario unless $scc_credentials
