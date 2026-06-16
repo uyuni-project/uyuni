@@ -1,0 +1,1 @@
+- Remote Report DB connection should always use SSL (bsc#1268229).

@@ -962,7 +962,8 @@ public class ConfigDefaults {
         String dbBackend = Config.get().getString(REPORT_DB_BACKEND);
         String dbProto = Optional.ofNullable(Config.get().getString(REPORT_DB_PROTO))
                 .orElse("jdbc:postgresql");
-        boolean dbSslEnabled = Config.get().getBoolean(REPORT_DB_SSL_ENABLED);
+        //Remote Report DB connection should always use SSL
+        boolean dbSslEnabled = true;
 
         // If the server with the remote reporting database is registered as a ISSv3 peripheral, the correct root
         // certificate authority is available in /etc/pki/trust/anchors
