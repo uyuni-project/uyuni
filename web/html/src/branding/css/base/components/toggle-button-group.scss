@@ -6,9 +6,13 @@
     margin-right: -2px;
 
     &.active {
-      background-color: $eos-bc-pine-500;
+      background: $eos-bc-pine-500;
       color: $white;
       border-color: $eos-bc-pine-500;
     }
   }
+}
+
+@include onUyuni {
+  @import "toggle-button-group.uyuni.scss";
 }
