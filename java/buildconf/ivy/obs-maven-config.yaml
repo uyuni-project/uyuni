@@ -1,15 +1,9 @@
 repositories:
   Leap:
-    project: openSUSE:Leap:15.6
-    repository: standard
-  Uyuni_Other:
-    project: systemsmanagement:Uyuni:Master:Other
-    repository: openSUSE_Leap_15.6
+    url: https://download.opensuse.org/distribution/leap/16.0/repo/oss/
   Uyuni:
     project: systemsmanagement:Uyuni:Master
-    repository: openSUSE_Leap_15.6
-  Leap_sle:
-    url: https://download.opensuse.org/update/leap/15.6/sle
+    repository: openSUSE_Leap_16.0
 artifacts:
   - artifact: antlr4-runtime
     package: antlr4-java
@@ -17,20 +11,20 @@ artifacts:
   - artifact: byte-buddy
     package: byte-buddy
     jar: byte-buddy\.jar
-    repository: Uyuni
+    repository: Leap
   - artifact: c3p0
-    repository: Leap
+    repository: Uyuni
   - artifact: classmate
-    repository: Leap
+    repository: Uyuni
   - artifact: jakarta.mail-api
     package: jakarta-mail
-    repository: Uyuni
+    repository: Leap
   - artifact: jakarta.mail
     package: angus-mail-core
     repository: Uyuni
   - artifact: commons-beanutils
     package: apache-commons-beanutils
-    repository: Leap_sle
+    repository: Leap
   - artifact: commons-cli
     package: apache-commons-cli
     repository: Leap
@@ -48,39 +42,39 @@ artifacts:
     repository: Leap
   - artifact: commons-fileupload2-core
     package: apache-commons-fileupload2-core
-    repository: Uyuni_Other
+    repository: Uyuni
   - artifact: commons-fileupload2-jakarta-servlet6
     package: apache-commons-fileupload2-jakarta-servlet6
-    repository: Uyuni_Other
+    repository: Uyuni
   - artifact: commons-io
     package: apache-commons-io
-    repository: Leap_sle
+    repository: Leap
   - artifact: commons-jexl
     package: apache-commons-jexl
     jar: commons-jexl\.jar
     repository: Leap
   - artifact: commons-lang3
     package: apache-commons-lang3
-    repository: Leap_sle
+    repository: Leap
   - artifact: commons-text
     package: apache-commons-text
-    repository: Leap_sle
+    repository: Leap
   - artifact: commons-logging
     package: apache-commons-logging
     jar: apache-commons-logging\.jar
-    repository: Leap_sle
+    repository: Leap
   - artifact: commons-validator
     package: apache-commons-validator
-    repository: Uyuni
+    repository: Leap
   - artifact: commons-compress
     package: apache-commons-compress
     repository: Leap
   - artifact: concurrentlinkedhashmap-lru
-    repository: Leap
+    repository: Uyuni
   - artifact: cache-api
     package: jcache
     jar: jcache\.jar
-    repository: Uyuni
+    repository: Leap
   - artifact: geronimo-jta_1.1_spec
     package: geronimo-jta-1_1-api
     repository: Leap
@@ -93,11 +87,11 @@ artifacts:
     jar: hibernate-c3p0
     repository: Uyuni
   - artifact: jackson-annotations
-    repository: Leap_sle
+    repository: Leap
   - artifact: jackson-core
-    repository: Leap_sle
+    repository: Leap
   - artifact: jackson-databind
-    repository: Leap_sle
+    repository: Leap
   - artifact: hibernate-models
     package: hibernate-models
     repository: Uyuni
@@ -109,55 +103,55 @@ artifacts:
     repository: Uyuni
   - artifact: ehcache
     jar: ehcache-jakarta
-    repository: Uyuni_Other
+    repository: Uyuni
   - artifact: httpasyncclient
     package: httpcomponents-asyncclient
     jar: httpasyncclient-[0-9.]+
-    repository: Leap
+    repository: Uyuni
   - artifact: httpclient
     package: httpcomponents-client
-    repository: Leap_sle
+    repository: Leap
   - artifact: httpcore
     package: httpcomponents-core
     jar: httpcore\.jar
-    repository: Leap_sle
+    repository: Leap
   - artifact: httpcore-nio
     package: httpcomponents-core
-    repository: Leap_sle
+    repository: Leap
   - artifact: jade4j
-    repository: Uyuni_Other
+    repository: Uyuni
   - artifact: jakarta.persistence-api
     package: jakarta-persistence-api
     repository: Uyuni
   - artifact: java-saml
     jar: java-saml\.jar
-    repository: Uyuni_Other
+    repository: Uyuni
   - artifact: java-saml-core
     package: java-saml
-    repository: Uyuni_Other
+    repository: Uyuni
   - artifact: jboss-logging
     repository: Uyuni
   - artifact: jctools-core
     package: jctools
-    repository: Leap_sle
+    repository: Leap
   - artifact: jdom
     repository: Leap
   - artifact: jose4j
-    repository: Uyuni_Other
+    repository: Uyuni
   - artifact: log4j-core
     package: log4j
-    repository: Leap
+    repository: Uyuni
   - artifact: log4j-api
     package: log4j
-    repository: Leap
+    repository: Uyuni
   - artifact: log4j-slf4j-impl
     package: log4j-slf4j
-    repository: Leap
+    repository: Uyuni
   - artifact: jsch
-    repository: Leap_sle
+    repository: Leap
   - artifact: mchange-commons-java
     package: mchange-commons
-    repository: Leap
+    repository: Uyuni
   - artifact: client
     package: ongres-scram-client
     repository: Leap
@@ -176,40 +170,40 @@ artifacts:
     package: postgresql-jdbc
     repository: Leap
   - artifact: quartz
-    repository: Uyuni_Other
+    repository: Uyuni
   - artifact: redstone-xmlrpc
     jar: redstone-xmlrpc-[0-9.]+
-    repository: Uyuni_Other
+    repository: Uyuni
   - artifact: redstone-xmlrpc-client
     package: redstone-xmlrpc
-    repository: Uyuni_Other
+    repository: Uyuni
   - artifact: salt-netapi-client
     repository: Uyuni
   - artifact: prometheus-metrics-core
     package: prometheus-metrics-java-core
-    repository: Uyuni_Other
+    repository: Uyuni
   - artifact: prometheus-metrics-config
     package: prometheus-metrics-java-config
-    repository: Uyuni_Other
+    repository: Uyuni
   - artifact: prometheus-metrics-model
     package: prometheus-metrics-java-model
-    repository: Uyuni_Other
+    repository: Uyuni
   - artifact: prometheus-metrics-exporter-common
     package: prometheus-metrics-java-exporter-common
-    repository: Uyuni_Other
+    repository: Uyuni
   - artifact: prometheus-metrics-exporter-httpserver
     package: prometheus-metrics-java-exporter-httpserver
-    repository: Uyuni_Other
+    repository: Uyuni
   - artifact: prometheus-metrics-exporter-servlet-jakarta
     package: prometheus-metrics-java-exporter-servlet-jakarta
-    repository: Uyuni_Other
+    repository: Uyuni
   - artifact: prometheus-metrics-exposition-textformats
     package: prometheus-metrics-java-exposition-textformats
-    repository: Uyuni_Other
+    repository: Uyuni
   - artifact: simple-core
     # How comes that package is not noarch?
     arch: x86_64
-    repository: Uyuni_Other
+    repository: Uyuni
   - artifact: sitemesh
     repository: Uyuni
   - artifact: slf4j-api
@@ -217,50 +211,49 @@ artifacts:
     jar: api
     repository: Leap
   - artifact: snakeyaml
-    repository: Leap_sle
+    repository: Leap
   - artifact: spark-core
     package: spark-core
-    repository: Uyuni_Other
+    repository: Uyuni
   - artifact: spark-template-jade
-    repository: Uyuni_Other
+    repository: Uyuni
   - artifact: stax2-api
-    repository: Leap
+    repository: Uyuni
   - artifact: struts
     repository: Uyuni
   - artifact: woodstox-core
-    repository: Leap
+    repository: Uyuni
   - artifact: xmlsec
-    repository: Uyuni_Other
+    repository: Uyuni
   - artifact: velocity-engine-core
-    repository: Leap_sle
+    repository: Leap
 
   - artifact: tomcat-el-api
     package: tomcat11-el-6_0-api
-    repository: Leap_sle
+    repository: Leap
   - artifact: tomcat-jsp-api
     package: tomcat11-jsp-4_0-api
-    repository: Leap_sle
+    repository: Leap
   - artifact: tomcat-juli
     package: tomcat11-lib
-    repository: Leap_sle
+    repository: Leap
   - artifact: tomcat-servlet-api
     package: tomcat11-servlet-6_1-api
-    repository: Leap_sle
+    repository: Leap
 
   - artifact: hamcrest-core
     repository: Leap
-
   - artifact: hamcrest
-    repository: Leap_sle
+    repository: Leap
   - artifact: junit
     repository: Leap
   - artifact: ical4j
-    repository: Uyuni_Other
+    repository: Uyuni
   - artifact: jetty-util
-    repository: Leap_sle
+    repository: Uyuni
   - artifact: jakarta.xml.bind-api
     package: jaxb-api
-    repository: Uyuni
+    repository: Leap
   - artifact: jaxb-core
     package: jaxb-core
     repository: Uyuni
@@ -272,7 +265,7 @@ artifacts:
     repository: Uyuni
   - artifact: jakarta.activation-api
     package: jakarta-activation
-    repository: Uyuni
+    repository: Leap
   - artifact: angus-activation
     package: angus-activation
     jar: angus-activation.jar
