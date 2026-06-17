@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jun 17 17:37:25 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.13-0
+  * Remove unused files from node modules
+
+-------------------------------------------------------------------
 Wed Jun 17 14:11:45 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.12-0
