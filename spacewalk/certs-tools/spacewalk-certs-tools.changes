@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Jun 17 14:18:20 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.7-0
+  * Set Basic Constraints extension as 'critical' according to
+    RFC 5280 for self signed CA certificates
+
+-------------------------------------------------------------------
 Fri May 22 08:40:27 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.6-0
