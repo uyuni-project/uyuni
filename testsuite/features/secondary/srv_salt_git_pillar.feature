@@ -14,7 +14,7 @@ Feature: Salt master integration with Git pillar
 
   @uyuni
   Scenario: Pre-requisite: Enabling repositories for installing git-core
-    When I add repository "repo-oss" with url "http://minima-mirror-ci-bv.mgr.suse.de/distribution/leap/16.0/repo/oss/" on "server" without error control
+    When I add repository "repo-oss" with url "http://minima-mirror-ci-bv.mgr.suse.de/distribution/leap/16.0/repo/oss/x86_64/" on "server" without error control
 
   Scenario: Preparing Git pillar configuration for Salt master
     When I setup a git_pillar environment on the Salt master
