@@ -34,6 +34,11 @@ my %DEFAULT_ATTRIBUTES = (
 # /etc/rhn/rhn.conf. It will get the configuration values once
 # and use them for subsequent calls.
 my ($DSN, $LOGIN, $PASSWORD);
+sub is_true {
+        my $val = shift;
+        return (defined $val and $val =~ /^(1|y|true|yes|on)$/i);
+}
+
 sub _get_dbi_connect_parameters {
         if (not defined $DSN) {
                 my $backend = PXT::Config->get("db_backend");
@@ -54,9 +59,12 @@ sub _get_dbi_connect_parameters {
                                 if (defined $port and $port ne '' and $port ne '5432') {
                                         $DSN .= ";port=$port";
                                 }
-                                if (PXT::Config->get("db_ssl_enabled")) {
+                                if (is_true(PXT::Config->get("db_ssl_enabled"))) {
                                         $DSN .= ";sslmode=verify-full";
                                         $DSN .= ";sslrootcert=" . PXT::Config->get("db_sslrootcert");
+                                }
+                                else {
+                                        $DSN .= ";sslmode=disable";
                                 }
                         }
                 }

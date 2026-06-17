@@ -36,7 +36,6 @@ public class TreeFilterTest extends RhnBaseTestCase {
     private TreeFilter filter;
 
 
-    @Override
     @BeforeEach
     public void setUp() {
         main = populate();

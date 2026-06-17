@@ -57,10 +57,8 @@ public class SaltServiceTest extends JMockBaseTestCaseWithUser {
 
     private Path tempDir;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         tempDir = Files.createTempDirectory("saltservice");
     }
@@ -194,10 +192,8 @@ public class SaltServiceTest extends JMockBaseTestCaseWithUser {
         assertFalse(listAppender.matchInLogs(dummyServerRSAKey));
     }
 
-    @Override
-    @AfterEach
+        @AfterEach
     public void tearDown() throws Exception {
-        super.tearDown();
         try {
             if (tempDir.toFile().exists()) {
                 FileUtils.deleteDirectory(tempDir.toFile());

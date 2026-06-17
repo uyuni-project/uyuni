@@ -39,10 +39,8 @@ public class CreateRepoCommandTest extends BaseTestCaseWithUser {
     private CreateRepoCommand repoCommand;
     private int labelCount = 0;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
 
         repoCommand = new CreateRepoCommand(user.getOrg());
     }

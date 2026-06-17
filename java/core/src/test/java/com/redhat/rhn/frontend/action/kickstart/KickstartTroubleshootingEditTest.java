@@ -66,7 +66,7 @@ public class KickstartTroubleshootingEditTest extends BaseKickstartEditTestCase 
         assertEquals("hdc=ide-scsi", this.ksdata.getKernelParams());
         assertEquals("lilo", this.ksdata.getBootloaderType());
         String[] keys = {"kickstart.troubleshooting.success"};
-        verifyActionMessages(keys);
+        testActionHasMessages(keys);
     }
 }
 

@@ -82,10 +82,8 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
     private FormulaManager manager;
     private Path metadataDir;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         MockConnection.clear();
         saltServiceMock = mock(SaltService.class);
@@ -95,10 +93,8 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         createMetadataFiles();
     }
 
-    @Override
-    @AfterEach
+        @AfterEach
     public void tearDown() throws Exception {
-        super.tearDown();
         FileUtils.deleteDirectory(metadataDir.toFile());
     }
 

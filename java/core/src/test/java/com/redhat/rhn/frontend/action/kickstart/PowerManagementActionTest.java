@@ -35,8 +35,6 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Map;
 
-import servletunit.HttpServletRequestSimulator;
-
 /**
  * Tests the Power Management action.
  */
@@ -74,10 +72,8 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
      * Sets up action path and mocked Cobbler connection.
      * @throws Exception if something goes wrong
      */
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         MockConnection.clear();
         setRequestPathInfo("/systems/details/kickstart/PowerManagement");
     }
@@ -108,8 +104,8 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
         assertNull(request.getAttribute(PowerManagementAction.POWER_USERNAME));
         assertNull(request.getAttribute(PowerManagementAction.POWER_PASSWORD));
         assertNull(request.getAttribute(PowerManagementAction.POWER_ID));
-        verifyNoActionErrors();
-        verifyNoActionMessages();
+        testActionHasNoErrors();
+        testActionHasNoMessages();
     }
 
     /**
@@ -121,7 +117,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
         Server server = ServerFactoryTest.createTestServer(user, true);
 
         addRequestParameter(RequestContext.SID, server.getId().toString());
-        request.setMethod(HttpServletRequestSimulator.POST);
+        request.setMethod("POST");
         addSubmitted();
         addDispatchCall("kickstart.powermanagement.jsp.save_only");
         request.addParameter(PowerManagementAction.POWER_TYPE, EXPECTED_TYPE);
@@ -143,7 +139,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
         assertEquals(EXPECTED_PASSWORD,
             request.getAttribute(PowerManagementAction.POWER_PASSWORD));
         assertEquals(EXPECTED_ID, request.getAttribute(PowerManagementAction.POWER_ID));
-        verifyNoActionErrors();
+        testActionHasNoErrors();
         verifyActionMessage("kickstart.powermanagement.saved");
 
         CobblerConnection connection = CobblerXMLRPCHelper.getConnection(user);
@@ -166,7 +162,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
         Server server = ServerFactoryTest.createTestServer(user, true);
 
         addRequestParameter(RequestContext.SID, server.getId().toString());
-        request.setMethod(HttpServletRequestSimulator.POST);
+        request.setMethod("POST");
         addSubmitted();
         addDispatchCall("kickstart.powermanagement.jsp.save_only");
         request.addParameter(PowerManagementAction.POWER_TYPE, EXPECTED_TYPE);
@@ -178,7 +174,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
 
         clearRequestParameters();
         addRequestParameter(RequestContext.SID, server.getId().toString());
-        request.setMethod(HttpServletRequestSimulator.GET);
+        request.setMethod("GET");
         actionPerform();
 
         Map<String, String> types = (Map<String, String>) request
@@ -193,7 +189,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
         assertEquals(EXPECTED_PASSWORD,
             request.getAttribute(PowerManagementAction.POWER_PASSWORD));
         assertEquals(EXPECTED_ID, request.getAttribute(PowerManagementAction.POWER_ID));
-        verifyNoActionErrors();
+        testActionHasNoErrors();
     }
 
     /**
@@ -204,7 +200,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
         Server server = ServerFactoryTest.createTestServer(user, true);
 
         addRequestParameter(RequestContext.SID, server.getId().toString());
-        request.setMethod(HttpServletRequestSimulator.POST);
+        request.setMethod("POST");
         addSubmitted();
         addDispatchCall("kickstart.powermanagement.jsp.save_only");
         request.addParameter(PowerManagementAction.POWER_TYPE, EXPECTED_TYPE);
@@ -236,7 +232,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
         assertEquals(EXPECTED_USERNAME_2, systemRecord.getPowerUsername());
         assertEquals(EXPECTED_PASSWORD_2, systemRecord.getPowerPassword());
         assertEquals(EXPECTED_ID_2, systemRecord.getPowerId());
-        verifyNoActionErrors();
+        testActionHasNoErrors();
     }
 
     /**
@@ -247,7 +243,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
         Server server = ServerFactoryTest.createTestServer(user, true);
 
         addRequestParameter(RequestContext.SID, server.getId().toString());
-        request.setMethod(HttpServletRequestSimulator.POST);
+        request.setMethod("POST");
         addSubmitted();
         addDispatchCall("kickstart.powermanagement.jsp.power_on");
         request.addParameter(PowerManagementAction.POWER_TYPE, EXPECTED_TYPE);
@@ -257,7 +253,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
         request.addParameter(PowerManagementAction.POWER_ID, EXPECTED_ID);
         actionPerform();
 
-        verifyNoActionErrors();
+        testActionHasNoErrors();
         assertEquals("power_system on " + server.getCobblerId(),
             MockConnection.getLatestPowerCommand());
     }
@@ -270,7 +266,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
         Server server = ServerFactoryTest.createTestServer(user, true);
 
         addRequestParameter(RequestContext.SID, server.getId().toString());
-        request.setMethod(HttpServletRequestSimulator.POST);
+        request.setMethod("POST");
         addSubmitted();
         addDispatchCall("kickstart.powermanagement.jsp.power_off");
         request.addParameter(PowerManagementAction.POWER_TYPE, EXPECTED_TYPE);
@@ -280,7 +276,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
         request.addParameter(PowerManagementAction.POWER_ID, EXPECTED_ID);
         actionPerform();
 
-        verifyNoActionErrors();
+        testActionHasNoErrors();
         assertEquals("power_system off " + server.getCobblerId(),
             MockConnection.getLatestPowerCommand());
     }
@@ -293,7 +289,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
         Server server = ServerFactoryTest.createTestServer(user, true);
 
         addRequestParameter(RequestContext.SID, server.getId().toString());
-        request.setMethod(HttpServletRequestSimulator.POST);
+        request.setMethod("POST");
         addSubmitted();
         addDispatchCall("kickstart.powermanagement.jsp.reboot");
         request.addParameter(PowerManagementAction.POWER_TYPE, EXPECTED_TYPE);
@@ -303,7 +299,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
         request.addParameter(PowerManagementAction.POWER_ID, EXPECTED_ID);
         actionPerform();
 
-        verifyNoActionErrors();
+        testActionHasNoErrors();
         assertEquals("power_system reboot " + server.getCobblerId(),
             MockConnection.getLatestPowerCommand());
     }
@@ -316,7 +312,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
         Server server = ServerFactoryTest.createTestServer(user, true);
 
         addRequestParameter(RequestContext.SID, server.getId().toString());
-        request.setMethod(HttpServletRequestSimulator.POST);
+        request.setMethod("POST");
         addSubmitted();
         addDispatchCall("kickstart.powermanagement.jsp.get_status");
         request.addParameter(PowerManagementAction.POWER_TYPE, EXPECTED_TYPE);
@@ -326,7 +322,7 @@ public class PowerManagementActionTest extends RhnMockStrutsTestCase {
         request.addParameter(PowerManagementAction.POWER_ID, EXPECTED_ID);
         actionPerform();
 
-        verifyNoActionErrors();
+        testActionHasNoErrors();
         assertEquals(true, request.getAttribute(PowerManagementAction.POWER_STATUS_ON));
         assertEquals("power_system status " + server.getCobblerId(),
             MockConnection.getLatestPowerCommand());

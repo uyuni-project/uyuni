@@ -23,7 +23,7 @@
     },
     "registrySecret": {
       "type": "string",
-      "description": "Name of the secret containing credentials for the registry",
+      "description": "Name of the secret which contains the credentials for the registry",
       "default": ""
     },
     "timezone": {
@@ -85,6 +85,11 @@
               "type": "string"
             }
           }
+        },
+        "sccSecret": {
+            "type": "string",
+            "description": "the name of a basic-auth secret with the organization mirroring credentials to set up on the server.",
+            "default": ""
         }
       }
     },

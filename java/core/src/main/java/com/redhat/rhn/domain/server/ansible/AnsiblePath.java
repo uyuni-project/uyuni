@@ -86,14 +86,18 @@ public abstract class AnsiblePath extends BaseDomainHelper {
     /**
      * Standard constructor
      */
-    protected AnsiblePath() { }
+    protected AnsiblePath() {
+        // Default constructor for hibernate
+    }
 
     /**
      * Standard constructor
      * @param minionServerIn the minion server
+     * @param pathIn the path
      */
-    protected AnsiblePath(MinionServer minionServerIn) {
+    protected AnsiblePath(MinionServer minionServerIn, Path pathIn) {
         this.minionServer = minionServerIn;
+        this.path = pathIn;
     }
 
     /**

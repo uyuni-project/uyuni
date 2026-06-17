@@ -77,10 +77,8 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         taskomaticMock = CONTEXT.mock(TaskomaticApi.class);
     }
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         anotherUser = UserTestUtils.createUser("anotherUser", "anotherOrg");
 

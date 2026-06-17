@@ -36,19 +36,14 @@ public abstract class JMockBaseTestCaseWithUser extends RhnJmockBaseTestCase {
      * @throws Exception if an error occurs during setup
      */
     @BeforeEach
-    @Override
-    public void setUp() throws Exception {
-        super.setUp();
-
+    public void setUpJMockBaseTestCaseWithUser() throws Exception {
         user = UserTestUtils.createUser();
         KickstartDataTest.setupTestConfiguration(user);
     }
 
-    @Override
     @AfterEach
-    public void tearDown() throws Exception {
-        super.tearDown();
-
+    public void tearDownJMockBaseTestCaseWithUser() throws Exception {
+        super.tearDownRhnJmockBaseTestCase();
         // If at some point we created a user and committed the transaction, we need
         // clean up our mess
         if (committed) {

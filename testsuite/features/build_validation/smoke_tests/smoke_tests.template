@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2025 SUSE LLC.
+# Copyright (c) 2020-2026 SUSE LLC.
 # Licensed under the terms of the MIT license.
 
 @<client>
@@ -199,6 +199,7 @@ Feature: Smoke tests for <client>
     Then I should see a "Formula saved" text
 
 @skip_for_transactional_minion
+@skip_for_rhel10_like
   Scenario: Enable Prometheus Apache and Postgres exporter formula on the <client>
     Given I am on the Systems overview page of this "<client>"
     When I follow "Formulas" in the content area
@@ -230,6 +231,7 @@ Feature: Smoke tests for <client>
     And I visit "Prometheus node exporter" endpoint of this "<client>"
 
 @skip_for_transactional_minion
+@skip_for_rhel10_like
   Scenario: Visit Apache and Postgres monitoring endpoint on the <client>
     When I wait until "apache" exporter service is active on "<client>"
     And I visit "Prometheus apache exporter" endpoint of this "<client>"

@@ -60,10 +60,8 @@ public class SystemDetailsHandlerTest  extends BaseHandlerTestCase {
     private FilePreservationListHandler fpHandler = new FilePreservationListHandler();
     private User userNotOrgOne;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         userNotOrgOne = UserTestUtils.createUser();
         userNotOrgOne.addPermanentRole(RoleFactory.ORG_ADMIN);
     }

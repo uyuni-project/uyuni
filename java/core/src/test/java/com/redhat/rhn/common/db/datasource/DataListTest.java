@@ -37,7 +37,6 @@ public class DataListTest extends RhnBaseTestCase {
     private HookedSelectMode hsm;
     private Map<String, Object> elabParams;
 
-    @Override
     @BeforeEach
     public void setUp() {
         String dbUser = Config.get().getString(ConfigDefaults.DB_USER);
@@ -48,10 +47,8 @@ public class DataListTest extends RhnBaseTestCase {
         elabParams.put("user_name", dbUser);
     }
 
-    @Override
-    @AfterEach
+        @AfterEach
     public void tearDown() throws Exception {
-        super.tearDown();
         hsm = null;
         elabParams = null;
     }

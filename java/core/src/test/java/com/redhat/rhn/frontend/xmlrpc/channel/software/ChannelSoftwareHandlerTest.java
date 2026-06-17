@@ -134,10 +134,8 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
     /**
      * {@inheritDoc}
      */
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
 
         Context ctx = Context.getCurrentContext();
         ctx.setLocale(Locale.getDefault());

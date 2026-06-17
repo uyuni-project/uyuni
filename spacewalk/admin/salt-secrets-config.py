@@ -12,8 +12,7 @@ import yaml
 import hashlib
 
 from contextlib import redirect_stderr
-from spacewalk.common.rhnConfig import cfg_component
-
+from spacewalk.common.rhnConfig import cfg_component, is_true
 
 uyuni_roster_config = {}
 
@@ -34,6 +33,9 @@ if not os.path.isdir(cert_location):
     cert_location = "/etc/pki/ca-trust/source/anchors"
 
 with cfg_component(component=None) as CFG:
+    db_ssl_enabled = is_true(getattr(CFG, "db_ssl_enabled", "0"))
+    sslmode = "verify-full" if db_ssl_enabled else "disable"
+
     mgr_events_config = {
         "engines": [
             {
@@ -44,6 +46,7 @@ with cfg_component(component=None) as CFG:
                         "dbname": CFG.db_name,
                         "user": CFG.db_user,
                         "password": CFG.db_password,
+                        "sslmode": sslmode,
                     },
                     "events": {"thread_pool_size": thread_pool_size},
                 }
@@ -58,6 +61,7 @@ with cfg_component(component=None) as CFG:
             "db": CFG.db_name,
             "user": CFG.db_user,
             "pass": CFG.db_password,
+            "sslmode": sslmode,
         }
     }
 

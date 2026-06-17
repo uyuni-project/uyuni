@@ -771,6 +771,42 @@ DATA = {
         "PKGLIST": ONLYSLE16 + PKGLIST16_SALT + PKGLIST16_X86_ARM,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/16/0/bootstrap/",
     },
+    "SLE-16.1-x86_64": {
+        "PDID": [3231, 3246],
+        "BETAPDID": [3250],
+        "PKGLIST": ONLYSLE16 + PKGLIST16_SALT + PKGLIST16_X86_ARM,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/16/1/bootstrap/",
+    },
+    "SLE-16.1-aarch64": {
+        "PDID": [3232, 3247],
+        "BETAPDID": [3251],
+        "PKGLIST": ONLYSLE16 + PKGLIST16_SALT + PKGLIST16_X86_ARM,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/16/1/bootstrap/",
+    },
+    "SLE-16.1-ppc64le": {
+        "PDID": [3234, 3249],
+        "BETAPDID": [3253],
+        "PKGLIST": ONLYSLE16 + PKGLIST16_SALT + PKGLIST16_PPC,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/16/1/bootstrap/",
+    },
+    "SLE-16.1-s390x": {
+        "PDID": [3233, 3248],
+        "BETAPDID": [3252],
+        "PKGLIST": ONLYSLE16 + PKGLIST16_SALT + PKGLIST16_Z,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/16/1/bootstrap/",
+    },
+    "SLES4SAP-16.1-ppc64le": {
+        "PDID": [3236, 3249],
+        "BETAPDID": [3253],
+        "PKGLIST": ONLYSLE16 + PKGLIST16_SALT + PKGLIST16_PPC,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/16/1/bootstrap/",
+    },
+    "SLES4SAP-16.1-x86_64": {
+        "PDID": [3235, 3246],
+        "BETAPDID": [3250],
+        "PKGLIST": ONLYSLE16 + PKGLIST16_SALT + PKGLIST16_X86_ARM,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/sle/16/1/bootstrap/",
+    },
     "SUMA-43-PROXY-x86_64": {
         "PDID": [2299, 2384, 2379],
         "BETAPDID": [],
@@ -984,6 +1020,46 @@ DATA = {
         "BASECHANNEL": "opensuse_leap16_0-ppc64le",
         "PKGLIST": PKGLIST16_SALT + PKGLIST16_PPC,
         "DEST": DOCUMENT_ROOT + "/pub/repositories/opensuse/16/0/bootstrap/",
+    },
+    "openSUSE-Leap-16.1-x86_64": {
+        "PDID": [3387, 3246],
+        "PKGLIST": PKGLIST16_SALT + PKGLIST16_X86_ARM,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/opensuse/16/1/bootstrap/",
+    },
+    "openSUSE-Leap-16.1-x86_64-uyuni": {
+        "BASECHANNEL": "opensuse_leap16_1-x86_64",
+        "PKGLIST": PKGLIST16_SALT + PKGLIST16_X86_ARM,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/opensuse/16/1/bootstrap/",
+    },
+    "openSUSE-Leap-16.1-aarch64": {
+        "PDID": [3388, 3247],
+        "PKGLIST": PKGLIST16_SALT + PKGLIST16_X86_ARM,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/opensuse/16/1/bootstrap/",
+    },
+    "openSUSE-Leap-16.1-aarch64-uyuni": {
+        "BASECHANNEL": "opensuse_leap16_1-aarch64",
+        "PKGLIST": PKGLIST16_SALT + PKGLIST16_X86_ARM,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/opensuse/16/1/bootstrap/",
+    },
+    "openSUSE-Leap-16.1-s390x": {
+        "PDID": [3389, 3248],
+        "PKGLIST": PKGLIST16_SALT + PKGLIST16_Z,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/opensuse/16/1/bootstrap/",
+    },
+    "openSUSE-Leap-16.1-s390x-uyuni": {
+        "BASECHANNEL": "opensuse_leap16_1-s390x",
+        "PKGLIST": PKGLIST16_SALT + PKGLIST16_Z,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/opensuse/16/1/bootstrap/",
+    },
+    "openSUSE-Leap-16.1-ppc64le": {
+        "PDID": [3390, 3249],
+        "PKGLIST": PKGLIST16_SALT + PKGLIST16_PPC,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/opensuse/16/1/bootstrap/",
+    },
+    "openSUSE-Leap-16.1-ppc64le-uyuni": {
+        "BASECHANNEL": "opensuse_leap16_1-ppc64le",
+        "PKGLIST": PKGLIST16_SALT + PKGLIST16_PPC,
+        "DEST": DOCUMENT_ROOT + "/pub/repositories/opensuse/16/1/bootstrap/",
     },
     "openSUSE-Leap-Micro-5.3-x86_64-uyuni": {
         "BASECHANNEL": "opensuse_micro5_3-x86_64",

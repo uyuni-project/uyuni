@@ -54,10 +54,8 @@ public class ProxyConfigUpdateApplySaltStateTest extends BaseTestCaseWithUser {
         setThreadingPolicy(new Synchroniser());
     }};
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         context.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         ActionManager.setTaskomaticApi(getTaskomaticApi());
     }

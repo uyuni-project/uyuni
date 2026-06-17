@@ -35,10 +35,8 @@ import org.junit.jupiter.api.Test;
 public class KickstartPartitionActionTest extends RhnPostMockStrutsTestCase {
     private KickstartData ksdata;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
 
         this.ksdata = KickstartDataTest.createKickstartWithOptions(user.getOrg());
         ksdata = TestUtils.saveAndFlush(ksdata);
@@ -72,7 +70,7 @@ public class KickstartPartitionActionTest extends RhnPostMockStrutsTestCase {
         assertFalse(formval.isEmpty());
         assertEquals(data, formval);
         String[] keys = {"kickstart.partition.success"};
-        verifyActionMessages(keys);
+        testActionHasMessages(keys);
         assertNotNull(ksdata.getPartitionData());
         assertEquals(data, ksdata.getPartitionData());
 
@@ -98,7 +96,7 @@ public class KickstartPartitionActionTest extends RhnPostMockStrutsTestCase {
         assertEquals(data, ksdata.getPartitionData());
 
         String[] keys = {"kickstart.partition.success"};
-        verifyActionMessages(keys);
+        testActionHasMessages(keys);
     }
 
 }

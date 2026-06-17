@@ -74,10 +74,8 @@ public class AccessTest extends BaseTestCaseWithUser {
             new SystemUnentitler(saltApi), new SystemEntitler(saltApi)
     );
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         acl = new Acl();
         acl.registerHandler(new Access());
     }

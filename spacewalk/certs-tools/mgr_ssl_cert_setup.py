@@ -42,14 +42,18 @@ APACHE_KEY_FILE = os.path.join(PKI_DIR, "tls", "private", SRV_KEY_NAME)
 ROOT_CA_NAME = "RHN-ORG-TRUSTED-SSL-CERT"
 PKI_ROOT_CA_NAME = "LOCAL-" + ROOT_CA_NAME
 
+# pylint: disable-next=invalid-name
 ROOT_CA_HTTP_DIR = "/srv/www/htdocs/pub/"
 if not os.path.exists(ROOT_CA_HTTP_DIR):
     # Red Hat
+    # pylint: disable-next=invalid-name
     ROOT_CA_HTTP_DIR = "/var/www/html/pub/"
 
+# pylint: disable-next=invalid-name
 CA_TRUST_DIR = os.path.join(PKI_DIR, "trust", "anchors")
 if not os.path.exists(CA_TRUST_DIR):
     # Red Hat
+    # pylint: disable-next=invalid-name
     CA_TRUST_DIR = os.path.join(PKI_DIR, "ca-trust", "source", "anchors")
 
 SALT_CA_DIR = "/usr/share/susemanager/salt/certs/"
@@ -235,6 +239,8 @@ def prepareData(root_ca_content, server_cert_content, intermediate_ca_content):
 
 # pylint: disable-next=invalid-name
 def isCA(cert):
+    is_ca = False
+    is_critical = False
     # pylint: disable-next=subprocess-run-check
     out = subprocess.run(
         ["openssl", "x509", "-noout", "-ext", "basicConstraints"],
@@ -250,8 +256,13 @@ def isCA(cert):
         return False
     for line in out.stdout.decode("utf-8").splitlines():
         if "CA:TRUE" in line.upper():
-            return True
-    return False
+            is_ca = True
+        if "critical" in line.lower():
+            is_critical = True
+    if is_ca and not is_critical:
+        # Print as warning and do not enforce it yet.
+        log("WARNING: CA basicConstraints extension is not marked as 'critical'")
+    return is_ca
 
 
 # pylint: disable-next=invalid-name
@@ -551,10 +562,8 @@ def deployApache(apache_cert_content, server_key_content):
         f.write(apache_cert_content)
     # exists on server and proxy
     os.system("/usr/bin/spacewalk-setup-httpd")
-    log(
-        """After changing the server certificate please execute:
-$> spacewalk-service stop """
-    )
+    log("""After changing the server certificate please execute:
+$> spacewalk-service stop """)
 
 
 # pylint: disable-next=invalid-name
@@ -618,12 +627,10 @@ def deployCAUyuni(certData):
     # in case a systemd timer try to do the same
     time.sleep(3)
     os.system("/usr/share/rhn/certs/update-ca-cert-trust.sh")
-    log(
-        """$> spacewalk-service start
+    log("""$> spacewalk-service start
 
 As the CA certificate has been changed, please deploy the CA to all registered clients.
-On salt-managed clients, you can do this by applying the highstate."""
-    )
+On salt-managed clients, you can do this by applying the highstate.""")
 
 
 # pylint: disable-next=invalid-name

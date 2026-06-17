@@ -26,10 +26,8 @@ import org.junit.jupiter.api.Test;
  */
 public class ArchivedActionsSetupTest extends RhnMockStrutsTestCase {
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         setRequestPathInfo("/schedule/ArchivedActions");
     }
 
@@ -39,7 +37,7 @@ public class ArchivedActionsSetupTest extends RhnMockStrutsTestCase {
 
 
         actionPerform();
-        verifyForwardPath("/WEB-INF/pages/schedule/archivedactions.jsp");
+        testForwardPath("/WEB-INF/pages/schedule/archivedactions.jsp");
         Object test = request.getAttribute("dataset");
         assertNotNull(test);
 

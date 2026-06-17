@@ -11,7 +11,7 @@ ARG PRODUCT_PATTERN_PREFIX="patterns-uyuni"
 ARG USEPYTHON="python3"
 
 # Extra packages can be added via project configuration
-ARG EXTRAPACKAGES
+ARG EXTRAPACKAGES=""
 
 # Create stable static UID and GID for salt, tomcat, apache (wwwrun)...
 RUN groupadd -r --gid 10550 susemanager && \
@@ -27,7 +27,8 @@ RUN useradd -r -s /usr/sbin/nologin -G susemanager,www -g tomcat -d /usr/share/t
   useradd -r -s /usr/sbin/nologin -g tftp -d /srv/tftpboot --uid 10555 tftp
 
 # Main packages
-RUN zypper ref && zypper --non-interactive up && \
+RUN set -euo pipefail; \
+    zypper ref && zypper --non-interactive up && \
     zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses --force-resolution \
         ${EXTRAPACKAGES} \
         ${PRODUCT_PATTERN_PREFIX}_server \
@@ -81,9 +82,10 @@ RUN zypper ref && zypper --non-interactive up && \
         virtual-host-gatherer-VMware \
         virtual-host-gatherer-libcloud \
         virtualization-formulas \
+        mozilla-nss-sysinit \
         zchunk && \
     zypper --non-interactive clean --all && \
-    rpm -e container-suseconnect && \
+    (rpm -e container-suseconnect || true) && \
     systemctl enable prometheus-node_exporter && \
     systemctl enable sssd && \
     rm /etc/krb5.conf.d/crypto-policies && \
@@ -101,6 +103,7 @@ RUN zypper ref && zypper --non-interactive up && \
     ln -sf /dev/null /etc/systemd/system/systemd-timedated.service && \
     ln -sf /dev/null /etc/systemd/system/systemd-tmpfiles-clean.service && \
     ln -sf /dev/null /etc/systemd/system/console-getty.service && \
+    zypper --non-interactive removerepo --all; \
     rm -rf /var/log/{alternatives.log,lastlog,tallylog,suseconnect.log,zypper.log,zypp/history,YaST2}
 
 ADD --chown=root:root root.tar.gz /
@@ -132,7 +135,7 @@ LABEL org.opencontainers.image.description="All-in-one ${PRODUCT} server image"
 LABEL org.opencontainers.image.created="%BUILDTIME%"
 LABEL org.opencontainers.image.vendor="${VENDOR}"
 LABEL org.opencontainers.image.url="${URL}"
-LABEL org.opencontainers.image.version=5.2.8
+LABEL org.opencontainers.image.version=5.2.12
 LABEL org.openbuildservice.disturl="%DISTURL%"
 LABEL org.opensuse.reference="${REFERENCE_PREFIX}/server:${PRODUCT_VERSION}.%RELEASE%"
 # endlabelprefix

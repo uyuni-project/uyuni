@@ -32,8 +32,6 @@ import org.junit.jupiter.api.Test;
 import java.util.LinkedList;
 import java.util.List;
 
-import servletunit.HttpServletRequestSimulator;
-
 /**
  * Tests PowerManagementConfigurationAction
  * @author Silvio Moioli {@literal <smoioli@suse.de>}
@@ -47,10 +45,8 @@ public class PowerManagementConfigurationActionTest extends RhnMockStrutsTestCas
      * @throws Exception if things go wrong
      * @see com.redhat.rhn.testing.RhnMockStrutsTestCase#setUp()
      */
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         connection = CobblerXMLRPCHelper.getConnection(user.getLogin());
         servers = setUpTestProvisionableSsmServers(user);
     }
@@ -79,7 +75,7 @@ public class PowerManagementConfigurationActionTest extends RhnMockStrutsTestCas
     @Test
     public void testExecute() {
         setRequestPathInfo("/systems/ssm/provisioning/PowerManagementConfiguration");
-        request.setMethod(HttpServletRequestSimulator.POST);
+        request.setMethod("POST");
 
         addSubmitted();
         addDispatchCall("ssm.provisioning.powermanagement.configuration.update");

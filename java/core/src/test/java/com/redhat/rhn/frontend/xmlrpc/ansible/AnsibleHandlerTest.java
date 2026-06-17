@@ -20,8 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.domain.action.Action;
@@ -29,9 +29,6 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ansible.PlaybookAction;
 import com.redhat.rhn.domain.action.ansible.PlaybookActionDetails;
 import com.redhat.rhn.domain.server.MinionServer;
-import com.redhat.rhn.domain.server.MinionServerFactoryTest;
-import com.redhat.rhn.domain.server.ServerArch;
-import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.domain.server.ansible.AnsiblePath;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ScheduledAction;
@@ -41,18 +38,13 @@ import com.redhat.rhn.frontend.xmlrpc.InvalidArgsException;
 import com.redhat.rhn.frontend.xmlrpc.ValidationException;
 import com.redhat.rhn.manager.action.ActionChainManager;
 import com.redhat.rhn.manager.action.ActionManager;
-import com.redhat.rhn.manager.entitlement.EntitlementManager;
 import com.redhat.rhn.manager.system.AnsibleManager;
-import com.redhat.rhn.manager.system.entitling.SystemEntitlementManager;
-import com.redhat.rhn.manager.system.entitling.SystemEntitler;
-import com.redhat.rhn.manager.system.entitling.SystemUnentitler;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
-import com.redhat.rhn.testing.TestUtils;
+import com.redhat.rhn.testing.ServerTestUtils;
 
 import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.salt.netapi.calls.LocalCall;
-import com.suse.salt.netapi.datatypes.target.MinionList;
 import com.suse.salt.netapi.utils.Xor;
 
 import org.jmock.Expectations;
@@ -69,7 +61,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @ExtendWith(JUnit5Mockery.class)
-public class AnsibleHandlerTest extends BaseHandlerTestCase {
+class AnsibleHandlerTest extends BaseHandlerTestCase {
 
     private AnsibleHandler handler;
 
@@ -82,10 +74,8 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
 
     private SaltApi saltApi;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         context.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         ActionChainManager.setTaskomaticApi(getTaskomaticApi());
 
@@ -95,12 +85,12 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testSchedulePlaybook() throws Exception {
+    void testSchedulePlaybook() {
         MinionServer controlNode = createAnsibleControlNode(admin);
         int preScheduleSize = ActionManager.recentlyScheduledActions(admin, null, 30).size();
         Date scheduleDate = new Date();
 
-        Long actionId = handler.schedulePlaybook(admin, "/path/to/myplaybook.yml", "/path/to/hosts",
+        Long actionId = handler.schedulePlaybook(admin, "/path/to/my-playbook.yml", "/path/to/hosts",
                 controlNode.getId().intValue(), scheduleDate, null, false);
         assertNotNull(actionId);
 
@@ -116,18 +106,18 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
 
         PlaybookActionDetails details = action.getDetails();
         assertNotNull(details);
-        assertEquals("/path/to/myplaybook.yml", details.getPlaybookPath());
+        assertEquals("/path/to/my-playbook.yml", details.getPlaybookPath());
         assertEquals("/path/to/hosts", details.getInventoryPath());
         assertFalse(details.isTestMode());
     }
 
     @Test
-    public void testSchedulePlaybookTestMode() throws Exception {
+    void testSchedulePlaybookTestMode() {
         MinionServer controlNode = createAnsibleControlNode(admin);
         int preScheduleSize = ActionManager.recentlyScheduledActions(admin, null, 30).size();
         Date scheduleDate = new Date();
 
-        Long actionId = handler.schedulePlaybook(admin, "/path/to/myplaybook.yml", null,
+        Long actionId = handler.schedulePlaybook(admin, "/path/to/my-playbook.yml", null,
                 controlNode.getId().intValue(), scheduleDate, null, true,
                 Map.of(AnsibleHandler.ANSIBLE_FLUSH_CACHE, true, AnsibleHandler.ANSIBLE_EXTRA_VARS, "{test: 123}"));
         assertNotNull(actionId);
@@ -144,7 +134,7 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
 
         PlaybookActionDetails details = action.getDetails();
         assertNotNull(details);
-        assertEquals("/path/to/myplaybook.yml", details.getPlaybookPath());
+        assertEquals("/path/to/my-playbook.yml", details.getPlaybookPath());
         assertEquals("{test: 123}", details.getExtraVarsContents());
         assertNull(details.getInventoryPath());
         assertTrue(details.isTestMode());
@@ -152,7 +142,7 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testCreateAndGetAnsiblePath() throws Exception {
+    void testCreateAndGetAnsiblePath() {
         MinionServer controlNode = createAnsibleControlNode(admin);
 
         AnsiblePath inventoryPath = handler.createAnsiblePath(
@@ -185,18 +175,12 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testCreateInvalidAnsiblePath() {
-        try {
-            handler.createAnsiblePath(admin, Map.of());
-            fail("An exception shold have been thrown");
-        }
-        catch (ValidationException e) {
-            // expected
-        }
+    void testCreateInvalidAnsiblePath() {
+        assertThrows(ValidationException.class, () -> handler.createAnsiblePath(admin, Map.of()));
     }
 
     @Test
-    public void testUpdateAnsiblePath() throws Exception {
+    void testUpdateAnsiblePath() {
         MinionServer controlNode = createAnsibleControlNode(admin);
 
         AnsiblePath inventoryPath = handler.createAnsiblePath(
@@ -213,7 +197,7 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
     }
 
     @Test
-    public void testUpdateInvalidAnsiblePath() throws Exception {
+    void testUpdateInvalidAnsiblePath() {
         MinionServer controlNode = createAnsibleControlNode(admin);
 
         AnsiblePath inventoryPath = handler.createAnsiblePath(
@@ -224,17 +208,13 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
                         "path", "/etc/ansible/test"
                 ));
 
-        try {
-            handler.updateAnsiblePath(admin, inventoryPath.getId().intValue(), Map.of("my-path", "/tmp/new-location"));
-            fail("An exception shold have been thrown");
-        }
-        catch (ValidationException e) {
-            // expected
-        }
+        int pathId = inventoryPath.getId().intValue();
+        Map<String, Object> props = Map.of("my-path", "/tmp/new-location");
+        assertThrows(ValidationException.class, () -> handler.updateAnsiblePath(admin, pathId, props));
     }
 
     @Test
-    public void testRemoveAnsiblePath() throws Exception {
+    void testRemoveAnsiblePath() {
         MinionServer controlNode = createAnsibleControlNode(admin);
 
         AnsiblePath inventoryPath = handler.createAnsiblePath(
@@ -247,40 +227,25 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
 
         int result = handler.removeAnsiblePath(admin, inventoryPath.getId().intValue());
         assertEquals(1, result);
-        try {
-            handler.lookupAnsiblePathById(admin, inventoryPath.getId().intValue());
-            fail("An exception shold have been thrown");
-        }
-        catch (EntityNotExistsFaultException e) {
-            //expected
-        }
+
+        int pathId = inventoryPath.getId().intValue();
+        assertThrows(EntityNotExistsFaultException.class, () -> handler.lookupAnsiblePathById(admin, pathId));
     }
 
     @Test
-    public void testRemoveInvalidAnsiblePath() {
-        try {
-            handler.lookupAnsiblePathById(admin, -1234);
-            fail("An exception shold have been thrown");
-        }
-        catch (EntityNotExistsFaultException e) {
-            //expected
-        }
+    void testRemoveInvalidAnsiblePath() {
+        assertThrows(EntityNotExistsFaultException.class, () -> handler.lookupAnsiblePathById(admin, -1234));
     }
 
     @Test
-    public void testFetchPlaybookContentsInvalidPath() throws Exception {
+    void testFetchPlaybookContentsInvalidPath() {
         createAnsibleControlNode(admin);
-        try {
-            handler.fetchPlaybookContents(admin, -123, "tmp/123");
-            fail("An exception shold have been thrown");
-        }
-        catch (EntityNotExistsFaultException e) {
-            // expected
-        }
+
+        assertThrows(EntityNotExistsFaultException.class, () -> handler.fetchPlaybookContents(admin, -123, "tmp/123"));
     }
 
     @Test
-    public void testFetchPlaybookContentsInvalidRelPath() throws Exception {
+    void testFetchPlaybookContentsInvalidRelPath() {
         MinionServer controlNode = createAnsibleControlNode(admin);
         AnsiblePath playbookPath = handler.createAnsiblePath(
                 admin,
@@ -289,18 +254,14 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
                         "server_id", controlNode.getId().intValue(),
                         "path", "/etc/playbooks"
                 ));
-        try {
-            // try with absolute path
-            handler.fetchPlaybookContents(admin, playbookPath.getId().intValue(), "/tmp/123");
-            fail("An exception shold have been thrown");
-        }
-        catch (InvalidArgsException e) {
-            // expected
-        }
+
+        int pathId = playbookPath.getId().intValue();
+        assertThrows(InvalidArgsException.class,
+            () -> handler.fetchPlaybookContents(admin, pathId, "/tmp/123"));
     }
 
     @Test
-    public void testFetchPlaybookContents() throws Exception {
+    void testFetchPlaybookContents() {
         MinionServer controlNode = createAnsibleControlNode(admin);
         AnsiblePath playbookPath = handler.createAnsiblePath(
                 admin,
@@ -319,33 +280,24 @@ public class AnsibleHandlerTest extends BaseHandlerTestCase {
                 handler.fetchPlaybookContents(admin, playbookPath.getId().intValue(), "tmp/123"));
     }
 
-    private MinionServer createAnsibleControlNode(User user) throws Exception {
-        SystemEntitlementManager entitlementManager = new SystemEntitlementManager(
-                new SystemUnentitler(saltApi), new SystemEntitler(saltApi)
-        );
-
-        context.checking(new Expectations() {{
-            allowing(saltApi).refreshPillar(with(any(MinionList.class)));
-        }});
-
-        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
-        ServerArch a = ServerFactory.lookupServerArchByName("x86_64");
-        server.setServerArch(a);
-        server = TestUtils.saveAndFlush(server);
-        entitlementManager.addEntitlementToServer(server, EntitlementManager.ANSIBLE_CONTROL_NODE);
-        return server;
+    private MinionServer createAnsibleControlNode(User user) {
+        return ServerTestUtils.createAnsibleControlNode(user, saltApi, context);
     }
 
-    private TaskomaticApi getTaskomaticApi() throws TaskomaticApiException {
-        if (taskomaticApi == null) {
-            taskomaticApi = context.mock(TaskomaticApi.class);
-            context.checking(new Expectations() {
-                {
-                    allowing(taskomaticApi)
-                            .scheduleActionExecution(with(any(Action.class)));
-                }
-            });
+    private TaskomaticApi getTaskomaticApi() {
+        if (taskomaticApi != null) {
+            return taskomaticApi;
         }
+
+        taskomaticApi = context.mock(TaskomaticApi.class);
+        context.checking(new Expectations() {{
+            try {
+                allowing(taskomaticApi).scheduleActionExecution(with(any(Action.class)));
+            }
+            catch (TaskomaticApiException e) {
+                throw new IllegalStateException("Unable to mock taskomatic api", e);
+            }
+        }});
 
         return taskomaticApi;
     }

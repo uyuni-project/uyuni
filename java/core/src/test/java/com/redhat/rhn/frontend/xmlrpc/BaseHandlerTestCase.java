@@ -48,11 +48,8 @@ public class BaseHandlerTestCase extends RhnBaseTestCase {
     protected String satAdminKey;
     private boolean committed;
 
-    @Override
     @BeforeEach
-    public void setUp() throws Exception {
-        super.setUp();
-
+    public void setUpBaseHandlerTestCase() throws Exception {
         committed = false;
 
         admin = new UserTestUtils.UserBuilder()
@@ -83,10 +80,7 @@ public class BaseHandlerTestCase extends RhnBaseTestCase {
     }
 
     @AfterEach
-    @Override
-    public void tearDown() throws Exception {
-        super.tearDown();
-
+    public void tearDownBaseHandlerTestCase() throws Exception {
         // If at some point we created a user and committed the transaction, we need
         // clean up our mess
         if (committed) {

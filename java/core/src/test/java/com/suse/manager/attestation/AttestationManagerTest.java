@@ -68,10 +68,8 @@ public class AttestationManagerTest extends JMockBaseTestCaseWithUser {
     private AttestationManager mgr;
     private static TaskomaticApi taskomaticApi;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         context.setThreadingPolicy(new Synchroniser());
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         user2 = UserTestUtils.createUser("user2", user.getOrg().getId());

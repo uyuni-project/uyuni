@@ -4,6 +4,7 @@
 @scope_ssm
 @sle_minion
 @scope_visualization
+@skip_if_github_validation
 Feature: Manage a group of systems and the Systems Set Manager
 
   Scenario: Log in as org admin user

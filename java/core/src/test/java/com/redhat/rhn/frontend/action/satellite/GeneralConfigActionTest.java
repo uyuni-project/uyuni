@@ -87,7 +87,7 @@ public class GeneralConfigActionTest extends RhnPostMockStrutsTestCase {
         actionPerform();
         assertEquals(origValue, Config.get().getBoolean(TEST_CONFIG_BOOLEAN));
         Config.get().setBoolean(TEST_CONFIG_BOOLEAN, Boolean.toString(origValue));
-        verifyForward("failure");
+        testForwardName("failure");
 
         addRequestParameter(
                 GeneralConfigAction.translateFormPropertyName("traceback_mail"),
@@ -101,7 +101,7 @@ public class GeneralConfigActionTest extends RhnPostMockStrutsTestCase {
         assertEquals("testuser@redhat.com", Config.get().getString("traceback_mail"));
         assertEquals("testbox", Config.get().getString("java.hostname"));
 
-        verifyActionMessages(new String[] {"config.restartrequired"});
+        testActionHasMessages(new String[] {"config.restartrequired"});
 
 
         Config.get().setBoolean(TEST_CONFIG_BOOLEAN, Boolean.toString(origValue));

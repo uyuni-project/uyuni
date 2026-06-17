@@ -186,7 +186,7 @@ public class TreeActionTest extends RhnPostMockStrutsTestCase {
     private void execute(String path) {
         setRequestPathInfo(path);
         actionPerform();
-        verifyNoActionErrors();
+        testActionHasNoErrors();
         assertNotNull(request.getAttribute(TreeCreateAction.CHANNELS));
 
         if (request.getAttribute(TreeCreateAction.INSTALLTYPES) == null) {
@@ -211,7 +211,7 @@ public class TreeActionTest extends RhnPostMockStrutsTestCase {
         KickstartInstallType installtype = TestUtils.lookupFromCacheById(1L, KickstartInstallType.class);
         addRequestParameter(TreeCreateAction.INSTALL_TYPE, installtype.getLabel());
         actionPerform();
-        verifyNoActionErrors();
+        testActionHasNoErrors();
         return newLabel;
     }
 
@@ -232,8 +232,8 @@ public class TreeActionTest extends RhnPostMockStrutsTestCase {
         addRequestParameter(RhnAction.SUBMITTED, Boolean.FALSE.toString());
         setRequestPathInfo("/kickstart/TreeDelete");
         actionPerform();
-        verifyNoActionErrors();
-        verifyForward(RhnHelper.DEFAULT_FORWARD);
+        testActionHasNoErrors();
+        testForwardName(RhnHelper.DEFAULT_FORWARD);
         assertNotNull(request.getAttribute(RequestContext.PAGE_LIST));
         verifyPageList(KickstartData.class);
     }
@@ -255,8 +255,8 @@ public class TreeActionTest extends RhnPostMockStrutsTestCase {
         addRequestParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
         setRequestPathInfo("/kickstart/TreeDelete");
         actionPerform();
-        verifyNoActionErrors();
-        verifyForward("success");
+        testActionHasNoErrors();
+        testForwardName("success");
         verifyActionMessage("tree.delete.success");
     }
 }

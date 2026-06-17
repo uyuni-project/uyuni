@@ -24,8 +24,6 @@ import java.io.InputStream;
 import java.util.Hashtable;
 
 import jakarta.servlet.http.HttpServletRequest;
-import servletunit.HttpServletRequestSimulator;
-
 
 /**
  * RhnPostMockStrutsTestCase
@@ -36,11 +34,9 @@ public class RhnPostMockStrutsTestCase extends RhnMockStrutsTestCase {
      * override the setupUp method
      * {@inheritDoc}
      */
-    @Override
     @BeforeEach
-    public void setUp() throws Exception {
-        super.setUp();
-        request.setMethod(HttpServletRequestSimulator.POST);
+    public void setUpRhnPostMockStrutsTestCase() throws Exception {
+        request.setMethod("POST");
         UploadsHandler.clear();
     }
 

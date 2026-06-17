@@ -60,10 +60,8 @@ public class PackageManagerPtfTest extends BaseTestCaseWithUser {
 
     private Channel channel;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
 
         server = ServerFactoryTest.createTestServer(user);
 

@@ -70,10 +70,8 @@ public class ActionChainManagerTest extends JMockBaseTestCaseWithUser {
     /**
      * {@inheritDoc}
      */
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         ActionChainManager.setTaskomaticApi(TASKO_TEST_API);
     }

@@ -1,1 +1,0 @@
-- Fix gpgverify check for file object (bsc#1263886)

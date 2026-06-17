@@ -49,18 +49,15 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
 
     private Path legacyStatesBackupDirectory;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         createTask(UpgradeCommand.UPGRADE_CUSTOM_STATES);
         legacyStatesBackupDirectory = Files.createTempDirectory("legacy_states");
     }
 
-    @Override
     @AfterEach
     public void tearDown() throws Exception {
-        super.tearDown();
+        removeTask(UpgradeCommand.UPGRADE_CUSTOM_STATES);
         assertTaskDoesNotExist(UpgradeCommand.UPGRADE_CUSTOM_STATES);
         FileUtils.deleteDirectory(legacyStatesBackupDirectory.toFile());
     }
@@ -320,5 +317,10 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
     private void assertTaskDoesNotExist(String taskName) {
         List<Task> tasks = TaskFactory.getTaskListByNameLike(taskName);
         assertTrue((tasks == null || tasks.isEmpty()));
+    }
+
+    private void removeTask(String taskName) {
+        List<Task> tasks = TaskFactory.getTaskListByNameLike(taskName);
+        tasks.forEach(TaskFactory::remove);
     }
 }

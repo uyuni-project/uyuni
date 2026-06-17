@@ -1,2 +1,0 @@
-- Use salt's network module if host or nslookup are not installed
-  (bsc#1262720)

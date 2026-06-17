@@ -28,6 +28,9 @@ server:
   # Email will be the email used for the notifications sent by the server.
   email: "admin@uyuni.lab.org"
 
+  # sccSecret is the name of a basic-auth secret with the organization mirroring credentials to set up on the server.
+  sccSecret: ""
+
   # mirror defines a volume or host path to mount in the container as server.susemanager.fromdir value.
   # Use either claimName or hostPath to reference the volume source.
   #

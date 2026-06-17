@@ -1,0 +1,2 @@
+- Handle release package for SLE16 correctly depending on the
+  transactional flag

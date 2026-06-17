@@ -47,10 +47,8 @@ public class ChannelOrgHandlerTest extends BaseHandlerTestCase {
     private ChannelOrgHandler handler = new ChannelOrgHandler();
     private OrgHandler orgHandler = new OrgHandler(new MigrationManager(new ServerGroupManager(new TestSaltApi())));
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         admin.addPermanentRole(RoleFactory.SAT_ADMIN);
     }
 

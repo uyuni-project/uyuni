@@ -34,10 +34,8 @@ public class SelectRemovePackagesActionTest extends RhnMockStrutsTestCase {
 
     private SsmActionTestUtils utils;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         setRequestPathInfo("/ssm/PackageRemove");
 
         utils = new SsmActionTestUtils(user);
@@ -52,7 +50,7 @@ public class SelectRemovePackagesActionTest extends RhnMockStrutsTestCase {
         actionPerform();
 
         // Verify
-        verifyForward(RhnHelper.DEFAULT_FORWARD);
+        testForwardName(RhnHelper.DEFAULT_FORWARD);
 
         Object pageList = getRequest().getAttribute(RequestContext.PAGE_LIST);
         assertNotNull(pageList);
@@ -72,7 +70,7 @@ public class SelectRemovePackagesActionTest extends RhnMockStrutsTestCase {
         actionPerform();
 
         // Verify
-        verifyForward("confirm");
+        testForwardName("confirm");
     }
 
     private void selectAllPackagesInUI() {

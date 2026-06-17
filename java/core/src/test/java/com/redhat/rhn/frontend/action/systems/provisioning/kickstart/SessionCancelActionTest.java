@@ -22,8 +22,6 @@ import com.redhat.rhn.frontend.struts.RhnAction;
 
 import org.junit.jupiter.api.Test;
 
-import servletunit.HttpServletRequestSimulator;
-
 /**
  * SessionCancelActionTest
  */
@@ -41,7 +39,7 @@ public class SessionCancelActionTest extends BaseSessionTestCase {
     public void testExecuteSubmit() {
         addRequestParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
         setRequestPathInfo("/systems/details/kickstart/SessionCancel");
-        request.setMethod(HttpServletRequestSimulator.POST);
+        request.setMethod("POST");
         actionPerform();
         verifyActionMessage("kickstart.session_cancel.success");
         assertEquals("/systems/details/kickstart/SessionStatus.do?sid=" + s.getId(),

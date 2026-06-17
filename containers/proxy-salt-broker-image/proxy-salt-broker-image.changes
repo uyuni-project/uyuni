@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri May 22 13:46:30 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.7
+  * Add salt ports configuration support
+
+-------------------------------------------------------------------
 Thu Apr 16 14:48:26 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.6

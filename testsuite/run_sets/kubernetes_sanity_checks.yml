@@ -1,0 +1,13 @@
+# This file describes the order of features in a normal testsuite run.
+#
+# If you create new features, please see conventions about naming of the
+# feature files in testsuite/documentation/guidelines.md in "Rules for features" chapter,
+# as well as guidelines about idempotency in "Idempotency" chapter.
+
+## Secondary features BEGIN ##
+
+# IDEMPOTENT
+
+- features/kubernetes/srv_rke2_install.feature
+- features/kubernetes/proxy_rke2_install.feature
+- features/kubernetes/srv_rke2_tftpd_sanity.feature

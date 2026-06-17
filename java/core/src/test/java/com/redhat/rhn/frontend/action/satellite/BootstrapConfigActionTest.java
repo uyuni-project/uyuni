@@ -35,10 +35,8 @@ public class BootstrapConfigActionTest extends RhnPostMockStrutsTestCase {
     /**
      * {@inheritDoc}
      */
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         user.getOrg().addRole(RoleFactory.SAT_ADMIN);
         user.addPermanentRole(RoleFactory.SAT_ADMIN);
         Config.get().setString("web.com.redhat.rhn.frontend." +
@@ -71,6 +69,6 @@ public class BootstrapConfigActionTest extends RhnPostMockStrutsTestCase {
         addRequestParameter(BootstrapConfigAction.HOSTNAME, "localhost");
         setRequestPathInfo("/admin/config/BootstrapConfig");
         actionPerform();
-        verifyActionMessages(new String[]{"bootstrap.config.success"});
+        testActionHasMessages(new String[]{"bootstrap.config.success"});
     }
 }

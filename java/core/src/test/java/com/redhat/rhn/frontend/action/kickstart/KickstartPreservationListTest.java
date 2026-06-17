@@ -37,10 +37,8 @@ public class KickstartPreservationListTest extends BaseKickstartEditTestCase {
     /**
      * {@inheritDoc}
      */
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         list1 = KickstartDataTest.createFileList1(user.getOrg());
         CommonFactory.saveFileList(list1);
         list2 = KickstartDataTest.createFileList2(user.getOrg());

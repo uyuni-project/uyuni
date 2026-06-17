@@ -144,3 +144,107 @@ tests:
         documentSelector:
           path: metadata.name
           value: salt-request-router
+
+      # ingress.class annotation propagates to every IngressRouteTCP
+      - equal:
+          path: metadata.annotations["kubernetes.io/ingress.class"]
+          value: testClass
+        template: traefik-routes.yaml
+        documentSelector:
+          path: metadata.name
+          value: ssh-router
+      - equal:
+          path: metadata.annotations["kubernetes.io/ingress.class"]
+          value: testClass
+        template: traefik-routes.yaml
+        documentSelector:
+          path: metadata.name
+          value: salt-publish-router
+      - equal:
+          path: metadata.annotations["kubernetes.io/ingress.class"]
+          value: testClass
+        template: traefik-routes.yaml
+        documentSelector:
+          path: metadata.name
+          value: salt-request-router
+
+  - it: should render custom ingress.entryPoints into IngressRouteTCP specs
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+        log_level: 2
+      global.httpd: "httpd_content: test httpd"
+      global.ssh: "ssh_content: test ssh"
+      ingress:
+        entryPoints:
+          ssh: "uyuni-ssh"
+          saltPublish: "uyuni-publish"
+          saltRequest: "uyuni-request"
+    release:
+      namespace: proxy1
+    asserts:
+      - equal:
+          path: spec.entryPoints
+          value:
+            - uyuni-ssh
+        template: traefik-routes.yaml
+        documentSelector:
+          path: metadata.name
+          value: ssh-router
+      - equal:
+          path: spec.entryPoints
+          value:
+            - uyuni-publish
+        template: traefik-routes.yaml
+        documentSelector:
+          path: metadata.name
+          value: salt-publish-router
+      - equal:
+          path: spec.entryPoints
+          value:
+            - uyuni-request
+        template: traefik-routes.yaml
+        documentSelector:
+          path: metadata.name
+          value: salt-request-router
+
+  - it: should render default ingress.entryPoints when not overridden
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+        log_level: 2
+      global.httpd: "httpd_content: test httpd"
+      global.ssh: "ssh_content: test ssh"
+    release:
+      namespace: proxy1
+    asserts:
+      - equal:
+          path: spec.entryPoints
+          value:
+            - ssh
+        template: traefik-routes.yaml
+        documentSelector:
+          path: metadata.name
+          value: ssh-router
+      - equal:
+          path: spec.entryPoints
+          value:
+            - salt-publish
+        template: traefik-routes.yaml
+        documentSelector:
+          path: metadata.name
+          value: salt-publish-router
+      - equal:
+          path: spec.entryPoints
+          value:
+            - salt-request
+        template: traefik-routes.yaml
+        documentSelector:
+          path: metadata.name
+          value: salt-request-router

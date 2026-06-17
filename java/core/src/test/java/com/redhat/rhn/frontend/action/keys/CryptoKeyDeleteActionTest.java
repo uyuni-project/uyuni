@@ -56,7 +56,7 @@ public class CryptoKeyDeleteActionTest extends RhnPostMockStrutsTestCase {
                             cmd.getCryptoKey().getKeyString());
         actionPerform();
         String[] keys = {"cryptokey.delete.success"};
-        verifyActionMessages(keys);
+        testActionHasMessages(keys);
         assertNull(KickstartFactory.lookupCryptoKeyById(cmd.getCryptoKey().getId(),
                                                               cmd.getCryptoKey().getOrg()));
     }

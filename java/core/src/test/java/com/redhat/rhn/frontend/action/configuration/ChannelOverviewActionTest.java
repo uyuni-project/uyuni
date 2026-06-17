@@ -32,8 +32,6 @@ import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.Test;
 
-import servletunit.HttpServletRequestSimulator;
-
 public class ChannelOverviewActionTest extends RhnMockStrutsTestCase {
 
     public static final String FWD_SUCCESS = "/configuration/ChannelOverview.do?ccid=";
@@ -88,7 +86,7 @@ public class ChannelOverviewActionTest extends RhnMockStrutsTestCase {
 
     private ConfigChannel doCreateChannelAction(String channelLabel) {
         // create a config channel via action and return it
-        request.setMethod(HttpServletRequestSimulator.POST);
+        request.setMethod("POST");
         setRequestPathInfo("/configuration/ChannelCreate");
         addRequestParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
         addRequestParameter("created", Boolean.TRUE.toString());

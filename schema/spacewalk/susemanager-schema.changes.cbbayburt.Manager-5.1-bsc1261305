@@ -1,2 +1,0 @@
-- Move Salt > Remote Commands to its own RBAC namespace
-  (bsc#1261305)

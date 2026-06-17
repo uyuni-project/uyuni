@@ -40,10 +40,8 @@ public class StateSourceServiceTest extends BaseTestCaseWithUser {
 
     private MinionServer server;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         server = MinionServerFactoryTest.createTestMinionServer(user);
     }
 

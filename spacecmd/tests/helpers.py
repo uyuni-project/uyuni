@@ -2,10 +2,11 @@
 """
 Testing helpers
 """
+
 import time
 import pytest
 import hashlib
-from mock import MagicMock
+from unittest.mock import MagicMock
 from io import StringIO
 
 

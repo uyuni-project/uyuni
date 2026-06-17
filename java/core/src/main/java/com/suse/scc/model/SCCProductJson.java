@@ -20,6 +20,8 @@ import com.redhat.rhn.domain.product.ReleaseStage;
 import com.google.gson.annotations.SerializedName;
 
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Collections;
 import java.util.List;
@@ -28,6 +30,8 @@ import java.util.List;
  * This is a SUSE product as parsed from JSON coming in from SCC.
  */
 public class SCCProductJson {
+
+    private static final Logger LOG = LogManager.getLogger(SCCProductJson.class);
 
     /**
      * Product Builder
@@ -512,6 +516,10 @@ public class SCCProductJson {
      * @return the arch
      */
     public String getArch() {
+        if ("unknown".equals(arch)) {
+            LOG.debug("Product '{}' (id={}) has arch='unknown' from SCC, treating as no-arch", identifier, id);
+            return null;
+        }
         if (arch != null && List.of("amd64", "arm64").contains(arch)) {
             return arch + "-deb";
         }

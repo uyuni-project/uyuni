@@ -44,10 +44,8 @@ public class SystemChannelsActionTest extends RhnMockStrutsTestCase {
     /**
      * {@inheritDoc}
      */
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         server = ServerTestUtils.createTestSystem(user);
         // Create some child channels so we can subscribe to them
         Channel child1 = ChannelTestUtils.createChildChannel(user, server.getBaseChannel());
@@ -120,7 +118,7 @@ public class SystemChannelsActionTest extends RhnMockStrutsTestCase {
         actionPerform();
         server = TestUtils.reload(server);
         assertEquals(newBase.getId(), server.getBaseChannel().getId());
-        verifyActionMessages(new String[]{"sdc.channels.edit.base_channel_updated",
+        testActionHasMessages(new String[]{"sdc.channels.edit.base_channel_updated",
                 "sdc.channels.edit.deploy.warning"});
     }
 
@@ -131,7 +129,7 @@ public class SystemChannelsActionTest extends RhnMockStrutsTestCase {
         actionPerform();
         server = TestUtils.reload(server);
         assertNull(server.getBaseChannel());
-        verifyActionMessages(new String[]{"sdc.channels.edit.base_channel_updated",
+        testActionHasMessages(new String[]{"sdc.channels.edit.base_channel_updated",
                 "sdc.channels.edit.deploy.warning"});
     }
 
@@ -155,7 +153,7 @@ public class SystemChannelsActionTest extends RhnMockStrutsTestCase {
                 arraySearch(server.getChannels().toArray(), "getId", child2.getId()));
         assertFalse(TestUtils.
                 arraySearch(server.getChannels().toArray(), "getId", child3.getId()));
-        verifyActionMessages(new String[]{"sdc.channels.edit.child_channels_updated",
+        testActionHasMessages(new String[]{"sdc.channels.edit.child_channels_updated",
                 "sdc.channels.edit.deploy.warning"});
     }
 }

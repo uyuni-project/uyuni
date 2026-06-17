@@ -47,17 +47,13 @@ public class RefreshGeneratedSaltFilesEventMessageActionTest extends BaseTestCas
 
     private Path tmpFileRoot;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         tmpFileRoot = Files.createTempDirectory("refgensalt");
     }
 
-    @Override
-    @AfterEach
+        @AfterEach
     public void tearDown() throws Exception {
-        super.tearDown();
         FileUtils.deleteDirectory(tmpFileRoot.toFile());
     }
 

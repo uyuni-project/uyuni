@@ -29,7 +29,6 @@ import com.suse.utils.Json;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.http.HttpStatus;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -41,12 +40,6 @@ import spark.Request;
 
 public class SaltbootControllerTest extends BaseControllerTestCase {
     private static final String TEST_DIR = "/com/suse/manager/webui/controllers/";
-
-    @Override
-    @BeforeEach
-    public void setUp() throws Exception {
-        super.setUp();
-    }
 
     @Test
     public void testSaltbootController() throws Exception {

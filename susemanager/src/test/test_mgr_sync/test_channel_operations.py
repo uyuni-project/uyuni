@@ -605,7 +605,7 @@ Scheduling reposync for following channels:
 'res4-es-i386' has not been added"""
 
         self.assertFalse(recorder.stdout)
-        self.assertEqual(expected_output.split("\n"), recorder.stderr)
+        self.assertIn(expected_output, "\n".join(recorder.stderr))
 
     def test_add_channels_interactive(self):
         options = get_options("add channel".split())

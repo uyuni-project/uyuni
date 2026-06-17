@@ -157,10 +157,8 @@ public class ActionManagerTest extends JMockBaseTestCaseWithUser {
     private final SystemManager systemManager =
             new SystemManager(ServerFactory.SINGLETON, new ServerGroupFactory(), saltApi);
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         context.setThreadingPolicy(new Synchroniser());
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         Config.get().setString("server.secret_key",

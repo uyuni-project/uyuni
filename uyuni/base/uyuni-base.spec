@@ -33,7 +33,7 @@
 %define apache_group apache
 %endif
 Name:           uyuni-base
-Version:        5.2.2
+Version:        5.2.3
 Release:        0
 Summary:        %{productprettyname} Base Package
 License:        GPL-2.0-only

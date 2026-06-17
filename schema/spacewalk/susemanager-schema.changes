@@ -1,4 +1,30 @@
 -------------------------------------------------------------------
+Fri May 29 20:56:46 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.11-0
+  * Fix schema migration directory structure
+
+-------------------------------------------------------------------
+Fri May 29 18:42:07 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.10-0
+  * Use db_ssl_enabled value consistently
+
+-------------------------------------------------------------------
+Fri May 22 11:28:09 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.9-0
+  * Add 'unpushed' to rhn_errata_adv_status_ck constraint to
+    allow importing EPEL errata with unpushed status (bsc#1264234)
+  * Require policycoreutils
+  * Sync package removal permissions in packages API with the Web UI
+    (bsc#1261327)
+  * Add the ability to disable automatic synchronization for
+    software channels
+  * Move Salt > Remote Commands to its own RBAC namespace
+    (bsc#1261305)
+
+-------------------------------------------------------------------
 Mon May 04 15:16:54 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.8-0

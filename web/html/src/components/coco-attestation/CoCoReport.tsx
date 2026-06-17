@@ -27,7 +27,7 @@ class CoCoReport extends Component<Props, State> {
     this.setState({ activeTabHash: hash });
   };
 
-  buildHash = (label) => `/details/${this.props.report.id}/${label}`;
+  buildHash = (label) => `#/details/${this.props.report.id}/${label}`;
 
   render = () => {
     const report: AttestationReport = this.props.report;

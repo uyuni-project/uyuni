@@ -218,9 +218,10 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I select "SUSE Linux Enterprise Micro 5.2 x86_64" as a product
     Then I should see the "SUSE Linux Enterprise Micro 5.2 x86_64" selected
     When I open the sub-list of the product "SUSE Linux Enterprise Micro 5.2 x86_64"
-    And I open the sub-list of the product "SUSE Multi-Linux Manager Client Tools for SLE Micro 5 x86_64"
-    And I select "SUSE Multi-Linux Manager Beta Client Tools for SLE Micro 5 x86_64 (BETA)" as a product
-    Then I should see the "SUSE Multi-Linux Manager Beta Client Tools for SLE Micro 5 x86_64 (BETA)" selected
+    And I select "SUSE Multi-Linux Manager Client Tools for SLE Micro 5 x86_64" as a product
+    Then I should see the "SUSE Multi-Linux Manager Client Tools for SLE Micro 5 x86_64" selected
+    When I open the sub-list of the product "SUSE Multi-Linux Manager Client Tools for SLE Micro 5 x86_64" if present
+    And I select or deselect "SUSE Multi-Linux Manager Beta Client Tools for SLE Micro 5 x86_64 (BETA)" beta client tools
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Enterprise Micro 5.2 x86_64" product has been added
@@ -258,9 +259,10 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I select "SUSE Linux Enterprise Micro 5.3 x86_64" as a product
     Then I should see the "SUSE Linux Enterprise Micro 5.3 x86_64" selected
     When I open the sub-list of the product "SUSE Linux Enterprise Micro 5.3 x86_64"
-    And I open the sub-list of the product "SUSE Multi-Linux Manager Client Tools for SLE Micro 5 x86_64"
-    And I select "SUSE Multi-Linux Manager Beta Client Tools for SLE Micro 5 x86_64 (BETA)" as a product
-    Then I should see the "SUSE Multi-Linux Manager Beta Client Tools for SLE Micro 5 x86_64 (BETA)" selected
+    And I select "SUSE Multi-Linux Manager Client Tools for SLE Micro 5 x86_64" as a product
+    Then I should see the "SUSE Multi-Linux Manager Client Tools for SLE Micro 5 x86_64" selected
+    When I open the sub-list of the product "SUSE Multi-Linux Manager Client Tools for SLE Micro 5 x86_64" if present
+    And I select or deselect "SUSE Multi-Linux Manager Beta Client Tools for SLE Micro 5 x86_64 (BETA)" beta client tools
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Enterprise Micro 5.3 x86_64" product has been added
@@ -298,9 +300,10 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I select "SUSE Linux Enterprise Micro 5.4 x86_64" as a product
     Then I should see the "SUSE Linux Enterprise Micro 5.4 x86_64" selected
     When I open the sub-list of the product "SUSE Linux Enterprise Micro 5.4 x86_64"
-    And I open the sub-list of the product "SUSE Multi-Linux Manager Client Tools for SLE Micro 5 x86_64"
-    And I select "SUSE Multi-Linux Manager Beta Client Tools for SLE Micro 5 x86_64 (BETA)" as a product
-    Then I should see the "SUSE Multi-Linux Manager Beta Client Tools for SLE Micro 5 x86_64 (BETA)" selected
+    And I select "SUSE Multi-Linux Manager Client Tools for SLE Micro 5 x86_64" as a product
+    Then I should see the "SUSE Multi-Linux Manager Client Tools for SLE Micro 5 x86_64" selected
+    When I open the sub-list of the product "SUSE Multi-Linux Manager Client Tools for SLE Micro 5 x86_64" if present
+    And I select or deselect "SUSE Multi-Linux Manager Beta Client Tools for SLE Micro 5 x86_64 (BETA)" beta client tools
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Enterprise Micro 5.4 x86_64" product has been added
@@ -338,9 +341,10 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I select "SUSE Linux Enterprise Micro 5.5 x86_64" as a product
     Then I should see the "SUSE Linux Enterprise Micro 5.5 x86_64" selected
     When I open the sub-list of the product "SUSE Linux Enterprise Micro 5.5 x86_64"
-    And I open the sub-list of the product "SUSE Multi-Linux Manager Client Tools for SLE Micro 5 x86_64"
-    And I select "SUSE Multi-Linux Manager Beta Client Tools for SLE Micro 5 x86_64 (BETA)" as a product
-    Then I should see the "SUSE Multi-Linux Manager Beta Client Tools for SLE Micro 5 x86_64 (BETA)" selected
+    And I select "SUSE Multi-Linux Manager Client Tools for SLE Micro 5 x86_64" as a product
+    Then I should see the "SUSE Multi-Linux Manager Client Tools for SLE Micro 5 x86_64" selected
+    When I open the sub-list of the product "SUSE Multi-Linux Manager Client Tools for SLE Micro 5 x86_64" if present
+    And I select or deselect "SUSE Multi-Linux Manager Beta Client Tools for SLE Micro 5 x86_64 (BETA)" beta client tools
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Enterprise Micro 5.5 x86_64" product has been added
@@ -378,9 +382,10 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I select "SUSE Linux Micro 6.0 x86_64" as a product
     Then I should see the "SUSE Linux Micro 6.0 x86_64" selected
     When I open the sub-list of the product "SUSE Linux Micro 6.0 x86_64"
-    And I open the sub-list of the product "SUSE Multi-Linux Manager Client Tools for SUSE Linux Micro 6 x86_64"
-    And I select "SUSE Multi-Linux Manager Beta Client Tools for SUSE Linux Micro 6 x86_64 (BETA)" as a product
-    Then I should see the "SUSE Multi-Linux Manager Beta Client Tools for SUSE Linux Micro 6 x86_64 (BETA)" selected
+    And I select "SUSE Multi-Linux Manager Client Tools for SUSE Linux Micro 6 x86_64" as a product
+    Then I should see the "SUSE Multi-Linux Manager Client Tools for SUSE Linux Micro 6 x86_64" selected
+    When I open the sub-list of the product "SUSE Multi-Linux Manager Client Tools for SUSE Linux Micro 6 x86_64" if present
+    And I select or deselect "SUSE Multi-Linux Manager Beta Client Tools for SUSE Linux Micro 6 x86_64 (BETA)" beta client tools
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Micro 6.0 x86_64" product has been added
@@ -418,9 +423,10 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I select "SUSE Linux Micro 6.1 x86_64" as a product
     Then I should see the "SUSE Linux Micro 6.1 x86_64" selected
     When I open the sub-list of the product "SUSE Linux Micro 6.1 x86_64"
-    And I open the sub-list of the product "SUSE Multi-Linux Manager Client Tools for SUSE Linux Micro 6 x86_64"
-    And I select "SUSE Multi-Linux Manager Beta Client Tools for SUSE Linux Micro 6 x86_64 (BETA)" as a product
-    Then I should see the "SUSE Multi-Linux Manager Beta Client Tools for SUSE Linux Micro 6 x86_64 (BETA)" selected
+    And I select "SUSE Multi-Linux Manager Client Tools for SUSE Linux Micro 6 x86_64" as a product
+    Then I should see the "SUSE Multi-Linux Manager Client Tools for SUSE Linux Micro 6 x86_64" selected
+    When I open the sub-list of the product "SUSE Multi-Linux Manager Client Tools for SUSE Linux Micro 6 x86_64" if present
+    And I select or deselect "SUSE Multi-Linux Manager Beta Client Tools for SUSE Linux Micro 6 x86_64 (BETA)" beta client tools
     When I click the Add Product button
     And I wait until I see "Selected channels/products were scheduled successfully for syncing." text
     And I wait until I see "SUSE Linux Micro 6.1 x86_64" product has been added
@@ -550,6 +556,20 @@ Feature: Synchronize products in the products page of the Setup Wizard
     And I wait until all synchronized channels for "almalinux9" have finished
 
 @susemanager
+@alma10_minion
+  Scenario: Add Alma Linux 10
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
+    And I wait until I do not see "Loading" text
+    And I enter "AlmaLinux 10" as the filtered product description
+    And I select "AlmaLinux 10 x86_64" as a product
+    Then I should see the "AlmaLinux 10 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "AlmaLinux 10 x86_64" product has been added
+    And I wait until all synchronized channels for "almalinux10" have finished
+
+@susemanager
 @amazon2023_minion
   Scenario: Add Amazon Linux 2023
     Given I am authorized for the "Admin" section
@@ -642,6 +662,20 @@ Feature: Synchronize products in the products page of the Setup Wizard
     When I use spacewalk-common-channel to add all "oraclelinux9" channels with arch "x86_64"
     And I wait until all synchronized channels for "oraclelinux9" have finished
 
+@susemanager
+@oracle10_minion
+  Scenario: Add Oracle Linux 10
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
+    And I wait until I do not see "Loading" text
+    And I enter "Oracle Linux 10" as the filtered product description
+    And I select "Oracle Linux 10 x86_64" as a product
+    Then I should see the "Oracle Linux 10 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "Oracle Linux 10 x86_64" product has been added
+    And I wait until all synchronized channels for "oraclelinux10" have finished
+
 @rhel9_minion
   Scenario: Add RHEL 9
     Given I am authorized for the "Admin" section
@@ -694,6 +728,20 @@ Feature: Synchronize products in the products page of the Setup Wizard
   Scenario: Add Rocky Linux 9
     When I use spacewalk-common-channel to add all "rockylinux9" channels with arch "x86_64"
     And I wait until all synchronized channels for "rockylinux9" have finished
+
+@susemanager
+@rocky10_minion
+  Scenario: Add Rocky Linux 10
+    Given I am authorized for the "Admin" section
+    When I follow the left menu "Admin > Setup Wizard > Products"
+    And I wait until I do not see "currently running" text
+    And I wait until I do not see "Loading" text
+    And I enter "Rocky Linux 10" as the filtered product description
+    And I select "Rocky Linux 10 x86_64" as a product
+    Then I should see the "Rocky Linux 10 x86_64" selected
+    When I click the Add Product button
+    And I wait until I see "Rocky Linux 10 x86_64" product has been added
+    And I wait until all synchronized channels for "rockylinux10" have finished
 
 @susemanager
 @ubuntu2204_minion

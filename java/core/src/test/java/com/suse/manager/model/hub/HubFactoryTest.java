@@ -48,10 +48,8 @@ public class HubFactoryTest extends BaseTestCaseWithUser {
 
     private HubFactory hubFactory;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         hubFactory = new HubFactory();
     }
 

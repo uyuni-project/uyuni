@@ -30,3 +30,39 @@ tests:
       - equal:
           path: spec.template.spec.containers[?(@.name=="uyuni")].image
           value: my-custom-registry/uyuni-server:5.0.0
+
+  - it: should use the registry credentials if set
+    set:
+      global.fqdn: uyuni.example.com
+      registrySecret: mycreds
+    asserts:
+      - contains:
+          path: spec.template.spec.imagePullSecrets
+          content:
+            name: mycreds
+
+  - it: should use the SCC credentials if set
+    set:
+      global.fqdn: uyuni.example.com
+      server:
+        sccSecret: myscccreds
+    asserts:
+      - contains:
+          path: spec.template.spec.containers[?(@.name=="uyuni")].env
+          content:
+            name: SCC_USER
+            valueFrom:
+              secretKeyRef:
+                key: username
+                name: myscccreds
+                optional: false
+
+      - contains:
+          path: spec.template.spec.containers[?(@.name=="uyuni")].env
+          content:
+            name: SCC_PASS
+            valueFrom:
+              secretKeyRef:
+                key: password
+                name: myscccreds
+                optional: false

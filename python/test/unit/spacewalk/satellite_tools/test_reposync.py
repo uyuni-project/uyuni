@@ -18,7 +18,9 @@
 import inspect
 
 # pylint: disable-next=deprecated-module
-import imp
+import importlib
+import importlib.util
+import importlib.machinery
 import sys
 import unittest
 import json
@@ -31,7 +33,7 @@ except ImportError:
     from StringIO import StringIO
 from datetime import datetime, timedelta
 
-from mock import MagicMock, Mock, patch, call
+from unittest.mock import MagicMock, Mock, patch, call
 
 import spacewalk.satellite_tools.reposync
 from spacewalk.satellite_tools.repo_plugins import ContentPackage
@@ -101,8 +103,8 @@ class RepoSyncTest(unittest.TestCase):
         self.stderr.close()
         sys.stderr = self.saved_stderr
 
-        imp.reload(spacewalk.satellite_tools.reposync)
-        imp.reload(spacewalk.satellite_tools.appstreams)
+        importlib.reload(spacewalk.satellite_tools.reposync)
+        importlib.reload(spacewalk.satellite_tools.appstreams)
 
     def test_init_succeeds_with_correct_attributes(self):
         rs = _init_reposync(self.reposync, "Label", RTYPE)
@@ -1026,7 +1028,7 @@ class SyncTest(unittest.TestCase):
         config = {
             "return_value.fetchone_dict.return_value": {
                 "username": "user#1",
-                "password": base64.encodestring(password.encode()).decode(),
+                "password": base64.b64encode(password.encode()).decode(),
                 "type": "SCC",
             }
         }
@@ -1104,7 +1106,18 @@ class RunScriptTest(unittest.TestCase):
         satellite_tools_dir = os.path.dirname(
             inspect.getfile(spacewalk.satellite_tools)
         )
-        cls.repo_sync = imp.load_source(
+
+        def load_source(modname, file_path):
+            loader = importlib.machinery.SourceFileLoader(modname, file_path)
+            spec = importlib.util.spec_from_file_location(
+                modname, file_path, loader=loader
+            )
+            module = importlib.util.module_from_spec(spec)
+            sys.modules[modname] = module
+            loader.exec_module(module)
+            return module
+
+        cls.repo_sync = load_source(
             "repo_sync", os.path.join(satellite_tools_dir, "spacewalk-repo-sync")
         )
 

@@ -2,12 +2,13 @@
 # Licensed under the terms of the MIT license.
 
 @scope_visualization
+@skip_if_github_validation
 Feature: The system details of each minion and client provides an overview of the system
 
   Scenario: Log in as org admin user
     Given I am authorized
 
-@sle_minion
+  @sle_minion
   Scenario: SLE minion hardware refresh
     Given I navigate to the Systems overview page of this "sle_minion"
     When I follow "Hardware"
@@ -16,7 +17,7 @@ Feature: The system details of each minion and client provides an overview of th
     When I wait until event "Hardware List Refresh scheduled" is completed
     And I wait until there is no Salt job calling the module "hardware.profileupdate" on "sle_minion"
 
-@sle_minion
+  @sle_minion
   Scenario: Minion grains are displayed correctly on the details page
     Given I am on the Systems overview page of this "sle_minion"
     Then the hostname for "sle_minion" should be correct
@@ -38,7 +39,7 @@ Feature: The system details of each minion and client provides an overview of th
     And I should see a "Description" text
     And I should see a "Location" text
 
-@rhlike_minion
+  @rhlike_minion
   Scenario: Red Hat-like minion hardware refresh
     Given I am on the Systems overview page of this "rhlike_minion"
     When I follow "Hardware"
@@ -47,7 +48,7 @@ Feature: The system details of each minion and client provides an overview of th
     When I wait until event "Hardware List Refresh scheduled" is completed
     And I wait until there is no Salt job calling the module "hardware.profileupdate" on "rhlike_minion"
 
-@rhlike_minion
+  @rhlike_minion
   Scenario: Red Hat-like minion grains are displayed correctly on the details page
     Given I am on the Systems overview page of this "rhlike_minion"
     Then the hostname for "rhlike_minion" should be correct
@@ -69,7 +70,7 @@ Feature: The system details of each minion and client provides an overview of th
     And I should see a "Description" text
     And I should see a "Location" text
 
-@deblike_minion
+  @deblike_minion
   Scenario: Debian-like minion hardware refresh
     Given I am on the Systems overview page of this "deblike_minion"
     When I follow "Hardware"
@@ -78,7 +79,7 @@ Feature: The system details of each minion and client provides an overview of th
     When I wait until event "Hardware List Refresh scheduled" is completed
     And I wait until there is no Salt job calling the module "hardware.profileupdate" on "deblike_minion"
 
-@deblike_minion
+  @deblike_minion
   Scenario: Debian-like minion grains are displayed correctly on the details page
     Given I am on the Systems overview page of this "deblike_minion"
     Then the hostname for "deblike_minion" should be correct
@@ -100,7 +101,7 @@ Feature: The system details of each minion and client provides an overview of th
     And I should see a "Description" text
     And I should see a "Location" text
 
-@ssh_minion
+  @ssh_minion
   Scenario: SSH-managed minion hardware refresh
     Given I am on the Systems overview page of this "ssh_minion"
     When I follow "Hardware"

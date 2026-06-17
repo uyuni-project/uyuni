@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri May 22 08:47:12 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.4-0
+  * Allow building mgr-push on Leap 16.0 and SLE 16
+  * Add support for Python 3.13
+
+-------------------------------------------------------------------
 Mon Mar 02 13:43:19 CET 2026 - michael.calmer@suse.com
 
 - version 5.2.3-0

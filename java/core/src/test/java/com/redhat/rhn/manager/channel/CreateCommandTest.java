@@ -38,7 +38,6 @@ public class CreateCommandTest extends RhnBaseTestCase {
     private int labelCount = 0;
     private User user = null;
 
-    @Override
     @BeforeEach
     public void setUp() {
         ccc = new CreateChannelCommand();

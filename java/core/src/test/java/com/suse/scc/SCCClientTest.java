@@ -21,6 +21,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import com.redhat.rhn.domain.product.ProductType;
+import com.redhat.rhn.domain.product.ReleaseStage;
 import com.redhat.rhn.testing.httpservermock.HttpServerMock;
 import com.redhat.rhn.testing.httpservermock.Responder;
 
@@ -288,5 +290,19 @@ public class SCCClientTest  {
         };
 
         serverMock.getResult(requester, errorResponder);
+    }
+
+    /**
+     * Tests that {@link SCCProductJson#getArch()} normalizes "unknown" to null,
+     * matching the behavior of a null arch (used for arch-independent products like Rancher).
+     */
+    @Test
+    public void testGetArchUnknownNormalizesToNull() {
+        SCCProductJson product = new SCCProductJson(
+                2284L, "SUSE Rancher", "rancher", "2.5.8", null, "unknown",
+                "SUSE Rancher 2.5.8", "RANCHER-X86", ReleaseStage.released,
+                "cpe:/o:suse:rancher:2.5.8", false, null, "",
+                List.of(), List.of(), List.of(), List.of(), ProductType.base, false);
+        assertNull(product.getArch());
     }
 }

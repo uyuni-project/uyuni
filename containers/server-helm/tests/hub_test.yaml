@@ -1,0 +1,60 @@
+suite: test hub API deployment
+templates:
+  - hub.yaml
+tests:
+  - it: should not render hub api resources by default
+    set:
+      global.fqdn: uyuni.example.com
+    asserts:
+      - hasDocuments:
+          count: 0
+        template: hub.yaml
+
+  - it: should render hub api deployment when set
+    set:
+      global.fqdn: uyuni.example.com
+      hubAPI:
+        enable: true
+    asserts:
+      - isKind:
+          of: Deployment
+      - equal:
+          path: metadata.name
+          value: hub-xmlrpc
+      - equal:
+          path: spec.template.spec.containers[?(@.name=="hub-xmlrpc")].image
+          value: registry.opensuse.org/uyuni/server-hub-xmlrpc-api:latest
+      - contains:
+          path: spec.template.spec.containers[?(@.name=="hub-xmlrpc")].env
+          content:
+            name: HUB_API_URL
+            value: "http://web/rpc/api"
+      - contains:
+          path: spec.template.spec.containers[?(@.name=="hub-xmlrpc")].env
+          content:
+            name: HUB_CONNECT_USING_SSL
+            value: "true"
+
+  - it: should override image when values.images is provided
+    set:
+      global.fqdn: uyuni.example.com
+      hubAPI:
+        enable: true
+        image: my-custom-registry/uyuni-server-api
+        tag: 1.2.3
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[?(@.name=="hub-xmlrpc")].image
+          value: my-custom-registry/uyuni-server-api:1.2.3
+
+  - it: should use the registry credentials if set
+    set:
+      global.fqdn: uyuni.example.com
+      registrySecret: mycreds
+      hubAPI:
+        enable: true
+    asserts:
+      - contains:
+          path: spec.template.spec.imagePullSecrets
+          content:
+            name: mycreds

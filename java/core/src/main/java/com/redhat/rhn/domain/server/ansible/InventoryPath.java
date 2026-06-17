@@ -21,6 +21,7 @@ import com.redhat.rhn.domain.server.Server;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -44,17 +45,29 @@ public class InventoryPath extends AnsiblePath {
     /**
      * Standard constructor
      */
-    public InventoryPath() {
+    protected InventoryPath() {
         inventoryServers = new HashSet<>();
     }
 
     /**
      * Standard constructor
      * @param minionServer the minion server
+     * @param path the path
      */
-    public InventoryPath(MinionServer minionServer) {
-        super(minionServer);
-        inventoryServers = new HashSet<>();
+    public InventoryPath(MinionServer minionServer, Path path) {
+        this(minionServer, path, Set.of());
+    }
+
+    /**
+     * Standard constructor
+     * @param minionServer the minion server
+     * @param path the path
+     * @param servers the inventory servers
+     */
+    public InventoryPath(MinionServer minionServer, Path path, Set<Server> servers) {
+        super(minionServer, path);
+
+        inventoryServers = new HashSet<>(servers);
     }
 
     @Override

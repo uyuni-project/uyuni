@@ -36,17 +36,14 @@ public class RhnSetTest extends RhnBaseTestCase {
     private static final String[] TEST_ELEMS = {"100", "150", "300", "175", "35"};
     private RhnSetImpl set;
 
-    @Override
     @BeforeEach
     public void setUp() {
         set = new RhnSetImpl();
         set.sync();
     }
 
-    @Override
-    @AfterEach
+        @AfterEach
     public void tearDown() throws Exception {
-        super.tearDown();
         set = null;
     }
 

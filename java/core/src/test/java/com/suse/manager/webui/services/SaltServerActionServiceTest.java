@@ -121,10 +121,8 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     private TaskomaticApi taskomaticMock;
     private SaltService saltService;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
 
         saltService = new SaltService() {

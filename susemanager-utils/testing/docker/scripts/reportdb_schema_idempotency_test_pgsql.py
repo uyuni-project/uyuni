@@ -194,7 +194,7 @@ def manage_postgresql(action):
         raise "Invalid action for the PostgreSQL service"
     if run_command(
         # pylint: disable-next=consider-using-f-string
-        "/usr/bin/su - postgres -c '/usr/lib/postgresql/bin/pg_ctl %s'"
+        "/usr/bin/su - postgres -c '/usr/lib/postgresql/bin/pg_ctl -D /var/lib/pgsql/data %s'"
         % action
     ):
         # pylint: disable-next=consider-using-f-string

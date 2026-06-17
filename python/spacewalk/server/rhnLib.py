@@ -38,7 +38,7 @@ def computeSignature(*fields):
     # We are still expecting the signature to be a string, so we have to
     # decode the output of encodestring(). Otherwise bootstrapping just
     # stales.
-    return base64.encodestring(m.digest()).rstrip().decode()
+    return base64.b64encode(m.digest()).rstrip().decode()
 
 
 # 'n_n-n-v.v.v-r_r.r:e.ARCH.rpm' ---> [n,v,r,e,a]

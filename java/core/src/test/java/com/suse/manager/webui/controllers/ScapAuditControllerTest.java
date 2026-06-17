@@ -100,10 +100,8 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
     }
 
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         controller = new ScapAuditController();
         System.setProperty("javax.xml.transform.TransformerFactory",
           "com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl");

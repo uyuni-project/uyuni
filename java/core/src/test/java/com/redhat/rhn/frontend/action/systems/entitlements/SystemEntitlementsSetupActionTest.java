@@ -67,10 +67,8 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
     private SaltService saltServiceMock;
     private SystemEntitlementManager systemEntitlementManager;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         Config.get().setBoolean(ConfigDefaults.KIWI_OS_IMAGE_BUILDING_ENABLED, "true");
         context.setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         saltServiceMock = context.mock(SaltService.class);

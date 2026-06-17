@@ -65,10 +65,8 @@ public class MaintenanceManagerScheduleActionsTest extends JMockBaseTestCaseWith
     private static final String TESTDATAPATH = "/com/suse/manager/maintenance/testdata";
     private static final String KDE_ICS = "maintenance-windows-kde.ics";
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
 
         user.addPermanentRole(ORG_ADMIN);

@@ -66,10 +66,8 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
     /**
      * {@inheritDoc}
      */
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         setRequestPathInfo("/systems/details/Edit");
         user.setOrg(TestUtils.saveAndFlush(user.getOrg()));
 
@@ -98,7 +96,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
         actionPerform();
         s = TestUtils.reload(s);
         verifyActionMessage("sdc.details.edit.propertieschanged");
-        verifyForwardPath("/systems/details/Overview.do?sid=" + s.getId());
+        testForwardPath("/systems/details/Overview.do?sid=" + s.getId());
         assertEquals("Augustus", s.getName());
         assertEquals("First Emperor", s.getDescription());
         assertEquals("Palatine Hill", s.getLocation().getAddress1());
@@ -116,7 +114,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
         request.addParameter(SystemDetailsEditAction.NAME, "ha");
         request.addParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
         actionPerform();
-        verifyForward("error");
+        testForwardName("error");
         /* Verifying nothing changed */
         assertEquals(originalName, s.getName());
     }
@@ -124,7 +122,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
     @Test
     public void testBaseEntitlementListForEntitledSystem() {
         actionPerform();
-        verifyForward(RhnHelper.DEFAULT_FORWARD);
+        testForwardName(RhnHelper.DEFAULT_FORWARD);
         List options = (List) request
                               .getAttribute(SystemDetailsEditAction
                                             .BASE_ENTITLEMENT_OPTIONS);
@@ -157,7 +155,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
         systemEntitlementManager.removeAllServerEntitlements(s);
         s = TestUtils.saveAndFlush(s);
         actionPerform();
-        verifyForward(RhnHelper.DEFAULT_FORWARD);
+        testForwardName(RhnHelper.DEFAULT_FORWARD);
         List options = (List) request
                               .getAttribute(SystemDetailsEditAction
                                             .BASE_ENTITLEMENT_OPTIONS);
@@ -242,7 +240,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
         request.addParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
         s = TestUtils.saveAndFlush(s);
         actionPerform();
-        verifyForwardPath("/systems/details/Overview.do?sid=" + s.getId());
+        testForwardPath("/systems/details/Overview.do?sid=" + s.getId());
         /* here we look the server back up since entitling a server involves
          * a stored procedure call
          */
@@ -280,7 +278,7 @@ public class SystemDetailsEditActionTest extends RhnPostMockStrutsTestCase {
         request.addParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
         s = TestUtils.saveAndFlush(s);
         actionPerform();
-        verifyForwardPath("/systems/details/Overview.do?sid=" + s.getId());
+        testForwardPath("/systems/details/Overview.do?sid=" + s.getId());
         TestUtils.flushAndEvict(s);
         s = ServerFactory.lookupById(s.getId());
         i = s.getValidAddonEntitlementsForServer().iterator();

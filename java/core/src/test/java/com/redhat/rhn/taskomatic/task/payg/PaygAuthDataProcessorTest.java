@@ -74,10 +74,8 @@ public class PaygAuthDataProcessorTest extends BaseHandlerTestCase {
         CHANNEL_SUFFIX.put("Installer", true);
     }
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         paygData = createPaygSshData();
         PaygSshDataFactory.savePaygSshData(paygData);
         paygInstanceInfo = createPaygInstanceInfo();

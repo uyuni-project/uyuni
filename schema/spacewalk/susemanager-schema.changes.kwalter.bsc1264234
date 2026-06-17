@@ -1,2 +1,0 @@
-- Add 'unpushed' to rhn_errata_adv_status_ck constraint to
-  allow importing EPEL errata with unpushed status (bsc#1264234)

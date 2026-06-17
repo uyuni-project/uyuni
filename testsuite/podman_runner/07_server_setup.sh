@@ -33,7 +33,7 @@ $PODMAN_CMD secret create uyuni-db-cert /tmp/testing/ssl/reportdb.crt
 $PODMAN_CMD secret create uyuni-db-key /tmp/testing/ssl/reportdb.key
 echo -n "admin" | $PODMAN_CMD secret create uyuni-db-user -
 echo -n "spacewalk" | $PODMAN_CMD secret create uyuni-db-pass -
-echo -n "dbadmin" | $PODMAN_CMD secret create uyuni-db-admin-user -
+echo -n "postgres" | $PODMAN_CMD secret create uyuni-db-admin-user -
 echo -n "dbpass" | $PODMAN_CMD secret create uyuni-db-admin-pass -
 echo -n "pythia_susemanager" | $PODMAN_CMD secret create uyuni-reportdb-user -
 echo -n "pythia_susemanager" | $PODMAN_CMD secret create uyuni-reportdb-pass -
@@ -86,6 +86,8 @@ if [ "$iteration" -eq "$max_iterations" ]; then
   exit 1
 fi
 
+$PODMAN_CMD exec uyuni-db bash -c "echo host all all all scram-sha-256 > /var/lib/pgsql/data/pg_hba_custom.conf"
+$PODMAN_CMD exec uyuni-db su postgres -c "/usr/bin/pg_ctl reload"
 
 # Run the setup container
 setup_pm_path=`$PODMAN_CMD run -ti ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-server-all-in-one-dev:$UYUNI_VERSION sh -c 'rpm -ql spacewalk-setup | grep Setup.pm' | tr -d '\r'`
@@ -175,7 +177,7 @@ $PODMAN_CMD run --cap-add AUDIT_CONTROL \
     -e NO_SSL="N"  \
     --cgroupns=host \
     -h server \
-    --name=server-setup \
+    --name=uyuni-server \
     --network network \
     ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-server-all-in-one-dev:$UYUNI_VERSION \
     bash -xc "/testsuite/podman_runner/provide-db-schema.sh && \

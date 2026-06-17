@@ -8,6 +8,7 @@ import subprocess
 import re
 import yaml
 import socket
+import ssl
 import sys
 import urllib.request
 import json
@@ -63,7 +64,12 @@ def get_server_version(fqdn):
     """
     url = f"https://{fqdn}/rhn/manager/api/api/systemVersion"
 
-    with urllib.request.urlopen(url, timeout=10) as response:
+    # Disable the strict X509 validation flag (Python 3.13+)
+    ctx = ssl.create_default_context()
+    if hasattr(ssl, "VERIFY_X509_STRICT") and hasattr(ctx, "verify_flags"):
+        ctx.verify_flags &= ~ssl.VERIFY_X509_STRICT
+
+    with urllib.request.urlopen(url, timeout=10, context=ctx) as response:
         body = response.read().decode("utf-8")
         data = json.loads(body)
 

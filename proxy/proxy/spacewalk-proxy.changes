@@ -1,4 +1,13 @@
 -------------------------------------------------------------------
+Fri May 22 08:43:37 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.3-0
+  * Add salt broker custom config files support
+  * Don't derive upstream scheme from REQUEST_SCHEME.
+    Use always HTTPS
+  * Add support for Python 3.13
+
+-------------------------------------------------------------------
 Thu Nov 27 11:13:44 CET 2025 - michael.calmer@suse.com
 
 - version 5.2.2-0

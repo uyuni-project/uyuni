@@ -43,8 +43,11 @@ Feature: Verify that Salt mgrcompat state works when the new module.run syntax i
     And I wait until there is no Salt job calling the module "hardware.profileupdate" on "sle_minion"
 
   Scenario: Delete SLES minion system profile before mgrcompat test
-    When I delete "sle_minion" system using the api
-    And I perform a full salt minion cleanup on "sle_minion"
+    Given I am on the Systems overview page of this "sle_minion"
+    When I follow "Delete System"
+    Then I should see a "Confirm System Profile Deletion" text
+    When I click on "Delete Profile"
+    And I wait until I see "has been deleted" text
     And I wait until Salt client is inactive on "sle_minion"
     Then "sle_minion" should not be registered
 

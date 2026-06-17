@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri May 22 11:46:48 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.6-0
+  * Fix ongres.scram artifactId for Leap 16
+
+-------------------------------------------------------------------
 Fri Apr 17 11:07:46 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.5-0

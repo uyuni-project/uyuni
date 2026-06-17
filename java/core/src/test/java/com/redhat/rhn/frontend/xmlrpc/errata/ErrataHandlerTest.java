@@ -80,10 +80,8 @@ public class ErrataHandlerTest extends BaseHandlerTestCase {
     private ErrataHandler handler = new ErrataHandler();
     private User user;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         user = new UserTestUtils.UserBuilder().orgId(admin.getOrg().getId()).build();
     }
 

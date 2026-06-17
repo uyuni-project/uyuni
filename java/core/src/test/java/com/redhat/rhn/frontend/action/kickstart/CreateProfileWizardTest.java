@@ -50,9 +50,8 @@ public class CreateProfileWizardTest extends RhnMockStrutsTestCase {
     private String label;
 
     @BeforeEach
-    @Override
     public void setUp() throws Exception {
-        super.setUp();
+
         label = TestUtils.randomString();
 
         // Create some crypto keys that should get associated
@@ -75,7 +74,7 @@ public class CreateProfileWizardTest extends RhnMockStrutsTestCase {
     public void testNoTreesOrChannels() {
         setRequestPathInfo(URL);
         actionPerform();
-        verifyNoActionMessages();
+        testActionHasNoMessages();
         DynaActionForm form = (DynaActionForm) getActionForm();
         if (form.get(CreateProfileWizardAction.CHANNELS) == null) {
             assertNotNull(request.getAttribute(
@@ -98,7 +97,7 @@ public class CreateProfileWizardTest extends RhnMockStrutsTestCase {
         tree = TestUtils.reload(tree);
         setRequestPathInfo(URL);
         actionPerform();
-        verifyNoActionMessages();
+        testActionHasNoMessages();
 
         // Step Three
         clearRequestParameters();
@@ -109,7 +108,7 @@ public class CreateProfileWizardTest extends RhnMockStrutsTestCase {
         addRequestParameter("rootPassword", "blahh");
         addRequestParameter("rootPasswordConfirm", "blahh");
         actionPerform();
-        verifyNoActionMessages();
+        testActionHasNoMessages();
         KickstartData ksdata = KickstartFactory.lookupKickstartDataByLabelAndOrgId(
                 label, user.getOrg().getId());
         assertEquals("--permissive", ksdata.getCommand("selinux").getArguments());
@@ -126,7 +125,7 @@ public class CreateProfileWizardTest extends RhnMockStrutsTestCase {
                 lookupKickstartInstallTypeByLabel(KickstartInstallType.RHEL_7));
         setRequestPathInfo(URL);
         actionPerform();
-        verifyNoActionMessages();
+        testActionHasNoMessages();
 
 
         // Step One
@@ -136,7 +135,7 @@ public class CreateProfileWizardTest extends RhnMockStrutsTestCase {
         addRequestParameter(KSTREE_ID, tree.getId().toString());
         actionPerform();
 
-        verifyNoActionMessages();
+        testActionHasNoMessages();
 
         //Step Two
         clearRequestParameters();
@@ -145,7 +144,7 @@ public class CreateProfileWizardTest extends RhnMockStrutsTestCase {
         addRequestParameter(KSTREE_ID, tree.getId().toString());
         addRequestParameter("defaultDownload", "true");
         actionPerform();
-        verifyNoActionMessages();
+        testActionHasNoMessages();
 
         // Step Three
         clearRequestParameters();
@@ -156,7 +155,7 @@ public class CreateProfileWizardTest extends RhnMockStrutsTestCase {
         addRequestParameter("rootPassword", "blahh");
         addRequestParameter("rootPasswordConfirm", "blahh");
         actionPerform();
-        verifyNoActionMessages();
+        testActionHasNoMessages();
         verifyKSCommandsDefaults(label);
     }
 
@@ -177,7 +176,7 @@ public class CreateProfileWizardTest extends RhnMockStrutsTestCase {
         addRequestParameter("rootPassword", "blahh");
         addRequestParameter("rootPasswordConfirm", "blahh");
         actionPerform();
-        verifyNoActionMessages();
+        testActionHasNoMessages();
 
     }
 
@@ -189,7 +188,7 @@ public class CreateProfileWizardTest extends RhnMockStrutsTestCase {
         addRequestParameter(WIZARD_STEP, "second");
         addRequestParameter(KSTREE_ID, "12997");
         actionPerform();
-        verifyForward("first");
+        testForwardName("first");
     }
 
     @Test
@@ -199,7 +198,7 @@ public class CreateProfileWizardTest extends RhnMockStrutsTestCase {
         addRequestParameter(WIZARD_STEP, "second");
         addRequestParameter(KICKSTART_LABEL, label);
         actionPerform();
-        verifyForward("first");
+        testForwardName("first");
     }
 
     @Test
@@ -214,7 +213,7 @@ public class CreateProfileWizardTest extends RhnMockStrutsTestCase {
         KickstartableTree tree = KickstartableTreeTest.createTestKickstartableTree(c);
         addRequestParameter(KSTREE_ID, tree.getId().toString());
         actionPerform();
-        verifyForward("second");
+        testForwardName("second");
     }
 
     @Test
@@ -232,7 +231,7 @@ public class CreateProfileWizardTest extends RhnMockStrutsTestCase {
 
         addRequestParameter("defaultDownload", "false");
         actionPerform();
-        verifyForward("second");
+        testForwardName("second");
 
         clearRequestParameters();
         setRequestPathInfo(URL);
@@ -244,7 +243,7 @@ public class CreateProfileWizardTest extends RhnMockStrutsTestCase {
         addRequestParameter("defaultDownload", "false");
         addRequestParameter("userDefinedDownload", "htp://blahblahblbah.com/blahblah");
         actionPerform();
-        verifyForward("second");
+        testForwardName("second");
 
     }
 
@@ -258,7 +257,7 @@ public class CreateProfileWizardTest extends RhnMockStrutsTestCase {
         addRequestParameter("defaultDownload", "true");
         addRequestParameter("rootPasswordConfirm", "blah");
         actionPerform();
-        verifyForward("third");
+        testForwardName("third");
     }
 
     @Test
@@ -271,7 +270,7 @@ public class CreateProfileWizardTest extends RhnMockStrutsTestCase {
         addRequestParameter("defaultDownload", "true");
         addRequestParameter("rootPassword", "blah");
         actionPerform();
-        verifyForward("third");
+        testForwardName("third");
     }
 
     @Test
@@ -285,8 +284,8 @@ public class CreateProfileWizardTest extends RhnMockStrutsTestCase {
         addRequestParameter(KICKSTART_LABEL, k.getLabel());
         addRequestParameter(KSTREE_ID, "12997");
         actionPerform();
-        verifyForward("first");
-        verifyActionErrors(array);
+        testForwardName("first");
+        testActionHasErrors(array);
     }
 
     public void verifyKSCommandsDefaults(String labelIn) {

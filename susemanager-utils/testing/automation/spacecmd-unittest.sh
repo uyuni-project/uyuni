@@ -39,7 +39,23 @@ cd $GITROOT/spacecmd
 $EXECUTOR pull ${REGISTRY}/${PGSQL_CONTAINER}
 
 CMD="pushd /manager/spacecmd; make -f Makefile.python __pytest"
+
+echo
+echo "##################### RUNNING TESTS ON MAIN PYTHON VERSION ###########################"
 $EXECUTOR run --rm -e $DOCKER_RUN_EXPORT $DOCKER_RUN_VOLUMES ${REGISTRY}/${PGSQL_CONTAINER} \
 	/bin/bash -c "${INITIAL_CMD}; ${CMD}; RET=\${?}; popd; ${CHOWN_CMD} && exit \${RET}"
+if [ $? -ne 0 ]; then
+    EXIT=1
+fi
 
-exit $?
+if [ "${VPRODUCT}" = "VERSION.Uyuni" ]; then
+echo
+echo "##################### RUNNING TESTS ON PYTHON 3.6 ###########################"
+$EXECUTOR run --rm -e $DOCKER_RUN_EXPORT $DOCKER_RUN_VOLUMES ${REGISTRY}/${PGSQL_CONTAINER_PYTHON36} \
+	/bin/bash -c "${INITIAL_CMD}; ${CMD}; RET=\${?}; popd; ${CHOWN_CMD} && exit \${RET}"
+if [ $? -ne 0 ]; then
+    EXIT=2
+fi
+fi
+
+exit $EXIT

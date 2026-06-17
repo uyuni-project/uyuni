@@ -65,9 +65,8 @@ public class MinionActionChainExecutorTest extends JMockBaseTestCaseWithUser {
     private TriggerFiredBundle firedBundle;
 
     @BeforeEach
-    @Override
     public void setUp() throws Exception {
-        super.setUp();
+
 
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
 

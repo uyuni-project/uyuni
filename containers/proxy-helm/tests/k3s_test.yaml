@@ -1,0 +1,46 @@
+suite: test k3s profile
+templates:
+  - templates/ingress.yaml
+  - templates/traefik-routes.yaml
+tests:
+  # K3S's bundled traefik uses an empty IngressClass and watches every Ingress
+  # regardless of class. The chart must therefore handle ingress.class: ""
+  # without emitting null/invalid fields the API server would reject.
+  - it: should not emit ingress class fields when ingress.class is empty
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+        log_level: 2
+      global.httpd: "httpd_content: test httpd"
+      global.ssh: "ssh_content: test ssh"
+      ingress:
+        type: traefik
+        class: ""
+    asserts:
+      - notExists:
+          path: spec.ingressClassName
+        template: ingress.yaml
+        documentSelector:
+          path: metadata.name
+          value: uyuni-proxy-ssl
+      - notExists:
+          path: metadata.annotations["kubernetes.io/ingress.class"]
+        template: traefik-routes.yaml
+        documentSelector:
+          path: metadata.name
+          value: ssh-router
+      - notExists:
+          path: metadata.annotations["kubernetes.io/ingress.class"]
+        template: traefik-routes.yaml
+        documentSelector:
+          path: metadata.name
+          value: salt-publish-router
+      - notExists:
+          path: metadata.annotations["kubernetes.io/ingress.class"]
+        template: traefik-routes.yaml
+        documentSelector:
+          path: metadata.name
+          value: salt-request-router

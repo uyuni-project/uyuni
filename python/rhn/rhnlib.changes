@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Fri May 22 08:32:15 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.5-0
+  * Add support for Python 3.13
+  * Enable build on openSUSE Leap 16
+
+-------------------------------------------------------------------
 Mon Mar 02 13:09:26 CET 2026 - michael.calmer@suse.com
 
 - version 5.2.4-0

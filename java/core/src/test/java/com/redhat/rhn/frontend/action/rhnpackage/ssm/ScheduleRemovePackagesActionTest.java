@@ -29,10 +29,8 @@ public class ScheduleRemovePackagesActionTest extends RhnMockStrutsTestCase {
 
     private SsmActionTestUtils utils;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         setRequestPathInfo("/ssm/PackageRemoveSchedule");
         addRequestParameter("mode", "remove");
 
@@ -48,7 +46,7 @@ public class ScheduleRemovePackagesActionTest extends RhnMockStrutsTestCase {
         actionPerform();
 
         // Verify
-        verifyForward(RhnHelper.DEFAULT_FORWARD);
+        testForwardName(RhnHelper.DEFAULT_FORWARD);
 
         Object pageList = getRequest().getAttribute(RequestContext.PAGE_LIST);
         assertNotNull(pageList);

@@ -117,10 +117,8 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         originalMountPoint = Config.get().getString(ConfigDefaults.MOUNT_POINT);
     }
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
 
         this.channel = ErrataTestUtils.createTestChannel(user);
         this.mockResponse = new RhnMockHttpServletResponse();
@@ -173,10 +171,8 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         downloadController.setCheckTokens(true);
     }
 
-    @Override
-    @AfterEach
+        @AfterEach
     public void tearDown() throws Exception {
-        super.tearDown();
         if (originalMountPoint != null) {
             Config.get().setString(ConfigDefaults.MOUNT_POINT, originalMountPoint);
         }

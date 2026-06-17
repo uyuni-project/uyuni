@@ -29,10 +29,8 @@ import java.util.Optional;
 
 public class CredentialsTest extends JMockBaseTestCaseWithUser {
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         UserTestUtils.addUserRole(user, ORG_ADMIN);
     }
 

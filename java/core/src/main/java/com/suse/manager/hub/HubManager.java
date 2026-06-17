@@ -396,6 +396,12 @@ public class HubManager {
 
         hubFactory.remove(peripheral);
         hubFactory.removeAccessTokensFor(peripheral.getFqdn());
+
+        if (StringUtils.isEmpty(peripheral.getRootCa())) {
+            // No root ca is set for this peripheral, skip the certificate deletion
+            return;
+        }
+
         try {
             taskomaticApi.scheduleSingleRootCaCertDelete(IssRole.PERIPHERAL, peripheral.getFqdn());
         }
@@ -438,12 +444,17 @@ public class HubManager {
 
         cleanupSccDeletingHub(hub);
 
+        if (StringUtils.isEmpty(hub.getRootCa())) {
+            // No root ca is set for this hub, skip the certificate deletion
+            return;
+        }
+
         try {
             taskomaticApi.scheduleSingleRootCaCertDelete(IssRole.HUB, hub.getFqdn());
         }
         catch (TaskomaticApiException ex) {
             //if unable to delete ca certificate, just log a warning
-            LOG.warn("Cannot remove ca certificate for peripheral {}", hub.getFqdn());
+            LOG.warn("Cannot remove ca certificate for hub {}", hub.getFqdn());
         }
     }
 

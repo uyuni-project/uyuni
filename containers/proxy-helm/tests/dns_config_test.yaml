@@ -1,0 +1,91 @@
+suite: test pod dnsConfig passthrough
+templates:
+  - templates/deployment.yaml
+tests:
+  - it: should omit dnsConfig by default
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+      global.httpd: "httpd_content: test httpd"
+      global.ssh: "ssh_content: test ssh"
+    asserts:
+      - notExists:
+          path: spec.template.spec.dnsConfig
+
+  - it: should render dnsConfig.options when ndots is set
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+      global.httpd: "httpd_content: test httpd"
+      global.ssh: "ssh_content: test ssh"
+      dnsConfig:
+        options:
+          - name: ndots
+            value: "1"
+    asserts:
+      - equal:
+          path: spec.template.spec.dnsConfig.options[0].name
+          value: ndots
+      - equal:
+          path: spec.template.spec.dnsConfig.options[0].value
+          value: "1"
+
+  - it: should render full PodDNSConfig (nameservers + searches + options)
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+      global.httpd: "httpd_content: test httpd"
+      global.ssh: "ssh_content: test ssh"
+      dnsConfig:
+        nameservers:
+          - "8.8.8.8"
+        searches:
+          - "example.com"
+        options:
+          - name: ndots
+            value: "1"
+          - name: edns0
+    asserts:
+      - equal:
+          path: spec.template.spec.dnsConfig.nameservers[0]
+          value: "8.8.8.8"
+      - equal:
+          path: spec.template.spec.dnsConfig.searches[0]
+          value: "example.com"
+      - contains:
+          path: spec.template.spec.dnsConfig.options
+          content:
+            name: ndots
+            value: "1"
+          any: true
+      - contains:
+          path: spec.template.spec.dnsConfig.options
+          content:
+            name: edns0
+          any: true
+
+  - it: should reject non-string option value via schema
+    set:
+      global.config: |
+        max_cache_size_mb: 2048
+        server: parent.example.org
+        proxy_fqdn: proxy.example.org
+        email: foo@example.org
+      global.httpd: "httpd_content: test httpd"
+      global.ssh: "ssh_content: test ssh"
+      dnsConfig:
+        options:
+          - name: ndots
+            value: 1
+    asserts:
+      - failedTemplate:
+          errorPattern: "got number, want string"

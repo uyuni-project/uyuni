@@ -33,10 +33,8 @@ public class KickstartAdvancedOptionsActionTest extends RhnPostMockStrutsTestCas
     protected KickstartData ksdata;
     protected KickstartData ksdataOptions;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         this.ksdata = KickstartDataTest.createKickstartWithChannel(user.getOrg());
         this.ksdataOptions = KickstartDataTest.createKickstartWithOptions(user.getOrg());
 
@@ -94,11 +92,11 @@ public class KickstartAdvancedOptionsActionTest extends RhnPostMockStrutsTestCas
         assertNotNull(request.getParameter("skipx"));
 
         String[] keys = {"kickstart.options.success"};
-        verifyActionMessages(keys);
+        testActionHasMessages(keys);
 
         // Verify we can submit twice
         actionPerform();
-        verifyActionMessages(keys);
+        testActionHasMessages(keys);
     }
 
     /*
@@ -139,7 +137,7 @@ public class KickstartAdvancedOptionsActionTest extends RhnPostMockStrutsTestCas
         assertNotNull(request.getAttribute(RequestContext.KICKSTART));
 
         String[] keys = {"kickstart.options.success"};
-        verifyActionMessages(keys);
+        testActionHasMessages(keys);
     }
 
 

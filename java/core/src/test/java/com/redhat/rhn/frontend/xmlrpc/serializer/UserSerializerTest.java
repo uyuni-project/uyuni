@@ -19,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.StringWriter;
@@ -31,15 +30,6 @@ import redstone.xmlrpc.XmlRpcSerializer;
  * UserSerializer test
  */
 public class UserSerializerTest extends BaseTestCaseWithUser {
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    @BeforeEach
-    public void setUp() throws Exception {
-        super.setUp();
-    }
 
     /**
      * Minimal test

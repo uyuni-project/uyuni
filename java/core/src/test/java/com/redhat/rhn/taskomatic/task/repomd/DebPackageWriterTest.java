@@ -46,10 +46,8 @@ public class DebPackageWriterTest extends JMockBaseTestCaseWithUser {
 
     private Path tmpDir;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         tmpDir = Files.createTempDirectory("debPkgWriterTest");
     }
 
@@ -171,10 +169,8 @@ public class DebPackageWriterTest extends JMockBaseTestCaseWithUser {
         return packagesContent;
     }
 
-    @Override
-    @AfterEach
+        @AfterEach
     public void tearDown() throws Exception {
-        super.tearDown();
         FileUtils.deleteDirectory(tmpDir.toFile());
     }
 

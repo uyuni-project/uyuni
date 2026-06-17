@@ -122,7 +122,26 @@ end
 # @param timeout [Integer] The maximum time to wait for the text to become visible (default: Capybara.default_max_wait_time).
 # @return [Boolean] Returns true if the text is visible, false otherwise.
 def check_text?(text1, text2: nil, timeout: Capybara.default_max_wait_time)
-  has_text?(text1, wait: timeout) || (!text2.nil? && has_text?(text2, wait: timeout))
+  # WORKAROUND: Chrome 134+ raises Capybara::ElementNotFound, StaleElementReferenceError, or
+  # NoMethodError (CDP response type mismatch) during page navigation, bypassing Capybara's
+  # synchronize() retry mechanism. All three are caught and retried. All other exceptions still
+  # propagate. Uses a plain Time.now loop instead of repeat_until_timeout / Timeout.timeout to
+  # avoid interrupting WebDriver mid-call, which corrupts the Selenium session.
+  deadline = Time.now + timeout
+  while Time.now < deadline
+    begin
+      return true if has_text?(text1, wait: 1)
+      return true if !text2.nil? && has_text?(text2, wait: 1)
+    rescue Capybara::ElementNotFound,
+           Selenium::WebDriver::Error::StaleElementReferenceError,
+           Selenium::WebDriver::Error::NoSuchElementError,
+           NoMethodError
+
+      # page mid-navigation, let it settle and retry
+      sleep 2
+    end
+  end
+  false
 end
 
 # Formats the detail message with optional last result and report result.
@@ -344,7 +363,14 @@ def kill_reposync_for_channel(channel)
       next
     elsif channel_synchronizing == channel
       pid = process.split[0]
-      get_target('server').run("kill #{pid}", verbose: true, check_errors: false)
+      node = get_target('server')
+      node.run("kill #{pid}", verbose: true, check_errors: false)
+      # Even if spacewalk-repo-sync is killed, it is possible that zypper
+      # is still running for some moments while refreshing metadata.
+      # If there is another execution of spacewalk-repo-sync again while
+      # zypper is still running, then the reposync will fail.
+      # We need to wait until zypper is finished
+      node.wait_while_process_running('zypper')
       log "Reposync of channel #{channel} killed"
       break
     else
@@ -925,6 +951,13 @@ end
 # @param timeout [Integer] The maximum time to wait for the action to complete, in seconds. Defaults to `DEFAULT_TIMEOUT`.
 def wait_action_complete(actionid, timeout: DEFAULT_TIMEOUT)
   repeat_until_timeout(timeout: timeout, message: 'Action was not found among completed actions') do
+    failed = $api_test.schedule.list_failed_actions
+    if failed.any? { |a| a['id'] == actionid }
+      failed_systems = $api_test.schedule.list_failed_systems(actionid)
+      details = failed_systems.map { |s| "#{s['server_name']}: #{s['message']}" }.join('; ')
+      raise "Action #{actionid} failed: #{details}"
+    end
+
     list = $api_test.schedule.list_completed_actions
     break if list.any? { |a| a['id'] == actionid }
 
@@ -962,13 +995,15 @@ def api_unlock
   end
 end
 
-# Function to get the highest event ID (latest event)
+# Function to get the most recent events for a system
 #
-# @param host String The hostname of the requested system
-def get_last_event(host)
+# @param host [String] The hostname of the requested system
+# @param count [Integer] The number of recent events to return (default: 1)
+# @return [Array<Hash>] The most recent events, newest first
+def get_last_events(host, count = 1)
   node = get_target(host)
   system_id = get_system_id(node)
-  $api_test.system.get_event_history(system_id, 0, 1)[0]
+  $api_test.system.get_event_history(system_id, 0, count)
 end
 
 # Function to trigger the upgrade command
@@ -976,6 +1011,7 @@ end
 # @param hostname String The hostname of the requested system
 # @param package String The package name where it will trigger an upgrade
 def trigger_upgrade(hostname, package)
+  get_target('server').run('spacecmd -u admin -p admin clear_caches', check_errors: false)
   get_target('server').run("spacecmd -u admin -p admin system_upgradepackage #{hostname} #{package} -y", check_errors: true)
 end
 
@@ -984,6 +1020,7 @@ end
 # @param hostname String The hostname of the requested system
 # @param package String The package name to install
 def trigger_install(hostname, package)
+  get_target('server').run('spacecmd -u admin -p admin clear_caches', check_errors: false)
   get_target('server').run("spacecmd -u admin -p admin system_installpackage #{hostname} #{package} -y", check_errors: true)
 end
 
@@ -992,6 +1029,7 @@ end
 # @param hostname String The hostname of the requested system
 # @param package String The package name to remove
 def trigger_remove(hostname, package)
+  get_target('server').run('spacecmd -u admin -p admin clear_caches', check_errors: false)
   get_target('server').run("spacecmd -u admin -p admin system_removepackage #{hostname} #{package} -y", check_errors: true)
 end
 

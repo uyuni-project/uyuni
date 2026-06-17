@@ -39,10 +39,8 @@ import java.util.Optional;
  */
 public class SSHMinionBootstrapperTest extends AbstractMinionBootstrapperTestBase {
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         bootstrapper = new SSHMinionBootstrapper(saltServiceMock, saltServiceMock, paygManager, attestationManager);
     }
 

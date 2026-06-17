@@ -28,10 +28,8 @@ import org.junit.jupiter.api.Test;
 public class SearchActionTest extends RhnMockStrutsTestCase {
 
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         setRequestPathInfo("/Search");
     }
 
@@ -68,7 +66,7 @@ public class SearchActionTest extends RhnMockStrutsTestCase {
         addRequestParameter("search_string", "test search");
         addRequestParameter("search_type", "l337_hax0r");
         actionPerform();
-        verifyForward("error");
+        testForwardName("error");
     }
 
 }

@@ -277,6 +277,7 @@ class Transport(xmlrpclib.Transport):
         return parser, unmarshaller
 
     # Rewrite parse_response to provide refresh callbacks
+    # pylint: disable-next=arguments-renamed
     def parse_response(self, f):
         # read response from input file, and parse it
 
@@ -866,7 +867,7 @@ class BaseOutput:
             transfer_name = self.transfers[self.TRANSFER_BASE64]
             self.set_header("Content-Transfer-Encoding", transfer_name)
             self.set_header("Content-Type", "text/base64")
-            self.data = base64.encodestring(self.data).decode()
+            self.data = base64.b64encode(self.data).decode()
 
         self.set_header("Content-Length", len(bstr(self.data)))
 

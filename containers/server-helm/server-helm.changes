@@ -1,4 +1,23 @@
 -------------------------------------------------------------------
+Fri May 29 18:48:51 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.7
+  * Separate SCC and registry secrets (bsc#1266938)
+
+-------------------------------------------------------------------
+Fri May 22 13:28:42 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.6
+  * Use HTTPS to connect to peripheral servers (bsc#1265931)
+  * Remove useless Traefik TCP routes (bsc#1264362)
+  * Disable TFTP by default
+  * Fix the selinux label on server volumes (bsc#1263023)
+  * Add services type and ports configuration
+  * Add global storageClass value (bsc#1263089)
+  * Use a startup check with no limit for the main server container
+    (bsc#1263157)
+
+-------------------------------------------------------------------
 Thu Apr 16 14:26:47 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.5

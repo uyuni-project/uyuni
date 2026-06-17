@@ -43,10 +43,8 @@ public class AttestationFactoryTest extends BaseTestCaseWithUser {
     private Server server;
     private AttestationFactory attestationFactory;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         server = ServerFactoryTest.createTestServer(user);
         attestationFactory = new AttestationFactory();
     }

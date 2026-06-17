@@ -1,2 +1,0 @@
-- Run ANALYZE asynchronously after CLM alignment to avoid
-  deadlocks (bsc#1261753)

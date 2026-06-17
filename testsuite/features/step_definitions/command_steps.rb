@@ -537,6 +537,12 @@ Then(/^the log messages should not contain out of memory errors$/) do
   raise ScriptError, "Out of memory errors in /var/log/messages:\n#{output}" if code.zero?
 end
 
+Then(/^the server log should not contain "([^"]*)" errors$/) do |component|
+  cmd = "cat /var/log/rhn/rhn_web_ui.log | grep -i 'Exception' | grep -i '#{component}'"
+  output, code = get_target('server').run(cmd, check_errors: false)
+  raise ScriptError, "Error related to \"#{component}\" found!\n#{output}" if code.zero?
+end
+
 When(/^I restart the spacewalk service$/) do
   get_target('server').run('spacewalk-service restart')
 end
@@ -1846,9 +1852,30 @@ Then(/^the word "([^']*)" does not occur more than (\d+) times in "(.*)" on "([^
   raise "The word #{word} occured #{occurences} times, which is more more than #{threshold} times in file #{path}" if occurences > threshold
 end
 
+When(/^I store the current last event id for "([^"]*)"$/) do |host|
+  add_context(:last_event_baseline, get_last_events(host).first)
+end
+
+When(/^I wait until a new "([^"]*)" event is completed for "([^"]*)"$/) do |event_summary, host|
+  baseline = get_context(:last_event_baseline)
+  raise 'No baseline event stored - did the previous scenario run the store step?' if baseline.nil?
+
+  target_event = nil
+  repeat_until_timeout(message: "Waiting for new '#{event_summary}' event to be created for #{host}") do
+    target_event =
+      get_last_events(host, 10).find do |e|
+        e["id"] > baseline["id"] && e["summary"].include?(event_summary)
+      end
+    break if target_event
+
+    sleep 2
+  end
+  wait_action_complete(target_event['id'])
+end
+
 When(/^I (upgrade|install) "([^"]*)" on "([^"]*)" using the API$/) do |action, package, host|
   system_name = get_system_name(host)
-  last_event_before_action = get_last_event(host)
+  last_event_before_action = get_last_events(host).first
   last_event = last_event_before_action
   case action
   when 'upgrade'
@@ -1857,7 +1884,7 @@ When(/^I (upgrade|install) "([^"]*)" on "([^"]*)" using the API$/) do |action, p
     trigger_install(system_name, package)
   end
   repeat_until_timeout(timeout: DEFAULT_TIMEOUT, message: 'Waiting for the new event to be created') do
-    last_event = get_last_event(host)
+    last_event = get_last_events(host).first
     break if last_event['id'] > last_event_before_action['id'] && (last_event['summary'].include? 'Package Install/Upgrade')
   end
   wait_action_complete(last_event['id'])
@@ -1865,11 +1892,11 @@ end
 
 When(/^I remove "([^"]*)" on "([^"]*)" using the API$/) do |package, host|
   system_name = get_system_name(host)
-  last_event_before_action = get_last_event(host)
+  last_event_before_action = get_last_events(host).first
   last_event = last_event_before_action
   trigger_remove(system_name, package)
   repeat_until_timeout(timeout: DEFAULT_TIMEOUT, message: 'Waiting for the new event to be created') do
-    last_event = get_last_event(host)
+    last_event = get_last_events(host).first
     break if last_event['id'] > last_event_before_action['id'] && (last_event['summary'].include? 'Package Removal')
   end
   wait_action_complete(last_event['id'])
@@ -1891,7 +1918,12 @@ end
 
 Then(/^the health check Grafana dashboard should be accessible on "([^"]*)"$/) do |host|
   node = get_target(host)
-  http_code, code = node.run("curl -s -o /dev/null -w '%{http_code}' localhost:3000", check_errors: false)
+  code = 0
+  http_code = ''
+  repeat_until_timeout(timeout: DEFAULT_TIMEOUT, message: 'Waiting for Grafana to be up and running') do
+    http_code, code = node.run("curl -s -o /dev/null -w '%{http_code}' localhost:3000", check_errors: false)
+    break if http_code.strip == '200'
+  end
   raise "Grafana dashboard not accessible: curl failed with exit code #{code}" unless code.zero?
   raise "Grafana dashboard not accessible: expected HTTP 200, got #{http_code.strip}" unless http_code.strip == '200'
 end

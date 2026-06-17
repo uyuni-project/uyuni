@@ -142,10 +142,8 @@ public class SCCCachingFactoryTest extends BaseTestCaseWithUser {
     /**
      * {@inheritDoc}
      */
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         SCCCachingFactory.clearRepositories();
     }
 

@@ -29,6 +29,36 @@
       "$ref": "#/definitions/nodeSelectorConfig",
       "description": "Default node placement rules for all pods"
     },
+    "dnsConfig": {
+      "type": ["object", "null"],
+      "description": "Pod DNS configuration. See Kubernetes PodDNSConfig.",
+      "properties": {
+        "nameservers": { "type": ["array", "null"], "items": { "type": "string" } },
+        "searches":    { "type": ["array", "null"], "items": { "type": "string" } },
+        "options": {
+          "type": ["array", "null"],
+          "items": {
+            "type": "object",
+            "properties": {
+              "name":  { "type": "string" },
+              "value": { "type": "string" }
+            },
+            "required": ["name"]
+          }
+        }
+      }
+    },
+    "cert": {
+      "type": ["object", "null"],
+      "description": "Controls handling of the proxy-cert TLS secret and uyuni-ca ConfigMap.",
+      "properties": {
+        "takeOwnership": {
+          "type": "boolean",
+          "default": false,
+          "description": "Render proxy-cert and uyuni-ca even when objects with those names already exist in the namespace and were not created by helm. Use together with `helm install --take-ownership` (helm 3.14+) to let helm adopt them."
+        }
+      }
+    },
     "global": {
       "type": "object",
       "required": ["config", "httpd", "ssh"],
@@ -66,6 +96,27 @@
             "ssl": {
               "type": ["object", "null"],
               "description": "Custom annotations for SSL ingress rules."
+            }
+          }
+        },
+        "entryPoints": {
+          "type": ["object", "null"],
+          "description": "Traefik entryPoint names the IngressRouteTCPs are bound to. Must match the entryPoints configured in the Traefik installation.",
+          "properties": {
+            "ssh": {
+              "type": "string",
+              "default": "ssh",
+              "description": "Name of the Traefik entryPoint for the SSH IngressRouteTCP."
+            },
+            "saltPublish": {
+              "type": "string",
+              "default": "salt-publish",
+              "description": "Name of the Traefik entryPoint for the Salt publish IngressRouteTCP."
+            },
+            "saltRequest": {
+              "type": "string",
+              "default": "salt-request",
+              "description": "Name of the Traefik entryPoint for the Salt request IngressRouteTCP."
             }
           }
         }

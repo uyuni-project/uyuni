@@ -107,18 +107,18 @@ spec:
         - name: DEBUG_JAVA
           value: "true"
 {{- end }}
-{{- if .Values.registrySecret }}
+{{- if .Values.server.sccSecret }}
         - name: SCC_USER
           valueFrom:
             secretKeyRef:
               key: username
-              name: {{ .Values.registrySecret }}
+              name: {{ .Values.server.sccSecret }}
               optional: false
         - name: SCC_PASS
           valueFrom:
             secretKeyRef:
               key: password
-              name: {{ .Values.registrySecret }}
+              name: {{ .Values.server.sccSecret }}
               optional: false
 {{- end }}
 {{- if .Values.server.systemdLogLevel }}

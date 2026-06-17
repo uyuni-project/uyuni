@@ -1,2 +1,0 @@
-- Do not depend on collation name when checking collation
-  version (bsc#1264178)

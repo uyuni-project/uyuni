@@ -28,7 +28,6 @@ import org.junit.jupiter.api.Test;
  */
 public class RhnTagFunctionsTest extends RhnBaseTestCase {
 
-    @Override
     @BeforeEach
     public void setUp() {
         TestUtils.disableLocalizationLogging();

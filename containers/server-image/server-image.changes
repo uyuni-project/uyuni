@@ -1,4 +1,35 @@
 -------------------------------------------------------------------
+Wed May 27 16:45:31 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.12
+  * Allow uyuni-config-files to handle lua scriptlets
+
+-------------------------------------------------------------------
+Mon May 25 10:23:00 WEST 2026 - psuarezhernandez@suse.com
+
+- version 5.2.11
+  * Do not get repositories from SCC in the server container
+    (bsc#1242916)
+
+-------------------------------------------------------------------
+Sat May 23 13:03:22 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.10
+  * Add mozilla-nss-sysinit to Dockerfile required for FIPS
+    (bsc#1247707)
+
+-------------------------------------------------------------------
+Fri May 22 13:24:16 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.9
+  * Implement startup check script (bsc#1263157)
+  * Use different flavors for Dockerfile
+  * Drop golang-github-QubitProducts-exporter_exporter
+  * Disable SSL on internal db connection
+  * Do not depend on collation name when checking collation
+    version (bsc#1264178)
+
+-------------------------------------------------------------------
 Tue May 05 11:17:56 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.8

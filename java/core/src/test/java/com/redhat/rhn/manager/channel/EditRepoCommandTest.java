@@ -40,10 +40,8 @@ public class EditRepoCommandTest extends BaseTestCaseWithUser {
 
     private Long contentSourceId;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
 
         contentSourceId = createInitialContentSource(user.getOrg());
 

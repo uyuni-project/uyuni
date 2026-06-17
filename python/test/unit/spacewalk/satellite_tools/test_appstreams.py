@@ -2,7 +2,7 @@
 
 import os
 import pytest
-from mock import Mock
+from unittest.mock import Mock
 
 import spacewalk.satellite_tools.appstreams
 from spacewalk.satellite_tools.appstreams import (

@@ -40,10 +40,8 @@ public class KickstartPackageProfileActionTest extends RhnMockStrutsTestCase {
     /**
      * {@inheritDoc}
      */
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         ksdata = KickstartDataTest.createKickstartWithProfile(user);
         ksdata.getKickstartDefaults().setProfile(null);
         addRequestParameter(RequestContext.KICKSTART_ID, ksdata.getId().toString());

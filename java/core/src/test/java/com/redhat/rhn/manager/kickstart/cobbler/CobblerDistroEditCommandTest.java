@@ -41,10 +41,8 @@ public class CobblerDistroEditCommandTest extends CobblerCommandTestBase {
      *
      * @throws Exception if anything goes wrong
      */
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
 
         connection = CobblerXMLRPCHelper.getAutomatedConnection();
         sourceTree = ksdata.getTree();

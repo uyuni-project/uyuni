@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri May 22 08:33:41 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.3-0
+  * Fix issue building package on openSUSE Leap 16.0
+
+-------------------------------------------------------------------
 Mon Mar 02 13:15:11 CET 2026 - michael.calmer@suse.com
 
 - version 5.2.2-0

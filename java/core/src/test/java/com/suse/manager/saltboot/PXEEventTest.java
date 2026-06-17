@@ -67,10 +67,8 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
     private static final String MAC_ADDRESS = "00:11:22:33:44:55";
 
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         cobblerMock = new MockConnection("http://localhost", "token");
 
@@ -93,10 +91,8 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
         profile.save();
     }
 
-    @Override
-    @AfterEach
+        @AfterEach
     public void tearDown() throws Exception {
-        super.tearDown();
         MockConnection.clear();
     }
 

@@ -122,10 +122,8 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
             new SystemUnentitler(SALT_API), new SystemEntitler(SALT_API)
     );
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         server = createTestServer(user);
         assertNotNull(server.getId());
     }

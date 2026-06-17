@@ -67,6 +67,23 @@ def _get_missing_products(refresh):
     if "SLE-Micro-Rancher-release" in products:
         products.remove("SLE-Micro-Rancher-release")
 
+    # For SLES 16+ we need to deal with 2 release packages depending on transactional flag
+    if (
+        # pylint: disable-next=undefined-variable
+        __grains__.get("osfullname", "") == "SLES"
+        # pylint: disable-next=undefined-variable
+        and __grains__.get("osmajorrelease", 0) == 16
+    ):
+        # pylint: disable-next=undefined-variable
+        if __grains__.get("transactional", False) and "SLES-release" in products:
+            products.remove("SLES-release")
+        elif (
+            # pylint: disable-next=undefined-variable
+            not __grains__.get("transactional", False)
+            and "SLES_immutable-release" in products
+        ):
+            products.remove("SLES_immutable-release")
+
     # Exclude products that are already provided by another to prevent conflicts
     to_install = []
     for pkg in products:

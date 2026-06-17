@@ -33,7 +33,6 @@ import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -51,17 +50,10 @@ public class SsmOperationManagerTest extends RhnBaseTestCase {
     private RhnSet serverSet;
     private String serverSetLabel;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         ssmUser = UserTestUtils.createUser("ssmuser", "ssmorg");
         serverSetLabel = populateRhnSet();
-    }
-
-    @AfterEach
-    public void tearDown() throws Exception {
-        super.tearDown();
     }
 
     @Test

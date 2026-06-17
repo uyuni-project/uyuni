@@ -67,10 +67,8 @@ public class ScheduleKickstartWizardTest extends RhnMockStrutsTestCase {
     /**
      * {@inheritDoc}
      */
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         setRequestPathInfo("/systems/details/kickstart/ScheduleWizard");
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         s = ServerFactoryTest.createTestServer(user, true);
@@ -107,7 +105,7 @@ public class ScheduleKickstartWizardTest extends RhnMockStrutsTestCase {
     public void testStepOneWithProxy() throws Exception {
         addProxy(user);
         actionPerform();
-        verifyNoActionErrors();
+        testActionHasNoErrors();
         assertEquals(Boolean.TRUE.toString(),
                 request.getAttribute(ScheduleKickstartWizardAction.HAS_PROXIES));
         verifyFormValue(ScheduleKickstartWizardAction.PROXY_HOST, "");
@@ -127,7 +125,7 @@ public class ScheduleKickstartWizardTest extends RhnMockStrutsTestCase {
     @Test
     public void testStepOne() {
         actionPerform();
-        verifyNoActionErrors();
+        testActionHasNoErrors();
         assertNotNull(request.getAttribute(RequestContext.SYSTEM));
         assertNotNull(request.getAttribute(ScheduleKickstartWizardAction.HAS_PROFILES));
     }
@@ -176,7 +174,7 @@ public class ScheduleKickstartWizardTest extends RhnMockStrutsTestCase {
         addRequestParameter("date_am_pm", "1");
         addRequestParameter(RequestContext.COBBLER_ID, k.getCobblerId());
         actionPerform();
-        verifyNoActionErrors();
+        testActionHasNoErrors();
         assertNotNull(request.getAttribute(RequestContext.KICKSTART));
         assertNotNull(request.getAttribute(RequestContext.SYSTEM));
         verifyFormList(ScheduleKickstartWizardAction.SYNCH_PACKAGES,
@@ -188,7 +186,7 @@ public class ScheduleKickstartWizardTest extends RhnMockStrutsTestCase {
     public void executeStepThree(boolean addProxy) throws Exception {
         // Perform step 1
         actionPerform();
-        verifyNoActionErrors();
+        testActionHasNoErrors();
         assertNotNull(request.getAttribute(RequestContext.SYSTEM));
         clearRequestParameters();
 

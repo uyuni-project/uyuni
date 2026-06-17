@@ -79,10 +79,8 @@ public class KickstartScheduleCommandTest extends BaseKickstartCommandTestCase {
     /**
      * {@inheritDoc}
      */
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
 
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         server = ServerFactoryTest.createTestServer(user, true,

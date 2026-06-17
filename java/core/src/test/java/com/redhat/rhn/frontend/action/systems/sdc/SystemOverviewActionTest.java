@@ -63,10 +63,8 @@ public class SystemOverviewActionTest extends RhnMockStrutsTestCase {
     /**
      * {@inheritDoc}
      */
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         setRequestPathInfo("/systems/details/Overview");
 
         s = ServerFactoryTest.createTestServer(user, true,

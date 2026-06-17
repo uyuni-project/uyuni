@@ -78,10 +78,8 @@ public class SSHServiceWorkerTest extends JMockBaseTestCaseWithUser {
     private SystemInfo sampleSystemInfo;
 
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         sshPushSystemMock = mock(SystemSummary.class);
         saltSSHServiceMock = mock(SaltSSHService.class);

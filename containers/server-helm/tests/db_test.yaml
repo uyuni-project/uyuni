@@ -35,3 +35,13 @@ tests:
       - hasDocuments:
           count: 0
         template: db.yaml
+
+  - it: should use the registry credentials if set
+    set:
+      global.fqdn: uyuni.example.com
+      registrySecret: mycreds
+    asserts:
+      - contains:
+          path: spec.template.spec.imagePullSecrets
+          content:
+            name: mycreds

@@ -51,10 +51,8 @@ public class VirtualInstanceFactoryTest extends RhnBaseTestCase {
     private GuestBuilder builder;
     private SystemEntitlementManager systemEntitlementManager;
 
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         virtualInstanceDAO = new VirtualInstanceFactory();
         user = UserTestUtils.createUser(this);
         builder = new GuestBuilder(user);

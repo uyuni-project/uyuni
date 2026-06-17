@@ -34,10 +34,8 @@ import org.junit.jupiter.api.Test;
  * ErrataSetupActionTest
  */
 public class ErrataSetupActionTest extends RhnMockStrutsTestCase {
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         setRequestPathInfo("/systems/details/ErrataList");
     }
     @Test

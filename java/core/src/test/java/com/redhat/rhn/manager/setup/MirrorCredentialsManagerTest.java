@@ -219,20 +219,16 @@ public class MirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
     /**
      * {@inheritDoc}
      */
-    @Override
     @BeforeEach
     public void setUp() throws Exception {
-        super.setUp();
         credsManager = new MirrorCredentialsManager();
     }
 
     /**
      * {@inheritDoc}
      */
-    @Override
-    @AfterEach
+        @AfterEach
     public void tearDown() throws Exception {
-        super.tearDown();
 
         // Tear down the manager class instance
         credsManager = null;

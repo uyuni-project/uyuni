@@ -52,9 +52,8 @@ public class HttpApiRegistryTest extends RhnJmockBaseTestCase {
     }
 
     @BeforeEach
-    @Override
     public void setUp() throws Exception {
-        super.setUp();
+
         context().setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
     }
 

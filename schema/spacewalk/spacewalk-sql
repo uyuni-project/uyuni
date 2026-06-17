@@ -8,6 +8,11 @@ use IPC::Open3 ();
 use Getopt::Long ();
 use Cwd 'abs_path';
 
+sub is_true {
+        my $val = shift;
+        return (defined $val and $val =~ /^(1|y|true|yes|on)$/i);
+}
+
 sub usage {
         die "Usage: $0 [-i | [ OPTIONS ] [sql-file-to-use.sql | - ]]\n    where possible OPTIONS are\n        --verbose\n        --reportdb\n        --select-mode or --select-mode-direct\n";
 }
@@ -51,7 +56,7 @@ my %options;
 Spacewalk::Setup::read_config($config_file, \%options);
 
 if ($reportdb) {
-    for my $n (qw( db_backend db_name db_user db_password db_host db_port db_ssl_enabled)) {
+    for my $n (qw( db_backend db_name db_user db_password db_host db_port db_ssl_enabled db_sslmode db_sslrootcert )) {
         $options{$n} = $options{'report_'.$n} if (defined $options{'report_'.$n});
     }
 }
@@ -85,6 +90,14 @@ if ($options{db_backend} eq 'postgresql') {
               push @command, ( '-v', 'ON_ERROR_STOP=ON', '-f', $filename );
       }
       $ENV{PGPASSWORD} = $options{db_password};
+      if (defined $options{db_host} and $options{db_host} eq 'localhost') {
+              $ENV{PGSSLMODE} = 'disable';
+      } elsif (is_true($options{db_ssl_enabled})) {
+              $ENV{PGSSLMODE} = $options{db_sslmode} || 'verify-full';
+              $ENV{PGSSLROOTCERT} = $options{db_sslrootcert} if $options{db_sslrootcert};
+      } else {
+              $ENV{PGSSLMODE} = 'disable';
+      }
       if ($verbose) {
               print STDERR "Running: @command\n";
       }
