@@ -24,7 +24,6 @@ import com.redhat.rhn.testing.RhnJmockBaseTestCase;
 import com.suse.manager.reactor.PGEventStream;
 import com.suse.salt.netapi.exception.SaltException;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -60,18 +59,6 @@ class PGEventStreamTest extends RhnJmockBaseTestCase {
     public static void beforeAll() {
         Config.get().setString(ConfigDefaults.SALT_EVENT_NOTIFICATION_POLL_INTERVAL_MS, "100");
         Config.get().setString(ConfigDefaults.SALT_EVENT_CONNECTION_WATCHDOG_INTERVAL_SECONDS, "1");
-    }
-
-    @AfterAll
-    public static void afterAll() {
-        Config.get().setString(
-                ConfigDefaults.SALT_EVENT_NOTIFICATION_POLL_INTERVAL_MS,
-                String.valueOf(DEFAULT_SALT_EVENT_NOTIFICATION_POLL_INTERVAL_MS_VALUE)
-        );
-        Config.get().setString(
-                ConfigDefaults.SALT_EVENT_CONNECTION_WATCHDOG_INTERVAL_SECONDS,
-                String.valueOf(DEFAULT_SALT_EVENT_CONNECTION_WATCHDOG_INTERVAL_SECONDS_VALUE)
-        );
     }
 
     @AfterEach
