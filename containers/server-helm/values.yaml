@@ -57,6 +57,11 @@ server:
   # The profile need to be showing up in the aa-status command output.
   apparmorProfile: ""
 
+  # SELinux type is the name of the SELinux type to use for the server pod.
+  # By default, it's not set so the container runtime's default (typically container_t) is used,
+  # or spc_t if superPrivileged is enabled.
+  selinuxType: ""
+
 
 global:
   # fqdn is the fully qualified name the server will answer as.

@@ -212,43 +212,69 @@ profile k8s-systemd-uyuni flags=(attach_disconnected,mediate_deleted) {
 If the node where the server pod is running has SELinux and RKE2 is configured to use it, the container won't be able to mount the cgroup2 file system.
 This can be addressed in two different ways.
 The easiest, but unsafe way is to set `server.superPrivileged=true` value so the server containers run with the `spc_t` label.
-Otherwise apply the following custom policy:
+Otherwise set the `server.selinuxType` to the name of a custom SELinux type granting only the permissions needed by the server pod.
+Defining a dedicated type — rather than extending the generic `container_t` — ensures the extra permissions are not granted to every other container running on the node.
+If using exactly the policy below, the name of the type to use will be `uyuni_container_t`.
 
-* Create a `/root/systemdcontainerpolicy.te` file with this content:
+To deploy the policy, create a `/root/systemdcontainerpolicy.te` file with this content:
 
 ```sepolicy
 module systemdcontainerpolicy 1.0;
 
 require {
-    type container_t;
+    attribute domain;
+    attribute container_domain;
+    attribute mcs_constrained_type;
+    attribute container_net_domain;
+    attribute svirt_sandbox_domain;
+    attribute sandbox_net_domain;
+    attribute syslog_client_type;
+    attribute can_dump_kernel;
+    attribute can_receive_kernel_messages;
+    attribute corenet_unconfined_type;
+    attribute corenet_unlabeled_type;
+    attribute kernel_system_state_reader;
+    attribute pcmcia_typeattr_1;
+    attribute process_user_target;
+    role system_r;
     type cgroup_t;
     type tmpfs_t;
     type proc_t;
     
-    class dir { search write add_name create remove_name rmdir setattr getattr mounton search };
+    class dir { search write add_name create remove_name rmdir setattr getattr mounton };
     class file { create open write append read unlink setattr getattr watch };
     class filesystem { mount getattr relabelfrom relabelto remount unmount };
+    class netlink_audit_socket { nlmsg_relay };
 }
 
-#============= container_t ==============
-allow container_t cgroup_t:dir { add_name create remove_name rmdir setattr write search getattr };
-allow container_t cgroup_t:file { create open write append read setattr getattr unlink watch };
-allow container_t cgroup_t:filesystem { mount getattr relabelfrom relabelto };
+# Declare the uyuni_container_t type and associate it with standard container attributes.
+type uyuni_container_t, domain, container_domain, container_net_domain, mcs_constrained_type, svirt_sandbox_domain, sandbox_net_domain, syslog_client_type, can_dump_kernel, can_receive_kernel_messages, corenet_unconfined_type, corenet_unlabeled_type, kernel_system_state_reader, pcmcia_typeattr_1, process_user_target;
+
+# Associate with the system_r role
+role system_r types uyuni_container_t;
+
+#============= uyuni_container_t ==============
+allow uyuni_container_t cgroup_t:dir { add_name create remove_name rmdir setattr write search getattr };
+allow uyuni_container_t cgroup_t:file { create open write append read setattr getattr unlink watch };
+allow uyuni_container_t cgroup_t:filesystem { mount getattr relabelfrom relabelto };
 
 # Allow systemd's credential helper (sd-mkdcreds) to use /dev/shm as a mount point for service credentials.
-allow container_t tmpfs_t:dir mounton;
+allow uyuni_container_t tmpfs_t:dir mounton;
 
 # Standard lookups and attributes for the mount point
-allow container_t tmpfs_t:dir { getattr search };
+allow uyuni_container_t tmpfs_t:dir { getattr search };
 
 # Allow systemd to mount/remount the proc filesystem for namespacing
-allow container_t proc_t:filesystem { mount remount unmount };
+allow uyuni_container_t proc_t:filesystem { mount remount unmount };
 
 # Required to use directories as mount points
-allow container_t proc_t:dir mounton;
+allow uyuni_container_t proc_t:dir mounton;
+
+# Allow su and PAM inside the container to log audits to the kernel
+allow uyuni_container_t self:netlink_audit_socket { nlmsg_relay };
 ```
 
-* Apply it:
+Then compile and load it:
 
 ```sh
 checkmodule -M -m -o /root/systemdcontainerpolicy.mod /root/systemdcontainerpolicy.te
