@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jun 17 14:37:47 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.4-0
+  * Fix wsgiHandler errors on openSUSE Leap 16.0
+
+-------------------------------------------------------------------
 Fri May 22 08:43:37 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.3-0
