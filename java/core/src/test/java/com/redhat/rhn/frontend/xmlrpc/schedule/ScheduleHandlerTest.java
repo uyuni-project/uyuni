@@ -255,10 +255,8 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         apiActions = handler.listAllArchivedActions(admin);
         assertTrue(apiActions.length > numActions);
 
-        int oldLimit = ConfigDefaults.get().getActionsDisplayLimit();
         Config.get().setString(ConfigDefaults.ACTIONS_DISPLAY_LIMIT, "1");
         Object[] apiActionsLimitted = handler.listArchivedActions(admin);
-        Config.get().setString(ConfigDefaults.ACTIONS_DISPLAY_LIMIT, String.valueOf(oldLimit));
 
         assertEquals(apiActionsLimitted.length, 1);
         assertTrue(apiActions.length > apiActionsLimitted.length);
@@ -290,10 +288,8 @@ public class ScheduleHandlerTest extends BaseHandlerTestCase {
         apiActions = handler.listAllCompletedActions(admin);
         assertTrue(apiActions.length > numActions);
 
-        int oldLimit = ConfigDefaults.get().getActionsDisplayLimit();
         Config.get().setString(ConfigDefaults.ACTIONS_DISPLAY_LIMIT, "1");
         Object[] apiActionsLimitted = handler.listCompletedActions(admin);
-        Config.get().setString(ConfigDefaults.ACTIONS_DISPLAY_LIMIT, String.valueOf(oldLimit));
 
         assertEquals(apiActionsLimitted.length, 1);
         assertTrue(apiActions.length > apiActionsLimitted.length);
