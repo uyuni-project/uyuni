@@ -45,18 +45,12 @@ public abstract class RhnBaseTestCase extends BaseTestCase implements SaltTestCa
     protected Path tmpSaltRoot;
 
     /**
-     * Default Constructor
-     */
-    public RhnBaseTestCase() {
-        MessageQueue.configureDefaultActions(new TestSaltApi());
-    }
-
-    /**
      * Called once per test method.
      * @throws Exception if an error occurs during setup.
      */
     @BeforeEach
     protected void setUpRhnBaseTestCase() throws Exception {
+        MessageQueue.configureDefaultActions(new TestSaltApi());
         tmpSaltRoot = setupSaltConfigurationForTests();
     }
 

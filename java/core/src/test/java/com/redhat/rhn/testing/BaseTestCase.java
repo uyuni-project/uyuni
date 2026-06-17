@@ -11,9 +11,17 @@
 
 package com.redhat.rhn.testing;
 
+import com.redhat.rhn.common.conf.Config;
+
+import org.junit.jupiter.api.AfterEach;
+
 /**
  * root class for all test cases
  */
 public class BaseTestCase {
 
+    @AfterEach
+    void tearDownAfterAllTests() {
+        Config.clear();
+    }
 }
