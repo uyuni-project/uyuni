@@ -35,7 +35,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class SaltMinionTestJson extends MockObjectTestCase {
+public class SaltMinionJsonTest extends MockObjectTestCase {
 
     @BeforeEach
     public void setUp() {
