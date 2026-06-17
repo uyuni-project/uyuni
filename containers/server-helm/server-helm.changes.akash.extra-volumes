@@ -1,0 +1,1 @@
+- Allow custom volume and mount settings in the server Helm chart.

@@ -41,6 +41,32 @@ tests:
           content:
             name: mycreds
 
+  - it: should render extra server volumes and volume mounts
+    set:
+      global.fqdn: uyuni.example.com
+      server:
+        extraVolumes:
+          - name: uyuni-bench-source
+            persistentVolumeClaim:
+              claimName: uyuni-bench-source
+        extraVolumeMounts:
+          - name: uyuni-bench-source
+            mountPath: /uyuni-bench-source
+            readOnly: true
+    asserts:
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: uyuni-bench-source
+            persistentVolumeClaim:
+              claimName: uyuni-bench-source
+      - contains:
+          path: spec.template.spec.containers[?(@.name=="uyuni")].volumeMounts
+          content:
+            name: uyuni-bench-source
+            mountPath: /uyuni-bench-source
+            readOnly: true
+
   - it: should use the SCC credentials if set
     set:
       global.fqdn: uyuni.example.com
