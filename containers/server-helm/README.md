@@ -72,20 +72,20 @@ The storage class supports a special `"-"` value to force the storage class to t
 This is different from the `""` value representing the default storage class by not setting any storage class at all.
 
 Additional volumes can be attached to the server pod with `server.extraVolumes` and mounted into the server container with `server.extraVolumeMounts`.
-This is useful for optional data sources such as benchmark repositories or externally managed content volumes without changing the chart templates.
+This is useful for optional content volumes like `inter-server-sync` data without changing the chart templates.
 
 For example:
 
 ```yaml
 server:
   extraVolumes:
-    - name: uyuni-bench-source
+    - name: inter-server-sync-data
       persistentVolumeClaim:
-        claimName: uyuni-bench-source
+        claimName: inter-server-sync-data
 
   extraVolumeMounts:
-    - name: uyuni-bench-source
-      mountPath: /uyuni-bench-source
+    - name: inter-server-sync-data
+      mountPath: /inter-server-sync-data
       readOnly: true
 ```
 
