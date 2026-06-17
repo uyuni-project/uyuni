@@ -138,6 +138,8 @@ const withUyuniTheme: Decorator = (Story, context) => {
 };
 
 const preview: Preview = {
+  // Default to Autodocs for real CSF stories; generated legacy wrappers opt out with `!autodocs`.
+  tags: ["autodocs"],
   decorators: [withUyuniTheme],
   globalTypes: {
     theme: {

@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 import type { StorybookConfig } from "@storybook/react-webpack5";
-import autoprefixer from "autoprefixer";
 import { createRequire } from "module";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
@@ -10,6 +9,7 @@ import {
   watchLegacyStorySources,
 } from "../html/src/build/storybook/generate-legacy-stories-lib.js";
 import webpackAlias from "../html/src/build/webpack/alias.js";
+import { scssProcessingLoaders } from "../html/src/build/webpack/scss-loaders.js";
 
 const require = createRequire(import.meta.url);
 
@@ -20,8 +20,6 @@ const webHtmlSrc = path.resolve(web, "html/src");
 const legacyStoriesOutputDir = path.resolve(webHtmlSrc, "storybook/generated");
 
 // Generate legacy .stories.tsx wrappers from .example.tsx sources before Storybook collects stories,
-// so `storybook dev`/`storybook build` work without a separate npm script. `cleanOutput: false` keeps
-// any in-flight HMR state intact across restarts.
 await generateLegacyStories({
   inputDir: webHtmlSrc,
   outputDir: legacyStoriesOutputDir,
@@ -33,31 +31,7 @@ const scssLoaders = (styleLoaderOptions: Record<string, unknown> = {}) => [
     loader: require.resolve("style-loader"),
     options: styleLoaderOptions,
   },
-  {
-    loader: require.resolve("css-loader"),
-    options: {
-      modules: {
-        auto: true,
-        localIdentName: "[path][name]__[local]--[hash:base64:5]",
-      },
-    },
-  },
-  {
-    loader: require.resolve("postcss-loader"),
-    options: {
-      postcssOptions: {
-        plugins: [autoprefixer],
-      },
-    },
-  },
-  {
-    loader: require.resolve("sass-loader"),
-    options: {
-      sassOptions: {
-        loadPaths: [webHtmlSrc],
-      },
-    },
-  },
+  ...scssProcessingLoaders(),
 ];
 
 const config: StorybookConfig = {

@@ -8,6 +8,7 @@
     "manager/**/*.tsx",
     "utils/**/*.ts",
     "utils/**/*.tsx",
+    "build/**/*.test.ts",
     "global.d.ts",
     "imports.d.ts",
     "lib.es5.d.ts",

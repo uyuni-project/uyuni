@@ -1,15 +1,14 @@
-import { promises as fs } from "node:fs";
-import { tmpdir } from "node:os";
-import path from "node:path";
+import { promises as fs } from "fs";
+import { tmpdir } from "os";
+import path from "path";
 
 import {
   findExampleFiles,
   generateLegacyStories,
   shouldRegenerateOnChange,
-  storyExportName,
   storyGroupName,
-  storyTemplate,
 } from "./generate-legacy-stories-lib";
+import { storyExportName, storyTemplate } from "./story-template";
 
 async function writeFile(filePath: string, content = "export default () => null;\n"): Promise<void> {
   await fs.mkdir(path.dirname(filePath), { recursive: true });
@@ -47,18 +46,23 @@ describe("generate legacy Storybook stories", () => {
   });
 
   test("renders a legacy CSF story wrapper", () => {
-    expect(storyTemplate("components/buttons/usage-guidelines.example.tsx")).toContain('title: "Legacy/buttons"');
+    expect(storyTemplate("components/buttons/usage-guidelines.example.tsx")).toContain(
+      'title: "Legacy Example Stories/buttons"'
+    );
     expect(storyTemplate("components/buttons/usage-guidelines.example.tsx")).toContain(
       'import Component from "components/buttons/usage-guidelines.example";'
     );
+    expect(storyTemplate("components/buttons/usage-guidelines.example.tsx")).toContain('tags: ["!autodocs"]');
     expect(storyTemplate("components/buttons/usage-guidelines.example.tsx")).toContain('name: "usage-guidelines"');
   });
 
   test("matches the legacy internal storybook grouping", () => {
     expect(storyGroupName("components/input/check/form.example.tsx")).toBe("check");
-    expect(storyTemplate("components/input/check/form.example.tsx")).toContain('title: "Legacy/check"');
-    expect(storyTemplate("components/utils/loading/text.example.tsx")).toContain('title: "Legacy/loading"');
-    expect(storyTemplate("core/intl/index.example.tsx")).toContain('title: "Legacy/intl"');
+    expect(storyTemplate("components/input/check/form.example.tsx")).toContain('title: "Legacy Example Stories/check"');
+    expect(storyTemplate("components/utils/loading/text.example.tsx")).toContain(
+      'title: "Legacy Example Stories/loading"'
+    );
+    expect(storyTemplate("core/intl/index.example.tsx")).toContain('title: "Legacy Example Stories/intl"');
   });
 
   test("creates valid export names from file names", () => {
