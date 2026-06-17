@@ -146,6 +146,10 @@ spec:
             level: "s0"
   {{- if .Values.server.superPrivileged }}
             type: "spc_t"
+  {{- else if .Values.server.selinuxType }}
+            type: {{ .Values.server.selinuxType | quote }}
+  {{- end }}
+  {{- if .Values.server.superPrivileged }}
           appArmorProfile:
             type: Unconfined
   {{- else if .Values.server.apparmorProfile }}
