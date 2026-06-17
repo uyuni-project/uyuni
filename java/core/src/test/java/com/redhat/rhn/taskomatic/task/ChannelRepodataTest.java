@@ -52,7 +52,6 @@ public class ChannelRepodataTest extends JMockBaseTestCaseWithUser {
 
     private ChannelRepodata channelRepodata;
 
-    private String pristineMountPoint;
     private Path tmpMountPoint;
 
     @BeforeEach
@@ -65,7 +64,6 @@ public class ChannelRepodataTest extends JMockBaseTestCaseWithUser {
         // allows RpmRepositoryWriter.initBaseDir to create a temporary mount point
         // instead of "/var/cache/rhn/repodata/..." to let tests run locally
         tmpMountPoint = Files.createTempDirectory("channelrepodatatest");
-        pristineMountPoint = Config.get().getString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, "/pub");
         Config.get().setString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, tmpMountPoint.toString());
     }
 
@@ -76,7 +74,6 @@ public class ChannelRepodataTest extends JMockBaseTestCaseWithUser {
         TaskoFactory.listRunsByBunch("channel-repodata-bunch")
             .forEach(TaskoFactory::deleteRun);
 
-        Config.get().setString(ConfigDefaults.REPOMD_CACHE_MOUNT_POINT, pristineMountPoint);
         FileUtils.deleteDirectory(tmpMountPoint.toFile());
     }
 

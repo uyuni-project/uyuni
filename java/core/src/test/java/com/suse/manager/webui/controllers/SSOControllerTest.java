@@ -26,7 +26,6 @@ import com.redhat.rhn.frontend.servlets.PxtSessionDelegate;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.TestUtils;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,19 +43,9 @@ public class SSOControllerTest extends BaseControllerTestCase {
 
     private SSOController ssoController;
 
-    private boolean ssoEnabled;
-
     @BeforeEach
     public void setUp() throws Exception {
-
-        ssoEnabled = Config.get().getBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED);
         ssoController = new SSOController(Optional.of(SSOTestUtils.getSaml2Settings()));
-    }
-
-    @AfterEach
-    public void tearDown() throws Exception {
-        // Restore the original SSO Enabled value
-        Config.get().setBoolean(ConfigDefaults.SINGLE_SIGN_ON_ENABLED, Boolean.toString(ssoEnabled));
     }
 
     @Test
