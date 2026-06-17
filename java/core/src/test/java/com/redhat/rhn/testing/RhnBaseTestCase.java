@@ -40,7 +40,7 @@ import java.util.Date;
  * test to simulate what happens when the code is run
  * in a web application server.
  */
-public abstract class RhnBaseTestCase implements SaltTestCaseUtils  {
+public abstract class RhnBaseTestCase extends BaseTestCase implements SaltTestCaseUtils  {
 
     protected Path tmpSaltRoot;
 

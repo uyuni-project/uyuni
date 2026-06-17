@@ -13,11 +13,13 @@ package com.suse.utils.xml;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import com.redhat.rhn.testing.BaseTestCase;
+
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-public class EmptyStringAdapterTest {
+public class EmptyStringAdapterTest extends BaseTestCase {
 
     private final EmptyStringAdapter adapter = new EmptyStringAdapter();
 
