@@ -527,17 +527,17 @@ public class SaltUtils {
      */
     public static Map<String, String> getFailedStateErrors(JsonElement jsonResult) {
         return jsonEventToStateApplyResults(jsonResult)
-                .map(results -> results.entrySet().stream()
-                        .filter(entry -> !entry.getValue().isResult())
-                        .collect(Collectors.toMap(
-                                Map.Entry::getKey,
-                                entry ->
-                                    StringUtils.defaultIfEmpty(
-                                            entry.getValue().getComment(),
-                                            "State failed without error message")
-
-                        )))
-                .orElse(Collections.emptyMap());
+                .stream()
+                .flatMap(map -> map.entrySet().stream())
+                .filter(entry -> entry.getValue() != null && !entry.getValue().isResult())
+                .collect(Collectors.toUnmodifiableMap(
+                        Map.Entry::getKey,
+                        entry ->
+                                StringUtils.defaultIfBlank(
+                                        entry.getValue().getComment(),
+                                        "State failed without error message")
+                        )
+                );
     }
 
     /**
