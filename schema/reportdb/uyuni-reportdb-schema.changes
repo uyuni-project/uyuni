@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jun 17 14:36:32 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.2-0
+  * Increase url on table repository (bsc#1259230)
+
+-------------------------------------------------------------------
 Mon Oct 27 15:36:01 CET 2025 - rosuna@suse.com
 
 - version 5.2.1-0
