@@ -6,12 +6,12 @@ import {
   findExampleFiles,
   isExampleFile,
   isIgnoredPath,
-  storyGroupName,
   toPosix,
 } from "./example-discovery.js";
 import { storyTemplate } from "./story-template.js";
 
-export { findExampleFiles, isIgnoredPath, storyGroupName, toPosix };
+export { findExampleFiles, isIgnoredPath, toPosix };
+export { storyGroupName } from "./example-discovery.js";
 export { storyExportName, storyTemplate } from "./story-template.js";
 
 const DEFAULT_INPUT_DIR = path.resolve("html/src");
