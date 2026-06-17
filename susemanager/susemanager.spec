@@ -48,7 +48,7 @@
 %global debug_package %{nil}
 
 Name:           susemanager
-Version:        5.2.8
+Version:        5.2.9
 Release:        0
 Summary:        %{productprettyname} specific scripts
 License:        GPL-2.0-only
