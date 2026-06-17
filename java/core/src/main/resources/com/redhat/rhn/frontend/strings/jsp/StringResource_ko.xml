@@ -1964,7 +1964,7 @@ button below, and &lt;b&gt;will be unable to log back in&lt;/b&gt;.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserDetails</context>
         </context-group>
-        <target state="final">이메일 주소 추가</target>
+        <target state="final">이메일 주소 없음</target>
       </trans-unit>
       <trans-unit id="userdetails.jsp.disable" xml:space="preserve">
         <source>Deactivate User</source>
@@ -6958,7 +6958,7 @@ organization. You may grant or remove the organization administrator role in the
       </trans-unit>
       <trans-unit approved="yes" id="systems.groups.jsp.remove" xml:space="preserve">
         <source>Leave Groups</source>
-        <target state="final">그룹 나가기</target>
+        <target state="final">그룹 종료</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/systems/details/groups/* pages</context>
         </context-group>
@@ -15257,7 +15257,7 @@ the &lt;strong&gt;@@ENTERPRISE_LINUX_NAME@@ System Administration Guide.&lt;/str
       </trans-unit>
       <trans-unit approved="yes" id="system.event.pending.headerPending" xml:space="preserve">
         <source>You may cancel events for this system by selecting them and clicking the &lt;strong&gt;Cancel Events&lt;/strong&gt; button.</source>
-        <target state="final">&lt;strong&gt;이벤트 취소&lt;/strong&gt; 버튼을 선택한 후 클릭하여 이 시스템의 이벤트를 취소할 수 있습니다.</target>
+        <target state="final">선택한 후 &lt;strong&gt;이벤트 취소&lt;/strong&gt; 버튼을 클릭하여 이벤트를 취소할 수 있습니다.</target>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
@@ -16805,12 +16805,12 @@ a file or files, or copy the latest version into a set of local overrides or int
         </context-group>
         <target>등록된 시스템</target>
       </trans-unit>
-      <trans-unit id="channeltarget.jsp.header1" xml:space="preserve">
+      <trans-unit id="channeltarget.jsp.header1" xml:space="preserve" approved="yes">
         <source>Eligible Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/TargetSystems.do</context>
         </context-group>
-        <target state="needs-adaptation">대상 시스템</target>
+        <target state="final">대상 시스템</target>
       </trans-unit>
       <trans-unit approved="yes" id="channeltarget.jsp.header2" xml:space="preserve">
         <source>The following systems can be subscribed to this channel:</source>
@@ -21283,9 +21283,9 @@ any of these revisions.  Are you sure you want to do this?</source>
 
              Select one or more and click the &lt;b&gt;Remove Packages&lt;/b&gt; button to schedule package removal.
           </source>
-        <target state="final">아래에 나열된 패키지를 하나 이상의 시스템에서 제거할 수 있습니다.
+        <target state="final">아래에 나열된 패키지는 하나 이상의 시스템에서 제거할 수 있습니다.
 
-             하나 이상의 시스템을 선택하고 &lt;b&gt;패키지 제거&lt;/b&gt; 버튼을 클릭하여 패키지 제거를 예약합니다.
+             하나 이상의 시스템을 선택하고 &lt;b&gt;패키지 제거&lt;/b&gt; 버튼을 클릭하여 패키지 제거를 스케줄합니다.
           </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/PackageRemove.do</context>
@@ -21423,9 +21423,9 @@ any of these revisions.  Are you sure you want to do this?</source>
 
             Select one or more and click the &lt;b&gt;Verify Packages&lt;/b&gt; button to schedule package verification.
          </source>
-        <target state="final">아래에 나열된 패키지를 하나 이상의 시스템에서 검증할 수 있습니다.
+        <target state="final">아래에 나열된 패키지는 하나 이상의 시스템에서 확인할 수 있습니다.
 
-             하나 이상의 시스템을 선택하고 &lt;b&gt;패키지 검증&lt;/b&gt; 버튼을 클릭하여 패키지 확인을 예약합니다.
+             하나 이상의 시스템을 선택하고 &lt;b&gt;패키지 검증&lt;/b&gt; 버튼을 클릭하여 패키지 검증을 스케줄링합니다.
          </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/PackageVerify.do</context>
@@ -23555,7 +23555,7 @@ The Tree Path, Base Channel, and Installer Generation should always match. This 
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target state="final">구독한 채널</target>
+        <target state="final">서브스크립션된 채널</target>
       </trans-unit>
       <trans-unit id="sdc.details.overview.sysevents" xml:space="preserve">
         <source>System Events</source>
@@ -27795,7 +27795,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit approved="yes" id="iss.slave.remove" xml:space="preserve">
         <source>Remove slaves</source>
-        <target state="final">슬레이브 삭제</target>
+        <target state="final">슬레이브 제거</target>
       </trans-unit>
       <trans-unit id="toolbar.create.master" xml:space="preserve">
         <source>Add new master</source>
@@ -27803,7 +27803,7 @@ given channel.</source>
       </trans-unit>
       <trans-unit approved="yes" id="iss.master.remove" xml:space="preserve">
         <source>Remove masters</source>
-        <target state="final">마스터 삭제</target>
+        <target state="final">마스터 제거</target>
       </trans-unit>
       <trans-unit id="toolbar.delete.slave" xml:space="preserve">
         <source>Delete slave</source>
@@ -29565,7 +29565,7 @@ given channel.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/systems/details/Overview.do</context>
         </context-group>
-        <target state="final">구독한 채널 수정</target>
+        <target state="final">서브스크라이브된 채널 편집</target>
       </trans-unit>
       <trans-unit approved="yes" id="sdc.details.overview.sysproperties.edit" xml:space="preserve">
         <source>Edit System Properties</source>
@@ -29655,12 +29655,12 @@ given channel.</source>
         <source>CA Certificates Update</source>
         <target state="final">CA 인증서 업데이트</target>
       </trans-unit>
-      <trans-unit id="system.event.actionId" xml:space="preserve">
+      <trans-unit id="system.event.actionId" xml:space="preserve" approved="yes">
         <source>Action ID</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">액션 ID</target>
       </trans-unit>
       <trans-unit id="pkg.lock.message.lockerror" xml:space="preserve" approved="yes">
         <source>Failed to lock selected packages. Can't lock multiple versions of the same package.</source>
@@ -29669,128 +29669,124 @@ given channel.</source>
         </context-group>
         <target state="final">선택한 패키지를 잠글 수 없습니다. 동일한 패키지의 여러 버전을 잠글 수 없습니다.</target>
       </trans-unit>
-    <trans-unit id="preferences.disk-check-warning.name" xml:space="preserve">
+      <trans-unit id="preferences.disk-check-warning.name" xml:space="preserve" approved="yes">
         <source>Disk Check Warning</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="preferences.disk-check-warning.description" xml:space="preserve">
+        <target state="final">디스크 확인 경고</target>
+      </trans-unit>
+      <trans-unit id="preferences.disk-check-warning.description" xml:space="preserve" approved="yes">
         <source> Show disk space warning when running low.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-
-
- 
-      <trans-unit id="bunch.jsp.description.diskcheck-task-bunch" xml:space="preserve">
+        <target state="final"> 디스크 공간이 부족해지면 디스크 공간 경고를 표시합니다.</target>
+      </trans-unit>
+      <trans-unit id="bunch.jsp.description.diskcheck-task-bunch" xml:space="preserve" approved="yes">
         <source>Schedule a disk check</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="task.status.clm-channel-diff" xml:space="preserve">
+        <target state="final">디스크 확인 예약</target>
+      </trans-unit>
+      <trans-unit id="task.status.clm-channel-diff" xml:space="preserve" approved="yes">
         <source>CLM Channel Comparison</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="task.status.diskcheck-task" xml:space="preserve">
+        <target state="final">CLM 채널 비교</target>
+      </trans-unit>
+      <trans-unit id="task.status.diskcheck-task" xml:space="preserve" approved="yes">
         <source>Disk Check Actions</source>
-      <target state="new"/>
-  </trans-unit>
-
+        <target state="final">디스크 확인 액션</target>
+      </trans-unit>
       <trans-unit id="preferences.jsp.betafeatures" xml:space="preserve">
         <source> Enable beta features</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="preferences.jsp.betaheader" xml:space="preserve">
         <source>Beta Features</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="preferences.jsp.betadescription" xml:space="preserve">
         <source>Beta features are experimental and may not be fully tested. Enable this option to access new functionality that is still under development. Use with caution in production environments.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="system.audit.xccdfdetails.jsp.action" xml:space="preserve">
-          <source>Action</source>
+        <source>Action</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Detailed view of SCAP XCCDF scan</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="spmigration.sles16.preflight.title" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="spmigration.sles16.preflight.title" xml:space="preserve" approved="yes">
         <source>Before Migrating to SLES 16 — Please ensure</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="spmigration.sles16.preflight.patch.title" xml:space="preserve">
+        <target state="final">SLES 16로 마이그레이션하기 전에 다음을 확인하세요.</target>
+      </trans-unit>
+      <trans-unit id="spmigration.sles16.preflight.patch.title" xml:space="preserve" approved="yes">
         <source>System is fully up to date</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="spmigration.sles16.preflight.diskspace.title" xml:space="preserve">
+        <target state="final">시스템이 완전히 업데이트되었음</target>
+      </trans-unit>
+      <trans-unit id="spmigration.sles16.preflight.diskspace.title" xml:space="preserve" approved="yes">
         <source>Sufficient disk space is available</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="spmigration.sles16.preflight.ssh.title" xml:space="preserve">
+        <target state="final">충분한 디스크 공간 사용 가능</target>
+      </trans-unit>
+      <trans-unit id="spmigration.sles16.preflight.ssh.title" xml:space="preserve" approved="yes">
         <source>Ensure SSH key-based access is available for at least one user. If root login is required, create /etc/ssh/sshd_config.d/50-permit-root-login.conf with: PermitRootLogin yes</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="spmigration.sles16.preflight.kvmguests.title" xml:space="preserve">
+        <target state="final">SSH 키 기반 액세스가 한 명 이상의 사용자에 대해 사용 가능한지 확인하세요. 루트 로그인이 필요한 경우 PermitRootLogin yes로 /etc/ssh/sshd_config.d/50-permit-root-login.conf를 생성하세요.</target>
+      </trans-unit>
+      <trans-unit id="spmigration.sles16.preflight.kvmguests.title" xml:space="preserve" approved="yes">
         <source>KVM guests are shut down (if applicable)</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="spmigration.sles16.preflight.network.title" xml:space="preserve">
+        <target state="final">KVM 게스트 종료됨(있는 경우)</target>
+      </trans-unit>
+      <trans-unit id="spmigration.sles16.preflight.network.title" xml:space="preserve" approved="yes">
         <source>Network configuration will be migrated from wicked to NetworkManager</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="spmigration.sles16.preflight.selinux.title" xml:space="preserve">
+        <target state="final">네트워크 구성이 wicked에서 NetworkManager로 마이그레이션됨</target>
+      </trans-unit>
+      <trans-unit id="spmigration.sles16.preflight.selinux.title" xml:space="preserve" approved="yes">
         <source>AppArmor profiles will be migrated to SELinux</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="usercreate.prefix" xml:space="preserve">
+        <target state="final">AppArmor 프로파일이 SELinux로 마이그레이션될 예정</target>
+      </trans-unit>
+      <trans-unit id="usercreate.prefix" xml:space="preserve" approved="yes">
         <source>Prefix</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="usercreate.firstName" xml:space="preserve">
+        <target state="final">프리픽스</target>
+      </trans-unit>
+      <trans-unit id="usercreate.firstName" xml:space="preserve" approved="yes">
         <source>First Name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="usercreate.lastName" xml:space="preserve">
+        <target state="final">이름</target>
+      </trans-unit>
+      <trans-unit id="usercreate.lastName" xml:space="preserve" approved="yes">
         <source>Last Name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="final">성</target>
+      </trans-unit>
       <trans-unit id="channel.jsp.repoautosync" xml:space="preserve">
         <source>Automatic Repository Synchronization</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="channel.jsp.repoautosync.true" xml:space="preserve">
         <source> Enabled </source>
-      <target state="new"/>
-  </trans-unit>
-        <trans-unit id="channel.jsp.repoautosync.false" xml:space="preserve">
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="channel.jsp.repoautosync.false" xml:space="preserve">
         <source> Disabled </source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

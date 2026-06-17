@@ -11894,12 +11894,12 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>Unable to gather and upload the support data. Please check the server logs for detailed information.</source>
         <target state="final">지원 데이터를 수집하여 업로드할 수 없습니다. 자세한 내용은 서버 로그를 확인하십시오.</target>
       </trans-unit>
-      <trans-unit approved="yes" id="Add address" xml:space="preserve">
+      <trans-unit approved="no" id="Add address" xml:space="preserve">
         <source>Add address</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/Addresses</context>
         </context-group>
-        <target state="final">주소 추가</target>
+        <target state="translated">주소 추가</target>
       </trans-unit>
       <trans-unit approved="yes" id="Edit" xml:space="preserve">
         <source>Edit</source>
@@ -12111,17 +12111,17 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <target>ARMHF Debian</target>
         <target state="new"/>
       </trans-unit>
-      <trans-unit id="diskcheckwarning" xml:space="preserve">
+      <trans-unit id="diskcheckwarning" xml:space="preserve" approved="yes">
         <source>Disk Check</source>
-        <target state="new"/>
+        <target state="final">디스크 점검</target>
       </trans-unit>
-      <trans-unit id="notification.diskcheck.summary" xml:space="preserve">
+      <trans-unit id="notification.diskcheck.summary" xml:space="preserve" approved="yes">
         <source>You are running out of space on your @@PRODUCT_NAME@@ {0}. This is {1}</source>
-        <target state="new"/>
+        <target state="final">@@PRODUCT_NAME@@ {0}의 디스크 공간이 거의 다 찼습니다. {1}입니다.</target>
       </trans-unit>
-      <trans-unit id="notification.diskcheck.details" xml:space="preserve">
+      <trans-unit id="notification.diskcheck.details" xml:space="preserve" approved="yes">
         <source>You are running out of space on your @@PRODUCT_NAME@@ {0}. This is {1}. If you run out of disk space, @@PRODUCT_NAME@@ will stop running, and this could lead to a loss of data. @@PRODUCT_NAME@@ will shutdown automatically.</source>
-        <target state="new"/>
+        <target state="final">@@PRODUCT_NAME@@ {0}의 디스크 공간이 거의 다 찼습니다. {1}입니다. 디스크 공간이 부족하면 @@PRODUCT_NAME@@의 작동이 중단되고 데이터가 손실될 수 있습니다. @@PRODUCT_NAME@@이(가) 자동으로 종료됩니다.</target>
       </trans-unit>
       <trans-unit id="SCAP Policies" xml:space="preserve">
         <source>SCAP Policies</source>
@@ -12144,19 +12144,21 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         </context-group>
         <target state="new"/>
       </trans-unit>
-      <trans-unit id="distupgrade.sles16.migration.success" xml:space="preserve">
+      <trans-unit id="distupgrade.sles16.migration.success" xml:space="preserve" approved="yes">
         <source>SLES 16 migration completed successfully.{0}</source>
-        <target state="new"/>
+        <target state="final">SLES 16 마이그레이션이 완료되었습니다.{0}</target>
       </trans-unit>
-      <trans-unit id="distupgrade.sles16.migration.success.post_steps" xml:space="preserve">
+      <trans-unit id="distupgrade.sles16.migration.success.post_steps" xml:space="preserve" approved="yes">
         <source>Recommended post-migration steps:
 - Check for orphaned/unneeded packages: zypper packages --orphaned --unneeded
 - Check for updated config files: find /etc/ -name '*.rpmnew' -o -name '*.rpmsave'</source>
-        <target state="new"/>
+        <target state="final">권장 마이그레이션 후 단계:
+- 고아/불필요한 패키지 확인: zypper packages --orphaned --unneeded
+- 업데이트된 구성 파일 확인: find /etc/ -name '*.rpmnew' -o -name '*.rpmsave'</target>
       </trans-unit>
-      <trans-unit id="distupgrade.sles16.migration.failed" xml:space="preserve">
+      <trans-unit id="distupgrade.sles16.migration.failed" xml:space="preserve" approved="yes">
         <source>SLES 16 migration failed or result not found.{0}</source>
-        <target state="new"/>
+        <target state="final">SLES 16 마이그레이션이 실패했으며 결과가 없습니다.{0}</target>
       </trans-unit>
     </body>
   </file>

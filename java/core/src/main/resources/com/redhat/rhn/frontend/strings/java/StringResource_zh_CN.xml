@@ -12108,58 +12108,60 @@ To amend this situation, please add SCC credentials &lt;a href="/rhn/admin/setup
         <source>PXE Event Failed</source>
         <target state="new"/>
       </trans-unit>
-    <trans-unit id="ARMHF Debian" xml:space="preserve">
+      <trans-unit id="ARMHF Debian" xml:space="preserve">
         <source>ARMHF Debian</source>
         <target>ARMHF Debian</target>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="diskcheckwarning" xml:space="preserve">
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="diskcheckwarning" xml:space="preserve" approved="yes">
         <source>Disk Check</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.diskcheck.summary" xml:space="preserve">
+        <target state="final">磁盘检查</target>
+      </trans-unit>
+      <trans-unit id="notification.diskcheck.summary" xml:space="preserve" approved="yes">
         <source>You are running out of space on your @@PRODUCT_NAME@@ {0}. This is {1}</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="notification.diskcheck.details" xml:space="preserve">
+        <target state="final">您的 @@PRODUCT_NAME@@ {0} 存储空间即将不足。当前状态为 {1}</target>
+      </trans-unit>
+      <trans-unit id="notification.diskcheck.details" xml:space="preserve" approved="yes">
         <source>You are running out of space on your @@PRODUCT_NAME@@ {0}. This is {1}. If you run out of disk space, @@PRODUCT_NAME@@ will stop running, and this could lead to a loss of data. @@PRODUCT_NAME@@ will shutdown automatically.</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="final">您的 @@PRODUCT_NAME@@ {0} 存储空间即将不足。当前状态为 {1}。一旦磁盘空间耗尽，@@PRODUCT_NAME@@ 将停止运行，还可能造成数据丢失，@@PRODUCT_NAME@@ 将会自动关闭。</target>
+      </trans-unit>
       <trans-unit id="SCAP Policies" xml:space="preserve">
         <source>SCAP Policies</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="SCAP Content" xml:space="preserve">
         <source>SCAP Content</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="Tailoring Files" xml:space="preserve">
         <source>Tailoring Files</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Navigation Menu</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="distupgrade.sles16.migration.success" xml:space="preserve">
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="distupgrade.sles16.migration.success" xml:space="preserve" approved="yes">
         <source>SLES 16 migration completed successfully.{0}</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="distupgrade.sles16.migration.success.post_steps" xml:space="preserve">
+        <target state="final">SLES 16 迁移已成功完成。{0}</target>
+      </trans-unit>
+      <trans-unit id="distupgrade.sles16.migration.success.post_steps" xml:space="preserve" approved="yes">
         <source>Recommended post-migration steps:
 - Check for orphaned/unneeded packages: zypper packages --orphaned --unneeded
 - Check for updated config files: find /etc/ -name '*.rpmnew' -o -name '*.rpmsave'</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="distupgrade.sles16.migration.failed" xml:space="preserve">
+        <target state="final">迁移后建议执行以下操作：
+- 检查孤立/无用软件包：zypper packages --orphaned --unneeded
+- 检查已更新的配置文件：find /etc/ -name '*.rpmnew' -o -name '*.rpmsave'</target>
+      </trans-unit>
+      <trans-unit id="distupgrade.sles16.migration.failed" xml:space="preserve" approved="yes">
         <source>SLES 16 migration failed or result not found.{0}</source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="final">SLES 16 迁移失败或未找到迁移结果。{0}</target>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

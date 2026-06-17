@@ -16810,12 +16810,12 @@ a file or files, or copy the latest version into a set of local overrides or int
         </context-group>
         <target state="translated">订阅的系统</target>
       </trans-unit>
-      <trans-unit id="channeltarget.jsp.header1" xml:space="preserve">
+      <trans-unit id="channeltarget.jsp.header1" xml:space="preserve" approved="yes">
         <source>Eligible Systems</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/channels/TargetSystems.do</context>
         </context-group>
-        <target state="needs-adaptation">目标系统</target>
+        <target state="final">符合条件的系统</target>
       </trans-unit>
       <trans-unit id="channeltarget.jsp.header2" xml:space="preserve">
         <source>The following systems can be subscribed to this channel:</source>
@@ -21429,9 +21429,9 @@ any of these revisions.  Are you sure you want to do this?</source>
 
             Select one or more and click the &lt;b&gt;Verify Packages&lt;/b&gt; button to schedule package verification.
          </source>
-        <target state="final">可以在一个或多个系统上校验下列软件包。
+        <target state="final">可以在一个或多个系统上验证下列软件包。
 
-             选择一个或多个软件包，然后单击&lt;b&gt;校验软件包&lt;/b&gt;按钮安排校验软件包。
+             选择一个或多个软件包，然后单击&lt;b&gt;验证软件包&lt;/b&gt;按钮安排校验软件包。
          </target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/PackageVerify.do</context>
@@ -21439,7 +21439,7 @@ any of these revisions.  Are you sure you want to do this?</source>
       </trans-unit>
       <trans-unit approved="yes" id="ssm.package.verify.select.confirm" xml:space="preserve">
         <source>Verify Packages</source>
-        <target state="final">校验软件包</target>
+        <target state="final">验证软件包</target>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/ssm/PackageVerify.do</context>
         </context-group>
@@ -29672,12 +29672,12 @@ given channel.</source>
         <source>CA Certificates Update</source>
         <target state="final">CA 证书更新</target>
       </trans-unit>
-      <trans-unit id="system.event.actionId" xml:space="preserve">
+      <trans-unit id="system.event.actionId" xml:space="preserve" approved="yes">
         <source>Action ID</source>
         <context-group name="ctx">
           <context context-type="sourcefile">System Events Pages</context>
         </context-group>
-        <target state="new"/>
+        <target state="final">操作 ID</target>
       </trans-unit>
       <trans-unit id="pkg.lock.message.lockerror" xml:space="preserve" approved="yes">
         <source>Failed to lock selected packages. Can't lock multiple versions of the same package.</source>
@@ -29686,128 +29686,124 @@ given channel.</source>
         </context-group>
         <target state="final">未能锁定所选软件包。无法锁定同一软件包的多个版本。</target>
       </trans-unit>
-    <trans-unit id="preferences.disk-check-warning.name" xml:space="preserve">
+      <trans-unit id="preferences.disk-check-warning.name" xml:space="preserve" approved="yes">
         <source>Disk Check Warning</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="preferences.disk-check-warning.description" xml:space="preserve">
+        <target state="final">磁盘检查警告</target>
+      </trans-unit>
+      <trans-unit id="preferences.disk-check-warning.description" xml:space="preserve" approved="yes">
         <source> Show disk space warning when running low.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-
-
- 
-      <trans-unit id="bunch.jsp.description.diskcheck-task-bunch" xml:space="preserve">
+        <target state="final"> 存储空间不足时显示磁盘空间警告。</target>
+      </trans-unit>
+      <trans-unit id="bunch.jsp.description.diskcheck-task-bunch" xml:space="preserve" approved="yes">
         <source>Schedule a disk check</source>
-            <context-group name="ctx">
+        <context-group name="ctx">
           <context context-type="sourcefile">/rhn/admin/BunchDetail.do</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="task.status.clm-channel-diff" xml:space="preserve">
+        <target state="final">安排磁盘检查</target>
+      </trans-unit>
+      <trans-unit id="task.status.clm-channel-diff" xml:space="preserve" approved="yes">
         <source>CLM Channel Comparison</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="task.status.diskcheck-task" xml:space="preserve">
+        <target state="final">CLM 通道比较</target>
+      </trans-unit>
+      <trans-unit id="task.status.diskcheck-task" xml:space="preserve" approved="yes">
         <source>Disk Check Actions</source>
-      <target state="new"/>
-  </trans-unit>
-
+        <target state="final">磁盘检查操作</target>
+      </trans-unit>
       <trans-unit id="preferences.jsp.betafeatures" xml:space="preserve">
         <source> Enable beta features</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="preferences.jsp.betaheader" xml:space="preserve">
         <source>Beta Features</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="preferences.jsp.betadescription" xml:space="preserve">
         <source>Beta features are experimental and may not be fully tested. Enable this option to access new functionality that is still under development. Use with caution in production environments.</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/UserPreferences</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="system.audit.xccdfdetails.jsp.action" xml:space="preserve">
-          <source>Action</source>
+        <source>Action</source>
         <context-group name="ctx">
           <context context-type="sourcefile">Detailed view of SCAP XCCDF scan</context>
         </context-group>
         <target state="new"/>
-  </trans-unit>
-        <trans-unit id="spmigration.sles16.preflight.title" xml:space="preserve">
+      </trans-unit>
+      <trans-unit id="spmigration.sles16.preflight.title" xml:space="preserve" approved="yes">
         <source>Before Migrating to SLES 16 — Please ensure</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="spmigration.sles16.preflight.patch.title" xml:space="preserve">
+        <target state="final">迁移到 SLES 16 前 — 请确认</target>
+      </trans-unit>
+      <trans-unit id="spmigration.sles16.preflight.patch.title" xml:space="preserve" approved="yes">
         <source>System is fully up to date</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="spmigration.sles16.preflight.diskspace.title" xml:space="preserve">
+        <target state="final">系统已完全更新</target>
+      </trans-unit>
+      <trans-unit id="spmigration.sles16.preflight.diskspace.title" xml:space="preserve" approved="yes">
         <source>Sufficient disk space is available</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="spmigration.sles16.preflight.ssh.title" xml:space="preserve">
+        <target state="final">磁盘空间充足</target>
+      </trans-unit>
+      <trans-unit id="spmigration.sles16.preflight.ssh.title" xml:space="preserve" approved="yes">
         <source>Ensure SSH key-based access is available for at least one user. If root login is required, create /etc/ssh/sshd_config.d/50-permit-root-login.conf with: PermitRootLogin yes</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="spmigration.sles16.preflight.kvmguests.title" xml:space="preserve">
+        <target state="final">至少有一位用户可通过 SSH 密钥方式访问。如果需要通过 root 帐户登录，请创建 /etc/ssh/sshd_config.d/50-permit-root-login.conf 文件，并写入配置：PermitRootLogin yes</target>
+      </trans-unit>
+      <trans-unit id="spmigration.sles16.preflight.kvmguests.title" xml:space="preserve" approved="yes">
         <source>KVM guests are shut down (if applicable)</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="spmigration.sles16.preflight.network.title" xml:space="preserve">
+        <target state="final">KVM Guest 已关闭（如有）</target>
+      </trans-unit>
+      <trans-unit id="spmigration.sles16.preflight.network.title" xml:space="preserve" approved="yes">
         <source>Network configuration will be migrated from wicked to NetworkManager</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="spmigration.sles16.preflight.selinux.title" xml:space="preserve">
+        <target state="final">网络配置将从 wicked 迁移到 NetworkManager</target>
+      </trans-unit>
+      <trans-unit id="spmigration.sles16.preflight.selinux.title" xml:space="preserve" approved="yes">
         <source>AppArmor profiles will be migrated to SELinux</source>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="usercreate.prefix" xml:space="preserve">
+        <target state="final">AppArmor 配置文件将迁移到 SELinux</target>
+      </trans-unit>
+      <trans-unit id="usercreate.prefix" xml:space="preserve" approved="yes">
         <source>Prefix</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="usercreate.firstName" xml:space="preserve">
+        <target state="final">前缀</target>
+      </trans-unit>
+      <trans-unit id="usercreate.firstName" xml:space="preserve" approved="yes">
         <source>First Name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
-      <trans-unit id="usercreate.lastName" xml:space="preserve">
+        <target state="final">名字</target>
+      </trans-unit>
+      <trans-unit id="usercreate.lastName" xml:space="preserve" approved="yes">
         <source>Last Name</source>
         <context-group name="ctx">
           <context context-type="sourcefile">/rhn/users/CreateUser</context>
         </context-group>
-      <target state="new"/>
-  </trans-unit>
+        <target state="final">姓氏</target>
+      </trans-unit>
       <trans-unit id="channel.jsp.repoautosync" xml:space="preserve">
         <source>Automatic Repository Synchronization</source>
-      <target state="new"/>
-  </trans-unit>
+        <target state="new"/>
+      </trans-unit>
       <trans-unit id="channel.jsp.repoautosync.true" xml:space="preserve">
         <source> Enabled </source>
-      <target state="new"/>
-  </trans-unit>
-        <trans-unit id="channel.jsp.repoautosync.false" xml:space="preserve">
+        <target state="new"/>
+      </trans-unit>
+      <trans-unit id="channel.jsp.repoautosync.false" xml:space="preserve">
         <source> Disabled </source>
-      <target state="new"/>
-  </trans-unit>
-      </body>
+        <target state="new"/>
+      </trans-unit>
+    </body>
   </file>
 </xliff>

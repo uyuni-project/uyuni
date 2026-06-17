@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-20 12:03+0000\n"
-"PO-Revision-Date: 2025-12-06 15:04+0000\n"
+"PO-Revision-Date: 2026-05-22 00:12+0000\n"
 "Last-Translator: Ettore Atalan <atalanttore@googlemail.com>\n"
 "Language-Team: German <https://l10n.opensuse.org/projects/uyuni/web/de/>\n"
 "Language: de\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.14.3\n"
+"X-Generator: Weblate 2026.5\n"
 
 #: ../html/javascript/spacewalk-essentials.js:409
 msgid "remaining"
@@ -2981,10 +2981,8 @@ msgid "Last Status Update"
 msgstr ""
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:50
-#, fuzzy
-#| msgid "Edit"
 msgid "Edit "
-msgstr "Bearbeiten"
+msgstr "Bearbeiten "
 
 #: ../html/src/manager/admin/payg-shared/sshData/payg-ssh-data-edit.tsx:65
 msgid "Editing ssh connection data.."
@@ -5373,10 +5371,8 @@ msgid "Built externally"
 msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:134
-#, fuzzy
-#| msgid "Status"
 msgid " Status"
-msgstr "Status"
+msgstr " Status"
 
 #: ../html/src/manager/images/image-view-overview.tsx:139
 msgid "Picked Up"
@@ -5391,7 +5387,7 @@ msgstr ""
 #: ../html/src/manager/images/image-view.tsx:563
 #: ../html/src/manager/images/image-view.tsx:615
 msgid "Instances"
-msgstr ""
+msgstr "Instanzen"
 
 #: ../html/src/manager/images/image-view-overview.tsx:203
 #: ../html/src/manager/images/image-view-overview.tsx:240
@@ -5415,11 +5411,11 @@ msgstr ""
 #: ../html/src/manager/images/image-view-overview.tsx:267
 #: ../html/src/manager/images/image-view.tsx:538
 msgid "Outdated instances found"
-msgstr ""
+msgstr "Veraltete Instanzen gefunden"
 
 #: ../html/src/manager/images/image-view-overview.tsx:330
 msgid "Edit profile"
-msgstr ""
+msgstr "Profil bearbeiten"
 
 #: ../html/src/manager/images/image-view-overview.tsx:354
 msgid "Edit store"
@@ -5430,33 +5426,33 @@ msgstr ""
 #: ../html/src/manager/images/image-view.tsx:489
 #: ../html/src/manager/systems/list-filter.tsx:28
 msgid "Critical updates available"
-msgstr ""
+msgstr "Kritische Aktualisierungen verfügbar"
 
 #: ../html/src/manager/images/image-view-overview.tsx:531
 #: ../html/src/manager/images/image-view-overview.tsx:532
 #: ../html/src/manager/images/image-view.tsx:492
 msgid "Non-critical updates available"
-msgstr ""
+msgstr "Nicht-kritische Aktualisierungen verfügbar"
 
 #: ../html/src/manager/images/image-view-overview.tsx:538
 #: ../html/src/manager/images/image-view-overview.tsx:539
 #: ../html/src/manager/images/image-view.tsx:495
 msgid "Package updates available"
-msgstr ""
+msgstr "Paketaktualisierungen verfügbar"
 
 #: ../html/src/manager/images/image-view-overview.tsx:545
 #: ../html/src/manager/images/image-view-overview.tsx:546
 #: ../html/src/manager/images/image-view.tsx:497
 msgid "Image is up to date"
-msgstr ""
+msgstr "Abbild ist auf dem neuesten Stand"
 
 #: ../html/src/manager/images/image-view-overview.tsx:614
 msgid "Image Status"
-msgstr ""
+msgstr "Abbildstatus"
 
 #: ../html/src/manager/images/image-view-overview.tsx:617
 msgid "Image Info"
-msgstr ""
+msgstr "Abbildinfo"
 
 #: ../html/src/manager/images/image-view-overview.tsx:628
 msgid "Build Status"
@@ -5465,7 +5461,7 @@ msgstr ""
 #: ../html/src/manager/images/image-view-overview.tsx:636
 #: ../html/src/manager/images/image-view-overview.tsx:816
 msgid "Inspect"
-msgstr ""
+msgstr "Untersuchen"
 
 #: ../html/src/manager/images/image-view-overview.tsx:647
 msgid "Reschedule the build"
@@ -5473,7 +5469,7 @@ msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:655
 msgid "Reinspect"
-msgstr ""
+msgstr "Erneut untersuchen"
 
 #: ../html/src/manager/images/image-view-overview.tsx:656
 msgid "Reschedule the inspect"
@@ -5487,7 +5483,7 @@ msgstr ""
 #: ../html/src/manager/images/image-view.tsx:367
 #: ../html/src/manager/images/image-view.tsx:729
 msgid "Delete Image"
-msgstr ""
+msgstr "Abbild löschen"
 
 #: ../html/src/manager/images/image-view-overview.tsx:687
 #: ../html/src/manager/images/image-view.tsx:732
@@ -5500,7 +5496,7 @@ msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:772
 msgid "Rebuild Image"
-msgstr ""
+msgstr "Abbild neu bauen"
 
 #: ../html/src/manager/images/image-view-overview.tsx:817
 msgid "Schedule inspect"
@@ -5508,13 +5504,13 @@ msgstr ""
 
 #: ../html/src/manager/images/image-view-overview.tsx:843
 msgid "Reinspect Image"
-msgstr ""
+msgstr "Abbild erneut untersuchen"
 
 #: ../html/src/manager/images/image-view-packages.tsx:54
 #: ../html/src/manager/minion/packages/package-states.tsx:322
 #: ../html/src/manager/minion/ptf/ptf-column-definition.tsx:26
 msgid "Installed"
-msgstr ""
+msgstr "Installiert"
 
 #: ../html/src/manager/images/image-view-patches.tsx:22
 msgid "fa fa-shield fa-1-5x"
