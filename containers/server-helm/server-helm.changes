@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Jun 17 14:51:36 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.8
+  * Allow custom volume and mount settings in the server Helm chart.
+  * Allow use of dedicated SELinux type
+
+-------------------------------------------------------------------
 Fri May 29 18:48:51 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.7
