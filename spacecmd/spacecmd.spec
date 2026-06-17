@@ -43,7 +43,7 @@
 %endif
 
 Name:           spacecmd
-Version:        5.2.8
+Version:        5.2.9
 Release:        0
 Summary:        Command-line interface to %{productprettyname} servers
 License:        GPL-3.0-or-later
