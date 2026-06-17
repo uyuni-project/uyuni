@@ -1,4 +1,16 @@
 -------------------------------------------------------------------
+Wed Jun 17 14:42:26 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.16-0
+  * Handle the 'unknown' arch as no arch
+  * Fix queries to list servers in an Ansible control node server
+    (bsc#1267964)
+  * Update OSs supported with OVAL
+  * Do not attempt to delete a certificate that does not exist
+    (bsc#1268151)
+  * Remote Report DB connection should always use SSL (bsc#1268229).
+
+-------------------------------------------------------------------
 Fri May 29 18:45:15 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.15-0
