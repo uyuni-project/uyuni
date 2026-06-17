@@ -16059,7 +16059,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 --------------------------------------------------------------------------------
 
-Package: moment-timezone@0.5.35
+Package: moment-timezone@0.5.38
 License text:
 
 The MIT License (MIT)
