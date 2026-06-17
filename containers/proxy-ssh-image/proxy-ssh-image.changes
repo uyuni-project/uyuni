@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jun 17 14:52:17 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.8
+  * Find sshd configuration in openSUSE Leap 16.0
+
+-------------------------------------------------------------------
 Fri May 22 13:52:37 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.7
