@@ -80,15 +80,35 @@ public class OVALCleaner {
         if (osFamily == OsFamily.DEBIAN) {
             convertDebianTestRefs(definition.getCriteria(), osVersion);
         }
+        else if (osFamily == OsFamily.ORACLE_LINUX) {
+            normalizeOracleCpes(definition);
+        }
+    }
+
+    private static void normalizeOracleCpes(DefinitionType definition) {
+        definition.getMetadata().getAdvisory().ifPresent(advisory -> {
+            List<String> normalizedCpes = advisory.getAffectedCpeList().stream()
+                    .map(cpe -> {
+                        if (cpe.startsWith("cpe:/o:oracle:linux:")) {
+                            String[] parts = cpe.split(":");
+                            if (parts.length >= 5) {
+                                return String.join(":", parts[0], parts[1], parts[2], parts[3], parts[4]);
+                            }
+                        }
+                        return cpe;
+                    }).distinct().collect(Collectors.toList());
+            advisory.setAffectedCpeList(normalizedCpes);
+        });
     }
 
     private static final Pattern EXTRACT_CVE_REGEX = Pattern.compile(".{0,30}(CVE-\\d{4}-\\d+).{0,30}");
 
     private static void fillCves(DefinitionType definition, OsFamily osFamily) {
         switch (osFamily) {
-            case REDHAT_ENTERPRISE_LINUX,
-                 LEAP, LEAP_MICRO,
-                 SUSE_LINUX_ENTERPRISE_SERVER, SUSE_LINUX_ENTERPRISE_DESKTOP, SUSE_LINUX_ENTERPRISE_MICRO,
+            case REDHAT_ENTERPRISE_LINUX, ALMA_LINUX, ORACLE_LINUX,
+                 LEAP,
+                 SUSE_LINUX_ENTERPRISE_SERVER, SUSE_LINUX_ENTERPRISE_DESKTOP,
+                 SUSE_LINUX_ENTERPRISE_MICRO, SUSE_LIBERTY_LINUX,
                  UBUNTU:
                 List<String> cves =
                         definition.getMetadata().getAdvisory().map(Advisory::getCveList)
@@ -184,6 +204,9 @@ public class OVALCleaner {
         }
         else if ("12.0".equals(osVersion) || "12".equals(osVersion)) {
             codename = "bookworm";
+        }
+        else if ("13.0".equals(osVersion) || "13".equals(osVersion)) {
+            codename = "trixie";
         }
         else {
             throw new IllegalArgumentException("Invalid debian version: " + osVersion);

@@ -82,7 +82,7 @@ def _derive_cpe(grains):
     """
     os = grains.get("os")
     os_release = grains.get("osrelease", "")
-    if os == "Debian":
+    if os in ("Debian", "Raspbian"):
         return "cpe:/o:debian:debian_linux:" + os_release
     elif os == "Ubuntu":
         return "cpe:/o:canonical:ubuntu_linux:" + os_release

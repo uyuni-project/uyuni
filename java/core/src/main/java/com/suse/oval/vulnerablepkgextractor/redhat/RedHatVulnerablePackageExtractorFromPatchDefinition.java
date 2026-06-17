@@ -114,7 +114,9 @@ public class RedHatVulnerablePackageExtractorFromPatchDefinition extends Criteri
     public boolean isValidDefinition(DefinitionType definitionTypeIn) {
         boolean isPatchDefinition =
                 definitionTypeIn.getDefinitionClass() == DefinitionClassEnum.PATCH;
-        boolean isRedHatOVAL = definitionTypeIn.getOsFamily() == OsFamily.REDHAT_ENTERPRISE_LINUX;
+        boolean isRedHatOVAL = definitionTypeIn.getOsFamily() == OsFamily.REDHAT_ENTERPRISE_LINUX ||
+                definitionTypeIn.getOsFamily() == OsFamily.ALMA_LINUX ||
+                definitionTypeIn.getOsFamily() == OsFamily.ORACLE_LINUX;
 
         boolean hasCVEs = !definitionTypeIn.getCves().isEmpty();
 

@@ -27,19 +27,23 @@ import java.util.stream.Collectors;
  * */
 public enum OsFamily {
     LEAP("openSUSE Leap", "Leap", "opensuse",
-            oneOf("15.2", "15.3", "15.4", "15.5", "15.6")),
-    LEAP_MICRO("openSUSELeap Micro", "openSUE Leap Micro", "opensuse",
-            oneOf("5.2", "5.3", "5.4", "5.5", "6.0")),
+            oneOf("16.0")),
     SUSE_LINUX_ENTERPRISE_SERVER("SUSE Linux Enterprise Server", "SLES", "suse",
-            oneOf("11", "12", "15")),
+            oneOf("12", "15", "16")),
     SUSE_LINUX_ENTERPRISE_DESKTOP("SUSE Linux Enterprise Desktop", "SLED", "suse",
-            oneOf("10", "11", "12", "15")),
+            oneOf("15")),
     SUSE_LINUX_ENTERPRISE_MICRO("SUSE Linux Enterprise Micro", "SLE Micro", "suse",
-            oneOf("5.0", "5.1", "5.2", "5.3", "5.4", "5.5", "6.0")),
+            oneOf("5.2", "5.3", "5.4", "5.5", "6.0", "6.1", "6.2")),
+    SUSE_LIBERTY_LINUX("SUSE Liberty Linux", "SLL", "SLL",
+            oneOf("7", "8", "9", "10")),
+    ALMA_LINUX("AlmaLinux", "AlmaLinux", "almalinux",
+            oneOf("8", "9", "10")),
+    ORACLE_LINUX("Oracle Linux", "OEL", "oel",
+            oneOf("7", "8", "9", "10")),
     REDHAT_ENTERPRISE_LINUX("Red Hat Enterprise Linux", "Red Hat Enterprise Linux", "redhat",
             withPrefix("7.", "8.", "9.")),
     UBUNTU("Ubuntu", "ubuntu", "canonical", oneOf("20.04", "22.04", "24.04", "26.04")),
-    DEBIAN("Debian", "Debian", "debian", oneOf("11", "12"));
+    DEBIAN("Debian", "Debian", "debian", oneOf("11", "12", "13"));
 
     private final String vendor;
     private final String fullname;
