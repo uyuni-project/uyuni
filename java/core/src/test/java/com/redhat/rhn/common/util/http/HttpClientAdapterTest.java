@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.manager.setup.ProxySettingsDto;
 import com.redhat.rhn.manager.setup.ProxySettingsManagerTest;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.TestStatics;
 import com.redhat.rhn.testing.httpservermock.HttpServerMock;
 import com.redhat.rhn.testing.httpservermock.Responder;
@@ -43,7 +44,7 @@ import simple.http.Response;
 /**
  * Integrational unit tests for {@link HttpClientAdapter}.
  */
-public class HttpClientAdapterTest  {
+public class HttpClientAdapterTest extends BaseTestCase {
 
     // Mock server for reuse
     private static final HttpServerMock SERVER_MOCK = new HttpServerMock();
