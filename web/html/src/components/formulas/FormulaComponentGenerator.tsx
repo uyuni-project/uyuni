@@ -971,11 +971,6 @@ export class FormulaFormContextProvider extends Component<
     while (element.$default.length < element.$minItems) {
       element.$default.push(deepCopy(element.$newItemValue));
     }
-
-    // show one sample item by default for empty dynamic edit-groups
-    if (element.$default.length === 0) {
-      element.$default.push(deepCopy(element.$newItemValue));
-    }
   };
 
   /*
