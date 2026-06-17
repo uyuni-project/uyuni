@@ -26,6 +26,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.context.Context;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.user.UserManager;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.ChannelTestUtils;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
@@ -48,7 +49,7 @@ import java.util.TimeZone;
 /**
  * Unit test for {@link SPMigrationAction}
  */
-public class SPMigrationActionTest implements SaltTestCaseUtils {
+public class SPMigrationActionTest extends BaseTestCase implements SaltTestCaseUtils {
 
     private Server server;
     private RhnMockHttpServletRequest request;

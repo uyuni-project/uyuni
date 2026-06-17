@@ -42,7 +42,7 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-public class BaseStrutsTestCase {
+public class BaseStrutsTestCase extends BaseTestCase {
 
     private static final Logger LOGGER = LogManager.getLogger(BaseStrutsTestCase.class);
 
