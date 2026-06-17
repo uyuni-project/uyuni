@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed Jun 17 14:50:41 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.11
+  * Edit pg_hba only in one script (bsc#1267980).
+
+-------------------------------------------------------------------
 Fri May 29 18:46:34 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.10
