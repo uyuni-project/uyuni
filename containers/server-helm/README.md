@@ -29,11 +29,39 @@ Its name needs to be passed as the `registrySecret` value.
 
 The Root CA certificate of `db-cert` and `uyuni-cert` are expected in ConfigMaps named `db-ca` and `uyuni-ca` with the certificate in the `ca.crt` key.
 
+An optional `custom-cas` ConfigMap can be created to extend the server's trust store with custom CA certificates.
+When present, it is projected into `/etc/pki/trust/anchors/` alongside `uyuni-ca` and `db-ca`.
+Each key in the ConfigMap becomes a file under that directory, so name the keys after the certificate file name (typically ending in `.crt`).
+If the ConfigMap is missing, the chart still deploys — only the `uyuni-ca` and `db-ca` certificates are projected.
+
+If you previously used the removed `ca-certs` PVC to provide additional certificates, migrate them into `custom-cas` before upgrading.
+
+### Custom CA certificates
+
+On Kubernetes, the `/etc/pki/trust/anchors/` directory is a read-only projected volume that aggregates the `uyuni-ca`, `db-ca`, and `custom-cas` ConfigMaps.
+To add or remove custom CAs, update the `custom-cas` ConfigMap. Kubernetes will update the mounted files automatically (with a short delay), but you may still need to restart the `uyuni` deployment so running services reload the trust store.
+For example, to add `my-corp.crt`:
+
+```sh
+kubectl create configmap custom-cas -n $NAMESPACE \
+    --from-file=my-corp.crt=./my-corp.crt
+kubectl rollout restart deployment/uyuni -n $NAMESPACE
+```
+
+To change the set of trusted CAs later, delete the ConfigMap and recreate it with all the certificates you want trusted:
+
+```sh
+kubectl delete configmap custom-cas -n $NAMESPACE
+kubectl create configmap custom-cas -n $NAMESPACE \
+    --from-file=my-corp.crt=./my-corp.crt \
+    --from-file=partner.crt=./partner.crt
+kubectl rollout restart deployment/uyuni -n $NAMESPACE
+```
+
 ### Persistent Volumes
 
 The following persistent volume claims will be created and will need to be bound to persistent volumes.
 
-- `ca-certs`: (default size: 10Mi)
 - `etc-apache2`: (default size: 1Mi)
 - `etc-cobbler`: (default size: 1Mi)
 - `etc-postfix`: (default size: 1Mi)
