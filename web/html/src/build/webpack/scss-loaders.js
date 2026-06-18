@@ -9,9 +9,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const webHtmlSrc = path.resolve(__dirname, "../..");
 
-// css-loader → postcss-loader → sass-loader chain shared between the app's webpack build
-// and Storybook. Callers prepend their own injector (MiniCssExtractPlugin.loader for the
-// app, style-loader for Storybook) and may override `localIdentName` for production hashes.
+// css-loader → postcss-loader → sass-loader chain shared between the app's webpack build and Storybook
 export function scssProcessingLoaders({ localIdentName = "[path][name]__[local]--[hash:base64:5]" } = {}) {
   return [
     {
