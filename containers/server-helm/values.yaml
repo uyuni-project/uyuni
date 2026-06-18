@@ -17,6 +17,10 @@ registrySecret: ""
 # The time zone to set in the containers
 timezone: "Etc/UTC"
 
+# skipPreFlight allows skipping pre-flight checks during helm template or --dry-run.
+# Set to true to skip all pre-flight validation checks.
+skipPreFlight: false
+
 # Server component configuration
 server:
   # image overrides the default image computed using the repository property
@@ -449,30 +453,6 @@ volumes:
     # size is the requested volume size.
     # This value is required.
     size: 300Mi
-
-    # If defined, storageClassName: <storageClass>
-    # If set to "-", storageClassName: "", which disables dynamic provisioning
-    # If undefined (the default) or set to null, no storageClassName spec is
-    #   set, choosing the default storage class.
-    storageClass:
-
-    # extraLabels adds custom labels to the PVC metadata
-    extraLabels:
-
-    # annotations sets annotations to the PVC.
-    # This may be useful to configure some storage backends
-    annotations:
-
-    # volumeName sets the volumeName to bind to if defined.
-    volumeName:
-
-    # selector is rendered with toYAML and can be used to bind to a specific PV.
-    selector:
-
-  ca-certs:
-    # size is the requested volume size.
-    # This value is required.
-    size: 10Mi
 
     # If defined, storageClassName: <storageClass>
     # If set to "-", storageClassName: "", which disables dynamic provisioning
