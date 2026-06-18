@@ -23,8 +23,6 @@ public class SaltConstants {
 
     public static final String SUMA_STATE_FILES_ROOT_PATH = "/srv/susemanager/salt";
 
-    public static final String SUMA_PILLAR_DATA_PATH = "/srv/susemanager/pillar_data";
-
     public static final String SUMA_PILLAR_IMAGES_DATA_PATH = "/srv/susemanager/pillar_data/images";
 
     public static final String SALT_FILE_GENERATION_TEMP_PATH = "/srv/susemanager/tmp";
@@ -36,8 +34,6 @@ public class SaltConstants {
     public static final String PILLAR_IMAGE_DATA_FILE_PREFIX = "image";
 
     public static final String PILLAR_IMAGE_DATA_FILE_EXT = "sls";
-
-    public static final String SLS_FILE_ENCODING = "US-ASCII";
 
     public static final String SALT_SERVER_STATE_FILE_PREFIX = "custom_";
 
