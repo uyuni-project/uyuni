@@ -58,8 +58,8 @@ public class SyncFromOriginalServiceImplTest extends BaseTestCaseWithUser {
 
     @Override
     @BeforeEach
-    public void setUp() throws Exception {
-        super.setUp();
+    public void setUpBaseTestCaseWithUser() throws Exception {
+        super.setUpBaseTestCaseWithUser();
         service = new SyncFromOriginalServiceImpl();
         originalChannel = ChannelFactoryTest.createTestChannel(user);
         clonedChannel = ChannelFactoryTest.createTestClonedChannel(originalChannel, user);
