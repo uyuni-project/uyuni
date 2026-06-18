@@ -153,3 +153,11 @@ tests:
         documentSelector:
           path: metadata.name
           value: var-cache
+
+  - it: should not render the removed ca-certs PVC
+    set:
+      global.fqdn: uyuni.example.com
+    asserts:
+      - notEqual:
+          path: metadata.name
+          value: ca-certs

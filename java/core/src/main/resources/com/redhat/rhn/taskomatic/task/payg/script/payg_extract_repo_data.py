@@ -156,7 +156,7 @@ def _extract_rmt_server_info(netloc):
     if not Path(ca_cert_path).exists():
         ca_cert_path = (
             # pylint: disable-next=consider-using-f-string
-            "/usr/share/pki/trust/anchors/registration_server_%s.pem"
+            "/etc/rhn/ca/registration_server_%s.pem"
             % server_ip.replace(".", "_")
         )
         if not Path(ca_cert_path).exists():
@@ -164,7 +164,7 @@ def _extract_rmt_server_info(netloc):
                 6,
                 [
                     # pylint: disable-next=consider-using-f-string
-                    "CA file for server {} not found (location '/etc/pki/trust/anchors/' or '/usr/share/pki/trust/anchors/')".format(
+                    "CA file for server {} not found (location '/etc/pki/trust/anchors/' or '/etc/rhn/ca/')".format(
                         server_ip
                     )
                 ],

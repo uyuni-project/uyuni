@@ -1,3 +1,23 @@
+{{- define "ca-certs-warning" }}
+
+ERROR: The ca-certs PVC still exists on the cluster.
+Custom CA certificates stored in this PVC must be recovered BEFORE upgrading.
+If the storage class reclaim policy is Delete, the PV will be removed during
+the upgrade and the data will be lost permanently.
+
+To proceed:
+  1. Recover any custom CA certificates (see the 'Migrating custom CAs from the
+     removed ca-certs PVC' section in the Kubernetes deployment documentation)
+  2. Delete the PVC: kubectl delete pvc ca-certs -n $NAMESPACE
+  3. Re-run helm upgrade
+
+Check the reclaim policy:
+  kubectl get storageclass $(kubectl get pvc ca-certs -n $NAMESPACE \
+    -o jsonpath='{.spec.storageClassName}') -o jsonpath='{.reclaimPolicy}'
+{{- end -}}
+{{- if (lookup "v1" "PersistentVolumeClaim" .Release.Namespace "ca-certs") }}
+{{- fail (include "ca-certs-warning" .) }}
+{{- end -}}
 Thank you for installing the {{ .Chart.Description }}!
 Connect to the web UI using the credentials from the admin-credentials secret:
 

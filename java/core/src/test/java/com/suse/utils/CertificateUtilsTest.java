@@ -47,22 +47,22 @@ public class CertificateUtilsTest {
 
     @Test
     public void ensureSafePathAcceptsValidCases() throws IllegalArgumentException {
-        assertEquals("/etc/pki/trust/anchors/test_1-12.txt",
+        assertEquals("/etc/rhn/ca/test_1-12.txt",
                 CertificateUtils.getCertificateSafePath("test_1-12.txt").toString());
-        assertEquals("/etc/pki/trust/anchors/test___1---13..txt",
+        assertEquals("/etc/rhn/ca/test___1---13..txt",
                 CertificateUtils.getCertificateSafePath("test___1---13..txt").toString());
         //ipv4
-        assertEquals("/etc/pki/trust/anchors/registration_server_10.1.2.245.pem",
+        assertEquals("/etc/rhn/ca/registration_server_10.1.2.245.pem",
                 CertificateUtils.getCertificateSafePath("registration_server_10.1.2.245.pem").toString());
         //ipv6
-        assertEquals("/etc/pki/trust/anchors/registration_server_2001:db8:3333:4444:5555:6666:7777:8888.pem",
+        assertEquals("/etc/rhn/ca/registration_server_2001:db8:3333:4444:5555:6666:7777:8888.pem",
                 CertificateUtils.getCertificateSafePath(
                         "registration_server_2001:db8:3333:4444:5555:6666:7777:8888.pem").toString());
-        assertEquals("/etc/pki/trust/anchors/registration_server_::.pem",
+        assertEquals("/etc/rhn/ca/registration_server_::.pem",
                 CertificateUtils.getCertificateSafePath("registration_server_::.pem").toString());
-        assertEquals("/etc/pki/trust/anchors/registration_server_2001:db8::.pem",
+        assertEquals("/etc/rhn/ca/registration_server_2001:db8::.pem",
                 CertificateUtils.getCertificateSafePath("registration_server_2001:db8::.pem").toString());
-        assertEquals("/etc/pki/trust/anchors/registration_server_::1234:5678.pem",
+        assertEquals("/etc/rhn/ca/registration_server_::1234:5678.pem",
                 CertificateUtils.getCertificateSafePath("registration_server_::1234:5678.pem").toString());
     }
 }
