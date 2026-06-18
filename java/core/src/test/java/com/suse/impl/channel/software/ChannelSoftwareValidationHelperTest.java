@@ -52,8 +52,8 @@ class ChannelSoftwareValidationHelperTest extends BaseTestCaseWithUser {
 
     @Override
     @BeforeEach
-    public void setUp() throws Exception {
-        super.setUp();
+    public void setUpBaseTestCaseWithUser() throws Exception {
+        super.setUpBaseTestCaseWithUser();
         admin = UserTestUtils.createUser();
         admin.addPermanentRole(RoleFactory.CHANNEL_ADMIN);
         UserTestUtils.addUserRole(admin, RoleFactory.CHANNEL_ADMIN);

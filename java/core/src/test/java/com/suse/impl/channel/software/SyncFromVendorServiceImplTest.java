@@ -51,8 +51,8 @@ public class SyncFromVendorServiceImplTest extends BaseTestCaseWithUser {
 
     @Override
     @BeforeEach
-    public void setUp() throws Exception {
-        super.setUp();
+    public void setUpBaseTestCaseWithUser() throws Exception {
+        super.setUpBaseTestCaseWithUser();
         service = new SyncFromVendorServiceImpl();
         targetChannel = ChannelFactoryTest.createTestChannel(user);
         userOrg = user.getOrg();
