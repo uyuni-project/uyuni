@@ -839,6 +839,12 @@
       "required": [],
       "title": "services"
     },
+    "skipPreFlight": {
+      "default": "false",
+      "description": "Skip pre-flight validation checks (useful with helm template or --dry-run when the cluster cannot be queried).",
+      "title": "skipPreFlight",
+      "type": "boolean"
+    },
     "tag": {
       "default": "",
       "description": "The default tag to use for all the images, can be overridden By default the tag will be the appVersion of the Chart.",
@@ -920,11 +926,6 @@
       "additionalProperties": false,
       "description": "Configuration of persistent volume claims.",
       "properties": {
-        "ca-certs": {
-          "$ref": "#/definitions/volumeConfig",
-          "description": "ca-certs volume configuration",
-          "required": []
-        },
         "etc-apache2": {
           "$ref": "#/definitions/volumeConfig",
           "description": "etc-apache2 volume configuration",
