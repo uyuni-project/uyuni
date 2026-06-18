@@ -280,7 +280,7 @@
                 <exclude name="**/tomcat*-servlet*"/>
                 <exclude name="**/jspapi*"/>
                 <exclude name="**/websocket-api*"/>
-                <exclude name="**/zz-checkstyle*"/>
+                <exclude name="**/checkstyle*"/>
                 <exclude name="**/jacocoant*"/>
             </fileset>
         </copy>
@@ -569,13 +569,32 @@
     </target>
 
     <target name="apidoc-asciidoc" description="Generate asciidoc from the API">
+        <property name="doclet.class" value="AsciidocDoclet"/>
+        <property name="template.dir" value="asciidoc"/>
+        <property name="apidoc.output" value="${report.dir}/apidocs/${template.dir}/"/>
+        <antcall target="apidoc"/>
+        <delete dir="${report.dir}/apidocs/${template.dir}/handlers/"/>
+    </target>
+
+    <target name="apidoc-asciidoc-new" description="Generate asciidoc from the API">
         <property name="template.dir" value="asciidoc"/>
         <java classname="com.suse.manager.api.docs.OpenApiToAsciidocParser" fork="true" failonerror="true">
             <classpath>
                 <pathelement location="build/classes"/>
                 <path refid="libjars"/>
             </classpath>
-            <sysproperty key="apidoc.output" value="${report.dir}/apidocs/${template.dir}/"/>
+            <sysproperty key="apidoc.output" value="${report.dir}/apidocs/${template.dir}/new/"/>
+        </java>
+    </target>
+
+    <target name="apidoc-docbook-new" description="Generate DocBook from OpenAPI spec">
+        <property name="template.dir" value="docbook"/>
+        <java classname="com.suse.manager.api.docs.OpenApiToDocBookParser" fork="true" failonerror="true">
+            <classpath>
+                <pathelement location="build/classes"/>
+                <path refid="libjars"/>
+            </classpath>
+            <sysproperty key="apidoc.output" value="${report.dir}/apidocs/${template.dir}/new/"/>
         </java>
     </target>
 
