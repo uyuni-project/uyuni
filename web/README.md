@@ -28,9 +28,11 @@ npm run proxy https://server.tf.local
 
 ## Storybook and reusable components 
 
-The external Storybook exists to improve frontend development and review workflows without replacing the legacy in-app style guide. It gives new and actively changed React components a standalone place for interactive documentation, args/controls, local regression checks, and a future static PR preview that contributors can open without running a full Uyuni instance.
+The external Storybook exists to improve frontend development and review workflows without replacing the legacy in-app style guide. It gives new and actively changed React components a standalone place for interactive documentation, args/controls, local regression checks.
 
-The preferred local component development workflow uses the external Storybook:
+## How to run the storybook?
+
+Inside the web directory run:
 
 ```sh
 npm run storybook
