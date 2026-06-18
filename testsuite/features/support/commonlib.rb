@@ -10,6 +10,22 @@ require_relative 'kubernetes'
 require_relative 'constants'
 require_relative 'api_test'
 
+# Switch the active Capybara session and app_host to a different server for the
+# duration of the block. Each server gets its own isolated browser session
+# (separate cookies, history), so two servers can be logged into simultaneously.
+#
+# Usage:
+#   using_server('server2') do
+#     visit('/rhn/YourRhn.do')
+#   end
+#   # default session (server) is automatically restored after the block
+def using_server(host)
+  Capybara.using_session(host) do
+    Capybara.app_host = "https://#{get_target(host).full_hostname}"
+    yield
+  end
+end
+
 # Returns the current URL of the driver.
 #
 # @return [String] The current URL.
