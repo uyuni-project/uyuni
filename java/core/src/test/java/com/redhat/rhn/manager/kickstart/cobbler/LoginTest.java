@@ -16,12 +16,12 @@ package com.redhat.rhn.manager.kickstart.cobbler;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 import org.junit.jupiter.api.Test;
 
 
-public class LoginTest extends RhnBaseTestCase {
+public class LoginTest extends BaseTestCaseWithUser {
 
     @Test
     public void testLogin() {
