@@ -15,7 +15,10 @@
 package com.suse.manager.api.docs;
 
 import com.suse.manager.api.OpenApiConfig;
-
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.Operation;
+import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.oas.models.parameters.Parameter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,43 +28,18 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.stream.Collectors;
 
-import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.Operation;
-import io.swagger.v3.oas.models.media.Schema;
-import io.swagger.v3.oas.models.parameters.Parameter;
-
-/**
- * Converts the generated OpenAPI specification into AsciiDoc files.
- */
 public class OpenApiToAsciidocParser {
 
     private static final Logger LOGGER = LogManager.getLogger(OpenApiToAsciidocParser.class);
-
     private final OpenAPI openAPI;
 
-    /**
-     * Creates a new parser for the given OpenAPI specification.
-     *
-     * @param openApiSpec OpenAPI specification
-     */
-    public OpenApiToAsciidocParser(OpenAPI openApiSpec) {
-        this.openAPI = Objects.requireNonNull(openApiSpec, "OpenAPI spec cannot be null");
+    public OpenApiToAsciidocParser(OpenAPI openAPI) {
+        this.openAPI = Objects.requireNonNull(openAPI, "OpenAPI spec cannot be null");
     }
 
-    /**
-     * Generates AsciiDoc documentation into the configured output directory.
-     *
-     * @param args command line arguments
-     */
     public static void main(String[] args) {
         String outputDir = System.getProperty("apidoc.output");
         if (outputDir == null || outputDir.isEmpty()) {
@@ -70,7 +48,7 @@ public class OpenApiToAsciidocParser {
         }
 
         try {
-            OpenAPI spec = OpenApiConfig.processHandlers();
+            var spec = OpenApiConfig.processHandlers();
             new OpenApiToAsciidocParser(spec).generateDocumentation(outputDir);
             LOGGER.info("Documentation generated successfully in: {}", outputDir);
         }
@@ -80,148 +58,106 @@ public class OpenApiToAsciidocParser {
         }
     }
 
-    /**
-     * Generates AsciiDoc files for all tags present in the OpenAPI specification.
-     *
-     * @param outputDir output directory
-     * @throws IOException if writing documentation fails
-     */
     public void generateDocumentation(String outputDir) throws IOException {
         Path pathDir = Paths.get(outputDir);
         Files.createDirectories(pathDir);
         Map<String, List<DocEntry>> taggedOps = new TreeMap<>();
 
         openAPI.getPaths().forEach((path, pathItem) -> {
-            if (pathItem.getGet() != null) {
-                processOperation("GET", pathItem.getGet(), taggedOps);
-            }
-            if (pathItem.getPost() != null) {
-                processOperation("POST", pathItem.getPost(), taggedOps);
-            }
+            if (pathItem.getGet() != null) processOperation("GET", pathItem.getGet(), taggedOps);
+            if (pathItem.getPost() != null) processOperation("POST", pathItem.getPost(), taggedOps);
         });
 
-        for (Map.Entry<String, List<DocEntry>> entry : taggedOps.entrySet()) {
+        for (var entry : taggedOps.entrySet()) {
             writeAdocFile(entry.getKey(), entry.getValue(), pathDir);
         }
     }
 
-    private void processOperation(String method, Operation operation, Map<String, List<DocEntry>> operationsByTag) {
-        if (operation == null || operation.getTags() == null || operation.getTags().isEmpty()) {
-            return;
-        }
-        String tag = operation.getTags().get(0);
+    private void processOperation(String method, Operation op, Map<String, List<DocEntry>> map) {
+        if (op == null || op.getTags() == null || op.getTags().isEmpty()) return;
+        String tag = op.getTags().get(0);
 
-        boolean securityRequired = isSecurityRequired(operation);
-        List<String> required = getFieldsByRequirement(operation, true);
-        List<String> optional = getFieldsByRequirement(operation, false);
+        boolean securityRequired = isSecurityRequired(op);
+        List<String> required = getFieldsByRequirement(op, true);
+        List<String> optional = getFieldsByRequirement(op, false);
 
-        List<DocEntry> entries = operationsByTag.computeIfAbsent(tag, key -> new ArrayList<>());
+        List<DocEntry> entries = map.computeIfAbsent(tag, k -> new ArrayList<>());
 
         if (!optional.isEmpty()) {
             List<String> allParams = new ArrayList<>(required);
             allParams.addAll(optional);
-            entries.add(DocEntry.create(method, operation, allParams, securityRequired));
+            entries.add(DocEntry.create(method, op, allParams, securityRequired));
         }
-        entries.add(DocEntry.create(method, operation, required, securityRequired));
+        entries.add(DocEntry.create(method, op, required, securityRequired));
     }
 
     private void writeAdocFile(String tag, List<DocEntry> entries, Path dir) throws IOException {
         Path filePath = dir.resolve(tag + ".adoc");
         try (PrintWriter writer = new PrintWriter(Files.newBufferedWriter(filePath, StandardCharsets.UTF_8))) {
             writer.printf("[#apidoc-%s]%n= %s%n%n== Available methods%n%n", tag, tag);
-            for (DocEntry entry : entries) {
-                writer.printf("* <<apidoc-%s-%s,%s>>%n", tag, entry.anchor(),
-                        entry.operation().getOperationId());
+            for (var entry : entries) {
+                writer.printf("* <<apidoc-%s-%s,%s>>%n", tag, entry.anchor(), entry.operation().getOperationId());
             }
             writer.printf("%n== Description%n%n%s%n%n*Namespace*:%n%n%s%n%n", getTagDesc(tag), tag);
-            for (DocEntry entry : entries) {
+            for (var entry : entries) {
                 writeMethod(writer, tag, entry);
             }
         }
     }
 
     private void writeMethod(PrintWriter writer, String tag, DocEntry entry) {
-        Operation operation = entry.operation();
-        String summary = Optional.ofNullable(operation.getSummary()).orElse("");
-        String description = "";
-        if (operation.getDescription() != null && !operation.getDescription().trim().equals(summary.trim())) {
-            description = operation.getDescription();
-        }
+        Operation op = entry.operation();
+        String summary = Optional.ofNullable(op.getSummary()).orElse("");
+        String description = (op.getDescription() != null && !op.getDescription().trim().equals(summary.trim()))
+                ? op.getDescription() : "";
 
-        writer.printf(
-                """
-                    [#apidoc-%s-%s]
-                    == Method: %s
+        writer.printf("""
+            [#apidoc-%s-%s]
+            == Method: %s
 
-                    HTTP `%s`
+            HTTP `%s`
 
-                    Description:
+            Description:
 
-                    %s
-                    %s
+            %s
+            %s
 
-                    Parameters:
+            Parameters:
 
-                    """,
-                tag,
-                entry.anchor(),
-                operation.getOperationId(),
-                entry.method(),
-                summary,
-                description
+            """, tag, entry.anchor(), op.getOperationId(), entry.method(), summary, description
         );
 
-        if (isSecurityRequired(operation)) {
+        if (isSecurityRequired(op)) {
             writer.println("* [.string]#string#  sessionKey\n");
         }
 
-        Map<String, Schema> allProps = getAllPossibleProperties(operation);
+        Map<String, Schema> allProps = getAllPossibleProperties(op);
         allProps.forEach((paramName, schema) -> {
             if (entry.activeParams().contains(paramName)) {
-                String type;
-                if ("array".equals(schema.getType())) {
-                    type = "[.array]#string array#";
-                }
-                else {
-                    type = "[." + schema.getType() + "]#" + schema.getType() + "#";
-                }
-                String descriptionText = findDescription(schema);
-                writer.printf(
-                        "* %s  %s%s%n ",
-                        type,
-                        paramName,
-                        descriptionText.isEmpty() ? "" : " - " + descriptionText
-                );
+                String type = "array".equals(schema.getType()) ? "[.array]#string array#" : "[." + schema.getType() + "]#" + schema.getType() + "#";
+                String descText = findDescription(schema);
+                writer.printf("* %s  %s%s%n ", type, paramName, descText.isEmpty() ? "" : " - " + descText);
             }
         });
 
         writer.println("\nReturns:\n");
-        writeReturn(writer, operation);
+        writeReturn(writer, op);
         writer.print("\n\n\n");
     }
 
-    private boolean isSecurityRequired(Operation operation) {
-        if (operation.getSecurity() != null) {
-            return !operation.getSecurity().isEmpty();
-        }
+    private boolean isSecurityRequired(Operation op) {
+        if (op.getSecurity() != null) return !op.getSecurity().isEmpty();
         return openAPI.getSecurity() != null && !openAPI.getSecurity().isEmpty();
     }
 
-    private void writeReturn(PrintWriter writer, Operation operation) {
-        var responses = operation.getResponses();
-        if (responses == null || responses.get("200") == null || responses.get("200").getContent() == null) {
-            return;
-        }
+    private void writeReturn(PrintWriter writer, Operation op) {
+        var responses = op.getResponses();
+        if (responses == null || responses.get("200") == null || responses.get("200").getContent() == null) return;
 
-        Schema<?> responseSchema = responses.get("200").getContent().get("application/json").getSchema();
-        if (responseSchema == null) {
-            return;
-        }
+        Schema<?> respSchema = responses.get("200").getContent().get("application/json").getSchema();
+        if (respSchema == null) return;
 
-        Schema<?> schema = responseSchema;
-        if (responseSchema.get$ref() != null) {
-            schema = resolveSchema(responseSchema.get$ref());
-        }
+        Schema<?> schema = respSchema.get$ref() != null ? resolveSchema(respSchema.get$ref()) : respSchema;
         String refName = "";
 
         if (schema.getProperties() != null && schema.getProperties().containsKey("result")) {
@@ -230,19 +166,33 @@ public class OpenApiToAsciidocParser {
             schema = resultSchema.get$ref() != null ? resolveSchema(resultSchema.get$ref()) : resultSchema;
         }
 
+        if ("array".equals(schema.getType()) && schema.getItems() != null) {
+            Schema itemSchema = schema.getItems();
+            Schema resolved = itemSchema.get$ref() != null ? resolveSchema(itemSchema.get$ref()) : itemSchema;
+            String itemRefName = itemSchema.get$ref() != null ? extractRefName(itemSchema.get$ref()) : "";
+
+            writer.println("* [.array]#array# :");
+            writer.printf("    * [.struct]#struct#  %s%n", itemRefName);
+            if (resolved != null && resolved.getProperties() != null) {
+                resolved.getProperties().forEach((name, prop) -> {
+                    String propDesc = ((Schema) prop).getDescription() != null ? " - " + ((Schema) prop).getDescription() : "";
+                    writer.printf("** [.string]#string#  \"%s\"%s%n", name, propDesc);
+                });
+            }
+            writer.println(" ");
+            return;
+        }
+
         if (isSimpleType(schema)) {
             String type = schema.getType();
-            String label = operation.getOperationId()
-                    .replace("get", "")
-                    .replaceAll("([a-z])([A-Z])", "$1 $2")
-                    .toLowerCase()
-                    .trim();
+            String label = Optional.ofNullable(responses.get("200").getDescription())
+                    .filter(d -> !d.isBlank())
+                    .orElseGet(() -> op.getOperationId()
+                            .replaceAll("([a-z])([A-Z])", "$1 $2")
+                            .toLowerCase().trim());
 
-            if (label.contains("system version")) {
-                label = "version";
-            }
-
-            writer.printf("* [.%s]#%s#  %s%n ", type, type, label);
+            String displayType = "integer".equals(type) ? "int" : type;
+            writer.printf("* [.%s]#%s#  %s%n ", displayType, displayType, label);
             return;
         }
 
@@ -250,16 +200,11 @@ public class OpenApiToAsciidocParser {
     }
 
     private void printStruct(PrintWriter writer, Schema<?> schema, int indent, String forcedLabel) {
-        if (schema == null) {
-            return;
-        }
+        if (schema == null) return;
         String prefix = " ".repeat(indent);
-        String marker = indent == 0 ? "*" : "**";
+        String marker = (indent == 0) ? "*" : "**";
 
-        String label = "";
-        if (forcedLabel != null && !forcedLabel.isEmpty()) {
-            label = forcedLabel;
-        }
+        String label = (forcedLabel != null && !forcedLabel.isEmpty()) ? forcedLabel : "";
         if (label.isEmpty() && schema.getAdditionalProperties() != null) {
             label = "namespace";
         }
@@ -269,61 +214,47 @@ public class OpenApiToAsciidocParser {
         }
 
         if (schema.getProperties() != null) {
-            schema.getProperties().forEach((name, property) -> {
-                Schema<?> propertySchema = (Schema<?>) property;
-                String propertyDescription = "";
-                if (propertySchema.getDescription() != null) {
-                    propertyDescription = " - " + propertySchema.getDescription();
-                }
-                writer.printf("%s** [.string]#string#  \"%s\"%s%n", prefix, name, propertyDescription);
+            schema.getProperties().forEach((name, prop) -> {
+                String propDesc = (prop.getDescription() != null) ? " - " + prop.getDescription() : "";
+                writer.printf("%s** [.string]#string#  \"%s\"%s%n", prefix, name, propDesc);
             });
         }
 
         if (schema.getAdditionalProperties() instanceof Schema<?> inner) {
             Schema<?> resolvedInner = inner.get$ref() != null ? resolveSchema(inner.get$ref()) : inner;
             if (resolvedInner.getProperties() != null) {
-                resolvedInner.getProperties().forEach((name, property) -> {
-                    Schema<?> propertySchema = (Schema<?>) property;
-                    String propertyDescription = "";
-                    if (propertySchema.getDescription() != null) {
-                        propertyDescription = " - " + propertySchema.getDescription();
-                    }
-                    writer.printf("%s** [.string]#string#  \"%s\"%s%n", prefix, name, propertyDescription);
+                resolvedInner.getProperties().forEach((name, prop) -> {
+                    String propDesc = (prop.getDescription() != null) ? " - " + prop.getDescription() : "";
+                    writer.printf("%s** [.string]#string#  \"%s\"%s%n", prefix, name, propDesc);
                 });
             }
             else if (isSimpleType(resolvedInner)) {
-                String description = "";
-                if (resolvedInner.getDescription() != null) {
-                    description = " - " + resolvedInner.getDescription();
-                }
-                writer.printf("%s** [.string]#string#%s%n", prefix, description);
+                String desc = (resolvedInner.getDescription() != null) ? " - " + resolvedInner.getDescription() : "";
+                writer.printf("%s** [.string]#string#%s%n", prefix, desc);
             }
         }
     }
 
     private String extractRefName(String ref) {
-        if (ref == null) {
-            return null;
-        }
-        String name = ref.substring(ref.lastIndexOf('/') + 1);
-        return name.replaceAll("([a-z])([A-Z])", "$1_$2").toLowerCase();
+        if (ref == null) return null;
+        String name = ref.substring(ref.lastIndexOf("/") + 1);
+        return name.replaceAll("([a-z])([A-Z])", "$1 $2").toLowerCase();
     }
 
     private boolean isSimpleType(Schema<?> schema) {
         String type = schema.getType();
-        return "string".equals(type) || "integer".equals(type) ||
-                "boolean".equals(type) || "number".equals(type);
+        return "string".equals(type) || "integer".equals(type) || "boolean".equals(type) || "number".equals(type);
     }
 
-    private List<String> getFieldsByRequirement(Operation operation, boolean requiredOnly) {
+    private List<String> getFieldsByRequirement(Operation op, boolean requiredOnly) {
         List<String> fields = new ArrayList<>();
-        if (operation.getParameters() != null) {
-            operation.getParameters().stream()
-                    .filter(parameter -> Objects.equals(parameter.getRequired(), requiredOnly))
+        if (op.getParameters() != null) {
+            op.getParameters().stream()
+                    .filter(p -> Objects.equals(p.getRequired(), requiredOnly))
                     .map(Parameter::getName)
                     .forEach(fields::add);
         }
-        Schema<?> bodySchema = getBodySchema(operation);
+        Schema<?> bodySchema = getBodySchema(op);
         if (bodySchema != null && bodySchema.getProperties() != null) {
             List<String> requiredInBody = bodySchema.getRequired() != null ? bodySchema.getRequired() : List.of();
             Map<String, Schema> props = (Map<String, Schema>) bodySchema.getProperties();
@@ -336,14 +267,14 @@ public class OpenApiToAsciidocParser {
         return fields;
     }
 
-    private Map<String, Schema> getAllPossibleProperties(Operation operation) {
+    private Map<String, Schema> getAllPossibleProperties(Operation op) {
         Map<String, Schema> props = new LinkedHashMap<>();
-        if (operation.getParameters() != null) {
-            for (Parameter parameter : operation.getParameters()) {
-                props.put(parameter.getName(), parameter.getSchema());
+        if (op.getParameters() != null) {
+            for (var param : op.getParameters()) {
+                props.put(param.getName(), param.getSchema());
             }
         }
-        Schema<?> body = getBodySchema(operation);
+        Schema<?> body = getBodySchema(op);
         if (body != null && body.getProperties() != null) {
             props.putAll((Map<String, Schema>) body.getProperties());
         }
@@ -351,15 +282,13 @@ public class OpenApiToAsciidocParser {
     }
 
     private Schema<?> resolveSchema(String ref) {
-        if (ref == null || openAPI.getComponents() == null) {
-            return null;
-        }
-        return openAPI.getComponents().getSchemas().get(ref.substring(ref.lastIndexOf('/') + 1));
+        if (ref == null || openAPI.getComponents() == null) return null;
+        return openAPI.getComponents().getSchemas().get(ref.substring(ref.lastIndexOf("/") + 1));
     }
 
-    private Schema<?> getBodySchema(Operation operation) {
+    private Schema<?> getBodySchema(Operation op) {
         try {
-            var mediaType = operation.getRequestBody().getContent().get("application/json");
+            var mediaType = op.getRequestBody().getContent().get("application/json");
             Schema<?> schema = mediaType.getSchema();
             return schema.get$ref() != null ? resolveSchema(schema.get$ref()) : schema;
         }
@@ -370,46 +299,35 @@ public class OpenApiToAsciidocParser {
 
     private String getTagDesc(String tag) {
         return Optional.ofNullable(openAPI.getTags()).orElse(List.of()).stream()
-                .filter(openApiTag -> openApiTag.getName().equals(tag))
-                .map(io.swagger.v3.oas.models.tags.Tag::getDescription)
-                .findFirst()
-                .orElse("");
+                .filter(t -> t.getName().equals(tag)).map(io.swagger.v3.oas.models.tags.Tag::getDescription)
+                .findFirst().orElse("");
     }
 
-    private String findDescription(Schema<?> schema) {
-        if (schema.getDescription() != null) {
-            return schema.getDescription();
+    private String findDescription(Schema<?> s) {
+        if (s.getDescription() != null) return s.getDescription();
+        if (s.get$ref() != null) {
+            Schema<?> res = resolveSchema(s.get$ref());
+            if (res != null && res.getDescription() != null) return res.getDescription();
         }
-        if (schema.get$ref() != null) {
-            Schema<?> resolved = resolveSchema(schema.get$ref());
-            if (resolved != null && resolved.getDescription() != null) {
-                return resolved.getDescription();
-            }
-        }
-        return schema.getItems() != null ? findDescription(schema.getItems()) : "";
+        return (s.getItems() != null) ? findDescription(s.getItems()) : "";
     }
 
     private record DocEntry(String method, String anchor, Operation operation, List<String> activeParams) {
-
-        static DocEntry create(String method, Operation operation, List<String> params, boolean securityRequired) {
-            String suffix = params.stream().sorted().collect(Collectors.joining("-"));
+        static DocEntry create(String method, Operation op, List<String> params, boolean securityRequired) {
+            String suffix = params.stream().collect(Collectors.joining("-"));
             String authPart = securityRequired ? "loggedInUser" : "";
 
             List<String> anchorParts = new ArrayList<>();
-            anchorParts.add(operation.getOperationId());
-            if (!authPart.isEmpty()) {
-                anchorParts.add(authPart);
-            }
-            if (!suffix.isEmpty()) {
-                anchorParts.add(suffix);
-            }
+            anchorParts.add(op.getOperationId());
+            if (!authPart.isEmpty()) anchorParts.add(authPart);
+            if (!suffix.isEmpty()) anchorParts.add(suffix);
 
             String anchor = String.join("-", anchorParts);
             if (authPart.isEmpty() && suffix.isEmpty()) {
                 anchor += "-";
             }
 
-            return new DocEntry(method, anchor, operation, List.copyOf(params));
+            return new DocEntry(method, anchor, op, List.copyOf(params));
         }
     }
 }
