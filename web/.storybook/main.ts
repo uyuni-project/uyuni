@@ -26,6 +26,10 @@ await generateLegacyStories({
   cleanOutput: false,
 });
 
+// Storybook may call webpackFinal multiple times per process (config reloads, addon init).
+// Guard so we register exactly one recursive fs.watch on the src tree.
+let legacyStoryWatcherStarted = false;
+
 const scssLoaders = (styleLoaderOptions: Record<string, unknown> = {}) => [
   {
     loader: require.resolve("style-loader"),
@@ -42,7 +46,8 @@ const config: StorybookConfig = {
     options: {},
   },
   webpackFinal: async (webpackConfig, { configType }) => {
-    if (configType === "DEVELOPMENT") {
+    if (configType === "DEVELOPMENT" && !legacyStoryWatcherStarted) {
+      legacyStoryWatcherStarted = true;
       watchLegacyStorySources({
         inputDir: webHtmlSrc,
         outputDir: legacyStoriesOutputDir,

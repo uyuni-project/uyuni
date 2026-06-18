@@ -6,13 +6,13 @@ import {
   findExampleFiles,
   isExampleFile,
   isIgnoredPath,
+  storyGroupName,
   toPosix,
 } from "./example-discovery.js";
-import { storyTemplate } from "./story-template.js";
+import { storyExportName, storyTemplate } from "./story-template.js";
 
-export { findExampleFiles, isIgnoredPath, toPosix };
-export { storyGroupName } from "./example-discovery.js";
-export { storyExportName, storyTemplate } from "./story-template.js";
+export { findExampleFiles, isIgnoredPath, storyGroupName, toPosix };
+export { storyExportName, storyTemplate };
 
 const DEFAULT_INPUT_DIR = path.resolve("html/src");
 const DEFAULT_OUTPUT_DIR = path.resolve(DEFAULT_INPUT_DIR, "storybook/generated");
@@ -75,11 +75,21 @@ export async function generateLegacyStories(options = {}) {
       }
     }
   }
+  const exportCounts = new Map();
 
   for (const relativePath of exampleFiles) {
+    const fileName = path.posix.basename(relativePath).replace(/\.example\.(tsx|ts)$/, "");
+    const collisionKey = `${storyGroupName(relativePath)}::${storyExportName(fileName)}`;
+    const previous = exportCounts.get(collisionKey) ?? 0;
+    exportCounts.set(collisionKey, previous + 1);
+
     const outputPath = path.join(outputDir, ...relativePath.replace(/\.(tsx|ts)$/, ".stories.tsx").split("/"));
     await fs.mkdir(path.dirname(outputPath), { recursive: true });
-    await fs.writeFile(outputPath, storyTemplate(relativePath), "utf8");
+    await fs.writeFile(
+      outputPath,
+      storyTemplate(relativePath, previous > 0 ? { exportNameSuffix: String(previous + 1) } : {}),
+      "utf8"
+    );
   }
 
   return {

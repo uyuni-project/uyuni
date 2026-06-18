@@ -29,11 +29,12 @@ export const storyExportName = (input) => {
   return isAsciiLetter(exportName.charAt(0)) || exportName.startsWith("_") ? exportName : `Story_${exportName}`;
 };
 
-export const storyTemplate = (relativePath) => {
+export const storyTemplate = (relativePath, options = {}) => {
   const importPath = withoutExtension(relativePath);
   const storyName = withoutExampleSuffix(path.posix.basename(relativePath));
   const title = `Legacy Example Stories/${storyGroupName(relativePath)}`;
-  const exportName = storyExportName(storyName);
+  const baseExportName = storyExportName(storyName);
+  const exportName = options.exportNameSuffix ? `${baseExportName}_${options.exportNameSuffix}` : baseExportName;
 
   return `/* eslint-disable */
 /**

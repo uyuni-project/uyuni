@@ -100,6 +100,28 @@ describe("generate legacy Storybook stories", () => {
     );
   });
 
+  test("disambiguates colliding export names within a story group", async () => {
+    await writeFile(path.join(inputDir, "components/buttons/usage-guidelines.example.tsx"));
+    await writeFile(path.join(inputDir, "components/buttons/usage_guidelines.example.tsx"));
+
+    await generateLegacyStories({ inputDir, outputDir });
+
+    const dashed = await fs.readFile(
+      path.join(outputDir, "components/buttons/usage-guidelines.example.stories.tsx"),
+      "utf8"
+    );
+    const underscored = await fs.readFile(
+      path.join(outputDir, "components/buttons/usage_guidelines.example.stories.tsx"),
+      "utf8"
+    );
+
+    // findExampleFiles sorts by localeCompare, which puts the underscore variant first,
+    // so it keeps the base export name and the dashed variant gets the suffix.
+    expect(underscored).toContain("export const Usage_guidelines = {");
+    expect(dashed).toContain("export const Usage_guidelines_2 = {");
+    expect(dashed).toContain('name: "usage-guidelines"');
+  });
+
   test("updates wrappers without removing directories in watch mode", async () => {
     const staleDirectory = path.join(outputDir, "core");
 
