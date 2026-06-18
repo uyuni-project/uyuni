@@ -40,12 +40,10 @@ public class PackageCalculatorTest extends BaseTestCaseWithUser {
 
     @Override
     @BeforeEach
-    public void setUp() throws Exception {
-        super.setUp();
+    public void setUpBaseTestCaseWithUser() throws Exception {
+        super.setUpBaseTestCaseWithUser();
         targetChannel = ChannelFactoryTest.createTestChannel(user);
     }
-
-    // calculateFromCloneTree
 
     /**
      * Tests that calculateFromVendorMatch returns empty set when given empty errata set.
