@@ -14,19 +14,11 @@
  */
 package com.redhat.rhn.manager.satellite;
 
-import static com.suse.manager.webui.services.SaltConstants.ORG_STATES_DIRECTORY_PREFIX;
-
 import com.redhat.rhn.GlobalInstanceHolder;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.common.RhnConfiguration;
 import com.redhat.rhn.domain.common.RhnConfigurationFactory;
-import com.redhat.rhn.domain.config.ConfigChannel;
-import com.redhat.rhn.domain.config.ConfigContent;
-import com.redhat.rhn.domain.config.ConfigFile;
-import com.redhat.rhn.domain.config.ConfigFileName;
-import com.redhat.rhn.domain.config.ConfigRevision;
-import com.redhat.rhn.domain.config.ConfigurationFactory;
 import com.redhat.rhn.domain.kickstart.KickstartData;
 import com.redhat.rhn.domain.kickstart.KickstartFactory;
 import com.redhat.rhn.domain.kickstart.KickstartSession;
@@ -42,30 +34,18 @@ import com.redhat.rhn.manager.kickstart.KickstartSessionCreateCommand;
 
 import com.suse.manager.saltboot.SaltbootMigrationException;
 import com.suse.manager.saltboot.SaltbootMigrationUtils;
-import com.suse.manager.webui.services.ConfigChannelSaltManager;
 import com.suse.manager.webui.services.SaltConstants;
 import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.type.StandardBasicTypes;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import jakarta.persistence.Tuple;
 
 /**
  * Class responsible for executing one-time upgrade logic
@@ -80,8 +60,6 @@ public class UpgradeCommand extends BaseTransactionCommand {
     public static final String UPGRADE_TASK_NAME = "upgrade_satellite_";
     public static final String UPGRADE_KS_PROFILES =
             UPGRADE_TASK_NAME + "kickstart_profiles";
-    public static final String UPGRADE_CUSTOM_STATES =
-            UPGRADE_TASK_NAME + "custom_states";
     public static final String UPGRADE_REFRESH_CUSTOM_SLS_FILES =
             UPGRADE_TASK_NAME + "refresh_custom_sls_files";
     public static final String REFRESH_VIRTHOST_PILLARS =
@@ -96,28 +74,22 @@ public class UpgradeCommand extends BaseTransactionCommand {
             UPGRADE_TASK_NAME + "migrate_cobbler";
 
     private final Path saltRootPath;
-    private final Path legacyStatesBackupDirectory;
-    private static final String ORG_CFG_CHANNEL_LEGACY_PREFIX = "mgr_cfg_org_";
 
     /**
      * Constructor
      */
     public UpgradeCommand() {
-        this(
-                Paths.get(SaltConstants.SUMA_STATE_FILES_ROOT_PATH),
-                Paths.get(SaltConstants.LEGACY_STATES_BACKUP));
+        this(Paths.get(SaltConstants.SUMA_STATE_FILES_ROOT_PATH));
     }
 
     /**
      * Constructor allowing parameters mocking.
      *
      * @param saltRootPathIn - custom salt root path
-     * @param legacyStatesBackupDirectoryIn - custom legacy statates backup directory
      */
-    public UpgradeCommand(Path saltRootPathIn, Path legacyStatesBackupDirectoryIn) {
+    public UpgradeCommand(Path saltRootPathIn) {
         super(log);
         this.saltRootPath = saltRootPathIn;
-        this.legacyStatesBackupDirectory = legacyStatesBackupDirectoryIn;
     }
 
 
@@ -152,9 +124,6 @@ public class UpgradeCommand extends BaseTransactionCommand {
                 switch (t.getName()) {
                     case UPGRADE_KS_PROFILES:
                         processKickstartProfiles();
-                        break;
-                    case UPGRADE_CUSTOM_STATES:
-                        processCustomStates();
                         break;
                     case UPGRADE_REFRESH_CUSTOM_SLS_FILES:
                         refreshCustomSlsFiles();
@@ -200,167 +169,6 @@ public class UpgradeCommand extends BaseTransactionCommand {
         }
     }
 
-    /**
-     * Migrates the legacy custom states stored in the salt root on the filesystem to the database
-     * and regenerates the contents of the (normal + state) configuration channels + their assignment
-     * to the systems, groups and orgs on the disk.
-     *
-     * The custom states now make use of the {@link ConfigChannel} and related classes.
-     *
-     * Database migration ensured that for each legacy custom state there is a {@link ConfigChannel}
-     * with {@link ConfigFile} with path='/init.sls', single {@link ConfigRevision} pointing to
-     * {@link ConfigContent} with empty content.
-     *
-     * This method is responsible for populating that {@link ConfigContent} based on the contents
-     * of the state file on the disk.
-     *
-     * Before the import, the files corresponding to the legacy states are backed up to a separate directory.
-     * After the import, the legacy state files are deleted.
-     *
-     * If the process of backing up fails, neither the import nor the clean up will happen.
-     */
-    private void processCustomStates() {
-        backupLegacyStates();
-        importLegacyStatesToDb();
-        cleanUpLegacyStates();
-
-        // Re-generate the configuration channels
-        cleanUpLegacyConfigChannelDirectory();
-        regenerateConfigChannelFiles();
-    }
-
-    /**
-     * Backs up the directories with legacy custom states.
-     *
-     * @throws java.lang.RuntimeException if some IO error happens during the process
-     */
-    private void backupLegacyStates() {
-        try {
-            Set<Path> orgStateDirs = listDirsWithPrefix(ORG_STATES_DIRECTORY_PREFIX);
-            legacyStatesBackupDirectory.toFile().mkdirs();
-            for (Path stateDir : orgStateDirs) {
-                FileUtils.copyDirectory(
-                        stateDir.toFile(),
-                        legacyStatesBackupDirectory.resolve(stateDir.getFileName()).toFile());
-            }
-        }
-        catch (IOException e) {
-            log.error("Error backing up legacy custom states. Not importing them to the database.");
-            // when backup failed, we don't want to continue
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * Populates the state file contents in newly created state channels.
-     *
-     * @throws java.lang.RuntimeException if some IO error happens during the process
-     */
-    private void importLegacyStatesToDb() {
-        // Using a native query since in version 7.1.6 of hibernate, the length() function of HQL queries doesn't work
-        // for a byte[] field mapped as BYTEA. This should be checked again when upgrading hibernate
-        List<Tuple> candidates = HibernateFactory.getSession()
-                .createNativeQuery("""
-                               SELECT channel.org_id, channel.label, rev.*
-                                 FROM rhnconfigrevision rev
-                                          INNER JOIN rhnconfigfile file ON rev.config_file_id = file.id
-                                          INNER JOIN rhnconfigfilename name ON file.config_file_name_id = name.id
-                                          INNER JOIN rhnconfigchannel channel ON file.config_channel_id = channel.id
-                                          INNER JOIN rhnconfigchanneltype type ON channel.confchan_type_id = type.id
-                                          INNER JOIN rhnconfigcontent content ON rev.config_content_id = content.id
-                                WHERE rev.revision = 1
-                                          AND name.path = '/init.sls'
-                                          AND type.label = 'state'
-                                          AND LENGTH(content.contents) = 0
-                               """, Tuple.class)
-                .addSynchronizedEntityClass(ConfigRevision.class)
-                .addSynchronizedEntityClass(ConfigFile.class)
-                .addSynchronizedEntityClass(ConfigFileName.class)
-                .addSynchronizedEntityClass(ConfigChannel.class)
-                .addSynchronizedEntityClass(ConfigContent.class)
-                .addScalar("org_id", StandardBasicTypes.LONG)
-                .addScalar("label", StandardBasicTypes.STRING)
-                .addEntity("rev", ConfigRevision.class)
-                .list();
-
-        // Use WARN here because we want this operation logged.
-        log.warn("Migrating content of {} custom states from disk to database.", candidates.size());
-        candidates.forEach(row -> {
-            Long orgId = row.get("org_id", Long.class);
-            String channelLabel = row.get("label", String.class);
-            ConfigRevision revision = row.get("rev", ConfigRevision.class);
-
-            Path statePath = saltRootPath
-                    .resolve(ORG_STATES_DIRECTORY_PREFIX + orgId)
-                    .resolve(channelLabel + ".sls");
-
-            log.info("Migrating {} from path {}.", channelLabel, statePath);
-
-            try {
-                byte[] bytes = FileUtils.readFileToByteArray(statePath.toFile());
-                ByteArrayInputStream stream = new ByteArrayInputStream(bytes);
-                ConfigContent content = ConfigurationFactory.createNewContentFromStream(stream,
-                        (long) bytes.length, false, "{|", "|}");
-                revision.setConfigContent(content);
-                HibernateFactory.getSession().persist(revision);
-            }
-            catch (IOException e) {
-                log.error("Error when importing state '{}' from file '{}'. Skipping this state.", channelLabel, statePath, e);
-                // when import failed, we don't want to continue
-                throw new RuntimeException(e);
-            }
-        });
-    }
-
-    /**
-     * Delete the directories with the legacy states.
-     */
-    private void cleanUpLegacyStates() {
-        try {
-            for (Path stateDir : listDirsWithPrefix(ORG_STATES_DIRECTORY_PREFIX)) {
-                Collection<File> legacySlsFiles = FileUtils.listFiles(
-                        stateDir.toFile(),
-                        new String[]{"sls"},
-                        false);
-                for (File file : legacySlsFiles) {
-                    if (file.isFile()) {
-                        file.delete();
-                    }
-                }
-            }
-        }
-        catch (IOException e) {
-            log.error("Error cleaning up directory with legacy custom states. Ignoring.", e);
-        }
-    }
-
-    private void cleanUpLegacyConfigChannelDirectory() {
-        try {
-            for (Path dir : listDirsWithPrefix(ORG_CFG_CHANNEL_LEGACY_PREFIX)) {
-                FileUtils.deleteDirectory(dir.toFile());
-            }
-        }
-        catch (IOException e) {
-            log.error("Error when cleaning legacy config channel directory. Ignoring.", e);
-        }
-    }
-
-    // re-generates config channels (state + normal) + their assignments on the disk
-    private void regenerateConfigChannelFiles() {
-        List<ConfigChannel> globalChannels = ConfigurationFactory.listGlobalChannels();
-        ConfigChannelSaltManager.getInstance().generateConfigChannelFiles(globalChannels);
-        globalChannels.forEach(SaltStateGeneratorService.INSTANCE::regenerateConfigStates);
-    }
-
-    // list of directories with given prefix and natural number suffix in the salt root
-    private Set<Path> listDirsWithPrefix(String prefix) throws IOException {
-        try (Stream<Path> pathStream = Files.list(saltRootPath)) {
-            return pathStream
-                .filter(path -> path.getFileName().toString().matches("^" + prefix + "\\d*$") &&
-                    path.toFile().isDirectory())
-                .collect(Collectors.toSet());
-        }
-    }
 
     /**
      * Regenerate all minion custom SLS files (/srv/susemanager/salt/custom/custom_*.sls) according to
