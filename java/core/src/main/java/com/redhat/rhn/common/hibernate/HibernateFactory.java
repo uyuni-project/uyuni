@@ -71,7 +71,7 @@ public abstract class HibernateFactory {
     public static final String ROLLBACK_MSG = "Error during transaction. Rolling back";
 
     /**
-     * Set a new conntionManager instance
+     * Set a new connectionManager instance
      * @param conMgr the new connection manager
      */
     protected static void setConnectionManager(ConnectionManager conMgr) {
@@ -86,6 +86,29 @@ public abstract class HibernateFactory {
      */
     public static void addConfigurator(Configurator c) {
         connectionManager.addConfigurator(c);
+    }
+
+    /**
+     * add a listener
+     * @param l the listener to be added
+     */
+    public static void addCommitListener(HibernateCommitListener l) {
+        connectionManager.addCommitListener(l);
+    }
+
+    /**
+     * removes a particular listener
+     * @param l the listener to be removed
+     */
+    public static void removeCommitListener(HibernateCommitListener l) {
+        connectionManager.removeCommitListener(l);
+    }
+
+    /**
+     * removes all listeners
+     */
+    public static void removeAllCommitListeners() {
+        connectionManager.removeAllCommitListeners();
     }
 
     /**
