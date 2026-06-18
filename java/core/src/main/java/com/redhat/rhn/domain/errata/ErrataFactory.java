@@ -1393,13 +1393,17 @@ public class ErrataFactory extends HibernateFactory {
      * @param endDate filter erratas issued on or before this date (optional)
      * @return Set of matching erratas matching the criteria
      */
-    public static Set<Errata> lookupErrataByChannelOrOrg(
+    private static Set<Errata> lookupErrataByChannelOrOrg(
             Org org,
             Channel channel,
             List<String> advisories,
             Date startDate,
             Date endDate
     ) {
+        if (channel != null && org != null) {
+            throw new IllegalArgumentException("channel and org parameters are mutually exclusive");
+        }
+
         StringBuilder hql = new StringBuilder("SELECT DISTINCT e FROM Errata e");
         Map<String, Object> params = new HashMap<>();
 
