@@ -30,12 +30,7 @@ const iconOptions = [
   "fa-edit",
 ];
 
-const tooltipPlacementOptions = [
-  "top",
-  "right",
-  "bottom",
-  "left",
-];
+const tooltipPlacementOptions = ["top", "right", "bottom", "left"];
 
 const meta = {
   title: "Components/Buttons/Button",
