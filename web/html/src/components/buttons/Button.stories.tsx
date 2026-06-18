@@ -4,6 +4,39 @@ import { StoryRow, StripedStorySection } from "manager/storybook/layout";
 
 import { Button } from "./index";
 
+const buttonClassOptions = [
+  "btn-primary",
+  "btn-default",
+  "btn-danger",
+  "btn-tertiary",
+  "btn-primary btn-sm",
+  "btn-default btn-sm",
+  "btn-danger btn-sm",
+  "btn-tertiary btn-sm",
+];
+
+const iconOptions = [
+  "fa-plus",
+  "fa-trash",
+  "fa-pencil",
+  "fa-download",
+  "fa-check",
+  "fa-times",
+  "fa-refresh",
+  "fa-floppy-o",
+  "fa-chevron-left",
+  "fa-search",
+  "fa-list",
+  "fa-edit",
+];
+
+const tooltipPlacementOptions = [
+  "top",
+  "right",
+  "bottom",
+  "left",
+];
+
 const meta = {
   title: "Components/Buttons/Button",
   component: Button,
@@ -21,13 +54,24 @@ const meta = {
     text: "Create",
     title: "Create item",
     icon: "fa-plus",
+    tooltipPlacement: "top",
     disabled: false,
   },
   argTypes: {
-    className: { control: "text" },
+    className: {
+      control: "select",
+      options: buttonClassOptions,
+    },
     text: { control: "text" },
     title: { control: "text" },
-    icon: { control: "text" },
+    icon: {
+      control: "select",
+      options: iconOptions,
+    },
+    tooltipPlacement: {
+      control: "select",
+      options: tooltipPlacementOptions,
+    },
     disabled: { control: "boolean" },
     handler: { action: "clicked" },
   },
