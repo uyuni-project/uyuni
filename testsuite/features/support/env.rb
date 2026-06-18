@@ -649,6 +649,12 @@ Before('@slmicro62_ssh_minion') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['slmicro62_ssh_minion']
 end
 
+Before('@pre_patched_system_downgrade') do
+  pre_patched_systems = %w[slmicro60_minion slmicro60_ssh_minion slmicro62_minion slmicro62_ssh_minion]
+  current_system_env = pre_patched_systems.find { |sys| ENV.key? ENV_VAR_BY_HOST[sys] }
+  skip_this_scenario unless current_system_env
+end
+
 Before('@sle15sp6_buildhost') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['sle15sp6_buildhost']
 end
