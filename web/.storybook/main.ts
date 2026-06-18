@@ -115,6 +115,14 @@ const config: StorybookConfig = {
         use: scssLoaders(),
       },
     ];
+    // Storybook 10's React 18 peer-dep references useSyncExternalStore / useInsertionEffect,
+    // which don't exist on the React 16 the app ships with. The imports are guarded at runtime,
+    // so silence the build-time noise until the React upgrade lands.
+    webpackConfig.ignoreWarnings = [
+      ...(webpackConfig.ignoreWarnings ?? []),
+      /export 'useSyncExternalStore'.*was not found in 'react'/,
+      /export 'useInsertionEffect'.*was not found in 'react'/,
+    ];
 
     return webpackConfig;
   },
