@@ -19,9 +19,6 @@ import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.common.RhnConfiguration;
 import com.redhat.rhn.domain.common.RhnConfigurationFactory;
-import com.redhat.rhn.domain.kickstart.KickstartData;
-import com.redhat.rhn.domain.kickstart.KickstartFactory;
-import com.redhat.rhn.domain.kickstart.KickstartSession;
 import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
@@ -34,7 +31,6 @@ import com.redhat.rhn.domain.task.TaskFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.manager.BaseTransactionCommand;
-import com.redhat.rhn.manager.kickstart.KickstartSessionCreateCommand;
 import com.redhat.rhn.taskomatic.TaskomaticApi;
 import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
@@ -67,8 +63,6 @@ public class UpgradeCommand extends BaseTransactionCommand {
     private static Logger log = LogManager.getLogger(UpgradeCommand.class);
 
     public static final String UPGRADE_TASK_NAME = "upgrade_satellite_";
-    public static final String UPGRADE_KS_PROFILES =
-            UPGRADE_TASK_NAME + "kickstart_profiles";
     public static final String UPGRADE_REFRESH_CUSTOM_SLS_FILES =
             UPGRADE_TASK_NAME + "refresh_custom_sls_files";
     public static final String REFRESH_VIRTHOST_PILLARS =
@@ -133,9 +127,6 @@ public class UpgradeCommand extends BaseTransactionCommand {
             if (t != null) {
                 log.warn("got upgrade task: {}", t.getName());
                 switch (t.getName()) {
-                    case UPGRADE_KS_PROFILES:
-                        processKickstartProfiles();
-                        break;
                     case UPGRADE_REFRESH_CUSTOM_SLS_FILES:
                         refreshCustomSlsFiles();
                         break;
@@ -162,24 +153,6 @@ public class UpgradeCommand extends BaseTransactionCommand {
                 // always run this
                 TaskFactory.remove(t);
             }
-        }
-    }
-
-    private void processKickstartProfiles() {
-        // Use WARN here because we want this operation logged.
-        log.warn("Processing ks profiles.");
-        List<KickstartData> allKickstarts = KickstartFactory.listAllKickstartData();
-        for (KickstartData ksdata : allKickstarts) {
-            KickstartSession ksession =
-                    KickstartFactory.lookupDefaultKickstartSessionForKickstartData(ksdata);
-            if (ksession == null) {
-                log.warn("Kickstart does not have a session: id: {} label: {}", ksdata.getId(), ksdata.getLabel());
-                KickstartSessionCreateCommand kcmd = new KickstartSessionCreateCommand(
-                        ksdata.getOrg(), ksdata);
-                kcmd.store();
-                log.warn("Created kickstart session and key");
-            }
-
         }
     }
 
