@@ -48,8 +48,6 @@ public class UpgradeCommand extends BaseTransactionCommand {
     private static Logger log = LogManager.getLogger(UpgradeCommand.class);
 
     public static final String UPGRADE_TASK_NAME = "upgrade_satellite_";
-    public static final String REFRESH_VIRTHOST_PILLARS =
-            UPGRADE_TASK_NAME + "virthost_pillar_refresh";
     public static final String REFRESH_ALL_SYSTEMS_PILLARS =
             UPGRADE_TASK_NAME + "all_systems_pillar_refresh";
     public static final String SYSTEM_THRESHOLD_FROM_CONFIG =
@@ -96,9 +94,6 @@ public class UpgradeCommand extends BaseTransactionCommand {
             if (t != null) {
                 log.warn("got upgrade task: {}", t.getName());
                 switch (t.getName()) {
-                    case REFRESH_VIRTHOST_PILLARS:
-                        refreshVirtHostPillar();
-                        break;
                     case SYSTEM_THRESHOLD_FROM_CONFIG:
                         convertSystemThresholdFromConfig();
                         break;
@@ -116,24 +111,6 @@ public class UpgradeCommand extends BaseTransactionCommand {
                 // always run this
                 TaskFactory.remove(t);
             }
-        }
-    }
-
-    /**
-     * Regenerate pillar data for every virtualization host.
-     */
-    private void refreshVirtHostPillar() {
-        try {
-            List<MinionServer> virtHosts = MinionServerFactory.listMinions().stream()
-                    .filter(Server::hasVirtualizationEntitlement)
-                    .toList();
-            virtHosts.forEach(MinionPillarManager.INSTANCE::generatePillar);
-            List<String> minionIds = virtHosts.stream().map(MinionServer::getMinionId).collect(Collectors.toList());
-            GlobalInstanceHolder.SALT_API.refreshPillar(new MinionList(minionIds));
-            log.warn("Refreshed virtualization hosts pillar");
-        }
-        catch (Exception e) {
-            log.error("Error refreshing virtualization host pillar. Ignoring.", e);
         }
     }
 
