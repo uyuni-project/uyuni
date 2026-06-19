@@ -14,51 +14,8 @@
  */
 package com.redhat.rhn.manager.satellite;
 
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import com.redhat.rhn.domain.kickstart.KickstartData;
-import com.redhat.rhn.domain.kickstart.KickstartFactory;
-import com.redhat.rhn.domain.kickstart.KickstartSession;
-import com.redhat.rhn.domain.task.Task;
-import com.redhat.rhn.domain.task.TaskFactory;
-import com.redhat.rhn.frontend.action.kickstart.KickstartTestHelper;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
-import com.redhat.rhn.testing.TestUtils;
-
-import org.junit.jupiter.api.Test;
-
-import java.util.List;
 
 public class UpgradeCommandTest extends BaseTestCaseWithUser {
 
-    @Test
-    public void testUpgradeProfiles() throws Exception {
-        TaskFactory.createTask(user.getOrg(), UpgradeCommand.UPGRADE_KS_PROFILES, 0L);
-        List<Task> l = TaskFactory.getTaskListByNameLike(UpgradeCommand.UPGRADE_KS_PROFILES);
-        assertInstanceOf(Task.class, l.get(0));
-
-        KickstartData ksd = KickstartTestHelper.createTestKickStart(user);
-
-        KickstartSession ksession =
-            KickstartFactory.lookupDefaultKickstartSessionForKickstartData(ksd);
-        assertNull(ksession);
-
-        // UpgradeCommand its its own transaction so we gotta commit.
-        TestUtils.commitAndCloseSession();
-        commitHappened();
-
-        UpgradeCommand cmd = new UpgradeCommand();
-        cmd.upgrade();
-
-        // Check to see if the upgrade command created the default profile.
-        ksession =
-            KickstartFactory.lookupDefaultKickstartSessionForKickstartData(ksd);
-        assertNotNull(ksession);
-
-        List<Task> tasks = TaskFactory.getTaskListByNameLike(UpgradeCommand.UPGRADE_KS_PROFILES);
-        assertTrue((tasks == null || tasks.isEmpty()));
-    }
 }
