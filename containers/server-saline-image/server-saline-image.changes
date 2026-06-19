@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Jun 19 16:31:16 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.9
+  * Fix issue starting saline container (bsc#1268588)
+
+-------------------------------------------------------------------
 Wed Jun 17 15:02:45 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.8
