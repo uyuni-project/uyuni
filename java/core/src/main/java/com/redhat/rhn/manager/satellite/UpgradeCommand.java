@@ -15,13 +15,9 @@
 package com.redhat.rhn.manager.satellite;
 
 import com.redhat.rhn.GlobalInstanceHolder;
-import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.domain.common.RhnConfiguration;
-import com.redhat.rhn.domain.common.RhnConfigurationFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
-import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.task.Task;
 import com.redhat.rhn.domain.task.TaskFactory;
 import com.redhat.rhn.manager.BaseTransactionCommand;
@@ -50,8 +46,6 @@ public class UpgradeCommand extends BaseTransactionCommand {
     public static final String UPGRADE_TASK_NAME = "upgrade_satellite_";
     public static final String REFRESH_ALL_SYSTEMS_PILLARS =
             UPGRADE_TASK_NAME + "all_systems_pillar_refresh";
-    public static final String SYSTEM_THRESHOLD_FROM_CONFIG =
-            UPGRADE_TASK_NAME + "system_threshold_conf";
     public static final String ALL_SYSTEMS_SYNC_ALL =
             UPGRADE_TASK_NAME + "all_systems_sync_all";
     public static final String MIGRATE_COBBLER =
@@ -94,9 +88,6 @@ public class UpgradeCommand extends BaseTransactionCommand {
             if (t != null) {
                 log.warn("got upgrade task: {}", t.getName());
                 switch (t.getName()) {
-                    case SYSTEM_THRESHOLD_FROM_CONFIG:
-                        convertSystemThresholdFromConfig();
-                        break;
                     case REFRESH_ALL_SYSTEMS_PILLARS:
                         refreshAllSystemsPillar();
                         break;
@@ -128,13 +119,6 @@ public class UpgradeCommand extends BaseTransactionCommand {
         catch (Exception e) {
             log.error("Error refreshing hosts pillar. Ignoring.", e);
         }
-    }
-
-    private void convertSystemThresholdFromConfig() {
-        log.warn("Converting web.system_checkin_threshold to DB config");
-        RhnConfigurationFactory factory = RhnConfigurationFactory.getSingleton();
-        factory.updateConfigurationValue(RhnConfiguration.KEYS.SYSTEM_CHECKIN_THRESHOLD,
-                Config.get().getString("web.system_checkin_threshold", "1"));
     }
 
     /**
