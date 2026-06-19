@@ -439,16 +439,20 @@ public class AttestationManager {
     /**
      * Sets failure in report and inputs not yet computed
      * @param report the report
+     * @param failureMessage the failure message
      */
-    public void setFailed(ServerCoCoAttestationReport report) {
+    public void setFailed(ServerCoCoAttestationReport report, String failureMessage) {
         report.setStatus(CoCoReportStatus.FAILED);
 
-        report.getResults().stream()
-                .filter(result -> !result.getStatus().hasInputData())
-                .forEach(result -> {
-                    result.setStatus(CoCoResultStatus.FAILED);
-                    result.setDetails("No input data");
-                });
+        report.getResults().forEach(result -> {
+            result.setStatus(CoCoResultStatus.FAILED);
+            if (result.getStatus().hasInputData()) {
+                result.setDetails(failureMessage);
+            }
+            else {
+                result.setDetails("No input data");
+            }
+        });
     }
 
     /**
