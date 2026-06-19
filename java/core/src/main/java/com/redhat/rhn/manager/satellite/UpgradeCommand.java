@@ -24,8 +24,6 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactory;
 import com.redhat.rhn.domain.server.Server;
-import com.redhat.rhn.domain.state.ServerStateRevision;
-import com.redhat.rhn.domain.state.StateFactory;
 import com.redhat.rhn.domain.task.Task;
 import com.redhat.rhn.domain.task.TaskFactory;
 import com.redhat.rhn.domain.user.User;
@@ -36,16 +34,12 @@ import com.redhat.rhn.taskomatic.TaskomaticApiException;
 
 import com.suse.manager.saltboot.SaltbootMigrationException;
 import com.suse.manager.saltboot.SaltbootMigrationUtils;
-import com.suse.manager.webui.services.SaltConstants;
-import com.suse.manager.webui.services.SaltStateGeneratorService;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,8 +57,6 @@ public class UpgradeCommand extends BaseTransactionCommand {
     private static Logger log = LogManager.getLogger(UpgradeCommand.class);
 
     public static final String UPGRADE_TASK_NAME = "upgrade_satellite_";
-    public static final String UPGRADE_REFRESH_CUSTOM_SLS_FILES =
-            UPGRADE_TASK_NAME + "refresh_custom_sls_files";
     public static final String REFRESH_VIRTHOST_PILLARS =
             UPGRADE_TASK_NAME + "virthost_pillar_refresh";
     public static final String REFRESH_ALL_SYSTEMS_PILLARS =
@@ -78,23 +70,11 @@ public class UpgradeCommand extends BaseTransactionCommand {
     public static final String MGR_SYNC_ALL =
             UPGRADE_TASK_NAME + "mgr_sync_all";
 
-    private final Path saltRootPath;
-
     /**
      * Constructor
      */
     public UpgradeCommand() {
-        this(Paths.get(SaltConstants.SUMA_STATE_FILES_ROOT_PATH));
-    }
-
-    /**
-     * Constructor allowing parameters mocking.
-     *
-     * @param saltRootPathIn - custom salt root path
-     */
-    public UpgradeCommand(Path saltRootPathIn) {
         super(log);
-        this.saltRootPath = saltRootPathIn;
     }
 
 
@@ -127,9 +107,6 @@ public class UpgradeCommand extends BaseTransactionCommand {
             if (t != null) {
                 log.warn("got upgrade task: {}", t.getName());
                 switch (t.getName()) {
-                    case UPGRADE_REFRESH_CUSTOM_SLS_FILES:
-                        refreshCustomSlsFiles();
-                        break;
                     case REFRESH_VIRTHOST_PILLARS:
                         refreshVirtHostPillar();
                         break;
@@ -153,31 +130,6 @@ public class UpgradeCommand extends BaseTransactionCommand {
                 // always run this
                 TaskFactory.remove(t);
             }
-        }
-    }
-
-
-    /**
-     * Regenerate all minion custom SLS files (/srv/susemanager/salt/custom/custom_*.sls) according to
-     * the information stored on the database.
-     */
-    private void refreshCustomSlsFiles() {
-        try {
-            for (MinionServer minion : MinionServerFactory.listMinions()) {
-                ServerStateRevision serverRev = StateFactory
-                        .latestStateRevision(minion)
-                        .orElseGet(() -> {
-                            ServerStateRevision rev =
-                                    new ServerStateRevision();
-                            rev.setServer(minion);
-                            return rev;
-                        });
-                SaltStateGeneratorService.INSTANCE.generateConfigState(serverRev, saltRootPath);
-            }
-            log.info("Regenerated custom minion SLS files in {}", saltRootPath);
-        }
-        catch (Exception e) {
-            log.error("Error refreshing custom SLS files. Ignoring.", e);
         }
     }
 
