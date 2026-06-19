@@ -16,7 +16,6 @@ import com.redhat.rhn.domain.action.server.ServerAction;
 import com.redhat.rhn.domain.server.MinionSummary;
 
 import com.suse.manager.attestation.AttestationManager;
-import com.suse.manager.model.attestation.CoCoResultStatus;
 import com.suse.manager.model.attestation.ServerCoCoAttestationReport;
 import com.suse.manager.utils.SaltUtils;
 import com.suse.manager.webui.services.SaltParameters;
@@ -69,7 +68,19 @@ public class CoCoAttestationAction extends Action {
     public void onFailAction(ServerAction serverActionIn) {
         if (!Objects.equals(serverActionIn.getParentAction(), this)) {
             LOG.error("This is not the action which belongs to the passed server action");
+            return;
         }
+
+        AttestationManager attestationManager = GlobalInstanceHolder.ATTESTATION_MANAGER;
+        Optional<ServerCoCoAttestationReport> optReport =
+                attestationManager.lookupReportByServerAndAction(serverActionIn.getServer(), this);
+        if (optReport.isEmpty()) {
+            LOG.warn("Failed to find a report entry while reacting to a failed server action");
+            return;
+        }
+        ServerCoCoAttestationReport report = optReport.get();
+
+        attestationManager.setFailed(report, serverActionIn.getResultMsg());
     }
 
     /**
@@ -182,8 +193,7 @@ public class CoCoAttestationAction extends Action {
                             AttestationManager attestationManager, ServerCoCoAttestationReport report) {
         LOG.error(message);
         serverAction.fail(message);
-        attestationManager.setFailed(report);
-        report.getResults().forEach(result -> result.setStatus(CoCoResultStatus.FAILED));
+        attestationManager.setFailed(report, message);
     }
 
 }
