@@ -20,7 +20,10 @@ def batched(iterable, n):
     if n < 1:
         raise ValueError("n must be at least one")
     iterator = iter(iterable)
-    while batch := tuple(islice(iterator, n)):
+    while True:
+        batch = tuple(islice(iterator, n))
+        if not batch:
+            break
         yield batch
 
 
