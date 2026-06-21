@@ -1478,6 +1478,18 @@ password={passwd}
             return None
         return media_products_path
 
+    def get_filelists(self):
+        """
+        Return path to filelists.xml file if available
+
+        :returns: str
+        """
+        filelists_name = self._retrieve_md_path("filelists", True)
+        repo_base = self._get_repodata_path().rstrip("/repodata")
+
+        downloaded = self.get_file(filelists_name, repo_base)
+        return downloaded
+
     def raw_list_packages(self, filters=None):
         """
         Return a raw list of available packages.
