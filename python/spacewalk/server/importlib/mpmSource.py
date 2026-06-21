@@ -119,7 +119,6 @@ def create_package(
     header_start=None,
     header_end=None,
     channels=[],
-    expand_full_filelist=True,
     remote_path=None,
 ):
     if header.packaging == "rpm":
@@ -133,7 +132,6 @@ def create_package(
             header_start=header_start,
             header_end=header_end,
             channels=channels,
-            expand_full_filelist=expand_full_filelist,
             remote_path=remote_path,
         )
     if header.packaging == "deb":
