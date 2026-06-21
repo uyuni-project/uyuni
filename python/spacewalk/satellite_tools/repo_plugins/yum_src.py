@@ -1076,9 +1076,10 @@ password={passwd}
             self.setup_repo(self.repo)
         return bool(self._retrieve_md_path(tag))
 
-    def _retrieve_md_path(self, tag):
+    def _retrieve_md_path(self, tag, filename_only=False):
         """
         Return the path to the requested metadata if exists
+        Set filename_only=True to return only the filename part without the full path.
 
         :returns: str
         """
@@ -1102,6 +1103,8 @@ password={passwd}
                 if elem.tag.endswith("data") and elem.attrib.get("type").startswith(
                     tag
                 ):
+                    if filename_only:
+                        return get_location_from_xml_element(elem)
                     path = os.path.join(
                         self.repo.root,
                         ZYPP_RAW_CACHE_PATH,
