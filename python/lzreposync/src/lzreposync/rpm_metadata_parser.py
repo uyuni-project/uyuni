@@ -48,7 +48,7 @@ class BadParserException(Exception):
 
 
 def parse_rpm_packages_metadata(
-    primary_xml, filelists_xml, repository_url, cache_dir, arch_filter=".*"
+    primary_xml, filelists_xml, repository_url, cache_dir, arch_filter=".*", skip_import=False
 ):
     """
     Parse both primary.xml and filelists.xml files and yield packages metadata
@@ -95,6 +95,9 @@ def parse_rpm_packages_metadata(
             # pylint: disable-next=logging-format-interpolation,consider-using-f-string
             "Yielding pacakge {}".format(package["checksum"])
         )
+        if skip_import:
+            yield package
+
         # pylint: disable=W0703,W0706
         try:
             rpm_package = mpmSource.create_package(
