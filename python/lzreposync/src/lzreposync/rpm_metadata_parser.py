@@ -97,6 +97,7 @@ def parse_rpm_packages_metadata(
         )
         if skip_import:
             yield package
+            continue
 
         # pylint: disable=W0703,W0706
         try:

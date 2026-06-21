@@ -34,9 +34,11 @@ import gettext
 import errno
 import multiprocessing
 
+from lzreposync.rpm_metadata_parser import parse_rpm_packages_metadata
 from rhn.connections import idn_puny_to_unicode
 from rhn.stringutils import ustr
 
+from uyuni.common.rhn_rpm import RPM_Package
 from uyuni.common.usix import raise_with_tb
 
 from spacewalk.server import rhnPackage, rhnSQL, rhnChannel, suseEula
@@ -1385,6 +1387,17 @@ class RepoSync(object):
 
         skipped = 0
         packages = []
+
+        if self.metadata_only:
+            # Download the repository filelists.xml file.
+            plug.get_filelists()
+            # Get package metadata from filelist file so we can assign it to apkg later
+            rpm_packages_medatata = {metadata["checksum"]:metadata for metadata in parse_rpm_packages_metadata(plug._retrieve_md_path("primary"),
+                            plug._retrieve_md_path("filelists"),
+                            self.urls[0]["source_url"][0],
+                            CACHE_DIR,
+                            skip_import=True)}
+
         try:
             packages = plug.list_packages(filters, self.latest)
         except repo.GeneralRepoException as exc:
@@ -1449,6 +1462,11 @@ class RepoSync(object):
 
             to_download = True
             to_link = True
+
+            # TODO: Check on the consequences of existing packages. See if statement on different org_ids below
+            if self.metadata_only:
+                to_download = False
+
             # Package exists in DB
             if db_pack:
                 # Path in filesystem is defined
@@ -1481,6 +1499,19 @@ class RepoSync(object):
             if to_download or to_link:
                 if pack.arch in ["src", "nosrc"]:
                     to_link = False
+
+                # TODO: This is for lazy sync only. Not sure of metadata_only impact on other unknown scenario
+                if self.metadata_only:
+                    pack_metadata = rpm_packages_medatata[pack.checksum]
+                    pack.a_pkg = RPM_Package()
+                    pack.a_pkg.header = pack_metadata["header"]
+                    pack.a_pkg.payload_size = pack_metadata["package_size"]
+                    pack.a_pkg.checksum_type = pack_metadata["checksum_type"]
+                    pack.a_pkg.checksum = pack_metadata["checksum"]
+                    pack.a_pkg.header_start = pack_metadata["header_start"]
+                    pack.a_pkg.header_end = pack_metadata["header_end"]
+                    pack.a_pkg.remote_path = pack_metadata["remote_path"]
+
                 to_process.append((pack, to_download, to_link))
 
         num_to_process = len(to_process)
@@ -1716,7 +1747,8 @@ class RepoSync(object):
         for index, what in enumerate(to_process):
             # pylint: disable-next=unused-variable
             pack, to_download, to_link = what
-            if not to_download:
+            # TODO: Check impact of metadata_only. Maybe use to-link instead?
+            if not to_download and not metadata_only:
                 continue
             import_count += 1
             stage_path = pack.path
@@ -1724,13 +1756,17 @@ class RepoSync(object):
             # pylint: disable=W0703
             try:
                 # check if package was downloaded
-                if not os.path.exists(stage_path):
+                if to_download and not os.path.exists(stage_path):
                     # pylint: disable-next=broad-exception-raised
                     raise Exception
 
-                pack.load_checksum_from_header()
+                if to_download:
+                    pack.load_checksum_from_header()
 
                 if not metadata_only:
+                    # Remove remote path from pack as it is not required
+                    # If remote_path is filled, it will be used a an installation source by the client.
+                    pack.a_pkg.remote_path=""
                     rel_package_path = rhnPackageUpload.relative_path_from_header(
                         pack.a_pkg.header,
                         org_id,
@@ -1781,6 +1817,7 @@ class RepoSync(object):
                     header_start=pack.a_pkg.header_start,
                     header_end=pack.a_pkg.header_end,
                     channels=[],
+                    remote_path=pack.a_pkg.remote_path,
                 )
 
                 if pack.a_pkg.header.is_source:
@@ -1792,7 +1829,7 @@ class RepoSync(object):
                 pack.checksum = pack.a_pkg.checksum
                 pack.checksum_type = pack.a_pkg.checksum_type
                 pack.epoch = pack.a_pkg.header["epoch"]
-                pack.a_pkg = None
+                pack.clear_header()
 
                 all_packages.add((pack.checksum_type, pack.checksum))
 
