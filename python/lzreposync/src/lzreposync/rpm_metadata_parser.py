@@ -107,7 +107,6 @@ def parse_rpm_packages_metadata(
                 header_start=package["header_start"],
                 header_end=package["header_end"],
                 channels=[],
-                expand_full_filelist=False,
                 remote_path=package["remote_path"],
             )
             rpm_package.arch = package["header"]["arch"]
