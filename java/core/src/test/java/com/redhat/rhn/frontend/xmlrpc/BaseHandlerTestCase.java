@@ -82,11 +82,6 @@ public class BaseHandlerTestCase extends RhnBaseTestCase {
         TestUtils.deleteAllAccessTokens();
     }
 
-    // If we have to commit in mid-test, set up the next transaction correctly
-    protected void commitHappened() {
-        // to be removed
-    }
-
     protected void addAccessGroup(User user, AccessGroup group) {
         user.addToGroup(group);
     }

@@ -80,7 +80,6 @@ public class ChannelRepodataTest extends JMockBaseTestCaseWithUser {
     @Test
     public void canProcessRepositoriesDataForChannel() throws Exception {
         // A commit will happen in taskomatic, so we need to clean up everything in the end
-        commitHappened();
 
         // Fill in the rhnRepoRegenQueue table to request the repodata generation execution
         Channel testChannel = ChannelFactoryTest.createTestChannel(user);
