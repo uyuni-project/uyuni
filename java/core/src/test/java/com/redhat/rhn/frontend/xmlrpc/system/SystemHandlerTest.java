@@ -471,8 +471,6 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
             handler.setChildChannels(admin, sid, ia32Children);
         }, "allowed invalid child channel to be set.");
-
-        commitHappened();
     }
 
     @Test
@@ -594,8 +592,6 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
             handler.setChildChannels(admin, sid, ia32Children);
         }, "allowed invalid child channel to be set.");
-
-        commitHappened();
     }
 
     @Test
@@ -683,8 +679,6 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         catch (InvalidChannelException e) {
             // success
         }
-
-        commitHappened();
     }
 
     @Test
@@ -765,8 +759,6 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
 
             handler.setBaseChannel(admin, sid, base1.getLabel());
         }, "allowed channel with incompatible arch to be set");
-
-        commitHappened();
     }
 
     @Test
@@ -1202,7 +1194,6 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         // Commit in this test is mandatory as creation date keeps updating while the object is not actually stored
         // in the database
         TestUtils.commitAndCloseSession();
-        commitHappened();
 
         Thread.sleep(2_000);
         final Date earliestDate = new Date();
@@ -1214,7 +1205,6 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         action = ActionManager.schedulePackageRefresh(admin, server, new Date());
         ActionFactory.save(action);
         TestUtils.commitAndCloseSession();
-        commitHappened();
 
         results = handler.listSystemEvents(admin, server.getId().intValue());
         assertEquals(3, results.size());
@@ -2410,7 +2400,6 @@ public class SystemHandlerTest extends BaseHandlerTestCase {
         // lookup_transaction_package(:operation, :n, :e, :v, :r, :a)
         // which can cause deadlocks.  We are forced to call commitAndCloseTransaction()
         TestUtils.commitAndCloseSession();
-        commitHappened();
         handler.scheduleSyncPackagesWithSystem(admin, s1.getId().
                         intValue(), s2.getId().intValue(), packagesToSync,
                 new Date());

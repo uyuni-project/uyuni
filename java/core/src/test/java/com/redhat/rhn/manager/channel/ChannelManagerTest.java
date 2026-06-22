@@ -816,7 +816,6 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         clearSsm();
         SsmManager.addServersToSsm(user, new String[] {s.getId().toString()});
         ChannelFactory.commitTransaction();
-        commitHappened();
 
         // Ask for channels compatible with the new server's base
         List<EssentialChannelDto> compatibles = ChannelManager.listCompatibleBaseChannelsForChannel(user, c);
