@@ -32,9 +32,9 @@
                       class="required-form-field">*</span>:</label>
                 <div class="col-sm-6">
                   <div id="desiredpassword-input-group" class="input-group">
-                      <html:password property="desiredpassword" styleClass="form-control" size="15"/>
+                      <html:password property="desiredpassword" onkeyup="updateTickIcon()" styleClass="form-control" size="15"/>
                       <span class="input-group-addon input-group-text">
-                          <i class="fa fa-times-circle text-danger fa-1-5x" id="desiredtick"></i>
+                          <i class="fa fa-info-circle fa-1-5x" data-bs-custom-class="wide-tooltip" data-bs-toggle="tooltip" id="desiredtick"></i>
                       </span>
                   </div>
                 </div>
@@ -46,7 +46,7 @@
                   <div class="input-group">
                       <html:password styleClass="form-control" property="desiredpasswordConfirm" onkeyup="updateTickIcon()" size="15" styleId="confirmpass"/>
                       <span class="input-group-addon input-group-text">
-                          <i class="fa fa-times-circle text-danger fa-1-5x" id="confirmtick"></i>
+                          <i class="fa fa-info-circle fa-1-5x" data-bs-custom-class="wide-tooltip" data-bs-toggle="tooltip" id="confirmtick"></i>
                       </span>
                   </div>
                 </div>
@@ -57,14 +57,6 @@
                       jQuery("[name='password-asterisk']").toggle()
                     }
               </script>
-              <div class="form-group">
-                <label class="col-sm-3 control-label"><bean:message key="help.credentials.jsp.passwordstrength"/>:</label>
-                <div class="col-sm-6">
-                    <div id="pwstrenghtfield">
-                      <!-- progress-bar will attach to this container -->
-                    </div>
-                </div>
-              </div>
               <c:if test="${displaypam == 'true'}">
                 <div class="form-group">
                   <label class="col-sm-3 control-label" for="pam"><bean:message key="usercreate.jsp.pam"/></label>
