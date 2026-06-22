@@ -158,6 +158,22 @@ public class AnsibleManager extends BaseManager {
      * @throws ValidatorException if the validation fails
      */
     public AnsiblePath createAnsiblePath(String typeLabel, MinionServer minionServer, String path) {
+        return createAnsiblePath(typeLabel, minionServer, path, true);
+    }
+
+    /**
+     * Create and save a new ansible path
+     *
+     * @param typeLabel the type label
+     * @param minionServer the minion server
+     * @param path the path
+     * @param scheduleRefresh whether to schedule an immediate inventory refresh
+     * @return the created and saved AnsiblePath
+     * @throws LookupException if the user does not have permissions or server not found
+     * @throws ValidatorException if the validation fails
+     */
+    public AnsiblePath createAnsiblePath(String typeLabel, MinionServer minionServer,
+            String path, boolean scheduleRefresh) {
         validateAnsiblePath(path, of(typeLabel), empty(), minionServer.getId());
 
         AnsiblePath ansiblePath;
@@ -176,13 +192,16 @@ public class AnsibleManager extends BaseManager {
         ansiblePath = AnsibleFactory.saveAnsiblePath(ansiblePath);
 
         if (type == AnsiblePath.Type.INVENTORY) {
-            // Schedule inventory refresh
-            try {
-                ActionManager.scheduleInventoryRefresh(ansiblePath.getMinionServer(), ansiblePath.getPath().toString());
-            }
-            catch (TaskomaticApiException e) {
-                log.error("Could not schedule Ansible inventory refresh for minion: {}",
-                        ansiblePath.getMinionServer().getMinionId(), e);
+            if (scheduleRefresh) {
+                // Schedule inventory refresh
+                try {
+                    ActionManager.scheduleInventoryRefresh(ansiblePath.getMinionServer(),
+                            ansiblePath.getPath().toString());
+                }
+                catch (TaskomaticApiException e) {
+                    log.error("Could not schedule Ansible inventory refresh for minion: {}",
+                            ansiblePath.getMinionServer().getMinionId(), e);
+                }
             }
 
             // Refresh inotify beacon
@@ -575,7 +594,7 @@ public class AnsibleManager extends BaseManager {
         String inventory = "/etc/ansible/hosts";
         String playbook = "/etc/ansible/playbooks";
         try {
-            createAnsiblePath(AnsiblePath.Type.INVENTORY.getLabel(), minionServer, inventory);
+            createAnsiblePath(AnsiblePath.Type.INVENTORY.getLabel(), minionServer, inventory, false);
         }
         catch (ValidatorException e) {
             log.info(String.format("Inventory path: '%s' already exists. Skipping...", inventory));
