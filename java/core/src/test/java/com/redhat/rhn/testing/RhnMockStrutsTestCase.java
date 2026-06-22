@@ -201,9 +201,4 @@ public class RhnMockStrutsTestCase extends BaseStrutsTestCase implements SaltTes
     protected void assertException() {
         assertTrue(getActualForward().indexOf("/errors") > 0);
     }
-
-    // If we have to commit in mid-test, set up the next transaction correctly
-    protected void commitHappened() {
-        //to be removed
-    }
 }

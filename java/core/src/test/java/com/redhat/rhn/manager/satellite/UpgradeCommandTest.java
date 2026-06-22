@@ -46,9 +46,8 @@ public class UpgradeCommandTest extends BaseTestCaseWithUser {
             KickstartFactory.lookupDefaultKickstartSessionForKickstartData(ksd);
         assertNull(ksession);
 
-        // UpgradeCommand its its own transaction so we gotta commit.
+        // UpgradeCommand has its own transaction, so we have to commit.
         TestUtils.commitAndCloseSession();
-        commitHappened();
 
         UpgradeCommand cmd = new UpgradeCommand();
         cmd.upgrade();

@@ -146,7 +146,6 @@ public class AttestationManagerTest extends JMockBaseTestCaseWithUser {
         TestUtils.flushSession();
         HibernateFactory.commitTransaction();
         TestUtils.clearSession();
-        commitHappened();
 
         assertEquals(2, mgr.countCoCoAttestationReportsForUserAndServer(user, server));
         assertEquals(1, mgr.countCoCoAttestationReportsForUserAndServer(user, server3));
@@ -165,7 +164,6 @@ public class AttestationManagerTest extends JMockBaseTestCaseWithUser {
         TestUtils.flushSession();
         HibernateFactory.commitTransaction();
         TestUtils.clearSession();
-        commitHappened();
 
         List<ServerCoCoAttestationReport> reports = mgr.listCoCoAttestationReportsForUserAndServer(user, server,
             new Date(0), 0, Integer.MAX_VALUE);
@@ -197,7 +195,6 @@ public class AttestationManagerTest extends JMockBaseTestCaseWithUser {
         TestUtils.flushSession();
         HibernateFactory.commitTransaction();
         TestUtils.clearSession();
-        commitHappened();
 
         assertEquals(3, mgr.countCoCoAttestationReportsForUser(user));
         assertEquals(5, mgr.countCoCoAttestationReportsForUser(user2));
@@ -224,7 +221,6 @@ public class AttestationManagerTest extends JMockBaseTestCaseWithUser {
         TestUtils.flushSession();
         HibernateFactory.commitTransaction();
         TestUtils.clearSession();
-        commitHappened();
 
         List<ServerCoCoAttestationReport> reports = mgr.listCoCoAttestationReportsForUser(user, 0, Integer.MAX_VALUE);
         assertEquals(3, reports.size());
@@ -244,7 +240,6 @@ public class AttestationManagerTest extends JMockBaseTestCaseWithUser {
             createFakeAttestationReport(user, server);
             TestUtils.flushSession();
             HibernateFactory.commitTransaction();
-            commitHappened();
             TimeUnit.SECONDS.sleep(2);
         }
         TestUtils.clearSession();
