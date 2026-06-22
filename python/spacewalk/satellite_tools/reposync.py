@@ -580,7 +580,7 @@ class RepoSync(object):
         if not url:
             # TODO:need to look at user security across orgs
             h = rhnSQL.prepare("""
-                select s.id, s.source_url, s.metadata_signed, s.label as repo_label, cst.label as repo_type_label
+                select s.id, s.source_url, s.metadata_signed, s.label as repo_label, s.download_strategy_id, cst.label as repo_type_label
                 from rhnContentSource s,
                      rhnChannelContentSource cs,
                      rhnContentSourceType cst
@@ -617,6 +617,7 @@ class RepoSync(object):
                     "metadata_signed": "N",
                     "repo_label": None,
                     "repo_type": repo_type_label,
+                    "metadata_only": self.metadata_only,
                 }
             ]
 
@@ -673,6 +674,8 @@ class RepoSync(object):
 
             plugin = None
             repo_type = data["repo_type"]
+            if data["metadata_only"]:
+                self.metadata_only = True
 
             for source_url in data["source_url_auth"]:
                 url = source_url["url"]
@@ -2460,7 +2463,9 @@ class RepoSync(object):
                     repo_type_label = repo_type
                 else:
                     repo_type_label = item["repo_type_label"]
-
+                metadata_only_flag = False
+                if item["download_strategy_id"] >= 600:
+                    metadata_only_flag = True
                 ret.append(
                     dict(
                         id=item["id"],
@@ -2468,6 +2473,7 @@ class RepoSync(object):
                         metadata_signed=item["metadata_signed"],
                         repo_label=item["repo_label"],
                         repo_type=repo_type_label,
+                        metadata_only=metadata_only_flag,
                     )
                 )
         return ret

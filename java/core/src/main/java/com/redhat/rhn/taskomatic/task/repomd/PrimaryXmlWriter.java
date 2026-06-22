@@ -218,11 +218,12 @@ public class PrimaryXmlWriter extends RepomdWriter {
         attr.clear();
 
         String remotePath = pkgDto.getRemotePath();
-        if (remotePath == null || remotePath.isBlank() ){
+        if (remotePath == null || remotePath.isBlank()) {
             attr.addAttribute("href", "getPackage/" + pkgDto.getOrgIdAsString() + "/" +
                     sanitize(pkgId, pkgDto.getChecksum()) + "/" + pkgFile);
             attr.addAttribute("href", remotePath);
-        } else {
+        }
+        else {
             attr.addAttribute("href", remotePath);
         }
         localHandler.startElement("location", attr);
