@@ -1507,17 +1507,29 @@ Then(/^I should be able to connect to the ReportDB with the ReportDB admin user$
   node = get_target('server')
 
   # connection from the controller to the reportdb in the server
-  reportdb_admin_conn = PG.connect(host: node.public_ip, port: 5432, dbname: 'reportdb', user: $reportdb_admin_user, password: $reportdb_admin_password)
-  raise SystemCallError, 'Couldn\'t connect to ReportDB with admin from external machine' unless reportdb_admin_conn.status.zero?
+  reportdb_admin_conn = nil
+  begin
+    reportdb_admin_conn = PG.connect(host: node.public_ip, port: 5432, dbname: 'reportdb', user: $reportdb_admin_user, password: $reportdb_admin_password)
+    raise SystemCallError, 'Couldn\'t connect to ReportDB with admin from external machine' unless reportdb_admin_conn.status.zero?
+  ensure
+    # Close the communication
+    reportdb_admin_conn&.close if reportdb_admin_conn && !reportdb_admin_conn.finished?
+  end
 end
 
 Then(/^I should not be able to connect to product database with the ReportDB admin user$/) do
   node = get_target('server')
 
   dbname = 'susemanager'
-  reportdb_admin_conn = PG.connect(host: node.public_ip, port: 5432, dbname: dbname, user: $reportdb_admin_user, password: $reportdb_admin_password)
-  assert_raises PG::InsufficientPrivilege do
-    reportdb_admin_conn.exec('select * from rhnserver;')
+  reportdb_admin_conn = nil
+  begin
+    assert_raises(PG::ConnectionBad, PG::InsufficientPrivilege, PG::InvalidAuthorizationSpecification) do
+      reportdb_admin_conn = PG.connect(host: node.public_ip, port: 5432, dbname: dbname, user: $reportdb_admin_user, password: $reportdb_admin_password)
+      reportdb_admin_conn.exec('select * from rhnserver;')
+    end
+  ensure
+    # Close the communication even when assert_raises itself fails.
+    reportdb_admin_conn&.close if reportdb_admin_conn && !reportdb_admin_conn.finished?
   end
 end
 
