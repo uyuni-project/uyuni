@@ -263,7 +263,7 @@ public class PackageDto extends BaseDto {
     public String getRemotePath() {
         return remotePath;
     }
-    
+
     /**
      *
      * @param remotePathIn The remote package URL to set
