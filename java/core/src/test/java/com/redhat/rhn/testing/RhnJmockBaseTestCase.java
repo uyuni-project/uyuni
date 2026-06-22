@@ -35,8 +35,6 @@ public abstract class RhnJmockBaseTestCase extends MockObjectTestCase implements
      */
     @AfterEach
     public void tearDownRhnJmockBaseTestCase() throws Exception {
-        TestCaseHelper.tearDownHelper();
-
         cleanupSaltConfiguration(tmpSaltRoot);
     }
 }
