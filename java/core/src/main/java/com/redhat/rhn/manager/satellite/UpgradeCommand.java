@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2026 SUSE LLC
  * Copyright (c) 2009--2010 Red Hat, Inc.
  *
  * This software is licensed to you under the GNU General Public License,
@@ -24,6 +25,7 @@ import com.redhat.rhn.manager.BaseTransactionCommand;
 
 import com.suse.manager.saltboot.SaltbootMigrationException;
 import com.suse.manager.saltboot.SaltbootMigrationUtils;
+import com.suse.manager.webui.services.iface.SaltApi;
 import com.suse.manager.webui.services.pillar.MinionPillarManager;
 import com.suse.salt.netapi.datatypes.target.MinionList;
 
@@ -41,23 +43,33 @@ public class UpgradeCommand extends BaseTransactionCommand {
     /**
      * Logger for this class
      */
-    private static Logger log = LogManager.getLogger(UpgradeCommand.class);
+    private static final Logger LOG = LogManager.getLogger(UpgradeCommand.class);
+
+    private final SaltApi saltApi;
+    private final MinionPillarManager minionPillarManager;
 
     public static final String UPGRADE_TASK_NAME = "upgrade_satellite_";
-    public static final String REFRESH_ALL_SYSTEMS_PILLARS =
-            UPGRADE_TASK_NAME + "all_systems_pillar_refresh";
-    public static final String ALL_SYSTEMS_SYNC_ALL =
-            UPGRADE_TASK_NAME + "all_systems_sync_all";
-    public static final String MIGRATE_COBBLER =
-            UPGRADE_TASK_NAME + "migrate_cobbler";
+    public static final String REFRESH_ALL_SYSTEMS_PILLARS = UPGRADE_TASK_NAME + "all_systems_pillar_refresh";
+    public static final String ALL_SYSTEMS_SYNC_ALL = UPGRADE_TASK_NAME + "all_systems_sync_all";
+    public static final String MIGRATE_COBBLER = UPGRADE_TASK_NAME + "migrate_cobbler";
 
     /**
      * Constructor
      */
     public UpgradeCommand() {
-        super(log);
+        this(GlobalInstanceHolder.SALT_API, MinionPillarManager.INSTANCE);
     }
 
+    /**
+     * Constructor with parameters
+     * @param saltApiIn Salt API instance
+     * @param minionPillarManagerIn MinionPillarManager instance
+     */
+    public UpgradeCommand(SaltApi saltApiIn,  MinionPillarManager minionPillarManagerIn) {
+        super(LOG);
+        this.saltApi = saltApiIn;
+        this.minionPillarManager = minionPillarManagerIn;
+    }
 
     /**
      * Executes the upgrade step in an own transaction
@@ -67,15 +79,13 @@ public class UpgradeCommand extends BaseTransactionCommand {
             upgrade();
         }
         catch (Exception e) {
-            log.error("Problem upgrading!", e);
+            LOG.error("Problem upgrading!", e);
             HibernateFactory.rollbackTransaction();
-
         }
         finally {
             handleTransaction();
         }
     }
-
 
     /**
      * Executes the upgrade step
@@ -86,7 +96,7 @@ public class UpgradeCommand extends BaseTransactionCommand {
         for (Task t : upgradeTasks) {
             // Use WARN because we want this logged.
             if (t != null) {
-                log.warn("got upgrade task: {}", t.getName());
+                LOG.warn("got upgrade task: {}", t.getName());
                 switch (t.getName()) {
                     case REFRESH_ALL_SYSTEMS_PILLARS:
                         refreshAllSystemsPillar();
@@ -108,31 +118,31 @@ public class UpgradeCommand extends BaseTransactionCommand {
     /**
      * Regenerate pillar data for every registered system.
      */
-    private void refreshAllSystemsPillar() {
+    protected void refreshAllSystemsPillar() {
         try {
             List<MinionServer> hosts = MinionServerFactory.listMinions();
-            hosts.forEach(MinionPillarManager.INSTANCE::generatePillar);
+            hosts.forEach(minionPillarManager::generatePillar);
             List<String> minionIds = hosts.stream().map(MinionServer::getMinionId).collect(Collectors.toList());
-            GlobalInstanceHolder.SALT_API.refreshPillar(new MinionList(minionIds));
-            log.info("Refreshed hosts pillar");
+            saltApi.refreshPillar(new MinionList(minionIds));
+            LOG.info("Refreshed hosts pillar");
         }
         catch (Exception e) {
-            log.error("Error refreshing hosts pillar. Ignoring.", e);
+            LOG.error("Error refreshing hosts pillar. Ignoring.", e);
         }
     }
 
     /**
      * Run Sync_all on all systems
      */
-    private void allSystemsSyncAll() {
+    protected void allSystemsSyncAll() {
         try {
             List<String> minionIds = MinionServerFactory.listMinions()
                     .stream().map(MinionServer::getMinionId).collect(Collectors.toList());
-            GlobalInstanceHolder.SALT_API.syncAllAsync(new MinionList(minionIds));
-            log.info("Sync all scheduled on all systems");
+            saltApi.syncAllAsync(new MinionList(minionIds));
+            LOG.info("Sync all scheduled on all systems");
         }
         catch (Exception e) {
-            log.error("Error running sync_all. Ignoring.", e);
+            LOG.error("Error running sync_all. Ignoring.", e);
         }
     }
 
@@ -140,22 +150,22 @@ public class UpgradeCommand extends BaseTransactionCommand {
      * Migrate cobbler entries.
      * The execution must be delayed, because cobbler auth needs a fully started tomcat.
      */
-    private void migrateCobbler(Task t) {
+    protected void migrateCobbler(Task t) {
         new Thread(() -> {
             try {
-                log.info("Cobbler migration: waiting");
+                LOG.info("Cobbler migration: waiting");
                 Thread.sleep(60000);
-                log.info("Cobbler migration: started");
+                LOG.info("Cobbler migration: started");
                 SaltbootMigrationUtils.migrateSaltboot();
                 TaskFactory.remove(t);
                 HibernateFactory.commitTransaction();
-                log.info("Cobbler migration: finished");
+                LOG.info("Cobbler migration: finished");
             }
             catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
             catch (SaltbootMigrationException e) {
-                log.error("Cobbler migration failed", e);
+                LOG.error("Cobbler migration failed", e);
             }
             finally {
                 HibernateFactory.closeSession();
