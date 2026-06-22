@@ -60,8 +60,6 @@ public abstract class RhnBaseTestCase extends BaseTestCase implements SaltTestCa
      */
     @AfterEach
     public void tearDownRhnBaseTestCase() throws Exception {
-        TestCaseHelper.tearDownHelper();
-
         cleanupSaltConfiguration(tmpSaltRoot);
     }
 
