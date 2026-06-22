@@ -80,9 +80,10 @@ SPDX-License-Identifier: GPL-2.0-only
                                        size="15"
                                        styleClass="form-control"
                                        maxlength="32"
+                                       onkeyup="updateTickIcon()"
                                        styleId="desiredpass" />
                         <span class="input-group-addon input-group-text">
-                            <i class="fa fa-times-circle text-danger fa-1-5x" id="desiredtick"></i>
+                          <i class="fa fa-info-circle fa-1-5x" data-bs-custom-class="wide-tooltip" data-bs-toggle="tooltip" id="desiredtick"></i>
                         </span>
                     </div>
                 </div>
@@ -100,7 +101,7 @@ SPDX-License-Identifier: GPL-2.0-only
                                        onkeyup="updateTickIcon()"
                                        maxlength="32" styleId="confirmpass"/>
                         <span class="input-group-addon input-group-text">
-                            <i class="fa fa-times-circle text-danger fa-1-5x" id="confirmtick"></i>
+                          <i class="fa fa-info-circle fa-1-5x" data-bs-custom-class="wide-tooltip" data-bs-toggle="tooltip" id="confirmtick"></i>
                         </span>
                     </div>
                 </div>
