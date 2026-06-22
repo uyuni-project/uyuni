@@ -22,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.domain.kickstart.KickstartDataTest;
-import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.domain.user.User;
@@ -33,7 +32,6 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnAction;
 
 import org.apache.struts.action.DynaActionForm;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -50,16 +48,12 @@ public class RhnMockStrutsTestCase extends BaseStrutsTestCase implements SaltTes
 
     protected Path tmpSaltRoot;
     protected User user;
-    private boolean committed = false;
 
     /**
      * {@inheritDoc}
      */
     @BeforeEach
     public void setUpRhnMockStrutsTestCase() throws Exception {
-        // Warning: MockStrutsTestCase.setUp() is not automatically called.
-        super.setUp();
-
         RequestContext requestContext = new RequestContext(request);
         Context ctx = Context.getCurrentContext();
         ctx.setLocale(Locale.getDefault());
@@ -86,23 +80,14 @@ public class RhnMockStrutsTestCase extends BaseStrutsTestCase implements SaltTes
         tmpSaltRoot = setupSaltConfigurationForTests();
     }
 
-    /**
-     * Tears down the fixture, and closes the HibernateSession.
-     */
-    @AfterEach
-    public void tearDownRhnMockStrutsTestCase() throws Exception {
-        TestCaseHelper.tearDownHelper();
-        if (committed) {
-            OrgFactory.deleteOrg(user.getOrg().getId(), user);
-            TestUtils.commitAndCloseSession();
-        }
-        committed = false;
+    @Override
+    protected void cleanupDatabaseCommits() {
+        TestUtils.deleteOrgOfUser(user);
+    }
+
+    @Override
+    protected void afterCleanupDatabaseCommits() {
         user = null;
-
-        cleanupSaltConfiguration(tmpSaltRoot);
-
-        // Warning: MockStrutsTestCase.tearDown() is not automatically called.
-        super.tearDown();
     }
 
     /**
@@ -219,6 +204,6 @@ public class RhnMockStrutsTestCase extends BaseStrutsTestCase implements SaltTes
 
     // If we have to commit in mid-test, set up the next transaction correctly
     protected void commitHappened() {
-        committed = true;
+        //to be removed
     }
 }

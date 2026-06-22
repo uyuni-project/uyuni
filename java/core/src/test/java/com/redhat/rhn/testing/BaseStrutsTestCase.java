@@ -194,14 +194,6 @@ public class BaseStrutsTestCase extends BaseTestCase {
     private HashMap<String, String> initParameters;
     private Optional<String> actionPath;
 
-    public void setUp() throws Exception {
-        // REMOVE WHEN NOT NEEDED ANYMORE
-    }
-
-    public void tearDown() throws Exception {
-        // REMOVE WHEN NOT NEEDED ANYMORE
-    }
-
     @BeforeEach
     public void setUpMockStrutsTestCase() throws Exception {
         initParameters = new HashMap<>();

@@ -16,22 +16,19 @@
 package com.redhat.rhn.testing;
 
 import com.redhat.rhn.domain.kickstart.KickstartDataTest;
-import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.user.User;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
 /**
- * Basic test class class with a User
+ * Basic test class with a User
  */
 public abstract class JMockBaseTestCaseWithUser extends RhnJmockBaseTestCase {
 
     protected User user;
-    private boolean committed = false;
 
     /**
-     * Called once per test method to setup the test environment.
+     * Called once per test method to set up the test environment.
      *
      * @throws Exception if an error occurs during setup
      */
@@ -41,22 +38,19 @@ public abstract class JMockBaseTestCaseWithUser extends RhnJmockBaseTestCase {
         KickstartDataTest.setupTestConfiguration(user);
     }
 
-    @AfterEach
-    public void tearDownJMockBaseTestCaseWithUser() throws Exception {
-        super.tearDownRhnJmockBaseTestCase();
-        // If at some point we created a user and committed the transaction, we need
-        // clean up our mess
-        if (committed) {
-            OrgFactory.deleteOrg(user.getOrg().getId(), user);
-            TestUtils.deleteAllAccessTokens();
-            TestUtils.commitAndCloseSession();
-        }
-        committed = false;
+    @Override
+    protected void cleanupDatabaseCommits() {
+        TestUtils.deleteOrgOfUser(user);
+        TestUtils.deleteAllAccessTokens();
+    }
+
+    @Override
+    protected void afterCleanupDatabaseCommits() {
         user = null;
     }
 
     // If we have to commit in mid-test, set up the next transaction correctly
     protected void commitHappened() {
-        committed = true;
+        //to be removed
     }
 }
