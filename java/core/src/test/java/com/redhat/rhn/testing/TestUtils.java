@@ -29,6 +29,7 @@ import com.redhat.rhn.common.util.MethodUtil;
 import com.redhat.rhn.domain.channel.AccessToken;
 import com.redhat.rhn.domain.channel.AccessTokenFactory;
 import com.redhat.rhn.domain.channel.ChannelArch;
+import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegate;
 import com.redhat.rhn.frontend.servlets.PxtSessionDelegateFactory;
@@ -61,6 +62,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 /**
  * TestUtils, a simple package for utility functions helpful when
@@ -484,6 +487,18 @@ public class TestUtils {
      */
     public static void deleteLastMgrSyncRefresh() {
         HibernateFactory.getSession().createNativeMutationQuery("DELETE FROM suseManagerInfo").executeUpdate();
+    }
+
+    /**
+     * Deletes the org of a user, looking up the org id to check if it's committed in the database
+     * @param userIn the given user
+     */
+    public static void deleteOrgOfUser(User userIn) {
+        Stream.of(userIn)
+                .map(u -> u.getOrg().getId())
+                .map(OrgFactory::lookupById)
+                .filter(Objects::nonNull)
+                .forEach(org -> OrgFactory.deleteOrg(org.getId(), userIn));
     }
 
     //=========================================================================
