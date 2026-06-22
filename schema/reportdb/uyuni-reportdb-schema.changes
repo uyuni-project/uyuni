@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Jun 22 15:29:38 CEST 2026 - michael.calmer@suse.com
+
+- version 5.2.3-0
+  * Fix relationship for new reportDB tables in the documentation
+
+-------------------------------------------------------------------
 Wed Jun 17 14:36:32 CEST 2026 - michael.calmer@suse.com
 
 - version 5.2.2-0

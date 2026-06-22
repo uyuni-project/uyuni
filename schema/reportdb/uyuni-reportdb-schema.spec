@@ -23,7 +23,7 @@
 %{!?fedora: %global sbinpath /sbin}%{?fedora: %global sbinpath %{_sbindir}}
 
 Name:           uyuni-reportdb-schema
-Version:        5.2.2
+Version:        5.2.3
 Release:        0
 Summary:        Report DB SQL schema for %{productprettyname} server
 License:        GPL-2.0-only
