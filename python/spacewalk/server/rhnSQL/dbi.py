@@ -34,15 +34,9 @@ def get_database_module(backend=None):
 
     driver_dir = "spacewalk.server.rhnSQL"
     driver_mod = "driver_" + driver
-    try:
-        module = __import__(driver_dir, globals(), locals(), [driver_mod])
-        module = getattr(module, driver_mod)
-    # pylint: disable-next=try-except-raise
-    except ImportError:
-        raise
-
+    module = __import__(driver_dir, globals(), locals(), [driver_mod])
+    module = getattr(module, driver_mod)
     return module
-
 
 def get_database_class(backend=None):
     """Returns the database class"""
