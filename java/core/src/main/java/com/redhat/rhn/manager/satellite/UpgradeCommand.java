@@ -118,7 +118,7 @@ public class UpgradeCommand extends BaseTransactionCommand {
     /**
      * Regenerate pillar data for every registered system.
      */
-    protected void refreshAllSystemsPillar() {
+    void refreshAllSystemsPillar() {
         try {
             List<MinionServer> hosts = MinionServerFactory.listMinions();
             hosts.forEach(minionPillarManager::generatePillar);
@@ -134,7 +134,7 @@ public class UpgradeCommand extends BaseTransactionCommand {
     /**
      * Run Sync_all on all systems
      */
-    protected void allSystemsSyncAll() {
+    void allSystemsSyncAll() {
         try {
             List<String> minionIds = MinionServerFactory.listMinions()
                     .stream().map(MinionServer::getMinionId).collect(Collectors.toList());
