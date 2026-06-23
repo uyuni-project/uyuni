@@ -73,7 +73,7 @@ public class PackagesHandlerTest extends BaseHandlerTestCase {
         assertEquals(2, files.length);
 
 
-        //TODO: Once we work out the mappings between packages -> files -> capabilities
+        //OLDTODO: Once we work out the mappings between packages -> files -> capabilities
         //we should do some more exhaustive testing of this method.
     }
 

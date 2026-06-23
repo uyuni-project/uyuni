@@ -207,7 +207,7 @@ public class RequestContext {
      *
      * @return User found.
      */
-    // TODO Write unit tests for getUserFromUIDParameter()
+    // OLDTODO Write unit tests for getUserFromUIDParameter()
     public User getUserFromUIDParameter() {
         Long uid = getParamAsLong(USER_ID);
         return UserManager.lookupUser(getCurrentUser(), uid);
@@ -243,7 +243,7 @@ public class RequestContext {
      * @throws IllegalArgumentException if no server with the ID given in the
      * request can be found
      */
-    // TODO Write unit tests for lookupServer()
+    // OLDTODO Write unit tests for lookupServer()
     public Server lookupServer()
     throws IllegalArgumentException {
         Long serverId = getRequiredParam(SID);
@@ -402,7 +402,7 @@ public class RequestContext {
      * @param required whether this parameter must be present
      * @return the parameter value or null if not required.
      */
-    // TODO Refactor getParam(String, boolean)
+    // OLDTODO Refactor getParam(String, boolean)
     // This method is awkward in that if the required flag is set, an exception may be
     // throw. No exception will be thrown though if the flag is not set. Refactor the
     // method by removing the boolean argument, and adding a new method,
@@ -554,7 +554,7 @@ public class RequestContext {
      * Creates a hashmap with pagination vars added.
      * @return Returns a new hashmap containing the parameters
      */
-    // TODO Write unit tests for makeParamMapWithPagination()
+    // OLDTODO Write unit tests for makeParamMapWithPagination()
     public Map<String, Object> makeParamMapWithPagination() {
         Map<String, Object> params = new HashMap<>();
         String lower = processPagination();

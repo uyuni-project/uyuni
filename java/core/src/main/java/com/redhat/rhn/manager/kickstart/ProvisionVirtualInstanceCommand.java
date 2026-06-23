@@ -193,7 +193,7 @@ public class ProvisionVirtualInstanceCommand extends KickstartScheduleCommand {
 
         KickstartSession ksSession = getKickstartSession();
         Long sessionId = (ksSession != null) ? ksSession.getId() : null;
-        //TODO -- It feels a little dirty to pass in this & this.getExtraOptions,
+        //OLDTODO -- It feels a little dirty to pass in this & this.getExtraOptions,
         //but I don't know that I understand the implications of making getExtraOptions
         //a public method.
         KickstartGuestAction ksAction = ActionManager.scheduleKickstartGuestAction(this,

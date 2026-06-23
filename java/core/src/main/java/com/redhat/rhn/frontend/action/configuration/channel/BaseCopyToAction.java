@@ -188,8 +188,8 @@ public abstract class BaseCopyToAction extends RhnAction {
 
     /**
      * When we tell the user things worked, what's the bean-key?
-     * @param numFiles TODO
-     * @param numChannels TODO
+     * @param numFiles
+     * @param numChannels
      * @return key into I18N system
      */
     public abstract String getSuccessKey(int numFiles, int numChannels);

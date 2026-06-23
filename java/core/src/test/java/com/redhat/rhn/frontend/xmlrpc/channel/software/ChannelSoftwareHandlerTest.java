@@ -135,7 +135,7 @@ public class ChannelSoftwareHandlerTest extends BaseHandlerTestCase {
 
     public void ignoredtestAddRemovePackages() throws Exception {
 
-        // TODO : GET THIS WORKING
+        // OLDTODO : GET THIS WORKING
         Channel channel = ChannelFactoryTest.createTestChannel(admin);
         Package pkg1 = PackageTest.createTestPackage(admin.getOrg());
         Package pkg2 = PackageTest.createTestPackage(admin.getOrg());
