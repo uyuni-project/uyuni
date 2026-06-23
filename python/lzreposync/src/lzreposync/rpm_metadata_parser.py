@@ -124,4 +124,5 @@ def parse_rpm_packages_metadata(
             raise e  # Ignore the package and continue
             # continue
 
-    filelists_parser.clear_cache()
+    if not skip_import:
+        filelists_parser.clear_cache()
