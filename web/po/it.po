@@ -13,15 +13,15 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-20 12:03+0000\n"
-"PO-Revision-Date: 2026-05-12 13:04+0000\n"
-"Last-Translator: Lorenzo Proietti <lorenzoproietti110706@gmail.com>\n"
+"PO-Revision-Date: 2026-06-23 13:12+0000\n"
+"Last-Translator: Emanuele Marcello <emanuele.marcello@studenti.unipg.it>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/web/it/>\n"
 "Language: it\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 5.17.1\n"
+"X-Generator: Weblate 2026.6.1\n"
 
 #: ../html/javascript/spacewalk-essentials.js:409
 msgid "remaining"
@@ -131,7 +131,7 @@ msgstr "Nessuna finestra di manutenzione imminente"
 
 #: ../html/src/components/action-schedule.tsx:249
 msgid "Earliest:"
-msgstr ""
+msgstr "primo:"
 
 #: ../html/src/components/action-schedule.tsx:249
 msgid "Maintenance Window:"
@@ -533,13 +533,12 @@ msgstr "Anno prossimo"
 
 #. TODO: Here and below, this translation logic needs to be changed to whole sentences from parents
 #: ../html/src/components/dialog/ActionConfirm.tsx:72
-#, fuzzy
 msgid "Are you sure you want to {action} {name}"
-msgstr "Sei sicuro di voler {0} {1} "
+msgstr "Sei sicuro di voler {0} {1}"
 
 #: ../html/src/components/dialog/ActionConfirm.tsx:84
 msgid "Are you sure you want to {action} the selected {name}s? ({count} {name}s selected)"
-msgstr ""
+msgstr "Sei sicuro di voler {azione} i {nomi} selezionati? ({contare} {nomi} selezionati)"
 
 #: ../html/src/components/dialog/DangerDialog.tsx:59
 #: ../html/src/components/dialog/DangerDialog.tsx:60
