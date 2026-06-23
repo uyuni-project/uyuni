@@ -130,6 +130,7 @@ type State = {
   selectedItems: any[];
   target?: any;
   auditExecuted?: boolean;
+  loading: boolean;
 };
 
 class CVEAudit extends Component<Props, State> {
@@ -145,6 +146,7 @@ class CVEAudit extends Component<Props, State> {
       messages: [],
       selectedItems: [],
       auditExecuted: false,
+      loading: false,
     };
   }
 
@@ -208,24 +210,29 @@ class CVEAudit extends Component<Props, State> {
   }
 
   audit = (target) => {
-    cveAudit("CVE-" + this.state.cveYear + "-" + this.state.cveNumber, target, this.state.statuses).then((data) => {
-      if (data.success) {
-        this.setState({
-          results: data.data,
-          selectedItems: data.data.filter((i) => i.selected).map((i) => i.id),
-          resultType: target,
-          messages: [],
-          auditExecuted: true,
-        });
-      } else {
-        this.setState({
-          results: [],
-          selectedItems: [],
-          messages: data.messages,
-          auditExecuted: false,
-        });
-      }
-    });
+    this.setState({ loading: true });
+    return cveAudit("CVE-" + this.state.cveYear + "-" + this.state.cveNumber, target, this.state.statuses)
+      .then((data) => {
+        if (data.success) {
+          this.setState({
+            results: data.data,
+            selectedItems: data.data.filter((i) => i.selected).map((i) => i.id),
+            resultType: target,
+            messages: [],
+            auditExecuted: true,
+          });
+        } else {
+          this.setState({
+            results: [],
+            selectedItems: [],
+            messages: data.messages,
+            auditExecuted: false,
+          });
+        }
+      })
+      .finally(() => {
+        this.setState({ loading: false });
+      });
   };
 
   getPatchStatusAccuracyWarning = (row) => {
@@ -378,6 +385,8 @@ class CVEAudit extends Component<Props, State> {
             data={this.state.results}
             identifier={(row) => row.id}
             initialSortColumnKey="id"
+            loading={this.state.loading}
+            loadingText={t("Auditing in progress...")}
             selectable={this.state.resultType === TARGET_SERVER && this.state.results.length > 0}
             onSelect={this.handleSelectItems}
             selectedItems={this.state.selectedItems}
