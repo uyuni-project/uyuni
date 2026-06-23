@@ -938,7 +938,7 @@ public class SystemHandler extends BaseHandler {
                 SystemManager.subscribableChannels(server.getId(),
                 loggedInUser.getId(), baseChannel.getId());
 
-        //TODO: This should go away once we teach marquee how to deal with nulls in a list.
+        //OLDTODO: This should go away once we teach marquee how to deal with nulls in a list.
         //      Luckily, this list shouldn't be too long.
         for (Map<String, Object> row : dr) {
             Map<String, Object> channel = new HashMap<>();

@@ -391,7 +391,7 @@ public class ActivationKeyManager {
      * was generated implies that the user credentials have been
      * verified...
      * @param key the key to remove
-     * @param user TODO
+     * @param user
      */
     public void remove(ActivationKey key, User user) {
         changeCobblerProfileKey(key, key.getKey(), "", user);
@@ -426,7 +426,7 @@ public class ActivationKeyManager {
      * and activation key after edit by prepending its org_id to it.
      * @param newKey the key to rename to
      * @param key the key object to be renamed
-     * @param user TODO
+     * @param user
      */
     public void changeKey(String newKey, ActivationKey key, User user) {
         String oldKey = key.getKey();
