@@ -155,7 +155,7 @@ public class ColumnTagTest extends RhnBaseTestCase {
         ct.setPageContext(mpc);
         tth.assertDoStartTag(Tag.SKIP_BODY);
         tth.assertDoEndTag(Tag.EVAL_BODY_INCLUDE);
-        //TODO: verify if this test is needed, followup with bug 458688
+        //OLDTODO: verify if this test is needed, followup with bug 458688
         RhnMockJspWriter out = (RhnMockJspWriter)tth.getPageContext().getOut();
         String expected = String.format("<th><a class=\"js-spa\" title=\"Sort By This Column\" " +
                         "href=\"?order=desc&sort=sortProp&uid=%d\">**headervalue**</a></th>",

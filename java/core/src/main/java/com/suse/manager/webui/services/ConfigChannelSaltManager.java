@@ -151,7 +151,7 @@ public class ConfigChannelSaltManager {
      * @throws IOException in case of an IO error
      */
     private void doGenerateConfigChannelFiles(ConfigChannel channel) throws IOException {
-        // TODO synchronize at file level not on the class instance
+        // OLDTODO synchronize at file level not on the class instance
         if (!(channel.isNormalChannel() || channel.isStateChannel())) {
             LOG.debug("Trying to generate salt files for incompatible channel type (channel: {}). Skipping. " +
                     "(Only 'normal' and 'state' configuration channels are supported.)", channel);

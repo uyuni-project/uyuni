@@ -587,7 +587,7 @@ public class SaltServerActionService {
                     // get Salt calls for this action
                     Map<LocalCall<?>, List<MinionSummary>> actionCalls = callsForAction(actionIn, minions);
 
-                    // TODO how to handle staging jobs?
+                    // OLDTODO how to handle staging jobs?
 
                     // Salt calls for each minion
                     Map<MinionSummary, List<LocalCall<?>>> callsPerMinion =

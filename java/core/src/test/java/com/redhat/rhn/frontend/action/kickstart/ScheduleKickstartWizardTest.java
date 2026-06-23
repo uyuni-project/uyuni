@@ -245,7 +245,7 @@ public class ScheduleKickstartWizardTest extends RhnMockStrutsTestCase {
         assertEquals(getActualForward(),
                 "/systems/details/kickstart/SessionStatus.do?sid=" + s.getId());
 
-        // TODO Figure out why this is breaking on digdug
+        // OLDTODO Figure out why this is breaking on digdug
         //assertNotNull(KickstartFactory.lookupKickstartSessionByServer(s.getId()));
         if (addProxy && proxy != null) {
             verifyFormValue(ScheduleKickstartWizardAction.PROXY_HOST,

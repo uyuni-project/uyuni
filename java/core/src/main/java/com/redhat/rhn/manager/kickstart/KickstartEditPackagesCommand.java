@@ -31,7 +31,6 @@ public class KickstartEditPackagesCommand extends BaseKickstartCommand {
      */
     public KickstartEditPackagesCommand(Long ksidIn, User userIn) {
         super(ksidIn, userIn);
-        // TODO Auto-generated constructor stub
     }
 
     /**

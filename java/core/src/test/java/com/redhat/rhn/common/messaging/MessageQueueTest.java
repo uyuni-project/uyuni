@@ -140,7 +140,7 @@ public class MessageQueueTest extends RhnBaseTestCase {
         Thread.sleep(5000);
         // Just need to relinquish control to let the notify happen.
         TestEventMessage me = new TestEventMessage();
-        // TODO: figure out why this breaks on galaga but not on my
+        // OLDTODO: figure out why this breaks on galaga but not on my
         // workstation
         verifyMessageEvent(me, false);
         logger.debug("testStop - end");
