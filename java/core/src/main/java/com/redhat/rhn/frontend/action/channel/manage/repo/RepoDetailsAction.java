@@ -344,7 +344,7 @@ public class RepoDetailsAction extends RhnAction {
 
         try {
             // Add SSL
-            // FIXME: Allow to set multiple SSL sets per custom repo - new page?
+            // OLDTODO: Allow to set multiple SSL sets per custom repo - new page?
             repoCmd.deleteAllSslSets();
             repoCmd.addSslSet(parseIdFromForm(form, SSL_CA_CERT),
                     parseIdFromForm(form, SSL_CLIENT_CERT),
