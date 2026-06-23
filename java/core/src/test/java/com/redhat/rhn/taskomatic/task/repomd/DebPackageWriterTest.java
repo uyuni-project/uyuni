@@ -109,53 +109,54 @@ public class DebPackageWriterTest extends BaseTestCaseWithUser {
         String packagesContent = FileUtils.readFileToString(tmpDir.resolve("Packages").toFile());
         packagesContent = cleanupContent(packagesContent);
 
-        assertEquals("Package: pkg_1\n" +
-                        "Version: 1:1.0.0-1\n" +
-                        "Architecture: noarch\n" +
-                        "Maintainer: Debian\n" +
-                        "Installed-Size: 42\n" +
-                        "Depends: python:any (>= 2.4~), python-crypto (>= 2.5.0)\n" +
-                        "Filename: channel/getPackage/pkg_1_1:1.0.0-1.noarch.deb\n" +
-                        "Size: 42\n" +
-                        "SHA256: some-sha256sum\n" +
-                        "Section: some-section\n" +
-                        "Tag1: value1\n" +
-                        "Tag2: value2\n" +
-                        "Description: RHN-JAVA Package Test\n" +
-                        "\n" +
-                        "Package: pkg_2\n" +
-                        "Version: 1:1.0.0-1\n" +
-                        "Architecture: noarch\n" +
-                        "Maintainer: Rhn-Java\n" +
-                        "Installed-Size: 42\n" +
-                        "Filename: channel/getPackage/pkg_2_1:1.0.0-1.noarch.deb\n" +
-                        "Size: 42\n" +
-                        "SHA256: some-sha256sum\n" +
-                        "Section: some-section\n" +
-                        "Tag3: value3\n" +
-                        "Tag2: value2\n" +
-                        "Description: RHN-JAVA Package Test\n" +
-                        "\n" +
-                        "Package: pkg_3\n" +
-                        "Version: 1:1.0.0-1\n" +
-                        "Architecture: noarch\n" +
-                        "Maintainer: Rhn-Java\n" +
-                        "Installed-Size: 42\n" +
-                        "Filename: channel/getPackage/pkg_3_1:1.0.0-1.noarch.deb\n" +
-                        "Size: 42\n" +
-                        "SHA256: some-sha256sum\n" +
-                        "Section: some-section\n" +
-                        "Description: RHN-JAVA Package Test\n" +
-                        "\n" +
-                        "Package: pkg_4\n" +
-                        "Version: 1:1.0.0-1\n" +
-                        "Architecture: noarch\n" +
-                        "Maintainer: Rhn-Java\n" +
-                        "Filename: channel/getPackage/pkg_4_1:1.0.0-1.noarch.deb\n" +
-                        "Size: 42\n" +
-                        "SHA256: some-sha256sum\n" +
-                        "Section: some-section\n" +
-                        "Description: RHN-JAVA Package Test",
+        assertEquals("""
+                                Package: pkg_1
+                                Version: 1:1.0.0-1
+                                Architecture: noarch
+                                Maintainer: Debian
+                                Installed-Size: 42
+                                Depends: python:any (>= 2.4~), python-crypto (>= 2.5.0)
+                                Filename: channel/getPackage/pkg_1_1:1.0.0-1.noarch.deb
+                                Size: 42
+                                SHA256: some-sha256sum
+                                Section: some-section
+                                Tag1: value1
+                                Tag2: value2
+                                Description: RHN-JAVA Package Test
+
+                                Package: pkg_2
+                                Version: 1:1.0.0-1
+                                Architecture: noarch
+                                Maintainer: Rhn-Java
+                                Installed-Size: 42
+                                Filename: channel/getPackage/pkg_2_1:1.0.0-1.noarch.deb
+                                Size: 42
+                                SHA256: some-sha256sum
+                                Section: some-section
+                                Tag3: value3
+                                Tag2: value2
+                                Description: RHN-JAVA Package Test
+
+                                Package: pkg_3
+                                Version: 1:1.0.0-1
+                                Architecture: noarch
+                                Maintainer: Rhn-Java
+                                Installed-Size: 42
+                                Filename: channel/getPackage/pkg_3_1:1.0.0-1.noarch.deb
+                                Size: 42
+                                SHA256: some-sha256sum
+                                Section: some-section
+                                Description: RHN-JAVA Package Test
+
+                                Package: pkg_4
+                                Version: 1:1.0.0-1
+                                Architecture: noarch
+                                Maintainer: Rhn-Java
+                                Filename: channel/getPackage/pkg_4_1:1.0.0-1.noarch.deb
+                                Size: 42
+                                SHA256: some-sha256sum
+                                Section: some-section
+                                Description: RHN-JAVA Package Test""",
                 packagesContent.trim());
     }
 
