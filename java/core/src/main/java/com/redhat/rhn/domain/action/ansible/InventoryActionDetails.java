@@ -36,7 +36,7 @@ public class InventoryActionDetails extends BaseDomainHelper {
     @SequenceGenerator(name = "act_inventory_seq", sequenceName = "rhn_act_inventory_id_seq", allocationSize = 1)
     private Long id;
 
-    @Column(name = "inventory_path")
+    @Column(name = "inventory_path", nullable = false)
     private String inventoryPath;
 
     @ManyToOne(fetch = FetchType.LAZY)
