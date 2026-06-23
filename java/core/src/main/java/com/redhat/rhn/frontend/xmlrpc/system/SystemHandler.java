@@ -6819,7 +6819,7 @@ public class SystemHandler extends BaseHandler {
 
         // Set network device information to the server
         for (Map<String, String> map : netDevices) {
-            // FIXME: why do we need this?
+            // OLDTODO: why do we need this?
             CobblerNetworkInterface device = cmd.new CobblerNetworkInterface();
             device.setName(map.get("name"));
             device.setIpaddr(map.get("ip"));
