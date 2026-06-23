@@ -32,6 +32,8 @@ import static java.util.stream.Collectors.partitioningBy;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
+import jakarta.persistence.FlushModeType;
+
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.LookupException;
 import com.redhat.rhn.common.messaging.MessageQueue;
@@ -582,6 +584,9 @@ public class ContentManager {
                 .orElseThrow(() -> new EntityNotExistsException(ContentFilter.class, filterId));
         project.attachFilter(filter);
         ContentProjectFactory.save(project);
+        if (HibernateFactory.getSession().getFlushMode().equals(FlushModeType.COMMIT)) {
+            HibernateFactory.getSession().flush();
+        }
         return filter;
     }
 
@@ -600,6 +605,9 @@ public class ContentManager {
                 .orElseThrow(() -> new EntityNotExistsException(ContentFilter.class, filterId));
         project.detachFilter(filter);
         ContentProjectFactory.save(project);
+        if (HibernateFactory.getSession().getFlushMode().equals(FlushModeType.COMMIT)) {
+            HibernateFactory.getSession().flush();
+        }
     }
 
     /**
