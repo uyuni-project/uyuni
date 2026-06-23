@@ -1,17 +1,17 @@
 import type { ReactNode } from "react";
 
 import { FromNow } from "components/datetime";
-import { CronTimes, RecurringType } from "components/picker/recurring-event-picker";
+
+// These values have to match those defined in com.suse.manager.attestation.IbmInputDataValidator.java
+export const HOST_KEY_DOCUMENT_FIELD = "host_key_document";
+export const SECURE_EXECUTION_HEADER_FIELD = "secure_execution_header";
 
 export type Settings = {
   enabled: boolean;
   environmentType: string;
   attestOnBoot: boolean;
   attestOnSchedule: boolean;
-  scheduleName?: string;
-  scheduleType?: RecurringType;
-  scheduleCron?: string;
-  scheduleCronTimes?: CronTimes;
+  inputData: Record<string, any>;
 };
 
 export type AttestationResult = {

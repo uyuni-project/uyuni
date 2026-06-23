@@ -34,6 +34,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -104,6 +105,42 @@ public class AttestationFactoryTest extends BaseTestCaseWithUser {
         assertEquals(server, cnf.getServer());
         assertEquals(CoCoEnvironmentType.KVM_AMD_EPYC_TURIN, cnf.getEnvironmentType());
         assertTrue(cnf.isEnabled(), "Config is not enabled");
+        assertFalse(cnf.isAttestOnBoot());
+    }
+
+    @Test
+    public void testCreateAttestationConfigurationIBMZWithAdditionalData() {
+        Map<String, Object> additionalDataMap = Map.of(
+            "secure_execution_header", "DUMMY_BINARY_DATA",
+            "host_key_document", "DUMMY_CERTIFICATE_TEXT_DATA"
+        );
+
+        ServerCoCoAttestationConfig cnf = attestationFactory.createConfigForServer(server,
+                CoCoEnvironmentType.KVM_IBM_Z17, true, additionalDataMap, false);
+
+        TestUtils.flushSession();
+
+        assertEquals(server, cnf.getServer());
+        assertEquals(CoCoEnvironmentType.KVM_IBM_Z17, cnf.getEnvironmentType());
+        assertTrue(cnf.isEnabled(), "Config is not enabled");
+        assertNotNull(cnf.getInData());
+        assertEquals("DUMMY_BINARY_DATA", cnf.getInData().get("secure_execution_header"));
+        assertEquals("DUMMY_CERTIFICATE_TEXT_DATA", cnf.getInData().get("host_key_document"));
+        assertFalse(cnf.isAttestOnBoot());
+    }
+
+    @Test
+    public void testCreateAttestationConfigurationWithoutAdditionalDataSetsEmptyMap() {
+        ServerCoCoAttestationConfig cnf = attestationFactory.createConfigForServer(server,
+                CoCoEnvironmentType.KVM_AMD_EPYC_TURIN, true, false);
+
+        TestUtils.flushSession();
+
+        assertEquals(server, cnf.getServer());
+        assertEquals(CoCoEnvironmentType.KVM_AMD_EPYC_TURIN, cnf.getEnvironmentType());
+        assertTrue(cnf.isEnabled(), "Config is not enabled");
+        assertNotNull(cnf.getInData());
+        assertTrue(cnf.getInData().isEmpty());
         assertFalse(cnf.isAttestOnBoot());
     }
 

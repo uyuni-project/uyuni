@@ -1,170 +1,344 @@
-import { type ReactNode, Component } from "react";
+import { useEffect, useRef, useState } from "react";
 
-import { AsyncButton, Button } from "../buttons";
-import { BootstrapPanel } from "../panels/BootstrapPanel";
-import { RecurringEventPicker } from "../picker/recurring-event-picker";
-import { Toggler } from "../toggler";
-import { Settings } from "./Utils";
+import { AsyncButton, Button, LinkButton } from "components/buttons";
+import { Form, FormGroup, Label, Text } from "components/input";
+import { LargeTextInput, LargeTextInputRef } from "components/large-text-input";
+import { BootstrapPanel, Panel } from "components/panels";
+import { CronTimes, RecurringEventPicker, RecurringType } from "components/picker/recurring-event-picker";
+import { Toggler } from "components/toggler";
 
-type Props = {
+import { HOST_KEY_DOCUMENT_FIELD, SECURE_EXECUTION_HEADER_FIELD, Settings } from "./Utils";
+
+interface Props {
   initialData: Settings;
-  availableEnvironmentTypes: object;
+  availableEnvironmentTypes: Record<string, string>;
   showOnScheduleOption?: boolean;
-  saveHandler: (data: Settings) => void;
-};
+  saveHandler: (data: Promise<Settings>) => void;
+}
 
-type State = Settings;
+interface FormModel {
+  enabled: boolean;
+  environmentType: string;
+  attestOnBoot: boolean;
+  attestOnSchedule: boolean;
+  // The following fields are set by the UI if showOnScheduleOption is true, but they are currently not
+  // supported by the backend and not included in the Settings object.
+  scheduleName?: string;
+  scheduleType?: RecurringType;
+  scheduleCron?: string;
+  scheduleCronTimes?: CronTimes;
+  currentSecureExecutionHeader?: string;
+  currentHostKeyDocument?: string;
+}
 
-class CoCoSettingsForm extends Component<Props, State> {
-  public static readonly defaultProps: Partial<Props> = {
-    showOnScheduleOption: true,
-  };
+export const CoCoSettingsForm: React.FC<Props> = ({
+  initialData,
+  availableEnvironmentTypes,
+  showOnScheduleOption = true,
+  saveHandler,
+}: Props): JSX.Element => {
+  const [model, setModel] = useState<FormModel>(() => computeFormModel(initialData));
+  const [validated, setValidated] = useState(true);
+  const [headerDownloadUrl, setHeaderDownloadUrl] = useState<string | undefined>(undefined);
+  const [hostKeyDownloadUrl, setHostKeyDownloadUrl] = useState<string | undefined>(undefined);
 
-  constructor(props: Props) {
-    super(props);
+  const hostKeyRef = useRef<LargeTextInputRef>(null);
 
-    this.state = {
-      ...this.props.initialData,
+  // Ensure the model is recomputed if initialData changes
+  useEffect(() => setModel(computeFormModel(initialData)), [initialData]);
+
+  // Compute the download url and ensure they are recomputed and revoked correctly
+  useEffect(() => {
+    let headerUrl: string | undefined;
+    let hostKeyUrl: string | undefined;
+
+    if (model.currentSecureExecutionHeader) {
+      headerUrl = createDownloadUrl(model.currentSecureExecutionHeader, "application/octet-stream");
+      setHeaderDownloadUrl(headerUrl);
+    } else {
+      setHeaderDownloadUrl(undefined);
+    }
+
+    if (model.currentHostKeyDocument) {
+      hostKeyUrl = createDownloadUrl(model.currentHostKeyDocument, "text/plain");
+      setHostKeyDownloadUrl(hostKeyUrl);
+    } else {
+      setHostKeyDownloadUrl(undefined);
+    }
+
+    // Free the old URLs when data changes or component unmounts
+    return () => {
+      if (headerUrl) URL.revokeObjectURL(headerUrl);
+      if (hostKeyUrl) URL.revokeObjectURL(hostKeyUrl);
+    };
+  }, [model.currentSecureExecutionHeader, model.currentHostKeyDocument]);
+
+  function onResetChanges() {
+    setModel(computeFormModel(initialData));
+  }
+
+  function isIbmZEnvironmentType(environmentType: string): boolean {
+    return environmentType.startsWith("KVM_IBM_Z");
+  }
+
+  // Convert the settings object to the form model, which includes additional fields for handling UI-specific data.
+  function computeFormModel(settings: Settings): FormModel {
+    const { enabled, environmentType, attestOnBoot, attestOnSchedule } = settings;
+
+    let [currentSecureExecutionHeader, currentHostKeyDocument]: (string | undefined)[] = [undefined, undefined];
+
+    if (isIbmZEnvironmentType(settings.environmentType)) {
+      currentSecureExecutionHeader = settings.inputData?.[SECURE_EXECUTION_HEADER_FIELD];
+      currentHostKeyDocument = settings.inputData?.[HOST_KEY_DOCUMENT_FIELD];
+    }
+
+    return {
+      enabled,
+      environmentType,
+      attestOnBoot,
+      attestOnSchedule,
+      currentSecureExecutionHeader: currentSecureExecutionHeader,
+      currentHostKeyDocument: currentHostKeyDocument,
     };
   }
 
-  toggleCocoAttestation = (value) => {
-    this.setState({
-      enabled: value,
+  // Convert from the form model to the settings object
+  async function computeSettings(model: FormModel): Promise<Settings> {
+    const inputData: Record<string, any> = {};
+    if (isIbmZEnvironmentType(model.environmentType)) {
+      const headerPromise = model.currentSecureExecutionHeader
+        ? Promise.resolve(model.currentSecureExecutionHeader)
+        : getExtensionHeaderFileContent();
+
+      const hostKeyPromise = model.currentHostKeyDocument
+        ? Promise.resolve(model.currentHostKeyDocument)
+        : hostKeyRef.current?.getContent();
+
+      const [secureExecutionHeader, hostKeyDocument] = await Promise.all([headerPromise, hostKeyPromise]);
+
+      inputData[SECURE_EXECUTION_HEADER_FIELD] = secureExecutionHeader;
+      inputData[HOST_KEY_DOCUMENT_FIELD] = hostKeyDocument;
+    }
+
+    return {
+      enabled: model.enabled,
+      environmentType: model.environmentType,
+      attestOnBoot: model.attestOnBoot,
+      attestOnSchedule: model.attestOnSchedule,
+      inputData: inputData,
+    };
+  }
+
+  function getExtensionHeaderFileContent(): Promise<string | undefined> {
+    return new Promise((resolve, reject) => {
+      const uploadField = document.getElementById("secureExecutionHeaderFile") as HTMLInputElement | null;
+      const uploadedFile = uploadField?.files?.[0];
+      if (uploadedFile) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const dataUrl = reader.result as string;
+          // Take only the Base64 content from the Data URL
+          resolve(dataUrl.split(",")[1]);
+        };
+        reader.onerror = () => reject(reader.error);
+        reader.readAsDataURL(uploadedFile);
+      } else {
+        reject(t("Unable to retrieve the uploaded file"));
+      }
     });
-  };
+  }
 
-  environmentTypeChanged = (event) => {
-    this.setState({ environmentType: event.target.value });
-  };
+  function createDownloadUrl(content: string, type: string): string {
+    let data: BlobPart;
+    if (type === "application/octet-stream") {
+      // Binary data is Base64 encoded
+      const binaryData = atob(content);
+      // charCodeAt() is preferred over codePointAt() because atob() outputs characters strictly between 0 and 255
+      data = Uint8Array.from(binaryData, (c) => c.charCodeAt(0));
+    } else if (type === "text/plain") {
+      // Take the content as is for plain text
+      data = content;
+    } else {
+      throw new TypeError("Invalid data type");
+    }
 
-  toggleAttestOnBoot = (value) => {
-    this.setState({ attestOnBoot: value });
-  };
+    return URL.createObjectURL(new Blob([data], { type }));
+  }
 
-  toggleAttestOnSchedule = (value) => {
-    this.setState({ attestOnSchedule: value });
-  };
+  return (
+    <Panel headingLevel="h3" header={t("Settings")}>
+      <Form
+        className="form-horizontal"
+        model={model}
+        onChange={(updatedValues) => setModel((prev) => ({ ...prev, ...updatedValues }))}
+        onValidate={setValidated}
+        onSubmit={() => saveHandler(computeSettings(model))}
+      >
+        <FormGroup>
+          <div className="col-md-offset-3 offset-md-3 col-md-6">
+            <Toggler
+              className="checkbox"
+              text={t("Enable attestation")}
+              value={model.enabled}
+              handler={(enabled) => setModel((prev) => ({ ...prev, enabled }))}
+            />
+          </div>
+        </FormGroup>
 
-  onScheduleNameChanged = (scheduleName) => {
-    this.setState({ scheduleName: scheduleName });
-  };
+        <FormGroup>
+          <Label className="col-md-3 control-label" name={t("Environment Type")} required />
+          <div className="col-md-6">
+            <select
+              value={model.environmentType}
+              onChange={(event) => {
+                const environmentType = event.target.value;
+                setModel((prev) => ({ ...prev, environmentType }));
+              }}
+              className="form-control"
+              name="activationKeys"
+              disabled={!model.enabled}
+            >
+              {Object.keys(availableEnvironmentTypes).map((k) => (
+                <option key={k} value={k}>
+                  {availableEnvironmentTypes[k]}
+                </option>
+              ))}
+            </select>
+          </div>
+        </FormGroup>
 
-  onTypeChanged = (type) => {
-    this.setState({ scheduleType: type });
-  };
-
-  onCronTimesChanged = (cronTimes) => {
-    this.setState({ scheduleCronTimes: cronTimes });
-  };
-
-  onCustomCronChanged = (cron) => {
-    this.setState({ scheduleCron: cron });
-  };
-
-  onResetChanges = () => {
-    this.setState({
-      ...this.props.initialData,
-    });
-  };
-
-  render(): ReactNode {
-    return (
-      <>
-        <BootstrapPanel>
-          <div className="form-horizontal">
-            <div className="form-group">
-              <div className="col-md-offset-3 offset-md-3 col-md-6">
-                <Toggler
-                  className="checkbox"
-                  text={t("Enable attestation")}
-                  value={this.state.enabled}
-                  handler={this.toggleCocoAttestation}
-                />
-              </div>
-            </div>
-            <div className="form-group">
-              <label className="col-md-3 control-label">{t("Environment Type")}:</label>
-              <div className="col-md-6">
-                <select
-                  value={this.state.environmentType ?? undefined}
-                  onChange={this.environmentTypeChanged}
-                  className="form-control"
-                  name="activationKeys"
-                  disabled={!this.state.enabled}
-                >
-                  {Object.keys(this.props.availableEnvironmentTypes).map((k) => (
-                    <option key={k} value={k}>
-                      {this.props.availableEnvironmentTypes[k]}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-            <div className="form-group">
-              <label className="col-md-3 control-label">{t("Executions")}:</label>
-              <div className="col-md-6">
-                <Toggler
-                  className="checkbox"
-                  text={t("Peform attestation during the boot process")}
-                  value={this.state.attestOnBoot}
-                  handler={this.toggleAttestOnBoot}
-                  disabled={!this.state.enabled}
-                />
-              </div>
-            </div>
-            {this.props.showOnScheduleOption && (
-              <div className="form-group">
-                <div className="col-md-offset-3 offset-md-3 col-md-6">
-                  <Toggler
-                    className="checkbox"
-                    text={t("Peform attestation on a schedule")}
-                    value={this.state.attestOnSchedule}
-                    handler={this.toggleAttestOnSchedule}
-                    disabled={!this.state.enabled}
+        {isIbmZEnvironmentType(model.environmentType) && (
+          <>
+            {model.currentSecureExecutionHeader !== undefined ? (
+              <FormGroup>
+                <Label className="col-md-3 control-label" name={t("Secure execution header")} required />
+                <div className="col-md-6">
+                  <LinkButton
+                    text="secure-extension-header.bin"
+                    href={headerDownloadUrl}
+                    className="btn-link pl-0"
+                    title={t("Download the current Secure execution header")}
+                    download="secure-extension-header.bin"
+                  />
+                  <Button
+                    icon={"fa-edit"}
+                    title={t("Change")}
+                    className="btn-tertiary"
+                    handler={() => setModel((prev) => ({ ...prev, currentSecureExecutionHeader: undefined }))}
                   />
                 </div>
-              </div>
+              </FormGroup>
+            ) : (
+              <Text
+                name="secureExecutionHeaderFile"
+                label={t("Secure execution header")}
+                required
+                type="file"
+                labelClass="col-md-3"
+                divClass="col-md-6"
+              />
             )}
-          </div>
-        </BootstrapPanel>
-        {this.state.attestOnSchedule && (
-          <BootstrapPanel title={t("Select a schedule")}>
-            <RecurringEventPicker
-              mode="Inline"
-              hideScheduleName
-              scheduleName={this.state.scheduleName}
-              type={this.state.scheduleType}
-              cron={this.state.scheduleCron}
-              cronTimes={this.state.scheduleCronTimes}
-              onScheduleNameChanged={this.onScheduleNameChanged}
-              onTypeChanged={this.onTypeChanged}
-              onCronTimesChanged={this.onCronTimesChanged}
-              onCronChanged={this.onCustomCronChanged}
-            />
-          </BootstrapPanel>
-        )}
-        <div className="row">
-          <div className="col-md-offset-3 offset-md-3 col-md-6">
-            <AsyncButton
-              id="save-btn"
-              icon="fa-floppy-o"
-              action={() => this.props.saveHandler(this.state as Settings)}
-              text={t("Save")}
-              className="btn-primary me-2"
-            />
-            <Button
-              id="reset-btn"
-              icon="fa-undo"
-              text={t("Reset Changes")}
-              className="btn-default"
-              handler={this.onResetChanges}
-            />
-          </div>
-        </div>
-      </>
-    );
-  }
-}
+            {model.currentHostKeyDocument !== undefined ? (
+              <FormGroup>
+                <Label className="col-md-3 control-label" name={t("Host key document")} required />
+                <div className="col-md-6">
+                  <LinkButton
+                    text="host-key-document.pem"
+                    href={hostKeyDownloadUrl}
+                    className="btn-link pl-0"
+                    title={t("Download the current Host Key Document certificate")}
+                    download="host-key-document.pem"
+                  />
+                  <Button
+                    icon={"fa-edit"}
+                    title={t("Change")}
+                    className="btn-tertiary"
+                    handler={() => setModel((prev) => ({ ...prev, currentHostKeyDocument: undefined }))}
+                  />
+                </div>
+              </FormGroup>
+            ) : (
+              <LargeTextInput
+                ref={hostKeyRef}
+                name="hostKeyDocument"
+                required
+                label={t("Host key document")}
+                uploadLabel={t("Certificate File")}
+                uploadHint={t("Certificate file, in PEM format")}
+                pasteLabel={t("PEM certificate")}
+                pasteHint={t("The text representing the certificate, in PEM format")}
+                pastePlaceholder={`-----BEGIN CERTIFICATE-----
 
-export default CoCoSettingsForm;
+-----END CERTIFICATE-----`}
+              />
+            )}
+          </>
+        )}
+
+        <FormGroup>
+          <Label className="col-md-3 control-label" name={t("Executions")} />
+          <div className="col-md-6">
+            <Toggler
+              className="checkbox"
+              text={t("Perform attestation during the boot process")}
+              value={model.attestOnBoot}
+              handler={(attestOnBoot) => setModel((prev) => ({ ...prev, attestOnBoot }))}
+              disabled={!model.enabled}
+            />
+          </div>
+        </FormGroup>
+
+        {showOnScheduleOption && (
+          <FormGroup>
+            <div className="col-md-offset-3 offset-md-3 col-md-6">
+              <Toggler
+                className="checkbox"
+                text={t("Perform attestation on a schedule")}
+                value={model.attestOnSchedule}
+                handler={(attestOnSchedule) => setModel((prev) => ({ ...prev, attestOnSchedule }))}
+                disabled={!model.enabled}
+              />
+            </div>
+          </FormGroup>
+        )}
+
+        {model.attestOnSchedule && (
+          <FormGroup>
+            <BootstrapPanel title={t("Select a schedule")}>
+              <RecurringEventPicker
+                mode="Inline"
+                hideScheduleName
+                scheduleName={model.scheduleName}
+                type={model.scheduleType}
+                cron={model.scheduleCron}
+                cronTimes={model.scheduleCronTimes}
+                onScheduleNameChanged={(scheduleName) => setModel((prev) => ({ ...prev, scheduleName }))}
+                onTypeChanged={(scheduleType) => setModel((prev) => ({ ...prev, scheduleType }))}
+                onCronTimesChanged={(scheduleCronTimes) => setModel((prev) => ({ ...prev, scheduleCronTimes }))}
+                onCronChanged={(scheduleCron) => setModel((prev) => ({ ...prev, scheduleCron }))}
+              />
+            </BootstrapPanel>
+          </FormGroup>
+        )}
+
+        <div className="col-md-offset-3 offset-md-3 col-md-6">
+          <AsyncButton
+            id="save-btn"
+            icon="fa-floppy-o"
+            action={() => saveHandler(computeSettings(model))}
+            text={t("Save")}
+            disabled={!validated}
+            className="btn-primary me-2"
+          />
+          <Button
+            id="reset-btn"
+            icon="fa-undo"
+            text={t("Reset Changes")}
+            className="btn-default"
+            handler={onResetChanges}
+          />
+        </div>
+      </Form>
+    </Panel>
+  );
+};

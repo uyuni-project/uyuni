@@ -140,7 +140,7 @@ public class RecordTypeAdapterFactory implements TypeAdapterFactory {
             try {
                 return constructor.newInstance(constructorParameters);
             }
-            catch (ReflectiveOperationException e) {
+            catch (ReflectiveOperationException | RuntimeException e) {
                 throw new IOException("Unable to create instance of record " + recordName, e);
             }
         }

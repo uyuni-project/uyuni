@@ -1,9 +1,10 @@
-import { type ReactNode, Component } from "react";
+import { type ReactNode, Component, createRef, RefObject } from "react";
 
 import { productName } from "core/user-preferences";
 
 import { AsyncButton, SubmitButton } from "components/buttons";
-import { Form, Password, Radio, Text, TextArea } from "components/input";
+import { Form, Password, Radio, Text } from "components/input";
+import { LargeTextInput, LargeTextInputMode, LargeTextInputRef } from "components/large-text-input";
 import { Messages, MessageType } from "components/messages/messages";
 import { TopPanel } from "components/panels";
 import Validation from "components/validation";
@@ -17,21 +18,13 @@ enum RegistrationMode {
   UserPassword = "userPassword",
 }
 
-enum CertificateMode {
-  NotNeeded = "notNeeded",
-  Upload = "upload",
-  Paste = "paste",
-}
-
 type FormModel = {
   serverFqdn: string;
   registrationMode: RegistrationMode;
   token?: string;
   username?: string;
   password?: string;
-  certificateMode: CertificateMode;
-  uploadedRootCA?: string;
-  pastedRootCA?: string;
+  rootCA_inputMode?: LargeTextInputMode;
 };
 
 type Props = Record<never, never>;
@@ -48,11 +41,15 @@ export class RegisterPeripheralForm extends Component<Props, State> {
   private static readonly INITIAL_MODEL: FormModel = {
     serverFqdn: "",
     registrationMode: RegistrationMode.Token,
-    certificateMode: CertificateMode.NotNeeded,
+    rootCA_inputMode: LargeTextInputMode.NotNeeded,
   };
+
+  private largeTextInputRef: RefObject<LargeTextInputRef>;
 
   constructor(props: Props) {
     super(props);
+
+    this.largeTextInputRef = createRef<LargeTextInputRef>();
 
     this.state = {
       model: { ...RegisterPeripheralForm.INITIAL_MODEL },
@@ -76,30 +73,7 @@ export class RegisterPeripheralForm extends Component<Props, State> {
         ? { token: formData.token }
         : { username: formData.username, password: formData.password };
 
-    let certDataPromise: Promise<string | undefined>;
-    switch (formData.certificateMode) {
-      case CertificateMode.NotNeeded:
-        certDataPromise = Promise.resolve(undefined);
-        break;
-
-      case CertificateMode.Upload:
-        certDataPromise = new Promise((resolve, reject) => {
-          const uploadField = document.getElementById("uploadedRootCA") as HTMLInputElement | null;
-          const certificateFile = uploadField?.files?.[0];
-          if (certificateFile) {
-            const reader = new FileReader();
-            reader.onload = () => resolve(reader.result as string);
-            reader.onerror = () => reject(reader.error);
-            reader.readAsText(certificateFile);
-          }
-        });
-        break;
-
-      case CertificateMode.Paste:
-        certDataPromise = Promise.resolve(formData.pastedRootCA);
-        break;
-    }
-
+    const certDataPromise = this.largeTextInputRef.current?.getContent() ?? Promise.resolve(undefined);
     certDataPromise
       .then((certData) => {
         const rootCA = certData !== undefined ? { rootCA: certData.replace(/\r\n/g, "\n") } : {};
@@ -210,49 +184,21 @@ export class RegisterPeripheralForm extends Component<Props, State> {
               />
             </>
           )}
-          <Radio
-            name="certificateMode"
+          <LargeTextInput
+            ref={this.largeTextInputRef}
+            name="rootCA"
             label={t("Root CA certificate")}
-            title={t("Root CA certificate")}
             hint={t(
               "The Root certificate authority of the remote server, that must be trusted to establish a secure connection."
             )}
-            inline={true}
-            required
-            labelClass="col-md-3"
-            divClass="col-md-6"
-            defaultValue={CertificateMode.NotNeeded}
-            items={[
-              { label: t("Not needed"), value: CertificateMode.NotNeeded },
-              { label: t("Upload a file"), value: CertificateMode.Upload },
-              { label: t("Paste a PEM certificate"), value: CertificateMode.Paste },
-            ]}
-          />
-          {this.state.model.certificateMode === CertificateMode.Upload && (
-            <Text
-              name="uploadedRootCA"
-              label={t("Certificate File")}
-              hint={t("Certificate file, in PEM format")}
-              required
-              type="file"
-              labelClass="col-md-3"
-              divClass="col-md-6"
-            />
-          )}
-          {this.state.model.certificateMode === CertificateMode.Paste && (
-            <TextArea
-              name="pastedRootCA"
-              label={t("PEM Certificate")}
-              hint={t("The text representing the certificate, in PEM format")}
-              required
-              rows={15}
-              labelClass="col-md-3"
-              divClass="col-md-6"
-              placeholder={`-----BEGIN CERTIFICATE-----
+            uploadLabel={t("Certificate File")}
+            uploadHint={t("Certificate file, in PEM format")}
+            pasteLabel={t("PEM Certificate")}
+            pasteHint={t("The text representing the certificate, in PEM format")}
+            pastePlaceholder={`-----BEGIN CERTIFICATE-----
 
 -----END CERTIFICATE-----`}
-            />
-          )}
+          />
 
           <div className="col-md-offset-3 offset-md-3 col-md-6">
             <SubmitButton
