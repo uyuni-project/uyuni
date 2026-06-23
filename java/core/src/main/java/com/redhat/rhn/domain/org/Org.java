@@ -375,7 +375,7 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
     }
 
     /**
-     * TODO: get rid of Role label and pass in the class Reset channel
+     * OLDTODO: get rid of Role label and pass in the class Reset channel
      * permissions for a user/channel/role combination
      * @param uid User ID to reset
      * @param cid Channel ID
@@ -386,7 +386,7 @@ public class Org extends BaseDomainHelper implements SaltConfigurable {
     }
 
     /**
-     * TODO: get rid of Role label and pass in the class Remove all channel
+     * OLDTODO: get rid of Role label and pass in the class Remove all channel
      * permissions for a user/channel/role combination
      * @param uid User ID to reset
      * @param cid Channel ID

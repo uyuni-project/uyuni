@@ -135,7 +135,7 @@ public class SchemaParser {
     /**
      * <p>
      *  This will convert an attribute into constraints.
-     *  TODO: make everyone happy: replace this with Digester
+     *  OLDTODO: make everyone happy: replace this with Digester
      * </p>
      *
      * @throws IOException - when parsing errors occur.

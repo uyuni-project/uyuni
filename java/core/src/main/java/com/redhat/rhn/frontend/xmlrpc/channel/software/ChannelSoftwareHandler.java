@@ -423,7 +423,7 @@ public class ChannelSoftwareHandler extends BaseHandler {
      */
     @ReadOnly
     public int isGloballySubscribable(User loggedInUser, String channelLabel) {
-        // TODO: this should return a boolean NOT an int
+        // OLDTODO: this should return a boolean NOT an int
 
         // Make sure the channel exists:
         lookupChannelByLabel(loggedInUser, channelLabel);

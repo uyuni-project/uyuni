@@ -163,7 +163,7 @@ public class IpAddressRange implements Serializable {
     }
 
     /**
-     * TODO: does anybody use this? Is there any reason for it to exist?
+     * OLDTODO: does anybody use this? Is there any reason for it to exist?
      * @return range in String form
      */
     public String getRange() {

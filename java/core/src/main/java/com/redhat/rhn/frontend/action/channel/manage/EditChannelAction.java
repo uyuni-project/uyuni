@@ -821,7 +821,6 @@ public class EditChannelAction extends RhnAction implements Listable<OrgTrust> {
 
     /** {@inheritDoc} */
     public String getListName() {
-        // TODO Auto-generated method stub
         return "trustedOrgList";
     }
 

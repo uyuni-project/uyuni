@@ -836,7 +836,7 @@ public class DownloadFile extends DownloadAction {
         log.debug("Added header Content-Length: {}", size);
         log.debug("Added header Content-Range: bytes {}-{}/{}", start, end, totalSize);
         log.debug("Added header Accept-Ranges: bytes");
-        // TODO: it's a bad idea to read file from filesystem into memory.
+        // OLDTODO: it's a bad idea to read file from filesystem into memory.
         // We have to implement copying from InputStream to OutputStream by chunks in this
         // class instead of using parent execute() (and copy()).
         // New copy() method will take into account Content-Range header in response
