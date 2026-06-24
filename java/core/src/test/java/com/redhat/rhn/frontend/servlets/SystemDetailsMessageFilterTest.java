@@ -20,35 +20,31 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.testing.MockObjectTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.SaltTestCaseExtension;
 import com.redhat.rhn.testing.SaltTestRootPath;
-import com.redhat.rhn.testing.UserTestUtils;
+import com.redhat.rhn.testing.UserForTest;
+import com.redhat.rhn.testing.UserForTestCaseExtension;
 
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Iterator;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 @ExtendWith(SaltTestCaseExtension.class)
-public class SystemDetailsMessageFilterTest extends MockObjectTestCase {
+@ExtendWith(UserForTestCaseExtension.class)
+public class SystemDetailsMessageFilterTest extends BaseTestCase {
     @SaltTestRootPath
     protected Path tmpSaltRoot;
 
+    @UserForTest(useClassNameForOrg = true)
     private User user;
-
-    @BeforeEach
-    public void setUp() throws IOException {
-        user = UserTestUtils.createUser(this);
-    }
 
     @Test
     public void shouldAddTraditionalStackDeprecationMessage() {

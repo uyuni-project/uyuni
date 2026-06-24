@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.testing.RhnJmockBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
@@ -28,7 +28,7 @@ import java.io.InputStream;
 import java.util.Optional;
 import java.util.function.BiFunction;
 
-public class MonitoringServiceTest extends RhnJmockBaseTestCase {
+public class MonitoringServiceTest extends BaseTestCase {
 
     @Test
     public void testGetStatusWithTaskomaticEnableNeeded() {
