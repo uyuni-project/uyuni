@@ -948,7 +948,6 @@ Then(/^I click on the filter button until page does not contain "([^"]*)" text$/
       find('button.spacewalk-button-filter').click
       check_text?('is filtered')
     rescue Capybara::ElementNotFound, NoMethodError
-
       # page mid-navigation, retry
     end
   end
@@ -962,7 +961,6 @@ Then(/^I click on the filter button until page does contain "([^"]*)" text$/) do
       find('button.spacewalk-button-filter').click
       check_text?('is filtered')
     rescue Capybara::ElementNotFound, NoMethodError
-
       # page mid-navigation, retry
     end
   end

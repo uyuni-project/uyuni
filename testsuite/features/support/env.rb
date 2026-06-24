@@ -89,7 +89,6 @@ end
 # Fix a problem with minitest and cucumber options passed through rake
 MultiTest.disable_autorun
 
-
 # register the Playwright driver (Chromium, headless unless debug)
 def capybara_register_driver
   Capybara.register_driver :playwright do |app|
@@ -181,8 +180,7 @@ def web_session_is_active?
 
   page.has_selector?('header', wait: 0) || page.has_selector?('#username-field', wait: 0)
 rescue Capybara::ElementNotFound, NoMethodError
-
-  # Chrome 134+ CDP type mismatch during page navigation - page is not in a usable state
+  # the page is mid-navigation and not in a usable state
   false
 end
 
