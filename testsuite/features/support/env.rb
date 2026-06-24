@@ -345,6 +345,26 @@ Before('@proxy') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['proxy']
 end
 
+Before('@proxy2') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['proxy2']
+end
+
+Before('@proxy3') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['proxy3']
+end
+
+Before('@server2') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['server2']
+end
+
+Before('@server3') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['server3']
+end
+
+Before('@server4') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['server4']
+end
+
 Before('@run_if_proxy_transactional_or_slmicro62_minion') do
   skip_this_scenario unless suse_proxy_transactional? || ENV.key?(ENV_VAR_BY_HOST['slmicro62_minion'])
 end
