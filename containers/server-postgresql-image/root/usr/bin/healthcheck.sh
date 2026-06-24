@@ -14,6 +14,11 @@ if [ "$DISK_USAGE" -gt "$THRESHOLD" ]; then
     exit 1
 fi
 
+if [ -f "/run/upgrade_in_progress" ]; then
+    echo "Healthcheck failed: Database upgrade is currently in progress."
+    exit 1
+fi
+
 if ! pg_isready -U "$PGUSER" -h localhost -p "$PGPORT" > /dev/null; then
     echo "Healthcheck failed: PostgreSQL is not ready (user: ${PGUSER}, host: localhost, port: ${PGPORT})."
     exit 1
