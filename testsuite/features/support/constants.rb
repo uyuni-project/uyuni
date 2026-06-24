@@ -5,6 +5,7 @@ ENV_VAR_BY_HOST = {
   'localhost' => 'HOSTNAME',
   'proxy' => 'PROXY',
   'server' => 'SERVER',
+  'server2' => 'SERVER2',
   'sle_minion' => 'MINION',
   'ssh_minion' => 'SSH_MINION',
   'rhlike_minion' => 'RHLIKE_MINION',

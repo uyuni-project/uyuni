@@ -352,7 +352,9 @@ When(/^I create an activation key including custom channels for "([^"]*)" via AP
 
   $stdout.puts "Activation key #{key} created"
   contact_method = client.include?('ssh_minion') ? 'ssh-push' : 'default'
-  $api_test.activationkey.details_set?(key, description, base_channel_label, 100, contact_method)
+  success = $api_test.activationkey.details_set?(key, description, base_channel_label, 100, contact_method)
+  raise 'Failed to set activation key details' unless success
+
   $api_test.activationkey.set_entitlement(key, ['osimage_build_host']) if client.include?('buildhost')
 
   # Attach the child channels appropriate for this client's role
