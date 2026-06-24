@@ -28,7 +28,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageRequires;
 import com.redhat.rhn.frontend.dto.PackageDto;
 import com.redhat.rhn.manager.rhnpackage.PackageManagerTest;
 import com.redhat.rhn.manager.task.TaskManager;
-import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.commons.io.FileUtils;
@@ -42,7 +42,7 @@ import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Map;
 
-public class DebPackageWriterTest extends JMockBaseTestCaseWithUser {
+public class DebPackageWriterTest extends BaseTestCaseWithUser {
 
     private Path tmpDir;
 
