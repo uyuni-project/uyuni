@@ -33,11 +33,11 @@ public class KickstartsSetupActionTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testKickstartList() throws Exception {
-        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(getTestUser(), AccessGroupFactory.CONFIG_ADMIN);
 
         // Create a kickstart and the defaults so the list
         // will return something.
-        KickstartDataTest.createKickstartWithChannel(user.getOrg());
+        KickstartDataTest.createKickstartWithChannel(getTestUser().getOrg());
         setRequestPathInfo("/kickstart/Kickstarts");
         actionPerform();
         DataResult dr = (DataResult) request.getAttribute(RequestContext.PAGE_LIST);

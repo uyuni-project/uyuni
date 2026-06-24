@@ -34,7 +34,7 @@ public class KickstartCloneCommandTest extends BaseKickstartCommandTestCase {
 
     @Test
     public void testClone() {
-        KickstartCloneCommand cmd = new KickstartCloneCommand(ksdata.getId(), user,
+        KickstartCloneCommand cmd = new KickstartCloneCommand(ksdata.getId(), getTestUser(),
                 "someNewLabel [" + TestUtils.randomString() + "]");
 
         LinkedHashSet<KickstartCommand> customSet = new LinkedHashSet<>();

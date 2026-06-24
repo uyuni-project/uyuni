@@ -61,15 +61,15 @@ public class FailedActionsSetupActionTest extends RhnPostMockStrutsTestCase {
     public void testPerformSubmit() throws Exception {
 
 
-        Server server = ServerFactoryTest.createTestServer(user);
+        Server server = ServerFactoryTest.createTestServer(getTestUser());
 
-        Action act = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
+        Action act = ActionFactoryTest.createAction(getTestUser(), ActionFactory.TYPE_ERRATA);
         ServerAction sAction = ActionFactoryTest.createServerAction(server, act);
         sAction.setStatusFailed();
         sAction = TestUtils.saveAndFlush(sAction);
 
 
-        RhnSet set = RhnSetDecl.ACTIONS_FAILED.get(user);
+        RhnSet set = RhnSetDecl.ACTIONS_FAILED.get(getTestUser());
         set.addElement(act.getId());
         RhnSetManager.store(set);
 

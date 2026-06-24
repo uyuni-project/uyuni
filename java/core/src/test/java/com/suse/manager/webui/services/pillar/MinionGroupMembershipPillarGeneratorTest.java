@@ -51,9 +51,9 @@ public class MinionGroupMembershipPillarGeneratorTest extends BaseTestCaseWithUs
 
     @Test
     public void testGenerateGroupMembershipsPillarData() throws Exception {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
-        ServerGroup group = ServerGroupTest.createTestServerGroup(user.getOrg(), null);
+        ServerGroup group = ServerGroupTest.createTestServerGroup(getTestUser().getOrg(), null);
         ServerFactory.addServerToGroup(minion, group);
         ServerFactory.save(minion);
         this.minionGroupMembershipPillarGenerator.generatePillarData(minion);

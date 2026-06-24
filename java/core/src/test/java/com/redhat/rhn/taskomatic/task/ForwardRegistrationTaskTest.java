@@ -535,7 +535,7 @@ public class ForwardRegistrationTaskTest extends BaseTestCaseWithUser {
     }
 
     private void setupVirtualHostWithGuest() throws Exception {
-        Server host = ServerTestUtils.createVirtHostWithGuests(user, 1, true, systemEntitlementManager);
+        Server host = ServerTestUtils.createVirtHostWithGuests(getTestUser(), 1, true, systemEntitlementManager);
         host.getServerInfo().setCheckin(new Date(0));
         servers.add(host);
         synchronized (this) {

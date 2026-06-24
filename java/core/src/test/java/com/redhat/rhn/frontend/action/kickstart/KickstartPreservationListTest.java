@@ -39,11 +39,11 @@ public class KickstartPreservationListTest extends BaseKickstartEditTestCase {
      */
     @BeforeEach
     public void setUp() throws Exception {
-        list1 = KickstartDataTest.createFileList1(user.getOrg());
+        list1 = KickstartDataTest.createFileList1(getTestUser().getOrg());
         CommonFactory.saveFileList(list1);
-        list2 = KickstartDataTest.createFileList2(user.getOrg());
+        list2 = KickstartDataTest.createFileList2(getTestUser().getOrg());
         CommonFactory.saveFileList(list2);
-        list3 = KickstartDataTest.createFileList3(user.getOrg());
+        list3 = KickstartDataTest.createFileList3(getTestUser().getOrg());
         CommonFactory.saveFileList(list3);
 
         TestUtils.flushAndEvict(list1);

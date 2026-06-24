@@ -92,8 +92,8 @@ public class RouteFactoryTest extends BaseControllerTestCase {
 
         Request req = createRequest("/manager/api/test/withUser");
         Response res = createResponse();
-        authorizeRequest(req, res, user);
-        assertEquals(user.getId(), getResult((String) route.handle(req, res), Long.class));
+        authorizeRequest(req, res, getTestUser());
+        assertEquals(getTestUser().getId(), getResult((String) route.handle(req, res), Long.class));
     }
 
     /**
@@ -101,7 +101,7 @@ public class RouteFactoryTest extends BaseControllerTestCase {
      */
     @Test
     public void testWithReadOnlyUser() throws Exception {
-        User readOnly = UserTestUtils.createUser("readonly-user", user.getOrg().getId());
+        User readOnly = UserTestUtils.createUser("readonly-user", getTestUser().getOrg().getId());
         readOnly.setReadOnly(true);
 
         Method withUser = TestHandler.class.getMethod("withUser", User.class);

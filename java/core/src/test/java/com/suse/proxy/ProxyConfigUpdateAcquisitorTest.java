@@ -200,7 +200,7 @@ public class ProxyConfigUpdateAcquisitorTest extends BaseTestCaseWithUser {
     @Test
     public void testAcquireProxyMinionWhenSuccessfulAcquisitions() {
         // minion setup
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         minion.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
         minion.addFqdn(DUMMY_PROXY_FQDN);
         systemEntitlementManager.addEntitlementToServer(minion, EntitlementManager.PROXY);
@@ -238,7 +238,7 @@ public class ProxyConfigUpdateAcquisitorTest extends BaseTestCaseWithUser {
     @Test
     public void testAcquireCertificatesKeepWhenSuccessfulRetrieveCertificates() {
         // minion setup
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         systemEntitlementManager.addEntitlementToServer(minion, EntitlementManager.PROXY);
         Pillar pillar = new Pillar(ProxyConfigUtils.PROXY_PILLAR_CATEGORY, new HashMap<>(), minion);
         pillar.add(ProxyConfigUtils.ROOT_CA_FIELD, DUMMY_ROOT_CA);
@@ -283,7 +283,7 @@ public class ProxyConfigUpdateAcquisitorTest extends BaseTestCaseWithUser {
     @Test
     public void testAcquireCertificatesKeepWhenFailRetrieveCertificates() {
         // minion setup
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         systemEntitlementManager.addEntitlementToServer(minion, EntitlementManager.PROXY);
         minion = TestUtils.saveAndFlush(minion);
 
@@ -319,7 +319,7 @@ public class ProxyConfigUpdateAcquisitorTest extends BaseTestCaseWithUser {
     @Test
     public void testAcquireCertificatesReplaceWhenSuccessfulRetrieveCertificates() {
         // minion setup
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         systemEntitlementManager.addEntitlementToServer(minion, EntitlementManager.PROXY);
         Pillar pillar = new Pillar(ProxyConfigUtils.PROXY_PILLAR_CATEGORY, new HashMap<>(), minion);
         pillar.add(ProxyConfigUtils.ROOT_CA_FIELD, DUMMY_ROOT_CA);
@@ -364,7 +364,7 @@ public class ProxyConfigUpdateAcquisitorTest extends BaseTestCaseWithUser {
     @Test
     public void testAcquireParentServerWhenSuccessfulRetrieveServer() {
         // parent server setup
-        Server parent = ServerFactoryTest.createTestServer(user, true,
+        Server parent = ServerFactoryTest.createTestServer(getTestUser(), true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
                 ServerFactoryTest.TYPE_SERVER_MGR);
         parent.addFqdn(DUMMY_PARENT_FQDN);
@@ -390,7 +390,7 @@ public class ProxyConfigUpdateAcquisitorTest extends BaseTestCaseWithUser {
     @Test
     public void testAcquireParentServerWhenFailRetrieveServer() {
         // parent server setup
-        Server parent = ServerFactoryTest.createTestServer(user, true,
+        Server parent = ServerFactoryTest.createTestServer(getTestUser(), true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
                 ServerFactoryTest.TYPE_SERVER_MGR);
         parent.addFqdn(DUMMY_PARENT_FQDN);

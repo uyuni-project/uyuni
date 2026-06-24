@@ -25,7 +25,7 @@ import org.junit.jupiter.api.BeforeEach;
  */
 public abstract class JMockBaseTestCaseWithUser extends RhnJmockBaseTestCase {
 
-    protected User user;
+    private User user;
 
     /**
      * Called once per test method to set up the test environment.
@@ -35,12 +35,12 @@ public abstract class JMockBaseTestCaseWithUser extends RhnJmockBaseTestCase {
     @BeforeEach
     public void setUpJMockBaseTestCaseWithUser() throws Exception {
         user = UserTestUtils.createUser();
-        KickstartDataTest.setupTestConfiguration(user);
+        KickstartDataTest.setupTestConfiguration(getTestUser());
     }
 
     @Override
     protected void cleanupDatabaseCommits() {
-        TestUtils.deleteOrgOfUser(user);
+        TestUtils.deleteOrgOfUser(getTestUser());
         TestUtils.deleteAllAccessTokens();
     }
 

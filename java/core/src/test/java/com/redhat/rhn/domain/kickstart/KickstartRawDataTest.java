@@ -45,9 +45,9 @@ public class KickstartRawDataTest extends BaseTestCaseWithUser {
 
     @BeforeEach
     public void setUp() throws Exception {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
         tree = KickstartableTreeTest.createTestKickstartableTree();
-        ksdata = createRawData(user, "boring" + TestUtils.randomString(), tree,
+        ksdata = createRawData(getTestUser(), "boring" + TestUtils.randomString(), tree,
                 fileContents,
                 KickstartVirtualizationType.XEN_PARAVIRT);
 
@@ -68,7 +68,7 @@ public class KickstartRawDataTest extends BaseTestCaseWithUser {
 
         long id = ksdata.getId();
         KickstartRawData checker = (KickstartRawData) KickstartFactory.
-                lookupKickstartDataByIdAndOrg(user.getOrg(), id);
+                lookupKickstartDataByIdAndOrg(getTestUser().getOrg(), id);
 
         assertEquals(fileContents, checker.getData());
         // Setting to null zeros out in memory but
@@ -87,9 +87,9 @@ public class KickstartRawDataTest extends BaseTestCaseWithUser {
         System.out.println("KSData111.label: " + ksdata.getLabel());
         System.out.println("KSData111.id: " + ksdata.getId());
         KickstartCloneCommand ccmd = new KickstartCloneCommand(ksdata.getId(),
-                user, TestUtils.randomString());
+                getTestUser(), TestUtils.randomString());
         ccmd.store();
-        KickstartRawData clone = (KickstartRawData) ksdata.deepCopy(user, TestUtils.randomString());
+        KickstartRawData clone = (KickstartRawData) ksdata.deepCopy(getTestUser(), TestUtils.randomString());
         assertNotNull(clone);
         assertEquals(clone.getData(), ksdata.getData());
     }

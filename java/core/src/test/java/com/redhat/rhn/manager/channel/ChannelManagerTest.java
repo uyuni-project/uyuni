@@ -119,18 +119,18 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testAddRemoveSubscribeRole() throws Exception {
-        User admin = UserTestUtils.createUser(TestStatics.TEST_ADMIN_USER, user.getOrg().getId());
+        User admin = UserTestUtils.createUser(TestStatics.TEST_ADMIN_USER, getTestUser().getOrg().getId());
         Channel channel = ChannelFactoryTest.createTestChannel(admin);
         channel.setGloballySubscribable(false, admin.getOrg());
         assertFalse(channel.isGloballySubscribable(admin.getOrg()));
 
-        assertFalse(ChannelManager.verifyChannelSubscribe(user, channel.getId()));
+        assertFalse(ChannelManager.verifyChannelSubscribe(getTestUser(), channel.getId()));
 
-        ChannelManager.addSubscribeRole(user, channel);
-        assertTrue(ChannelManager.verifyChannelSubscribe(user, channel.getId()));
+        ChannelManager.addSubscribeRole(getTestUser(), channel);
+        assertTrue(ChannelManager.verifyChannelSubscribe(getTestUser(), channel.getId()));
 
-        ChannelManager.removeSubscribeRole(user, channel);
-        assertFalse(ChannelManager.verifyChannelSubscribe(user, channel.getId()));
+        ChannelManager.removeSubscribeRole(getTestUser(), channel);
+        assertFalse(ChannelManager.verifyChannelSubscribe(getTestUser(), channel.getId()));
     }
 
     @Test
@@ -150,8 +150,8 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testChannelsForUser() throws Exception {
-        ChannelFactoryTest.createTestChannel(user);
-        List<String> channels = ChannelManager.channelsForUser(user);
+        ChannelFactoryTest.createTestChannel(getTestUser());
+        List<String> channels = ChannelManager.channelsForUser(getTestUser());
 
         //make sure we got a list out
         assertNotNull(channels);
@@ -161,44 +161,44 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testVendorChannelTree() throws Exception {
 
-        Channel channel = ChannelFactoryTest.createTestChannel(user);
+        Channel channel = ChannelFactoryTest.createTestChannel(getTestUser());
         channel.setOrg(null);
 
-        OrgFactory.save(user.getOrg());
+        OrgFactory.save(getTestUser().getOrg());
         ChannelFactory.save(channel);
-        DataResult<ChannelTreeNode> dr = ChannelManager.vendorChannelTree(user, null);
+        DataResult<ChannelTreeNode> dr = ChannelManager.vendorChannelTree(getTestUser(), null);
         assertNotEmpty(dr);
     }
 
     @Test
    public void testMyChannelTree() throws Exception {
 
-        Channel channel = ChannelFactoryTest.createTestChannel(user);
-        user.getOrg().addOwnedChannel(channel);
+        Channel channel = ChannelFactoryTest.createTestChannel(getTestUser());
+        getTestUser().getOrg().addOwnedChannel(channel);
 
-        OrgFactory.save(user.getOrg());
+        OrgFactory.save(getTestUser().getOrg());
         ChannelFactory.save(channel);
-        DataResult<ChannelTreeNode> dr = ChannelManager.myChannelTree(user, null);
+        DataResult<ChannelTreeNode> dr = ChannelManager.myChannelTree(getTestUser(), null);
         assertNotEmpty(dr);
     }
 
 
     @Test
    public void testPopularChannelTree() throws Exception {
-       Server server = ServerFactoryTest.createTestServer(user, true);
+       Server server = ServerFactoryTest.createTestServer(getTestUser(), true);
        ServerFactory.save(server);
-       Channel channel = ChannelFactoryTest.createTestChannel(user);
+       Channel channel = ChannelFactoryTest.createTestChannel(getTestUser());
        ChannelFactory.save(channel);
-       user.getOrg().addOwnedChannel(channel);
-       OrgFactory.save(user.getOrg());
+       getTestUser().getOrg().addOwnedChannel(channel);
+       OrgFactory.save(getTestUser().getOrg());
 
-        DataResult<ChannelTreeNode> dr = ChannelManager.popularChannelTree(user, 1L, null);
+        DataResult<ChannelTreeNode> dr = ChannelManager.popularChannelTree(getTestUser(), 1L, null);
 
        assertTrue(dr.isEmpty());
-       SystemManager.unsubscribeServerFromChannel(user, server, server.getBaseChannel());
-       SystemManager.subscribeServerToChannel(user, server, channel);
+       SystemManager.unsubscribeServerFromChannel(getTestUser(), server, server.getBaseChannel());
+       SystemManager.subscribeServerToChannel(getTestUser(), server, channel);
 
-       dr = ChannelManager.popularChannelTree(user, 1L, null);
+       dr = ChannelManager.popularChannelTree(getTestUser(), 1L, null);
 
        assertFalse(dr.isEmpty());
    }
@@ -207,65 +207,65 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testAllChannelTree() throws Exception {
 
-        Channel channel = ChannelFactoryTest.createTestChannel(user);
+        Channel channel = ChannelFactoryTest.createTestChannel(getTestUser());
         channel.setEndOfLife(new Date(System.currentTimeMillis() + Integer.MAX_VALUE));
-        user.getOrg().addOwnedChannel(channel);
+        getTestUser().getOrg().addOwnedChannel(channel);
 
-        OrgFactory.save(user.getOrg());
+        OrgFactory.save(getTestUser().getOrg());
         ChannelFactory.save(channel);
-        DataResult<ChannelTreeNode> dr = ChannelManager.allChannelTree(user, null);
+        DataResult<ChannelTreeNode> dr = ChannelManager.allChannelTree(getTestUser(), null);
         assertNotEmpty(dr);
     }
 
     @Test
     public void testOrphanedChannelTree() throws Exception {
-        Channel channel = ChannelFactoryTest.createTestChannel(user);
+        Channel channel = ChannelFactoryTest.createTestChannel(getTestUser());
         channel.setEndOfLife(new Date(System.currentTimeMillis() + 10000000L));
-        user.getOrg().addOwnedChannel(channel);
+        getTestUser().getOrg().addOwnedChannel(channel);
 
-        Channel childChannel = ChannelFactoryTest.createTestChannel(user);
+        Channel childChannel = ChannelFactoryTest.createTestChannel(getTestUser());
         childChannel.setParentChannel(channel);
 
-        OrgFactory.save(user.getOrg());
+        OrgFactory.save(getTestUser().getOrg());
         ChannelFactory.save(channel);
         ChannelFactory.save(childChannel);
 
         TestUtils.flushAndClearSession();
 
-        DataResult<ChannelTreeNode> dr = ChannelManager.allChannelTree(user, null);
+        DataResult<ChannelTreeNode> dr = ChannelManager.allChannelTree(getTestUser(), null);
         assertNotEmpty(dr);
     }
 
     @Test
     public void testOwnedChannelsTree() {
         assertTrue(ChannelManager.ownedChannelsTree(UserTestUtils.createUser()).isEmpty());
-        assertNotEmpty(ChannelManager.ownedChannelsTree(user));
+        assertNotEmpty(ChannelManager.ownedChannelsTree(getTestUser()));
     }
 
     @Test
     public void testRetiredChannelTree() throws Exception {
-        Channel channel = ChannelFactoryTest.createTestChannel(user);
+        Channel channel = ChannelFactoryTest.createTestChannel(getTestUser());
         channel.setEndOfLife(new Date(System.currentTimeMillis() - 1000000));
-        user.getOrg().addOwnedChannel(channel);
-        channel.setGloballySubscribable(true, user.getOrg());
+        getTestUser().getOrg().addOwnedChannel(channel);
+        channel.setGloballySubscribable(true, getTestUser().getOrg());
 
-        OrgFactory.save(user.getOrg());
+        OrgFactory.save(getTestUser().getOrg());
         ChannelFactory.save(channel);
 
-        DataResult<ChannelTreeNode> dr = ChannelManager.retiredChannelTree(user, null);
+        DataResult<ChannelTreeNode> dr = ChannelManager.retiredChannelTree(getTestUser(), null);
         assertNotEmpty(dr);
     }
 
     @Test
     public void testAccessibleChannels() throws Exception {
-        Channel parent = ChannelFactoryTest.createBaseChannel(user);
-        Channel child = ChannelFactoryTest.createTestChannel(user);
+        Channel parent = ChannelFactoryTest.createBaseChannel(getTestUser());
+        Channel child = ChannelFactoryTest.createTestChannel(getTestUser());
         child.setParentChannel(parent);
         child = TestUtils.saveAndFlush(child);
         parent = TestUtils.saveAndFlush(parent);
 
         List<Channel> dr =
-                ChannelManager.userAccessibleChildChannels(user.getOrg().getId(),
+                ChannelManager.userAccessibleChildChannels(getTestUser().getOrg().getId(),
                 parent.getId());
 
         assertFalse(dr.isEmpty());
@@ -281,18 +281,18 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     public void testUpdateSystemsChannelsInfo() throws Exception {
         ActionManager.setTaskomaticApi(getTaskomaticApi());
 
-        Channel base = ChannelFactoryTest.createBaseChannel(user);
-        Channel child = ChannelFactoryTest.createTestChannel(user);
+        Channel base = ChannelFactoryTest.createBaseChannel(getTestUser());
+        Channel child = ChannelFactoryTest.createTestChannel(getTestUser());
 
-        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         testMinionServer.addChannel(base);
         testMinionServer.addChannel(child);
         assertTrue(AccessTokenFactory.generate(testMinionServer, Set.of(base)).isPresent());
         assertTrue(AccessTokenFactory.generate(testMinionServer, Set.of(child)).isPresent());
         MinionServer minionServer = TestUtils.save(testMinionServer);
 
-        ChannelManager.deleteChannel(user, child.getLabel(), true);
-        Optional<Long> actionId = ChannelManager.applyChannelState(user, List.of(minionServer));
+        ChannelManager.deleteChannel(getTestUser(), child.getLabel(), true);
+        Optional<Long> actionId = ChannelManager.applyChannelState(getTestUser(), List.of(minionServer));
         TestUtils.flushAndClearSession();
 
         minionServer = MinionServerFactory.findByMinionId(minionServer.getMinionId()).orElse(null);
@@ -304,9 +304,9 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testDeleteChannel() throws Exception {
         // thanks mmccune for the tip
-        user.getOrg().addRole(RoleFactory.CHANNEL_ADMIN);
-        user.addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
-        User reloadedTestUser = TestUtils.saveAndFlush(user);
+        getTestUser().getOrg().addRole(RoleFactory.CHANNEL_ADMIN);
+        getTestUser().addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
+        User reloadedTestUser = TestUtils.saveAndFlush(getTestUser());
 
         Channel c = ChannelFactoryTest.createTestChannel(reloadedTestUser);
         c = TestUtils.reload(c);
@@ -316,9 +316,9 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testDeleteClonedChannel() throws Exception {
-        user.getOrg().addRole(RoleFactory.CHANNEL_ADMIN);
-        user.addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
-        User reloadedTestUser = TestUtils.saveAndFlush(user);
+        getTestUser().getOrg().addRole(RoleFactory.CHANNEL_ADMIN);
+        getTestUser().addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
+        User reloadedTestUser = TestUtils.saveAndFlush(getTestUser());
 
         Channel c = ChannelFactoryTest.createTestChannel(reloadedTestUser);
         Channel cClone1 = ChannelFactoryTest.createTestClonedChannel(c, reloadedTestUser);
@@ -332,9 +332,9 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testDeleteChannelWithClones() throws Exception {
-        user.getOrg().addRole(RoleFactory.CHANNEL_ADMIN);
-        user.addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
-        User reloadedTestUser = TestUtils.saveAndFlush(user);
+        getTestUser().getOrg().addRole(RoleFactory.CHANNEL_ADMIN);
+        getTestUser().addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
+        User reloadedTestUser = TestUtils.saveAndFlush(getTestUser());
 
         Channel c = ChannelFactoryTest.createTestChannel(reloadedTestUser);
         Channel cClone1 = ChannelFactoryTest.createTestClonedChannel(c, reloadedTestUser);
@@ -356,7 +356,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testDeleteChannelException() throws Exception {
         try {
-            ChannelManager.deleteChannel(user, "jesusr-channel-test");
+            ChannelManager.deleteChannel(getTestUser(), "jesusr-channel-test");
         }
         catch (NoSuchChannelException e) {
             assertTrue(true);
@@ -365,15 +365,15 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testListErrata() throws Exception {
-        Channel c = ChannelFactoryTest.createTestChannel(user);
-        Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Channel c = ChannelFactoryTest.createTestChannel(getTestUser());
+        Errata e = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         List<Errata> errataList = new ArrayList<>();
         errataList.add(e);
-        ErrataFactory.addToChannel(errataList, c, user, false);
+        ErrataFactory.addToChannel(errataList, c, getTestUser(), false);
 
         e = TestUtils.saveAndReload(e);
 
-        List<ErrataOverview> errata = ChannelManager.listErrata(c, null, null, false, user);
+        List<ErrataOverview> errata = ChannelManager.listErrata(c, null, null, false, getTestUser());
         boolean found = false;
         for (ErrataOverview eo : errata) {
             if (eo.getId().equals(e.getId())) {
@@ -386,7 +386,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         found = false;
         Date date = new Date();
         errata = ChannelManager.listErrata(c, new Date(date.getTime() - 100000),
-                null, false, user);
+                null, false, getTestUser());
         for (ErrataOverview eo : errata) {
             if (eo.getId().equals(e.getId())) {
                 found = true;
@@ -396,7 +396,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
         found = false;
         errata = ChannelManager.listErrata(c, new Date(date.getTime() - 100000),
-                                    new Date(date.getTime() + 5000000), false, user);
+                                    new Date(date.getTime() + 5000000), false, getTestUser());
         for (ErrataOverview eo : errata) {
             if (eo.getId().equals(e.getId())) {
                 found = true;
@@ -407,8 +407,8 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testPackagesLike() throws Exception {
-        Server s = ServerFactoryTest.createTestServer(user);
-        Channel c = ChannelFactoryTest.createTestChannel(user);
+        Server s = ServerFactoryTest.createTestServer(getTestUser());
+        Channel c = ChannelFactoryTest.createTestChannel(getTestUser());
         PackageManagerTest.addPackageToSystemAndChannel("some-test-package", s, c);
         assertEquals(1, ChannelManager.listLatestPackagesEqual(c.getId(),
                 "some-test-package").size());
@@ -420,30 +420,30 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testBaseChannelsForSystem() throws Exception {
-        Server s = ServerTestUtils.createTestSystem(user);
+        Server s = ServerTestUtils.createTestSystem(getTestUser());
 
-        ChannelTestUtils.createTestChannel(user);
-        ChannelTestUtils.createTestChannel(user);
-        List<EssentialChannelDto> channels = ChannelManager.listBaseChannelsForSystem(user, s);
+        ChannelTestUtils.createTestChannel(getTestUser());
+        ChannelTestUtils.createTestChannel(getTestUser());
+        List<EssentialChannelDto> channels = ChannelManager.listBaseChannelsForSystem(getTestUser(), s);
 
         assertTrue(channels.size() >= 2);
     }
 
     @Test
     public void testBaseChannelsForSystemSorted() throws Exception {
-        Server s = ServerTestUtils.createTestSystem(user);
+        Server s = ServerTestUtils.createTestSystem(getTestUser());
 
-        Channel c = ChannelTestUtils.createTestChannel(user);
+        Channel c = ChannelTestUtils.createTestChannel(getTestUser());
         c.setName("A Channel");
         c = TestUtils.saveAndReload(c);
-        c = ChannelTestUtils.createTestChannel(user);
+        c = ChannelTestUtils.createTestChannel(getTestUser());
         c.setName("C Channel");
         c = TestUtils.saveAndReload(c);
-        c = ChannelTestUtils.createTestChannel(user);
+        c = ChannelTestUtils.createTestChannel(getTestUser());
         c.setName("B Channel");
         c = TestUtils.saveAndReload(c);
 
-        List<String> channelNames = ChannelManager.listBaseChannelsForSystem(user, s).stream()
+        List<String> channelNames = ChannelManager.listBaseChannelsForSystem(getTestUser(), s).stream()
                 .map(EssentialChannelDto::getName).toList();
 
         assertTrue(channelNames.indexOf("A Channel") < channelNames.indexOf("B Channel"));
@@ -452,11 +452,11 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testBaseChannelsForLiberty() throws Exception {
-        Server s = MinionServerFactoryTest.createTestMinionServer(user);
+        Server s = MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
         // load official product data as test data into the DB
         s.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
-        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user,
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(getTestUser(),
                 "/com/redhat/rhn/manager/content/data4", true);
         TestUtils.flushAndClearSession();
 
@@ -465,13 +465,13 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         assertNotNull(resProduct);
         SUSEProduct resLtssProduct = SUSEProductFactory.findSUSEProduct("res-ltss", "7", "", "x86_64", true);
         assertNotNull(resLtssProduct);
-        SUSEProductTestUtils.createBaseChannelForBaseProduct(resProduct, user);
-        SUSEProductTestUtils.createBaseChannelForBaseProduct(resLtssProduct, user);
+        SUSEProductTestUtils.createBaseChannelForBaseProduct(resProduct, getTestUser());
+        SUSEProductTestUtils.createBaseChannelForBaseProduct(resLtssProduct, getTestUser());
 
         // Test: list base channels for Liberty 7
         SUSEProductTestUtils.installSUSEProductOnServer(resProduct, s);
 
-        List<EssentialChannelDto> channels = ChannelManager.listBaseChannelsForSystem(user, s);
+        List<EssentialChannelDto> channels = ChannelManager.listBaseChannelsForSystem(getTestUser(), s);
 
         assertEquals(3, channels.size());
         List<String> expectedNames = new ArrayList<>(List.of(
@@ -498,7 +498,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testLookupDefaultReleaseChannelMap() throws Exception {
-        Channel base1 = ChannelFactoryTest.createBaseChannel(user);
+        Channel base1 = ChannelFactoryTest.createBaseChannel(getTestUser());
         String version = "5Server";
         String release = "5.0.0";
         ChannelManagerTest.createReleaseChannelMap(base1, "MAP_OS", version,
@@ -512,20 +512,20 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testBaseChannelsForSystemIncludesEus() throws Exception {
-        Server s = ServerTestUtils.createTestSystem(user);
+        Server s = ServerTestUtils.createTestSystem(getTestUser());
         String version = "5Server";
         String release = "5.0.0.9";
         s = ServerTestUtils.addRedhatReleasePackageToServer(s, version, release);
         String release2 = "5.2.0.4";
         String release3 = "5.3.0.3";
         // Create some base channels and corresponding entries in rhnReleaseChannelMap:
-        Channel base1 = ChannelFactoryTest.createBaseChannel(user);
-        Channel base2 = ChannelFactoryTest.createBaseChannel(user);
+        Channel base1 = ChannelFactoryTest.createBaseChannel(getTestUser());
+        Channel base2 = ChannelFactoryTest.createBaseChannel(getTestUser());
         // not sure why we create this third one, but I'll leave it here.
         // jesusr 2007/11/15
         // making sure it's not included in the final results
         // -- dgoodwin
-        ChannelFactoryTest.createBaseChannel(user);
+        ChannelFactoryTest.createBaseChannel(getTestUser());
 
         ChannelManagerTest.createReleaseChannelMap(base1,
                 ChannelManager.RHEL_PRODUCT_NAME, version, release2);
@@ -533,7 +533,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
                 ChannelManager.RHEL_PRODUCT_NAME, version, release3);
         TestUtils.flushSession();
 
-        List<EssentialChannelDto> channels = ChannelManager.listBaseChannelsForSystem(user, s);
+        List<EssentialChannelDto> channels = ChannelManager.listBaseChannelsForSystem(getTestUser(), s);
         assertTrue(channels.size() >= 2);
     }
 
@@ -542,13 +542,13 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         String version = "5Server";
 
         // Create some base channels and corresponding entries in rhnReleaseChannelMap:
-        Channel rhel50 = ChannelFactoryTest.createBaseChannel(user);
-        Channel rhel51 = ChannelFactoryTest.createBaseChannel(user);
-        Channel rhel52 = ChannelFactoryTest.createBaseChannel(user);
-        Channel rhel53 = ChannelFactoryTest.createBaseChannel(user);
-        Channel rhel6 = ChannelFactoryTest.createBaseChannel(user);
-        Channel rhel4 = ChannelFactoryTest.createBaseChannel(user);
-        ChannelFactoryTest.createBaseChannel(user);
+        Channel rhel50 = ChannelFactoryTest.createBaseChannel(getTestUser());
+        Channel rhel51 = ChannelFactoryTest.createBaseChannel(getTestUser());
+        Channel rhel52 = ChannelFactoryTest.createBaseChannel(getTestUser());
+        Channel rhel53 = ChannelFactoryTest.createBaseChannel(getTestUser());
+        Channel rhel6 = ChannelFactoryTest.createBaseChannel(getTestUser());
+        Channel rhel4 = ChannelFactoryTest.createBaseChannel(getTestUser());
+        ChannelFactoryTest.createBaseChannel(getTestUser());
 
         ChannelManagerTest.createReleaseChannelMap(rhel50,
                 ChannelManager.RHEL_PRODUCT_NAME, version, "5.0.0.0");
@@ -566,7 +566,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         // For a system with 5.0 already, they should only see RHEL 5 EUS channels
         // with a higher or equal release.
         List<EssentialChannelDto> channels = ChannelManager.
-            listBaseEusChannelsByVersionReleaseAndChannelArch(user, rcm51);
+            listBaseEusChannelsByVersionReleaseAndChannelArch(getTestUser(), rcm51);
         assertTrue(channels.size() >= 2);
 
         Set<Long> returnedIds = new HashSet<>();
@@ -590,9 +590,9 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         String release530 = "5.3.0.3";
 
         // Create some base channels and corresponding entries in rhnReleaseChannelMap:
-        Channel rhel500Chan = ChannelFactoryTest.createBaseChannel(user);
-        Channel rhel530Chan = ChannelFactoryTest.createBaseChannel(user);
-        Channel rhel520Chan = ChannelFactoryTest.createBaseChannel(user);
+        Channel rhel500Chan = ChannelFactoryTest.createBaseChannel(getTestUser());
+        Channel rhel530Chan = ChannelFactoryTest.createBaseChannel(getTestUser());
+        Channel rhel520Chan = ChannelFactoryTest.createBaseChannel(getTestUser());
 
         // Creating these in a random order to make sure most recent isn't also
         // most recently created and accidentally getting returned.
@@ -604,7 +604,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
                 ChannelManager.RHEL_PRODUCT_NAME, el5version, release520);
 
         EssentialChannelDto channel = ChannelManager.
-            lookupLatestEusChannelForRhelVersion(user, el5version,
+            lookupLatestEusChannelForRhelVersion(getTestUser(), el5version,
                     rhel500Chan.getChannelArch().getId());
         assertEquals(rhel530Chan.getId().longValue(), channel.getId().longValue());
     }
@@ -617,8 +617,8 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         String release539 = "5.3.9.0";
 
         // Create some base channels and corresponding entries in rhnReleaseChannelMap:
-        Channel rhel5310Chan = ChannelFactoryTest.createBaseChannel(user);
-        Channel rhel539Chan = ChannelFactoryTest.createBaseChannel(user);
+        Channel rhel5310Chan = ChannelFactoryTest.createBaseChannel(getTestUser());
+        Channel rhel539Chan = ChannelFactoryTest.createBaseChannel(getTestUser());
 
         // Creating these in a random order to make sure most recent isn't also
         // most recently created and accidentally getting returned.
@@ -628,7 +628,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
                 ChannelManager.RHEL_PRODUCT_NAME, el5version, release539);
 
         EssentialChannelDto channel = ChannelManager.
-            lookupLatestEusChannelForRhelVersion(user, el5version,
+            lookupLatestEusChannelForRhelVersion(getTestUser(), el5version,
                     rhel5310Chan.getChannelArch().getId());
         assertEquals(rhel5310Chan.getId().longValue(), channel.getId().longValue());
     }
@@ -636,8 +636,8 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testLookupLatestEusChannelForRhelVersionNoneFound() throws Exception {
         // Create some base channels and corresponding entries in rhnReleaseChannelMap:
-        Channel base1 = ChannelFactoryTest.createBaseChannel(user);
-        Channel base2 = ChannelFactoryTest.createBaseChannel(user);
+        Channel base1 = ChannelFactoryTest.createBaseChannel(getTestUser());
+        Channel base2 = ChannelFactoryTest.createBaseChannel(getTestUser());
         // Fake some EUS channels for RHEL 6, which should not appear in results:
         ChannelManagerTest.createReleaseChannelMap(base1, TEST_OS, "6Server",
                 "6.0.0.0");
@@ -646,7 +646,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
         // Should find nothing:
         EssentialChannelDto channel = ChannelManager.
-            lookupLatestEusChannelForRhelVersion(user, "5Server",
+            lookupLatestEusChannelForRhelVersion(getTestUser(), "5Server",
                     base1.getChannelArch().getId());
         assertNull(channel);
     }
@@ -665,27 +665,27 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testGetToolsChannel() throws Exception {
-        Channel base = ChannelTestUtils.createTestChannel(user);
-        Channel tools = ChannelTestUtils.createChildChannel(user, base);
+        Channel base = ChannelTestUtils.createTestChannel(getTestUser());
+        Channel tools = ChannelTestUtils.createChildChannel(getTestUser(), base);
         PackageManagerTest.addKickstartPackageToChannel(
                 ConfigDefaults.get().getKickstartPackageNames().get(0), tools);
 
-        Channel lookup = ChannelManager.getToolsChannel(base, user);
+        Channel lookup = ChannelManager.getToolsChannel(base, getTestUser());
         assertEquals(tools.getId(), lookup.getId());
     }
 
     @Test
     public void testGetToolsChannelNoneFound() throws Exception {
-        Channel base = ChannelTestUtils.createTestChannel(user);
+        Channel base = ChannelTestUtils.createTestChannel(getTestUser());
 
-        Channel lookup = ChannelManager.getToolsChannel(base, user);
+        Channel lookup = ChannelManager.getToolsChannel(base, getTestUser());
         assertNull(lookup);
     }
 
     @Test
     public void testChildrenAvailableToSet() {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        User reloadedTestUser = TestUtils.saveAndFlush(user);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
+        User reloadedTestUser = TestUtils.saveAndFlush(getTestUser());
 
         DataResult<ChildChannelDto> childChannels =
                 ChannelManager.childrenAvailableToSet(reloadedTestUser);
@@ -695,7 +695,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testGetChannelVersion() throws Exception {
-        Channel c = ChannelTestUtils.createTestChannel(user);
+        Channel c = ChannelTestUtils.createTestChannel(getTestUser());
         ChannelTestUtils.addDistMapToChannel(c);
         Set<ChannelVersion> versions = ChannelManager.getChannelVersions(c);
         assertEquals(1, versions.size());
@@ -704,8 +704,8 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testSubscribeToChildChannelWithPackageName() throws Exception {
-        UserTestUtils.addVirtualization(user.getOrg());
-        Server s = ServerTestUtils.createTestSystem(user);
+        UserTestUtils.addVirtualization(getTestUser().getOrg());
+        Server s = ServerTestUtils.createTestSystem(getTestUser());
         Channel[] chans = ChannelTestUtils.
             setupBaseChannelForVirtualization(s.getCreator(), s.getBaseChannel());
 
@@ -713,7 +713,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         s.addChannel(chans[1]);
         s = TestUtils.saveAndReload(s);
 
-        assertNotNull(ChannelManager.subscribeToChildChannelWithPackageName(user,
+        assertNotNull(ChannelManager.subscribeToChildChannelWithPackageName(getTestUser(),
                 s, ChannelManager.TOOLS_CHANNEL_PACKAGE_NAME));
     }
 
@@ -721,8 +721,8 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     public void testSubscribeToChildChannelWithPackageNameMultipleResults()
         throws Exception {
 
-        UserTestUtils.addVirtualization(user.getOrg());
-        Server s = ServerTestUtils.createTestSystem(user);
+        UserTestUtils.addVirtualization(getTestUser().getOrg());
+        Server s = ServerTestUtils.createTestSystem(getTestUser());
         ChannelTestUtils.
             setupBaseChannelForVirtualization(s.getCreator(), s.getBaseChannel());
         // Repeat to ensure there's multiple child channels created:
@@ -731,7 +731,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
         int channelCountBefore = s.getChannels().size();
         try {
-            ChannelManager.subscribeToChildChannelWithPackageName(user,
+            ChannelManager.subscribeToChildChannelWithPackageName(getTestUser(),
                 s, ChannelManager.TOOLS_CHANNEL_PACKAGE_NAME);
             fail();
         }
@@ -745,8 +745,8 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     public void testSubscribeToChildChannelWithPackageNameMultipleResultsAlreadySubbed()
         throws Exception {
 
-        UserTestUtils.addVirtualization(user.getOrg());
-        Server s = ServerTestUtils.createTestSystem(user);
+        UserTestUtils.addVirtualization(getTestUser().getOrg());
+        Server s = ServerTestUtils.createTestSystem(getTestUser());
         ChannelTestUtils.setupBaseChannelForVirtualization(s.getCreator(), s.getBaseChannel());
         // Repeat to ensure there's multiple child channels created:
         Channel[] chans = ChannelTestUtils.
@@ -759,7 +759,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         s = TestUtils.saveAndReload(s);
 
         int channelCountBefore = s.getChannels().size();
-        assertNotNull(ChannelManager.subscribeToChildChannelWithPackageName(user,
+        assertNotNull(ChannelManager.subscribeToChildChannelWithPackageName(getTestUser(),
                     s, ChannelManager.TOOLS_CHANNEL_PACKAGE_NAME));
         assertEquals(channelCountBefore, s.getChannels().size());
 
@@ -767,12 +767,12 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testsubscribeToChildChannelByOSProduct() throws Exception {
-        UserTestUtils.addVirtualization(user.getOrg());
-        Server s = ServerTestUtils.createTestSystem(user);
+        UserTestUtils.addVirtualization(getTestUser().getOrg());
+        Server s = ServerTestUtils.createTestSystem(getTestUser());
         ChannelTestUtils.setupBaseChannelForVirtualization(s.getCreator(),
                 s.getBaseChannel());
 
-        assertNotNull(ChannelManager.subscribeToChildChannelByOSProduct(user,
+        assertNotNull(ChannelManager.subscribeToChildChannelByOSProduct(getTestUser(),
                 s, ChannelManager.VT_OS_PRODUCT));
 
     }
@@ -780,16 +780,16 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testBaseChannelsInSet() throws Exception {
         // Get ourselves a system
-        Server s = ServerTestUtils.createTestSystem(user);
+        Server s = ServerTestUtils.createTestSystem(getTestUser());
 
         // insert sys into system-set
-        RhnSetDecl.SYSTEMS.clear(user);
-        RhnSet set = RhnSetDecl.SYSTEMS.get(user);
+        RhnSetDecl.SYSTEMS.clear(getTestUser());
+        RhnSet set = RhnSetDecl.SYSTEMS.get(getTestUser());
         set.addElement(s.getId());
         RhnSetManager.store(set);
 
         // ask for the base channels of all systems in the system-set for the test user
-        DataResult<SystemsPerChannelDto> dr = ChannelManager.baseChannelsInSet(user);
+        DataResult<SystemsPerChannelDto> dr = ChannelManager.baseChannelsInSet(getTestUser());
 
         // should be one, with one system, and its name should be == the name of the
         // base-channel for the system we just created
@@ -804,21 +804,21 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         // Testing this is going to be a pain with our existing infrastructure
 
         // Create a server
-        Server s = ServerTestUtils.createTestSystem(user);
+        Server s = ServerTestUtils.createTestSystem(getTestUser());
 
         // Get its current base-channel
         Channel c = s.getBaseChannel();
 
         // Create a custom base channel
-        Channel custom = ChannelTestUtils.createBaseChannel(user);
-        custom.setOrg(user.getOrg());
+        Channel custom = ChannelTestUtils.createBaseChannel(getTestUser());
+        custom.setOrg(getTestUser().getOrg());
 
         clearSsm();
-        SsmManager.addServersToSsm(user, new String[] {s.getId().toString()});
+        SsmManager.addServersToSsm(getTestUser(), new String[] {s.getId().toString()});
         ChannelFactory.commitTransaction();
 
         // Ask for channels compatible with the new server's base
-        List<EssentialChannelDto> compatibles = ChannelManager.listCompatibleBaseChannelsForChannel(user, c);
+        List<EssentialChannelDto> compatibles = ChannelManager.listCompatibleBaseChannelsForChannel(getTestUser(), c);
 
         // There should be two - we now list ALL custom-channelsl
         assertNotNull(compatibles);
@@ -846,8 +846,8 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testFindCompatibleChildrenByOriginalChannel() throws Exception {
         // look for a cloned channel
-        Channel parent = ChannelFactoryTest.createBaseChannel(user);
-        Channel child = ChannelFactoryTest.createTestChannel(user);
+        Channel parent = ChannelFactoryTest.createBaseChannel(getTestUser());
+        Channel child = ChannelFactoryTest.createTestChannel(getTestUser());
 
         child.setParentChannel(parent);
 
@@ -855,8 +855,8 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         parent = TestUtils.saveAndFlush(parent);
         TestUtils.flushAndEvict(child);
 
-        Channel parent1 = ChannelFactoryTest.createTestClonedChannel(parent, user);
-        Channel child1 = ChannelFactoryTest.createTestClonedChannel(child, user);
+        Channel parent1 = ChannelFactoryTest.createTestClonedChannel(parent, getTestUser());
+        Channel child1 = ChannelFactoryTest.createTestClonedChannel(child, getTestUser());
 
         child1.setParentChannel(parent1);
 
@@ -865,14 +865,14 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         TestUtils.flushAndEvict(child1);
 
         Map<Channel, Channel> children = ChannelManager.
-                                findCompatibleChildren(parent, parent1, user);
+                                findCompatibleChildren(parent, parent1, getTestUser());
 
         assertNotEmpty(children.keySet());
         assertEquals(child, children.keySet().iterator().next());
 
         // look for a a clone of a cloned channel
-        Channel parent2 = ChannelFactoryTest.createTestClonedChannel(parent1, user);
-        Channel child2 = ChannelFactoryTest.createTestClonedChannel(child1, user);
+        Channel parent2 = ChannelFactoryTest.createTestClonedChannel(parent1, getTestUser());
+        Channel child2 = ChannelFactoryTest.createTestClonedChannel(child1, getTestUser());
         child2.setParentChannel(parent2);
 
         child2 = TestUtils.saveAndFlush(child2);
@@ -880,7 +880,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         TestUtils.flushAndEvict(child2);
 
         children = ChannelManager.
-                findCompatibleChildren(parent, parent2, user);
+                findCompatibleChildren(parent, parent2, getTestUser());
 
         assertNotEmpty(children.keySet());
         assertEquals(child, children.keySet().iterator().next());
@@ -890,8 +890,8 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testFindCompatibleChildrenByParentProduct() throws Exception {
         ProductName pn = ChannelFactoryTest.createProductName();
-        Channel parent = ChannelFactoryTest.createBaseChannel(user);
-        Channel child = ChannelFactoryTest.createTestChannel(user);
+        Channel parent = ChannelFactoryTest.createBaseChannel(getTestUser());
+        Channel child = ChannelFactoryTest.createTestChannel(getTestUser());
 
         child.setParentChannel(parent);
         child.setProductName(pn);
@@ -900,8 +900,8 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         parent = TestUtils.saveAndFlush(parent);
         TestUtils.flushAndEvict(child);
 
-        Channel parent1 = ChannelFactoryTest.createBaseChannel(user);
-        Channel child1 = ChannelFactoryTest.createTestChannel(user);
+        Channel parent1 = ChannelFactoryTest.createBaseChannel(getTestUser());
+        Channel child1 = ChannelFactoryTest.createTestChannel(getTestUser());
 
         child1.setParentChannel(parent1);
         child1.setProductName(pn);
@@ -910,7 +910,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         parent1 = TestUtils.saveAndFlush(parent1);
         TestUtils.flushAndEvict(child1);
 
-        Map<Channel, Channel> children = ChannelManager.findCompatibleChildren(parent, parent1, user);
+        Map<Channel, Channel> children = ChannelManager.findCompatibleChildren(parent, parent1, getTestUser());
 
         assertNotEmpty(children.keySet());
         assertEquals(child, children.keySet().iterator().next());
@@ -920,7 +920,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testLookupDistChannelMap() throws Exception {
-        Channel c = ChannelFactoryTest.createTestChannel(user);
+        Channel c = ChannelFactoryTest.createTestChannel(getTestUser());
         ProductName pn = new ProductName();
         pn.setLabel(TEST_OS);
         pn.setName(TEST_OS);
@@ -931,7 +931,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         String release = MAP_RELEASE + TestUtils.randomString();
         ChannelTestUtils.addDistMapToChannel(c, TEST_OS, release);
         DistChannelMap dcm = ChannelManager.lookupDistChannelMapByPnReleaseArch(
-                user.getOrg(), TEST_OS, release, c.getChannelArch());
+                getTestUser().getOrg(), TEST_OS, release, c.getChannelArch());
         assertNotNull(dcm);
         assertEquals(c.getId(), dcm.getChannel().getId());
     }
@@ -946,31 +946,31 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testRemoveErrata() throws Exception {
-        Channel c = ChannelFactoryTest.createTestChannel(user);
+        Channel c = ChannelFactoryTest.createTestChannel(getTestUser());
         List<Errata> errataList = new ArrayList<>();
-        Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata e = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         errataList.add(e);
-        ErrataFactory.addToChannel(errataList, c, user, false);
+        ErrataFactory.addToChannel(errataList, c, getTestUser(), false);
         assertTrue(e.getChannels().contains(c));
 
-        ChannelManager.removeErrata(c, Set.of(e.getId()), user);
+        ChannelManager.removeErrata(c, Set.of(e.getId()), getTestUser());
         TestUtils.flushAndClearSession();
 
         e = ErrataFactory.lookupErrataById(e.getId());
         assertFalse(e.getChannels().contains(c));
-        c = ChannelManager.lookupByLabel(user.getOrg(), c.getLabel());
+        c = ChannelManager.lookupByLabel(getTestUser().getOrg(), c.getLabel());
         assertFalse(c.getErratas().contains(e));
     }
 
     @Test
     public void testListErrataPackages() throws Exception {
 
-        Channel c = ChannelFactoryTest.createBaseChannel(user);
-        Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Channel c = ChannelFactoryTest.createBaseChannel(getTestUser());
+        Errata e = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
 
-        Package bothP = PackageTest.createTestPackage(user.getOrg());
-        Package channelP = PackageTest.createTestPackage(user.getOrg());
-        Package errataP = PackageTest.createTestPackage(user.getOrg());
+        Package bothP = PackageTest.createTestPackage(getTestUser().getOrg());
+        Package channelP = PackageTest.createTestPackage(getTestUser().getOrg());
+        Package errataP = PackageTest.createTestPackage(getTestUser().getOrg());
 
 
         ChannelTestUtility.testAddPackage(c, bothP);
@@ -997,11 +997,11 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testListErrataNeedingResync() throws Exception {
 
-        user.addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
-        UserFactory.save(user);
+        getTestUser().addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
+        UserFactory.save(getTestUser());
 
-        Channel ochan = ChannelFactoryTest.createTestChannel(user);
-        Channel cchan = ChannelFactoryTest.createTestClonedChannel(ochan, user);
+        Channel ochan = ChannelFactoryTest.createTestChannel(getTestUser());
+        Channel cchan = ChannelFactoryTest.createTestClonedChannel(ochan, getTestUser());
 
         Errata oe = ErrataFactoryTest.createTestErrata(null);
         ochan.addErrata(oe);
@@ -1009,15 +1009,15 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         List<Long> list = new ArrayList<>();
         list.add(cchan.getId());
 
-        Long ceid = ErrataHelper.cloneErrataFaster(oe.getId(), user.getOrg());
+        Long ceid = ErrataHelper.cloneErrataFaster(oe.getId(), getTestUser().getOrg());
         Errata ce = ErrataFactory.lookupById(ceid);
-        ce = ErrataManager.addToChannels(ce, list, user);
+        ce = ErrataManager.addToChannels(ce, list, getTestUser());
 
-        Package testPackage = PackageTest.createTestPackage(user.getOrg());
+        Package testPackage = PackageTest.createTestPackage(getTestUser().getOrg());
         oe.addPackage(testPackage);
         ChannelTestUtility.testAddPackage(ochan, testPackage);
 
-        List<ErrataOverview> result = ChannelManager.listErrataNeedingResync(cchan, user);
+        List<ErrataOverview> result = ChannelManager.listErrataNeedingResync(cchan, getTestUser());
         assertEquals(1, result.size());
         assertEquals(result.get(0).getId(), ce.getId());
     }
@@ -1029,11 +1029,11 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testListErrataNeedingResyncRetracted() throws Exception {
-        user.addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
-        UserFactory.save(user);
+        getTestUser().addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
+        UserFactory.save(getTestUser());
 
-        Channel ochan = ChannelFactoryTest.createTestChannel(user);
-        Channel cchan = ChannelFactoryTest.createTestClonedChannel(ochan, user);
+        Channel ochan = ChannelFactoryTest.createTestChannel(getTestUser());
+        Channel cchan = ChannelFactoryTest.createTestClonedChannel(ochan, getTestUser());
 
         Errata oe = ErrataFactoryTest.createTestErrata(null);
         ochan.addErrata(oe);
@@ -1042,14 +1042,14 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         Errata notCloned = ErrataFactoryTest.createTestErrata(null);
         ochan.addErrata(notCloned);
 
-        Long ceid = ErrataHelper.cloneErrataFaster(oe.getId(), user.getOrg());
+        Long ceid = ErrataHelper.cloneErrataFaster(oe.getId(), getTestUser().getOrg());
         Errata ce = ErrataFactory.lookupById(ceid);
-        ce = ErrataManager.addToChannels(ce, List.of(cchan.getId()), user);
+        ce = ErrataManager.addToChannels(ce, List.of(cchan.getId()), getTestUser());
 
         oe.setAdvisoryStatus(AdvisoryStatus.RETRACTED);
         notCloned.setAdvisoryStatus(AdvisoryStatus.RETRACTED);
 
-        List<ErrataOverview> result = ChannelManager.listErrataNeedingResync(cchan, user);
+        List<ErrataOverview> result = ChannelManager.listErrataNeedingResync(cchan, getTestUser());
         assertEquals(1, result.size());
         assertEquals(result.get(0).getId(), ce.getId());
     }
@@ -1057,10 +1057,10 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testListErrataPackagesForResync() throws Exception {
 
-        user.addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
+        getTestUser().addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
 
-        Channel ochan = ChannelFactoryTest.createTestChannel(user);
-        Channel cchan = ChannelFactoryTest.createTestClonedChannel(ochan, user);
+        Channel ochan = ChannelFactoryTest.createTestChannel(getTestUser());
+        Channel cchan = ChannelFactoryTest.createTestClonedChannel(ochan, getTestUser());
 
         Errata oe = ErrataFactoryTest.createTestErrata(null);
         ochan.addErrata(oe);
@@ -1068,21 +1068,21 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         List<Long> list = new ArrayList<>();
         list.add(cchan.getId());
 
-        Long ceid = ErrataHelper.cloneErrataFaster(oe.getId(), user.getOrg());
+        Long ceid = ErrataHelper.cloneErrataFaster(oe.getId(), getTestUser().getOrg());
         Errata ce = ErrataFactory.lookupById(ceid);
-        ce = ErrataManager.addToChannels(ce, list, user);
+        ce = ErrataManager.addToChannels(ce, list, getTestUser());
 
-        Package testPackage = PackageTest.createTestPackage(user.getOrg());
+        Package testPackage = PackageTest.createTestPackage(getTestUser().getOrg());
         oe.addPackage(testPackage);
         ChannelTestUtility.testAddPackage(ochan, testPackage);
 
-        RhnSet set = RhnSetDecl.ERRATA_TO_SYNC.get(user);
+        RhnSet set = RhnSetDecl.ERRATA_TO_SYNC.get(getTestUser());
         set.clear();
         set.add(ce.getId());
         RhnSetManager.store(set);
 
         List<PackageOverview> result = ChannelManager.listErrataPackagesForResync(
-                                         cchan, user, set.getLabel());
+                                         cchan, getTestUser(), set.getLabel());
         assertEquals(1, result.size());
 
         assertEquals(result.get(0).getId(), testPackage.getId());
@@ -1090,14 +1090,14 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void ensureForceBecomingCloneOfWorksOnClonedChannels() throws Exception {
-        user.addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
-        Channel origCh = ChannelFactoryTest.createTestChannel(user);
-        Channel clonedCh = ChannelFactoryTest.createTestClonedChannel(origCh, user);
+        getTestUser().addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
+        Channel origCh = ChannelFactoryTest.createTestChannel(getTestUser());
+        Channel clonedCh = ChannelFactoryTest.createTestClonedChannel(origCh, getTestUser());
 
         assertTrue(clonedCh.asCloned().isPresent());
         assertEquals(origCh, clonedCh.asCloned().orElseThrow().getOriginal());
 
-        Channel substituteOrigCh = ChannelFactoryTest.createTestChannel(user);
+        Channel substituteOrigCh = ChannelFactoryTest.createTestChannel(getTestUser());
         ChannelManager.forceBecomingCloneOf(clonedCh, substituteOrigCh);
 
         assertTrue(clonedCh.asCloned().isPresent());
@@ -1106,12 +1106,12 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void ensureForceBecomingCloneOfWorksOnRegularChannels() throws Exception {
-        user.addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
-        Channel regularCh = ChannelFactoryTest.createTestChannel(user);
+        getTestUser().addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
+        Channel regularCh = ChannelFactoryTest.createTestChannel(getTestUser());
 
         assertFalse(regularCh.asCloned().isPresent());
 
-        Channel origCh = ChannelFactoryTest.createTestChannel(user);
+        Channel origCh = ChannelFactoryTest.createTestChannel(getTestUser());
         ChannelManager.forceBecomingCloneOf(regularCh, origCh);
         regularCh = TestUtils.reload(regularCh);
 
@@ -1122,8 +1122,8 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     @Test
     public void ensureGetOriginalChannelNotLoopingForever() throws Exception {
         // creating a tree with 2 levels
-        Channel parent = ChannelFactoryTest.createBaseChannel(user);
-        Channel child = ChannelFactoryTest.createTestChannel(user);
+        Channel parent = ChannelFactoryTest.createBaseChannel(getTestUser());
+        Channel child = ChannelFactoryTest.createTestChannel(getTestUser());
 
         child.setParentChannel(parent);
 
@@ -1131,12 +1131,12 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         parent = TestUtils.saveAndFlush(parent);
         TestUtils.flushAndEvict(child);
 
-        Channel parent1 = ChannelFactoryTest.createTestClonedChannel(parent, user);
-        ClonedChannel child1 = (ClonedChannel)ChannelFactoryTest.createTestClonedChannel(child, user);
+        Channel parent1 = ChannelFactoryTest.createTestClonedChannel(parent, getTestUser());
+        ClonedChannel child1 = (ClonedChannel)ChannelFactoryTest.createTestClonedChannel(child, getTestUser());
 
         child1.setParentChannel(parent1);
 
-        ClonedChannel damagedChild2 = (ClonedChannel)ChannelFactoryTest.createTestClonedChannel(child1, user);
+        ClonedChannel damagedChild2 = (ClonedChannel)ChannelFactoryTest.createTestClonedChannel(child1, getTestUser());
         child1.setOriginal(damagedChild2);
 
         child1 = TestUtils.saveAndFlush(child1);
@@ -1155,7 +1155,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
      * Clears the list of servers in the SSM.
      */
     private void clearSsm() {
-        RhnSet set = RhnSetDecl.SYSTEMS.get(user);
+        RhnSet set = RhnSetDecl.SYSTEMS.get(getTestUser());
         set.clear();
         RhnSetManager.store(set);
     }

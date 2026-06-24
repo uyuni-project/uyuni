@@ -33,8 +33,8 @@ public class KickstartFileDownloadCommandTest extends
 
     @Test
     public void testDownload() throws Exception {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        Channel c = ChannelFactoryTest.createTestChannel(user);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
+        Channel c = ChannelFactoryTest.createTestChannel(getTestUser());
         ksdata.getKickstartDefaults().getKstree().setChannel(c);
         KickstartDataTest.addKickstartPackagesToChannel(c);
         ksdata.getTree().setInstallType(KickstartFactory.

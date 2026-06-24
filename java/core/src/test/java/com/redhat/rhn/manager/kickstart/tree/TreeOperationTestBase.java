@@ -29,7 +29,7 @@ public abstract class TreeOperationTestBase extends BaseTestCaseWithUser {
     protected void setTestTreeParams(BaseTreeEditOperation cmd) throws Exception {
         cmd.setInstallType(KickstartFactory.lookupKickstartInstallTypeByLabel("rhel_7"));
         cmd.setBasePath(KickstartableTreeTest.KICKSTART_TREE_PATH.getAbsolutePath());
-        cmd.setChannel(ChannelFactoryTest.createTestChannel(user));
+        cmd.setChannel(ChannelFactoryTest.createTestChannel(getTestUser()));
         cmd.setLabel("some_label" + TestUtils.randomString());
     }
 

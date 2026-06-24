@@ -51,16 +51,16 @@ public class SsmPowerManagementActionTest extends BaseTestCaseWithUser {
      */
     @BeforeEach
     public void setUp() throws Exception {
-        connection = CobblerXMLRPCHelper.getConnection(user.getLogin());
+        connection = CobblerXMLRPCHelper.getConnection(getTestUser().getLogin());
         servers = PowerManagementConfigurationActionTest
-            .setUpTestProvisionableSsmServers(user);
+            .setUpTestProvisionableSsmServers(getTestUser());
         systemOverviews = new LinkedList<>();
         for (Server server : servers) {
             SystemOverview systemOverview = new SystemOverview();
             systemOverview.setId(server.getId());
             systemOverviews.add(systemOverview);
 
-            assertNull(new CobblerPowerSettingsUpdateCommand(user, server, "ipmi",
+            assertNull(new CobblerPowerSettingsUpdateCommand(getTestUser(), server, "ipmi",
                 "192.168.0.1", "user", "password", null).store());
         }
     }
@@ -71,7 +71,7 @@ public class SsmPowerManagementActionTest extends BaseTestCaseWithUser {
     @Test
     public void testAction() {
         SsmPowerManagementAction action = new SsmPowerManagementAction();
-        action.execute(new SsmPowerManagementEvent(user.getId(), systemOverviews,
+        action.execute(new SsmPowerManagementEvent(getTestUser().getId(), systemOverviews,
             Operation.POWER_ON));
 
         for (Server server : servers) {

@@ -35,11 +35,11 @@ public class TreeEditOperationTest extends TreeOperationTestBase {
 
     @Test
     public void testEdit() throws Exception {
-        Channel testChannel = ChannelFactoryTest.createTestChannel(user);
+        Channel testChannel = ChannelFactoryTest.createTestChannel(getTestUser());
         KickstartableTree tree = KickstartableTreeTest.createTestKickstartableTree(testChannel);
         Long tid = tree.getId();
 
-        TreeEditOperation cmd = new TreeEditOperation(tree.getId(), user);
+        TreeEditOperation cmd = new TreeEditOperation(tree.getId(), getTestUser());
         assertNotNull(cmd.getTree());
 
         String nlabel = "newlabel" + TestUtils.randomString();
@@ -48,28 +48,28 @@ public class TreeEditOperationTest extends TreeOperationTestBase {
         assertNull(cmd.store());
         TestUtils.flushAndClearSession();
 
-        KickstartableTree lookedUp = KickstartFactory.lookupKickstartTreeByIdAndOrg(tid, user.getOrg());
+        KickstartableTree lookedUp = KickstartFactory.lookupKickstartTreeByIdAndOrg(tid, getTestUser().getOrg());
         assertEquals(nlabel, lookedUp.getLabel());
     }
 
     @Test
     public void testInvalidEdit() throws Exception {
-        Channel testChannel = ChannelFactoryTest.createTestChannel(user);
+        Channel testChannel = ChannelFactoryTest.createTestChannel(getTestUser());
         KickstartableTree tree = KickstartableTreeTest.createTestKickstartableTree(testChannel);
         Long tid = tree.getId();
         TestUtils.flushAndClearSession();
 
-        TreeEditOperation cmd = new TreeEditOperation(tid, user);
+        TreeEditOperation cmd = new TreeEditOperation(tid, getTestUser());
         cmd.setBasePath(KickstartableTreeTest.KICKSTART_TREE_PATH.getAbsolutePath());
         assertNull(cmd.store());
         TestUtils.flushAndClearSession();
 
-        TreeEditOperation newcmd = new TreeEditOperation(tid, user);
+        TreeEditOperation newcmd = new TreeEditOperation(tid, getTestUser());
         newcmd.setLabel("testInvalidEdit " + TestUtils.randomString());
         assertNotNull(newcmd.store());
         TestUtils.flushAndClearSession();
 
-        KickstartableTree lookedUp = KickstartFactory.lookupKickstartTreeByIdAndOrg(tid, user.getOrg());
+        KickstartableTree lookedUp = KickstartFactory.lookupKickstartTreeByIdAndOrg(tid, getTestUser().getOrg());
         assertFalse(lookedUp.getLabel().startsWith("testInvalidEdit"));
     }
 

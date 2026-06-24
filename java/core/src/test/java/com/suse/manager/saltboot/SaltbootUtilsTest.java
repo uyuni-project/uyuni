@@ -126,24 +126,24 @@ public class SaltbootUtilsTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testCobblerName() {
-        String orgName = user.getOrg().getName();
-        Long orgId = user.getOrg().getId();
+        String orgName = getTestUser().getOrg().getName();
+        Long orgId = getTestUser().getOrg().getId();
 
         // Test with a simple label
         String label = "my-test-label";
         String expectedName = String.format("%s:S:%d:%s", label, orgId, orgName);
-        assertEquals(expectedName, SaltbootUtils.makeCobblerName(user.getOrg(), label));
+        assertEquals(expectedName, SaltbootUtils.makeCobblerName(getTestUser().getOrg(), label));
 
         // Test with a label containing spaces
         String labelWithSpaces = "my test label";
         String expectedNameWithSpaces = String.format("my_test_label:S:%d:%s", orgId, orgName);
-        assertEquals(expectedNameWithSpaces, SaltbootUtils.makeCobblerName(user.getOrg(), labelWithSpaces));
+        assertEquals(expectedNameWithSpaces, SaltbootUtils.makeCobblerName(getTestUser().getOrg(), labelWithSpaces));
 
         // Test with a label containing spaces and special chars
         String labelWithSpacesAndChars = "my test %label%2";
         String expectedNameWithSpacesAndChars = String.format("my_test_label2:S:%d:%s", orgId, orgName);
         assertEquals(expectedNameWithSpacesAndChars, SaltbootUtils.makeCobblerName(
-                user.getOrg(), labelWithSpacesAndChars));
+                getTestUser().getOrg(), labelWithSpacesAndChars));
     }
 
     @Test
@@ -151,10 +151,10 @@ public class SaltbootUtilsTest extends JMockBaseTestCaseWithUser {
         String imageName = "my-image";
         String imageVersion = "1.2.3";
         int imageRevision = 4;
-        ImageInfo imageInfo = createImageHelper(user, imageName, imageVersion, imageRevision);
+        ImageInfo imageInfo = createImageHelper(getTestUser(), imageName, imageVersion, imageRevision);
 
-        String orgName = user.getOrg().getName();
-        Long orgId = user.getOrg().getId();
+        String orgName = getTestUser().getOrg().getName();
+        Long orgId = getTestUser().getOrg().getId();
 
         String expectedName = String.format("%s-%s-%d:S:%d:%s",
                 imageName, imageVersion, imageRevision, orgId, orgName);
@@ -169,13 +169,13 @@ public class SaltbootUtilsTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testCreateSaltbootDistro() throws Exception {
-        ImageInfo imageInfo = createImageHelper(user, "my-image", "1.2.3", 4);
+        ImageInfo imageInfo = createImageHelper(getTestUser(), "my-image", "1.2.3", 4);
         SaltbootUtils.createSaltbootDistro(imageInfo, Distro.list(client), client);
 
         String nameVR = SaltbootUtils.makeCobblerNameVR(imageInfo);
-        String nameV = SaltbootUtils.makeCobblerName(user.getOrg(), "my-image-1.2.3");
-        String name = SaltbootUtils.makeCobblerName(user.getOrg(), "my-image");
-        String defaultName = SaltbootUtils.makeCobblerName(user.getOrg(), SaltbootUtils.DEFAULT_BOOT_IMAGE);
+        String nameV = SaltbootUtils.makeCobblerName(getTestUser().getOrg(), "my-image-1.2.3");
+        String name = SaltbootUtils.makeCobblerName(getTestUser().getOrg(), "my-image");
+        String defaultName = SaltbootUtils.makeCobblerName(getTestUser().getOrg(), SaltbootUtils.DEFAULT_BOOT_IMAGE);
 
         // Check that the distro was created
         Distro distro = Distro.lookupByName(client, nameVR);
@@ -202,7 +202,7 @@ public class SaltbootUtilsTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testCreateSaltbootDistroIdempotent() throws Exception {
-        ImageInfo imageInfo = createImageHelper(user, "my-image", "1.2.3", 4);
+        ImageInfo imageInfo = createImageHelper(getTestUser(), "my-image", "1.2.3", 4);
 
         // First call
         SaltbootUtils.createSaltbootDistro(imageInfo, Distro.list(client), client);
@@ -224,17 +224,17 @@ public class SaltbootUtilsTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testDeleteSaltbootDistro() throws Exception {
         // Create two versions of an image
-        ImageInfo imageV1 = createImageHelper(user, "my-image", "1.0.0", 1);
-        ImageInfo imageV2 = createImageHelper(user, "my-image", "1.0.0", 2);
+        ImageInfo imageV1 = createImageHelper(getTestUser(), "my-image", "1.0.0", 1);
+        ImageInfo imageV2 = createImageHelper(getTestUser(), "my-image", "1.0.0", 2);
 
         SaltbootUtils.createSaltbootDistro(imageV1, Distro.list(client), client);
         SaltbootUtils.createSaltbootDistro(imageV2, Distro.list(client), client);
 
         String nameV1VR = SaltbootUtils.makeCobblerNameVR(imageV1);
         String nameV2VR = SaltbootUtils.makeCobblerNameVR(imageV2);
-        String nameV = SaltbootUtils.makeCobblerName(user.getOrg(), "my-image-1.0.0");
-        String name = SaltbootUtils.makeCobblerName(user.getOrg(), "my-image");
-        String defaultName = SaltbootUtils.makeCobblerName(user.getOrg(), SaltbootUtils.DEFAULT_BOOT_IMAGE);
+        String nameV = SaltbootUtils.makeCobblerName(getTestUser().getOrg(), "my-image-1.0.0");
+        String name = SaltbootUtils.makeCobblerName(getTestUser().getOrg(), "my-image");
+        String defaultName = SaltbootUtils.makeCobblerName(getTestUser().getOrg(), SaltbootUtils.DEFAULT_BOOT_IMAGE);
 
         // Profiles should point to the newest version (v2)
         assertEquals(nameV2VR, Profile.lookupByName(client, nameV).getDistro().getName());
@@ -270,16 +270,16 @@ public class SaltbootUtilsTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testCreateSaltbootProfile() throws Exception {
         // Create a server group and an image
-        ServerGroup group = createSaltbootGroupHelper(user, "my-saltboot-group");
-        ImageInfo image = createImageHelper(user, "my-image", "1.0.0", 1);
+        ServerGroup group = createSaltbootGroupHelper(getTestUser(), "my-saltboot-group");
+        ImageInfo image = createImageHelper(getTestUser(), "my-image", "1.0.0", 1);
         SaltbootUtils.createSaltbootDistro(image, Distro.list(client), client);
 
         // Call the method to be tested
-        String imageProfileName = SaltbootUtils.makeCobblerName(user.getOrg(), "my-image-1.0.0");
+        String imageProfileName = SaltbootUtils.makeCobblerName(getTestUser().getOrg(), "my-image-1.0.0");
         SaltbootUtils.createSaltbootProfile(group, imageProfileName, false, client);
 
         // Verify the profile was created correctly
-        String groupProfileName = SaltbootUtils.makeCobblerName(user.getOrg(), "my-saltboot-group");
+        String groupProfileName = SaltbootUtils.makeCobblerName(getTestUser().getOrg(), "my-saltboot-group");
         Profile groupProfile = Profile.lookupByName(client, groupProfileName);
         assertNotNull(groupProfile);
 
@@ -294,20 +294,21 @@ public class SaltbootUtilsTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testCreateSaltbootProfileWithDefault() throws Exception {
         // Create a server group and an image
-        ImageInfo image = createImageHelper(user, "my-image", "1.0.0", 1);
+        ImageInfo image = createImageHelper(getTestUser(), "my-image", "1.0.0", 1);
         SaltbootUtils.createSaltbootDistro(image, Distro.list(client), client);
 
         // Create Saltboot Profile for group
-        ServerGroup group = createSaltbootGroupHelper(user, "my-saltboot-group-2");
+        ServerGroup group = createSaltbootGroupHelper(getTestUser(), "my-saltboot-group-2");
         SaltbootUtils.createSaltbootProfile(group, client);
 
         // Verify the profile was created correctly
-        String groupProfileName = SaltbootUtils.makeCobblerName(user.getOrg(), "my-saltboot-group-2");
+        String groupProfileName = SaltbootUtils.makeCobblerName(getTestUser().getOrg(), "my-saltboot-group-2");
         Profile groupProfile = Profile.lookupByName(client, groupProfileName);
         assertNotNull(groupProfile);
 
         // Verify parent and kernel options
-        String imageProfileName = SaltbootUtils.makeCobblerName(user.getOrg(), SaltbootUtils.DEFAULT_BOOT_IMAGE);
+        String imageProfileName = SaltbootUtils.makeCobblerName(getTestUser().getOrg(),
+                SaltbootUtils.DEFAULT_BOOT_IMAGE);
         assertEquals(imageProfileName, groupProfile.getParent());
         Map<String, Object> kernelOptions = groupProfile.getKernelOptions().get();
         assertEquals("my-saltboot-group-2", kernelOptions.get("MINION_ID_PREFIX"));
@@ -318,20 +319,20 @@ public class SaltbootUtilsTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testCreateSaltbootProfileWithImage() throws Exception {
         // Create a server group and an image
-        ImageInfo image = createImageHelper(user, "my-branch-image", "1.0.0", 1);
+        ImageInfo image = createImageHelper(getTestUser(), "my-branch-image", "1.0.0", 1);
         SaltbootUtils.createSaltbootDistro(image, Distro.list(client), client);
 
         // Create Saltboot Profile for group
-        ServerGroup group = createSaltbootGroupHelper(user, "my-saltboot-group-3", "my-branch-image", null);
+        ServerGroup group = createSaltbootGroupHelper(getTestUser(), "my-saltboot-group-3", "my-branch-image", null);
         SaltbootUtils.createSaltbootProfile(group, client);
 
         // Verify the profile was created correctly
-        String groupProfileName = SaltbootUtils.makeCobblerName(user.getOrg(), "my-saltboot-group-3");
+        String groupProfileName = SaltbootUtils.makeCobblerName(getTestUser().getOrg(), "my-saltboot-group-3");
         Profile groupProfile = Profile.lookupByName(client, groupProfileName);
         assertNotNull(groupProfile);
 
         // Verify parent and kernel options
-        String imageProfileName = SaltbootUtils.makeCobblerName(user.getOrg(), "my-branch-image");
+        String imageProfileName = SaltbootUtils.makeCobblerName(getTestUser().getOrg(), "my-branch-image");
         assertEquals(imageProfileName, groupProfile.getParent());
         Map<String, Object> kernelOptions = groupProfile.getKernelOptions().get();
         assertEquals("my-saltboot-group-3", kernelOptions.get("MINION_ID_PREFIX"));
@@ -342,20 +343,20 @@ public class SaltbootUtilsTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testCreateSaltbootProfileWithImageVersion() throws Exception {
         // Create a server group and an image
-        ImageInfo image = createImageHelper(user, "my-branch-image", "1.0.0", 1);
+        ImageInfo image = createImageHelper(getTestUser(), "my-branch-image", "1.0.0", 1);
         SaltbootUtils.createSaltbootDistro(image, Distro.list(client), client);
 
         // Create Saltboot Profile for group
-        ServerGroup group = createSaltbootGroupHelper(user, "my-saltboot-group-4", "my-branch-image", "1.0.0");
+        ServerGroup group = createSaltbootGroupHelper(getTestUser(), "my-saltboot-group-4", "my-branch-image", "1.0.0");
         SaltbootUtils.createSaltbootProfile(group, client);
 
         // Verify the profile was created correctly
-        String groupProfileName = SaltbootUtils.makeCobblerName(user.getOrg(), "my-saltboot-group-4");
+        String groupProfileName = SaltbootUtils.makeCobblerName(getTestUser().getOrg(), "my-saltboot-group-4");
         Profile groupProfile = Profile.lookupByName(client, groupProfileName);
         assertNotNull(groupProfile);
 
         // Verify parent and kernel options
-        String imageProfileName = SaltbootUtils.makeCobblerName(user.getOrg(), "my-branch-image-1.0.0");
+        String imageProfileName = SaltbootUtils.makeCobblerName(getTestUser().getOrg(), "my-branch-image-1.0.0");
         assertEquals(imageProfileName, groupProfile.getParent());
         Map<String, Object> kernelOptions = groupProfile.getKernelOptions().get();
         assertEquals("my-saltboot-group-4", kernelOptions.get("MINION_ID_PREFIX"));
@@ -366,13 +367,13 @@ public class SaltbootUtilsTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testDeleteSaltbootProfile() throws Exception {
         // 1. Test successful deletion
-        ServerGroup group = createSaltbootGroupHelper(user, "my-group-to-delete");
-        ImageInfo image = createImageHelper(user, "my-image", "1.0.0", 1);
+        ServerGroup group = createSaltbootGroupHelper(getTestUser(), "my-group-to-delete");
+        ImageInfo image = createImageHelper(getTestUser(), "my-image", "1.0.0", 1);
         SaltbootUtils.createSaltbootDistro(image, Distro.list(client), client);
-        String imageProfileName = SaltbootUtils.makeCobblerName(user.getOrg(), "my-image-1.0.0");
+        String imageProfileName = SaltbootUtils.makeCobblerName(getTestUser().getOrg(), "my-image-1.0.0");
         SaltbootUtils.createSaltbootProfile(group, imageProfileName, false, client);
 
-        String groupProfileName = SaltbootUtils.makeCobblerName(user.getOrg(), "my-group-to-delete");
+        String groupProfileName = SaltbootUtils.makeCobblerName(getTestUser().getOrg(), "my-group-to-delete");
         assertNotNull(Profile.lookupByName(client, groupProfileName));
 
         SaltbootUtils.deleteSaltbootProfile(groupProfileName, client);
@@ -382,14 +383,15 @@ public class SaltbootUtilsTest extends JMockBaseTestCaseWithUser {
         SaltbootUtils.deleteSaltbootProfile("non-existent-profile", client);
 
         // 3. Test deletion of a profile with associated systems (should throw)
-        ServerGroup groupWithSystems = createSaltbootGroupHelper(user, "my-group-with-systems");
+        ServerGroup groupWithSystems = createSaltbootGroupHelper(getTestUser(), "my-group-with-systems");
         SaltbootUtils.createSaltbootProfile(groupWithSystems, imageProfileName, false, client);
-        String groupWithSystemsProfileName = SaltbootUtils.makeCobblerName(user.getOrg(), "my-group-with-systems");
+        String groupWithSystemsProfileName = SaltbootUtils.makeCobblerName(getTestUser().getOrg(),
+                "my-group-with-systems");
         Profile profileWithSystems = Profile.lookupByName(client, groupWithSystemsProfileName);
 
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         minion.setMinionId("test-minion");
-        String systemName = SaltbootUtils.makeCobblerName(user.getOrg(), minion.getMinionId());
+        String systemName = SaltbootUtils.makeCobblerName(getTestUser().getOrg(), minion.getMinionId());
         SystemRecord.create(client, systemName, profileWithSystems);
 
         assertThrows(SaltbootException.class, () ->
@@ -399,15 +401,15 @@ public class SaltbootUtilsTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testCreateSaltbootSystem() throws Exception {
         // 1. Setup
-        ImageInfo image = createImageHelper(user, "my-image", "1.0.0", 1);
+        ImageInfo image = createImageHelper(getTestUser(), "my-image", "1.0.0", 1);
         SaltbootUtils.createSaltbootDistro(image, Distro.list(client), client);
         String imageProfileName = SaltbootUtils.makeCobblerNameVR(image);
 
-        ServerGroup group = createSaltbootGroupHelper(user, "my-saltboot-group");
+        ServerGroup group = createSaltbootGroupHelper(getTestUser(), "my-saltboot-group");
         SaltbootUtils.createSaltbootProfile(group, imageProfileName, false, client);
         String groupName = group.getName();
 
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         minion.setMinionId("test-minion-for-system");
 
         List<String> hwAddresses = List.of("AA:BB:CC:DD:EE:FF");
@@ -416,7 +418,7 @@ public class SaltbootUtilsTest extends JMockBaseTestCaseWithUser {
         // 2. Test system creation
         SaltbootUtils.createSaltbootSystem(minion, "my-image-1.0.0-1", groupName, hwAddresses, kernelParams, client);
 
-        String systemName = SaltbootUtils.makeCobblerName(user.getOrg(), minion.getMinionId());
+        String systemName = SaltbootUtils.makeCobblerName(getTestUser().getOrg(), minion.getMinionId());
         SystemRecord system = SystemRecord.lookupByName(client, systemName);
         assertNotNull(system);
         assertEquals(imageProfileName, system.getProfile().getName());
@@ -437,7 +439,7 @@ public class SaltbootUtilsTest extends JMockBaseTestCaseWithUser {
         assertEquals(String.join(" ", expectedOpts), String.join(" ", actualOpts));
 
         // 3. Test system update
-        ImageInfo newImage = createImageHelper(user, "my-new-image", "2.0.0", 1);
+        ImageInfo newImage = createImageHelper(getTestUser(), "my-new-image", "2.0.0", 1);
         SaltbootUtils.createSaltbootDistro(newImage, Distro.list(client), client);
         String newImageProfileName = SaltbootUtils.makeCobblerNameVR(newImage);
         SaltbootUtils.createSaltbootSystem(minion, "my-new-image-2.0.0-1",
@@ -456,9 +458,9 @@ public class SaltbootUtilsTest extends JMockBaseTestCaseWithUser {
                 "Should throw when group profile doesn't exist");
 
         // 5. Test MAC conflict resolution
-        MinionServer conflictingMinion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer conflictingMinion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         conflictingMinion.setMinionId("conflicting-minion");
-        String conflictingSystemName = SaltbootUtils.makeCobblerName(user.getOrg(), "some-other-system");
+        String conflictingSystemName = SaltbootUtils.makeCobblerName(getTestUser().getOrg(), "some-other-system");
         SystemRecord conflictingSystem = SystemRecord.create(client, conflictingSystemName,
                 Profile.lookupByName(client, imageProfileName));
         Network net = new Network(client, "00:11:22:33:44:55");
@@ -472,6 +474,6 @@ public class SaltbootUtilsTest extends JMockBaseTestCaseWithUser {
         assertNull(SystemRecord.lookupByName(client,
                 conflictingSystemName), "Conflicting system should be deleted");
         assertNotNull(SystemRecord.lookupByName(client,
-                SaltbootUtils.makeCobblerName(user.getOrg(), "conflicting-minion")));
+                SaltbootUtils.makeCobblerName(getTestUser().getOrg(), "conflicting-minion")));
     }
 }

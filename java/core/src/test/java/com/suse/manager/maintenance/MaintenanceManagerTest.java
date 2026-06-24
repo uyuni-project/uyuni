@@ -85,24 +85,24 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
 
     @BeforeEach
     public void setUp() throws Exception {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        user = TestUtils.saveAndFlush(user);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
+        saveAndFlushTestUser();
     }
 
     @Test
     public void testCreateSchedule() {
         MaintenanceManager mm = new MaintenanceManager();
-        mm.createSchedule(user, "test server", ScheduleType.SINGLE, Optional.empty());
+        mm.createSchedule(getTestUser(), "test server", ScheduleType.SINGLE, Optional.empty());
 
-        List<String> names = mm.listScheduleNamesByUser(user);
+        List<String> names = mm.listScheduleNamesByUser(getTestUser());
         assertEquals(1, names.size());
         assertContains(names, "test server");
 
-        Optional<MaintenanceSchedule> dbScheduleOpt = mm.lookupScheduleByUserAndName(user, "test server");
+        Optional<MaintenanceSchedule> dbScheduleOpt = mm.lookupScheduleByUserAndName(getTestUser(), "test server");
         assertNotNull(dbScheduleOpt.orElse(null));
         MaintenanceSchedule dbSchedule = dbScheduleOpt.get();
 
-        assertEquals(user.getOrg(), dbSchedule.getOrg());
+        assertEquals(getTestUser().getOrg(), dbSchedule.getOrg());
         assertEquals("test server", dbSchedule.getName());
         assertEquals(ScheduleType.SINGLE, dbSchedule.getScheduleType());
         assertTrue(dbSchedule.getCalendarOpt().isEmpty());
@@ -115,17 +115,17 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
                 new File(TESTDATAPATH,  KDE_ICS).getAbsolutePath()).getPath());
 
         MaintenanceManager mm = new MaintenanceManager();
-        mm.createCalendar(user, "testcalendar", FileUtils.readStringFromFile(ical.getAbsolutePath()));
+        mm.createCalendar(getTestUser(), "testcalendar", FileUtils.readStringFromFile(ical.getAbsolutePath()));
 
-        List<String> labels = mm.listCalendarLabelsByUser(user);
+        List<String> labels = mm.listCalendarLabelsByUser(getTestUser());
         assertEquals(1, labels.size());
         assertContains(labels, "testcalendar");
 
-        Optional<MaintenanceCalendar> dbCalOpt = mm.lookupCalendarByUserAndLabel(user, "testcalendar");
+        Optional<MaintenanceCalendar> dbCalOpt = mm.lookupCalendarByUserAndLabel(getTestUser(), "testcalendar");
         assertNotNull(dbCalOpt.orElse(null));
         MaintenanceCalendar dbCal = dbCalOpt.get();
 
-        assertEquals(user.getOrg(), dbCal.getOrg());
+        assertEquals(getTestUser().getOrg(), dbCal.getOrg());
         assertEquals("testcalendar", dbCal.getLabel());
         assertEquals(FileUtils.readStringFromFile(ical.getAbsolutePath()), dbCal.getIcal());
         assertNull(dbCal.getUrlOpt().orElse(null));
@@ -138,24 +138,24 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         MaintenanceManager mm = new MaintenanceManager();
 
         MaintenanceCalendar mc = mm.createCalendar(
-                user, "testcalendar", FileUtils.readStringFromFile(ical.getAbsolutePath()));
-        mm.createSchedule(user, "test server", ScheduleType.SINGLE, Optional.of(mc));
+                getTestUser(), "testcalendar", FileUtils.readStringFromFile(ical.getAbsolutePath()));
+        mm.createSchedule(getTestUser(), "test server", ScheduleType.SINGLE, Optional.of(mc));
 
-        List<String> names = mm.listScheduleNamesByUser(user);
+        List<String> names = mm.listScheduleNamesByUser(getTestUser());
         assertEquals(1, names.size());
         assertContains(names, "test server");
 
-        Optional<MaintenanceSchedule> dbScheduleOpt = mm.lookupScheduleByUserAndName(user, "test server");
+        Optional<MaintenanceSchedule> dbScheduleOpt = mm.lookupScheduleByUserAndName(getTestUser(), "test server");
         assertNotNull(dbScheduleOpt.orElse(null));
         MaintenanceSchedule dbSchedule = dbScheduleOpt.get();
 
-        assertEquals(user.getOrg(), dbSchedule.getOrg());
+        assertEquals(getTestUser().getOrg(), dbSchedule.getOrg());
         assertEquals("test server", dbSchedule.getName());
         assertEquals(ScheduleType.SINGLE, dbSchedule.getScheduleType());
         assertNotNull(dbSchedule.getCalendarOpt().orElse(null));
 
         MaintenanceCalendar dbCal = dbSchedule.getCalendarOpt().get();
-        assertEquals(user.getOrg(), dbCal.getOrg());
+        assertEquals(getTestUser().getOrg(), dbCal.getOrg());
         assertEquals("testcalendar", dbCal.getLabel());
         assertEquals(FileUtils.readStringFromFile(ical.getAbsolutePath()), dbCal.getIcal());
         assertNull(dbCal.getUrlOpt().orElse(null));
@@ -175,16 +175,16 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         };
 
         MaintenanceCalendar mc = mm.createCalendar(
-                user, "testcalendar", FileUtils.readStringFromFile(icalKde.getAbsolutePath()));
-        mm.createSchedule(user, "test server", ScheduleType.SINGLE, Optional.of(mc));
+                getTestUser(), "testcalendar", FileUtils.readStringFromFile(icalKde.getAbsolutePath()));
+        mm.createSchedule(getTestUser(), "test server", ScheduleType.SINGLE, Optional.of(mc));
 
-        Optional<MaintenanceSchedule> dbScheduleOpt = mm.lookupScheduleByUserAndName(user, "test server");
+        Optional<MaintenanceSchedule> dbScheduleOpt = mm.lookupScheduleByUserAndName(getTestUser(), "test server");
         assertNotNull(dbScheduleOpt.orElse(null));
         MaintenanceSchedule dbSchedule = dbScheduleOpt.get();
         assertNotNull(dbSchedule.getCalendarOpt().orElse(null));
 
         MaintenanceCalendar dbCal = dbSchedule.getCalendarOpt().get();
-        assertEquals(user.getOrg(), dbCal.getOrg());
+        assertEquals(getTestUser().getOrg(), dbCal.getOrg());
         assertEquals("testcalendar", dbCal.getLabel());
         assertEquals(FileUtils.readStringFromFile(icalKde.getAbsolutePath()), dbCal.getIcal());
         assertNull(dbCal.getUrlOpt().orElse(null));
@@ -192,11 +192,11 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         Map<String, String> details = new HashMap<>();
         details.put("url", "http://dummy.domain.top/exchange");
 
-        mm.updateCalendar(user, "testcalendar", details, Collections.emptyList());
+        mm.updateCalendar(getTestUser(), "testcalendar", details, Collections.emptyList());
 
         dbCal = mm.lookupCalendarByUserAndLabel(
-                user, "testcalendar").orElseThrow(() -> new RuntimeException("Cannot find testcalendar"));
-        assertEquals(user.getOrg(), dbCal.getOrg());
+                getTestUser(), "testcalendar").orElseThrow(() -> new RuntimeException("Cannot find testcalendar"));
+        assertEquals(getTestUser().getOrg(), dbCal.getOrg());
         assertEquals("testcalendar", dbCal.getLabel());
         assertEquals(FileUtils.readStringFromFile(icalEx.getAbsolutePath()), dbCal.getIcal());
         assertNotNull(dbCal.getUrlOpt().orElse(null));
@@ -205,13 +205,13 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         Map<String, String> sDetails = new HashMap<>();
         sDetails.put("type", "multi");
 
-        mm.updateSchedule(user, "test server", sDetails, Collections.emptyList());
+        mm.updateSchedule(getTestUser(), "test server", sDetails, Collections.emptyList());
 
-        dbScheduleOpt = mm.lookupScheduleByUserAndName(user, "test server");
+        dbScheduleOpt = mm.lookupScheduleByUserAndName(getTestUser(), "test server");
         assertNotNull(dbScheduleOpt.orElse(null));
         dbSchedule = dbScheduleOpt.get();
 
-        assertEquals(user.getOrg(), dbSchedule.getOrg());
+        assertEquals(getTestUser().getOrg(), dbSchedule.getOrg());
         assertEquals("test server", dbSchedule.getName());
         assertEquals(MULTI, dbSchedule.getScheduleType());
         assertEquals(dbCal, dbSchedule.getCalendarOpt().orElse(null));
@@ -224,18 +224,18 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testListSystemsWithSchedule() throws Exception {
-        user.addPermanentRole(ORG_ADMIN);
+        getTestUser().addPermanentRole(ORG_ADMIN);
         MaintenanceManager mm = new MaintenanceManager();
         MaintenanceSchedule schedule = mm.createSchedule(
-                user, "test-schedule-1", MaintenanceSchedule.ScheduleType.SINGLE, Optional.empty());
+                getTestUser(), "test-schedule-1", MaintenanceSchedule.ScheduleType.SINGLE, Optional.empty());
 
-        Server withSchedule = MinionServerFactoryTest.createTestMinionServer(user);
+        Server withSchedule = MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
-        mm.assignScheduleToSystems(user, schedule, Set.of(withSchedule.getId()), false);
+        mm.assignScheduleToSystems(getTestUser(), schedule, Set.of(withSchedule.getId()), false);
 
         assertEquals(
                 List.of(withSchedule.getId()),
-                mm.listSystemIdsWithSchedule(user, schedule)
+                mm.listSystemIdsWithSchedule(getTestUser(), schedule)
         );
     }
 
@@ -246,23 +246,23 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testRetractScheduleFromSystems() throws Exception {
-        user.addPermanentRole(ORG_ADMIN);
+        getTestUser().addPermanentRole(ORG_ADMIN);
         MaintenanceManager mm = new MaintenanceManager();
         MaintenanceSchedule schedule = mm.createSchedule(
-                user, "test-schedule-1", MaintenanceSchedule.ScheduleType.SINGLE, Optional.empty());
+                getTestUser(), "test-schedule-1", MaintenanceSchedule.ScheduleType.SINGLE, Optional.empty());
 
         // assign the schedule to both systems
-        Server system1 = MinionServerFactoryTest.createTestMinionServer(user);
-        Server system2 = MinionServerFactoryTest.createTestMinionServer(user);
-        mm.assignScheduleToSystems(user, schedule, Set.of(system1.getId(), system2.getId()), false);
+        Server system1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        Server system2 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        mm.assignScheduleToSystems(getTestUser(), schedule, Set.of(system1.getId(), system2.getId()), false);
 
         // retract it from one system
-        mm.retractScheduleFromSystems(user, Set.of(system1.getId()));
+        mm.retractScheduleFromSystems(getTestUser(), Set.of(system1.getId()));
 
         // check, that the other system still has it
         assertEquals(
                 List.of(system2.getId()),
-                mm.listSystemIdsWithSchedule(user, schedule)
+                mm.listSystemIdsWithSchedule(getTestUser(), schedule)
         );
     }
 
@@ -274,34 +274,36 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testAssignScheduleToSystemWithPendingActions() throws Exception {
-        user.addPermanentRole(ORG_ADMIN);
+        getTestUser().addPermanentRole(ORG_ADMIN);
         MaintenanceManager mm = new MaintenanceManager();
         File ical = new File(TestUtils.findTestData(new File(
                 "/com/suse/manager/maintenance/testdata/maintenance-windows-exchange.ics")
                 .getAbsolutePath()).getPath());
         String calendarString = FileUtils.readStringFromFile(ical.getAbsolutePath());
-        MaintenanceCalendar mc = mm.createCalendar(user, "testcalendar", calendarString);
-        MaintenanceSchedule schedule = mm.createSchedule(user, "test-schedule-1", SINGLE, of(mc));
+        MaintenanceCalendar mc = mm.createCalendar(getTestUser(), "testcalendar", calendarString);
+        MaintenanceSchedule schedule = mm.createSchedule(getTestUser(), "test-schedule-1", SINGLE, of(mc));
 
-        Server sys1 = MinionServerFactoryTest.createTestMinionServer(user);
-        Server sys2 = MinionServerFactoryTest.createTestMinionServer(user);
+        Server sys1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        Server sys2 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
         // assign an action not tied to maintenance mode
         MaintenanceTestUtils.createActionForServerAt(
-                        user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST, sys1, "2020-04-13T08:15:00+02:00");
-        assertEquals(1, mm.assignScheduleToSystems(user, schedule, Set.of(sys1.getId()), false));
+                getTestUser(), ActionFactory.TYPE_HARDWARE_REFRESH_LIST, sys1, "2020-04-13T08:15:00+02:00");
+        assertEquals(1, mm.assignScheduleToSystems(getTestUser(), schedule, Set.of(sys1.getId()), false));
 
         // assign maintenance window affected action inside a maintenance window
         MaintenanceTestUtils
-                .createActionForServerAt(user, ActionFactory.TYPE_APPLY_STATES, sys1, "2020-07-27T09:00:00+02:00");
-        assertEquals(1, mm.assignScheduleToSystems(user, schedule, Set.of(sys1.getId()), false));
+                .createActionForServerAt(getTestUser(), ActionFactory.TYPE_APPLY_STATES, sys1,
+                        "2020-07-27T09:00:00+02:00");
+        assertEquals(1, mm.assignScheduleToSystems(getTestUser(), schedule, Set.of(sys1.getId()), false));
 
         // assign an offending action to one system
         MaintenanceTestUtils
-                .createActionForServerAt(user, ActionFactory.TYPE_APPLY_STATES, sys2, "2020-07-27T11:00:00+02:00");
+                .createActionForServerAt(getTestUser(), ActionFactory.TYPE_APPLY_STATES, sys2,
+                        "2020-07-27T11:00:00+02:00");
 
         assertExceptionThrown(
-                () -> mm.assignScheduleToSystems(user, schedule, Set.of(sys1.getId(), sys2.getId()), false),
+                () -> mm.assignScheduleToSystems(getTestUser(), schedule, Set.of(sys1.getId(), sys2.getId()), false),
                 IllegalArgumentException.class);
     }
 
@@ -313,16 +315,16 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testAssignScheduleCrossOrg() throws Exception {
         MaintenanceManager mm = new MaintenanceManager();
-        user.addPermanentRole(ORG_ADMIN);
+        getTestUser().addPermanentRole(ORG_ADMIN);
         User user2 = UserTestUtils.createUser("user-321", "acme-123");
         user2.addPermanentRole(ORG_ADMIN);
 
         MaintenanceSchedule schedule1 = mm.createSchedule(
-                user, "test-schedule-1", MaintenanceSchedule.ScheduleType.SINGLE, Optional.empty());
+                getTestUser(), "test-schedule-1", MaintenanceSchedule.ScheduleType.SINGLE, Optional.empty());
         MaintenanceSchedule schedule2 = mm.createSchedule(
                 user2, "test-schedule-2", MaintenanceSchedule.ScheduleType.SINGLE, Optional.empty());
 
-        Server system1 = MinionServerFactoryTest.createTestMinionServer(user);
+        Server system1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         Server system2 = MinionServerFactoryTest.createTestMinionServer(user2);
 
         // user 2 assigns schedule 1
@@ -360,12 +362,12 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         };
 
         MaintenanceCalendar mc = mm.createCalendar(
-                user, "testcalendar", FileUtils.readStringFromFile(icalKde.getAbsolutePath()));
-        MaintenanceSchedule ms = mm.createSchedule(user, "test server", ScheduleType.SINGLE, Optional.of(mc));
+                getTestUser(), "testcalendar", FileUtils.readStringFromFile(icalKde.getAbsolutePath()));
+        MaintenanceSchedule ms = mm.createSchedule(getTestUser(), "test server", ScheduleType.SINGLE, Optional.of(mc));
 
-        Server server = ServerTestUtils.createTestSystem(user);
+        Server server = ServerTestUtils.createTestSystem(getTestUser());
 
-        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
+        Action action = ActionFactoryTest.createAction(getTestUser(), ActionFactory.TYPE_ERRATA);
         ZonedDateTime start = ZonedDateTime.parse("2020-04-21T09:00:00+02:00", DateTimeFormatter.ISO_OFFSET_DATE_TIME);
         action.setEarliestAction(Date.from(start.toInstant()));
 
@@ -401,35 +403,41 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
                 new File(TESTDATAPATH,  EXCHANGE_MULTI2_ICS).getAbsolutePath()).getPath());
 
         /* setup test environment */
-        Server sapServer = ServerTestUtils.createTestSystem(user);
-        Server coreServer = ServerTestUtils.createTestSystem(user);
+        Server sapServer = ServerTestUtils.createTestSystem(getTestUser());
+        Server coreServer = ServerTestUtils.createTestSystem(getTestUser());
 
         MaintenanceManager mm = new MaintenanceManager();
         MaintenanceCalendar mcal = mm.createCalendar(
-                user, "multicalendar", FileUtils.readStringFromFile(icalExM1.getAbsolutePath()));
-        MaintenanceSchedule sapSchedule = mm.createSchedule(user, "SAP Maintenance Window", MULTI, Optional.of(mcal));
-        MaintenanceSchedule coreSchedule = mm.createSchedule(user, "Core Server Window", MULTI, Optional.of(mcal));
+                getTestUser(), "multicalendar", FileUtils.readStringFromFile(icalExM1.getAbsolutePath()));
+        MaintenanceSchedule sapSchedule = mm.createSchedule(getTestUser(), "SAP Maintenance Window", MULTI,
+                Optional.of(mcal));
+        MaintenanceSchedule coreSchedule = mm.createSchedule(getTestUser(), "Core Server Window", MULTI,
+                Optional.of(mcal));
 
-        mm.assignScheduleToSystems(user, sapSchedule, Collections.singleton(sapServer.getId()), false);
-        mm.assignScheduleToSystems(user, coreSchedule, Collections.singleton(coreServer.getId()), false);
+        mm.assignScheduleToSystems(getTestUser(), sapSchedule, Collections.singleton(sapServer.getId()),
+                false);
+        mm.assignScheduleToSystems(getTestUser(), coreSchedule, Collections.singleton(coreServer.getId()),
+                false);
 
         //sapAction1
         MaintenanceTestUtils.createActionForServerAt(
-                user, ActionFactory.TYPE_ERRATA, sapServer, "2020-04-13T08:15:00+02:00"); //moved
+                getTestUser(), ActionFactory.TYPE_ERRATA, sapServer, "2020-04-13T08:15:00+02:00"); //moved
         Action sapActionEx = MaintenanceTestUtils.createActionForServerAt(
-                user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST, sapServer, "2020-04-13T08:15:00+02:00"); //moved
+                getTestUser(), ActionFactory.TYPE_HARDWARE_REFRESH_LIST, sapServer,
+                "2020-04-13T08:15:00+02:00"); //moved
         Action sapAction2 = MaintenanceTestUtils.createActionForServerAt(
-                user, ActionFactory.TYPE_ERRATA, sapServer, "2020-04-27T08:15:00+02:00"); //stay
+                getTestUser(), ActionFactory.TYPE_ERRATA, sapServer, "2020-04-27T08:15:00+02:00"); //stay
         Action coreAction1 = MaintenanceTestUtils.createActionForServerAt(
-                user, ActionFactory.TYPE_ERRATA, coreServer, "2020-04-30T09:15:00+02:00"); //stay
+                getTestUser(), ActionFactory.TYPE_ERRATA, coreServer, "2020-04-30T09:15:00+02:00"); //stay
         Action coreActionEx = MaintenanceTestUtils.createActionForServerAt(
-                user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST, coreServer, "2020-05-21T09:15:00+02:00"); //moved
+                getTestUser(), ActionFactory.TYPE_HARDWARE_REFRESH_LIST, coreServer,
+                "2020-05-21T09:15:00+02:00"); //moved
         //coreAction2
         MaintenanceTestUtils.createActionForServerAt(
-                user, ActionFactory.TYPE_ERRATA, coreServer, "2020-05-21T09:15:00+02:00"); //moved
+                getTestUser(), ActionFactory.TYPE_ERRATA, coreServer, "2020-05-21T09:15:00+02:00"); //moved
 
-        List sapActionsBefore = ActionFactory.listActionsForServer(user, sapServer);
-        List coreActionsBefore = ActionFactory.listActionsForServer(user, coreServer);
+        List sapActionsBefore = ActionFactory.listActionsForServer(getTestUser(), sapServer);
+        List coreActionsBefore = ActionFactory.listActionsForServer(getTestUser(), coreServer);
 
         assertEquals(3, sapActionsBefore.size());
         assertEquals(3, coreActionsBefore.size());
@@ -441,11 +449,11 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         List<RescheduleStrategy> rescheduleStrategy = new LinkedList<>();
         rescheduleStrategy.add(new CancelRescheduleStrategy());
 
-        mm.updateCalendar(user, "multicalendar", details, rescheduleStrategy);
+        mm.updateCalendar(getTestUser(), "multicalendar", details, rescheduleStrategy);
 
         /* check results */
-        List<Action> sapActionsAfter = ActionFactory.listActionsForServer(user, sapServer);
-        List<Action> coreActionsAfter = ActionFactory.listActionsForServer(user, coreServer);
+        List<Action> sapActionsAfter = ActionFactory.listActionsForServer(getTestUser(), sapServer);
+        List<Action> coreActionsAfter = ActionFactory.listActionsForServer(getTestUser(), coreServer);
 
         assertEquals(2, sapActionsAfter.size());
         assertEquals(2, coreActionsAfter.size());
@@ -460,9 +468,9 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
 
         /* remove the calendar */
         mcal = mm.lookupCalendarByUserAndLabel(
-                user, "multicalendar").orElseThrow(() -> new RuntimeException("Cannot find Calendar"));
+                getTestUser(), "multicalendar").orElseThrow(() -> new RuntimeException("Cannot find Calendar"));
         TestUtils.flushAndClearSession();
-        List<RescheduleResult> results = mm.remove(user, mcal, false);
+        List<RescheduleResult> results = mm.remove(getTestUser(), mcal, false);
         assertEquals(1, results.size());
         assertFalse(results.get(0).isSuccess());
         // we remove the schedules ordered by name
@@ -477,53 +485,59 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
                 new File(TESTDATAPATH,  EXCHANGE_MULTI2_ICS).getAbsolutePath()).getPath());
 
         /* setup test environment */
-        Server sapServer = ServerTestUtils.createTestSystem(user);
-        Server coreServer = ServerTestUtils.createTestSystem(user);
+        Server sapServer = ServerTestUtils.createTestSystem(getTestUser());
+        Server coreServer = ServerTestUtils.createTestSystem(getTestUser());
 
         MaintenanceManager mm = new MaintenanceManager();
         MaintenanceCalendar mcal = mm.createCalendar(
-                user, "multicalendar", FileUtils.readStringFromFile(icalExM1.getAbsolutePath()));
-        MaintenanceSchedule sapSchedule = mm.createSchedule(user, "SAP Maintenance Window", MULTI, Optional.of(mcal));
-        MaintenanceSchedule coreSchedule = mm.createSchedule(user, "Core Server Window", MULTI, Optional.of(mcal));
+                getTestUser(), "multicalendar", FileUtils.readStringFromFile(icalExM1.getAbsolutePath()));
+        MaintenanceSchedule sapSchedule = mm.createSchedule(getTestUser(), "SAP Maintenance Window", MULTI,
+                Optional.of(mcal));
+        MaintenanceSchedule coreSchedule = mm.createSchedule(getTestUser(), "Core Server Window", MULTI,
+                Optional.of(mcal));
 
-        mm.assignScheduleToSystems(user, sapSchedule, Collections.singleton(sapServer.getId()), false);
-        mm.assignScheduleToSystems(user, coreSchedule, Collections.singleton(coreServer.getId()), false);
+        mm.assignScheduleToSystems(getTestUser(), sapSchedule, Collections.singleton(sapServer.getId()), false);
+        mm.assignScheduleToSystems(getTestUser(), coreSchedule, Collections.singleton(coreServer.getId()), false);
 
         // Action Chain which start inside of the window, but has parts outside of the window
         // Expected Result: No change
         Action sapAction1 = MaintenanceTestUtils.createActionForServerAt(
-                user, ActionFactory.TYPE_ERRATA, sapServer, "2020-04-27T09:59:00+02:00"); //stay (MW end at 10am)
+                getTestUser(), ActionFactory.TYPE_ERRATA, sapServer,
+                "2020-04-27T09:59:00+02:00"); //stay (MW end at 10am)
         Action sapAction2 = MaintenanceTestUtils.createActionForServerAt(
-                user, ActionFactory.TYPE_REBOOT, sapServer,
+                getTestUser(), ActionFactory.TYPE_REBOOT, sapServer,
                 "2020-04-27T10:01:00+02:00", sapAction1); //stay (MW end at 10am)
 
         // Action Chain which start with an action not tied to a maintenance window
         // Expected Result: Cancel all Actions
         Action sapAction3 = MaintenanceTestUtils.createActionForServerAt(
-                user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST, sapServer, "2020-04-13T09:59:00+02:00"); //moved
+                getTestUser(), ActionFactory.TYPE_HARDWARE_REFRESH_LIST, sapServer,
+                "2020-04-13T09:59:00+02:00"); //moved
         //sapAction4
         MaintenanceTestUtils.createActionForServerAt(
-                user, ActionFactory.TYPE_ERRATA, sapServer, "2020-04-13T08:10:02+02:00", sapAction3); //moved
+                getTestUser(), ActionFactory.TYPE_ERRATA, sapServer, "2020-04-13T08:10:02+02:00",
+                sapAction3); //moved
 
-        List<Action> sapActionsBefore = ActionFactory.listActionsForServer(user, sapServer);
+        List<Action> sapActionsBefore = ActionFactory.listActionsForServer(getTestUser(), sapServer);
         assertEquals(4, sapActionsBefore.size());
 
         // Action Chain which is inside of a Window but the window gets moved.
         // Expected Result: Cancel all Actions
         Action coreAction1 = MaintenanceTestUtils.createActionForServerAt(
-                user, ActionFactory.TYPE_ERRATA, coreServer, "2020-05-21T09:15:00+02:00"); //moved
+                getTestUser(), ActionFactory.TYPE_ERRATA, coreServer, "2020-05-21T09:15:00+02:00"); //moved
         //coreAction2
         MaintenanceTestUtils.createActionForServerAt(
-                user, ActionFactory.TYPE_REBOOT, coreServer, "2020-05-21T09:16:00+02:00", coreAction1); //moved
+                getTestUser(), ActionFactory.TYPE_REBOOT, coreServer, "2020-05-21T09:16:00+02:00", coreAction1); //moved
 
         // Action Chain which start with an action not tied to a maintenance window
         // Expected Result: No change
         Action coreAction3 = MaintenanceTestUtils.createActionForServerAt(
-                user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST, coreServer, "2020-04-30T11:59:30+02:00"); //stay
+                getTestUser(), ActionFactory.TYPE_HARDWARE_REFRESH_LIST, coreServer,
+                "2020-04-30T11:59:30+02:00"); //stay
         Action coreAction4 = MaintenanceTestUtils.createActionForServerAt(
-                user, ActionFactory.TYPE_ERRATA, coreServer, "2020-04-30T13:01:00+02:00", coreAction3); //stay
+                getTestUser(), ActionFactory.TYPE_ERRATA, coreServer, "2020-04-30T13:01:00+02:00", coreAction3); //stay
 
-        List<Action> coreActionsBefore = ActionFactory.listActionsForServer(user, coreServer);
+        List<Action> coreActionsBefore = ActionFactory.listActionsForServer(getTestUser(), coreServer);
         assertEquals(4, coreActionsBefore.size());
 
 
@@ -534,15 +548,16 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         List<RescheduleStrategy> rescheduleStrategy = new LinkedList<>();
         rescheduleStrategy.add(new CancelRescheduleStrategy());
 
-        List<RescheduleResult> upResult = mm.updateCalendar(user, "multicalendar", details, rescheduleStrategy);
+        List<RescheduleResult> upResult = mm.updateCalendar(getTestUser(), "multicalendar", details,
+                rescheduleStrategy);
 
         /* check results */
-        List<Action> sapActionsAfter = ActionFactory.listActionsForServer(user, sapServer);
+        List<Action> sapActionsAfter = ActionFactory.listActionsForServer(getTestUser(), sapServer);
         assertEquals(2, sapActionsAfter.size()); // First chain should be unchanged, second should be removed.
         assertContains(sapActionsAfter, sapAction1);
         assertContains(sapActionsAfter, sapAction2);
 
-        List<Action> coreActionsAfter = ActionFactory.listActionsForServer(user, coreServer);
+        List<Action> coreActionsAfter = ActionFactory.listActionsForServer(getTestUser(), coreServer);
         assertContains(coreActionsAfter, coreAction3);
         assertContains(coreActionsAfter, coreAction4);
         assertEquals(2, coreActionsAfter.size()); // First chain should be canceled, second stay
@@ -561,10 +576,10 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         }
 
         /* remove the calendar */
-        mcal = mm.lookupCalendarByUserAndLabel(user, "multicalendar")
+        mcal = mm.lookupCalendarByUserAndLabel(getTestUser(), "multicalendar")
                 .orElseThrow(() -> new RuntimeException("Cannot find Calendar"));
         TestUtils.flushAndClearSession();
-        List<RescheduleResult> results = mm.remove(user, mcal, true);
+        List<RescheduleResult> results = mm.remove(getTestUser(), mcal, true);
         assertEquals(2, results.size());
         for (RescheduleResult r : results) {
             assertTrue(r.isSuccess());
@@ -589,15 +604,15 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testListSystemsSchedules() throws Exception {
-        user.addPermanentRole(ORG_ADMIN);
+        getTestUser().addPermanentRole(ORG_ADMIN);
         MaintenanceManager mm = new MaintenanceManager();
         MaintenanceSchedule schedule = mm.createSchedule(
-                user, "test-schedule-1", MaintenanceSchedule.ScheduleType.SINGLE, Optional.empty());
+                getTestUser(), "test-schedule-1", MaintenanceSchedule.ScheduleType.SINGLE, Optional.empty());
 
-        Server withSchedule = MinionServerFactoryTest.createTestMinionServer(user);
-        Server withoutSchedule = MinionServerFactoryTest.createTestMinionServer(user);
+        Server withSchedule = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        Server withoutSchedule = MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
-        mm.assignScheduleToSystems(user, schedule, Set.of(withSchedule.getId()), false);
+        mm.assignScheduleToSystems(getTestUser(), schedule, Set.of(withSchedule.getId()), false);
 
         assertEquals(
                 Set.of(schedule),
@@ -611,14 +626,14 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
                 new File(TESTDATAPATH,  EXCHANGE_MULTI2_ICS).getAbsolutePath()).getPath());
 
         MaintenanceManager mm = new MaintenanceManager();
-        mm.createCalendar(user, "multi-test-calendar", FileUtils.readStringFromFile(ical.getAbsolutePath()));
+        mm.createCalendar(getTestUser(), "multi-test-calendar", FileUtils.readStringFromFile(ical.getAbsolutePath()));
 
-        Optional<MaintenanceCalendar> calendar = mm.lookupCalendarByUserAndLabel(user, "multi-test-calendar");
+        Optional<MaintenanceCalendar> calendar = mm.lookupCalendarByUserAndLabel(getTestUser(), "multi-test-calendar");
         assertNotNull(calendar.orElse(null));
         Long id = calendar.get().getId();
 
         Long date = ZonedDateTime.parse("2020-05-21T09:00:00+02:00").toInstant().toEpochMilli();
-        List<Triple<String, String, String>> events = mm.preprocessCalendarData(user, "next", id, date, true)
+        List<Triple<String, String, String>> events = mm.preprocessCalendarData(getTestUser(), "next", id, date, true)
                 .stream().limit(4).map(event -> Triple.of(
                         event.getName(),
                         Instant.ofEpochMilli(event.getFromMilliseconds()).toString(),
@@ -639,21 +654,22 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
                 new File(TESTDATAPATH,  EXCHANGE_MULTI2_ICS).getAbsolutePath()).getPath());
 
         MaintenanceManager mm = new MaintenanceManager();
-        mm.createCalendar(user, "multi-test-calendar", FileUtils.readStringFromFile(ical.getAbsolutePath()));
-        mm.createSchedule(user, "single-test-schedule", SINGLE,
-                mm.lookupCalendarByUserAndLabel(user, "multi-test-calendar"));
-        mm.createSchedule(user, "SAP Maintenance Window", MULTI,
-                mm.lookupCalendarByUserAndLabel(user, "multi-test-calendar"));
+        mm.createCalendar(getTestUser(), "multi-test-calendar", FileUtils.readStringFromFile(ical.getAbsolutePath()));
+        mm.createSchedule(getTestUser(), "single-test-schedule", SINGLE,
+                mm.lookupCalendarByUserAndLabel(getTestUser(), "multi-test-calendar"));
+        mm.createSchedule(getTestUser(), "SAP Maintenance Window", MULTI,
+                mm.lookupCalendarByUserAndLabel(getTestUser(), "multi-test-calendar"));
 
         Long date = ZonedDateTime.parse("2020-05-21T09:00:00+02:00").toInstant().toEpochMilli();
 
         // Test schedule of type single
-        Optional<MaintenanceSchedule> scheduleSingle = mm.lookupScheduleByUserAndName(user, "single-test-schedule");
+        Optional<MaintenanceSchedule> scheduleSingle = mm.lookupScheduleByUserAndName(getTestUser(),
+                "single-test-schedule");
         assertNotNull(scheduleSingle.orElse(null));
         Long singleId = scheduleSingle.get().getId();
 
         List<Triple<String, String, String>> singleEvents =
-            mm.preprocessScheduleData(user, "next", singleId, date, true)
+            mm.preprocessScheduleData(getTestUser(), "next", singleId, date, true)
                 .stream().limit(4).map(event -> Triple.of(
                         event.getName(),
                         Instant.ofEpochMilli(event.getFromMilliseconds()).toString(),
@@ -668,11 +684,13 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
         ), singleEvents);
 
         // Test schedule of type multi
-        Optional<MaintenanceSchedule> scheduleMulti = mm.lookupScheduleByUserAndName(user, "SAP Maintenance Window");
+        Optional<MaintenanceSchedule> scheduleMulti = mm.lookupScheduleByUserAndName(getTestUser(),
+                "SAP Maintenance Window");
         assertNotNull(scheduleMulti.orElse(null));
         Long multiId = scheduleMulti.get().getId();
 
-        List<Triple<String, String, String>> multiEvents = mm.preprocessScheduleData(user, "next", multiId, date, true)
+        List<Triple<String, String, String>> multiEvents = mm.preprocessScheduleData(getTestUser(),
+                        "next", multiId, date, true)
                 .stream().limit(4).map(event -> Triple.of(
                         event.getName(),
                         Instant.ofEpochMilli(event.getFromMilliseconds()).toString(),
@@ -693,9 +711,9 @@ public class MaintenanceManagerTest extends BaseTestCaseWithUser {
                 new File(TESTDATAPATH,  EXCHANGE_MULTI3_ICS).getAbsolutePath()).getPath());
 
         MaintenanceManager mm = new MaintenanceManager();
-        mm.createCalendar(user, "multi-test-calendar", FileUtils.readStringFromFile(ical.getAbsolutePath()));
+        mm.createCalendar(getTestUser(), "multi-test-calendar", FileUtils.readStringFromFile(ical.getAbsolutePath()));
 
-        Optional<MaintenanceCalendar> calendar = mm.lookupCalendarByUserAndLabel(user, "multi-test-calendar");
+        Optional<MaintenanceCalendar> calendar = mm.lookupCalendarByUserAndLabel(getTestUser(), "multi-test-calendar");
         assertNotNull(calendar.orElse(null));
 
         Long nextDate = ZonedDateTime.parse("2020-11-30T00:00:00+02:00").toInstant().toEpochMilli();

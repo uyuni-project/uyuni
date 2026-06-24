@@ -256,7 +256,7 @@ public class ProxyConfigUpdateFileAcquisitorTest extends BaseTestCaseWithUser {
                 .sshKey(DUMMY_SSH_KEY)
                 .build();
         ProxyConfigUpdateContext proxyConfigUpdateContext =
-                new ProxyConfigUpdateContext(request, systemManager, user);
+                new ProxyConfigUpdateContext(request, systemManager, getTestUser());
         proxyConfigUpdateContext.setProxyFqdn(DUMMY_PROXY_FQDN);
         proxyConfigUpdateContext.setRootCA(DUMMY_ROOT_CA);
         proxyConfigUpdateContext.setIntermediateCAs(List.of(DUMMY_INTERMEDIATE_CA_1, DUMMY_INTERMEDIATE_CA_2));

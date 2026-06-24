@@ -88,7 +88,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
         ConfigTestUtils.createConfigRevision(configFile, 1L);
 
         Path statePath = getSaltRootPath()
-                .resolve(ORG_STATES_DIRECTORY_PREFIX + user.getOrg().getId())
+                .resolve(ORG_STATES_DIRECTORY_PREFIX + getTestUser().getOrg().getId())
                 .resolve(stateChannel.getLabel() + ".sls");
         statePath.toFile().getParentFile().mkdirs();
 
@@ -108,7 +108,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
                 configFile.getLatestConfigRevision().getConfigContent().getContentsString());
 
         Path channelDirectory = getSaltRootPath()
-                .resolve(ORG_STATES_DIRECTORY_PREFIX + user.getOrg().getId())
+                .resolve(ORG_STATES_DIRECTORY_PREFIX + getTestUser().getOrg().getId())
                 .resolve(stateChannel.getLabel());
         File stateFile = channelDirectory.resolve("init.sls").toFile();
         assertTrue(channelDirectory.toFile().isDirectory());
@@ -145,7 +145,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
         configRevision.getConfigContent().setContents(originalContent.getBytes());
 
         Path statePath = getSaltRootPath()
-                .resolve(ORG_STATES_DIRECTORY_PREFIX + user.getOrg().getId())
+                .resolve(ORG_STATES_DIRECTORY_PREFIX + getTestUser().getOrg().getId())
                 .resolve(stateChannel.getLabel() + ".sls");
         statePath.toFile().getParentFile().mkdirs();
 
@@ -176,7 +176,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
         configRevision.setConfigContent(configContent);
 
         Path statePath = getSaltRootPath()
-                .resolve(ORG_STATES_DIRECTORY_PREFIX + user.getOrg().getId())
+                .resolve(ORG_STATES_DIRECTORY_PREFIX + getTestUser().getOrg().getId())
                 .resolve(stateChannel.getLabel() + ".sls");
         statePath.toFile().getParentFile().mkdirs();
 
@@ -200,7 +200,8 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testProcessCustomStatesNormalChannelSkipped() throws IOException {
-        ConfigChannel normalChannel = ConfigTestUtils.createConfigChannel(user.getOrg(), ConfigChannelType.normal());
+        ConfigChannel normalChannel = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(),
+                ConfigChannelType.normal());
         ConfigFile configFile = normalChannel.createConfigFile(ConfigFileState.normal(), "/init.sls");
         ConfigRevision configRevision = ConfigTestUtils.createConfigRevision(configFile, 1L);
         ConfigContent configContent = ConfigTestUtils.createConfigContent();
@@ -208,7 +209,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
         configRevision.setConfigContent(configContent);
 
         Path statePath = getSaltRootPath()
-                .resolve(ORG_STATES_DIRECTORY_PREFIX + user.getOrg().getId())
+                .resolve(ORG_STATES_DIRECTORY_PREFIX + getTestUser().getOrg().getId())
                 .resolve(normalChannel.getLabel() + ".sls");
         statePath.toFile().getParentFile().mkdirs();
 
@@ -304,12 +305,12 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
     }
 
     private ConfigChannel createTestStateChannel() {
-        ConfigChannel cc = ConfigTestUtils.createConfigChannel(user.getOrg(), ConfigChannelType.state());
+        ConfigChannel cc = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(), ConfigChannelType.state());
         return TestUtils.reload(cc);
     }
 
     private void createTask(String taskName) {
-        TaskFactory.createTask(user.getOrg(), taskName, 0L);
+        TaskFactory.createTask(getTestUser().getOrg(), taskName, 0L);
         List<Task> l = TaskFactory.getTaskListByNameLike(taskName);
         assertInstanceOf(Task.class, l.get(0));
     }

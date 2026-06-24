@@ -263,7 +263,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
                 }
             }
             SUSEProductTestUtils.createVendorSUSEProductEnvironment(
-                    user, "/com/redhat/rhn/manager/content", false);
+                    getTestUser(), "/com/redhat/rhn/manager/content", false);
             TestUtils.flushAndClearSession();
             subtempFile.delete();
             ordertempFile.delete();
@@ -287,7 +287,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testUpdateProducts()  throws Exception {
-        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, null, false);
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(getTestUser(), null, false);
 
         assertTrue(SCCCachingFactory.lookupRepositoryBySccId(2524L).get()
                 .getRepositoryAuth().isEmpty(), "Repo should not have authentication.");
@@ -323,7 +323,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
                 .create();
         SCCCredentials credentials = CredentialsFactory.createSCCCredentials("dummy", "dummy");
         credentials.setUrl("dummy");
-        credentials.setUser(user);
+        credentials.setUser(getTestUser());
         CredentialsFactory.storeCredentials(credentials);
 
         InputStreamReader inputStreamReader = new InputStreamReader(
@@ -370,7 +370,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testReleaseStageOverride() throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(
-                user, "/com/redhat/rhn/manager/content/smallBase", true);
+                getTestUser(), "/com/redhat/rhn/manager/content/smallBase", true);
         TestUtils.flushAndClearSession();
         SUSEProduct product = SUSEProductFactory.lookupByProductId(1150);
         assertEquals(ReleaseStage.beta, product.getReleaseStage());
@@ -378,7 +378,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testClonedVendorChannelMandadory() throws Exception {
-        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user,
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(getTestUser(),
                 "/com/redhat/rhn/manager/content/smallBase", true);
         TestUtils.flushAndClearSession();
 
@@ -392,16 +392,16 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         Channel applicationsPool = ChannelFactory.lookupByLabel("sle-module-server-applications15-pool-x86_64");
 
 
-        Channel baseClone = createTestClonedChannel(baseChannel, user, "", "-clone",
+        Channel baseClone = createTestClonedChannel(baseChannel, getTestUser(), "", "-clone",
                 "Clone of", "", null);
-        Channel basesystemJan = createTestClonedChannel(basesystemPool, user, "", "-jan",
+        Channel basesystemJan = createTestClonedChannel(basesystemPool, getTestUser(), "", "-jan",
                 "", " Jan", baseClone);
-        Channel applicationsJan = createTestClonedChannel(applicationsPool, user, "", "-jan",
+        Channel applicationsJan = createTestClonedChannel(applicationsPool, getTestUser(), "", "-jan",
                 "", " Jan", baseClone);
 
-        Channel basesystemFeb = createTestClonedChannel(basesystemPool, user, "", "-feb",
+        Channel basesystemFeb = createTestClonedChannel(basesystemPool, getTestUser(), "", "-feb",
                 "", " Feb", baseClone);
-        Channel applicationsFeb = createTestClonedChannel(applicationsPool, user, "", "-feb",
+        Channel applicationsFeb = createTestClonedChannel(applicationsPool, getTestUser(), "", "-feb",
                 "", " Feb", baseClone);
 
         TestUtils.flushAndClearSession();
@@ -432,7 +432,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testUpdateChannels() throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(
-                user, "/com/redhat/rhn/manager/content/smallBase", true);
+                getTestUser(), "/com/redhat/rhn/manager/content/smallBase", true);
         TestUtils.flushAndClearSession();
 
         // SLES12 GA
@@ -506,11 +506,11 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testUpdateChannelsPillar() throws Exception {
-        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         testMinionServer.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
         testMinionServer = ServerFactory.save(testMinionServer);
 
-        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user,
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(getTestUser(),
                 "/com/redhat/rhn/manager/content/smallBase", true);
         TestUtils.flushAndClearSession();
 
@@ -519,7 +519,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1150));
         TestUtils.flushAndClearSession();
 
-        User reloadedTestUser = TestUtils.reload(user);
+        User reloadedTestUser = TestUtils.reload(getTestUser());
         testMinionServer = TestUtils.reload(testMinionServer);
 
         Channel pool = ChannelFactory.lookupByLabel("sles12-pool-x86_64");
@@ -616,7 +616,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testUpdateChannelsWithSimilarPath() throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(
-                user, "/com/redhat/rhn/manager/content/smallBase", true);
+                getTestUser(), "/com/redhat/rhn/manager/content/smallBase", true);
         TestUtils.flushAndClearSession();
 
         // SLES12 GA
@@ -698,7 +698,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     public void testUpdateChannelsWithPtfReposMainProducts() throws Exception {
-        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user,
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(getTestUser(),
                 "/com/redhat/rhn/manager/content/data2", true);
         TestUtils.flushAndClearSession();
 
@@ -771,7 +771,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     public void testUpdateChannelsWithPtfReposAllModules() throws Exception {
-        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user,
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(getTestUser(),
                 "/com/redhat/rhn/manager/content/data3", true);
         TestUtils.flushAndClearSession();
 
@@ -896,7 +896,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testSwitchingBestAuthItem() throws Exception {
-        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user,
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(getTestUser(),
                 "/com/redhat/rhn/manager/content/smallBase", true);
         TestUtils.flushAndClearSession();
 
@@ -924,7 +924,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         }
         MirrorCredentialsManager mgr = new MirrorCredentialsManager();
         SCCCredentials scc1st = CredentialsFactory.listSCCCredentials().get(0);
-        SCCCredentials scc2nd = SUSEProductTestUtils.createSecondarySCCCredentials("dummy2", user);
+        SCCCredentials scc2nd = SUSEProductTestUtils.createSecondarySCCCredentials("dummy2", getTestUser());
 
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX")
@@ -985,16 +985,16 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testCredentials() {
-        SCCCredentials sccCredentials = SUSEProductTestUtils.createSCCCredentials("scccred", user);
+        SCCCredentials sccCredentials = SUSEProductTestUtils.createSCCCredentials("scccred", getTestUser());
         TestUtils.persist(sccCredentials);
 
         CloudRMTCredentials rmtCredential = CredentialsFactory.createCloudRmtCredentials("rmtuser", "rmtpassword",
             "dummy");
-        rmtCredential.setUser(user);
+        rmtCredential.setUser(getTestUser());
         TestUtils.persist(rmtCredential);
 
         VHMCredentials vhmCredentials = CredentialsFactory.createVHMCredentials("vhmuser", "vhmpassword");
-        vhmCredentials.setUser(user);
+        vhmCredentials.setUser(getTestUser());
         TestUtils.persist(vhmCredentials);
 
         List<SCCCredentials> sccCredentials1 = CredentialsFactory.listCredentialsByType(SCCCredentials.class);
@@ -1214,14 +1214,14 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
     private SCCCredentials createSccCredentials(String username) {
         SCCCredentials sccCred1 = CredentialsFactory.createSCCCredentials(username, "dummy");
         sccCred1.setUrl("dummy");
-        sccCred1.setUser(user);
+        sccCred1.setUser(getTestUser());
         CredentialsFactory.storeCredentials(sccCred1);
         return sccCred1;
     }
 
     private CloudRMTCredentials createCloudCredentials(String username) {
         CloudRMTCredentials cloudCred1 = CredentialsFactory.createCloudRmtCredentials(username, "dummy", "dummy");
-        cloudCred1.setUser(user);
+        cloudCred1.setUser(getTestUser());
         CredentialsFactory.storeCredentials(cloudCred1);
         return cloudCred1;
     }
@@ -1333,7 +1333,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testGetAvailableChannels() throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(
-                user, "/com/redhat/rhn/manager/content/smallBase", true);
+                getTestUser(), "/com/redhat/rhn/manager/content/smallBase", true);
         TestUtils.flushAndClearSession();
 
         ContentSyncManager csm = new SUSEProductTestUtils.TestContentSyncManager();
@@ -1360,7 +1360,8 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testNoDupInGetAvailableChannels() throws Exception {
-        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, "/com/redhat/rhn/manager/content/", true);
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(getTestUser(),
+                "/com/redhat/rhn/manager/content/", true);
         TestUtils.flushAndClearSession();
 
         ContentSyncManager csm = new SUSEProductTestUtils.TestContentSyncManager();
@@ -1718,7 +1719,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testListChannels() throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(
-                user, "/com/redhat/rhn/manager/content/smallBase", true);
+                getTestUser(), "/com/redhat/rhn/manager/content/smallBase", true);
         TestUtils.flushAndClearSession();
 
         // SLES12 GA
@@ -1765,7 +1766,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testListProductsAvailability() throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(
-                user, "/com/redhat/rhn/manager/content/smallBase", true);
+                getTestUser(), "/com/redhat/rhn/manager/content/smallBase", true);
         TestUtils.flushAndClearSession();
 
         // SLES12 GA
@@ -1806,7 +1807,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testIsRefreshNeeded() throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(
-                user, "/com/redhat/rhn/manager/content/smallBase", true);
+                getTestUser(), "/com/redhat/rhn/manager/content/smallBase", true);
         Config.get().remove(ContentSyncManager.RESOURCE_PATH);
         TestUtils.flushAndClearSession();
 
@@ -1841,7 +1842,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testIsRefreshNeededFromDir() throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(
-                user, "/com/redhat/rhn/manager/content/smallBase", true, true);
+                getTestUser(), "/com/redhat/rhn/manager/content/smallBase", true, true);
         TestUtils.flushAndClearSession();
 
         // SLES12 GA
@@ -1908,7 +1909,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testUpdateChannelsWithPtfReposUbuntuWithTools() throws Exception {
-        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user,
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(getTestUser(),
                 "/com/redhat/rhn/manager/content/data3", true);
         TestUtils.flushAndClearSession();
 
@@ -1967,7 +1968,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testAddChannel() throws Exception {
         SUSEProductTestUtils.createVendorSUSEProductEnvironment(
-                user, "/com/redhat/rhn/manager/content/smallBase", true);
+                getTestUser(), "/com/redhat/rhn/manager/content/smallBase", true);
         TestUtils.flushAndClearSession();
 
         ContentSyncManager csm = new SUSEProductTestUtils.TestContentSyncManager();
@@ -2172,7 +2173,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
             // remove "fromdir" config
             Config.get().remove(ContentSyncManager.RESOURCE_PATH);
             SUSEProductTestUtils.createVendorSUSEProductEnvironment(
-                    user, "/com/redhat/rhn/manager/content/smallBase", true);
+                    getTestUser(), "/com/redhat/rhn/manager/content/smallBase", true);
 
             TestUtils.flushAndClearSession();
 
@@ -2302,7 +2303,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testIsChannelOrLabelReserved() throws Exception {
-        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, null, false);
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(getTestUser(), null, false);
         TestUtils.flushAndClearSession();
 
         assertFalse(ContentSyncManager.isChannelNameReserved("suse"));
@@ -2375,7 +2376,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
     public void updateRepositoriesForPaygDoNotCallSCC() {
         SCCCredentials credentials = CredentialsFactory.createSCCCredentials("dummy", "dummy");
         credentials.setUrl("dummy");
-        credentials.setUser(user);
+        credentials.setUser(getTestUser());
         CredentialsFactory.storeCredentials(credentials);
 
         SCCClient sccClient = mock(SCCClient.class);

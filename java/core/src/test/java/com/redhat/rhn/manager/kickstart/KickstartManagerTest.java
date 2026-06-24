@@ -40,16 +40,16 @@ public class KickstartManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testFindProfileForIpAddress() throws Exception {
 
-        KickstartData ks = KickstartDataTest.createTestKickstartData(user.getOrg());
+        KickstartData ks = KickstartDataTest.createTestKickstartData(getTestUser().getOrg());
 
         KickstartIpRange range = new KickstartIpRange();
         range.setMaxString("192.168.0.255");
         range.setMinString("192.168.0.1");
         range.setKsdata(ks);
-        range.setOrg(user.getOrg());
+        range.setOrg(getTestUser().getOrg());
         ks.getIps().add(range);
 
-        Server serv = ServerFactoryTest.createTestServer(user);
+        Server serv = ServerFactoryTest.createTestServer(getTestUser());
         NetworkInterface nic = new NetworkInterface();
         nic.setName("eth0");
         nic.setHwaddr("aa:aa:aa");
@@ -73,16 +73,16 @@ public class KickstartManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testFindProfileForIpAddressEth1() throws Exception {
 
-        KickstartData ks = KickstartDataTest.createTestKickstartData(user.getOrg());
+        KickstartData ks = KickstartDataTest.createTestKickstartData(getTestUser().getOrg());
 
         KickstartIpRange range = new KickstartIpRange();
         range.setMaxString("192.168.0.255");
         range.setMinString("192.168.0.1");
         range.setKsdata(ks);
-        range.setOrg(user.getOrg());
+        range.setOrg(getTestUser().getOrg());
         ks.getIps().add(range);
 
-        Server serv = ServerFactoryTest.createTestServer(user);
+        Server serv = ServerFactoryTest.createTestServer(getTestUser());
         NetworkInterface nic = new NetworkInterface();
         nic.setName("eth0");
         nic.setHwaddr("aa:aa:aa");
@@ -114,19 +114,19 @@ public class KickstartManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testFindProfileForIpAddressDefault() throws Exception {
 
-        KickstartData ks = KickstartDataTest.createTestKickstartData(user.getOrg());
+        KickstartData ks = KickstartDataTest.createTestKickstartData(getTestUser().getOrg());
 
-        KickstartData ksDefault = KickstartDataTest.createTestKickstartData(user.getOrg());
+        KickstartData ksDefault = KickstartDataTest.createTestKickstartData(getTestUser().getOrg());
         ksDefault.setOrgDefault(true);
 
         KickstartIpRange range = new KickstartIpRange();
         range.setMaxString("192.168.0.255");
         range.setMinString("192.168.0.1");
         range.setKsdata(ks);
-        range.setOrg(user.getOrg());
+        range.setOrg(getTestUser().getOrg());
         ks.getIps().add(range);
 
-        Server serv = ServerFactoryTest.createTestServer(user);
+        Server serv = ServerFactoryTest.createTestServer(getTestUser());
         NetworkInterface nic = new NetworkInterface();
         nic.setName("eth0");
         nic.setHwaddr("aa:aa:aa");
@@ -151,16 +151,16 @@ public class KickstartManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testFindProfileForIpAddressNull() throws Exception {
 
-        KickstartData ks = KickstartDataTest.createTestKickstartData(user.getOrg());
+        KickstartData ks = KickstartDataTest.createTestKickstartData(getTestUser().getOrg());
 
         KickstartIpRange range = new KickstartIpRange();
         range.setMaxString("192.168.0.255");
         range.setMinString("192.168.0.1");
         range.setKsdata(ks);
-        range.setOrg(user.getOrg());
+        range.setOrg(getTestUser().getOrg());
         ks.getIps().add(range);
 
-        Server serv = ServerFactoryTest.createTestServer(user);
+        Server serv = ServerFactoryTest.createTestServer(getTestUser());
         NetworkInterface nic = new NetworkInterface();
         nic.setName("eth0");
         nic.setHwaddr("aa:aa:aa");

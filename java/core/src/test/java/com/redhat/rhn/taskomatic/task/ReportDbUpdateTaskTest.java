@@ -86,12 +86,12 @@ public class ReportDbUpdateTaskTest extends JMockBaseTestCaseWithUser {
         // Set up the data for testing the query SystemPackageUpdate_byId
 
         // Create a channel
-        Channel channel = ChannelTestUtils.createBaseChannel(user);
+        Channel channel = ChannelTestUtils.createBaseChannel(getTestUser());
         channel.setChecksumType(ChannelFactory.findChecksumTypeByLabel("sha256"));
 
         // Create some servers
         List<Server> servers = IntStream.range(1, 5)
-            .mapToObj(index -> ServerFactoryTest.createTestServer(user))
+            .mapToObj(index -> ServerFactoryTest.createTestServer(getTestUser()))
             .toList();
 
         // Store the packages we create to be able to verify the data at the end
@@ -99,11 +99,11 @@ public class ReportDbUpdateTaskTest extends JMockBaseTestCaseWithUser {
 
         servers.forEach(server -> {
             // Subscribe the server to the channel
-            SystemManager.subscribeServerToChannel(user, server, channel);
+            SystemManager.subscribeServerToChannel(getTestUser(), server, channel);
 
             // Create some packages and add them to the channel
             List<Package> packages = IntStream.range(1, 10)
-                .mapToObj(index -> PackageTest.createTestPackage(user.getOrg()))
+                .mapToObj(index -> PackageTest.createTestPackage(getTestUser().getOrg()))
                 .collect(Collectors.toList());
             channel.getPackages().addAll(packages);
 
@@ -111,7 +111,7 @@ public class ReportDbUpdateTaskTest extends JMockBaseTestCaseWithUser {
             // Create a newer version for each of the packages and add  them to the channel as well
             List<Package> updatedPackages = packages.stream()
                 .map(originalPackage -> PackageTestUtils.newVersionOfPackage(originalPackage, null, "2.0.0", null,
-                    user.getOrg()))
+                    getTestUser().getOrg()))
                 .collect(Collectors.toList());
             channel.getPackages().addAll(updatedPackages);
             updatablePackagesMap.put(server.getId(), updatedPackages);

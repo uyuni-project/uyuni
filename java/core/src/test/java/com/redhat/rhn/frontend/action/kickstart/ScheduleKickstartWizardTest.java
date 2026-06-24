@@ -70,12 +70,12 @@ public class ScheduleKickstartWizardTest extends RhnMockStrutsTestCase {
     @BeforeEach
     public void setUp() throws Exception {
         setRequestPathInfo("/systems/details/kickstart/ScheduleWizard");
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        s = ServerFactoryTest.createTestServer(user, true);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
+        s = ServerFactoryTest.createTestServer(getTestUser(), true);
         NetworkInterface device = NetworkInterfaceTest.createTestNetworkInterface(s);
         s.addNetworkInterface(device);
 
-        Channel c = ChannelFactoryTest.createTestChannel(user);
+        Channel c = ChannelFactoryTest.createTestChannel(getTestUser());
         // Required so the Server has a base channel
         // otherwise we cant ks.
         s.addChannel(c);
@@ -103,7 +103,7 @@ public class ScheduleKickstartWizardTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testStepOneWithProxy() throws Exception {
-        addProxy(user);
+        addProxy(getTestUser());
         actionPerform();
         testActionHasNoErrors();
         assertEquals(Boolean.TRUE.toString(),
@@ -137,7 +137,7 @@ public class ScheduleKickstartWizardTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testStepTwoWithProxy() throws Exception {
-       Server proxy = addProxy(user);
+       Server proxy = addProxy(getTestUser());
         /** Assign a proxy host, this would be the case
          * When user selects a proxy entry from the proxies combo
          */
@@ -149,10 +149,10 @@ public class ScheduleKickstartWizardTest extends RhnMockStrutsTestCase {
     }
 
     private void executeStepTwo() throws Exception {
-        KickstartData k = KickstartDataTest.createKickstartWithProfile(user);
-        ProfileManagerTest.createProfileWithServer(user);
+        KickstartData k = KickstartDataTest.createKickstartWithProfile(getTestUser());
+        ProfileManagerTest.createProfileWithServer(getTestUser());
 
-        ActivationKey key = ActivationKeyFactory.createNewKey(user, "some key");
+        ActivationKey key = ActivationKeyFactory.createNewKey(getTestUser(), "some key");
         ActivationKeyFactory.save(key);
         key = TestUtils.reload(key);
         Token t = TokenFactory.lookupById(key.getId());
@@ -192,24 +192,24 @@ public class ScheduleKickstartWizardTest extends RhnMockStrutsTestCase {
 
         // see if we have any kickstarts first
         List ks = KickstartLister.getInstance()
-                                 .kickstartsInOrg(user.getOrg(), null);
+                                 .kickstartsInOrg(getTestUser().getOrg(), null);
 
         if (ks.isEmpty()) {
             verifyActionMessage("kickstart.schedule.noprofiles");
         }
 
         // Perform step2
-        KickstartData k = KickstartDataTest.createKickstartWithProfile(user);
+        KickstartData k = KickstartDataTest.createKickstartWithProfile(getTestUser());
         // Required so the server and profile match base channels
         k.getKickstartDefaults().getKstree().setChannel(s.getBaseChannel());
 
         // Create other server to sync
-        Server otherServer = ServerFactoryTest.createTestServer(user, true,
+        Server otherServer = ServerFactoryTest.createTestServer(getTestUser(), true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
-        otherServer.addChannel(ChannelFactoryTest.createTestChannel(user));
+        otherServer.addChannel(ChannelFactoryTest.createTestChannel(getTestUser()));
         Server proxy = null;
         if (addProxy) {
-            proxy = ScheduleKickstartWizardTest.addProxy(user);
+            proxy = ScheduleKickstartWizardTest.addProxy(getTestUser());
             assertNotNull(proxy.getHostname());
             /** Assign a proxy host, this would be the case
              * When user selects a proxy entry from the proxies combo

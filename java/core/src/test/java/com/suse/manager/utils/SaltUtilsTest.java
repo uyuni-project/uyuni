@@ -102,7 +102,7 @@ public class SaltUtilsTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testPackageChangeOutcomeWithLivePatchPackages() throws Exception {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
         Map<String, Change<Xor<String, List<Pkg.Info>>>> installLivePatch =
                 Json.GSON.fromJson(new InputStreamReader(getClass().getResourceAsStream(

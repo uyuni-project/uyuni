@@ -37,9 +37,9 @@ public class ExtraPackageListActionTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testExecute() {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        Server server = ServerFactoryTest.createTestServer(user, true);
-        Package standard = PackageTest.createTestPackage(user.getOrg());
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
+        Server server = ServerFactoryTest.createTestServer(getTestUser(), true);
+        Package standard = PackageTest.createTestPackage(getTestUser().getOrg());
         PackageTestUtils.installPackageOnServer(standard, server);
         server = TestUtils.reload(server);
         //.do?sid=1000010000
@@ -51,14 +51,14 @@ public class ExtraPackageListActionTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testExecuteWithPtf() {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        Server server = ServerFactoryTest.createTestServer(user, true);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
+        Server server = ServerFactoryTest.createTestServer(getTestUser(), true);
 
-        Package standard = PackageTest.createTestPackage(user.getOrg());
+        Package standard = PackageTest.createTestPackage(getTestUser().getOrg());
         standard.setDescription("Standard package");
 
-        Package ptfMaster = PackageTestUtils.createPtfMaster("123456", "1", user.getOrg());
-        Package ptfPackage = PackageTestUtils.createPtfPackage("123456", "1", user.getOrg());
+        Package ptfMaster = PackageTestUtils.createPtfMaster("123456", "1", getTestUser().getOrg());
+        Package ptfPackage = PackageTestUtils.createPtfPackage("123456", "1", getTestUser().getOrg());
 
         PackageTestUtils.installPackagesOnServer(List.of(standard, ptfMaster, ptfPackage), server);
         server = TestUtils.reload(server);

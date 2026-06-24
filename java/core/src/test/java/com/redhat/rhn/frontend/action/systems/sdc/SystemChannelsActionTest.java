@@ -46,11 +46,11 @@ public class SystemChannelsActionTest extends RhnMockStrutsTestCase {
      */
     @BeforeEach
     public void setUp() throws Exception {
-        server = ServerTestUtils.createTestSystem(user);
+        server = ServerTestUtils.createTestSystem(getTestUser());
         // Create some child channels so we can subscribe to them
-        Channel child1 = ChannelTestUtils.createChildChannel(user, server.getBaseChannel());
+        Channel child1 = ChannelTestUtils.createChildChannel(getTestUser(), server.getBaseChannel());
         child1.setOrg(null);
-        Channel child2 = ChannelTestUtils.createChildChannel(user, server.getBaseChannel());
+        Channel child2 = ChannelTestUtils.createChildChannel(getTestUser(), server.getBaseChannel());
         child2.setOrg(null);
 
         child1 = TestUtils.saveAndFlush(child1);
@@ -60,7 +60,7 @@ public class SystemChannelsActionTest extends RhnMockStrutsTestCase {
         server = TestUtils.saveAndFlush(server);
 
         // Org Owned channel
-        ChannelTestUtils.createTestChannel(user);
+        ChannelTestUtils.createTestChannel(getTestUser());
 
         addRequestParameter(RequestContext.SID, server.getId().toString());
         setRequestPathInfo("/systems/details/SystemChannels");
@@ -97,7 +97,7 @@ public class SystemChannelsActionTest extends RhnMockStrutsTestCase {
     @Test
     public void testConfirmUpdateBaseChannel() throws Exception {
         addDispatchCall("sdc.channels.edit.confirm_update_base");
-        Channel newBase = ChannelTestUtils.createBaseChannel(user);
+        Channel newBase = ChannelTestUtils.createBaseChannel(getTestUser());
         addRequestParameter(SystemChannelsAction.NEW_BASE_CHANNEL_ID,
                 newBase.getId().toString());
         actionPerform();
@@ -112,7 +112,7 @@ public class SystemChannelsActionTest extends RhnMockStrutsTestCase {
     @Test
     public void testUpdateBaseChannel() throws Exception {
         addDispatchCall("sdc.channels.confirmNewBase.modifyBaseSoftwareChannel");
-        Channel newBase = ChannelTestUtils.createBaseChannel(user);
+        Channel newBase = ChannelTestUtils.createBaseChannel(getTestUser());
         addRequestParameter(SystemChannelsAction.NEW_BASE_CHANNEL_ID,
                 newBase.getId().toString());
         actionPerform();
@@ -137,9 +137,9 @@ public class SystemChannelsActionTest extends RhnMockStrutsTestCase {
     public void testUpdateChildChannels() throws Exception {
         addDispatchCall("sdc.channels.edit.update_sub");
 
-        Channel child1 = ChannelTestUtils.createChildChannel(user, server.getBaseChannel());
-        Channel child2 = ChannelTestUtils.createChildChannel(user, server.getBaseChannel());
-        Channel child3 = ChannelTestUtils.createChildChannel(user, server.getBaseChannel());
+        Channel child1 = ChannelTestUtils.createChildChannel(getTestUser(), server.getBaseChannel());
+        Channel child2 = ChannelTestUtils.createChildChannel(getTestUser(), server.getBaseChannel());
+        Channel child3 = ChannelTestUtils.createChildChannel(getTestUser(), server.getBaseChannel());
 
         String[] childchan = new String[2];
         childchan[0] = child1.getId().toString();

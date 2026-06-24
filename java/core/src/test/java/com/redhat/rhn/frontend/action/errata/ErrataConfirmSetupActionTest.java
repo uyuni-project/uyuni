@@ -44,23 +44,23 @@ public class ErrataConfirmSetupActionTest extends RhnMockStrutsTestCase {
     public void testExecute() throws Exception {
 
         // Create Errata
-        Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata e = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         request.addParameter("eid", e.getId().toString());
         request.addParameter(DatePicker.SCHEDULE_TYPE, DatePicker.ScheduleType.DATE.asString());
 
         //Create a System
-        Server server = ServerFactoryTest.createTestServer(user, true);
+        Server server = ServerFactoryTest.createTestServer(getTestUser(), true);
 
         //Associate the system and the errata
-        UserFactory.save(user);
-        OrgFactory.save(user.getOrg());
+        UserFactory.save(getTestUser());
+        OrgFactory.save(getTestUser().getOrg());
         Package p = e.getPackages().iterator().next();
         int rows = ErrataCacheManager.insertNeededErrataCache(
                 server.getId(), e.getId(), p.getId());
         assertEquals(1, rows);
 
         //Add the system to the set
-        RhnSet set = RhnSetDecl.SYSTEMS_AFFECTED.get(user);
+        RhnSet set = RhnSetDecl.SYSTEMS_AFFECTED.get(getTestUser());
         set.addElement(server.getId());
         RhnSetFactory.save(set);
 

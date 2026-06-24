@@ -63,7 +63,7 @@ public class RecurringActionHandlerTest extends JMockBaseTestCaseWithUser {
     @BeforeEach
     public void setUp() throws Exception {
 
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
         highstateHandler = new RecurringHighstateHandler();
         actionHandler = new RecurringActionHandler();
 
@@ -78,8 +78,8 @@ public class RecurringActionHandlerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testCreateOrgAction() {
-        int actionId = highstateHandler.create(user, Map.of(
-                "entity_id", user.getOrg().getId().intValue(),
+        int actionId = highstateHandler.create(getTestUser(), Map.of(
+                "entity_id", getTestUser().getOrg().getId().intValue(),
                 "entity_type", "org",
                 "name", "test-action",
                 "cron_expr", TEST_CRON_EXPR
@@ -87,17 +87,17 @@ public class RecurringActionHandlerTest extends JMockBaseTestCaseWithUser {
         RecurringAction action = RecurringActionFactory.lookupById(actionId).get();
 
         assertEquals(HIGHSTATE, action.getActionType());
-        assertEquals(user, action.getCreator());
+        assertEquals(getTestUser(), action.getCreator());
         assertEquals("test-action", action.getName());
-        assertEquals(user.getOrg().getId(), action.getEntityId());
+        assertEquals(getTestUser().getOrg().getId(), action.getEntityId());
         assertEquals("0 * * * * ?", action.getCronExpr());
         assertEquals(RecurringAction.TargetType.ORG, action.getTargetType());
     }
 
     @Test
     public void testCreateMinionAction() throws Exception {
-        int minionId = MinionServerFactoryTest.createTestMinionServer(user).getId().intValue();
-        int actionId = highstateHandler.create(user, Map.of(
+        int minionId = MinionServerFactoryTest.createTestMinionServer(getTestUser()).getId().intValue();
+        int actionId = highstateHandler.create(getTestUser(), Map.of(
                 "entity_id", minionId,
                 "entity_type", "minion",
                 "name", "test_action",
@@ -107,7 +107,7 @@ public class RecurringActionHandlerTest extends JMockBaseTestCaseWithUser {
         RecurringAction action = RecurringActionFactory.lookupById(actionId).get();
 
         assertEquals(HIGHSTATE, action.getActionType());
-        assertEquals(user, action.getCreator());
+        assertEquals(getTestUser(), action.getCreator());
         assertEquals("test_action", action.getName());
         assertEquals(minionId, action.getEntityId());
         assertEquals("0 * * * * ?", action.getCronExpr());
@@ -116,26 +116,26 @@ public class RecurringActionHandlerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testCreateActionInvalidData() {
-        assertThrows(InvalidArgsException.class, () -> highstateHandler.create(user, Collections.emptyMap()));
+        assertThrows(InvalidArgsException.class, () -> highstateHandler.create(getTestUser(), Collections.emptyMap()));
     }
 
     @Test
     public void testCreateExistingAction() {
         Map<String, Object> actionProps = Map.of(
-                "entity_id", user.getOrg().getId().intValue(),
+                "entity_id", getTestUser().getOrg().getId().intValue(),
                 "entity_type", "org",
                 "name", "test-action",
                 "cron_expr", TEST_CRON_EXPR
         );
-        highstateHandler.create(user, actionProps);
+        highstateHandler.create(getTestUser(), actionProps);
         ValidationException e = assertThrows(ValidationException.class,
-                () -> highstateHandler.create(user, actionProps));
+                () -> highstateHandler.create(getTestUser(), actionProps));
         assertEquals("Recurring Action with given name already exists", e.getMessage());
     }
 
     @Test
     public void testCreateActionWithNonExistingEntity() {
-        assertThrows(EntityNotExistsFaultException.class, () -> highstateHandler.create(user, Map.of(
+        assertThrows(EntityNotExistsFaultException.class, () -> highstateHandler.create(getTestUser(), Map.of(
                 "entity_id", -12345,
                 "entity_type", "org",
                 "name", "test-action",
@@ -150,7 +150,8 @@ public class RecurringActionHandlerTest extends JMockBaseTestCaseWithUser {
         org = OrgFactory.save(org);
 
         Org finalOrg = org;
-        ValidationException e = assertThrows(ValidationException.class, () -> highstateHandler.create(user, Map.of(
+        ValidationException e = assertThrows(ValidationException.class, () -> highstateHandler.create(getTestUser(),
+                Map.of(
                 "entity_id", finalOrg.getId().intValue(),
                 "entity_type", "ORG",
                 "name", "test-action-123",
@@ -161,8 +162,9 @@ public class RecurringActionHandlerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testCreateInvalidCronExpr() {
-        ValidationException e = assertThrows(ValidationException.class, () -> highstateHandler.create(user, Map.of(
-                "entity_id", user.getOrg().getId().intValue(),
+        ValidationException e = assertThrows(ValidationException.class, () -> highstateHandler.create(getTestUser(),
+                Map.of(
+                "entity_id", getTestUser().getOrg().getId().intValue(),
                 "entity_type", "org",
                 "name", "test-action",
                 "cron_expr", "This is invalid"
@@ -173,8 +175,8 @@ public class RecurringActionHandlerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testUpdateAction() {
-        int actionId = highstateHandler.create(user, Map.of(
-                "entity_id", user.getOrg().getId().intValue(),
+        int actionId = highstateHandler.create(getTestUser(), Map.of(
+                "entity_id", getTestUser().getOrg().getId().intValue(),
                 "entity_type", "org",
                 "name", "test-action",
                 "cron_expr", TEST_CRON_EXPR
@@ -185,7 +187,7 @@ public class RecurringActionHandlerTest extends JMockBaseTestCaseWithUser {
                 "name", "new-test-action",
                 "active", false
         );
-        highstateHandler.update(user, updateProps);
+        highstateHandler.update(getTestUser(), updateProps);
 
         RecurringAction action = RecurringActionFactory.lookupById(actionId).get();
         assertEquals("new-test-action", action.getName());
@@ -194,21 +196,22 @@ public class RecurringActionHandlerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testUpdateActionSetExistingName() {
-        highstateHandler.create(user, Map.of(
-                "entity_id", user.getOrg().getId().intValue(),
+        highstateHandler.create(getTestUser(), Map.of(
+                "entity_id", getTestUser().getOrg().getId().intValue(),
                 "entity_type", "org",
                 "name", "test-action",
                 "cron_expr", TEST_CRON_EXPR
         ));
 
-        int otherActionId = highstateHandler.create(user, Map.of(
-                "entity_id", user.getOrg().getId().intValue(),
+        int otherActionId = highstateHandler.create(getTestUser(), Map.of(
+                "entity_id", getTestUser().getOrg().getId().intValue(),
                 "entity_type", "org",
                 "name", "other-test-action",
                 "cron_expr", TEST_CRON_EXPR
         ));
 
-        ValidationException e = assertThrows(ValidationException.class, () -> highstateHandler.update(user, Map.of(
+        ValidationException e = assertThrows(ValidationException.class, () -> highstateHandler.update(getTestUser(),
+                Map.of(
                 "id", otherActionId,
                 "name", "test-action"
         )));
@@ -218,14 +221,15 @@ public class RecurringActionHandlerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testUpdateActionSetInvalidCronExpr() {
-        var actionId = highstateHandler.create(user, Map.of(
-                "entity_id", user.getOrg().getId().intValue(),
+        var actionId = highstateHandler.create(getTestUser(), Map.of(
+                "entity_id", getTestUser().getOrg().getId().intValue(),
                 "entity_type", "org",
                 "name", "test-action",
                 "cron_expr", TEST_CRON_EXPR
         ));
 
-        ValidationException e = assertThrows(ValidationException.class, () -> highstateHandler.update(user, Map.of(
+        ValidationException e = assertThrows(ValidationException.class, () -> highstateHandler.update(getTestUser(),
+                Map.of(
                 "id", actionId,
                 "cron_expr", "THIS IS NOT CRON, THIS IS A STRING!"
         )));
@@ -235,7 +239,7 @@ public class RecurringActionHandlerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testUpdateNonexistingAction() {
-        assertThrows(EntityNotExistsFaultException.class, () -> highstateHandler.update(user, Map.of(
+        assertThrows(EntityNotExistsFaultException.class, () -> highstateHandler.update(getTestUser(), Map.of(
                 "id", -123,
                 "name", "new-name"
         )));
@@ -255,10 +259,10 @@ public class RecurringActionHandlerTest extends JMockBaseTestCaseWithUser {
         RecurringActionManager.setTaskomaticApi(taskomaticMock2);
 
         // create a minion with no recurring actions
-        var minionId = MinionServerFactoryTest.createTestMinionServer(user).getId();
+        var minionId = MinionServerFactoryTest.createTestMinionServer(getTestUser()).getId();
 
         assertThrows(com.redhat.rhn.frontend.xmlrpc.TaskomaticApiException.class,
-                () -> highstateHandler.create(user, Map.of(
+                () -> highstateHandler.create(getTestUser(), Map.of(
                         "entity_id", minionId.intValue(),
                         "entity_type", "minion",
                         "name", "test-action",
@@ -268,19 +272,19 @@ public class RecurringActionHandlerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testDeleteAction() {
-        int actionId = highstateHandler.create(user, Map.of(
-                "entity_id", user.getOrg().getId().intValue(),
+        int actionId = highstateHandler.create(getTestUser(), Map.of(
+                "entity_id", getTestUser().getOrg().getId().intValue(),
                 "entity_type", "org",
                 "name", "test-action",
                 "cron_expr", TEST_CRON_EXPR
         ));
 
-        actionHandler.delete(user, actionId);
+        actionHandler.delete(getTestUser(), actionId);
         assertTrue(RecurringActionFactory.lookupById(actionId).isEmpty());
     }
 
     @Test
     public void testDeleteNonexistingAction() {
-        assertThrows(EntityNotExistsFaultException.class, () -> actionHandler.delete(user, -123));
+        assertThrows(EntityNotExistsFaultException.class, () -> actionHandler.delete(getTestUser(), -123));
     }
 }

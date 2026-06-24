@@ -64,24 +64,24 @@ public class ServerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testSsmForSubscribe() throws Exception {
-        Server s = ServerTestUtils.createTestSystem(user);
+        Server s = ServerTestUtils.createTestSystem(getTestUser());
         s.setMachineId("themachineid");
 
-        ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(user.getOrg(),
+        ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(),
                 "Channel 1", "cfg-channel-1");
-        ConfigChannel channel2 = ConfigTestUtils.createConfigChannel(user.getOrg(),
+        ConfigChannel channel2 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(),
                 "Channel 2", "cfg-channel-2");
-        s.subscribeConfigChannels(List.of(channel1, channel2), user);
+        s.subscribeConfigChannels(List.of(channel1, channel2), getTestUser());
         long sid = s.getId();
         s = TestUtils.saveAndFlush(s);
-        RhnSetDecl.SYSTEMS.get(user).addElement(sid);
-        RhnSet ssm = RhnSetDecl.SYSTEMS.get(user);
+        RhnSetDecl.SYSTEMS.get(getTestUser()).addElement(sid);
+        RhnSet ssm = RhnSetDecl.SYSTEMS.get(getTestUser());
         ssm.addElement(sid);
         RhnSetFactory.save(ssm);
-        List<Server> inSSM = ServerFactory.listSystemsInSsm(user);
+        List<Server> inSSM = ServerFactory.listSystemsInSsm(getTestUser());
         assertEquals(1, inSSM.size());
 
-        List<Server> servers = ServerFactory.getSsmSystemsForSubscribe(user);
+        List<Server> servers = ServerFactory.getSsmSystemsForSubscribe(getTestUser());
         assertEquals(1, servers.size());
         assertNull(servers.get(0).getName());
         assertEquals(2, servers.get(0).getConfigChannelCount());
@@ -90,15 +90,15 @@ public class ServerTest extends BaseTestCaseWithUser {
     @Test
     public void testChangeConfigChannelsRankingOrder() throws Exception {
         //create server and subscribe configuration channels in order 1,2,3
-        Server s = ServerTestUtils.createTestSystem(user);
-        ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(user.getOrg(), "Ch 1", "cfg-channel-1");
-        ConfigChannel channel2 = ConfigTestUtils.createConfigChannel(user.getOrg(), "Ch 2", "cfg-channel-2");
-        ConfigChannel channel3 = ConfigTestUtils.createConfigChannel(user.getOrg(), "Ch 3", "cfg-channel-3");
-        s.subscribeConfigChannels(List.of(channel1, channel2, channel3), user);
+        Server s = ServerTestUtils.createTestSystem(getTestUser());
+        ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(), "Ch 1", "cfg-channel-1");
+        ConfigChannel channel2 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(), "Ch 2", "cfg-channel-2");
+        ConfigChannel channel3 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(), "Ch 3", "cfg-channel-3");
+        s.subscribeConfigChannels(List.of(channel1, channel2, channel3), getTestUser());
 
         //save and reload server, check configuration channels order
         TestUtils.saveAndFlush(s);
-        Server s1 = ServerFactory.lookupByIdAndOrg(s.getId(), user.getOrg());
+        Server s1 = ServerFactory.lookupByIdAndOrg(s.getId(), getTestUser().getOrg());
         assertNotNull(s1);
         List<ConfigChannel> result1ConfigChannelList = s1.getConfigChannelList();
         assertEquals(3, result1ConfigChannelList.size());
@@ -107,11 +107,11 @@ public class ServerTest extends BaseTestCaseWithUser {
         assertEquals("cfg-channel-3", result1ConfigChannelList.get(2).getLabel());
 
         //change configuration channels ranking order to 3,1,2
-        s1.subscribeConfigChannels(List.of(channel3, channel1, channel2), user);
+        s1.subscribeConfigChannels(List.of(channel3, channel1, channel2), getTestUser());
 
         //save and reload server, check configuration channels order
         TestUtils.saveAndFlush(s1);
-        Server s2 = ServerFactory.lookupByIdAndOrg(s.getId(), user.getOrg());
+        Server s2 = ServerFactory.lookupByIdAndOrg(s.getId(), getTestUser().getOrg());
         assertNotNull(s2);
         List<ConfigChannel> result2ConfigChannelList = s2.getConfigChannelList();
         assertEquals(3, result2ConfigChannelList.size());
@@ -133,7 +133,7 @@ public class ServerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testSetBaseEntitlement() throws Exception {
-        Server s = ServerTestUtils.createTestSystem(user);
+        Server s = ServerTestUtils.createTestSystem(getTestUser());
         systemUnentitler.removeAllServerEntitlements(s);
         UserTestUtils.addManagement(s.getCreator().getOrg());
         TestUtils.clearSession();
@@ -146,7 +146,7 @@ public class ServerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testCapabilities() throws Exception {
-        Server s = ServerFactoryTest.createTestServer(user, true);
+        Server s = ServerFactoryTest.createTestServer(getTestUser(), true);
         SystemManagerTest.giveCapability(s.getId(), SystemManager.CAP_CONFIGFILES_DEPLOY, 1L);
         s = TestUtils.reload(s);
         assertFalse(s.getCapabilities().isEmpty());
@@ -162,7 +162,7 @@ public class ServerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testRemoveCapability() throws Exception {
-        Server s = ServerFactoryTest.createTestServer(user, true);
+        Server s = ServerFactoryTest.createTestServer(getTestUser(), true);
         SystemManagerTest.giveCapability(s.getId(), SystemManager.CAP_CONFIGFILES_DEPLOY, 1L);
         SystemManagerTest.giveCapability(s.getId(), SystemManager.CAP_SCRIPT_RUN, 2L);
         s = TestUtils.reload(s);
@@ -179,10 +179,10 @@ public class ServerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testNetworkInterfaces() throws Exception {
-        Server s = ServerTestUtils.createTestSystem(user);
+        Server s = ServerTestUtils.createTestSystem(getTestUser());
         NetworkInterfaceTest.createTestNetworkInterface(s);
         s = TestUtils.saveAndReload(s);
-        Server s2 = ServerTestUtils.createTestSystem(user);
+        Server s2 = ServerTestUtils.createTestSystem(getTestUser());
         s2 = TestUtils.saveAndReload(s2);
         NetworkInterfaceTest.createTestNetworkInterface(s2);
         TestUtils.saveAndReload(s2);
@@ -193,7 +193,7 @@ public class ServerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testOsSupportsContainerization() throws Exception {
-        Server s = ServerFactoryTest.createTestServer(user, true,
+        Server s = ServerFactoryTest.createTestServer(getTestUser(), true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
                 ServerFactoryTest.TYPE_SERVER_MINION);
         s.setOs("SLES");
@@ -205,7 +205,7 @@ public class ServerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testOsDoesNotSupportsContainerization() throws Exception {
-        Server s = ServerFactoryTest.createTestServer(user, true,
+        Server s = ServerFactoryTest.createTestServer(getTestUser(), true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
                 ServerFactoryTest.TYPE_SERVER_MINION);
         s.setOs("SLES");
@@ -218,7 +218,7 @@ public class ServerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testOsSupportsOSImageBuilding() throws Exception {
-        Server s = ServerFactoryTest.createTestServer(user, true,
+        Server s = ServerFactoryTest.createTestServer(getTestUser(), true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
                 ServerFactoryTest.TYPE_SERVER_MINION);
         s.setOsFamily(ServerConstants.OS_FAMILY_SUSE);
@@ -232,7 +232,7 @@ public class ServerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testOsSupportsMonitoring() throws Exception {
-        Server s = ServerFactoryTest.createTestServer(user, true,
+        Server s = ServerFactoryTest.createTestServer(getTestUser(), true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
                 ServerFactoryTest.TYPE_SERVER_MINION);
         s.setOs("SLES");
@@ -245,7 +245,7 @@ public class ServerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testOsSupportsMonitoringLeap() throws Exception {
-        Server s = ServerFactoryTest.createTestServer(user, true,
+        Server s = ServerFactoryTest.createTestServer(getTestUser(), true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
                 ServerFactoryTest.TYPE_SERVER_MINION);
         s.setOs("Leap");
@@ -258,7 +258,7 @@ public class ServerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testOsSupportsMonitoringUbuntu() throws Exception {
-        Server s = ServerFactoryTest.createTestServer(user, true,
+        Server s = ServerFactoryTest.createTestServer(getTestUser(), true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
                 ServerFactoryTest.TYPE_SERVER_MINION);
         s.setOs("Ubuntu");
@@ -271,7 +271,7 @@ public class ServerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testOsSupportsMonitoringRedHat6() throws Exception {
-        MinionServer s = (MinionServer) ServerFactoryTest.createTestServer(user, true,
+        MinionServer s = (MinionServer) ServerFactoryTest.createTestServer(getTestUser(), true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
                 ServerFactoryTest.TYPE_SERVER_MINION);
         s.setOsFamily(ServerConstants.OS_FAMILY_REDHAT);
@@ -284,7 +284,7 @@ public class ServerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testOsSupportsMonitoringRedHat7() throws Exception {
-        MinionServer s = (MinionServer) ServerFactoryTest.createTestServer(user, true,
+        MinionServer s = (MinionServer) ServerFactoryTest.createTestServer(getTestUser(), true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
                 ServerFactoryTest.TYPE_SERVER_MINION);
         s.setOsFamily(ServerConstants.OS_FAMILY_REDHAT);
@@ -297,7 +297,7 @@ public class ServerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testOsSupportsMonitoringRedHat8() throws Exception {
-        MinionServer s = (MinionServer) ServerFactoryTest.createTestServer(user, true,
+        MinionServer s = (MinionServer) ServerFactoryTest.createTestServer(getTestUser(), true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
                 ServerFactoryTest.TYPE_SERVER_MINION);
         s.setOsFamily(ServerConstants.OS_FAMILY_REDHAT);
@@ -310,7 +310,7 @@ public class ServerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testOsSupportsMonitoringRedHat9() throws Exception {
-        MinionServer s = (MinionServer) ServerFactoryTest.createTestServer(user, true,
+        MinionServer s = (MinionServer) ServerFactoryTest.createTestServer(getTestUser(), true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
                 ServerFactoryTest.TYPE_SERVER_MINION);
         s.setOsFamily(ServerConstants.OS_FAMILY_REDHAT);
@@ -323,7 +323,7 @@ public class ServerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testOsDoesNotSupportsOSImageBuilding() throws Exception {
-        Server s = ServerFactoryTest.createTestServer(user, true,
+        Server s = ServerFactoryTest.createTestServer(getTestUser(), true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
                 ServerFactoryTest.TYPE_SERVER_MINION);
         s.setOsFamily(ServerConstants.OS_FAMILY_DEBIAN);
@@ -337,7 +337,7 @@ public class ServerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testOsDoesNotSupportsMonitoring() throws Exception {
-        Server s = ServerFactoryTest.createTestServer(user, true,
+        Server s = ServerFactoryTest.createTestServer(getTestUser(), true,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
                 ServerFactoryTest.TYPE_SERVER_MINION);
         s.setOs("SLES");
@@ -347,7 +347,7 @@ public class ServerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testGetIpAddress() throws Exception {
-        Server s = ServerTestUtils.createTestSystem(user);
+        Server s = ServerTestUtils.createTestSystem(getTestUser());
         assertNull(s.getIpAddress());
 
         String hwAddr = "AA:AA:BB:BB:CC:CC";
@@ -383,15 +383,15 @@ public class ServerTest extends BaseTestCaseWithUser {
 
 
     public void xxxtestServerWithVirtEntitlementIsVirtualHost() {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        Server server = new VirtEntitledServer(user);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
+        Server server = new VirtEntitledServer(getTestUser());
         server = TestUtils.saveAndReload(server);
         assertTrue(server.isVirtualHost());
     }
 
     public void xxtestServerWithGuestsIsVirtualHost() {
         Server server = new ServerWithGuests();
-        server.setOrg(user.getOrg());
+        server.setOrg(getTestUser().getOrg());
 
         assertTrue(server.isVirtualHost());
     }

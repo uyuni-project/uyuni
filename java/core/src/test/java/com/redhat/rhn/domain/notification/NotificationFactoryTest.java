@@ -43,13 +43,13 @@ public class NotificationFactoryTest extends BaseTestCaseWithUser {
     public final void testVisibilityForNoRoles() {
         mailer.setExpectedSendCount(1);
         UserNotificationFactory.setMailer(mailer);
-        assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(user));
+        assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(getTestUser()));
         NotificationMessage msg = UserNotificationFactory.createNotificationMessage(new OnboardingFailed("minion1"));
         UserNotificationFactory.storeNotificationMessageFor(msg);
 
-        assertEquals(1, UserNotificationFactory.unreadUserNotificationsSize(user));
-        assertEquals(1, UserNotificationFactory.listUnreadByUser(user).size());
-        assertEquals(1, UserNotificationFactory.listAllByUser(user).size());
+        assertEquals(1, UserNotificationFactory.unreadUserNotificationsSize(getTestUser()));
+        assertEquals(1, UserNotificationFactory.listUnreadByUser(getTestUser()).size());
+        assertEquals(1, UserNotificationFactory.listAllByUser(getTestUser()).size());
         mailer.verify();
         assertContains(mailer.getBody(), "minion1");
     }
@@ -58,14 +58,14 @@ public class NotificationFactoryTest extends BaseTestCaseWithUser {
     public final void testEmailContentStripHTML() {
         mailer.setExpectedSendCount(1);
         UserNotificationFactory.setMailer(mailer);
-        assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(user));
+        assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(getTestUser()));
         NotificationMessage msg = UserNotificationFactory.createNotificationMessage(
                 new StateApplyFailed("minion1", 10000010000L, 42L));
         UserNotificationFactory.storeNotificationMessageFor(msg);
 
-        assertEquals(1, UserNotificationFactory.unreadUserNotificationsSize(user));
-        assertEquals(1, UserNotificationFactory.listUnreadByUser(user).size());
-        assertEquals(1, UserNotificationFactory.listAllByUser(user).size());
+        assertEquals(1, UserNotificationFactory.unreadUserNotificationsSize(getTestUser()));
+        assertEquals(1, UserNotificationFactory.listUnreadByUser(getTestUser()).size());
+        assertEquals(1, UserNotificationFactory.listAllByUser(getTestUser()).size());
         mailer.verify();
         assertContains(mailer.getBody(), "minion1");
     }
@@ -74,15 +74,15 @@ public class NotificationFactoryTest extends BaseTestCaseWithUser {
     public final void testUserOptOutForMail() {
         mailer.setExpectedSendCount(0);
         UserNotificationFactory.setMailer(mailer);
-        user.setEmailNotify(0);
+        getTestUser().setEmailNotify(0);
 
-        assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(user));
+        assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(getTestUser()));
         NotificationMessage msg = UserNotificationFactory.createNotificationMessage(new OnboardingFailed("minion1"));
         UserNotificationFactory.storeNotificationMessageFor(msg);
 
-        assertEquals(1, UserNotificationFactory.unreadUserNotificationsSize(user));
-        assertEquals(1, UserNotificationFactory.listUnreadByUser(user).size());
-        assertEquals(1, UserNotificationFactory.listAllByUser(user).size());
+        assertEquals(1, UserNotificationFactory.unreadUserNotificationsSize(getTestUser()));
+        assertEquals(1, UserNotificationFactory.listUnreadByUser(getTestUser()).size());
+        assertEquals(1, UserNotificationFactory.listAllByUser(getTestUser()).size());
         mailer.verify();
     }
 
@@ -90,16 +90,16 @@ public class NotificationFactoryTest extends BaseTestCaseWithUser {
     public final void testUserDisabledNotification() {
         mailer.setExpectedSendCount(0);
         UserNotificationFactory.setMailer(mailer);
-        user.setEmailNotify(0);
+        getTestUser().setEmailNotify(0);
 
-        assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(user));
+        assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(getTestUser()));
         NotificationMessage msg = UserNotificationFactory.createNotificationMessage(
                 new ChannelSyncFinished(1L, "dumma-channel"));
         UserNotificationFactory.storeNotificationMessageFor(msg);
 
-        assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(user));
-        assertEquals(0, UserNotificationFactory.listUnreadByUser(user).size());
-        assertEquals(0, UserNotificationFactory.listAllByUser(user).size());
+        assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(getTestUser()));
+        assertEquals(0, UserNotificationFactory.listUnreadByUser(getTestUser()).size());
+        assertEquals(0, UserNotificationFactory.listAllByUser(getTestUser()).size());
         mailer.verify();
     }
 
@@ -107,40 +107,40 @@ public class NotificationFactoryTest extends BaseTestCaseWithUser {
     public final void testVisibilityForWrongRoles() {
         mailer.setExpectedSendCount(0);
         UserNotificationFactory.setMailer(mailer);
-        assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(user));
+        assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(getTestUser()));
         NotificationMessage msg = UserNotificationFactory.createNotificationMessage(new OnboardingFailed("minion1"));
         UserNotificationFactory.storeNotificationMessageFor(msg, Set.of(AccessGroupFactory.CHANNEL_ADMIN));
 
-        assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(user));
-        assertEquals(0, UserNotificationFactory.listUnreadByUser(user).size());
-        assertEquals(0, UserNotificationFactory.listAllByUser(user).size());
+        assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(getTestUser()));
+        assertEquals(0, UserNotificationFactory.listUnreadByUser(getTestUser()).size());
+        assertEquals(0, UserNotificationFactory.listAllByUser(getTestUser()).size());
         mailer.verify();
     }
 
     @Test
     public final void testUpdateReadFlag() {
         UserNotificationFactory.setMailer(mailer);
-        assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(user));
+        assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(getTestUser()));
         NotificationMessage msg = UserNotificationFactory.createNotificationMessage(new OnboardingFailed("minion1"));
         UserNotificationFactory.storeNotificationMessageFor(msg);
 
-        List<UserNotification> unread = UserNotificationFactory.listUnreadByUser(user);
+        List<UserNotification> unread = UserNotificationFactory.listUnreadByUser(getTestUser());
 
-        assertEquals(1, UserNotificationFactory.unreadUserNotificationsSize(user));
+        assertEquals(1, UserNotificationFactory.unreadUserNotificationsSize(getTestUser()));
         assertEquals(1, unread.size());
-        assertEquals(1, UserNotificationFactory.listAllByUser(user).size());
+        assertEquals(1, UserNotificationFactory.listAllByUser(getTestUser()).size());
 
         UserNotificationFactory.updateStatus(unread.get(0), true);
 
-        assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(user));
-        assertEquals(0, UserNotificationFactory.listUnreadByUser(user).size());
-        assertEquals(1, UserNotificationFactory.listAllByUser(user).size());
+        assertEquals(0, UserNotificationFactory.unreadUserNotificationsSize(getTestUser()));
+        assertEquals(0, UserNotificationFactory.listUnreadByUser(getTestUser()).size());
+        assertEquals(1, UserNotificationFactory.listAllByUser(getTestUser()).size());
 
         UserNotificationFactory.updateStatus(unread.get(0), false);
 
-        assertEquals(1, UserNotificationFactory.unreadUserNotificationsSize(user));
-        assertEquals(1, UserNotificationFactory.listUnreadByUser(user).size());
-        assertEquals(1, UserNotificationFactory.listAllByUser(user).size());
+        assertEquals(1, UserNotificationFactory.unreadUserNotificationsSize(getTestUser()));
+        assertEquals(1, UserNotificationFactory.listUnreadByUser(getTestUser()).size());
+        assertEquals(1, UserNotificationFactory.listAllByUser(getTestUser()).size());
     }
 
     @Test
@@ -186,7 +186,7 @@ public class NotificationFactoryTest extends BaseTestCaseWithUser {
 
         // There should be one present
         assertEquals(1, UserNotificationFactory.listAllNotificationMessages().size());
-        List<UserNotification> unread = UserNotificationFactory.listUnreadByUser(user);
+        List<UserNotification> unread = UserNotificationFactory.listUnreadByUser(getTestUser());
         assertEquals(1, unread.size());
 
         // Try deleting
@@ -196,7 +196,7 @@ public class NotificationFactoryTest extends BaseTestCaseWithUser {
         TestUtils.flushSession();
 
         // Should be deleted
-        assertEquals(0, UserNotificationFactory.listUnreadByUser(user).size());
+        assertEquals(0, UserNotificationFactory.listUnreadByUser(getTestUser()).size());
 
         // Try deleting again
         int resultAfter = UserNotificationFactory.delete(unread);

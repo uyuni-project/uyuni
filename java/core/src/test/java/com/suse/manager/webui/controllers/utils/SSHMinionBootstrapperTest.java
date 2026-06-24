@@ -69,14 +69,14 @@ public class SSHMinionBootstrapperTest extends AbstractMinionBootstrapperTestBas
 
     @Test
     public void testIncompatibleActivationKeys() throws Exception {
-        ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
+        ActivationKey key = ActivationKeyTest.createTestActivationKey(getTestUser());
         key.setContactMethod(ServerFactory.findContactMethodByLabel("default"));
         super.testIncompatibleActivationKeysBase(key);
     }
 
     @Test
     public void testCompatibleActivationKeys() throws Exception {
-        ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
+        ActivationKey key = ActivationKeyTest.createTestActivationKey(getTestUser());
         key.setContactMethod(ServerFactory.findContactMethodByLabel("ssh-push"));
         bootstrapper = mockRegistrationBootstrapper(Optional.of(key.getKey()));
         super.testCompatibleActivationKeysBase(key);
@@ -84,7 +84,7 @@ public class SSHMinionBootstrapperTest extends AbstractMinionBootstrapperTestBas
 
     @Test
     public void testCompatibleActivationKeysTunnel() throws Exception {
-        ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
+        ActivationKey key = ActivationKeyTest.createTestActivationKey(getTestUser());
         key.setContactMethod(ServerFactory.findContactMethodByLabel("ssh-push-tunnel"));
         bootstrapper = mockRegistrationBootstrapper(Optional.of(key.getKey()));
         super.testCompatibleActivationKeysBase(key);
@@ -104,7 +104,7 @@ public class SSHMinionBootstrapperTest extends AbstractMinionBootstrapperTestBas
     protected Map<String, Object> createPillarData(Optional<ActivationKey> key, Optional<ActivationKey> reactKey) {
         String contactMethod = key.map(k -> k.getContactMethod().getLabel()).orElse(getDefaultContactMethod());
         Map<String, Object> pillarData = new HashMap<>();
-        key.ifPresent(k -> ActivationKeyManager.getInstance().findAll(user)
+        key.ifPresent(k -> ActivationKeyManager.getInstance().findAll(getTestUser())
         .stream()
         .filter(ak -> k.getKey().equals(ak.getKey()))
         .findFirst()

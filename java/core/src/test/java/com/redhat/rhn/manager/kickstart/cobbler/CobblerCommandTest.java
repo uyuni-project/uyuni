@@ -53,17 +53,17 @@ public class CobblerCommandTest extends CobblerCommandTestBase {
     @Test
     public void testSystemCreate() throws Exception {
 
-        Server s = ServerTestUtils.createTestSystem(user);
+        Server s = ServerTestUtils.createTestSystem(getTestUser());
         NetworkInterface device = NetworkInterfaceTest.createTestNetworkInterface(s);
         s.addNetworkInterface(device);
 
-        CobblerSystemCreateCommand cmd = new CobblerSystemCreateCommand(user, s, ksdata,
+        CobblerSystemCreateCommand cmd = new CobblerSystemCreateCommand(getTestUser(), s, ksdata,
                     "http://localhost/test/path", TestUtils.randomString());
         cmd.store();
         assertNotNull(s.getCobblerId());
 
         // Ensure we can call it twice.
-        cmd = new CobblerSystemCreateCommand(user, s, ksdata,
+        cmd = new CobblerSystemCreateCommand(getTestUser(), s, ksdata,
                 "http://localhost/test/path", TestUtils.randomString());
         cmd.store();
         assertNotNull(s.getCobblerId());
@@ -72,37 +72,37 @@ public class CobblerCommandTest extends CobblerCommandTestBase {
     @Test
     public void testProfileCreate() {
         CobblerProfileCreateCommand cmd = new CobblerProfileCreateCommand(
-                ksdata, user);
+                ksdata, getTestUser());
         assertNull(cmd.store());
-        assertNotNull(ksdata.getCobblerObject(user));
-        assertNotNull(ksdata.getCobblerObject(user).getName());
+        assertNotNull(ksdata.getCobblerObject(getTestUser()));
+        assertNotNull(ksdata.getCobblerObject(getTestUser()).getName());
     }
 
     @Test
     public void testProfileEdit() {
         // create one first
         CobblerProfileCreateCommand cmd = new CobblerProfileCreateCommand(
-                ksdata, user);
+                ksdata, getTestUser());
         assertNull(cmd.store());
 
         // Now test edit
         CobblerProfileEditCommand pec = new
-            CobblerProfileEditCommand(ksdata, user);
+            CobblerProfileEditCommand(ksdata, getTestUser());
         String newName = "some-new-name-" + System.currentTimeMillis();
         ksdata.setLabel(newName);
         assertNull(pec.store());
-        assertNotNull(ksdata.getCobblerObject(user).getName());
+        assertNotNull(ksdata.getCobblerObject(getTestUser()).getName());
     }
 
     @Test
     public void testProfileDelete() {
         CobblerProfileCreateCommand createCmd = new CobblerProfileCreateCommand(
-                ksdata, user);
+                ksdata, getTestUser());
         assertNull(createCmd.store());
 
-        CobblerProfileDeleteCommand cmd = new CobblerProfileDeleteCommand(ksdata, user);
+        CobblerProfileDeleteCommand cmd = new CobblerProfileDeleteCommand(ksdata, getTestUser());
         assertNull(cmd.store());
-        assertNull(ksdata.getCobblerObject(user));
+        assertNull(ksdata.getCobblerObject(getTestUser()));
     }
 
     /**
@@ -199,15 +199,15 @@ public class CobblerCommandTest extends CobblerCommandTestBase {
     @Test
     public void testDistroDelete() {
         CobblerDistroDeleteCommand cmd = new
-            CobblerDistroDeleteCommand(ksdata.getTree(), user);
+            CobblerDistroDeleteCommand(ksdata.getTree(), getTestUser());
         assertNull(cmd.store());
     }
 
     @Test
     public void testLogin() {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        UserFactory.save(user);
-        User reloadedTestUser = TestUtils.reload(user);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
+        UserFactory.save(getTestUser());
+        User reloadedTestUser = TestUtils.reload(getTestUser());
 
         CobblerLoginCommand cmd = new CobblerLoginCommand();
         String cobblertoken = cmd.login(reloadedTestUser.getLogin(), "password");

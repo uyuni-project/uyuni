@@ -36,11 +36,11 @@ import org.junit.jupiter.api.Test;
 public class FileListSetupActionTest extends RhnMockStrutsTestCase {
 
     private void doTheTest(String path, String feature) throws Exception {
-        Server server = ServerFactoryTest.createTestServer(user, true);
+        Server server = ServerFactoryTest.createTestServer(getTestUser(), true);
         SystemManagerTest.giveCapability(server.getId(), feature, 1L);
 
         //create a normal config revision
-        ConfigRevision rev1 = ConfigTestUtils.createConfigRevision(user.getOrg());
+        ConfigRevision rev1 = ConfigTestUtils.createConfigRevision(getTestUser().getOrg());
 
         //create a config revision for a directory
         ConfigFile file2 = ConfigTestUtils
@@ -53,7 +53,7 @@ public class FileListSetupActionTest extends RhnMockStrutsTestCase {
         ConfigTestUtils.createConfigRevision(file3);
 
         //we have to subscribe the server to the global channel.
-        server.subscribeConfigChannel(file2.getConfigChannel(), user);
+        server.subscribeConfigChannel(file2.getConfigChannel(), getTestUser());
         SystemManager.storeServer(server);
 
         //test the action

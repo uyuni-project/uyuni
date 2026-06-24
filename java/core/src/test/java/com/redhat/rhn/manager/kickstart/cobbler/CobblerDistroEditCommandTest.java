@@ -57,12 +57,12 @@ public class CobblerDistroEditCommandTest extends CobblerCommandTestBase {
     @Test
     public void testDistroEdit() {
         CobblerDistroEditCommand cmd = new
-            CobblerDistroEditCommand(sourceTree, user);
+            CobblerDistroEditCommand(sourceTree, getTestUser());
         String newName = TestUtils.randomString();
         ksdata.getKickstartDefaults().getKstree().setLabel(newName);
         assertNull(cmd.store());
-        assertNotNull(ksdata.getTree().getCobblerObject(user));
-        assertNotNull(ksdata.getTree().getCobblerObject(user).getName());
+        assertNotNull(ksdata.getTree().getCobblerObject(getTestUser()));
+        assertNotNull(ksdata.getTree().getCobblerObject(getTestUser()).getName());
     }
 
     /**
@@ -82,7 +82,7 @@ public class CobblerDistroEditCommandTest extends CobblerCommandTestBase {
 
         // verify it's recreated
         CobblerDistroEditCommand cmd = new
-                CobblerDistroEditCommand(sourceTree, user);
+                CobblerDistroEditCommand(sourceTree, getTestUser());
         assertNull(cmd.store());
         assertNotNull(Distro.lookupById(connection, sourceTree.getCobblerXenId()));
     }
@@ -104,7 +104,7 @@ public class CobblerDistroEditCommandTest extends CobblerCommandTestBase {
 
         // verify it's removed
         CobblerDistroEditCommand cmd = new
-                CobblerDistroEditCommand(sourceTree, user);
+                CobblerDistroEditCommand(sourceTree, getTestUser());
         assertNull(cmd.store());
         assertNull(Distro.lookupById(connection, sourceTree.getCobblerXenId()));
     }
@@ -119,7 +119,7 @@ public class CobblerDistroEditCommandTest extends CobblerCommandTestBase {
         String xenIdBefore = sourceTree.getCobblerXenId();
 
         CobblerDistroEditCommand cmd = new
-                CobblerDistroEditCommand(sourceTree, user);
+                CobblerDistroEditCommand(sourceTree, getTestUser());
         cmd.store();
 
         String xenIdAfter = sourceTree.getCobblerXenId();

@@ -77,15 +77,15 @@ public class SaltbootMigrationUtilsTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testMigrateSaltbootDistro() throws Exception {
-        String orgName = user.getOrg().getName();
-        Long orgId = user.getOrg().getId();
+        String orgName = getTestUser().getOrg().getName();
+        Long orgId = getTestUser().getOrg().getId();
 
         // create ImageInfo objects for the distro
         String image = "POS_Image_JeOS7";
         String imageVersion = "7.1.0";
         int imageRevision = 3;
         String label = String.format("%s-%s-%s", image, imageVersion, imageRevision);
-        SaltbootUtilsTest.createImageHelper(user, image, imageVersion, imageRevision);
+        SaltbootUtilsTest.createImageHelper(getTestUser(), image, imageVersion, imageRevision);
 
         // create old entries
         String oldDistroName = String.format("%s-%s", orgId, label);
@@ -101,23 +101,23 @@ public class SaltbootMigrationUtilsTest extends JMockBaseTestCaseWithUser {
 
         // check that old entries were removed and new ones created
         String newDistroName = String.format("%s-%s-%s:S:%s:%s", image, imageVersion, imageRevision, orgId, orgName);
-        assertEquals(newDistroName, SaltbootUtils.makeCobblerName(user.getOrg(), label));
+        assertEquals(newDistroName, SaltbootUtils.makeCobblerName(getTestUser().getOrg(), label));
         assertNull(Distro.lookupByName(client, oldDistroName));
         assertNotNull(Distro.lookupByName(client, newDistroName));
         assertNull(Profile.lookupByName(client, oldDistroName));
         assertNotNull(Profile.lookupByName(client, newDistroName));
         assertNotNull(Profile.lookupByName(client, SaltbootUtils.makeCobblerName(
-                user.getOrg(), SaltbootUtils.DEFAULT_BOOT_IMAGE)));
+                getTestUser().getOrg(), SaltbootUtils.DEFAULT_BOOT_IMAGE)));
     }
 
     @Test
     public void testMigrateSaltboot() throws Exception {
-        String orgName = user.getOrg().getName();
-        Long orgId = user.getOrg().getId();
+        String orgName = getTestUser().getOrg().getName();
+        Long orgId = getTestUser().getOrg().getId();
         assertEquals(0, Distro.list(client).size());
 
         // create ImageInfo objects for the distro
-        SaltbootUtilsTest.createImageHelper(user, "POS_Image_JeOS7", "7.1.0", 3);
+        SaltbootUtilsTest.createImageHelper(getTestUser(), "POS_Image_JeOS7", "7.1.0", 3);
 
         // create old entries
         String oldDistroName = orgId + "-POS_Image_JeOS7-7.1.0-3";
@@ -131,7 +131,7 @@ public class SaltbootMigrationUtilsTest extends JMockBaseTestCaseWithUser {
 
         // Old branch profiles
         String groupName = "my-old-saltboot-group";
-        SaltbootUtilsTest.createSaltbootGroupHelper(user, groupName);
+        SaltbootUtilsTest.createSaltbootGroupHelper(getTestUser(), groupName);
         String oldProfileName = orgId + "-" + groupName;
         Profile.create(client, oldProfileName, oldDistro);
 
@@ -158,16 +158,16 @@ public class SaltbootMigrationUtilsTest extends JMockBaseTestCaseWithUser {
         assertNotNull(Profile.lookupByName(client, newProfileName));
         // check default boot image was also created
         assertNotNull(Profile.lookupByName(client, SaltbootUtils.makeCobblerName(
-                user.getOrg(), SaltbootUtils.DEFAULT_BOOT_IMAGE)));
+                getTestUser().getOrg(), SaltbootUtils.DEFAULT_BOOT_IMAGE)));
     }
 
     @Test
     public void testMigrationSaltbootGroup() throws Exception {
-        Long orgId = user.getOrg().getId();
+        Long orgId = getTestUser().getOrg().getId();
         assertEquals(0, Distro.list(client).size());
 
         // create ImageInfo objects for the distro
-        ImageInfo image = SaltbootUtilsTest.createImageHelper(user, "POS_Image_JeOS7", "7.1.0", 3);
+        ImageInfo image = SaltbootUtilsTest.createImageHelper(getTestUser(), "POS_Image_JeOS7", "7.1.0", 3);
 
         // create old entries
         String oldDistroName = orgId + "-POS_Image_JeOS7-7.1.0-3";
@@ -181,7 +181,7 @@ public class SaltbootMigrationUtilsTest extends JMockBaseTestCaseWithUser {
 
         // Old branch profiles
         String groupName = "my-old-saltboot-group";
-        SaltbootUtilsTest.createSaltbootGroupHelper(user, groupName);
+        SaltbootUtilsTest.createSaltbootGroupHelper(getTestUser(), groupName);
         String oldProfileName = orgId + "-" + groupName;
         Profile.create(client, oldProfileName, oldDistro);
 
@@ -189,7 +189,7 @@ public class SaltbootMigrationUtilsTest extends JMockBaseTestCaseWithUser {
 
         // check that old entries were removed and new ones created
         String newDistroName = SaltbootUtils.makeCobblerNameVR(image);
-        String newProfileName = SaltbootUtils.makeCobblerName(user.getOrg(), groupName);
+        String newProfileName = SaltbootUtils.makeCobblerName(getTestUser().getOrg(), groupName);
 
         // Old distro is removed, new distro is present
         assertNull(Distro.lookupByName(client, oldDistroName));
@@ -201,7 +201,7 @@ public class SaltbootMigrationUtilsTest extends JMockBaseTestCaseWithUser {
         assertNull(Profile.lookupByName(client, oldProfileName));
         assertNotNull(Profile.lookupByName(client, newProfileName));
         // Check default boot image was also created
-        String defaultImage = SaltbootUtils.makeCobblerName(user.getOrg(), SaltbootUtils.DEFAULT_BOOT_IMAGE);
+        String defaultImage = SaltbootUtils.makeCobblerName(getTestUser().getOrg(), SaltbootUtils.DEFAULT_BOOT_IMAGE);
         assertNotNull(Profile.lookupByName(client, defaultImage));
         // New branch has default boot image assigned
         assertEquals(defaultImage, Profile.lookupByName(client, newProfileName).getParent());
@@ -210,10 +210,10 @@ public class SaltbootMigrationUtilsTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testMigrationIdempotence() throws Exception {
         // Database entries
-        ImageInfo image = SaltbootUtilsTest.createImageHelper(user, "POS_Image_JeOS7", "7.1.0", 3);
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        ImageInfo image = SaltbootUtilsTest.createImageHelper(getTestUser(), "POS_Image_JeOS7", "7.1.0", 3);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         minion.setMinionId("my-saltboot-system");
-        ServerGroup group = SaltbootUtilsTest.createSaltbootGroupHelper(user, "my-saltboot-group");
+        ServerGroup group = SaltbootUtilsTest.createSaltbootGroupHelper(getTestUser(), "my-saltboot-group");
 
         // Saltboot entries
         SaltbootUtils.createSaltbootDistro(image, List.of(), client);
@@ -221,8 +221,8 @@ public class SaltbootMigrationUtilsTest extends JMockBaseTestCaseWithUser {
         SaltbootUtils.createSaltbootSystem(minion, "POS_Image_JeOS7-7.1.0-3", group.getName(), List.of(), "", client);
 
         // Expected names
-        String orgName = user.getOrg().getName();
-        Long orgId = user.getOrg().getId();
+        String orgName = getTestUser().getOrg().getName();
+        Long orgId = getTestUser().getOrg().getId();
         String distroName = String.format("POS_Image_JeOS7-7.1.0-3:S:%s:%s", orgId, orgName);
         String distroProfileNameVR = String.format("POS_Image_JeOS7-7.1.0-3:S:%s:%s", orgId, orgName);
         String distroProfileNameV = String.format("POS_Image_JeOS7-7.1.0:S:%s:%s", orgId, orgName);
@@ -244,7 +244,7 @@ public class SaltbootMigrationUtilsTest extends JMockBaseTestCaseWithUser {
         assertNotNull(Profile.lookupByName(client, profileName));
         // Check default boot image was also created
         assertNotNull(Profile.lookupByName(client, SaltbootUtils.makeCobblerName(
-                user.getOrg(), SaltbootUtils.DEFAULT_BOOT_IMAGE)));
+                getTestUser().getOrg(), SaltbootUtils.DEFAULT_BOOT_IMAGE)));
 
         SaltbootMigrationUtils.migrateSaltboot(client);
 
@@ -262,15 +262,15 @@ public class SaltbootMigrationUtilsTest extends JMockBaseTestCaseWithUser {
         assertNotNull(Profile.lookupByName(client, profileName));
         // check default boot image was also created
         assertNotNull(Profile.lookupByName(client, SaltbootUtils.makeCobblerName(
-                user.getOrg(), SaltbootUtils.DEFAULT_BOOT_IMAGE)));
+                getTestUser().getOrg(), SaltbootUtils.DEFAULT_BOOT_IMAGE)));
     }
 
     @Test
     public void testMigrationOfPartiallyMigratedData() throws Exception {
-        Long orgId = user.getOrg().getId();
+        Long orgId = getTestUser().getOrg().getId();
 
         // An image that needs migration
-        ImageInfo imageToMigrate = SaltbootUtilsTest.createImageHelper(user, "Image-To-Migrate", "1.0.0", 1);
+        ImageInfo imageToMigrate = SaltbootUtilsTest.createImageHelper(getTestUser(), "Image-To-Migrate", "1.0.0", 1);
         String oldDistroName = String.format("%d-%s-%s-%d", orgId, "Image-To-Migrate", "1.0.0", 1);
         Distro oldDistro = new Distro.Builder<String>()
                 .setName(oldDistroName)
@@ -281,16 +281,16 @@ public class SaltbootMigrationUtilsTest extends JMockBaseTestCaseWithUser {
         Profile.create(client, oldDistroName, oldDistro);
 
         // An image that is already migrated
-        ImageInfo imageMigrated = SaltbootUtilsTest.createImageHelper(user, "Image-Migrated", "2.0.0", 2);
+        ImageInfo imageMigrated = SaltbootUtilsTest.createImageHelper(getTestUser(), "Image-Migrated", "2.0.0", 2);
         SaltbootUtils.createSaltbootDistro(imageMigrated, List.of(), client);
 
         // A group that needs migration
-        ServerGroup groupToMigrate = SaltbootUtilsTest.createSaltbootGroupHelper(user, "group-to-migrate");
+        ServerGroup groupToMigrate = SaltbootUtilsTest.createSaltbootGroupHelper(getTestUser(), "group-to-migrate");
         String oldProfileName = orgId + "-" + groupToMigrate.getName();
         Profile.create(client, oldProfileName, oldDistro);
 
         // A group that is already migrated
-        ServerGroup groupMigrated = SaltbootUtilsTest.createSaltbootGroupHelper(user, "group-migrated");
+        ServerGroup groupMigrated = SaltbootUtilsTest.createSaltbootGroupHelper(getTestUser(), "group-migrated");
         SaltbootUtils.createSaltbootProfile(groupMigrated, imageMigrated.getName(), false, client);
 
         // Run migration
@@ -324,9 +324,9 @@ public class SaltbootMigrationUtilsTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testMigrateMultipleDistrosAndSystems() throws Exception {
-        Long orgId = user.getOrg().getId();
+        Long orgId = getTestUser().getOrg().getId();
 
-        ImageInfo image1 = SaltbootUtilsTest.createImageHelper(user, "Image-One", "1.1.0", 1);
+        ImageInfo image1 = SaltbootUtilsTest.createImageHelper(getTestUser(), "Image-One", "1.1.0", 1);
         String oldDistroName1 = String.format("%d-%s-%s-%d", orgId, "Image-One", "1.1.0", 1);
         Distro oldDistro1 = new Distro.Builder<String>()
                 .setName(oldDistroName1)
@@ -338,7 +338,7 @@ public class SaltbootMigrationUtilsTest extends JMockBaseTestCaseWithUser {
         String systemName1 = orgId + "-system-one";
         SystemRecord.create(client, systemName1, oldProfile1);
 
-        ImageInfo image2 = SaltbootUtilsTest.createImageHelper(user, "Image-Two", "2.2.0", 2);
+        ImageInfo image2 = SaltbootUtilsTest.createImageHelper(getTestUser(), "Image-Two", "2.2.0", 2);
         String oldDistroName2 = String.format("%d-%s-%s-%d", orgId, "Image-Two", "2.2.0", 2);
         Distro oldDistro2 = new Distro.Builder<String>()
                 .setName(oldDistroName2)

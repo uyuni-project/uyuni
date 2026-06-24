@@ -161,10 +161,10 @@ public class MirrorCredentialsManagerTest extends RhnMockStrutsTestCase {
     public void canRetrieveListOfSubscriptions() {
         MirrorCredentialsDto creds = storeTestCredentials();
 
-        ChannelFamilyTest.ensureChannelFamilyExists(user, "MODULE", "SUSE Linux Enterprise Modules");
-        ChannelFamilyTest.ensureChannelFamilyExists(user, "SLE-M-T", "SUSE Manager Tools");
-        ChannelFamilyTest.ensureChannelFamilyExists(user, "SMS", "SUSE Manager Server");
-        ChannelFamilyTest.ensureChannelFamilyExists(user, "SMP", "SUSE Manager Proxy");
+        ChannelFamilyTest.ensureChannelFamilyExists(getTestUser(), "MODULE", "SUSE Linux Enterprise Modules");
+        ChannelFamilyTest.ensureChannelFamilyExists(getTestUser(), "SLE-M-T", "SUSE Manager Tools");
+        ChannelFamilyTest.ensureChannelFamilyExists(getTestUser(), "SMS", "SUSE Manager Server");
+        ChannelFamilyTest.ensureChannelFamilyExists(getTestUser(), "SMP", "SUSE Manager Proxy");
 
         // Mock the content sync manager to return a known set of subscriptions
         CloudPaygManager cloudPaygManager = new TestCloudPaygManagerBuilder().build();

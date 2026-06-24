@@ -31,7 +31,7 @@ import org.junit.jupiter.api.Test;
 public class MessageQueueTest extends RhnBaseTestCase {
 
     private static Logger logger = LogManager.getLogger(MessageQueueTest.class);
-    protected User user;
+    private User user;
 
     @BeforeEach
     public void setUp() {

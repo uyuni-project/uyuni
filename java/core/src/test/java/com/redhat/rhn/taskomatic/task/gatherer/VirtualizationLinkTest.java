@@ -55,7 +55,7 @@ public class VirtualizationLinkTest extends BaseTestCaseWithUser {
         String vhmLabel = "1";
         manager.setLabel(vhmLabel);
         manager.setId(101L);
-        manager.setOrg(user.getOrg());
+        manager.setOrg(getTestUser().getOrg());
 
         new VirtualHostManagerProcessor(manager, hosts.get(vhmLabel)).processMapping();
 

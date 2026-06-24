@@ -34,7 +34,7 @@ public class ScheduleRemovePackagesActionTest extends RhnMockStrutsTestCase {
         setRequestPathInfo("/ssm/PackageRemoveSchedule");
         addRequestParameter("mode", "remove");
 
-        utils = new SsmActionTestUtils(user);
+        utils = new SsmActionTestUtils(getTestUser());
     }
 
     @Test

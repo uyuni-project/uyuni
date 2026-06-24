@@ -61,17 +61,17 @@ public class SubscribeConfirmTest extends RhnMockStrutsTestCase {
          * Server3 subscriptions in order: -
          */
 
-        Server server1 = ServerTestUtils.createTestSystem(user);
-        Server server2 = ServerTestUtils.createTestSystem(user);
-        Server server3 = ServerTestUtils.createTestSystem(user);
+        Server server1 = ServerTestUtils.createTestSystem(getTestUser());
+        Server server2 = ServerTestUtils.createTestSystem(getTestUser());
+        Server server3 = ServerTestUtils.createTestSystem(getTestUser());
 
-        ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(user.getOrg(),
+        ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(),
                 "Channel 1", "cfg-channel-1");
-        ConfigChannel channel2 = ConfigTestUtils.createConfigChannel(user.getOrg(),
+        ConfigChannel channel2 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(),
                 "Channel 2", "cfg-channel-2");
-        ConfigChannel channel3 = ConfigTestUtils.createConfigChannel(user.getOrg(),
+        ConfigChannel channel3 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(),
                 "Channel 3", "cfg-channel-3");
-        ConfigChannel channel4 = ConfigTestUtils.createConfigChannel(user.getOrg(),
+        ConfigChannel channel4 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(),
                 "Channel 4", "cfg-channel-4");
 
         List<ConfigChannel> srv1Channels = new ArrayList<>();
@@ -82,28 +82,28 @@ public class SubscribeConfirmTest extends RhnMockStrutsTestCase {
         srv2Channels.add(channel3);
         srv2Channels.add(channel2);
 
-        server1.subscribeConfigChannels(srv1Channels, user);
-        server2.subscribeConfigChannels(srv2Channels, user);
+        server1.subscribeConfigChannels(srv1Channels, getTestUser());
+        server2.subscribeConfigChannels(srv2Channels, getTestUser());
         ServerFactory.save(server1);
         ServerFactory.save(server2);
         ServerFactory.save(server3);
 
         // Add systems to SSM
-        RhnSet ssm = RhnSetDecl.SYSTEMS.get(user);
+        RhnSet ssm = RhnSetDecl.SYSTEMS.get(getTestUser());
         ssm.addElement(server1.getId());
         ssm.addElement(server2.getId());
         ssm.addElement(server3.getId());
         RhnSetFactory.save(ssm);
 
         // Select channels 2, 3, 4
-        RhnSet channels = RhnSetDecl.CONFIG_CHANNELS.get(user);
+        RhnSet channels = RhnSetDecl.CONFIG_CHANNELS.get(getTestUser());
         channels.addElement(channel2.getId());
         channels.addElement(channel3.getId());
         channels.addElement(channel4.getId());
         RhnSetFactory.save(channels);
 
         // Set ranking: 2, 4, 3, 1
-        RhnSet channelRanking = RhnSetDecl.CONFIG_CHANNELS_RANKING.get(user);
+        RhnSet channelRanking = RhnSetDecl.CONFIG_CHANNELS_RANKING.get(getTestUser());
         channelRanking.addElement(channel2.getId(), 0L);
         channelRanking.addElement(channel4.getId(), 1L);
         channelRanking.addElement(channel3.getId(), 2L);
@@ -150,17 +150,17 @@ public class SubscribeConfirmTest extends RhnMockStrutsTestCase {
          * Server3 subscriptions in order: -
          */
 
-        Server server1 = ServerTestUtils.createTestSystem(user);
-        Server server2 = ServerTestUtils.createTestSystem(user);
-        Server server3 = ServerTestUtils.createTestSystem(user);
+        Server server1 = ServerTestUtils.createTestSystem(getTestUser());
+        Server server2 = ServerTestUtils.createTestSystem(getTestUser());
+        Server server3 = ServerTestUtils.createTestSystem(getTestUser());
 
-        ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(user.getOrg(),
+        ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(),
                 "Channel 1", "cfg-channel-1");
-        ConfigChannel channel2 = ConfigTestUtils.createConfigChannel(user.getOrg(),
+        ConfigChannel channel2 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(),
                 "Channel 2", "cfg-channel-2");
-        ConfigChannel channel3 = ConfigTestUtils.createConfigChannel(user.getOrg(),
+        ConfigChannel channel3 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(),
                 "Channel 3", "cfg-channel-3");
-        ConfigChannel channel4 = ConfigTestUtils.createConfigChannel(user.getOrg(),
+        ConfigChannel channel4 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(),
                 "Channel 4", "cfg-channel-4");
 
         List<ConfigChannel> srv1Channels = new ArrayList<>();
@@ -171,28 +171,28 @@ public class SubscribeConfirmTest extends RhnMockStrutsTestCase {
         srv2Channels.add(channel3);
         srv2Channels.add(channel2);
 
-        server1.subscribeConfigChannels(srv1Channels, user);
-        server2.subscribeConfigChannels(srv2Channels, user);
+        server1.subscribeConfigChannels(srv1Channels, getTestUser());
+        server2.subscribeConfigChannels(srv2Channels, getTestUser());
         ServerFactory.save(server1);
         ServerFactory.save(server2);
         ServerFactory.save(server3);
 
         // Add systems to SSM
-        RhnSet ssm = RhnSetDecl.SYSTEMS.get(user);
+        RhnSet ssm = RhnSetDecl.SYSTEMS.get(getTestUser());
         ssm.addElement(server1.getId());
         ssm.addElement(server2.getId());
         ssm.addElement(server3.getId());
         RhnSetFactory.save(ssm);
 
         // Select channels 2, 3, 4
-        RhnSet channels = RhnSetDecl.CONFIG_CHANNELS.get(user);
+        RhnSet channels = RhnSetDecl.CONFIG_CHANNELS.get(getTestUser());
         channels.addElement(channel2.getId());
         channels.addElement(channel3.getId());
         channels.addElement(channel4.getId());
         RhnSetFactory.save(channels);
 
         // Set ranking: 2, 4, 3, 1
-        RhnSet channelRanking = RhnSetDecl.CONFIG_CHANNELS_RANKING.get(user);
+        RhnSet channelRanking = RhnSetDecl.CONFIG_CHANNELS_RANKING.get(getTestUser());
         channelRanking.addElement(channel2.getId(), 0L);
         channelRanking.addElement(channel4.getId(), 1L);
         channelRanking.addElement(channel3.getId(), 2L);
@@ -240,17 +240,17 @@ public class SubscribeConfirmTest extends RhnMockStrutsTestCase {
          * Server3 subscriptions in order: -
          */
 
-        Server server1 = ServerTestUtils.createTestSystem(user);
-        Server server2 = ServerTestUtils.createTestSystem(user);
-        Server server3 = ServerTestUtils.createTestSystem(user);
+        Server server1 = ServerTestUtils.createTestSystem(getTestUser());
+        Server server2 = ServerTestUtils.createTestSystem(getTestUser());
+        Server server3 = ServerTestUtils.createTestSystem(getTestUser());
 
-        ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(user.getOrg(),
+        ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(),
                 "Channel 1", "cfg-channel-1");
-        ConfigChannel channel2 = ConfigTestUtils.createConfigChannel(user.getOrg(),
+        ConfigChannel channel2 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(),
                 "Channel 2", "cfg-channel-2");
-        ConfigChannel channel3 = ConfigTestUtils.createConfigChannel(user.getOrg(),
+        ConfigChannel channel3 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(),
                 "Channel 3", "cfg-channel-3");
-        ConfigChannel channel4 = ConfigTestUtils.createConfigChannel(user.getOrg(),
+        ConfigChannel channel4 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(),
                 "Channel 4", "cfg-channel-4");
 
         List<ConfigChannel> srv1Channels = new ArrayList<>();
@@ -261,28 +261,28 @@ public class SubscribeConfirmTest extends RhnMockStrutsTestCase {
         srv2Channels.add(channel3);
         srv2Channels.add(channel2);
 
-        server1.subscribeConfigChannels(srv1Channels, user);
-        server2.subscribeConfigChannels(srv2Channels, user);
+        server1.subscribeConfigChannels(srv1Channels, getTestUser());
+        server2.subscribeConfigChannels(srv2Channels, getTestUser());
         ServerFactory.save(server1);
         ServerFactory.save(server2);
         ServerFactory.save(server3);
 
         // Add systems to SSM
-        RhnSet ssm = RhnSetDecl.SYSTEMS.get(user);
+        RhnSet ssm = RhnSetDecl.SYSTEMS.get(getTestUser());
         ssm.addElement(server1.getId());
         ssm.addElement(server2.getId());
         ssm.addElement(server3.getId());
         RhnSetFactory.save(ssm);
 
         // Select channels 2, 3, 4
-        RhnSet channels = RhnSetDecl.CONFIG_CHANNELS.get(user);
+        RhnSet channels = RhnSetDecl.CONFIG_CHANNELS.get(getTestUser());
         channels.addElement(channel2.getId());
         channels.addElement(channel3.getId());
         channels.addElement(channel4.getId());
         RhnSetFactory.save(channels);
 
         // Set ranking: 2, 4, 3
-        RhnSet channelRanking = RhnSetDecl.CONFIG_CHANNELS_RANKING.get(user);
+        RhnSet channelRanking = RhnSetDecl.CONFIG_CHANNELS_RANKING.get(getTestUser());
         channelRanking.addElement(channel2.getId(), 0L);
         channelRanking.addElement(channel4.getId(), 1L);
         channelRanking.addElement(channel3.getId(), 2L);

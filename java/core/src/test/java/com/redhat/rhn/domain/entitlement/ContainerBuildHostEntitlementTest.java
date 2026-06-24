@@ -56,8 +56,8 @@ public class ContainerBuildHostEntitlementTest extends BaseEntitlementTestCase {
     @Override
     @Test
     public void testIsAllowedOnServer() throws Exception {
-        Server traditional = ServerTestUtils.createTestSystem(user);
-        Server minion = MinionServerFactoryTest.createTestMinionServer(user);
+        Server traditional = ServerTestUtils.createTestSystem(getTestUser());
+        Server minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         minion.setOs("SLES");
         minion.setRelease("12.2");
 
@@ -75,7 +75,7 @@ public class ContainerBuildHostEntitlementTest extends BaseEntitlementTestCase {
     @Override
     @Test
     public void testIsAllowedOnServerWithGrains() throws Exception {
-        Server minion = MinionServerFactoryTest.createTestMinionServer(user);
+        Server minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         Map<String, Object> grains = new HashMap<>();
         grains.put("os_family", ServerConstants.OS_FAMILY_SUSE);
         grains.put("osmajorrelease", "12");

@@ -42,7 +42,7 @@ public class MinionServerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testPillars() throws Exception {
-        MinionServer minionServer = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minionServer = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         Set<Pillar> pillars = new HashSet<>();
         Map<String, Object> pillar1 = new HashMap<>();
         pillar1.put("data1", "foo");
@@ -67,7 +67,7 @@ public class MinionServerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testMinionPillarAdding() throws Exception {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
         Set<Pillar> pillars = new HashSet<>();
         for (int i = 0; i < 2; i++) {

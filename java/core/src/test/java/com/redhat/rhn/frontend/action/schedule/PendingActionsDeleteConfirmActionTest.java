@@ -33,19 +33,19 @@ public class PendingActionsDeleteConfirmActionTest extends RhnMockStrutsTestCase
 
     @Test
     public void testConfirmDeleteActions() throws Exception {
-        Action a = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
-        Server server = ServerFactoryTest.createTestServer(user, true);
+        Action a = ActionFactoryTest.createAction(getTestUser(), ActionFactory.TYPE_ERRATA);
+        Server server = ServerFactoryTest.createTestServer(getTestUser(), true);
         ServerAction saction = ServerActionTest.createServerAction(server, a);
         saction.setStatusQueued();
 
-        Action b = ActionFactoryTest.createAction(user, ActionFactory.TYPE_ERRATA);
+        Action b = ActionFactoryTest.createAction(getTestUser(), ActionFactory.TYPE_ERRATA);
         ServerAction saction2 = ServerActionTest.createServerAction(server, b);
         saction2.setStatusQueued();
 
         ActionFactory.save(a);
         ActionFactory.save(b);
 
-        RhnSet set = RhnSetDecl.ACTIONS_PENDING.get(user);
+        RhnSet set = RhnSetDecl.ACTIONS_PENDING.get(getTestUser());
         set.addElement(a.getId());
         set.addElement(b.getId());
         RhnSetManager.store(set);

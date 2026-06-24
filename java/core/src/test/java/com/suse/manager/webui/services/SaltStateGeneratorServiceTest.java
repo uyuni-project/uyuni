@@ -62,14 +62,14 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
 
     @Test
     public void testGenerateServerConfigState() throws Exception {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
         ServerStateRevision serverRev = new ServerStateRevision();
         serverRev.setServer(minion);
 
-        ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(user.getOrg(),
+        ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(),
                 "Channel 1", "cfg-channel-1");
-        ConfigChannel channel2 = ConfigTestUtils.createConfigChannel(user.getOrg(),
+        ConfigChannel channel2 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(),
                 "Channel 2", "cfg-channel-2");
 
         serverRev.getConfigChannels().add(channel1);
@@ -97,13 +97,13 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
 
     @Test
     public void testRegenerateConfigStates() throws Exception {
-        Server minion1 = MinionServerFactoryTest.createTestMinionServer(user);
-        Server minion2 = MinionServerFactoryTest.createTestMinionServer(user);
+        Server minion1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        Server minion2 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
         // Prepare input
-        ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(user.getOrg(),
+        ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(),
                 "Channel 1", "cfg-channel-1");
-        ConfigChannel channel2 = ConfigTestUtils.createConfigChannel(user.getOrg(),
+        ConfigChannel channel2 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(),
                 "Channel 2", "cfg-channel-2");
 
         ServerStateRevision minion1Revision = new ServerStateRevision(minion1);
@@ -158,8 +158,8 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
 
     @Test
     public void testImageSyncedPillar() {
-        ServerGroup group = ServerGroupTest.createTestServerGroup(user.getOrg(), null);
-        ImageInfo img1 = ImageTestUtils.createImageInfo("ImageTest", "8.0.0", user);
+        ServerGroup group = ServerGroupTest.createTestServerGroup(getTestUser().getOrg(), null);
+        ImageInfo img1 = ImageTestUtils.createImageInfo("ImageTest", "8.0.0", getTestUser());
         img1.setRevisionNumber(1);
 
         String category = "SyncedImage" + img1.getId();
@@ -180,7 +180,7 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
     }
     @Test
     public void testLegacyImageSyncedPillar() {
-        ServerGroup group = ServerGroupTest.createTestServerGroup(user.getOrg(), null);
+        ServerGroup group = ServerGroupTest.createTestServerGroup(getTestUser().getOrg(), null);
 
         SaltStateGeneratorService.INSTANCE.createImageSyncedPillar(group, "ImageName", "1.0.0");
 

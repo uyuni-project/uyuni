@@ -31,15 +31,15 @@ public class CopyFilesCentralActionTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testExecute() {
-        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(getTestUser(), AccessGroupFactory.CONFIG_ADMIN);
 
         //Create the revision to copy
-        ConfigRevision revision = ConfigTestUtils.createConfigRevision(user.getOrg());
+        ConfigRevision revision = ConfigTestUtils.createConfigRevision(getTestUser().getOrg());
         Long cfid = revision.getConfigFile().getId();
         Long crid = revision.getId();
 
         //Create a channel to appear in the list.
-        ConfigTestUtils.createConfigChannel(user.getOrg());
+        ConfigTestUtils.createConfigChannel(getTestUser().getOrg());
 
         setRequestPathInfo("/configuration/file/CopyFileCentral");
         addRequestParameter("cfid", cfid.toString());

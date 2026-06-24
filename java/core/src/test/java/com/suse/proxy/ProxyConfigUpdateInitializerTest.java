@@ -90,7 +90,7 @@ public class ProxyConfigUpdateInitializerTest extends JMockBaseTestCaseWithUser 
         }});
 
         ProxyConfigUpdateContext proxyConfigUpdateContext = ProxyConfigUpdateTestUtils.createContext(
-                context, mockMinionServer, systemEntitlementManager, user
+                context, mockMinionServer, systemEntitlementManager, getTestUser()
         );
 
         initializer.handle(proxyConfigUpdateContext);
@@ -119,7 +119,7 @@ public class ProxyConfigUpdateInitializerTest extends JMockBaseTestCaseWithUser 
         }});
 
         ProxyConfigUpdateContext proxyConfigUpdateContext = ProxyConfigUpdateTestUtils.createContext(
-                context, mockMinionServer, systemEntitlementManager, user
+                context, mockMinionServer, systemEntitlementManager, getTestUser()
         );
 
         initializer.handle(proxyConfigUpdateContext);
@@ -149,7 +149,7 @@ public class ProxyConfigUpdateInitializerTest extends JMockBaseTestCaseWithUser 
         }});
 
         ProxyConfigUpdateContext proxyConfigUpdateContext = ProxyConfigUpdateTestUtils.createContext(
-                context, mockMinionServer, mockSystemEntitlementManager, user
+                context, mockMinionServer, mockSystemEntitlementManager, getTestUser()
         );
 
         initializer.handle(proxyConfigUpdateContext);
@@ -183,7 +183,7 @@ public class ProxyConfigUpdateInitializerTest extends JMockBaseTestCaseWithUser 
         }});
 
         ProxyConfigUpdateContext proxyConfigUpdateContext = ProxyConfigUpdateTestUtils.createContext(
-                context, mockMinionServer, mockSystemEntitlementManager, user
+                context, mockMinionServer, mockSystemEntitlementManager, getTestUser()
         );
 
         initializer.handle(proxyConfigUpdateContext);
@@ -205,7 +205,7 @@ public class ProxyConfigUpdateInitializerTest extends JMockBaseTestCaseWithUser 
 
         context().checking(new Expectations() {{
             allowing(taskomaticMock).scheduleSubscribeChannels(
-                    with(user),
+                    with(getTestUser()),
                     with(any(SubscribeChannelsAction.class))
             );
             will(new CustomAction("capture SubscribeChannelsAction") {
@@ -223,7 +223,7 @@ public class ProxyConfigUpdateInitializerTest extends JMockBaseTestCaseWithUser 
         }});
 
         ProxyConfigUpdateContext proxyConfigUpdateContext = ProxyConfigUpdateTestUtils.createContext(
-                context, mockMinionServer, systemEntitlementManager, user
+                context, mockMinionServer, systemEntitlementManager, getTestUser()
         );
         proxyConfigUpdateContext.getSubscribableChannels().add(channelWithMgrpxy);
 
@@ -246,7 +246,7 @@ public class ProxyConfigUpdateInitializerTest extends JMockBaseTestCaseWithUser 
 
         context().checking(new Expectations() {{
             allowing(taskomaticMock).scheduleSubscribeChannels(
-                    with(user),
+                    with(getTestUser()),
                     with(any(SubscribeChannelsAction.class))
             );
             will(throwException(new TaskomaticApiException(new RuntimeException())));
@@ -254,7 +254,7 @@ public class ProxyConfigUpdateInitializerTest extends JMockBaseTestCaseWithUser 
 
 
         ProxyConfigUpdateContext proxyConfigUpdateContext = ProxyConfigUpdateTestUtils.createContext(
-                context, mockMinionServer, systemEntitlementManager, user
+                context, mockMinionServer, systemEntitlementManager, getTestUser()
         );
         proxyConfigUpdateContext.getSubscribableChannels().add(channelWithMgrpxy);
 
@@ -266,9 +266,9 @@ public class ProxyConfigUpdateInitializerTest extends JMockBaseTestCaseWithUser 
      * Helper method to set up a subscribable channel containing mgrpxy package
      */
     private Channel setupChannelWithMgrpxy() throws Exception {
-        Server server = ServerTestUtils.createTestSystem(user);
-        Package pkg = PackageTest.createTestPackage(user.getOrg(), MGRPXY);
-        Channel channelWithMgrpxy = ChannelTestUtils.createChildChannel(user, server.getBaseChannel());
+        Server server = ServerTestUtils.createTestSystem(getTestUser());
+        Package pkg = PackageTest.createTestPackage(getTestUser().getOrg(), MGRPXY);
+        Channel channelWithMgrpxy = ChannelTestUtils.createChildChannel(getTestUser(), server.getBaseChannel());
         channelWithMgrpxy.getPackages().add(pkg);
 
         context().checking(new Expectations() {{

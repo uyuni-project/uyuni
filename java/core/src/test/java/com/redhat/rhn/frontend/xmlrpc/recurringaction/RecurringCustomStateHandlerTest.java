@@ -58,7 +58,7 @@ public class RecurringCustomStateHandlerTest extends JMockBaseTestCaseWithUser {
     @BeforeEach
     public void setUp() throws Exception {
 
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
         handler = new RecurringCustomStateHandler();
 
         // mocking
@@ -72,8 +72,8 @@ public class RecurringCustomStateHandlerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testCreateInternalStates() {
-        int actionId = handler.create(user, Map.of(
-                "entity_id", user.getOrg().getId().intValue(),
+        int actionId = handler.create(getTestUser(), Map.of(
+                "entity_id", getTestUser().getOrg().getId().intValue(),
                 "entity_type", "org",
                 "name", "test-action",
                 "cron_expr", TEST_CRON_EXPR,
@@ -95,8 +95,8 @@ public class RecurringCustomStateHandlerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testCreateNonExistingStates() {
-        NoSuchStateException e = assertThrows(NoSuchStateException.class, () -> handler.create(user, Map.of(
-                "entity_id", user.getOrg().getId().intValue(),
+        NoSuchStateException e = assertThrows(NoSuchStateException.class, () -> handler.create(getTestUser(), Map.of(
+                "entity_id", getTestUser().getOrg().getId().intValue(),
                 "entity_type", "org",
                 "name", "test-action",
                 "cron_expr", TEST_CRON_EXPR,
@@ -108,9 +108,9 @@ public class RecurringCustomStateHandlerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testCreateConfigStates() {
-        ConfigTestUtils.createConfigChannel(user.getOrg(), "My channel", "my-channel");
-        int actionId = handler.create(user, Map.of(
-                "entity_id", user.getOrg().getId().intValue(),
+        ConfigTestUtils.createConfigChannel(getTestUser().getOrg(), "My channel", "my-channel");
+        int actionId = handler.create(getTestUser(), Map.of(
+                "entity_id", getTestUser().getOrg().getId().intValue(),
                 "entity_type", "org",
                 "name", "test-action",
                 "cron_expr", TEST_CRON_EXPR,
@@ -118,7 +118,7 @@ public class RecurringCustomStateHandlerTest extends JMockBaseTestCaseWithUser {
         ));
         RecurringState state =
                 (RecurringState) RecurringActionFactory.lookupById(actionId).get().getRecurringActionType();
-        String configStateWithPrefix = "manager_org_" + user.getOrg().getId() + ".my-channel";
+        String configStateWithPrefix = "manager_org_" + getTestUser().getOrg().getId() + ".my-channel";
 
         assertEquals(3, state.getStateConfig().size());
         assertTrue(state.getStateConfig().stream().anyMatch(
@@ -136,8 +136,8 @@ public class RecurringCustomStateHandlerTest extends JMockBaseTestCaseWithUser {
         org = OrgFactory.save(org);
         ConfigTestUtils.createConfigChannel(org, "My channel", "my-channel");
 
-        NoSuchStateException e = assertThrows(NoSuchStateException.class, () -> handler.create(user, Map.of(
-                "entity_id", user.getOrg().getId().intValue(),
+        NoSuchStateException e = assertThrows(NoSuchStateException.class, () -> handler.create(getTestUser(), Map.of(
+                "entity_id", getTestUser().getOrg().getId().intValue(),
                 "entity_type", "org",
                 "name", "test-action",
                 "cron_expr", TEST_CRON_EXPR,
@@ -148,15 +148,15 @@ public class RecurringCustomStateHandlerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testCreateWithStatesFromMultipleOrgs() {
-        ConfigTestUtils.createConfigChannel(user.getOrg(), "My channel", "my-channel");
+        ConfigTestUtils.createConfigChannel(getTestUser().getOrg(), "My channel", "my-channel");
 
         Org org = OrgFactory.createOrg();
         org.setName("Not My Org");
         org = OrgFactory.save(org);
         ConfigTestUtils.createConfigChannel(org, "My channel", "my-channel");
 
-        int actionId = handler.create(user, Map.of(
-                "entity_id", user.getOrg().getId().intValue(),
+        int actionId = handler.create(getTestUser(), Map.of(
+                "entity_id", getTestUser().getOrg().getId().intValue(),
                 "entity_type", "org",
                 "name", "test-action",
                 "cron_expr", TEST_CRON_EXPR,
@@ -167,28 +167,28 @@ public class RecurringCustomStateHandlerTest extends JMockBaseTestCaseWithUser {
 
         assertEquals(1, state.getStateConfig().size());
         RecurringStateConfig stateConfig = state.getStateConfig().iterator().next();
-        assertEquals("manager_org_" + user.getOrg().getId() + ".my-channel", stateConfig.getStateName());
+        assertEquals("manager_org_" + getTestUser().getOrg().getId() + ".my-channel", stateConfig.getStateName());
     }
 
     @Test
     public void testUpdate() {
-        ConfigTestUtils.createConfigChannel(user.getOrg(), "My channel", "my-channel");
-        int actionId = handler.create(user, Map.of(
-                "entity_id", user.getOrg().getId().intValue(),
+        ConfigTestUtils.createConfigChannel(getTestUser().getOrg(), "My channel", "my-channel");
+        int actionId = handler.create(getTestUser(), Map.of(
+                "entity_id", getTestUser().getOrg().getId().intValue(),
                 "entity_type", "org",
                 "name", "test-action",
                 "cron_expr", TEST_CRON_EXPR,
                 "states", List.of("certs", "channels", "packages.profileupdate")
         ));
 
-        handler.update(user, Map.of(
+        handler.update(getTestUser(), Map.of(
                 "id", actionId,
                 "states", List.of("packages.profileupdate", "my-channel")
         ));
 
         RecurringState state =
                 (RecurringState) RecurringActionFactory.lookupById(actionId).get().getRecurringActionType();
-        String configStateWithPrefix = "manager_org_" + user.getOrg().getId() + ".my-channel";
+        String configStateWithPrefix = "manager_org_" + getTestUser().getOrg().getId() + ".my-channel";
 
         assertEquals(2, state.getStateConfig().size());
         assertTrue(state.getStateConfig().stream().anyMatch(
@@ -199,14 +199,14 @@ public class RecurringCustomStateHandlerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testListAvailable() {
-        ConfigTestUtils.createConfigChannel(user.getOrg(), "My channel", "my-channel");
+        ConfigTestUtils.createConfigChannel(getTestUser().getOrg(), "My channel", "my-channel");
 
         Org org = OrgFactory.createOrg();
         org.setName("Not My Org");
         org = OrgFactory.save(org);
         ConfigTestUtils.createConfigChannel(org, "Not my channel", "not-my-channel");
 
-        List<String> availableStates = handler.listAvailable(user);
+        List<String> availableStates = handler.listAvailable(getTestUser());
 
         assertTrue(availableStates.contains("certs"));
         assertTrue(availableStates.contains("my-channel"));

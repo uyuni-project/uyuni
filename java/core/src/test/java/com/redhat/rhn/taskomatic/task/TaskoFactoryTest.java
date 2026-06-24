@@ -114,7 +114,7 @@ public class TaskoFactoryTest extends BaseTestCaseWithUser {
         taskoBunch.setOrgBunch("Y");
         TaskoFactory.save(taskoBunch);
 
-        TaskoFactory.listActiveSchedulesByOrgAndBunch(user.getOrg().getId().intValue(), taskoBunchName);
+        TaskoFactory.listActiveSchedulesByOrgAndBunch(getTestUser().getOrg().getId().intValue(), taskoBunchName);
     }
 
     @Test

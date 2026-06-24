@@ -38,7 +38,7 @@ public class UserPaneTest extends BaseTestCaseWithUser {
     @Test
     public void testNewUser() {
         // There should be NO HIDDEN PANE attached  to the user.
-        assertTrue(user.getHiddenPanes().isEmpty());
+        assertTrue(getTestUser().getHiddenPanes().isEmpty());
     }
 
     private List<Pane> addPanes(Long userId) {
@@ -63,7 +63,7 @@ public class UserPaneTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testAddRemovePane() {
-        Long userId = user.getId();
+        Long userId = getTestUser().getId();
 
         List<Pane> hiddenPanes = addPanes(userId);
 

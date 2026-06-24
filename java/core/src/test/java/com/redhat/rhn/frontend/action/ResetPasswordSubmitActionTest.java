@@ -56,7 +56,7 @@ public class ResetPasswordSubmitActionTest extends BaseTestCaseWithUser {
 
     @Test
     public void testPerformInvalidToken() {
-        ResetPassword rp = ResetPasswordFactory.createNewEntryFor(user);
+        ResetPassword rp = ResetPasswordFactory.createNewEntryFor(getTestUser());
         ResetPasswordFactory.invalidateToken(rp.getToken());
         form.set("token", rp.getToken());
         ActionForward rc = action.execute(mapping, form, request, response);
@@ -65,8 +65,8 @@ public class ResetPasswordSubmitActionTest extends BaseTestCaseWithUser {
 
     @Test
     public void testPerformDisabledUser() {
-        ResetPassword rp = ResetPasswordFactory.createNewEntryFor(user);
-        UserFactory.getInstance().disable(user, adminUser);
+        ResetPassword rp = ResetPasswordFactory.createNewEntryFor(getTestUser());
+        UserFactory.getInstance().disable(getTestUser(), adminUser);
         form.set("token", rp.getToken());
         ActionForward rc = action.execute(mapping, form, request, response);
         assertEquals(invalid.getName(), rc.getName(), "Disabled user");
@@ -74,7 +74,7 @@ public class ResetPasswordSubmitActionTest extends BaseTestCaseWithUser {
 
     @Test
     public void testPerformPasswordMismatch() {
-        ResetPassword rp = ResetPasswordFactory.createNewEntryFor(user);
+        ResetPassword rp = ResetPasswordFactory.createNewEntryFor(getTestUser());
         form.set("token", rp.getToken());
         form.set("password", "foobar");
         form.set("passwordConfirm", "foobarblech");
@@ -84,7 +84,7 @@ public class ResetPasswordSubmitActionTest extends BaseTestCaseWithUser {
 
     @Test
     public void testPerformBadPassword() {
-        ResetPassword rp = ResetPasswordFactory.createNewEntryFor(user);
+        ResetPassword rp = ResetPasswordFactory.createNewEntryFor(getTestUser());
         form.set("token", rp.getToken());
         form.set("password", "a");
         form.set("passwordConfirm", "a");

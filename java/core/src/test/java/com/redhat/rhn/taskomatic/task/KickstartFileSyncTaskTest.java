@@ -37,17 +37,17 @@ public class KickstartFileSyncTaskTest extends BaseTestCaseWithUser {
     @Test
     public void testTask() throws Exception {
 
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
 
-        KickstartData ks = KickstartDataTest.createTestKickstartData(user.getOrg());
-        ks.setKickstartDefaults(KickstartDataTest.createDefaults(ks, user));
+        KickstartData ks = KickstartDataTest.createTestKickstartData(getTestUser().getOrg());
+        ks.setKickstartDefaults(KickstartDataTest.createDefaults(ks, getTestUser()));
         KickstartDataTest.createCobblerObjects(ks);
         KickstartFactory.saveKickstartData(ks);
 
 
         ks = TestUtils.saveAndReload(ks);
 
-        Profile p = Profile.lookupById(CobblerXMLRPCHelper.getConnection(user),
+        Profile p = Profile.lookupById(CobblerXMLRPCHelper.getConnection(getTestUser()),
                 ks.getCobblerId());
 
         File f = new File(p.getKickstart());

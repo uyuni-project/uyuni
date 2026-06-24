@@ -79,12 +79,12 @@ public class MinionActionExecutorTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void rejectsActionsWithOldEarliestDate() {
-        Action a1 = ActionFactoryTest.createEmptyAction(user, ActionFactory.TYPE_REBOOT);
+        Action a1 = ActionFactoryTest.createEmptyAction(getTestUser(), ActionFactory.TYPE_REBOOT);
         // Set the earliest action date to one week ago
         a1.setEarliestAction(Date.from(Instant.now().minus(7, ChronoUnit.DAYS)));
 
-        ServerAction sa1 = ActionFactoryTest.addServerAction(user, a1, ServerAction::setStatusCompleted);
-        ServerAction sa2 = ActionFactoryTest.addServerAction(user, a1, ServerAction::setStatusQueued);
+        ServerAction sa1 = ActionFactoryTest.addServerAction(getTestUser(), a1, ServerAction::setStatusCompleted);
+        ServerAction sa2 = ActionFactoryTest.addServerAction(getTestUser(), a1, ServerAction::setStatusQueued);
 
         final Action a1Reloaded = TestUtils.saveAndReload(a1);
 
@@ -94,7 +94,7 @@ public class MinionActionExecutorTest extends JMockBaseTestCaseWithUser {
             expectations.ignoring(jobDetail).getJobDataMap();
             expectations.will(returnValue(new JobDataMap(Map.of(
                 "action_id", String.valueOf(a1Reloaded.getId()),
-                "user_id", String.valueOf(user.getId()),
+                "user_id", String.valueOf(getTestUser().getId()),
                 "staging_job", String.valueOf(false),
                 "force_pkg_list_refresh", String.valueOf(false)
             ))));

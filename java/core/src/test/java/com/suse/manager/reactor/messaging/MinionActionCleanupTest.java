@@ -84,13 +84,13 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testMinionActionCleanup() throws Exception {
         // Prepare test objects: minion servers, products and action
-        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         minion1.setMinionId("minion1");
-        MinionServer minion2 = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion2 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         minion2.setMinionId("minion2");
 
         ApplyStatesAction action = ActionManager.scheduleApplyStates(
-                user,
+                getTestUser(),
                 Arrays.asList(minion1.getId(), minion2.getId()),
                 Collections.singletonList(ApplyStatesEventMessage.PACKAGES),
                 Date.from(Instant.now().minus(6, ChronoUnit.MINUTES)));
@@ -155,10 +155,10 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testMinionActionChainCleanupAllCompleted() throws Exception {
-        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         SystemManager.giveCapability(minion1.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
 
-        MinionServer minion2 = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion2 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         SystemManager.giveCapability(minion2.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
 
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
@@ -174,17 +174,18 @@ public class MinionActionCleanupTest extends JMockBaseTestCaseWithUser {
                 .toInstant());
 
         String label = TestUtils.randomString();
-        ActionChain actionChain = ActionChainFactory.getOrCreateActionChain(label, user);
+        ActionChain actionChain = ActionChainFactory.getOrCreateActionChain(label, getTestUser());
 
         Set<Action> applyStates = ActionChainManager
-                .scheduleApplyStates(user, Arrays.asList(minion1.getId(), minion2.getId()),
+                .scheduleApplyStates(getTestUser(), Arrays.asList(minion1.getId(), minion2.getId()),
                         Optional.of(false), earliest, actionChain);
         assertEquals(2, applyStates.size());
 
         ScriptActionDetails sad = ActionFactory.createScriptActionDetails(
                 "root", "root", 10L, "#!/bin/csh\necho hello");
         Set<Action> scriptRun = ActionChainManager.scheduleScriptRuns(
-                user, Arrays.asList(minion1.getId(), minion2.getId()), "Run script test", sad, earliest, actionChain);
+                getTestUser(), Arrays.asList(minion1.getId(), minion2.getId()), "Run script test",
+                sad, earliest, actionChain);
         assertEquals(2, scriptRun.size());
 
         TestUtils.flushSession();

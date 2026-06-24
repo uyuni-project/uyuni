@@ -31,7 +31,7 @@ public class ReleaseChannelMapTest extends BaseTestCaseWithUser {
 
     @Test
     public void testCreate() throws Exception {
-        Channel c = ChannelFactoryTest.createTestChannel(user);
+        Channel c = ChannelFactoryTest.createTestChannel(getTestUser());
         ReleaseChannelMap rcm = new ReleaseChannelMap();
         rcm.setChannel(c);
         rcm.setChannelArch(c.getChannelArch());

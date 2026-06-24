@@ -54,16 +54,16 @@ public class SetControllerTest extends BaseControllerTestCase {
     @BeforeEach
     public void setUp() throws Exception {
 
-        initializeSet(SetLabels.SYSTEM_LIST, user);
+        initializeSet(SetLabels.SYSTEM_LIST, getTestUser());
     }
 
     @Test
     public void canUpdateExistingDeclSet() throws UnsupportedEncodingException {
-        Server s0 = ServerFactoryTest.createTestServer(user, true);
-        Server s1 = ServerFactoryTest.createTestServer(user, true);
-        Server s2 = ServerFactoryTest.createTestServer(user, true);
+        Server s0 = ServerFactoryTest.createTestServer(getTestUser(), true);
+        Server s1 = ServerFactoryTest.createTestServer(getTestUser(), true);
+        Server s2 = ServerFactoryTest.createTestServer(getTestUser(), true);
 
-        RhnSetDecl testSetDecl = initializeSet(SetLabels.SYSTEM_LIST, user, s0.getId(), s1.getId());
+        RhnSetDecl testSetDecl = initializeSet(SetLabels.SYSTEM_LIST, getTestUser(), s0.getId(), s1.getId());
 
         Request request = SparkTestUtils.createMockRequestWithBodyAndParams(
             "/manager/api/sets/:label",
@@ -72,23 +72,23 @@ public class SetControllerTest extends BaseControllerTestCase {
             "system_list"
         );
 
-        String result = SetController.updateSet(request, response, user);
+        String result = SetController.updateSet(request, response, getTestUser());
 
         assertEquals("2", result);
-        assertEquals(2, testSetDecl.get(user).size());
-        assertTrue(testSetDecl.get(user).contains(s0.getId()));
-        assertTrue(testSetDecl.get(user).contains(s2.getId()));
+        assertEquals(2, testSetDecl.get(getTestUser()).size());
+        assertTrue(testSetDecl.get(getTestUser()).contains(s0.getId()));
+        assertTrue(testSetDecl.get(getTestUser()).contains(s2.getId()));
 
         assertEquals("application/json", response.raw().getContentType());
     }
 
     @Test
     public void canClearExistingDeclSet() {
-        Server s0 = ServerFactoryTest.createTestServer(user, true);
-        Server s1 = ServerFactoryTest.createTestServer(user, true);
-        ServerFactoryTest.createTestServer(user, true); //s2
+        Server s0 = ServerFactoryTest.createTestServer(getTestUser(), true);
+        Server s1 = ServerFactoryTest.createTestServer(getTestUser(), true);
+        ServerFactoryTest.createTestServer(getTestUser(), true); //s2
 
-        RhnSetDecl testSetDecl = initializeSet(SetLabels.SYSTEM_LIST, user, s0.getId(), s1.getId());
+        RhnSetDecl testSetDecl = initializeSet(SetLabels.SYSTEM_LIST, getTestUser(), s0.getId(), s1.getId());
 
         Request request = SparkTestUtils.createMockRequestWithParams(
             "/manager/api/sets/:label/clear",
@@ -96,10 +96,10 @@ public class SetControllerTest extends BaseControllerTestCase {
             "system_list"
         );
 
-        String result = SetController.clearSet(request, response, user);
+        String result = SetController.clearSet(request, response, getTestUser());
 
         assertEquals("0", result);
-        assertEquals(0, testSetDecl.get(user).size());
+        assertEquals(0, testSetDecl.get(getTestUser()).size());
         assertEquals("application/json", response.raw().getContentType());
     }
 
@@ -116,7 +116,7 @@ public class SetControllerTest extends BaseControllerTestCase {
         selectionList.add("selection-key-0");
         selectionList.add("selection-key-1");
 
-        String result = SetController.updateSet(request, response, user);
+        String result = SetController.updateSet(request, response, getTestUser());
 
         assertEquals("2", result);
         assertEquals(Set.of("selection-key-0", "selection-key-2"), selectionList);
@@ -135,7 +135,7 @@ public class SetControllerTest extends BaseControllerTestCase {
         selectionList.add("selection-key-0");
         selectionList.add("selection-key-1");
 
-        String result = SetController.clearSet(request, response, user);
+        String result = SetController.clearSet(request, response, getTestUser());
 
         assertEquals("0", result);
         assertEquals(Set.of(), selectionList);
@@ -150,7 +150,7 @@ public class SetControllerTest extends BaseControllerTestCase {
             "nonExisting"
         );
 
-        String result = SetController.updateSet(request, response, user);
+        String result = SetController.updateSet(request, response, getTestUser());
 
         assertEquals(GSON.toJson(Map.of("messages", List.of("Failed to change set"))), result);
         assertEquals("application/json", response.raw().getContentType());
@@ -165,7 +165,7 @@ public class SetControllerTest extends BaseControllerTestCase {
             "nonExisting"
         );
 
-        String result = SetController.clearSet(request, response, user);
+        String result = SetController.clearSet(request, response, getTestUser());
 
         assertEquals(GSON.toJson(Map.of("error", "No such set: nonExisting")), result);
         assertEquals("application/json", response.raw().getContentType());

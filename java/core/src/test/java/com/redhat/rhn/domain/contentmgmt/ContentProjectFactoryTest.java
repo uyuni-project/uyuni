@@ -66,7 +66,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testCreateEnvironments() {
-        ContentProject cp = new ContentProject("project1", "Project 1", "This is project 1", user.getOrg());
+        ContentProject cp = new ContentProject("project1", "Project 1", "This is project 1", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
 
         ContentEnvironment envdev = new ContentEnvironment("dev", "Development", null, cp);
@@ -87,7 +87,8 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
 
         TestUtils.flushSession();
 
-        ContentProject fromDb = ContentProjectFactory.lookupProjectByLabelAndOrg("project1", user.getOrg()).get();
+        ContentProject fromDb = ContentProjectFactory.lookupProjectByLabelAndOrg("project1",
+                getTestUser().getOrg()).get();
         assertEquals("project1", fromDb.getLabel());
         assertEquals("This is project 1", fromDb.getDescription());
 
@@ -118,7 +119,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testRemoveEnvironments() {
-        ContentProject cp = new ContentProject("project1", "Project 1", "This is project 1", user.getOrg());
+        ContentProject cp = new ContentProject("project1", "Project 1", "This is project 1", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
 
         ContentEnvironment envdev = new ContentEnvironment("dev", "Development", null, cp);
@@ -135,7 +136,8 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
 
         ContentProjectFactory.removeEnvironment(envtest);
 
-        ContentProject fromDb = ContentProjectFactory.lookupProjectByLabelAndOrg("project1", user.getOrg()).get();
+        ContentProject fromDb = ContentProjectFactory.lookupProjectByLabelAndOrg("project1",
+                getTestUser().getOrg()).get();
         assertEquals("project1", fromDb.getLabel());
         assertEquals("This is project 1", fromDb.getDescription());
 
@@ -152,7 +154,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
 
         ContentProjectFactory.removeEnvironment(envdev);
 
-        fromDb = ContentProjectFactory.lookupProjectByLabelAndOrg("project1", user.getOrg()).get();
+        fromDb = ContentProjectFactory.lookupProjectByLabelAndOrg("project1", getTestUser().getOrg()).get();
         ContentEnvironment newfirst = fromDb.getFirstEnvironmentOpt().get();
         assertEquals("prod", newfirst.getLabel());
         assertEquals("Production", newfirst.getName());
@@ -164,7 +166,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testRemoveSingleEnvironment() {
-        ContentProject cp = new ContentProject("project1", "Project 1", "This is project 1", user.getOrg());
+        ContentProject cp = new ContentProject("project1", "Project 1", "This is project 1", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
 
         ContentEnvironment envdev = new ContentEnvironment("dev", "Development", null, cp);
@@ -183,7 +185,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testComputeEnvironmentStatus() throws Exception {
-        ContentProject cp = new ContentProject("project1", "Project 1", "This is project 1", user.getOrg());
+        ContentProject cp = new ContentProject("project1", "Project 1", "This is project 1", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
 
         ContentEnvironment envdev = new ContentEnvironment("dev", "Development", null, cp);
@@ -192,12 +194,12 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
 
         assertFalse(envdev.computeStatus().isPresent());
 
-        Channel channel = ChannelTestUtils.createBaseChannel(user);
+        Channel channel = ChannelTestUtils.createBaseChannel(getTestUser());
         SoftwareEnvironmentTarget target = new SoftwareEnvironmentTarget(envdev, channel);
         envdev.addTarget(target);
         assertFalse(envdev.computeStatus().isPresent());
 
-        Channel channel2 = ChannelTestUtils.createBaseChannel(user);
+        Channel channel2 = ChannelTestUtils.createBaseChannel(getTestUser());
         SoftwareEnvironmentTarget target2 = new SoftwareEnvironmentTarget(envdev, channel2);
         envdev.addTarget(target2);
 
@@ -239,7 +241,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testSaveAndList() {
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
 
         Org org2 = OrgFactory.createOrg();
@@ -248,7 +250,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         ContentProject cp2 = new ContentProject("cplabel2", "cpname2", "cpdesc2", org2);
         ContentProjectFactory.save(cp2);
 
-        List<ContentProject> contentProjects = ContentProjectFactory.listProjects(user.getOrg());
+        List<ContentProject> contentProjects = ContentProjectFactory.listProjects(getTestUser().getOrg());
         assertEquals(1, contentProjects.size());
         ContentProject fromDb = contentProjects.get(0);
         assertNotNull(fromDb.getId());
@@ -264,7 +266,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testLookupCrossOrg() {
-        Org org1 = user.getOrg();
+        Org org1 = getTestUser().getOrg();
         ContentProject cp1 = new ContentProject("cplabel", "cpname", "cpdesc", org1);
         ContentProjectFactory.save(cp1);
         Org org2 = UserTestUtils.createOrg("testOrg2");
@@ -287,7 +289,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testListEnvironments() {
-        ContentProject cp = new ContentProject("project1", "Project 1", "This is project 1", user.getOrg());
+        ContentProject cp = new ContentProject("project1", "Project 1", "This is project 1", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
 
         ContentEnvironment envdev = new ContentEnvironment("dev", "Development", null, cp);
@@ -308,7 +310,8 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
 
         TestUtils.flushAndClearSession();
 
-        ContentProject fromDb = ContentProjectFactory.lookupProjectByLabelAndOrg("project1", user.getOrg()).get();
+        ContentProject fromDb = ContentProjectFactory.lookupProjectByLabelAndOrg("project1",
+                getTestUser().getOrg()).get();
         List<ContentEnvironment> envs = ContentProjectFactory.listProjectEnvironments(fromDb);
         assertEquals("dev", envs.get(0).getLabel());
         assertEquals("int", envs.get(1).getLabel());
@@ -323,10 +326,10 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testProjectSource() throws Exception {
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
 
-        Channel baseChannel = ChannelTestUtils.createBaseChannel(user);
+        Channel baseChannel = ChannelTestUtils.createBaseChannel(getTestUser());
         ProjectSource swSource = new SoftwareProjectSource(cp, baseChannel);
         assertNull(swSource.getPosition());
         cp.addSource(swSource, empty());
@@ -336,7 +339,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         List<ProjectSource> fromDb = cp.getSources();
         assertEquals(singletonList(swSource), fromDb);
 
-        Channel childChannel = ChannelTestUtils.createChildChannel(user, baseChannel);
+        Channel childChannel = ChannelTestUtils.createChildChannel(getTestUser(), baseChannel);
         ProjectSource swSource2 = new SoftwareProjectSource(cp, childChannel);
         cp.addSource(swSource2, empty());
         assertEquals(Integer.valueOf(1), swSource2.getPosition());
@@ -357,18 +360,18 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testEnvironmentTargetByChannelLabel() throws Exception {
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
         ContentEnvironment envdev = new ContentEnvironment("dev", "Development", null, cp);
         ContentProjectFactory.save(envdev);
         cp.setFirstEnvironment(envdev);
-        Channel channel = ChannelTestUtils.createBaseChannel(user);
+        Channel channel = ChannelTestUtils.createBaseChannel(getTestUser());
 
         SoftwareEnvironmentTarget target = new SoftwareEnvironmentTarget(envdev, channel);
         ContentProjectFactory.save(target);
 
         assertEquals(target,
-                ContentProjectFactory.lookupEnvironmentTargetByChannelLabel(channel.getLabel(), user).get());
+                ContentProjectFactory.lookupEnvironmentTargetByChannelLabel(channel.getLabel(), getTestUser()).get());
     }
 
     /**
@@ -376,22 +379,23 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testProjectHistory() {
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
 
         ContentProjectHistoryEntry fstEntry = new ContentProjectHistoryEntry();
         fstEntry.setMessage("First Content Project build");
-        fstEntry.setUser(user);
+        fstEntry.setUser(getTestUser());
         ContentProjectFactory.addHistoryEntryToProject(cp, fstEntry);
         TestUtils.flushSession(); // so that the CreationTimestamp gets updated
 
         ContentProjectHistoryEntry sndEntry = new ContentProjectHistoryEntry();
         sndEntry.setMessage("Second Content Project build");
-        sndEntry.setUser(user);
+        sndEntry.setUser(getTestUser());
 
         ContentProjectFactory.addHistoryEntryToProject(cp, sndEntry);
 
-        ContentProject fromDb = ContentProjectFactory.lookupProjectByLabelAndOrg(cp.getLabel(), user.getOrg()).get();
+        ContentProject fromDb = ContentProjectFactory.lookupProjectByLabelAndOrg(cp.getLabel(),
+                getTestUser().getOrg()).get();
         ContentProjectHistoryEntry fstEntryFromDb = fromDb.getHistoryEntries().get(0);
         ContentProjectHistoryEntry sndEntryFromDb = fromDb.getHistoryEntries().get(1);
 
@@ -402,7 +406,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
 
         assertFalse(sndEntryFromDb.getCreated().before(fstEntryFromDb.getCreated()));
 
-        UserFactory.deleteUser(user.getId());
+        UserFactory.deleteUser(getTestUser().getId());
         fstEntryFromDb = TestUtils.reload(fstEntryFromDb);
         sndEntryFromDb = TestUtils.reload(sndEntryFromDb);
         assertNull(fstEntryFromDb.getUser());
@@ -432,10 +436,10 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testProjectSourceState() throws Exception {
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
 
-        Channel baseChannel = ChannelTestUtils.createBaseChannel(user);
+        Channel baseChannel = ChannelTestUtils.createBaseChannel(getTestUser());
         ProjectSource swSource = new SoftwareProjectSource(cp, baseChannel);
         cp.addSource(swSource, empty());
         ContentProjectFactory.save(swSource);
@@ -457,15 +461,15 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testLookupProjectLeader() throws Exception {
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
-        Channel baseChannel = ChannelTestUtils.createBaseChannel(user);
+        Channel baseChannel = ChannelTestUtils.createBaseChannel(getTestUser());
         ProjectSource swSource = new SoftwareProjectSource(cp, baseChannel);
         ContentProjectFactory.save(swSource);
-        Channel baseChannel2 = ChannelTestUtils.createBaseChannel(user);
+        Channel baseChannel2 = ChannelTestUtils.createBaseChannel(getTestUser());
         ProjectSource swSource2 = new SoftwareProjectSource(cp, baseChannel2);
         ContentProjectFactory.save(swSource2);
-        Channel childChannel = ChannelTestUtils.createChildChannel(user, baseChannel);
+        Channel childChannel = ChannelTestUtils.createChildChannel(getTestUser(), baseChannel);
         ProjectSource childChannelSource = new SoftwareProjectSource(cp, childChannel);
         ContentProjectFactory.save(swSource);
 
@@ -476,14 +480,14 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         cp.addSource(childChannelSource, empty());
         cp.addSource(swSource, empty());
         cp.addSource(swSource2, empty());
-        cp = ContentProjectFactory.lookupProjectByLabelAndOrg("cplabel", user.getOrg()).get();
+        cp = ContentProjectFactory.lookupProjectByLabelAndOrg("cplabel", getTestUser().getOrg()).get();
         assertEquals(swSource, cp.lookupSwSourceLeader().get());
 
         // let's re-arrange the sources and test that the leader lookup works
         // but keep the "child source" as the first element - it is supposed to be skipped on leader lookup
         cp.removeSource(swSource2);
         cp.addSource(swSource2, of(1));
-        cp = ContentProjectFactory.lookupProjectByLabelAndOrg("cplabel", user.getOrg()).get();
+        cp = ContentProjectFactory.lookupProjectByLabelAndOrg("cplabel", getTestUser().getOrg()).get();
         assertEquals(swSource2, cp.lookupSwSourceLeader().get());
     }
 
@@ -494,7 +498,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testLookupEnvironmentTargets() throws Exception {
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
         ContentEnvironment envdev = new ContentEnvironment("dev", "Development", null, cp);
         ContentProjectFactory.save(envdev);
@@ -503,10 +507,10 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         ContentProjectFactory.save(envtest);
         cp.setFirstEnvironment(envtest);
 
-        Channel channel = ChannelTestUtils.createBaseChannel(user);
+        Channel channel = ChannelTestUtils.createBaseChannel(getTestUser());
         SoftwareEnvironmentTarget target = new SoftwareEnvironmentTarget(envdev, channel);
         envdev.addTarget(target);
-        Channel channel2 = ChannelTestUtils.createBaseChannel(user);
+        Channel channel2 = ChannelTestUtils.createBaseChannel(getTestUser());
         SoftwareEnvironmentTarget target2 = new SoftwareEnvironmentTarget(envdev, channel2);
         envdev.addTarget(target2);
 
@@ -515,7 +519,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         assertContains(targetsDev, target);
         assertContains(targetsDev, target2);
 
-        Channel channel3 = ChannelTestUtils.createBaseChannel(user);
+        Channel channel3 = ChannelTestUtils.createBaseChannel(getTestUser());
         SoftwareEnvironmentTarget target3 = new SoftwareEnvironmentTarget(envtest, channel3);
         envtest.addTarget(target3);
         List<EnvironmentTarget> targetsTest = envtest.getTargets();
@@ -539,13 +543,13 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testLookupEnvironmentTargetById() throws Exception {
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
         ContentEnvironment envdev = new ContentEnvironment("dev", "Development", null, cp);
         ContentProjectFactory.save(envdev);
         cp.setFirstEnvironment(envdev);
 
-        Channel channel = ChannelTestUtils.createBaseChannel(user);
+        Channel channel = ChannelTestUtils.createBaseChannel(getTestUser());
         SoftwareEnvironmentTarget target = new SoftwareEnvironmentTarget(envdev, channel);
         ContentProjectFactory.save(target);
 
@@ -559,12 +563,12 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testPurgeSwTarget() throws Exception {
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
         ContentEnvironment envdev = new ContentEnvironment("dev", "Development", null, cp);
         ContentProjectFactory.save(envdev);
         cp.setFirstEnvironment(envdev);
-        Channel channel = ChannelTestUtils.createBaseChannel(user);
+        Channel channel = ChannelTestUtils.createBaseChannel(getTestUser());
         SoftwareEnvironmentTarget target = new SoftwareEnvironmentTarget(envdev, channel);
         envdev.addTarget(target);
         String channelLabel = channel.getLabel();
@@ -583,12 +587,12 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testPurgeSwTargetWithKS() throws Exception {
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
         ContentEnvironment envdev = new ContentEnvironment("dev", "Development", null, cp);
         ContentProjectFactory.save(envdev);
         cp.setFirstEnvironment(envdev);
-        Channel channel = ChannelTestUtils.createBaseChannel(user);
+        Channel channel = ChannelTestUtils.createBaseChannel(getTestUser());
         KickstartableTreeTest.createTestKickstartableTree(channel);
         SoftwareEnvironmentTarget target = new SoftwareEnvironmentTarget(envdev, channel);
         envdev.addTarget(target);
@@ -613,11 +617,11 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testListFilterProjects() {
-        user.addPermanentRole(ORG_ADMIN);
+        getTestUser().addPermanentRole(ORG_ADMIN);
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "name", "aaa");
         ContentFilter filter = contentManager.createFilter(
-                "my-filter", ContentFilter.Rule.DENY, ContentFilter.EntityType.PACKAGE, criteria, user);
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+                "my-filter", ContentFilter.Rule.DENY, ContentFilter.EntityType.PACKAGE, criteria, getTestUser());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
 
         assertTrue(ContentProjectFactory.listFilterProjects(filter).isEmpty());
@@ -665,7 +669,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testLookupClonesInProject() throws Exception {
         // create CLM objects
-        ContentProject cp = new ContentProject("project1", "Project 1", "This is project 1", user.getOrg());
+        ContentProject cp = new ContentProject("project1", "Project 1", "This is project 1", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
 
         var devEnv = new ContentEnvironment("dev", "dev", null, cp);
@@ -676,11 +680,11 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         ContentProjectFactory.insertEnvironment(testEnv, of(devEnv));
 
         // create channels and corresponding targets
-        Channel srcChannel = ChannelFactoryTest.createTestChannel(user);
+        Channel srcChannel = ChannelFactoryTest.createTestChannel(getTestUser());
         srcChannel.setLabel("channel123");
-        Channel devChannel = ChannelFactoryTest.createTestClonedChannel(srcChannel, user);
+        Channel devChannel = ChannelFactoryTest.createTestClonedChannel(srcChannel, getTestUser());
         devChannel.setLabel("testproj1-dev-channel123");
-        Channel testChannel = ChannelFactoryTest.createTestClonedChannel(devChannel, user);
+        Channel testChannel = ChannelFactoryTest.createTestClonedChannel(devChannel, getTestUser());
         testChannel.setLabel("testproj1-test-channel123");
 
         var devTgt = new SoftwareEnvironmentTarget(devEnv, devChannel);
@@ -711,7 +715,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void canDeleteProject() {
-        ContentProject project = new ContentProject("test", "test", "test", user.getOrg());
+        ContentProject project = new ContentProject("test", "test", "test", getTestUser().getOrg());
         ContentProjectFactory.save(project);
 
         ContentEnvironment one = new ContentEnvironment("one", "one", null, project);
@@ -725,7 +729,7 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
         TestUtils.flushAndClearSession();
 
         // Reload the project to ensure it was stored correctly
-        project = ContentProjectFactory.lookupProjectByNameAndOrg("test", user.getOrg()).orElse(null);
+        project = ContentProjectFactory.lookupProjectByNameAndOrg("test", getTestUser().getOrg()).orElse(null);
         assertNotNull(project);
 
         List<ContentEnvironment> contentEnvironments = ContentProjectFactory.listProjectEnvironments(project);
@@ -744,11 +748,11 @@ public class ContentProjectFactoryTest extends BaseTestCaseWithUser {
 
         TestUtils.clearSession();
 
-        project = ContentProjectFactory.lookupProjectByNameAndOrg("test", user.getOrg()).orElse(null);
+        project = ContentProjectFactory.lookupProjectByNameAndOrg("test", getTestUser().getOrg()).orElse(null);
         ContentProjectFactory.remove(project);
 
         TestUtils.flushAndClearSession();
 
-        assertTrue(ContentProjectFactory.lookupProjectByNameAndOrg("test", user.getOrg()).isEmpty());
+        assertTrue(ContentProjectFactory.lookupProjectByNameAndOrg("test", getTestUser().getOrg()).isEmpty());
     }
 }

@@ -42,7 +42,7 @@ public class SystemSearchActionTest extends RhnMockStrutsTestCase {
     @BeforeEach
     public void setUp() throws Exception {
         setRequestPathInfo("/systems/Search");
-        s = ServerFactoryTest.createTestServer(user, true,
+        s = ServerFactoryTest.createTestServer(getTestUser(), true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
 
     }
@@ -63,7 +63,7 @@ public class SystemSearchActionTest extends RhnMockStrutsTestCase {
         *
         * Will be marking this test to be skipped till a suitable test is implemented
         */
-        s = ServerFactoryTest.createTestServer(user, true,
+        s = ServerFactoryTest.createTestServer(getTestUser(), true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
         addRequestParameter(RhnAction.SUBMITTED, Boolean.TRUE.toString());
         addRequestParameter(BaseSearchAction.SEARCH_STR, "redhat");

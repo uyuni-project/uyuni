@@ -50,13 +50,13 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
      */
     @BeforeEach
     public void setUp() throws Exception {
-        user.addPermanentRole(RoleFactory.SAT_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.SAT_ADMIN);
     }
 
     @Test
     public void testCreateCommand() {
 
-        cmd = new ConfigureSatelliteCommand(user) {
+        cmd = new ConfigureSatelliteCommand(getTestUser()) {
             @Override
             public ValidatorError[] storeConfiguration() {
                 this.clearUpdates();
@@ -108,7 +108,7 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
     @Test
     public void testRemoveEntries() {
 
-        cmd = new ConfigureSatelliteCommand(user) {
+        cmd = new ConfigureSatelliteCommand(getTestUser()) {
             @Override
             public ValidatorError[] storeConfiguration() {
                 this.clearUpdates();
@@ -145,7 +145,7 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
     @Test
     public void testUpdateHostname() {
 
-        cmd = new ConfigureSatelliteCommand(user) {
+        cmd = new ConfigureSatelliteCommand(getTestUser()) {
             @Override
             protected Executor getExecutor() {
                 return new TestExecutor();
@@ -161,7 +161,7 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
     @Test
     public void testMountPoint() {
 
-        cmd = new ConfigureSatelliteCommand(user) {
+        cmd = new ConfigureSatelliteCommand(getTestUser()) {
             @Override
             protected Executor getExecutor() {
                 return new TestExecutor();
@@ -179,16 +179,16 @@ public class ConfigureSatelliteCommandTest extends BaseTestCaseWithUser {
     @Test
     public void testRoles() {
 
-        user.removePermanentRole(RoleFactory.SAT_ADMIN);
+        getTestUser().removePermanentRole(RoleFactory.SAT_ADMIN);
         try {
-            cmd = new ConfigureSatelliteCommand(user);
+            cmd = new ConfigureSatelliteCommand(getTestUser());
             fail("Should have thrown an IllegalArgumentException");
         }
         catch (IllegalArgumentException iae) {
             // noop
         }
-        user.addPermanentRole(RoleFactory.SAT_ADMIN);
-        cmd = new ConfigureSatelliteCommand(user);
+        getTestUser().addPermanentRole(RoleFactory.SAT_ADMIN);
+        cmd = new ConfigureSatelliteCommand(getTestUser());
         assertNotNull(cmd);
     }
 

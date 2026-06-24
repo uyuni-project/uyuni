@@ -117,17 +117,17 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
     @BeforeEach
     public void setUp() throws Exception {
 
-        this.channel = ErrataTestUtils.createTestChannel(user);
+        this.channel = ErrataTestUtils.createTestChannel(getTestUser());
         this.mockResponse = new RhnMockHttpServletResponse();
         this.response = RequestResponseFactory.create(mockResponse);
 
-        this.pkg = ErrataTestUtils.createTestPackage(user, channel, "noarch");
+        this.pkg = ErrataTestUtils.createTestPackage(getTestUser(), channel, "noarch");
         final String nvra = String.format("%s-%s-%s.%s",
                 pkg.getPackageName().getName(), pkg.getPackageEvr().getVersion(),
                 pkg.getPackageEvr().getRelease(), pkg.getPackageArch().getLabel());
         this.uriFile = String.format("%s.rpm", nvra);
 
-        this.pkg2 = ErrataTestUtils.createLaterTestPackage(user, null, channel, pkg,
+        this.pkg2 = ErrataTestUtils.createLaterTestPackage(getTestUser(), null, channel, pkg,
                 null, "1000+git001^20220524", pkg.getPackageEvr().getRelease());
         final String nvra2 = String.format("%s-%s-%s.%s",
                 pkg2.getPackageName().getName(), pkg2.getPackageEvr().getVersion(),
@@ -225,7 +225,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
         PackageName pname = PackageNameTest.createTestPackageName();
         PackageEvr pevr = PackageEvrFactoryTest.createTestPackageEvr(epoch, version, release, PackageType.DEB);
         PackageArch parch = PackageFactory.lookupPackageArchByLabel(arch);
-        PackageTest.populateTestPackage(dpkg, user.getOrg(), pname, pevr, parch);
+        PackageTest.populateTestPackage(dpkg, getTestUser().getOrg(), pname, pevr, parch);
         dpkg = TestUtils.saveAndFlush(dpkg);
 
         List<Long> list = new ArrayList<>(1);
@@ -367,7 +367,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testTwoTokens() throws Exception {
-        Token token = new DownloadTokenBuilder(user.getOrg().getId())
+        Token token = new DownloadTokenBuilder(getTestUser().getOrg().getId())
             .usingServerSecret()
             .build();
 
@@ -395,7 +395,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
     @Test
     public void testTokenDifferentChannel() throws Exception {
         // The added token is for a different channel
-        Token tokenOtherChannel = new DownloadTokenBuilder(user.getOrg().getId())
+        Token tokenOtherChannel = new DownloadTokenBuilder(getTestUser().getOrg().getId())
             .usingServerSecret()
             .allowingOnlyChannels(Set.of(channel.getLabel() + "WRONG"))
             .build();
@@ -423,7 +423,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testTokenWrongOrg() throws Exception {
-        Token tokenOtherOrg = new DownloadTokenBuilder(user.getOrg().getId() + 1)
+        Token tokenOtherOrg = new DownloadTokenBuilder(getTestUser().getOrg().getId() + 1)
             .usingServerSecret()
             .allowingOnlyChannels(Set.of(channel.getLabel()))
             .build();
@@ -450,7 +450,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testTokenNotValid() throws Exception {
-        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         testMinionServer.getChannels().add(channel);
         AccessTokenFactory.refreshTokens(testMinionServer);
 
@@ -531,7 +531,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      * @throws Exception if anything goes wrong
      */
     private void testCorrectChannel(Supplier<File> pkgFile, Function<String, Request> requestFactory) throws Exception {
-        Token token = new DownloadTokenBuilder(user.getOrg().getId())
+        Token token = new DownloadTokenBuilder(getTestUser().getOrg().getId())
             .usingServerSecret()
             .allowingOnlyChannels(Set.of(channel.getLabel()))
             .build();
@@ -555,7 +555,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testDownloadPackageWithSpecialCharacters() throws Exception {
-        Token token = new DownloadTokenBuilder(user.getOrg().getId())
+        Token token = new DownloadTokenBuilder(getTestUser().getOrg().getId())
             .usingServerSecret().allowingOnlyChannels(Set.of(channel.getLabel()))
             .build();
 
@@ -585,7 +585,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testCorrectOrg() throws Exception {
-        Token token = new DownloadTokenBuilder(user.getOrg().getId())
+        Token token = new DownloadTokenBuilder(getTestUser().getOrg().getId())
             .usingServerSecret()
             .build();
 
@@ -616,7 +616,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testExpiredToken() throws Exception {
-        Token token = new DownloadTokenBuilder(user.getOrg().getId())
+        Token token = new DownloadTokenBuilder(getTestUser().getOrg().getId())
             .usingServerSecret()
             .expiringAfterMinutes(-1) // already expired
             .build();
@@ -672,7 +672,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testDownloadComps() throws Exception {
-        Token token = new DownloadTokenBuilder(user.getOrg().getId())
+        Token token = new DownloadTokenBuilder(getTestUser().getOrg().getId())
             .usingServerSecret()
             .build();
 
@@ -728,7 +728,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testDownloadModules() throws Exception {
-        Token token = new DownloadTokenBuilder(user.getOrg().getId())
+        Token token = new DownloadTokenBuilder(getTestUser().getOrg().getId())
             .usingServerSecret()
             .build();
         AccessToken accessToken = saveTokenToDataBase(token);
@@ -782,7 +782,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testDownloadMediaProducts() throws Exception {
-        Token token = new DownloadTokenBuilder(user.getOrg().getId())
+        Token token = new DownloadTokenBuilder(getTestUser().getOrg().getId())
             .usingServerSecret()
             .build();
 
@@ -838,7 +838,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testDownloadMissingFile() throws Exception {
-        Token token = new DownloadTokenBuilder(user.getOrg().getId())
+        Token token = new DownloadTokenBuilder(getTestUser().getOrg().getId())
             .usingServerSecret()
             .build();
 
@@ -906,15 +906,15 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
                 .build();
 
         downloadController = new DownloadController(cpg);
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         minion.setInstalledProducts(Collections.emptySet());
 
-        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user,
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(getTestUser(),
                 "/com/redhat/rhn/manager/content/smallBase", true);
         TestUtils.flushSession();
 
         // Test case - Token passed minion has no products
-        Token token = new DownloadTokenBuilder(user.getOrg().getId())
+        Token token = new DownloadTokenBuilder(getTestUser().getOrg().getId())
             .usingServerSecret()
             .expiringAfterMinutes(30)
             .build();
@@ -966,7 +966,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
 
         // Test case - Token passed is not a short-token (must fail)
         try {
-            Token tokenFail = new DownloadTokenBuilder(user.getOrg().getId())
+            Token tokenFail = new DownloadTokenBuilder(getTestUser().getOrg().getId())
                 .usingServerSecret()
                 .expiringAfterMinutes(360)
                 .build();
@@ -984,7 +984,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
 
         // Test case - Token passed is short-lived (must pass)
         try {
-            Token tokenPass = new DownloadTokenBuilder(user.getOrg().getId())
+            Token tokenPass = new DownloadTokenBuilder(getTestUser().getOrg().getId())
                 .usingServerSecret()
                 .expiringAfterMinutes(30)
                 .build();
@@ -1000,7 +1000,7 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
 
         // Test case - Token passed is expired
         try {
-            Token tokenExpired = new DownloadTokenBuilder(user.getOrg().getId())
+            Token tokenExpired = new DownloadTokenBuilder(getTestUser().getOrg().getId())
                 .usingServerSecret()
                 .expiringAfterMinutes(-15)
                 .build();

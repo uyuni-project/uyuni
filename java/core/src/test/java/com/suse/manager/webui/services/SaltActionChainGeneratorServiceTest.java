@@ -56,9 +56,9 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
     public void testCreateActionChainSLSFilesOneChunk() throws Exception {
         String label = TestUtils.randomString();
 
-        ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
+        ActionChain actionChain = ActionChainFactory.createActionChain(label, getTestUser());
 
-        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         SystemManager.giveCapability(minion1.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
 
         MinionSummary minionSummary1 = new MinionSummary(minion1);
@@ -125,9 +125,9 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
     public void testCreateActionChainSLSFilesTwoChunks() throws Exception {
         String label = TestUtils.randomString();
 
-        ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
+        ActionChain actionChain = ActionChainFactory.createActionChain(label, getTestUser());
 
-        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         MinionSummary minionSummary1 = new MinionSummary(minion1);
 
         SystemManager.giveCapability(minion1.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
@@ -211,9 +211,9 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
     public void testCreateActionChainSLSFilesOneChunksTransactionalUpdate() throws Exception {
         String label = TestUtils.randomString();
 
-        ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
+        ActionChain actionChain = ActionChainFactory.createActionChain(label, getTestUser());
 
-        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         minion1.setOs(ServerConstants.SLEMICRO);
         minion1.setRelease("5.5");
         MinionSummary minionSummary1 = new MinionSummary(minion1);
@@ -275,9 +275,9 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
     public void testCreateActionChainSLSFilesTwoChunksTransactionalUpdate() throws Exception {
         String label = TestUtils.randomString();
 
-        ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
+        ActionChain actionChain = ActionChainFactory.createActionChain(label, getTestUser());
 
-        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         minion1.setOs(ServerConstants.SLEMICRO);
         minion1.setRelease("6.0");
         MinionSummary minionSummary1 = new MinionSummary(minion1);
@@ -359,9 +359,9 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
     @Test
     public void testCreateActionChainSLSFilesSaltUpgrade() throws Exception {
         String label = TestUtils.randomString();
-        ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
+        ActionChain actionChain = ActionChainFactory.createActionChain(label, getTestUser());
 
-        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         MinionSummary minionSummary1 = new MinionSummary(minion1);
         SystemManager.giveCapability(minion1.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
 
@@ -445,8 +445,8 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
     @Test
     public void testRemoveAllActionChainSLSFilesForMinion() throws Exception {
         String label = TestUtils.randomString();
-        ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
-        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
+        ActionChain actionChain = ActionChainFactory.createActionChain(label, getTestUser());
+        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         MinionSummary minionSummary1 = new MinionSummary(minion1);
 
         Path stateFilesRoot = Files.createTempDirectory("actionchaingentest");
@@ -534,9 +534,9 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
     @Test
     public void testPkgInstallationSLSFiles() throws Exception {
         String label = TestUtils.randomString();
-        ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
+        ActionChain actionChain = ActionChainFactory.createActionChain(label, getTestUser());
 
-        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         MinionSummary minionSummary1 = new MinionSummary(minion1);
         SystemManager.giveCapability(minion1.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
 
@@ -609,9 +609,9 @@ public class SaltActionChainGeneratorServiceTest extends BaseTestCaseWithUser {
     public void testRemoveActionChainSLSFiles() throws Exception {
         String label = TestUtils.randomString();
 
-        ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
+        ActionChain actionChain = ActionChainFactory.createActionChain(label, getTestUser());
 
-        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         MinionSummary minionSummary1 = new MinionSummary(minion1);
         SystemManager.giveCapability(minion1.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
 

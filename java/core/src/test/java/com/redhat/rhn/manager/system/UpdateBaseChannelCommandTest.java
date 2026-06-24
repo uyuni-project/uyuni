@@ -39,8 +39,8 @@ public class UpdateBaseChannelCommandTest extends BaseTestCaseWithUser {
     @Test
     public void testChannelPreservation() throws Exception {
         ProductName pn = ChannelFactoryTest.createProductName();
-        Channel parent = ChannelFactoryTest.createBaseChannel(user);
-        Channel child = ChannelFactoryTest.createTestChannel(user);
+        Channel parent = ChannelFactoryTest.createBaseChannel(getTestUser());
+        Channel child = ChannelFactoryTest.createTestChannel(getTestUser());
 
         child.setParentChannel(parent);
         child.setProductName(pn);
@@ -48,8 +48,8 @@ public class UpdateBaseChannelCommandTest extends BaseTestCaseWithUser {
         child = TestUtils.saveAndFlush(child);
         parent = TestUtils.saveAndFlush(parent);
 
-        Channel parent1 = ChannelFactoryTest.createBaseChannel(user);
-        Channel child1 = ChannelFactoryTest.createTestChannel(user);
+        Channel parent1 = ChannelFactoryTest.createBaseChannel(getTestUser());
+        Channel child1 = ChannelFactoryTest.createTestChannel(getTestUser());
 
         child1.setParentChannel(parent1);
         child1.setProductName(pn);
@@ -57,7 +57,7 @@ public class UpdateBaseChannelCommandTest extends BaseTestCaseWithUser {
         child1 = TestUtils.saveAndFlush(child1);
         parent1 = TestUtils.saveAndFlush(parent1);
 
-        Server s = ServerFactoryTest.createTestServer(user, true,
+        Server s = ServerFactoryTest.createTestServer(getTestUser(), true,
                     ServerConstants.getServerGroupTypeEnterpriseEntitled());
 
         s.addChannel(parent);
@@ -76,7 +76,7 @@ public class UpdateBaseChannelCommandTest extends BaseTestCaseWithUser {
         channels.add(child);
         assertEquals(channels, s.getChannels());
 
-        UpdateBaseChannelCommand cmd = new UpdateBaseChannelCommand(user,
+        UpdateBaseChannelCommand cmd = new UpdateBaseChannelCommand(getTestUser(),
                                                             s, parent1.getId());
         cmd.store();
 

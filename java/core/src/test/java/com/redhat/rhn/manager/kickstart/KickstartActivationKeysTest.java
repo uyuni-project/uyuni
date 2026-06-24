@@ -41,12 +41,12 @@ public class KickstartActivationKeysTest extends BaseKickstartCommandTestCase {
 
     @Test
     public void testActivationKeysForKickstart() {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
 
         String note = TestUtils.randomString() +
             " -- Java unit test activation key.";
 
-        ActivationKey key = ActivationKeyFactory.createNewKey(user, note);
+        ActivationKey key = ActivationKeyFactory.createNewKey(getTestUser(), note);
         ActivationKeyFactory.save(key);
         key = TestUtils.reload(key);
 
@@ -75,14 +75,14 @@ public class KickstartActivationKeysTest extends BaseKickstartCommandTestCase {
 
         KickstartFactory.saveKickstartData(ksdata);
 
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
 
         String note = TestUtils.randomString() +
             " -- Java unit test activation key.";
 
-        ActivationKey key1 = ActivationKeyFactory.createNewKey(user, "first " + note);
-        ActivationKey key2 = ActivationKeyFactory.createNewKey(user, "second " + note);
-        ActivationKey key3 = ActivationKeyFactory.createNewKey(user, "third " + note);
+        ActivationKey key1 = ActivationKeyFactory.createNewKey(getTestUser(), "first " + note);
+        ActivationKey key2 = ActivationKeyFactory.createNewKey(getTestUser(), "second " + note);
+        ActivationKey key3 = ActivationKeyFactory.createNewKey(getTestUser(), "third " + note);
         ActivationKeyFactory.save(key1);
         ActivationKeyFactory.save(key2);
         ActivationKeyFactory.save(key3);
@@ -103,7 +103,7 @@ public class KickstartActivationKeysTest extends BaseKickstartCommandTestCase {
         all.add(key3.getId());
 
         KickstartActivationKeysCommand command =
-            new KickstartActivationKeysCommand(ksdata.getId(), user);
+            new KickstartActivationKeysCommand(ksdata.getId(), getTestUser());
 
         // test adding
         checkTokens(command, one, null, 1);
@@ -151,7 +151,7 @@ public class KickstartActivationKeysTest extends BaseKickstartCommandTestCase {
         command.store();
 
         KickstartData ks =
-            KickstartFactory.lookupKickstartDataByIdAndOrg(user.getOrg(),
+            KickstartFactory.lookupKickstartDataByIdAndOrg(getTestUser().getOrg(),
                     command.getKickstartData().getId());
 
         assertEquals(expectedCount, ks.getDefaultRegTokens().size());

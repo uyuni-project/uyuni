@@ -34,32 +34,32 @@ public class CobblerSnippetListerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testList() {
-        user.addToGroup(AccessGroupFactory.CONFIG_ADMIN);
+        getTestUser().addToGroup(AccessGroupFactory.CONFIG_ADMIN);
         CobblerSnippet snip = CobblerSnippetTest.readOnly();
         List<CobblerSnippet> snips =
-            CobblerSnippetLister.getInstance().list(user);
+            CobblerSnippetLister.getInstance().list(getTestUser());
         assertTrue(snips.contains(snip));
         snips =
-            CobblerSnippetLister.getInstance().listDefault(user);
+            CobblerSnippetLister.getInstance().listDefault(getTestUser());
         assertTrue(snips.contains(snip));
 
-        CobblerSnippet snip2 = CobblerSnippetTest.editable(user);
+        CobblerSnippet snip2 = CobblerSnippetTest.editable(getTestUser());
         snips =
-            CobblerSnippetLister.getInstance().list(user);
+            CobblerSnippetLister.getInstance().list(getTestUser());
         assertTrue(snips.contains(snip2));
         snips =
-            CobblerSnippetLister.getInstance().listCustom(user);
+            CobblerSnippetLister.getInstance().listCustom(getTestUser());
         assertTrue(snips.contains(snip2));
         snips =
-            CobblerSnippetLister.getInstance().listDefault(user);
+            CobblerSnippetLister.getInstance().listDefault(getTestUser());
         assertFalse(snips.contains(snip2));
         snip2.delete();
         snips =
-            CobblerSnippetLister.getInstance().list(user);
+            CobblerSnippetLister.getInstance().list(getTestUser());
         assertFalse(snips.contains(snip2));
 
         snips =
-            CobblerSnippetLister.getInstance().listCustom(user);
+            CobblerSnippetLister.getInstance().listCustom(getTestUser());
         assertFalse(snips.contains(snip2));
     }
 }

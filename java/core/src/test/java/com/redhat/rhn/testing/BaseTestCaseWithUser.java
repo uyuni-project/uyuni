@@ -25,17 +25,17 @@ import org.junit.jupiter.api.BeforeEach;
  */
 public abstract class BaseTestCaseWithUser extends RhnBaseTestCase {
 
-    protected User user;
+    private User user;
 
     @BeforeEach
     public void setUpBaseTestCaseWithUser() throws Exception {
         user = UserTestUtils.createUser(this);
-        KickstartDataTest.setupTestConfiguration(user);
+        KickstartDataTest.setupTestConfiguration(getTestUser());
     }
 
      @Override
     protected void cleanupDatabaseCommits() {
-        TestUtils.deleteOrgOfUser(user);
+        TestUtils.deleteOrgOfUser(getTestUser());
     }
 
     @Override

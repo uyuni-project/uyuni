@@ -45,7 +45,7 @@ public class ResponseMappersTest extends BaseTestCaseWithUser {
     @BeforeEach
     public void setUp() throws Exception {
         manager = new ContentManager();
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
     }
 
     /**
@@ -53,9 +53,10 @@ public class ResponseMappersTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testMapProjectPropertiesFromDB() throws Exception {
-        ContentProject cp = new ContentProject("myproject", "My Project", "My CLM project", user.getOrg());
+        ContentProject cp = new ContentProject("myproject", "My Project", "My CLM project", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
-        manager.createEnvironment(cp.getLabel(), empty(), "dev", "Development", "Development environment", false, user);
+        manager.createEnvironment(cp.getLabel(), empty(),
+                "dev", "Development", "Development environment", false, getTestUser());
 
         // Initial project creation
         ProjectPropertiesResponse props = ResponseMappers.mapProjectPropertiesFromDB(cp);
@@ -66,11 +67,11 @@ public class ResponseMappersTest extends BaseTestCaseWithUser {
         assertTrue(props.getHistoryEntries().isEmpty());
 
         // First build
-        Channel source = ChannelTestUtils.createTestChannel(user);
+        Channel source = ChannelTestUtils.createTestChannel(getTestUser());
         source.setChecksumType(ChannelFactory.findChecksumTypeByLabel("sha1"));
         ChannelFactory.save(source);
-        manager.attachSource(cp.getLabel(), SW_CHANNEL, source.getLabel(), empty(), user);
-        manager.buildProject(cp, empty(), false, user);
+        manager.attachSource(cp.getLabel(), SW_CHANNEL, source.getLabel(), empty(), getTestUser());
+        manager.buildProject(cp, empty(), false, getTestUser());
 
         props = ResponseMappers.mapProjectPropertiesFromDB(cp);
         Date firstBuildDate = ViewHelper.getDateFromISOString(props.getLastBuildDate());
@@ -80,7 +81,7 @@ public class ResponseMappersTest extends BaseTestCaseWithUser {
         Thread.sleep(1000); // wait before building again
 
         // Second build
-        manager.buildProject(cp, empty(), false, user);
+        manager.buildProject(cp, empty(), false, getTestUser());
         props = ResponseMappers.mapProjectPropertiesFromDB(cp);
         Date secondBuildDate = ViewHelper.getDateFromISOString(props.getLastBuildDate());
         assertTrue(secondBuildDate.after(firstBuildDate));

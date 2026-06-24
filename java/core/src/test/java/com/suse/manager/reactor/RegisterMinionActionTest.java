@@ -203,14 +203,14 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
             }};
 
     private ActivationKeySupplier activationKeySupplier = (contactMethod) -> {
-        Channel baseChannel = ChannelFactoryTest.createBaseChannel(user, "channel-x86_64");
-        ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
+        Channel baseChannel = ChannelFactoryTest.createBaseChannel(getTestUser(), "channel-x86_64");
+        ActivationKey key = ActivationKeyTest.createTestActivationKey(getTestUser());
         key.setBaseChannel(baseChannel);
-        key.setOrg(user.getOrg());
+        key.setOrg(getTestUser().getOrg());
         key.setContactMethod(ServerFactory.findContactMethodByLabel(contactMethod));
         key.addPackage(PackageFactory.lookupOrCreatePackageByName("vim"), null);
         ManagedServerGroup testGroup = ServerGroupFactory.create(
-                "TestGroup", "group for tests", user.getOrg());
+                "TestGroup", "group for tests", getTestUser().getOrg());
         key.setServerGroups(Collections.singleton(testGroup));
         ActivationKeyFactory.save(key);
         return key.getKey();
@@ -266,8 +266,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
     @BeforeEach
     public void setUp() throws Exception {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        UserFactory.save(user);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
+        UserFactory.save(getTestUser());
 
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         Config.get().setString("server.secret_key", "d8d796b3322d65928511769d180d284d2b15158165eb83083efa02c9024aa6cc");
@@ -375,14 +375,15 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testReRegisterTraditionalAsMinion() throws Exception {
         ServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
-        Server server = ServerTestUtils.createTestSystem(user, ServerConstants.getServerGroupTypeEnterpriseEntitled());
+        Server server = ServerTestUtils.createTestSystem(getTestUser(),
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
         server.setMachineId(MACHINE_ID);
         ServerFactory.save(server);
         SystemManager.giveCapability(server.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
-        SystemManager.lockServer(user, server, "manually locked");
+        SystemManager.lockServer(getTestUser(), server, "manually locked");
 
         // Activation key used for the traditional registration
-        ActivationKey activationKey = ActivationKeyTest.createTestActivationKey(user);
+        ActivationKey activationKey = ActivationKeyTest.createTestActivationKey(getTestUser());
         activationKey.getToken().getActivatedServers().add(server);
 
         executeTest(slesExpectations, activationKeySupplier, (optMinion, machineId, key) -> {
@@ -401,12 +402,12 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testScheduleCoCoAttestationNotEnabled() throws Exception {
-        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         server.setMinionId(MINION_ID);
         server.setHostname(MINION_ID);
 
         try {
-            attestationManager.createConfig(user, server, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, false);
+            attestationManager.createConfig(getTestUser(), server, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, false);
             executeTest(slesExpectationsAlreadyRegistered, null, (minion, machineId, key) -> {
                 assertTrue(MinionServerFactory.findByMachineId(MACHINE_ID).isPresent());
                 MinionServerFactory.findByMachineId(MACHINE_ID).ifPresentOrElse(
@@ -414,7 +415,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                             assertEquals(m.getCreated(), server.getCreated());
                             assertEquals(m.getId(), server.getId());
                             assertEquals(0, attestationManager.listCoCoAttestationReportsForUserAndServer(
-                                    user, m, new Date(0), 0, 10).size());
+                                    getTestUser(), m, new Date(0), 0, 10).size());
                         },
                         () -> fail("Machine ID not found"));
             }, null, DEFAULT_CONTACT_METHOD);
@@ -426,12 +427,12 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testScheduleCoCoAttestationEnabledOnBootDisabled() throws Exception {
-        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         server.setMinionId(MINION_ID);
         server.setHostname(MINION_ID);
 
         try {
-            attestationManager.createConfig(user, server, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, true);
+            attestationManager.createConfig(getTestUser(), server, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, true);
             executeTest(slesExpectationsAlreadyRegistered, null, (minion, machineId, key) -> {
                 assertTrue(MinionServerFactory.findByMachineId(MACHINE_ID).isPresent());
                 MinionServerFactory.findByMachineId(MACHINE_ID).ifPresentOrElse(
@@ -439,7 +440,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                             assertEquals(m.getCreated(), server.getCreated());
                             assertEquals(m.getId(), server.getId());
                             assertEquals(0, attestationManager.listCoCoAttestationReportsForUserAndServer(
-                                    user, m, new Date(0), 0, 10).size());
+                                    getTestUser(), m, new Date(0), 0, 10).size());
                         },
                         () -> fail("Machine ID not found"));
             }, null, DEFAULT_CONTACT_METHOD);
@@ -451,12 +452,12 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testScheduleCoCoAttestationEnabledAndBoot() throws Exception {
-        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         server.setMinionId(MINION_ID);
         server.setHostname(MINION_ID);
 
         try {
-            attestationManager.createConfig(user, server, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, true, true);
+            attestationManager.createConfig(getTestUser(), server, CoCoEnvironmentType.KVM_AMD_EPYC_GENOA, true, true);
             executeTest(slesExpectationsAlreadyRegistered, null, (minion, machineId, key) -> {
                 assertTrue(MinionServerFactory.findByMachineId(MACHINE_ID).isPresent());
                 MinionServerFactory.findByMachineId(MACHINE_ID).ifPresentOrElse(
@@ -464,7 +465,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                             assertEquals(m.getCreated(), server.getCreated());
                             assertEquals(m.getId(), server.getId());
                             assertEquals(1, attestationManager.listCoCoAttestationReportsForUserAndServer(
-                                    user, m, new Date(0), 0, 10).size());
+                                    getTestUser(), m, new Date(0), 0, 10).size());
                         },
                         () -> fail("Machine ID not found"));
             }, null, DEFAULT_CONTACT_METHOD);
@@ -481,8 +482,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testRegisterDuplicateMinionId() throws Exception {
-        MinionPendingRegistrationService.addMinion(user, MINION_ID, ContactMethodUtil.DEFAULT);
-        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionPendingRegistrationService.addMinion(getTestUser(), MINION_ID, ContactMethodUtil.DEFAULT);
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         server.setMinionId(MINION_ID);
         server.setHostname(MINION_ID);
         try {
@@ -507,7 +508,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testAlreadyRegisteredMinionWithSameMachineId() throws Exception {
-        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         server.setMinionId(MINION_ID);
         server.setMachineId(MACHINE_ID);
         executeTest(slesExpectationsAlreadyRegistered, activationKeySupplier,
@@ -525,11 +526,11 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testAlreadyRegisteredMinionWithSameMachineId2() throws Exception {
-        MinionPendingRegistrationService.addMinion(user, MINION_ID, ContactMethodUtil.DEFAULT);
-        MinionServer server1 = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionPendingRegistrationService.addMinion(getTestUser(), MINION_ID, ContactMethodUtil.DEFAULT);
+        MinionServer server1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         server1.setMinionId(MINION_ID);
         server1.setHostname(MINION_ID);
-        MinionServer server2 = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer server2 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         server2.setMachineId(MACHINE_ID);
         server2.setHostname(server2.getName());
         try {
@@ -560,7 +561,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testAlreadyRegisteredMinionWithNewMinionId() throws Exception {
-        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         server.setMachineId(MACHINE_ID);
         executeTest((key) -> new Expectations() {{
             allowing(saltServiceMock).updateSystemInfo(with(any(MinionList.class)));
@@ -576,7 +577,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testWithMissingMachineIdStartUpGrains() throws Exception {
-        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         server.setMinionId(MINION_ID);
         executeTest((key) -> new Expectations(),
                 null,
@@ -587,8 +588,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testAlreadyRegisteredRetailMinion() throws Exception {
         ManagedServerGroup terminalsGroup = ServerGroupFactory.create(
-                "TERMINALS", "All terminals group", user.getOrg());
-        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+                "TERMINALS", "All terminals group", getTestUser().getOrg());
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         server.getManagedGroups().add(terminalsGroup);
         server.setMinionId(MINION_ID);
         server.setMachineId(MACHINE_ID);
@@ -610,7 +611,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testChangeContactMethodRegisterMinion() throws Exception {
         ServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
-        Server server = ServerTestUtils.createTestSystem(user, ServerConstants.getServerGroupTypeEnterpriseEntitled());
+        Server server = ServerTestUtils.createTestSystem(getTestUser(),
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
         server.setMachineId(MACHINE_ID);
         ServerFactory.save(server);
         SystemManager.giveCapability(server.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
@@ -669,8 +671,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testReRegisterMinionResetProxyPath() throws Exception {
         ServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
-        Server proxy = ServerFactoryTest.createTestProxyServer(user, false);
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        Server proxy = ServerFactoryTest.createTestProxyServer(getTestUser(), false);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         minion.setMachineId(MACHINE_ID);
         minion.setMinionId(MINION_ID);
         minion.setHostname(MINION_ID);
@@ -697,10 +699,10 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     will(returnValue(Optional.empty()));
                 }},
                 (contactMethod) -> {
-                    ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
+                    ActivationKey key = ActivationKeyTest.createTestActivationKey(getTestUser());
                     // setting a server makes it a re-activation key
                     key.setServer(minion);
-                    key.setOrg(user.getOrg());
+                    key.setOrg(getTestUser().getOrg());
                     ActivationKeyFactory.save(key);
                     return key.getKey();
                 },
@@ -808,8 +810,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     will(returnValue(Optional.of(pil)));
                 }},
                 (contactMethod) -> {
-                    ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
-                    key.setOrg(user.getOrg());
+                    ActivationKey key = ActivationKeyTest.createTestActivationKey(getTestUser());
+                    key.setOrg(getTestUser().getOrg());
                     ActivationKeyFactory.save(key);
                     return key.getKey();
                 },
@@ -833,7 +835,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         ChannelFamily channelFamily = createTestChannelFamily();
         SUSEProduct product = SUSEProductTestUtils.createTestSUSEProduct(channelFamily);
         Channel baseChannelX8664 = setupBaseAndRequiredChannels(channelFamily, product);
-        ConfigChannel cfgChannel = ConfigTestUtils.createConfigChannel(user.getOrg(),
+        ConfigChannel cfgChannel = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(),
                 "Config channel 1", "config-channel-1");
         MinionStartupGrains.SuseManagerGrain suseManagerGrain =
                 new MinionStartupGrains.SuseManagerGrain(Optional.of("non-existent-key"));
@@ -858,9 +860,9 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     will(returnValue(Optional.of(pil)));
                 }},
                 (contactMethod) -> {
-                    ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
+                    ActivationKey key = ActivationKeyTest.createTestActivationKey(getTestUser());
                     key.setBaseChannel(baseChannelX8664);
-                    key.setOrg(user.getOrg());
+                    key.setOrg(getTestUser().getOrg());
 
                     ConfigChannelListProcessor proc = new ConfigChannelListProcessor();
                     proc.add(key.getAllConfigChannels(), cfgChannel);
@@ -891,7 +893,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         ChannelFamily channelFamily = createTestChannelFamily();
         SUSEProduct product = SUSEProductTestUtils.createTestSUSEProduct(channelFamily);
         Channel baseChannelX8664 = setupBaseAndRequiredChannels(channelFamily, product);
-        ConfigChannel cfgChannel = ConfigTestUtils.createConfigChannel(user.getOrg(),
+        ConfigChannel cfgChannel = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(),
                 "Config channel 1", "config-channel-1");
         TestUtils.flushSession();
         executeTest(
@@ -908,11 +910,11 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     will(returnValue(getSystemInfo(null, key)));
                 }},
                 (contactMethod) -> {
-                    ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
+                    ActivationKey key = ActivationKeyTest.createTestActivationKey(getTestUser());
                     key.setBaseChannel(baseChannelX8664);
-                    baseChannelX8664.getAccessibleChildrenFor(user)
+                    baseChannelX8664.getAccessibleChildrenFor(getTestUser())
                             .forEach(key::addChannel);
-                    key.setOrg(user.getOrg());
+                    key.setOrg(getTestUser().getOrg());
 
                     ConfigChannelListProcessor proc = new ConfigChannelListProcessor();
                     proc.add(key.getAllConfigChannels(), cfgChannel);
@@ -930,7 +932,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     assertNotNull(minion.getBaseChannel());
                     HashSet<Channel> channels = new HashSet<>();
                     channels.add(baseChannelX8664);
-                    baseChannelX8664.getAccessibleChildrenFor(user)
+                    baseChannelX8664.getAccessibleChildrenFor(getTestUser())
                     .forEach(channels::add);
                     assertEquals(baseChannelX8664, minion.getBaseChannel());
                     assertEquals(channels.size(), minion.getChannels().size());
@@ -976,13 +978,13 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 will(returnValue(Optional.of(pil)));
             }
         }, (contactMethod) -> {
-            ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
+            ActivationKey key = ActivationKeyTest.createTestActivationKey(getTestUser());
             key.setBaseChannel(null);
             // Channels unrelated to the product added as child channels in the
             // Activation Key
-            baseChannelX8664Other.getAccessibleChildrenFor(user)
+            baseChannelX8664Other.getAccessibleChildrenFor(getTestUser())
                     .forEach(key::addChannel);
-            key.setOrg(user.getOrg());
+            key.setOrg(getTestUser().getOrg());
             ActivationKeyFactory.save(key);
             return key.getKey();
         }, (optMinion, machineId, key) -> {
@@ -1033,14 +1035,14 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 testCase.channelParameters
                         .stream()
                         .map(ch -> RhelUtilsTest.createExpandedSupportChannel(
-                                user,
+                                getTestUser(),
                                 ch.get("version"),
                                 ch.get("shortName"),
                                 ch.get("friendlyName")
                         ))
                         .toList() : null;
         Channel baseChannel = channels != null ? channels.get(0) : null;
-        MinionPendingRegistrationService.addMinion(user, MINION_ID, ContactMethodUtil.DEFAULT);
+        MinionPendingRegistrationService.addMinion(getTestUser(), MINION_ID, ContactMethodUtil.DEFAULT);
         TestUtils.flushSession();
         try {
             executeTest(
@@ -1063,9 +1065,9 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                         ))));
                     }},
                     baseChannel != null ? (contactMethod) -> {
-                        ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
+                        ActivationKey key = ActivationKeyTest.createTestActivationKey(getTestUser());
                         key.setBaseChannel(baseChannel);
-                        key.setOrg(user.getOrg());
+                        key.setOrg(getTestUser().getOrg());
                         ActivationKeyFactory.save(key);
                         return key.getKey();
                     } : null,
@@ -1317,15 +1319,15 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testRegisterRetailMinionHwGroupAlreadyAssigned() throws Exception {
         ManagedServerGroup terminalsGroup = ServerGroupFactory.create(
-                "TERMINALS", "All terminals group", user.getOrg());
+                "TERMINALS", "All terminals group", getTestUser().getOrg());
         ManagedServerGroup branchGroup = ServerGroupFactory.create(
-                "Branch001", "Branch group", user.getOrg());
+                "Branch001", "Branch group", getTestUser().getOrg());
         ManagedServerGroup hwGroupMatching = ServerGroupFactory.create(
-                "HWTYPE:QEMU-CashDesk01", "HW group", user.getOrg());
+                "HWTYPE:QEMU-CashDesk01", "HW group", getTestUser().getOrg());
         ManagedServerGroup alreadyAssignedGroup = ServerGroupFactory.create("HWTYPE:idontmatch",
-                "HW group - assigned to empty profile beforehand", user.getOrg());
+                "HW group - assigned to empty profile beforehand", getTestUser().getOrg());
 
-        MinionServer emptyMinion = systemManager.createSystemProfile(user, "empty profile",
+        MinionServer emptyMinion = systemManager.createSystemProfile(getTestUser(), "empty profile",
                 singletonMap("hwAddress", "00:11:22:33:44:55"));
         ServerFactory.addServerToGroup(emptyMinion, alreadyAssignedGroup);
         MinionStartupGrains minionStartUpGrains =  new MinionStartupGrains.MinionStartupGrainsBuilder()
@@ -1371,13 +1373,13 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testRegisterRetailTerminalNonDefaultOrg() throws Exception {
         ManagedServerGroup hwGroup = ServerGroupFactory.create("HWTYPE:QEMU-CashDesk01", "HW group",
-                user.getOrg());
+                getTestUser().getOrg());
         ManagedServerGroup terminalsGroup = ServerGroupFactory.create("TERMINALS", "All terminals group",
-                user.getOrg());
+                getTestUser().getOrg());
         ManagedServerGroup branchGroup = ServerGroupFactory.create("Branch001", "Branch group",
-                user.getOrg());
+                getTestUser().getOrg());
 
-        MinionPendingRegistrationService.addMinion(user, MINION_ID, ContactMethodUtil.DEFAULT);
+        MinionPendingRegistrationService.addMinion(getTestUser(), MINION_ID, ContactMethodUtil.DEFAULT);
         MinionStartupGrains minionStartUpGrains =  new MinionStartupGrains.MinionStartupGrainsBuilder()
                 .machineId(MACHINE_ID).saltbootInitrd(true)
                 .createMinionStartUpGrains();
@@ -1420,11 +1422,11 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testRegisterRetailTerminalNonDefaultOrgFailWithoutProxy() throws Exception {
         ManagedServerGroup hwGroup = ServerGroupFactory.create("HWTYPE:QEMU-CashDesk01", "HW group",
-                user.getOrg());
+                getTestUser().getOrg());
         ManagedServerGroup terminalsGroup = ServerGroupFactory.create("TERMINALS", "All terminals group",
-                user.getOrg());
+                getTestUser().getOrg());
         ManagedServerGroup branchGroup = ServerGroupFactory.create("Branch001", "Branch group",
-                user.getOrg());
+                getTestUser().getOrg());
 
         MinionStartupGrains minionStartUpGrains =  new MinionStartupGrains.MinionStartupGrainsBuilder()
                 .machineId(MACHINE_ID).saltbootInitrd(true)
@@ -1465,14 +1467,14 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testRegisterRetailTerminalNonDefaultOrgWithoutCreator() throws Exception {
         ManagedServerGroup hwGroup = ServerGroupFactory.create("HWTYPE:QEMU-CashDesk01", "HW group",
-                user.getOrg());
+                getTestUser().getOrg());
         ManagedServerGroup terminalsGroup = ServerGroupFactory.create("TERMINALS", "All terminals group",
-                user.getOrg());
+                getTestUser().getOrg());
         ManagedServerGroup branchGroup = ServerGroupFactory.create("Branch001", "Branch group",
-                user.getOrg());
+                getTestUser().getOrg());
 
         // create a proxy for minion with correct organization
-        Server proxy = ServerFactoryTest.createTestProxyServer(user, false);
+        Server proxy = ServerFactoryTest.createTestProxyServer(getTestUser(), false);
         // this proxy minion must have correct fqdn set equaling minions master
         String proxyFqdn = "proxy" + MINION_ID;
         proxy.addFqdn(proxyFqdn);
@@ -1502,7 +1504,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     assertTrue(minion.getManagedGroups().contains(hwGroup));
                     assertTrue(minion.getManagedGroups().contains(terminalsGroup));
                     assertTrue(minion.getManagedGroups().contains(branchGroup));
-                    assertEquals(minion.getOrg(), user.getOrg());
+                    assertEquals(minion.getOrg(), getTestUser().getOrg());
                 }, DEFAULT_CONTACT_METHOD, Optional.of(minionStartUpGrains));
     }
 
@@ -1512,7 +1514,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testEmptyProfileRegistration() throws Exception {
-        MinionServer emptyMinion = systemManager.createSystemProfile(user, "empty profile",
+        MinionServer emptyMinion = systemManager.createSystemProfile(getTestUser(), "empty profile",
                 singletonMap("hwAddress", "00:11:22:33:44:55"));
         MinionStartupGrains minionStartUpGrains =  new MinionStartupGrains.MinionStartupGrainsBuilder()
                 .machineId(MACHINE_ID).saltbootInitrd(false)
@@ -1564,14 +1566,15 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testMigrationSystemWithChannelsAndAK() throws Exception {
-        Channel akBaseChannel = ChannelFactoryTest.createBaseChannel(user, "channel-x86_64");
-        Channel akChildChannel = ChannelFactoryTest.createTestChannel(user, "channel-x86_64");
+        Channel akBaseChannel = ChannelFactoryTest.createBaseChannel(getTestUser(), "channel-x86_64");
+        Channel akChildChannel = ChannelFactoryTest.createTestChannel(getTestUser(), "channel-x86_64");
         akChildChannel.setParentChannel(akBaseChannel);
         akChildChannel = TestUtils.saveAndFlush(akChildChannel);
 
-        Channel assignedChannel = ChannelTestUtils.createBaseChannel(user);
+        Channel assignedChannel = ChannelTestUtils.createBaseChannel(getTestUser());
         ServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
-        Server server = ServerTestUtils.createTestSystem(user, ServerConstants.getServerGroupTypeEnterpriseEntitled());
+        Server server = ServerTestUtils.createTestSystem(getTestUser(),
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
         server.setMachineId(MACHINE_ID);
         server.addChannel(assignedChannel);
         ServerFactory.save(server);
@@ -1583,10 +1586,10 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 will(returnValue(getSystemInfo(null, key)));
             }
         }, (contactMethod) -> {
-            ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
+            ActivationKey key = ActivationKeyTest.createTestActivationKey(getTestUser());
             key.setBaseChannel(akBaseChannel);
             key.addChannel(akChildChannelCopy);
-            key.setOrg(user.getOrg());
+            key.setOrg(getTestUser().getOrg());
             ActivationKeyFactory.save(key);
             return key.getKey();
         }, (optMinion, machineId, key) -> {
@@ -1614,16 +1617,17 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testMigrationSystemWithChannelsAndAKSameBase() throws Exception {
-        Channel akBaseChannel = ChannelFactoryTest.createBaseChannel(user, "channel-x86_64");
-        Channel akChildChannel = ChannelFactoryTest.createTestChannel(user, "channel-x86_64");
+        Channel akBaseChannel = ChannelFactoryTest.createBaseChannel(getTestUser(), "channel-x86_64");
+        Channel akChildChannel = ChannelFactoryTest.createTestChannel(getTestUser(), "channel-x86_64");
         akChildChannel.setParentChannel(akBaseChannel);
         akChildChannel = TestUtils.saveAndFlush(akChildChannel);
-        Channel assignedChildChannel = ChannelFactoryTest.createTestChannel(user, "channel-x86_64");
+        Channel assignedChildChannel = ChannelFactoryTest.createTestChannel(getTestUser(), "channel-x86_64");
         assignedChildChannel.setParentChannel(akBaseChannel);
         assignedChildChannel = TestUtils.saveAndFlush(assignedChildChannel);
 
         ServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
-        Server server = ServerTestUtils.createTestSystem(user, ServerConstants.getServerGroupTypeEnterpriseEntitled());
+        Server server = ServerTestUtils.createTestSystem(getTestUser(),
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
         server.setMachineId(MACHINE_ID);
         server.addChannel(akBaseChannel);
         server.addChannel(assignedChildChannel);
@@ -1635,10 +1639,10 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                 will(returnValue(getSystemInfo(null, key)));
             }
         }, (contactMethod) -> {
-            ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
+            ActivationKey key = ActivationKeyTest.createTestActivationKey(getTestUser());
             key.setBaseChannel(akBaseChannel);
             key.addChannel(akChildChannelCopy);
-            key.setOrg(user.getOrg());
+            key.setOrg(getTestUser().getOrg());
             ActivationKeyFactory.save(key);
             return key.getKey();
         }, (optMinion, machineId, key) -> {
@@ -1664,13 +1668,14 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testMigrationSystemWithChannelsNoAK() throws Exception {
-        Channel assignedChannel = ChannelFactoryTest.createBaseChannel(user, "channel-x86_64");
-        Channel assignedChildChannel = ChannelFactoryTest.createTestChannel(user, "channel-x86_64");
+        Channel assignedChannel = ChannelFactoryTest.createBaseChannel(getTestUser(), "channel-x86_64");
+        Channel assignedChildChannel = ChannelFactoryTest.createTestChannel(getTestUser(), "channel-x86_64");
         assignedChildChannel.setParentChannel(assignedChannel);
         assignedChildChannel = TestUtils.saveAndFlush(assignedChildChannel);
 
         ServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
-        Server server = ServerTestUtils.createTestSystem(user, ServerConstants.getServerGroupTypeEnterpriseEntitled());
+        Server server = ServerTestUtils.createTestSystem(getTestUser(),
+                ServerConstants.getServerGroupTypeEnterpriseEntitled());
         server.setMachineId(MACHINE_ID);
         server.getChannels().clear();
         server.addChannel(assignedChannel);
@@ -1702,12 +1707,12 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testMigrationMinionWithReActivationKey() throws Exception {
-        Channel assignedChannel = ChannelFactoryTest.createBaseChannel(user, "channel-x86_64");
-        Channel assignedChildChannel = ChannelFactoryTest.createTestChannel(user, "channel-x86_64");
+        Channel assignedChannel = ChannelFactoryTest.createBaseChannel(getTestUser(), "channel-x86_64");
+        Channel assignedChildChannel = ChannelFactoryTest.createTestChannel(getTestUser(), "channel-x86_64");
         assignedChildChannel.setParentChannel(assignedChannel);
         assignedChildChannel = TestUtils.saveAndFlush(assignedChildChannel);
 
-        MinionServer oldMinion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer oldMinion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         oldMinion.addChannel(assignedChannel);
         oldMinion.addChannel(assignedChildChannel);
         ServerFactory.save(oldMinion);
@@ -1728,10 +1733,10 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     will(returnValue(getSystemInfo(null, null)));
                 }},
                 (contactMethod) -> {
-                    ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
+                    ActivationKey key = ActivationKeyTest.createTestActivationKey(getTestUser());
                     // setting a server makes it a re-activation key
                     key.setServer(oldMinion);
-                    key.setOrg(user.getOrg());
+                    key.setOrg(getTestUser().getOrg());
                     ActivationKeyFactory.save(key);
                     return key.getKey();
                 },
@@ -1755,12 +1760,12 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testMinionWithUsedReActivationKey() throws Exception {
-        Channel assignedChannel = ChannelFactoryTest.createBaseChannel(user, "channel-x86_64");
-        Channel assignedChildChannel = ChannelFactoryTest.createTestChannel(user, "channel-x86_64");
+        Channel assignedChannel = ChannelFactoryTest.createBaseChannel(getTestUser(), "channel-x86_64");
+        Channel assignedChildChannel = ChannelFactoryTest.createTestChannel(getTestUser(), "channel-x86_64");
         assignedChildChannel.setParentChannel(assignedChannel);
 
         ServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
-        MinionServer oldMinion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer oldMinion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         oldMinion.setMachineId(MACHINE_ID);
         oldMinion.setMinionId(MINION_ID);
         oldMinion.setHostname(MINION_ID);
@@ -1795,12 +1800,12 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testMinionWithUsedReActivationKeyWithStartUpGrains() throws Exception {
-        Channel assignedChannel = ChannelFactoryTest.createBaseChannel(user, "channel-x86_64");
-        Channel assignedChildChannel = ChannelFactoryTest.createTestChannel(user, "channel-x86_64");
+        Channel assignedChannel = ChannelFactoryTest.createBaseChannel(getTestUser(), "channel-x86_64");
+        Channel assignedChildChannel = ChannelFactoryTest.createTestChannel(getTestUser(), "channel-x86_64");
         assignedChildChannel.setParentChannel(assignedChannel);
 
         ServerFactory.findByMachineId(MACHINE_ID).ifPresent(ServerFactory::delete);
-        MinionServer oldMinion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer oldMinion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         oldMinion.setMachineId(MACHINE_ID);
         oldMinion.setMinionId(MINION_ID);
         oldMinion.setHostname(MINION_ID);
@@ -2026,8 +2031,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
         Channel baseChannelX8664 = DistUpgradeManagerTest
                 .createTestBaseChannel(channelFamily, channelProduct, channelArch);
         SUSEProductTestUtils.createTestSUSEProductChannel(baseChannelX8664, product, true);
-        Channel channel2 = ChannelFactoryTest.createTestChannel(user, "channel-x86_64");
-        Channel channel3 = ChannelFactoryTest.createTestChannel(user, "channel-x86_64");
+        Channel channel2 = ChannelFactoryTest.createTestChannel(getTestUser(), "channel-x86_64");
+        Channel channel3 = ChannelFactoryTest.createTestChannel(getTestUser(), "channel-x86_64");
         channel2.setChannelArch(channelArch);
         channel3.setChannelArch(channelArch);
         channel2.setParentChannel(baseChannelX8664);

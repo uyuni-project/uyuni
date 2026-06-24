@@ -31,7 +31,7 @@ public class CredentialsTest extends JMockBaseTestCaseWithUser {
 
     @BeforeEach
     public void setUp() throws Exception {
-        UserTestUtils.addUserRole(user, ORG_ADMIN);
+        UserTestUtils.addUserRole(getTestUser(), ORG_ADMIN);
     }
 
     @Test

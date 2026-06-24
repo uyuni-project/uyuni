@@ -33,12 +33,12 @@ public class ActivationKeyFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testListAssociatedKickstarts() throws Exception {
 
-        ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
+        ActivationKey key = ActivationKeyTest.createTestActivationKey(getTestUser());
 
         List<KickstartData> list = ActivationKeyFactory.listAssociatedKickstarts(key);
         assertTrue(list.isEmpty());
 
-        KickstartData data = KickstartDataTest.createTestKickstartData(user.getOrg());
+        KickstartData data = KickstartDataTest.createTestKickstartData(getTestUser().getOrg());
         data.getDefaultRegTokens().add(key.getToken());
 
         list = ActivationKeyFactory.listAssociatedKickstarts(key);
@@ -48,7 +48,7 @@ public class ActivationKeyFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testLookupByServer() throws Exception {
-        ActivationKey activationKey = ActivationKeyTest.createTestActivationKey(user);
+        ActivationKey activationKey = ActivationKeyTest.createTestActivationKey(getTestUser());
 
         List<ActivationKey> activationKeys =
                 ActivationKeyFactory.lookupByServer(activationKey.getServer());
@@ -57,7 +57,7 @@ public class ActivationKeyFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testLookupByActivatedServer() throws Exception {
-        ActivationKey activationKey = ActivationKeyTest.createTestActivationKey(user);
+        ActivationKey activationKey = ActivationKeyTest.createTestActivationKey(getTestUser());
         Server server = activationKey.getServer();
 
         // Server not added to activated servers

@@ -44,7 +44,7 @@ public class CloneConfirmActionTest extends RhnPostMockStrutsTestCase {
     @BeforeEach
     public void setUp() throws Exception {
         setRequestPathInfo("/errata/manage/CloneConfirmSubmit");
-        user.getOrg().addRole(RoleFactory.CHANNEL_ADMIN);
+        getTestUser().getOrg().addRole(RoleFactory.CHANNEL_ADMIN);
     }
 
     @Test
@@ -52,14 +52,14 @@ public class CloneConfirmActionTest extends RhnPostMockStrutsTestCase {
 
         List list = new ArrayList<>();
 
-        RhnSet errataToClone = RhnSetFactory.createRhnSet(user.getId(),
+        RhnSet errataToClone = RhnSetFactory.createRhnSet(getTestUser().getId(),
                                                           "clone_errata_list",
                                                           SetCleanup.NOOP);
 
-        Channel original = ChannelFactoryTest.createTestChannel(user);
+        Channel original = ChannelFactoryTest.createTestChannel(getTestUser());
 
         for (int j = 0; j < 5; ++j) {
-            Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+            Errata e = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
             original.addErrata(e);
             errataToClone.addElement(e.getId());
             list.add(e);
@@ -67,29 +67,29 @@ public class CloneConfirmActionTest extends RhnPostMockStrutsTestCase {
 
         RhnSetManager.store(errataToClone);
 
-        RhnSet set = RhnSetDecl.ERRATA_CLONE.get(user);
+        RhnSet set = RhnSetDecl.ERRATA_CLONE.get(getTestUser());
         assertEquals(5, set.size());
 
-        Channel destination = ChannelFactoryTest.createTestChannel(user);
-        RhnSet destinationChannels = RhnSetFactory.createRhnSet(user.getId(),
+        Channel destination = ChannelFactoryTest.createTestChannel(getTestUser());
+        RhnSet destinationChannels = RhnSetFactory.createRhnSet(getTestUser().getId(),
                 RhnSetDecl.CHANNELS_FOR_ERRATA.getLabel(),
                 SetCleanup.NOOP);
         destinationChannels.addElement(destination.getId());
         RhnSetManager.store(destinationChannels);
 
-        RhnSet channelSet = RhnSetDecl.CHANNELS_FOR_ERRATA.get(user);
+        RhnSet channelSet = RhnSetDecl.CHANNELS_FOR_ERRATA.get(getTestUser());
         assertEquals(1, channelSet.size());
 
         request.addParameter("dispatch", "Confirm");
 
         actionPerform();
         testForwardName("success");
-        set = RhnSetDecl.ERRATA_CLONE.get(user);
+        set = RhnSetDecl.ERRATA_CLONE.get(getTestUser());
         assertEquals(0, set.size());
 
         for (Object oIn : list) {
             Errata e = (Errata) oIn;
-            List clones = ErrataManager.lookupByOriginal(user, e);
+            List clones = ErrataManager.lookupByOriginal(getTestUser(), e);
 
             assertEquals(1, clones.size());
             var clone = (ClonedErrata) clones.get(0);

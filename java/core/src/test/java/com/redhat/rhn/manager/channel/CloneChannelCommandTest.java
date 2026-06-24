@@ -47,13 +47,13 @@ public class CloneChannelCommandTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testNoParentOnClone() throws Exception {
-        Channel originalBase = ChannelTestUtils.createBaseChannel(user);
-        Channel originalChild = ChannelTestUtils.createChildChannel(user, originalBase);
+        Channel originalBase = ChannelTestUtils.createBaseChannel(getTestUser());
+        Channel originalChild = ChannelTestUtils.createChildChannel(getTestUser(), originalBase);
         originalChild.setChecksumType(ChannelFactory.findChecksumTypeByLabel("sha256"));
         originalChild.setSummary("summary");
         CloneChannelCommand ccc = new CloneChannelCommand(
                 CloneChannelCommand.CloneBehavior.ORIGINAL_STATE, originalChild);
-        ccc.setUser(user);
+        ccc.setUser(getTestUser());
 
         Channel clone = ccc.create();
         assertNull(clone.getParentChannel());
@@ -70,7 +70,7 @@ public class CloneChannelCommandTest extends BaseTestCaseWithUser {
         assertFalse(original.isModular());
 
         CloneChannelCommand ccc = new CloneChannelCommand(CloneChannelCommand.CloneBehavior.ORIGINAL_STATE, original);
-        ccc.setUser(user);
+        ccc.setUser(getTestUser());
         Channel clone = ccc.create();
         assertFalse(clone.isModular());
     }
@@ -90,7 +90,7 @@ public class CloneChannelCommandTest extends BaseTestCaseWithUser {
         assertTrue(original.isModular());
 
         CloneChannelCommand ccc = new CloneChannelCommand(CloneChannelCommand.CloneBehavior.ORIGINAL_STATE, original);
-        ccc.setUser(user);
+        ccc.setUser(getTestUser());
         Channel clone = ccc.create();
         Modules originalModules = original.getModules();
         Modules cloneModules = clone.getModules();
@@ -112,7 +112,7 @@ public class CloneChannelCommandTest extends BaseTestCaseWithUser {
         assertTrue(original.isModular());
 
         CloneChannelCommand ccc = new CloneChannelCommand(CloneChannelCommand.CloneBehavior.ORIGINAL_STATE, original);
-        ccc.setUser(user);
+        ccc.setUser(getTestUser());
         ccc.setStripModularMetadata(true);
         Channel c = ccc.create();
         c = ChannelFactory.reload(c);
@@ -132,11 +132,11 @@ public class CloneChannelCommandTest extends BaseTestCaseWithUser {
 
         CloneChannelCommand ccc = new CloneChannelCommand(CloneChannelCommand.CloneBehavior.ORIGINAL_STATE,
                                                         parentChannel, fakeCloudPaygManager);
-        ccc.setUser(user);
+        ccc.setUser(getTestUser());
         Channel clonedParentChannel = ccc.create();
 
         // Asserts that the channel actually exists after cloning
-        Channel gotChannel = ChannelFactory.lookupByIdAndUser(clonedParentChannel.getId(), user);
+        Channel gotChannel = ChannelFactory.lookupByIdAndUser(clonedParentChannel.getId(), getTestUser());
         assertNotNull(gotChannel);
     }
 
@@ -154,12 +154,12 @@ public class CloneChannelCommandTest extends BaseTestCaseWithUser {
 
         CloneChannelCommand ccc = new CloneChannelCommand(CloneChannelCommand.CloneBehavior.ORIGINAL_STATE,
                 childrenChannel, fakeCloudPaygManager);
-        ccc.setUser(user);
+        ccc.setUser(getTestUser());
         ccc.setParentId(parentChannelWithProductChannels.getId());
         Channel clonedChildChannel1 = ccc.create();
 
         // Asserts that the channel actually exists after cloning
-        Channel gotChannelTest1 = ChannelFactory.lookupByIdAndUser(clonedChildChannel1.getId(), user);
+        Channel gotChannelTest1 = ChannelFactory.lookupByIdAndUser(clonedChildChannel1.getId(), getTestUser());
         assertNotNull(gotChannelTest1);
         assertInstanceOf(ClonedChannel.class, gotChannelTest1);
     }
@@ -181,7 +181,7 @@ public class CloneChannelCommandTest extends BaseTestCaseWithUser {
 
         CloneChannelCommand ccc = new CloneChannelCommand(CloneChannelCommand.CloneBehavior.ORIGINAL_STATE,
                 childrenChannel, fakeCloudPaygManager);
-        ccc.setUser(user);
+        ccc.setUser(getTestUser());
         ccc.setParentId(parentChannelWithoutProductChannels.getId());
 
         // Assert that cloning operation throws ForbiddenCloneChannelPAYGException exception
@@ -204,22 +204,22 @@ public class CloneChannelCommandTest extends BaseTestCaseWithUser {
 
         CloneChannelCommand cccBase = new CloneChannelCommand(CloneChannelCommand.CloneBehavior.ORIGINAL_STATE,
                 parentChannelWithProductChannels, fakeCloudPaygManager);
-        cccBase.setUser(user);
+        cccBase.setUser(getTestUser());
         Channel clonedBaseChannel = cccBase.create();
 
         CloneChannelCommand cccChildren = new CloneChannelCommand(CloneChannelCommand.CloneBehavior.ORIGINAL_STATE,
                 childrenChannel, fakeCloudPaygManager);
-        cccChildren.setUser(user);
+        cccChildren.setUser(getTestUser());
         cccChildren.setParentId(clonedBaseChannel.getId());
         Channel clonedChildChannel = cccChildren.create();
 
         // Assert that the channel actually exists
-        Channel gotChannelTest3 = ChannelFactory.lookupByIdAndUser(clonedChildChannel.getId(), user);
+        Channel gotChannelTest3 = ChannelFactory.lookupByIdAndUser(clonedChildChannel.getId(), getTestUser());
         assertNotNull(gotChannelTest3);
     }
 
     private Channel createBaseChannel() throws Exception {
-        Channel channel = ChannelTestUtils.createBaseChannel(user);
+        Channel channel = ChannelTestUtils.createBaseChannel(getTestUser());
         channel.setChecksumType(ChannelFactory.findChecksumTypeByLabel("sha256"));
         channel.setSummary("summary");
         return channel;
@@ -232,7 +232,7 @@ public class CloneChannelCommandTest extends BaseTestCaseWithUser {
     }
 
     private Channel createChildrenWIthProductChannel(Channel parentChannel) throws Exception {
-        Channel childrenChannel = ChannelTestUtils.createChildChannel(user, parentChannel);
+        Channel childrenChannel = ChannelTestUtils.createChildChannel(getTestUser(), parentChannel);
         childrenChannel.setChecksumType(ChannelFactory.findChecksumTypeByLabel("sha256"));
         childrenChannel.setSummary("summary");
 

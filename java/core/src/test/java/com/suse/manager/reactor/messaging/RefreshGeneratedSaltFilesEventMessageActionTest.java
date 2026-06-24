@@ -59,9 +59,9 @@ public class RefreshGeneratedSaltFilesEventMessageActionTest extends BaseTestCas
 
     @Test
     public void testDoExecute() throws Exception {
-        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         // create a group to make sure we have at least one
-        ServerGroupTestUtils.createManaged(user);
+        ServerGroupTestUtils.createManaged(getTestUser());
 
         ServerStateRevision serverRev = new ServerStateRevision();
         serverRev.setServer(server);
@@ -99,7 +99,7 @@ public class RefreshGeneratedSaltFilesEventMessageActionTest extends BaseTestCas
         Path customPath = getSaltRootPath().resolve(SALT_CONFIG_STATES_DIR);
         for (Org org : OrgFactory.lookupAllOrgs()) {
             assertTrue(Files.exists(customPath.resolve(
-                    "org_" + user.getOrg().getId() + ".sls")));
+                    "org_" + getTestUser().getOrg().getId() + ".sls")));
 
             for (ServerGroup group : ServerGroupFactory.listManagedGroups(org)) {
                 assertTrue(Files.exists(customPath.resolve(

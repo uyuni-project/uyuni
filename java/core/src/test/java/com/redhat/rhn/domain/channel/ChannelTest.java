@@ -53,11 +53,11 @@ public class ChannelTest extends BaseTestCaseWithUser {
 
     @Test
     public void testRemovePackage() throws Exception {
-        Channel c = ChannelFactoryTest.createTestChannel(user);
-        Package p = PackageTest.createTestPackage(user.getOrg());
+        Channel c = ChannelFactoryTest.createTestChannel(getTestUser());
+        Package p = PackageTest.createTestPackage(getTestUser().getOrg());
         ChannelTestUtility.testAddPackage(c, p);
         ChannelFactory.save(c);
-        c.removePackage(p, user);
+        c.removePackage(p, getTestUser());
         assertEquals(0, c.getPackageCount());
         assertTrue(c.getPackages().isEmpty());
 
@@ -65,9 +65,9 @@ public class ChannelTest extends BaseTestCaseWithUser {
 
     @Test
     public void testChannel() throws Exception {
-        Channel c = ChannelFactoryTest.createTestChannel(user);
+        Channel c = ChannelFactoryTest.createTestChannel(getTestUser());
         //add an errata
-        Errata e = ErrataFactoryTest.createTestErrata(user.getId());
+        Errata e = ErrataFactoryTest.createTestErrata(getTestUser().getId());
         c.addErrata(e);
         assertEquals(c.getErratas().size(), 1);
         ChannelFactory.save(c);
@@ -80,7 +80,7 @@ public class ChannelTest extends BaseTestCaseWithUser {
         assertEquals(c.getLabel(), c2.getLabel());
         assertNotNull(c.getChannelArch());
 
-        Channel c3 = ChannelFactoryTest.createTestChannel(user);
+        Channel c3 = ChannelFactoryTest.createTestChannel(getTestUser());
 
         c.setParentChannel(c3);
         assertEquals(c.getParentChannel().getId(), c3.getId());
@@ -97,14 +97,14 @@ public class ChannelTest extends BaseTestCaseWithUser {
 
     @Test
     public void testChannelGpgCheck() throws Exception {
-        Channel c = ChannelFactoryTest.createTestChannel(user, true);
+        Channel c = ChannelFactoryTest.createTestChannel(getTestUser(), true);
         ChannelFactory.save(c);
         assertTrue(c.isGPGCheck());
         TestUtils.flushAndEvict(c);
         Channel c1 = ChannelFactory.lookupById(c.getId());
         assertTrue(c1.isGPGCheck());
 
-        Channel c2 = ChannelFactoryTest.createTestChannel(user, false);
+        Channel c2 = ChannelFactoryTest.createTestChannel(getTestUser(), false);
         ChannelFactory.save(c2);
         assertFalse(c2.isGPGCheck());
         TestUtils.flushAndEvict(c2);
@@ -114,8 +114,8 @@ public class ChannelTest extends BaseTestCaseWithUser {
 
     @Test
     public void testEquals() throws Exception {
-        Channel c1 = ChannelFactoryTest.createTestChannel(user);
-        Channel c2 = ChannelFactoryTest.createTestChannel(user);
+        Channel c1 = ChannelFactoryTest.createTestChannel(getTestUser());
+        Channel c2 = ChannelFactoryTest.createTestChannel(getTestUser());
         assertNotEquals(c1, c2);
         Channel c3 = ChannelFactory.lookupById(c1.getId());
         Set<Channel> testSet = new HashSet<>();
@@ -127,7 +127,7 @@ public class ChannelTest extends BaseTestCaseWithUser {
 
     @Test
     public void testDistChannelMap() throws Exception {
-        Channel c = ChannelFactoryTest.createTestChannel(user);
+        Channel c = ChannelFactoryTest.createTestChannel(getTestUser());
         ChannelTestUtils.addDistMapToChannel(c);
         c = (Channel) TestUtils.reload(c);
         assertNotNull(c.getDistChannelMaps());
@@ -136,8 +136,8 @@ public class ChannelTest extends BaseTestCaseWithUser {
 
     @Test
     public void testIsProxy() throws Exception {
-        Channel c = ChannelFactoryTest.createTestChannel(user);
-        ChannelFamily cfam = ChannelFamilyFactoryTest.createTestChannelFamily(user, false);
+        Channel c = ChannelFactoryTest.createTestChannel(getTestUser());
+        ChannelFamily cfam = ChannelFamilyFactoryTest.createTestChannelFamily(getTestUser(), false);
         cfam.setLabel(ChannelFamilyFactory.PROXY_CHANNEL_FAMILY_LABEL);
 
         c.setChannelFamily(cfam);
@@ -150,14 +150,14 @@ public class ChannelTest extends BaseTestCaseWithUser {
 
     @Test
     public void testIsSub() throws Exception {
-        Channel c = ChannelFactoryTest.createTestChannel(user);
-        Server s = ServerTestUtils.createTestSystem(user);
+        Channel c = ChannelFactoryTest.createTestChannel(getTestUser());
+        Server s = ServerTestUtils.createTestSystem(getTestUser());
         assertTrue(c.isSubscribable(c.getOrg(), s));
     }
 
     @Test
     public void testDeleteChannel() throws Exception {
-        Channel c = ChannelFactoryTest.createTestChannel(user);
+        Channel c = ChannelFactoryTest.createTestChannel(getTestUser());
         Long id = c.getId();
         assertNotNull(c);
         ChannelFactory.save(c);
@@ -179,8 +179,8 @@ public class ChannelTest extends BaseTestCaseWithUser {
 
     @Test
     public void testAddPackage() throws Exception {
-        Channel c = ChannelFactoryTest.createTestChannel(user);
-        Package p = PackageTest.createTestPackage(user.getOrg());
+        Channel c = ChannelFactoryTest.createTestChannel(getTestUser());
+        Package p = PackageTest.createTestPackage(getTestUser().getOrg());
         assertNotNull(c);
         assertEquals("channel-x86_64", c.getChannelArch().getLabel());
         assertNotNull(p);
@@ -209,13 +209,13 @@ public class ChannelTest extends BaseTestCaseWithUser {
 
     @Test
     public void testContentSource() throws Exception {
-        Channel c = ChannelFactoryTest.createTestChannel(user);
+        Channel c = ChannelFactoryTest.createTestChannel(getTestUser());
         ContentSource cs = new ContentSource();
         cs.setLabel("repo_label-" + c.getLabel());
         cs.setSourceUrl("fake url");
         List<ContentSourceType> cst = ChannelFactory.listContentSourceTypes();
         cs.setType(cst.get(0));
-        cs.setOrg(user.getOrg());
+        cs.setOrg(getTestUser().getOrg());
         cs = TestUtils.saveAndReload(cs);
         c.getSources().add(cs);
         c = TestUtils.saveAndReload(c);
@@ -224,7 +224,7 @@ public class ChannelTest extends BaseTestCaseWithUser {
 
     @Test
     public void testIsTypeRpm() throws Exception {
-        Channel c = ChannelFactoryTest.createTestChannel(user);
+        Channel c = ChannelFactoryTest.createTestChannel(getTestUser());
         ChannelArch arch = ChannelFactory.lookupArchByLabel("channel-ia64");
         c.setChannelArch(arch);
 
@@ -233,7 +233,7 @@ public class ChannelTest extends BaseTestCaseWithUser {
 
     @Test
     public void testIsTypeDeb() throws Exception {
-        Channel c = ChannelFactoryTest.createTestChannel(user);
+        Channel c = ChannelFactoryTest.createTestChannel(getTestUser());
         ChannelArch arch = ChannelFactory.lookupArchByLabel("channel-ia64-deb");
         c.setChannelArch(arch);
 
@@ -242,7 +242,7 @@ public class ChannelTest extends BaseTestCaseWithUser {
 
     @Test
     public void testIsModular() throws Exception {
-        Channel c = ChannelFactoryTest.createTestChannel(user);
+        Channel c = ChannelFactoryTest.createTestChannel(getTestUser());
         assertNull(c.getModules());
         assertFalse(c.isModular());
 

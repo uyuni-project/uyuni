@@ -60,8 +60,8 @@ public class PeripheralServerEntitlementTest extends BaseEntitlementTestCase {
      */
     @Test
     public void testIsAllowed() throws Exception {
-        Server foreign = ServerTestUtils.createForeignSystem(user, "9999");
-        Server minion = MinionServerFactoryTest.createTestMinionServer(user);
+        Server foreign = ServerTestUtils.createForeignSystem(getTestUser(), "9999");
+        Server minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         foreign.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
         minion.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
         foreign.addFqdn("test.com");

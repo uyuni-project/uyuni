@@ -70,7 +70,7 @@ public class SystemsControllerTest extends BaseControllerTestCase {
 
     @BeforeEach
     public void setUp() throws Exception {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
 
         SaltApi saltApi = new TestSaltApi();
@@ -84,7 +84,7 @@ public class SystemsControllerTest extends BaseControllerTestCase {
 
             // Set up the host
             String hostName = e.getKey();
-            Server host = ServerTestUtils.createVirtHostWithGuests(user, e.getValue().size(), true,
+            Server host = ServerTestUtils.createVirtHostWithGuests(getTestUser(), e.getValue().size(), true,
                     systemEntitlementManager);
             host.setName(hostName);
             serversByHostServerName.put(hostName, host);
@@ -103,7 +103,7 @@ public class SystemsControllerTest extends BaseControllerTestCase {
         // Assert all vms are created
         for (Server host : serversByHostServerName.values()) {
             int expectedVmsSize = SERVER_NAMES_BY_HOST_SERVER_NAME_NAME_MAP.get(host.getName()).size();
-            int actualVmsSize = SystemManager.virtualGuestsForHostList(user, host.getId(), null).size();
+            int actualVmsSize = SystemManager.virtualGuestsForHostList(getTestUser(), host.getId(), null).size();
             assertEquals(expectedVmsSize, actualVmsSize,
                     "Expected to find " + expectedVmsSize + " guests for host " + host.getName() +
                             " but got " + actualVmsSize);
@@ -116,7 +116,7 @@ public class SystemsControllerTest extends BaseControllerTestCase {
     @Test
     public void testVirtualSystemsReturnAllSystemsWhenNoFilter() {
         Request request = SparkTestUtils.createMockRequest(BASE_URI);
-        Object virtualSystemsObject = systemsController.virtualSystems(request, response, user);
+        Object virtualSystemsObject = systemsController.virtualSystems(request, response, getTestUser());
         assertNotNull(virtualSystemsObject);
         Map<String, Object> virtualSystemsAsMap = new Gson().fromJson(virtualSystemsObject.toString(), Map.class);
         assertEquals(5, ((Collection) virtualSystemsAsMap.get("items")).size());
@@ -196,7 +196,7 @@ public class SystemsControllerTest extends BaseControllerTestCase {
         Request request = SparkTestUtils.createMockRequestWithParams(BASE_URI, queryParams);
 
         //
-        Object virtualSystemsObject = systemsController.virtualSystems(request, response, user);
+        Object virtualSystemsObject = systemsController.virtualSystems(request, response, getTestUser());
 
         //
         assertNotNull(virtualSystemsObject);
@@ -214,7 +214,7 @@ public class SystemsControllerTest extends BaseControllerTestCase {
         queryParams.put("qc", paramQC);
         queryParams.put("q", paramQ);
         Request request = SparkTestUtils.createMockRequestWithParams(BASE_URI, queryParams);
-        ModelAndView virtualSystemsModelAndView = systemsController.virtualListPage(request, response, user);
+        ModelAndView virtualSystemsModelAndView = systemsController.virtualListPage(request, response, getTestUser());
 
         assertNotNull(virtualSystemsModelAndView);
         assertNotNull(virtualSystemsModelAndView.getModel());

@@ -34,7 +34,7 @@ public class PreservationListEditActionTest extends RhnPostMockStrutsTestCase {
 
     @Test
     public void testEditExecute() {
-        FileList list = FileListTest.createTestFileList(user.getOrg());
+        FileList list = FileListTest.createTestFileList(getTestUser().getOrg());
         CommonFactory.saveFileList(list);
         TestUtils.flushAndEvict(list);
         String testLabel = "some new label" + TestUtils.randomString();
@@ -45,7 +45,7 @@ public class PreservationListEditActionTest extends RhnPostMockStrutsTestCase {
         actionPerform();
         String[] msgs = {"preservation.key.success"};
         testActionHasMessages(msgs);
-        FileList lchanged = CommonFactory.lookupFileList(list.getId(), user.getOrg());
+        FileList lchanged = CommonFactory.lookupFileList(list.getId(), getTestUser().getOrg());
         assertEquals(testLabel, lchanged.getLabel());
         assertNotNull(getRequest().
                 getAttribute(BasePreservationListEditAction.FILE_LIST));

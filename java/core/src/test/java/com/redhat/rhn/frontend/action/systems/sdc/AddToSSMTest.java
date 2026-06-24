@@ -40,12 +40,12 @@ public class AddToSSMTest extends RhnMockStrutsTestCase {
      */
     @BeforeEach
     public void setUp() throws Exception {
-        server = ServerTestUtils.createTestSystem(user);
+        server = ServerTestUtils.createTestSystem(getTestUser());
 
         addRequestParameter(RequestContext.SID, server.getId().toString());
         setRequestPathInfo("/systems/details/AddToSSM");
 
-        RhnSet set = RhnSetDecl.SYSTEMS.get(user);
+        RhnSet set = RhnSetDecl.SYSTEMS.get(getTestUser());
         set.clear();
         RhnSetManager.store(set);
 
@@ -57,7 +57,7 @@ public class AddToSSMTest extends RhnMockStrutsTestCase {
 
         actionPerform();
         assertEquals(request.getParameter("sid"), server.getId().toString());
-        RhnSet set = RhnSetDecl.SYSTEMS.get(user);
+        RhnSet set = RhnSetDecl.SYSTEMS.get(getTestUser());
         assertTrue(set.contains(server.getId()));
 
     }

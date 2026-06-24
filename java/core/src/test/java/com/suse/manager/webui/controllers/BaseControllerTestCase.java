@@ -38,7 +38,7 @@ public class BaseControllerTestCase extends JMockBaseTestCaseWithUser {
      */
     @BeforeEach
     public void setUpBaseControllerTestCase() throws Exception {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
         setImposteriser(ByteBuddyClassImposteriser.INSTANCE);
         response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
     }

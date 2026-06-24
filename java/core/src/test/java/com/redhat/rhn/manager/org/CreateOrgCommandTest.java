@@ -45,7 +45,7 @@ public class CreateOrgCommandTest extends BaseTestCaseWithUser {
     public void testFailCreate() {
         CreateOrgCommand cmd = new CreateOrgCommand(
                 "newOrg" + TestUtils.randomString(),
-                user.getLogin(),
+                getTestUser().getLogin(),
                 "password",
                 "test@redhat.com",
                 false);

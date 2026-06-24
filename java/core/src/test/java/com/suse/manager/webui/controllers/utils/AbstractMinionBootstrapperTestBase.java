@@ -88,7 +88,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
         }});
 
         BootstrapParameters params = bootstrapper.createBootstrapParams(input);
-        BootstrapResult bootstrap = bootstrapper.bootstrap(params, user, "default");
+        BootstrapResult bootstrap = bootstrapper.bootstrap(params, getTestUser(), "default");
         assertFalse(bootstrap.isSuccess());
     }
 
@@ -139,7 +139,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
     @Test
     public void testBootstrapFailsWhenMinionExists()
             throws Exception {
-        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         server.setMinionId("myhost");
 
         BootstrapHostsJson input = mockStandardInput();
@@ -151,7 +151,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
         }});
 
         BootstrapParameters params = bootstrapper.createBootstrapParams(input);
-        BootstrapResult bootstrap = bootstrapper.bootstrap(params, user, getDefaultContactMethod());
+        BootstrapResult bootstrap = bootstrapper.bootstrap(params, getTestUser(), getDefaultContactMethod());
         assertFalse(bootstrap.isSuccess());
     }
 
@@ -193,7 +193,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
         BootstrapHostsJson input = mockStandardInput();
         setEmptyActivationKeys(input);
         BootstrapParameters params = bootstrapper.createBootstrapParams(input);
-        BootstrapResult bootstrap = bootstrapper.bootstrap(params, user, getDefaultContactMethod());
+        BootstrapResult bootstrap = bootstrapper.bootstrap(params, getTestUser(), getDefaultContactMethod());
         assertTrue(bootstrap.isSuccess());
     }
 
@@ -214,7 +214,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
         }});
 
         BootstrapParameters params = bootstrapper.createBootstrapParams(input);
-        assertFalse(bootstrapper.bootstrap(params, user, getDefaultContactMethod()).isSuccess());
+        assertFalse(bootstrapper.bootstrap(params, getTestUser(), getDefaultContactMethod()).isSuccess());
     }
 
     /**
@@ -255,7 +255,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
         }});
 
         BootstrapParameters params = bootstrapper.createBootstrapParams(input);
-        assertTrue(bootstrapper.bootstrap(params, user, getDefaultContactMethod()).isSuccess());
+        assertTrue(bootstrapper.bootstrap(params, getTestUser(), getDefaultContactMethod()).isSuccess());
     }
 
     /**
@@ -299,7 +299,7 @@ public abstract class AbstractMinionBootstrapperTestBase extends JMockBaseTestCa
         BootstrapParameters params = bootstrapper.createBootstrapParams(input);
         assertTrue(params.getReactivationKey().isPresent());
         assertEquals(params.getReactivationKey().get(), reactKey.getKey());
-        assertTrue(bootstrapper.bootstrap(params, user, getDefaultContactMethod()).isSuccess());
+        assertTrue(bootstrapper.bootstrap(params, getTestUser(), getDefaultContactMethod()).isSuccess());
     }
 
     protected abstract Map<String, Object> createPillarData(Optional<ActivationKey> key,

@@ -40,25 +40,25 @@ public class UnsubscribeActionTest extends RhnMockStrutsTestCase {
     @Test
     public void testExecute() {
         //give the user config admin status
-        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(getTestUser(), AccessGroupFactory.CONFIG_ADMIN);
 
         //create a global channel
-        ConfigChannel channel = ConfigTestUtils.createConfigChannel(user.getOrg());
+        ConfigChannel channel = ConfigTestUtils.createConfigChannel(getTestUser().getOrg());
 
         //create a server and add it to the two required server groups
         //provisioning for config management and enterprise for server grouping
-        Server server = ServerFactoryTest.createTestServer(user, true,
+        Server server = ServerFactoryTest.createTestServer(getTestUser(), true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
-        ServerGroup group = ServerGroupTest.createTestServerGroup(user.getOrg(),
+        ServerGroup group = ServerGroupTest.createTestServerGroup(getTestUser().getOrg(),
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
         ServerFactory.addServerToGroup(server, group);
 
         //subscribe to the channel
-        server.subscribeConfigChannel(channel, user);
+        server.subscribeConfigChannel(channel, getTestUser());
         ServerFactory.save(server);
 
         //add the server to the system list and save.
-        RhnSet set = RhnSetDecl.SYSTEMS.get(user);
+        RhnSet set = RhnSetDecl.SYSTEMS.get(getTestUser());
         set.addElement(server.getId());
         RhnSetFactory.save(set);
 

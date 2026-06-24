@@ -32,9 +32,9 @@ public class OrgCreateActionTest extends RhnPostMockStrutsTestCase {
 
     @Test
     public void testExecuteSubmit() {
-        user.getOrg().addRole(RoleFactory.SAT_ADMIN);
-        user.addPermanentRole(RoleFactory.SAT_ADMIN);
-        TestUtils.saveAndFlush(user);
+        getTestUser().getOrg().addRole(RoleFactory.SAT_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.SAT_ADMIN);
+        TestUtils.saveAndFlush(getTestUser());
 
         addSubmitted();
         addRequestParameter("orgName", "neworg" + TestUtils.randomString());
@@ -52,9 +52,9 @@ public class OrgCreateActionTest extends RhnPostMockStrutsTestCase {
 
     @Test
     public void testEmptyFields() {
-        user.getOrg().addRole(RoleFactory.SAT_ADMIN);
-        user.addPermanentRole(RoleFactory.SAT_ADMIN);
-        TestUtils.saveAndFlush(user);
+        getTestUser().getOrg().addRole(RoleFactory.SAT_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.SAT_ADMIN);
+        TestUtils.saveAndFlush(getTestUser());
 
         addSubmitted();
         setRequestPathInfo("/admin/multiorg/OrgCreate");
@@ -66,9 +66,9 @@ public class OrgCreateActionTest extends RhnPostMockStrutsTestCase {
 
     @Test
     public void testCreateDupeUser() {
-        user.getOrg().addRole(RoleFactory.SAT_ADMIN);
-        user.addPermanentRole(RoleFactory.SAT_ADMIN);
-        User savedTestUser = TestUtils.saveAndFlush(user);
+        getTestUser().getOrg().addRole(RoleFactory.SAT_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.SAT_ADMIN);
+        User savedTestUser = TestUtils.saveAndFlush(getTestUser());
 
         addSubmitted();
         addRequestParameter("orgName", "neworg" + TestUtils.randomString());

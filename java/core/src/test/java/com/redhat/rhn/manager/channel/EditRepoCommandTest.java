@@ -43,23 +43,23 @@ public class EditRepoCommandTest extends BaseTestCaseWithUser {
     @BeforeEach
     public void setUp() throws Exception {
 
-        contentSourceId = createInitialContentSource(user.getOrg());
+        contentSourceId = createInitialContentSource(getTestUser().getOrg());
 
-        repoCommand = new EditRepoCommand(user, contentSourceId);
+        repoCommand = new EditRepoCommand(getTestUser(), contentSourceId);
     }
 
     @Test
     public void canModifySSLData() throws InvalidCertificateException {
-        SslCryptoKey caCert = KickstartFactoryTest.createTestSslKey(user.getOrg());
-        SslCryptoKey sslClientCert = KickstartFactoryTest.createTestSslKey(user.getOrg());
-        SslCryptoKey sslClientKey = KickstartFactoryTest.createTestSslKey(user.getOrg());
+        SslCryptoKey caCert = KickstartFactoryTest.createTestSslKey(getTestUser().getOrg());
+        SslCryptoKey sslClientCert = KickstartFactoryTest.createTestSslKey(getTestUser().getOrg());
+        SslCryptoKey sslClientKey = KickstartFactoryTest.createTestSslKey(getTestUser().getOrg());
 
         repoCommand.addSslSet(caCert.getId(), sslClientCert.getId(), sslClientKey.getId());
         repoCommand.store();
 
         TestUtils.flushAndClearSession();
 
-        ContentSource contentSource = ChannelFactory.lookupContentSource(contentSourceId, user.getOrg());
+        ContentSource contentSource = ChannelFactory.lookupContentSource(contentSourceId, getTestUser().getOrg());
         assertNotNull(contentSource);
         assertNotNull(contentSource.getSslSets());
         assertEquals(1, contentSource.getSslSets().size(), "One SSL set must be associated with the content source");
@@ -75,7 +75,7 @@ public class EditRepoCommandTest extends BaseTestCaseWithUser {
 
         TestUtils.flushAndClearSession();
 
-        contentSource = ChannelFactory.lookupContentSource(contentSourceId, user.getOrg());
+        contentSource = ChannelFactory.lookupContentSource(contentSourceId, getTestUser().getOrg());
         assertNotNull(contentSource);
         assertTrue(CollectionUtils.isEmpty(contentSource.getSslSets()),
                 "No SSL data should be associated with the content source after deletion");

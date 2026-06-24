@@ -35,8 +35,8 @@ public class KickstartAdvancedOptionsActionTest extends RhnPostMockStrutsTestCas
 
     @BeforeEach
     public void setUp() throws Exception {
-        this.ksdata = KickstartDataTest.createKickstartWithChannel(user.getOrg());
-        this.ksdataOptions = KickstartDataTest.createKickstartWithOptions(user.getOrg());
+        this.ksdata = KickstartDataTest.createKickstartWithChannel(getTestUser().getOrg());
+        this.ksdataOptions = KickstartDataTest.createKickstartWithOptions(getTestUser().getOrg());
 
         ksdata = TestUtils.saveAndFlush(ksdata);
         ksdataOptions = TestUtils.saveAndFlush(ksdataOptions);

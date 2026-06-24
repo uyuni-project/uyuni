@@ -335,7 +335,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
             // If the channel is "Provided" create a real channel in the database
             if (channel.isProvided()) {
                 com.redhat.rhn.domain.channel.Channel dbChannel =
-                        ChannelFactoryTest.createTestChannel(user);
+                        ChannelFactoryTest.createTestChannel(getTestUser());
                 channel.setLabel(dbChannel.getLabel());
                 dbChannel.setLastSynced(new Date());
                 channelByLabel.put(dbChannel.getLabel(), dbChannel);
@@ -375,7 +375,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
      */
     private TaskoSchedule insertTaskoSchedule(List<String> channelIds) {
         String bunchName = "repo-sync-bunch";
-        Integer orgId = user.getOrg().getId().intValue();
+        Integer orgId = getTestUser().getOrg().getId().intValue();
         Map<String, Object> params = new HashMap<>();
         params.put("channel_ids", channelIds);
         TaskoBunch bunch = TaskoFactory.lookupBunchByName(bunchName);
@@ -494,7 +494,7 @@ public class ProductSyncManagerTest extends BaseTestCaseWithUser {
         ChannelArch arch = TestUtils.lookupChannelArchFromCacheById(500L);
 
         try {
-            ChannelFactoryTest.createTestChannel(channel + "-conflict", channel, user.getOrg(), arch,
+            ChannelFactoryTest.createTestChannel(channel + "-conflict", channel, getTestUser().getOrg(), arch,
                 family);
         }
         catch (Exception ex) {

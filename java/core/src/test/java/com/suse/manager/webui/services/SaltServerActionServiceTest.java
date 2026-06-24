@@ -136,7 +136,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
                 //do nothing
             }
         };
-        minion = MinionServerFactoryTest.createTestMinionServer(user);
+        minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         saltServerActionService = createSaltServerActionService(saltService, saltService);
 
         taskomaticMock = mock(TaskomaticApi.class);
@@ -152,16 +152,16 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testPackageUpdate() throws Exception {
-        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         List<MinionServer> mins = new ArrayList<>();
         mins.add(testMinionServer);
 
         List<MinionSummary> minionSummaries = mins.stream().
                 map(MinionSummary::new).collect(Collectors.toList());
 
-        Channel channel = ChannelFactoryTest.createTestChannel(user);
-        Package p64 = ErrataTestUtils.createTestPackage(user, channel, "x86_64");
-        Package p32 = ErrataTestUtils.createLaterTestPackage(user, null, channel, p64);
+        Channel channel = ChannelFactoryTest.createTestChannel(getTestUser());
+        Package p64 = ErrataTestUtils.createTestPackage(getTestUser(), channel, "x86_64");
+        Package p32 = ErrataTestUtils.createLaterTestPackage(getTestUser(), null, channel, p64);
         p32.setPackageEvr(p64.getPackageEvr());
         p32.setPackageArch(PackageFactory.lookupPackageArchByLabel("i686"));
         p32 = TestUtils.saveAndFlush(p32);
@@ -179,7 +179,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         packageMaps.add(pkg64map);
 
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
-        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, user,
+        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, getTestUser(),
                 "test action", Date.from(now.toInstant()));
 
         ActionFactory.addServerToAction(testMinionServer, action);
@@ -198,16 +198,16 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testPackageFullUpdate() throws Exception {
-        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         List<MinionServer> mins = new ArrayList<>();
         mins.add(testMinionServer);
 
         List<MinionSummary> minionSummaries = mins.stream().
                 map(MinionSummary::new).collect(Collectors.toList());
 
-        Channel channel = ChannelFactoryTest.createTestChannel(user);
-        Package p64 = ErrataTestUtils.createTestPackage(user, channel, "x86_64");
-        Package p32 = ErrataTestUtils.createLaterTestPackage(user, null, channel, p64);
+        Channel channel = ChannelFactoryTest.createTestChannel(getTestUser());
+        Package p64 = ErrataTestUtils.createTestPackage(getTestUser(), channel, "x86_64");
+        Package p32 = ErrataTestUtils.createLaterTestPackage(getTestUser(), null, channel, p64);
         p32.setPackageEvr(p64.getPackageEvr());
         p32.setPackageArch(PackageFactory.lookupPackageArchByLabel("i686"));
         p32 = TestUtils.saveAndFlush(p32);
@@ -225,7 +225,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         packageMaps.add(pkg64map);
 
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
-        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, user,
+        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, getTestUser(),
                 "test action", Date.from(now.toInstant()));
 
         ActionFactory.addServerToAction(testMinionServer, action);
@@ -243,20 +243,20 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testRetractedPackageInstall() throws Exception {
-        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         List<MinionServer> mins = new ArrayList<>();
         mins.add(testMinionServer);
 
         List<MinionSummary> minionSummaries = mins.stream().
                 map(MinionSummary::new).collect(Collectors.toList());
 
-        Channel channel = ChannelFactoryTest.createTestChannel(user);
-        SystemManager.subscribeServerToChannel(user, testMinionServer, channel);
-        Package p64 = ErrataTestUtils.createTestPackage(user, channel, "x86_64");
+        Channel channel = ChannelFactoryTest.createTestChannel(getTestUser());
+        SystemManager.subscribeServerToChannel(getTestUser(), testMinionServer, channel);
+        Package p64 = ErrataTestUtils.createTestPackage(getTestUser(), channel, "x86_64");
         Errata retracted = ErrataFactoryTest.createTestErrata(null);
         retracted.addChannel(channel);
         retracted.setAdvisoryStatus(AdvisoryStatus.RETRACTED);
-        Package p32 = ErrataTestUtils.createLaterTestPackage(user, retracted, channel, p64);
+        Package p32 = ErrataTestUtils.createLaterTestPackage(getTestUser(), retracted, channel, p64);
         p32.setPackageEvr(p64.getPackageEvr());
         p32.setPackageArch(PackageFactory.lookupPackageArchByLabel("i686"));
         p32 = TestUtils.saveAndFlush(p32);
@@ -274,7 +274,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         packageMaps.add(pkg64map);
 
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
-        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, user,
+        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, getTestUser(),
                 "test action", Date.from(now.toInstant()));
 
         ActionFactory.addServerToAction(testMinionServer, action);
@@ -294,7 +294,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testPackageRemoveDebian() throws Exception {
-        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         testMinionServer.setServerArch(ServerFactory.lookupServerArchByLabel("amd64-debian-linux"));
         List<MinionServer> mins = new ArrayList<>();
         mins.add(testMinionServer);
@@ -302,8 +302,8 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         List<MinionSummary> minionSummaries = mins.stream().
                 map(MinionSummary::new).collect(Collectors.toList());
 
-        Channel channel = ChannelFactoryTest.createTestChannel(user);
-        Package p = ErrataTestUtils.createTestPackage(user, channel, "amd64-deb");
+        Channel channel = ChannelFactoryTest.createTestChannel(getTestUser());
+        Package p = ErrataTestUtils.createTestPackage(getTestUser(), channel, "amd64-deb");
         p.setPackageEvr(PackageEvrFactoryTest.createTestPackageEvr(null, "1.0.0", "X", PackageType.DEB));
 
         Map<String, Long> pkgMap = new HashMap<>();
@@ -312,7 +312,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         pkgMap.put("arch_id", p.getPackageArch().getId());
 
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
-        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, user,
+        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, getTestUser(),
                 "test action", Date.from(now.toInstant()));
 
         ActionFactory.addServerToAction(testMinionServer, action);
@@ -338,7 +338,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testPackageUpdateDebian() throws Exception {
-        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         testMinionServer.setServerArch(ServerFactory.lookupServerArchByLabel("amd64-debian-linux"));
         List<MinionServer> mins = new ArrayList<>();
         mins.add(testMinionServer);
@@ -346,10 +346,10 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         List<MinionSummary> minionSummaries = mins.stream().
                 map(MinionSummary::new).collect(Collectors.toList());
 
-        Channel channel = ChannelFactoryTest.createTestChannel(user);
-        Package p1 = ErrataTestUtils.createTestPackage(user, channel, "amd64-deb");
+        Channel channel = ChannelFactoryTest.createTestChannel(getTestUser());
+        Package p1 = ErrataTestUtils.createTestPackage(getTestUser(), channel, "amd64-deb");
         p1.setPackageEvr(PackageEvrFactoryTest.createTestPackageEvr(null, "1.0.0", "X", PackageType.DEB));
-        Package p2 = ErrataTestUtils.createTestPackage(user, channel, "amd64-deb");
+        Package p2 = ErrataTestUtils.createTestPackage(getTestUser(), channel, "amd64-deb");
         p2.setPackageEvr(PackageEvrFactoryTest.createTestPackageEvr("1", "1.2", "1ubuntu1", PackageType.DEB));
 
         List<Map<String, Long>> packageMaps = new ArrayList<>();
@@ -366,7 +366,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         packageMaps.add(pkgMap);
 
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
-        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, user,
+        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_UPDATE, getTestUser(),
                 "test action", Date.from(now.toInstant()));
 
         ActionFactory.addServerToAction(testMinionServer, action);
@@ -397,16 +397,16 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testPackageRemoveDuplicates() throws Exception {
-        MinionServer testMinion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer testMinion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         List<MinionServer> mins = new ArrayList<>();
         mins.add(testMinion);
 
         List<MinionSummary> minionSummaries = mins.stream().
                 map(MinionSummary::new).collect(Collectors.toList());
 
-        Channel channel = ChannelFactoryTest.createTestChannel(user);
-        Package p1 = ErrataTestUtils.createTestPackage(user, channel, "x86_64");
-        Package p2 = ErrataTestUtils.createTestPackage(user, channel, "x86_64");
+        Channel channel = ChannelFactoryTest.createTestChannel(getTestUser());
+        Package p1 = ErrataTestUtils.createTestPackage(getTestUser(), channel, "x86_64");
+        Package p2 = ErrataTestUtils.createTestPackage(getTestUser(), channel, "x86_64");
         p1.getPackageName().setName("test-package-duplicated-name");
         p2.setPackageName(p1.getPackageName());
         p1.setPackageEvr(PackageEvrFactoryTest.createTestPackageEvr(null, "1.0.0", "X", PackageType.RPM));
@@ -425,7 +425,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         packageMaps.add(p2map);
 
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
-        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_REMOVE, user,
+        Action action = ActionFactory.createAndSaveAction(ActionFactory.TYPE_PACKAGES_REMOVE, getTestUser(),
                 "test remove action", Date.from(now.toInstant()));
 
         ActionFactory.addServerToAction(testMinion, action);
@@ -460,14 +460,14 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testDeployFiles() {
-        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
-        MinionServer minion2 = MinionServerFactoryTest.createTestMinionServer(user);
-        MinionServer minion3 = MinionServerFactoryTest.createTestMinionServer(user);
-        MinionServer minion4 = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        MinionServer minion2 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        MinionServer minion3 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        MinionServer minion4 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
         ConfigAction configAction = (ConfigAction) ActionFactory.createAction(ActionFactory.TYPE_CONFIGFILES_DEPLOY,
-                user, Date.from(now.toInstant()));
+                getTestUser(), Date.from(now.toInstant()));
 
         ActionFactory.addServerToAction(minion1, configAction);
         ActionFactory.addServerToAction(minion2, configAction);
@@ -475,11 +475,11 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         ActionFactory.addServerToAction(minion4, configAction);
 
         //create the revision, file, and channel.
-        ConfigRevision revision1 = ConfigTestUtils.createConfigRevision(user.getOrg());
+        ConfigRevision revision1 = ConfigTestUtils.createConfigRevision(getTestUser().getOrg());
         revision1.getConfigFile().setLatestConfigRevision(revision1);
-        ConfigRevision revision2 = ConfigTestUtils.createConfigRevision(user.getOrg());
+        ConfigRevision revision2 = ConfigTestUtils.createConfigRevision(getTestUser().getOrg());
         revision2.getConfigFile().setLatestConfigRevision(revision2);
-        ConfigRevision revision3 = ConfigTestUtils.createConfigRevision(user.getOrg());
+        ConfigRevision revision3 = ConfigTestUtils.createConfigRevision(getTestUser().getOrg());
         revision3.getConfigFile().setLatestConfigRevision(revision3);
 
         ActionFactory.addConfigRevisionToAction(revision1, minion1, configAction);
@@ -567,34 +567,34 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         saltServerActionService.setSaltActionChainGeneratorService(generatorService);
         ActionChainFactory.setTaskomaticApi(taskomaticMock);
 
-        testMinion1 = MinionServerFactoryTest.createTestMinionServer(user);
+        testMinion1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         SystemManager.giveCapability(testMinion1.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
 
-        testMinion2 = MinionServerFactoryTest.createTestMinionServer(user);
+        testMinion2 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         SystemManager.giveCapability(testMinion2.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
 
-        testServer1 = ServerFactoryTest.createTestServer(user, false,
+        testServer1 = ServerFactoryTest.createTestServer(getTestUser(), false,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
         SystemManager.giveCapability(testServer1.getId(), SystemManager.CAP_SCRIPT_RUN, 1L);
 
         String label = TestUtils.randomString();
-        testActionChain = ActionChainFactory.createActionChain(label, user);
+        testActionChain = ActionChainFactory.createActionChain(label, getTestUser());
 
 
         Date earliestAction = new Date();
 
         ScriptActionDetails sad = ActionFactory.createScriptActionDetails(
                 "root", "root", 10L, "#!/bin/csh\necho hello");
-        ActionChainManager.scheduleScriptRuns(user,
+        ActionChainManager.scheduleScriptRuns(getTestUser(),
                 Arrays.asList(testMinion1.getId(), testMinion2.getId(), testServer1.getId()),
                 "script", sad, earliestAction, testActionChain);
 
         Set<Long> allServerIds = new HashSet<>();
         Collections.addAll(allServerIds, testMinion1.getId(), testMinion2.getId(), testServer1.getId());
 
-        ActionChainManager.scheduleRebootActions(user, allServerIds, earliestAction, testActionChain);
+        ActionChainManager.scheduleRebootActions(getTestUser(), allServerIds, earliestAction, testActionChain);
 
-        testHighstateActions = ActionChainManager.scheduleApplyStates(user,
+        testHighstateActions = ActionChainManager.scheduleApplyStates(getTestUser(),
                 Arrays.asList(testMinion1.getId(), testMinion2.getId()), Optional.empty(),
                 earliestAction, testActionChain);
 
@@ -654,29 +654,30 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
                 testSaltUtils);
         messageAction.execute(message);
 
-        assertEquals(3, ActionFactory.listActionsForServer(user, testMinion1).size(),
+        assertEquals(3, ActionFactory.listActionsForServer(getTestUser(), testMinion1).size(),
                 "3 actions have been scheduled for minion 1");
-        assertEquals(3, ActionFactory.listActionsForServer(user, testMinion2).size(),
+        assertEquals(3, ActionFactory.listActionsForServer(getTestUser(), testMinion2).size(),
                 "3 actions have been scheduled for minion 2");
-        assertEquals(2, ActionFactory.listActionsForServer(user, testServer1).size(),
+        assertEquals(2, ActionFactory.listActionsForServer(getTestUser(), testServer1).size(),
                 "2 actions have been scheduled for server 1");
     }
 
     @Test
     public void testSubscribeChannels() throws Exception {
-        Channel base = ChannelFactoryTest.createBaseChannel(user);
-        Channel ch1 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        Channel base = ChannelFactoryTest.createBaseChannel(getTestUser());
+        Channel ch1 = ChannelFactoryTest.createTestChannel(getTestUser().getOrg());
         ch1.setParentChannel(base);
         ch1 = TestUtils.saveAndFlush(ch1);
-        Channel ch2 = ChannelFactoryTest.createTestChannel(user.getOrg());
+        Channel ch2 = ChannelFactoryTest.createTestChannel(getTestUser().getOrg());
         ch2.setParentChannel(base);
         ch2 = TestUtils.saveAndFlush(ch2);
 
-        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
         final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
         SubscribeChannelsAction action = (SubscribeChannelsAction) ActionFactory.createAndSaveAction(
-                ActionFactory.TYPE_SUBSCRIBE_CHANNELS, user, "Subscribe to channels", Date.from(now.toInstant()));
+                ActionFactory.TYPE_SUBSCRIBE_CHANNELS, getTestUser(), "Subscribe to channels",
+                Date.from(now.toInstant()));
         action.setSaltApi(saltService);
 
         SubscribeChannelsActionDetails details = new SubscribeChannelsActionDetails();
@@ -747,11 +748,11 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         successWorker();
 
         // prerequisite is still queued
-        Action prereq = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        Action prereq = ActionFactoryTest.createAction(getTestUser(), ActionFactory.TYPE_SCRIPT_RUN);
         ServerAction prereqServerAction = createChildServerAction(prereq, ServerAction::setStatusQueued, 5L);
 
         // action is queued as well
-        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        Action action = ActionFactoryTest.createAction(getTestUser(), ActionFactory.TYPE_SCRIPT_RUN);
         action.setPrerequisite(prereq);
         ServerAction serverAction = createChildServerAction(action, ServerAction::setStatusQueued, 5L);
 
@@ -792,7 +793,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     public void testDontExecuteCompletedAction() throws Exception {
         AtomicInteger counter = new AtomicInteger();
         SaltServerActionService testService = countSaltActionCalls(counter);
-        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        Action action = ActionFactoryTest.createAction(getTestUser(), ActionFactory.TYPE_SCRIPT_RUN);
         ServerAction serverAction = createChildServerAction(action, ServerAction::setStatusCompleted, 5L);
 
         testService.executeSSHAction(action, minion);
@@ -834,7 +835,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
     public void testDontExecuteFailedAction() throws Exception {
         AtomicInteger counter = new AtomicInteger();
         SaltServerActionService testService = countSaltActionCalls(counter);
-        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        Action action = ActionFactoryTest.createAction(getTestUser(), ActionFactory.TYPE_SCRIPT_RUN);
         ServerAction serverAction = createChildServerAction(action, ServerAction::setStatusFailed, 5L);
 
         testService.executeSSHAction(action, minion);
@@ -856,10 +857,10 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         SaltServerActionService testService = countSaltActionCalls(counter);
 
         // prerequisite failed
-        Action prereq = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        Action prereq = ActionFactoryTest.createAction(getTestUser(), ActionFactory.TYPE_SCRIPT_RUN);
         createChildServerAction(prereq, ServerAction::setStatusFailed, 0L);
 
-        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        Action action = ActionFactoryTest.createAction(getTestUser(), ActionFactory.TYPE_SCRIPT_RUN);
         action.setPrerequisite(prereq);
         ServerAction serverAction = createChildServerAction(action, ServerAction::setStatusQueued, 5L);
 
@@ -885,7 +886,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         successWorker();
 
         // create action without servers
-        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        Action action = ActionFactoryTest.createAction(getTestUser(), ActionFactory.TYPE_SCRIPT_RUN);
         ServerAction serverAction = createChildServerAction(action, ServerAction::setStatusQueued, 5L);
 
         saltServerActionService.executeSSHAction(action, minion);
@@ -912,7 +913,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         };
         SaltServerActionService testService = createSaltServerActionService(new TestSystemQuery(), saltApi);
 
-        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        Action action = ActionFactoryTest.createAction(getTestUser(), ActionFactory.TYPE_SCRIPT_RUN);
         ServerAction serverAction = createChildServerAction(action, ServerAction::setStatusQueued, 5L);
 
         testService.executeSSHAction(action, minion);
@@ -938,7 +939,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
             }
         };
         SaltServerActionService testService = createSaltServerActionService(new TestSystemQuery(), saltApi);
-        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        Action action = ActionFactoryTest.createAction(getTestUser(), ActionFactory.TYPE_SCRIPT_RUN);
         ServerAction serverAction = createChildServerAction(action, ServerAction::setStatusQueued, 5L);
         try {
             testService.executeSSHAction(action, minion);
@@ -980,7 +981,7 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
     private Action createRebootAction(Date earliestAction) {
         Action action = ActionFactory.createAction(ActionFactory.TYPE_REBOOT);
-        action.setOrg(user.getOrg());
+        action.setOrg(getTestUser().getOrg());
         action.setEarliestAction(earliestAction);
         return action;
     }
@@ -998,12 +999,12 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
         successWorker();
 
         // prerequisite is still queued
-        Action prereq = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        Action prereq = ActionFactoryTest.createAction(getTestUser(), ActionFactory.TYPE_SCRIPT_RUN);
         ServerAction prereqServerAction = createChildServerAction(prereq, ServerAction::setStatusQueued, 5L);
         prereq.setServerActions(Collections.singleton(prereqServerAction));
 
         // action is queued as well
-        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_SCRIPT_RUN);
+        Action action = ActionFactoryTest.createAction(getTestUser(), ActionFactory.TYPE_SCRIPT_RUN);
         action.setPrerequisite(prereq);
         ServerAction serverAction = createChildServerAction(action, ServerAction::setStatusQueued, 5L);
 
@@ -1017,10 +1018,10 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testExectueSSHAction() throws Exception {
-        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(user);
-        MinionServer sshMinion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer testMinionServer = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        MinionServer sshMinion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         sshMinion.setContactMethod(ServerFactory.findContactMethodByLabel(ContactMethodUtil.SSH_PUSH));
-        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
+        Action action = ActionFactoryTest.createAction(getTestUser(), ActionFactory.TYPE_REBOOT);
 
         // set the auto generated server action to failed
         action.getServerActions().forEach(sa -> sa.fail("not needed"));
@@ -1052,10 +1053,10 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testDoNotReExecuteDoneActions() throws Exception {
-        MinionServer firstMinion = MinionServerFactoryTest.createTestMinionServer(user);
-        MinionServer secondMinion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer firstMinion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        MinionServer secondMinion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
-        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_REBOOT);
+        Action action = ActionFactoryTest.createAction(getTestUser(), ActionFactory.TYPE_REBOOT);
 
         // set the auto generated server action to failed
         action.getServerActions().forEach(sa -> sa.fail("not needed"));
@@ -1111,9 +1112,10 @@ public class SaltServerActionServiceTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testAnsiblePlaybookAction() throws Exception {
-        MinionServer controlNode = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer controlNode = MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
-        PlaybookAction action = (PlaybookAction) ActionFactoryTest.createAction(user, ActionFactory.TYPE_PLAYBOOK);
+        PlaybookAction action = (PlaybookAction) ActionFactoryTest.createAction(getTestUser(),
+                ActionFactory.TYPE_PLAYBOOK);
         PlaybookActionDetails details = new PlaybookActionDetails();
         details.setInventoryPath("/path/to/my/hosts");
         details.setPlaybookPath("/path/to/myplaybook.yml");

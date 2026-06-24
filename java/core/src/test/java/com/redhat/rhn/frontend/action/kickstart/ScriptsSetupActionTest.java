@@ -34,7 +34,7 @@ public class ScriptsSetupActionTest extends RhnMockStrutsTestCase {
     public void testKickstartList() throws Exception {
         // Create a kickstart and the defaults so the list
         // will return something.
-        KickstartData k = KickstartDataTest.createTestKickstartData(user.getOrg());
+        KickstartData k = KickstartDataTest.createTestKickstartData(getTestUser().getOrg());
         setRequestPathInfo("/kickstart/Scripts");
         addRequestParameter(RequestContext.KICKSTART_ID, k.getId().toString());
         actionPerform();

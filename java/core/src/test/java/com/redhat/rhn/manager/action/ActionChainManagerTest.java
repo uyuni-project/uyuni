@@ -82,11 +82,11 @@ public class ActionChainManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testSchedulePackageUpgrades() throws Exception {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
 
-        Server s = ServerFactoryTest.createTestServer(user, true);
+        Server s = ServerFactoryTest.createTestServer(getTestUser(), true);
 
-        Package p = PackageTest.createTestPackage(user.getOrg());
+        Package p = PackageTest.createTestPackage(getTestUser().getOrg());
 
         Map<String, Long> packageMap = new HashMap<>();
         packageMap.put("name_id", p.getPackageName().getId());
@@ -95,12 +95,12 @@ public class ActionChainManagerTest extends JMockBaseTestCaseWithUser {
         Map<Long, List<Map<String, Long>>> packageMaps = new HashMap<>();
         packageMaps.put(s.getId(), singletonList(packageMap));
 
-        List<Action> actions = ActionChainManager.schedulePackageUpgrades(user, packageMaps,
+        List<Action> actions = ActionChainManager.schedulePackageUpgrades(getTestUser(), packageMaps,
                 new Date(), null);
 
         for (Action action : actions) {
             assertNotNull(action.getId());
-            Action retrievedAction = ActionManager.lookupAction(user, action.getId());
+            Action retrievedAction = ActionManager.lookupAction(getTestUser(), action.getId());
             assertNotNull(retrievedAction);
             assertEquals(action, retrievedAction);
         }
@@ -112,18 +112,18 @@ public class ActionChainManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testScheduleErrataUpdates() throws Exception {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
 
         Map<String, Object> info =
-                ErrataCacheManagerTest.createServerNeededCache(user,
+                ErrataCacheManagerTest.createServerNeededCache(getTestUser(),
                         ErrataFactory.ERRATA_TYPE_BUG);
         Server s = (Server) info.get("server");
         Errata e = (Errata) info.get("errata");
 
         List<Integer> errataIds = singletonList(e.getId().intValue());
         String label = TestUtils.randomString();
-        ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
-        List<Long> actions = ActionChainManager.scheduleErrataUpdate(user, List.of(s),
+        ActionChain actionChain = ActionChainFactory.createActionChain(label, getTestUser());
+        List<Long> actions = ActionChainManager.scheduleErrataUpdate(getTestUser(), List.of(s),
                 errataIds, new Date(), actionChain);
 
         assertEquals(1, actionChain.getEntries().size());
@@ -139,13 +139,13 @@ public class ActionChainManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testScheduleAnsiblePlaybook() throws Exception {
-        Server server = ServerFactoryTest.createTestServer(user);
+        Server server = ServerFactoryTest.createTestServer(getTestUser());
         Date earliestAction = new Date();
-        PlaybookAction action = ActionChainManager.scheduleExecutePlaybook(user, server.getId(),
+        PlaybookAction action = ActionChainManager.scheduleExecutePlaybook(getTestUser(), server.getId(),
                 "/path/to/myplaybook.yml", "/path/to/hosts", null, earliestAction, false, false, "{test: 123}");
 
         // Look it up and verify
-        PlaybookAction savedAction = (PlaybookAction) ActionFactory.lookupByUserAndId(user, action.getId());
+        PlaybookAction savedAction = (PlaybookAction) ActionFactory.lookupByUserAndId(getTestUser(), action.getId());
         assertNotNull(savedAction);
         assertEquals("Execute playbook 'myplaybook.yml'", savedAction.getName());
         assertInstanceOf(PlaybookAction.class, savedAction);
@@ -168,13 +168,13 @@ public class ActionChainManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testScheduleAnsiblePlaybookTestMode() throws Exception {
-        Server server = ServerFactoryTest.createTestServer(user);
+        Server server = ServerFactoryTest.createTestServer(getTestUser());
         Date earliestAction = new Date();
-        PlaybookAction action = ActionChainManager.scheduleExecutePlaybook(user, server.getId(),
+        PlaybookAction action = ActionChainManager.scheduleExecutePlaybook(getTestUser(), server.getId(),
                 "/path/to/myplaybook.yml", null, null, earliestAction, true, true, "{test: 123}");
 
         // Look it up and verify
-        PlaybookAction savedAction = (PlaybookAction) ActionFactory.lookupByUserAndId(user, action.getId());
+        PlaybookAction savedAction = (PlaybookAction) ActionFactory.lookupByUserAndId(getTestUser(), action.getId());
         assertNotNull(savedAction);
         assertEquals("Execute playbook 'myplaybook.yml'", savedAction.getName());
         assertInstanceOf(PlaybookAction.class, savedAction);

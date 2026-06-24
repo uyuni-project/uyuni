@@ -76,11 +76,11 @@ public class RecurringActionControllerTest extends BaseControllerTestCase {
     @BeforeEach
     public void setUp() throws Exception {
 
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
 
         response = RequestResponseFactory.create(new RhnMockHttpServletResponse());
 
-        minionServer = MinionServerFactoryTest.createTestMinionServer(user);
+        minionServer = MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
         // mocking
         taskomaticMock = context().mock(TaskomaticApi.class);
@@ -94,7 +94,7 @@ public class RecurringActionControllerTest extends BaseControllerTestCase {
 
     @Test
     public void testCreateOrgHighstateAction() throws UnsupportedEncodingException {
-        Long orgId = user.getOrg().getId();
+        Long orgId = getTestUser().getOrg().getId();
         String actionName = "org-highstate-1";
         createOrgHighstateAction(orgId, actionName);
 
@@ -107,7 +107,7 @@ public class RecurringActionControllerTest extends BaseControllerTestCase {
         assertEquals(orgId, extractTargetId(action));
         assertEquals(actionName, action.get("scheduleName"));
         assertEquals("HIGHSTATE", action.get("actionType"));
-        assertEquals(user.getLogin(), details.getCreatorLogin());
+        assertEquals(getTestUser().getLogin(), details.getCreatorLogin());
     }
 
     @Test
@@ -128,7 +128,7 @@ public class RecurringActionControllerTest extends BaseControllerTestCase {
         ManagedServerGroup group = ServerGroupFactory.create(
             ServerGroupTestUtils.NAME,
             ServerGroupTestUtils.DESCRIPTION,
-            user.getOrg()
+            getTestUser().getOrg()
         );
         String actionName = "group-highstate-1";
         createGroupHighstateAction(group.getId(), actionName);
@@ -144,7 +144,7 @@ public class RecurringActionControllerTest extends BaseControllerTestCase {
     @Test
     public void testGetStatesConfigInternalStates() {
         var request = getRequestWithCsrf("/manager/api/recurringactions/states");
-        var states = RecurringActionController.getStatesConfig(request, response, user);
+        var states = RecurringActionController.getStatesConfig(request, response, getTestUser());
         assertTrue(states.contains("hardware.profileupdate"));
         assertTrue(states.contains("packages.profileupdate"));
         assertTrue(states.contains("util.syncstates"));
@@ -165,13 +165,13 @@ public class RecurringActionControllerTest extends BaseControllerTestCase {
 
         var params = Map.of("id", extractActionId(action).toString());
         var request = getRequestWithCsrfAndParams("/manager/api/recurringactions/states", params);
-        var states = RecurringActionController.getStatesConfig(request, response, user);
+        var states = RecurringActionController.getStatesConfig(request, response, getTestUser());
         assertTrue(states.contains(stateName));
     }
 
     @Test
     public void testGetStatesConfigHighstateAction() throws UnsupportedEncodingException {
-        Long orgId = user.getOrg().getId();
+        Long orgId = getTestUser().getOrg().getId();
         createOrgHighstateAction(orgId, "org-highstate-3");
         Long actionId = extractActionId(listRecurringActions("ORG", orgId).get(0));
 
@@ -179,7 +179,7 @@ public class RecurringActionControllerTest extends BaseControllerTestCase {
         var params = Map.of("id", actionId.toString());
         var request = getRequestWithCsrfAndParams("/manager/api/recurringactions/states", params);
         try {
-            RecurringActionController.getStatesConfig(request, response, user);
+            RecurringActionController.getStatesConfig(request, response, getTestUser());
             fail("An exception should have been thrown");
         }
         catch (HaltException e) {
@@ -191,7 +191,7 @@ public class RecurringActionControllerTest extends BaseControllerTestCase {
     public void testGetStatesConfigInvalidActionId() {
         var params = Map.of("id", "53");
         var request = getRequestWithCsrfAndParams("/manager/api/recurringactions/states", params);
-        var states = RecurringActionController.getStatesConfig(request, response, user);
+        var states = RecurringActionController.getStatesConfig(request, response, getTestUser());
 
         // Trying to list config states of an action that doesn't exist.
         assertTrue(states.contains("Action 53 not found"));
@@ -199,7 +199,7 @@ public class RecurringActionControllerTest extends BaseControllerTestCase {
 
     @Test
     public void testCreateActionSameName() throws UnsupportedEncodingException {
-        Long orgId = user.getOrg().getId();
+        Long orgId = getTestUser().getOrg().getId();
 
         var actionJsonString = createActionJsonString(
             empty(),
@@ -209,10 +209,10 @@ public class RecurringActionControllerTest extends BaseControllerTestCase {
             "HIGHSTATE"
         );
         var saveRequest = getPostRequestWithCsrfAndBody("/manager/api/recurringactions/save", actionJsonString);
-        RecurringActionController.save(saveRequest, response, user);
+        RecurringActionController.save(saveRequest, response, getTestUser());
 
         try {
-            RecurringActionController.save(saveRequest, response, user);
+            RecurringActionController.save(saveRequest, response, getTestUser());
             fail("An exception should have been thrown");
         }
         catch (HaltException e) {
@@ -225,7 +225,7 @@ public class RecurringActionControllerTest extends BaseControllerTestCase {
         var org = OrgFactory.createOrg();
         org.setName("test org: " + TestUtils.randomString());
         org = OrgFactory.save(org);
-        user.addPermanentRole(RoleFactory.SAT_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.SAT_ADMIN);
 
         var orgId = org.getId();
         var actionJsonString = createActionJsonString(
@@ -236,7 +236,7 @@ public class RecurringActionControllerTest extends BaseControllerTestCase {
             "HIGHSTATE"
         );
         var createRequest = getPostRequestWithCsrfAndBody("/manager/api/recurringactions/save", actionJsonString);
-        RecurringActionController.save(createRequest, response, user);
+        RecurringActionController.save(createRequest, response, getTestUser());
 
         var actionId = RecurringActionFactory.listOrgRecurringActions(orgId).iterator().next().getId();
 
@@ -247,7 +247,7 @@ public class RecurringActionControllerTest extends BaseControllerTestCase {
             "HIGHSTATE"
         );
         var updateRequest = getPostRequestWithCsrfAndBody("/manager/api/recurringactions/save", updateJsonStr);
-        RecurringActionController.save(updateRequest, response, user);
+        RecurringActionController.save(updateRequest, response, getTestUser());
 
         var updated = RecurringActionFactory.listOrgRecurringActions(orgId).iterator().next();
         assertEquals("new-name-123", updated.getName());
@@ -258,7 +258,7 @@ public class RecurringActionControllerTest extends BaseControllerTestCase {
         // Should throw an exception when trying to delete an action that doesn't exist.
         var request = getRequestWithCsrf("/manager/api/recurringactions/:id/delete", "55");
         try {
-            RecurringActionController.deleteSchedule(request, response, user);
+            RecurringActionController.deleteSchedule(request, response, getTestUser());
             fail("An exception should have been thrown");
         }
         catch (HaltException e) {
@@ -271,7 +271,7 @@ public class RecurringActionControllerTest extends BaseControllerTestCase {
 
         var actionId = extractActionId(list.get(0));
         request = getRequestWithCsrf("/manager/api/recurringactions/:id/delete", actionId);
-        RecurringActionController.deleteSchedule(request, response, user);
+        RecurringActionController.deleteSchedule(request, response, getTestUser());
 
         list = listRecurringActions("MINION", minionServer.getId());
         assertTrue(list.isEmpty());
@@ -347,33 +347,33 @@ public class RecurringActionControllerTest extends BaseControllerTestCase {
 
     private List<Map<String, Object>> listRecurringActions(String type, Long targetId) {
         var listRequest = getRequestWithCsrf("/manager/api/recurringactions/:type/:id", type, targetId);
-        return GSON.fromJson(RecurringActionController.listByEntity(listRequest, response, user), List.class);
+        return GSON.fromJson(RecurringActionController.listByEntity(listRequest, response, getTestUser()), List.class);
     }
 
     private void createMinionHighstateAction(Long minionId, String name) throws Exception {
         var saveRequest = makeSaveRequest(name, "minion", of(minionId), "HIGHSTATE");
-        RecurringActionController.save(saveRequest, response, user);
+        RecurringActionController.save(saveRequest, response, getTestUser());
     }
 
     private void createMinionCustomStateAction(Long minionId, String name, String stateName) throws Exception {
         var saveRequest = makeSaveRequest(name, "minion", of(minionId), "CUSTOMSTATE", of(stateName));
-        RecurringActionController.save(saveRequest, response, user);
+        RecurringActionController.save(saveRequest, response, getTestUser());
     }
 
     private void createGroupHighstateAction(Long groupId, String name) throws Exception {
         var saveRequest = makeSaveRequest(name, "group", of(groupId), "HIGHSTATE");
-        RecurringActionController.save(saveRequest, response, user);
+        RecurringActionController.save(saveRequest, response, getTestUser());
     }
     private void createOrgHighstateAction(Long orgId, String name) throws UnsupportedEncodingException {
         var saveRequest = makeSaveRequest(name, "org", of(orgId), "HIGHSTATE");
-        RecurringActionController.save(saveRequest, response, user);
+        RecurringActionController.save(saveRequest, response, getTestUser());
     }
 
     private RecurringActionDetailsDto getDetails(Map<String, Object> action) {
         Long actionId = extractActionId(action);
         var request = getRequestWithCsrf("/manager/api/recurringactions/:id/details", actionId);
         return GSON.fromJson(
-            RecurringActionController.getDetails(request, response, user), RecurringActionDetailsDto.class
+            RecurringActionController.getDetails(request, response, getTestUser()), RecurringActionDetailsDto.class
         );
     }
 

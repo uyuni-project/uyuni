@@ -50,7 +50,7 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testLatestPackageStatesEmpty() throws Exception {
-        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         assertFalse(StateFactory.latestPackageStates(server).isPresent());
     }
 
@@ -62,14 +62,14 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testLatestPackageStates() throws Exception {
         // Create test packages and a server
-        Package pkg1 = PackageTest.createTestPackage(user.getOrg());
-        Package pkg2 = PackageTest.createTestPackage(user.getOrg());
-        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        Package pkg1 = PackageTest.createTestPackage(getTestUser().getOrg());
+        Package pkg2 = PackageTest.createTestPackage(getTestUser().getOrg());
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
         // Create a server state revision
         ServerStateRevision serverState = new ServerStateRevision();
         serverState.setServer(server);
-        serverState.setCreator(user);
+        serverState.setCreator(getTestUser());
 
         // Add a package state and save: pkg1 -> INSTALLED
         PackageState packageState = new PackageState();
@@ -82,7 +82,7 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
         // Create a new server state revision
         serverState = new ServerStateRevision();
         serverState.setServer(server);
-        serverState.setCreator(user);
+        serverState.setCreator(getTestUser());
 
         // Add a different package state: pkg2 -> REMOVED
         packageState = new PackageState();
@@ -105,13 +105,13 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testAssignConfigChannelsToServer() throws Exception {
-        Server server = ServerFactoryTest.createTestServer(user);
+        Server server = ServerFactoryTest.createTestServer(getTestUser());
         ServerStateRevision serverState = new ServerStateRevision();
         serverState.setServer(server);
-        serverState.setCreator(user);
+        serverState.setCreator(getTestUser());
 
-        ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(user.getOrg(), "Foo", "foo");
-        ConfigChannel channel2 = ConfigTestUtils.createConfigChannel(user.getOrg(), "Bar", "bar");
+        ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(), "Foo", "foo");
+        ConfigChannel channel2 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(), "Bar", "bar");
 
         serverState.getConfigChannels().add(channel1);
         serverState.getConfigChannels().add(channel2);
@@ -140,13 +140,13 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testRemoveAssignedStatesFromServer() throws Exception {
-        Server server = ServerFactoryTest.createTestServer(user);
+        Server server = ServerFactoryTest.createTestServer(getTestUser());
         ServerStateRevision serverState = new ServerStateRevision();
         serverState.setServer(server);
-        serverState.setCreator(user);
+        serverState.setCreator(getTestUser());
 
-        ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(user.getOrg(), "Foo", "foo");
-        ConfigChannel channel2 = ConfigTestUtils.createConfigChannel(user.getOrg(), "Bar", "bar");
+        ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(), "Foo", "foo");
+        ConfigChannel channel2 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(), "Bar", "bar");
 
         serverState.getConfigChannels().add(channel1);
         serverState.getConfigChannels().add(channel2);
@@ -172,14 +172,14 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testServerGroupConfigChannels() {
         ManagedServerGroup group = ServerGroupFactory.create("testgroup-" +
-                TestUtils.randomString(), "desc", user.getOrg());
+                TestUtils.randomString(), "desc", getTestUser().getOrg());
 
-        ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(user.getOrg(), "Foo", "foo");
-        ConfigChannel channel2 = ConfigTestUtils.createConfigChannel(user.getOrg(), "Bar", "bar");
+        ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(), "Foo", "foo");
+        ConfigChannel channel2 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(), "Bar", "bar");
 
         ServerGroupStateRevision groupRevision = new ServerGroupStateRevision();
         groupRevision.setGroup(group);
-        groupRevision.setCreator(user);
+        groupRevision.setCreator(getTestUser());
         groupRevision.getConfigChannels().add(channel1);
         groupRevision.getConfigChannels().add(channel2);
 
@@ -194,12 +194,12 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testOrgConfigChannels() {
 
-        ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(user.getOrg(), "Foo", "foo");
-        ConfigChannel channel2 = ConfigTestUtils.createConfigChannel(user.getOrg(), "Bar", "bar");
+        ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(), "Foo", "foo");
+        ConfigChannel channel2 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(), "Bar", "bar");
 
         OrgStateRevision orgRevision = new OrgStateRevision();
-        orgRevision.setOrg(user.getOrg());
-        orgRevision.setCreator(user);
+        orgRevision.setOrg(getTestUser().getOrg());
+        orgRevision.setCreator(getTestUser());
         orgRevision.getConfigChannels().add(channel1);
         orgRevision.getConfigChannels().add(channel2);
 
@@ -214,24 +214,24 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testLatestServerGroupConfigChannels() {
         ManagedServerGroup group = ServerGroupFactory.create("testgroup-" +
-                TestUtils.randomString(), "desc", user.getOrg());
+                TestUtils.randomString(), "desc", getTestUser().getOrg());
 
         // create revision 1
-        ConfigChannel channel = ConfigTestUtils.createConfigChannel(user.getOrg(), "First", "first");
+        ConfigChannel channel = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(), "First", "first");
 
         ServerGroupStateRevision groupRevision = new ServerGroupStateRevision();
         groupRevision.setGroup(group);
-        groupRevision.setCreator(user);
+        groupRevision.setCreator(getTestUser());
         groupRevision.getConfigChannels().add(channel);
 
         StateFactory.save(groupRevision);
 
         // create revision 2
-        channel = ConfigTestUtils.createConfigChannel(user.getOrg(), "Second", "second");
+        channel = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(), "Second", "second");
 
         groupRevision = new ServerGroupStateRevision();
         groupRevision.setGroup(group);
-        groupRevision.setCreator(user);
+        groupRevision.setCreator(getTestUser());
         groupRevision.getConfigChannels().add(channel);
 
         StateFactory.save(groupRevision);
@@ -249,26 +249,26 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testLatestOrgConfigChannels() {
         // create revision 1
-        ConfigChannel channel = ConfigTestUtils.createConfigChannel(user.getOrg(), "First", "first");
+        ConfigChannel channel = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(), "First", "first");
 
         OrgStateRevision orgRevision = new OrgStateRevision();
-        orgRevision.setOrg(user.getOrg());
-        orgRevision.setCreator(user);
+        orgRevision.setOrg(getTestUser().getOrg());
+        orgRevision.setCreator(getTestUser());
         orgRevision.getConfigChannels().add(channel);
 
         StateFactory.save(orgRevision);
 
-        channel = ConfigTestUtils.createConfigChannel(user.getOrg(), "Second", "second");
+        channel = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(), "Second", "second");
 
         orgRevision = new OrgStateRevision();
-        orgRevision.setOrg(user.getOrg());
-        orgRevision.setCreator(user);
+        orgRevision.setOrg(getTestUser().getOrg());
+        orgRevision.setCreator(getTestUser());
         orgRevision.getConfigChannels().add(channel);
 
         StateFactory.save(orgRevision);
 
         // Verify: Latest config channels contain only "second"
-        Optional<List<ConfigChannel>> channels = StateFactory.latestConfigChannels(user.getOrg());
+        Optional<List<ConfigChannel>> channels = StateFactory.latestConfigChannels(getTestUser().getOrg());
         assertTrue(channels.isPresent());
         assertEquals(1, channels.get().size());
         assertTrue(channels.get().stream()
@@ -281,12 +281,12 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testLatestConfigChannels() throws Exception {
         // Create revision 1
-        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
         ServerStateRevision serverRevision = new ServerStateRevision();
         serverRevision.setServer(server);
-        serverRevision.setCreator(user);
-        ConfigChannel channel = ConfigTestUtils.createConfigChannel(user.getOrg(),
+        serverRevision.setCreator(getTestUser());
+        ConfigChannel channel = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(),
                 "Test Channel 1", "test-channel-1");
         serverRevision.getConfigChannels().add(channel);
         StateFactory.save(serverRevision);
@@ -294,11 +294,11 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
         // Create revision 2
         serverRevision = new ServerStateRevision();
         serverRevision.setServer(server);
-        serverRevision.setCreator(user);
-        channel = ConfigTestUtils.createConfigChannel(user.getOrg(), "Test Channel 2",
+        serverRevision.setCreator(getTestUser());
+        channel = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(), "Test Channel 2",
                 "test-channel-2");
         serverRevision.getConfigChannels().add(channel);
-        channel = ConfigTestUtils.createConfigChannel(user.getOrg(), "Test Channel 3",
+        channel = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(), "Test Channel 3",
                 "test-channel-3");
         serverRevision.getConfigChannels().add(channel);
         StateFactory.save(serverRevision);
@@ -319,22 +319,22 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testLatestStateRevisionsByConfigChannel() throws Exception {
-        ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(user.getOrg(),
+        ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(),
                 "Test Channel 1", "test-channel-1");
 
-        ConfigChannel channel2 = ConfigTestUtils.createConfigChannel(user.getOrg(),
+        ConfigChannel channel2 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(),
                 "Test Channel 2", "test-channel-2");
 
         // Server usage
-        Server srv = ServerFactoryTest.createTestServer(user);
+        Server srv = ServerFactoryTest.createTestServer(getTestUser());
         ServerStateRevision srvRevision = new ServerStateRevision();
         srvRevision.setServer(srv);
-        srvRevision.setCreator(user);
+        srvRevision.setCreator(getTestUser());
         srvRevision.getConfigChannels().add(channel1);
 
         OrgStateRevision org1Revision = new OrgStateRevision();
-        org1Revision.setOrg(user.getOrg());
-        org1Revision.setCreator(user);
+        org1Revision.setOrg(getTestUser().getOrg());
+        org1Revision.setCreator(getTestUser());
         org1Revision.getConfigChannels().add(channel2);
 
         StateFactory.save(org1Revision);
@@ -350,8 +350,8 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
 
         // Org usage
         OrgStateRevision org2Revision = new OrgStateRevision();
-        org2Revision.setOrg(user.getOrg());
-        org2Revision.setCreator(user);
+        org2Revision.setOrg(getTestUser().getOrg());
+        org2Revision.setCreator(getTestUser());
         org2Revision.getConfigChannels().add(channel1);
         org2Revision.getConfigChannels().add(channel2);
         StateFactory.save(org2Revision);
@@ -367,17 +367,17 @@ public class StateFactoryTest extends BaseTestCaseWithUser {
 
         // Server group usage
         ManagedServerGroup grp1 =
-                ServerGroupFactory.create("test-group-1", "Test Group 1", user.getOrg());
+                ServerGroupFactory.create("test-group-1", "Test Group 1", getTestUser().getOrg());
         ServerGroupStateRevision grp1Revision = new ServerGroupStateRevision();
         grp1Revision.setGroup(grp1);
-        grp1Revision.setCreator(user);
+        grp1Revision.setCreator(getTestUser());
         grp1Revision.getConfigChannels().add(channel1);
 
         ManagedServerGroup grp2 =
-                ServerGroupFactory.create("test-group-2", "Test Group 2", user.getOrg());
+                ServerGroupFactory.create("test-group-2", "Test Group 2", getTestUser().getOrg());
         ServerGroupStateRevision grp2Revision = new ServerGroupStateRevision();
         grp2Revision.setGroup(grp2);
-        grp2Revision.setCreator(user);
+        grp2Revision.setCreator(getTestUser());
         grp2Revision.getConfigChannels().add(channel1);
 
         StateFactory.save(grp1Revision);

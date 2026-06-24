@@ -32,9 +32,9 @@ public class KickstartLocaleCommandTest extends BaseTestCaseWithUser {
 
     @Test
     public void testKickstartLocaleCommand() throws Exception {
-        KickstartData k = KickstartDataTest.createKickstartWithOptions(user.getOrg());
+        KickstartData k = KickstartDataTest.createKickstartWithOptions(getTestUser().getOrg());
 
-        KickstartLocaleCommand cmd = new KickstartLocaleCommand(k.getId(), user);
+        KickstartLocaleCommand cmd = new KickstartLocaleCommand(k.getId(), getTestUser());
         String tz = cmd.getTimezone();
 
         assertEquals("", tz);
@@ -48,9 +48,9 @@ public class KickstartLocaleCommandTest extends BaseTestCaseWithUser {
 
     @Test
     public void testKickstartLocaleCommandWithUtc() throws Exception {
-        KickstartData k = KickstartDataTest.createKickstartWithOptions(user.getOrg());
+        KickstartData k = KickstartDataTest.createKickstartWithOptions(getTestUser().getOrg());
 
-        KickstartLocaleCommand cmd = new KickstartLocaleCommand(k.getId(), user);
+        KickstartLocaleCommand cmd = new KickstartLocaleCommand(k.getId(), getTestUser());
 
         // set timezone command to --utc America/New_York
         cmd.setTimezone("America/New_York");

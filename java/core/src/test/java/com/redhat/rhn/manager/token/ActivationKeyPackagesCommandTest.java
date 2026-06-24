@@ -38,7 +38,7 @@ public class ActivationKeyPackagesCommandTest extends BaseTestCaseWithUser {
     public void testPopulatePackages() throws Exception {
 
         // setup
-        ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
+        ActivationKey key = ActivationKeyTest.createTestActivationKey(getTestUser());
         TokenPackage pkg1 = TokenPackageTest.createTestPackage(key);
         TokenPackage pkg2 = TokenPackageTest.createTestPackage(key);
         TokenPackage pkg3 = TokenPackageTest.createTestPackage(key);
@@ -68,7 +68,7 @@ public class ActivationKeyPackagesCommandTest extends BaseTestCaseWithUser {
 
         // setup
 
-        ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
+        ActivationKey key = ActivationKeyTest.createTestActivationKey(getTestUser());
         ActivationKeyPackagesCommand command = new ActivationKeyPackagesCommand(key);
         int numPkgsBefore = key.getPackages().size();
 

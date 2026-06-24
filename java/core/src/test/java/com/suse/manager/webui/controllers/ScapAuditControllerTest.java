@@ -126,7 +126,7 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
     private TailoringFile createTestTailoringFile() {
         TailoringFile tf = new TailoringFile("Test Tailoring " + System.currentTimeMillis(),
                 "tf-" + System.currentTimeMillis() + ".xml");
-        tf.setOrg(user.getOrg());
+        tf.setOrg(getTestUser().getOrg());
         ScapFactory.saveTailoringFile(tf);
         return tf;
     }
@@ -144,7 +144,7 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
         String body = GSON.toJson(json);
         Request request = getPostRequestWithCsrfAndBody("/manager/api/audit/scap/policy/create", body);
 
-        String responseStr = controller.createScapPolicy(request, response, user);
+        String responseStr = controller.createScapPolicy(request, response, getTestUser());
         ResultJson<?> result = GSON.fromJson(responseStr, ResultJson.class);
 
         assertTrue(result.isSuccess(), "Response should be success");
@@ -152,7 +152,7 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
 
         // Verify in DB
         Integer policyId = ((Double) result.getData()).intValue();
-        Optional<ScapPolicy> policy = ScapFactory.lookupScapPolicyByIdAndOrg(policyId, user.getOrg());
+        Optional<ScapPolicy> policy = ScapFactory.lookupScapPolicyByIdAndOrg(policyId, getTestUser().getOrg());
         assertTrue(policy.isPresent());
         assertEquals("Test Policy Create", policy.get().getPolicyName());
         assertEquals(content.getId(), policy.get().getScapContent().getId());
@@ -164,7 +164,7 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
         createTestTailoringFile();
         Request request = getRequestWithCsrf("/manager/audit/scap/tailoring-files");
 
-        ModelAndView mv = controller.listTailoringFilesView(request, response, user);
+        ModelAndView mv = controller.listTailoringFilesView(request, response, getTestUser());
 
         assertEquals("templates/audit/list-tailoring-files.jade", mv.getViewName());
         Map<String, Object> model = (Map<String, Object>) mv.getModel();
@@ -176,7 +176,7 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
     @Test
     public void testCreateTailoringFileView() throws Exception {
         Request request = getRequestWithCsrf("/manager/audit/scap/tailoring-file/create");
-        ModelAndView mv = controller.createTailoringFileView(request, response, user);
+        ModelAndView mv = controller.createTailoringFileView(request, response, getTestUser());
         assertEquals("templates/audit/create-tailoring-file.jade", mv.getViewName());
     }
 
@@ -185,7 +185,7 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
         TailoringFile tf = createTestTailoringFile();
         Request request = getRequestWithCsrf("/manager/audit/scap/tailoring-file/edit/:id", tf.getId());
 
-        ModelAndView mv = controller.updateTailoringFileView(request, response, user);
+        ModelAndView mv = controller.updateTailoringFileView(request, response, getTestUser());
 
         assertEquals("templates/audit/create-tailoring-file.jade", mv.getViewName());
         Map<String, Object> model = (Map<String, Object>) mv.getModel();
@@ -196,7 +196,7 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
     @Test
     public void testListScapPoliciesView() throws Exception {
         Request request = getRequestWithCsrf("/manager/audit/scap/policies");
-        ModelAndView mv = controller.listScapPoliciesView(request, response, user);
+        ModelAndView mv = controller.listScapPoliciesView(request, response, getTestUser());
         assertEquals("templates/audit/list-scap-policies.jade", mv.getViewName());
         Map<String, Object> model = (Map<String, Object>) mv.getModel();
         assertNotNull(model.get("scapPolicies"));
@@ -205,7 +205,7 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
     @Test
     public void testCreateScapPolicyView() throws Exception {
         Request request = getRequestWithCsrf("/manager/audit/scap/policy/create");
-        ModelAndView mv = controller.createScapPolicyView(request, response, user);
+        ModelAndView mv = controller.createScapPolicyView(request, response, getTestUser());
         assertEquals("templates/audit/create-scap-policy.jade", mv.getViewName());
         Map<String, Object> model = (Map<String, Object>) mv.getModel();
         assertNotNull(model.get("scapPolicyPageDataJson"));
@@ -218,11 +218,11 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
         policy.setPolicyName("Edit Policy");
         policy.setScapContent(content);
         policy.setXccdfProfileId("profile");
-        policy.setOrg(user.getOrg());
+        policy.setOrg(getTestUser().getOrg());
         ScapFactory.saveScapPolicy(policy);
 
         Request request = getRequestWithCsrf("/manager/audit/scap/policy/edit/:id", policy.getId());
-        ModelAndView mv = controller.editScapPolicyView(request, response, user);
+        ModelAndView mv = controller.editScapPolicyView(request, response, getTestUser());
 
         assertEquals("templates/audit/create-scap-policy.jade", mv.getViewName());
         Map<String, Object> model = (Map<String, Object>) mv.getModel();
@@ -236,11 +236,11 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
         policy.setPolicyName("Detail Policy");
         policy.setScapContent(content);
         policy.setXccdfProfileId("profile");
-        policy.setOrg(user.getOrg());
+        policy.setOrg(getTestUser().getOrg());
         ScapFactory.saveScapPolicy(policy);
 
         Request request = getRequestWithCsrf("/manager/audit/scap/policy/details/:id", policy.getId());
-        ModelAndView mv = controller.detailScapPolicyView(request, response, user);
+        ModelAndView mv = controller.detailScapPolicyView(request, response, getTestUser());
 
         assertEquals("templates/audit/scap-policy-details.jade", mv.getViewName());
         Map<String, Object> model = (Map<String, Object>) mv.getModel();
@@ -250,14 +250,14 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
     @Test
     public void testListScapContentView() throws Exception {
         Request request = getRequestWithCsrf("/manager/audit/scap/content");
-        ModelAndView mv = controller.listScapContentView(request, response, user);
+        ModelAndView mv = controller.listScapContentView(request, response, getTestUser());
         assertEquals("templates/audit/list-scap-content.jade", mv.getViewName());
     }
 
     @Test
     public void testCreateScapContentView() throws Exception {
         Request request = getRequestWithCsrf("/manager/audit/scap/content/create");
-        ModelAndView mv = controller.createScapContentView(request, response, user);
+        ModelAndView mv = controller.createScapContentView(request, response, getTestUser());
         assertEquals("templates/audit/create-scap-content.jade", mv.getViewName());
     }
 
@@ -265,7 +265,7 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
     public void testUpdateScapContentView() throws Exception {
         ScapContent content = createTestScapContent();
         Request request = getRequestWithCsrf("/manager/audit/scap/content/edit/:id", content.getId());
-        ModelAndView mv = controller.updateScapContentView(request, response, user);
+        ModelAndView mv = controller.updateScapContentView(request, response, getTestUser());
         assertEquals("templates/audit/create-scap-content.jade", mv.getViewName());
     }
 
@@ -289,7 +289,7 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
         }
         Request request = getRequestWithCsrf("/manager/api/audit/profiles/list/:type/:id",
           "dataStream", content.getId());
-        String responseStr = controller.getProfileList(request, response, user);
+        String responseStr = controller.getProfileList(request, response, getTestUser());
 
         var listType = new TypeToken<List<Map<String, String>>>() { } .getType();
         List<Map<String, String>> profiles = GSON.fromJson(responseStr, listType);
@@ -309,12 +309,12 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
 
         ScapFactory.saveCustomRemediation("test_rule", "test_bench",
                 ScriptType.BASH, "#!/bin/bash\necho 'hi'",
-                user.getOrg(), user);
+                getTestUser().getOrg(), getTestUser());
 
         Request request = getRequestWithCsrf("/manager/api/audit/scap/custom-remediation/:identifier/:benchmarkId",
                 "test_rule", "test_bench");
 
-        String responseStr = controller.getCustomRemediation(request, response, user);
+        String responseStr = controller.getCustomRemediation(request, response, getTestUser());
         ResultJson<?> result = GSON.fromJson(responseStr, ResultJson.class);
 
         assertTrue(result.isSuccess());
@@ -326,18 +326,18 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
 
         ScapFactory.saveCustomRemediation("del_rule", "del_bench",
                 ScriptType.BASH, "#!/bin/bash\necho 'del'",
-                user.getOrg(), user);
+                getTestUser().getOrg(), getTestUser());
 
         Request request = getDeleteRequestWithCsrf(
                 "/manager/api/audit/scap/custom-remediation/:identifier/:benchmarkId/:scriptType",
                 "del_rule", "del_bench", "bash");
 
-        String responseStr = controller.deleteCustomRemediation(request, response, user);
+        String responseStr = controller.deleteCustomRemediation(request, response, getTestUser());
         ResultJson<?> result = GSON.fromJson(responseStr, ResultJson.class);
 
         assertTrue(result.isSuccess());
         Optional<XccdfRuleFixCustom> deleted = ScapFactory.lookupCustomRemediationByIdentifier(
-                "del_rule", "del_bench", user.getOrg());
+                "del_rule", "del_bench", getTestUser().getOrg());
         assertFalse(deleted.isPresent());
     }
 
@@ -358,7 +358,7 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
         String body = GSON.toJson(json);
         Request request = getPostRequestWithCsrfAndBody("/manager/api/audit/schedule/create", body);
 
-        String responseStr = controller.scheduleAuditScan(request, response, user);
+        String responseStr = controller.scheduleAuditScan(request, response, getTestUser());
         ResultJson<?> result = GSON.fromJson(responseStr, ResultJson.class);
         assertNotNull(result);
     }
@@ -370,11 +370,11 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
         policy.setPolicyName("History Policy");
         policy.setScapContent(content);
         policy.setXccdfProfileId("profile");
-        policy.setOrg(user.getOrg());
+        policy.setOrg(getTestUser().getOrg());
         ScapFactory.saveScapPolicy(policy);
 
         Request request = getRequestWithCsrf("/manager/api/audit/scap/policy/:id/scan-history", policy.getId());
-        String responseStr = controller.getPolicyScanHistory(request, response, user);
+        String responseStr = controller.getPolicyScanHistory(request, response, getTestUser());
         ResultJson<?> result = GSON.fromJson(responseStr, ResultJson.class);
         assertTrue(result.isSuccess());
     }
@@ -389,7 +389,7 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
         String body = GSON.toJson(json);
         Request request = getPostRequestWithCsrfAndBody("/manager/api/audit/scap/scan/rule-apply-remediation", body);
 
-        String responseStr = controller.applyRemediation(request, response, user);
+        String responseStr = controller.applyRemediation(request, response, getTestUser());
         ResultJson<?> result = GSON.fromJson(responseStr, ResultJson.class);
         assertNotNull(result);
     }
@@ -402,7 +402,7 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
         policy.setPolicyName("Original Name");
         policy.setScapContent(content);
         policy.setXccdfProfileId("profile_1");
-        policy.setOrg(user.getOrg());
+        policy.setOrg(getTestUser().getOrg());
         ScapFactory.saveScapPolicy(policy);
 
         // Update request
@@ -416,13 +416,14 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
         String body = GSON.toJson(json);
         Request request = getPostRequestWithCsrfAndBody("/manager/api/audit/scap/policy/update", body);
 
-        String responseStr = controller.updateScapPolicy(request, response, user);
+        String responseStr = controller.updateScapPolicy(request, response, getTestUser());
         ResultJson<?> result = GSON.fromJson(responseStr, ResultJson.class);
 
         assertTrue(result.isSuccess());
 
         // Verify update
-        Optional<ScapPolicy> updatedPolicy = ScapFactory.lookupScapPolicyByIdAndOrg(policy.getId(), user.getOrg());
+        Optional<ScapPolicy> updatedPolicy = ScapFactory.lookupScapPolicyByIdAndOrg(policy.getId(),
+                getTestUser().getOrg());
         assertTrue(updatedPolicy.isPresent());
         assertEquals("Updated Name", updatedPolicy.get().getPolicyName());
         assertEquals("profile_2", updatedPolicy.get().getXccdfProfileId());
@@ -436,7 +437,7 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
         policy.setPolicyName("Delete Me");
         policy.setScapContent(content);
         policy.setXccdfProfileId("profile_del");
-        policy.setOrg(user.getOrg());
+        policy.setOrg(getTestUser().getOrg());
         ScapFactory.saveScapPolicy(policy);
         Integer policyId = policy.getId();
 
@@ -445,13 +446,13 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
         String body = GSON.toJson(ids);
         Request request = getPostRequestWithCsrfAndBody("/manager/api/audit/scap/policy/delete", body);
 
-        String responseStr = controller.deleteScapPolicy(request, response, user);
+        String responseStr = controller.deleteScapPolicy(request, response, getTestUser());
         ResultJson<?> result = GSON.fromJson(responseStr, ResultJson.class);
 
         assertTrue(result.isSuccess());
 
         // Verify deletion
-        Optional<ScapPolicy> deletedPolicy = ScapFactory.lookupScapPolicyByIdAndOrg(policyId, user.getOrg());
+        Optional<ScapPolicy> deletedPolicy = ScapFactory.lookupScapPolicyByIdAndOrg(policyId, getTestUser().getOrg());
         assertFalse(deletedPolicy.isPresent());
     }
 
@@ -465,7 +466,7 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
         String body = GSON.toJson(json);
         Request request = getPostRequestWithCsrfAndBody("/manager/api/audit/scap/policy/create", body);
 
-        String responseStr = controller.createScapPolicy(request, response, user);
+        String responseStr = controller.createScapPolicy(request, response, getTestUser());
         ResultJson<?> result = GSON.fromJson(responseStr, ResultJson.class);
 
         assertFalse(result.isSuccess());
@@ -487,7 +488,7 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
         // Mock lookup to find rule
         createTestXccdfRuleFix("xccdf_benchmark_save", "xccdf_rule_save_test");
 
-        String responseStr = controller.saveCustomRemediation(request, response, user);
+        String responseStr = controller.saveCustomRemediation(request, response, getTestUser());
         ResultJson<?> result = GSON.fromJson(responseStr, ResultJson.class);
 
         assertTrue(result.isSuccess());
@@ -495,7 +496,7 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
 
         // Verify saved in DB
         Optional<XccdfRuleFixCustom> saved = ScapFactory.lookupCustomRemediationByIdentifier(
-                json.getIdentifier(), json.getBenchmarkId(), user.getOrg());
+                json.getIdentifier(), json.getBenchmarkId(), getTestUser().getOrg());
         assertTrue(saved.isPresent());
         assertEquals(json.getRemediation(), saved.get().getCustomRemediationBash());
     }
@@ -511,7 +512,7 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
         Request request = getPostRequestWithCsrfAndBody(
                 "/manager/api/audit/scap/custom-remediation", body);
 
-        String responseStr = controller.saveCustomRemediation(request, response, user);
+        String responseStr = controller.saveCustomRemediation(request, response, getTestUser());
 
         assertEquals(HttpStatus.SC_BAD_REQUEST, response.raw().getStatus());
         ResultJson<?> result = GSON.fromJson(responseStr, ResultJson.class);
@@ -530,7 +531,7 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
         Request request = getPostRequestWithCsrfAndBody(
                 "/manager/api/audit/scap/custom-remediation", body);
 
-        String responseStr = controller.saveCustomRemediation(request, response, user);
+        String responseStr = controller.saveCustomRemediation(request, response, getTestUser());
 
         assertEquals(HttpStatus.SC_BAD_REQUEST, response.raw().getStatus());
         ResultJson<?> result = GSON.fromJson(responseStr, ResultJson.class);
@@ -550,7 +551,7 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
         Request request = getPostRequestWithCsrfAndBody(
                 "/manager/api/audit/scap/custom-remediation", body);
 
-        String responseStr = controller.saveCustomRemediation(request, response, user);
+        String responseStr = controller.saveCustomRemediation(request, response, getTestUser());
 
         assertEquals(HttpStatus.SC_BAD_REQUEST, response.raw().getStatus());
         ResultJson<?> result = GSON.fromJson(responseStr, ResultJson.class);
@@ -570,7 +571,7 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
         Request request = getPostRequestWithCsrfAndBody(
                 "/manager/api/audit/scap/custom-remediation", body);
 
-        String responseStr = controller.saveCustomRemediation(request, response, user);
+        String responseStr = controller.saveCustomRemediation(request, response, getTestUser());
 
         assertEquals(HttpStatus.SC_BAD_REQUEST, response.raw().getStatus());
         ResultJson<?> result = GSON.fromJson(responseStr, ResultJson.class);
@@ -638,11 +639,11 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
 
     @Test
     public void testCheckScapEnablementSuseMinion() throws Exception {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         minion.setOsFamily(ServerConstants.OS_FAMILY_SUSE);
         HibernateFactory.getSession().flush();
 
-        Map<String, Object> result = controller.checkScapEnablement(minion, user);
+        Map<String, Object> result = controller.checkScapEnablement(minion, getTestUser());
 
         assertNotNull(result);
         assertFalse((Boolean) result.get("scapEnabled"),
@@ -652,11 +653,11 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
 
     @Test
     public void testCheckScapEnablementRedHatMinion() throws Exception {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         minion.setOsFamily(ServerConstants.OS_FAMILY_REDHAT);
         HibernateFactory.getSession().flush();
 
-        Map<String, Object> result = controller.checkScapEnablement(minion, user);
+        Map<String, Object> result = controller.checkScapEnablement(minion, getTestUser());
 
         assertNotNull(result);
         assertFalse((Boolean) result.get("scapEnabled"),
@@ -666,13 +667,13 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
 
     @Test
     public void testCheckScapEnablementDebianMinion() throws Exception {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         minion.setOsFamily(ServerConstants.OS_FAMILY_DEBIAN);
         minion.setOs(ServerConstants.UBUNTU);
         minion.setRelease("24.04");
         HibernateFactory.getSession().flush();
 
-        Map<String, Object> result = controller.checkScapEnablement(minion, user);
+        Map<String, Object> result = controller.checkScapEnablement(minion, getTestUser());
 
         assertNotNull(result);
         assertFalse((Boolean) result.get("scapEnabled"),
@@ -682,13 +683,13 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
 
     @Test
     public void testCheckScapEnablementDebianLegacyMinion() throws Exception {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         minion.setOsFamily(ServerConstants.OS_FAMILY_DEBIAN);
         minion.setOs(ServerConstants.UBUNTU);
         minion.setRelease("20.04");
         HibernateFactory.getSession().flush();
 
-        Map<String, Object> result = controller.checkScapEnablement(minion, user);
+        Map<String, Object> result = controller.checkScapEnablement(minion, getTestUser());
 
         assertNotNull(result);
         assertFalse((Boolean) result.get("scapEnabled"),
@@ -836,7 +837,7 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
             policyA.setPolicyName("PCI Compliance Policy");
             policyA.setScapContent(contentA);
             policyA.setXccdfProfileId("xccdf_pci_profile");
-            policyA.setOrg(user.getOrg());
+            policyA.setOrg(getTestUser().getOrg());
             ScapFactory.saveScapPolicy(policyA);
 
             // Create Content B with SAME filenames
@@ -858,7 +859,7 @@ public class ScapAuditControllerTest extends BaseControllerTestCase {
             policyB.setPolicyName("HIPAA Compliance Policy");
             policyB.setScapContent(contentB);
             policyB.setXccdfProfileId("xccdf_hipaa_profile");
-            policyB.setOrg(user.getOrg());
+            policyB.setOrg(getTestUser().getOrg());
             ScapFactory.saveScapPolicy(policyB);
 
             // Verify both policies reference correct content

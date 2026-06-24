@@ -131,7 +131,7 @@ public class KickstartUrlHelperTest extends BaseKickstartCommandTestCase {
     public void testGetKickstartMediaSessionUrl() throws Exception {
         // /ks/dist/session/35x45fed383beaeb31a184166b4c1040633/ks-f9-x86_64
         KickstartSession session =
-            KickstartSessionTest.createKickstartSession(ksdata, user);
+            KickstartSessionTest.createKickstartSession(ksdata, getTestUser());
         session = TestUtils.saveAndFlush(session);
         session = TestUtils.reload(session);
         String encodedId = SessionSwap.encodeData(session.getId().toString());
@@ -156,7 +156,7 @@ public class KickstartUrlHelperTest extends BaseKickstartCommandTestCase {
     public void testGetKickstartMediaSessionPath() throws Exception {
         // /ks/dist/session/35x45fed383beaeb31a184166b4c1040633/ks-f9-x86_64
         KickstartSession session =
-            KickstartSessionTest.createKickstartSession(ksdata, user);
+            KickstartSessionTest.createKickstartSession(ksdata, getTestUser());
         session = TestUtils.saveAndFlush(session);
         session = TestUtils.reload(session);
         String encodedId = SessionSwap.encodeData(session.getId().toString());

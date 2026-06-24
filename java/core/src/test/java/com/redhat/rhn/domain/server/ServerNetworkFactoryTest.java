@@ -29,7 +29,7 @@ public class ServerNetworkFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testIPv6Handling() {
 
-        Server s = ServerFactoryTest.createTestServer(user);
+        Server s = ServerFactoryTest.createTestServer(getTestUser());
 
         NetworkInterface netint = new NetworkInterface();
         netint.setHwaddr("52:54:00:9e:36:00");
@@ -59,7 +59,7 @@ public class ServerNetworkFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testIPv4Handling() {
 
-        Server s = ServerFactoryTest.createTestServer(user);
+        Server s = ServerFactoryTest.createTestServer(getTestUser());
 
         NetworkInterface netint = new NetworkInterface();
         netint.setHwaddr("52:54:00:9e:36:01");

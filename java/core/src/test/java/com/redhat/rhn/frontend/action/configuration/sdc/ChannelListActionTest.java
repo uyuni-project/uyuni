@@ -32,10 +32,10 @@ public class ChannelListActionTest extends RhnMockStrutsTestCase {
     @Test
     public void testExecute() {
         //Create a config channel and a server
-        ConfigChannel channel = ConfigTestUtils.createConfigChannel(user.getOrg());
-        Server server = ServerFactoryTest.createTestServer(user, true);
+        ConfigChannel channel = ConfigTestUtils.createConfigChannel(getTestUser().getOrg());
+        Server server = ServerFactoryTest.createTestServer(getTestUser(), true);
         //associate the two.
-        server.subscribeConfigChannel(channel, user);
+        server.subscribeConfigChannel(channel, getTestUser());
         SystemManager.storeServer(server);
 
         setRequestPathInfo("/systems/details/configuration/ConfigChannelList");

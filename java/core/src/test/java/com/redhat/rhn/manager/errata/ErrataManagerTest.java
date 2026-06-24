@@ -140,15 +140,15 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testSearchByPackagesIdsInOrg() throws Exception {
-        Channel channel = ChannelTestUtils.createTestChannel(user);
+        Channel channel = ChannelTestUtils.createTestChannel(getTestUser());
         searchByPackagesIdsHelper(
                 Optional.of(channel),
-                (pids) -> ErrataManager.searchByPackageIdsWithOrg(pids, user.getOrg()));
+                (pids) -> ErrataManager.searchByPackageIdsWithOrg(pids, getTestUser().getOrg()));
     }
 
     private void searchByPackagesIdsHelper(Optional<Channel> channel,
                                            Function<List<Long>, List<ErrataOverview>> errataSearchFn) {
-        Package p = PackageTest.createTestPackage(user.getOrg());
+        Package p = PackageTest.createTestPackage(getTestUser().getOrg());
         // errata search is done by the search-server. The search
         // in ErrataManager is to load ErrataOverview objects from
         // the results of the search-server searches.
@@ -378,23 +378,23 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testCloneChannelErrata() throws Exception {
-        Channel original = ChannelFactoryTest.createTestChannel(user);
-        final Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        final Errata errata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
-        final Errata errata3 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Channel original = ChannelFactoryTest.createTestChannel(getTestUser());
+        final Errata errata1 = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
+        final Errata errata2 = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
+        final Errata errata3 = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
 
         original.addErrata(errata1);
         original.addErrata(errata2);
         original.addErrata(errata3);
 
         // clone it
-        Channel cloned = ChannelFactoryTest.createTestClonedChannel(original, user);
+        Channel cloned = ChannelFactoryTest.createTestClonedChannel(original, getTestUser());
         cloned.addErrata(errata1);
         cloned.addErrata(errata3);
 
         List<ErrataOverview> toClone = ErrataFactory
                 .relevantToOneChannelButNotAnother(original.getId(), cloned.getId());
-        Set<Long> eids = ErrataManager.cloneChannelErrata(toClone, cloned.getId(), user);
+        Set<Long> eids = ErrataManager.cloneChannelErrata(toClone, cloned.getId(), getTestUser());
         assertFalse(eids.isEmpty());
         assertEquals(new HashSet<>(eids).size(), eids.size());
     }
@@ -410,43 +410,43 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testApplyErrata() throws Exception {
 
-        Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata errata1 = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         errata1 = TestUtils.saveAndFlush(errata1);
-        Errata errata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata errata2 = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         errata2 = TestUtils.saveAndFlush(errata2);
-        Errata errata3 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata errata3 = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         errata3 = TestUtils.saveAndFlush(errata3);
 
-        Channel channel1 = ChannelFactoryTest.createTestChannel(user);
-        Channel channel2 = ChannelFactoryTest.createTestChannel(user);
-        Channel channel3 = ChannelFactoryTest.createTestChannel(user);
+        Channel channel1 = ChannelFactoryTest.createTestChannel(getTestUser());
+        Channel channel2 = ChannelFactoryTest.createTestChannel(getTestUser());
+        Channel channel3 = ChannelFactoryTest.createTestChannel(getTestUser());
 
         Set<Channel> server1Channels = new HashSet<>();
         server1Channels.add(channel1);
         server1Channels.add(channel3);
-        Server server1 = createTestServer(user, server1Channels);
+        Server server1 = createTestServer(getTestUser(), server1Channels);
 
         Set<Channel> server2Channels = new HashSet<>();
         server2Channels.add(channel2);
         server2Channels.add(channel3);
-        Server server2 = createTestServer(user, server2Channels);
+        Server server2 = createTestServer(getTestUser(), server2Channels);
 
         // server 1 has an errata for package1 available
         com.redhat.rhn.domain.rhnpackage.Package package1 =
-                createTestPackage(user, channel1, "noarch");
+                createTestPackage(getTestUser(), channel1, "noarch");
         createTestInstalledPackage(package1, server1);
-        createLaterTestPackage(user, errata1, channel1, package1);
+        createLaterTestPackage(getTestUser(), errata1, channel1, package1);
 
         // server 2 has an errata for package2 available
-        Package package2 = createTestPackage(user, channel2, "noarch");
+        Package package2 = createTestPackage(getTestUser(), channel2, "noarch");
         createTestInstalledPackage(package2, server2);
-        createLaterTestPackage(user, errata2, channel2, package2);
+        createLaterTestPackage(getTestUser(), errata2, channel2, package2);
 
         // errata in common for both servers
-        Package package3 = createTestPackage(user, channel3, "noarch");
+        Package package3 = createTestPackage(getTestUser(), channel3, "noarch");
         createTestInstalledPackage(package3, server1);
         createTestInstalledPackage(package3, server2);
-        createLaterTestPackage(user, errata3, channel3, package3);
+        createLaterTestPackage(getTestUser(), errata3, channel3, package3);
 
         ErrataCacheManager.insertNeededErrataCache(
                 server1.getId(), errata1.getId(), package1.getId());
@@ -475,13 +475,13 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
             allowing(taskomaticMock).scheduleMinionActionExecutions(with(any(List.class)), with(any(Boolean.class)));
         } });
 
-        ErrataManager.applyErrata(user, errataIds, new Date(), serverIds);
+        ErrataManager.applyErrata(getTestUser(), errataIds, new Date(), serverIds);
 
         // we want to check that no matter how many actions were scheduled for
         // server1, all the erratas included in those scheduled actions for
         // server1 do not contain the erratas for server2
 
-        List<Action> actionsServer1 = ActionFactory.listActionsForServer(user, server1);
+        List<Action> actionsServer1 = ActionFactory.listActionsForServer(getTestUser(), server1);
         Set<Long> server1ScheduledErrata = new HashSet<>();
         for (Action a : actionsServer1) {
             ErrataAction errataAction = errataActionFromAction(a);
@@ -490,7 +490,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
             }
         }
 
-        List<Action> actionsServer2 = ActionFactory.listActionsForServer(user, server2);
+        List<Action> actionsServer2 = ActionFactory.listActionsForServer(getTestUser(), server2);
         Set<Long> server2ScheduledErrata = new HashSet<>();
         for (Action a : actionsServer2) {
             ErrataAction errataAction = errataActionFromAction(a);
@@ -528,56 +528,56 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testApplyErrataOnManagementStack() throws Exception {
 
-        Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata errata1 = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         errata1 = TestUtils.saveAndFlush(errata1);
-        Errata errata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata errata2 = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         errata2 = TestUtils.saveAndFlush(errata2);
-        Errata errata3 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata errata3 = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         errata2 = TestUtils.saveAndFlush(errata2);
 
         // software management stack erratas
-        Errata yumErrata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata yumErrata1 = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         yumErrata1.addKeyword("restart_suggested");
         yumErrata1 = TestUtils.saveAndFlush(yumErrata1);
-        Errata yumErrata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata yumErrata2 = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         yumErrata2.addKeyword("restart_suggested");
         yumErrata2 = TestUtils.saveAndFlush(yumErrata2);
 
 
-        Channel channel1 = ChannelFactoryTest.createTestChannel(user);
-        Channel channel2 = ChannelFactoryTest.createTestChannel(user);
-        Channel channel3 = ChannelFactoryTest.createTestChannel(user);
+        Channel channel1 = ChannelFactoryTest.createTestChannel(getTestUser());
+        Channel channel2 = ChannelFactoryTest.createTestChannel(getTestUser());
+        Channel channel3 = ChannelFactoryTest.createTestChannel(getTestUser());
 
         Set<Channel> server1Channels = new HashSet<>();
         server1Channels.add(channel1);
         server1Channels.add(channel3);
-        Server server1 = createTestServer(user, server1Channels);
+        Server server1 = createTestServer(getTestUser(), server1Channels);
 
         Set<Channel> server2Channels = new HashSet<>();
         server2Channels.add(channel2);
         server2Channels.add(channel3);
-        Server server2 = createTestServer(user, server2Channels);
+        Server server2 = createTestServer(getTestUser(), server2Channels);
 
         // server 1 has an errata for package1 available
         com.redhat.rhn.domain.rhnpackage.Package package1 =
-                createTestPackage(user, channel1, "noarch");
+                createTestPackage(getTestUser(), channel1, "noarch");
         createTestInstalledPackage(package1, server1);
-        createLaterTestPackage(user, errata1, channel1, package1);
+        createLaterTestPackage(getTestUser(), errata1, channel1, package1);
 
         // server 2 has an errata for package2 available
-        Package package2 = createTestPackage(user, channel2, "noarch");
+        Package package2 = createTestPackage(getTestUser(), channel2, "noarch");
         createTestInstalledPackage(package2, server2);
-        createLaterTestPackage(user, errata2, channel2, package2);
+        createLaterTestPackage(getTestUser(), errata2, channel2, package2);
 
         // errata does not affect any system
-        Package package3 = createTestPackage(user, channel3, "noarch");
+        Package package3 = createTestPackage(getTestUser(), channel3, "noarch");
         // they systems do not have package3 installed
-        createLaterTestPackage(user, errata3, channel3, package3);
+        createLaterTestPackage(getTestUser(), errata3, channel3, package3);
 
         // server1 is affected by both yum erratas
         // server2 only by one
-        Package yumPackage1 = createTestPackage(user, channel3, "noarch");
-        Package yumPackage2 = createTestPackage(user, channel3, "noarch");
+        Package yumPackage1 = createTestPackage(getTestUser(), channel3, "noarch");
+        Package yumPackage2 = createTestPackage(getTestUser(), channel3, "noarch");
 
         createTestInstalledPackage(yumPackage1, server1);
         createTestInstalledPackage(yumPackage2, server1);
@@ -585,8 +585,8 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         createTestInstalledPackage(yumPackage1, server2);
 
         // they systems do not have package3 installed
-        createLaterTestPackage(user, yumErrata1, channel3, yumPackage1);
-        createLaterTestPackage(user, yumErrata2, channel3, yumPackage2);
+        createLaterTestPackage(getTestUser(), yumErrata1, channel3, yumPackage1);
+        createLaterTestPackage(getTestUser(), yumErrata2, channel3, yumPackage2);
 
 
         ErrataCacheManager.insertNeededErrataCache(
@@ -620,13 +620,13 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
             allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
         } });
 
-        ErrataManager.applyErrata(user, errataIds, new Date(), serverIds);
+        ErrataManager.applyErrata(getTestUser(), errataIds, new Date(), serverIds);
 
         // we want to check that no matter how many actions were scheduled for
         // server1, all the erratas included in those scheduled actions for
         // server1 do not contain the erratas for server2
 
-        List<Action> actionsServer1 = ActionFactory.listActionsForServer(user, server1);
+        List<Action> actionsServer1 = ActionFactory.listActionsForServer(getTestUser(), server1);
         Set<Long> server1ScheduledErrata = new HashSet<>();
         for (Action a : actionsServer1) {
             ErrataAction errataAction = errataActionFromAction(a);
@@ -635,7 +635,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
             }
         }
 
-        List<Action> actionsServer2 = ActionFactory.listActionsForServer(user, server2);
+        List<Action> actionsServer2 = ActionFactory.listActionsForServer(getTestUser(), server2);
         Set<Long> server2ScheduledErrata = new HashSet<>();
         for (Action a : actionsServer2) {
             ErrataAction errataAction = errataActionFromAction(a);
@@ -721,38 +721,38 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testApplyErrataOnManagementStackForZypp() throws Exception {
 
-        Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata errata1 = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         errata1 = TestUtils.saveAndFlush(errata1);
-        Errata errata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata errata2 = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         errata2 = TestUtils.saveAndFlush(errata2);
-        Errata errata3 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata errata3 = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         errata2 = TestUtils.saveAndFlush(errata2);
 
         // software management stack erratas
-        Errata yumErrata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata yumErrata1 = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         yumErrata1.addKeyword("restart_suggested");
         yumErrata1 = TestUtils.saveAndFlush(yumErrata1);
-        Errata yumErrata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata yumErrata2 = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         yumErrata2.addKeyword("restart_suggested");
         yumErrata2 = TestUtils.saveAndFlush(yumErrata2);
 
 
-        Channel channel1 = ChannelFactoryTest.createTestChannel(user);
-        Channel channel2 = ChannelFactoryTest.createTestChannel(user);
-        Channel channel3 = ChannelFactoryTest.createTestChannel(user);
+        Channel channel1 = ChannelFactoryTest.createTestChannel(getTestUser());
+        Channel channel2 = ChannelFactoryTest.createTestChannel(getTestUser());
+        Channel channel3 = ChannelFactoryTest.createTestChannel(getTestUser());
 
         Set<Channel> server1Channels = new HashSet<>();
         server1Channels.add(channel1);
         server1Channels.add(channel3);
-        Server server1 = createTestServer(user, server1Channels);
+        Server server1 = createTestServer(getTestUser(), server1Channels);
 
         Set<Channel> server2Channels = new HashSet<>();
         server2Channels.add(channel2);
         server2Channels.add(channel3);
-        Server server2 = createTestServer(user, server2Channels);
+        Server server2 = createTestServer(getTestUser(), server2Channels);
 
         // add zypper as installed package
-        Package zypperPkg = PackageTest.createTestPackage(user.getOrg());
+        Package zypperPkg = PackageTest.createTestPackage(getTestUser().getOrg());
         PackageName name = PackageManager.lookupPackageName("zypper");
         if (name == null) {
             name = zypperPkg.getPackageName();
@@ -769,24 +769,24 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
 
         // server 1 has an errata for package1 available
         com.redhat.rhn.domain.rhnpackage.Package package1 =
-                createTestPackage(user, channel1, "noarch");
+                createTestPackage(getTestUser(), channel1, "noarch");
         createTestInstalledPackage(package1, server1);
-        createLaterTestPackage(user, errata1, channel1, package1);
+        createLaterTestPackage(getTestUser(), errata1, channel1, package1);
 
         // server 2 has an errata for package2 available
-        Package package2 = createTestPackage(user, channel2, "noarch");
+        Package package2 = createTestPackage(getTestUser(), channel2, "noarch");
         createTestInstalledPackage(package2, server2);
-        createLaterTestPackage(user, errata2, channel2, package2);
+        createLaterTestPackage(getTestUser(), errata2, channel2, package2);
 
         // errata does not affect any system
-        Package package3 = createTestPackage(user, channel3, "noarch");
+        Package package3 = createTestPackage(getTestUser(), channel3, "noarch");
         // they systems do not have package3 installed
-        createLaterTestPackage(user, errata3, channel3, package3);
+        createLaterTestPackage(getTestUser(), errata3, channel3, package3);
 
         // server1 is affected by both yum erratas
         // server2 only by one
-        Package yumPackage1 = createTestPackage(user, channel3, "noarch");
-        Package yumPackage2 = createTestPackage(user, channel3, "noarch");
+        Package yumPackage1 = createTestPackage(getTestUser(), channel3, "noarch");
+        Package yumPackage2 = createTestPackage(getTestUser(), channel3, "noarch");
 
         createTestInstalledPackage(yumPackage1, server1);
         createTestInstalledPackage(yumPackage2, server1);
@@ -794,8 +794,8 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         createTestInstalledPackage(yumPackage1, server2);
 
         // they systems do not have package3 installed
-        createLaterTestPackage(user, yumErrata1, channel3, yumPackage1);
-        createLaterTestPackage(user, yumErrata2, channel3, yumPackage2);
+        createLaterTestPackage(getTestUser(), yumErrata1, channel3, yumPackage1);
+        createLaterTestPackage(getTestUser(), yumErrata2, channel3, yumPackage2);
 
 
         ErrataCacheManager.insertNeededErrataCache(
@@ -829,13 +829,13 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
             allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
         } });
 
-        ErrataManager.applyErrata(user, errataIds, new Date(), serverIds);
+        ErrataManager.applyErrata(getTestUser(), errataIds, new Date(), serverIds);
 
         // we want to check that no matter how many actions were scheduled for
         // server1, all the erratas included in those scheduled actions for
         // server1 do not contain the erratas for server2
 
-        List<Action> actionsServer1 = ActionFactory.listActionsForServer(user, server1);
+        List<Action> actionsServer1 = ActionFactory.listActionsForServer(getTestUser(), server1);
         Set<Long> server1ScheduledErrata = new HashSet<>();
         for (Action a : actionsServer1) {
             ErrataAction errataAction = errataActionFromAction(a);
@@ -844,7 +844,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
             }
         }
 
-        List<Action> actionsServer2 = ActionFactory.listActionsForServer(user, server2);
+        List<Action> actionsServer2 = ActionFactory.listActionsForServer(getTestUser(), server2);
         Set<Long> server2ScheduledErrata = new HashSet<>();
         for (Action a : actionsServer2) {
             ErrataAction errataAction = errataActionFromAction(a);
@@ -885,7 +885,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testApplyErrataNoSystems() throws Exception {
 
-        Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata errata1 = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         errata1 = TestUtils.saveAndFlush(errata1);
 
         List<Long> errataIds = new ArrayList<>();
@@ -897,7 +897,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         ErrataManager.setTaskomaticApi(taskomaticMock);
 
         List<Long> result =
-                ErrataManager.applyErrata(user, errataIds, new Date(), serverIds);
+                ErrataManager.applyErrata(getTestUser(), errataIds, new Date(), serverIds);
 
         assertEquals(0, result.size(), "No Actions have been produced");
     }
@@ -912,14 +912,14 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         List<Long> errataIds = new ArrayList<>();
 
         List<Long> serverIds = new ArrayList<>();
-        Server server1 = MinionServerFactoryTest.createTestMinionServer(user);
+        Server server1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         serverIds.add(server1.getId());
 
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ErrataManager.setTaskomaticApi(taskomaticMock);
 
         List<Long> result =
-                ErrataManager.applyErrata(user, errataIds, new Date(), serverIds);
+                ErrataManager.applyErrata(getTestUser(), errataIds, new Date(), serverIds);
 
         assertEquals(0, result.size(), "No Actions have been produced");
     }
@@ -938,7 +938,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         ErrataManager.setTaskomaticApi(taskomaticMock);
 
         List<Long> result =
-                ErrataManager.applyErrata(user, errataIds, new Date(), serverIds);
+                ErrataManager.applyErrata(getTestUser(), errataIds, new Date(), serverIds);
 
         assertEquals(0, result.size(), "No Actions have been produced");
     }
@@ -950,21 +950,21 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testApplyErrataInapplicable() throws Exception {
-        Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata errata1 = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         errata1 = TestUtils.saveAndFlush(errata1);
 
         List<Long> errataIds = new ArrayList<>();
         errataIds.add(errata1.getId());
 
         List<Long> serverIds = new ArrayList<>();
-        Server server1 = MinionServerFactoryTest.createTestMinionServer(user);
+        Server server1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         serverIds.add(server1.getId());
 
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ErrataManager.setTaskomaticApi(taskomaticMock);
 
         List<Long> result =
-                ErrataManager.applyErrata(user, errataIds, new Date(), serverIds);
+                ErrataManager.applyErrata(getTestUser(), errataIds, new Date(), serverIds);
 
         assertEquals(0, result.size(), "No Actions have been produced");
     }
@@ -977,27 +977,27 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testApplyErrataMultipleErrataYum() throws Exception {
-        Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata errata1 = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         errata1 = TestUtils.saveAndFlush(errata1);
-        Errata errata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata errata2 = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         errata2 = TestUtils.saveAndFlush(errata2);
 
-        Channel channel = ChannelFactoryTest.createTestChannel(user);
+        Channel channel = ChannelFactoryTest.createTestChannel(getTestUser());
 
         Set<Channel> serverChannels = new HashSet<>();
         serverChannels.add(channel);
-        Server server1 = createTestServer(user, serverChannels);
-        Server server2 = createTestServer(user, serverChannels);
+        Server server1 = createTestServer(getTestUser(), serverChannels);
+        Server server2 = createTestServer(getTestUser(), serverChannels);
 
         // both servers have two errata for two packages available
-        Package package1 = createTestPackage(user, channel, "noarch");
-        Package package2 = createTestPackage(user, channel, "noarch");
+        Package package1 = createTestPackage(getTestUser(), channel, "noarch");
+        Package package2 = createTestPackage(getTestUser(), channel, "noarch");
         createTestInstalledPackage(package1, server1);
         createTestInstalledPackage(package1, server2);
         createTestInstalledPackage(package2, server1);
         createTestInstalledPackage(package2, server2);
-        createLaterTestPackage(user, errata1, channel, package1);
-        createLaterTestPackage(user, errata2, channel, package2);
+        createLaterTestPackage(getTestUser(), errata1, channel, package1);
+        createLaterTestPackage(getTestUser(), errata2, channel, package2);
 
         ErrataCacheManager.insertNeededErrataCache(
                 server1.getId(), errata1.getId(), package1.getId());
@@ -1024,11 +1024,11 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
             allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
         } });
 
-        ErrataManager.applyErrata(user, errataIds, new Date(), serverIds);
+        ErrataManager.applyErrata(getTestUser(), errataIds, new Date(), serverIds);
 
         // 4 Actions should be created
 
-        List<Action> actionsServer1 = ActionFactory.listActionsForServer(user, server1);
+        List<Action> actionsServer1 = ActionFactory.listActionsForServer(getTestUser(), server1);
         assertEquals(2, actionsServer1.size(),
                 "2 actions have been scheduled for server 1");
         Set<Long> server1ScheduledErrata = new HashSet<>();
@@ -1039,7 +1039,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
             }
         }
 
-        List<Action> actionsServer2 = ActionFactory.listActionsForServer(user, server2);
+        List<Action> actionsServer2 = ActionFactory.listActionsForServer(getTestUser(), server2);
         assertEquals(2, actionsServer2.size(),
                 "2 actions have been scheduled for server 2");
         Set<Long> server2ScheduledErrata = new HashSet<>();
@@ -1074,29 +1074,29 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
     @SuppressWarnings("unchecked")
     @Test
     public void testApplyErrataMultipleErrataMinions() throws Exception {
-        Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata errata1 = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         errata1 = TestUtils.saveAndFlush(errata1);
-        Errata errata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata errata2 = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         errata2 = TestUtils.saveAndFlush(errata2);
 
-        Channel channel = ChannelFactoryTest.createTestChannel(user);
+        Channel channel = ChannelFactoryTest.createTestChannel(getTestUser());
 
         Set<Channel> serverChannels = new HashSet<>();
         serverChannels.add(channel);
-        Server server1 = MinionServerFactoryTest.createTestMinionServer(user);
+        Server server1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         server1.addChannel(channel);
-        Server server2 = MinionServerFactoryTest.createTestMinionServer(user);
+        Server server2 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         server2.addChannel(channel);
 
         // both servers have two errata for two packages available
-        Package package1 = createTestPackage(user, channel, "noarch");
-        Package package2 = createTestPackage(user, channel, "noarch");
+        Package package1 = createTestPackage(getTestUser(), channel, "noarch");
+        Package package2 = createTestPackage(getTestUser(), channel, "noarch");
         createTestInstalledPackage(package1, server1);
         createTestInstalledPackage(package1, server2);
         createTestInstalledPackage(package2, server1);
         createTestInstalledPackage(package2, server2);
-        createLaterTestPackage(user, errata1, channel, package1);
-        createLaterTestPackage(user, errata2, channel, package2);
+        createLaterTestPackage(getTestUser(), errata1, channel, package1);
+        createLaterTestPackage(getTestUser(), errata2, channel, package2);
 
         ErrataCacheManager.insertNeededErrataCache(
                 server1.getId(), errata1.getId(), package1.getId());
@@ -1123,11 +1123,11 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
             allowing(taskomaticMock).scheduleMinionActionExecutions(with(any(List.class)), with(any(Boolean.class)));
         } });
 
-        ErrataManager.applyErrata(user, errataIds, new Date(), serverIds);
+        ErrataManager.applyErrata(getTestUser(), errataIds, new Date(), serverIds);
 
         // only one Action should be created
 
-        List<Action> actionsServer1 = ActionFactory.listActionsForServer(user, server1);
+        List<Action> actionsServer1 = ActionFactory.listActionsForServer(getTestUser(), server1);
         assertEquals(1, actionsServer1.size(), "1 action has been scheduled for server 1");
         Set<Long> server1ScheduledErrata = new HashSet<>();
         for (Action a : actionsServer1) {
@@ -1137,7 +1137,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
             }
         }
 
-        List<Action> actionsServer2 = ActionFactory.listActionsForServer(user, server2);
+        List<Action> actionsServer2 = ActionFactory.listActionsForServer(getTestUser(), server2);
         assertEquals(1, actionsServer2.size(), "1 action has been scheduled for server 2");
         assertEquals(actionsServer1.get(0), actionsServer2.get(0),
                 "action created for server 1 is actually the same as the one for server 2");
@@ -1176,30 +1176,30 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
     @SuppressWarnings("unchecked")
     @Test
     public void testApplyErrataMultipleManagementStackErrataMinions() throws Exception {
-        Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata errata1 = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         errata1 = TestUtils.saveAndFlush(errata1);
-        Errata errata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata errata2 = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         errata2.addKeyword("restart_suggested");
         errata2 = TestUtils.saveAndFlush(errata2);
 
-        Channel channel = ChannelFactoryTest.createTestChannel(user);
+        Channel channel = ChannelFactoryTest.createTestChannel(getTestUser());
 
         Set<Channel> serverChannels = new HashSet<>();
         serverChannels.add(channel);
-        Server server1 = MinionServerFactoryTest.createTestMinionServer(user);
+        Server server1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         server1.addChannel(channel);
-        Server server2 = MinionServerFactoryTest.createTestMinionServer(user);
+        Server server2 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         server2.addChannel(channel);
 
         // both servers have two errata for two packages available
-        Package package1 = createTestPackage(user, channel, "noarch");
-        Package package2 = createTestPackage(user, channel, "noarch");
+        Package package1 = createTestPackage(getTestUser(), channel, "noarch");
+        Package package2 = createTestPackage(getTestUser(), channel, "noarch");
         createTestInstalledPackage(package1, server1);
         createTestInstalledPackage(package1, server2);
         createTestInstalledPackage(package2, server1);
         createTestInstalledPackage(package2, server2);
-        createLaterTestPackage(user, errata1, channel, package1);
-        createLaterTestPackage(user, errata2, channel, package2);
+        createLaterTestPackage(getTestUser(), errata1, channel, package1);
+        createLaterTestPackage(getTestUser(), errata2, channel, package2);
 
         ErrataCacheManager.insertNeededErrataCache(
                 server1.getId(), errata1.getId(), package1.getId());
@@ -1226,11 +1226,11 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
             allowing(taskomaticMock).scheduleMinionActionExecutions(with(any(List.class)), with(any(Boolean.class)));
         } });
 
-        ErrataManager.applyErrata(user, errataIds, new Date(), serverIds);
+        ErrataManager.applyErrata(getTestUser(), errataIds, new Date(), serverIds);
 
         // only one Action should be created
 
-        List<Action> actionsServer1 = ActionFactory.listActionsForServer(user, server1);
+        List<Action> actionsServer1 = ActionFactory.listActionsForServer(getTestUser(), server1);
         assertEquals(1, actionsServer1.size(), "1 action has been scheduled for server 1");
         Set<Long> server1ScheduledErrata = new HashSet<>();
         for (Action a : actionsServer1) {
@@ -1240,7 +1240,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
             }
         }
 
-        List<Action> actionsServer2 = ActionFactory.listActionsForServer(user, server2);
+        List<Action> actionsServer2 = ActionFactory.listActionsForServer(getTestUser(), server2);
         assertEquals(1, actionsServer2.size(), "1 action has been scheduled for server 2");
         assertEquals(actionsServer1.get(0), actionsServer2.get(0),
                 "action created for server 1 is actually the same as the one for server 2");
@@ -1277,20 +1277,20 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testApplyErrataMultipleErrataActionChain() throws Exception {
-        Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata errata1 = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         errata1 = TestUtils.saveAndFlush(errata1);
-        Errata errata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata errata2 = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         errata2 = TestUtils.saveAndFlush(errata2);
 
-        Channel channel = ChannelFactoryTest.createTestChannel(user);
+        Channel channel = ChannelFactoryTest.createTestChannel(getTestUser());
 
         Set<Channel> serverChannels = new HashSet<>();
         serverChannels.add(channel);
-        Server server1 = createTestServer(user, serverChannels);
-        Server server2 = createTestServer(user, serverChannels);
+        Server server1 = createTestServer(getTestUser(), serverChannels);
+        Server server2 = createTestServer(getTestUser(), serverChannels);
 
         // add zypper as installed package
-        Package zypperPkg = PackageTest.createTestPackage(user.getOrg());
+        Package zypperPkg = PackageTest.createTestPackage(getTestUser().getOrg());
         PackageName name = PackageManager.lookupPackageName("zypper");
         if (name == null) {
             name = zypperPkg.getPackageName();
@@ -1306,14 +1306,14 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         createTestInstalledPackage(zypperPkg, server2);
 
         // both servers have two errata for two packages available
-        Package package1 = createTestPackage(user, channel, "noarch");
-        Package package2 = createTestPackage(user, channel, "noarch");
+        Package package1 = createTestPackage(getTestUser(), channel, "noarch");
+        Package package2 = createTestPackage(getTestUser(), channel, "noarch");
         createTestInstalledPackage(package1, server1);
         createTestInstalledPackage(package1, server2);
         createTestInstalledPackage(package2, server1);
         createTestInstalledPackage(package2, server2);
-        createLaterTestPackage(user, errata1, channel, package1);
-        createLaterTestPackage(user, errata2, channel, package2);
+        createLaterTestPackage(getTestUser(), errata1, channel, package1);
+        createLaterTestPackage(getTestUser(), errata2, channel, package2);
 
         ErrataCacheManager.insertNeededErrataCache(
                 server1.getId(), errata1.getId(), package1.getId());
@@ -1334,7 +1334,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         serverIds.add(server2.getId());
 
         String label = TestUtils.randomString();
-        ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
+        ActionChain actionChain = ActionChainFactory.createActionChain(label, getTestUser());
 
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ErrataManager.setTaskomaticApi(taskomaticMock);
@@ -1343,11 +1343,11 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
             allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
         } });
 
-        ErrataManager.applyErrata(user, errataIds, new Date(), actionChain, serverIds);
+        ErrataManager.applyErrata(getTestUser(), errataIds, new Date(), actionChain, serverIds);
 
         // only one Action should be created
 
-        List<Action> actionsServer1 = ActionFactory.listActionsForServer(user, server1);
+        List<Action> actionsServer1 = ActionFactory.listActionsForServer(getTestUser(), server1);
         assertEquals(0, actionsServer1.size(), "no actions have been scheduled for server 1");
         assertTrue(actionChain.getEntries().stream().anyMatch(e -> e.getServer().equals(server1)),
                 "server 1 has been added to the chain");
@@ -1359,7 +1359,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
             .map(Errata::getId)
             .collect(Collectors.toSet());
 
-        List<Action> actionsServer2 = ActionFactory.listActionsForServer(user, server2);
+        List<Action> actionsServer2 = ActionFactory.listActionsForServer(getTestUser(), server2);
         assertEquals(0, actionsServer2.size(), "no actions have been scheduled for server 2");
         assertTrue(actionChain.getEntries().stream().anyMatch(e -> e.getServer().equals(server2)),
                 "server 2 has been added to the chain");
@@ -1400,27 +1400,27 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testApplyErrataMultipleErrataActionChainYum() throws Exception {
-        Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata errata1 = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         errata1 = TestUtils.saveAndFlush(errata1);
-        Errata errata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata errata2 = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         errata2 = TestUtils.saveAndFlush(errata2);
 
-        Channel channel = ChannelFactoryTest.createTestChannel(user);
+        Channel channel = ChannelFactoryTest.createTestChannel(getTestUser());
 
         Set<Channel> serverChannels = new HashSet<>();
         serverChannels.add(channel);
-        Server server1 = createTestServer(user, serverChannels);
-        Server server2 = createTestServer(user, serverChannels);
+        Server server1 = createTestServer(getTestUser(), serverChannels);
+        Server server2 = createTestServer(getTestUser(), serverChannels);
 
         // both servers have two errata for two packages available
-        Package package1 = createTestPackage(user, channel, "noarch");
-        Package package2 = createTestPackage(user, channel, "noarch");
+        Package package1 = createTestPackage(getTestUser(), channel, "noarch");
+        Package package2 = createTestPackage(getTestUser(), channel, "noarch");
         createTestInstalledPackage(package1, server1);
         createTestInstalledPackage(package1, server2);
         createTestInstalledPackage(package2, server1);
         createTestInstalledPackage(package2, server2);
-        createLaterTestPackage(user, errata1, channel, package1);
-        createLaterTestPackage(user, errata2, channel, package2);
+        createLaterTestPackage(getTestUser(), errata1, channel, package1);
+        createLaterTestPackage(getTestUser(), errata2, channel, package2);
 
         ErrataCacheManager.insertNeededErrataCache(
                 server1.getId(), errata1.getId(), package1.getId());
@@ -1441,7 +1441,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         serverIds.add(server2.getId());
 
         String label = TestUtils.randomString();
-        ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
+        ActionChain actionChain = ActionChainFactory.createActionChain(label, getTestUser());
 
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ErrataManager.setTaskomaticApi(taskomaticMock);
@@ -1450,11 +1450,11 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
             allowing(taskomaticMock).scheduleActionExecution(with(any(Action.class)));
         } });
 
-        ErrataManager.applyErrata(user, errataIds, new Date(), actionChain, serverIds);
+        ErrataManager.applyErrata(getTestUser(), errataIds, new Date(), actionChain, serverIds);
 
         // only one Action should be created
 
-        List<Action> actionsServer1 = ActionFactory.listActionsForServer(user, server1);
+        List<Action> actionsServer1 = ActionFactory.listActionsForServer(getTestUser(), server1);
         assertEquals(0, actionsServer1.size(), "no actions have been scheduled for server 1");
         assertTrue(actionChain.getEntries().stream().anyMatch(e -> e.getServer().equals(server1)),
                 "server 1 has been added to the chain");
@@ -1466,7 +1466,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
             .map(Errata::getId)
             .collect(Collectors.toSet());
 
-        List<Action> actionsServer2 = ActionFactory.listActionsForServer(user, server2);
+        List<Action> actionsServer2 = ActionFactory.listActionsForServer(getTestUser(), server2);
         assertEquals(0, actionsServer2.size(), "no actions have been scheduled for server 2");
         assertTrue(actionChain.getEntries().stream().anyMatch(e -> e.getServer().equals(server2)),
                 "server 2 has been added to the chain");
@@ -1518,34 +1518,34 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
     @Test
     public void testUpdateStackUpdateNeeded() throws Exception {
 
-        Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata errata1 = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         errata1 = TestUtils.saveAndFlush(errata1);
-        Errata errata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata errata2 = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         errata2 = TestUtils.saveAndFlush(errata2);
-        Errata errata3 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata errata3 = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         errata3 = TestUtils.saveAndFlush(errata3);
 
-        Channel channel1 = ChannelFactoryTest.createTestChannel(user);
+        Channel channel1 = ChannelFactoryTest.createTestChannel(getTestUser());
 
         Set<Channel> serverChannels = new HashSet<>();
         serverChannels.add(channel1);
-        Server server = createTestServer(user, serverChannels);
+        Server server = createTestServer(getTestUser(), serverChannels);
 
         // server 1 has an errata for package1 available
         com.redhat.rhn.domain.rhnpackage.Package package1 =
-                createTestPackage(user, channel1, "noarch");
+                createTestPackage(getTestUser(), channel1, "noarch");
         createTestInstalledPackage(package1, server);
-        createLaterTestPackage(user, errata1, channel1, package1);
+        createLaterTestPackage(getTestUser(), errata1, channel1, package1);
 
         // server 2 has an errata for package2 available
-        Package package2 = createTestPackage(user, channel1, "noarch");
+        Package package2 = createTestPackage(getTestUser(), channel1, "noarch");
         createTestInstalledPackage(package2, server);
-        createLaterTestPackage(user, errata2, channel1, package2);
+        createLaterTestPackage(getTestUser(), errata2, channel1, package2);
 
         // errata in common for both servers
-        Package package3 = createTestPackage(user, channel1, "noarch");
+        Package package3 = createTestPackage(getTestUser(), channel1, "noarch");
         createTestInstalledPackage(package3, server);
-        createLaterTestPackage(user, errata3, channel1, package3);
+        createLaterTestPackage(getTestUser(), errata3, channel1, package3);
 
         ErrataCacheManager.insertNeededErrataCache(
                 server.getId(), errata1.getId(), package1.getId());
@@ -1555,7 +1555,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
                 server.getId(), errata3.getId(), package3.getId());
         TestUtils.flushSession();
 
-        assertFalse(ErrataManager.updateStackUpdateNeeded(user, server));
+        assertFalse(ErrataManager.updateStackUpdateNeeded(getTestUser(), server));
 
         Set<Keyword> kw = new HashSet<>();
         Keyword k = new Keyword();
@@ -1565,7 +1565,7 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         errata3.setKeywords(kw);
         errata3 = TestUtils.saveAndFlush(errata3);
 
-        assertTrue(ErrataManager.updateStackUpdateNeeded(user, server));
+        assertTrue(ErrataManager.updateStackUpdateNeeded(getTestUser(), server));
     }
 
     /**
@@ -1575,19 +1575,19 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testTruncateErrataSimple() throws Exception {
-        user.addPermanentRole(ORG_ADMIN);
-        Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        getTestUser().addPermanentRole(ORG_ADMIN);
+        Errata errata1 = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         errata1 = TestUtils.saveAndFlush(errata1);
-        Errata errata2 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata errata2 = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         errata2 = TestUtils.saveAndFlush(errata2);
 
-        Channel src = ChannelFactoryTest.createTestChannel(user);
-        Channel tgt = ChannelFactoryTest.createTestChannel(user);
+        Channel src = ChannelFactoryTest.createTestChannel(getTestUser());
+        Channel tgt = ChannelFactoryTest.createTestChannel(getTestUser());
 
-        ErrataFactory.addToChannel(Arrays.asList(errata1), src, user, false);
-        ErrataFactory.addToChannel(Arrays.asList(errata1, errata2), tgt, user, false);
+        ErrataFactory.addToChannel(Arrays.asList(errata1), src, getTestUser(), false);
+        ErrataFactory.addToChannel(Arrays.asList(errata1, errata2), tgt, getTestUser(), false);
 
-        ErrataManager.truncateErrata(src.getErratas(), tgt, user);
+        ErrataManager.truncateErrata(src.getErratas(), tgt, getTestUser());
 
         assertEquals(src.getErratas(), tgt.getErratas());
     }
@@ -1599,22 +1599,22 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testTruncateErrataCloned() throws Exception {
-        user.addPermanentRole(ORG_ADMIN);
-        Errata errata1 = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        getTestUser().addPermanentRole(ORG_ADMIN);
+        Errata errata1 = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         errata1 = TestUtils.saveAndFlush(errata1);
-        Package pack = PackageTest.createTestPackage(user.getOrg());
-        Errata errata1Clone = ErrataTestUtils.createTestClonedErrata(user, errata1, new HashSet<>(), pack);
+        Package pack = PackageTest.createTestPackage(getTestUser().getOrg());
+        Errata errata1Clone = ErrataTestUtils.createTestClonedErrata(getTestUser(), errata1, new HashSet<>(), pack);
         errata1Clone = TestUtils.saveAndFlush(errata1Clone);
-        Errata errataInTgt = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata errataInTgt = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         errataInTgt = TestUtils.saveAndFlush(errataInTgt);
 
-        Channel src = ChannelFactoryTest.createTestChannel(user);
-        Channel tgt = ChannelFactoryTest.createTestChannel(user);
+        Channel src = ChannelFactoryTest.createTestChannel(getTestUser());
+        Channel tgt = ChannelFactoryTest.createTestChannel(getTestUser());
 
-        ErrataFactory.addToChannel(Arrays.asList(errata1), src, user, false);
-        ErrataFactory.addToChannel(Arrays.asList(errata1Clone, errataInTgt), tgt, user, false);
+        ErrataFactory.addToChannel(Arrays.asList(errata1), src, getTestUser(), false);
+        ErrataFactory.addToChannel(Arrays.asList(errata1Clone, errataInTgt), tgt, getTestUser(), false);
 
-        ErrataManager.truncateErrata(src.getErratas(), tgt, user);
+        ErrataManager.truncateErrata(src.getErratas(), tgt, getTestUser());
 
         assertEquals(1, tgt.getErratas().size());
         // the clone will "survive" in the tgt channel as it has original in the src
@@ -1628,19 +1628,19 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testPackagesOnTruncateErrata() throws Exception {
-        user.addPermanentRole(ORG_ADMIN);
-        Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        getTestUser().addPermanentRole(ORG_ADMIN);
+        Errata errata = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         errata = TestUtils.saveAndFlush(errata);
         Package errataPackage = errata.getPackages().iterator().next();
         // we assume version 1.0.0 for the test
         assertEquals("1.0.0", errataPackage.getPackageEvr().getVersion());
 
-        Channel chan = ChannelFactoryTest.createTestChannel(user);
-        Package olderPack = copyPackage(errataPackage, user, chan, "0.9.9");
+        Channel chan = ChannelFactoryTest.createTestChannel(getTestUser());
+        Package olderPack = copyPackage(errataPackage, getTestUser(), chan, "0.9.9");
 
-        ErrataFactory.addToChannel(Arrays.asList(errata), chan, user, false);
+        ErrataFactory.addToChannel(Arrays.asList(errata), chan, getTestUser(), false);
 
-        ErrataManager.truncateErrata(Collections.emptySet(), chan, user);
+        ErrataManager.truncateErrata(Collections.emptySet(), chan, getTestUser());
 
         assertTrue(chan.getErratas().isEmpty());
         assertTrue(chan.getPackages().contains(olderPack));
@@ -1653,18 +1653,18 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testListRetractedErrata() throws Exception {
-        Channel channel = ChannelTestUtils.createBaseChannel(user);
+        Channel channel = ChannelTestUtils.createBaseChannel(getTestUser());
 
-        Errata patch = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata patch = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         patch.addChannel(channel);
         ErrataFactory.save(patch);
 
-        Errata retractedPatch = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata retractedPatch = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         retractedPatch.setAdvisoryStatus(AdvisoryStatus.RETRACTED);
         retractedPatch.addChannel(channel);
         ErrataFactory.save(retractedPatch);
 
-        DataResult<ErrataOverview> patches = ErrataManager.allErrata(user);
+        DataResult<ErrataOverview> patches = ErrataManager.allErrata(getTestUser());
         Map<Long, ErrataOverview> patchesMap = patches.stream()
                 .collect(Collectors.toMap(ErrataOverview::getId, p -> p));
         assertEquals(2, patches.size());

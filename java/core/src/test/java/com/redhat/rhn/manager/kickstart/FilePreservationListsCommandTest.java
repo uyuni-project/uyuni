@@ -34,11 +34,11 @@ public class FilePreservationListsCommandTest extends BaseKickstartCommandTestCa
     @Test
     public void testCommand() {
         FilePreservationListsCommand cmd =
-            new FilePreservationListsCommand(ksdata.getId(), user);
+            new FilePreservationListsCommand(ksdata.getId(), getTestUser());
 
-        FileList list1 = KickstartDataTest.createFileList1(user.getOrg());
-        FileList list2 = KickstartDataTest.createFileList2(user.getOrg());
-        FileList list3 = KickstartDataTest.createFileList3(user.getOrg());
+        FileList list1 = KickstartDataTest.createFileList1(getTestUser().getOrg());
+        FileList list2 = KickstartDataTest.createFileList2(getTestUser().getOrg());
+        FileList list3 = KickstartDataTest.createFileList3(getTestUser().getOrg());
 
         CommonFactory.saveFileList(list1);
         CommonFactory.saveFileList(list2);

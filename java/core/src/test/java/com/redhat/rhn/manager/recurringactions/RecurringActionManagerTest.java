@@ -79,7 +79,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
 
     @BeforeEach
     public void setUp() throws Exception {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
         anotherUser = UserTestUtils.createUser("anotherUser", "anotherOrg");
 
         RecurringActionManager.setTaskomaticApi(taskomaticMock);
@@ -87,7 +87,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testCreateMinionRecurringActions() throws Exception {
-        var minion = MinionServerFactoryTest.createTestMinionServer(user);
+        var minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
         CONTEXT.checking(new Expectations() { {
             allowing(taskomaticMock).scheduleRecurringAction(with(any(RecurringAction.class)), with(any(User.class)));
@@ -106,10 +106,10 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         }
 
         var recurringAction = RecurringActionManager.createRecurringAction(
-                MINION, HIGHSTATE, minion.getId(), user);
+                MINION, HIGHSTATE, minion.getId(), getTestUser());
         recurringAction.setCronExpr(CRON_EXPR);
         recurringAction.setName("test-recurring-action-2");
-        RecurringActionManager.saveAndSchedule(recurringAction, user);
+        RecurringActionManager.saveAndSchedule(recurringAction, getTestUser());
         assertNotEmpty(RecurringActionFactory.listMinionRecurringActions(minion));
     }
 
@@ -134,18 +134,18 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
             // no-op
         }
 
-        var group = ServerGroupTestUtils.createManaged(user);
+        var group = ServerGroupTestUtils.createManaged(getTestUser());
         var recurringAction = RecurringActionManager.createRecurringAction(
-                GROUP, HIGHSTATE, group.getId(), user);
+                GROUP, HIGHSTATE, group.getId(), getTestUser());
         recurringAction.setCronExpr(CRON_EXPR);
         recurringAction.setName("test-recurring-action-2");
-        RecurringActionManager.saveAndSchedule(recurringAction, user);
+        RecurringActionManager.saveAndSchedule(recurringAction, getTestUser());
         assertNotEmpty(RecurringActionFactory.listGroupRecurringActions(group));
     }
 
     @Test
     public void testCreateOrgRecurringActions() throws Exception {
-        var org = user.getOrg();
+        var org = getTestUser().getOrg();
 
         CONTEXT.checking(new Expectations() { {
             allowing(taskomaticMock).scheduleRecurringAction(with(any(RecurringAction.class)), with(any(User.class)));
@@ -164,10 +164,10 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         }
 
         var recurringAction = RecurringActionManager.createRecurringAction(
-                ORG, HIGHSTATE, org.getId(), user);
+                ORG, HIGHSTATE, org.getId(), getTestUser());
         recurringAction.setCronExpr(CRON_EXPR);
         recurringAction.setName("test-recurring-action-2");
-        RecurringActionManager.saveAndSchedule(recurringAction, user);
+        RecurringActionManager.saveAndSchedule(recurringAction, getTestUser());
         assertNotEmpty(RecurringActionFactory.listOrgRecurringActions(org.getId()));
     }
 
@@ -182,10 +182,10 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
 
         // user 'user' creates an action
         var action = RecurringActionManager.createRecurringAction(
-                ORG, HIGHSTATE, user.getOrg().getId(), user);
+                ORG, HIGHSTATE, getTestUser().getOrg().getId(), getTestUser());
         action.setCronExpr(CRON_EXPR);
         action.setName("test-recurring-action-2");
-        RecurringActionManager.saveAndSchedule(action, user);
+        RecurringActionManager.saveAndSchedule(action, getTestUser());
 
         // 'anotherUser' tries to update that action, which should fail
         action.setName("hack the planet!");
@@ -202,7 +202,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
     public void testCreateOrgActionNoOrg() {
         try {
             // let's try to create an action for a nonexisting org
-            RecurringActionManager.createRecurringAction(ORG, HIGHSTATE, -123456L, user);
+            RecurringActionManager.createRecurringAction(ORG, HIGHSTATE, -123456L, getTestUser());
             fail("An exception should have been thrown");
         }
         catch (EntityNotExistsException e) {
@@ -212,7 +212,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testListMinionRecurringActions() throws Exception {
-        var minion = MinionServerFactoryTest.createTestMinionServer(user);
+        var minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         var action = new MinionRecurringAction();
         action.setMinion(minion);
         action.setCronExpr(CRON_EXPR);
@@ -220,7 +220,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         action.setActionType(RecurringActionType.ActionType.HIGHSTATE);
         RecurringActionFactory.save(action);
 
-        assertEquals(List.of(action), RecurringActionManager.listMinionRecurringActions(minion.getId(), user));
+        assertEquals(List.of(action), RecurringActionManager.listMinionRecurringActions(minion.getId(), getTestUser()));
 
         try {
             RecurringActionManager.listMinionRecurringActions(minion.getId(), anotherUser);
@@ -234,7 +234,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testListGroupRecurringActions() {
         ServerGroupManager manager = new ServerGroupManager(new TestSaltApi());
-        ManagedServerGroup group = ServerGroupTestUtils.createManaged(user);
+        ManagedServerGroup group = ServerGroupTestUtils.createManaged(getTestUser());
 
         var action = new GroupRecurringAction();
         action.setGroup(group);
@@ -243,8 +243,8 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         action.setActionType(RecurringActionType.ActionType.HIGHSTATE);
         RecurringActionFactory.save(action);
 
-        assertTrue(manager.canAccess(user, group));
-        assertEquals(List.of(action), RecurringActionManager.listGroupRecurringActions(group.getId(), user));
+        assertTrue(manager.canAccess(getTestUser(), group));
+        assertEquals(List.of(action), RecurringActionManager.listGroupRecurringActions(group.getId(), getTestUser()));
 
         try {
             RecurringActionManager.listGroupRecurringActions(group.getId(), anotherUser);
@@ -258,16 +258,17 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testListOrgRecurringAction() {
         var action = new OrgRecurringAction();
-        action.setOrg(user.getOrg());
+        action.setOrg(getTestUser().getOrg());
         action.setCronExpr(CRON_EXPR);
         action.setName("test-recurring-action-1");
         action.setActionType(RecurringActionType.ActionType.HIGHSTATE);
         RecurringActionFactory.save(action);
 
-        assertEquals(List.of(action), RecurringActionManager.listOrgRecurringActions(user.getOrg().getId(), user));
+        assertEquals(List.of(action),
+                RecurringActionManager.listOrgRecurringActions(getTestUser().getOrg().getId(), getTestUser()));
 
         try {
-            RecurringActionManager.listOrgRecurringActions(user.getOrg().getId(), anotherUser);
+            RecurringActionManager.listOrgRecurringActions(getTestUser().getOrg().getId(), anotherUser);
             fail("User shouldn't have access");
         }
         catch (PermissionException e) {
@@ -277,24 +278,24 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testUpdateAction() throws Exception {
-        var minion = MinionServerFactoryTest.createTestMinionServer(user);
+        var minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
         CONTEXT.checking(new Expectations() { {
             allowing(taskomaticMock).scheduleRecurringAction(with(any(RecurringAction.class)), with(any(User.class)));
         } });
 
         var recurringAction = RecurringActionManager.createRecurringAction(
-                MINION, HIGHSTATE, minion.getId(), user);
+                MINION, HIGHSTATE, minion.getId(), getTestUser());
         recurringAction.setCronExpr(CRON_EXPR);
         recurringAction.setName("test-recurring-action-1");
-        recurringAction = RecurringActionManager.saveAndSchedule(recurringAction, user);
+        recurringAction = RecurringActionManager.saveAndSchedule(recurringAction, getTestUser());
 
         var sameAction = RecurringActionFactory.lookupById(recurringAction.getId()).get();
         var newName = "testname";
         var newCronExpr = "1 * * * * ?";
         sameAction.setName(newName);
         sameAction.setCronExpr(newCronExpr);
-        RecurringActionManager.saveAndSchedule(recurringAction, user);
+        RecurringActionManager.saveAndSchedule(recurringAction, getTestUser());
 
         var sameAction2 = RecurringActionFactory.lookupById(recurringAction.getId()).get();
         // the action with the original id has changed name and cron expr
@@ -304,7 +305,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testDeleteAction() throws Exception {
-        var minion = MinionServerFactoryTest.createTestMinionServer(user);
+        var minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
         CONTEXT.checking(new Expectations() { {
             allowing(taskomaticMock).scheduleRecurringAction(with(any(RecurringAction.class)), with(any(User.class)));
@@ -312,12 +313,13 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         } });
 
         var recurringAction = RecurringActionManager.createRecurringAction(
-                MINION, HIGHSTATE, minion.getId(), user);
+                MINION, HIGHSTATE, minion.getId(), getTestUser());
         recurringAction.setCronExpr(CRON_EXPR);
         recurringAction.setName("test-recurring-action-1");
-        recurringAction = RecurringActionManager.saveAndSchedule(recurringAction, user);
+        recurringAction = RecurringActionManager.saveAndSchedule(recurringAction, getTestUser());
 
-        assertEquals(List.of(recurringAction), RecurringActionManager.listMinionRecurringActions(minion.getId(), user));
+        assertEquals(List.of(recurringAction),
+                RecurringActionManager.listMinionRecurringActions(minion.getId(), getTestUser()));
 
         try {
             RecurringActionManager.deleteAndUnschedule(recurringAction, anotherUser);
@@ -327,7 +329,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
             // no-op
         }
 
-        RecurringActionManager.deleteAndUnschedule(recurringAction, user);
+        RecurringActionManager.deleteAndUnschedule(recurringAction, getTestUser());
         TestUtils.flushAndClearSession();
 
         assertTrue(RecurringActionFactory.listMinionRecurringActions(minion).isEmpty());
@@ -335,24 +337,24 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testCreateActionsWithSameName() throws Exception {
-        var minion = MinionServerFactoryTest.createTestMinionServer(user);
+        var minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
         CONTEXT.checking(new Expectations() { {
             allowing(taskomaticMock).scheduleRecurringAction(with(any(RecurringAction.class)), with(any(User.class)));
         } });
 
         var action = RecurringActionManager.createRecurringAction(
-                MINION, HIGHSTATE, minion.getId(), user);
+                MINION, HIGHSTATE, minion.getId(), getTestUser());
         action.setCronExpr(CRON_EXPR);
         action.setName("test-recurring-action");
-        RecurringActionManager.saveAndSchedule(action, user);
+        RecurringActionManager.saveAndSchedule(action, getTestUser());
 
         var sameAction = RecurringActionManager.createRecurringAction(
-                MINION, HIGHSTATE, minion.getId(), user);
+                MINION, HIGHSTATE, minion.getId(), getTestUser());
         sameAction.setCronExpr(CRON_EXPR);
         sameAction.setName("test-recurring-action");
         try {
-            RecurringActionManager.saveAndSchedule(sameAction, user);
+            RecurringActionManager.saveAndSchedule(sameAction, getTestUser());
             fail("An exception should have been thrown");
         }
         catch (ValidatorException e) {
@@ -362,25 +364,25 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testCreateActionsWithSameNameDifferentEntity() throws Exception {
-        var minion = MinionServerFactoryTest.createTestMinionServer(user);
-        var minion2 = MinionServerFactoryTest.createTestMinionServer(user);
+        var minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        var minion2 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
         CONTEXT.checking(new Expectations() { {
             allowing(taskomaticMock).scheduleRecurringAction(with(any(RecurringAction.class)), with(any(User.class)));
         } });
 
         var action = RecurringActionManager.createRecurringAction(
-                MINION, HIGHSTATE, minion.getId(), user);
+                MINION, HIGHSTATE, minion.getId(), getTestUser());
         action.setCronExpr(CRON_EXPR);
         action.setName("test-recurring-action");
-        RecurringActionManager.saveAndSchedule(action, user);
+        RecurringActionManager.saveAndSchedule(action, getTestUser());
 
         var otherAction = RecurringActionManager.createRecurringAction(
-                MINION, HIGHSTATE, minion2.getId(), user);
+                MINION, HIGHSTATE, minion2.getId(), getTestUser());
         otherAction.setCronExpr(CRON_EXPR);
         otherAction.setName("test-recurring-action");
         try {
-            RecurringActionManager.saveAndSchedule(otherAction, user);
+            RecurringActionManager.saveAndSchedule(otherAction, getTestUser());
         }
         catch (EntityExistsException e) {
             fail("An exception shouldn't have been thrown");
@@ -389,7 +391,7 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
 
     @Test
     public void testCreateActionWithInvalidCron() throws Exception {
-        var minion = MinionServerFactoryTest.createTestMinionServer(user);
+        var minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         var invalidCron = "SOMETHING INVALID";
 
         CONTEXT.checking(new Expectations() { {
@@ -397,12 +399,12 @@ public class RecurringActionManagerTest extends BaseTestCaseWithUser {
         } });
 
         var action = RecurringActionManager.createRecurringAction(
-                MINION, HIGHSTATE, minion.getId(), user);
+                MINION, HIGHSTATE, minion.getId(), getTestUser());
         action.setCronExpr(invalidCron);
         action.setName("test-recurring-action");
 
         try {
-            RecurringActionManager.saveAndSchedule(action, user);
+            RecurringActionManager.saveAndSchedule(action, getTestUser());
             fail("An exception should have been thrown");
         }
         catch (ValidatorException e) {

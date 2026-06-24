@@ -35,11 +35,11 @@ public class KickstartPartitionCommandTest extends BaseTestCaseWithUser {
 
     @Test
     public void testKickstartPartitionCommand() throws Exception {
-        KickstartData k = KickstartDataTest.createKickstartWithChannel(user.getOrg());
+        KickstartData k = KickstartDataTest.createKickstartWithChannel(getTestUser().getOrg());
         assertTrue(k.getPartitionData().isEmpty());
         KickstartFactory.saveKickstartData(k);
 
-        KickstartPartitionCommand cmd = new KickstartPartitionCommand(k.getId(), user);
+        KickstartPartitionCommand cmd = new KickstartPartitionCommand(k.getId(), getTestUser());
 
         String partitions = "partition /boot --fstype=ext3 --size=200\n" +
             "partition swap --size=2000\n" +
@@ -58,10 +58,10 @@ public class KickstartPartitionCommandTest extends BaseTestCaseWithUser {
 
     @Test
     public void testLVMSwapPartitions() throws Exception {
-        KickstartData k = KickstartDataTest.createKickstartWithChannel(user.getOrg());
+        KickstartData k = KickstartDataTest.createKickstartWithChannel(getTestUser().getOrg());
         KickstartFactory.saveKickstartData(k);
 
-        KickstartPartitionCommand cmd = new KickstartPartitionCommand(k.getId(), user);
+        KickstartPartitionCommand cmd = new KickstartPartitionCommand(k.getId(), getTestUser());
         String partitions = "partition swap.01 --size=5150 --ondisk=sda\n" +
             "partition /boot --fstype=ext3 --size=200\n" +
             "partition swap.02 --size=8888 --ondisk=sda\n" +

@@ -70,14 +70,14 @@ public class CobblerSnippetTest extends BaseTestCaseWithUser {
         String contents = TestUtils.randomString();
         String name = TestUtils.randomString();
         CobblerSnippet snip = CobblerSnippet.createOrUpdate(true, name,
-                                contents, user.getOrg());
+                                contents, getTestUser().getOrg());
         assertTrue(snip.getPath().exists());
         assertEquals(contents, snip.getContents());
         assertTrue(snip.isEditable());
         contents += "Updated";
         try {
             CobblerSnippet.createOrUpdate(true, name,
-                    contents, user.getOrg());
+                    contents, getTestUser().getOrg());
             fail("No error on a create for a already existing file..");
         }
         catch (ValidatorException ve) {
@@ -85,7 +85,7 @@ public class CobblerSnippetTest extends BaseTestCaseWithUser {
         }
 
         snip = CobblerSnippet.createOrUpdate(false, name,
-                contents, user.getOrg());
+                contents, getTestUser().getOrg());
         assertEquals(contents, snip.getContents());
 
         contents = contents + "Ugh";
@@ -104,7 +104,7 @@ public class CobblerSnippetTest extends BaseTestCaseWithUser {
         String name = TestUtils.randomString() + "/HoHO";
         try {
             CobblerSnippet.createOrUpdate(true, name,
-                    contents, user.getOrg());
+                    contents, getTestUser().getOrg());
             fail("Create should not happen for the name has a slash in it:(");
         }
         catch (ValidatorException ve) {
@@ -113,8 +113,8 @@ public class CobblerSnippetTest extends BaseTestCaseWithUser {
 
         name = TestUtils.randomString();
         CobblerSnippet.createOrUpdate(true, name,
-                        contents, user.getOrg());
-        CobblerSnippet snip  = CobblerSnippet.loadEditable(name, user.getOrg());
+                        contents, getTestUser().getOrg());
+        CobblerSnippet snip  = CobblerSnippet.loadEditable(name, getTestUser().getOrg());
         assertNotNull(snip);
         assertTrue(snip.getPath().exists());
         assertEquals(contents, snip.getContents());

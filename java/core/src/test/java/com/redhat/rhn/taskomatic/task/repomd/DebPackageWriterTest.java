@@ -53,7 +53,7 @@ public class DebPackageWriterTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testWritePackages() throws Exception {
-        Channel channel = ChannelFactoryTest.createBaseChannel(user);
+        Channel channel = ChannelFactoryTest.createBaseChannel(getTestUser());
 
         PackageExtraTagsKeys tag1 = PackageManagerTest.createExtraTagKey("Tag1");
         PackageExtraTagsKeys tag2 = PackageManagerTest.createExtraTagKey("Tag2");

@@ -93,18 +93,18 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         // Create channels
         baseChannel = createTestVendorBaseChannel(channelFamily, channelProduct);
 
-        UserManager.addChannelPerm(user, baseChannel.getId(), "subscribe");
-        UserManager.addChannelPerm(user, baseChannel.getId(), "manage");
+        UserManager.addChannelPerm(getTestUser(), baseChannel.getId(), "subscribe");
+        UserManager.addChannelPerm(getTestUser(), baseChannel.getId(), "manage");
         childChannel1 = createTestVendorChildChannel(baseChannel, channelProduct);
-        UserManager.addChannelPerm(user, childChannel1.getId(), "subscribe");
-        UserManager.addChannelPerm(user, childChannel1.getId(), "manage");
+        UserManager.addChannelPerm(getTestUser(), childChannel1.getId(), "subscribe");
+        UserManager.addChannelPerm(getTestUser(), childChannel1.getId(), "manage");
         childChannel2 = createTestVendorChildChannel(baseChannel, channelProduct);
-        UserManager.addChannelPerm(user, childChannel2.getId(), "subscribe");
-        UserManager.addChannelPerm(user, childChannel2.getId(), "manage");
+        UserManager.addChannelPerm(getTestUser(), childChannel2.getId(), "subscribe");
+        UserManager.addChannelPerm(getTestUser(), childChannel2.getId(), "manage");
 
-        baseChannel.setOrg(user.getOrg());
-        childChannel1.setOrg(user.getOrg());
-        childChannel2.setOrg(user.getOrg());
+        baseChannel.setOrg(getTestUser().getOrg());
+        childChannel1.setOrg(getTestUser().getOrg());
+        childChannel2.setOrg(getTestUser().getOrg());
 
         // Assign channels to SUSE product
         createTestSUSEProductChannel(baseChannel, product, true);
@@ -118,18 +118,18 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         // Create channels
         baseChannel2 = createTestVendorBaseChannel(channelFamily, channelProduct);
 
-        UserManager.addChannelPerm(user, baseChannel2.getId(), "subscribe");
-        UserManager.addChannelPerm(user, baseChannel2.getId(), "manage");
+        UserManager.addChannelPerm(getTestUser(), baseChannel2.getId(), "subscribe");
+        UserManager.addChannelPerm(getTestUser(), baseChannel2.getId(), "manage");
         childChannel2Child1 = createTestVendorChildChannel(baseChannel2, channelProduct);
-        UserManager.addChannelPerm(user, childChannel2Child1.getId(), "subscribe");
-        UserManager.addChannelPerm(user, childChannel2Child1.getId(), "manage");
+        UserManager.addChannelPerm(getTestUser(), childChannel2Child1.getId(), "subscribe");
+        UserManager.addChannelPerm(getTestUser(), childChannel2Child1.getId(), "manage");
         childChannel2Child2 = createTestVendorChildChannel(baseChannel2, channelProduct);
-        UserManager.addChannelPerm(user, childChannel2Child2.getId(), "subscribe");
-        UserManager.addChannelPerm(user, childChannel2Child2.getId(), "manage");
+        UserManager.addChannelPerm(getTestUser(), childChannel2Child2.getId(), "subscribe");
+        UserManager.addChannelPerm(getTestUser(), childChannel2Child2.getId(), "manage");
 
-        baseChannel2.setOrg(user.getOrg());
-        childChannel2Child1.setOrg(user.getOrg());
-        childChannel2Child2.setOrg(user.getOrg());
+        baseChannel2.setOrg(getTestUser().getOrg());
+        childChannel2Child1.setOrg(getTestUser().getOrg());
+        childChannel2Child2.setOrg(getTestUser().getOrg());
 
         // Assign channels to SUSE product
         createTestSUSEProductChannel(baseChannel2, product2, true);
@@ -143,12 +143,12 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testComputeAllowedChannelChangesChangeBaseDefault1() throws Exception {
-        Server server1 = ServerFactoryTest.createTestServer(user, true);
+        Server server1 = ServerFactoryTest.createTestServer(getTestUser(), true);
 
-        Channel parent = ChannelFactoryTest.createTestChannel(user);
+        Channel parent = ChannelFactoryTest.createTestChannel(getTestUser());
         parent.setParentChannel(null);
 
-        Channel child = ChannelFactoryTest.createTestChannel(user);
+        Channel child = ChannelFactoryTest.createTestChannel(getTestUser());
         child.setParentChannel(parent);
 
         server1.addChannel(parent);
@@ -158,14 +158,14 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
 
         TestUtils.flushSession();
 
-        RhnSet set = RhnSetDecl.SYSTEMS.get(user);
+        RhnSet set = RhnSetDecl.SYSTEMS.get(getTestUser());
         set.addElement(server1.getId() + "");
         RhnSetManager.store(set);
 
         SsmBaseChannelChangesDto changes = new SsmBaseChannelChangesDto();
         changes.getChanges().add(new SsmBaseChannelChangesDto.Change(parent.getId(), -1));
 
-        List<SsmAllowedChildChannelsDto> result = SsmManager.computeAllowedChannelChanges(changes, user);
+        List<SsmAllowedChildChannelsDto> result = SsmManager.computeAllowedChannelChanges(changes, getTestUser());
 
         assertEquals(1, result.size());
         assertEquals(parent.getId().longValue(), result.get(0).getOldBaseChannel().get().getId());
@@ -181,16 +181,16 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testComputeAllowedChannelChangesChangeBaseDefault2() throws Exception {
-        Channel parent = ChannelFactoryTest.createTestChannel(user);
+        Channel parent = ChannelFactoryTest.createTestChannel(getTestUser());
         parent.setParentChannel(null);
-        Channel child = ChannelFactoryTest.createTestChannel(user);
+        Channel child = ChannelFactoryTest.createTestChannel(getTestUser());
         child.setParentChannel(parent);
 
-        Server server1 = ServerFactoryTest.createTestServer(user, true);
+        Server server1 = ServerFactoryTest.createTestServer(getTestUser(), true);
         server1.addChannel(parent);
         server1.addChannel(child);
 
-        Server server2 = ServerFactoryTest.createTestServer(user, true);
+        Server server2 = ServerFactoryTest.createTestServer(getTestUser(), true);
         server2.addChannel(parent);
         server2.addChannel(child);
 
@@ -198,7 +198,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         installSUSEProductOnServer(product, server2);
         TestUtils.flushSession();
 
-        RhnSet set = RhnSetDecl.SYSTEMS.get(user);
+        RhnSet set = RhnSetDecl.SYSTEMS.get(getTestUser());
         set.addElement(server1.getId() + "");
         set.addElement(server2.getId() + "");
         RhnSetManager.store(set);
@@ -206,7 +206,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         SsmBaseChannelChangesDto changes = new SsmBaseChannelChangesDto();
         changes.getChanges().add(new SsmBaseChannelChangesDto.Change(parent.getId(), -1));
 
-        List<SsmAllowedChildChannelsDto> result = SsmManager.computeAllowedChannelChanges(changes, user);
+        List<SsmAllowedChildChannelsDto> result = SsmManager.computeAllowedChannelChanges(changes, getTestUser());
 
         assertEquals(1, result.size());
         assertEquals(parent.getId().longValue(), result.get(0).getOldBaseChannel().get().getId());
@@ -222,16 +222,16 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testComputeAllowedChannelChangesNoBaseChange() throws Exception {
-        Channel parent = ChannelFactoryTest.createTestChannel(user);
+        Channel parent = ChannelFactoryTest.createTestChannel(getTestUser());
         parent.setParentChannel(null);
-        Channel child = ChannelFactoryTest.createTestChannel(user);
+        Channel child = ChannelFactoryTest.createTestChannel(getTestUser());
         child.setParentChannel(parent);
 
-        Server server1 = ServerFactoryTest.createTestServer(user, true);
+        Server server1 = ServerFactoryTest.createTestServer(getTestUser(), true);
         server1.addChannel(parent);
         server1.addChannel(child);
 
-        Server server2 = ServerFactoryTest.createTestServer(user, true);
+        Server server2 = ServerFactoryTest.createTestServer(getTestUser(), true);
         server2.addChannel(parent);
         server2.addChannel(child);
 
@@ -239,7 +239,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         installSUSEProductOnServer(product, server2);
         TestUtils.flushSession();
 
-        RhnSet set = RhnSetDecl.SYSTEMS.get(user);
+        RhnSet set = RhnSetDecl.SYSTEMS.get(getTestUser());
         set.addElement(server1.getId() + "");
         set.addElement(server2.getId() + "");
         RhnSetManager.store(set);
@@ -248,7 +248,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         // base -> no change
         changes.getChanges().add(new SsmBaseChannelChangesDto.Change(parent.getId(), 0));
 
-        List<SsmAllowedChildChannelsDto> result = SsmManager.computeAllowedChannelChanges(changes, user);
+        List<SsmAllowedChildChannelsDto> result = SsmManager.computeAllowedChannelChanges(changes, getTestUser());
 
         assertEquals(1, result.size());
         assertEquals((long)parent.getId(), result.get(0).getOldBaseChannel().get().getId());
@@ -265,24 +265,24 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testComputeAllowedChannelChangesServersWithoutBase() throws Exception {
-        Channel parent = ChannelFactoryTest.createTestChannel(user);
+        Channel parent = ChannelFactoryTest.createTestChannel(getTestUser());
         parent.setParentChannel(null);
-        Channel child = ChannelFactoryTest.createTestChannel(user);
+        Channel child = ChannelFactoryTest.createTestChannel(getTestUser());
         child.setParentChannel(parent);
 
-        Server server1 = ServerFactoryTest.createTestServer(user, true);
+        Server server1 = ServerFactoryTest.createTestServer(getTestUser(), true);
         server1.addChannel(parent);
         server1.addChannel(child);
 
-        Server server2 = ServerFactoryTest.createTestServer(user, true);
-        Server server3 = ServerFactoryTest.createTestServer(user, true);
+        Server server2 = ServerFactoryTest.createTestServer(getTestUser(), true);
+        Server server3 = ServerFactoryTest.createTestServer(getTestUser(), true);
 
         installSUSEProductOnServer(product, server1);
         installSUSEProductOnServer(product, server2);
         installSUSEProductOnServer(product, server3);
         TestUtils.flushSession();
 
-        RhnSet set = RhnSetDecl.SYSTEMS.get(user);
+        RhnSet set = RhnSetDecl.SYSTEMS.get(getTestUser());
         set.addElement(server1.getId() + "");
         set.addElement(server2.getId() + "");
         set.addElement(server3.getId() + "");
@@ -294,7 +294,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         // no base -> default
         changes.getChanges().add(new SsmBaseChannelChangesDto.Change(-1, -1));
 
-        List<SsmAllowedChildChannelsDto> result = SsmManager.computeAllowedChannelChanges(changes, user);
+        List<SsmAllowedChildChannelsDto> result = SsmManager.computeAllowedChannelChanges(changes, getTestUser());
 
         assertEquals(2, result.size());
         SsmAllowedChildChannelsDto allowedWithBase =
@@ -324,14 +324,14 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testComputeAllowedChannelChangesTwoServersWithoutBase() {
-        Server server1 = ServerFactoryTest.createTestServer(user, true);
-        Server server2 = ServerFactoryTest.createTestServer(user, true);
+        Server server1 = ServerFactoryTest.createTestServer(getTestUser(), true);
+        Server server2 = ServerFactoryTest.createTestServer(getTestUser(), true);
 
         installSUSEProductOnServer(product, server1);
         installSUSEProductOnServer(product, server2);
         TestUtils.flushSession();
 
-        RhnSet set = RhnSetDecl.SYSTEMS.get(user);
+        RhnSet set = RhnSetDecl.SYSTEMS.get(getTestUser());
         set.addElement(server1.getId() + "");
         set.addElement(server2.getId() + "");
         RhnSetManager.store(set);
@@ -340,7 +340,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         // no base -> default
         changes.getChanges().add(new SsmBaseChannelChangesDto.Change(-1, -1));
 
-        List<SsmAllowedChildChannelsDto> result = SsmManager.computeAllowedChannelChanges(changes, user);
+        List<SsmAllowedChildChannelsDto> result = SsmManager.computeAllowedChannelChanges(changes, getTestUser());
 
         assertEquals(1, result.size());
 
@@ -365,7 +365,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
     public void testComputeAllowedChannelChangesNoChangePresent() {
         SsmBaseChannelChangesDto changes = new SsmBaseChannelChangesDto();
 
-        List<SsmAllowedChildChannelsDto> result = SsmManager.computeAllowedChannelChanges(changes, user);
+        List<SsmAllowedChildChannelsDto> result = SsmManager.computeAllowedChannelChanges(changes, getTestUser());
         assertNotNull(result);
         assertTrue(result.isEmpty());
     }
@@ -377,23 +377,23 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testComputeAllowedChannelChangesBaseChangeNoGuess() throws Exception {
-        Channel parent = ChannelFactoryTest.createTestChannel(user);
+        Channel parent = ChannelFactoryTest.createTestChannel(getTestUser());
         parent.setParentChannel(null);
-        Channel child = ChannelFactoryTest.createTestChannel(user);
+        Channel child = ChannelFactoryTest.createTestChannel(getTestUser());
         child.setParentChannel(parent);
 
-        Server server1 = ServerFactoryTest.createTestServer(user, true);
+        Server server1 = ServerFactoryTest.createTestServer(getTestUser(), true);
         server1.addChannel(parent);
         server1.addChannel(child);
 
-        Server server2 = ServerFactoryTest.createTestServer(user, true);
+        Server server2 = ServerFactoryTest.createTestServer(getTestUser(), true);
         server2.addChannel(parent);
         server2.addChannel(child);
 
         installSUSEProductOnServer(product, server1);
         TestUtils.flushSession();
 
-        RhnSet set = RhnSetDecl.SYSTEMS.get(user);
+        RhnSet set = RhnSetDecl.SYSTEMS.get(getTestUser());
         set.addElement(server1.getId() + "");
         set.addElement(server2.getId() + "");
         RhnSetManager.store(set);
@@ -401,7 +401,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         SsmBaseChannelChangesDto changes = new SsmBaseChannelChangesDto();
         changes.getChanges().add(new SsmBaseChannelChangesDto.Change(parent.getId(), -1));
 
-        List<SsmAllowedChildChannelsDto> result = SsmManager.computeAllowedChannelChanges(changes, user);
+        List<SsmAllowedChildChannelsDto> result = SsmManager.computeAllowedChannelChanges(changes, getTestUser());
 
         assertEquals(2, result.size());
         assertEquals(2, result.stream()
@@ -431,16 +431,16 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testComputeAllowedChannelChangesChangeBaseExplicit1() throws Exception {
-        Channel parent = ChannelFactoryTest.createTestChannel(user);
+        Channel parent = ChannelFactoryTest.createTestChannel(getTestUser());
         parent.setParentChannel(null);
-        Channel child = ChannelFactoryTest.createTestChannel(user);
+        Channel child = ChannelFactoryTest.createTestChannel(getTestUser());
         child.setParentChannel(parent);
 
-        Server server1 = ServerFactoryTest.createTestServer(user, true);
+        Server server1 = ServerFactoryTest.createTestServer(getTestUser(), true);
         server1.addChannel(parent);
         server1.addChannel(child);
 
-        Server server2 = ServerFactoryTest.createTestServer(user, true);
+        Server server2 = ServerFactoryTest.createTestServer(getTestUser(), true);
         server2.addChannel(parent);
         server2.addChannel(child);
 
@@ -448,7 +448,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         installSUSEProductOnServer(product, server2);
         TestUtils.flushSession();
 
-        RhnSet set = RhnSetDecl.SYSTEMS.get(user);
+        RhnSet set = RhnSetDecl.SYSTEMS.get(getTestUser());
         set.addElement(server1.getId() + "");
         set.addElement(server2.getId() + "");
         RhnSetManager.store(set);
@@ -456,7 +456,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         SsmBaseChannelChangesDto changes = new SsmBaseChannelChangesDto();
         changes.getChanges().add(new SsmBaseChannelChangesDto.Change(parent.getId(), baseChannel.getId()));
 
-        List<SsmAllowedChildChannelsDto> result = SsmManager.computeAllowedChannelChanges(changes, user);
+        List<SsmAllowedChildChannelsDto> result = SsmManager.computeAllowedChannelChanges(changes, getTestUser());
 
         assertEquals(1, result.size());
         assertEquals((long)parent.getId(), result.get(0).getOldBaseChannel().get().getId());
@@ -476,16 +476,16 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testComputeAllowedChannelChangesChangeExplicitAndDefault() throws Exception {
-        Channel parent = ChannelFactoryTest.createTestChannel(user);
+        Channel parent = ChannelFactoryTest.createTestChannel(getTestUser());
         parent.setParentChannel(null);
-        Channel child = ChannelFactoryTest.createTestChannel(user);
+        Channel child = ChannelFactoryTest.createTestChannel(getTestUser());
         child.setParentChannel(parent);
 
-        Channel explicit = ChannelFactoryTest.createTestChannel(user);
+        Channel explicit = ChannelFactoryTest.createTestChannel(getTestUser());
 
-        Server server1 = ServerFactoryTest.createTestServer(user, true);
+        Server server1 = ServerFactoryTest.createTestServer(getTestUser(), true);
 
-        Server server2 = ServerFactoryTest.createTestServer(user, true);
+        Server server2 = ServerFactoryTest.createTestServer(getTestUser(), true);
         server2.addChannel(parent);
         server2.addChannel(child);
 
@@ -493,7 +493,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         installSUSEProductOnServer(product, server2);
         TestUtils.flushSession();
 
-        RhnSet set = RhnSetDecl.SYSTEMS.get(user);
+        RhnSet set = RhnSetDecl.SYSTEMS.get(getTestUser());
         set.addElement(server1.getId() + "");
         set.addElement(server2.getId() + "");
         RhnSetManager.store(set);
@@ -504,7 +504,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         // no base -> explicit
         changes.getChanges().add(new SsmBaseChannelChangesDto.Change(-1, explicit.getId()));
 
-        List<SsmAllowedChildChannelsDto> result = SsmManager.computeAllowedChannelChanges(changes, user);
+        List<SsmAllowedChildChannelsDto> result = SsmManager.computeAllowedChannelChanges(changes, getTestUser());
 
         assertEquals(2, result.size());
 
@@ -529,22 +529,22 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testComputeAllowedChannelChangesIllegalChangeBaseExplicit() throws Exception {
-        Channel parent = ChannelFactoryTest.createTestChannel(user);
+        Channel parent = ChannelFactoryTest.createTestChannel(getTestUser());
 
-        Server server1 = ServerFactoryTest.createTestServer(user, true);
+        Server server1 = ServerFactoryTest.createTestServer(getTestUser(), true);
         server1.addChannel(parent);
 
-        Server server2 = ServerFactoryTest.createTestServer(user, true);
+        Server server2 = ServerFactoryTest.createTestServer(getTestUser(), true);
         server2.addChannel(parent);
 
-        Channel parent2 = ChannelFactoryTest.createTestChannel(user);
+        Channel parent2 = ChannelFactoryTest.createTestChannel(getTestUser());
         parent2.setOrg(null);
 
         installSUSEProductOnServer(product, server1);
         installSUSEProductOnServer(product, server2);
         TestUtils.flushSession();
 
-        RhnSet set = RhnSetDecl.SYSTEMS.get(user);
+        RhnSet set = RhnSetDecl.SYSTEMS.get(getTestUser());
         set.addElement(server1.getId() + "");
         set.addElement(server2.getId() + "");
         RhnSetManager.store(set);
@@ -552,7 +552,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         SsmBaseChannelChangesDto changes = new SsmBaseChannelChangesDto();
         changes.getChanges().add(new SsmBaseChannelChangesDto.Change(parent.getId(), parent2.getId()));
         try {
-            SsmManager.computeAllowedChannelChanges(changes, user);
+            SsmManager.computeAllowedChannelChanges(changes, getTestUser());
             fail("Should throw IllegalArgumentException");
         }
         catch (IllegalArgumentException e) {
@@ -571,16 +571,16 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
                     .scheduleSubscribeChannels(with(any(User.class)), with(any(SubscribeChannelsAction.class)));
         } });
 
-        Channel parent = ChannelFactoryTest.createTestChannel(user);
+        Channel parent = ChannelFactoryTest.createTestChannel(getTestUser());
         parent.setParentChannel(null);
-        Channel child = ChannelFactoryTest.createTestChannel(user);
+        Channel child = ChannelFactoryTest.createTestChannel(getTestUser());
         child.setParentChannel(parent);
 
-        Server server1 = ServerFactoryTest.createTestServer(user, true);
+        Server server1 = ServerFactoryTest.createTestServer(getTestUser(), true);
         server1.addChannel(parent);
         server1.addChannel(child);
 
-        Server server2 = ServerFactoryTest.createTestServer(user, true);
+        Server server2 = ServerFactoryTest.createTestServer(getTestUser(), true);
         server2.addChannel(parent);
         server2.addChannel(child);
 
@@ -588,7 +588,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         installSUSEProductOnServer(product, server2);
         TestUtils.flushSession();
 
-        RhnSet set = RhnSetDecl.SYSTEMS.get(user);
+        RhnSet set = RhnSetDecl.SYSTEMS.get(getTestUser());
         set.addElement(server1.getId() + "");
         set.addElement(server2.getId() + "");
         RhnSetManager.store(set);
@@ -604,13 +604,13 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         Date earliest = new Date();
 
         List<ScheduleChannelChangesResultDto> results = SsmManager.scheduleChannelChanges(
-                changes, earliest, null, user);
+                changes, earliest, null, getTestUser());
 
         assertEquals(2, results.size());
         assertEquals(2,
                 results.stream().filter(r -> !r.getErrorMessage().isPresent() && r.getActionId().isPresent()).count());
         List<SubscribeChannelsActionDetails> details = results.stream()
-                .map(r -> (SubscribeChannelsAction)ActionManager.lookupAction(user, r.getActionId().get()))
+                .map(r -> (SubscribeChannelsAction)ActionManager.lookupAction(getTestUser(), r.getActionId().get()))
                 .map(SubscribeChannelsAction::getDetails)
                 .toList();
         assertEquals(2, details.stream().filter(d -> d.getBaseChannel().getId() == baseChannel.getId()).count());
@@ -631,16 +631,16 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
                     .scheduleSubscribeChannels(with(any(User.class)), with(any(SubscribeChannelsAction.class)));
         } });
 
-        Channel parent = ChannelFactoryTest.createTestChannel(user);
+        Channel parent = ChannelFactoryTest.createTestChannel(getTestUser());
         parent.setParentChannel(null);
-        Channel child = ChannelFactoryTest.createTestChannel(user);
+        Channel child = ChannelFactoryTest.createTestChannel(getTestUser());
         child.setParentChannel(parent);
 
-        Server server1 = ServerFactoryTest.createTestServer(user, true);
+        Server server1 = ServerFactoryTest.createTestServer(getTestUser(), true);
         server1.addChannel(parent);
         server1.addChannel(child);
 
-        Server server2 = ServerFactoryTest.createTestServer(user, true);
+        Server server2 = ServerFactoryTest.createTestServer(getTestUser(), true);
         server2.addChannel(parent);
         server2.addChannel(child);
 
@@ -648,7 +648,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         installSUSEProductOnServer(product2, server2);
         TestUtils.flushSession();
 
-        RhnSet set = RhnSetDecl.SYSTEMS.get(user);
+        RhnSet set = RhnSetDecl.SYSTEMS.get(getTestUser());
         set.addElement(server1.getId() + "");
         set.addElement(server2.getId() + "");
         RhnSetManager.store(set);
@@ -674,7 +674,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         Date earliest = new Date();
 
         List<ScheduleChannelChangesResultDto> results = SsmManager.scheduleChannelChanges(
-                changes, earliest, null, user);
+                changes, earliest, null, getTestUser());
 
         TestUtils.flushAndClearSession();
 
@@ -682,7 +682,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         assertEquals(2,
                 results.stream().filter(r -> !r.getErrorMessage().isPresent() && r.getActionId().isPresent()).count());
         List<SubscribeChannelsActionDetails> details = results.stream()
-                .map(r -> (SubscribeChannelsAction)ActionManager.lookupAction(user, r.getActionId().get()))
+                .map(r -> (SubscribeChannelsAction)ActionManager.lookupAction(getTestUser(), r.getActionId().get()))
                 .map(SubscribeChannelsAction::getDetails)
                 .toList();
 
@@ -730,22 +730,22 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
                     .scheduleSubscribeChannels(with(any(User.class)), with(any(SubscribeChannelsAction.class)));
         } });
 
-        Channel parent1 = ChannelFactoryTest.createTestChannel(user);
+        Channel parent1 = ChannelFactoryTest.createTestChannel(getTestUser());
         parent1.setParentChannel(null);
-        Channel child11 = ChannelFactoryTest.createTestChannel(user);
+        Channel child11 = ChannelFactoryTest.createTestChannel(getTestUser());
         child11.setParentChannel(parent1);
 
-        Server server1 = ServerFactoryTest.createTestServer(user, true);
+        Server server1 = ServerFactoryTest.createTestServer(getTestUser(), true);
         server1.addChannel(parent1);
         server1.addChannel(child11);
 
-        Server server2 = ServerFactoryTest.createTestServer(user, true);
+        Server server2 = ServerFactoryTest.createTestServer(getTestUser(), true);
         server2.addChannel(parent1);
         server2.addChannel(child11);
 
-        Channel parent2 = ChannelFactoryTest.createTestChannel(user);
+        Channel parent2 = ChannelFactoryTest.createTestChannel(getTestUser());
         parent2.setParentChannel(null);
-        Channel child21 = ChannelFactoryTest.createTestChannel(user);
+        Channel child21 = ChannelFactoryTest.createTestChannel(getTestUser());
         child21.setParentChannel(parent2);
 
         installSUSEProductOnServer(product, server1);
@@ -753,7 +753,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
 
         TestUtils.flushSession();
 
-        RhnSet set = RhnSetDecl.SYSTEMS.get(user);
+        RhnSet set = RhnSetDecl.SYSTEMS.get(getTestUser());
         set.addElement(server1.getId() + "");
         set.addElement(server2.getId() + "");
         RhnSetManager.store(set);
@@ -778,7 +778,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         Date earliest = new Date();
 
         List<ScheduleChannelChangesResultDto> results = SsmManager.scheduleChannelChanges(
-                changes, earliest, null, user);
+                changes, earliest, null, getTestUser());
 
         TestUtils.flushAndClearSession();
 
@@ -800,27 +800,27 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
                     .scheduleSubscribeChannels(with(any(User.class)), with(any(SubscribeChannelsAction.class)));
         } });
 
-        Channel parent1 = ChannelFactoryTest.createTestChannel(user);
+        Channel parent1 = ChannelFactoryTest.createTestChannel(getTestUser());
         parent1.setParentChannel(null);
-        Channel child11 = ChannelFactoryTest.createTestChannel(user);
+        Channel child11 = ChannelFactoryTest.createTestChannel(getTestUser());
         child11.setParentChannel(parent1);
 
-        Server server1 = ServerFactoryTest.createTestServer(user, true);
+        Server server1 = ServerFactoryTest.createTestServer(getTestUser(), true);
         server1.addChannel(parent1);
         server1.addChannel(child11);
 
-        Channel parent2 = ChannelFactoryTest.createTestChannel(user);
+        Channel parent2 = ChannelFactoryTest.createTestChannel(getTestUser());
         parent2.setParentChannel(null);
-        Channel child21 = ChannelFactoryTest.createTestChannel(user);
+        Channel child21 = ChannelFactoryTest.createTestChannel(getTestUser());
         child21.setParentChannel(parent2);
 
-        Server server2 = ServerFactoryTest.createTestServer(user, true);
+        Server server2 = ServerFactoryTest.createTestServer(getTestUser(), true);
         server2.addChannel(parent2);
         server2.addChannel(child21);
 
-        Channel customBase = ChannelFactoryTest.createTestChannel(user);
+        Channel customBase = ChannelFactoryTest.createTestChannel(getTestUser());
         customBase.setParentChannel(null);
-        Channel customBaseChild1 = ChannelFactoryTest.createTestChannel(user);
+        Channel customBaseChild1 = ChannelFactoryTest.createTestChannel(getTestUser());
         customBaseChild1.setParentChannel(customBase);
 
         installSUSEProductOnServer(product, server1);
@@ -828,7 +828,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
 
         TestUtils.flushSession();
 
-        RhnSet set = RhnSetDecl.SYSTEMS.get(user);
+        RhnSet set = RhnSetDecl.SYSTEMS.get(getTestUser());
         set.addElement(server1.getId() + "");
         set.addElement(server2.getId() + "");
         RhnSetManager.store(set);
@@ -853,7 +853,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         Date earliest = new Date();
 
         List<ScheduleChannelChangesResultDto> results = SsmManager.scheduleChannelChanges(
-                changes, earliest, null, user);
+                changes, earliest, null, getTestUser());
 
         TestUtils.flushAndClearSession();
 
@@ -862,7 +862,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
                 r.getActionId().isPresent()));
 
         List<SubscribeChannelsActionDetails> details = results.stream()
-                .map(r -> (SubscribeChannelsAction)ActionManager.lookupAction(user, r.getActionId().get()))
+                .map(r -> (SubscribeChannelsAction)ActionManager.lookupAction(getTestUser(), r.getActionId().get()))
                 .map(SubscribeChannelsAction::getDetails)
                 .toList();
 
@@ -906,21 +906,21 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
                     .scheduleSubscribeChannels(with(any(User.class)), with(any(SubscribeChannelsAction.class)));
         } });
 
-        Server server1 = ServerFactoryTest.createTestServer(user, true);
+        Server server1 = ServerFactoryTest.createTestServer(getTestUser(), true);
         // no base channel for serve 1
 
-        Channel parent2 = ChannelFactoryTest.createTestChannel(user);
+        Channel parent2 = ChannelFactoryTest.createTestChannel(getTestUser());
         parent2.setParentChannel(null);
-        Channel child21 = ChannelFactoryTest.createTestChannel(user);
+        Channel child21 = ChannelFactoryTest.createTestChannel(getTestUser());
         child21.setParentChannel(parent2);
 
-        Server server2 = ServerFactoryTest.createTestServer(user, true);
+        Server server2 = ServerFactoryTest.createTestServer(getTestUser(), true);
         server2.addChannel(parent2);
         server2.addChannel(child21);
 
-        Channel customBase = ChannelFactoryTest.createTestChannel(user);
+        Channel customBase = ChannelFactoryTest.createTestChannel(getTestUser());
         customBase.setParentChannel(null);
-        Channel customBaseChild1 = ChannelFactoryTest.createTestChannel(user);
+        Channel customBaseChild1 = ChannelFactoryTest.createTestChannel(getTestUser());
         customBaseChild1.setParentChannel(customBase);
 
         installSUSEProductOnServer(product, server1);
@@ -928,7 +928,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
 
         TestUtils.flushSession();
 
-        RhnSet set = RhnSetDecl.SYSTEMS.get(user);
+        RhnSet set = RhnSetDecl.SYSTEMS.get(getTestUser());
         set.addElement(server1.getId() + "");
         set.addElement(server2.getId() + "");
         RhnSetManager.store(set);
@@ -953,7 +953,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         Date earliest = new Date();
 
         List<ScheduleChannelChangesResultDto> results = SsmManager.scheduleChannelChanges(
-                changes, earliest, null, user);
+                changes, earliest, null, getTestUser());
 
         TestUtils.flushAndClearSession();
 
@@ -963,7 +963,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
                 r.getActionId().isPresent()));
 
         List<SubscribeChannelsActionDetails> details = results.stream()
-                .map(r -> (SubscribeChannelsAction)ActionManager.lookupAction(user, r.getActionId().get()))
+                .map(r -> (SubscribeChannelsAction)ActionManager.lookupAction(getTestUser(), r.getActionId().get()))
                 .map(SubscribeChannelsAction::getDetails)
                 .toList();
 
@@ -1003,25 +1003,25 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
     public void testScheduleChannelChangesWithIncompatibleBase() throws Exception {
         Org org2 = UserTestUtils.createOrg("anotherOrg");
 
-        Channel parent1 = ChannelFactoryTest.createTestChannel(user);
+        Channel parent1 = ChannelFactoryTest.createTestChannel(getTestUser());
         parent1.setParentChannel(null);
-        Channel child11 = ChannelFactoryTest.createTestChannel(user);
+        Channel child11 = ChannelFactoryTest.createTestChannel(getTestUser());
         child11.setParentChannel(parent1);
 
-        Server server1 = ServerFactoryTest.createTestServer(user, true);
+        Server server1 = ServerFactoryTest.createTestServer(getTestUser(), true);
         server1.addChannel(parent1);
         server1.addChannel(child11);
 
         Channel parent2 = ChannelFactoryTest.createTestChannel(org2);
         parent2.setParentChannel(null);
-        Channel child21 = ChannelFactoryTest.createTestChannel(user);
+        Channel child21 = ChannelFactoryTest.createTestChannel(getTestUser());
         child21.setParentChannel(parent2);
 
         installSUSEProductOnServer(product, server1);
 
         TestUtils.flushSession();
 
-        RhnSet set = RhnSetDecl.SYSTEMS.get(user);
+        RhnSet set = RhnSetDecl.SYSTEMS.get(getTestUser());
         set.addElement(server1.getId() + "");
         RhnSetManager.store(set);
 
@@ -1037,7 +1037,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         Date earliest = new Date();
 
         List<ScheduleChannelChangesResultDto> results = SsmManager
-                .scheduleChannelChanges(changes, earliest, null, user);
+                .scheduleChannelChanges(changes, earliest, null, getTestUser());
 
         TestUtils.flushAndClearSession();
 
@@ -1054,18 +1054,18 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
     public void testScheduleChannelChangesWithIncompatibleBaseOnNoBaseServer() throws Exception {
         Org org2 = UserTestUtils.createOrg("anotherOrg");
 
-        Server server1 = ServerFactoryTest.createTestServer(user, true);
+        Server server1 = ServerFactoryTest.createTestServer(getTestUser(), true);
 
         Channel parent2 = ChannelFactoryTest.createTestChannel(org2);
         parent2.setParentChannel(null);
-        Channel child21 = ChannelFactoryTest.createTestChannel(user);
+        Channel child21 = ChannelFactoryTest.createTestChannel(getTestUser());
         child21.setParentChannel(parent2);
 
         installSUSEProductOnServer(product, server1);
 
         TestUtils.flushSession();
 
-        RhnSet set = RhnSetDecl.SYSTEMS.get(user);
+        RhnSet set = RhnSetDecl.SYSTEMS.get(getTestUser());
         set.addElement(server1.getId() + "");
         RhnSetManager.store(set);
 
@@ -1081,7 +1081,7 @@ public class SsmManagerTest extends JMockBaseTestCaseWithUser {
         Date earliest = new Date();
 
         List<ScheduleChannelChangesResultDto> results = SsmManager.scheduleChannelChanges(
-                changes, earliest, null, user);
+                changes, earliest, null, getTestUser());
 
         TestUtils.flushAndClearSession();
 

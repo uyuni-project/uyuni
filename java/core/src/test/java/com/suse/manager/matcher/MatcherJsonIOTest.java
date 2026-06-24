@@ -469,7 +469,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         SUSEProductTestUtils.createVendorSUSEProducts();
         SUSEProductTestUtils.createVendorEntitlementProducts();
 
-        Server hostServer = ServerTestUtils.createVirtHostWithGuests(user, 1, true, systemEntitlementManager);
+        Server hostServer = ServerTestUtils.createVirtHostWithGuests(getTestUser(), 1, true, systemEntitlementManager);
         // monitoring is only compatible with certain architectures. make sure we use one of them:
         hostServer.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
         // let's set some base product to our systems (otherwise lifecycle subscriptions aren't reported)
@@ -537,7 +537,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         instPrd = createInstalledProduct("sle-manager-tools", "12", "0", "x86_64", false);
         installedProducts.add(instPrd);
 
-        Server testSystem = ServerTestUtils.createTestSystem(user);
+        Server testSystem = ServerTestUtils.createTestSystem(getTestUser());
         testSystem.setInstalledProducts(installedProducts);
 
         MatcherJsonIO matcherInput = getMatcherJsonIO();
@@ -650,7 +650,7 @@ public class MatcherJsonIOTest extends JMockBaseTestCaseWithUser {
         Server virtualHost1 = ServerTestUtils.createVirtHostWithGuests(2, systemEntitlementManager);
         Server virtualHost2 = ServerTestUtils.createVirtHostWithGuest(systemEntitlementManager);
         VirtualHostManager vhm = VirtualHostManagerFactory.getInstance()
-                .createVirtualHostManager("ESXi", user.getOrg(), "file", new HashMap<>());
+                .createVirtualHostManager("ESXi", getTestUser().getOrg(), "file", new HashMap<>());
         vhm.addServer(virtualHost1);
         vhm.addServer(virtualHost2);
         VirtualHostManagerFactory.getInstance().save(vhm);

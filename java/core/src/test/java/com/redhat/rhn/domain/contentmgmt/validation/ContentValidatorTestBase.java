@@ -57,10 +57,10 @@ public abstract class ContentValidatorTestBase extends BaseTestCaseWithUser {
 
     @BeforeEach
     public void setUpContentValidatorTestBase() throws Exception {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
 
         manager = new ContentManager(new MockModulemdApi());
-        project = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        project = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
 
         ContentProjectFactory.save(project);
     }
@@ -85,8 +85,8 @@ public abstract class ContentValidatorTestBase extends BaseTestCaseWithUser {
      * Attach a (non-modular) source to the content project
      */
     final void attachSource() throws Exception {
-        Channel channel = ChannelTestUtils.createBaseChannel(user);
-        manager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        Channel channel = ChannelTestUtils.createBaseChannel(getTestUser());
+        manager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), getTestUser());
     }
 
     /**
@@ -94,16 +94,16 @@ public abstract class ContentValidatorTestBase extends BaseTestCaseWithUser {
      */
     final void attachFilter() {
         FilterCriteria criteria = new FilterCriteria(CONTAINS, "name", "aaa");
-        ContentFilter filter = manager.createFilter(TestUtils.randomString(), DENY, PACKAGE, criteria, user);
-        manager.attachFilter("cplabel", filter.getId(), user);
+        ContentFilter filter = manager.createFilter(TestUtils.randomString(), DENY, PACKAGE, criteria, getTestUser());
+        manager.attachFilter("cplabel", filter.getId(), getTestUser());
     }
 
     /**
      * Attach a modular source to the content project
      */
     final void attachModularSource() throws Exception {
-        Channel channel = MockModulemdApi.createModularTestChannel(user);
-        manager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), user);
+        Channel channel = MockModulemdApi.createModularTestChannel(getTestUser());
+        manager.attachSource("cplabel", SW_CHANNEL, channel.getLabel(), empty(), getTestUser());
     }
 
     /**
@@ -120,14 +120,14 @@ public abstract class ContentValidatorTestBase extends BaseTestCaseWithUser {
      */
     final void attachModularFilter(String value) {
         FilterCriteria criteria = new FilterCriteria(EQUALS, "module_stream", value);
-        ContentFilter filter = manager.createFilter(TestUtils.randomString(), ALLOW, MODULE, criteria, user);
-        manager.attachFilter("cplabel", filter.getId(), user);
+        ContentFilter filter = manager.createFilter(TestUtils.randomString(), ALLOW, MODULE, criteria, getTestUser());
+        manager.attachFilter("cplabel", filter.getId(), getTestUser());
     }
 
     final void attachModuleNoneFilter() {
         FilterCriteria criteria = new FilterCriteria(MODULE_NONE, "module_stream", null);
-        ContentFilter filter = manager.createFilter(TestUtils.randomString(), ALLOW, MODULE, criteria, user);
-        manager.attachFilter("cplabel", filter.getId(), user);
+        ContentFilter filter = manager.createFilter(TestUtils.randomString(), ALLOW, MODULE, criteria, getTestUser());
+        manager.attachFilter("cplabel", filter.getId(), getTestUser());
     }
 
     /**

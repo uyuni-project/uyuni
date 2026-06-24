@@ -34,7 +34,7 @@ public class KickstartEditCommandTest extends BaseKickstartCommandTestCase {
     @Test
     public void testKickstartEditCommand() {
 
-        KickstartEditCommand command = new KickstartEditCommand(ksdata.getId(), user);
+        KickstartEditCommand command = new KickstartEditCommand(ksdata.getId(), getTestUser());
         command.setComments("My Comment");
         command.setActive(Boolean.TRUE);
         command.setLabel("scoobykickstart");
@@ -51,7 +51,7 @@ public class KickstartEditCommandTest extends BaseKickstartCommandTestCase {
 
     @Test
     public void testKickstartLabel() {
-        KickstartEditCommand command = new KickstartEditCommand(ksdata.getId(), user);
+        KickstartEditCommand command = new KickstartEditCommand(ksdata.getId(), getTestUser());
         command.setLabel("shaggy-ks-rhel4");
         command.store();
         assertEquals(ksdata.getLabel(), command.getLabel());
@@ -60,17 +60,17 @@ public class KickstartEditCommandTest extends BaseKickstartCommandTestCase {
     @Test
     public void testOrgDefault() throws Exception {
         assertFalse(ksdata.isOrgDefault());
-        KickstartData k1 = KickstartDataTest.createKickstartWithChannel(user.getOrg());
+        KickstartData k1 = KickstartDataTest.createKickstartWithChannel(getTestUser().getOrg());
         Long oldDefaultId = k1.getId();
         k1.setOrgDefault(Boolean.TRUE);
         assertTrue(k1.isOrgDefault());
         KickstartFactory.saveKickstartData(k1);
         TestUtils.flushAndEvict(k1);
 
-        KickstartEditCommand command = new KickstartEditCommand(ksdata.getId(), user);
+        KickstartEditCommand command = new KickstartEditCommand(ksdata.getId(), getTestUser());
         command.setIsOrgDefault(Boolean.TRUE);
         assertTrue(ksdata.isOrgDefault());
-        k1 = KickstartFactory.lookupKickstartDataByIdAndOrg(user.getOrg(), oldDefaultId);
+        k1 = KickstartFactory.lookupKickstartDataByIdAndOrg(getTestUser().getOrg(), oldDefaultId);
         assertFalse(k1.isOrgDefault());
     }
 

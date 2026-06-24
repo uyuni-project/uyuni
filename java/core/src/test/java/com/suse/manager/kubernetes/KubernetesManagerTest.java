@@ -192,7 +192,7 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
         expectGetAllContainers("local-context", "get_all_containers.external_build.json");
         createVirtHostManager();
 
-        ImageStore store = ImageTestUtils.createImageStore("test-docker-registry:5000", user);
+        ImageStore store = ImageTestUtils.createImageStore("test-docker-registry:5000", getTestUser());
         ImageInfo imgInfo = createImageWithRepoDigest("jocatalin/kubernetes-bootcamp", "latest", 1,
             "jocatalin/kubernetes-bootcamp@sha256:0d6b8ee63bb57c5f5b6156f446b3bc3b3c143d233037f3a2f00e279c8fcc1111");
         imgInfo.setStore(store);
@@ -262,14 +262,14 @@ public class KubernetesManagerTest extends JMockBaseTestCaseWithUser {
         String label = "K8s_" + TestUtils.randomString();
 
         VirtualHostManager virtualHostManager = VirtualHostManagerFactory.getInstance().createVirtualHostManager(label,
-                user.getOrg(), VirtualHostManagerFactory.KUBERNETES, params);
+                getTestUser().getOrg(), VirtualHostManagerFactory.KUBERNETES, params);
 
         virtualHostManager = TestUtils.saveAndFlush(virtualHostManager);
         return virtualHostManager;
     }
 
     private ImageInfo createImageWithRepoDigest(String name, String version, int revision, String digest) {
-        ImageInfo imgInfo = ImageTestUtils.createImageInfo(name, version, user);
+        ImageInfo imgInfo = ImageTestUtils.createImageInfo(name, version, getTestUser());
         imgInfo.setRevisionNumber(revision);
         ImageRepoDigest digest1 = new ImageRepoDigest();
         digest1.setImageInfo(imgInfo);

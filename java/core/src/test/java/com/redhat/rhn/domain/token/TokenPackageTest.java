@@ -35,13 +35,13 @@ public class TokenPackageTest extends BaseTestCaseWithUser {
 
     @BeforeEach
     public void setUp() throws Exception {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
     }
 
     @Test
     public void testTokenPackage() throws Exception {
 
-        ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
+        ActivationKey key = ActivationKeyTest.createTestActivationKey(getTestUser());
         TokenPackage pkg = createTestPackage(key);
         assertNotNull(pkg);
 

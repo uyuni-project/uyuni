@@ -76,7 +76,7 @@ public class ContentSyncManagerNonRegressionTest extends BaseTestCaseWithUser {
     public void skipTestListProducts() throws Exception {
         File expectedProductsCSV = new File(TestUtils.findTestData(EXPECTED_PRODUCTS_CSV).getPath());
 
-        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, null, true);
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(getTestUser(), null, true);
         TestUtils.flushAndClearSession();
         try {
             ContentSyncManager csm = new ContentSyncManager();

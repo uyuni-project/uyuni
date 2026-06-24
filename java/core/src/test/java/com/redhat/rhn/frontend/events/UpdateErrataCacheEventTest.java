@@ -24,14 +24,14 @@ public class UpdateErrataCacheEventTest extends BaseTestCaseWithUser {
 
     @Test
     public void testUpdateCache() throws Exception {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
         for (int i = 0; i < 10; i++) {
-            ErrataCacheManagerTest.createServerNeedintErrataCache(user);
+            ErrataCacheManagerTest.createServerNeedintErrataCache(getTestUser());
         }
 
         UpdateErrataCacheEvent evt =
             new UpdateErrataCacheEvent(UpdateErrataCacheEvent.TYPE_ORG);
-        evt.setOrgId(user.getOrg().getId());
+        evt.setOrgId(getTestUser().getOrg().getId());
 
         UpdateErrataCacheAction action = new UpdateErrataCacheAction();
         action.execute(evt);

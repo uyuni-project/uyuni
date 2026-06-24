@@ -100,37 +100,37 @@ public class RegularMinionBootstrapperTest extends AbstractMinionBootstrapperTes
         }});
 
         BootstrapParameters params = bootstrapper.createBootstrapParams(input);
-        BootstrapResult bootstrap = bootstrapper.bootstrap(params, user, getDefaultContactMethod());
+        BootstrapResult bootstrap = bootstrapper.bootstrap(params, getTestUser(), getDefaultContactMethod());
         assertFalse(bootstrap.isSuccess());
     }
 
     @Test
     public void testIncompatibleActivationKeys() throws Exception {
-        ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
+        ActivationKey key = ActivationKeyTest.createTestActivationKey(getTestUser());
         key.setContactMethod(ServerFactory.findContactMethodByLabel("ssh-push"));
         super.testIncompatibleActivationKeysBase(key);
     }
 
     @Test
     public void testIncompatibleActivationKeysTunnel() throws Exception {
-        ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
+        ActivationKey key = ActivationKeyTest.createTestActivationKey(getTestUser());
         key.setContactMethod(ServerFactory.findContactMethodByLabel("ssh-push-tunnel"));
         super.testIncompatibleActivationKeysBase(key);
     }
 
     @Test
     public void testCompatibleActivationKeys() throws Exception {
-        ActivationKey key = ActivationKeyTest.createTestActivationKey(user);
+        ActivationKey key = ActivationKeyTest.createTestActivationKey(getTestUser());
         key.setContactMethod(ServerFactory.findContactMethodByLabel("default"));
         super.testCompatibleActivationKeysBase(key);
     }
 
     @Test
     public void testCompatibleActivationKeysAndReactivation() throws Exception {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        ServerFactoryTest.createTestServer(user);
-        ActivationKey key = ActivationKeyManager.getInstance().createNewActivationKey(user, "");
-        ActivationKey reactkey = ActivationKeyTest.createTestActivationKey(user);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
+        ServerFactoryTest.createTestServer(getTestUser());
+        ActivationKey key = ActivationKeyManager.getInstance().createNewActivationKey(getTestUser(), "");
+        ActivationKey reactkey = ActivationKeyTest.createTestActivationKey(getTestUser());
 
         key.setContactMethod(ServerFactory.findContactMethodByLabel("default"));
         super.testCompatibleActivationKeysBase(key, reactkey);
@@ -149,7 +149,7 @@ public class RegularMinionBootstrapperTest extends AbstractMinionBootstrapperTes
     @Override
     protected Map<String, Object> createPillarData(Optional<ActivationKey> key, Optional<ActivationKey> reactKey) {
         Map<String, Object> pillarData = new HashMap<>();
-        key.ifPresent(k -> ActivationKeyManager.getInstance().findAll(user)
+        key.ifPresent(k -> ActivationKeyManager.getInstance().findAll(getTestUser())
         .stream()
         .filter(ak -> k.getKey().equals(ak.getKey()))
         .findFirst()

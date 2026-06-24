@@ -112,7 +112,7 @@ public class IssMigratorTest extends JMockBaseTestCaseWithUser {
 
         Config.get().setString(ConfigDefaults.SERVER_HOSTNAME, LOCAL_SERVER_FQDN);
 
-        User satAdmin = UserTestUtils.createUser(TestStatics.TEST_SAT_USER, user.getOrg().getId());
+        User satAdmin = UserTestUtils.createUser(TestStatics.TEST_SAT_USER, getTestUser().getOrg().getId());
         satAdmin.addPermanentRole(RoleFactory.SAT_ADMIN);
         UserFactory.save(satAdmin);
 
@@ -409,10 +409,10 @@ public class IssMigratorTest extends JMockBaseTestCaseWithUser {
                 )
                 .collect(Collectors.toMap(SlaveMigrationData::fqdn, Function.identity()));
 
-            Channel slesChannel = createCustomChannel("sles-15sp6", user.getOrg());
-            Channel ubuntuChannel = createCustomChannel("ubuntu-2004", user.getOrg());
-            Channel prodChannel = createCustomChannel("custom-channel-prod", user.getOrg());
-            Channel stageChanngel = createCustomChannel("custom-channel-stage", user.getOrg());
+            Channel slesChannel = createCustomChannel("sles-15sp6", getTestUser().getOrg());
+            Channel ubuntuChannel = createCustomChannel("ubuntu-2004", getTestUser().getOrg());
+            Channel prodChannel = createCustomChannel("custom-channel-prod", getTestUser().getOrg());
+            Channel stageChanngel = createCustomChannel("custom-channel-stage", getTestUser().getOrg());
 
             context().checking(new MigrationExpectations() {{
                 expectMigratedFromV1(migrationData.get(ALPHA), List.of(
@@ -537,10 +537,10 @@ public class IssMigratorTest extends JMockBaseTestCaseWithUser {
                 createMigrationData(BETA)
             );
 
-            Channel slesChannel = createCustomChannel("sles-15sp6", user.getOrg());
-            Channel ubuntuChannel = createCustomChannel("ubuntu-2004", user.getOrg());
-            Channel prodChannel = createCustomChannel("custom-channel-prod", user.getOrg());
-            Channel stageChanngel = createCustomChannel("custom-channel-stage", user.getOrg());
+            Channel slesChannel = createCustomChannel("sles-15sp6", getTestUser().getOrg());
+            Channel ubuntuChannel = createCustomChannel("ubuntu-2004", getTestUser().getOrg());
+            Channel prodChannel = createCustomChannel("custom-channel-prod", getTestUser().getOrg());
+            Channel stageChanngel = createCustomChannel("custom-channel-stage", getTestUser().getOrg());
 
             context().checking(new MigrationExpectations() {{
                 expectMigratedFromV2(migrationData.get(0), List.of(

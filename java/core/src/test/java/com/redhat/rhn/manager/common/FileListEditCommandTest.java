@@ -43,7 +43,7 @@ public class FileListEditCommandTest extends BaseTestCaseWithUser {
 
     @Test
     public void testBaseFileListEditCommand() throws Exception {
-        setupKey(new CreateFileListCommand(user));
+        setupKey(new CreateFileListCommand(getTestUser()));
         int version = 1;
         String baseStr = "Test10.";
         String files = "";
@@ -74,7 +74,7 @@ public class FileListEditCommandTest extends BaseTestCaseWithUser {
 
     @Test
     public void testCreateCommand() throws Exception {
-        setupKey(new CreateFileListCommand(user));
+        setupKey(new CreateFileListCommand(getTestUser()));
         FileList list = cmd.getFileList();
 
         String files = "1\n2\n3\n4\n5\n6\n7\n8";
@@ -93,10 +93,10 @@ public class FileListEditCommandTest extends BaseTestCaseWithUser {
 
     @Test
     public void testEdit() throws Exception {
-        FileList list = FileListTest.createTestFileList(user.getOrg());
+        FileList list = FileListTest.createTestFileList(getTestUser().getOrg());
         CommonFactory.saveFileList(list);
         TestUtils.flushAndEvict(list);
-        setupKey(new EditFileListCommand(user, list.getId()));
+        setupKey(new EditFileListCommand(getTestUser(), list.getId()));
         assertNotNull(cmd.getFileList());
         assertNull(cmd.store());
 

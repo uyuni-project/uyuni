@@ -58,7 +58,7 @@ public class ActionChainHelperTest extends BaseTestCaseWithUser {
     @Test
     public void testReadActionChain() {
         ActionChain chain = ActionChainFactory.createActionChain(TestUtils.randomString(),
-                user);
+                getTestUser());
 
         // poor-man's DynaActionForm mocking
         final Map<String, Object> formMap = new HashMap<>();
@@ -69,17 +69,17 @@ public class ActionChainHelperTest extends BaseTestCaseWithUser {
             }
         };
 
-        assertNull(ActionChainHelper.readActionChain(form, user));
+        assertNull(ActionChainHelper.readActionChain(form, getTestUser()));
 
         formMap.put(DatePicker.SCHEDULE_TYPE, DatePicker.ScheduleType.ACTION_CHAIN.asString());
         formMap.put(ActionChainHelper.LABEL_PROPERTY_NAME, chain.getLabel());
 
-        ActionChain retrievedChain = ActionChainHelper.readActionChain(form, user);
+        ActionChain retrievedChain = ActionChainHelper.readActionChain(form, getTestUser());
         assertNotNull(retrievedChain);
         assertEquals(chain.getId(), retrievedChain.getId());
 
         formMap.put(ActionChainHelper.LABEL_PROPERTY_NAME, TestUtils.randomString());
-        ActionChain newChain = ActionChainHelper.readActionChain(form, user);
+        ActionChain newChain = ActionChainHelper.readActionChain(form, getTestUser());
         assertNotNull(newChain);
         assertFalse(chain.getId().equals(newChain.getId()));
     }

@@ -36,7 +36,7 @@ public class PackageActionFormatterTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testGetRelatedObjectDescription() throws Exception {
-        PackageAction action = (PackageAction) ActionFactoryTest.createAction(user,
+        PackageAction action = (PackageAction) ActionFactoryTest.createAction(getTestUser(),
             ActionFactory.TYPE_PACKAGES_UPDATE);
         PackageActionFormatter formatter = new PackageActionFormatter(action);
 

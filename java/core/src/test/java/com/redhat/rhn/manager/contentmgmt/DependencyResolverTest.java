@@ -60,15 +60,15 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
     @BeforeEach
     public void setUp() throws Exception {
 
-        user.addPermanentRole(ORG_ADMIN);
+        getTestUser().addPermanentRole(ORG_ADMIN);
 
-        modularChannel = MockModulemdApi.createModularTestChannel(user);
+        modularChannel = MockModulemdApi.createModularTestChannel(getTestUser());
         api = new MockModulemdApi();
         contentManager = new ContentManager(api);
 
-        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", user.getOrg());
+        ContentProject cp = new ContentProject("cplabel", "cpname", "cpdesc", getTestUser().getOrg());
         ContentProjectFactory.save(cp);
-        contentManager.attachSource("cplabel", SW_CHANNEL, modularChannel.getLabel(), Optional.empty(), user);
+        contentManager.attachSource("cplabel", SW_CHANNEL, modularChannel.getLabel(), Optional.empty(), getTestUser());
 
         resolver = new DependencyResolver(cp, api);
     }
@@ -89,7 +89,7 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
     @Test
     public void testNoModuleFilters() throws DependencyResolutionException {
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "name", "mypkg");
-        ContentFilter filter = contentManager.createFilter("mypkg-filter", DENY, PACKAGE, criteria, user);
+        ContentFilter filter = contentManager.createFilter("mypkg-filter", DENY, PACKAGE, criteria, getTestUser());
 
         List<ContentFilter> result = resolver.resolveFilters(singletonList(filter)).getFilters();
 
@@ -104,9 +104,9 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
     @Test
     public void testMixedFilters() throws DependencyResolutionException {
         FilterCriteria criteria1 = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "postgresql:10");
-        ContentFilter filter1 = contentManager.createFilter("mymodule-filter", ALLOW, MODULE, criteria1, user);
+        ContentFilter filter1 = contentManager.createFilter("mymodule-filter", ALLOW, MODULE, criteria1, getTestUser());
         FilterCriteria criteria2 = new FilterCriteria(FilterCriteria.Matcher.CONTAINS, "name", "mypkg");
-        ContentFilter filter2 = contentManager.createFilter("mypkg-filter", DENY, PACKAGE, criteria2, user);
+        ContentFilter filter2 = contentManager.createFilter("mypkg-filter", DENY, PACKAGE, criteria2, getTestUser());
 
         DependencyResolutionResult result = resolver.resolveFilters(Arrays.asList(filter1, filter2));
 
@@ -129,7 +129,7 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
     @Test
     public void testNonMatchingModuleFilter() {
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "postgresql:foo");
-        ContentFilter filter = contentManager.createFilter("mymodule-filter", ALLOW, MODULE, criteria, user);
+        ContentFilter filter = contentManager.createFilter("mymodule-filter", ALLOW, MODULE, criteria, getTestUser());
 
         try {
             resolver.resolveFilters(singletonList(filter));
@@ -157,9 +157,10 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
     @Test
     public void testResolveModuleFilters() throws Exception {
         FilterCriteria criteria1 = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "postgresql:10");
-        ContentFilter filter1 = contentManager.createFilter("postgresql-filter", ALLOW, MODULE, criteria1, user);
+        ContentFilter filter1 = contentManager.createFilter("postgresql-filter", ALLOW, MODULE, criteria1,
+                getTestUser());
         FilterCriteria criteria2 = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "perl:5.24");
-        ContentFilter filter2 = contentManager.createFilter("perl-filter", ALLOW, MODULE, criteria2, user);
+        ContentFilter filter2 = contentManager.createFilter("perl-filter", ALLOW, MODULE, criteria2, getTestUser());
 
         DependencyResolutionResult result = resolver.resolveFilters(Arrays.asList(filter1, filter2));
 
@@ -201,7 +202,7 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
     @Test
     public void testResolveModuleFiltersVersionUpdates() throws DependencyResolutionException {
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "perl:5.24");
-        ContentFilter filter = contentManager.createFilter("perl-filter", ALLOW, MODULE, criteria, user);
+        ContentFilter filter = contentManager.createFilter("perl-filter", ALLOW, MODULE, criteria, getTestUser());
 
         List<ContentFilter> result = resolver.resolveFilters(singletonList(filter)).getFilters();
 
@@ -216,7 +217,7 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
     @Test
     public void testResolveModularFiltersDisabled() throws DependencyResolutionException {
         FilterCriteria criteria1 = new FilterCriteria(FilterCriteria.Matcher.MODULE_NONE, "module_stream", null);
-        ContentFilter noModules = contentManager.createFilter("no-modules", ALLOW, MODULE, criteria1, user);
+        ContentFilter noModules = contentManager.createFilter("no-modules", ALLOW, MODULE, criteria1, getTestUser());
 
         DependencyResolutionResult result = resolver.resolveFilters(List.of(noModules));
 
@@ -231,9 +232,10 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
     @Test
     public void testResolveModuleFiltersDisabledWithModuleFilters() {
         FilterCriteria criteria1 = new FilterCriteria(FilterCriteria.Matcher.MODULE_NONE, "module_stream", null);
-        ContentFilter noModules = contentManager.createFilter("no-modules", ALLOW, MODULE, criteria1, user);
+        ContentFilter noModules = contentManager.createFilter("no-modules", ALLOW, MODULE, criteria1, getTestUser());
         FilterCriteria criteria2 = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "perl:5.26");
-        ContentFilter moduleFilter = contentManager.createFilter("perl-5.26-filter", ALLOW, MODULE, criteria2, user);
+        ContentFilter moduleFilter = contentManager.createFilter("perl-5.26-filter", ALLOW, MODULE, criteria2,
+                getTestUser());
 
         DependencyResolutionException exception = assertThrows(DependencyResolutionException.class,
                 () -> resolver.resolveFilters(List.of(moduleFilter, noModules)));
@@ -249,7 +251,7 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
     @Test
     public void testModuleFiltersForeignPackagesSelected() throws Exception {
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "perl:5.26");
-        ContentFilter filter = contentManager.createFilter("perl-5.26-filter", ALLOW, MODULE, criteria, user);
+        ContentFilter filter = contentManager.createFilter("perl-5.26-filter", ALLOW, MODULE, criteria, getTestUser());
 
         List<ContentFilter> result = resolver.resolveFilters(singletonList(filter)).getFilters();
         assertNotEmpty(result);
@@ -270,7 +272,7 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
     @Test
     public void testModuleFiltersForeignPackagesConflicting() throws Exception {
         FilterCriteria criteria = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "perl:5.24");
-        ContentFilter filter = contentManager.createFilter("perl-5.24-filter", ALLOW, MODULE, criteria, user);
+        ContentFilter filter = contentManager.createFilter("perl-5.24-filter", ALLOW, MODULE, criteria, getTestUser());
 
         List<ContentFilter> result = resolver.resolveFilters(singletonList(filter)).getFilters();
         assertNotEmpty(result);
@@ -291,9 +293,11 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
     @Test
     public void testConflictingStreams() {
         FilterCriteria criteria1 = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "perl:5.24");
-        ContentFilter filter1 = contentManager.createFilter("perl-5.24-filter", ALLOW, MODULE, criteria1, user);
+        ContentFilter filter1 = contentManager.createFilter("perl-5.24-filter", ALLOW, MODULE, criteria1,
+                getTestUser());
         FilterCriteria criteria2 = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "perl:5.26");
-        ContentFilter filter2 = contentManager.createFilter("perl-5.26-filter", ALLOW, MODULE, criteria2, user);
+        ContentFilter filter2 = contentManager.createFilter("perl-5.26-filter", ALLOW, MODULE, criteria2,
+                getTestUser());
 
         try {
             resolver.resolveFilters(Arrays.asList(filter1, filter2));
@@ -310,9 +314,10 @@ public class DependencyResolverTest extends BaseTestCaseWithUser {
     @Test
     public void testIsModulesDisabled() {
         FilterCriteria criteria1 = new FilterCriteria(FilterCriteria.Matcher.EQUALS, "module_stream", "perl:5.24");
-        ContentFilter moduleFilter = contentManager.createFilter("perl-5.24-filter", ALLOW, MODULE, criteria1, user);
+        ContentFilter moduleFilter = contentManager.createFilter("perl-5.24-filter", ALLOW, MODULE, criteria1,
+                getTestUser());
         FilterCriteria criteria2 = new FilterCriteria(FilterCriteria.Matcher.MODULE_NONE, "module_stream", null);
-        ContentFilter noModules = contentManager.createFilter("no-modules", ALLOW, MODULE, criteria2, user);
+        ContentFilter noModules = contentManager.createFilter("no-modules", ALLOW, MODULE, criteria2, getTestUser());
 
         assertFalse(DependencyResolver.isModulesDisabled(emptyList()));
         assertFalse(DependencyResolver.isModulesDisabled(List.of(moduleFilter)));

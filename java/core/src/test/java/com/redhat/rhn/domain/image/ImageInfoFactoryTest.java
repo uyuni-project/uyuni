@@ -176,10 +176,10 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public final void testList() {
-        ImageInfo img1 = createImageInfo("myimage1", "1.0.0", user);
-        ImageInfo img2 = createImageInfo("myimage1", "2.0.0", user);
-        ImageInfo img3 = createImageInfo("myimage2", "1.0.0", user);
-        ImageInfo img4 = createImageInfo("myimage1", "1.1.0", user);
+        ImageInfo img1 = createImageInfo("myimage1", "1.0.0", getTestUser());
+        ImageInfo img2 = createImageInfo("myimage1", "2.0.0", getTestUser());
+        ImageInfo img3 = createImageInfo("myimage2", "1.0.0", getTestUser());
+        ImageInfo img4 = createImageInfo("myimage1", "1.1.0", getTestUser());
 
         List<ImageInfo> result = ImageInfoFactory.list();
 
@@ -195,11 +195,11 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
     public final void testListImageInfos() {
         User foreignUser = UserTestUtils.createUser("foreign-user", "foreign-org");
 
-        ImageInfo img1 = createImageInfo("myimage1", "1.0.0", user);
-        ImageInfo img2 = createImageInfo("myimage2", "1.0.0", user);
+        ImageInfo img1 = createImageInfo("myimage1", "1.0.0", getTestUser());
+        ImageInfo img2 = createImageInfo("myimage2", "1.0.0", getTestUser());
         createImageInfo("myimage1", "1.0.0", foreignUser);
 
-        List<ImageInfo> result = ImageInfoFactory.listImageInfos(user.getOrg());
+        List<ImageInfo> result = ImageInfoFactory.listImageInfos(getTestUser().getOrg());
 
         assertEquals(2, result.size());
         ImageInfo img = result.stream().filter(i -> i.equals(img1)).findFirst().get();
@@ -213,29 +213,29 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
     public final void testListImageOverviews() {
         User foreignUser = UserTestUtils.createUser("foreign-user", "foreign-org");
 
-        ImageInfo img1 = createImageInfo("myimage1", "1.0.0", user);
-        ImageInfo img2 = createImageInfo("myimage2", "1.0.0", user);
+        ImageInfo img1 = createImageInfo("myimage1", "1.0.0", getTestUser());
+        ImageInfo img2 = createImageInfo("myimage2", "1.0.0", getTestUser());
         createImageInfo("myimage1", "1.0.0", foreignUser);
 
-        List<ImageOverview> result = ImageInfoFactory.listImageOverviews(user.getOrg());
+        List<ImageOverview> result = ImageInfoFactory.listImageOverviews(getTestUser().getOrg());
 
         assertEquals(2, result.size());
         ImageOverview overview = result.stream().filter(i -> img1.getId().equals(i.getId()))
                 .findFirst().get();
         assertEquals("myimage1", overview.getName());
         assertEquals("1.0.0", overview.getVersion());
-        assertEquals(user.getOrg(), overview.getOrg());
+        assertEquals(getTestUser().getOrg(), overview.getOrg());
 
         overview = result.stream().filter(i -> img2.getId().equals(i.getId()))
                 .findFirst().get();
         assertEquals("myimage2", overview.getName());
         assertEquals("1.0.0", overview.getVersion());
-        assertEquals(user.getOrg(), overview.getOrg());
+        assertEquals(getTestUser().getOrg(), overview.getOrg());
     }
 
     @Test
     public final void testLookupById() {
-        ImageInfo image = createImageInfo("myimage", "1.0.0", user);
+        ImageInfo image = createImageInfo("myimage", "1.0.0", getTestUser());
 
         ImageInfo result = ImageInfoFactory.lookupById(image.getId()).get();
         assertEquals(image, result);
@@ -245,10 +245,10 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
     public final void testLookupByIdAndOrg() {
         User foreignUser = UserTestUtils.createUser("foreign-user", "foreign-org");
 
-        ImageInfo image = createImageInfo("myimage", "1.0.0", user);
+        ImageInfo image = createImageInfo("myimage", "1.0.0", getTestUser());
 
         ImageInfo result =
-                ImageInfoFactory.lookupByIdAndOrg(image.getId(), user.getOrg()).get();
+                ImageInfoFactory.lookupByIdAndOrg(image.getId(), getTestUser().getOrg()).get();
         assertEquals(image, result);
 
         assertFalse(ImageInfoFactory.lookupByIdAndOrg(image.getId(), foreignUser.getOrg())
@@ -258,13 +258,13 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
     @Test
     public final void testLookupOverviewByIdAndOrg() {
         User foreignUser = UserTestUtils.createUser("foreign-user", "foreign-org");
-        ImageInfo image = createImageInfo("myimage", "1.0.0", user);
+        ImageInfo image = createImageInfo("myimage", "1.0.0", getTestUser());
 
         ImageOverview result = ImageInfoFactory
-                .lookupOverviewByIdAndOrg(image.getId(), user.getOrg()).get();
+                .lookupOverviewByIdAndOrg(image.getId(), getTestUser().getOrg()).get();
         assertEquals("myimage", result.getName());
         assertEquals("1.0.0", result.getVersion());
-        assertEquals(user.getOrg(), result.getOrg());
+        assertEquals(getTestUser().getOrg(), result.getOrg());
 
         assertFalse(ImageInfoFactory
                 .lookupOverviewByIdAndOrg(image.getId(), foreignUser.getOrg()).isPresent());
@@ -272,10 +272,10 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public final void testLookupByName() {
-        ImageStore store = ImageTestUtils.createImageStore("mystore", user);
-        ImageStore anotherStore = ImageTestUtils.createImageStore("myotherstore", user);
-        ImageInfo image = createImageInfo("myimage", "1.0.0", store, user);
-        ImageInfo image2 = createImageInfo("myimage2", null, store, user);
+        ImageStore store = ImageTestUtils.createImageStore("mystore", getTestUser());
+        ImageStore anotherStore = ImageTestUtils.createImageStore("myotherstore", getTestUser());
+        ImageInfo image = createImageInfo("myimage", "1.0.0", store, getTestUser());
+        ImageInfo image2 = createImageInfo("myimage2", null, store, getTestUser());
 
         ImageInfo result =
                 ImageInfoFactory.lookupByName("myimage", "1.0.0", store).get();
@@ -297,30 +297,30 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
     @Test
     public final void testScheduleBuild() throws Exception {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
-        MinionServer buildHost = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer buildHost = MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
-        ImageStore store = createImageStore("myregistry", user);
-        ActivationKey key = createActivationKey(user);
+        ImageStore store = createImageStore("myregistry", getTestUser());
+        ActivationKey key = createActivationKey(getTestUser());
         ImageProfile profile =
-                createImageProfile("suma-3.1-base", store, key, user);
+                createImageProfile("suma-3.1-base", store, key, getTestUser());
 
         try {
             // Should not be processed because the server is not a build host yet.
             ImageInfoFactory
-                    .scheduleBuild(buildHost.getId(), "v1.0", profile, new Date(), user);
+                    .scheduleBuild(buildHost.getId(), "v1.0", profile, new Date(), getTestUser());
         }
         catch (IllegalArgumentException e) {
             assertEquals("Server is not a build host.", e.getMessage());
         }
 
-        assertEquals(0, ImageInfoFactory.listImageInfos(user.getOrg()).size());
+        assertEquals(0, ImageInfoFactory.listImageInfos(getTestUser().getOrg()).size());
 
         systemEntitlementManager.addEntitlementToServer(buildHost, EntitlementManager.CONTAINER_BUILD_HOST);
 
         // Schedule
         ImageInfoFactory.scheduleBuild(buildHost.getId(), "v1.0", profile, new Date(),
-                user);
-        assertEquals(1, ImageInfoFactory.listImageInfos(user.getOrg()).size());
+                getTestUser());
+        assertEquals(1, ImageInfoFactory.listImageInfos(getTestUser().getOrg()).size());
         ImageInfo info =
                 ImageInfoFactory.lookupByName("suma-3.1-base", "v1.0", store).get();
 
@@ -331,14 +331,14 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         assertEquals(buildHost.getServerArch(), info.getImageArch());
         assertEquals(profile, info.getProfile());
         assertEquals(store, info.getStore());
-        assertEquals(user.getOrg(), info.getOrg());
+        assertEquals(getTestUser().getOrg(), info.getOrg());
         assertEquals(2, info.getChannels().size());
         assertEquals(info.getChannels(), key.getChannels());
         assertTrue(info.getCustomDataValues().isEmpty());
         assertFalse(info.isExternalImage());
 
         // Add inspection data after build
-        Package p = PackageTest.createTestPackage(user.getOrg());
+        Package p = PackageTest.createTestPackage(getTestUser().getOrg());
         ImagePackage pkg = new ImagePackage();
         pkg.setInstallTime(new Date());
         pkg.setImageInfo(info);
@@ -357,9 +357,9 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         info = ImageInfoFactory.save(info);
 
         // Update values
-        CustomDataKey cdk = CustomDataKeyTest.createTestCustomDataKey(user);
+        CustomDataKey cdk = CustomDataKeyTest.createTestCustomDataKey(getTestUser());
         ProfileCustomDataValue val =
-                createProfileCustomDataValue("Test value", cdk, profile, user);
+                createProfileCustomDataValue("Test value", cdk, profile, getTestUser());
         Set<ProfileCustomDataValue> cdvSet = new HashSet<>();
         cdvSet.add(val);
         profile.setCustomDataValues(cdvSet);
@@ -367,10 +367,10 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
         // Reschedule
         ImageInfoFactory.scheduleBuild(buildHost.getId(), "v1.0", profile, new Date(),
-                user);
+                getTestUser());
 
         // Image info should be added
-        assertEquals(2, ImageInfoFactory.listImageInfos(user.getOrg()).size());
+        assertEquals(2, ImageInfoFactory.listImageInfos(getTestUser().getOrg()).size());
         ImageInfo info2 = ImageInfoFactory.lookupByName("suma-3.1-base", "v1.0", store).get();
 
         // ImageInfo instance is preserved on new builds if it exists already with the same name/version and store
@@ -382,10 +382,10 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
         // Schedule
         ImageInfoFactory.scheduleBuild(buildHost.getId(), "v2.0", profile, new Date(),
-                user);
+                getTestUser());
 
         // We should have 3 image infos: suma-3.1-base-v1.0-1, suma-3.1-base-v1.0-2, suma-3.1-base-v2.0-1
-        List<ImageInfo> infoList = ImageInfoFactory.listImageInfos(user.getOrg());
+        List<ImageInfo> infoList = ImageInfoFactory.listImageInfos(getTestUser().getOrg());
 
         assertEquals(3, infoList.size());
         infoList.forEach(i -> assertEquals("suma-3.1-base", i.getName()));
@@ -399,18 +399,18 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
     @Test
     public final void testScheduleInspect() throws Exception {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
-        MinionServer buildHost = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer buildHost = MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
-        ImageStore store = createImageStore("myregistry", user);
-        ActivationKey key = createActivationKey(user);
+        ImageStore store = createImageStore("myregistry", getTestUser());
+        ActivationKey key = createActivationKey(getTestUser());
         ImageProfile profile =
-                createImageProfile("suma-3.1-base", store, key, user);
-        ImageInfo info = createImageInfo(profile, buildHost, "v1.0.0", user);
+                createImageProfile("suma-3.1-base", store, key, getTestUser());
+        ImageInfo info = createImageInfo(profile, buildHost, "v1.0.0", getTestUser());
         assertNotNull(info.getId());
 
         try {
             // Should not be processed because the server is not a build host yet.
-            ImageInfoFactory.scheduleInspect(info, new Date(), user);
+            ImageInfoFactory.scheduleInspect(info, new Date(), getTestUser());
         }
         catch (IllegalArgumentException e) {
             assertEquals("Server is not a build host.", e.getMessage());
@@ -421,7 +421,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         systemEntitlementManager.addEntitlementToServer(buildHost, EntitlementManager.CONTAINER_BUILD_HOST);
 
         // Schedule
-        assertNotNull(ImageInfoFactory.scheduleInspect(info, new Date(), user));
+        assertNotNull(ImageInfoFactory.scheduleInspect(info, new Date(), getTestUser()));
         assertNotNull(info.getInspectAction());
         ImageInspectActionDetails details = info.getInspectAction().getDetails();
 
@@ -432,10 +432,10 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
     @Test
     public final void testScheduleImport() throws Exception {
         ImageInfoFactory.setTaskomaticApi(getTaskomaticApi());
-        MinionServer buildHost = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer buildHost = MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
-        ImageStore store = createImageStore("myregistry", user);
-        Optional<Set<Channel>> channels = Optional.ofNullable(createActivationKey(user))
+        ImageStore store = createImageStore("myregistry", getTestUser());
+        Optional<Set<Channel>> channels = Optional.ofNullable(createActivationKey(getTestUser()))
                 .map(ActivationKey::getChannels);
         assertTrue(channels.isPresent());
 
@@ -444,7 +444,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
         try {
             ImageInfoFactory.scheduleImport(buildHost.getId(), "myimage", "1.0", store,
-                    channels, new Date(), user);
+                    channels, new Date(), getTestUser());
         }
         catch (IllegalArgumentException e) {
             assertEquals("Server is not a build host.", e.getMessage());
@@ -457,7 +457,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
         // Schedule
         assertNotNull(ImageInfoFactory.scheduleImport(buildHost.getId(), "myimage", "1.0",
-                store, channels, new Date(), user));
+                store, channels, new Date(), getTestUser()));
         ImageInfo info =
                 ImageInfoFactory.lookupByName("myimage", "1.0", store).get();
 
@@ -465,7 +465,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         assertEquals(buildHost, info.getBuildServer());
         assertEquals(buildHost.getServerArch(), info.getImageArch());
         assertNull(info.getProfile());
-        assertEquals(user.getOrg(), info.getOrg());
+        assertEquals(getTestUser().getOrg(), info.getOrg());
         assertEquals(0, info.getCustomDataValues().size());
         assertEquals(2, info.getChannels().size());
         assertEquals(info.getChannels(), channels.get());
@@ -475,7 +475,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         // Reschedule
         try {
             ImageInfoFactory.scheduleImport(buildHost.getId(), "myimage", "1.0", store,
-                    channels, new Date(), user);
+                    channels, new Date(), getTestUser());
         }
         catch (IllegalArgumentException e) {
             assertEquals("Image already exists.", e.getMessage());
@@ -484,16 +484,16 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testLookupByIdsAndOrg() {
-        ImageInfo img1 = createImageInfo("myimage1", "1.0.0", user);
-        ImageInfo img2 = createImageInfo("myimage1", "2.0.0", user);
-        ImageInfo img3 = createImageInfo("myimage2", "1.0.0", user);
+        ImageInfo img1 = createImageInfo("myimage1", "1.0.0", getTestUser());
+        ImageInfo img2 = createImageInfo("myimage1", "2.0.0", getTestUser());
+        ImageInfo img3 = createImageInfo("myimage2", "1.0.0", getTestUser());
 
         List<Long> ids = new ArrayList<>();
         ids.add(img1.getId());
         ids.add(img2.getId());
 
         List<ImageInfo> lookup =
-                ImageInfoFactory.lookupByIdsAndOrg(ids, user.getOrg());
+                ImageInfoFactory.lookupByIdsAndOrg(ids, getTestUser().getOrg());
         assertEquals(2, lookup.size());
         assertTrue(lookup.stream().filter(img1::equals).findFirst().isPresent());
         assertTrue(lookup.stream().filter(img2::equals).findFirst().isPresent());
@@ -510,19 +510,19 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         ids.add(img1.getId());
         ids.add(100L);
         assertFalse(ImageInfoFactory.lookupById(100L).isPresent());
-        lookup = ImageInfoFactory.lookupByIdsAndOrg(ids, user.getOrg());
+        lookup = ImageInfoFactory.lookupByIdsAndOrg(ids, getTestUser().getOrg());
         assertEquals(1, lookup.size());
         assertEquals(img1, lookup.get(0));
     }
 
     @Test
     public void testUpdateRevision() {
-        ImageInfo img1 = createImageInfo("test", "1.0.0", user);
+        ImageInfo img1 = createImageInfo("test", "1.0.0", getTestUser());
         ImageInfoFactory.updateRevision(img1);
         assertEquals(1, img1.getRevisionNumber());
         ImageInfoFactory.updateRevision(img1);
         assertEquals(1, img1.getRevisionNumber());
-        ImageInfo img2 = createImageInfo("test", "1.0.0", user);
+        ImageInfo img2 = createImageInfo("test", "1.0.0", getTestUser());
         ImageInfoFactory.updateRevision(img2);
         assertEquals(2, img2.getRevisionNumber());
         ImageInfoFactory.updateRevision(img2);
@@ -534,13 +534,14 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         context.checking(new Expectations() {{
             allowing(saltApiMock).removeFile(
                     with(equal(Paths.get(String.format("/srv/www/os-images/%d/test-1.0.0.tgz",
-                                             user.getOrg().getId())))));
+                                             getTestUser().getOrg().getId())))));
             will(returnValue(Optional.of(true)));
         }});
 
-        ImageStore store = ImageStoreFactory.lookupBylabelAndOrg("SUSE Manager OS Image Store", user.getOrg()).get();
+        ImageStore store = ImageStoreFactory.lookupBylabelAndOrg("SUSE Manager OS Image Store",
+                getTestUser().getOrg()).get();
 
-        ImageInfo image = createImageInfo("test", "1.0.0", store, user);
+        ImageInfo image = createImageInfo("test", "1.0.0", store, getTestUser());
         String category = "Image" + image.getId();
         Pillar pillarEntry = new Pillar(category, new TreeMap<String, Object>(), image.getOrg());
         TestUtils.persist(pillarEntry);
@@ -560,7 +561,7 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
 
         TestUtils.flushSession();
 
-        assertFalse(user.getOrg().getPillars().stream()
+        assertFalse(getTestUser().getOrg().getPillars().stream()
               .filter(item -> (category.equals(item.getCategory())))
               .findAny().isPresent());
 
@@ -571,22 +572,22 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
         context.checking(new Expectations() {{
             allowing(saltApiMock).removeFile(
                     with(equal(Paths.get(String.format("/srv/www/os-images/%d/delta1.tgz",
-                                             user.getOrg().getId())))));
+                                             getTestUser().getOrg().getId())))));
             will(returnValue(Optional.of(true)));
             allowing(saltApiMock).removeFile(
                     with(equal(Paths.get(String.format("/srv/www/os-images/%d/delta2.tgz",
-                                             user.getOrg().getId())))));
+                                             getTestUser().getOrg().getId())))));
             will(returnValue(Optional.of(true)));
         }});
-        Org org = user.getOrg();
+        Org org = getTestUser().getOrg();
         ImageStore store = ImageStoreFactory.lookupBylabelAndOrg("SUSE Manager OS Image Store", org).get();
 
         // Add extra org pillar so at the end we do not check for 0
         org.getPillars().add(new Pillar("testCategory", Collections.singletonMap("key", "value"), org));
 
-        ImageInfo img1 = createImageInfo("test", "1.0.0", store, user);
-        ImageInfo img2 = createImageInfo("test", "1.0.1", store, user);
-        ImageInfo img3 = createImageInfo("test", "1.0.2", store, user);
+        ImageInfo img1 = createImageInfo("test", "1.0.0", store, getTestUser());
+        ImageInfo img2 = createImageInfo("test", "1.0.1", store, getTestUser());
+        ImageInfo img3 = createImageInfo("test", "1.0.2", store, getTestUser());
         DeltaImageInfo delta1 = ImageInfoFactory.createDeltaImageInfo(img1, img2,
                                                  "delta1.tgz", new TreeMap<String, Object>());
         ImageInfoFactory.createDeltaImageInfo(img2, img3,
@@ -655,22 +656,22 @@ public class ImageInfoFactoryTest extends BaseTestCaseWithUser {
     @ValueSource(strings = {"test-store"})
     @NullSource
     public void canDeleteImageWithObsoletes(String storeLabel) {
-        ImageStore store = storeLabel != null ? createImageStore(storeLabel, user) : null;
+        ImageStore store = storeLabel != null ? createImageStore(storeLabel, getTestUser()) : null;
 
         // Main image
-        ImageInfo mainImage = createImageInfo("fedora-web-server", "39", store, user);
+        ImageInfo mainImage = createImageInfo("fedora-web-server", "39", store, getTestUser());
         mainImage.setBuilt(true);
         mainImage.setObsolete(false);
         ImageInfoFactory.save(mainImage);
 
         // Obsolete version
-        ImageInfo obsoleteImage = createImageInfo("fedora-web-server", "39", store, user);
+        ImageInfo obsoleteImage = createImageInfo("fedora-web-server", "39", store, getTestUser());
         obsoleteImage.setBuilt(true);
         obsoleteImage.setObsolete(true); // This makes it eligible for deletion
         ImageInfoFactory.save(obsoleteImage);
 
         // Unrelated obsolete image
-        ImageInfo otherImage = createImageInfo("ubuntu-db-server", "22.04", store, user);
+        ImageInfo otherImage = createImageInfo("ubuntu-db-server", "22.04", store, getTestUser());
         otherImage.setBuilt(true);
         otherImage.setObsolete(true);
         ImageInfoFactory.save(otherImage);

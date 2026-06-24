@@ -59,7 +59,7 @@ public class ResetLinkActionTest extends BaseTestCaseWithUser {
 
     @Test
     public void testPerformInvalidToken() {
-        ResetPassword rp = ResetPasswordFactory.createNewEntryFor(user);
+        ResetPassword rp = ResetPasswordFactory.createNewEntryFor(getTestUser());
         ResetPasswordFactory.invalidateToken(rp.getToken());
         request.addParameter("token", rp.getToken());
         ActionForward rc = action.execute(mapping, form, request, response);
@@ -68,7 +68,7 @@ public class ResetLinkActionTest extends BaseTestCaseWithUser {
 
     @Test
     public void testPerformValidToken() {
-        ResetPassword rp = ResetPasswordFactory.createNewEntryFor(user);
+        ResetPassword rp = ResetPasswordFactory.createNewEntryFor(getTestUser());
         request.addParameter("token", rp.getToken());
         ActionForward rc = action.execute(mapping, form, request, response);
         assertEquals(valid, rc);

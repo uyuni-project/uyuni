@@ -149,12 +149,12 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
     public void testSaveGroupFormulaData() throws Exception {
         String contentsData = TestUtils.readAll(TestUtils.findTestData(FORMULA_DATA));
         Map<String, Object> contents = Json.GSON.fromJson(contentsData, Map.class);
-        ManagedServerGroup managed = ServerGroupTestUtils.createManaged(user);
+        ManagedServerGroup managed = ServerGroupTestUtils.createManaged(getTestUser());
 
         context().checking(new Expectations() {{
             allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
         }});
-        manager.saveGroupFormulaData(user, managed.getId(), FORMULA_NAME, contents);
+        manager.saveGroupFormulaData(getTestUser(), managed.getId(), FORMULA_NAME, contents);
         Map<String, Object> savedFormulaData =
                 FormulaFactory.getGroupFormulaValuesByNameAndGroup(FORMULA_NAME, managed)
                         .orElseGet(Collections::emptyMap);
@@ -170,7 +170,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
     public void testEnableFormula() throws Exception {
         String contentsData = TestUtils.readAll(TestUtils.findTestData(FORMULA_DATA));
         Json.GSON.fromJson(contentsData, Map.class);
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         FormulaFactory.setMetadataDirOfficial(metadataDir.toString());
 
         context().checking(new Expectations() {{
@@ -191,11 +191,11 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
 
         String contentsData = TestUtils.readAll(TestUtils.findTestData(FORMULA_DATA));
         Map<String, Object> contents = Json.GSON.fromJson(contentsData, Map.class);
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         context().checking(new Expectations() {{
             allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
         }});
-        manager.saveServerFormulaData(user, minion.getId(), FORMULA_NAME, contents);
+        manager.saveServerFormulaData(getTestUser(), minion.getId(), FORMULA_NAME, contents);
         Map<String, Object> savedFormulaData =
                 FormulaFactory.getFormulaValuesByNameAndMinion(FORMULA_NAME, minion)
                         .orElseGet(Collections::emptyMap);
@@ -213,13 +213,13 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
     public void testSaveServerFormulaDataForGroupFormula() throws Exception {
         String contentsData = TestUtils.readAll(TestUtils.findTestData(FORMULA_DATA));
         Map<String, Object> contents = Json.GSON.fromJson(contentsData, Map.class);
-        ManagedServerGroup group = ServerGroupTestUtils.createManaged(user);
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        ManagedServerGroup group = ServerGroupTestUtils.createManaged(getTestUser());
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         minion.addGroup(group);
         context().checking(new Expectations() {{
             allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
         }});
-        manager.saveGroupFormulaData(user, group.getId(), FORMULA_NAME, contents);
+        manager.saveGroupFormulaData(getTestUser(), group.getId(), FORMULA_NAME, contents);
         Map<String, Object> savedFormulaData =
                 FormulaFactory.getGroupFormulaValuesByNameAndGroup(FORMULA_NAME, group)
                         .orElseGet(Collections::emptyMap);
@@ -231,7 +231,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
 
         Map<String, Object> contentsServer = Json.GSON.fromJson(contentsData, Map.class);
         ((Map<String, Object>)contentsServer.get(FORMULA_NAME)).replace("domain_name", "server_domain_test");
-        manager.saveServerFormulaData(user, minion.getId(), FORMULA_NAME, contentsServer);
+        manager.saveServerFormulaData(getTestUser(), minion.getId(), FORMULA_NAME, contentsServer);
         Map<String, Object> savedFormulaSystemData =
                 FormulaFactory.getFormulaValuesByNameAndMinion(FORMULA_NAME, minion)
                         .orElseGet(Collections::emptyMap);
@@ -250,9 +250,9 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
     public void testSaveServerFormulaDataForUnAuthorized() throws Exception {
         String contentsData = TestUtils.readAll(TestUtils.findTestData(FORMULA_DATA));
         Map<String, Object> contents = Json.GSON.fromJson(contentsData, Map.class);
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         FormulaManager formulaManager = new FormulaManager(saltServiceMock);
-        User testUser = UserTestUtils.createUser("test-user", user.getOrg().getId());
+        User testUser = UserTestUtils.createUser("test-user", getTestUser().getOrg().getId());
         try {
             formulaManager.saveServerFormulaData(testUser, minion.getId(), FORMULA_NAME, contents);
             fail("Exception expected but didn't throw");
@@ -330,7 +330,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
 
     @Test
     public void testListEndpoints() throws Exception {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         String formulaValues = TestUtils.readAll(TestUtils.findTestData(PROMETHEUS_EXPORTERS_FORMULA_DATA));
         Map<String, Object> formulaValuesMap = Json.GSON.fromJson(formulaValues, Map.class);
         context().checking(new Expectations() {{
@@ -341,7 +341,7 @@ public class FormulaManagerTest extends JMockBaseTestCaseWithUser {
         );
         FormulaFactory.setSystemEntitlementManager(sysEntMgr);
         FormulaFactory.saveServerFormulas(minion, Collections.singletonList(PROMETHEUS_EXPORTERS));
-        manager.saveServerFormulaData(user, minion.getId(), PROMETHEUS_EXPORTERS, formulaValuesMap);
+        manager.saveServerFormulaData(getTestUser(), minion.getId(), PROMETHEUS_EXPORTERS, formulaValuesMap);
 
         List<EndpointInfo> endpoints = manager.listEndpoints(Collections.singletonList(minion.getId()));
 

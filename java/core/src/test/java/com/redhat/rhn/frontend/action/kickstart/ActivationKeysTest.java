@@ -36,7 +36,7 @@ public class ActivationKeysTest extends BaseKickstartEditTestCase {
 
     @Test
     public void testSetupExecute() throws Exception {
-        addKeysToKickstartData(user, ksdata);
+        addKeysToKickstartData(getTestUser(), ksdata);
         setRequestPathInfo("/kickstart/ActivationKeys");
         actionPerform();
         assertNotNull(request.getAttribute(RequestContext.KICKSTART));
@@ -46,10 +46,10 @@ public class ActivationKeysTest extends BaseKickstartEditTestCase {
     @Test
     public void testSubmit() throws Exception {
         addDispatchCall(ActivationKeysSubmitAction.UPDATE_METHOD);
-        addKeysToKickstartData(user, ksdata);
+        addKeysToKickstartData(getTestUser(), ksdata);
         setRequestPathInfo("/kickstart/ActivationKeysSubmit");
-        addSelectedItem(ActivationKeyTest.createTestActivationKey(user,
-                ServerFactoryTest.createTestServer(user)).getId());
+        addSelectedItem(ActivationKeyTest.createTestActivationKey(getTestUser(),
+                ServerFactoryTest.createTestServer(getTestUser())).getId());
         actionPerform();
         String[] msgs = {"kickstart_activation_keys.added",
                 "kickstart_activation_keys.removed"};

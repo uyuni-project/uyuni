@@ -38,7 +38,7 @@ public class ErrataCacheDriverTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testGetCandidates() throws Exception {
-        Server server = ServerFactoryTest.createTestServer(user);
+        Server server = ServerFactoryTest.createTestServer(getTestUser());
         ErrataManager.insertErrataCacheTask(server);
         Thread.sleep(1);
         ErrataManager.insertErrataCacheTask(server);

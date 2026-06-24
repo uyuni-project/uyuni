@@ -41,7 +41,7 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testLookupById() {
         ImageProfile profile =
-                createImageProfile("myprofile", createImageStore("mystore", user), user);
+                createImageProfile("myprofile", createImageStore("mystore", getTestUser()), getTestUser());
 
         Optional<ImageProfile> lookup =
                 ImageProfileFactory.lookupById(profile.getProfileId());
@@ -55,14 +55,14 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testLookupByIdAndOrg() {
         ImageProfile profile =
-                createImageProfile("myprofile", createImageStore("mystore", user), user);
+                createImageProfile("myprofile", createImageStore("mystore", getTestUser()), getTestUser());
 
         Optional<ImageProfile> lookup =
-                ImageProfileFactory.lookupByIdAndOrg(profile.getProfileId(), user.getOrg());
+                ImageProfileFactory.lookupByIdAndOrg(profile.getProfileId(), getTestUser().getOrg());
         assertTrue(lookup.isPresent());
         assertEquals(profile, lookup.get());
 
-        lookup = ImageProfileFactory.lookupByIdAndOrg(-1, user.getOrg());
+        lookup = ImageProfileFactory.lookupByIdAndOrg(-1, getTestUser().getOrg());
         assertFalse(lookup.isPresent());
 
         Org org = OrgFactory.createOrg();
@@ -75,17 +75,17 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testLookupByIdsAndOrg() {
-        ImageStore store = createImageStore("mystore", user);
-        ImageProfile p1 = createImageProfile("myprofile1", store, user);
-        ImageProfile p2 = createImageProfile("myprofile2", store, user);
-        ImageProfile p3 = createImageProfile("myprofile3", store, user);
+        ImageStore store = createImageStore("mystore", getTestUser());
+        ImageProfile p1 = createImageProfile("myprofile1", store, getTestUser());
+        ImageProfile p2 = createImageProfile("myprofile2", store, getTestUser());
+        ImageProfile p3 = createImageProfile("myprofile3", store, getTestUser());
 
         List<Long> ids = new ArrayList<>();
         ids.add(p1.getProfileId());
         ids.add(p2.getProfileId());
 
         List<ImageProfile> lookup =
-                ImageProfileFactory.lookupByIdsAndOrg(ids, user.getOrg());
+                ImageProfileFactory.lookupByIdsAndOrg(ids, getTestUser().getOrg());
         assertEquals(2, lookup.size());
         assertTrue(lookup.stream().filter(p1::equals).findFirst().isPresent());
         assertTrue(lookup.stream().filter(p2::equals).findFirst().isPresent());
@@ -102,7 +102,7 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
         ids.add(p1.getProfileId());
         ids.add(100L);
         assertFalse(ImageProfileFactory.lookupById(100L).isPresent());
-        lookup = ImageProfileFactory.lookupByIdsAndOrg(ids, user.getOrg());
+        lookup = ImageProfileFactory.lookupByIdsAndOrg(ids, getTestUser().getOrg());
         assertEquals(1, lookup.size());
         assertEquals(p1, lookup.get(0));
     }
@@ -110,10 +110,10 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testLookupByLabelAndOrg() {
         ImageProfile profile =
-                createImageProfile("myprofile", createImageStore("mystore", user), user);
+                createImageProfile("myprofile", createImageStore("mystore", getTestUser()), getTestUser());
 
         ImageProfile prf = ImageProfileFactory.lookupByLabelAndOrg("myprofile",
-                user.getOrg()).get();
+                getTestUser().getOrg()).get();
         assertEquals(profile, prf);
 
         Org org = OrgFactory.createOrg();
@@ -121,16 +121,16 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
         org = OrgFactory.save(org);
 
         assertFalse(ImageProfileFactory
-                .lookupByLabelAndOrg("non-existent-label", user.getOrg()).isPresent());
+                .lookupByLabelAndOrg("non-existent-label", getTestUser().getOrg()).isPresent());
         assertFalse(ImageProfileFactory.lookupByLabelAndOrg("myprofile", org).isPresent());
     }
 
     @Test
     public void testListImageProfiles() {
         ImageProfile profile =
-                createImageProfile("myprofile", createImageStore("mystore", user), user);
+                createImageProfile("myprofile", createImageStore("mystore", getTestUser()), getTestUser());
 
-        List<ImageProfile> list = ImageProfileFactory.listImageProfiles(user.getOrg());
+        List<ImageProfile> list = ImageProfileFactory.listImageProfiles(getTestUser().getOrg());
         assertEquals(1, list.size());
         assertEquals(profile, list.get(0));
     }
@@ -138,20 +138,20 @@ public class ImageProfileFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testProfileCustomData() {
         ImageProfile profile =
-                createImageProfile("myprofile", createImageStore("mystore", user), user);
+                createImageProfile("myprofile", createImageStore("mystore", getTestUser()), getTestUser());
 
-        CustomDataKey key = CustomDataKeyTest.createTestCustomDataKey(user);
+        CustomDataKey key = CustomDataKeyTest.createTestCustomDataKey(getTestUser());
         ProfileCustomDataValue val =
-                createProfileCustomDataValue("Test value", key, profile, user);
+                createProfileCustomDataValue("Test value", key, profile, getTestUser());
 
         Set<ProfileCustomDataValue> values = profile.getCustomDataValues();
         assertNotNull(values);
         for (ProfileCustomDataValue v : values) {
             assertEquals(val, v);
         }
-        CustomDataKey key2 = CustomDataKeyTest.createTestCustomDataKey(user);
+        CustomDataKey key2 = CustomDataKeyTest.createTestCustomDataKey(getTestUser());
         ProfileCustomDataValue val2 =
-                createProfileCustomDataValue("Test value", key2, profile, user);
+                createProfileCustomDataValue("Test value", key2, profile, getTestUser());
 
         profile = TestUtils.saveAndReload(profile);
         Set<ProfileCustomDataValue> values2 = profile.getCustomDataValues();

@@ -52,11 +52,11 @@ public class CobblerDistroCreateCommandTest extends CobblerCommandTestBase {
     @Test
     public void testDistroCreate() {
         CobblerDistroCreateCommand cmd = new
-            CobblerDistroCreateCommand(tree, user);
+            CobblerDistroCreateCommand(tree, getTestUser());
         assertNull(cmd.store());
-        assertNotNull(tree.getCobblerObject(user));
+        assertNotNull(tree.getCobblerObject(getTestUser()));
         assertNotNull(
-                tree.getCobblerObject(user)
+                tree.getCobblerObject(getTestUser())
                         .getKsMeta()
                         .get()
                         .get(KickstartUrlHelper.COBBLER_MEDIA_VARIABLE)
@@ -74,7 +74,7 @@ public class CobblerDistroCreateCommandTest extends CobblerCommandTestBase {
         distro.remove();
         assertNull(Distro.lookupById(con, tree.getCobblerXenId()));
 
-        CobblerDistroCreateCommand cmd = new CobblerDistroCreateCommand(tree, user);
+        CobblerDistroCreateCommand cmd = new CobblerDistroCreateCommand(tree, getTestUser());
         cmd.store();
         assertNotNull(Distro.lookupById(con, tree.getCobblerXenId()));
     }
@@ -93,7 +93,7 @@ public class CobblerDistroCreateCommandTest extends CobblerCommandTestBase {
         xenPath.delete();
 
         CobblerDistroCreateCommand cmd = new
-            CobblerDistroCreateCommand(tree, user);
+            CobblerDistroCreateCommand(tree, getTestUser());
         cmd.store();
         assertNull(Distro.lookupById(con, tree.getCobblerXenId()));
     }

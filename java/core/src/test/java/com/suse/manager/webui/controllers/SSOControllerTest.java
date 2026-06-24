@@ -164,7 +164,7 @@ public class SSOControllerTest extends BaseControllerTestCase {
         String xml = FileUtils.readStringFromFile(TestUtils.findTestData("sso/response.xml"))
                 // Change uuid to email to invalidate the request
                 .replace("Name=\"uid\"", "Name=\"email\"")
-                .replace("{user}", user.getLogin())
+                .replace("{user}", getTestUser().getLogin())
                 .replace("{requestId}", requestId);
 
         String signedXml = SSOTestUtils.signSamlDocument(xml, requestId);
@@ -190,7 +190,7 @@ public class SSOControllerTest extends BaseControllerTestCase {
 
         String requestId = "testRequest-" + TestUtils.randomString(4);
         String xml = FileUtils.readStringFromFile(TestUtils.findTestData("sso/response.xml"))
-                .replace("{user}", user.getLogin())
+                .replace("{user}", getTestUser().getLogin())
                 .replace("{requestId}", requestId);
 
         String signedXml = SSOTestUtils.signSamlDocument(xml, requestId);
@@ -206,12 +206,12 @@ public class SSOControllerTest extends BaseControllerTestCase {
 
         // 4. Assertions
         // Verify the toolkit successfully parsed the XML and pulled the UID into the session
-        assertEquals(user.getLogin(), request.raw().getSession().getAttribute("nameId"));
+        assertEquals(getTestUser().getLogin(), request.raw().getSession().getAttribute("nameId"));
 
         @SuppressWarnings("unchecked")
         var sessionAttributes = (Map<String, List<String>>) request.raw().getSession().getAttribute("attributes");
         assertNotNull(sessionAttributes);
-        assertEquals(user.getLogin(), sessionAttributes.get("uid").get(0));
+        assertEquals(getTestUser().getLogin(), sessionAttributes.get("uid").get(0));
 
         Response rr = assertInstanceOf(Response.class, result);
         RhnMockHttpServletResponse mockResponse = assertInstanceOf(RhnMockHttpServletResponse.class, rr.raw());
@@ -253,7 +253,7 @@ public class SSOControllerTest extends BaseControllerTestCase {
         Request request = getRequestWithCsrf("https://localhost", "/manager/sso/logout");
 
         // Mocking an active session to ensure it gets cleared (assuming your test harness does this)
-        request.raw().getSession().setAttribute("nameId", user.getLogin());
+        request.raw().getSession().setAttribute("nameId", getTestUser().getLogin());
 
         // Execute the controller
         Object result = ssoController.logout(request, response);
@@ -286,7 +286,7 @@ public class SSOControllerTest extends BaseControllerTestCase {
         // Prepare the incoming LogoutRequest from the IdP
         String requestId = "testRequest-" + TestUtils.randomString(4);
         String xml = FileUtils.readStringFromFile(TestUtils.findTestData("sso/logout_request.xml"))
-                .replace("{user}", user.getLogin())
+                .replace("{user}", getTestUser().getLogin())
                 .replace("{requestId}", requestId);
 
         String signedXml = SSOTestUtils.signSamlDocument(xml, requestId);
@@ -297,7 +297,7 @@ public class SSOControllerTest extends BaseControllerTestCase {
         ));
 
         // Inject a fake active session so the toolkit can "destroy" it
-        request.raw().getSession().setAttribute("nameId", user.getLogin());
+        request.raw().getSession().setAttribute("nameId", getTestUser().getLogin());
 
         // Execute the controller
         Object result = ssoController.sls(request, response);

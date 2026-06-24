@@ -38,7 +38,7 @@ public class TargetSystemsTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testExecute() {
-        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(getTestUser(), AccessGroupFactory.CONFIG_ADMIN);
 
         //Need to set the locale and timezone for the datepicker.
         Context ctxt = Context.getCurrentContext();
@@ -46,7 +46,7 @@ public class TargetSystemsTest extends RhnMockStrutsTestCase {
         ctxt.setTimezone(TimeZone.getDefault());
 
         //Make a not currently managed system (Salt Systems are not supported by called target)
-        ServerFactoryTest.createTestServer(user, true, ServerConstants.getServerGroupTypeEnterpriseEntitled());
+        ServerFactoryTest.createTestServer(getTestUser(), true, ServerConstants.getServerGroupTypeEnterpriseEntitled());
         TestUtils.flushSession();
 
         setRequestPathInfo("/configuration/system/TargetSystems");

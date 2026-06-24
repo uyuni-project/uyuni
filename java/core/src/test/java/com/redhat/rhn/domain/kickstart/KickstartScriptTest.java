@@ -56,7 +56,7 @@ public class KickstartScriptTest extends BaseTestCaseWithUser {
 
     @Test
     public void testScript() throws Exception {
-        KickstartData ksdata = KickstartDataTest.createKickstartWithOptions(user.getOrg());
+        KickstartData ksdata = KickstartDataTest.createKickstartWithOptions(getTestUser().getOrg());
         KickstartFactory.saveKickstartData(ksdata);
         ksdata = TestUtils.reload(ksdata);
         assertNotNull(ksdata.getScripts());
@@ -74,7 +74,7 @@ public class KickstartScriptTest extends BaseTestCaseWithUser {
 
     @Test
     public void testMultiplePreScripts() throws Exception {
-        KickstartData ksdata = KickstartDataTest.createKickstartWithOptions(user.getOrg());
+        KickstartData ksdata = KickstartDataTest.createKickstartWithOptions(getTestUser().getOrg());
         KickstartScript kss1 = createPre(ksdata);
         KickstartScript kss2 = createPre(ksdata);
         ksdata.addScript(kss1);
@@ -88,7 +88,7 @@ public class KickstartScriptTest extends BaseTestCaseWithUser {
     @Test
     public void testLargeScript() throws Exception {
         String largeString = RandomStringUtils.randomAscii(4000);
-        KickstartData ksdata = KickstartDataTest.createKickstartWithOptions(user.getOrg());
+        KickstartData ksdata = KickstartDataTest.createKickstartWithOptions(getTestUser().getOrg());
         ksdata.getScripts().clear();
         KickstartFactory.saveKickstartData(ksdata);
         ksdata = TestUtils.reload(ksdata);

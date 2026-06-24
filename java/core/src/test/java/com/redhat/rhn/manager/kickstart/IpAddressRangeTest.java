@@ -68,7 +68,7 @@ public class IpAddressRangeTest extends BaseTestCaseWithUser {
     @Test
     public void testRange() throws Exception {
 
-        KickstartData k = KickstartDataTest.createTestKickstartData(user.getOrg());
+        KickstartData k = KickstartDataTest.createTestKickstartData(getTestUser().getOrg());
 
 
 
@@ -96,7 +96,7 @@ public class IpAddressRangeTest extends BaseTestCaseWithUser {
 
     @Test
     public void testSetTheory() throws Exception {
-        KickstartData k = KickstartDataTest.createTestKickstartData(user.getOrg());
+        KickstartData k = KickstartDataTest.createTestKickstartData(getTestUser().getOrg());
         IpAddressRange range1 = new IpAddressRange(min, max3, k.getId());
         IpAddressRange range2 = new IpAddressRange(min4, max4, k.getId());
         IpAddressRange range3 = new IpAddressRange(min5, max5, k.getId());

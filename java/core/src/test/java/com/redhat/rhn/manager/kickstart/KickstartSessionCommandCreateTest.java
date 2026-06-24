@@ -41,19 +41,19 @@ public class KickstartSessionCommandCreateTest extends BaseKickstartCommandTestC
         // We want to add a activation key to the kickstart data to validate
         // that we get both a one-time-key and the actual key associated with the KS
         // See BZ: 252980
-        ActivationKeysTest.addKeysToKickstartData(user, ksdata);
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        Profile p = ProfileManagerTest.createProfileWithServer(user);
+        ActivationKeysTest.addKeysToKickstartData(getTestUser(), ksdata);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
+        Profile p = ProfileManagerTest.createProfileWithServer(getTestUser());
         ksdata.getKickstartDefaults().setProfile(p);
         ksdata = TestUtils.saveAndFlush(ksdata);
-        Channel toolsChannel = ChannelFactoryTest.createTestChannel(user);
+        Channel toolsChannel = ChannelFactoryTest.createTestChannel(getTestUser());
         KickstartScheduleCommandTest.setupChannelForKickstarting(toolsChannel);
         toolsChannel.setParentChannel(ksdata.getChannel());
         ChannelFactory.save(toolsChannel);
 
-        UserFactory.save(user);
+        UserFactory.save(getTestUser());
         KickstartSessionCreateCommand cmd = new
-            KickstartSessionCreateCommand(user.getOrg(), ksdata, "127.0.0.1");
+            KickstartSessionCreateCommand(getTestUser().getOrg(), ksdata, "127.0.0.1");
         assertNull(cmd.store());
         assertNotNull(cmd.getKickstartSession());
         KickstartSession sess = cmd.getKickstartSession();

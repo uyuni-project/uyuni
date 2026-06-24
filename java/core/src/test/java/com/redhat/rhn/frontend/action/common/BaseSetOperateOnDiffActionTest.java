@@ -43,9 +43,9 @@ public class BaseSetOperateOnDiffActionTest extends RhnPostMockStrutsTestCase {
     @Test
     public void testSelectAll() throws Exception {
 
-        KickstartData ksdata = KickstartDataTest.createKickstartWithOptions(user.getOrg());
+        KickstartData ksdata = KickstartDataTest.createKickstartWithOptions(getTestUser().getOrg());
         for (int i = 0; i < 5; i++) {
-            ActivationKey key = ActivationKeyFactory.createNewKey(user,
+            ActivationKey key = ActivationKeyFactory.createNewKey(getTestUser(),
                     TestUtils.randomString());
             ActivationKeyFactory.save(key);
             TestUtils.flushAndEvict(key);
@@ -53,12 +53,12 @@ public class BaseSetOperateOnDiffActionTest extends RhnPostMockStrutsTestCase {
         assertTrue((ksdata.getDefaultRegTokens() == null ||
                 ksdata.getDefaultRegTokens().isEmpty()));
         setRequestPathInfo("/kickstart/ActivationKeysSubmit");
-        addSelectedItem(ActivationKeyTest.createTestActivationKey(user,
-                ServerFactoryTest.createTestServer(user)).getId());
+        addSelectedItem(ActivationKeyTest.createTestActivationKey(getTestUser(),
+                ServerFactoryTest.createTestServer(getTestUser())).getId());
         addDispatchCall(ListDisplayTag.SELECT_ALL_KEY);
         actionPerform();
         assertTrue(
-            RhnSetDecl.KICKSTART_ACTIVATION_KEYS.get(user).getElements().size() >= 5);
+            RhnSetDecl.KICKSTART_ACTIVATION_KEYS.get(getTestUser()).getElements().size() >= 5);
         clearRequestParameters();
         addRequestParameter(RequestContext.KICKSTART_ID, ksdata.getId().toString());
         addDispatchCall(ActivationKeysSubmitAction.UPDATE_METHOD);

@@ -44,7 +44,7 @@ public class KickstartWizardCommandTest extends BaseTestCaseWithUser {
     @Test
     public void testWizTrees() throws Exception {
 
-        Channel c = ChannelFactoryTest.createBaseChannel(user);
+        Channel c = ChannelFactoryTest.createBaseChannel(getTestUser());
         assertNull(c.getParentChannel());
         assertNotNull(c.getOrg());
         KickstartableTree tree  = KickstartableTreeTest.createTestKickstartableTree(c);
@@ -52,7 +52,7 @@ public class KickstartWizardCommandTest extends BaseTestCaseWithUser {
         tree = TestUtils.saveAndFlush(tree);
         c = TestUtils.saveAndFlush(c);
 
-        KickstartWizardHelper cmd = new KickstartWizardHelper(user);
+        KickstartWizardHelper cmd = new KickstartWizardHelper(getTestUser());
         List trees = cmd.getKickstartableTrees();
         assertNotNull(trees);
         assertFalse(trees.isEmpty());
@@ -78,8 +78,8 @@ public class KickstartWizardCommandTest extends BaseTestCaseWithUser {
     @Test
     public void testStore() throws Exception {
 
-        KickstartData ksdata = KickstartDataTest.createKickstartWithOptions(user.getOrg());
-        KickstartWizardHelper cmd = new KickstartWizardHelper(user);
+        KickstartData ksdata = KickstartDataTest.createKickstartWithOptions(getTestUser().getOrg());
+        KickstartWizardHelper cmd = new KickstartWizardHelper(getTestUser());
         cmd.store(ksdata);
         KickstartSession ksession =
             KickstartFactory.lookupDefaultKickstartSessionForKickstartData(ksdata);

@@ -74,7 +74,7 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
 
         // create cobbler distro and saltboot profile
         Distro distro = new Distro.Builder<String>()
-                .setName(SaltbootUtils.makeCobblerName(user.getOrg(), BOOT_IMAGE))
+                .setName(SaltbootUtils.makeCobblerName(getTestUser().getOrg(), BOOT_IMAGE))
                 .setKernel("kernel_file")
                 .setInitrd("initrd_file")
                 .setKernelOptions(Optional.of("panic=60 splash=silent"))
@@ -82,11 +82,11 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
         distro.save();
 
         Profile imageProfile = Profile.create(cobblerMock,
-                                              SaltbootUtils.makeCobblerName(user.getOrg(), BOOT_IMAGE),
+                                              SaltbootUtils.makeCobblerName(getTestUser().getOrg(), BOOT_IMAGE),
                                               distro);
         imageProfile.save();
         Profile profile = Profile.create(cobblerMock,
-                                         SaltbootUtils.makeCobblerName(user.getOrg(), SALTBOOT_GROUP),
+                                         SaltbootUtils.makeCobblerName(getTestUser().getOrg(), SALTBOOT_GROUP),
                                          distro);
         profile.save();
     }
@@ -427,7 +427,7 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testPXEEventAction() throws Exception {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
         Event event = mock(Event.class);
         Map<String, Object> data = createTestData(minion.getMinionId(), SALTBOOT_GROUP, "root=/dev/sda1",
@@ -476,7 +476,8 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
         // System should be registered in cobbler
         assertNotNull(minion.getCobblerId());
         assertNotNull(SystemRecord.lookupByName(cobblerMock,
-                                                SaltbootUtils.makeCobblerName(user.getOrg(), minion.getMinionId())));
+                                                SaltbootUtils.makeCobblerName(getTestUser().getOrg(),
+                                                        minion.getMinionId())));
     }
 
     /**
@@ -488,8 +489,8 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testPXEEventActionNoFlag() throws Exception {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
-        ServerGroup hwtypeGroup = ServerGroupFactory.create("HWTYPE:test", "testgroup", user.getOrg());
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        ServerGroup hwtypeGroup = ServerGroupFactory.create("HWTYPE:test", "testgroup", getTestUser().getOrg());
         minion.addGroup(hwtypeGroup);
 
         Event event = mock(Event.class);
@@ -547,7 +548,8 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
 
         assertNotNull(minion.getCobblerId());
         assertNotNull(SystemRecord.lookupByName(cobblerMock,
-                                                SaltbootUtils.makeCobblerName(user.getOrg(), minion.getMinionId())));
+                                                SaltbootUtils.makeCobblerName(getTestUser().getOrg(),
+                                                        minion.getMinionId())));
     }
 
     /**
@@ -556,8 +558,8 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testPXEEventActionPillarOnly() throws Exception {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
-        ServerGroup hwtypeGroup = ServerGroupFactory.create("HWTYPE:test", "testgroup", user.getOrg());
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        ServerGroup hwtypeGroup = ServerGroupFactory.create("HWTYPE:test", "testgroup", getTestUser().getOrg());
         minion.addGroup(hwtypeGroup);
 
         Event event = mock(Event.class);
@@ -628,7 +630,8 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
 
         assertNotNull(minion.getCobblerId());
         assertNotNull(SystemRecord.lookupByName(cobblerMock,
-                                                SaltbootUtils.makeCobblerName(user.getOrg(), minion.getMinionId())));
+                                                SaltbootUtils.makeCobblerName(getTestUser().getOrg(),
+                                                        minion.getMinionId())));
     }
 
     /**
@@ -640,8 +643,8 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
      */
     @Test
     public void testPXEEventActionCustomInfoOnly() throws Exception {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
-        ServerGroup hwtypeGroup = ServerGroupFactory.create("HWTYPE:test", "testgroup", user.getOrg());
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        ServerGroup hwtypeGroup = ServerGroupFactory.create("HWTYPE:test", "testgroup", getTestUser().getOrg());
 
         Event event = mock(Event.class);
         Map<String, Object> data = createTestData(minion.getMinionId(), SALTBOOT_GROUP, "root=/dev/sda1",
@@ -667,14 +670,14 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
         assertFalse(minion.getPillarByCategory(SALTBOOT_PILLAR).isPresent());
         assertTrue(hwtypeGroup.getPillarByCategory(SALTBOOT_FORMULA).isPresent());
 
-        CustomDataKey saltbootRedeploy = createTestCustomDataKey(user, "saltboot_force_redeploy");
-        CustomDataKey saltbootRepart = createTestCustomDataKey(user, "saltboot_force_repartition");
+        CustomDataKey saltbootRedeploy = createTestCustomDataKey(getTestUser(), "saltboot_force_redeploy");
+        CustomDataKey saltbootRepart = createTestCustomDataKey(getTestUser(), "saltboot_force_repartition");
 
-        user.getOrg().addCustomDataKey(saltbootRedeploy);
-        user.getOrg().addCustomDataKey(saltbootRepart);
+        getTestUser().getOrg().addCustomDataKey(saltbootRedeploy);
+        getTestUser().getOrg().addCustomDataKey(saltbootRepart);
 
-        createTestCustomDataValue(user, saltbootRedeploy, minion, "True");
-        createTestCustomDataValue(user, saltbootRepart, minion, "True");
+        createTestCustomDataValue(getTestUser(), saltbootRedeploy, minion, "True");
+        createTestCustomDataValue(getTestUser(), saltbootRepart, minion, "True");
 
         // Do the thing
         action.execute(pxemsg);
@@ -700,6 +703,7 @@ public class PXEEventTest extends JMockBaseTestCaseWithUser {
 
         assertNotNull(minion.getCobblerId());
         assertNotNull(SystemRecord.lookupByName(cobblerMock,
-                                                SaltbootUtils.makeCobblerName(user.getOrg(), minion.getMinionId())));
+                                                SaltbootUtils.makeCobblerName(getTestUser().getOrg(),
+                                                        minion.getMinionId())));
     }
 }

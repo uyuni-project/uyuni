@@ -45,7 +45,7 @@ public class AttestationFactoryTest extends BaseTestCaseWithUser {
 
     @BeforeEach
     public void setUp() throws Exception {
-        server = ServerFactoryTest.createTestServer(user);
+        server = ServerFactoryTest.createTestServer(getTestUser());
         attestationFactory = new AttestationFactory();
     }
 
@@ -109,7 +109,7 @@ public class AttestationFactoryTest extends BaseTestCaseWithUser {
     public void testAttestationConfigurationLookup() {
         ServerCoCoAttestationConfig cnf = attestationFactory.createConfigForServer(server,
                 CoCoEnvironmentType.KVM_AMD_EPYC_MILAN, true, true);
-        Server srv = ServerFactory.lookupByIdAndOrg(server.getId(), user.getOrg());
+        Server srv = ServerFactory.lookupByIdAndOrg(server.getId(), getTestUser().getOrg());
         Optional<ServerCoCoAttestationConfig> cocoAttCnf = srv.getOptCocoAttestationConfig();
         assertNotNull(cocoAttCnf);
         if (cocoAttCnf.isPresent()) {
@@ -145,14 +145,14 @@ public class AttestationFactoryTest extends BaseTestCaseWithUser {
         assertEquals(cnf.getEnvironmentType(), report.getEnvironmentType());
         assertNull(report.getAction());
 
-        Action action = ActionFactoryTest.createAction(user, ActionFactory.TYPE_COCO_ATTESTATION);
+        Action action = ActionFactoryTest.createAction(getTestUser(), ActionFactory.TYPE_COCO_ATTESTATION);
         report.setAction(action);
         action.addCocoAttestationReport(report);
 
         Long actionId = action.getId();
 
         TestUtils.flushAndClearSession();
-        Action a1 = ActionFactory.lookupByUserAndId(user, actionId);
+        Action a1 = ActionFactory.lookupByUserAndId(getTestUser(), actionId);
         assertNotNull(a1);
         Set<ServerCoCoAttestationReport> reports = a1.getCocoAttestationReports();
         assertNotNull(reports);
@@ -190,7 +190,7 @@ public class AttestationFactoryTest extends BaseTestCaseWithUser {
         // containing a hibernate query that is not covered by any test so far
         // feel free to modify and/or complete it
         AttestationFactory testObject = new AttestationFactory();
-        Server arg0 = ServerFactoryTest.createTestServer(user);
+        Server arg0 = ServerFactoryTest.createTestServer(getTestUser());
         Action arg1 = new Action();
         TestUtils.save(arg1);
         testObject.lookupReportByServerAndAction(arg0, arg1);

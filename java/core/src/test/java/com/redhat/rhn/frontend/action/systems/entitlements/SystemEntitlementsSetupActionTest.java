@@ -79,8 +79,8 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
             allowing(saltServiceMock).refreshPillar(with(any(MinionList.class)));
         }});
         setRequestPathInfo("/systems/SystemEntitlements");
-        UserTestUtils.addManagement(user.getOrg());
-        UserTestUtils.addVirtualization(user.getOrg());
+        UserTestUtils.addManagement(getTestUser().getOrg());
+        UserTestUtils.addVirtualization(getTestUser().getOrg());
     }
     /**
      *
@@ -88,7 +88,7 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
      */
     @Test
     public void testUpdateEntitledUser() throws Exception {
-        ServerFactoryTest.createTestServer(user);
+        ServerFactoryTest.createTestServer(getTestUser());
         executeTests();
 
         assertNull(request.getAttribute(SystemEntitlementsSetupAction.SHOW_NO_SYSTEMS));
@@ -103,10 +103,10 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testVirtualizationType() throws Exception {
-        Server server = ServerTestUtils.createTestSystem(user,
+        Server server = ServerTestUtils.createTestSystem(getTestUser(),
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
 
-        Channel[] ch = ChannelTestUtils.setupBaseChannelForVirtualization(user, server.getBaseChannel());
+        Channel[] ch = ChannelTestUtils.setupBaseChannelForVirtualization(getTestUser(), server.getBaseChannel());
         server.addChannel(ch[0]);
         server.addChannel(ch[1]);
 
@@ -130,7 +130,7 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testContainerBuildHostType() throws Exception {
-        Server server = MinionServerFactoryTest.createTestMinionServer(user);
+        Server server = MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
         assertTrue(EntitlementManager.CONTAINER_BUILD_HOST.isAllowedOnServer(server));
         boolean hasErrors = systemEntitlementManager
@@ -157,7 +157,7 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
                     with(equal(SaltSSHService.SSH_KEY_PATH)), with(equal(SaltSSHService.SUMA_SSH_PUB_KEY)));
         }});
 
-        Server server = MinionServerFactoryTest.createTestMinionServer(user);
+        Server server = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         // OS Image building is SUSE only
         server.setServerArch(ServerFactory.lookupServerArchByLabel("x86_64-redhat-linux"));
         server.setOs("SLES");
@@ -188,11 +188,11 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
      */
     @Test
     public void testManagementEntitledUser() {
-        ServerFactoryTest.createTestServer(user, true,
+        ServerFactoryTest.createTestServer(getTestUser(), true,
                         ServerConstants.getServerGroupTypeEnterpriseEntitled());
 
-        UserFactory.save(user);
-        OrgFactory.save(user.getOrg());
+        UserFactory.save(getTestUser());
+        OrgFactory.save(getTestUser().getOrg());
 
 
         executeTests();
@@ -225,7 +225,7 @@ public class SystemEntitlementsSetupActionTest extends RhnMockStrutsTestCase {
      */
     @Test
     public void testEntitlementCountMessage() {
-        Server server = ServerFactoryTest.createTestServer(user, true,
+        Server server = ServerFactoryTest.createTestServer(getTestUser(), true,
                         ServerConstants.getServerGroupTypeEnterpriseEntitled());
         assertFalse(server.getEntitlements().isEmpty());
 

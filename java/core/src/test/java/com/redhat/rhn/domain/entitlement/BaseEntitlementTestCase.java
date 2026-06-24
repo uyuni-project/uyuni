@@ -61,9 +61,9 @@ public abstract class BaseEntitlementTestCase extends BaseTestCaseWithUser {
 
     @Test
     public void testIsAllowedOnServer() throws Exception {
-        Server traditional = ServerTestUtils.createTestSystem(user,
+        Server traditional = ServerTestUtils.createTestSystem(getTestUser(),
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
-        Server foreign = ServerTestUtils.createForeignSystem(user, "9999");
+        Server foreign = ServerTestUtils.createForeignSystem(getTestUser(), "9999");
 
         systemEntitlementManager.setBaseEntitlement(traditional, EntitlementManager.MANAGEMENT);
         systemEntitlementManager.setBaseEntitlement(foreign, EntitlementManager.FOREIGN);
@@ -74,9 +74,9 @@ public abstract class BaseEntitlementTestCase extends BaseTestCaseWithUser {
 
     @Test
     public void testIsAllowedOnServerWithGrains() throws Exception {
-        Server traditional = ServerTestUtils.createTestSystem(user,
+        Server traditional = ServerTestUtils.createTestSystem(getTestUser(),
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
-        Server foreign = ServerTestUtils.createForeignSystem(user, "9999");
+        Server foreign = ServerTestUtils.createForeignSystem(getTestUser(), "9999");
 
         systemEntitlementManager.setBaseEntitlement(traditional, EntitlementManager.MANAGEMENT);
         systemEntitlementManager.setBaseEntitlement(foreign, EntitlementManager.FOREIGN);

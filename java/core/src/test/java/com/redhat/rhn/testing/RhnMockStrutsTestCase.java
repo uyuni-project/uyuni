@@ -47,7 +47,7 @@ import java.util.TimeZone;
 @ExtendWith(SaltTestCaseExtension.class)
 public class RhnMockStrutsTestCase extends BaseStrutsTestCase {
 
-    protected User user;
+    private User user;
 
     /**
      * {@inheritDoc}
@@ -62,8 +62,8 @@ public class RhnMockStrutsTestCase extends BaseStrutsTestCase {
         request.setServerName("localhost");
         request.setMethod("GET");
         user = UserTestUtils.createUser(TestStatics.TEST_USER, TestStatics.TEST_ORG);
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        addRequestParameter(RequestContext.USER_ID, user.getId().toString());
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
+        addRequestParameter(RequestContext.USER_ID, getTestUser().getId().toString());
         WebSession s = requestContext.getWebSession();
         request.setAttribute("session", s);
         request.setRequestURI("http://localhost.redhat.com");
@@ -74,13 +74,13 @@ public class RhnMockStrutsTestCase extends BaseStrutsTestCase {
 
         PxtSessionDelegate pxtDelegate = pxtDelegateFactory.newPxtSessionDelegate();
 
-        pxtDelegate.updateWebUserId(request, response, user.getId());
-        KickstartDataTest.setupTestConfiguration(user);
+        pxtDelegate.updateWebUserId(request, response, getTestUser().getId());
+        KickstartDataTest.setupTestConfiguration(getTestUser());
     }
 
     @Override
     protected void cleanupDatabaseCommits() {
-        TestUtils.deleteOrgOfUser(user);
+        TestUtils.deleteOrgOfUser(getTestUser());
     }
 
     @Override

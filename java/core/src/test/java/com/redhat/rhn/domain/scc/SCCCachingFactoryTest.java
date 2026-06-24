@@ -113,7 +113,7 @@ public class SCCCachingFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testListReposForRootProduct() throws Exception {
-        SUSEProductTestUtils.createVendorSUSEProductEnvironment(user, null, true);
+        SUSEProductTestUtils.createVendorSUSEProductEnvironment(getTestUser(), null, true);
         TestUtils.flushAndClearSession();
 
         Set<SCCRepository> repos = SCCCachingFactory.lookupRepositoriesByRootProductNameVersionArchForPayg(

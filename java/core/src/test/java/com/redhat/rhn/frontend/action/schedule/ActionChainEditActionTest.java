@@ -51,7 +51,7 @@ public class ActionChainEditActionTest extends RhnPostMockStrutsTestCase {
     @Test
     public void testNotSubmitted() {
         String label = TestUtils.randomString();
-        ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
+        ActionChain actionChain = ActionChainFactory.createActionChain(label, getTestUser());
         actionChain = TestUtils.saveAndFlush(actionChain);
 
         addRequestParameter(ActionChainEditAction.ACTION_CHAIN_ID_PARAMETER, actionChain
@@ -77,7 +77,7 @@ public class ActionChainEditActionTest extends RhnPostMockStrutsTestCase {
     @Test
     public void testDelete() {
         String label = TestUtils.randomString();
-        ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
+        ActionChain actionChain = ActionChainFactory.createActionChain(label, getTestUser());
         actionChain = TestUtils.saveAndFlush(actionChain);
 
         addRequestParameter(ActionChainEditAction.ACTION_CHAIN_ID_PARAMETER, actionChain
@@ -97,11 +97,11 @@ public class ActionChainEditActionTest extends RhnPostMockStrutsTestCase {
     @Test
     public void testSchedule() throws Exception {
         String label = TestUtils.randomString();
-        ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
+        ActionChain actionChain = ActionChainFactory.createActionChain(label, getTestUser());
         Action action = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
-        action.setOrg(user.getOrg());
+        action.setOrg(getTestUser().getOrg());
         ActionChainEntry entry = ActionChainFactory.queueActionChainEntry(action,
-            actionChain, ServerFactoryTest.createTestServer(user), 0);
+            actionChain, ServerFactoryTest.createTestServer(getTestUser()), 0);
         actionChain = TestUtils.saveAndFlush(actionChain);
 
         addRequestParameter(ActionChainEditAction.ACTION_CHAIN_ID_PARAMETER, actionChain

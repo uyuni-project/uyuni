@@ -29,18 +29,19 @@ public class CopyFileSandboxActionTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testExecute() throws Exception {
-        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(getTestUser(), AccessGroupFactory.CONFIG_ADMIN);
 
         //Create the revision to copy
-        ConfigRevision revision = ConfigTestUtils.createConfigRevision(user.getOrg());
+        ConfigRevision revision = ConfigTestUtils.createConfigRevision(getTestUser().getOrg());
         Long cfid = revision.getConfigFile().getId();
         Long crid = revision.getId();
 
         //Create a channel to appear in the list.
-        ConfigChannel channel = ConfigTestUtils.createConfigChannel(user.getOrg(), ConfigChannelType.sandbox());
+        ConfigChannel channel = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(),
+                ConfigChannelType.sandbox());
         //This is a sandbox channel, which means that we need to give it a server
         //for it to be a valid channel,  the function below does that.
-        ConfigTestUtils.giveUserChanAccess(user, channel);
+        ConfigTestUtils.giveUserChanAccess(getTestUser(), channel);
 
         setRequestPathInfo("/configuration/file/CopyFileSandbox");
         addRequestParameter("cfid", cfid.toString());

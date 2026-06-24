@@ -53,15 +53,16 @@ public class PtfPackagesCacheManagerTest extends BaseTestCaseWithUser {
     @BeforeEach
     public void setUp() throws Exception {
 
-        server = ServerFactoryTest.createTestServer(user);
+        server = ServerFactoryTest.createTestServer(getTestUser());
 
-        originalPackage = PackageTest.createTestPackage(user.getOrg());
-        ptfPackage = PackageTestUtils.createPtfPackage(originalPackage, "123456", "1", user.getOrg());
-        newerPackage = PackageTestUtils.newVersionOfPackage(originalPackage, null, "2.0.0", null, user.getOrg());
+        originalPackage = PackageTest.createTestPackage(getTestUser().getOrg());
+        ptfPackage = PackageTestUtils.createPtfPackage(originalPackage, "123456", "1", getTestUser().getOrg());
+        newerPackage =
+                PackageTestUtils.newVersionOfPackage(originalPackage, null, "2.0.0", null, getTestUser().getOrg());
 
-        subscribedChannel = ChannelTestUtils.createBaseChannel(user);
+        subscribedChannel = ChannelTestUtils.createBaseChannel(getTestUser());
         subscribedChannel.setChecksumType(ChannelFactory.findChecksumTypeByLabel("sha256"));
-        SystemManager.subscribeServerToChannel(user, server, subscribedChannel);
+        SystemManager.subscribeServerToChannel(getTestUser(), server, subscribedChannel);
     }
 
     /**
@@ -82,17 +83,17 @@ public class PtfPackagesCacheManagerTest extends BaseTestCaseWithUser {
         // Verify that no ptf are in the needed cache
         DataResult<ErrataCacheDto> needingUpdates = ErrataCacheManager.packagesNeedingUpdates(server.getId());
         Assertions.assertEquals(0L, needingUpdates.stream()
-                                                  .map(e -> PackageFactory.lookupByIdAndUser(e.getPackageId(), user))
-                                                  .filter(Package::isPartOfPtf)
-                                                  .count());
+                                      .map(e -> PackageFactory.lookupByIdAndUser(e.getPackageId(), getTestUser()))
+                                      .filter(Package::isPartOfPtf)
+                                      .count());
 
         // just to be sure, recompute the cache and verify that the results are same
         ServerFactory.updateServerNeededCache(server.getId());
         needingUpdates = ErrataCacheManager.packagesNeedingUpdates(server.getId());
         Assertions.assertEquals(0L, needingUpdates.stream()
-                                                  .map(e -> PackageFactory.lookupByIdAndUser(e.getPackageId(), user))
-                                                  .filter(Package::isPartOfPtf)
-                                                  .count());
+                                      .map(e -> PackageFactory.lookupByIdAndUser(e.getPackageId(), getTestUser()))
+                                      .filter(Package::isPartOfPtf)
+                                      .count());
     }
 
     /**
@@ -105,7 +106,7 @@ public class PtfPackagesCacheManagerTest extends BaseTestCaseWithUser {
         // channel has original and ptf packages
         subscribedChannel.getPackages().addAll(List.of(originalPackage, ptfPackage, newerPackage));
 
-        Errata errataPtf = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata errataPtf = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         errataPtf.addPackage(ptfPackage);
         subscribedChannel.addErrata(errataPtf);
 
@@ -119,17 +120,17 @@ public class PtfPackagesCacheManagerTest extends BaseTestCaseWithUser {
         // Verify that no ptf are in the needed cache
         DataResult<ErrataCacheDto> needingUpdates = ErrataCacheManager.packagesNeedingUpdates(server.getId());
         Assertions.assertEquals(0L, needingUpdates.stream()
-                                                  .map(e -> PackageFactory.lookupByIdAndUser(e.getPackageId(), user))
-                                                  .filter(Package::isPartOfPtf)
-                                                  .count());
+                                      .map(e -> PackageFactory.lookupByIdAndUser(e.getPackageId(), getTestUser()))
+                                      .filter(Package::isPartOfPtf)
+                                      .count());
 
         // just to be sure, recompute the cache and verify that the results are same
         ServerFactory.updateServerNeededCache(server.getId());
         needingUpdates = ErrataCacheManager.packagesNeedingUpdates(server.getId());
         Assertions.assertEquals(0L, needingUpdates.stream()
-                                                  .map(e -> PackageFactory.lookupByIdAndUser(e.getPackageId(), user))
-                                                  .filter(Package::isPartOfPtf)
-                                                  .count());
+                                      .map(e -> PackageFactory.lookupByIdAndUser(e.getPackageId(), getTestUser()))
+                                      .filter(Package::isPartOfPtf)
+                                      .count());
     }
 
     /**
@@ -152,17 +153,17 @@ public class PtfPackagesCacheManagerTest extends BaseTestCaseWithUser {
         DataResult<ErrataCacheDto> needingUpdates = ErrataCacheManager.packagesNeedingUpdates(server.getId());
         Assertions.assertEquals(1L, needingUpdates.size());
         Assertions.assertEquals(0L, needingUpdates.stream()
-                                                  .map(e -> PackageFactory.lookupByIdAndUser(e.getPackageId(), user))
-                                                  .filter(Package::isPartOfPtf)
-                                                  .count());
+                                      .map(e -> PackageFactory.lookupByIdAndUser(e.getPackageId(), getTestUser()))
+                                      .filter(Package::isPartOfPtf)
+                                      .count());
 
         // just to be sure, recompute the cache and verify that the results are same
         ServerFactory.updateServerNeededCache(server.getId());
         needingUpdates = ErrataCacheManager.packagesNeedingUpdates(server.getId());
         Assertions.assertEquals(1L, needingUpdates.size());
         Assertions.assertEquals(0L, needingUpdates.stream()
-                                                  .map(e -> PackageFactory.lookupByIdAndUser(e.getPackageId(), user))
-                                                  .filter(Package::isPartOfPtf)
-                                                  .count());
+                                      .map(e -> PackageFactory.lookupByIdAndUser(e.getPackageId(), getTestUser()))
+                                      .filter(Package::isPartOfPtf)
+                                      .count());
     }
 }

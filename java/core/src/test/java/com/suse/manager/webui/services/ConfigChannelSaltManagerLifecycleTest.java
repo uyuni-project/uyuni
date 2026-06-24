@@ -35,7 +35,6 @@ import com.redhat.rhn.domain.server.ServerFactory;
 import com.redhat.rhn.manager.configuration.ConfigurationManager;
 import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ConfigTestUtils;
-import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -58,41 +57,41 @@ public class ConfigChannelSaltManagerLifecycleTest extends BaseTestCaseWithUser 
 
     @BeforeEach
     public void setUp() throws Exception {
-        user.getOrg().addRole(RoleFactory.CONFIG_ADMIN);
-        user.addToGroup(AccessGroupFactory.CONFIG_ADMIN);
-        user = TestUtils.saveAndFlush(user);
+        getTestUser().getOrg().addRole(RoleFactory.CONFIG_ADMIN);
+        getTestUser().addToGroup(AccessGroupFactory.CONFIG_ADMIN);
+        saveAndFlushTestUser();
     }
 
     @Test
     public void testCreateAndRemoveChannel() throws Exception {
-        ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(user);
+        ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(getTestUser());
         ConfigChannelSaltManagerTestUtils.addFileToChannel(channel);
         ConfigurationManager.getInstance().save(channel, empty());
 
         File initSls = getGeneratedFile(channel, "init.sls");
         initSlsAssertions(initSls);
 
-        ConfigurationManager.getInstance().deleteConfigChannel(user, channel);
+        ConfigurationManager.getInstance().deleteConfigChannel(getTestUser(), channel);
         assertFalse(initSls.getParentFile().exists());
     }
 
     @Test
     public void testRemoveAssignedChannel() throws Exception {
-        ConfigChannel channel1 = ConfigChannelSaltManagerTestUtils.createTestChannel(user);
+        ConfigChannel channel1 = ConfigChannelSaltManagerTestUtils.createTestChannel(getTestUser());
         ConfigChannelSaltManagerTestUtils.addFileToChannel(channel1);
         ConfigurationManager.getInstance().save(channel1, empty());
-        ConfigChannel channel2 = ConfigChannelSaltManagerTestUtils.createTestChannel(user);
+        ConfigChannel channel2 = ConfigChannelSaltManagerTestUtils.createTestChannel(getTestUser());
         ConfigChannelSaltManagerTestUtils.addFileToChannel(channel2);
         ConfigurationManager.getInstance().save(channel2, empty());
 
-        MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
-        server.setConfigChannels(Arrays.asList(channel1, channel2), user);
+        MinionServer server = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        server.setConfigChannels(Arrays.asList(channel1, channel2), getTestUser());
         ServerFactory.save(server);
 
-        ConfigurationManager.getInstance().deleteConfigChannel(user, channel1);
+        ConfigurationManager.getInstance().deleteConfigChannel(getTestUser(), channel1);
 
         try {
-            ConfigurationManager.getInstance().lookupConfigChannel(user, channel1.getId());
+            ConfigurationManager.getInstance().lookupConfigChannel(getTestUser(), channel1.getId());
             fail("Channel shouldn't be there...Error detected.");
         }
         catch (LookupException e) {
@@ -102,7 +101,7 @@ public class ConfigChannelSaltManagerLifecycleTest extends BaseTestCaseWithUser 
 
     @Test
     public void testCreatedBinaryFile() throws Exception {
-        ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(user);
+        ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(getTestUser());
         ConfigFile fl = ConfigTestUtils.createConfigFile(channel);
         ConfigRevision configRevision = ConfigTestUtils.createConfigRevision(fl, ConfigFileType.file());
 
@@ -122,13 +121,13 @@ public class ConfigChannelSaltManagerLifecycleTest extends BaseTestCaseWithUser 
                         "sha256");
         assertEquals(contentsChecksum, fileChecksum);
 
-        ConfigurationManager.getInstance().deleteConfigChannel(user, channel);
+        ConfigurationManager.getInstance().deleteConfigChannel(getTestUser(), channel);
         assertFalse(createdFile.getParentFile().exists());
     }
 
     @Test
     public void testRenameChannelLabel() throws Exception {
-        ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(user);
+        ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(getTestUser());
         ConfigChannelSaltManagerTestUtils.addFileToChannel(channel);
         ConfigurationManager.getInstance().save(channel, empty());
 
@@ -147,7 +146,7 @@ public class ConfigChannelSaltManagerLifecycleTest extends BaseTestCaseWithUser 
 
     @Test
     public void testRemoveFile() throws Exception {
-        ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(user);
+        ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(getTestUser());
         ConfigRevision configRevision =
                 ConfigChannelSaltManagerTestUtils.addFileToChannel(channel);
         ConfigurationManager.getInstance().save(channel, empty());
@@ -160,14 +159,14 @@ public class ConfigChannelSaltManagerLifecycleTest extends BaseTestCaseWithUser 
                 configFile.getConfigFileName().getPath());
         assertTrue(configFileOnDisk.exists());
 
-        ConfigurationManager.getInstance().deleteConfigFile(user, configFile);
+        ConfigurationManager.getInstance().deleteConfigFile(getTestUser(), configFile);
         getGeneratedFile(channel, configFile.getConfigFileName().getPath());
         assertFalse(configFileOnDisk.exists());
     }
 
     @Test
     public void testUpdateRevision() throws Exception {
-        ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(user);
+        ConfigChannel channel = ConfigChannelSaltManagerTestUtils.createTestChannel(getTestUser());
         ConfigRevision configRevision =
                 ConfigChannelSaltManagerTestUtils.addFileToChannel(channel);
         ConfigurationManager.getInstance().save(channel, empty());
@@ -180,7 +179,7 @@ public class ConfigChannelSaltManagerLifecycleTest extends BaseTestCaseWithUser 
                 configFile.getConfigFileName().getPath());
         assertTrue(configFileOnDisk.exists());
 
-        ConfigurationManager.getInstance().deleteConfigFile(user, configFile);
+        ConfigurationManager.getInstance().deleteConfigFile(getTestUser(), configFile);
         getGeneratedFile(channel, configFile.getConfigFileName().getPath());
         assertFalse(configFileOnDisk.exists());
     }

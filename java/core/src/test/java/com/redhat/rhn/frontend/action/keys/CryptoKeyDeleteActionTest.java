@@ -34,7 +34,7 @@ public class CryptoKeyDeleteActionTest extends RhnPostMockStrutsTestCase {
 
     @Test
     public void testExecute() throws Exception {
-        cmd = new CreateCryptoKeyCommand(user.getOrg());
+        cmd = new CreateCryptoKeyCommand(getTestUser().getOrg());
         CryptoKeyCommandTest testObj = new CryptoKeyCommandTest();
         testObj.setupKey(cmd);
         setRequestPathInfo("/keys/CryptoKeyDelete");
@@ -46,7 +46,7 @@ public class CryptoKeyDeleteActionTest extends RhnPostMockStrutsTestCase {
 
     @Test
     public void testDeleteSubmit() throws Exception {
-        cmd = new CreateCryptoKeyCommand(user.getOrg());
+        cmd = new CreateCryptoKeyCommand(getTestUser().getOrg());
         CryptoKeyCommandTest testObj = new CryptoKeyCommandTest();
         testObj.setupKey(cmd);
         setRequestPathInfo("/keys/CryptoKeyDelete");

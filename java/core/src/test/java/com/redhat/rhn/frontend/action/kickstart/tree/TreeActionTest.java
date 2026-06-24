@@ -50,22 +50,22 @@ public class TreeActionTest extends RhnPostMockStrutsTestCase {
 
     @Test
     public void testCreateNonSubmit() throws Exception {
-        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
-        ChannelFactoryTest.createTestChannel(user);
+        UserTestUtils.addAccessGroup(getTestUser(), AccessGroupFactory.CONFIG_ADMIN);
+        ChannelFactoryTest.createTestChannel(getTestUser());
         executeNonSubmit("/kickstart/TreeCreate");
     }
 
     @Test
     public void testCreateSubmit() throws Exception {
-        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
-        Channel c = ChannelFactoryTest.createTestChannel(user);
+        UserTestUtils.addAccessGroup(getTestUser(), AccessGroupFactory.CONFIG_ADMIN);
+        Channel c = ChannelFactoryTest.createTestChannel(getTestUser());
         executeSubmit("/kickstart/TreeCreate", c);
         verifyActionMessage("tree.create.success");
     }
 
     @Test
     public void testCreateRefresh() throws Exception {
-        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(getTestUser(), AccessGroupFactory.CONFIG_ADMIN);
 
         Channel rhel5BaseChan = createRhel5Channels();
         Channel rhel4BaseChan = createRhel4Channels();
@@ -118,8 +118,8 @@ public class TreeActionTest extends RhnPostMockStrutsTestCase {
      * @throws Exception
      */
     private Channel createRhel5Channels() throws Exception {
-        Channel rhel5BaseChan = ChannelTestUtils.createTestChannel(user);
-        Channel rhel5ToolsChan = ChannelTestUtils.createChildChannel(user, rhel5BaseChan);
+        Channel rhel5BaseChan = ChannelTestUtils.createTestChannel(getTestUser());
+        Channel rhel5ToolsChan = ChannelTestUtils.createChildChannel(getTestUser(), rhel5BaseChan);
         PackageManagerTest.addKickstartPackageToChannel(
                 ConfigDefaults.get().getKickstartPackageNames().get(0), rhel5ToolsChan);
         return rhel5BaseChan;
@@ -132,8 +132,8 @@ public class TreeActionTest extends RhnPostMockStrutsTestCase {
      * @throws Exception
      */
     private Channel createRhel4Channels() throws Exception {
-        Channel rhel4BaseChan = ChannelTestUtils.createTestChannel(user);
-        Channel rhel4ToolsChan = ChannelTestUtils.createChildChannel(user, rhel4BaseChan);
+        Channel rhel4BaseChan = ChannelTestUtils.createTestChannel(getTestUser());
+        Channel rhel4ToolsChan = ChannelTestUtils.createChildChannel(getTestUser(), rhel4BaseChan);
 
         PackageManagerTest.addKickstartPackageToChannel(
                 KickstartData.LEGACY_KICKSTART_PACKAGE_NAME + "ks-rh-i386-desktop-4",
@@ -149,7 +149,7 @@ public class TreeActionTest extends RhnPostMockStrutsTestCase {
 
     @Test
     public void testEditSubmit() throws Exception {
-        Channel c = ChannelFactoryTest.createTestChannel(user);
+        Channel c = ChannelFactoryTest.createTestChannel(getTestUser());
         KickstartableTree t = KickstartableTreeTest.createTestKickstartableTree(c);
         addRequestParameter(RequestContext.KSTREE_ID, t.getId().toString());
         String newLabel = executeSubmit("/kickstart/TreeEdit", c);
@@ -162,7 +162,7 @@ public class TreeActionTest extends RhnPostMockStrutsTestCase {
 
     @Test
     public void testEditNonSubmit() throws Exception {
-        Channel c = ChannelFactoryTest.createTestChannel(user);
+        Channel c = ChannelFactoryTest.createTestChannel(getTestUser());
         KickstartableTree t = KickstartableTreeTest.createTestKickstartableTree(c);
         addRequestParameter(RequestContext.KSTREE_ID, t.getId().toString());
         executeNonSubmit("/kickstart/TreeEdit");
@@ -217,9 +217,9 @@ public class TreeActionTest extends RhnPostMockStrutsTestCase {
 
     @Test
     public void testDeleteConfirm() throws Exception {
-        Channel c = ChannelFactoryTest.createTestChannel(user);
+        Channel c = ChannelFactoryTest.createTestChannel(getTestUser());
         KickstartableTree t = KickstartableTreeTest.createTestKickstartableTree(c);
-        KickstartData ksdata = KickstartDataTest.createKickstartWithOptions(user.getOrg());
+        KickstartData ksdata = KickstartDataTest.createKickstartWithOptions(getTestUser().getOrg());
         ksdata.getKickstartDefaults().setKstree(t);
         KickstartFactory.saveKickstartData(ksdata);
         TestUtils.flushAndEvict(ksdata);
@@ -240,13 +240,13 @@ public class TreeActionTest extends RhnPostMockStrutsTestCase {
 
     @Test
     public void testDeleteSubmit() throws Exception {
-        Channel c = ChannelFactoryTest.createTestChannel(user);
+        Channel c = ChannelFactoryTest.createTestChannel(getTestUser());
         KickstartableTree t = KickstartableTreeTest.createTestKickstartableTree(c);
         assertNotNull(t);
 
         KickstartFactory.saveKickstartableTree(t);
         assertNotNull(KickstartFactory.
-                        lookupKickstartTreeByIdAndOrg(t.getId(), user.getOrg()));
+                        lookupKickstartTreeByIdAndOrg(t.getId(), getTestUser().getOrg()));
         addRequestParameter(RequestContext.KSTREE_ID, t.getId().toString());
         addRequestParameter(TreeEditAction.BASE_PATH, t.getBasePath());
         addRequestParameter(TreeEditAction.CHANNEL_ID,

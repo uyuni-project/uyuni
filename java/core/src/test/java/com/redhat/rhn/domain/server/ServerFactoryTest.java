@@ -124,7 +124,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     @BeforeEach
     public void setUp() throws Exception {
-        server = createTestServer(user);
+        server = createTestServer(getTestUser());
         assertNotNull(server.getId());
     }
 
@@ -132,11 +132,11 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     public void testListConfigEnabledSystems() throws Exception {
         //Only Config Admins can use this manager function.
         //Making the user a config admin will also automatically
-        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(getTestUser(), AccessGroupFactory.CONFIG_ADMIN);
 
         //That is not enough though, the user must also have a server that is
         //a member of the config channel and have access to the server as well.
-        Server s = ServerFactoryTest.createTestServer(user, true);
+        Server s = ServerFactoryTest.createTestServer(getTestUser(), true);
         ConfigTestUtils.giveConfigCapabilities(s);
         List<Server> systems = ServerFactory.listConfigEnabledSystems();
         assertNotNull(systems);
@@ -145,35 +145,35 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testServerGroupMembers() throws Exception {
-        Server s = createTestServer(user);
+        Server s = createTestServer(getTestUser());
         assertNotNull(s.getEntitledGroups());
         assertFalse(s.getEntitledGroups().isEmpty());
     }
 
     @Test
     public void testCustomDataValues() throws Exception {
-        Org org = user.getOrg();
-        Server testServer = createTestServer(user);
+        Org org = getTestUser().getOrg();
+        Server testServer = createTestServer(getTestUser());
 
         // make sure we dont' have anything defined for this server yet
         Set vals = testServer.getCustomDataValues();
         assertEquals(0, vals.size());
 
         // create a test key and add to org
-        CustomDataKey testKey = CustomDataKeyTest.createTestCustomDataKey(user);
+        CustomDataKey testKey = CustomDataKeyTest.createTestCustomDataKey(getTestUser());
         org.addCustomDataKey(testKey);
         assertTrue(org.hasCustomDataKey(testKey.getLabel()));
         assertNull(testServer.getCustomDataValue(testKey));
 
         // add the test key to the server and make sure we can get to it.
-        testServer.addCustomDataValue(testKey.getLabel(), "foo", user);
+        testServer.addCustomDataValue(testKey.getLabel(), "foo", getTestUser());
         assertNotNull(testServer.getCustomDataValue(testKey));
         assertFalse(testServer.getCustomDataValues().isEmpty());
 
         // try sending null for key
         int numVals = testServer.getCustomDataValues().size();
         try {
-            testServer.addCustomDataValue(new CustomDataKey(), "foo", user);
+            testServer.addCustomDataValue(new CustomDataKey(), "foo", getTestUser());
             fail("server.addCustomDataValue() allowed a value set for an undefined key.");
         }
         catch (UndefinedCustomDataKeyException e) {
@@ -185,9 +185,9 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testServerLookup() {
-        assertNull(ServerFactory.lookupByIdAndOrg(-1234L, user.getOrg()));
+        assertNull(ServerFactory.lookupByIdAndOrg(-1234L, getTestUser().getOrg()));
         assertNotNull(ServerFactory.lookupByIdAndOrg(server.getId(),
-                user.getOrg()));
+                getTestUser().getOrg()));
     }
 
     @Test
@@ -207,7 +207,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testCreateServer() throws Exception {
-        Server newS = createTestServer(user);
+        Server newS = createTestServer(getTestUser());
         newS.getNetworkInterfaces().clear();
         // make sure our many-to-one mappings were set and saved
         assertNotNull(newS.getOrg());
@@ -227,7 +227,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         ServerFactory.save(newS);
 
-        Server server2 = ServerFactory.lookupByIdAndOrg(newS.getId(), user.getOrg());
+        Server server2 = ServerFactory.lookupByIdAndOrg(newS.getId(), getTestUser().getOrg());
 
         Set<Note> notes = server2.getNotes();
         assertEquals(2, notes.size());
@@ -247,9 +247,9 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         Collection servers = new ArrayList<>();
         servers.add(server);
-        user.addToGroup(AccessGroupFactory.SYSTEM_GROUP_ADMIN);
-        ManagedServerGroup sg1 = SERVER_GROUP_MANAGER.create(user, "FooFooFOO", "Foo Description");
-        SERVER_GROUP_MANAGER.addServers(sg1, servers, user);
+        getTestUser().addToGroup(AccessGroupFactory.SYSTEM_GROUP_ADMIN);
+        ManagedServerGroup sg1 = SERVER_GROUP_MANAGER.create(getTestUser(), "FooFooFOO", "Foo Description");
+        SERVER_GROUP_MANAGER.addServers(sg1, servers, getTestUser());
 
         server = TestUtils.reload(server);
         assertEquals(1, server.getEntitledGroupTypes().size());
@@ -266,7 +266,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         //from the db.
         TestUtils.evict(server);
 
-        Server server2 = ServerFactory.lookupByIdAndOrg(id, user.getOrg());
+        Server server2 = ServerFactory.lookupByIdAndOrg(id, getTestUser().getOrg());
         assertEquals(1, server2.getManagedGroups().size());
         sg1 = server2.getManagedGroups().iterator().next();
 
@@ -371,9 +371,9 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     public void testAddRemove() throws Exception {
 
         //Test adding/removing server from group
-        ServerGroupTestUtils.createManaged(user);
-        Server testServer = createTestServer(user);
-        Org org = user.getOrg();
+        ServerGroupTestUtils.createManaged(getTestUser());
+        Server testServer = createTestServer(getTestUser());
+        Org org = getTestUser().getOrg();
 
         ManagedServerGroup group = org.getManagedServerGroups().
             iterator().next();
@@ -403,23 +403,23 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         assertTrue(notes.isEmpty());
 
         Note note = new Note();
-        note.setCreator(user);
+        note.setCreator(getTestUser());
         note.setSubject("Test Note subject");
         note.setNote("Body text");
         Note note2 = new Note();
-        note2.setCreator(user);
+        note2.setCreator(getTestUser());
         note2.setSubject("Test Note 2 subject");
         note2.setNote("Body of note");
 
         server.addNote(note);
         server.addNote(note2);
-        server.addNote(user, "Test Note 3 subject", "Boddy of note");
+        server.addNote(getTestUser(), "Test Note 3 subject", "Boddy of note");
         ServerFactory.save(server);
         //Evict from session to make sure that we get a fresh server
         //from the db.
         TestUtils.flushAndEvict(server);
         Server server2 = ServerFactory.lookupByIdAndOrg(server.getId(),
-                user.getOrg());
+                getTestUser().getOrg());
         notes = server2.getNotes();
         assertNotNull(notes);
         assertFalse(notes.isEmpty());
@@ -454,7 +454,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         TestUtils.flushAndEvict(server);
 
         Server server2 = ServerFactory.lookupByIdAndOrg(server.getId(),
-                user.getOrg());
+                getTestUser().getOrg());
         devs = server2.getDevices();
         assertNotNull(devs);
         assertFalse(devs.isEmpty());
@@ -475,7 +475,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         TestUtils.flushAndEvict(server);
 
         Server server2 = ServerFactory.lookupByIdAndOrg(server.getId(),
-                user.getOrg());
+                getTestUser().getOrg());
         assertEquals(1024, server2.getRam());
         assertEquals(256, server2.getSwap());
     }
@@ -499,7 +499,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         //Evict from session to make sure that we get a fresh server from the db.
         TestUtils.flushAndEvict(server);
 
-        Server server2 = ServerFactory.lookupByIdAndOrg(server.getId(), user.getOrg());
+        Server server2 = ServerFactory.lookupByIdAndOrg(server.getId(), getTestUser().getOrg());
         assertEquals(dmi, server2.getDmi());
 
         // set server back to a managed instance
@@ -513,19 +513,19 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testTwoServers() throws Exception {
-        Server s1 = createTestServer(user);
-        Server s2 = createTestServer(user);
+        Server s1 = createTestServer(getTestUser());
+        Server s2 = createTestServer(getTestUser());
         assertNotNull(s1);
         assertNotNull(s2);
     }
 
     @Test
     public void testGetChildChannels() throws Exception {
-        Server s1 = ServerTestUtils.createTestSystem(user);
+        Server s1 = ServerTestUtils.createTestSystem(getTestUser());
         assertTrue(s1.getChildChannels().isEmpty());
 
-        s1.addChannel(ChannelTestUtils.createChildChannel(user, s1.getBaseChannel()));
-        s1.addChannel(ChannelTestUtils.createChildChannel(user, s1.getBaseChannel()));
+        s1.addChannel(ChannelTestUtils.createChildChannel(getTestUser(), s1.getBaseChannel()));
+        s1.addChannel(ChannelTestUtils.createChildChannel(getTestUser(), s1.getBaseChannel()));
         assertEquals(2, s1.getChildChannels().size());
     }
 
@@ -534,7 +534,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
      * @throws Exception something bad happened
      */
     public void aTestServerHasSpecificEntitlement() throws Exception {
-        Server s = createTestServer(user);
+        Server s = createTestServer(getTestUser());
         SYSTEM_ENTITLEMENT_MANAGER.addEntitlementToServer(s, EntitlementManager.VIRTUALIZATION);
         assertTrue(s.hasEntitlement(EntitlementManager.VIRTUALIZATION));
     }
@@ -548,7 +548,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
         // The default test server should not have a virtualization entitlement.
 
-        Server s = createTestServer(user);
+        Server s = createTestServer(getTestUser());
         assertFalse(s.hasEntitlement(EntitlementManager.VIRTUALIZATION));
     }
 
@@ -765,12 +765,12 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     // This may be busted , can comment out
     @Test
     public void testCompatibleWithServer()  {
-        Server serverA = createTestServer(user, true,
+        Server serverA = createTestServer(getTestUser(), true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
-        Server serverB = createTestServer(user, true,
+        Server serverB = createTestServer(getTestUser(), true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
 
-        Channel channel = ChannelFactoryTest.createTestChannel(user);
+        Channel channel = ChannelFactoryTest.createTestChannel(getTestUser());
         serverA.addChannel(channel);
         serverB.addChannel(channel);
         ServerFactory.save(serverA);
@@ -779,8 +779,8 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         TestUtils.flushAndClearSession();
 
         // retrieve servers and verify that they are compatible
-        Server serverLookup = ServerFactory.lookupByIdAndOrg(serverA.getId(), user.getOrg());
-        List<Row> list = ServerFactory.compatibleWithServer(user, serverLookup);
+        Server serverLookup = ServerFactory.lookupByIdAndOrg(serverA.getId(), getTestUser().getOrg());
+        List<Row> list = ServerFactory.compatibleWithServer(getTestUser(), serverLookup);
         assertNotNull(list, "List is null");
         assertFalse(list.isEmpty(), "List is empty");
         boolean found = false;
@@ -845,7 +845,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testGetServerHistory() throws Exception {
 
-        Server serverTest = ServerFactoryTest.createTestServer(user);
+        Server serverTest = ServerFactoryTest.createTestServer(getTestUser());
         ServerHistoryEvent event = new ServerHistoryEvent();
         event.setSummary("summary1");
         event.setDetails("details1");
@@ -923,11 +923,11 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testUnsubscribeFromAllChannels() throws Exception {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        ChannelFactoryTest.createBaseChannel(user);
-        Server serverIn = ServerFactoryTest.createTestServer(user);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
+        ChannelFactoryTest.createBaseChannel(getTestUser());
+        Server serverIn = ServerFactoryTest.createTestServer(getTestUser());
 
-        server  = ServerFactory.unsubscribeFromAllChannels(user, serverIn);
+        server  = ServerFactory.unsubscribeFromAllChannels(getTestUser(), serverIn);
         ServerFactory.commitTransaction();
 
         assertEquals(0, server.getChannels().size());
@@ -935,12 +935,12 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testSet() {
-        Server serverIn = ServerFactoryTest.createTestServer(user, true,
+        Server serverIn = ServerFactoryTest.createTestServer(getTestUser(), true,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
-        RhnSet set = RhnSetDecl.SYSTEMS.get(user);
+        RhnSet set = RhnSetDecl.SYSTEMS.get(getTestUser());
         set.addElement(serverIn.getId(), null);
         RhnSetManager.store(set);
-        List<Server> servers = ServerFactory.listSystemsInSsm(user);
+        List<Server> servers = ServerFactory.listSystemsInSsm(getTestUser());
         assertEquals(1, servers.size());
         assertEquals(serverIn, servers.get(0));
     }
@@ -956,7 +956,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testListSnapshotsForServer() {
-        Server server2 = ServerFactoryTest.createTestServer(user, true);
+        Server server2 = ServerFactoryTest.createTestServer(getTestUser(), true);
         ServerSnapshot snap = generateSnapshot(server2);
         ServerGroup grp = ServerGroupTestUtils.createEntitled(server2.getOrg(),
          ServerConstants.getServerGroupTypeEnterpriseEntitled());
@@ -971,7 +971,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testLookupSnapshotById() {
-        Server server2 = ServerFactoryTest.createTestServer(user, true);
+        Server server2 = ServerFactoryTest.createTestServer(getTestUser(), true);
         ServerSnapshot snap = TestUtils.saveAndFlush(generateSnapshot(server2));
 
         ServerSnapshot snap2 = ServerFactory.lookupSnapshotById(snap.getId().intValue());
@@ -981,7 +981,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testDeleteSnapshot() {
-        Server server2 = ServerFactoryTest.createTestServer(user, true);
+        Server server2 = ServerFactoryTest.createTestServer(getTestUser(), true);
         ServerSnapshot serverSnapshotNew = generateSnapshot(server2);
         ServerSnapshot serverSnapshot = TestUtils.saveAndFlush(serverSnapshotNew);
         ServerFactory.deleteSnapshot(serverSnapshot);
@@ -993,7 +993,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testGetSnapshotTags() {
-        Server server2 = ServerFactoryTest.createTestServer(user, true);
+        Server server2 = ServerFactoryTest.createTestServer(getTestUser(), true);
         ServerSnapshot snap = TestUtils.saveAndFlush(generateSnapshot(server2));
 
         SnapshotTagName nameNew = new SnapshotTagName();
@@ -1022,17 +1022,18 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         PackageArch parch1 = PackageFactory.lookupPackageArchById(100L);
 
         Package zypper = new Package();
-        PackageTest.populateTestPackage(zypper, user.getOrg(),  PackageFactory.lookupOrCreatePackageByName("zypper"),
+        PackageTest.populateTestPackage(zypper, getTestUser().getOrg(),
+                PackageFactory.lookupOrCreatePackageByName("zypper"),
                 PackageEvrFactoryTest.createTestPackageEvr("1", "1.0.0", "1", PackageType.RPM), parch1);
         zypper = TestUtils.saveAndFlush(zypper);
 
         Package p1v1 = new Package();
-        PackageTest.populateTestPackage(p1v1, user.getOrg(), p1Name,
+        PackageTest.populateTestPackage(p1v1, getTestUser().getOrg(), p1Name,
                 PackageEvrFactoryTest.createTestPackageEvr("1", "1.0.0", "1", PackageType.RPM), parch1);
         p1v1 = TestUtils.saveAndFlush(p1v1);
 
         Package p1v2 = new Package();
-        PackageTest.populateTestPackage(p1v2, user.getOrg(), p1Name,
+        PackageTest.populateTestPackage(p1v2, getTestUser().getOrg(), p1Name,
                 PackageEvrFactoryTest.createTestPackageEvr("1", "2.0.0", "1", PackageType.RPM), parch1);
         p1v2 = TestUtils.saveAndFlush(p1v2);
 
@@ -1051,23 +1052,23 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         zypperIn.setArch(zypper.getPackageArch());
         zypperIn.setName(zypper.getPackageName());
 
-        Channel baseChan = ChannelFactoryTest.createBaseChannel(user);
+        Channel baseChan = ChannelFactoryTest.createBaseChannel(getTestUser());
         final String updateTag = "SLE-SERVER";
         baseChan.setUpdateTag(updateTag);
 
-        MinionServer nonZypperSystem = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer nonZypperSystem = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         nonZypperSystem.addChannel(baseChan);
         p1v1InNZ.setServer(nonZypperSystem);
         nonZypperSystem.getPackages().add(p1v1InNZ);
 
-        MinionServer zypperSystem = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer zypperSystem = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         zypperSystem.addChannel(baseChan);
         p1v1InZ.setServer(zypperSystem);
         zypperIn.setServer(zypperSystem);
         zypperSystem.getPackages().add(p1v1InZ);
         zypperSystem.getPackages().add(zypperIn);
 
-        Errata e1 = ErrataFactoryTest.createTestErrata(user.getId());
+        Errata e1 = ErrataFactoryTest.createTestErrata(getTestUser().getId());
         baseChan.addErrata(e1);
         e1.setAdvisoryName("SUSE-2016-1234");
         e1.getPackages().add(p1v2);
@@ -1106,7 +1107,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testlistNewestPkgsForServerErrata() throws Exception {
-        Server srv = ServerFactoryTest.createTestServer(user, true);
+        Server srv = ServerFactoryTest.createTestServer(getTestUser(), true);
         PackageName p1Name = PackageNameTest.createTestPackageName("testPackage1-" + TestUtils.randomString());
         PackageName p2Name = PackageNameTest.createTestPackageName("testPackage2-" + TestUtils.randomString());
 
@@ -1114,12 +1115,12 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         PackageArch parch2 = PackageFactory.lookupPackageArchById(101L);
 
         Package p1v1 = new Package();
-        PackageTest.populateTestPackage(p1v1, user.getOrg(), p1Name,
+        PackageTest.populateTestPackage(p1v1, getTestUser().getOrg(), p1Name,
                 PackageEvrFactoryTest.createTestPackageEvr("1", "1.0.0", "1", srv.getPackageType()), parch1);
         p1v1 = TestUtils.saveAndFlush(p1v1);
 
         Package p1v2 = new Package();
-        PackageTest.populateTestPackage(p1v2, user.getOrg(), p1Name,
+        PackageTest.populateTestPackage(p1v2, getTestUser().getOrg(), p1Name,
                 PackageEvrFactoryTest.createTestPackageEvr("1", "2.0.0", "1", srv.getPackageType()), parch1);
         p1v2 = TestUtils.saveAndFlush(p1v2);
 
@@ -1127,21 +1128,21 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
                 srv.getPackageType());
 
         Package p1v3 = new Package();
-        PackageTest.populateTestPackage(p1v3, user.getOrg(), p1Name, v3, parch1);
+        PackageTest.populateTestPackage(p1v3, getTestUser().getOrg(), p1Name, v3, parch1);
         p1v3 = TestUtils.saveAndFlush(p1v3);
 
         Package p1v4 = new Package();
-        PackageTest.populateTestPackage(p1v4, user.getOrg(), p1Name,
+        PackageTest.populateTestPackage(p1v4, getTestUser().getOrg(), p1Name,
                 PackageEvrFactoryTest.createTestPackageEvr("1", "3.0.0", "1",
                         srv.getPackageType()), parch1);
         p1v4 = TestUtils.saveAndFlush(p1v4);
 
         Package p1v3arch2 = new Package();
-        PackageTest.populateTestPackage(p1v3arch2, user.getOrg(), p1Name, v3, parch2);
+        PackageTest.populateTestPackage(p1v3arch2, getTestUser().getOrg(), p1Name, v3, parch2);
         p1v3arch2 = TestUtils.saveAndFlush(p1v3arch2);
 
         Package p2v4 = new Package();
-        PackageTest.populateTestPackage(p2v4, user.getOrg(), p2Name,
+        PackageTest.populateTestPackage(p2v4, getTestUser().getOrg(), p2Name,
                 PackageEvrFactoryTest.createTestPackageEvr("1", "4.0.0", "1",
                         srv.getPackageType()), parch1);
         p2v4 = TestUtils.saveAndFlush(p2v4);
@@ -1156,15 +1157,15 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         Set<Long> errataIds = new HashSet<>();
 
         serverIds.add(srv.getId());
-        Channel baseChan = ChannelFactoryTest.createBaseChannel(user);
+        Channel baseChan = ChannelFactoryTest.createBaseChannel(getTestUser());
         srv.addChannel(baseChan);
         p1v1In.setServer(srv);
         srv.getPackages().add(p1v1In);
 
-        Channel childChan = ChannelFactoryTest.createTestChannel(user);
+        Channel childChan = ChannelFactoryTest.createTestChannel(getTestUser());
         childChan.setParentChannel(baseChan);
 
-        Errata e1 = ErrataFactoryTest.createTestErrata(user.getId());
+        Errata e1 = ErrataFactoryTest.createTestErrata(getTestUser().getId());
         errataIds.add(e1.getId());
         baseChan.addErrata(e1);
         e1.getPackages().add(p1v2);
@@ -1172,25 +1173,25 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         baseChan.getPackages().add(p1v2);
         baseChan.getPackages().add(p2v4);
 
-        Errata e2 = ErrataFactoryTest.createTestErrata(user.getId());
+        Errata e2 = ErrataFactoryTest.createTestErrata(getTestUser().getId());
         errataIds.add(e2.getId());
         baseChan.addErrata(e2);
         e2.getPackages().add(p1v3);
         baseChan.getPackages().add(p1v3);
 
-        Errata e3 = ErrataFactoryTest.createTestErrata(user.getId());
+        Errata e3 = ErrataFactoryTest.createTestErrata(getTestUser().getId());
         errataIds.add(e3.getId());
         baseChan.addErrata(e3);
         e3.getPackages().add(p1v3arch2);
         baseChan.getPackages().add(p1v3arch2);
 
-        Errata e4 = ErrataFactoryTest.createTestErrata(user.getId());
+        Errata e4 = ErrataFactoryTest.createTestErrata(getTestUser().getId());
         errataIds.add(e4.getId());
         childChan.addErrata(e4);
         e4.getPackages().add(p1v2);
         childChan.getPackages().add(p1v2);
 
-        Errata e5 = ErrataFactoryTest.createTestErrata(user.getId());
+        Errata e5 = ErrataFactoryTest.createTestErrata(getTestUser().getId());
         childChan.addErrata(e4);
         e4.getPackages().add(p1v4);
         childChan.getPackages().add(p1v4);
@@ -1216,18 +1217,18 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         Set<Long> serverIds = new HashSet<>();
         Set<Long> errataIds = new HashSet<>();
 
-        Server srv = ServerFactoryTest.createTestServer(user, true);
+        Server srv = ServerFactoryTest.createTestServer(getTestUser(), true);
         serverIds.add(srv.getId());
-        Channel baseChan = ChannelFactoryTest.createBaseChannel(user);
+        Channel baseChan = ChannelFactoryTest.createBaseChannel(getTestUser());
         baseChan.setUpdateTag("SLE-SERVER");
         srv.addChannel(baseChan);
 
-        Errata e = ErrataFactoryTest.createTestErrata(user.getId());
+        Errata e = ErrataFactoryTest.createTestErrata(getTestUser().getId());
         errataIds.add(e.getId());
         e.setAdvisoryName("SUSE-2016-1234");
         baseChan.addErrata(e);
 
-        Errata ce = ErrataFactoryTest.createTestErrata(user.getId());
+        Errata ce = ErrataFactoryTest.createTestErrata(getTestUser().getId());
         errataIds.add(ce.getId());
         ce.setAdvisoryName("CL-SUSE-2016-1234");
         baseChan.addErrata(ce);
@@ -1250,18 +1251,18 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         Set<Long> serverIds = new HashSet<>();
         Set<Long> errataIds = new HashSet<>();
 
-        Server srv = ServerFactoryTest.createTestServer(user, true);
+        Server srv = ServerFactoryTest.createTestServer(getTestUser(), true);
         serverIds.add(srv.getId());
-        Channel baseChan = ChannelFactoryTest.createBaseChannel(user);
+        Channel baseChan = ChannelFactoryTest.createBaseChannel(getTestUser());
         baseChan.setUpdateTag("slessp4");
         srv.addChannel(baseChan);
 
-        Errata e = ErrataFactoryTest.createTestErrata(user.getId());
+        Errata e = ErrataFactoryTest.createTestErrata(getTestUser().getId());
         errataIds.add(e.getId());
         e.setAdvisoryName("ecryptfs-utils-12379");
         baseChan.addErrata(e);
 
-        Errata ce = ErrataFactoryTest.createTestErrata(user.getId());
+        Errata ce = ErrataFactoryTest.createTestErrata(getTestUser().getId());
         errataIds.add(ce.getId());
         ce.setAdvisoryName("CL-ecryptfs-utils-12379");
         baseChan.addErrata(ce);
@@ -1287,7 +1288,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     @Test
     public void testAddRemoveServerPath() throws Exception {
         Server minion = ServerTestUtils.createTestSystem();
-        Server proxy = ServerFactoryTest.createTestProxyServer(user, false);
+        Server proxy = ServerFactoryTest.createTestProxyServer(getTestUser(), false);
         String proxyHostname = "proxyHostname";
         Set<ServerPath> serverPaths = ServerFactory.createServerPaths(minion, proxy, proxyHostname);
         minion.getServerPaths().addAll(serverPaths);
@@ -1361,7 +1362,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testLookupProxyServer() {
-        Server s = createTestServer(user,
+        Server s = createTestServer(getTestUser(),
                 false,
                 ServerConstants.getServerGroupTypeSaltEntitled(),
                 TYPE_SERVER_PROXY);
@@ -1384,7 +1385,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testLookupProxyServerFQDNWithCaseName() {
-        Server s = createTestServer(user,
+        Server s = createTestServer(getTestUser(),
                 false,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled(),
                 TYPE_SERVER_PROXY);
@@ -1404,7 +1405,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testLookupProxyServerFQDNIgnoreCase() {
-        Server s = createTestServer(user,
+        Server s = createTestServer(getTestUser(),
                 false,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled(),
                 TYPE_SERVER_PROXY);
@@ -1424,7 +1425,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testLookupProxyServerWithSimpleName() {
-        Server s = createTestServer(user,
+        Server s = createTestServer(getTestUser(),
                 false,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled(),
                 TYPE_SERVER_PROXY);
@@ -1442,23 +1443,23 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testFindServersInSetByChannel() throws Exception {
-        Server srv = ServerFactoryTest.createTestServer(user, true);
-        Channel parent = ChannelFactoryTest.createTestChannel(user);
+        Server srv = ServerFactoryTest.createTestServer(getTestUser(), true);
+        Channel parent = ChannelFactoryTest.createTestChannel(getTestUser());
         parent.setParentChannel(null);
 
-        Channel child = ChannelFactoryTest.createTestChannel(user);
+        Channel child = ChannelFactoryTest.createTestChannel(getTestUser());
         child.setParentChannel(parent);
 
         srv.addChannel(parent);
         srv.addChannel(child);
 
-        RhnSet set = RhnSetDecl.SYSTEMS.get(user);
+        RhnSet set = RhnSetDecl.SYSTEMS.get(getTestUser());
         set.addElement(srv.getId() + "");
         RhnSetManager.store(set);
 
         TestUtils.flushAndClearSession();
 
-        List<Long> servers = ServerFactory.findServersInSetByChannel(user, srv.getBaseChannel().getId());
+        List<Long> servers = ServerFactory.findServersInSetByChannel(getTestUser(), srv.getBaseChannel().getId());
         assertEquals(1, servers.size());
         assertEquals(srv.getId(), servers.stream().findFirst().get());
 
@@ -1466,17 +1467,17 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testFilterSystemsWithMaintOnlyActions() throws Exception {
-        Server systemWith = MinionServerFactoryTest.createTestMinionServer(user);
-        Server systemWithout = MinionServerFactoryTest.createTestMinionServer(user);
+        Server systemWith = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        Server systemWithout = MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
         // non-offending action
-        Action allowedAction = ActionFactoryTest.createAction(user, ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
+        Action allowedAction = ActionFactoryTest.createAction(getTestUser(), ActionFactory.TYPE_HARDWARE_REFRESH_LIST);
         // assign it to both systems
         ServerActionTest.createServerAction(systemWith, allowedAction);
         ServerActionTest.createServerAction(systemWithout, allowedAction);
 
         // offending action
-        Action disallowedAction = ActionFactoryTest.createAction(user, ActionFactory.TYPE_APPLY_STATES);
+        Action disallowedAction = ActionFactoryTest.createAction(getTestUser(), ActionFactory.TYPE_APPLY_STATES);
         // assign it to one system only
         ServerActionTest.createServerAction(systemWith, disallowedAction);
 
@@ -1490,12 +1491,12 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testSetMaintenanceWindowToSystems() {
-        user.addPermanentRole(RoleFactory.ORG_ADMIN);
+        getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
         MaintenanceSchedule schedule = new MaintenanceManager().createSchedule(
-                user, "test-schedule-1", MaintenanceSchedule.ScheduleType.SINGLE, Optional.empty());
+                getTestUser(), "test-schedule-1", MaintenanceSchedule.ScheduleType.SINGLE, Optional.empty());
 
-        Server sys1 = MinionServerFactoryTest.createTestMinionServer(user);
-        Server sys2 = MinionServerFactoryTest.createTestMinionServer(user);
+        Server sys1 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
+        Server sys2 = MinionServerFactoryTest.createTestMinionServer(getTestUser());
 
         ServerFactory.setMaintenanceScheduleToSystems(schedule, Set.of(sys1.getId(), sys2.getId()));
 
@@ -1505,19 +1506,19 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testQuerySlesSystems() {
-        Server s1 = createTestServer(user, true);
+        Server s1 = createTestServer(getTestUser(), true);
         s1.setName("first-system");
         s1.setOs("SLES");
-        Server s2 = createTestServer(user, false);
+        Server s2 = createTestServer(getTestUser(), false);
         s2.setName("second-system");
         s2.setOs("SLES");
-        Server s3 = createTestServer(user, true);
+        Server s3 = createTestServer(getTestUser(), true);
         s3.setName("third-system");
         s3.setOs("not-SLES");
 
         TestUtils.flushAndClearSession();
 
-        List<Server> result = ServerFactory.querySlesSystems("", 20, user).toList();
+        List<Server> result = ServerFactory.querySlesSystems("", 20, getTestUser()).toList();
 
         assertEquals(1, result.size());
         assertEquals("first-system", result.get(0).getName());
@@ -1525,19 +1526,19 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testQuerySlesSystemsWithQueryString() {
-        Server s1 = createTestServer(user, true);
+        Server s1 = createTestServer(getTestUser(), true);
         s1.setName("my-foo-system-1");
         s1.setOs("SLES");
-        Server s2 = createTestServer(user, true);
+        Server s2 = createTestServer(getTestUser(), true);
         s2.setName("my-foo-system-2");
         s2.setOs("SLES");
-        Server s3 = createTestServer(user, true);
+        Server s3 = createTestServer(getTestUser(), true);
         s3.setName("my-bar-system");
         s3.setOs("SLES");
 
         TestUtils.flushAndClearSession();
 
-        List<Server> result = ServerFactory.querySlesSystems("foo", 20, user).toList();
+        List<Server> result = ServerFactory.querySlesSystems("foo", 20, getTestUser()).toList();
 
         assertEquals(2, result.size());
         assertTrue(result.stream().anyMatch(s -> "my-foo-system-1".equals(s.getName())));
@@ -1546,7 +1547,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void testGetInstalledKernelVersions() throws Exception {
-        Server srv = createTestServer(user);
+        Server srv = createTestServer(getTestUser());
         PackageArch pkgArch = PackageFactory.lookupPackageArchById(100L);
 
         Package pkg1 = PackageTest.createTestPackage(null);
@@ -1579,18 +1580,18 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
 
     @Test
     public void canIdentifyIfPtfUninstallationIsSupported() {
-        Package zypperNoSupport = PackageTestUtils.createZypperPackage("1.14.50", user);
-        Package zypperWithSupport = PackageTestUtils.createZypperPackage("1.14.59", user);
+        Package zypperNoSupport = PackageTestUtils.createZypperPackage("1.14.50", getTestUser());
+        Package zypperWithSupport = PackageTestUtils.createZypperPackage("1.14.59", getTestUser());
 
-        Server noPtfSupport = createTestServer(user);
+        Server noPtfSupport = createTestServer(getTestUser());
         noPtfSupport.setOs(ServerConstants.ALMA);
 
-        Server ptfSupportNoUninstall = createTestServer(user);
+        Server ptfSupportNoUninstall = createTestServer(getTestUser());
         ptfSupportNoUninstall.setOs(ServerConstants.SLES);
         ptfSupportNoUninstall.setRelease("15.3");
         PackageTestUtils.installPackagesOnServer(List.of(zypperNoSupport), ptfSupportNoUninstall);
 
-        Server ptfFullSupport = createTestServer(user);
+        Server ptfFullSupport = createTestServer(getTestUser());
         ptfFullSupport.setOs(ServerConstants.SLES);
         ptfFullSupport.setRelease("15.3");
         PackageTestUtils.installPackagesOnServer(List.of(zypperWithSupport), ptfFullSupport);
@@ -1612,14 +1613,14 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     @Test
     @DisplayName("ServerFactory.lookupProxiesByOrg detects a proxy")
     public void testLookupProxiesByOrgWithProxy() {
-        Server proxyServer = createTestServer(user, true,
+        Server proxyServer = createTestServer(getTestUser(), true,
                 ServerConstants.getServerGroupTypeSaltEntitled(), TYPE_SERVER_PROXY);
         proxyServer.setHostname(HOSTNAME);
         TestUtils.flushAndClearSession();
 
         assertEquals(proxyServer, ServerFactory.lookupProxyServer(HOSTNAME).orElseThrow());
 
-        List<Server> proxyList = ServerFactory.lookupProxiesByOrg(user);
+        List<Server> proxyList = ServerFactory.lookupProxiesByOrg(getTestUser());
         assertEquals(1, proxyList.size());
         assertEquals(proxyServer, proxyList.get(0));
     }
@@ -1627,14 +1628,14 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
     @Test
     @DisplayName("ServerFactory.lookupProxiesByOrg avoid to detect normal minions")
     public void testLookupProxiesByOrgWithMinion() {
-        Server normalMinion = createTestServer(user, true,
+        Server normalMinion = createTestServer(getTestUser(), true,
                 ServerConstants.getServerGroupTypeSaltEntitled(), TYPE_SERVER_MINION);
         normalMinion.setHostname("my.minion.com");
         TestUtils.flushAndClearSession();
 
         assertTrue(ServerFactory.lookupProxyServer("my.minion.com").isEmpty());
 
-        List<Server> proxyList = ServerFactory.lookupProxiesByOrg(user);
+        List<Server> proxyList = ServerFactory.lookupProxiesByOrg(getTestUser());
         assertEquals(0, proxyList.size());
     }
 
@@ -1644,7 +1645,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         // this test has been generated programmatically to test ServerFactory.lookupStorageDevicesByServer
         // containing a hibernate query that is not covered by any test so far
         // feel free to modify and/or complete it
-        Server arg0 = ServerFactoryTest.createTestServer(user);
+        Server arg0 = ServerFactoryTest.createTestServer(getTestUser());
         ServerFactory.lookupStorageDevicesByServer(arg0);
     }
 
@@ -1664,7 +1665,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         // this test has been generated programmatically to test ServerFactory.lookupLatestForServer
         // containing a hibernate query that is not covered by any test so far
         // feel free to modify and/or complete it
-        Server arg0 = ServerFactoryTest.createTestServer(user);
+        Server arg0 = ServerFactoryTest.createTestServer(getTestUser());
         ServerFactory.lookupLatestForServer(arg0);
     }
 
@@ -1673,7 +1674,7 @@ public class ServerFactoryTest extends BaseTestCaseWithUser {
         // this test has been generated programmatically to test ServerFactory.deleteSnapshots
         // containing a hibernate query that is not covered by any test so far
         // feel free to modify and/or complete it
-        Org arg0 = user.getOrg();
+        Org arg0 = getTestUser().getOrg();
         ServerFactory.deleteSnapshots(arg0, new Date(0), new Date(0));
         ServerFactory.deleteSnapshots(arg0, new Date(0), null);
         ServerFactory.deleteSnapshots(arg0, null, null);

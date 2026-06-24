@@ -386,37 +386,39 @@ public class AccessTest extends BaseTestCaseWithUser {
 
     @Test
     public void testIsVirtual() throws Exception {
-        Server host = ServerTestUtils.createVirtHostWithGuests(user, 1, systemEntitlementManager);
+        Server host = ServerTestUtils.createVirtHostWithGuests(getTestUser(), 1, systemEntitlementManager);
         Server guest = host.getGuests().iterator().next().getGuestSystem();
 
         Access a = new Access();
         Map<String, Object> ctx = new HashMap<>();
         ctx.put("sid", guest.getId());
-        ctx.put("user", user);
+        ctx.put("user", getTestUser());
         assertTrue(a.aclSystemIsVirtual(ctx, null));
     }
 
     @Test
     public void testCanEvalIfServerHasPtfRepositories() throws Exception {
-        Server serverNoSupport = ServerFactoryTest.createTestServer(user, true);
+        Server serverNoSupport = ServerFactoryTest.createTestServer(getTestUser(), true);
         serverNoSupport.setOs(ServerConstants.ALMA);
 
-        Server serverWithSupport = ServerFactoryTest.createTestServer(user, true);
+        Server serverWithSupport = ServerFactoryTest.createTestServer(getTestUser(), true);
         serverWithSupport.setOs(ServerConstants.SLES);
 
-        Server serverWithSupportAndChannel = ServerFactoryTest.createTestServer(user, true);
+        Server serverWithSupportAndChannel = ServerFactoryTest.createTestServer(getTestUser(), true);
         serverWithSupportAndChannel.setOs(ServerConstants.SLES);
 
-        Channel normalChannel = ChannelFactoryTest.createTestChannel(user, List.of("http://example.com/REPO/RPMS"));
-        Channel ptfChannel = ChannelFactoryTest.createTestChannel(user, List.of("http://example.com/PTF/RPMS"));
+        Channel normalChannel = ChannelFactoryTest.createTestChannel(getTestUser(),
+                List.of("http://example.com/REPO/RPMS"));
+        Channel ptfChannel = ChannelFactoryTest.createTestChannel(getTestUser(),
+                List.of("http://example.com/PTF/RPMS"));
 
-        SystemManager.subscribeServerToChannel(user, serverNoSupport, normalChannel);
-        SystemManager.subscribeServerToChannel(user, serverWithSupport, normalChannel);
-        SystemManager.subscribeServerToChannel(user, serverWithSupportAndChannel, ptfChannel);
+        SystemManager.subscribeServerToChannel(getTestUser(), serverNoSupport, normalChannel);
+        SystemManager.subscribeServerToChannel(getTestUser(), serverWithSupport, normalChannel);
+        SystemManager.subscribeServerToChannel(getTestUser(), serverWithSupportAndChannel, ptfChannel);
 
         Access access = new Access();
         Map<String, Object> context = new HashMap<>();
-        context.put("user", user);
+        context.put("user", getTestUser());
 
         context.put("sid", serverNoSupport.getId());
         assertFalse(access.aclHasPtfRepositories(context, null));
@@ -430,17 +432,17 @@ public class AccessTest extends BaseTestCaseWithUser {
 
     @Test
     public void testCanEvalIfServerSupportsPtfRemoval() {
-        Package zypperNoSupport = PackageTestUtils.createZypperPackage("1.14.50", user);
-        Package zypperWithSupport = PackageTestUtils.createZypperPackage("1.14.59", user);
+        Package zypperNoSupport = PackageTestUtils.createZypperPackage("1.14.50", getTestUser());
+        Package zypperWithSupport = PackageTestUtils.createZypperPackage("1.14.59", getTestUser());
 
-        Server serverNoSupport = ServerFactoryTest.createTestServer(user, true);
+        Server serverNoSupport = ServerFactoryTest.createTestServer(getTestUser(), true);
         serverNoSupport.setOs(ServerConstants.ALMA);
 
-        Server serverOnlyPtf = ServerFactoryTest.createTestServer(user, true);
+        Server serverOnlyPtf = ServerFactoryTest.createTestServer(getTestUser(), true);
         serverOnlyPtf.setOs(ServerConstants.SLES);
         serverOnlyPtf.setRelease("15");
 
-        Server serverPtfAndRemoval = ServerFactoryTest.createTestServer(user, true);
+        Server serverPtfAndRemoval = ServerFactoryTest.createTestServer(getTestUser(), true);
         serverPtfAndRemoval.setOs(ServerConstants.SLES);
         serverPtfAndRemoval.setRelease("15");
 
@@ -453,7 +455,7 @@ public class AccessTest extends BaseTestCaseWithUser {
 
         Access access = new Access();
         Map<String, Object> context = new HashMap<>();
-        context.put("user", user);
+        context.put("user", getTestUser());
 
         context.put("sid", serverNoSupport.getId());
         assertFalse(access.aclSystemSupportsPtfRemoval(context, null));

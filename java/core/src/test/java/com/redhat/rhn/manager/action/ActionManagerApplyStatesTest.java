@@ -51,20 +51,20 @@ public class ActionManagerApplyStatesTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testScheduleApplyStates() throws Exception {
-        Server server = ServerFactoryTest.createTestServer(user);
+        Server server = ServerFactoryTest.createTestServer(getTestUser());
         Date earliestAction = new Date();
         List<String> mods = Arrays.asList(
                 ApplyStatesEventMessage.CHANNELS,
                 ApplyStatesEventMessage.PACKAGES);
         ApplyStatesAction action = ActionManager.scheduleApplyStates(
-                user,
+                getTestUser(),
                 Arrays.asList(server.getId()),
                 mods,
                 earliestAction);
 
         // Look it up and verify
         ApplyStatesAction savedAction = (ApplyStatesAction) ActionFactory
-                .lookupByUserAndId(user, action.getId());
+                .lookupByUserAndId(getTestUser(), action.getId());
         assertNotNull(savedAction);
         assertInstanceOf(ApplyStatesAction.class, savedAction);
         assertEquals(earliestAction, savedAction.getEarliestAction());
@@ -88,17 +88,17 @@ public class ActionManagerApplyStatesTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testScheduleApplyStatesHighstate() throws Exception {
-        Server server = ServerFactoryTest.createTestServer(user);
+        Server server = ServerFactoryTest.createTestServer(getTestUser());
         Date earliestAction = new Date();
         ApplyStatesAction action = ActionManager.scheduleApplyStates(
-                user,
+                getTestUser(),
                 Arrays.asList(server.getId()),
                 new ArrayList<>(),
                 earliestAction);
 
         // Look it up and verify
         ApplyStatesAction savedAction = (ApplyStatesAction) ActionFactory
-                .lookupByUserAndId(user, action.getId());
+                .lookupByUserAndId(getTestUser(), action.getId());
         assertNotNull(savedAction);
         assertInstanceOf(ApplyStatesAction.class, savedAction);
         assertEquals(earliestAction, savedAction.getEarliestAction());
@@ -118,17 +118,18 @@ public class ActionManagerApplyStatesTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testScheduleApplyStatesHighstateTest() throws Exception {
-        Server server = ServerFactoryTest.createTestServer(user);
+        Server server = ServerFactoryTest.createTestServer(getTestUser());
         Date earliestAction = new Date();
         ApplyStatesAction action = ActionManager.scheduleApplyStates(
-                user,
+                getTestUser(),
                 Arrays.asList(server.getId()),
                 new ArrayList<>(),
                 earliestAction,
                 Optional.of(true));
 
         // Look up the action and verify the details
-        ApplyStatesAction savedAction = (ApplyStatesAction) ActionFactory.lookupByUserAndId(user, action.getId());
+        ApplyStatesAction savedAction =
+                (ApplyStatesAction) ActionFactory.lookupByUserAndId(getTestUser(), action.getId());
         assertNotNull(savedAction);
         assertInstanceOf(ApplyStatesAction.class, savedAction);
         assertEquals(earliestAction, savedAction.getEarliestAction());
@@ -147,14 +148,14 @@ public class ActionManagerApplyStatesTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testScheduleApplyHighstate() throws Exception {
-        Server server = ServerFactoryTest.createTestServer(user);
+        Server server = ServerFactoryTest.createTestServer(getTestUser());
         Date earliestAction = new Date();
-        ApplyStatesAction action = ActionManager.scheduleApplyHighstate(user,
+        ApplyStatesAction action = ActionManager.scheduleApplyHighstate(getTestUser(),
                 Collections.singletonList(server.getId()), earliestAction, Optional.empty());
 
         // Look it up and verify
         ApplyStatesAction savedAction = (ApplyStatesAction) ActionFactory
-                .lookupByUserAndId(user, action.getId());
+                .lookupByUserAndId(getTestUser(), action.getId());
         assertNotNull(savedAction);
         assertInstanceOf(ApplyStatesAction.class, savedAction);
         assertEquals(earliestAction, savedAction.getEarliestAction());
@@ -174,13 +175,14 @@ public class ActionManagerApplyStatesTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testScheduleApplyHighstateTest() throws Exception {
-        Server server = ServerFactoryTest.createTestServer(user);
+        Server server = ServerFactoryTest.createTestServer(getTestUser());
         Date earliestAction = new Date();
-        ApplyStatesAction action = ActionManager.scheduleApplyHighstate(user,
+        ApplyStatesAction action = ActionManager.scheduleApplyHighstate(getTestUser(),
                 Collections.singletonList(server.getId()), earliestAction, Optional.of(true));
 
         // Look up the action and verify the details
-        ApplyStatesAction savedAction = (ApplyStatesAction) ActionFactory.lookupByUserAndId(user, action.getId());
+        ApplyStatesAction savedAction =
+                (ApplyStatesAction) ActionFactory.lookupByUserAndId(getTestUser(), action.getId());
         assertNotNull(savedAction);
         assertInstanceOf(ApplyStatesAction.class, savedAction);
         assertEquals(earliestAction, savedAction.getEarliestAction());

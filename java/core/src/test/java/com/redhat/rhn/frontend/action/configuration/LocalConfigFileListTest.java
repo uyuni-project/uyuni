@@ -30,7 +30,7 @@ public class LocalConfigFileListTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testExecute() {
-        UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
+        UserTestUtils.addAccessGroup(getTestUser(), AccessGroupFactory.CONFIG_ADMIN);
 
         setRequestPathInfo("/configuration/file/LocalConfigFileList");
         actionPerform();

@@ -51,7 +51,7 @@ public class AffectedSystemsSetupActionTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testNormalCase() throws Exception {
-        Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata e = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
         addRequestParameter("eid", e.getId().toString());
         actionPerform();
         DataResult dr = (DataResult) request.getAttribute(RequestContext.PAGE_LIST);

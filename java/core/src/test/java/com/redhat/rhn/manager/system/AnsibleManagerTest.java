@@ -66,26 +66,26 @@ class AnsibleManagerTest extends BaseTestCaseWithUser {
 
     @Test
     void testSaveAndLookupAnsiblePath() {
-        MinionServer minion = createAnsibleControlNode(user);
-        AnsiblePath path = ansibleManager.createAnsiblePath("inventory", minion.getId(), "/tmp/test", user);
+        MinionServer minion = createAnsibleControlNode(getTestUser());
+        AnsiblePath path = ansibleManager.createAnsiblePath("inventory", minion.getId(), "/tmp/test", getTestUser());
 
         TestUtils.flushSession();
         TestUtils.evict(path);
-        assertEquals(path, AnsibleManager.lookupAnsiblePathById(path.getId(), user).get());
+        assertEquals(path, AnsibleManager.lookupAnsiblePathById(path.getId(), getTestUser()).get());
     }
 
     @Test
     void testSaveAndLookupAnsiblePathNoPerms() {
         User chuck = UserTestUtils.createUser(this);
 
-        MinionServer minion = createAnsibleControlNode(user);
+        MinionServer minion = createAnsibleControlNode(getTestUser());
         Long minionId = minion.getId();
 
         assertThrows(LookupException.class,
             () -> ansibleManager.createAnsiblePath("inventory", minionId, "/tmp/test", chuck));
 
         // now save with allowed user
-        AnsiblePath path = ansibleManager.createAnsiblePath("inventory", minionId, "/tmp/test", user);
+        AnsiblePath path = ansibleManager.createAnsiblePath("inventory", minionId, "/tmp/test", getTestUser());
 
         long pathId = path.getId();
         assertThrows(LookupException.class,
@@ -96,58 +96,61 @@ class AnsibleManagerTest extends BaseTestCaseWithUser {
 
     @Test
     void testUpdateNonExistingAnsiblePath() {
-        assertThrows(LookupException.class, () -> ansibleManager.updateAnsiblePath(-12345, "/tmp/test", user));
+        assertThrows(LookupException.class, () -> ansibleManager.updateAnsiblePath(-12345, "/tmp/test", getTestUser()));
     }
 
     @Test
     void testUpdateAnsiblePath() {
-        MinionServer minion = createAnsibleControlNode(user);
-        AnsiblePath path = ansibleManager.createAnsiblePath("inventory", minion.getId(), "/tmp/test", user);
-        path = ansibleManager.updateAnsiblePath(path.getId(), "/tmp/test-updated", user);
+        MinionServer minion = createAnsibleControlNode(getTestUser());
+        AnsiblePath path = ansibleManager.createAnsiblePath("inventory", minion.getId(), "/tmp/test", getTestUser());
+        path = ansibleManager.updateAnsiblePath(path.getId(), "/tmp/test-updated", getTestUser());
         TestUtils.flushSession();
         TestUtils.evict(path);
-        AnsiblePath updated = AnsibleManager.lookupAnsiblePathById(path.getId(), user).get();
+        AnsiblePath updated = AnsibleManager.lookupAnsiblePathById(path.getId(), getTestUser()).get();
         assertEquals(path, updated);
     }
 
     @Test
     void testCreateAnsiblePathNormalSystem() {
-        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minion = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         Long minionId = minion.getId();
 
         assertThrows(LookupException.class,
-            () -> ansibleManager.createAnsiblePath("inventory", minionId, "/tmp/test", user));
+            () -> ansibleManager.createAnsiblePath("inventory", minionId, "/tmp/test", getTestUser()));
     }
 
     @Test
     void testSaveAnsibleRelativePath() {
-        MinionServer minion = createAnsibleControlNode(user);
+        MinionServer minion = createAnsibleControlNode(getTestUser());
         Long minionId = minion.getId();
 
         assertThrows(ValidatorException.class,
-            () -> ansibleManager.createAnsiblePath("inventory", minionId, "relative/path", user));
+            () -> ansibleManager.createAnsiblePath("inventory", minionId, "relative/path", getTestUser()));
     }
 
     @Test
     void testFetchPlaybookInvalidPath() {
         assertThrows(LookupException.class,
-            () -> ansibleManager.fetchPlaybookContents(-1234, "path/to/playbook", user));
+            () -> ansibleManager.fetchPlaybookContents(-1234, "path/to/playbook",
+                    getTestUser()));
     }
 
     @Test
     void testFetchPlaybookAbsolutePath() {
-        MinionServer controlNode = createAnsibleControlNode(user);
-        AnsiblePath path = ansibleManager.createAnsiblePath("playbook", controlNode.getId(), "/root/playbooks", user);
+        MinionServer controlNode = createAnsibleControlNode(getTestUser());
+        AnsiblePath path =
+                ansibleManager.createAnsiblePath("playbook", controlNode.getId(), "/root/playbooks", getTestUser());
         Long pathId = path.getId();
 
         assertThrows(IllegalArgumentException.class,
-            () -> ansibleManager.fetchPlaybookContents(pathId, "/absolute", user));
+            () -> ansibleManager.fetchPlaybookContents(pathId, "/absolute", getTestUser()));
     }
 
     @Test
     void testFetchPlaybook() {
-        MinionServer controlNode = createAnsibleControlNode(user);
-        AnsiblePath path = ansibleManager.createAnsiblePath("playbook", controlNode.getId(), "/root/playbooks", user);
+        MinionServer controlNode = createAnsibleControlNode(getTestUser());
+        AnsiblePath path =
+                ansibleManager.createAnsiblePath("playbook", controlNode.getId(), "/root/playbooks", getTestUser());
 
         context.checking(new Expectations() {{
             allowing(saltApi).callSync(with(any(LocalCall.class)), with(controlNode.getMinionId()));
@@ -156,13 +159,14 @@ class AnsibleManagerTest extends BaseTestCaseWithUser {
 
         assertEquals(
                 Optional.of("such-playbook-wow"),
-                ansibleManager.fetchPlaybookContents(path.getId(), "site.yml", user));
+                ansibleManager.fetchPlaybookContents(path.getId(), "site.yml", getTestUser()));
     }
 
     @Test
     void testFetchPlaybookSaltNoResult() {
-        MinionServer controlNode = createAnsibleControlNode(user);
-        AnsiblePath path = ansibleManager.createAnsiblePath("playbook", controlNode.getId(), "/root/playbooks", user);
+        MinionServer controlNode = createAnsibleControlNode(getTestUser());
+        AnsiblePath path =
+                ansibleManager.createAnsiblePath("playbook", controlNode.getId(), "/root/playbooks", getTestUser());
 
         context.checking(new Expectations() {{
             allowing(saltApi).callSync(with(any(LocalCall.class)), with(controlNode.getMinionId()));
@@ -172,13 +176,13 @@ class AnsibleManagerTest extends BaseTestCaseWithUser {
         Long pathId = path.getId();
 
         var ex = assertThrows(IllegalStateException.class,
-            () -> ansibleManager.fetchPlaybookContents(pathId, "site.yml", user));
+            () -> ansibleManager.fetchPlaybookContents(pathId, "site.yml", getTestUser()));
         assertEquals("no result", ex.getMessage());
     }
 
     @Test
     void testSchedulePlaybookBlankPath() {
-        MinionServer minion = createAnsibleControlNode(user);
+        MinionServer minion = createAnsibleControlNode(getTestUser());
 
         Long minionId = minion.getId();
         Optional<String> actionChainLabel = Optional.empty();
@@ -193,7 +197,7 @@ class AnsibleManagerTest extends BaseTestCaseWithUser {
             "",
             earliestDate,
             actionChainLabel,
-            user
+                getTestUser()
         ));
     }
 
@@ -212,14 +216,15 @@ class AnsibleManagerTest extends BaseTestCaseWithUser {
             "",
             earliestDate,
             actionChainLabel,
-            user
+                getTestUser()
         ));
     }
 
     @Test
     void testDiscoverPlaybooks() {
-        MinionServer controlNode = createAnsibleControlNode(user);
-        AnsiblePath playbookPath = ansibleManager.createAnsiblePath("playbook", controlNode.getId(), "/tmp/test", user);
+        MinionServer controlNode = createAnsibleControlNode(getTestUser());
+        AnsiblePath playbookPath =
+                ansibleManager.createAnsiblePath("playbook", controlNode.getId(), "/tmp/test", getTestUser());
 
         var expected = Map.of(
             "/tmp/test", Map.of("site.yml", new AnsiblePlaybookSlsResult("/tmp/test/site.yml", "/tmp/test/hosts"))
@@ -230,14 +235,15 @@ class AnsibleManagerTest extends BaseTestCaseWithUser {
             will(returnValue(Optional.of(Xor.right(expected))));
         }});
 
-        var result = ansibleManager.discoverPlaybooks(playbookPath.getId(), user);
+        var result = ansibleManager.discoverPlaybooks(playbookPath.getId(), getTestUser());
         assertEquals(Optional.of(expected), result);
     }
 
     @Test
     void testDiscoverPlaybooksSaltError() {
-        MinionServer controlNode = createAnsibleControlNode(user);
-        AnsiblePath playbookPath = ansibleManager.createAnsiblePath("playbook", controlNode.getId(), "/tmp/test", user);
+        MinionServer controlNode = createAnsibleControlNode(getTestUser());
+        AnsiblePath playbookPath =
+                ansibleManager.createAnsiblePath("playbook", controlNode.getId(), "/tmp/test", getTestUser());
 
         context.checking(new Expectations() {{
             allowing(saltApi).callSync(with(any(LocalCall.class)), with(controlNode.getMinionId()));
@@ -246,30 +252,31 @@ class AnsibleManagerTest extends BaseTestCaseWithUser {
 
 
         Long pathId = playbookPath.getId();
-        var ex = assertThrows(IllegalStateException.class, () -> ansibleManager.discoverPlaybooks(pathId, user));
+        var ex = assertThrows(IllegalStateException.class,
+                () -> ansibleManager.discoverPlaybooks(pathId, getTestUser()));
         assertEquals("error", ex.getMessage());
     }
 
     @Test
     void testDiscoverPlaybooksNonExistingPath() {
-        assertThrows(LookupException.class, () -> ansibleManager.discoverPlaybooks(-1234, user));
+        assertThrows(LookupException.class, () -> ansibleManager.discoverPlaybooks(-1234, getTestUser()));
     }
 
     @Test
     void testDiscoverPlaybooksInInventory() {
-        MinionServer controlNode = createAnsibleControlNode(user);
+        MinionServer controlNode = createAnsibleControlNode(getTestUser());
         AnsiblePath inventoryPath = ansibleManager.createAnsiblePath(
-                "inventory", controlNode.getId(), "/tmp/test/hosts", user);
+                "inventory", controlNode.getId(), "/tmp/test/hosts", getTestUser());
 
         Long pathId = inventoryPath.getId();
-        assertThrows(IllegalArgumentException.class, () -> ansibleManager.discoverPlaybooks(pathId, user));
+        assertThrows(IllegalArgumentException.class, () -> ansibleManager.discoverPlaybooks(pathId, getTestUser()));
     }
 
     @Test
     void testIntrospectInventory() {
-        MinionServer controlNode = createAnsibleControlNode(user);
+        MinionServer controlNode = createAnsibleControlNode(getTestUser());
         AnsiblePath inventoryPath = ansibleManager.createAnsiblePath(
-                "inventory", controlNode.getId(), "/tmp/test/hosts", user);
+                "inventory", controlNode.getId(), "/tmp/test/hosts", getTestUser());
 
         var expected = Map.of(
             "minion",  Map.of("all", Map.of("children", List.of("host1", "host2")))
@@ -280,15 +287,15 @@ class AnsibleManagerTest extends BaseTestCaseWithUser {
             will(returnValue(Optional.of(Xor.right(expected))));
         }});
 
-        var result = ansibleManager.introspectInventory(inventoryPath.getId(), user);
+        var result = ansibleManager.introspectInventory(inventoryPath.getId(), getTestUser());
         assertEquals(Optional.of(expected), result);
     }
 
     @Test
     void testIntrospectInventorySaltError() {
-        MinionServer controlNode = createAnsibleControlNode(user);
+        MinionServer controlNode = createAnsibleControlNode(getTestUser());
         AnsiblePath inventoryPath = ansibleManager.createAnsiblePath(
-                "inventory", controlNode.getId(), "/tmp/test/hosts", user);
+                "inventory", controlNode.getId(), "/tmp/test/hosts", getTestUser());
 
         context.checking(new Expectations() {{
             allowing(saltApi).callSync(with(any(LocalCall.class)), with(controlNode.getMinionId()));
@@ -297,13 +304,13 @@ class AnsibleManagerTest extends BaseTestCaseWithUser {
 
         Long pathId = inventoryPath.getId();
         var ex = assertThrows(IllegalStateException.class,
-            () -> ansibleManager.introspectInventory(pathId, user));
+            () -> ansibleManager.introspectInventory(pathId, getTestUser()));
         assertEquals("error desc", ex.getMessage());
     }
 
     @Test
     void testIntrospectInventoryNonExistingPath() {
-        assertThrows(LookupException.class, () -> ansibleManager.introspectInventory(-1234, user));
+        assertThrows(LookupException.class, () -> ansibleManager.introspectInventory(-1234, getTestUser()));
     }
 
     /**
@@ -313,11 +320,12 @@ class AnsibleManagerTest extends BaseTestCaseWithUser {
      */
     @Test
     void testIntrospectInventoryInPlaybook() {
-        MinionServer controlNode = createAnsibleControlNode(user);
-        AnsiblePath playbookPath = ansibleManager.createAnsiblePath("playbook", controlNode.getId(), "/tmp/test", user);
+        MinionServer controlNode = createAnsibleControlNode(getTestUser());
+        AnsiblePath playbookPath =
+                ansibleManager.createAnsiblePath("playbook", controlNode.getId(), "/tmp/test", getTestUser());
 
         Long pathId = playbookPath.getId();
-        assertThrows(IllegalArgumentException.class, () -> ansibleManager.introspectInventory(pathId, user));
+        assertThrows(IllegalArgumentException.class, () -> ansibleManager.introspectInventory(pathId, getTestUser()));
     }
 
     private MinionServer createAnsibleControlNode(User user) {

@@ -47,10 +47,10 @@ public class ErrataSetupActionTest extends RhnMockStrutsTestCase {
 
     @Test
     public void testNormalCase() throws Exception {
-        Server server = ServerFactoryTest.createTestServer(user, true);
+        Server server = ServerFactoryTest.createTestServer(getTestUser(), true);
         addRequestParameter("allowVendorChange", "false");
         addRequestParameter("sid", server.getId().toString());
-        Errata e = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
+        Errata e = ErrataFactoryTest.createTestErrata(getTestUser().getOrg().getId());
 
         for (Package pkg : e.getPackages()) {
             ErrataCacheManager.insertNeededErrataCache(server.getId(),

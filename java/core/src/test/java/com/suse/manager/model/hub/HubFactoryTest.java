@@ -113,8 +113,8 @@ public class HubFactoryTest extends BaseTestCaseWithUser {
         HubSCCCredentials sccCredentials = CredentialsFactory.createHubSCCCredentials("U123", "not so secret", "fqdn");
         CredentialsFactory.storeCredentials(sccCredentials);
 
-        Channel baseChannel = ChannelFactoryTest.createBaseChannel(user);
-        Channel childChannel = ChannelFactoryTest.createTestChannel(user);
+        Channel baseChannel = ChannelFactoryTest.createBaseChannel(getTestUser());
+        Channel childChannel = ChannelFactoryTest.createTestChannel(getTestUser());
         childChannel.setParentChannel(baseChannel);
         ChannelFactory.save(baseChannel);
         ChannelFactory.save(childChannel);
@@ -314,31 +314,31 @@ public class HubFactoryTest extends BaseTestCaseWithUser {
         peripheral.setMirrorCredentials(sccCredentials);
         hubFactory.save(peripheral);
 
-        Channel vendorBaseChannel = ChannelFactoryTest.createBaseChannel(user);
+        Channel vendorBaseChannel = ChannelFactoryTest.createBaseChannel(getTestUser());
         vendorBaseChannel.setOrg(null);
-        Channel vendorChildChannel = ChannelFactoryTest.createTestChannel(user);
+        Channel vendorChildChannel = ChannelFactoryTest.createTestChannel(getTestUser());
         vendorChildChannel.setOrg(null);
         vendorChildChannel.setParentChannel(vendorBaseChannel);
         ChannelFactory.save(vendorBaseChannel);
         ChannelFactory.save(vendorChildChannel);
 
-        Channel devBaseChannel = ChannelFactoryTest.createTestClonedChannel(vendorBaseChannel, user,
+        Channel devBaseChannel = ChannelFactoryTest.createTestClonedChannel(vendorBaseChannel, getTestUser(),
                 "dev-", "-base", "DEV ", " Base", null);
-        Channel devChildChannel = ChannelFactoryTest.createTestClonedChannel(vendorChildChannel, user,
+        Channel devChildChannel = ChannelFactoryTest.createTestClonedChannel(vendorChildChannel, getTestUser(),
                 "dev-", "-child", "DEV ", " Child", devBaseChannel);
         ChannelFactory.save(devBaseChannel);
         ChannelFactory.save(devChildChannel);
 
-        Channel testBaseChannel = ChannelFactoryTest.createTestClonedChannel(devBaseChannel, user,
+        Channel testBaseChannel = ChannelFactoryTest.createTestClonedChannel(devBaseChannel, getTestUser(),
                 "test-", "-base", "TEST ", " Base", null);
-        Channel testChildChannel = ChannelFactoryTest.createTestClonedChannel(devChildChannel, user,
+        Channel testChildChannel = ChannelFactoryTest.createTestClonedChannel(devChildChannel, getTestUser(),
                 "test-", "-child", "TEST ", " Child", testBaseChannel);
         ChannelFactory.save(testBaseChannel);
         ChannelFactory.save(testChildChannel);
 
-        Channel prodBaseChannel = ChannelFactoryTest.createTestClonedChannel(testBaseChannel, user,
+        Channel prodBaseChannel = ChannelFactoryTest.createTestClonedChannel(testBaseChannel, getTestUser(),
                 "prod-", "-base", "PROD ", " Base", null);
-        Channel prodChildChannel = ChannelFactoryTest.createTestClonedChannel(testChildChannel, user,
+        Channel prodChildChannel = ChannelFactoryTest.createTestClonedChannel(testChildChannel, getTestUser(),
                 "prod-", "-child", "PROD ", " Child", prodBaseChannel);
         ChannelFactory.save(prodBaseChannel);
         ChannelFactory.save(prodChildChannel);

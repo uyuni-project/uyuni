@@ -42,7 +42,7 @@ public class StateSourceServiceTest extends BaseTestCaseWithUser {
 
     @BeforeEach
     public void setUp() throws Exception {
-        server = MinionServerFactoryTest.createTestMinionServer(user);
+        server = MinionServerFactoryTest.createTestMinionServer(getTestUser());
     }
 
     @Test
@@ -56,10 +56,12 @@ public class StateSourceServiceTest extends BaseTestCaseWithUser {
 
     @Test
     public void testSystemStates() {
-        ConfigChannel stateChannel = ConfigTestUtils.createConfigChannel(user.getOrg(), ConfigChannelType.state());
-        server.subscribeConfigChannel(stateChannel, user);
-        ConfigChannel configChannel = ConfigTestUtils.createConfigChannel(user.getOrg(), ConfigChannelType.normal());
-        server.subscribeConfigChannel(configChannel, user);
+        ConfigChannel stateChannel = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(),
+                ConfigChannelType.state());
+        server.subscribeConfigChannel(stateChannel, getTestUser());
+        ConfigChannel configChannel = ConfigTestUtils.createConfigChannel(getTestUser().getOrg(),
+                ConfigChannelType.normal());
+        server.subscribeConfigChannel(configChannel, getTestUser());
 
         List<StateSourceDto> result = StateSourceService.getSystemStateSources(server);
         assertEquals(3, result.size());
@@ -71,26 +73,26 @@ public class StateSourceServiceTest extends BaseTestCaseWithUser {
 
     @Test
     public void testGroupAndOrgStates() {
-        ServerGroup group1 = ServerGroupTestUtils.createManaged(user);
-        ServerGroup group2 = ServerGroupTestUtils.createManaged(user);
-        ServerGroup group3 = ServerGroupTestUtils.createManaged(user);
+        ServerGroup group1 = ServerGroupTestUtils.createManaged(getTestUser());
+        ServerGroup group2 = ServerGroupTestUtils.createManaged(getTestUser());
+        ServerGroup group3 = ServerGroupTestUtils.createManaged(getTestUser());
 
         server.addGroup(group1);
         server.addGroup(group2);
         // Not subscribed to group3
 
-        ConfigChannel ch1 = ConfigTestUtils.createConfigChannel(user.getOrg());
-        ConfigChannel ch2 = ConfigTestUtils.createConfigChannel(user.getOrg());
-        ConfigChannel ch3 = ConfigTestUtils.createConfigChannel(user.getOrg());
-        ConfigChannel ch4 = ConfigTestUtils.createConfigChannel(user.getOrg());
+        ConfigChannel ch1 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg());
+        ConfigChannel ch2 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg());
+        ConfigChannel ch3 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg());
+        ConfigChannel ch4 = ConfigTestUtils.createConfigChannel(getTestUser().getOrg());
 
         Org org = server.getOrg();
 
-        org.subscribeConfigChannels(Arrays.asList(ch3, ch4), user);
-        group3.subscribeConfigChannels(Arrays.asList(ch4), user);
-        group2.subscribeConfigChannels(Arrays.asList(ch3), user);
-        group1.subscribeConfigChannels(Arrays.asList(ch1, ch2), user);
-        server.subscribeConfigChannel(ch1, user);
+        org.subscribeConfigChannels(Arrays.asList(ch3, ch4), getTestUser());
+        group3.subscribeConfigChannels(Arrays.asList(ch4), getTestUser());
+        group2.subscribeConfigChannels(Arrays.asList(ch3), getTestUser());
+        group1.subscribeConfigChannels(Arrays.asList(ch1, ch2), getTestUser());
+        server.subscribeConfigChannel(ch1, getTestUser());
 
         List<StateSourceDto> result = StateSourceService.getSystemStateSources(server);
         assertEquals(5, result.size());

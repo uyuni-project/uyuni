@@ -42,7 +42,7 @@ public class ServerGroupFactoryTest extends BaseTestCaseWithUser {
         managedGroup = ServerGroupFactory.create(
                             ServerGroupTestUtils.NAME,
                             ServerGroupTestUtils.DESCRIPTION,
-                            user.getOrg());
+                            getTestUser().getOrg());
     }
     @Test
     public void testCreate() {
@@ -52,26 +52,26 @@ public class ServerGroupFactoryTest extends BaseTestCaseWithUser {
         assertNotNull(managedGroup);
         assertTrue(managedGroup.getName().startsWith(name));
         assertTrue(managedGroup.getDescription().startsWith(description));
-        assertEquals(user.getOrg(), managedGroup.getOrg());
+        assertEquals(getTestUser().getOrg(), managedGroup.getOrg());
 
         name += "1";
         managedGroup = ServerGroupFactory.create(name, description,
-                user.getOrg());
+                getTestUser().getOrg());
         managedGroup = TestUtils.reload(managedGroup);
         assertNotNull(managedGroup);
         System.out.println("Name: " + managedGroup.getName());
         System.out.println("Desc: " + managedGroup.getDescription());
         assertTrue(managedGroup.getName().startsWith(name));
         assertTrue(managedGroup.getDescription().startsWith(description));
-        assertEquals(user.getOrg(), managedGroup.getOrg());
+        assertEquals(getTestUser().getOrg(), managedGroup.getOrg());
 
     }
 
     @Test
     public void testSave() {
-        ServerGroupTest.createTestServerGroup(user.getOrg(), ServerConstants
+        ServerGroupTest.createTestServerGroup(getTestUser().getOrg(), ServerConstants
                 .getServerGroupTypeEnterpriseEntitled());
-        EntitlementServerGroup sg = ServerGroupFactory.lookupEntitled(user.getOrg(),
+        EntitlementServerGroup sg = ServerGroupFactory.lookupEntitled(getTestUser().getOrg(),
                     ServerConstants.getServerGroupTypeEnterpriseEntitled());
         ServerGroupFactory.save(sg);
         sg = TestUtils.saveAndFlush(sg);
@@ -95,7 +95,7 @@ public class ServerGroupFactoryTest extends BaseTestCaseWithUser {
         int initSize = groups.size();
         ServerGroup sg1 = ServerGroupFactory.create(ServerGroupTestUtils.NAME + "ALPHA",
                 ServerGroupTestUtils.DESCRIPTION,
-                user.getOrg());
+                getTestUser().getOrg());
         Collection<ServerGroup> groups1 = ServerGroupFactory.listNoAdminGroups(sg1.getOrg());
         assertEquals(initSize + 1, groups1.size());
         groups.add(sg1);
@@ -117,7 +117,7 @@ public class ServerGroupFactoryTest extends BaseTestCaseWithUser {
         // containing a hibernate query that is not covered by any test so far
         // feel free to modify and/or complete it
         ServerGroup arg0 = new ServerGroup();
-        arg0.setOrg(user.getOrg());
+        arg0.setOrg(getTestUser().getOrg());
         ServerGroupFactory.listMinionIdsForServerGroup(arg0);
     }
 }
