@@ -161,7 +161,7 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
 
             // Add the FQDNs as some may not be already known
             server.getFqdns().addAll(fqdns.stream()
-                    .filter(fqdn -> !fqdn.contains("*"))
+                    .filter(fqdn -> fqdn != null && !fqdn.contains("*") && fqdn.contains("."))
                     .map(fqdn -> new ServerFQDN(server, fqdn)).collect(Collectors.toList()));
 
             systemEntitlementManager.addEntitlementToServer(server, EntitlementManager.PROXY);
@@ -173,7 +173,7 @@ public class ProxyContainerConfigCreateAcquisitor implements ProxyContainerConfi
         server.setName(proxyName);
         server.setHostname(proxyName);
         server.getFqdns().addAll(fqdns.stream()
-                .filter(fqdn -> !fqdn.contains("*"))
+                .filter(fqdn -> fqdn != null && !fqdn.contains("*") && fqdn.contains("."))
                 .map(fqdn -> new ServerFQDN(server, fqdn)).collect(Collectors.toList()));
         server.setOrg(creator.getOrg());
         server.setCreator(creator);
