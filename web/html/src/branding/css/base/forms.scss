@@ -71,11 +71,19 @@ input[type="checkbox"] {
     margin-bottom: 0;
   }
 
-  .radio-inline {
-    margin-right: 20px;
+  .radio {
+    display: grid;
+    label {
+      margin-bottom: 10px;
+    }
   }
 
-  .radio,
+  .radio-inline {
+    label {
+      margin-right: 20px;
+    }
+  }
+
   .checkbox {
     min-height: 28px;
   }

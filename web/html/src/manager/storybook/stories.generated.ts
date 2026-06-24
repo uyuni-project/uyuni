@@ -427,6 +427,18 @@ export const components_toastr_toastr_example_tsx = {
 };
 
 // @ts-ignore
+import components_toggle_button_group_toggle_button_group_example_tsx_component from "components/toggle-button-group/toggle-button-group.example.tsx";
+import components_toggle_button_group_toggle_button_group_example_tsx_raw from "components/toggle-button-group/toggle-button-group.example.tsx?raw";
+
+export const components_toggle_button_group_toggle_button_group_example_tsx = {
+  path: "components/toggle-button-group/toggle-button-group.example.tsx",
+  title: "toggle-button-group.example.tsx",
+  groupName: "toggle-button-group",
+  component: components_toggle_button_group_toggle_button_group_example_tsx_component,
+  raw: components_toggle_button_group_toggle_button_group_example_tsx_raw,
+};
+
+// @ts-ignore
 import components_tooltip_tooltip_example_tsx_component from "components/tooltip/tooltip.example.tsx";
 import components_tooltip_tooltip_example_tsx_raw from "components/tooltip/tooltip.example.tsx?raw";
 
