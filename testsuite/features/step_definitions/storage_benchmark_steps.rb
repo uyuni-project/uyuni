@@ -78,6 +78,8 @@ end
 def reposync_benchmark_parse_time_metrics(output)
   metrics = {}
   output.each_line do |line|
+    next if line.start_with?('Defaulted container ')
+
     key, value = line.split(':', 2).map(&:strip)
     next if key.nil? || value.nil?
 
@@ -89,10 +91,17 @@ end
 
 # Extract timestamp and message from a spacewalk-repo-sync log line.
 def reposync_benchmark_parse_log_line(line)
-  match = line.chomp.match(/\A(?<timestamp>\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2} [+-]\d{2}:\d{2}) (?<message>.*)\z/)
-  return nil if match.nil?
+  chomped = line.chomp
+  full_match = chomped.match(/\A(?<timestamp>\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2} [+-]\d{2}:\d{2}) (?<message>.*)\z/)
+  if full_match
+    return [Time.strptime(full_match[:timestamp], '%Y/%m/%d %H:%M:%S %z'), full_match[:message]]
+  end
 
-  [Time.strptime(match[:timestamp], '%Y/%m/%d %H:%M:%S %z'), match[:message]]
+  short_match = chomped.match(/\A(?<timestamp>\d{2}:\d{2}:\d{2}) (?<message>.*)\z/)
+  return nil if short_match.nil?
+
+  parsed_time = Time.strptime(short_match[:timestamp], '%H:%M:%S')
+  [Time.utc(2000, 1, 1, parsed_time.hour, parsed_time.min, parsed_time.sec), short_match[:message]]
 rescue ArgumentError
   nil
 end
@@ -120,6 +129,12 @@ def reposync_benchmark_rate(count, duration)
   return nil if count.nil? || duration.nil? || duration <= 0
 
   (count.to_f / duration).round(3)
+end
+
+# Extract the last integer-only line from command output that may include shell banners.
+def reposync_benchmark_last_integer(output)
+  count_line = output.each_line.map(&:strip).reverse.find { |line| line.match?(/\A\d+\z/) }
+  count_line ? count_line.to_i : 0
 end
 
 # Parse one spacewalk-repo-sync run into benchmark-oriented counters and phase timings.
@@ -172,6 +187,7 @@ def reposync_benchmark_parse_reposync_log_run(output)
     when 'Importing packages started.'
       markers[:import_started_at] ||= timestamp
     when 'Importing packages to DB:'
+      markers[:import_started_at] ||= timestamp
       markers[:db_import_started_at] ||= timestamp
     when /\APackage batch #(\d+) of (\d+) completed/
       import_batches[Regexp.last_match(1).to_i] = true
@@ -180,6 +196,8 @@ def reposync_benchmark_parse_reposync_log_run(output)
       markers[:import_finished_at] ||= timestamp
       markers[:db_import_finished_at] ||= timestamp
     when 'Linking packages to the channel.'
+      markers[:import_finished_at] ||= timestamp
+      markers[:db_import_finished_at] ||= timestamp
       markers[:channel_link_started_at] ||= timestamp
     when /\A(\d+) packages linked/
       markers[:last_package_linked_at] = timestamp
@@ -297,7 +315,7 @@ Given('the reposync benchmark source repository is mounted in the server pod') d
   repo = Shellwords.escape(reposync_benchmark_source_repo)
   command = "test -r #{repo}/repodata/repomd.xml && find #{repo} -name '*.rpm' | wc -l"
   output, = reposync_benchmark_run_in_server_pod(command, timeout: 300)
-  @reposync_benchmark_source_package_count = output.to_i
+  @reposync_benchmark_source_package_count = reposync_benchmark_last_integer(output)
 
   if @reposync_benchmark_source_package_count.zero?
     raise ScriptError, "No RPM packages found in #{reposync_benchmark_source_repo}"
@@ -332,9 +350,11 @@ When('I run the reposync benchmark for the mounted source repository') do
   time_path = Shellwords.escape(@reposync_benchmark_time_path)
   timeout = ENV.fetch('UYUNI_BENCH_REPOSYNC_TIMEOUT', '14400').to_i
 
+  sync_command = "spacewalk-repo-sync -c #{channel} --url=#{source_url}"
   command = "mkdir -p #{results_dir} && " \
-            "/usr/bin/time -v -o #{time_path} " \
-            "spacewalk-repo-sync -c #{channel} --url=#{source_url} " \
+            "if [ -x /usr/bin/time ]; then " \
+            "/usr/bin/time -v -o #{time_path} #{sync_command}; " \
+            "else #{sync_command}; fi " \
             "> #{stdout_path} 2> #{stderr_path}"
 
   started_at = Time.now.utc
