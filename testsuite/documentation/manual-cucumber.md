@@ -9,7 +9,7 @@
 
 ### Background information
   * For a high level view of testing, please refer to the [Test Plan](https://gitlab.suse.de/galaxy/testplan).
-  * For the automated test suite, please refer to the ["real" Cucumber](https://github.com/SUSE/spacewalk/tree/Manager/testsuite/features).
+  * For the automated test suite, please refer to the ["real" Cucumber](https://github.com/uyuni-project/uyuni/tree/master/testsuite/features).
 
 ### Structure of this document
   * Manual Cucumber tests are split by the main component or functionality: server, clients, proxy, retail and other tests.
@@ -41,42 +41,42 @@
 ### 1.1 Server (fresh installation, x86_64)
 * Priority: high
 * Could be automated: yes (has been done in openQA but we don't get the qcow2 from it automatically yet)
-1. Install on a x86_64 host **without terraform**, like our customers:
+1. Install on an x86_64 host **without terraform**, like our customers:
     1. Prepare a fresh disk of at least 180 GB on a VM or a real host
-    1. Install SLE15 SP4 Virtual Machine from an [ISO image](http://dist.suse.de/install/SLE-15-SP3-Full-TEST/) or from some other installation source ([SSC-Proxy only for testing purpose](https://github.com/SUSE/spacewalk/wiki/SCC-QA-proxy#installation-from-scratch-using-scc-proxy-40))
-    1. At registration screen, register with your employee key (for betas use https://scc.suse.com/dashboard)
-    1. When asked, answer you would like to install more repositories
-    1. In extra software screen, un-filter the beta versions, and check SUSE Manager server latest version Beta
-    1. Accept licence and enter beta key for SUSE Manager server latest version
-    1. Accept default software selection (with X Window and GNOME)
-    1. At partitioning screen, choose the default proposal
-    1. Continue with installation screens
-    1. After the system rebooted, make sure ``hostname -f`` gives the correct result
-    1. Also make sure that SUSE Manager server software is installed with ``zypper search -t pattern``
-    1. Set up the server with ``yast2 susemanager_setup``
-    1. On credentials screen, enter "UC7" and the corresponding credential, and press "Test"
-    1. Continue with [general server smoke tests here](#generalserversmoke).
+    1. Install a SLES 15 SP7 virtual machine from an [ISO image](https://dist.suse.de/install/SLE-15-SP7-Full-GM/) (see [SUSE Multi-Linux Manager 5.2 server deployment](https://documentation.suse.com/multi-linux-manager/5.2/en/docs/installation-and-upgrade/container-deployment/mlm/server-deployment-mlm.html))
+    1. At the registration screen, register with your employee key (for betas use https://scc.suse.com/)
+    1. In Extensions and Modules Selection, select SUSE Multi-Linux Manager Server Extension 5.2, Basesystem Module, and Containers Module
+    1. Accept the licence and enter the SUSE Multi-Linux Manager Server 5.2 extension registration code when prompted (use the beta key from SCC while 5.2 is in RC)
+    1. Accept the default software selection (with X Window and GNOME)
+    1. At the partitioning screen, choose the default proposal
+    1. Continue with the installation screens
+    1. After the system has rebooted, make sure ``hostname -f`` gives the correct result
+    1. Also make sure ``podman`` and the Multi-Linux-Manager-Server product are installed
+    1. Configure persistent storage with ``mgr-storage-server`` if needed
+    1. Deploy the server with ``mgradm install podman <fqdn>``
+    1. In the Web UI Setup Wizard credentials screen, enter "UC7" and the corresponding credential, and press "Test"
+    1. Continue with the [general server smoke tests here](#generalserversmoke).
 
 ### 1.2 Server (fresh installation, s390x)
 * Priority: high
 * Could be automated: yes (has been done in openQA but we don't get the qcow2 from it automatically yet)
-1. Install on a s390x host with ``yast2 susemanager_setup``
-1. Continue with [general server smoke tests here](#generalserversmoke).
+1. Install on an s390x host following the [SUSE Multi-Linux Manager 5.2 server deployment guide](https://documentation.suse.com/multi-linux-manager/5.2/en/docs/installation-and-upgrade/container-deployment/mlm/server-deployment-mlm.html) and deploy with ``mgradm install podman <fqdn>``
+1. Continue with the [general server smoke tests here](#generalserversmoke).
 
 ### 1.3 Server (fresh installation, ppc64le)
 * Priority: high
 * Could be automated: yes (has been done in openQA but we don't get the qcow2 from it automatically yet)
-1. Install on a ppc64le host with ``yast2 susemanager_setup``
-1. Continue with [general server smoke tests here](#generalserversmoke).
+1. Install on a ppc64le host following the [SUSE Multi-Linux Manager 5.2 server deployment guide](https://documentation.suse.com/multi-linux-manager/5.2/en/docs/installation-and-upgrade/container-deployment/mlm/server-deployment-mlm.html) and deploy with ``mgradm install podman <fqdn>``
+1. Continue with the [general server smoke tests here](#generalserversmoke).
 
 ### 1.4 Server Migration (from the older version to the latest version)
 * Priority: high
 * Could be automated: yes (basically what we do in MUs and later on 4.0->4.1)
 1. Make sure both SLES and SUMA are registered with SCC.
-1. Make sure spacewalk services are not running ``spacewalk-service stop``
+1. Make sure the spacewalk services are not running ``spacewalk-service stop``
 1. Apply all patches for the old SUMA version by running ``zypper ref`` followed by ``zypper up``
-1. Upgrade the database schema by running ``spacewalk-schema-upgrade``
-1. Run to command that will perform migration ``zypper migration``
+1. Upgrade the database schema by running the command ``spacewalk-schema-upgrade``
+1. Run the command that will perform the migration ``zypper migration``
 1. Select one of the options and let the migration process complete.
 1. If necessary, upgrade the database schema again by running ``spacewalk-schema-upgrade``
 1. Run the database migration script ``/usr/lib/susemanager/bin/pg-migrate-X-to-Y``, where
@@ -91,92 +91,119 @@ General server smoke tests are: <a name="generalserversmoke"/>
 1. Make sure the credentials are accepted, from Web UI
 1. Synchronize x86_64 repositories, from Web UI or ``spacewalk-repo-sync``
 1. Add custom client-side channels as needed (tools, salt, python...)
-1. Depending on which client you want to test, see the corresponding entry in the server documentation [for example the one for sle clients](https://documentation.suse.com/multi-linux-manager/5.1/en/docs/client-configuration/clients-sle.html)
+1. Depending on which client you want to test, see the corresponding entry in the server documentation [for example the one for sle clients](https://documentation.suse.com/multi-linux-manager/5.2/en/docs/client-configuration/clients-sle.html)
 1. Synchronize the custom channels for BETA with ``spacewalk-repo-sync -c <name> -u <url>``
 1. Perform package search
 1. Create corresponding activation key
 1. Add all children channels to activation key
-1. Create bootstrap repository for clients (traditional or minions), with ``mgr-create-bootstrap-repo --with-custom-channels``
+1. Create a bootstrap repository for clients (traditional or minions), with ``mgr-create-bootstrap-repo --with-custom-channels``
 1. Do one of the client tests below
 
 
 Add custom client-side channels:
 - Go to Software > Channel list > Create a channel
 - Inside the Channel create a Repository pointing to one of the custom repos above
-- After that you go to Manage Channel, then follow Repositories tab, and inside tap on Sync.
+- After that you go to Manage Channel, then follow Repositories tab, and click **Sync**.
 
 
 # 2. Client Tests <a name="b"/>
 
 ### 2.1 Client Smoke Testing <a name="b1"/>
 
-Client tests are listed by the platform.
-Most tests are already automated but are redone manually for safety, or cannot be automated.
-The tests that should be considered for future automation have been flagged in the relevant column.
+Client tests are listed by platform. The platforms below are covered by `build_validation/init_clients` features; manual smoke tests can still be run for release milestones.
 
 ___Platform___ | ___Client Type___ | ___Priority___ | ___Automation<br>candidate___ | ___Tests___
 --- | --- | --- | --- | ---
-**SLE 15 SP3** | Traditional | high | ... | [General client smoke tests](#generalclientsmoke)
-... | Normal Salt minion | high | ... | [General client smoke tests](#generalclientsmoke)
-... | SSH Salt minion | high | ... | [General client smoke tests](#generalclientsmoke)
-**SLE 15 SP2** | Traditional | high | ... | [General client smoke tests](#generalclientsmoke)
-... | Normal Salt minion | high | ... | [General client smoke tests](#generalclientsmoke)
-... | SSH Salt minion | high | ... | [General client smoke tests](#generalclientsmoke)
-**SLE 15 SP1 LTSS** | Traditional | high | ... | [General client smoke tests](#generalclientsmoke)
-... | Normal Salt minion | high | ... | [General client smoke tests](#generalclientsmoke)
-... | SSH Salt minion | high | ... | [General client smoke tests](#generalclientsmoke)
-**SLE 15 LTSS** | Traditional | high | ... | [General client smoke tests](#generalclientsmoke)
-... | Normal Salt minion | high | ... | [General client smoke tests](#generalclientsmoke)
-... | SSH Salt minion | high | ... | [General client smoke tests](#generalclientsmoke)
-**SLE 12 SP5** | Traditional | high | ... | [General client smoke tests](#generalclientsmoke)
-... | Normal Salt minion | high | ... | [General client smoke tests](#generalclientsmoke)
-... | SSH Salt minion | high | ... | [General client smoke tests](#generalclientsmoke)
-... | SSH Salt minion tunnel | high | ... | [General client smoke tests](#generalclientsmoke)
-**SLE 12 SP4** | Traditional | high | ... | [General client smoke tests](#generalclientsmoke)
-... | Normal Salt minion | high | ... | [General client smoke tests](#generalclientsmoke)
-... | SSH Salt minion | high | ... | [General client smoke tests](#generalclientsmoke)
-... | SSH Salt minion tunnel | high | ... | [General client smoke tests](#generalclientsmoke)
- .. | Retail terminal | high | ... | [General client smoke tests](#generalclientsmoke)
-**SLE 11 SP4** | Traditional | medium | ... | [General client smoke tests](#generalclientsmoke)
-... | Normal Salt minion | medium | ... | [General client smoke tests](#generalclientsmoke)
-... | Retail terminal | high | ... | [General client smoke tests](#generalclientsmoke)
-**SLE 11 SP3** | Traditional | low | ... | [General client smoke tests](#generalclientsmoke)
-... | Normal Salt minion | low | ... | [General client smoke tests](#generalclientsmoke)
-**RES 8** | Traditional | high | ... | [General client smoke tests](#generalclientsmoke)
-... | Normal Salt minion | high | ... | [General client smoke tests](#generalclientsmoke)
-... | SSH Salt minion | high | ... | [General client smoke tests](#generalclientsmoke)
-**RES 7** | Traditional | high | ... | [General client smoke tests](#generalclientsmoke)
-... | Normal Salt minion | high | ... | [General client smoke tests](#generalclientsmoke)
-... | SSH Salt minion | high | ... | [General client smoke tests](#generalclientsmoke)
- **CentOS 8** | Normal Salt minion | medium | ... | [General client smoke tests](#generalclientsmoke)
-... | SSH Salt minion | medium | ... | [General client smoke tests](#generalclientsmoke)
- .. | SSH Salt minion tunnel | medium | ... | [General client smoke tests](#generalclientsmoke)
-**osad** | Traditional | high | yes | [General client smoke tests](#generalclientsmoke)
+**SLE 12 SP5** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/sle12sp5_minion.feature` | [General client smoke tests](#generalclientsmoke)
+... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/sle12sp5_ssh_minion.feature` | [General client smoke tests](#generalclientsmoke)
+**SLE 15 SP3** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/sle15sp3_minion.feature` | [General client smoke tests](#generalclientsmoke)
+... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/sle15sp3_ssh_minion.feature` | [General client smoke tests](#generalclientsmoke)
+**SLE 15 SP4** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/sle15sp4_minion.feature` | [General client smoke tests](#generalclientsmoke)
+... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/sle15sp4_ssh_minion.feature` | [General client smoke tests](#generalclientsmoke)
+**SLE 15 SP5** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/sle15sp5_minion.feature` | [General client smoke tests](#generalclientsmoke)
+... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/sle15sp5_ssh_minion.feature` | [General client smoke tests](#generalclientsmoke)
+**SLE 15 SP5 (s390x)** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/sle15sp5s390_minion.feature` | [General client smoke tests](#generalclientsmoke)
+... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/sle15sp5s390_ssh_minion.feature` | [General client smoke tests](#generalclientsmoke)
+**SLE 15 SP6** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/sle15sp6_minion.feature` | [General client smoke tests](#generalclientsmoke)
+... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/sle15sp6_ssh_minion.feature` | [General client smoke tests](#generalclientsmoke)
+**SLE 15 SP7** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/sle15sp7_minion.feature` | [General client smoke tests](#generalclientsmoke)
+... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/sle15sp7_ssh_minion.feature` | [General client smoke tests](#generalclientsmoke)
+**SLE 16.0** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/sle160_minion.feature` | [General client smoke tests](#generalclientsmoke)
+... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/sle160_ssh_minion.feature` | [General client smoke tests](#generalclientsmoke)
+**SLE Micro 5.2** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/slemicro52_minion.feature` | [General client smoke tests](#generalclientsmoke)
+... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/slemicro52_ssh_minion.feature` | [General client smoke tests](#generalclientsmoke)
+**SLE Micro 5.3** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/slemicro53_minion.feature` | [General client smoke tests](#generalclientsmoke)
+... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/slemicro53_ssh_minion.feature` | [General client smoke tests](#generalclientsmoke)
+**SLE Micro 5.4** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/slemicro54_minion.feature` | [General client smoke tests](#generalclientsmoke)
+... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/slemicro54_ssh_minion.feature` | [General client smoke tests](#generalclientsmoke)
+**SLE Micro 5.5** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/slemicro55_minion.feature` | [General client smoke tests](#generalclientsmoke)
+... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/slemicro55_ssh_minion.feature` | [General client smoke tests](#generalclientsmoke)
+**SL Micro 6.0** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/slmicro60_minion.feature` | [General client smoke tests](#generalclientsmoke)
+... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/slmicro60_ssh_minion.feature` | [General client smoke tests](#generalclientsmoke)
+**SL Micro 6.1** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/slmicro61_minion.feature` | [General client smoke tests](#generalclientsmoke)
+... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/slmicro61_ssh_minion.feature` | [General client smoke tests](#generalclientsmoke)
+**SL Micro 6.2** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/slmicro62_minion.feature` | [General client smoke tests](#generalclientsmoke)
+... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/slmicro62_ssh_minion.feature` | [General client smoke tests](#generalclientsmoke)
+**CentOS 7** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/centos7_minion.feature` | [General client smoke tests](#generalclientsmoke)
+... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/centos7_ssh_minion.feature` | [General client smoke tests](#generalclientsmoke)
+**RHEL 9** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/rhel9_minion.feature` | [General client smoke tests](#generalclientsmoke)
+... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/rhel9_ssh_minion.feature` | [General client smoke tests](#generalclientsmoke)
+**AlmaLinux 8** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/alma8_minion.feature` | [General client smoke tests](#generalclientsmoke)
+... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/alma8_ssh_minion.feature` | [General client smoke tests](#generalclientsmoke)
+**AlmaLinux 9** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/alma9_minion.feature` | [General client smoke tests](#generalclientsmoke)
+... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/alma9_ssh_minion.feature` | [General client smoke tests](#generalclientsmoke)
+**AlmaLinux 10** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/alma10_minion.feature` | [General client smoke tests](#generalclientsmoke)
+... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/alma10_ssh_minion.feature` | [General client smoke tests](#generalclientsmoke)
+**Rocky Linux 8** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/rocky8_minion.feature` | [General client smoke tests](#generalclientsmoke)
+... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/rocky8_ssh_minion.feature` | [General client smoke tests](#generalclientsmoke)
+**Rocky Linux 9** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/rocky9_minion.feature` | [General client smoke tests](#generalclientsmoke)
+... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/rocky9_ssh_minion.feature` | [General client smoke tests](#generalclientsmoke)
+**Rocky Linux 10** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/rocky10_minion.feature` | [General client smoke tests](#generalclientsmoke)
+... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/rocky10_ssh_minion.feature` | [General client smoke tests](#generalclientsmoke)
+**Oracle Linux 9** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/oracle9_minion.feature` | [General client smoke tests](#generalclientsmoke)
+... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/oracle9_ssh_minion.feature` | [General client smoke tests](#generalclientsmoke)
+**Oracle Linux 10** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/oracle10_minion.feature` | [General client smoke tests](#generalclientsmoke)
+... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/oracle10_ssh_minion.feature` | [General client smoke tests](#generalclientsmoke)
+**Liberty Linux 9** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/liberty9_minion.feature` | [General client smoke tests](#generalclientsmoke)
+... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/liberty9_ssh_minion.feature` | [General client smoke tests](#generalclientsmoke)
+**Amazon Linux 2023** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/amazon2023_minion.feature` | [General client smoke tests](#generalclientsmoke)
+... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/amazon2023_ssh_minion.feature` | [General client smoke tests](#generalclientsmoke)
+**Debian 12** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/debian12_minion.feature` | [General client smoke tests](#generalclientsmoke)
+... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/debian12_ssh_minion.feature` | [General client smoke tests](#generalclientsmoke)
+**Ubuntu 22.04** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/ubuntu2204_minion.feature` | [General client smoke tests](#generalclientsmoke)
+... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/ubuntu2204_ssh_minion.feature` | [General client smoke tests](#generalclientsmoke)
+**Ubuntu 24.04** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/ubuntu2404_minion.feature` | [General client smoke tests](#generalclientsmoke)
+... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/ubuntu2404_ssh_minion.feature` | [General client smoke tests](#generalclientsmoke)
+**Ubuntu 26.04** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/ubuntu2604_minion.feature` | [General client smoke tests](#generalclientsmoke)
+... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/ubuntu2604_ssh_minion.feature` | [General client smoke tests](#generalclientsmoke)
+**openSUSE Leap 15.6 (aarch64)** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/opensuse156arm_minion.feature` | [General client smoke tests](#generalclientsmoke)
+... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/opensuse156arm_ssh_minion.feature` | [General client smoke tests](#generalclientsmoke)
+**openSUSE Leap 16.0 (aarch64)** | Normal Salt minion | high | yes - `testsuite/features/build_validation/init_clients/opensuse160arm_minion.feature` | [General client smoke tests](#generalclientsmoke)
+... | SSH Salt minion | high | yes - `testsuite/features/build_validation/init_clients/opensuse160arm_ssh_minion.feature` | [General client smoke tests](#generalclientsmoke)
+**Salt migration** | Salt migration minion | high | yes - `testsuite/features/build_validation/init_clients/salt_migration_minion.feature` | [General client smoke tests](#generalclientsmoke)
 
 #### Sequence of test steps
 **General client smoke tests**: <a name="generalclientsmoke"/>
-1. (traditional) Boostrap the client using the bootstrap script with the relevant activation key
+1. (traditional) Bootstrap the client using the bootstrap script with the relevant activation key
     OR
     (salt minion) Bootstrap the minion from the UI
     OR
     (salt minion) Bootstrap the minion with salt script
     OR
-    (salt-ssh) Still UI but with activation key with Push contact method
+    (salt-ssh) Still UI but with an activation key with the Push contact method
 
 1. Install a package via Web UI
 1. Install a patch via Web UI
 1. Remove a package via Web UI
-1. Execute a remote command via Web UI ([Tip for traditional](#remotecommandtraditional))
-1. [Apply a configuration file via Web UI](#applyconfigfile) ([Tip for traditional](#remotecommandtraditional))
-1. [Schedule Software package refresh](#updatepackagelist)
-1. [Schedule Hardware refresh](#hardwardrefresh)
+1. Execute a remote command via Web UI (see tip for traditional clients below)
+1. Apply a configuration file via Web UI (see tip for traditional clients below)
+1. Schedule Software package refresh
+1. Schedule Hardware refresh
 1. Reboot the client via Web UI
-
-**SLES11SPx:** Before bootstrapping be sure to have changed that apache config in the server -> https://documentation.suse.com/external-tree/en-us/suma/4.0/suse-manager/client-configuration/tshoot-clients.html#_ssl_errors
 
 -----------
 
-The following smoke tests and the details on how to do them are done automatically [already here](https://github.com/SUSE/spacewalk/blob/Manager-4.1/testsuite/features/build_validation/smoke_tests/smoke_tests.template) and you can see further details in that template
+The following smoke tests and the details on how to do them are done automatically [already here](https://github.com/uyuni-project/uyuni/blob/master/testsuite/features/build_validation/smoke_tests/smoke_tests.template) and you can see further details in that template
 
 ### 2.2 Additional Client Tests <a name="b2"/>
 
@@ -197,18 +224,18 @@ Traditional SLES ES | Normal Salt minion | high | yes | [Migration steps](#migra
 1. In the system details, unregister this client
 1. Go to Systems => Bootstrap
 1. In the form, enter its hostname, fill in the other fields and click on the button
-1. Check that this machine is no more of "Management" type
+1. Check that this machine is no longer of the "Management" type
 1. Do usual [client smoke tests](#generalclientsmoke)
 
 #### Sequence of test steps
-Migration test steps tests: <a name="migrationsteps"/>
+Migration test steps: <a name="migrationsteps"/>
 1. Register a traditional client
-1. In  case of SLES ES clients make sure <code>rhnplugin</code> is disabled
+1. In case of SLES ES clients make sure <code>rhnplugin</code> is disabled
 1. Go to Systems => Bootstrap
 1. In the form, enter its hostname, fill in the other fields (including SSH mode)
 1. Use the right activation key
 1. Click on the Bootstrap button and wait for the bootstrapping to finish
-1. Check that this machine is no more of "Management" type
+1. Check that this machine is no longer of the "Management" type
 1. Do usual [client smoke tests](#generalclientsmoke)
 
 
@@ -229,16 +256,16 @@ ___Type___| ___Priority___ | ___Automation<br>candidate___ | ___Tests___
 ### 3.3 Proxy Migration (old version with the new version's channels)
 * Priority: high
 * Could be automated: yes
-1. Install old version server with or without terraform
+1. Install the old version server with or without terraform
 1. Create initial organization, from Web UI
 1. Make sure the credentials are accepted, from Web UI
 1. Synchronize x86_64 repositories, from Web UI or ``spacewalk-repo-sync``
-1. Synchronize also Proxy old version child channel
+1. Synchronize also the Proxy old version child channel
 1. Go to "Channels => Manage Software Channels => Create Channel" and create a custom channel named "custom_tools"
 1. Synchronize it with the beta URL: ``spacewalk-repo-sync -c custom_tools -u http://<user:password>@beta.suse.com/private/SUSE-Manager-beta/RC1/SLE12/x86_64/update``
 1. Create an activation key
 1. Add all children channels to activation key
-1. Create bootstrap repository for clients (traditional or minions), with ``mgr-create-bootstrap-repo --with-custom-channels``
+1. Create a bootstrap repository for clients (traditional or minions), with ``mgr-create-bootstrap-repo --with-custom-channels``
 1. Create a bootstrap script for the proxy
 1. Prepare another SLESmachine which will be the proxy
 1. Bootstrap the proxy with the server as a traditional client
@@ -257,34 +284,34 @@ Then, completely at the end:
 and check whether everything continues working.
 
 #### Sequence of test steps
-[Proxy steps are](<a name="proxysteps"/>)
+Proxy steps are: <a name="proxysteps"/>
 1. Synchronize Proxy child channel for the relevant version
-1. Create activation key that includes Proxy channels
+1. Create an activation key that includes Proxy channels
 1. Bootstrap the required type of proxy (traditional or Salt)
-1. Run configure-proxy.sh on the proxy (you may need to do this twice - keep an eye on the script output)
-1. Make sure SSL keys as copied explained in the documentation
+1. Run `configure-proxy.sh` on the proxy (you may need to do this twice - keep an eye on the script output)
+1. Make sure SSL keys are copied as explained in the documentation
 1. Bootstrap a traditional client attached to the proxy
 1. Bootstrap a Salt minion attached to the proxy
 
 ### 3.4 Proxy Migration (from traditional to salt)
 * Priority: medium
 * Could be automated: no
-1. Install and setup server
-1. Install and setup traditional proxy
+1. Install and setup the server
+1. Install and setup the traditional proxy
 1. Install and bootstrap a salt minion client attached to the proxy
 1. Install and setup a traditional client registered to the proxy
-1. Reinstall the proxy and set it up as salt client
+1. Reinstall the proxy and set it up as a salt client
    Note it is the same hardware/virtual machine and you should use the same activation key.
 1. Check in the web UI that you can check if there are new updates on both clients
 1. Check in the web UI that you can run remote commands in the salt minion one.
-1. Check in the web UI that the proxy is setup with salt management mode
+1. Check in the web UI that the proxy is set up with salt management mode
 1. Check in the web UI that the clients are still listed in the proxy
 
 ### 3.5 Proxy Migration by Reactivation (from traditional to salt)
 * Priority: medium
 * Could be automated: ?
-1. Install and setup server
-1. Install and setup traditional proxy of the previous major version
+1. Install and setup the server
+1. Install and setup the traditional proxy of the previous major version
 1. Install and bootstrap a traditional client registered to the proxy
 1. Install and bootstrap a salt client registered to the proxy
 1. Shutdown the proxy
@@ -295,7 +322,7 @@ and check whether everything continues working.
 1. Run `proxy-configuration.sh` in the new proxy
 1. Check in the web UI that you can check if there are new updates on both clients
 1. Check in the web UI that you can run remote commands in the salt minion one.
-1. Check in the web UI that the proxy is setup with salt management mode
+1. Check in the web UI that the proxy is set up with salt management mode
 1. Check in the web UI that the clients are still listed in the proxy
 
 # 4. SUMA for Retail <a name="d"/>
@@ -303,10 +330,10 @@ and check whether everything continues working.
 ### 4.1 SUMA for Retail - Basic workflow
 * Priority: high
 * Could be automated: to be confirmed
-1. Synchronize necessary child child channels
+1. Synchronize the necessary child channels
 1. Register Image Build Host and create images
-1. Configure Branch server
-1. Transfer the images from SUMA Server to the Branch server
+1. Configure the Branch server
+1. Transfer the images from the SUSE Multi-Linux Manager server to the Branch server
 1. Register new SLE12SP5 terminal
 1. Register new SLE15SP1 terminal
 1. Log in to the new terminals
@@ -315,7 +342,7 @@ and check whether everything continues working.
 #### 4.1.1 Registering retail terminal with UEFI boot enabled
 
 1. Modify saltboot formula in web UI, so `gpt` is used as a partition table type.
-1. Install package `qemu-ovmf-x86_64` before creation of libvirt based VM.
+1. Install the package `qemu-ovmf-x86_64` before creation of libvirt based VM.
 1. When package installation is finished, multiple UEFI firmwares are available as `/usr/share/qemu/ovmf-*`.
 1. Select UEFI instead of BIOS in _Hypervisor details_ menu via `virt-manager`.
 1. Firmware `/usr/share/qemu/ovmf-x86_64-ms-code.bin` is pre-selected by `virt-manager`. This cannot be changed via GUI, but only via `virsh edit` command.
@@ -347,13 +374,13 @@ and check whether everything continues working.
 **Important note:** Option `secure='no'` doesn't turn off secure boot feature. It is necessary to do it via UEFI menu during VM's boot. To enter UEFI configuration menu, just type `exit` in previous UEFI shell command prompt. Then you can disable secure boot.
 
 #### 4.1.2 Registering retail terminal with EFI HTTP booting
-1. This feature is for SLE15SP1 (JeOS7) terminals only, please build kiwi image for it first.
+1. This feature is for SLE15SP1 (JeOS7) terminals only, please build a kiwi image for it first.
 1. Follow the same steps from 4.1.1 section, so everything in the VM for retail terminal is ready for EFI booting
 1. Configure DHCP formula as usual and fill `Filename Http:` input field with `http://[branch-server-FQDN-for-private network]/saltboot/boot/shim.efi`
-1. Ensure default initrd is set to SLE15SP1 image (JeOS7). Check this path on branch server: `/srv/saltboot/boot` - both symlinks (initrd.gz and link) should point to files containg JeOS7
-1. Change default boot option via UEFI menu during VM's boot and set it to *UEFI HTTPv4*. To enter UEFI configuration menu, press ESC and then type `exit` in UEFI shell command prompt
+1. Ensure default initrd is set to SLE15SP1 image (JeOS7). Check this path on branch server: `/srv/saltboot/boot` - both symlinks (initrd.gz and link) should point to files containing JeOS7
+1. Change the default boot option via UEFI menu during VM's boot and set it to *UEFI HTTPv4*. To enter UEFI configuration menu, press ESC and then type `exit` in UEFI shell command prompt
 1. Restart and boot the terminal. The rest should follow as usual.
-1. If you jump into error message `No mapping found` during booting, try to disable secure boot (see instructions above in section 4.1.1)
+1. If you jump into the error message `No mapping found` during booting, try to disable secure boot (see instructions above in section 4.1.1)
 
 **Note:** Apache access log at the branch server should contain lines related to HTTP booting starting with `"HEAD /saltboot/boot/grub.efi HTTP/1.1" 200 - "-" "UefiHttpBoot/1.0"`
 
@@ -361,23 +388,23 @@ and check whether everything continues working.
 1. Follow the same steps from 4.1 section
 1. Create multiple groups named as branch prefixes according to the number of Branch servers
 1. Prepare also multiple private virtual networks, one private network per Branch server
-1. If you plan to use JeOS image as a base for 3.2 Branch server, assure the content of `/etc/zypp/zypp.conf` contains line `rpm.install.excludedocs = no`
+1. If you plan to use a JeOS image as a base for 3.2 Branch server, assure the content of `/etc/zypp/zypp.conf` contains line `rpm.install.excludedocs = no`
 1. This has to be done **before you install proxy pattern** on the branch server
-1. Aftern proxy pattern is installed run `configure-proxy.sh` script as usual
-1. Then check if content of the file `/etc/rhn/rhn.conf` is not empty and contains line with `proxy.rhn_parent` set to the FQDN of the SUMA Server
+1. After the proxy pattern is installed run the `configure-proxy.sh` script as usual
+1. Then check if the content of the file `/etc/rhn/rhn.conf` is not empty and contains a line with `proxy.rhn_parent` set to the FQDN of the SUSE Multi-Linux Manager server
 1. When tests for the first branch server are finished (and terminals are successfully deployed), the easiest way to switch to the next Branch server is just to change private network
-1. It is also suitable to recrate virtual HDD of terminal or restore it from the snapshot before terminals are rebooted
+1. It is also suitable to recreate the virtual HDD of the terminal or restore it from the snapshot before terminals are rebooted
 
-#### 4.1.4. USB stick for booting of retail terminal (instead of HTTP or PXE booting)
-1. This feature is for SLE15SP1 (JeOS7) terminals only, please build kiwi image for it first
+#### 4.1.4. USB stick for booting of retail terminal (instead of HTTP or PXE booting) <a name="retailusb"/>
+1. This feature is for SLE15SP1 (JeOS7) terminals only, please build a kiwi image for it first
 1. Follow the same steps from 4.1.1 section, this feature is available for both: EFI and legacy BIOS based terminals
 1. Modify VM of branch server and add additional storage of size 512 MiB. Make sure it uses **USB bus**
-1. Ensure default image is set to SLE15SP1 (JeOS7). You can do it by executing `salt-call pillar.item image-synchronize` at branch server, output should contain `POS_Image_Graphical7-7.0.0` or similar name
+1. Ensure the default image is set to SLE15SP1 (JeOS7). You can do it by executing `salt-call pillar.item image-synchronize` at branch server, output should contain `POS_Image_Graphical7-7.0.0` or similar name
 1. If default image is not set to JeOS7, do it in branch server profile at `Image Synchronization` formula. Then apply highstate
-1. Prepare usb stick by executing `salt-call image_sync_usb.create /dev/sdX` at branch server assuming `/dev/sdX` points to the USB stisk you created in step 3
+1. Prepare a usb stick by executing `salt-call image_sync_usb.create /dev/sdX` at branch server assuming `/dev/sdX` points to the USB stick you created in step 3
 1. When this is successfully completed, please remove this storage from branch server's VM and add it to the VM for retail terminal
 1. Ensure that **secure boot is disabled** in case of EFI usage, you can do it in EFI menu (just type exit and press ENTER at EFI prompt)
-1. Set booting sequence so retail terminal boots from this USB stick device
+1. Set the booting sequence so the retail terminal boots from this USB stick device
 1. Everything should follow like during usual retail terminal bootstrap (accept salt key etc.)
 
 **NOTE:** If you encounter failure at "History > Events" page at profile of retail terminal stating `'Sum of partition sizes ({0}MiB) exceeds disk size ({1}MiB)'.format(size_known, disk_size - 1)) salt.exceptions.SaltException: Sum of partition sizes (1525MiB) exceeds disk size (511.0MiB)'` or similar, make sure saltboot formula points to the proper disk device. You use two devices now, so device you want for image deployment could be detected as `/dev/sdb`
@@ -396,24 +423,24 @@ and check whether everything continues working.
 
 #### 4.1.6 Boot and deployment of retail terminal via wifi connection
 1. Real hardware is necessary for this test (retail terminal, wifi router or access point)
-2. Setup SUSE Manager 4.1 and branch server localy at your workstation as a VMs using libvirt
-3. Create second virtual network interface during branch server VM setup.
-4. This interface has to be bridged to network interface at your workstation, which is expected to be connected to your router or access point (for example `Host device eth1: macvtap`)
-5. Configure your wifi router / access point to be at regime with DHCP disabled as this is going to be provided via branch server
-6. Configure wifi at this device to use WPA2 PSK, set credentials and save them for later use
-7. Connect this device with your laptop as described at step 4.
-8. Modify kiwi image profile `confix.xml` file for JeOS7 to include `dracut-wireless` package as follows:
+1. Set up SUSE Multi-Linux Manager 5.2 and a branch server locally at your workstation as VMs using libvirt
+1. Create second virtual network interface during branch server VM setup.
+1. This interface has to be bridged to network interface at your workstation, which is expected to be connected to your router or access point (for example `Host device eth1: macvtap`)
+1. Configure your wifi router / access point to be at regime with DHCP disabled as this is going to be provided via branch server
+1. Configure wifi at this device to use WPA2 PSK, set credentials and save them for later use
+1. Connect this device with your laptop as described at the bridging step above
+1. Modify kiwi image profile `config.xml` file for JeOS7 to include `dracut-wireless` package as follows:
 ```
 	<package name="dracut-wireless"/>
 ```
-9. We also have to provide credentials for wifi by creating `root/etc/sysconfig/network/ifcfg-wlan0` file in kiwi image profile:
+1. We also have to provide credentials for wifi by creating `root/etc/sysconfig/network/ifcfg-wlan0` file in kiwi image profile:
 ```
 # ALLOW_UPDATE_FROM_INITRD
 WIRELESS_ESSID=<wireless network name>
 WIRELESS_WPA_PSK=<wireless network password>
 ```
-10. Build kiwi image with these changes and create USB stick as described in [4.1.4](https://gitlab.suse.de/galaxy/testplan/-/blob/master/manual-cucumber.md) section above
-11. Boot terminal from USB stick you previously created and terminal boot should proceed as usual
+1. Build the kiwi image with these changes and create a USB stick as described in [section 4.1.4](#retailusb) above
+1. Boot the terminal from the USB stick you previously created and the terminal boot should proceed as usual
 
 ### 4.2 SUMA for Retail - Image Upgrade
 * Priority: high
@@ -424,11 +451,11 @@ WIRELESS_WPA_PSK=<wireless network password>
 1. Build a new image for deployment, using newer version of SLE 12 SP4
 1. Assign the new image to the terminal by changing field `OS Image to Deploy` to the name of SLE 12 SP4 image at saltboot formula page on HWTYPE system group of this terminal
 1. Restart the terminal
-1. Confrm that the new SLE is running on the terminal
+1. Confirm that the new SLE is running on the terminal
 
 ### 4.3 SUMA for Retail - Migration from SLEPOS
 * Priority: high
-* Could be automated: yes (all steps already done excepted the first 2 ones)
+* Could be automated: yes (all steps already done except the first two steps)
 1. Get an existing XML files from Retail team. Those are currently [provided](https://gitlab.suse.de/SLEPOS/SUMA_Retail/tree/master/doc/migration/test_data). (Prepare two SLE15SP1 based VMs as a branch servers to be used for import.)
 1. Check for duplicates in source XML file and also check for too long names (longer than 56 characters) of HWTYPE groups and correct if necessary. (Both is documented in official docs.)
 1. Convert XML to yaml file with ``retail_migration`` command
@@ -436,8 +463,8 @@ WIRELESS_WPA_PSK=<wireless network password>
 1. Prepare one (or more) branch servers accordingly to generated yaml file
 1. Apply that configuration file with ``retail_yaml`` command
 1. Check that the branch server is configured accordingly to yaml file
-1. Check that the the empty terminal profiles are created accordingly to yaml file
-1. Prepare VM for terminal and modify it (via `virsh edit` command) to match MAC address and HWTYPE group of one of imported terminals (please see YAML file or DHCP formula on branch server)
+1. Check that the empty terminal profiles are created accordingly to the yaml file
+1. Prepare a VM for the terminal and modify it (via `virsh edit` command) to match the MAC address and HWTYPE group of one of the imported terminals (please see YAML file or DHCP formula on branch server)
 1. Register for real one of these terminals
 1. Proceed with POS terminal health-check after registration
 
@@ -460,9 +487,9 @@ WIRELESS_WPA_PSK=<wireless network password>
 
 ### 5.2 File-based Virtual Host Manager
 * Priority: low
-* Could be automated: yes, in `srv_virtual_host_manager.feature` we only miss the checks explained below
-1. On the SUSE Manager server, create a file inside `/srv/www/htdocs/pub/`
-1. In this file, put the example JSON data from https://documentation.suse.com/suma/4.2/en/suse-manager/client-configuration/vhm-file.html (the one with "examplevhost")
+* Could be automated: yes, in `testsuite/features/secondary/srv_virtual_host_manager.feature` we only miss the checks explained below
+1. On the SUSE Multi-Linux Manager server, create a file inside `/srv/www/htdocs/pub/`
+1. In this file, put the example JSON data from https://documentation.suse.com/multi-linux-manager/5.2/en/docs/client-configuration/vhm-file.html (the one with "examplevhost")
 1. Go to "Systems => Virtual Hosts Manager => Create => File-based" and provide a label and the URL of that file, for example `https://<server_fqdn>/pub/test.json`; validate
 1. Press "Refresh Data" button.
 1. Return to "Systems => Virtual Hosts Manager", follow the newly created link, and check the new hosts appeared
@@ -475,11 +502,11 @@ WIRELESS_WPA_PSK=<wireless network password>
 * Priority: medium
 * Could be automated: no
 1. Create instance of SLES in AWS cloud with public domain name
-1. Install `virtual-host-gatherer-libcloud` package on SUMA server and restart spacewalk services
+1. Install the `virtual-host-gatherer-libcloud` package on the SUSE Multi-Linux Manager server and restart spacewalk services
 1. Prepare new virtual host manager via Web UI at "Systems => Virtual Host Managers => Create => Amazon EC2"
 1. Open this new virtual host manager and press "Refresh Data"
 1. Check at "Nodes => &lt;name of manager&gt; => Virtualization => Guests" that you can see a list of available instances
-1. Bootstrap the new client as a SSH minion with its public domain name
+1. Bootstrap the new client as an SSH minion with its public domain name
 1. Check that both the Amazon host and the VM appear in "Systems => System List => Virtual Systems"
 1. Also check in "Systems => Visualization" (dropped in 5.0)
 
@@ -487,12 +514,12 @@ WIRELESS_WPA_PSK=<wireless network password>
 * Priority: medium
 * Could be automated: no
 1. Create instance of SLES in Google cloud with public domain name
-1. Install `virtual-host-gatherer-libcloud` package on SUMA server and restart spacewalk services
-1. Upload on the SUSE Manager server the key for qa-galaxy@ service account
+1. Install the `virtual-host-gatherer-libcloud` package on the SUSE Multi-Linux Manager server and restart spacewalk services
+1. Upload the key for qa-galaxy@ service account on the SUSE Multi-Linux Manager server
 1. Prepare new virtual host manager via Web UI at "Systems => Virtual Host Managers => Create => Google Cloud Engine"
 1. Open this new virtual host manager and press "Refresh Data"
 1. Check at "Nodes => &lt;name of manager&gt; => Virtualization => Guests" that you can see a list of available instances
-1. Bootstrap the new client as a SSH minion with its public domain name
+1. Bootstrap the new client as an SSH minion with its public domain name
 1. Check that both the Google cloud host and the VM appear in "Systems => System List => Virtual Systems"
 1. Also check in "Systems => Visualization" (dropped in 5.0)
 
@@ -500,12 +527,12 @@ WIRELESS_WPA_PSK=<wireless network password>
 * Priority: medium
 * Could be automated: no
 1. Create instance of SLES in Azure with public domain name
-1. Install `virtual-host-gatherer-libcloud` package on SUMA server and restart spacewalk services
+1. Install the `virtual-host-gatherer-libcloud` package on the SUSE Multi-Linux Manager server and restart spacewalk services
 1. Make sure you know the secret key for registered application qa-galaxy
 1. Prepare new virtual host manager via Web UI at "Systems => Virtual Host Managers => Create => Azure"
 1. Open this new virtual host manager and press "Refresh Data"
 1. Check at "Nodes => &lt;name of manager&gt; => Virtualization => Guests" that you can see a list of available instances
-1. Bootstrap the new client as a SSH minion with its public domain name
+1. Bootstrap the new client as an SSH minion with its public domain name
 1. Check that both the Google cloud host and the VM appear in "Systems => System List => Virtual Systems"
 1. Also check in "Systems => Visualization" (dropped in 5.0)
 
@@ -514,14 +541,14 @@ WIRELESS_WPA_PSK=<wireless network password>
 * Could be automated: no
 1. Contact Steven Canova at SUSE Alliance team to discuss the certification at Nutanix.
 1. Once we have Steven's green light, contact Raj Kumar Marimuthu at Nutanix to get the credentials
-1. Create an instance of SLES and an instance of SUSE Manager in Nutanix AHV lab provided by Nutanix
+1. Create an instance of SLES and an instance of SUSE Multi-Linux Manager in Nutanix AHV lab provided by Nutanix
    (see QA wiki for details)
-1. Install `virtual-host-gatherer-nutanix` package on SUMA server and restart spacewalk services
+1. Install the `virtual-host-gatherer-nutanix` package on the SUSE Multi-Linux Manager server and restart spacewalk services
 1. Make sure you have installed Nutanix API certificate as explained in the wiki
 1. Prepare new virtual host manager via Web UI at "Systems => Virtual Host Managers => Create => Nutanix AHV"
 1. Open this new virtual host manager and press "Refresh Data"
 1. Check at "Nodes => &lt;name of manager&gt; => Virtualization => Guests" that you can see a list of available instances
-1. Bootstrap the new client as a SSH minion
+1. Bootstrap the new client as an SSH minion
 1. Check that both the AHV nodes and the VM appear in "Systems => System List => Virtual Systems"
 1. Also check in "Systems => Visualization" (dropped in 5.0)
 1. Do the formal registration at Nutanix with Raj
@@ -532,12 +559,12 @@ WIRELESS_WPA_PSK=<wireless network password>
 * Priority: high
 * Could be automated: no (needs human eyes)
 1. Check that there are release notes
-1. Check there is online documentation at SUSE web servers
+1. Check there is online documentation at the SUSE web servers
 1. Check that documentation can be accessed from web UI
 
 ### 6.2 System Overview
 * Priority: high
-* Could be automated: yes (already partially implemented: allcli_overview_systems_details.feature)
+* Could be automated: yes (already partially implemented: `testsuite/features/secondary/allcli_overview_systems_details.feature`)
 1. Go to "Details => Overview"
 1. Check "Activation Key" field
 1. Check "Lock Status" field
@@ -556,7 +583,7 @@ Note: in automation, we already test some parts of this page, but not all
 * Priority: medium
 * Could be automated: yes (but with two extra VMs)
 1. Prepare a proxy
-1. Register two minions throuh the proxy
+1. Register two minions through the proxy
 1. Prepare a virtualization host
 1. Register a traditional client VM on the virtualization host
 1. Create a systems group
@@ -571,8 +598,8 @@ Note: in automation, we already test some parts of this page, but not all
 
 ### 6.5 System Set Manager
 * Priority: medium
-* Could be automated: yes (might be grouped with other existing SSM tests)
-1. Select on minion and one traditional client in System Set Manager
+* Automated: yes - `testsuite/features/secondary/allcli_system_group.feature` (includes SSM package install/remove/patch scenarios)
+1. Select one minion and one traditional client in System Set Manager
 1. Install a package
 1. Verify that the package was installed on the target systems
 
@@ -610,7 +637,7 @@ Note: in automation, we already test some parts of this page, but not all
 
 ### 6.9 Use a System Group
 * Priority: medium
-* Could be automated: yes - issue #3998
+* Automated: yes - `testsuite/features/secondary/allcli_system_group.feature`
 1. Create a group in "Systems => System Groups"
 1. Go to a system's details
 1. In "Groups => Join", make it join the group
@@ -631,29 +658,34 @@ Note: in automation, we already test some parts of this page, but not all
 
 ### 7.2 Openscap (RHEL8 with Expanded Support in AWS)
 * Priority: low
-* Could be automated: yes
-1. Login into AWS using your credentials: https://eu-central-1.console.aws.amazon.com/
+* Automated: yes - `testsuite/features/secondary/min_rhlike_openscap_audit.feature` (RHEL/Rocky), `testsuite/features/secondary/min_salt_openscap_audit.feature` (SLES), `testsuite/features/secondary/min_deblike_openscap_audit.feature` (Debian)
+* Manual test below describes AWS Expanded Support deployment which is not automated
+* Could be automated: yes (AWS deployment steps)
+1. Log in to AWS using your credentials: https://eu-central-1.console.aws.amazon.com/
 1. Go to: https://github.com/SUSE-Enceladus/ec2imgutils
-1. Install: zypper in python3-ec2imgutils
+1. Install: `zypper in python3-ec2imgutils`
 1. Setup EC2 credentials using ec2utils.conf.example from the repo above
 1. Remember that your key-pair is inside EC2 > Key Pair menu in AWS dashboard.
-1. Download latest SUMA 4.3 public cloud image.
+1. Download the latest SUSE Multi-Linux Manager 5.2 public cloud BYOS image (see [Installing from RAW image](https://documentation.suse.com/multi-linux-manager/5.2/en/docs/common-workflows/workflow-install-from-raw-image.html)).
 1. Create a new AMI that will be replaced with the content of the image that we will upload.
 1. In order to create an "empty" one, the easy way is to go to Images > AMIs and copy and paste one of the existing AMIs.
 1. Upload the image:
-ec2uploadimg --access-id 'xxxx' -s 'xxxx' --backing-store ssd --machine 'x86_64' --virt-type hvm --sriov-support --ena-support --verbose --regions 'eu-central-1' --ssh-key-pair 'obarrios' --private-key-file ~/.ssh/obarrios_aws.pem -d 'SUMA 4.3 xxx' --wait-count 3 -n 'susemanager-4-3-server-BYOS-build2.5' --type 't2.micro' --user 'ec2-user' -e 'ami-03dee5a4b23035973' 'SUSE-Manager-Server-BYOS.x86_64-4.3.0-EC2-HVM-xxx.raw.xz'
-1. Follow these steps to create an instance using the newly uploaded image: https://github.com/SUSE/spacewalk/wiki/Testing-SUSE-Manager-in-Amazon-public-cloud#deploying-manually
-1. After setup SUSE Manager
-1. Synchronize this product with all sub-channels:
-RHEL or SLES ES or CentOS 8 Base
-1. Create custom repositories that contains RHEL8 repos: https://<your_server>/docs/en/suse-manager/client-configuration/clients-sleses.html#_optional_add_base_media_from_a_content_url you can find those repos in your rhel client. Alternatively, once the minion is bootstrap, enable again the disabled repos you have in your client, so you don't need to perform this step using custom repos.
+
+    ```shell
+    ec2uploadimg --access-id 'xxxx' -s 'xxxx' --backing-store ssd --machine 'x86_64' --virt-type hvm --sriov-support --ena-support --verbose --regions 'eu-central-1' --ssh-key-pair 'obarrios' --private-key-file ~/.ssh/obarrios_aws.pem -d 'MLM 5.2 xxx' --wait-count 3 -n 'multi-linux-manager-5-2-server-BYOS-build' --type 't2.micro' --user 'ec2-user' -e 'ami-03dee5a4b23035973' 'SUSE-Multi-Linux-Manager-Server-BYOS.x86_64-5.2.0-EC2-HVM-xxx.raw.xz'
+    ```
+
+1. Follow these steps to create an instance using the newly uploaded image: see [BYOS public cloud initial setup](https://documentation.suse.com/multi-linux-manager/5.2/en/docs/specialized-guides/public-cloud-guide/byos/setup.html)
+1. After setting up SUSE Multi-Linux Manager 5.2
+1. Synchronize this product with all sub-channels (RHEL or SLES ES or CentOS 8 Base)
+1. Create custom repositories that contain RHEL8 repos: see [Add base media from a content URL](https://documentation.suse.com/multi-linux-manager/5.2/en/docs/client-configuration/clients-sleses.html#_optional_add_base_media_from_a_content_url). You can find those repos in your RHEL client. Alternatively, once the minion is bootstrapped, re-enable the disabled repos on your client so you do not need to perform this step using custom repos.
 1. To find proper Repo URL of the CDN go inside your client in AWS, you will have this info in:
 1. Create Activation Keys for Salt and Salt-SSH Minion for both products
-1. Go to EC2 Console and create another instance for:
-AMI: 309956199498/RHEL_HA-8.4.0_HVM-20210504-x86_64-2-Hourly2-GP2
-AMI: https://aws.amazon.com/marketplace/pp/prodview-puvcki5kgypyy?qid=1622539284199
-1. Enable root access via SSH with a password https://github.com/SUSE/spacewalk/wiki/Testing-SUSE-Manager-in-Amazon-public-cloud#essential-operations-on-your-instance-after-connecting
-1. Go to the documentation to bootstrap an Expanded Support client https://<your_server>/docs/en/suse-manager/client-configuration/clients-sleses.html
+1. Go to EC2 Console and create another instance using one of these AMIs:
+   - 309956199498/RHEL_HA-8.4.0_HVM-20210504-x86_64-2-Hourly2-GP2
+   - https://aws.amazon.com/marketplace/pp/prodview-puvcki5kgypyy?qid=1622539284199
+1. Enable root access via SSH with a password (see [Registering clients from the Web UI](https://documentation.suse.com/multi-linux-manager/5.2/en/docs/client-configuration/registration-webui.html))
+1. Bootstrap an Expanded Support client: see [Registering SUSE Liberty Linux clients](https://documentation.suse.com/multi-linux-manager/5.2/en/docs/client-configuration/clients-sleses.html#_register_suse_liberty_linux_clients)
 1. Bootstrap a RHEL 8 system as a salt minion
 1. Install on it the openscap packages: ``yum install openscap-utils scap-security-guide openscap-content -y``
 1. In the Web UI, go to system details, then "Audit => Schedule"
@@ -677,19 +709,19 @@ AMI: https://aws.amazon.com/marketplace/pp/prodview-puvcki5kgypyy?qid=1622539284
    - Apply a Package list Refresh
    - Check in the system details if the kernel and patch version are correct
 1. Now you should see some critical patches available in the systems overview page
-1. CAUTION: If you want to install a concrete patch version, keep in mind that the system by default will install the latest critical kernel patch available in your subscribez channels
+1. CAUTION: If you want to install a concrete patch version, keep in mind that the system by default will install the latest critical kernel patch available in your subscribed channels
    - In this case, you need to create a CLM filter using NEVRA, passing the Version an Release from you want to start denying
    - And then swap the channels and subscribe to the channel created by this CLM project
 1. The kernel patches must now have the possibility to be installed without a reboot
 1. On "Software => Patches" page, check that the "Reboot required" icon is absent
-1. Apply one of this critical patches
+1. Apply one of these critical patches
 1. Check with "kgr patches" command if your patch was applied
 
 ### 7.4 Unattended Bare Metal Provisioning
 * Priority: medium
 * Could be automated: no (too complicated, dangerous)
 1. This functionality seems dangerous, test in a private, isolated, network
-1. In this network, set up a DHCP server with a "next-server" configuration parameter pointing to the SUSE Manager server
+1. In this network, set up a DHCP server with a "next-server" configuration parameter pointing to the SUSE Multi-Linux Manager server
 1. Activate the functionality in "Admin => Manager configuration => Bare-metal systems"
 1. Boot a machine on the same network
 1. The machine should appear in the systems list and be powered off
@@ -698,13 +730,14 @@ AMI: https://aws.amazon.com/marketplace/pp/prodview-puvcki5kgypyy?qid=1622539284
 
 ### 7.5 Content Lifecycle Management Filters
 * Priority: low
-* Could be automated: yes
+* Automated: yes - `testsuite/features/secondary/srv_content_lifecycle.feature` (covers both Allow and Deny filters)
+* Manual test below includes feedback page functionality which is not automated
 1. Scenario: Deny filter
    - Create a "Deny" filter for a package contains name "ruby"
    - Check those packages containing ruby are not included in the channel
 1. Scenario: Combine Deny and Allow filters
    - Create a "Deny" filter for a package containing name "ruby"
-   - Create a "Allow" filter for a package containing name "ruby"
+   - Create an "Allow" filter for a package containing name "ruby"
    - Check those packages containing ruby are included in the channel
 1. Feedback page functionality
    - Create filter "enable module non-existing-module"
@@ -716,13 +749,13 @@ AMI: https://aws.amazon.com/marketplace/pp/prodview-puvcki5kgypyy?qid=1622539284
 * Priority: medium
 * Could be automated: yes (but preferably not with EC2 instances)
 1. Create instance of SLES in AWS cloud with public domain name
-1. Install `virtual-host-gatherer-libcloud` package on SUMA server and restart spacewalk services
+1. Install the `virtual-host-gatherer-libcloud` package on the SUSE Multi-Linux Manager server and restart spacewalk services
 1. Prepare new virtual host manager via Web UI at "Systems => Virtual Host Managers => Create => Amazon EC2"
 1. Open this new virtual host manager and press "Refresh Data"
 1. Check at "Nodes => &lt;name of manager&gt; => Virtualization => Guests" that you can see a list of available instances
-1. Bootstrap the new client as a SSH minion with its public domain name
+1. Bootstrap the new client as an SSH minion with its public domain name
 1. Go to system details page of bootstrapped system and check that the UUID field is same string as AWS instance ID (starting with `i-0xxxxxxxxx`), apart from the missing dash
-1. Go back to  "Systems => Virtual Host Managers" and follow the link to this manager
+1. Go back to "Systems => Virtual Host Managers" and follow the link to this manager
 1. Go to "Nodes => &lt;name of manager&gt; => Virtualization => Guests" and check that the new system is seen as registered
 1. Go to "Audit => Subscription Matching => Subscription" page and trigger refresh of matching data
 1. Go to "Unmatched products" tab and check that AWS client is listed
@@ -733,7 +766,7 @@ AMI: https://aws.amazon.com/marketplace/pp/prodview-puvcki5kgypyy?qid=1622539284
 ### 7.7 Hub
 * Priority: medium
 * Automated: Yes
-1. Do 3 SUSE Manager deployments (all 4.1 at least):
+1. Do 3 SUSE Multi-Linux Manager deployments (5.2 at least):
    * first deployment: 1 server (the hub server)
    * second deployment: 1 server (the first peripheral server), 1 proxy, 1 client, 1 minion
    * third deployment: 1 server (the second peripheral server), 1 proxy, 1 client, 1 minion
@@ -741,9 +774,9 @@ AMI: https://aws.amazon.com/marketplace/pp/prodview-puvcki5kgypyy?qid=1622539284
 1. Do reposync on all 3 servers
 1. Create bootstrap repositories on all 3 servers
 1. Register the 2 peripheral servers onto the hub server and register all clients on the peripheral servers
-1. Install package `hub-xmlrpc-api` onto the hub server
+1. Install the package `hub-xmlrpc-api` onto the hub server
 1. Edit file `/etc/hub/hub-xmlrpc-api-config.json` to change the default URL
-1. Restart the SUSE Manager services
+1. Restart the spacewalk services
 1. Enable and start the `hub-xmlrpc-api` systemd service
 1. Run the following script:
 ```
@@ -788,25 +821,23 @@ It should list all clients on all peripheral servers.
 ### 7.9 A roster is created for pending minions not yet in DB
 * Priority: medium
 * Automated: Yes
-1. Prepara a VM for a SSH Minion
-1. Using IP Tables cut access to the SUMA Server
-1. Bootstrap a SSH Minion using the SUMA Proxy
+1. Prepare a VM for an SSH minion
+1. Using iptables, cut access to the SUSE Multi-Linux Manager server
+1. Bootstrap an SSH minion using the proxy
 1. Check if a roster file was created (ask MC)
 1. Automated test included in https://github.com/uyuni-project/uyuni/pull/5384
 
 ### 7.10 Test SLE-Micro
 * Priority: medium
-* Only available as [tech preview](https://documentation.suse.com/suma/4.3/en/suse-manager/client-configuration/supported-features-sle-micro.html)
-* Manual test for SLE-Micro 5.2: https://github.com/SUSE/spacewalk/issues/17785
-* Could be automated: Yes
-1. Deploy a VM using the latest 5.2 [ISO](https://download.suse.de/download/install/SLE-Micro-5.2-GM/SUSE-MicroOS-5.2-DVD-x86_64-GM-Media1.iso)
+* Automated: yes - Multiple versions automated: 5.2-5.5 in `testsuite/features/build_validation/init_clients/slemicro*.feature`, 6.0-6.2 in `testsuite/features/build_validation/init_clients/slmicro60_*.feature`, `testsuite/features/build_validation/init_clients/slmicro61_*.feature`, and `testsuite/features/build_validation/init_clients/slmicro62_*.feature`, and migration tests in `testsuite/features/build_validation/migration/migration_slemicro54_*.feature` and `testsuite/features/build_validation/migration/migration_slemicro55_*.feature`
+* See [supported SLE Micro features](https://documentation.suse.com/multi-linux-manager/5.2/en/docs/client-configuration/supported-features-sle-micro.html) for feature availability
+1. Deploy a VM using the latest 5.2 [ISO](https://dist.suse.de/install/SLE-Micro-5.2-GM/SUSE-MicroOS-5.2-DVD-x86_64-GM-Media1.iso)
 1. Install requirement for bootstrapping:
     - `transactional-update pkg install salt-transactional-update`
     - reboot (A reboot is mandatory to add the changes into the snapshot)
 1. Synchronize SLE-Micro from the Product Wizard
 1. Create an activation key
 1. Onboard SLE-Micro as a Salt minion using this activation key
-    - blocked atm due to https://github.com/SUSE/spacewalk/issues/17793 and https://github.com/SUSE/spacewalk/issues/16314
 1. Check the onboarding event
 1. Perform some basic smoke tests
 1. To test OpenScap install:
@@ -816,11 +847,12 @@ It should list all clients on all peripheral servers.
 
 ### 7.11 Test `spacewalk-hostname-rename`
 * Priority: low
-* Could be automated: Yes but risky to include in the testsuite.
-* Full procedure i described in https://documentation.suse.com/external-tree/en-us/suma/4.1/suse-manager/administration/tshoot-hostname-rename.html
-1. Have a SUSE Manager server deployment.
+* Automated: yes - `testsuite/features/finishing/srv_rename_hostname.feature`
+* Note: Risky test — if the server fails to reboot properly or cleanup fails, subsequent features may be affected
+* Full procedure is described in https://documentation.suse.com/multi-linux-manager/5.2/en/docs/administration/troubleshooting/tshoot-hostname-rename.html
+1. Have a SUSE Multi-Linux Manager server deployment.
 1. Change the server's hostname in /etc/HOSTNAME .
 1. Reboot the server - as simply opening a new session does not seem to be sufficient to apply the new hostname for the script.
 1. Run `spacewalk-hostname-rename <ip-address>` where `<ip-address>` is the server's ip-address.
-1. Follow the certificate creation steps by providing te information if and when prompted.
+1. Follow the certificate creation steps by providing the information if and when prompted.
 1. Check on the web UI that the certificate includes the new hostname.
