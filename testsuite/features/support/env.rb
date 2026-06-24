@@ -46,7 +46,7 @@ $context = {}
 
 # Other global variables
 $pxeboot_mac = ENV.fetch('PXEBOOT_MAC', nil)
-$pxeboot_image = ENV.fetch('PXEBOOT_IMAGE', nil) || 'sles15sp3o'
+$pxeboot_image = ENV.fetch('PXEBOOT_IMAGE', nil) || 'sles15sp7o'
 $sle15sp6_terminal_mac = ENV.fetch('SLE15SP6_TERMINAL_MAC', nil)
 $sle15sp7_terminal_mac = ENV.fetch('SLE15SP7_TERMINAL_MAC', nil)
 $private_net = ENV.fetch('PRIVATENET', nil) if ENV['PRIVATENET']
