@@ -19,13 +19,15 @@ import com.redhat.rhn.domain.kickstart.KickstartDataTest;
 import com.redhat.rhn.domain.user.User;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 /**
  * Basic test class with a User
  */
 public abstract class JMockBaseTestCaseWithUser extends RhnJmockBaseTestCase {
 
-    private User user;
+    @RegisterExtension
+    private final UserTestCaseExtension userTestExtension = new UserTestCaseExtension();
 
     /**
      * Called once per test method to set up the test environment.
@@ -34,7 +36,6 @@ public abstract class JMockBaseTestCaseWithUser extends RhnJmockBaseTestCase {
      */
     @BeforeEach
     public void setUpJMockBaseTestCaseWithUser() throws Exception {
-        user = UserTestUtils.createUser();
         KickstartDataTest.setupTestConfiguration(getTestUser());
     }
 
@@ -50,10 +51,10 @@ public abstract class JMockBaseTestCaseWithUser extends RhnJmockBaseTestCase {
     }
 
     protected User getTestUser() {
-        return user;
+        return userTestExtension.getTestUser();
     }
 
     protected void nullifyTestUser() {
-        user = null;
+        userTestExtension.nullifyTestUser();
     }
 }

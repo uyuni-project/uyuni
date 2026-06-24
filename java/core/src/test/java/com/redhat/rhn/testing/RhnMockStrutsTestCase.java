@@ -35,6 +35,7 @@ import org.apache.struts.action.DynaActionForm;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.util.List;
 import java.util.Locale;
@@ -47,7 +48,9 @@ import java.util.TimeZone;
 @ExtendWith(SaltTestCaseExtension.class)
 public class RhnMockStrutsTestCase extends BaseStrutsTestCase {
 
-    private User user;
+    @RegisterExtension
+    private final UserTestCaseExtension userTestExtension =
+            new UserTestCaseExtension(TestStatics.TEST_USER, TestStatics.TEST_ORG);
 
     /**
      * {@inheritDoc}
@@ -61,7 +64,7 @@ public class RhnMockStrutsTestCase extends BaseStrutsTestCase {
 
         request.setServerName("localhost");
         request.setMethod("GET");
-        user = UserTestUtils.createUser(TestStatics.TEST_USER, TestStatics.TEST_ORG);
+        //user = UserTestUtils.createUser(TestStatics.TEST_USER, TestStatics.TEST_ORG);
         getTestUser().addPermanentRole(RoleFactory.ORG_ADMIN);
         addRequestParameter(RequestContext.USER_ID, getTestUser().getId().toString());
         WebSession s = requestContext.getWebSession();
@@ -89,11 +92,11 @@ public class RhnMockStrutsTestCase extends BaseStrutsTestCase {
     }
 
     protected User getTestUser() {
-        return user;
+        return userTestExtension.getTestUser();
     }
 
     protected void nullifyTestUser() {
-        user = null;
+        userTestExtension.nullifyTestUser();
     }
 
     /**
