@@ -34,8 +34,8 @@ import com.redhat.rhn.frontend.struts.RhnAction;
 import org.apache.struts.action.DynaActionForm;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-import java.nio.file.Path;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -44,9 +44,9 @@ import java.util.TimeZone;
  * RhnMockStrutsTestCase - simple base class that adds a User to the test since all our
  * Struts Actions use a User.
  */
-public class RhnMockStrutsTestCase extends BaseStrutsTestCase implements SaltTestCaseUtils {
+@ExtendWith(SaltTestCaseExtension.class)
+public class RhnMockStrutsTestCase extends BaseStrutsTestCase {
 
-    protected Path tmpSaltRoot;
     protected User user;
 
     /**
@@ -76,8 +76,6 @@ public class RhnMockStrutsTestCase extends BaseStrutsTestCase implements SaltTes
 
         pxtDelegate.updateWebUserId(request, response, user.getId());
         KickstartDataTest.setupTestConfiguration(user);
-
-        tmpSaltRoot = setupSaltConfigurationForTests();
     }
 
     @Override
