@@ -253,6 +253,29 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
     }
 
     @Test
+    public void testRelevantErrataListElaboratesCves() throws Exception {
+        User user = UserTestUtils.createUser(this);
+        Errata errata = createRelevantErrataWithCve(user, ErrataFactory.ERRATA_TYPE_BUG, "CVE-2026-3333");
+
+        DataResult<ErrataOverview> result = ErrataManager.relevantErrata(user);
+        result.elaborate();
+
+        assertEquals("CVE-2026-3333", getOverview(result, errata).getCveNames());
+    }
+
+    @Test
+    public void testRelevantErrataByTypeElaboratesCves() throws Exception {
+        User user = UserTestUtils.createUser(this);
+        Errata errata = createRelevantErrataWithCve(user, ErrataFactory.ERRATA_TYPE_BUG, "CVE-2026-4444");
+
+        DataResult<ErrataOverview> result = ErrataManager.relevantErrataByType(
+                user, null, ErrataFactory.ERRATA_TYPE_BUG);
+        result.elaborate();
+
+        assertEquals("CVE-2026-4444", getOverview(result, errata).getCveNames());
+    }
+
+    @Test
     public void testLookupErrata() throws Exception {
         User user = UserTestUtils.createUser(this);
         Errata errata = ErrataFactoryTest.createTestErrata(user.getOrg().getId());
@@ -1683,5 +1706,19 @@ public class ErrataManagerTest extends JMockBaseTestCaseWithUser {
         ));
         olderPkg.setPackageName(fromPkg.getPackageName());
         return olderPkg;
+    }
+
+    private Errata createRelevantErrataWithCve(User user, String errataType, String cveName) throws Exception {
+        Map<String, Object> cache = ErrataCacheManagerTest.createServerNeededCache(user, errataType);
+        Errata errata = (Errata) cache.get("errata");
+        errata.setCves(Set.of(ErrataTestUtils.createTestCve(cveName)));
+        return TestUtils.saveAndFlush(errata);
+    }
+
+    private ErrataOverview getOverview(DataResult<ErrataOverview> result, Errata errata) {
+        return result.stream()
+                .filter(overview -> overview.getId().equals(errata.getId()))
+                .findFirst()
+                .orElseThrow();
     }
 }
