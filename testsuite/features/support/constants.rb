@@ -249,6 +249,8 @@ BASE_CHANNEL_BY_CLIENT = {
     'proxy' => 'SL-Micro-6.2-Pool for x86_64',
     'proxy_container' => 'SL-Micro-6.2-Pool for x86_64',
     'proxy_nontransactional' => 'SLE-Product-SLES15-SP7-Pool for x86_64',
+    'server' => 'SL-Micro-6.2-Pool for x86_64',
+    'server_nontransactional' => 'SLE-Product-SLES15-SP7-Pool for x86_64',
     'sle_minion' => 'SLE-Product-SLES15-SP7-Pool for x86_64',
     'ssh_minion' => 'SLE-Product-SLES15-SP7-Pool for x86_64',
     'rhlike_minion' => 'RHEL8-Pool for x86_64',
@@ -493,6 +495,39 @@ LABEL_BY_BASE_CHANNEL = {
     'openSUSE Leap 15.6 (aarch64)' => 'opensuse_leap15_6-aarch64',
     'openSUSE Leap 16.0 (aarch64)' => 'opensuse_leap16_0-aarch64'
   }
+}.freeze
+
+# Maps an activation-key client to its deployment role. Anything not listed
+# (minions, monitoring_server, terminals, buildhosts) defaults to :minion.
+ACTIVATION_KEY_ROLE_BY_CLIENT = {
+  'proxy' => :proxy,
+  'proxy_container' => :proxy,
+  'proxy_nontransactional' => :proxy,
+  'server' => :server,
+  'server_nontransactional' => :server
+}.freeze
+
+# Channel-label substrings grouped by the role that owns them. Retail branch
+# server is a proxy-type role, so it lives in :proxy.
+ACTIVATION_KEY_CHANNEL_CATEGORIES = {
+  proxy: %w[
+    suse-manager-proxy
+    suse-multi-linux-manager-proxy
+    suse-manager-retail-branch-server
+    suse-multi-linux-manager-retail-branch-server
+    custom_channel_proxy
+  ],
+  server: %w[
+    suse-manager-server
+    suse-multi-linux-manager-server
+  ]
+}.freeze
+
+# Channel categories each role must NOT carry on its activation key.
+ACTIVATION_KEY_EXCLUDED_CATEGORIES_BY_ROLE = {
+  minion: %i[proxy server],
+  proxy: %i[server],
+  server: %i[proxy]
 }.freeze
 
 # Used for creating bootstrap repositories
@@ -1163,6 +1198,15 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
       %w[
         suse-multi-linux-manager-retail-branch-server-sle-5.2-pool-x86_64-sp7
         suse-multi-linux-manager-retail-branch-server-sle-5.2-updates-x86_64-sp7
+      ],
+    'suse-multi-linux-manager-server-52' =>
+      %w[
+        suse-multi-linux-manager-server-5.2-x86_64
+      ],
+    'suse-multi-linux-manager-server-52-sp7' =>
+      %w[
+        suse-multi-linux-manager-server-sle-5.2-pool-x86_64-sp7
+        suse-multi-linux-manager-server-sle-5.2-updates-x86_64-sp7
       ]
   },
   'Uyuni' => {
@@ -1850,6 +1894,9 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'suse-multi-linux-manager-retail-branch-server-sle-5.1-updates-x86_64-sp7' => 60, # for sles15sp7
   'suse-multi-linux-manager-retail-branch-server-sle-5.2-pool-x86_64-sp7' => 60, # for sles15sp7
   'suse-multi-linux-manager-retail-branch-server-sle-5.2-updates-x86_64-sp7' => 60, # for sles15sp7
+  'suse-multi-linux-manager-server-5.2-x86_64' => 60, # for slmicro6.2
+  'suse-multi-linux-manager-server-sle-5.2-pool-x86_64-sp7' => 60, # for sles15sp7
+  'suse-multi-linux-manager-server-sle-5.2-updates-x86_64-sp7' => 60, # for sles15sp7
   'suse-microos-5.2-devel-uyuni-client-x86_64' => 120,
   'suse-microos-5.2-pool-x86_64' => 120,
   'suse-microos-5.2-updates-x86_64' => 540,

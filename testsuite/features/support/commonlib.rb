@@ -793,6 +793,33 @@ def channel_packages_are_downloaded?(channel_name)
   false
 end
 
+# Return the child channels an activation key should carry for the given client,
+# excluding the proxy/server channels that don't belong to the client's role.
+def child_channels_for_activation_key(client, base_channel_label)
+  child_channels = $api_test.channel.software.list_child_channels(base_channel_label)
+
+  role = ACTIVATION_KEY_ROLE_BY_CLIENT.fetch(client, :minion)
+  excluded_tokens =
+    ACTIVATION_KEY_EXCLUDED_CATEGORIES_BY_ROLE[role]
+    .flat_map { |category| ACTIVATION_KEY_CHANNEL_CATEGORIES[category] }
+  child_channels.reject! { |channel| excluded_tokens.any? { |token| channel.include?(token) } }
+
+  # A non-transactional proxy/server (5.1 and 5.2) shares the SLES15 SP7 HostOS, so the
+  # other MLM version's channels show up too - drop them.
+  if client.include?('nontransactional')
+    version = product_version_full
+    version_to_exclude =
+      if version&.include?('5.1')
+        '5.2'
+      elsif version&.include?('5.2') || version&.include?('head')
+        '5.1'
+      end
+    child_channels.reject! { |channel| channel.include?(version_to_exclude) } if version_to_exclude
+  end
+
+  child_channels
+end
+
 # Determines whether a channel is synchronized on the server.
 #
 # @param channel [String] The name of the channel to check.
