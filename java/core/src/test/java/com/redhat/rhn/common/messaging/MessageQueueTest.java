@@ -44,15 +44,23 @@ public class MessageQueueTest extends RhnBaseTestCase {
         logger.debug("setUp - end");
     }
 
-        @AfterEach
+    @AfterEach
     public void tearDown() throws Exception {
         logger.debug("tearDown - start");
         TestAction.deRegisterAction();
         TestDBAction.deRegisterAction();
         MessageQueue.stopMessaging();
 
-        user = null;
+        nullifyTestUser();
         logger.debug("tearDown - end");
+    }
+
+    protected User getTestUser() {
+        return user;
+    }
+
+    protected void nullifyTestUser() {
+        user = null;
     }
 
     @Test

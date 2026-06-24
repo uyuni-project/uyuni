@@ -46,6 +46,14 @@ public abstract class JMockBaseTestCaseWithUser extends RhnJmockBaseTestCase {
 
     @Override
     protected void afterCleanupDatabaseCommits() {
+        nullifyTestUser();
+    }
+
+    protected User getTestUser() {
+        return user;
+    }
+
+    protected void nullifyTestUser() {
         user = null;
     }
 }

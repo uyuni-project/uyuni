@@ -40,6 +40,18 @@ public abstract class BaseTestCaseWithUser extends RhnBaseTestCase {
 
     @Override
     protected void afterCleanupDatabaseCommits() {
+        nullifyTestUser();
+    }
+
+    protected User getTestUser() {
+        return user;
+    }
+
+    protected void nullifyTestUser() {
         user = null;
+    }
+
+    protected void saveAndFlushTestUser() {
+        user = TestUtils.saveAndFlush(user);
     }
 }

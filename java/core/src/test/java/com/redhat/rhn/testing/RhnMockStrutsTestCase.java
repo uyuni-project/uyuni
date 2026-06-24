@@ -85,6 +85,14 @@ public class RhnMockStrutsTestCase extends BaseStrutsTestCase {
 
     @Override
     protected void afterCleanupDatabaseCommits() {
+        nullifyTestUser();
+    }
+
+    protected User getTestUser() {
+        return user;
+    }
+
+    protected void nullifyTestUser() {
         user = null;
     }
 
