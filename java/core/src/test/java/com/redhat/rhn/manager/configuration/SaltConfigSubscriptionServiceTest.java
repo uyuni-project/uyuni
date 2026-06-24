@@ -49,7 +49,8 @@ public class SaltConfigSubscriptionServiceTest extends BaseTestCaseWithUser {
     @Test
     public void testSubscribeChannels() throws Exception {
         MinionServer server = MinionServerFactoryTest.createTestMinionServer(user);
-        Path slsPath = tmpSaltRoot.resolve("custom").resolve("custom_" + server.getMachineId() + ".sls");
+        Path slsPath = getSaltRootPath()
+                .resolve("custom").resolve("custom_" + server.getMachineId() + ".sls");
         assertFalse(slsPath.toFile().exists());
 
         ConfigChannel channel1 = ConfigTestUtils.createConfigChannel(user.getOrg(), "Channel 1", "cfg-channel-1");

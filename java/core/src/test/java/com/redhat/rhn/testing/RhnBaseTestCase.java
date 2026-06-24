@@ -21,13 +21,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.RhnRuntimeException;
-import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.messaging.MessageQueue;
 
 import com.suse.manager.webui.services.TestSaltApi;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -40,9 +39,9 @@ import java.util.Date;
  * test to simulate what happens when the code is run
  * in a web application server.
  */
-public abstract class RhnBaseTestCase extends BaseTestCase implements SaltTestCaseUtils  {
-
-    protected Path tmpSaltRoot;
+public abstract class RhnBaseTestCase extends BaseTestCase {
+    @RegisterExtension
+    private final SaltTestCaseExtension saltTestExtension = new SaltTestCaseExtension();
 
     /**
      * Called once per test method.
@@ -51,16 +50,10 @@ public abstract class RhnBaseTestCase extends BaseTestCase implements SaltTestCa
     @BeforeEach
     protected void setUpRhnBaseTestCase() throws Exception {
         MessageQueue.configureDefaultActions(new TestSaltApi());
-        tmpSaltRoot = setupSaltConfigurationForTests();
     }
 
-    /**
-     * Tears down the fixture, and closes the HibernateSession.
-     * @see HibernateFactory#closeSession()
-     */
-    @AfterEach
-    public void tearDownRhnBaseTestCase() throws Exception {
-        cleanupSaltConfiguration(tmpSaltRoot);
+    protected Path getSaltRootPath() {
+        return saltTestExtension.getSaltRootPath();
     }
 
     /**

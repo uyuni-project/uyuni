@@ -77,7 +77,7 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
 
         SaltStateGeneratorService.INSTANCE.generateConfigState(serverRev);
 
-        Path filePath = tmpSaltRoot.resolve(SALT_CONFIG_STATES_DIR)
+        Path filePath = getSaltRootPath().resolve(SALT_CONFIG_STATES_DIR)
                 .resolve(defaultExtension(SALT_SERVER_STATE_FILE_PREFIX +
                         minion.getMachineId()));
 
@@ -120,9 +120,9 @@ public class SaltStateGeneratorServiceTest extends BaseTestCaseWithUser {
         SaltStateGeneratorService.INSTANCE.generateConfigState(minion1Revision);
         SaltStateGeneratorService.INSTANCE.generateConfigState(minion2Revision);
 
-        Path minion1StateFile = tmpSaltRoot.resolve(SALT_CONFIG_STATES_DIR).resolve(
+        Path minion1StateFile = getSaltRootPath().resolve(SALT_CONFIG_STATES_DIR).resolve(
                 defaultExtension(SALT_SERVER_STATE_FILE_PREFIX + minion1.getMachineId()));
-        Path minion2StateFile = tmpSaltRoot.resolve(SALT_CONFIG_STATES_DIR).resolve(
+        Path minion2StateFile = getSaltRootPath().resolve(SALT_CONFIG_STATES_DIR).resolve(
                 defaultExtension(SALT_SERVER_STATE_FILE_PREFIX + minion2.getMachineId()));
 
         byte[] min1InitialContent = Files.readAllBytes(minion1StateFile);
