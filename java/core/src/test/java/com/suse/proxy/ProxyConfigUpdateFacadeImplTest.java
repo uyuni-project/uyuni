@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.common.UyuniGeneralException;
-import com.redhat.rhn.testing.MockObjectTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import com.suse.proxy.update.ProxyConfigUpdateContext;
 import com.suse.proxy.update.ProxyConfigUpdateContextHandler;
@@ -35,7 +35,7 @@ import java.util.List;
 /**
  * Tests for the ProxyConfigUpdate class
  */
-public class ProxyConfigUpdateFacadeImplTest extends MockObjectTestCase {
+public class ProxyConfigUpdateFacadeImplTest extends BaseTestCase {
 
     /**
      * Tests the success case when all handlers are successful
