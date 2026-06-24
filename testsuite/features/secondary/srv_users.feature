@@ -34,6 +34,7 @@ Feature: Manage users
     And I enter "galaxy-noise@localhost" as "email"
     And I click on "Create Login"
     Then I should see a "Account user1 created, login information sent to galaxy-noise@localhost" text
+    When I filter "user1" username
     And I should see a "user1" link
     And I should see a "normal user" text
 
@@ -44,6 +45,7 @@ Feature: Manage users
   Scenario: Access user details
     Given I am authorized for the "Admin" section
     When I follow the left menu "Users > User List > Active"
+    And I filter "user1" username
     And I follow "user1"
     Then I should see a "User Details" text
     And I should see a "Delete User" link
@@ -67,6 +69,7 @@ Feature: Manage users
 @susemanager
   Scenario: Add roles
     When I follow the left menu "Users > User List > Active"
+    And I filter "user1" username
     And I follow "user1"
     When the "role_satellite_admin" checkbox should be disabled
     And I check "role_system_group_admin"
@@ -91,6 +94,7 @@ Feature: Manage users
 @uyuni
   Scenario: Add roles
     When I follow the left menu "Users > User List > Active"
+    And I filter "user1" username
     And I follow "user1"
     When the "role_satellite_admin" checkbox should be disabled
     And I check "role_system_group_admin"
@@ -166,10 +170,12 @@ Feature: Manage users
 
   Scenario: Verify user list
     When I follow the left menu "Users > User List > Active"
+    And I filter "user1" username
     Then table row for "user1" should contain "Organization Administrator"
 
   Scenario: Fail to deactivate organization administrator
     When I follow the left menu "Users > User List > Active"
+    And I filter "user1" username
     And I follow "user1"
     When I follow "Deactivate User"
     Then I should see a "This action will deactivate this user. This user will no longer be able to log in or perform actions unless it is reactivated." text
@@ -180,6 +186,7 @@ Feature: Manage users
 
   Scenario: Remove role
     When I follow the left menu "Users > User List > Active"
+    And I filter "user1" username
     And I follow "user1"
     When I uncheck "role_org_admin"
     And I click on "Update"
@@ -192,6 +199,7 @@ Feature: Manage users
 
   Scenario: Deactivate ordinary user
     When I follow the left menu "Users > User List > Active"
+    And I filter "user1" username
     And I follow "user1"
     Then I should see "role_org_admin" as unchecked
     When I follow "Deactivate User"
@@ -203,6 +211,7 @@ Feature: Manage users
     Then I should see a "Deactivated Users" text
     And I should see a "user1" link
     When I follow "All"
+    And I filter "user1" username
     Then I should see a "user1" link
 
 @susemanager
@@ -235,12 +244,14 @@ Feature: Manage users
 
   Scenario: Delete user
     When I follow the left menu "Users > User List > Active"
+    And I filter "user1" username
     And I follow "user1"
     When I follow "Delete User"
     Then I should see a "Confirm User Deletion" text
     And I should see a "This will delete this user permanently." text
     When I click on "Delete User"
     Then I should see a "Active Users" text
+    And I filter "user1" username
     And I should not see a "user1" link
 
   Scenario: Display the CSV separator preference

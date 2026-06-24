@@ -371,28 +371,26 @@ When(/^I select the child channel "([^"]*)"$/) do |target_channel|
 end
 
 Then(/^I should see "([^"]*)" "([^"]*)" for the "([^"]*)" channel$/) do |target_radio, target_status, target_channel|
-  xpath = "//a[contains(text(), '#{target_channel}')]"
-  channel_id = find(:xpath, xpath)['href'].split('?')[1].split('=')[1]
+  channel_link = find(:xpath, "//a[contains(text(), '#{target_channel}')]")
+  channel_id = channel_link['href'].split('?')[1].split('=')[1]
 
-  case target_radio
-  when 'No change'
-    xpath = "//input[@type='radio' and @name='ch_action_#{channel_id}' and @value='NO_CHANGE']"
-  when 'Subscribe'
-    xpath = "//input[@type='radio' and @name='ch_action_#{channel_id}' and @value='SUBSCRIBE']"
-  when 'Unsubscribe'
-    xpath = "//input[@type='radio' and @name='ch_action_#{channel_id}' and @value='UNSUBSCRIBE']"
-  else
-    log "Target Radio #{target_radio} not supported"
-  end
+  radio_value =
+    case target_radio
+    when 'No change' then 'NO_CHANGE'
+    when 'Subscribe' then 'SUBSCRIBE'
+    when 'Unsubscribe' then 'UNSUBSCRIBE'
+    else raise ScriptError, "Target Radio '#{target_radio}' not supported"
+    end
 
-  case target_status
-  when 'selected'
-    raise ScriptError, "xpath: #{xpath} is not selected" if find(:xpath, xpath)['checked'].nil?
-  when 'unselected'
-    raise ScriptError, "xpath: #{xpath} is selected" unless find(:xpath, xpath)['checked'].nil?
-  else
-    log "Target status #{target_status} not supported"
-  end
+  checked =
+    case target_status
+    when 'selected' then true
+    when 'unselected' then false
+    else raise ScriptError, "Target status '#{target_status}' not supported"
+    end
+
+  raise ScriptError, "Radio '#{target_radio}' for channel '#{target_channel}' is not #{target_status}" unless
+    has_field?(type: 'radio', name: "ch_action_#{channel_id}", with: radio_value, checked: checked)
 end
 
 Then(/^the notification badge and the table should count the same amount of messages$/) do

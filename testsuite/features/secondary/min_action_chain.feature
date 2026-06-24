@@ -106,7 +106,7 @@ Feature: Action chains on Salt minions
     And I follow "Action Chain Channel"
     And I follow "List/Remove Files"
     And I follow "/etc/action-chain.cnf"
-    And I follow "Download File"
+    And I download the file by following "Download File"
     And I wait until file "/tmp/downloads/action-chain.cnf" exists on "localhost"
     Then file "/tmp/downloads/action-chain.cnf" should contain "Testchain=YES_PLEASE" on "localhost"
 

@@ -176,12 +176,34 @@ end
 
 # This Ruby function refreshes the current page and handles any modal not found errors.
 def refresh_page
+  # A bare reload usually fires no JS prompt, so bound the wait: the Playwright driver passes
+  # this straight to the modal future and value!(nil) would otherwise block forever.
+  accept_prompt(wait: Capybara.default_max_wait_time) do
+    execute_script 'window.location.reload()'
+  end
+rescue Capybara::ModalNotFound
+  # no beforeunload dialog appeared - page reloaded normally
+end
+
+#
+# Waits for any page transition triggered by a preceding click to complete.
+# Handles both Senna SPA transitions (.senna-loading) and hard navigations.
+#
+def wait_for_page_transition
+  # Grace period: both the Senna loading class and a hard navigation are set up
+  # asynchronously after the click (e.g. React fires an API call before bouncing
+  # window.location). Without this, both checks below pass vacuously against the
+  # old, already-loaded page.
+  sleep 0.3
   begin
-    accept_prompt do
-      execute_script 'window.location.reload()'
-    end
-  rescue Capybara::ModalNotFound
-    # ignored
+    warn 'Timeout: Waiting AJAX transition' unless has_no_css?('.senna-loading', wait: 20)
+  rescue StandardError => e
+    $stdout.puts e.message # context may be destroyed mid-check by a hard navigation
+  end
+  begin
+    page.driver.with_playwright_page { |pw_page| pw_page.wait_for_load_state(state: 'load', timeout: 30_000) }
+  rescue Playwright::Error
+    # No navigation occurred, or the page is already loaded -- acceptable
   end
 end
 
@@ -191,26 +213,33 @@ end
 # @param locator [String] (optional) The locator for the button element.
 # @param options [Hash] (optional) Additional options for the click_button method.
 def click_button_and_wait(locator = nil, **options)
-  click_button(locator, **options)
   begin
-    warn 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
-  rescue StandardError => e
-    $stdout.puts e.message # Skip errors related to .senna-loading element
+    click_button(locator, **options)
+  rescue Playwright::Error => e
+    raise unless e.message.include?('Timeout') && locator
+
+    warn "click_button_and_wait: Playwright action timeout for '#{locator}' -- waiting for page load to complete"
+    page.driver.with_playwright_page { |pw_page| pw_page.wait_for_load_state(state: 'load', timeout: 60_000) }
   end
+  wait_for_page_transition
 end
 
 #
 # Clicks on a link and waits for any AJAX transition to complete.
 #
 # @param locator [String, nil] The locator for the link to click.
+# @param force [Boolean] When true, uses Playwright force-click (bypasses overlay/actionability
+#   checks). Useful for <a> elements styled as buttons where the standard click is intercepted.
 # @param options [Hash] Additional options for the click action.
-def click_link_and_wait(locator = nil, **options)
-  click_link(locator, **options)
-  begin
-    warn 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
-  rescue StandardError => e
-    $stdout.puts e.message # Skip errors related to .senna-loading element
+def click_link_and_wait(locator = nil, force: false, **options)
+  if force && locator
+    page.driver.with_playwright_page do |pw_page|
+      pw_page.get_by_role('link', name: locator, exact: false).first.click(force: true)
+    end
+  else
+    click_link(locator, **options)
   end
+  wait_for_page_transition
 end
 
 #
@@ -227,14 +256,19 @@ def click_link_or_button_and_wait(locator = nil, **options)
   end
 end
 
-# Capybara Node Element extension to override click method, clicking and then waiting for ajax transition
+# Capybara Node Element extension to override click method,
+# clicking and then waiting for the Senna SPA transition to complete
 module CapybaraNodeElementExtension
   def click
     super
+    # Senna adds .senna-loading asynchronously after the click.
+    # Wait a short moment for it to appear (it may legitimately never
+    # appear for non-navigating clicks), then wait for it to be gone.
+    has_css?('.senna-loading', wait: 1)
     begin
       warn 'Timeout: Waiting AJAX transition (click link)' unless has_no_css?('.senna-loading', wait: 20)
     rescue StandardError => e
-      $stdout.puts e.message # Skip errors related to .senna-loading element
+      $stdout.puts e.message
     end
   end
 end

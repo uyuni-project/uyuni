@@ -6,7 +6,7 @@ echo buildhostproductuuid > /tmp/buildhost_product_uuid
 
 AUTH_REGISTRY_USER=$(echo "$AUTH_REGISTRY_CREDENTIALS"| cut -d\| -f1)
 AUTH_REGISTRY_PASSWD=$(echo "$AUTH_REGISTRY_CREDENTIALS" | cut -d\| -f2)
-sudo -i podman run --pull newer --rm -d --network network -v /tmp/testing:/tmp --name controller -h controller -v ${src_dir}/testsuite:/testsuite ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-controller-dev:$UYUNI_VERSION
+sudo -i podman run --pull missing --rm -d --network network -v /tmp/testing:/tmp --name controller -h controller -v ${src_dir}/testsuite:/testsuite ghcr.io/$UYUNI_PROJECT/uyuni/ci-test-controller-dev:$UYUNI_VERSION
 cat <<EOF | sudo -i podman exec -i controller bash --login -c 'cat > /etc/profile.local'
 # Generated /etc/profile.local for testsuite environment
 export SCC_CREDENTIALS="test|test"
