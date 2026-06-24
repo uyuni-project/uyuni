@@ -134,10 +134,6 @@ setup_spacewalk() {
     fi
     /usr/sbin/update-ca-certificates
 
-    if [ ! -f /srv/susemanager/salt/images/rhn-org-trusted-ssl-cert-osimage-1.0-1.noarch.rpm ]; then
-        /usr/sbin/mgr-package-rpm-certificate-osimage
-    fi
-
     echo "admin-email = ${MANAGER_ADMIN_EMAIL}
 ssl-config-sslvhost = Y
 db-backend=postgresql

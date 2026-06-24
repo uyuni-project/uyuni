@@ -1,0 +1,2 @@
+- Regenerate the OS image trusted CA RPM when the server CA changes
+  (bsc#1268892)
