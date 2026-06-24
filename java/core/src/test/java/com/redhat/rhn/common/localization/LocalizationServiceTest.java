@@ -162,7 +162,6 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
         assertFalse(isMessageValid(ls.getMessage("no message with this key")),
                       "Didn't fetch an invalid message (we want to, in this test)");
         // java.l10n_missingmessage_exceptions
-        boolean orig = Config.get().getBoolean("java.l10n_missingmessage_exceptions");
         Config.get().setBoolean("java.l10n_missingmessage_exceptions", "true");
 
         boolean caught = false;
@@ -173,9 +172,6 @@ public class LocalizationServiceTest extends RhnBaseTestCase {
             caught = true;
         }
         assertTrue(caught);
-        Config.get().setBoolean("java.l10n_missingmessage_exceptions",
-                Boolean.toString(orig));
-
     }
 
 

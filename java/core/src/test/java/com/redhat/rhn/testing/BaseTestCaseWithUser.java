@@ -16,19 +16,16 @@
 package com.redhat.rhn.testing;
 
 import com.redhat.rhn.domain.kickstart.KickstartDataTest;
-import com.redhat.rhn.domain.org.OrgFactory;
 import com.redhat.rhn.domain.user.User;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
 /**
- * Basic test class class with a User
+ * Basic test class with a User
  */
 public abstract class BaseTestCaseWithUser extends RhnBaseTestCase {
 
     protected User user;
-    private boolean committed = false;
 
     @BeforeEach
     public void setUpBaseTestCaseWithUser() throws Exception {
@@ -36,24 +33,13 @@ public abstract class BaseTestCaseWithUser extends RhnBaseTestCase {
         KickstartDataTest.setupTestConfiguration(user);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @AfterEach
-    public void tearDownBaseTestCaseWithUser() throws Exception {
-        super.tearDownRhnBaseTestCase();
-        // If at some point we created a user and committed the transaction, we need
-        // clean up our mess
-        if (committed) {
-           OrgFactory.deleteOrg(user.getOrg().getId(), user);
-           TestUtils.commitAndCloseSession();
-        }
-        committed = false;
-        user = null;
+     @Override
+    protected void cleanupDatabaseCommits() {
+        TestUtils.deleteOrgOfUser(user);
     }
 
-    // If we have to commit in mid-test, set up the next transaction correctly
-    protected void commitHappened() {
-        committed = true;
+    @Override
+    protected void afterCleanupDatabaseCommits() {
+        user = null;
     }
 }

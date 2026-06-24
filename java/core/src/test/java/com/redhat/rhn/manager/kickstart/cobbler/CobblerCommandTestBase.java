@@ -70,7 +70,6 @@ public abstract class CobblerCommandTestBase extends BaseTestCaseWithUser {
             Config.get().setString(CobblerXMLRPCHelper.class.getName(), CobblerXMLRPCHelper.class.getName());
             Config.get().setString(CobblerConnection.class.getName(), CobblerConnection.class.getName());
             TestUtils.commitAndCloseSession();
-            commitHappened();
         }
 
         KickstartableTreeTest.createKickstartTreeItems(this.ksdata.getTree());

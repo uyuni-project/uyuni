@@ -42,7 +42,7 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-public class BaseStrutsTestCase {
+public class BaseStrutsTestCase extends BaseTestCase {
 
     private static final Logger LOGGER = LogManager.getLogger(BaseStrutsTestCase.class);
 
@@ -193,14 +193,6 @@ public class BaseStrutsTestCase {
     private StrutsTestRequestDispatcher requestDispatcher;
     private HashMap<String, String> initParameters;
     private Optional<String> actionPath;
-
-    public void setUp() throws Exception {
-        // REMOVE WHEN NOT NEEDED ANYMORE
-    }
-
-    public void tearDown() throws Exception {
-        // REMOVE WHEN NOT NEEDED ANYMORE
-    }
 
     @BeforeEach
     public void setUpMockStrutsTestCase() throws Exception {

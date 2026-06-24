@@ -70,7 +70,6 @@ import com.suse.utils.Exceptions;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -95,8 +94,6 @@ public class IssMigratorTest extends JMockBaseTestCaseWithUser {
     public static final String BETA = "beta.unit-test.local";
     public static final String GAMMA = "gamma.unit-test.local";
 
-    private final String originalFqdn;
-
     private HubFactory hubFactory;
 
     private HubClientFactory hubClientFactory;
@@ -106,7 +103,7 @@ public class IssMigratorTest extends JMockBaseTestCaseWithUser {
     private IssMigrator migrator;
 
     public IssMigratorTest() {
-        originalFqdn = ConfigDefaults.get().getHostname();
+        // empty
     }
 
     @BeforeEach
@@ -139,12 +136,6 @@ public class IssMigratorTest extends JMockBaseTestCaseWithUser {
                 sysMgr);
 
         migrator = new IssMigrator(hubManager, satAdmin);
-    }
-
-    @AfterEach
-    public void tearDown() throws Exception {
-
-        Config.get().setString(ConfigDefaults.SERVER_HOSTNAME, originalFqdn);
     }
 
     private static SlaveMigrationData createMigrationData(String slaveFqdn) {

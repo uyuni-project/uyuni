@@ -107,14 +107,11 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
     private Package debPkg;
     private Package debPkg2;
 
-    private static String originalMountPoint;
-
     private DownloadController downloadController;
     @BeforeAll
     public static void beforeAll() {
         Config.get().setString("server.secret_key",
                 DigestUtils.sha256Hex(TestUtils.randomString()));
-        originalMountPoint = Config.get().getString(ConfigDefaults.MOUNT_POINT);
     }
 
     @BeforeEach
@@ -173,9 +170,6 @@ public class DownloadControllerTest extends BaseTestCaseWithUser {
 
         @AfterEach
     public void tearDown() throws Exception {
-        if (originalMountPoint != null) {
-            Config.get().setString(ConfigDefaults.MOUNT_POINT, originalMountPoint);
-        }
         Files.deleteIfExists(packageFile.toPath());
         Files.deleteIfExists(debPackageFile.toPath());
         Files.deleteIfExists(debPackageFile2.toPath());

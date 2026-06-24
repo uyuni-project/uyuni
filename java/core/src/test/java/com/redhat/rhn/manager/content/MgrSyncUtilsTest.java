@@ -46,11 +46,9 @@ public class MgrSyncUtilsTest extends BaseTestCaseWithUser {
         Config.get().setString(ContentSyncManager.RESOURCE_PATH, fromdir.toString());
     }
 
-        @AfterEach
+    @AfterEach
     public void tearDown() throws Exception {
-        Config.get().remove(ContentSyncManager.RESOURCE_PATH);
         FileUtils.deleteDirectory(fromdir.toFile());
-        Config.get().setString(ConfigDefaults.SCC_UPDATE_HOST_DOMAIN, ".suse.com");
     }
 
     @Test
