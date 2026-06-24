@@ -21,8 +21,7 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
 # Main packages
 RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-licenses --force-resolution --download-only saline ${USEPYTHON}-saline && \
     rpm -ivh --nodeps $(find /var/cache/zypp/packages/ -type f \
-      -name update-alternatives.rpm -o \
-      -name ${USEPYTHON}-base.rpm -o -name lib${USEPYTHON/python3/python3_/}\*.rpm -o -name 'libopenssl*.rpm' -o -name libexpat1.rpm -o \
+      -name ${USEPYTHON}-base.rpm -o -name lib${USEPYTHON/python3/python3_}\*.rpm -o -name 'libopenssl*.rpm' -o -name libexpat1.rpm -o \
       -name salt.rpm -o -name ${USEPYTHON}-salt.rpm -o -name ${USEPYTHON}-tornado6.rpm -o \
       -name ${USEPYTHON}-contextvars.rpm -o -name ${USEPYTHON}-immutables.rpm -o -name ${USEPYTHON}-looseversion.rpm -o \
       -name ${USEPYTHON}-packaging.rpm -o -name ${USEPYTHON}-distro.rpm -o \
@@ -31,6 +30,8 @@ RUN zypper --gpg-auto-import-keys --non-interactive install --auto-agree-with-li
       -name saline.rpm -o -name ${USEPYTHON}-saline.rpm -o -name ${USEPYTHON}-python-dateutil.rpm -o -name ${USEPYTHON}-six.rpm) && \
     mkdir /etc/saline.defaults && cp -r /etc/salt/saline* /etc/saline.defaults/ && \
     chown -R salt:salt /etc/saline.defaults && \
+    ln -s -f salined-${USEPYTHON/python3/3.} /usr/bin/salined && \
+    rm -f /usr/bin/distro* /usr/bin/pydoc* /usr/bin/salt-call* /usr/bin/salt-support* /usr/bin/spm* && \
     zypper --non-interactive clean --all && \
     rpm -e zypper libzypp container-suseconnect && \
     find /etc -maxdepth 1 -type f -name '*-' -delete && \
