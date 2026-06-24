@@ -32,11 +32,8 @@ import java.util.Set;
  * UserPaneTest
  */
 public class UserPaneTest extends BaseTestCaseWithUser {
-
-
     /**
      * Tests a new user
-     *
      */
     @Test
     public void testNewUser() {
@@ -44,22 +41,18 @@ public class UserPaneTest extends BaseTestCaseWithUser {
         assertTrue(user.getHiddenPanes().isEmpty());
     }
 
-    private List<Pane> addPanes() {
+    private List<Pane> addPanes(Long userId) {
         List<Pane> panes = new ArrayList<>(PaneFactory.getAllPanes().values());
-        UserFactory.save(user);
-        Long id = user.getId();
-        user = null;
-        user = UserFactory.lookupById(id);
+        User testUser = UserFactory.lookupById(userId);
 
         Set<Pane> userPanes = new HashSet<>();
 
         userPanes.add(panes.get(0));
         userPanes.add(panes.get(1));
-        user.setHiddenPanes(userPanes);
-        UserFactory.save(user);
-        user = null;
-        user = UserFactory.lookupById(id);
-        assertEquals(new HashSet<>(panes.subList(0, 2)), new HashSet<>(user.getHiddenPanes()));
+        testUser.setHiddenPanes(userPanes);
+        UserFactory.save(testUser);
+        testUser = UserFactory.lookupById(userId);
+        assertEquals(new HashSet<>(panes.subList(0, 2)), new HashSet<>(testUser.getHiddenPanes()));
 
         return panes.subList(0, 2);
     }
@@ -70,18 +63,19 @@ public class UserPaneTest extends BaseTestCaseWithUser {
      */
     @Test
     public void testAddRemovePane() {
-        List<Pane> hiddenPanes = addPanes();
+        Long userId = user.getId();
 
-        assertTrue(user.getHiddenPanes().contains(hiddenPanes.get(0)));
+        List<Pane> hiddenPanes = addPanes(userId);
 
-        Long id = user.getId();
+        User testUser = UserFactory.lookupById(userId);
 
-        Set<Pane> userPanes = new HashSet<>(user.getHiddenPanes());
+        assertTrue(testUser.getHiddenPanes().contains(hiddenPanes.get(0)));
+
+        Set<Pane> userPanes = new HashSet<>(testUser.getHiddenPanes());
         userPanes.remove(hiddenPanes.get(0));
-        user.setHiddenPanes(userPanes);
-        UserFactory.save(user);
-        user = null;
-        user = UserFactory.lookupById(id);
-        assertFalse(user.getHiddenPanes().contains(hiddenPanes.get(0)));
+        testUser.setHiddenPanes(userPanes);
+        UserFactory.save(testUser);
+        testUser = UserFactory.lookupById(userId);
+        assertFalse(testUser.getHiddenPanes().contains(hiddenPanes.get(0)));
     }
 }

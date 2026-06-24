@@ -65,6 +65,7 @@ import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.Pillar;
 import com.redhat.rhn.domain.server.ServerFactory;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.sync.content.ContentSyncSource;
 import com.redhat.rhn.frontend.xmlrpc.sync.content.SCCContentSyncSource;
 import com.redhat.rhn.manager.setup.MirrorCredentialsManager;
@@ -518,7 +519,7 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
         SUSEProductTestUtils.addChannelsForProduct(SUSEProductFactory.lookupByProductId(1150));
         TestUtils.flushAndClearSession();
 
-        user = TestUtils.reload(user);
+        User reloadedTestUser = TestUtils.reload(user);
         testMinionServer = TestUtils.reload(testMinionServer);
 
         Channel pool = ChannelFactory.lookupByLabel("sles12-pool-x86_64");
@@ -544,9 +545,9 @@ public class ContentSyncManagerTest extends JMockBaseTestCaseWithUser {
 
         assertEquals("file:///usr/lib/rpm/gnupg/keys/gpg-pubkey-39db7c82-5f68629b.asc", legacy.getGPGKeyUrl());
 
-        SystemManager.subscribeServerToChannel(user, testMinionServer, pool);
-        SystemManager.subscribeServerToChannel(user, testMinionServer, update);
-        SystemManager.subscribeServerToChannel(user, testMinionServer, legacy);
+        SystemManager.subscribeServerToChannel(reloadedTestUser, testMinionServer, pool);
+        SystemManager.subscribeServerToChannel(reloadedTestUser, testMinionServer, update);
+        SystemManager.subscribeServerToChannel(reloadedTestUser, testMinionServer, legacy);
 
         // Refresh pillar data for the assigned clients
         MinionPillarManager.INSTANCE.generatePillar(testMinionServer, true, MinionPillarManager.PillarSubset.GENERAL);

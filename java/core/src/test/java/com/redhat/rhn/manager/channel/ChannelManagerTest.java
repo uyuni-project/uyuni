@@ -306,11 +306,11 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         // thanks mmccune for the tip
         user.getOrg().addRole(RoleFactory.CHANNEL_ADMIN);
         user.addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
-        user = TestUtils.saveAndFlush(user);
+        User reloadedTestUser = TestUtils.saveAndFlush(user);
 
-        Channel c = ChannelFactoryTest.createTestChannel(user);
+        Channel c = ChannelFactoryTest.createTestChannel(reloadedTestUser);
         c = TestUtils.reload(c);
-        ChannelManager.deleteChannel(user, c.getLabel(), true);
+        ChannelManager.deleteChannel(reloadedTestUser, c.getLabel(), true);
         assertNull(TestUtils.reload(c));
     }
 
@@ -318,13 +318,13 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     public void testDeleteClonedChannel() throws Exception {
         user.getOrg().addRole(RoleFactory.CHANNEL_ADMIN);
         user.addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
-        user = TestUtils.saveAndFlush(user);
+        User reloadedTestUser = TestUtils.saveAndFlush(user);
 
-        Channel c = ChannelFactoryTest.createTestChannel(user);
-        Channel cClone1 = ChannelFactoryTest.createTestClonedChannel(c, user);
-        Channel cClone2 = ChannelFactoryTest.createTestClonedChannel(cClone1, user);
+        Channel c = ChannelFactoryTest.createTestChannel(reloadedTestUser);
+        Channel cClone1 = ChannelFactoryTest.createTestClonedChannel(c, reloadedTestUser);
+        Channel cClone2 = ChannelFactoryTest.createTestClonedChannel(cClone1, reloadedTestUser);
         cClone2 = TestUtils.reload(cClone2);
-        ChannelManager.deleteChannel(user, cClone2.getLabel(), true);
+        ChannelManager.deleteChannel(reloadedTestUser, cClone2.getLabel(), true);
         assertNotNull(TestUtils.reload(c));
         assertNotNull(TestUtils.reload(cClone1));
         assertNull(TestUtils.reload(cClone2));
@@ -334,14 +334,14 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     public void testDeleteChannelWithClones() throws Exception {
         user.getOrg().addRole(RoleFactory.CHANNEL_ADMIN);
         user.addToGroup(AccessGroupFactory.CHANNEL_ADMIN);
-        user = TestUtils.saveAndFlush(user);
+        User reloadedTestUser = TestUtils.saveAndFlush(user);
 
-        Channel c = ChannelFactoryTest.createTestChannel(user);
-        Channel cClone1 = ChannelFactoryTest.createTestClonedChannel(c, user);
-        Channel cClone2 = ChannelFactoryTest.createTestClonedChannel(cClone1, user);
+        Channel c = ChannelFactoryTest.createTestChannel(reloadedTestUser);
+        Channel cClone1 = ChannelFactoryTest.createTestClonedChannel(c, reloadedTestUser);
+        Channel cClone2 = ChannelFactoryTest.createTestClonedChannel(cClone1, reloadedTestUser);
         cClone1 = TestUtils.reload(cClone1);
         try {
-            ChannelManager.deleteChannel(user, cClone1.getLabel(), true);
+            ChannelManager.deleteChannel(reloadedTestUser, cClone1.getLabel(), true);
             fail();
         }
         catch (ValidatorException exc) {
@@ -685,10 +685,10 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
     @Test
     public void testChildrenAvailableToSet() {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
-        user = TestUtils.saveAndFlush(user);
+        User reloadedTestUser = TestUtils.saveAndFlush(user);
 
         DataResult<ChildChannelDto> childChannels =
-                ChannelManager.childrenAvailableToSet(user);
+                ChannelManager.childrenAvailableToSet(reloadedTestUser);
         assertNotNull(childChannels);
         assertTrue(childChannels.isEmpty());
     }

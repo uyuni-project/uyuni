@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.domain.access.AccessGroupFactory;
 import com.redhat.rhn.domain.config.ConfigFile;
 import com.redhat.rhn.domain.config.ConfigurationFactory;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.dto.ConfigFileDto;
 import com.redhat.rhn.testing.ConfigTestUtils;
 import com.redhat.rhn.testing.RhnMockStrutsTestCase;
@@ -36,14 +37,14 @@ public class OverviewTest extends RhnMockStrutsTestCase {
     @Test
     public void testExecute() throws Exception {
         UserTestUtils.addAccessGroup(user, AccessGroupFactory.CONFIG_ADMIN);
-        user = TestUtils.saveAndFlush(user);
+        User savedTestUser = TestUtils.saveAndFlush(user);
 
         //Make a file for the recentFiles list
-        ConfigFile file = ConfigTestUtils.createConfigFile(user.getOrg());
+        ConfigFile file = ConfigTestUtils.createConfigFile(savedTestUser.getOrg());
         //Make a revision so that the query can get at the file type attribute
         ConfigTestUtils.createConfigRevision(file);
 
-        ConfigTestUtils.giveUserChanAccess(user, file.getConfigChannel());
+        ConfigTestUtils.giveUserChanAccess(savedTestUser, file.getConfigChannel());
         ConfigurationFactory.commit(file);
 
         setRequestPathInfo("/configuration/Overview");

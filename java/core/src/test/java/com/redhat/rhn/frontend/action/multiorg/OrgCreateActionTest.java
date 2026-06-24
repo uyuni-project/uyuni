@@ -17,6 +17,7 @@ package com.redhat.rhn.frontend.action.multiorg;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.role.RoleFactory;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnPostMockStrutsTestCase;
 import com.redhat.rhn.testing.TestStatics;
@@ -33,7 +34,8 @@ public class OrgCreateActionTest extends RhnPostMockStrutsTestCase {
     public void testExecuteSubmit() {
         user.getOrg().addRole(RoleFactory.SAT_ADMIN);
         user.addPermanentRole(RoleFactory.SAT_ADMIN);
-        user = TestUtils.saveAndFlush(user);
+        TestUtils.saveAndFlush(user);
+
         addSubmitted();
         addRequestParameter("orgName", "neworg" + TestUtils.randomString());
         addRequestParameter("login", "newlogin" + TestUtils.randomString());
@@ -52,7 +54,8 @@ public class OrgCreateActionTest extends RhnPostMockStrutsTestCase {
     public void testEmptyFields() {
         user.getOrg().addRole(RoleFactory.SAT_ADMIN);
         user.addPermanentRole(RoleFactory.SAT_ADMIN);
-        user = TestUtils.saveAndFlush(user);
+        TestUtils.saveAndFlush(user);
+
         addSubmitted();
         setRequestPathInfo("/admin/multiorg/OrgCreate");
         actionPerform();
@@ -65,10 +68,11 @@ public class OrgCreateActionTest extends RhnPostMockStrutsTestCase {
     public void testCreateDupeUser() {
         user.getOrg().addRole(RoleFactory.SAT_ADMIN);
         user.addPermanentRole(RoleFactory.SAT_ADMIN);
-        user = TestUtils.saveAndFlush(user);
+        User savedTestUser = TestUtils.saveAndFlush(user);
+
         addSubmitted();
         addRequestParameter("orgName", "neworg" + TestUtils.randomString());
-        addRequestParameter("login", user.getLogin());
+        addRequestParameter("login", savedTestUser.getLogin());
         addRequestParameter("email", "test@redhat.com");
         addRequestParameter("desiredpassword", "password");
         addRequestParameter("desiredpasswordConfirm", "password");

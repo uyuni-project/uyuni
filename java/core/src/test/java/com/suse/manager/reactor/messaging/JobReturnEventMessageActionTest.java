@@ -1877,10 +1877,10 @@ public class JobReturnEventMessageActionTest extends JMockBaseTestCaseWithUser {
 
         ImageInfoFactory.delete(image, saltServiceMock);
 
-        user = TestUtils.reload(user);
+        User reloadedTestUser = TestUtils.reload(user);
 
         String imageCategory = "Image" + image.getId();
-        assertFalse(user.getOrg().getPillars().stream().anyMatch(item -> (imageCategory.equals(item.getCategory()))));
+        assertFalse(reloadedTestUser.getOrg().getPillars().stream().anyMatch(item -> (imageCategory.equals(item.getCategory()))));
     }
 
     @Test

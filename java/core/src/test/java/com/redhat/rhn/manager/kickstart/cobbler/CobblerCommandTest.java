@@ -25,6 +25,7 @@ import com.redhat.rhn.domain.role.RoleFactory;
 import com.redhat.rhn.domain.server.NetworkInterface;
 import com.redhat.rhn.domain.server.NetworkInterfaceTest;
 import com.redhat.rhn.domain.server.Server;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.testing.ServerTestUtils;
 import com.redhat.rhn.testing.TestUtils;
@@ -206,9 +207,10 @@ public class CobblerCommandTest extends CobblerCommandTestBase {
     public void testLogin() {
         user.addPermanentRole(RoleFactory.ORG_ADMIN);
         UserFactory.save(user);
-        user = TestUtils.reload(user);
+        User reloadedTestUser = TestUtils.reload(user);
+
         CobblerLoginCommand cmd = new CobblerLoginCommand();
-        String cobblertoken = cmd.login(user.getLogin(), "password");
+        String cobblertoken = cmd.login(reloadedTestUser.getLogin(), "password");
         assertNotNull(cobblertoken);
         assertTrue(cmd.checkToken(cobblertoken));
     }
