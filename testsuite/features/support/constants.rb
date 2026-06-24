@@ -74,6 +74,8 @@ ENV_VAR_BY_HOST = {
   'ubuntu2604_ssh_minion' => 'UBUNTU2604_SSHMINION',
   'debian12_minion' => 'DEBIAN12_MINION',
   'debian12_ssh_minion' => 'DEBIAN12_SSHMINION',
+  'debian13_minion' => 'DEBIAN13_MINION',
+  'debian13_ssh_minion' => 'DEBIAN13_SSHMINION',
   'opensuse156arm_minion' => 'OPENSUSE156ARM_MINION',
   'opensuse156arm_ssh_minion' => 'OPENSUSE156ARM_SSHMINION',
   'opensuse160arm_minion' => 'OPENSUSE160ARM_MINION',
@@ -230,6 +232,8 @@ PACKAGE_BY_CLIENT = {
   'ubuntu2604_ssh_minion' => 'bison',
   'debian12_minion' => 'bison',
   'debian12_ssh_minion' => 'bison',
+  'debian13_minion' => 'bison',
+  'debian13_ssh_minion' => 'bison',
   'opensuse156arm_minion' => 'bison',
   'opensuse156arm_ssh_minion' => 'bison',
   'opensuse160arm_minion' => 'bison',
@@ -320,6 +324,8 @@ BASE_CHANNEL_BY_CLIENT = {
     'ubuntu2604_ssh_minion' => 'ubuntu-2604-amd64-main for amd64',
     'debian12_minion' => 'debian-12-pool for amd64',
     'debian12_ssh_minion' => 'debian-12-pool for amd64',
+    'debian13_minion' => 'debian-13-pool for amd64',
+    'debian13_ssh_minion' => 'debian-13-pool for amd64',
     'opensuse156arm_minion' => 'openSUSE-Leap-15.6-Pool for aarch64',
     'opensuse156arm_ssh_minion' => 'openSUSE-Leap-15.6-Pool for aarch64',
     'opensuse160arm_minion' => 'openSUSE-Leap-16.0 for aarch64',
@@ -456,6 +462,7 @@ LABEL_BY_BASE_CHANNEL = {
     'ubuntu-2204-amd64-main for amd64' => 'ubuntu-2204-amd64-main-amd64',
     'ubuntu-2404-amd64-main for amd64' => 'ubuntu-2404-amd64-main-amd64',
     'debian-12-pool for amd64' => 'debian-12-pool-amd64',
+    'debian-13-pool for amd64' => 'debian-13-pool-amd64',
     'openSUSE-Leap-15.6-Pool for aarch64' => 'opensuse-leap-15.6-pool-aarch64',
     'openSUSE-Leap-16.0 for aarch64' => 'opensuse-leap-16.0-aarch64'
   },
@@ -533,6 +540,7 @@ CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'ubuntu-2204-amd64-main for amd64' => 'ubuntu-22.04-amd64',
     'ubuntu-2404-amd64-main for amd64' => 'ubuntu-24.04-amd64',
     'debian-12-pool for amd64' => 'debian12-amd64',
+    'debian-13-pool for amd64' => 'debian13-amd64',
     'openSUSE-Leap-15.6-Pool for aarch64' => 'openSUSE-Leap-15.6-aarch64',
     'openSUSE-Leap-16.0 for aarch64' => 'openSUSE-Leap-16.0-aarch64'
   },
@@ -612,6 +620,7 @@ PARENT_CHANNEL_LABEL_TO_SYNC_BY_BASE_CHANNEL = {
     'ubuntu-2204-amd64-main for amd64' => nil,
     'ubuntu-2404-amd64-main for amd64' => nil,
     'debian-12-pool for amd64' => 'debian-12-pool-amd64',
+    'debian-13-pool for amd64' => 'debian-13-pool-amd64',
     'openSUSE-Leap-15.6-Pool for aarch64' => nil,
     'openSUSE-Leap-16.0 for aarch64' => nil
   },
@@ -717,6 +726,8 @@ PKGARCH_BY_CLIENT = {
   'ubuntu2604_ssh_minion' => 'amd64',
   'debian12_minion' => 'amd64',
   'debian12_ssh_minion' => 'amd64',
+  'debian13_minion' => 'amd64',
+  'debian13_ssh_minion' => 'amd64',
   'opensuse156arm_minion' => 'aarch64',
   'opensuse156arm_ssh_minion' => 'aarch64',
   'opensuse160arm_minion' => 'aarch64',
@@ -797,6 +808,13 @@ CHANNEL_TO_SYNC_BY_OS_PRODUCT_VERSION = {
         debian-12-main-updates-amd64
         managertools-debian12-updates-amd64
         managertools-debian12-beta-updates-amd64
+      ],
+    'debian-13' =>
+      %w[
+        debian-13-pool-amd64
+        debian-13-main-security-amd64
+        debian-13-main-updates-amd64
+        managertools-debian13-updates-amd64
       ],
     'sll-7-ltss' => # CHECKED
       %w[
@@ -1569,6 +1587,9 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'debian-12-main-updates-amd64' => 120,
   'debian-12-pool-amd64' => 8400,
   'debian-12-pool-amd64-uyuni' => 28_260,
+  'debian-13-main-security-amd64' => 300,
+  'debian-13-main-updates-amd64' => 120,
+  'debian-13-pool-amd64' => 8400,
   'devel-build-host-channel' => 120,
   'devel-debian-like-channel' => 120,
   'devel-rh-like-channel' => 120,
@@ -1602,6 +1623,7 @@ TIMEOUT_BY_CHANNEL_NAME = {
   'managertools-beta-ubuntu2604-updates-amd64' => 60,
   'managertools-debian12-beta-updates-amd64' => 60,
   'managertools-debian12-updates-amd64' => 60,
+  'managertools-debian13-updates-amd64' => 60,
   'managertools-el7-pool-x86_64-lbt7' => 60,
   'managertools-el7-updates-x86_64-lbt7' => 60,
   'managertools-el7-pool-x86_64-lbt' => 60,
