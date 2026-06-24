@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.common.validator.TestObject;
 import com.redhat.rhn.frontend.struts.RequestContext;
-import com.redhat.rhn.testing.RhnJmockBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
@@ -27,7 +27,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class DynamicComparatorTest extends RhnJmockBaseTestCase {
+public class DynamicComparatorTest extends BaseTestCase {
 
     @Test
     public void testComparatorMaps() {

@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.testing.RhnJmockBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import com.suse.manager.reactor.PGEventStream;
 import com.suse.salt.netapi.exception.SaltException;
@@ -46,7 +46,7 @@ import java.util.stream.LongStream;
 /**
  * Unit tests for {@link PGEventStream}.
  */
-class PGEventStreamTest extends RhnJmockBaseTestCase {
+class PGEventStreamTest extends BaseTestCase {
     private static final int QUEUE_COUNT = ConfigDefaults.get().getSaltEventThreadPoolSize() + 1;
     private static final int DEFAULT_SALT_EVENT_NOTIFICATION_POLL_INTERVAL_MS_VALUE =
             ConfigDefaults.get().getSaltEventNotificationPollIntervalMs();

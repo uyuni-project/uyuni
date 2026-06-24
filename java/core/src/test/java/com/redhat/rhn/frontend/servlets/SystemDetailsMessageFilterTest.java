@@ -20,35 +20,35 @@ import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerConstants;
 import com.redhat.rhn.domain.server.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.testing.MockObjectTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.SaltTestCaseExtension;
-import com.redhat.rhn.testing.UserTestUtils;
+import com.redhat.rhn.testing.UserTestCaseExtension;
 
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
-import java.io.IOException;
 import java.util.Iterator;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 @ExtendWith(SaltTestCaseExtension.class)
-public class SystemDetailsMessageFilterTest extends MockObjectTestCase {
-    private User user;
+public class SystemDetailsMessageFilterTest extends BaseTestCase {
 
-    @BeforeEach
-    public void setUp() throws IOException {
-        user = UserTestUtils.createUser(this);
+    @RegisterExtension
+    private final UserTestCaseExtension userTestExtension = new UserTestCaseExtension(this);
+
+    protected User getTestUser() {
+        return userTestExtension.getTestUser();
     }
 
     @Test
     public void shouldAddTraditionalStackDeprecationMessage() {
         // The server is created as a traditional system (enterprise entitled)
-        Server server = ServerFactoryTest.createTestServer(user, false,
+        Server server = ServerFactoryTest.createTestServer(getTestUser(), false,
                 ServerConstants.getServerGroupTypeEnterpriseEntitled());
         HttpServletRequest request = new RhnMockHttpServletRequest();
         SystemDetailsMessageFilter filter = new SystemDetailsMessageFilter();
@@ -67,7 +67,7 @@ public class SystemDetailsMessageFilterTest extends MockObjectTestCase {
     @Test
     public void shouldNotAddTraditionalStackDeprecationMessage() {
         // The server is created as a salt system (salt entitled)
-        MinionServer minionServer = MinionServerFactoryTest.createTestMinionServer(user);
+        MinionServer minionServer = MinionServerFactoryTest.createTestMinionServer(getTestUser());
         HttpServletRequest request = new RhnMockHttpServletRequest();
         SystemDetailsMessageFilter filter = new SystemDetailsMessageFilter();
         filter.processSystemMessages(request, minionServer);
