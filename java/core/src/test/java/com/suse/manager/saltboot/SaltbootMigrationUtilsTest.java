@@ -23,7 +23,7 @@ import com.redhat.rhn.domain.image.ImageInfo;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactoryTest;
 import com.redhat.rhn.domain.server.ServerGroup;
-import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+import com.redhat.rhn.testing.BaseTestCaseWithUser;
 
 import org.cobbler.CobblerConnection;
 import org.cobbler.Distro;
@@ -39,7 +39,7 @@ import java.util.List;
 /**
  * Test for {@link SaltbootMigrationUtils}.
  */
-public class SaltbootMigrationUtilsTest extends JMockBaseTestCaseWithUser {
+public class SaltbootMigrationUtilsTest extends BaseTestCaseWithUser {
 
     private CobblerConnection client;
 
