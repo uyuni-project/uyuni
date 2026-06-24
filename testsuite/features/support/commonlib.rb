@@ -132,10 +132,7 @@ def check_text?(text1, text2: nil, timeout: Capybara.default_max_wait_time)
     begin
       return true if has_text?(text1, wait: 1)
       return true if !text2.nil? && has_text?(text2, wait: 1)
-    rescue Capybara::ElementNotFound,
-           Selenium::WebDriver::Error::StaleElementReferenceError,
-           Selenium::WebDriver::Error::NoSuchElementError,
-           NoMethodError
+    rescue Capybara::ElementNotFound, NoMethodError
 
       # page mid-navigation, let it settle and retry
       sleep 2

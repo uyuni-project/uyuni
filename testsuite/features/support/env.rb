@@ -89,55 +89,35 @@ end
 # Fix a problem with minitest and cucumber options passed through rake
 MultiTest.disable_autorun
 
-# WORKAROUND: Chrome 134+ raises UnknownError ("Node with given id does not belong to the document")
-# via CDP when a full page navigation invalidates DOM node references mid-wait.
-# Capybara's synchronize() only retries on errors in invalid_element_errors, which does not include
-# UnknownError, so the error surfaces as a hard crash. Extending the driver makes it retryable.
-module CapybaraUnknownErrorRetry
-  # Adds UnknownError to the list of errors that Capybara retries on during synchronize().
-  # Chrome 134+ raises UnknownError via CDP when a page navigation invalidates DOM node references.
-  def invalid_element_errors
-    super | [Selenium::WebDriver::Error::UnknownError]
-  end
-end
 
-# register chromedriver in headless mode
+# register the Playwright driver (Chromium, headless unless debug)
 def capybara_register_driver
-  Capybara.register_driver :selenium_chrome_headless do |app|
-    # WORKAROUND failure at Scenario: Test IPMI functions: increase from 60 s to 180 s
-    client = Selenium::WebDriver::Remote::Http::Default.new(open_timeout: 30, read_timeout: 240)
-    chrome_options = Selenium::WebDriver::Chrome::Options.new(
+  Capybara.register_driver :playwright do |app|
+    Capybara::Playwright::Driver.new(
+      app,
+      browser_type: :chromium,
+      headless: !$debug_mode,
+      playwright_cli_executable_path: ENV.fetch('PLAYWRIGHT_CLI_EXECUTABLE_PATH', '/usr/local/bin/playwright'),
       args: %w[
         --disable-dev-shm-usage
         --ignore-certificate-errors
-        --window-size=2048,2048
-        --js-flags=--max-old-space-size=2048
         --no-sandbox
         --disable-notifications
+        --window-size=2048,2048
+        --js-flags=--max-old-space-size=2048
         --log-level=3
-      ]
+      ],
+      ignoreHTTPSErrors: true,
+      acceptDownloads: true,
+      viewport: { width: 2048, height: 2048 }
     )
-    chrome_options.args << '--headless=new' unless $debug_mode
-    chrome_options.args << "--remote-debugging-port=#{$chromium_dev_port}" if $chromium_dev_tools
-    chrome_options.add_argument("--user-data-dir=/tmp/chrome_profile_#{Process.pid}_#{Time.now.to_i}") if $is_cloud_provider
-
-    chrome_options.add_preference('prompt_for_download', false)
-    chrome_options.add_preference('download.default_directory', '/tmp/downloads')
-    chrome_options.add_preference('unhandledPromptBehavior', 'accept')
-    chrome_options.add_preference('unexpectedAlertBehaviour', 'accept')
-
-    # WORKAROUND: Chrome 134+ raises UnknownError ("Node with given id does not belong to the document")
-    driver = Capybara::Selenium::Driver.new(app, browser: :chrome, options: chrome_options, http_client: client)
-    driver.extend(CapybaraUnknownErrorRetry)
-    driver
   end
 end
 
-# register chromedriver headless mode
+# register the Playwright driver
 $capybara_driver = capybara_register_driver
-Selenium::WebDriver.logger.level = :error
-Capybara.default_driver = :selenium_chrome_headless
-Capybara.javascript_driver = :selenium_chrome_headless
+Capybara.default_driver = :playwright
+Capybara.javascript_driver = :playwright
 Capybara.default_normalize_ws = true
 Capybara.enable_aria_label = true
 Capybara.automatic_label_click = true
@@ -168,27 +148,18 @@ After do |scenario|
   log "This scenario took: #{current_epoch - @scenario_start_time} seconds"
   if scenario.failed?
     begin
-      if scenario.exception.is_a?(Selenium::WebDriver::Error::WebDriverError)
-        log "Caught web driver error: #{scenario.exception.message}"
-        Capybara.current_session.driver.quit
-        visit Capybara.app_host
-        log 'Web driver has been restarted'
-      else
-        # web_session_is_active? can raise WebDriverError if the session went stale
-        # after a long-running step (e.g. bootstrap timeout). Rescue it so the After
-        # hook does not fail and swallow the screenshot opportunity.
-        session_active =
-          begin
-            web_session_is_active?
-          rescue Selenium::WebDriver::Error::WebDriverError => e
-            log "WebDriver session went stale when checking for active session: #{e.message}"
-            false
-          end
-        if session_active
-          handle_screenshot_and_relog(scenario, current_epoch)
-        else
-          warn 'There is no active web session; unable to take a screenshot or relog.'
+      # web_session_is_active? can raise if the session went stale after a long step.
+      session_active =
+        begin
+          web_session_is_active?
+        rescue StandardError => e
+          log "Web session went stale when checking for active session: #{e.message}"
+          false
         end
+      if session_active
+        handle_screenshot_and_relog(scenario, current_epoch)
+      else
+        warn 'There is no active web session; unable to take a screenshot or relog.'
       end
     ensure
       print_server_logs
@@ -209,10 +180,7 @@ def web_session_is_active?
   return false unless capybara_session_created?
 
   page.has_selector?('header', wait: 0) || page.has_selector?('#username-field', wait: 0)
-rescue Capybara::ElementNotFound,
-       Selenium::WebDriver::Error::StaleElementReferenceError,
-       Selenium::WebDriver::Error::NoSuchElementError,
-       NoMethodError
+rescue Capybara::ElementNotFound, NoMethodError
 
   # Chrome 134+ CDP type mismatch during page navigation - page is not in a usable state
   false
@@ -225,7 +193,7 @@ def handle_screenshot_and_relog(scenario, current_epoch)
   path = "#{screenshot_dir}/#{scenario.name.tr(' ./', '_')}.png"
   begin
     click_details_if_present
-    page.driver.browser.save_screenshot(path)
+    page.driver.with_playwright_page { |pw_page| pw_page.screenshot(path: path) }
     attach path, 'image/png'
     # Attach additional information
     attach "#{Time.at(@scenario_start_time).strftime('%H:%M:%S:%L')} - #{Time.at(current_epoch).strftime('%H:%M:%S:%L')} | Current URL: #{current_url}", 'text/plain'

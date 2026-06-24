@@ -25,7 +25,6 @@ RUN zypper ref -f && \
       mozilla-nss-tools \
       postgresql14-devel \
       chromium \
-      chromedriver \
       libgbm-devel \
       npm \
       openssh-server \
@@ -53,6 +52,13 @@ RUN update-alternatives --set ri /usr/bin/ri.ruby.ruby3.3
 # debug
 RUN ruby -v
 RUN gem env
+
+# Playwright CLI + Chromium for the Capybara Playwright driver.
+# NOTE: no --with-deps — Playwright only supports apt/dnf for OS deps, not zypper.
+# The distro `chromium` package (installed above) provides the required shared libraries.
+RUN npm install -g playwright@1.60.0 && \
+    playwright install chromium
+ENV PLAYWRIGHT_CLI_EXECUTABLE_PATH=/usr/local/bin/playwright
 
 # TODO: Adjust the URL/branch before merging!
 RUN curl https://raw.githubusercontent.com/uyuni-project/uyuni/master/testsuite/Gemfile -o Gemfile && bundle.ruby3.3 install --verbose && rm Gemfile

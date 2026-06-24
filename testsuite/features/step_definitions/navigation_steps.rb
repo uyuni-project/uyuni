@@ -163,12 +163,12 @@ Then(/^I wait until I see the (VNC|spice) graphical console$/) do |type|
 end
 
 When(/^I switch to last opened window$/) do
-  page.driver.browser.switch_to.window(page.driver.browser.window_handles.last)
+  switch_to_window(windows.last)
 end
 
 When(/^I close the last opened window$/) do
-  page.driver.browser.close
-  page.driver.browser.switch_to.window(page.driver.browser.window_handles.first)
+  current_window.close
+  switch_to_window(windows.first)
 end
 
 #
@@ -305,7 +305,7 @@ end
 
 # Go back in the browser history
 When(/^I go back$/) do
-  page.driver.go_back
+  page.go_back
 end
 
 #
@@ -947,10 +947,7 @@ Then(/^I click on the filter button until page does not contain "([^"]*)" text$/
     begin
       find('button.spacewalk-button-filter').click
       check_text?('is filtered')
-    rescue Capybara::ElementNotFound,
-           Selenium::WebDriver::Error::StaleElementReferenceError,
-           Selenium::WebDriver::Error::NoSuchElementError,
-           NoMethodError
+    rescue Capybara::ElementNotFound, NoMethodError
 
       # page mid-navigation, retry
     end
@@ -964,10 +961,7 @@ Then(/^I click on the filter button until page does contain "([^"]*)" text$/) do
     begin
       find('button.spacewalk-button-filter').click
       check_text?('is filtered')
-    rescue Capybara::ElementNotFound,
-           Selenium::WebDriver::Error::StaleElementReferenceError,
-           Selenium::WebDriver::Error::NoSuchElementError,
-           NoMethodError
+    rescue Capybara::ElementNotFound, NoMethodError
 
       # page mid-navigation, retry
     end
@@ -1176,12 +1170,7 @@ When(/^I click on "([^"]*)" in "([^"]*)" modal$/) do |btn, title|
   # We wait until the element is not shown, because
   # the fade out animation might still be in progress
   repeat_until_timeout(message: "The #{title} modal dialog is still present") do
-    begin
-      break if has_no_xpath?(path, wait: 1)
-    rescue Selenium::WebDriver::Error::StaleElementReferenceError
-      # We need to consider the case that after obtaining the element it is detached from the page document
-      break
-    end
+    break if has_no_xpath?(path, wait: 1)
   end
 end
 
@@ -1242,7 +1231,7 @@ When(/^I enter the controller hostname as the redfish server address$/) do
 end
 
 When(/^I clear browser cookies$/) do
-  page.driver.browser.manage.delete_all_cookies
+  page.driver.with_playwright_page { |pw_page| pw_page.context.clear_cookies }
 end
 
 When(/^I close the modal dialog$/) do
