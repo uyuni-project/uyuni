@@ -49,6 +49,11 @@ public class PkgProfileUpdateSlsResult {
             "cmd_|-respkgquery_|-/usr/bin/rpm -q --whatprovides 'sles_es-release-server'_|-run";
     public static final String PKG_PROFILE_WHATPROVIDES_SLL_RELEASE =
             "cmd_|-sllpkgquery_|-/usr/bin/rpm -q --whatprovides 'sll-release'_|-run";
+    public static final String PKG_PROFILE_SNAPPER_LIST_SNAPSHOTS =
+            "cmd_|-snapper-list-snapshots_|-snapper --json --no-dbus list_|-run";
+    public static final String PKG_PROFILE_GET_ACTIVE_SNAPSHOT =
+            "cmd_|-get-active-snapshot_|-" +
+            "awk '$5==\"/\" {print $4}' /proc/1/mountinfo | grep -oP '\\.snapshots/\\K\\d+'_|-run";
 
     @SerializedName("module_|-status_uptime_|-status.uptime_|-run")
     private Optional<StateApplyResult<Ret<Map<String, Object>>>> upTime = Optional.empty();
@@ -97,6 +102,12 @@ public class PkgProfileUpdateSlsResult {
 
     @SerializedName(PKG_PROFILE_WHATPROVIDES_SLL_RELEASE)
     private StateApplyResult<CmdResult> whatProvidesSLLReleasePkg;
+
+    @SerializedName(PKG_PROFILE_SNAPPER_LIST_SNAPSHOTS)
+    private Optional<StateApplyResult<CmdResult>> snapperSnapshots = Optional.empty();
+
+    @SerializedName(PKG_PROFILE_GET_ACTIVE_SNAPSHOT)
+    private Optional<StateApplyResult<CmdResult>> activeSnapshotResult = Optional.empty();
 
     /**
      * Gets the system uptime
@@ -216,5 +227,34 @@ public class PkgProfileUpdateSlsResult {
      */
     public StateApplyResult<CmdResult> getWhatProvidesSLLReleasePkg() {
         return whatProvidesSLLReleasePkg;
+    }
+
+    /**
+     * Get the active snapshot number from /proc/1/mountinfo, or empty if not a transactional system.
+     * @return optional active snapshot number
+     */
+    public Optional<Long> getActiveSnapshotNumber() {
+        return activeSnapshotResult
+                .map(r -> r.getChanges().getStdout())
+                .filter(out -> out != null && !out.isBlank())
+                .map(out -> {
+                    try {
+                        return Long.parseLong(out.trim());
+                    }
+                    catch (NumberFormatException e) {
+                        return null;
+                    }
+                });
+    }
+
+    /**
+     * Get the raw stdout from {@code snapper --json --no-dbus list}.
+     * Present only on transactional systems (SLE Micro, Leap Micro, openSUSE MicroOS).
+     * @return raw snapper JSON output, or empty
+     */
+    public Optional<String> getSnapperRawStdout() {
+        return snapperSnapshots
+                .map(r -> r.getChanges().getStdout())
+                .filter(out -> out != null && !out.isBlank());
     }
 }
