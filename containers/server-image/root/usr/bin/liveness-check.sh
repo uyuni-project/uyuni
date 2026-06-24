@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # SPDX-FileCopyrightText: 2026 SUSE LLC
 #
-# SPDX-License-Identifier: GPL-2.0-Only
+# SPDX-License-Identifier: GPL-2.0-only
 
 # This script is common between podman and Kubernetes
 # Checking that the HTTP server responds is in the readiness check on Kubernetes.

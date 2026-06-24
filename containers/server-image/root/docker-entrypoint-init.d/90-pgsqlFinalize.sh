@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # SPDX-FileCopyrightText: 2026 SUSE LLC
 #
-# SPDX-License-Identifier: GPL-2.0-Only
+# SPDX-License-Identifier: GPL-2.0-only
 set -eu -o pipefail
 
 productdb=$(sed -n "s/^\s*db_name\s*=\s*\([^ ]*\)\s*$/\1/p" /etc/rhn/rhn.conf)

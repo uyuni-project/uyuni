@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # SPDX-FileCopyrightText: 2026 SUSE LLC
 #
-# SPDX-License-Identifier: GPL-2.0-Only
+# SPDX-License-Identifier: GPL-2.0-only
 
 if [ -n "${TZ}" ]; then
     if [ ! -e "/usr/share/zoneinfo/${TZ}" ]; then
