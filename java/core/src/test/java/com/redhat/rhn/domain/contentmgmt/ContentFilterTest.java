@@ -35,8 +35,8 @@ import com.redhat.rhn.domain.rhnpackage.PackageProvides;
 import com.redhat.rhn.domain.rhnpackage.PackageTest;
 import com.redhat.rhn.domain.rhnpackage.PackageType;
 import com.redhat.rhn.manager.contentmgmt.ContentManager;
+import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ErrataTestUtils;
-import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -54,7 +54,7 @@ import java.util.TimeZone;
 /**
  * Tests for {@link ContentFilter}
  */
-public class ContentFilterTest extends JMockBaseTestCaseWithUser {
+public class ContentFilterTest extends BaseTestCaseWithUser {
 
     private ContentManager contentManager;
 
