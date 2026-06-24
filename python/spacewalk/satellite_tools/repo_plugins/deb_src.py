@@ -479,7 +479,8 @@ class ContentSource:
                 self.authtoken = query
 
     def get_md_checksum_type(self):
-        pass
+        # all supported Debian OSes should support sha256 already
+        return "sha256"
 
     def get_products(self):
         # No products
