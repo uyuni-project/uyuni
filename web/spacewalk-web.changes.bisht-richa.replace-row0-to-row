@@ -1,0 +1,2 @@
+- Use the standard Bootstrap 5 row class in place of
+  legacy layout classes.

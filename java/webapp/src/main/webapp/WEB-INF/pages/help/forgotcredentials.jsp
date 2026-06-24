@@ -58,7 +58,7 @@
     <rhn:csrf />
     <div class="search-choices panel panel-default">
       <div class="search-choices-group panel-body">
-        <div class="row row">
+        <div class="row">
           <div class="col-md-2 text-right">
             <label><bean:message key="help.credentials.jsp.emailinput"/></label>
           </div>
