@@ -19,6 +19,7 @@ UPSTREAM_ENTRYPOINT="/usr/local/bin/docker-entrypoint.sh"
 IMAGE_REF_FILE="/etc/uyuni-image-ref"
 PGDATA="${PGDATA:-/var/lib/pgsql/data}"
 UPGRADE_HOOKS_DIR="/docker-entrypoint-upgdb.d"
+UPGRADE_IN_PROGRESS="/run/upgrade_in_progress"
 
 log() {
     echo "[ENTRYPOINT] $*" >&2
@@ -86,6 +87,7 @@ run_upgrade_scripts() {
     pg_port="${PGPORT:-5432}"
 
     echo "Starting temporary postgres server for upgrade scripts..."
+    touch "$UPGRADE_IN_PROGRESS"
     PGUSER="${PGUSER:-${POSTGRES_USER:-postgres}}" NOTIFY_SOCKET='' \
         pg_ctl -D "$PGDATA" -o "-c listen_addresses='localhost' -p ${pg_port}" -w start
 
@@ -103,6 +105,7 @@ run_upgrade_scripts() {
     if [ "$attempt" -gt "$attempts" ]; then
         log "Temporary postgres did not become ready for upgrades."
         pg_ctl -D "$PGDATA" status || true
+        rm -f "$UPGRADE_IN_PROGRESS"
         return 1
     fi
 
@@ -136,6 +139,7 @@ run_upgrade_scripts() {
 
     echo "Stopping temporary postgres server after upgrade scripts..."
     PGUSER="${PGUSER:-postgres}" pg_ctl -D "$PGDATA" -m fast -w stop
+    rm -f "$UPGRADE_IN_PROGRESS"
 }
 
 main() {
