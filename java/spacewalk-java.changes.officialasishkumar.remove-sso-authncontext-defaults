@@ -1,0 +1,5 @@
+- Stop forcing password-based SAML authentication by default; the
+  requested AuthnContext defaults shipped in the SSO config are now
+  commented out so the IdP can pick the appropriate authentication
+  method (FIDO2, Yubikey, Windows Hello) with strict SAML clients
+  such as Microsoft Edge
