@@ -277,6 +277,12 @@ def get_info_for_package(pkg, channel_id, org_id):
     h.execute(**params)
 
     ret = h.fetchall_dict() or []
+    if "evolution-data-server" in params["name"]:
+        log_debug(0, "[DEBUG]")
+        log_debug(0, h.sql)
+        log_debug(0, params)
+        log_debug(0, f"Returned: {ret}")
+
     if not ret:
         return ret
     for i in ret:
@@ -285,6 +291,9 @@ def get_info_for_package(pkg, channel_id, org_id):
             i["org_id"] = ""
         else:
             i["org_id"] = str(i["org_id"])
+
+    if "evolution-data-server" in params["name"]:
+        log_debug(0, f"[DEBUG] final lookup: {ret}")
     return ret
 
 
