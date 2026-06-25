@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.domain.session.WebSessionFactory;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
  * SessionCleanupTest
  * JUnit test for SessionCleanup
  */
-public class SessionCleanupTest extends RhnBaseTestCase {
+public class SessionCleanupTest extends BaseTestCase {
 
 /**
  * @throws Exception something bad happened

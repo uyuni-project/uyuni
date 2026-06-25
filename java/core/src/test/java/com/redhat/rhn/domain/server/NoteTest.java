@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -33,7 +33,7 @@ import java.util.Date;
 /**
  * NoteTest
  */
-public class NoteTest extends RhnBaseTestCase {
+public class NoteTest extends BaseTestCase {
 
     /**
      * Test Note creation and equals method
