@@ -32,6 +32,7 @@ CREATE TABLE web_user_site_info
     country             CHAR(2) NOT NULL,
     phone               VARCHAR(32),
     fax                 VARCHAR(32),
+    is_po_box           BOOLEAN NOT NULL DEFAULT FALSE,
     notes               VARCHAR(2000),
     created             TIMESTAMPTZ
                             DEFAULT (current_timestamp),
