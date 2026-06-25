@@ -15,13 +15,13 @@
 
 package com.suse.manager.errata;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import com.suse.manager.errata.model.errata.ErrataAdvisoryMapFactory;
 
 import org.junit.jupiter.api.Test;
 
-public class ErrataAdvisoryMapFactoryTest extends RhnBaseTestCase {
+public class ErrataAdvisoryMapFactoryTest extends BaseTestCase {
 
     @Test
     public void generatedCoverageTestCount() {
