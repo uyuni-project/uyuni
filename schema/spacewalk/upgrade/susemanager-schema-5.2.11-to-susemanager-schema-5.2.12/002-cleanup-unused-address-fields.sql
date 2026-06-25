@@ -9,15 +9,9 @@
 -- http://www.gnu.org/licenses/old-licenses/gpl-2.0.txt.
 --
 
--- Drop all unused fields from web_user_site_info table
-
 -- Drop the email_uc normalized email
 DROP INDEX IF EXISTS wusi_email_uc_idx;
 ALTER TABLE web_user_site_info DROP COLUMN IF EXISTS email_uc;
-
--- Drop PO Box flag
-ALTER TABLE web_user_site_info DROP CONSTRAINT IF EXISTS wusi_ipb_ck;
-ALTER TABLE web_user_site_info DROP COLUMN IF EXISTS is_po_box;
 
 -- Drop alternate names
 ALTER TABLE web_user_site_info DROP COLUMN IF EXISTS alt_first_names;
@@ -47,3 +41,21 @@ ALTER TABLE web_user_site_info DROP COLUMN IF EXISTS zip_ol;
 ALTER TABLE web_user_site_info DROP COLUMN IF EXISTS type;
 -- And drop the actual address type table
 DROP TABLE IF EXISTS web_user_site_type;
+
+-- Convert PO Box flag from CHAR(1) to BOOLEAN
+-- Drop the value check and defaul constraints
+ALTER TABLE web_user_site_info DROP CONSTRAINT IF EXISTS wusi_ipb_ck;
+ALTER TABLE web_user_site_info ALTER COLUMN is_po_box DROP DEFAULT;
+
+-- Convert CHAR(1) values ('0'/'1') to BOOLEAN (false/true)
+ALTER TABLE web_user_site_info
+ALTER COLUMN is_po_box TYPE BOOLEAN
+    USING (is_po_box = '1');
+
+-- Set NOT NULL constraint
+ALTER TABLE web_user_site_info
+    ALTER COLUMN is_po_box SET NOT NULL;
+
+-- Set default value
+ALTER TABLE web_user_site_info
+    ALTER COLUMN is_po_box SET DEFAULT FALSE;

@@ -128,6 +128,18 @@ public interface Address extends Serializable {
     void setFax(String faxIn);
 
     /**
+     * Getter for isPoBox
+     * @return true if this is a PO Box address
+     */
+    boolean isPoBox();
+
+    /**
+     * Setter for isPoBox
+     * @param isPoBoxIn true if this is a PO Box address
+     */
+    void setIsPoBox(boolean isPoBoxIn);
+
+    /**
      * Getter for created
      * @return created
      */
