@@ -21,7 +21,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.user.UserManager;
 import com.redhat.rhn.testing.ActionHelper;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.apache.struts.action.ActionForward;
 import org.junit.jupiter.api.Test;
@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 /**
  * ChangeEmailSetupActionTest
  */
-public class ChangeEmailSetupActionTest extends RhnBaseTestCase {
+public class ChangeEmailSetupActionTest extends BaseTestCase {
 
     @Test
     public void testChangeEmailSetupAction() throws Exception {

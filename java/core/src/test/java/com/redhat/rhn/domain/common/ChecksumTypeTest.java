@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.redhat.rhn.domain.channel.ChannelFactory;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
@@ -27,7 +27,7 @@ import java.util.Map;
 /**
  * ArchTypeTest
  */
-public class ChecksumTypeTest extends RhnBaseTestCase {
+public class ChecksumTypeTest extends BaseTestCase {
 
     @Test
     public void testChecksumType() {

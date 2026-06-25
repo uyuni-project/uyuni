@@ -16,7 +16,6 @@
 package com.redhat.rhn.domain.access;
 
 import com.redhat.rhn.testing.BaseTestCase;
-import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
