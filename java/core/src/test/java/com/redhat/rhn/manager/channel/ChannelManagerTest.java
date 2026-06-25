@@ -261,7 +261,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         Channel parent = ChannelFactoryTest.createBaseChannel(user);
         Channel child = ChannelFactoryTest.createTestChannel(user);
         child.setParentChannel(parent);
-        child = TestUtils.saveAndFlush(child);
+        TestUtils.saveAndFlush(child); //reassign variable if still needed
         parent = TestUtils.saveAndFlush(parent);
 
         List<Channel> dr =
@@ -435,13 +435,13 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
 
         Channel c = ChannelTestUtils.createTestChannel(user);
         c.setName("A Channel");
-        c = TestUtils.saveAndReload(c);
+        TestUtils.saveAndReload(c); //reassign variable if still needed
         c = ChannelTestUtils.createTestChannel(user);
         c.setName("C Channel");
-        c = TestUtils.saveAndReload(c);
+        TestUtils.saveAndReload(c); //reassign variable if still needed
         c = ChannelTestUtils.createTestChannel(user);
         c.setName("B Channel");
-        c = TestUtils.saveAndReload(c);
+        TestUtils.saveAndReload(c); //reassign variable if still needed
 
         List<String> channelNames = ChannelManager.listBaseChannelsForSystem(user, s).stream()
                 .map(EssentialChannelDto::getName).toList();
@@ -1141,7 +1141,7 @@ public class ChannelManagerTest extends BaseTestCaseWithUser {
         child1.setOriginal(damagedChild2);
 
         child1 = TestUtils.saveAndFlush(child1);
-        parent1 = TestUtils.saveAndFlush(parent1);
+        TestUtils.saveAndFlush(parent1); //reassign variable if still needed
         damagedChild2 = TestUtils.saveAndFlush(damagedChild2);
         TestUtils.flushAndEvict(child1);
 

@@ -151,7 +151,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
        provideProduct.setCapability(productCap);
        provideProduct.setPack(testPackage);
        provideProduct.setSense(0L);
-       provideProduct = TestUtils.saveAndFlush(provideProduct);
+       TestUtils.saveAndFlush(provideProduct); //reassign variable if still needed
 
        ServerFactory.save(testServer);
        testServer = TestUtils.reload(testServer);
@@ -176,7 +176,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
         provideProduct.setCapability(productCap);
         provideProduct.setPack(testPackage);
         provideProduct.setSense(0L);
-        provideProduct = TestUtils.saveAndFlush(provideProduct);
+        TestUtils.saveAndFlush(provideProduct); //reassign variable if still needed
 
         ServerFactory.save(testServer);
         testServer = TestUtils.reload(testServer);
@@ -202,7 +202,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
        provideProduct.setCapability(productCap);
        provideProduct.setPack(testPackage);
        provideProduct.setSense(0L);
-       provideProduct = TestUtils.saveAndFlush(provideProduct);
+       TestUtils.saveAndFlush(provideProduct); //reassign variable if still needed
 
        InstalledPackage testInstPack = new InstalledPackage();
        testInstPack.setArch(testPackage.getPackageArch());
@@ -237,7 +237,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
        provideProduct.setPack(testPackage1);
        provideProduct.setSense(0L);
 
-       provideProduct = TestUtils.saveAndFlush(provideProduct);
+       TestUtils.saveAndFlush(provideProduct); //reassign variable if still needed
 
        Package testPackage2 = ErrataTestUtils.createTestPackage(user, channel, "x86_64");
 
@@ -254,7 +254,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
        provideProduct3.setPack(testPackage2);
        provideProduct3.setSense(0L);
 
-       provideProduct3 = TestUtils.saveAndFlush(provideProduct3);
+       TestUtils.saveAndFlush(provideProduct3); //reassign variable if still needed
 
        InstalledPackage testInstPack = new InstalledPackage();
        testInstPack.setArch(testPackage2.getPackageArch());
@@ -288,7 +288,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
        provideProduct.setCapability(productCap);
        provideProduct.setPack(testPackage1);
        provideProduct.setSense(0L);
-       provideProduct = TestUtils.saveAndFlush(provideProduct);
+       TestUtils.saveAndFlush(provideProduct); //reassign variable if still needed
 
        Package testPackage2 = ErrataTestUtils.createTestPackage(user, channel, "x86_64");
 
@@ -296,7 +296,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
        provideProduct2.setCapability(productCap);
        provideProduct2.setPack(testPackage2);
        provideProduct2.setSense(0L);
-       provideProduct2 = TestUtils.saveAndFlush(provideProduct2);
+       TestUtils.saveAndFlush(provideProduct2); //reassign variable if still needed
 
        PackageCapability pkg1Cap = PackageCapabilityTest.createTestCapability(
                testPackage1.getPackageName().getName());
@@ -305,7 +305,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
        provideProduct3.setCapability(pkg1Cap);
        provideProduct3.setPack(testPackage2);
        provideProduct3.setSense(0L);
-       provideProduct3 = TestUtils.saveAndFlush(provideProduct3);
+       TestUtils.saveAndFlush(provideProduct3); //reassign variable if still needed
 
        InstalledPackage testInstPack = new InstalledPackage();
        testInstPack.setArch(testPackage1.getPackageArch());
@@ -364,7 +364,7 @@ public class PackageFactoryTest extends BaseTestCaseWithUser {
        prop.setCapability(cap);
        prop.setPack(pkg);
        prop.setSense(0L);
-       prop = TestUtils.saveAndFlush(prop);
+       TestUtils.saveAndFlush(prop); //reassign variable if still needed
    }
 }
 
