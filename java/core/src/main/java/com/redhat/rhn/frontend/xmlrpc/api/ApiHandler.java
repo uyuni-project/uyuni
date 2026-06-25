@@ -42,7 +42,7 @@ import java.util.stream.Collectors;
  * @apidoc.namespace api
  * @apidoc.doc Methods providing information about the API.
  */
-public class ApiHandler extends BaseHandler {
+public class ApiHandler extends BaseHandler implements ApiHandlerApi {
 
     private final HandlerFactory handlers;
 
