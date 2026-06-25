@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.WriteMode;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.Test;
@@ -30,7 +30,7 @@ import java.util.Map;
 /**
  * DailySummaryTest
  */
-public class DailySummaryTest extends RhnBaseTestCase {
+public class DailySummaryTest extends BaseTestCase {
 
     @Test
     void testDequeueOrg() {

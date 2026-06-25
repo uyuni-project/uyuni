@@ -58,8 +58,8 @@ public class OrgFactoryTest extends RhnBaseTestCase {
         OrgFactory.save(org);
         org = OrgFactory.lookupById(org.getId());
         trusted = OrgFactory.lookupById(trusted.getId());
-        assertContains(org.getTrustedOrgs(), trusted);
-        assertContains(trusted.getTrustedOrgs(), org);
+        assertTrue(org.getTrustedOrgs().contains(trusted));
+        assertTrue(trusted.getTrustedOrgs().contains(org));
         org.getTrustedOrgs().remove(trusted);
         OrgFactory.save(org);
         org = OrgFactory.lookupById(org.getId());

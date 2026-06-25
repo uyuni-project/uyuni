@@ -14,14 +14,14 @@
  */
 package com.redhat.rhn.taskomatic.task;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
 /**
  * SandboxCleanupTest
  */
-public class SandboxCleanupTest extends RhnBaseTestCase {
+public class SandboxCleanupTest extends BaseTestCase {
 
     /*
      * Again, there isn't much to test here. SandboxCleanup simply runs a few stored procs.

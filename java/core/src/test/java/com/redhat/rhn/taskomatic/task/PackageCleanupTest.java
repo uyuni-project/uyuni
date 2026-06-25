@@ -15,7 +15,7 @@
 package com.redhat.rhn.taskomatic.task;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.sql.Statement;
 
-public class PackageCleanupTest extends RhnBaseTestCase {
+public class PackageCleanupTest extends BaseTestCase {
 
     @BeforeEach
     public void setUp() throws Exception {
