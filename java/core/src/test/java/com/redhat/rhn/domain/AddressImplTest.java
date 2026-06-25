@@ -11,9 +11,11 @@
 package com.redhat.rhn.domain;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.user.Address;
@@ -46,31 +48,18 @@ public class AddressImplTest extends RhnBaseTestCase {
         address2.setCountry("PT");
 
         AddressImpl address3 = new AddressImpl();
-        address3.setId(2L);
         address3.setAddress1("Praça Gil Vicente 6");
         address3.setCity("Almada");
         address3.setCountry("PT");
 
-        // Same ID means equal (identity-based equality)
-        assertEquals(address1, address2);
+        // Sharing an ID does not make two addresses equal
+        assertNotEquals(address1, address2);
 
-        // Different ID means not equal
-        assertNotEquals(address1, address3);
+        // Addresses with different IDs can still be equal.
+        assertEquals(address1, address3);
 
         // HashCode should be consistent
-        assertEquals(address1.hashCode(), address1.hashCode());
-    }
-
-    @Test
-    public void testNullIdEquality() {
-        AddressImpl address1 = new AddressImpl();
-        address1.setAddress1("Rua Professor Fernando da Fonseca");
-
-        AddressImpl address2 = new AddressImpl();
-        address2.setAddress1("Rua Professor Fernando da Fonseca");
-
-        // Without IDs, they should not be equal
-        assertNotEquals(address1, address2);
+        assertEquals(address1.hashCode(), address3.hashCode());
     }
 
     /**
@@ -82,12 +71,16 @@ public class AddressImplTest extends RhnBaseTestCase {
         User user = UserTestUtils.createUser();
 
         AddressImpl address = new AddressImpl();
-        address.setAddress1("Av. João Dias Mourinha 82, 2E");
+        address.setAddress1("Av. João Dias Mourinha 82");
+        address.setAddress2("2E");
         address.setCity("Trafaria");
+        address.setState("Almada City");
         address.setCountry("PT");
         address.setZip("2825-897");
         address.setPhone("00351 21 123 4567");
         address.setEmail("teste@suse.com");
+        address.setFax("211234567");
+        address.setIsPoBox(true);
 
         user.setAddress(address);
         address.setUser(user);
@@ -100,12 +93,16 @@ public class AddressImplTest extends RhnBaseTestCase {
 
         assertNotNull(reloadedAddress);
         assertNotNull(reloadedAddress.getId());
-        assertEquals("Av. João Dias Mourinha 82, 2E", reloadedAddress.getAddress1());
+        assertEquals("Av. João Dias Mourinha 82", reloadedAddress.getAddress1());
+        assertEquals("2E", reloadedAddress.getAddress2());
         assertEquals("Trafaria", reloadedAddress.getCity());
+        assertEquals("Almada City", reloadedAddress.getState());
         assertEquals("PT", reloadedAddress.getCountry());
         assertEquals("2825-897", reloadedAddress.getZip());
         assertEquals("00351 21 123 4567", reloadedAddress.getPhone());
         assertEquals("teste@suse.com", ((AddressImpl) reloadedAddress).getEmail());
+        assertEquals("211234567", reloadedAddress.getFax());
+        assertTrue(reloadedAddress.isPoBox());
     }
 
     /**
@@ -139,6 +136,8 @@ public class AddressImplTest extends RhnBaseTestCase {
         assertNull(reloadedAddress.getZip());
         assertNull(reloadedAddress.getPhone());
         assertNull(reloadedAddress.getFax());
+        assertNull(((AddressImpl) reloadedAddress).getEmail());
+        assertFalse(reloadedAddress.isPoBox());
     }
 
     /**
