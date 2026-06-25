@@ -1109,14 +1109,14 @@ end
 # Test if a checkbox is checked
 #
 Then(/^I should see "([^"]*)" as checked$/) do |arg1|
-  raise ScriptError, "#{arg1} is unchecked" unless has_checked_field?(arg1)
+  raise ScriptError, "#{arg1} is unchecked" unless has_checked_field?(arg1, disabled: :all)
 end
 
 #
 # Test if a checkbox is unchecked
 #
 Then(/^I should see "([^"]*)" as unchecked$/) do |arg1|
-  raise ScriptError, "#{arg1} is checked" unless has_unchecked_field?(arg1)
+  raise ScriptError, "#{arg1} is checked" unless has_unchecked_field?(arg1, disabled: :all)
 end
 
 #
