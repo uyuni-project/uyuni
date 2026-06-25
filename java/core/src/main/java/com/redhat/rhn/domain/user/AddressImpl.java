@@ -70,6 +70,9 @@ public class AddressImpl extends BaseDomainHelper implements Address {
     @Column
     private String fax;
 
+    @Column(name = "is_po_box", nullable = false)
+    private boolean isPoBox = false;
+
     @ManyToOne
     @JoinColumn(name = "web_user_id")
     private UserImpl user;
@@ -212,6 +215,26 @@ public class AddressImpl extends BaseDomainHelper implements Address {
     @Override
     public void setFax(String faxIn) {
         fax = faxIn;
+    }
+
+    /**
+     * Getter for isPoBox.
+     *
+     * @return true if this is a PO Box address
+     */
+    @Override
+    public boolean isPoBox() {
+        return isPoBox;
+    }
+
+    /**
+     * Setter for isPoBox.
+     *
+     * @param isPoBoxIn true if this is a PO Box address
+     */
+    @Override
+    public void setIsPoBox(boolean isPoBoxIn) {
+        isPoBox = isPoBoxIn;
     }
 
     /** {@inheritDoc} */
