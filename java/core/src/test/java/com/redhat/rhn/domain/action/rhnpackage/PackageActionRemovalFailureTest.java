@@ -30,7 +30,7 @@ import com.redhat.rhn.domain.rhnpackage.PackageNameTest;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -40,7 +40,7 @@ import org.junit.jupiter.api.Test;
 /**
  * PackageActionRemovalFailureTest
  */
-public class PackageActionRemovalFailureTest extends RhnBaseTestCase {
+public class PackageActionRemovalFailureTest extends BaseTestCase {
 
     @Test
     public void testPackageActionRemovalFailure() throws Exception {

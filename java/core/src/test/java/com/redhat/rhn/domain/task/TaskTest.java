@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -34,7 +34,7 @@ import java.util.List;
 /**
  * TaskTest
  */
-public class TaskTest extends RhnBaseTestCase {
+public class TaskTest extends BaseTestCase {
 
     @Test
     public void testTask() {

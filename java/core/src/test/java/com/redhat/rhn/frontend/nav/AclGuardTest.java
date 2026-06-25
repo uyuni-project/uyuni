@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.common.security.acl.Access;
 import com.redhat.rhn.common.security.acl.AclFactory;
 import com.redhat.rhn.common.security.acl.AclHandler;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
@@ -30,7 +30,7 @@ import java.util.Map;
 /**
  * AclGuardTest
  */
-public class AclGuardTest extends RhnBaseTestCase {
+public class AclGuardTest extends BaseTestCase {
 
     @Test
     public void testNoAclDefined() {

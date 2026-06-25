@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.common.conf.ConfigDefaults;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class DataListTest extends RhnBaseTestCase {
+public class DataListTest extends BaseTestCase {
     private HookedSelectMode hsm;
     private Map<String, Object> elabParams;
 
@@ -47,7 +47,7 @@ public class DataListTest extends RhnBaseTestCase {
         elabParams.put("user_name", dbUser);
     }
 
-        @AfterEach
+    @AfterEach
     public void tearDown() throws Exception {
         hsm = null;
         elabParams = null;

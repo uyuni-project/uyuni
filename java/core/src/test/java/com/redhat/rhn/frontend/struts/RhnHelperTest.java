@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 
@@ -31,7 +31,7 @@ import org.junit.jupiter.api.Test;
 /**
  * RhnHelperTest - test our RhnHelper class
  */
-public class RhnHelperTest extends RhnBaseTestCase {
+public class RhnHelperTest extends BaseTestCase {
 
     @Test
     public void testEmptySelectionError() {
