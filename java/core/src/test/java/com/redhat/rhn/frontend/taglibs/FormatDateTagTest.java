@@ -16,8 +16,10 @@ package com.redhat.rhn.frontend.taglibs;
 
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.RhnMockJspWriter;
 import com.redhat.rhn.testing.TagTestHelper;
@@ -29,7 +31,7 @@ import java.util.Date;
 
 import jakarta.servlet.jsp.JspException;
 
-public class FormatDateTagTest extends RhnBaseTestCase {
+public class FormatDateTagTest extends BaseTestCase {
 
     /**
      * Test tag output
@@ -49,7 +51,7 @@ public class FormatDateTagTest extends RhnBaseTestCase {
         try {
             ht.doStartTag();
             ht.doEndTag();
-            assertContains(out.toString(), "<time");
+            assertTrue(out.toString().contains("<time"));
             ht.release();
         }
         catch (JspException e) {

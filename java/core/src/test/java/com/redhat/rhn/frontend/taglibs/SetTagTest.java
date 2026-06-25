@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.redhat.rhn.domain.rhnset.RhnSetImpl;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TagTestHelper;
 
@@ -29,7 +30,7 @@ import jakarta.servlet.jsp.tagext.TagSupport;
 /**
  * SetTagTest
  */
-public class SetTagTest extends RhnBaseTestCase {
+public class SetTagTest extends BaseTestCase {
 
     @Test
     public void testCopyConstructor() {

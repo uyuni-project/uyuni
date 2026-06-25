@@ -21,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.common.messaging.Mail;
 import com.redhat.rhn.common.messaging.MockMail;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.UserTestUtils;
@@ -35,7 +36,7 @@ import java.util.List;
  * Test for NewUserEvent
  */
 
-public class NewUserEventTest extends RhnBaseTestCase {
+public class NewUserEventTest extends BaseTestCase {
 
     private MockMail mailer;
 
@@ -53,10 +54,10 @@ public class NewUserEventTest extends RhnBaseTestCase {
         String eventText = evt.toText();
         System.out.println(eventText);
         assertNotNull(eventText);
-        assertContains(eventText, "A SUSE Manager login has been created for you");
-        assertContains(eventText,
-                "SUSE Manager login, in combination with an active SUSE subscription,");
-        assertContains(eventText, "e-mail: javaTest@example.com");
+        assertTrue(eventText.contains("A SUSE Manager login has been created for you"));
+        assertTrue(eventText.contains(
+                "SUSE Manager login, in combination with an active SUSE subscription,"));
+        assertTrue(eventText.contains("e-mail: javaTest@example.com"));
 
     }
 
@@ -72,9 +73,9 @@ public class NewUserEventTest extends RhnBaseTestCase {
         };
         action.execute(evt);
         mailer.verify();
-        assertContains(mailer.getSubject(), "SUSE Manager User Created: testUser");
-        assertContains(mailer.getBody(),
-                "someserver.rhndev.redhat.com/rhn/users/ActiveList.do");
+        assertTrue(mailer.getSubject().contains("SUSE Manager User Created: testUser"));
+        assertTrue(mailer.getBody().contains(
+                "someserver.rhndev.redhat.com/rhn/users/ActiveList.do"));
 
         assertTrue(mailer.getBody().contains("Your SUSE Manager login:         testUser") ||
                    mailer.getBody().contains("Your RHN login:         testUser"));
