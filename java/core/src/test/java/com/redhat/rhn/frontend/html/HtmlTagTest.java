@@ -18,7 +18,7 @@ package com.redhat.rhn.frontend.html;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test;
  * HtmlTagTest
  */
 
-public class HtmlTagTest extends RhnBaseTestCase {
+public class HtmlTagTest extends BaseTestCase {
     @Test
     public void testTagMaking() {
         HtmlTag a = new HtmlTag("a");

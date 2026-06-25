@@ -25,7 +25,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.domain.user.UserFactory;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.struts.RequestContext;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
 import com.redhat.rhn.testing.TestUtils;
@@ -39,7 +39,7 @@ import org.junit.jupiter.api.Test;
 /**
  * DeleteUserActionTest
  */
-public class DeleteUserActionTest extends RhnBaseTestCase {
+public class DeleteUserActionTest extends BaseTestCase {
 
     @Test
     public void testExecute() {

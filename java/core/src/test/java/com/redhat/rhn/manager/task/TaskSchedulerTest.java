@@ -27,7 +27,6 @@ import com.redhat.rhn.domain.org.Org;
 import com.redhat.rhn.domain.task.Task;
 import com.redhat.rhn.domain.task.TaskFactory;
 import com.redhat.rhn.testing.BaseTestCase;
-import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.Test;

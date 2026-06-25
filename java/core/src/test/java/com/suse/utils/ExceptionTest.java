@@ -19,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import com.redhat.rhn.testing.BaseTestCase;
-import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

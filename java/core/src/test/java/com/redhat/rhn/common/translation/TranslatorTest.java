@@ -21,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.testing.BaseTestCase;
-import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestStatics;
 import com.redhat.rhn.testing.UserTestUtils;
 

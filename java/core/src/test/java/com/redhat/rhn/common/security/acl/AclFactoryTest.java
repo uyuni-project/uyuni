@@ -16,14 +16,14 @@ package com.redhat.rhn.common.security.acl;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
 /**
  * AccessTest
  */
-public class AclFactoryTest extends RhnBaseTestCase {
+public class AclFactoryTest extends BaseTestCase {
 
     @Test
     public void testGetAcl() {
