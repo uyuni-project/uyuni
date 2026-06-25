@@ -19,7 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.redhat.rhn.domain.rhnset.RhnSetImpl;
 import com.redhat.rhn.testing.BaseTestCase;
-import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TagTestHelper;
 
 import org.junit.jupiter.api.Test;

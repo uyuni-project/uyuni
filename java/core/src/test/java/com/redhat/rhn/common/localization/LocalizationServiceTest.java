@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.frontend.context.Context;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.AfterEach;
@@ -40,7 +40,7 @@ import java.util.TimeZone;
  * Test for {@link LocalizationService}.
  */
 
-public class LocalizationServiceTest extends RhnBaseTestCase {
+public class LocalizationServiceTest extends BaseTestCase {
 
     private LocalizationService ls;
 

@@ -21,7 +21,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.manager.user.UserManager;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockHttpServletResponse;
@@ -36,7 +36,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * UserPrefActionTest
  */
-public class UserPrefActionTest extends RhnBaseTestCase {
+public class UserPrefActionTest extends BaseTestCase {
 
     private static final Integer PAGE_SIZE = 50;
     private static final Integer PREF_LOC = 7018;

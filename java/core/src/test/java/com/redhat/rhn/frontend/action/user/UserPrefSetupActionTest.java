@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.testing.ActionHelper;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.apache.struts.action.DynaActionForm;
 import org.junit.jupiter.api.Test;
@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test;
 /**
  * UserPrefSetupActionTest - Good **EXAMPLE** of a basic SetupActionTest class.
  */
-public class UserPrefSetupActionTest extends RhnBaseTestCase {
+public class UserPrefSetupActionTest extends BaseTestCase {
 
     /**
      *

@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockJspWriter;
 import com.redhat.rhn.testing.RhnMockPageContext;
@@ -35,7 +35,7 @@ import jakarta.servlet.jsp.tagext.Tag;
 /**
  * ColumnTagTest
  */
-public class ColumnTagTest extends RhnBaseTestCase {
+public class ColumnTagTest extends BaseTestCase {
 
     @Test
     public void testConstructor() {

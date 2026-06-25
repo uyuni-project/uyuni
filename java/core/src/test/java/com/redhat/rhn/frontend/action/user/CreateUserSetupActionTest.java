@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.redhat.rhn.common.localization.LocalizationService;
 import com.redhat.rhn.testing.ActionHelper;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.RhnMockDynaActionForm;
 
 import org.junit.jupiter.api.Test;
@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test;
 /**
  * CreateUserSetupActionTest
  */
-public class CreateUserSetupActionTest extends RhnBaseTestCase {
+public class CreateUserSetupActionTest extends BaseTestCase {
 
     @Test
     public void testPerformExecute() throws Exception {
