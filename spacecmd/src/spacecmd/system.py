@@ -3293,8 +3293,19 @@ def do_system_applyerrata(self, args):
         logging.warning(_N("No systems selected"))
         return 1
 
-    # allow globbing and searching of errata
-    errata_list = self.expand_errata(args)
+    errata_list = []
+    # For catch-all glob (*, or search:*), return errata only for selected systems
+    if re.match(r'(search:)?\.\*$', args[0]):
+        for system in systems:
+            system_id = self.get_system_id(system)
+            if not system_id:
+                continue
+
+            system_errata = self.client.system.getRelevantErrata(self.session, system_id)
+            errata_list += [erratum.get("advisory_name") for erratum in system_errata]
+    else:
+        # allow globbing and searching of errata
+        errata_list = self.expand_errata(args)
 
     if not errata_list or not systems:
         return 1
