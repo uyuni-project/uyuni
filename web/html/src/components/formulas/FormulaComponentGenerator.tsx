@@ -75,10 +75,11 @@ export function generateFormulaComponent(
   formulaForm: any,
   parents?: any,
   wrapper?: any,
-  disabled = false
+  disabled = false,
+  level = 1
 ) {
   const id = (parents ? parents + "#" : "") + element.$id;
-  return generateFormulaComponentForId(element, value, formulaForm, id, wrapper, disabled);
+  return generateFormulaComponentForId(element, value, formulaForm, id, wrapper, disabled, level);
 }
 
 export function generateFormulaComponentForId(
@@ -87,7 +88,8 @@ export function generateFormulaComponentForId(
   formulaForm: any,
   id,
   wrapper,
-  disabled = false
+  disabled = false,
+  level = 1
 ) {
   wrapper = get(wrapper, defaultWrapper);
 
@@ -205,10 +207,11 @@ export function generateFormulaComponentForId(
         isVisibleByCriteria={() => isVisibleByCriteria(element, formulaForm.props.searchCriteria)}
         criteria={formulaForm.props.searchCriteria}
       >
-        {generateChildrenFormItems(element, value, formulaForm, id, isDisabled)}
+        {generateChildrenFormItems(element, value, formulaForm, id, isDisabled, level)}
       </Group>
     );
-  } else if (element.$type === "namespace") return generateChildrenFormItems(element, value, formulaForm, id);
+  } else if (element.$type === "namespace")
+    return generateChildrenFormItems(element, value, formulaForm, id, isDisabled, level);
   else if (element.$type === "edit-group") {
     return (
       <EditGroup
@@ -242,20 +245,19 @@ export function generateFormulaComponentForId(
       element.$help
     );
   else if (element.$type === "boolean")
-    return wrapper(
+    return wrapCheckboxFormGroup(
       element.$name,
+      id,
       required,
-      <div className="checkbox">
-        <input
-          type="checkbox"
-          onChange={formulaForm.handleChange}
-          name={element.$name}
-          id={id}
-          title={element.$help}
-          disabled={isDisabled}
-          checked={value}
-        />
-      </div>,
+      <input
+        type="checkbox"
+        onChange={formulaForm.handleChange}
+        name={element.$name}
+        id={id}
+        title={element.$help}
+        disabled={isDisabled}
+        checked={value}
+      />,
       element.$help
     );
   else if (element.$type === "textarea")
@@ -388,12 +390,12 @@ function isVisibleByCriteria(element: any, criteria: string) {
   );
 }
 
-function generateChildrenFormItems(element, value, formulaForm, id, disabled = false) {
+function generateChildrenFormItems(element, value, formulaForm, id, disabled = false, level = 1) {
   const child_items: ReactNode[] = [];
   for (const child_name in element) {
     if (child_name.startsWith("$")) continue;
     child_items.push(
-      generateFormulaComponent(element[child_name], value[child_name], formulaForm, id, undefined, disabled)
+      generateFormulaComponent(element[child_name], value[child_name], formulaForm, id, undefined, disabled, level + 1)
     );
   }
   return child_items;
@@ -416,7 +418,7 @@ function defaultWrapper(elementName, required, element, help = null) {
     required,
     <Fragment>
       <div className="col-lg-6">{element}</div>
-      <HelpIcon text={help} />
+      <div className="col-lg-3 d-flex align-items-center">{elementName !== help ? <HelpIcon text={help} /> : null}</div>
     </Fragment>
   );
 }
@@ -436,6 +438,33 @@ function wrapLabel(text: ReactNode, required?: boolean, label_for?: string) {
       {text}
       {required ? <span className="required-form-field"> *</span> : null}:
     </label>
+  );
+}
+
+function wrapCheckboxFormGroup(
+  elementName: string,
+  id: string,
+  required?: boolean,
+  input?: ReactNode,
+  help?: string | null
+) {
+  return (
+    <div className="form-group" key={elementName}>
+      <div className="col-lg-3 control-label"></div>
+      <div className="col-lg-6">
+        <div className="checkbox">
+          <label htmlFor={id}>
+            {input} {elementName}
+            {required ? <span className="required-form-field"> *</span> : null}
+          </label>
+          {elementName !== help && (
+            <span className="help-icon-checkbox">
+              <HelpIcon text={help} />
+            </span>
+          )}
+        </div>
+      </div>
+    </div>
   );
 }
 
