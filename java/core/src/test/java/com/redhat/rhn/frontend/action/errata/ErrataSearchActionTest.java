@@ -20,7 +20,7 @@ import com.redhat.rhn.frontend.action.BaseSearchAction;
 import com.redhat.rhn.frontend.struts.RhnAction;
 import com.redhat.rhn.frontend.struts.RhnHelper;
 import com.redhat.rhn.testing.ActionHelper;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test;
 /**
  * ErrataSearchActionTest
  */
-public class ErrataSearchActionTest extends RhnBaseTestCase {
+public class ErrataSearchActionTest extends BaseTestCase {
 
     @Test
     public void testExecute() throws Exception {

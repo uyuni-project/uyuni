@@ -29,7 +29,7 @@ import com.redhat.rhn.frontend.struts.RequestContext;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.manager.rhnset.RhnSetManager;
 import com.redhat.rhn.testing.ActionHelper;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 
 import org.apache.struts.action.Action;
@@ -40,7 +40,7 @@ import org.junit.jupiter.api.Test;
 /**
  * PreservationListConfirmDeleteActionTest
  */
-public class PreservationListConfirmDeleteActionTest extends RhnBaseTestCase {
+public class PreservationListConfirmDeleteActionTest extends BaseTestCase {
     private Action action = null;
 
     @BeforeEach

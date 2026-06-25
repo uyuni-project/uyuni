@@ -19,14 +19,14 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import com.redhat.rhn.domain.errata.Errata;
 import com.redhat.rhn.domain.errata.ErrataFactoryTest;
 import com.redhat.rhn.testing.ActionHelper;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
 /**
  * ErrataPackagesSetupActionTest
  */
-public class ErrataPackagesSetupActionTest extends RhnBaseTestCase {
+public class ErrataPackagesSetupActionTest extends BaseTestCase {
 
     @Test
     public void testExecute() throws Exception {
