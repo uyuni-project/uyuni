@@ -15,6 +15,7 @@
  */
 package com.redhat.rhn.domain.channel;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -38,12 +39,16 @@ import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
+import com.suse.manager.model.hub.ChannelInfoDTO;
+
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * ChannelFactoryTest
@@ -455,6 +460,45 @@ public class ChannelFactoryTest extends RhnBaseTestCase {
         channels = ChannelFactory.listAllBaseChannels(user);
         assertNotNull(channels);
         assertEquals(size + 1, channels.size());
+    }
+
+    @Test
+    public void testGetAccessibleChannels() throws Exception {
+        User user1 = UserTestUtils.createUser(this);
+        Channel one = createTestChannel(user1);
+        Channel two = createTestClonedChannel(one, user1);
+        Channel three = createTestChannel(user1);
+        Channel four = ChannelTestUtils.createChildChannel(user1, three);
+
+        User user2 = UserTestUtils.createUser(this);
+        createTestChannel(user2);
+
+        List<Channel> expected = Arrays.asList(one, two, three, four);
+        List<ChannelInfoDTO> accessibleChannels = ChannelFactory.getAccessibleChannels(user1);
+        assertNotNull(accessibleChannels);
+        assertEquals(expected.size(), accessibleChannels.size());
+        assertAll(
+            // Ensure that all the  ids match
+            () -> assertEquals(
+                    expected.stream().map(Channel::getId).collect(Collectors.toSet()),
+                    accessibleChannels.stream().map(ChannelInfoDTO::id).collect(Collectors.toSet())
+            ),
+            // Ensure that all the labels match
+            () -> assertEquals(
+                    expected.stream().map(Channel::getLabel).collect(Collectors.toSet()),
+                    accessibleChannels.stream().map(ChannelInfoDTO::label).collect(Collectors.toSet())
+            ),
+            // Ensure the child is correctly identified
+            () -> assertEquals(
+                    List.of(four.getId()),
+                    accessibleChannels.stream().filter(dto -> dto.parentId() != null).map(ChannelInfoDTO::id).toList()
+            ),
+            // Ensure the clone is correctly identified
+            () -> assertEquals(
+                    List.of(two.getId()),
+                    accessibleChannels.stream().filter(dto -> dto.originalId() != null).map(ChannelInfoDTO::id).toList()
+            )
+        );
     }
 
     @Test
