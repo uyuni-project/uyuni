@@ -19,7 +19,7 @@ UPSTREAM_ENTRYPOINT="/usr/local/bin/docker-entrypoint.sh"
 IMAGE_REF_FILE="/etc/uyuni-image-ref"
 PGDATA="${PGDATA:-/var/lib/pgsql/data}"
 UPGRADE_HOOKS_DIR="/docker-entrypoint-upgdb.d"
-UPGRADE_IN_PROGRESS="/run/upgrade_in_progress"
+UPGRADE_IN_PROGRESS="/run/postgresql/upgrade_in_progress"
 
 log() {
     echo "[ENTRYPOINT] $*" >&2
