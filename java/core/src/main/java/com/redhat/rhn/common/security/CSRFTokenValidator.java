@@ -34,7 +34,7 @@ public final class CSRFTokenValidator {
 
     static {
         SECURE_RANDOM = new SecureRandom();
-        LOG.warn("CSRF token SecureRandom algorithm: {}", SECURE_RANDOM.getAlgorithm());
+        LOG.debug("CSRF token SecureRandom algorithm: {}", () -> SECURE_RANDOM.getAlgorithm());
     }
 
     /* utility class, no public constructor  */
