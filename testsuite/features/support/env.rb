@@ -58,8 +58,6 @@ $no_auth_registry = ENV.fetch('NO_AUTH_REGISTRY', nil) if ENV['NO_AUTH_REGISTRY'
 $auth_registry = ENV.fetch('AUTH_REGISTRY', nil) if ENV['AUTH_REGISTRY']
 $current_user = 'admin'
 $current_password = 'admin'
-$chromium_dev_tools = ENV.fetch('REMOTE_DEBUG', false)
-$chromium_dev_port = 9222 + ENV['TEST_ENV_NUMBER'].to_i
 $use_salt_bundle = ENV.fetch('USE_SALT_BUNDLE', true)
 
 # maximal wait before giving up
