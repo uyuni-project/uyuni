@@ -17,7 +17,7 @@ package com.redhat.rhn.domain.rhnpackage;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Test;
 /**
  * PackageNameTest
  */
-public class PackageNameTest extends RhnBaseTestCase {
+public class PackageNameTest extends BaseTestCase {
     /**
      * Simple test to make sure we can create
      * PackageNames and write them to the db.

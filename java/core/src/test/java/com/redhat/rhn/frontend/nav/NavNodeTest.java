@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.commons.beanutils.MethodUtils;
@@ -33,7 +33,7 @@ import java.util.List;
 /**
  * NavNodeTest
  */
-public class NavNodeTest extends RhnBaseTestCase {
+public class NavNodeTest extends BaseTestCase {
 
     private NavNode node;
 

@@ -19,14 +19,14 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
 /**
  * RhnSetElementTest
  */
-public class RhnSetElementTest extends RhnBaseTestCase {
+public class RhnSetElementTest extends BaseTestCase {
 
     @Test
     public void testDefaultCtor() {

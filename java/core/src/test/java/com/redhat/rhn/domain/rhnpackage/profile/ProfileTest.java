@@ -26,7 +26,7 @@ import com.redhat.rhn.domain.channel.ChannelFactoryTest;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -40,7 +40,7 @@ import java.util.List;
 /**
  * ProfileTest
  */
-public class ProfileTest extends RhnBaseTestCase {
+public class ProfileTest extends BaseTestCase {
 
     private static Logger log = LogManager.getLogger(ProfileTest.class);
 

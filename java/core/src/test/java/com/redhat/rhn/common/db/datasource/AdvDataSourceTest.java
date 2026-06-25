@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import com.redhat.rhn.common.ObjectCreateWrapperException;
 import com.redhat.rhn.common.hibernate.HibernateFactory;
 import com.redhat.rhn.common.hibernate.HibernateHelper;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 
 import org.apache.logging.log4j.LogManager;
@@ -46,7 +46,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-public class AdvDataSourceTest extends RhnBaseTestCase {
+public class AdvDataSourceTest extends BaseTestCase {
 
     private static final String TEST_QUERIES = "test_queries";
 
@@ -247,7 +247,7 @@ public class AdvDataSourceTest extends RhnBaseTestCase {
         params.add(3);
         DataResult<Map<String, Object>> result = m.execute(params);
         assertNotNull(result);
-        assertNotEmpty(result);
+        assertFalse(result.isEmpty());
     }
 
     @Test

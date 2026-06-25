@@ -15,11 +15,11 @@
 
 package com.redhat.rhn.domain.cloudpayg;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
-public class CloudRmtHostFactoryTest extends RhnBaseTestCase {
+public class CloudRmtHostFactoryTest extends BaseTestCase {
 
     @Test
     public void generatedCoverageTestLookupByHostname() {
