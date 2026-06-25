@@ -1,0 +1,2 @@
+- Fix inventory refresh triggering from unrelated
+  inotify events (bsc#1268309)
