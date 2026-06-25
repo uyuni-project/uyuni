@@ -40,7 +40,6 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 
@@ -83,8 +82,8 @@ public class ContentSource extends BaseDomainHelper implements Identifiable {
                 fetch = FetchType.LAZY, orphanRemoval = true)
     private Set<SslContentSource> sslSets = new HashSet<>();
 
-    @OneToOne(mappedBy = "contentSource", fetch = FetchType.LAZY)
-    private SCCRepositoryAuth repositoryAuth;
+    @OneToMany(mappedBy = "contentSource", fetch = FetchType.LAZY)
+    private Set<SCCRepositoryAuth> repositoryAuths = new HashSet<>();
 
     /**
      * Constructor
@@ -104,7 +103,7 @@ public class ContentSource extends BaseDomainHelper implements Identifiable {
         metadataSigned = cs.getMetadataSigned();
         channels = new HashSet<>(cs.getChannels());
         sslSets = new HashSet<>(cs.getSslSets());
-        repositoryAuth = cs.getRepositoryAuth();
+        repositoryAuths = new HashSet<>(cs.getRepositoryAuths());
     }
 
     /**
@@ -231,17 +230,17 @@ public class ContentSource extends BaseDomainHelper implements Identifiable {
     }
 
     /**
-     * @return repositoryAuth object or null
+     * @return repository auth objects for this content source
      */
-    public SCCRepositoryAuth getRepositoryAuth() {
-        return repositoryAuth;
+    public Set<SCCRepositoryAuth> getRepositoryAuths() {
+        return repositoryAuths;
     }
 
     /**
-     * @param repoAuth repository auth object to set
+     * @param repoAuths repository auth objects to set
      */
-    public void setRepositoryAuth(SCCRepositoryAuth repoAuth) {
-        repositoryAuth = repoAuth;
+    public void setRepositoryAuths(Set<SCCRepositoryAuth> repoAuths) {
+        repositoryAuths = repoAuths;
     }
 
     @Override

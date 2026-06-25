@@ -35,7 +35,6 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
@@ -105,7 +104,7 @@ public abstract class SCCRepositoryAuth extends BaseDomainHelper {
     /**
      * @return the contentSource
      */
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "source_id")
     public ContentSource getContentSource() {
         return contentSource;
