@@ -244,7 +244,7 @@ public class CobblerDistroSyncCommand extends CobblerCommand {
                     CobblerXMLRPCHelper.getAutomatedConnection(),
                     tree);
         }
-        else if (tree.doesParaVirt() && xen) {
+        else if (tree.doesParaVirt()) {
             log.debug("tree missing in cobbler. creating xenpv distro in cobbler : {}", treeLabel);
 
             String error =
