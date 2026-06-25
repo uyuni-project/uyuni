@@ -19,7 +19,7 @@
                     <rhn:csrf />
                     <rhn:submitted />
 
-                    <div class="form-group">
+                    <div class="row">
                         <label class="col-sm-3 control-label" for="searchfor">
                             <bean:message key="erratasearch.jsp.searchfor"/>
                         </label>
@@ -27,7 +27,7 @@
                             <html:text property="search_string" styleClass="form-control" name="search_string" styleId="searchfor" value="${search_string}" maxlength="100" accesskey="4"/>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <label class="col-sm-3 control-label" for="fieldtosearch">
                             <bean:message key="systemsearch.jsp.fieldtosearch"/>
                         </label>
@@ -50,7 +50,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <label class="col-sm-3 control-label">
                             <bean:message key="systemsearch.jsp.wheretosearch"/>
                         </label>
@@ -69,7 +69,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <label for="invertlabel" class="col-sm-3 control-label">
                             <bean:message key="systemsearch.jsp.invertlabel"/>
                         </label>
@@ -83,7 +83,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <label for="fineGrainedlabel" class="col-sm-3 control-label">
                             <bean:message key="systemsearch.jsp.finegrainedlabel"/>
                         </label>
@@ -97,7 +97,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="row">
                         <div class="col-sm-9 col-sm-offset-3 offset-sm-3">
                             <button type="submit" class="btn btn-primary">
                                 <rhn:icon type="header-search" />

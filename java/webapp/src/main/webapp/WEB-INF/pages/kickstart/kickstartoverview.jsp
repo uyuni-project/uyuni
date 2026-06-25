@@ -21,7 +21,7 @@
 <rl:listset name="ksSet">
 <rhn:csrf />
 <rhn:submitted />
-<div class="row-0">
+<div class="row">
   <div class="col-md-6">
     <%@ include file="/WEB-INF/pages/common/fragments/kickstart/kickstart-overview-summary.jspf" %>
   </div>

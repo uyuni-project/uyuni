@@ -335,7 +335,7 @@ class RecurringEventPicker extends Component<RecurringEventPickerProps, Recurrin
 
     const content = (
       <>
-        <div className={`form-group ${styles.center}`}>
+        <div className={`row ${styles.center}`}>
           <div className="col-sm-3 control-label">
             <input
               type="radio"
@@ -367,7 +367,7 @@ class RecurringEventPicker extends Component<RecurringEventPickerProps, Recurrin
             />
           </div>
         </div>
-        <div className={`form-group ${styles.center}`}>
+        <div className={`row ${styles.center}`}>
           <div className="col-sm-3 control-label">
             <input
               type="radio"
@@ -391,7 +391,7 @@ class RecurringEventPicker extends Component<RecurringEventPickerProps, Recurrin
             />
           </div>
         </div>
-        <div className={`form-group ${styles.center}`}>
+        <div className={`row ${styles.center}`}>
           <div className="col-sm-3 control-label">
             <input
               type="radio"
@@ -425,7 +425,7 @@ class RecurringEventPicker extends Component<RecurringEventPickerProps, Recurrin
             />
           </div>
         </div>
-        <div className={`form-group ${styles.center}`}>
+        <div className={`row ${styles.center}`}>
           <div className="col-sm-3 control-label">
             <input
               type="radio"
@@ -465,7 +465,7 @@ class RecurringEventPicker extends Component<RecurringEventPickerProps, Recurrin
             />
           </div>
         </div>
-        <div className={`form-group ${styles.center}`}>
+        <div className={`row ${styles.center}`}>
           <div className="col-sm-3 control-label">
             <input
               type="radio"
@@ -516,7 +516,7 @@ class RecurringEventPicker extends Component<RecurringEventPickerProps, Recurrin
       case "Inline":
         return (
           <div className="form-horizontal">
-            {!this.props.hideScheduleName && <div className="form-group">{form}</div>}
+            {!this.props.hideScheduleName && <div className="row">{form}</div>}
             {content}
           </div>
         );

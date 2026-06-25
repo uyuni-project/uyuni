@@ -297,7 +297,7 @@ class ImageImport extends Component {
           />
 
           {this.renderActivationKeySelect()}
-          <div className="form-group">
+          <div className="row">
             <div className="col-md-offset-3 offset-md-3 col-md-6">
               <SubmitButton
                 id="update-btn"

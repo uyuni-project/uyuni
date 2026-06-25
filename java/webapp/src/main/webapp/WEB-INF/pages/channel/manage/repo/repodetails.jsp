@@ -38,7 +38,7 @@
             <c:if test='${not empty requestScope.cid}'>
                 <html:hidden property="cid" value="${requestScope.cid}" />
             </c:if>
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label">
                     <rhn:required-field key = "repos.jsp.create.label"/>:
                 </label>
@@ -49,7 +49,7 @@
                     </c:if>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label">
                     <rhn:required-field key = "repos.jsp.create.url"/>:
                 </label>
@@ -57,7 +57,7 @@
                     <html:text property="url" styleClass="form-control"/>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label">
                     <rhn:required-field key = "repos.jsp.create.type"/>:
                 </label>
@@ -67,7 +67,7 @@
                     </html:select>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label">
                     <bean:message key = "repos.jsp.create.metadataSigned"/>:
                 </label>
@@ -75,7 +75,7 @@
                     <html:checkbox property="metadataSigned" />
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label">
                     <bean:message key = "repos.jsp.ssl.ca"/>:
                 </label>
@@ -85,7 +85,7 @@
                     </html:select>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label">
                     <bean:message key = "repos.jsp.ssl.clientcert"/>:
                 </label>
@@ -95,7 +95,7 @@
                     </html:select>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <label class="col-lg-3 control-label">
                     <bean:message key = "repos.jsp.ssl.clientkey"/>:
                 </label>
@@ -105,7 +105,7 @@
                     </html:select>
                 </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                         <label class="col-lg-3 control-label">
                             <bean:message key="repos.jsp.filters" />
                         </label>
@@ -116,7 +116,7 @@
                             </span>
                         </div>
             </div>
-            <div class="form-group">
+            <div class="row">
                 <div class="col-lg-offset-3 offset-lg-3 col-lg-6">
                     <c:choose>
                         <c:when test = "${empty requestScope.create_mode}">

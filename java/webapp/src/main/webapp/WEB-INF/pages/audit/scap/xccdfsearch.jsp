@@ -40,7 +40,7 @@
                     </label>
                   </td>
                   <td>
-                    <div class="row-0">
+                    <div class="row">
                       <div class="col-md-6">
                         <div class="input-group">
                           <html:text property="search_string" styleClass="form-control" name="search_string"
@@ -64,7 +64,7 @@
                     </label>
                   </td>
                   <td>
-                    <div class="row-0">
+                    <div class="row">
                       <div class="col-md-6">
                         <html:select styleClass="form-control" property="result_filter">
                           <html:options collection="allResults" property="label" labelProperty="label"/>

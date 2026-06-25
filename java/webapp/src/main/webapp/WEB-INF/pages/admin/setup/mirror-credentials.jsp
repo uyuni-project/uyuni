@@ -25,13 +25,13 @@
                             </ul>
                         </div>
                         <form class="form-horizontal" role="form" id="add-credentials-form">
-                            <div class="form-group">
+                            <div class="row">
                                 <label for="modal-user" class="col-sm-2 control-label"><bean:message key="mirror-credentials.jsp.username" />:</label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control" autocomplete="off" id="edit-user" placeholder="Username" required>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="row">
                                 <label for="modal-password" class="col-sm-2 control-label"><bean:message key="mirror-credentials.jsp.password" />:</label>
                                 <div class="col-sm-10">
                                     <input type="password" autocomplete="new-password" class="form-control" id="edit-password" required>
@@ -62,7 +62,7 @@
                     </div>
                     <div class="modal-body">
                         <form class="form-horizontal" role="form">
-                            <div class="form-group">
+                            <div class="row">
                                 <label class="col-sm-2 control-label"><bean:message key="mirror-credentials.jsp.username" />:</label>
                                 <div class="col-sm-10">
                                     <p class="form-control-static" id="delete-user"></p>

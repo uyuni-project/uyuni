@@ -138,7 +138,7 @@ const MaintenanceCalendarEdit = forwardRef((props: CalendarEditProps, ref) => {
         />
       )}
       <div className="form-horizontal">
-        <div className="form-group">
+        <div className="row">
           <label className="col-md-3 control-label">{t("Calendar data")}:</label>
           {(!props.isEdit || props.calendar?.url) && (
             <div className={"align-middle col-md-" + (props.isEdit ? "5" : "4")}>

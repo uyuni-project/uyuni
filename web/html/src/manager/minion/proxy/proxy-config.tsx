@@ -234,7 +234,7 @@ export function ProxyConfig({
                 labelClass="col-md-3"
                 divClass="col-md-6"
               />
-              <div className="form-group">
+              <div className="row">
                 <FormMultiInput
                   id="intermediateCAs"
                   title={t("Intermediate CAs")}
