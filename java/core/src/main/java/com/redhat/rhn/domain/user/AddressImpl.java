@@ -18,6 +18,9 @@ package com.redhat.rhn.domain.user;
 import com.redhat.rhn.domain.BaseDomainHelper;
 import com.redhat.rhn.domain.user.legacy.UserImpl;
 
+import java.util.Objects;
+import java.util.StringJoiner;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -234,7 +237,12 @@ public class AddressImpl extends BaseDomainHelper implements Address {
         if (!(o instanceof AddressImpl other)) {
             return false;
         }
-        return id != null && id.equals(other.id);
+        return Objects.equals(address1, other.address1) &&
+               Objects.equals(address2, other.address2) &&
+               Objects.equals(city, other.city) &&
+               Objects.equals(state, other.state) &&
+               Objects.equals(zip, other.zip) &&
+               Objects.equals(country, other.country);
     }
 
     /**
@@ -242,22 +250,19 @@ public class AddressImpl extends BaseDomainHelper implements Address {
      */
     @Override
     public int hashCode() {
-        return getClass().hashCode();
+        return Objects.hash(address1, address2, city, state, zip, country);
     }
 
     @Override
     public String toString() {
-        return "AddressImpl{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", address1='" + address1 + '\'' +
-                ", address2='" + address2 + '\'' +
-                ", city='" + city + '\'' +
-                ", state='" + state + '\'' +
-                ", zip='" + zip + '\'' +
-                ", country='" + country + '\'' +
-                ", phone='" + phone + '\'' +
-                ", fax='" + fax + '\'' +
-                '}';
+        return new StringJoiner(", ", AddressImpl.class.getSimpleName() + "[", "]")
+                .add("id=" + id)
+                .add("email='" + email + "'")
+                .add("address1='" + address1 + "'")
+                .add("address2='" + address2 + "'")
+                .add("city='" + city + "'")
+                .add("state='" + state + "'")
+                .add("zip='" + zip + "'")
+                .toString();
     }
 }
