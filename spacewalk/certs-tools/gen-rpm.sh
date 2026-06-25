@@ -340,8 +340,8 @@ RPMOPTS="--define \"_topdir $RPM_BUILD_DIR\"\
  --define '_specdir     %{_topdir}'\
  --define '_rpmdir      %{_topdir}'\
  --define '_srcrpmdir   %{_topdir}'\
- --define '_source_filedigest_algorithm md5'\
- --define '_binary_filedigest_algorithm md5'\
+ --define '_source_filedigest_algorithm 8'\
+ --define '_binary_filedigest_algorithm 8'\
  --define '_source_payload nil'\
  --define '_binary_payload nil'\
  "
