@@ -4,11 +4,11 @@
 
 .modal-header {
   // TODO: Here and elsewhere, standardize border colors after the Bootstrap migration is complete
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid $modal-border;
   padding: 15px;
 
   .close {
-    border: 1px solid #000;
+    border: 1px solid $eos-bc-gray-1000;
     border-radius: 2px;
     width: 22px;
     height: 22px;
@@ -20,8 +20,8 @@
 
     // Emulate the old theme verbatim
     line-height: 1;
-    color: #000;
-    text-shadow: 0 1px 0 #fff;
+    color: $eos-bc-gray-1000;
+    text-shadow: 0 1px 0 $white;
     order: 1;
 
     &:hover {
@@ -42,7 +42,7 @@
   height: auto;
   overflow-y: auto !important;
   padding: 15px;
-  
+
   &,
   &:active,
   &:focus {
@@ -58,8 +58,7 @@
 .modal-footer {
   margin: 0;
   padding: 15px;
-  // TODO: Here and elsewhere, standardize border colors after the Bootstrap migration is complete
-  border-top: 1px solid #e5e5e5;
+  border-top: 1px solid $modal-border;
 
   .btn + .btn {
     margin-left: 5px;
@@ -84,13 +83,13 @@
 }
 
 .modal-content {
-  background: white;
+  background: $modal-bg;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
   max-height: 90vh;
 }
 
 .ReactModal__Content {
-  background-color: $modal-color;
+  background-color: $modal-bg;
   border-radius: $border-radius;
   // For modals with unspecified constraints, limit them to the largest
   max-width: $modal-xl;
