@@ -23,8 +23,9 @@ import com.redhat.rhn.domain.action.ActionChainEntry;
 import com.redhat.rhn.domain.action.ActionChainFactory;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.server.ServerFactoryTest;
+import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
-import com.redhat.rhn.testing.BaseTestCaseWithUser;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -43,7 +44,7 @@ import java.util.Set;
  * Tests for ActionChainSaveAction.
  * @author Silvio Moioli {@literal <smoioli@suse.de>}
  */
-public class ActionChainSaveActionTest extends BaseTestCaseWithUser {
+public class ActionChainSaveActionTest extends BaseTestCase {
     /**
      * Tests save().
      * @throws Exception if something bad happens
@@ -52,23 +53,23 @@ public class ActionChainSaveActionTest extends BaseTestCaseWithUser {
     @Test
     public void testSave() throws Exception {
         RhnMockHttpServletRequest request = TestUtils.getRequestWithSessionAndUser();
-        user = new RequestContext(request).getCurrentUser();
+        User testUser = new RequestContext(request).getCurrentUser();
 
         ActionChainSaveAction saveAction = new ActionChainSaveAction();
         String label = TestUtils.randomString();
-        ActionChain actionChain = ActionChainFactory.createActionChain(label, user);
+        ActionChain actionChain = ActionChainFactory.createActionChain(label, testUser);
         for (int i = 0; i < 6; i++) {
             Action action = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
-            action.setOrg(user.getOrg());
+            action.setOrg(testUser.getOrg());
             ActionFactory.save(action);
             ActionChainFactory.queueActionChainEntry(action, actionChain,
-                ServerFactoryTest.createTestServer(user), i / 2);
+                ServerFactoryTest.createTestServer(testUser), i / 2);
         }
         Action lastAction = ActionFactory.createAction(ActionFactory.TYPE_ERRATA);
-        lastAction.setOrg(user.getOrg());
+        lastAction.setOrg(testUser.getOrg());
         ActionFactory.save(lastAction);
         ActionChainFactory.queueActionChainEntry(lastAction, actionChain,
-            ServerFactoryTest.createTestServer(user), 3);
+            ServerFactoryTest.createTestServer(testUser), 3);
 
         String newLabel = TestUtils.randomString();
         List<Long> deletedEntries = new LinkedList<>();

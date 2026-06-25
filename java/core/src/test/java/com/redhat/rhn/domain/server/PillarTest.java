@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.hibernate.LookupException;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
@@ -32,7 +32,7 @@ import java.util.Map;
 /**
  * Unit tests for the Pillar class
  */
-public class PillarTest extends RhnBaseTestCase {
+public class PillarTest extends BaseTestCase {
 
     @Test
     public void testGlobalPillarPersistence() {
