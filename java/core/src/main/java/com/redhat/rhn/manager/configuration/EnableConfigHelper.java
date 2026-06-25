@@ -63,7 +63,7 @@ public class EnableConfigHelper {
          * The problem we are solving by using RhnSet is remembering what
          * systems ran into what problems across page requests (pagination especially)
          *
-         * TODO: currently any single system will only have one error
+         * OLDTODO: currently any single system will only have one error
          *       condition.  We should probably tell the user multiple
          *       errors if we can.
          */

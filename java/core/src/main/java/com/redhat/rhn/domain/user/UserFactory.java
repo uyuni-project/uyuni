@@ -283,7 +283,7 @@ public class UserFactory extends HibernateFactory {
 
     /**
      * Insert a new user.  Invalid to call this when updating a user
-     * TODO: mmccune fill out the other fields in the user object.
+     * OLDTODO: mmccune fill out the other fields in the user object.
      * @param usr The object we are commiting.
      * @param addr The address to add to the User
      * @param orgId Org this new user is a member of
@@ -315,7 +315,7 @@ public class UserFactory extends HibernateFactory {
 
     /**
      * Insert a new user.  Invalid to call this when updating a user
-     * TODO: mmccune fill out the other fields in the user object.
+     * OLDTODO: mmccune fill out the other fields in the user object.
      * @param usr The object we are commiting.
      * @param addr The address to add to the User
      * @param orgId Org this new user is a member of

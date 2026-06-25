@@ -224,7 +224,7 @@ public class CreateUserCommand {
          * Check for login maximum length
          * Since we are allowing utf8 input, but not supporting it in the db, we need to
          * check the length of the bytes here as well.
-         * TODO: Do better error checking here once the db and code is fully localized and
+         * OLDTODO: Do better error checking here once the db and code is fully localized and
          * we are supporting it on logins
          */
         else if (login.length() > max || login.getBytes().length > max) {

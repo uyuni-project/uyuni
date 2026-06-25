@@ -230,7 +230,7 @@ public class ErrataMailer extends RhnJavaJob {
         Object[] args = new Object[2];
 
         //Create the data to show in the table
-        //TODO: I'm just copying over code that was here before, but it
+        //OLDTODO: I'm just copying over code that was here before, but it
         //      seems to me that we should be printing another column to
         //      the table according to the String Resource bundle.
         StringWriter writer = new StringWriter();
