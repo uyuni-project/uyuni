@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-05-20 12:03+0000\n"
-"PO-Revision-Date: 2026-06-23 13:12+0000\n"
+"PO-Revision-Date: 2026-06-25 19:12+0000\n"
 "Last-Translator: Emanuele Marcello <emanuele.marcello@studenti.unipg.it>\n"
 "Language-Team: Italian <https://l10n.opensuse.org/projects/uyuni/web/it/>\n"
 "Language: it\n"
@@ -642,7 +642,7 @@ msgstr ""
 #: ../html/src/components/input/text/Text.example.tsx:34
 #: ../html/src/components/steps-progress-bar.stories.tsx:11
 msgid "Minimum 2 characters"
-msgstr ""
+msgstr "Minimo 2 caratteri"
 
 #: ../html/src/components/formik/Form.example.tsx:37
 #: ../html/src/components/input/check/form.example.tsx:18
@@ -742,7 +742,7 @@ msgstr ""
 #: ../html/src/components/formik/field/FieldBase.tsx:35
 #: ../html/src/components/input/InputBase.tsx:281
 msgid "required"
-msgstr ""
+msgstr "richiesto"
 
 #: ../html/src/components/formik/field/MultiField.tsx:37
 #: ../html/src/manager/minion/ansible/ansible-var-yaml-editor.tsx:178
@@ -785,7 +785,7 @@ msgstr "Mostra/nascondi password"
 
 #: ../html/src/components/formulas/SectionToggle.tsx:25
 msgid "Toggle section visibility"
-msgstr ""
+msgstr "Attiva/disattiva la visibilità della sezione"
 
 #: ../html/src/components/hub/AddTokenButton.tsx:66
 #: ../html/src/components/hub/AddTokenButton.tsx:94
@@ -1062,7 +1062,7 @@ msgstr ""
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-details.tsx:121
 #: ../html/src/manager/systems/virtualhostmanager/virtualhostmanager-list.tsx:85
 msgid "Edit"
-msgstr ""
+msgstr "modificare"
 
 #: ../html/src/components/hub/MigrateSlavesForm.tsx:293
 msgid "Set access token for {fqdn}"
@@ -1445,7 +1445,7 @@ msgstr ""
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1134
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:688
 msgid "Confirm"
-msgstr ""
+msgstr "Confermare"
 
 #: ../html/src/components/hub/SyncOrgsToPeripheralChannels.tsx:312
 msgid "{peripheralFqdn} - Peripheral Sync Channels"
@@ -1672,7 +1672,7 @@ msgstr "Nessuna modifica"
 
 #: ../html/src/components/input/range/Range.test.tsx:72
 msgid "Both values need to be positive integers"
-msgstr ""
+msgstr "Entrambi i valori devono essere numeri interi positivi"
 
 #: ../html/src/components/input/select/ClearIndicator.tsx:17
 #: ../html/src/components/table/SelectedRowDetails.tsx:37
@@ -1743,17 +1743,17 @@ msgstr ""
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:105
 msgid "Unable to clear selection"
-msgstr ""
+msgstr "Impossibile cancellare la selezione"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:109
 msgid "Unable to perform action."
-msgstr ""
+msgstr "Impossibile eseguire l'azione."
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:210
 #: ../html/src/components/package/PackageListActionScheduler.tsx:243
 #: ../html/src/manager/packages/list.tsx:144
 msgid "Filter by package name"
-msgstr ""
+msgstr "Filtra per nome del pacchetto"
 
 #: ../html/src/components/package/PackageListActionScheduler.tsx:216
 #: ../html/src/components/package/PackageListActionScheduler.tsx:248
@@ -1765,7 +1765,7 @@ msgstr ""
 #: ../html/src/manager/images/image-view-packages.tsx:49
 #: ../html/src/manager/minion/packages/package-states.tsx:342
 msgid "Package Name"
-msgstr ""
+msgstr "Nome Pachetto"
 
 #: ../html/src/components/pagination.tsx:109
 msgid "Items {from} - {to} of {total}"
@@ -1773,31 +1773,31 @@ msgstr ""
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:56
 msgid "Sunday"
-msgstr ""
+msgstr "domenica"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:57
 msgid "Monday"
-msgstr ""
+msgstr "Lunedì"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:58
 msgid "Tuesday"
-msgstr ""
+msgstr "Martedì"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:59
 msgid "Wednesday"
-msgstr ""
+msgstr "Mercoledì"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:60
 msgid "Thursday"
-msgstr ""
+msgstr "Giovedì"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:61
 msgid "Friday"
-msgstr ""
+msgstr "Venerdì"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:62
 msgid "Saturday"
-msgstr ""
+msgstr "Sabato"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:329
 #: ../html/src/manager/maintenance/edit/schedule-edit.tsx:96
@@ -1805,39 +1805,39 @@ msgstr ""
 #: ../html/src/manager/recurring/recurring-actions-list.tsx:162
 #: ../html/src/manager/recurring/search/recurring-actions-search-utils.tsx:17
 msgid "Schedule Name"
-msgstr ""
+msgstr "nome programma"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:349
 msgid "Hourly:"
-msgstr ""
+msgstr "Ogni ora:"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:366
 msgid "The action will be executed every hour at the specified minute"
-msgstr ""
+msgstr "L'azione verrà eseguita ogni ora al minuto specificato"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:381
 msgid "Daily:"
-msgstr ""
+msgstr "Giornalmente:"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:405
 msgid "Weekly:"
-msgstr ""
+msgstr "Settimanale:"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:439
 msgid "Monthly:"
-msgstr ""
+msgstr "Mensilmente:"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:464
 msgid "Days are limited to 28 to have a recurring schedule available for all the months"
-msgstr ""
+msgstr "I giorni sono limitati a 28 per avere un programma ricorrente disponibile per tutti i mesi"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:479
 msgid "Custom Quartz format:"
-msgstr ""
+msgstr "Formato Quartz personalizzato:"
 
 #: ../html/src/components/picker/recurring-event-picker.tsx:508
 msgid "Select a Schedule"
-msgstr ""
+msgstr "Seleziona un programma"
 
 #: ../html/src/components/policies-picker.tsx:91
 msgid "Policy assignment has been saved."
@@ -1846,7 +1846,7 @@ msgstr ""
 #: ../html/src/components/policies-picker.tsx:94
 #: ../html/src/components/states-picker.tsx:176
 msgid "An error occurred on save."
-msgstr ""
+msgstr "Si è verificato un errore durante il salvataggio."
 
 #: ../html/src/components/policies-picker.tsx:105
 msgid "No SCAP Policies Found"
@@ -1864,7 +1864,7 @@ msgstr ""
 #: ../html/src/manager/minion/packages/package-states.tsx:213
 #: ../html/src/manager/minion/packages/package-states.tsx:246
 msgid "Search"
-msgstr ""
+msgstr "Cerca"
 
 #: ../html/src/components/policies-picker.tsx:175
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:318
@@ -2039,42 +2039,41 @@ msgstr "Applica lo stato alto"
 #: ../html/src/components/states-picker.tsx:34
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:25
 msgid "State Configuration Channel"
-msgstr ""
+msgstr "Canale di configurazione dello stato"
 
 #: ../html/src/components/ranking-table.tsx:23
 #: ../html/src/components/states-picker.tsx:37
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:28
 msgid "Internal State"
-msgstr ""
+msgstr "stato interno"
 
 #: ../html/src/components/ranking-table.tsx:27
 #: ../html/src/components/salt-state-popup.tsx:14
 #: ../html/src/components/states-picker.tsx:41
 #: ../html/src/manager/recurring/recurring-actions-details.tsx:32
 msgid "Normal Configuration Channel"
-msgstr ""
+msgstr "Canale di configurazione normale"
 
 #: ../html/src/components/ranking-table.tsx:44
 #: ../html/src/components/table/TableDataHandler.tsx:436
 msgid "There are no entries to show."
-msgstr ""
+msgstr "Non ci sono voci da mostrare."
 
 #: ../html/src/components/salt-state-popup.tsx:48
-#, fuzzy
 msgid "Configuration Channel: {name}"
-msgstr "Configurazione Canali"
+msgstr "Canale di configurazione: {nome}"
 
 #: ../html/src/components/salt-state-popup.tsx:59
 msgid "Edit Configuration Channel"
-msgstr ""
+msgstr "Modifica canale di configurazione"
 
 #: ../html/src/components/states-picker.tsx:96
 msgid "There are unsaved changes. Do you want to proceed?"
-msgstr ""
+msgstr "Ci sono modifiche non salvate. Vuoi procedere?"
 
 #: ../html/src/components/states-picker.tsx:112
 msgid "State configuration must not be empty"
-msgstr ""
+msgstr "La configurazione dello stato non deve essere vuota"
 
 #: ../html/src/components/states-picker.tsx:126
 msgid "Reboot state will be put last."
@@ -2086,30 +2085,29 @@ msgstr ""
 
 #: ../html/src/components/states-picker.tsx:158
 msgid "State assignments have been saved."
-msgstr ""
+msgstr "Gli stati assegnati sono stati salvati."
 
 #: ../html/src/components/states-picker.tsx:316
 msgid "No states assigned. Use search to find and assign states."
-msgstr ""
+msgstr "Nessuno stato assegnato. Utilizzare la ricerca per trovare e assegnare stati."
 
 #: ../html/src/components/states-picker.tsx:385
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:184
 #: ../html/src/manager/maintenance/details/schedule-details.tsx:193
 msgid "Save Changes"
-msgstr ""
+msgstr "salvataggio delle modifiche"
 
 #: ../html/src/components/states-picker.tsx:400
 msgid "Reorder"
-msgstr ""
+msgstr "riordinare"
 
 #: ../html/src/components/states-picker.tsx:426
 msgid "Search in states"
-msgstr ""
+msgstr "Cerca negli stati"
 
 #: ../html/src/components/states-picker.tsx:426
-#, fuzzy
 msgid "Search in configuration channels"
-msgstr "Configurazione Canali"
+msgstr "Cerca nei canali di configurazione"
 
 #: ../html/src/components/states-picker.tsx:442
 msgid "Edit State Ranks"
@@ -7991,7 +7989,7 @@ msgstr "Avanti"
 #: ../html/src/manager/systems/ssm/ssm-subscribe-channels.tsx:1131
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:681
 msgid "Prev"
-msgstr ""
+msgstr "Prec"
 
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:247
 #: ../html/src/manager/systems/subscribe-channels/subscribe-channels.tsx:463
