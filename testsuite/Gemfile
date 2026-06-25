@@ -6,6 +6,9 @@ source 'https://rubygems.org'
 gem 'bcrypt_pbkdf', '~> 1.1'
 gem 'capybara', '3.40.0'
 gem 'capybara-playwright-driver', '0.5.9'
+# Pinned explicitly (no Gemfile.lock in this repo): the Ruby client shells out to the Node
+# `playwright` driver and MUST match the npm version installed on controllers/dev images (1.60.0).
+gem 'playwright-ruby-client', '1.60.0'
 gem 'cucumber', '10.1.0'
 gem 'ed25519', '~> 1.4'
 gem 'faraday', '~>2.14'

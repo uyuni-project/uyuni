@@ -56,7 +56,9 @@ RUN gem env
 # Playwright CLI + Chromium for the Capybara Playwright driver.
 # NOTE: no --with-deps — Playwright only supports apt/dnf for OS deps, not zypper.
 # The distro `chromium` package (installed above) provides the required shared libraries.
-RUN npm install -g playwright@1.60.0 && \
+# Keep PLAYWRIGHT_VERSION aligned with the `playwright-ruby-client` gem pin in testsuite/Gemfile.
+ARG PLAYWRIGHT_VERSION=1.60.0
+RUN npm install -g playwright@${PLAYWRIGHT_VERSION} && \
     playwright install chromium
 ENV PLAYWRIGHT_CLI_EXECUTABLE_PATH=/usr/local/bin/playwright
 

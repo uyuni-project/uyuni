@@ -24,8 +24,8 @@ These three must stay aligned:
 | Component | Version | Why |
 | --- | --- | --- |
 | `capybara-playwright-driver` (gem) | `0.5.9` | declared in `testsuite/Gemfile` |
-| `playwright-ruby-client` (gem, transitive) | `>= 1.16.0` (resolves to `1.60.0`) | required by the driver |
-| `playwright` (npm) | `1.60.0` | **must equal** the `playwright-ruby-client` version — the Ruby client speaks to this exact driver |
+| `playwright-ruby-client` (gem) | `1.60.0` | **explicitly pinned** in `testsuite/Gemfile`. The repo commits no `Gemfile.lock`, so an explicit pin is required to stop Bundler resolving a newer client than the installed Node driver |
+| `playwright` (npm) | `1.60.0` | **must equal** the `playwright-ruby-client` version — the Ruby client shells out to this exact Node driver |
 
 If you bump the gem, bump the npm package to the matching version.
 
@@ -74,6 +74,13 @@ ruby -e 'require "capybara/playwright"; puts "gem ok"'   # from the testsuite di
 
 ## How it is provisioned
 
-The real controllers are provisioned with Salt. See the updated state in
-`workspace/output/ruby-playwright/controller_playwright.sls` (drop-in replacement for the current
-`controller/init.sls`) and the runbook `workspace/output/ruby-playwright/playwright-deploy-and-test.md`.
+The real controllers are provisioned with Salt, in the SUSE CI / sumaform Salt tree (outside this
+repository). The controller state installs the dependencies listed above, in short:
+
+1. keep the distro `chromium` package; remove `chromedriver` (Selenium-only);
+2. install the Node driver globally: `npm install -g playwright@1.60.0`;
+3. download the browser: `playwright install chromium` (never `--with-deps` on openSUSE — see above);
+4. export `PLAYWRIGHT_CLI_EXECUTABLE_PATH=/usr/local/bin/playwright`.
+
+The `capybara-playwright-driver` and `playwright-ruby-client` gems are pulled in automatically by the
+existing `bundle install` step against `testsuite/Gemfile`.

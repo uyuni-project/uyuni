@@ -1232,6 +1232,21 @@ When(/^I clear browser cookies$/) do
   page.driver.with_playwright_page { |pw_page| pw_page.context.clear_cookies }
 end
 
+# Click a link that triggers a browser download and persist it to /tmp/downloads.
+# Playwright has no "default download directory" (unlike the old Selenium Chrome preference).
+# Best practice: drop to the native Playwright page and trigger the click inside expect_download
+# with a native locator. Mixing Capybara DSL inside the download wait is a known flakiness source.
+When(/^I download the file by following "([^"]*)"$/) do |link|
+  FileUtils.mkdir_p('/tmp/downloads')
+  page.driver.with_playwright_page do |pw_page|
+    download =
+      pw_page.expect_download do
+        pw_page.get_by_role('link', name: link).click
+      end
+    download.save_as(File.join('/tmp/downloads', download.suggested_filename))
+  end
+end
+
 When(/^I close the modal dialog$/) do
   find(:xpath, '//*[contains(@class, \'modal-header\')]/button[contains(@class, \'close\')]').click
 end
