@@ -23,7 +23,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelLabelException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelNameException;
 import com.redhat.rhn.frontend.xmlrpc.InvalidParentChannelException;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -32,7 +32,7 @@ import org.junit.jupiter.api.Test;
 /**
  * CreateCommandTest
  */
-public class CreateCommandTest extends RhnBaseTestCase {
+public class CreateCommandTest extends BaseTestCase {
 
     private CreateChannelCommand ccc = null;
     private int labelCount = 0;

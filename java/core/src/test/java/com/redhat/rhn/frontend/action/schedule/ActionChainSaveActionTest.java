@@ -25,7 +25,7 @@ import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.server.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.struts.RequestContext;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.TestUtils;
 
@@ -44,7 +44,7 @@ import java.util.Set;
  * Tests for ActionChainSaveAction.
  * @author Silvio Moioli {@literal <smoioli@suse.de>}
  */
-public class ActionChainSaveActionTest extends RhnBaseTestCase {
+public class ActionChainSaveActionTest extends BaseTestCase {
     /**
      * Tests save().
      * @throws Exception if something bad happens
