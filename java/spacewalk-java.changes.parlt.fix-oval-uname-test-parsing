@@ -1,0 +1,2 @@
+- Support parsing of uname_test and dynamic fallback CPE
+  derivation in OVAL sync (bsc#1269038)

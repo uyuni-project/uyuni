@@ -126,7 +126,7 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
 
             ProductVulnerablePackages vulnerableProduct = new ProductVulnerablePackages();
             vulnerableProduct.setSingleCve(definition.getSingleCve().orElseThrow());
-            vulnerableProduct.setProductCpe(deriveCpe(productTest).asString());
+            vulnerableProduct.setProductCpe(deriveCpe(productCriterion, productTest).asString());
             vulnerableProduct.setProductUserFriendlyName(productUserFriendlyName);
             vulnerableProduct.setVulnerablePackages(vulnerablePackages);
 
@@ -168,7 +168,7 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
                         comment.startsWith("openSUSE Leap"));
     }
 
-    private Cpe deriveCpe(TestType productTest) {
+    private Cpe deriveCpe(CriterionType productCriterion, TestType productTest) {
         OsFamily osProduct = definition.getOsFamily();
         if (osProduct == OsFamily.LEAP) {
             return deriveOpenSUSELeapCpe();
@@ -180,8 +180,50 @@ public class SUSEVulnerablePackageExtractor extends CriteriaTreeBasedExtractor {
             return deriveSUSELibertyCpe();
         }
         else {
-            return deriveFromProductOVALTest(productTest);
+            try {
+                return deriveFromProductOVALTest(productTest);
+            }
+            catch (IllegalStateException e) {
+                return deriveFromProductCriterionComment(productCriterion);
+            }
         }
+    }
+
+    private Cpe deriveFromProductCriterionComment(CriterionType productCriterion) {
+        String comment = productCriterion.getComment();
+        String commentLower = comment.toLowerCase();
+
+        String productPart = "sles";
+        if (commentLower.contains("desktop")) {
+            productPart = "sled";
+        }
+        else if (commentLower.contains("suse linux enterprise server")) {
+            productPart = "sles";
+        }
+        else if (commentLower.contains("suse linux enterprise desktop")) {
+            productPart = "sled";
+        }
+
+        String versionPart = "12";
+        Pattern versionPattern = Pattern.compile("\\b(12|15|16)\\b");
+        Matcher versionMatcher = versionPattern.matcher(comment);
+        if (versionMatcher.find()) {
+            versionPart = versionMatcher.group(1);
+        }
+
+        String updatePart = null;
+        Pattern spPattern = Pattern.compile("sp(\\d+)", Pattern.CASE_INSENSITIVE);
+        Matcher spMatcher = spPattern.matcher(comment);
+        if (spMatcher.find()) {
+            updatePart = "sp" + spMatcher.group(1);
+        }
+
+        return new CpeBuilder()
+                .withVendor("suse")
+                .withProduct(productPart)
+                .withVersion(versionPart)
+                .withUpdate(updatePart)
+                .build();
     }
 
     private Cpe deriveSUSELibertyCpe() {

@@ -64,7 +64,7 @@ import javax.xml.stream.events.XMLEvent;
 public class OvalParser {
 
     private static final Logger LOG = LogManager.getLogger(OvalParser.class);
-    private static final List<String> TEST_TYPES = List.of("rpminfo_test", "dpkginfo_test");
+    private static final List<String> TEST_TYPES = List.of("rpminfo_test", "dpkginfo_test", "uname_test");
     private static final List<String> OBJECT_TYPES = List.of("rpminfo_object", "dpkginfo_object");
     private static final List<String> STATE_TYPES = List.of("rpminfo_state", "dpkginfo_state");
 
@@ -401,6 +401,9 @@ public class OvalParser {
                 }
                 else if (element.equals("dpkginfo_test_test")) {
                     tests.add(parseTestType(nextEvent.asStartElement(), reader, PackageType.DEB));
+                }
+                else if (element.equals("uname_test")) {
+                    tests.add(parseTestType(nextEvent.asStartElement(), reader, PackageType.RPM));
                 }
             }
 
