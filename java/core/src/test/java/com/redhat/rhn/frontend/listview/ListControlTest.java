@@ -22,7 +22,7 @@ import com.redhat.rhn.common.db.datasource.DataResult;
 import com.redhat.rhn.common.db.datasource.ModeFactory;
 import com.redhat.rhn.common.db.datasource.SelectMode;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.Test;
@@ -33,7 +33,7 @@ import java.util.Map;
 /**
  * ListControlTest
  */
-public class ListControlTest extends RhnBaseTestCase {
+public class ListControlTest extends BaseTestCase {
 
     /**
      * Test the basic functionality of PageControl

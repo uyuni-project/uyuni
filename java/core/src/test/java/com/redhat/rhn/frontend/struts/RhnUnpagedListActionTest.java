@@ -22,7 +22,7 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.action.common.BadParameterException;
 import com.redhat.rhn.frontend.listview.ListControl;
 import com.redhat.rhn.testing.ActionHelper;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -35,7 +35,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * RhnUnpagedListActionTest
  */
-public class RhnUnpagedListActionTest extends RhnBaseTestCase {
+public class RhnUnpagedListActionTest extends BaseTestCase {
     /**
      * Test to make sure we check for the right filter value string
      * @throws Exception something bad happened
