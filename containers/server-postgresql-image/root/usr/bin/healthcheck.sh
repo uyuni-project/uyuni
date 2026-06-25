@@ -9,12 +9,14 @@ PGPORT=${POSTGRES_PORT:-5432}
 # Get current disk usage percentage
 DISK_USAGE=$(df --output=pcent /var/lib/pgsql/data | tail -1 | tr -d '%')
 
+UPGRADE_IN_PROGRESS="/run/postgresql/upgrade_in_progress"
+
 if [ "$DISK_USAGE" -gt "$THRESHOLD" ]; then
     echo "Healthcheck failed: Disk usage is at ${DISK_USAGE}%, which exceeds the ${THRESHOLD}% threshold."
     exit 1
 fi
 
-if [ -f "/run/upgrade_in_progress" ]; then
+if [ -f "$UPGRADE_IN_PROGRESS" ]; then
     echo "Healthcheck failed: Database upgrade is currently in progress."
     exit 1
 fi
