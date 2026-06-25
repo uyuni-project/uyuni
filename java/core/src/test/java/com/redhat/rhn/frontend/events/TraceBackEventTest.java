@@ -23,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.redhat.rhn.common.messaging.Mail;
 import com.redhat.rhn.common.messaging.MockMail;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.UserTestUtils;
@@ -34,7 +35,7 @@ import org.junit.jupiter.api.Test;
  * Test for {@link TraceBackEvent}.
  */
 
-public class TraceBackEventTest extends RhnBaseTestCase {
+public class TraceBackEventTest extends BaseTestCase {
 
     private static final String MSG_OUTER_EXC = "outer-exception";
     private static final String MSG_INNER_EXC = "inner-exception";
@@ -55,17 +56,17 @@ public class TraceBackEventTest extends RhnBaseTestCase {
         TraceBackEvent evt = createTestEvent();
         String eventText = evt.toText();
         assertNotNull(eventText);
-        assertContains(eventText, MSG_INNER_EXC);
-        assertContains(eventText, MSG_OUTER_EXC);
-        assertContains(eventText, "Request");
-        assertContains(eventText, "User");
-        assertContains(eventText, "Exception");
+        assertTrue(eventText.contains(MSG_INNER_EXC));
+        assertTrue(eventText.contains(MSG_OUTER_EXC));
+        assertTrue(eventText.contains("Request"));
+        assertTrue(eventText.contains("User"));
+        assertTrue(eventText.contains("Exception"));
         //with null exception
         evt.setException(null);
         eventText = evt.toText();
-        assertContains(eventText, "Request");
-        assertContains(eventText, "User");
-        assertContains(eventText, "Exception");
+        assertTrue(eventText.contains("Request"));
+        assertTrue(eventText.contains("User"));
+        assertTrue(eventText.contains("Exception"));
     }
 
     @Test
@@ -108,40 +109,40 @@ public class TraceBackEventTest extends RhnBaseTestCase {
         evt.setUser(null);
         evt.setException(new RuntimeException(MSG_OUTER_EXC));
         String eventText = evt.toText();
-        assertContains(eventText, MSG_OUTER_EXC);
-        assertContains(eventText, "No User logged in");
-        assertContains(eventText, "No request information");
+        assertTrue(eventText.contains(MSG_OUTER_EXC));
+        assertTrue(eventText.contains("No User logged in"));
+        assertTrue(eventText.contains("No request information"));
     }
 
     @Test
     public void testToTextWithValues() {
         TraceBackEvent evt = createTestEventWithValue("numbers", "184634294");
         String eventText = evt.toText();
-        assertContains(eventText, "numbers: <digits only>");
+        assertTrue(eventText.contains("numbers: <digits only>"));
 
         evt = createTestEventWithValue("empty", "");
         eventText = evt.toText();
-        assertContains(eventText, "empty: <empty>");
+        assertTrue(eventText.contains("empty: <empty>"));
 
         evt = createTestEventWithValue("blank", "  ");
         eventText = evt.toText();
-        assertContains(eventText, "blank: <blank>");
+        assertTrue(eventText.contains("blank: <blank>"));
 
         evt = createTestEventWithValue("alpha", "aBczztTToOp");
         eventText = evt.toText();
-        assertContains(eventText, "alpha: <alpha only>");
+        assertTrue(eventText.contains("alpha: <alpha only>"));
 
         evt = createTestEventWithValue("alphanumeric", "218hgdsioZttdnll99");
         eventText = evt.toText();
-        assertContains(eventText, "alphanumeric: <alphanumeric only>");
+        assertTrue(eventText.contains("alphanumeric: <alphanumeric only>"));
 
         evt = createTestEventWithValue("asciiprint", "2+ 18hgdsioZttdd  hf ! ## nll99");
         eventText = evt.toText();
-        assertContains(eventText, "asciiprint: <ascii printable>");
+        assertTrue(eventText.contains("asciiprint: <ascii printable>"));
 
         evt = createTestEventWithValue("chars", "2+ 1ÖäÜ üä § 8hgdsioZttdd  hf ! ## nll99");
         eventText = evt.toText();
-        assertContains(eventText, "chars: <characters>");
+        assertTrue(eventText.contains("chars: <characters>"));
     }
 
     @Test

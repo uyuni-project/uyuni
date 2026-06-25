@@ -11,6 +11,7 @@
 package com.redhat.rhn.common.hibernate;
 
 import com.redhat.rhn.domain.TestFactory;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import org.apache.commons.lang3.StringUtils;
@@ -31,7 +32,7 @@ import java.sql.Statement;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-abstract class HibernateBaseTest extends RhnBaseTestCase {
+abstract class HibernateBaseTest extends BaseTestCase {
     private static final Logger LOG = LogManager.getLogger(HibernateBaseTest.class);
 
     @BeforeEach

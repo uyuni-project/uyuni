@@ -16,13 +16,14 @@ package com.redhat.rhn.domain.user;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 
-public class PaneFactoryTest extends RhnBaseTestCase  {
+public class PaneFactoryTest extends BaseTestCase {
     @Test
     public void testAllPanesRetireval() {
         Map panes = PaneFactory.getAllPanes();

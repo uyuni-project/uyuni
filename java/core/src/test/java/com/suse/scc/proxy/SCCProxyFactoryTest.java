@@ -15,11 +15,12 @@
 
 package com.suse.scc.proxy;
 
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
-public class SCCProxyFactoryTest extends RhnBaseTestCase {
+public class SCCProxyFactoryTest extends BaseTestCase {
 
     @Test
     public void generatedCoverageTestLookupByStatus() {

@@ -20,12 +20,13 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.domain.session.WebSessionFactory;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import org.hibernate.HibernateException;
 import org.junit.jupiter.api.Test;
 
-public class NestedTransactionFactoryTest extends RhnBaseTestCase {
+public class NestedTransactionFactoryTest extends BaseTestCase {
 
     private static final long EXP_TIME = 60 * 60 * 1000;
 

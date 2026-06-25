@@ -17,6 +17,7 @@ package com.redhat.rhn.domain;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import org.junit.jupiter.api.Test;
@@ -24,7 +25,7 @@ import org.junit.jupiter.api.Test;
 /**
  * AbstractLabelNameHelperTest
  */
-public class AbstractLabelNameHelperTest extends RhnBaseTestCase {
+public class AbstractLabelNameHelperTest extends BaseTestCase {
 
     @Test
     public void testEquals() {

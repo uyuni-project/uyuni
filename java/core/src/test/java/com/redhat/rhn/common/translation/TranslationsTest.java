@@ -19,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import org.junit.jupiter.api.Test;
@@ -28,7 +29,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-public class TranslationsTest extends RhnBaseTestCase {
+public class TranslationsTest extends BaseTestCase {
     @Test
     public void testNoTranslator() {
         try {
