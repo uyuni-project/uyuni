@@ -17,7 +17,6 @@ package com.redhat.rhn.frontend.dto;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.redhat.rhn.testing.BaseTestCase;
-import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

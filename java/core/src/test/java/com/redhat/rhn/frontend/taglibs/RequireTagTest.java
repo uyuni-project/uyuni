@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.redhat.rhn.common.security.acl.AclHandler;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.TagTestHelper;
 import com.redhat.rhn.testing.TagTestUtils;
 
@@ -34,7 +34,7 @@ import jakarta.servlet.jsp.tagext.Tag;
 /**
  * RequireTagTest
  */
-public class RequireTagTest extends RhnBaseTestCase {
+public class RequireTagTest extends BaseTestCase {
 
     private RequireTag rt;
     private TagTestHelper tth;

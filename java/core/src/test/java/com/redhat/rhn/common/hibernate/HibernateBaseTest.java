@@ -12,7 +12,6 @@ package com.redhat.rhn.common.hibernate;
 
 import com.redhat.rhn.domain.TestFactory;
 import com.redhat.rhn.testing.BaseTestCase;
-import com.redhat.rhn.testing.RhnBaseTestCase;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Strings;
