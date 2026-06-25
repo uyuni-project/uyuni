@@ -31,7 +31,7 @@ import com.redhat.rhn.domain.session.InvalidSessionIdException;
 import com.redhat.rhn.domain.session.WebSession;
 import com.redhat.rhn.domain.session.WebSessionFactory;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -40,7 +40,7 @@ import org.junit.jupiter.api.Test;
 /** JUnit test case for the SessionManagerTest.
  */
 
-public class SessionManagerTest extends RhnBaseTestCase {
+public class SessionManagerTest extends BaseTestCase {
 
     @Test
     public void testLifetimeValue() {

@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.common.conf.Config;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.UserForTest;
 import com.redhat.rhn.testing.UserForTestCaseExtension;
 
@@ -32,7 +32,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 @ExtendWith(UserForTestCaseExtension.class)
-public class MessageQueueTest extends RhnBaseTestCase {
+public class MessageQueueTest extends BaseTestCase {
 
     private static Logger logger = LogManager.getLogger(MessageQueueTest.class);
 
