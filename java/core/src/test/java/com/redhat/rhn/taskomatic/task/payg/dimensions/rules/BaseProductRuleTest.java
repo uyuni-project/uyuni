@@ -23,7 +23,7 @@ import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.taskomatic.task.payg.dimensions.DimensionRule;
 import com.redhat.rhn.taskomatic.task.payg.dimensions.RuleType;
-import com.redhat.rhn.testing.RhnJmockBaseTestCase;
+import com.redhat.rhn.testing.MockObjectTestCase;
 
 import org.jmock.imposters.ByteBuddyClassImposteriser;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,7 +33,7 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 
-public class BaseProductRuleTest extends RhnJmockBaseTestCase {
+public class BaseProductRuleTest extends MockObjectTestCase {
 
     @BeforeEach
     public void setup() {

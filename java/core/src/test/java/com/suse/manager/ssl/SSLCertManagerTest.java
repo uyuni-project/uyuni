@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import com.redhat.rhn.common.util.FileUtils;
-import com.redhat.rhn.testing.RhnJmockBaseTestCase;
+import com.redhat.rhn.testing.MockObjectTestCase;
 
 import com.suse.manager.utils.ExecHelper;
 
@@ -33,7 +33,7 @@ import java.nio.file.Files;
 import java.util.List;
 import java.util.Set;
 
-public class SSLCertManagerTest extends RhnJmockBaseTestCase {
+public class SSLCertManagerTest extends MockObjectTestCase {
 
     private Runtime runtime;
     private Process process;

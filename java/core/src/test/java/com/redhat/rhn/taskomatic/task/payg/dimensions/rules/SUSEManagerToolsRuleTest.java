@@ -26,7 +26,7 @@ import com.redhat.rhn.domain.product.SUSEProductSet;
 import com.redhat.rhn.domain.server.InstalledProduct;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.taskomatic.task.payg.dimensions.DimensionRule;
-import com.redhat.rhn.testing.RhnJmockBaseTestCase;
+import com.redhat.rhn.testing.MockObjectTestCase;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.jmock.imposters.ByteBuddyClassImposteriser;
@@ -37,7 +37,7 @@ import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 
-public class SUSEManagerToolsRuleTest extends RhnJmockBaseTestCase {
+public class SUSEManagerToolsRuleTest extends MockObjectTestCase {
 
     @BeforeEach
     public void setup() {

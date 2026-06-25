@@ -12,7 +12,7 @@ package com.suse.manager.api;
 
 import com.redhat.rhn.frontend.xmlrpc.BaseHandler;
 import com.redhat.rhn.frontend.xmlrpc.HandlerFactory;
-import com.redhat.rhn.testing.RhnJmockBaseTestCase;
+import com.redhat.rhn.testing.MockObjectTestCase;
 
 import com.suse.manager.webui.controllers.login.LoginController;
 import com.suse.manager.webui.services.OidcAuthHandler;
@@ -26,7 +26,7 @@ import java.util.Optional;
 
 import spark.Route;
 
-public class HttpApiRegistryTest extends RhnJmockBaseTestCase {
+public class HttpApiRegistryTest extends MockObjectTestCase {
     /**
      * Stub API handler for testing
      */
