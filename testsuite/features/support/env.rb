@@ -345,6 +345,12 @@ Before('@proxy') do
   skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['proxy']
 end
 
+# The hub/peripheral server node is 'server2' ('server' is the controller and
+# is always present, so it cannot gate this tag).
+Before('@server') do
+  skip_this_scenario unless ENV.key? ENV_VAR_BY_HOST['server2']
+end
+
 Before('@run_if_proxy_transactional_or_slmicro62_minion') do
   skip_this_scenario unless suse_proxy_transactional? || ENV.key?(ENV_VAR_BY_HOST['slmicro62_minion'])
 end
