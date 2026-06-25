@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import com.redhat.rhn.domain.config.ConfigFileName;
 import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -31,7 +31,7 @@ import java.util.Date;
 /**
  * FileListTest
  */
-public class FileListTest extends RhnBaseTestCase {
+public class FileListTest extends BaseTestCase {
 
     @Test
     public void testDeleteFileList() {

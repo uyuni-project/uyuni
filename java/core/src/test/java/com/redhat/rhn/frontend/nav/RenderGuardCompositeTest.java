@@ -17,14 +17,14 @@ package com.redhat.rhn.frontend.nav;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
 /**
  * RenderGuardCompositeTest
  */
-public class RenderGuardCompositeTest extends RhnBaseTestCase {
+public class RenderGuardCompositeTest extends BaseTestCase {
 
     @Test
     public void testNoGuards() {

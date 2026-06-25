@@ -23,7 +23,7 @@ import com.redhat.rhn.common.util.CSVWriterTest;
 import com.redhat.rhn.frontend.listview.PageControl;
 import com.redhat.rhn.manager.rhnset.RhnSetDecl;
 import com.redhat.rhn.testing.ActionHelper;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -35,7 +35,7 @@ import java.util.Map;
 /**
  * RhnListActionTest - test RhnListAction code.
  */
-public class BaseSetListActionTest extends RhnBaseTestCase {
+public class BaseSetListActionTest extends BaseTestCase {
 
     private TestSetupListAction tla;
     private ActionHelper sah;

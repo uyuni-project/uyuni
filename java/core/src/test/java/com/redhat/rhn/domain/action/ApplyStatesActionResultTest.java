@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.action.salt.ApplyStatesActionResult;
 import com.redhat.rhn.domain.action.salt.StateResult;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
@@ -31,7 +31,7 @@ import java.util.Optional;
 /**
  * ApplyStatesActionResultTest
  */
-public class ApplyStatesActionResultTest extends RhnBaseTestCase {
+public class ApplyStatesActionResultTest extends BaseTestCase {
 
     /**
      * Tests getResult Method for invalid Output

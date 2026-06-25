@@ -22,14 +22,14 @@ import com.redhat.rhn.domain.action.Action;
 import com.redhat.rhn.domain.action.ActionFactory;
 import com.redhat.rhn.domain.action.ActionFactoryTest;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;
 
-public class ConfigUploadActionTest extends RhnBaseTestCase {
+public class ConfigUploadActionTest extends BaseTestCase {
 
     @Test
     public void testLookup() throws Exception {

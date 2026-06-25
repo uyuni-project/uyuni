@@ -17,7 +17,8 @@ import com.redhat.rhn.domain.action.script.ScriptRunAction;
 import com.redhat.rhn.domain.server.MinionServer;
 import com.redhat.rhn.domain.server.MinionServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.testing.RhnJmockBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
+import com.redhat.rhn.testing.SaltTestCaseExtension;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import com.suse.cloud.CloudPaygManager;
@@ -42,10 +43,12 @@ import com.google.gson.reflect.TypeToken;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.util.Optional;
 
-public class RebootInfoBeaconTest extends RhnJmockBaseTestCase {
+@ExtendWith(SaltTestCaseExtension.class)
+public class RebootInfoBeaconTest extends BaseTestCase {
 
     private SaltReactor reactor;
     private User user;

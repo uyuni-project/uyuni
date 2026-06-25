@@ -20,7 +20,6 @@ import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.BUILT;
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.State.DETACHED;
 import static com.redhat.rhn.domain.contentmgmt.ProjectSource.Type.SW_CHANNEL;
 import static com.redhat.rhn.domain.role.RoleFactory.ORG_ADMIN;
-import static com.redhat.rhn.testing.RhnBaseTestCase.assertContains;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static java.util.Optional.empty;
@@ -71,8 +70,8 @@ import com.redhat.rhn.domain.user.User;
 import com.redhat.rhn.frontend.xmlrpc.InvalidChannelLabelException;
 import com.redhat.rhn.manager.EntityExistsException;
 import com.redhat.rhn.manager.EntityNotExistsException;
+import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.ChannelTestUtils;
-import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
@@ -88,7 +87,7 @@ import java.util.Set;
 /**
  * Tests for ContentManager
  */
-public class ContentManagerTest extends JMockBaseTestCaseWithUser {
+public class ContentManagerTest extends BaseTestCaseWithUser {
 
     private ContentManager contentManager;
 

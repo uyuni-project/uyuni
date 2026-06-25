@@ -16,14 +16,14 @@ package com.redhat.rhn.manager.kickstart;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
 /**
  * KickstartDetailsCommandTest - test for KickstartDetailsCommand
  */
-public class KickstartIpCommandTest extends RhnBaseTestCase {
+public class KickstartIpCommandTest extends BaseTestCase {
 
     //place holder after refactoring
     @Test

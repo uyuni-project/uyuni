@@ -27,14 +27,14 @@ import com.redhat.rhn.domain.config.ConfigRevision;
 import com.redhat.rhn.domain.server.Server;
 import com.redhat.rhn.domain.server.ServerFactoryTest;
 import com.redhat.rhn.domain.user.User;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.ConfigTestUtils;
-import com.redhat.rhn.testing.RhnBaseTestCase;
 import com.redhat.rhn.testing.TestUtils;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.Test;
 
-public class ConfigUploadMtimeActionTest extends RhnBaseTestCase {
+public class ConfigUploadMtimeActionTest extends BaseTestCase {
 
     /**
      * Test fetching a ConfigUploadAction

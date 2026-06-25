@@ -15,7 +15,7 @@
 
 package com.redhat.rhn.domain.access;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
@@ -24,7 +24,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class NamespaceFactoryTest extends RhnBaseTestCase {
+public class NamespaceFactoryTest extends BaseTestCase {
 
     @Test
     public void generatedCoverageTestList() {

@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.user.RhnTimeZone;
 import com.redhat.rhn.domain.user.UserFactory;
-import com.redhat.rhn.testing.MockObjectTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.hibernate.Cache;
 import org.hibernate.Session;
@@ -27,7 +27,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-class HibernateCacheTest extends MockObjectTestCase {
+class HibernateCacheTest extends BaseTestCase {
 
     private static List<Integer> timezoneIds = null;
     private Statistics stats;

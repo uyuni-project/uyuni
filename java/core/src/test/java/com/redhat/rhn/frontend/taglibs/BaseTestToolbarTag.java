@@ -17,7 +17,7 @@ package com.redhat.rhn.frontend.taglibs;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.redhat.rhn.common.security.acl.AclHandler;
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.RhnMockHttpServletRequest;
 import com.redhat.rhn.testing.RhnMockJspWriter;
 import com.redhat.rhn.testing.TagTestHelper;
@@ -36,7 +36,7 @@ import jakarta.servlet.jsp.tagext.Tag;
 /**
  * BaseTestToolbarTag
  */
-public abstract class BaseTestToolbarTag extends RhnBaseTestCase {
+public abstract class BaseTestToolbarTag extends BaseTestCase {
     protected URL url = null;
     protected TagTestHelper tth;
     protected ToolbarTag tt;

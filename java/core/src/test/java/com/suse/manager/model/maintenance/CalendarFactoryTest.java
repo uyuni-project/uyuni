@@ -17,7 +17,7 @@ package com.suse.manager.model.maintenance;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.redhat.rhn.domain.user.User;
-import com.redhat.rhn.testing.JMockBaseTestCaseWithUser;
+import com.redhat.rhn.testing.BaseTestCaseWithUser;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 /**
  * Test For {@link CalendarFactory}
  */
-public class CalendarFactoryTest extends JMockBaseTestCaseWithUser {
+public class CalendarFactoryTest extends BaseTestCaseWithUser {
 
     private CalendarFactory calendarFactory;
     private ScheduleFactory scheduleFactory;

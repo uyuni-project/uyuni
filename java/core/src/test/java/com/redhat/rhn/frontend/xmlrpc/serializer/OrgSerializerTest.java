@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.redhat.rhn.domain.org.Org;
-import com.redhat.rhn.testing.MockObjectTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 import com.redhat.rhn.testing.UserTestUtils;
 
 import org.junit.jupiter.api.Test;
@@ -30,7 +30,7 @@ import redstone.xmlrpc.XmlRpcException;
 import redstone.xmlrpc.XmlRpcSerializer;
 
 
-public class OrgSerializerTest extends MockObjectTestCase {
+public class OrgSerializerTest extends BaseTestCase {
 
     @Test
     public void testSerialize() throws XmlRpcException {

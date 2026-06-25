@@ -18,14 +18,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
 /**
  * PackageMetadataTest
  */
-public class PackageMetadataTest extends RhnBaseTestCase {
+public class PackageMetadataTest extends BaseTestCase {
 
     @Test
     public void testParameterizedCtor() {

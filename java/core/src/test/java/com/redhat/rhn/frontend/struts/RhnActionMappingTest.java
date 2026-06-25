@@ -16,14 +16,14 @@ package com.redhat.rhn.frontend.struts;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.Test;
 
 /**
  * RhnActionMappingTest
  */
-public class RhnActionMappingTest extends RhnBaseTestCase {
+public class RhnActionMappingTest extends BaseTestCase {
 
     @Test
     public void testAclMapping() {

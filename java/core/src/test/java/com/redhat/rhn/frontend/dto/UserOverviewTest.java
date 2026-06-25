@@ -16,7 +16,7 @@ package com.redhat.rhn.frontend.dto;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.redhat.rhn.testing.RhnBaseTestCase;
+import com.redhat.rhn.testing.BaseTestCase;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,7 +24,7 @@ import org.junit.jupiter.api.Test;
 /**
  * UserOverviewTest
  */
-public class UserOverviewTest extends RhnBaseTestCase {
+public class UserOverviewTest extends BaseTestCase {
     private UserOverview uo;
 
     /*
