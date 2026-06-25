@@ -188,7 +188,6 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     public static final int HOST_SWAP_MB = 1024;
 
     private SaltService saltServiceMock;
-    protected Path tmpSaltRoot;
     protected Path metadataDirOfficial;
     private SystemEntitlementManager systemEntitlementManager;
     private SystemManager systemManager;
@@ -202,7 +201,6 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
         TaskomaticApi taskomaticMock = mock(TaskomaticApi.class);
         ActionManager.setTaskomaticApi(taskomaticMock);
         saltServiceMock = mock(SaltService.class);
-        tmpSaltRoot = Files.createTempDirectory("salt");
         metadataDirOfficial = Files.createTempDirectory("meta");
         FormulaFactory.setMetadataDirOfficial(metadataDirOfficial.toString());
         context().checking(new Expectations() {
@@ -224,7 +222,6 @@ public class SystemManagerTest extends JMockBaseTestCaseWithUser {
     @AfterEach
     public void tearDown() throws Exception {
         try {
-            FileUtils.deleteDirectory(tmpSaltRoot.toFile());
             FileUtils.deleteDirectory(metadataDirOfficial.toFile());
         }
         catch (IOException e) {

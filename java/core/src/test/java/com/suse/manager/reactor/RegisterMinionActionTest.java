@@ -779,7 +779,7 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     assertTrue(minion.getChannels().size() > 1);
 
                     // Check if the state assignment file is generated
-                    assertTrue(tmpSaltRoot.resolve("custom")
+                    assertTrue(getSaltRootPath().resolve("custom")
                             .resolve("custom_" + minion.getMachineId() + ".sls").toFile()
                             .exists());
                 }, DEFAULT_CONTACT_METHOD);
@@ -878,7 +878,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     assertTrue(minion.getChannels().isEmpty());
 
                     // State assignment file check
-                    Path slsPath = tmpSaltRoot.resolve("custom").resolve("custom_" + minion.getMachineId() + ".sls");
+                    Path slsPath = getSaltRootPath().resolve("custom")
+                            .resolve("custom_" + minion.getMachineId() + ".sls");
                     assertTrue(slsPath.toFile().exists());
                     assertFalse(new String(Files.readAllBytes(slsPath)).contains(
                             ConfigChannelSaltManager.getInstance().getChannelStateName(cfgChannel)));
@@ -942,7 +943,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     assertTrue(minion.getConfigChannelStream().anyMatch(c -> "config-channel-1".equals(c.getLabel())));
 
                     // State assignment file check
-                    Path slsPath = tmpSaltRoot.resolve("custom").resolve("custom_" + minion.getMachineId() + ".sls");
+                    Path slsPath = getSaltRootPath()
+                            .resolve("custom").resolve("custom_" + minion.getMachineId() + ".sls");
                     assertTrue(slsPath.toFile().exists());
                     assertContains(new String(Files.readAllBytes(slsPath)),
                             ConfigChannelSaltManager.getInstance().getChannelStateName(cfgChannel));
@@ -1742,7 +1744,8 @@ public class RegisterMinionActionTest extends JMockBaseTestCaseWithUser {
                     assertTrue(minion.getFqdns().isEmpty());
 
                     // State assignment file check
-                    Path slsPath = tmpSaltRoot.resolve("custom").resolve("custom_" + minion.getMachineId() + ".sls");
+                    Path slsPath = getSaltRootPath()
+                            .resolve("custom").resolve("custom_" + minion.getMachineId() + ".sls");
                     assertTrue(slsPath.toFile().exists());
                 },
                 cleanup -> { },

@@ -67,14 +67,14 @@ public class RefreshGeneratedSaltFilesEventMessageActionTest extends BaseTestCas
         serverRev.setServer(server);
         SaltStateGeneratorService.INSTANCE.generateConfigState(serverRev);
 
-        assertTrue(Files.exists(tmpSaltRoot.resolve(SALT_CONFIG_STATES_DIR)
+        assertTrue(Files.exists(getSaltRootPath().resolve(SALT_CONFIG_STATES_DIR)
                 .resolve(SALT_SERVER_STATE_FILE_PREFIX + server.getMachineId() + ".sls")));
 
         RefreshGeneratedSaltFilesEventMessageAction action = new RefreshGeneratedSaltFilesEventMessageAction(
-                tmpSaltRoot.toString(), tmpFileRoot.toString());
+                getSaltRootPath().toString(), tmpFileRoot.toString());
         action.execute(new RefreshGeneratedSaltFilesEventMessage());
 
-        Path customPath = tmpSaltRoot.resolve(SALT_CONFIG_STATES_DIR);
+        Path customPath = getSaltRootPath().resolve(SALT_CONFIG_STATES_DIR);
         assertTrue(Files.exists(customPath.resolve(
                 SALT_SERVER_STATE_FILE_PREFIX + server.getMachineId() + ".sls")));
 
@@ -84,11 +84,11 @@ public class RefreshGeneratedSaltFilesEventMessageActionTest extends BaseTestCas
     @Test
     public void testDoExecuteNoCustomDir() throws Exception {
         // no /srv/susemanager/salt/custom
-        Files.deleteIfExists(tmpSaltRoot.resolve(SALT_CONFIG_STATES_DIR));
-        assertFalse(Files.exists(tmpSaltRoot.resolve(SALT_CONFIG_STATES_DIR)));
+        Files.deleteIfExists(getSaltRootPath().resolve(SALT_CONFIG_STATES_DIR));
+        assertFalse(Files.exists(getSaltRootPath().resolve(SALT_CONFIG_STATES_DIR)));
 
         RefreshGeneratedSaltFilesEventMessageAction action = new RefreshGeneratedSaltFilesEventMessageAction(
-                tmpSaltRoot.toString(), tmpFileRoot.toString());
+                getSaltRootPath().toString(), tmpFileRoot.toString());
         action.refreshFiles();
 
         checkAssertions();
@@ -96,7 +96,7 @@ public class RefreshGeneratedSaltFilesEventMessageActionTest extends BaseTestCas
 
     private void checkAssertions() throws IOException {
 
-        Path customPath = tmpSaltRoot.resolve(SALT_CONFIG_STATES_DIR);
+        Path customPath = getSaltRootPath().resolve(SALT_CONFIG_STATES_DIR);
         for (Org org : OrgFactory.lookupAllOrgs()) {
             assertTrue(Files.exists(customPath.resolve(
                     "org_" + user.getOrg().getId() + ".sls")));

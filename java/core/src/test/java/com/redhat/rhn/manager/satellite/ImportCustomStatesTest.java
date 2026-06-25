@@ -70,7 +70,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
     public void testMultipleTasksDone() {
         createTask(UpgradeCommand.UPGRADE_KS_PROFILES);
 
-        UpgradeCommand command = new UpgradeCommand(tmpSaltRoot, legacyStatesBackupDirectory);
+        UpgradeCommand command = new UpgradeCommand(getSaltRootPath(), legacyStatesBackupDirectory);
         command.upgrade();
 
         assertTaskDoesNotExist(UpgradeCommand.UPGRADE_KS_PROFILES);
@@ -87,7 +87,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
         ConfigFile configFile = stateChannel.createConfigFile(ConfigFileState.normal(), "/init.sls");
         ConfigTestUtils.createConfigRevision(configFile, 1L);
 
-        Path statePath = tmpSaltRoot
+        Path statePath = getSaltRootPath()
                 .resolve(ORG_STATES_DIRECTORY_PREFIX + user.getOrg().getId())
                 .resolve(stateChannel.getLabel() + ".sls");
         statePath.toFile().getParentFile().mkdirs();
@@ -99,7 +99,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
                 "",
                 configFile.getLatestConfigRevision().getConfigContent().getContentsString());
 
-        UpgradeCommand cmd = new UpgradeCommand(tmpSaltRoot, legacyStatesBackupDirectory);
+        UpgradeCommand cmd = new UpgradeCommand(getSaltRootPath(), legacyStatesBackupDirectory);
         cmd.upgrade();
 
         assertEquals(Long.valueOf(1L), configFile.getLatestConfigRevision().getRevision());
@@ -107,7 +107,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
                 stateContents,
                 configFile.getLatestConfigRevision().getConfigContent().getContentsString());
 
-        Path channelDirectory = tmpSaltRoot
+        Path channelDirectory = getSaltRootPath()
                 .resolve(ORG_STATES_DIRECTORY_PREFIX + user.getOrg().getId())
                 .resolve(stateChannel.getLabel());
         File stateFile = channelDirectory.resolve("init.sls").toFile();
@@ -144,14 +144,14 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
         String originalContent = "test-content";
         configRevision.getConfigContent().setContents(originalContent.getBytes());
 
-        Path statePath = tmpSaltRoot
+        Path statePath = getSaltRootPath()
                 .resolve(ORG_STATES_DIRECTORY_PREFIX + user.getOrg().getId())
                 .resolve(stateChannel.getLabel() + ".sls");
         statePath.toFile().getParentFile().mkdirs();
 
         String stateContents = "my-state:\n    ....";
         FileUtils.writeStringToFile(statePath.toFile(), stateContents);
-        UpgradeCommand cmd = new UpgradeCommand(tmpSaltRoot, legacyStatesBackupDirectory);
+        UpgradeCommand cmd = new UpgradeCommand(getSaltRootPath(), legacyStatesBackupDirectory);
         cmd.upgrade();
 
         assertEquals(Long.valueOf(1L), configFile.getLatestConfigRevision().getRevision());
@@ -175,7 +175,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
         configContent.setContents("original_content".getBytes());
         configRevision.setConfigContent(configContent);
 
-        Path statePath = tmpSaltRoot
+        Path statePath = getSaltRootPath()
                 .resolve(ORG_STATES_DIRECTORY_PREFIX + user.getOrg().getId())
                 .resolve(stateChannel.getLabel() + ".sls");
         statePath.toFile().getParentFile().mkdirs();
@@ -183,7 +183,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
         String stateContents = "my-state:\n    ....";
         FileUtils.writeStringToFile(statePath.toFile(), stateContents);
 
-        UpgradeCommand cmd = new UpgradeCommand(tmpSaltRoot, legacyStatesBackupDirectory);
+        UpgradeCommand cmd = new UpgradeCommand(getSaltRootPath(), legacyStatesBackupDirectory);
         cmd.upgrade();
 
         assertEquals(Long.valueOf(2L), configFile.getLatestConfigRevision().getRevision());
@@ -207,7 +207,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
         configContent.setContents("original_content".getBytes());
         configRevision.setConfigContent(configContent);
 
-        Path statePath = tmpSaltRoot
+        Path statePath = getSaltRootPath()
                 .resolve(ORG_STATES_DIRECTORY_PREFIX + user.getOrg().getId())
                 .resolve(normalChannel.getLabel() + ".sls");
         statePath.toFile().getParentFile().mkdirs();
@@ -215,7 +215,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
         String stateContents = "my-state:\n    ....";
         FileUtils.writeStringToFile(statePath.toFile(), stateContents);
 
-        UpgradeCommand cmd = new UpgradeCommand(tmpSaltRoot, legacyStatesBackupDirectory);
+        UpgradeCommand cmd = new UpgradeCommand(getSaltRootPath(), legacyStatesBackupDirectory);
         cmd.upgrade();
 
         assertEquals(Long.valueOf(1L), configFile.getLatestConfigRevision().getRevision());
@@ -236,7 +236,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
         ConfigFile configFile = stateChannel.createConfigFile(ConfigFileState.normal(), "/init.sls");
         ConfigTestUtils.createConfigRevision(configFile, 1L);
 
-        UpgradeCommand cmd = new UpgradeCommand(tmpSaltRoot, legacyStatesBackupDirectory);
+        UpgradeCommand cmd = new UpgradeCommand(getSaltRootPath(), legacyStatesBackupDirectory);
         try {
             cmd.upgrade();
             fail("A runtime exception should have been thrown.");
@@ -259,7 +259,7 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
         assertEquals(0, legacyStatesBackupDirectory.toFile().list().length);
 
         // this dir must be imported with all its contents
-        File dir1 = tmpSaltRoot.resolve(ORG_STATES_DIRECTORY_PREFIX + "1").toFile();
+        File dir1 = getSaltRootPath().resolve(ORG_STATES_DIRECTORY_PREFIX + "1").toFile();
         dir1.mkdirs();
         File state1 = dir1.toPath().resolve("customstate1.sls").toFile();
         state1.createNewFile();
@@ -269,19 +269,19 @@ public class ImportCustomStatesTest extends BaseTestCaseWithUser {
         FileUtils.writeStringToFile(state1, "contents2");
 
         // empty directory
-        File dir2 = tmpSaltRoot.resolve(ORG_STATES_DIRECTORY_PREFIX + "87654321").toFile();
+        File dir2 = getSaltRootPath().resolve(ORG_STATES_DIRECTORY_PREFIX + "87654321").toFile();
         dir2.mkdirs();
 
         // this dir must not be imported
-        File noStatesHereDir = tmpSaltRoot.resolve(ORG_STATES_DIRECTORY_PREFIX + "no_org_id").toFile();
+        File noStatesHereDir = getSaltRootPath().resolve(ORG_STATES_DIRECTORY_PREFIX + "no_org_id").toFile();
         noStatesHereDir.mkdirs();
 
         // legacy configuration channels directories
-        Path cfgDir = tmpSaltRoot.resolve("mgr_cfg_org_123").resolve("config_channel_321");
+        Path cfgDir = getSaltRootPath().resolve("mgr_cfg_org_123").resolve("config_channel_321");
         cfgDir.toFile().mkdirs();
         FileUtils.writeStringToFile(cfgDir.resolve("init.sls").toFile(), "state-content");
 
-        UpgradeCommand cmd = new UpgradeCommand(tmpSaltRoot, legacyStatesBackupDirectory);
+        UpgradeCommand cmd = new UpgradeCommand(getSaltRootPath(), legacyStatesBackupDirectory);
         cmd.upgrade();
 
         assertTrue(dir1.exists());
